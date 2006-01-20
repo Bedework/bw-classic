@@ -1270,12 +1270,56 @@
 
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3>Add Calendar / Folder</h3>
-    <form name="modCalForm" action="{$calendar-update}">
+    <form name="addCalForm" action="{$calendar-update}">
       <table class="eventFormTable">
         <tr>
           <th>Name:</th>
           <td>
-            <xsl:value-of select="name"/>
+            <xsl:variable name="curCalName" select="name"/>
+            <input name="calendar.name" value="{$curCalName}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Summary:</th>
+          <td>
+            <xsl:variable name="curCalSummary" select="summary"/>
+            <input type="text" name="calendar.summary" value="{$curCalSummary}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Description:</th>
+          <td>
+            <textarea name="calendar.description" width="60" height="20">
+              <xsl:value-of select="desc"/>
+            </textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>Calendar/Folder:</th>
+          <td>
+            <xsl:choose>
+              <xsl:when test="calendarCollection='true'">
+                <input type="radio" value="true" name="calendarCollection" checked="checked"/> Calendar
+                <input type="radio" value="false" name="calendarCollection"/> Folder
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" value="true" name="calendarCollection"/> Calendar
+                <input type="radio" value="false" name="calendarCollection" checked="checked"/> Folder
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+      </table>
+
+      <table border="0" width="100%" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="addCalendar" value="Add Calendar" class="padRight"/>
+            <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
+            <input type="reset" value="Clear" class="padRight"/>
+          </td>
+          <td align="right">
+            <input type="submit" name="delete" value="Delete Calendar"/>
           </td>
         </tr>
       </table>
@@ -1349,15 +1393,6 @@
           </td>
         </tr>
       </table>
-
-      <xsl:choose>
-        <xsl:when test="calendarCollection='true'">
-          <p><a href="">convert to folder</a> (calendar must be empty)</p>
-        </xsl:when>
-        <xsl:otherwise>
-          <p><a href="">convert to calendar</a> (folder must be empty)</p>
-        </xsl:otherwise>
-      </xsl:choose>
     </form>
   </xsl:template>
 
