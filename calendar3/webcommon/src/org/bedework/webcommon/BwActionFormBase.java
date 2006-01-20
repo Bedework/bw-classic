@@ -1,0 +1,1979 @@
+/*
+ Copyright (c) 2000-2005 University of Washington.  All rights reserved.
+
+ Redistribution and use of this distribution in source and binary forms,
+ with or without modification, are permitted provided that:
+
+   The above copyright notice and this permission notice appear in
+   all copies and supporting documentation;
+
+   The name, identifiers, and trademarks of the University of Washington
+   are not used in advertising or publicity without the express prior
+   written permission of the University of Washington;
+
+   Recipients acknowledge that this distribution is made available as a
+   research courtesy, "as is", potentially with defects, without
+   any obligation on the part of the University of Washington to
+   provide support, services, or repair;
+
+   THE UNIVERSITY OF WASHINGTON DISCLAIMS ALL WARRANTIES, EXPRESS OR
+   IMPLIED, WITH REGARD TO THIS SOFTWARE, INCLUDING WITHOUT LIMITATION
+   ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+   PARTICULAR PURPOSE, AND IN NO EVENT SHALL THE UNIVERSITY OF
+   WASHINGTON BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL
+   DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+   PROFITS, WHETHER IN AN ACTION OF CONTRACT, TORT (INCLUDING
+   NEGLIGENCE) OR STRICT LIABILITY, ARISING OUT OF OR IN CONNECTION WITH
+   THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+/* **********************************************************************
+    Copyright 2005 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+
+    Redistribution and use of this distribution in source and binary forms,
+    with or without modification, are permitted provided that:
+       The above copyright notice and this permission notice appear in all
+        copies and supporting documentation;
+
+        The name, identifiers, and trademarks of Rensselaer Polytechnic
+        Institute are not used in advertising or publicity without the
+        express prior written permission of Rensselaer Polytechnic Institute;
+
+    DISCLAIMER: The software is distributed" AS IS" without any express or
+    implied warranty, including but not limited to, any implied warranties
+    of merchantability or fitness for a particular purpose or any warrant)'
+    of non-infringement of any current or pending patent rights. The authors
+    of the software make no representations about the suitability of this
+    software for any particular purpose. The entire risk as to the quality
+    and performance of the software is with the user. Should the software
+    prove defective, the user assumes the cost of all necessary servicing,
+    repair or correction. In particular, neither Rensselaer Polytechnic
+    Institute, nor the authors of the software are liable for any indirect,
+    special, consequential, or incidental damages related to the software,
+    to the maximum extent the law permits.
+*/
+
+package org.bedework.webcommon;
+
+import org.bedework.appcommon.BedeworkDefs;
+import org.bedework.appcommon.DayView;
+import org.bedework.appcommon.MonthView;
+import org.bedework.appcommon.MyCalendarVO;
+import org.bedework.appcommon.TimeView;
+import org.bedework.appcommon.WeekView;
+import org.bedework.appcommon.YearView;
+import org.bedework.calenv.CalEnv;
+import org.bedework.calfacade.BwCalendar;
+import org.bedework.calfacade.BwCategory;
+import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.BwEventObj;
+import org.bedework.calfacade.BwLocation;
+import org.bedework.calfacade.BwSponsor;
+import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.CalFacadeDefs;
+import org.bedework.calfacade.svc.BwAdminGroup;
+import org.bedework.calfacade.svc.BwAuthUserPrefs;
+import org.bedework.calfacade.svc.BwPreferences;
+import org.bedework.calfacade.svc.BwSubscription;
+import org.bedework.calfacade.svc.BwView;
+import org.bedework.calfacade.svc.UserAuth;
+import org.bedework.calsvci.CalSvcI;
+import org.bedework.mail.MailerIntf;
+
+import edu.rpi.sss.util.Util;
+import edu.rpi.sss.util.jsp.UtilActionForm;
+
+import net.fortuna.ical4j.model.Calendar;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.upload.FormFile;
+
+/** Base for action form used by bedework web applications
+ *
+ * @author  Mike Douglass     douglm@rpi.edu
+ */
+public class BwActionFormBase extends UtilActionForm {
+  /** This object will be set up appropriately for the kind of client,
+   * e.g. admin, guest etc.
+   */
+  private CalEnv env;
+
+  private transient MailerIntf mailer;
+
+  /** True if we should auto-create sponsors. Some sites may wish to control
+   * the creation of sponsors to enforce consistency in their use. If this
+   * is true we create a sponsor as we create events. If false the sponsor
+   * must already exist.
+   */
+  private boolean autoCreateSponsors;
+
+  /** True if we should auto-create locations. Some sites may wish to control
+   * the creation of locations to enforce consistency in their use. If this
+   * is true we create a location as we create events. If false the location
+   * must already exist.
+   */
+  private boolean autoCreateLocations;
+
+  /** True if we should auto-delete sponsors. Some sites may wish to control
+   * the deletion of sponsors to enforce consistency in their use. If this
+   * is true we delete a sponsor when it becomes unused.
+   */
+  private boolean autoDeleteSponsors;
+
+  /** True if we should auto-delete locations. Some sites may wish to control
+   * the deletion of locations to enforce consistency in their use. If this
+   * is true we delete a location when it becomes unused.
+   */
+  private boolean autoDeleteLocations;
+
+  /* Kind of entity we are referring to */
+
+  private static int publicEntity = 0;
+  private static int ownersEntity = 1;
+  private static int editableEntity = 2;
+
+  private boolean newSession;
+
+  private BwSession sess;
+
+  private BwUser userVO;
+
+  /** Requests waiting */
+  private int waiters;
+
+  private MyCalendarVO today;
+
+  /** true if this is a guest (unauthenticated) user
+   */
+  private boolean guest;
+
+  /**
+   * The current administrative user.
+   */
+  protected String currentAdminUser;
+
+  /** True if this user has more than the default rights
+   */
+  private boolean authorisedUser;
+
+  /** true if we are showing the public face
+   */
+  private boolean publicView;
+
+  private CalSvcI calsvci;
+
+  private String[] yearVals;
+  private static final int numYearVals = 10;
+  //private String curYear;
+
+  /** Whether we show year data
+   */
+  private boolean showYearData;
+
+  /** Id doing administration, May be a group id */
+  private String adminUserId;
+
+  /** Auth prefs for the currently logged in user
+   */
+  private BwAuthUserPrefs authUserPrefs;
+
+  private boolean authUserAlerts;
+  private boolean authUserPublicEvents;
+  private boolean authUserSuperUser;
+
+  /* ....................................................................
+   *                       Admin Groups
+   * .................................................................... */
+
+  /** True if we have set the user's group.
+   */
+  private boolean groupSet;
+
+  /** True if we are choosing the user's group.
+   */
+  private boolean choosingGroup;
+
+  /** User's current group or null. */
+  private BwAdminGroup adminGroup;
+
+  /** The groups of which our user is a member
+   */
+  private Collection userAdminGroups;
+
+  /* ....................................................................
+   *           Event date and time fields
+   * .................................................................... */
+
+  private EventDates eventDates;
+
+  private boolean hour24;
+
+  private int minIncrement;
+
+  /* ....................................................................
+   *           Ids for fetching objects
+   * .................................................................... */
+
+  private int calId;
+
+  private int categoryId;
+
+  private int locationId;
+
+  private int sponsorId;
+
+  private int eventId;
+
+  //private EventKey ekey = new EventKey();
+
+  /* ....................................................................
+   *           Fields for creating or editing objects
+   * .................................................................... */
+
+  /** newCategory is where we build a new category object
+   */
+  private BwCategory newCategory;
+
+  /** editCategory is where we hold a category object for editing
+   */
+  private BwCategory editCategory;
+
+  /** newLocation is where we build a new location object
+   */
+  private BwLocation newLocation;
+
+  /** editLocation is where we hold a location object for editing
+   */
+  private BwLocation editLocation;
+
+  /** newSponsor is where we build a new Sponsor object
+   */
+  private BwSponsor newSponsor;
+
+  /** editSponsor is where we hold a Sponsor object for editing
+   */
+  private BwSponsor editSponsor;
+
+  /** newEvent is where we build a new Event object
+   */
+  private BwEvent newEvent;
+
+  /** editEvent is where we hold a Event object for editing
+   */
+  private BwEvent editEvent;
+
+  /** For apssing between actions
+   */
+  private BwEvent currentEvent;
+
+  /* ....................................................................
+   *                       Uploads and exports
+   * .................................................................... */
+
+  private FormFile uploadFile;
+
+  private Calendar vcal;
+
+  /* ....................................................................
+   *                       View period
+   * .................................................................... */
+
+  private static HashMap viewTypeMap = new HashMap();
+
+  static {
+    for (int i = 0; i < BedeworkDefs.viewTypeNames.length; i++) {
+      viewTypeMap.put(BedeworkDefs.viewTypeNames[i], new Integer(i));
+    }
+  }
+
+  /** Index of the view type set when the page was last generated
+   */
+  private int curViewPeriod;
+
+  /** This will be set if a refresh is needed - we do it on the way out.
+   */
+  private boolean refreshNeeded;
+
+  /** Index of the view type requested this time round. We set curViewPeriod to
+   * viewTypeI. This allows us to see if the view changed as a result of the
+   * request.
+   */
+  private int viewTypeI;
+
+  /** one of the viewTypeNames values
+   */
+  private String viewType;
+
+  /** The current view with user selected date (day, week, month etc)
+   */
+  private TimeView curTimeView;
+
+  /** MyCalendarVO version of the start date
+   */
+  private MyCalendarVO viewMcDate;
+
+  /* ....................................................................
+   *                       Subscriptions
+   * .................................................................... */
+
+  private Collection subscriptions;
+
+  private BwSubscription subscription;
+
+  private boolean addingSubscription;
+
+  /* ....................................................................
+   *                       Views
+   * .................................................................... */
+
+  private BwView view;
+
+  private boolean addingView;
+
+  /* ....................................................................
+   *                       Calendars
+   * .................................................................... */
+
+  private BwCalendar calendar;
+
+  private int parentCalendarId;
+
+  /** True if we are adding a new calendar
+   */
+  private boolean addingCalendar;
+
+  /* ....................................................................
+   *                   Preferences
+   * .................................................................... */
+
+  /** Last email address used to mail message. By default set to
+   * preferences value.
+   */
+  private String lastEmail;
+
+  private String lastSubject;
+
+  private BwPreferences preferences;
+
+  /* ====================================================================
+   *                   Property methods
+   * ==================================================================== */
+
+  /** This will default to the current user. Superusers will be able to
+   * specify a creator.
+   *
+   * @param val    String creator used to limit searches
+   */
+  public void setAdminUserId(String val) {
+    adminUserId = val;
+  }
+
+  /**
+   * @return admin userid
+   */
+  public String getAdminUserId() {
+    return adminUserId;
+  }
+
+  /**
+   * @return Collection of calendar instance owners
+   */
+  public Collection getInstanceOwners() {
+    try {
+      return getCalSvcI().getInstanceOwners();
+    } catch (Throwable t) {
+      err.emit(t);
+      return new Vector();
+    }
+  }
+
+  /* ====================================================================
+   *                   UserAuth Methods
+   * DO NOT return userAuth. We don't want the user auth object
+   * accessible to the request. Use the RO object instead.
+   * ==================================================================== */
+
+  /**
+   * @param val
+   */
+  public void setAuthUserPrefs(BwAuthUserPrefs val) {
+    authUserPrefs = val;
+  }
+
+  /**
+   * @return auth user prefs
+   */
+  public BwAuthUserPrefs getAuthUserPrefs() {
+    return authUserPrefs;
+  }
+
+  /** Current auth user rights
+   *
+   * @param val
+   */
+  public void assignAuthUserAlerts(boolean val) {
+    authUserAlerts = val;
+  }
+
+  /** Current auth user rights
+  *
+   * @return alerts
+   */
+  public boolean getAuthUserAlerts() {
+    return authUserAlerts;
+  }
+
+  /** Current auth user rights
+   *
+   * @param val
+   */
+  public void assignAuthUserPublicEvents(boolean val) {
+    authUserPublicEvents = val;
+  }
+
+  /** Current auth user rights
+  *
+   * @return true for user who can edit public events
+   */
+  public boolean getAuthUserPublicEvents() {
+    return authUserPublicEvents;
+  }
+
+  /** Current auth user rights
+   *
+   * @param val true for superuser
+   */
+  public void assignAuthUserSuperUser(boolean val) {
+    authUserSuperUser = val;
+  }
+
+  /** Current auth user rights
+  *
+   * @return true for superuser
+   */
+  public boolean getAuthUserSuperUser() {
+    return authUserSuperUser;
+  }
+
+  /* ====================================================================
+   *                   Admin groups
+   * ==================================================================== */
+
+  /**
+   * @param val
+   */
+  public void assignGroupSet(boolean val) {
+    groupSet = val;
+  }
+
+  /**
+   * @return true for group set
+   */
+  public boolean getGroupSet() {
+    return groupSet;
+  }
+
+  /**
+   * @param val
+   */
+  public void assignChoosingGroup(boolean val) {
+    choosingGroup = val;
+  }
+
+  /**
+   * @return true for choosing group
+   */
+  public boolean retrieveChoosingGroup() {
+    return choosingGroup;
+  }
+
+  /** Implant the current user group (or null for none) in the form.
+   * Do NOT call the setAdminGroup - it should not be visible to the request
+   * stream.
+   *
+   * @param val      AdminGroupROVO representing users group or null
+   */
+  public void assignAdminGroup(BwAdminGroup val) {
+    adminGroup = val;
+    assignGroupSet(true);
+  }
+
+  /**
+   * @return admin group
+   */
+  public BwAdminGroup getAdminGroup() {
+    return adminGroup;
+  }
+
+  /** The groups of which our user is a member
+   *
+   * @param val
+   */
+  public void setUserAdminGroups(Collection val) {
+    userAdminGroups = val;
+  }
+
+  /**
+   * @return user admin groups
+   */
+  public Collection getUserAdminGroups() {
+    return userAdminGroups;
+  }
+
+  /* ====================================================================
+   *                   Configuration flags
+   * ==================================================================== */
+
+  /** True if we should auto-create sponsors. Some sites may wish to control
+   * the creation of sponsors to enforce consistency in their use. If this
+   * is true we create a sponsor as we create events. If false the sponsor
+   * must already exist.
+   *
+   * @param val
+   */
+  public void setAutoCreateSponsors(boolean val) {
+    autoCreateSponsors = val;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getAutoCreateSponsors() {
+    return autoCreateSponsors;
+  }
+
+  /** True if we should auto-create locations. Some sites may wish to control
+   * the creation of locations to enforce consistency in their use. If this
+   * is true we create a location as we create events. If false the location
+   * must already exist.
+   *
+   * @param val
+   */
+  public void setAutoCreateLocations(boolean val) {
+    autoCreateLocations = val;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getAutoCreateLocations() {
+    return autoCreateLocations;
+  }
+
+  /** True if we should auto-delete sponsors. Some sites may wish to control
+   * the deletion of sponsors to enforce consistency in their use. If this
+   * is true we delete a sponsor when it becomes unused.
+   *
+   * @param val
+   */
+  public void setAutoDeleteSponsors(boolean val) {
+    autoDeleteSponsors = val;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getAutoDeleteSponsors() {
+    return autoDeleteSponsors;
+  }
+
+  /** True if we should auto-delete locations. Some sites may wish to control
+   * the deletion of locations to enforce consistency in their use. If this
+   * is true we delete a location when it becomes unused.
+   *
+   * @param val
+   */
+  public void setAutoDeleteLocations(boolean val) {
+    autoDeleteLocations = val;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getAutoDeleteLocations() {
+    return autoDeleteLocations;
+  }
+
+  /**
+   * @param val
+   */
+  public void assignEnv(CalEnv val) {
+    env = val;
+  }
+
+  /**
+   * @return env object
+   */
+  public CalEnv getEnv() {
+    return env;
+  }
+
+  /**
+   * @return mailer object
+   */
+  public MailerIntf getMailer() {
+    if (mailer != null) {
+      return mailer;
+    }
+
+    try {
+      mailer = (MailerIntf)CalEnv.getGlobalObject("mailerclass",
+                                                  MailerIntf.class);
+      mailer.init(getCalSvcI(), debug);
+    } catch (Throwable t) {
+      err.emit(t);
+    }
+
+    return mailer;
+  }
+
+  /**
+   * @param val
+   */
+  public void assignUserVO(BwUser val) {
+    userVO = val;
+  }
+
+  /**
+   * @return BwUser
+   */
+  public BwUser getUserVO() {
+    return userVO;
+  }
+
+  /* (non-Javadoc)
+   * @see edu.rpi.sss.util.jsp.UtilActionForm#incWaiters()
+   */
+  public void incWaiters() {
+    waiters++;
+  }
+
+  /* (non-Javadoc)
+   * @see edu.rpi.sss.util.jsp.UtilActionForm#decWaiters()
+   */
+  public void decWaiters() {
+    waiters--;
+  }
+
+  /* (non-Javadoc)
+   * @see edu.rpi.sss.util.jsp.UtilActionForm#getWaiters()
+   */
+  public int getWaiters() {
+    return waiters;
+  }
+
+  /**
+   * @param val true for new session
+   */
+  public void assignNewSession(boolean val) {
+    newSession = val;
+  }
+
+  /**
+   * @return boolean  true for new session
+   */
+  public boolean getNewSession() {
+    return newSession;
+  }
+
+  /** This should not be setCurrentAdminUser as that exposes it to the incoming
+   * request.
+   *
+   * @param val      String user id
+   */
+  public void assignCurrentAdminUser(String val) {
+    currentAdminUser = val;
+  }
+
+  /**
+   * @return admin user id
+   */
+  public String getCurrentAdminUser() {
+    return currentAdminUser;
+  }
+
+  /**
+   * @param val svci
+   */
+  public void setCalSvcI(CalSvcI val) {
+    calsvci = val;
+  }
+
+  /**
+   * @return svci
+   */
+  public CalSvcI getCalSvcI() {
+    return calsvci;
+  }
+
+  /** Returns a read only form for the jsp.
+   *
+   * @return UserAuth
+   */
+  public UserAuth getUserAuth() {
+    try {
+      return getCalSvcI().getUserAuth().getUserAuthRO();
+    } catch (Throwable t) {
+      err.emit(t);
+      return null;
+    }
+  }
+
+  /** Don't call this getUserAuth so it's hidden from the
+   * request stream
+   *
+   * @return UserAuth
+   */
+  public UserAuth retrieveUserAuth() {
+    try {
+      return getCalSvcI().getUserAuth();
+    } catch (Throwable t) {
+      err.emit(t);
+      return null;
+    }
+  }
+
+  /** Set flag to show if this user has any admin rights.
+   *
+   * @param val   boolean true if admin user
+   */
+  public void assignAuthorisedUser(boolean val) {
+    authorisedUser = val;
+  }
+
+  /** See if user has some form of access
+   *
+   * @return true for auth user
+   */
+  public boolean getAuthorisedUser() {
+    return authorisedUser;
+  }
+
+  /**
+   * @param val
+   */
+  public void setToday(MyCalendarVO val) {
+    today = val;
+  }
+
+  /**
+   * @return calendar today
+   */
+  public MyCalendarVO getToday() {
+    if (today == null) {
+      today = new MyCalendarVO();
+    }
+    return today;
+  }
+
+  /**
+   * @param val true for guest
+   */
+  public void setGuest(boolean val) {
+    guest = val;
+  }
+
+  /**
+   * @return true for guest
+   */
+  public boolean getGuest() {
+    return guest;
+  }
+
+  /**
+   * @param val
+   */
+  public void setPublicView(boolean val) {
+    publicView = val;
+  }
+
+  /**
+   * @return bool
+   */
+  public boolean getPublicView() {
+    return publicView;
+  }
+
+  /**
+   * @param val
+   */
+  public void setHour24(boolean val) {
+    hour24 = val;
+    eventDates = null;   // reset it
+  }
+
+  /**
+   * @return bool
+   */
+  public boolean getHour24() {
+    return hour24;
+  }
+
+
+  /**
+   * @param val
+   */
+  public void setMinIncrement(int val) {
+    minIncrement = val;
+    eventDates = null;   // reset it
+  }
+
+  /**
+   * @return int
+   */
+  public int getMinIncrement() {
+    return minIncrement;
+  }
+
+  /**
+   * @param val
+   */
+  public void assignShowYearData(boolean val) {
+    showYearData = val;
+  }
+
+  /**
+   * @return bool
+   */
+  public boolean getShowYearData() {
+    return showYearData;
+  }
+
+  /**
+   * @param val
+   */
+  public void setUploadFile(FormFile val) {
+    uploadFile = val;
+  }
+
+  /**
+   * @return FormFile
+   */
+  public FormFile getUploadFile() {
+    return uploadFile;
+  }
+
+  /**
+   * @param val
+   */
+  public void setVcal(Calendar val) {
+    vcal = val;
+  }
+
+  /**
+   * @return Calendar
+   */
+  public Calendar getVcal() {
+    return vcal;
+  }
+
+  /* ====================================================================
+   *                   View Period methods
+   * ==================================================================== */
+
+  /**
+   * @return names
+   */
+  public String[] getViewTypeNames() {
+    return BedeworkDefs.viewTypeNames;
+  }
+
+  /**
+   * @param i
+   * @return view name
+   */
+  public String getViewTypeName(int i) {
+    return BedeworkDefs.viewTypeNames[i];
+  }
+
+  /** Index of the view type set when the page was last generated
+   *
+   * @param val  int valid view index
+   */
+  public void setCurViewPeriod(int val) {
+    curViewPeriod = val;
+  }
+
+  /**
+   * @return view index
+   */
+  public int getCurViewPeriod() {
+    return curViewPeriod;
+  }
+
+  /** Index of the view type requested this time round. We set curViewPeriod to
+   * viewTypeI. This allows us to see if the view changed as a result of the
+   * request.
+   *
+   * @param val index
+   */
+  public void setViewTypeI(int val) {
+    viewTypeI = val;
+  }
+
+  /**
+   * @return index
+   */
+  public int getViewTypeI() {
+    return viewTypeI;
+  }
+
+  /** This often appears as the request parameter specifying the view.
+   * It should be one of the viewTypeNames
+   *
+   * @param  val   String viewType
+   */
+  public void setViewType(String val) {
+    viewType = Util.checkNull(val);
+
+    if (viewType == null) {
+      viewTypeI = -1;
+      return;
+    }
+
+    Integer i = (Integer)viewTypeMap.get(viewType);
+
+    if (i == null) {
+      viewTypeI = BedeworkDefs.defaultView;
+    } else {
+      viewTypeI = i.intValue();
+    }
+  }
+
+  /** Return the value or a default if it's invalid
+   *
+   * @param val
+   * @return String valid view period
+   */
+  public String validViewPeriod(String val) {
+    int vt = BedeworkDefs.defaultView;
+
+    val = Util.checkNull(val);
+    if (val != null) {
+      Integer i = (Integer)viewTypeMap.get(viewType);
+
+      if (i != null) {
+        vt = i.intValue();
+      }
+    }
+
+    return BedeworkDefs.viewTypeNames[vt];
+  }
+
+  /**
+   * @return String
+   */
+  public String getViewType() {
+    return viewType;
+  }
+
+  /** Date of the view as a MyCalendar object
+   *
+   * @param val
+   */
+  public void setViewMcDate(MyCalendarVO val) {
+    viewMcDate = val;
+  }
+
+  /* * return true if the parameter is the index of the current view.
+   * UW considers 0 to be today. We return selected if the current view is
+   * day and it is for today.
+   *
+   * @param  i       int view index
+   * @return boolean true if i is the current view index
+   * /
+  public boolean getViewSelected(int i) {
+    if (i == BedeworkDefs.todayView) {
+      if (curViewPeriod != BedeworkDefs.dayView) {
+        return false;
+      }
+
+      return getCurTimeView().getFirstDay().isSameDate(new MyCalendarVO());
+    }
+    return (i == curViewPeriod) / *|| ((curViewPeriod == 1 && (i == 0))) * /;
+  }*/
+
+  /** The current view (day, week, month etc)
+   */
+  /**
+   * @param val
+   */
+  public void setCurTimeView(TimeView val) {
+    curTimeView = val;
+  }
+
+  /**
+   *
+   * @return current view (day, week, month etc)
+   */
+  public TimeView getCurTimeView() {
+    /* We might be called before any time is set. Set a week view by
+       default
+       */
+
+    try {
+      if (curTimeView == null) {
+        /** Figure out the default from the properties
+         */
+        String vn;
+
+        try {
+          vn = getEnv().getAppOptProperty("app.default.view");
+          if (vn == null) {
+            vn = "week";
+          }
+        } catch (Throwable t) {
+          System.out.println("Exception setting current view");
+          vn = "week";
+        }
+
+        curViewPeriod = -1;
+
+        for (int i = 1; i < BedeworkDefs.viewTypeNames.length; i++) {
+          if (BedeworkDefs.viewTypeNames[i].startsWith(vn)) {
+            curViewPeriod = i;
+            break;
+          }
+        }
+
+        if (curViewPeriod < 0) {
+          curViewPeriod = BedeworkDefs.weekView;
+        }
+
+        setViewMcDate(new MyCalendarVO());
+        refreshView();
+      }
+    } catch (Throwable t) {
+      getLog().error("Exception in getCurTimeView", t);
+    }
+
+    if (curTimeView == null) {
+      getLog().warn("Null time view!!!!!!!!!!!");
+//    } else if (debug) {
+//      getLog().debug("Return a time view");
+    }
+
+    return curTimeView;
+  }
+
+  /** XXX This looks wrong we might be refreshing twice.
+   *
+   */
+  public void refreshIsNeeded() {
+    refreshView();
+    refreshNeeded = true;
+  }
+
+  /** set refreh needed flag
+   *
+   * @param val   boolean
+   */
+  public void setRefreshNeeded(boolean val) {
+    refreshNeeded = val;
+  }
+
+  /**
+   * @return true if we need to refresh
+   */
+  public boolean isRefreshNeeded() {
+    return refreshNeeded;
+  }
+
+  /** Reset the view according to the current setting of curViewPeriod.
+   * May be called when we change the view or if we need a refresh
+   */
+  public void refreshView() {
+    if (debug) {
+      getLog().debug(" set new view to ViewTypeI=" + curViewPeriod);
+    }
+
+    try {
+      getCalSvcI().refreshEvents();
+
+      switch (curViewPeriod) {
+      case BedeworkDefs.dayView:
+        setCurTimeView(new DayView(viewMcDate, getCalSvcI(), debug));
+        break;
+      case BedeworkDefs.weekView:
+        setCurTimeView(new WeekView(viewMcDate, getCalSvcI(), debug));
+        break;
+      case BedeworkDefs.monthView:
+        setCurTimeView(new MonthView(viewMcDate, getCalSvcI(), debug));
+        break;
+      case BedeworkDefs.yearView:
+        setCurTimeView(new YearView(viewMcDate, getCalSvcI(),
+                       getShowYearData(), debug));
+        break;
+      }
+    } catch (Throwable t) {
+      // Not much we can do here
+      setException(t);
+    }
+  }
+
+  /* ====================================================================
+   *                   Subscriptions
+   * ==================================================================== */
+
+  /**
+   * @param val
+   */
+  public void setSubscriptions(Collection val) {
+    subscriptions = val;
+  }
+
+  /**
+   * @return Collection of subscriptions - never null
+   */
+  public Collection getSubscriptions() {
+    if (subscriptions == null) {
+      subscriptions = new Vector();
+    }
+    return subscriptions;
+  }
+
+  /**
+   * @param val
+   */
+  public void setSubscription(BwSubscription val) {
+    subscription = val;
+  }
+
+  /**
+   * @return BwSubscription subscription object
+   */
+  public BwSubscription getSubscription() {
+    return subscription;
+  }
+
+  /** Not set - invisible to jsp
+   *
+   * @param val
+   */
+  public void assignAddingSubscription(boolean val) {
+    addingSubscription = val;
+  }
+
+  /**
+   * @return bool
+   */
+  public boolean getAddingSubscription() {
+    return addingSubscription;
+  }
+
+  /* ====================================================================
+   *                   Views
+   * ==================================================================== */
+
+  /** Return the collection of views - named collections of subscriptions
+   *
+   * @return views
+   */
+  public Collection getViews() {
+    try {
+      return getCalSvcI().getViews();
+    } catch (Throwable t) {
+      err.emit(t);
+      return null;
+    }
+  }
+
+  /** Get the current view we are displaying - or null for all events
+   *
+   * @return BwView  object or null for all events
+   */
+  public BwView getCurrentView() {
+    try {
+      return getCalSvcI().getCurrentView();
+    } catch (Throwable t) {
+      err.emit(t);
+      return null;
+    }
+  }
+
+  /** Set the view we are editing
+   *
+   * @param val    BwView  object or null
+   */
+  public void setView(BwView val) {
+    view = val;
+  }
+
+  /** Get the view we are editing
+   *
+   * @return BwView  object
+   */
+  public BwView getView() {
+    if (view == null) {
+      view = new BwView();
+    }
+
+    return view;
+  }
+
+  /** Not set - invisible to jsp
+   *
+   * @param val
+   */
+  public void assignAddingView(boolean val) {
+    addingView = val;
+  }
+
+  /**
+   * @return bool
+   */
+  public boolean getAddingView() {
+    return addingView;
+  }
+
+  /* ====================================================================
+   *                   Calendars
+   * ==================================================================== */
+
+  /**
+   * @param val id
+   */
+  public void setCalId(int val) {
+    calId = val;
+  }
+
+  /**
+   * @return cal id
+   */
+  public int getCalId() {
+    return calId;
+  }
+
+  /** Return the public calendars
+   *
+   * @return BwCalendar   root calendar
+   */
+  public BwCalendar getPublicCalendars() {
+    try {
+      return getCalSvcI().getPublicCalendars();
+    } catch (Throwable t) {
+      err.emit(t);
+      return null;
+    }
+  }
+
+  /** Return a list of public calendars in which calendar objects can be
+   * placed by the current user.
+   *
+   * <p>Caldav currently does not allow collections inside collections so that
+   * calendar collections are the leaf nodes only.
+   *
+   * @return Collection   of CalendarVO
+   */
+  public Collection getPublicCalendarCollections() {
+    try {
+      return getCalSvcI().getPublicCalendarCollections();
+    } catch (Throwable t) {
+      err.emit(t);
+      return null;
+    }
+  }
+
+  /** Return the current users calendars. For admin or guest mode this is the
+   * same as calling getPublicCalendars.
+   *
+   * @return BwCalendar   root of calendar tree
+   */
+  public BwCalendar getCalendars() {
+    try {
+      return getCalSvcI().getCalendars();
+    } catch (Throwable t) {
+      err.emit(t);
+      return null;
+    }
+  }
+
+  /** Return a list of user calendars in which calendar objects can be
+   * placed by the current user.
+   *
+   * <p>Caldav currently does not allow collections inside collections so that
+   * calendar collections are the leaf nodes only.
+   *
+   * @return Collection   of CalendarVO
+   */
+  public Collection getCalendarCollections() {
+    try {
+      return getCalSvcI().getCalendarCollections();
+    } catch (Throwable t) {
+      err.emit(t);
+      return null;
+    }
+  }
+
+  /** Return a list of calendars in which calendar objects can be
+   * placed by the current user.
+   *
+   * <p>Caldav currently does not allow collections inside collections so that
+   * calendar collections are the leaf nodes only.
+   *
+   * @return Collection   of BwCalendar
+   */
+  public Collection getAddContentCalendarCollections() {
+    try {
+      return getCalSvcI().getAddContentCalendarCollections();
+    } catch (Throwable t) {
+      err.emit(t);
+      return null;
+    }
+  }
+
+  /** Save the id of the soon-to-be parent
+   */
+  /**
+   * @param val
+   */
+  public void setParentCalendarId(int val) {
+    parentCalendarId = val;
+  }
+
+  /**
+   * @return cal id
+   */
+  public int getParentCalendarId() {
+    return parentCalendarId;
+  }
+
+  /** Not set - invisible to jsp
+   */
+  /**
+   * @param val
+   */
+  public void assignAddingCalendar(boolean val) {
+    addingCalendar = val;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getAddingCalendar() {
+    return addingCalendar;
+  }
+
+  /**
+   * @param val
+   */
+  public void setCalendar(BwCalendar val) {
+    calendar = val;
+  }
+
+  /** If a calendar object exists, return that otherwise create an empty one.
+   *
+   * @return CalendarVO  populated calendar value object
+   */
+  public BwCalendar getCalendar() {
+    if (calendar == null) {
+      calendar = new BwCalendar();
+    }
+
+    return calendar;
+  }
+
+  /* ====================================================================
+   *                   preferences
+   * ==================================================================== */
+
+  /** Last email address used
+   *
+   * @param  val   email address
+   */
+  public void setLastEmail(String val) {
+    lastEmail = val;
+  }
+
+  /**
+   * @return last email
+   */
+  public String getLastEmail() {
+    if (lastEmail == null) {
+      if (getUserVO() != null) {
+        lastEmail = getPreferences().getEmail();
+      }
+    }
+
+    return lastEmail;
+  }
+
+  /** Last subject used
+   *
+   * @param  val   subject
+   */
+  public void setLastSubject(String val) {
+    lastSubject = val;
+  }
+
+  /**
+   * @return last subject
+   */
+  public String getLastSubject() {
+    return lastSubject;
+  }
+
+  /** Get the preferences for the current user
+   *
+   * @return prefs
+   */
+  public BwPreferences getPreferences() {
+    if (preferences == null) {
+      try {
+        preferences = getCalSvcI().getUserPrefs();
+      } catch (Throwable t) {
+        err.emit(t);
+      }
+    }
+
+    return preferences;
+  }
+
+  /* ====================================================================
+   *                   Categories
+   * ==================================================================== */
+
+  /** Category id for next action
+   *
+   * @param val
+   */
+  public void setCategoryId(int val) {
+    categoryId = val;
+  }
+
+  /**
+   * @return int
+   */
+  public int getCategoryId() {
+    return categoryId;
+  }
+
+  /** Get the list of categories for this owner. Return a null list for
+   * exceptions or no categories.
+   *
+   * @return Collection    of BwCategory
+   */
+  public Collection getCategories() {
+    return getCategoryCollection(ownersEntity);
+  }
+
+  /** Get the list of editable categories for this user. Return a null list for
+   * exceptions or no categories.
+   *
+   * @return Collection    of BwCategory
+   */
+  public Collection getEditableCategories() {
+    return getCategoryCollection(editableEntity);
+  }
+
+  /** Get the list of public categories. Return a null list for exceptions or no
+   * categories.
+   *
+   * @return Collection    of BwCategory
+   */
+  public Collection getPublicCategories() {
+    return getCategoryCollection(publicEntity);
+  }
+
+  /**
+   * @return category
+   */
+  public BwCategory getNewCategory() {
+    if (newCategory == null) {
+      newCategory = new BwCategory();
+    }
+
+    return newCategory;
+  }
+
+  /** The only difference with newCategory is this doesn't get reset
+   *
+   * @param val
+   */
+  public void setEditCategory(BwCategory val) {
+    editCategory = val;
+  }
+
+  /**
+   * @return category
+   */
+  public BwCategory getEditCategory() {
+    if (editCategory == null) {
+      editCategory = new BwCategory();
+    }
+
+    return editCategory;
+  }
+
+  /* ====================================================================
+   *                   Locations
+   * ==================================================================== */
+
+  /** Location id for next action
+   *
+   * @param val id
+   */
+  public void setLocationId(int val) {
+    locationId = val;
+  }
+
+  /**
+   * @return id
+   */
+  public int getLocationId() {
+    return locationId;
+  }
+
+  /**
+   * @return locations
+   */
+  public Collection getLocations() {
+    return getLocations(ownersEntity);
+  }
+
+  /**
+   * @return editable locations
+   */
+  public Collection getEditableLocations() {
+    return getLocations(editableEntity);
+  }
+
+  /**
+   * @return public locations
+   */
+  public Collection getPublicLocations() {
+    return getLocations(publicEntity);
+  }
+
+  /**
+   * @return location
+   */
+  public BwLocation getNewLocation() {
+    if (newLocation == null) {
+      newLocation = new BwLocation();
+    }
+
+    return tidyLocation(newLocation);
+  }
+
+  /**
+   *
+   */
+  public void resetNewLocation() {
+    newLocation = null;
+  }
+
+  /** The only difference with newLocation is this doesn't get reset
+   *
+   * @param val
+   */
+  public void setEditLocation(BwLocation val) {
+    editLocation = val;
+  }
+
+  /**
+   * @return location
+   */
+  public BwLocation getEditLocation() {
+    if (editLocation == null) {
+      editLocation = new BwLocation();
+    }
+
+    return tidyLocation(editLocation);
+  }
+
+  /* ====================================================================
+   *                   Sponsors
+   * ==================================================================== */
+
+  /** Sponsor id for next action
+   *
+   * @param val
+   */
+  public void setSponsorId(int val) {
+    sponsorId = val;
+  }
+
+  /**
+   * @return id
+   */
+  public int getSponsorId() {
+    return sponsorId;
+  }
+
+  /** Get the list of sponsors for this owner. Return a null list for
+   * exceptions or no sponsors.
+   *
+   * @return Collection    of SponsorVO
+   */
+  public Collection getSponsors() {
+    return getSponsorCollection(ownersEntity);
+  }
+
+  /** Get the list of editable sponsors for this user. Return a null list for
+   * exceptions or no sponsors.
+   *
+   * @return Collection    of SponsorVO
+   */
+  public Collection getEditableSponsors() {
+    return getSponsorCollection(editableEntity);
+  }
+
+  /** Get the list of public sponsors. Return a null list for exceptions or no
+   * sponsors.
+   *
+   * @return Collection    of SponsorVO
+   */
+  public Collection getPublicSponsors() {
+    return getSponsorCollection(publicEntity);
+  }
+
+  /**
+   * @return sponsor
+   */
+  public BwSponsor getNewSponsor() {
+    if (newSponsor == null) {
+      newSponsor = new BwSponsor();
+    }
+
+    return newSponsor;
+  }
+
+  /** The only difference with newSponsor is this doesn't get reset
+   *
+   * @param val
+   */
+  public void setEditSponsor(BwSponsor val) {
+    editSponsor = val;
+  }
+
+  /**
+   * @return sponsor
+   */
+  public BwSponsor getEditSponsor() {
+    if (editSponsor == null) {
+      editSponsor = new BwSponsor();
+    }
+
+    return editSponsor;
+  }
+
+  /* ====================================================================
+   *                   Events
+   * ==================================================================== */
+
+  /** Event id for next action
+   *
+   * @param val
+   */
+  public void setEventId(int val) {
+    eventId = val;
+  }
+
+  /**
+   * @return int
+   */
+  public int getEventId() {
+    return eventId;
+  }
+
+  /**
+   * @return int
+   */
+  public BwEvent getNewEvent() {
+    if (newEvent == null) {
+      newEvent = new BwEventObj();
+    }
+
+    return newEvent;
+  }
+
+  /**
+   *
+   */
+  public void resetNewEvent() {
+    newEvent = null;
+  }
+
+  /** The only difference from newEvent is this doesn't get reset
+   *
+   * @param val
+   */
+  public void setEditEvent(BwEvent val) {
+    try {
+      editEvent = val;
+
+      if (val != null) {
+        getEventDates().setFromEvent(val, getCalSvcI().getTimezones());
+      }
+    } catch (Throwable t) {
+      err.emit(t);
+    }
+  }
+
+  /**
+   * @return event
+   */
+  public BwEvent getEditEvent() {
+    if (editEvent == null) {
+      editEvent = new BwEventObj();
+    }
+
+    return editEvent;
+  }
+
+  /** Event passed between actions
+   */
+  /**
+   * @param val
+   */
+  public void assignCurrentEvent(BwEvent val) {
+    currentEvent = val;
+  }
+
+  /**
+   * @return event
+   */
+  public BwEvent retrieveCurrentEvent() {
+    return currentEvent;
+  }
+
+  /** Return an initialised TimeDateComponents representing now
+   *
+   * @return TimeDateComponents  initialised object
+   */
+  public TimeDateComponents getNowTimeComponents() {
+    return getEventDates().getNowTimeComponents();
+  }
+
+  /* ====================================================================
+   *             Start and end Date and time and duration
+   *
+   * Methods related to selecting a particular date. These values may be
+   * used when setting the current date or when setting the date of an event.
+   * They will be distinguished by the action called.
+   * ==================================================================== */
+
+  /** Return an object containing the dates.
+   *
+   * @return EventDates  object representing date/times and duration
+   */
+  public EventDates getEventDates() {
+    if (eventDates == null) {
+      eventDates = new EventDates(getCalSvcI(), hour24, minIncrement, err, debug);
+    }
+
+    return eventDates;
+  }
+
+  /** Return an object representing an events start date.
+   *
+   * @return TimeDateComponents  object representing date and time
+   */
+  public TimeDateComponents getEventStartDate() {
+    return getEventDates().getStartDate();
+  }
+
+  /** Return an object representing an events end date.
+   *
+   * @return TimeDateComponents  object representing date and time
+   */
+  public TimeDateComponents getEventEndDate() {
+    return getEventDates().getEndDate();
+  }
+
+  /** Return an object representing an events duration.
+   *
+   * @return Duration  object representing date and time
+   */
+  public DurationBean getEventDuration() {
+//    return getEventDates().getDuration();
+    DurationBean db = getEventDates().getDuration();
+    if (debug) {
+      debugMsg("Event duration=" + db);
+    }
+
+    return db;
+  }
+/*
+  public void resetEventStartDate() {
+    eventStartDate = null;
+  }
+
+  public void resetEventEndDate() {
+    eventEndDate = null;
+  }*/
+
+  /**
+   * @param val
+   */
+  public void setEventEndType(String val) {
+    getEventDates().setEndType(val);
+  }
+
+  /**
+   * @return event end type
+   */
+  public String getEventEndType() {
+    return getEventDates().getEndType();
+  }
+
+  /* ====================================================================
+   *                Date and time labels for select boxes
+   * ==================================================================== */
+
+  /**
+   * @return year values
+   */
+  public String[] getYearVals() {
+    if (yearVals == null) {
+      yearVals = new String[numYearVals];
+      int year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+      //curYear = String.valueOf(year);
+
+      for (int i = 0; i < numYearVals; i++) {
+        yearVals[i] = String.valueOf(year + i);
+      }
+    }
+
+    return yearVals;
+  }
+
+  /**
+   * @return TimeDateComponents used for labels
+   */
+  public TimeDateComponents getForLabels() {
+    return getEventDates().getForLabels();
+  }
+
+  /**
+   * @param val
+   */
+  public void setSession(BwSession val) {
+    sess = val;
+  }
+
+  /**
+   * @return session
+   */
+  public BwSession getSession() {
+    return  sess;
+  }
+
+  /** Make sure string fields are null - no zero length
+   *
+   * @param loc
+   * @return tidied location
+   */
+  public BwLocation tidyLocation(BwLocation loc) {
+    loc.setAddress(Util.checkNull(loc.getAddress()));
+    loc.setSubaddress(Util.checkNull(loc.getSubaddress()));
+    loc.setLink(Util.checkNull(loc.getLink()));
+
+    return loc;
+  }
+
+  /**
+   * Reset properties to their default values.
+   *
+   * @param mapping The mapping used to select this instance
+   * @param request The servlet request we are processing
+   */
+  public void reset(ActionMapping mapping, HttpServletRequest request) {
+    eventId = CalFacadeDefs.unsavedItemKey;
+    locationId = CalFacadeDefs.defaultLocationId;
+    newCategory = null;
+    newSponsor = null;
+    viewTypeI = -1;
+    //key.reset();
+  }
+
+  /**
+   *
+   */
+  public void initFields() {
+  }
+
+  /* ====================================================================
+   *                Private methods
+   * ==================================================================== */
+
+  private Collection getCategoryCollection(int kind) {
+    try {
+      if (kind == publicEntity) {
+        return calsvci.getPublicCategories();
+      }
+
+      if (kind == ownersEntity) {
+        return calsvci.getCategories();
+      }
+
+      if (kind == editableEntity) {
+        return calsvci.getEditableCategories();
+      }
+
+      // Won't need this with 1.5
+      throw new Exception("Software error - bad kind " + kind);
+    } catch (Throwable t) {
+      if (debug) {
+        t.printStackTrace();
+      }
+      err.emit(t);
+      return new Vector();
+    }
+  }
+
+  private Collection getLocations(int kind) {
+    try {
+      if (kind == publicEntity) {
+        return calsvci.getPublicLocations();
+      }
+
+      if (kind == ownersEntity) {
+        return calsvci.getLocations();
+      }
+
+      if (kind == editableEntity) {
+        return calsvci.getEditableLocations();
+      }
+
+      // Won't need this with 1.5
+      throw new Exception("Software error - bad kind " + kind);
+    } catch (Throwable t) {
+      if (debug) {
+        t.printStackTrace();
+      }
+      err.emit(t);
+      return new Vector();
+    }
+  }
+
+  private Collection getSponsorCollection(int kind) {
+    try {
+      if (kind == publicEntity) {
+        return calsvci.getPublicSponsors();
+      }
+
+      if (kind == ownersEntity) {
+        return calsvci.getSponsors();
+      }
+
+      if (kind == editableEntity) {
+        return calsvci.getEditableSponsors();
+      }
+
+      // Won't need this with 1.5
+      throw new Exception("Software error - bad kind " + kind);
+    } catch (Throwable t) {
+      if (debug) {
+        t.printStackTrace();
+      }
+      err.emit(t);
+      return new Vector();
+    }
+  }
+}
+

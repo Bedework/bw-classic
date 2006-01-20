@@ -1,0 +1,10 @@
+DESCRIPTION: Interop - Test 1.2
+
+EXPECT-RESPONSE: 204
+
+METHOD: DELETE
+
+AUTH: true
+
+URL: calendar/meeting1.2.ics
+

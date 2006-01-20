@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+
+<!-- ====================== Synch classes build Targets ====================
+     This is the ant build file for the synchml libraries and application for
+     Bedework.
+
+     This file will probably need no modification as most of this is largely
+     site and application independent.
+
+     The target of interest is build which should leave some jar files
+     in the temp jar directory..
+
+     These files will be needed for subsequent application or module builds.
+
+     This build file depends upon properties set by the master build file one
+     level up in the directory tree.
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="uwcal.synch" default="build">
+  <property name="source.home" location="${org.bedework.synchml.base}/src"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+
+    <!-- ==================== Build properties ========================= -->
+    <property name="base.name" value="synchmlcommon"/>
+    <property name="base.description"
+              value="Synchronization components for the Bedework calendar" />
+    <property name="base.version" value="1.0" />
+  </target>
+
+  <target name="build" depends="init"
+          description="Compile calendar synchmlcommon Java sources and create build file">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+      <include name="edu/rpi/cct/uwcal/synchml/common/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="edu/rpi/cct/uwcal/synchml/common/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${ical4j.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.common.jar}"/>
+      <pathelement location="${org.bedework.calsvci.jar}"/>
+      <pathelement location="${org.bedework.calsvc.jar}"/>
+      <pathelement location="${org.bedework.ical.jar}"/>
+      <pathelement location="${org.bedework.appcommon.jar}"/>
+      <pathelement location="${org.bedework.webcommon.jar}"/>
+    </path>
+
+    <!-- ==================== Build Target ============================= -->
+
+    <property name="build.jar.file" location="${org.bedework.synchmlcommon.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target></project>

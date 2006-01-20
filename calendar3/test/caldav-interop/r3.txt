@@ -1,0 +1,3531 @@
+.Config file to be used: "configcaldav.sh"
+--------------------------------------------------------------------------------
+SUMMARY REPORT
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+CalDAV Interop Testing Event - June 2005
+--------------------------------------------------------------------------------
+Pre-Test Cleanup
+--------------------------------------------------------------------------------
+Test 1. Event Creation
+--------------------------------------------------------------------------------
+[STARTING TEST 1.1(CreateMeeting11)]: New single instance meeting.
+[FAILED TEST 1.1] : DAVTOOL returned an error 1(PUT) when running test "1.1"(500)
+[STARTING TEST 1.2(CreateMeeting12)]: New recurring meeting.
+[PASSED TEST 1.2] : HTTP status code : 201
+[STARTING TEST 1.3(CreateMeeting13)]: New single instance meeting with 2 attendees.
+[FAILED TEST 1.3] : DAVTOOL returned an error 1(PUT) when running test "1.3"(500)
+[STARTING TEST 1.4(CreateMeeting14)]: New single instance meeting with an alarm.
+[FAILED TEST 1.4] : DAVTOOL returned an error 1(PUT) when running test "1.4"(500)
+--------------------------------------------------------------------------------
+Test 2. Event Modification
+--------------------------------------------------------------------------------
+[STARTING TEST 2.1(ModifyMeeting21)]: Modify meeting title.
+[PASSED TEST 2.1] : HTTP status code : 204
+[STARTING TEST 2.2(ModifyMeeting22)]: Modify meeting location.
+[PASSED TEST 2.2] : HTTP status code : 204
+[STARTING TEST 2.3(ModifyMeeting23)]: Reschedule meeting to next day.
+[PASSED TEST 2.3] : HTTP status code : 204
+[STARTING TEST 2.4(ModifyMeeting24)]: Add an attendee.
+[PASSED TEST 2.4] : HTTP status code : 204
+[STARTING TEST 2.5(ModifyMeeting25)]: Add an alarm.
+[PASSED TEST 2.5] : HTTP status code : 204
+[STARTING TEST 2.6(ModifyMeeting26)]: Modify title of first instance of recurring meeting.
+[PASSED TEST 2.6] : HTTP status code : 204
+[STARTING TEST 2.7(ModifyMeeting27)]: Modify partstat of 1st instance to DECLINED.
+[PASSED TEST 2.7] : HTTP status code : 204
+[STARTING TEST 2.8(ModifyMeeting28)]: Cancel 4th instance of recurring meeting.
+[PASSED TEST 2.8] : HTTP status code : 204
+[STARTING TEST 2.9(ModifyMeeting29)]: One client changes meeting time, other clients sees the modif.
+[PASSED TEST 2.9] : HTTP status code : 204
+--------------------------------------------------------------------------------
+Test 3. Event Retrieval
+--------------------------------------------------------------------------------
+Test 3.1 Calendar Query Report
+--------------------------------------------------------------------------------
+Test 3.1.1 No Filtering
+--------------------------------------------------------------------------------
+[STARTING TEST 3.1.1.1(Query3111)]: Query all component, return all data.
+[PASSED TEST 3.1.1.1] : HTTP return code: 207
+[STARTING TEST 3.1.1.2(Query3112)]: Query all component, return getetag and all data.
+[PASSED TEST 3.1.1.2] : HTTP return code: 207
+[STARTING TEST 3.1.1.3(Query3113)]: Query all component, return VEVENT.
+[PASSED TEST 3.1.1.3] : HTTP return code: 207
+[STARTING TEST 3.1.1.4(Query3114)]: Query all component, return some properties.
+[PASSED TEST 3.1.1.4] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.1.2 Time-range filtering
+--------------------------------------------------------------------------------
+[STARTING TEST 3.1.2.1(Query3121)]: Query all components within a one day time-range with a non-overridden recurring
+[PASSED TEST 3.1.2.1] : HTTP return code: 207
+[STARTING TEST 3.1.2.2(Query3122)]: Query all components within a one week time-range return VEVENT, with overridden instance
+[PASSED TEST 3.1.2.2] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.1.3 Component based filtering
+--------------------------------------------------------------------------------
+[STARTING TEST 3.1.3.1(Query3131)]: Query all components with VALARM component
+[PASSED TEST 3.1.3.1] : HTTP return code: 207
+[STARTING TEST 3.1.3.2(Query3132)]: Query all components with VALARM whose TRIGGER is within time-range
+[PASSED TEST 3.1.3.2] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.1.4 Property based filtering
+--------------------------------------------------------------------------------
+[STARTING TEST 3.1.4.1(Query3141)]: Query all components that contain ORGANIZER property
+[PASSED TEST 3.1.4.1] : HTTP return code: 207
+[STARTING TEST 3.1.4.2(Query3142)]: Query all components that contain ORGANIZER property with case-insensitive text value
+[PASSED TEST 3.1.4.2] : HTTP return code: 207
+[STARTING TEST 3.1.4.3(Query3143)]: Query all components that contain ORGANIZER property with case-sensitive text value
+[PASSED TEST 3.1.4.3] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.1.5 Parameter based filtering
+--------------------------------------------------------------------------------
+[STARTING TEST 3.1.5.1(Query3151)]: Query all components with DTSTART with a TZID
+[PASSED TEST 3.1.5.1] : HTTP return code: 207
+[STARTING TEST 3.1.5.2(Query3152)]: Query all components with ATTENDEE with PART-STAT=NEEDS-ACTION
+[PASSED TEST 3.1.5.2] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.2 Calendar-multiget report
+--------------------------------------------------------------------------------
+[STARTING TEST 3.2.1(Query321)]: Query a specific href and return all data
+[PASSED TEST 3.2.1] : HTTP return code: 207
+[STARTING TEST 3.2.2(Query322)]: Query multiple hrefs some of which do not exist, return all data
+[PASSED TEST 3.2.2] : HTTP return code: 207
+[STARTING TEST 3.2.3(Query323)]: Query a specific href and return getetag and all calendar data
+[PASSED TEST 3.2.3] : HTTP return code: 207
+[STARTING TEST 3.2.4(Query324)]: Query multiple hrefs some of which dont exist return getetag and all calendar data
+[PASSED TEST 3.2.4] : HTTP return code: 207
+[STARTING TEST 3.2.5(Query325)]: Query specific href, return VEVENT(DTSTART,DTEND,DURATION,SUMMARY,UID,SEQUENCE,RRULE,RDATE,EXRULE,EXDATE,RECURRENCE-ID
+[PASSED TEST 3.2.5] : HTTP return code: 207
+[STARTING TEST 3.2.6(Query326)]: Query multiple hrefs, return VEVENT(DTSTART,DTEND,DURATION,SUMMARY,UID,SEQUENCE,RRULE,RDATE,EXRULE,EXDATE,RECURRENCE-ID
+[PASSED TEST 3.2.6] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.3 free-busy-query report
+--------------------------------------------------------------------------------
+[STARTING TEST 3.3.1(Query331)]: free-busy-query time range
+[PASSED TEST 3.3.1] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 4. Event Deletion
+--------------------------------------------------------------------------------
+[STARTING TEST 4.1(Delete41)]: Delete single non-recurring meeting.
+[PASSED TEST 4.1] : Delete http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics(Ret=0)
+[STARTING TEST 4.2(Delete42)]: Delete single recurring meeting.
+[PASSED TEST 4.2] : Delete http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting5.ics(Ret=0)
+[STARTING TEST 4.3(Delete43)]: Delete single recurring meeting with overridden instances.
+[PASSED TEST 4.3] : Delete http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics(Ret=0)
+[STARTING TEST 4.4(Delete44)]: Delete a non-overriden instance of a recurring meeting.
+[PASSED TEST 4.4] : Delete http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting6.ics(Ret=0)
+[STARTING TEST 4.5(Delete45)]: Delete an overriden instance of a recurring meeting.
+[FAILED TEST 4.5] : Delete http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting7.ics(Ret=0)
+--------------------------------------------------------------------------------
+Test 5. Event Access Control
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+DETAILED REPORT
+--------------------------------------------------------------------------------
+.--------------------------------------------------------------------------------
+.CalDAV Interop Testing Event - June 2005
+.--------------------------------------------------------------------------------
+.Pre-Test Cleanup
+.--------------------------------------------------------------------------------
+.Test 1. Event Creation
+.--------------------------------------------------------------------------------
+.[STARTING TEST 1.1(CreateMeeting11)]: New single instance meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+500 Internal Server Error
+
+real	0m1.253s
+user	0m0.016s
+sys	0m0.012s
+.[FAILED TEST 1.1] : DAVTOOL returned an error 1(PUT) when running test "1.1"(500)
+.[STARTING TEST 1.2(CreateMeeting12)]: New recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082025Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.660s
+user	0m0.012s
+sys	0m0.012s
+.[PASSED TEST 1.2] : HTTP status code : 201
+.[STARTING TEST 1.3(CreateMeeting13)]: New single instance meeting with 2 attendees.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting3
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.3
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+500 Internal Server Error
+
+real	0m0.088s
+user	0m0.008s
+sys	0m0.008s
+.[FAILED TEST 1.3] : DAVTOOL returned an error 1(PUT) when running test "1.3"(500)
+.[STARTING TEST 1.4(CreateMeeting14)]: New single instance meeting with an alarm.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting4
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.4
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-PT15M
+DURATION:PT15M
+REPEAT:2
+DESCRIPTION:A display alarm
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+500 Internal Server Error
+
+real	0m0.089s
+user	0m0.008s
+sys	0m0.004s
+.[FAILED TEST 1.4] : DAVTOOL returned an error 1(PUT) when running test "1.4"(500)
+.--------------------------------------------------------------------------------
+.Test 2. Event Modification
+.--------------------------------------------------------------------------------
+.[STARTING TEST 2.1(ModifyMeeting21)]: Modify meeting title.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.624s
+user	0m0.024s
+sys	0m0.012s
+.[PASSED TEST 2.1] : HTTP status code : 204
+.[STARTING TEST 2.2(ModifyMeeting22)]: Modify meeting location.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Seattle bis
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082026Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.490s
+user	0m0.028s
+sys	0m0.008s
+.[PASSED TEST 2.2] : HTTP status code : 204
+.[STARTING TEST 2.3(ModifyMeeting23)]: Reschedule meeting to next day.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Seattle bis
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050607T190000Z
+DTEND:20050607T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050607T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050607T190000Z
+LAST-MODIFIED:20060110T082027Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.476s
+user	0m0.016s
+sys	0m0.012s
+.[PASSED TEST 2.3] : HTTP status code : 204
+.[STARTING TEST 2.4(ModifyMeeting24)]: Add an attendee.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Seattle bis
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050607T190000Z
+DTEND:20050607T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050607T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050607T190000Z
+LAST-MODIFIED:20060110T082027Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.501s
+user	0m0.012s
+sys	0m0.020s
+.[PASSED TEST 2.4] : HTTP status code : 204
+.[STARTING TEST 2.5(ModifyMeeting25)]: Add an alarm.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Seattle bis
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050607T190000Z
+DTEND:20050607T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+BEGIN:VALARM
+TRIGGER:-PT15M
+DURATION:PT15M
+REPEAT:2
+DESCRIPTION:A display alarm
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050607T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050607T190000Z
+LAST-MODIFIED:20060110T082028Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.489s
+user	0m0.016s
+sys	0m0.016s
+.[PASSED TEST 2.5] : HTTP status code : 204
+.[STARTING TEST 2.6(ModifyMeeting26)]: Modify title of first instance of recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+RDATE;TZID=EST5EDT:20050606T100000
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+RECURRENCE-ID;TZID=EST5EDT:20050606T100000
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082025Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082028Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.991s
+user	0m0.012s
+sys	0m0.016s
+.[PASSED TEST 2.6] : HTTP status code : 204
+.[STARTING TEST 2.7(ModifyMeeting27)]: Modify partstat of 1st instance to DECLINED.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+RDATE;TZID=EST5EDT:20050606T100000
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+RECURRENCE-ID;TZID=EST5EDT:20050606T100000
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082025Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082029Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.997s
+user	0m0.028s
+sys	0m0.004s
+.[PASSED TEST 2.7] : HTTP status code : 204
+.[STARTING TEST 2.8(ModifyMeeting28)]: Cancel 4th instance of recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+EXDATE;TZID=EST5EDT:20050627T100000
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+RDATE;TZID=EST5EDT:20050606T100000
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+RECURRENCE-ID;TZID=EST5EDT:20050606T100000
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082025Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.988s
+user	0m0.012s
+sys	0m0.016s
+.[PASSED TEST 2.8] : HTTP status code : 204
+.[STARTING TEST 2.9(ModifyMeeting29)]: One client changes meeting time, other clients sees the modif.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Seattle bis
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050608T190000Z
+DTEND:20050608T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: WGetWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics
+WGET OUTPUT:
+--03:20:31--  http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics
+           => `/tmp/wrkdir.7322/wgetwrapper2.out'
+Resolving localhost... 127.0.0.1
+Connecting to localhost|127.0.0.1|:8080... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 459 [text/calendar]
+
+    0K                                                       100%   43.77 MB/s
+
+Last-modified header invalid -- time-stamp ignored.
+03:20:31 (43.77 MB/s) - `/tmp/wrkdir.7322/wgetwrapper2.out' saved [459/459]
+
+WGET RESPONSE:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050608T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050608T190000Z
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+
+real	0m0.492s
+user	0m0.008s
+sys	0m0.008s
+.[PASSED TEST 2.9] : HTTP status code : 204
+.--------------------------------------------------------------------------------
+.Test 3. Event Retrieval
+.--------------------------------------------------------------------------------
+.Test 3.1 Calendar Query Report
+.--------------------------------------------------------------------------------
+.Test 3.1.1 No Filtering
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.1.1.1(Query3111)]: Query all component, return all data.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:is-defined/></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting2@encoded.ics</ns2:summary>
+        <ns2:dtstart>20050606T100000</ns2:dtstart>
+        <ns2:dtend>2005-06-06 07:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting2%40encoded</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:displayname>
+        <ns0:getcontentlength>960</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082025Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting3.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting3</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting3.ics</ns0:displayname>
+        <ns0:getcontentlength>451</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082025Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.3
+UID:CalConnectCalDAVTest.Meeting3
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting4.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting4</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting4.ics</ns0:displayname>
+        <ns0:getcontentlength>418</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082025Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.4
+UID:CalConnectCalDAVTest.Meeting4
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting1.ics</ns2:summary>
+        <ns2:dtstart>20050608T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-08 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting1</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082024Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting1.ics</ns0:displayname>
+        <ns0:getcontentlength>459</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050608T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050608T190000Z
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/exdate.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>exdate.ics</ns2:summary>
+        <ns2:dtstart>20060109T111500</ns2:dtstart>
+        <ns2:dtend>2006-01-09 07:00:00.0</ns2:dtend>
+        <ns2:status>CONFIRMED</ns2:status>
+        <ns2:uid>10c624ac-8150-11da-9b33-0011246e17f0</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T081838Z</ns0:creationdate>
+        <ns0:displayname>exdate.ics</ns0:displayname>
+        <ns0:getcontentlength>826</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T081838Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:US/Pacific
+BEGIN:STANDARD
+DTSTART:20001029T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+TZNAME:US/Pacific
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:20000402T020000
+RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=1SU
+TZNAME:US/Pacific
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T081838Z
+DESCRIPTION:
+DTEND;TZID=US/Pacific:20060109T120000
+DTSTAMP:20060110T081838Z
+DTSTART;TZID=US/Pacific:20060109T111500
+LAST-MODIFIED:20060110T081838Z
+LOCATION:Here & Thereabouts
+PRIORITY:0
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Daily Event
+UID:10c624ac-8150-11da-9b33-0011246e17f0
+RRULE:FREQ=DAILY;UNTIL=20060114T075900Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.316s
+user	0m0.000s
+sys	0m0.012s
+.[PASSED TEST 3.1.1.1] : HTTP return code: 207
+.[STARTING TEST 3.1.1.2(Query3112)]: Query all component, return getetag and all data.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:prop><D:getetag/>
+</D:prop>
+<C:filter><C:comp-filter name="VCALENDAR"><C:is-defined/></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:getetag>"http://localhost:8080/ucaldav/schema20060110T082031Z"</ns0:getetag>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082025Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:getetag>"http://localhost:8080/ucaldav/schema20060110T082025Z"</ns0:getetag>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082025Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.3
+UID:CalConnectCalDAVTest.Meeting3
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:getetag>"http://localhost:8080/ucaldav/schema20060110T082025Z"</ns0:getetag>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082025Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.4
+UID:CalConnectCalDAVTest.Meeting4
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:getetag>"http://localhost:8080/ucaldav/schema20060110T082031Z"</ns0:getetag>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050608T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050608T190000Z
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/exdate.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:getetag>"http://localhost:8080/ucaldav/schema20060110T081838Z"</ns0:getetag>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:US/Pacific
+BEGIN:STANDARD
+DTSTART:20001029T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+TZNAME:US/Pacific
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:20000402T020000
+RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=1SU
+TZNAME:US/Pacific
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T081838Z
+DESCRIPTION:
+DTEND;TZID=US/Pacific:20060109T120000
+DTSTAMP:20060110T081838Z
+DTSTART;TZID=US/Pacific:20060109T111500
+LAST-MODIFIED:20060110T081838Z
+LOCATION:Here & Thereabouts
+PRIORITY:0
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Daily Event
+UID:10c624ac-8150-11da-9b33-0011246e17f0
+RRULE:FREQ=DAILY;UNTIL=20060114T075900Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.170s
+user	0m0.008s
+sys	0m0.004s
+.[PASSED TEST 3.1.1.2] : HTTP return code: 207
+.[STARTING TEST 3.1.1.3(Query3113)]: Query all component, return VEVENT.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"/></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:is-defined/></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting2@encoded.ics</ns2:summary>
+        <ns2:dtstart>20050606T100000</ns2:dtstart>
+        <ns2:dtend>2005-06-06 07:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting2%40encoded</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:displayname>
+        <ns0:getcontentlength>960</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting3.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting3</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting3.ics</ns0:displayname>
+        <ns0:getcontentlength>451</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting4.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting4</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting4.ics</ns0:displayname>
+        <ns0:getcontentlength>418</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting1.ics</ns2:summary>
+        <ns2:dtstart>20050608T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-08 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting1</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082024Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting1.ics</ns0:displayname>
+        <ns0:getcontentlength>459</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/exdate.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>exdate.ics</ns2:summary>
+        <ns2:dtstart>20060109T111500</ns2:dtstart>
+        <ns2:dtend>2006-01-09 07:00:00.0</ns2:dtend>
+        <ns2:status>CONFIRMED</ns2:status>
+        <ns2:uid>10c624ac-8150-11da-9b33-0011246e17f0</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T081838Z</ns0:creationdate>
+        <ns0:displayname>exdate.ics</ns0:displayname>
+        <ns0:getcontentlength>826</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T081838Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:US/Pacific
+BEGIN:STANDARD
+DTSTART:20001029T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+TZNAME:US/Pacific
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:20000402T020000
+RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=1SU
+TZNAME:US/Pacific
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.708s
+user	0m0.008s
+sys	0m0.000s
+.[PASSED TEST 3.1.1.3] : HTTP return code: 207
+.[STARTING TEST 3.1.1.4(Query3114)]: Query all component, return some properties.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT">
+                                <C:prop name="DTSTART"/>
+                                <C:prop name="DTEND"/>
+                                <C:prop name="DURATION"/>
+                                <C:prop name="SUMMARY"/>
+                                <C:prop name="UID"/>
+                                <C:prop name="SEQUENCE"/>
+                                <C:prop name="RRULE"/>
+                                <C:prop name="RDATE"/>
+                                <C:prop name="EXRULE"/>
+                                <C:prop name="EXDATE"/>
+                                <C:prop name="RECURRENCE-ID"/>
+                            </C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:is-defined/></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting2@encoded.ics</ns2:summary>
+        <ns2:dtstart>20050606T100000</ns2:dtstart>
+        <ns2:dtend>2005-06-06 07:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting2%40encoded</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:displayname>
+        <ns0:getcontentlength>960</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+SEQUENCE:0
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting3.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting3</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting3.ics</ns0:displayname>
+        <ns0:getcontentlength>451</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+SUMMARY:CalConnectCalDAVTest.Meeting 1.3
+UID:CalConnectCalDAVTest.Meeting3
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting4.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting4</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting4.ics</ns0:displayname>
+        <ns0:getcontentlength>418</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+SUMMARY:CalConnectCalDAVTest.Meeting 1.4
+UID:CalConnectCalDAVTest.Meeting4
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting1.ics</ns2:summary>
+        <ns2:dtstart>20050608T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-08 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting1</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082024Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting1.ics</ns0:displayname>
+        <ns0:getcontentlength>459</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:20050608T190000Z
+DTEND:20050608T200000Z
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/exdate.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>exdate.ics</ns2:summary>
+        <ns2:dtstart>20060109T111500</ns2:dtstart>
+        <ns2:dtend>2006-01-09 07:00:00.0</ns2:dtend>
+        <ns2:status>CONFIRMED</ns2:status>
+        <ns2:uid>10c624ac-8150-11da-9b33-0011246e17f0</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T081838Z</ns0:creationdate>
+        <ns0:displayname>exdate.ics</ns0:displayname>
+        <ns0:getcontentlength>826</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T081838Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:US/Pacific
+BEGIN:STANDARD
+DTSTART:20001029T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+TZNAME:US/Pacific
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:20000402T020000
+RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=1SU
+TZNAME:US/Pacific
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=US/Pacific:20060109T111500
+DTEND;TZID=US/Pacific:20060109T120000
+SUMMARY:Daily Event
+UID:10c624ac-8150-11da-9b33-0011246e17f0
+SEQUENCE:0
+RRULE:FREQ=DAILY;UNTIL=20060114T075900Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.501s
+user	0m0.016s
+sys	0m0.004s
+.[PASSED TEST 3.1.1.4] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.1.2 Time-range filtering
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.1.2.1(Query3121)]: Query all components within a one day time-range with a non-overridden recurring
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT">
+                                <C:prop name="DTSTART"/>
+                                <C:prop name="DTEND"/>
+                                <C:prop name="DURATION"/>
+                                <C:prop name="SUMMARY"/>
+                                <C:prop name="UID"/>
+                                <C:prop name="SEQUENCE"/>
+                                <C:prop name="RRULE"/>
+                                <C:prop name="RDATE"/>
+                                <C:prop name="EXRULE"/>
+                                <C:prop name="EXDATE"/>
+                                <C:prop name="RECURRENCE-ID"/>
+                            </C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range start="20050613T000000Z" end="20050613T235959Z"/></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting2@encoded.ics</ns2:summary>
+        <ns2:dtstart>20050606T100000</ns2:dtstart>
+        <ns2:dtend>2005-06-06 07:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting2%40encoded</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:displayname>
+        <ns0:getcontentlength>960</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+SEQUENCE:0
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.293s
+user	0m0.008s
+sys	0m0.008s
+.[PASSED TEST 3.1.2.1] : HTTP return code: 207
+.[STARTING TEST 3.1.2.2(Query3122)]: Query all components within a one week time-range return VEVENT, with overridden instance
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range start="20050606T000000Z" end="20050612T235959Z"/></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting2@encoded.ics</ns2:summary>
+        <ns2:dtstart>20050606T100000</ns2:dtstart>
+        <ns2:dtend>2005-06-06 07:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting2%40encoded</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:displayname>
+        <ns0:getcontentlength>960</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082025Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting3.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting3</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting3.ics</ns0:displayname>
+        <ns0:getcontentlength>451</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082025Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.3
+UID:CalConnectCalDAVTest.Meeting3
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting4.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting4</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting4.ics</ns0:displayname>
+        <ns0:getcontentlength>418</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082025Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.4
+UID:CalConnectCalDAVTest.Meeting4
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting1.ics</ns2:summary>
+        <ns2:dtstart>20050608T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-08 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting1</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082024Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting1.ics</ns0:displayname>
+        <ns0:getcontentlength>459</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050608T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050608T190000Z
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.405s
+user	0m0.008s
+sys	0m0.004s
+.[PASSED TEST 3.1.2.2] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.1.3 Component based filtering
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.1.3.1(Query3131)]: Query all components with VALARM component
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VALARM"><C:is-defined/></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.196s
+user	0m0.008s
+sys	0m0.008s
+.[PASSED TEST 3.1.3.1] : HTTP return code: 207
+.[STARTING TEST 3.1.3.2(Query3132)]: Query all components with VALARM whose TRIGGER is within time-range
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VALARM"><C:time-range start="20050606T000000Z" end="20050612T235959Z"/></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.241s
+user	0m0.004s
+sys	0m0.008s
+.[PASSED TEST 3.1.3.2] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.1.4 Property based filtering
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.1.4.1(Query3141)]: Query all components that contain ORGANIZER property
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="ORGANIZER"><C:is-defined/></C:prop-filter></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.366s
+user	0m0.012s
+sys	0m0.004s
+.[PASSED TEST 3.1.4.1] : HTTP return code: 207
+.[STARTING TEST 3.1.4.2(Query3142)]: Query all components that contain ORGANIZER property with case-insensitive text value
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="ORGANIZER"><C:text-match caseless="yes">mailto:</C:text-match></C:prop-filter></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.411s
+user	0m0.008s
+sys	0m0.012s
+.[PASSED TEST 3.1.4.2] : HTTP return code: 207
+.[STARTING TEST 3.1.4.3(Query3143)]: Query all components that contain ORGANIZER property with case-sensitive text value
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="ORGANIZER"><C:text-match caseless="no">mailto:</C:text-match></C:prop-filter></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.418s
+user	0m0.008s
+sys	0m0.008s
+.[PASSED TEST 3.1.4.3] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.1.5 Parameter based filtering
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.1.5.1(Query3151)]: Query all components with DTSTART with a TZID
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="DTSTART"><C:param-filter name="TZID"><C:is-defined/></C:param-filter></C:prop-filter></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting2@encoded.ics</ns2:summary>
+        <ns2:dtstart>20050606T100000</ns2:dtstart>
+        <ns2:dtend>2005-06-06 07:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting2%40encoded</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:displayname>
+        <ns0:getcontentlength>960</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082025Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting3.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting3</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting3.ics</ns0:displayname>
+        <ns0:getcontentlength>451</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082025Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.3
+UID:CalConnectCalDAVTest.Meeting3
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting4.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting4</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting4.ics</ns0:displayname>
+        <ns0:getcontentlength>418</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082025Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.4
+UID:CalConnectCalDAVTest.Meeting4
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting1.ics</ns2:summary>
+        <ns2:dtstart>20050608T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-08 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting1</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082024Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting1.ics</ns0:displayname>
+        <ns0:getcontentlength>459</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050608T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050608T190000Z
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/exdate.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>exdate.ics</ns2:summary>
+        <ns2:dtstart>20060109T111500</ns2:dtstart>
+        <ns2:dtend>2006-01-09 07:00:00.0</ns2:dtend>
+        <ns2:status>CONFIRMED</ns2:status>
+        <ns2:uid>10c624ac-8150-11da-9b33-0011246e17f0</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T081838Z</ns0:creationdate>
+        <ns0:displayname>exdate.ics</ns0:displayname>
+        <ns0:getcontentlength>826</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T081838Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:US/Pacific
+BEGIN:STANDARD
+DTSTART:20001029T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+TZNAME:US/Pacific
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:20000402T020000
+RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=1SU
+TZNAME:US/Pacific
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T081838Z
+DESCRIPTION:
+DTEND;TZID=US/Pacific:20060109T120000
+DTSTAMP:20060110T081838Z
+DTSTART;TZID=US/Pacific:20060109T111500
+LAST-MODIFIED:20060110T081838Z
+LOCATION:Here & Thereabouts
+PRIORITY:0
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Daily Event
+UID:10c624ac-8150-11da-9b33-0011246e17f0
+RRULE:FREQ=DAILY;UNTIL=20060114T075900Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.533s
+user	0m0.004s
+sys	0m0.012s
+.[PASSED TEST 3.1.5.1] : HTTP return code: 207
+.[STARTING TEST 3.1.5.2(Query3152)]: Query all components with ATTENDEE with PART-STAT=NEEDS-ACTION
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="ATTENDEE"><C:param-filter name="PARTSTAT"><C:text-match>mailto:douglm2@rpi.edu</C:text-match></C:param-filter></C:prop-filter></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting2@encoded.ics</ns2:summary>
+        <ns2:dtstart>20050606T100000</ns2:dtstart>
+        <ns2:dtend>2005-06-06 07:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting2%40encoded</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting2@encoded.ics</ns0:displayname>
+        <ns0:getcontentlength>960</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082025Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting3.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting3</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting3.ics</ns0:displayname>
+        <ns0:getcontentlength>451</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082025Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.3
+UID:CalConnectCalDAVTest.Meeting3
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting4.ics</ns2:summary>
+        <ns2:dtstart>20050606T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-06 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting4</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082025Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting4.ics</ns0:displayname>
+        <ns0:getcontentlength>418</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082025Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082025Z
+DESCRIPTION:
+DTEND:20050606T200000Z
+DTSTAMP:20060110T082025Z
+DTSTART:20050606T190000Z
+LAST-MODIFIED:20060110T082025Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.4
+UID:CalConnectCalDAVTest.Meeting4
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting1.ics</ns2:summary>
+        <ns2:dtstart>20050608T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-08 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting1</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082024Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting1.ics</ns0:displayname>
+        <ns0:getcontentlength>459</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050608T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050608T190000Z
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.524s
+user	0m0.004s
+sys	0m0.012s
+.[PASSED TEST 3.1.5.2] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.2 Calendar-multiget report
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.2.1(Query321)]: Query a specific href and return all data
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.202s
+user	0m0.012s
+sys	0m0.012s
+.[PASSED TEST 3.2.1] : HTTP return code: 207
+.[STARTING TEST 3.2.2(Query322)]: Query multiple hrefs some of which do not exist, return all data
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<D:href>/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</D:href><D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics</D:href><D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.DontexistMeeting11.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</ns0:href>
+    <ns0:propstat>
+      <ns0:prop>
+        <ns0:supportedlock><DAV:lockentry>  <DAV:lockscope>    <DAV:exclusive/>  </DAV:lockscope>  <DAV:locktype><DAV:write/></DAV:locktype></DAV:lockentry></ns0:supportedlock>
+        <ns2:summary>CalConnectCalDAVTest.Meeting1.ics</ns2:summary>
+        <ns2:dtstart>20050608T190000Z</ns2:dtstart>
+        <ns2:dtend>2005-06-08 16:00:00.0</ns2:dtend>
+        <ns2:uid>CalConnectCalDAVTest.Meeting1</ns2:uid>
+        <ns2:sequence>0</ns2:sequence>
+        <ns2:has-recurrence>0</ns2:has-recurrence>
+        <ns2:has-alarm>0</ns2:has-alarm>
+        <ns2:has-attachment>0</ns2:has-attachment>
+        <ns0:creationdate>20060110T082024Z</ns0:creationdate>
+        <ns0:displayname>CalConnectCalDAVTest.Meeting1.ics</ns0:displayname>
+        <ns0:getcontentlength>459</ns0:getcontentlength>
+        <ns0:getcontenttype>text/calendar</ns0:getcontenttype>
+        <ns0:getlastmodified>20060110T082031Z</ns0:getlastmodified>
+      </ns0:prop>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082024Z
+DESCRIPTION:
+DTEND:20050608T200000Z
+DTSTAMP:20060110T082024Z
+DTSTART:20050608T190000Z
+LAST-MODIFIED:20060110T082031Z
+LOCATION:Seattle bis
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+UID:CalConnectCalDAVTest.Meeting1
+END:VEVENT
+END:VCALENDAR
+</ns1:calendar-data>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.299s
+user	0m0.008s
+sys	0m0.008s
+.[PASSED TEST 3.2.2] : HTTP return code: 207
+.[STARTING TEST 3.2.3(Query323)]: Query a specific href and return getetag and all calendar data
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:prop><D:getetag/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+</D:prop>
+<D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.198s
+user	0m0.012s
+sys	0m0.004s
+.[PASSED TEST 3.2.3] : HTTP return code: 207
+.[STARTING TEST 3.2.4(Query324)]: Query multiple hrefs some of which dont exist return getetag and all calendar data
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:prop><D:getetag/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+</D:prop>
+<D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</D:href><D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics</D:href><D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.DontexistMeeting11.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.262s
+user	0m0.016s
+sys	0m0.004s
+.[PASSED TEST 3.2.4] : HTTP return code: 207
+.[STARTING TEST 3.2.5(Query325)]: Query specific href, return VEVENT(DTSTART,DTEND,DURATION,SUMMARY,UID,SEQUENCE,RRULE,RDATE,EXRULE,EXDATE,RECURRENCE-ID
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT">
+                                <C:prop name="DTSTART"/>
+                                <C:prop name="DTEND"/>
+                                <C:prop name="DURATION"/>
+                                <C:prop name="SUMMARY"/>
+                                <C:prop name="UID"/>
+                                <C:prop name="SEQUENCE"/>
+                                <C:prop name="RRULE"/>
+                                <C:prop name="RDATE"/>
+                                <C:prop name="EXRULE"/>
+                                <C:prop name="EXDATE"/>
+                                <C:prop name="RECURRENCE-ID"/>
+                            </C:comp></C:comp>
+</C:calendar-data>
+
+<D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.247s
+user	0m0.004s
+sys	0m0.012s
+.[PASSED TEST 3.2.5] : HTTP return code: 207
+.[STARTING TEST 3.2.6(Query326)]: Query multiple hrefs, return VEVENT(DTSTART,DTEND,DURATION,SUMMARY,UID,SEQUENCE,RRULE,RDATE,EXRULE,EXDATE,RECURRENCE-ID
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT">
+                                <C:prop name="DTSTART"/>
+                                <C:prop name="DTEND"/>
+                                <C:prop name="DURATION"/>
+                                <C:prop name="SUMMARY"/>
+                                <C:prop name="UID"/>
+                                <C:prop name="SEQUENCE"/>
+                                <C:prop name="RRULE"/>
+                                <C:prop name="RDATE"/>
+                                <C:prop name="EXRULE"/>
+                                <C:prop name="EXDATE"/>
+                                <C:prop name="RECURRENCE-ID"/>
+                            </C:comp></C:comp>
+</C:calendar-data>
+
+<D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics</D:href><D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2%40encoded.ics</D:href><D:href>http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.DontexistMeeting11.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 404 not_found</ns0:status>
+    </ns0:propstat>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.261s
+user	0m0.012s
+sys	0m0.008s
+.[PASSED TEST 3.2.6] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.3 free-busy-query report
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.3.1(Query331)]: free-busy-query time range
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:free-busy-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<C:time-range start="20050101T000000Z" end="20060501T000000Z"/>
+</C:free-busy-query>
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar -t text/xml -m REPORT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ns0:multistatus xmlns:ns0="DAV:" xmlns:ns2="http://www.w3.org/2002/12/cal/ical#" xmlns:ns1="urn:ietf:params:xml:ns:caldav">
+  <ns0:response>
+    <ns0:href>http://localhost:8080/ucaldav/user/testuser01/calendar/</ns0:href>
+    <ns0:propstat>
+      <ns0:status>HTTP/1.1 200 ok</ns0:status>
+    </ns0:propstat>
+    <ns1:calendar-data>BEGIN:VFREEBUSY
+DTSTART:20050101T000000Z
+DTEND:20060501T000000Z
+DTSTAMP:20060110T082038Z
+FREEBUSY;FBTYPE=BUSY:20050606T100000/20050606T110000,20050606T190000Z/20050606T200000Z,20050608T190000Z/20050608T200000Z,20050613T100000/20050613T110000,20050620T100000/20050620T110000,20050627T100000/20050627T110000,20060109T111500/20060109T120000,20060110T111500/20060110T120000,20060111T111500/20060111T120000,20060112T111500/20060112T120000,20060113T111500/20060113T120000
+END:VFREEBUSY
+</ns1:calendar-data>
+  </ns0:response>
+</ns0:multistatus>
+
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.355s
+user	0m0.012s
+sys	0m0.004s
+.[PASSED TEST 3.3.1] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 4. Event Deletion
+.--------------------------------------------------------------------------------
+.[STARTING TEST 4.1(Delete41)]: Delete single non-recurring meeting.
+CMD=DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting1.ics -m DELETE -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+CMD=DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting2@encoded.ics -m DELETE -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+CMD=DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics -m DELETE -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+
+real	0m0.477s
+user	0m0.020s
+sys	0m0.004s
+.[PASSED TEST 4.1] : Delete http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting3.ics(Ret=0)
+.[STARTING TEST 4.2(Delete42)]: Delete single recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting5
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 4.2
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting5.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting5.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082039Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082039Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082039Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 4.2
+UID:CalConnectCalDAVTest.Meeting5
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+CMD=DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting5.ics -m DELETE -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+
+real	0m1.001s
+user	0m0.024s
+sys	0m0.008s
+.[PASSED TEST 4.2] : Delete http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting5.ics(Ret=0)
+.[STARTING TEST 4.3(Delete43)]: Delete single recurring meeting with overridden instances.
+CMD=DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics -m DELETE -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+
+real	0m0.224s
+user	0m0.000s
+sys	0m0.008s
+.[PASSED TEST 4.3] : Delete http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting4.ics(Ret=0)
+.[STARTING TEST 4.4(Delete44)]: Delete a non-overriden instance of a recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting6
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 4.4
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting6.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting6.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082040Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082040Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082040Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 4.4
+UID:CalConnectCalDAVTest.Meeting6
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting6
+EXDATE;TZID=EST5EDT:20050627T100000
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 4.4
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting6.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting6.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082040Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082040Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082041Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 4.4
+UID:CalConnectCalDAVTest.Meeting6
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+CMD=DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting6.ics -m DELETE -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+
+real	0m1.591s
+user	0m0.036s
+sys	0m0.032s
+.[PASSED TEST 4.4] : Delete http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting6.ics(Ret=0)
+.[STARTING TEST 4.5(Delete45)]: Delete an overriden instance of a recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting7
+EXDATE;TZID=EST5EDT:20050627T100000
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+RDATE;TZID=EST5EDT:20050606T100000
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting7
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5 bis
+RECURRENCE-ID;TZID=EST5EDT:20050606T100000
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting7.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+500 Internal Server Error
+REQUEST FILE DUMP(/tmp/wrkdir.7322/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting7
+EXDATE;TZID=EST5EDT:20050606T100000
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+RDATE;TZID=EST5EDT:20050606T100000
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting7
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5 bis
+RECURRENCE-ID;TZID=EST5EDT:20050606T100000
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting7.ics -t text/calendar -m PUT -i /tmp/wrkdir.7322/reqfile.txt -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+COMMAND LINE: DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting7.ics -m GET -u testuser01 -p bedework
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:BedeWork V3.0
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+CATEGORIES:
+CLASS:PUBLIC
+CREATED:20060110T082042Z
+DESCRIPTION:
+DTEND;TZID=EST5EDT:20050606T110000
+DTSTAMP:20060110T082042Z
+DTSTART;TZID=EST5EDT:20050606T100000
+LAST-MODIFIED:20060110T082043Z
+LOCATION:Durham
+PRIORITY:0
+SEQUENCE:0
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5
+UID:CalConnectCalDAVTest.Meeting7
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+CMD=DAVToolWrapper http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting7.ics -m DELETE -u testuser01 -p bedework
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No Content
+
+real	0m1.911s
+user	0m0.040s
+sys	0m0.028s
+.[FAILED TEST 4.5] : Delete http://localhost:8080/ucaldav/user/testuser01/calendar/CalConnectCalDAVTest.Meeting7.ics(Ret=0)
+.--------------------------------------------------------------------------------
+.Test 5. Event Access Control
+.--------------------------------------------------------------------------------
+
+real	0m21.381s
+user	0m0.596s
+sys	0m0.412s

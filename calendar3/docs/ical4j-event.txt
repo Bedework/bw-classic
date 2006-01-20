@@ -1,0 +1,333 @@
+Ical4j properties and corresponding EventVO properties
+
+
+Calendar properties:
+----------------------------------------------
+ProdId
+Set to some unique string identifying this as (a specific version of) the
+uwcalendar.
+
+----------------------------------------------
+
+Version
+Possibly set by ical4j - should be "2.0"
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Timezone properties - probably get away without this
+----------------------------------------------
+
+TzId
+  This property specifies the text value that uniquely
+   identifies the "VTIMEZONE" calendar component.
+
+----------------------------------------------
+
+TzName
+   This property specifies the customary designation for a time
+   zone description.
+
+----------------------------------------------
+
+TzOffsetFrom
+   This property specifies the offset which is in use prior to
+   this time zone observance.
+
+----------------------------------------------
+
+TzOffsetTo
+   This property specifies the offset which is in use in this
+   time zone observance.
+
+----------------------------------------------
+
+TzUrl
+   The TZURL provides a means for a VTIMEZONE component to
+   point to a network location that can be used to retrieve an up-to-
+   date version of itself
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Event properties:
+----------------------------------------------
+
+Categories
+   This property is used to specify categories or subtypes
+   of the calendar component. The categories are useful in searching for
+   a calendar component of a particular type and category. Within the
+   "VEVENT", "VTODO" or "VJOURNAL" calendar components, more than one
+   category can be specified as a list of categories separated by the
+   COMMA character (US-ASCII decimal 44).
+
+   Example
+     CATEGORIES:APPOINTMENT,EDUCATION
+     CATEGORIES:MEETING
+
+   This is the keyword value - if we have user defined calendars can we determine
+   that it's a user category - probably.
+
+   This probably requires that we cannot put a public event into a personal
+   category.
+
+----------------------------------------------
+
+Clazz
+   This might work to identify a public/personal event
+   PUBLIC | PRIVATE
+
+----------------------------------------------
+
+Contact
+  Is this the sponsor?
+
+----------------------------------------------
+
+Created
+   Created field
+
+----------------------------------------------
+
+Description
+   Description field
+
+----------------------------------------------
+
+DtEnd
+   End of event
+
+----------------------------------------------
+
+DtStamp
+   I think this is set tothe date we create the icalendar representation
+
+----------------------------------------------
+
+DtStart
+  Start of event
+
+----------------------------------------------
+
+LastModified - EventVO.getLastmod()
+
+----------------------------------------------
+
+Location -
+   Might need to have some form such as:
+    LOCATION;ALTREP="http://cal.rpi.edu/locations.do?getId=12345":
+     Conference Room - F123, Bldg. 002
+
+   This allows us to locate the original location object
+
+----------------------------------------------
+
+Sequence
+  This property defines the revision sequence number of the
+   calendar component within a sequence of revisions.
+
+----------------------------------------------
+
+Summary - EventVO.getSummary()
+    This property defines a short summary or subject for the
+    calendar component.
+
+----------------------------------------------
+
+Uid
+   The UID itself MUST be a globally unique identifier. The
+   generator of the identifier MUST guarantee that the identifier is
+   unique. There are several algorithms that can be used to accomplish
+   this. The identifier is RECOMMENDED to be the identical syntax to the
+   [RFC 822] addr-spec.
+
+   We probably want to add a calendar system name so that we can identify
+   events even if the real url changes - what if we need to move the service
+   so I suggest we make up a fake domain
+       <calname>.myhost.mydomain
+   where <calname> is a name configured into the system.
+
+   I believe we can guarantee the uniqueness of the id.
+
+  Example
+   Assuming an event with id 23456 hosted on a system at
+      myhost.edu with name maincal
+       UID:23456@maincal.myhost.edu
+
+----------------------------------------------
+
+Url - EventVO.getLink()
+   This property may be used in a calendar component to
+   convey a location where a more dynamic rendition of the calendar
+   information associated with the calendar component can be found. This
+   memo does not attempt to standardize the form of the URI, nor the
+   format of the resource pointed to by the property value. If the URL
+   property and Content-Location MIME header are both specified, they
+   MUST point to the same resource.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+No EventVO field for these - do we need to add one?
+
+Priority
+    The property defines the relative priority for a calendar
+    component.
+
+----------------------------------------------
+
+Resources
+   This property defines the equipment or resources anticipated
+   for an activity specified by a calendar entity..
+
+----------------------------------------------
+
+Status
+   This property defines the overall status or confirmation for
+   the calendar component.
+
+Example
+     STATUS:TENTATIVE
+     STATUS:CANCELLED
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Following can probably be defaulted
+
+CalScale
+Calendar scale, e.g. GREGORIAN
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Following can be left for the moment
+
+Action
+Acion to take when alarm is triggered
+
+Attach
+Associate a document with the object
+
+Attendee
+Only for groups
+
+Comment
+   Extra descriptive text
+
+----------------------------------------------
+
+Completed
+  Date/Time Completed - to do
+
+----------------------------------------------
+
+Due
+This property defines the date and time that a to-do is
+   expected to be completed.
+
+----------------------------------------------
+
+Duration
+   This value type is used to identify properties that contain
+   a duration of time.
+
+----------------------------------------------
+
+ExDate
+   This property defines the list of date/time exceptions for a
+   recurring calendar component.
+
+----------------------------------------------
+
+ExRule
+  This property defines a rule or repeating pattern for an
+   exception to a recurrence set.
+
+----------------------------------------------
+
+FreeBusy
+   The property defines one or more free or busy time
+   intervals.
+  Example
+     FREEBUSY;FBTYPE=BUSY-UNAVAILABLE:19970308T160000Z/PT8H30M
+
+     FREEBUSY;FBTYPE=FREE:19970308T160000Z/PT3H,19970308T200000Z/PT1H
+
+     FREEBUSY;FBTYPE=FREE:19970308T160000Z/PT3H,19970308T200000Z/PT1H,
+      19970308T230000Z/19970309T000000Z
+
+----------------------------------------------
+
+Geo
+   This property specifies information related to the global
+   position for the activity specified by a calendar component
+
+   Example
+     GEO:37.386013;-122.082932
+
+----------------------------------------------
+
+Method - calendar object parameter
+   This property defines the iCalendar object method associated
+   with the calendar object.RequestStatus
+
+----------------------------------------------
+
+Organizer
+   This property MUST be specified in an iCalendar object
+   that specifies a group scheduled calendar entity. This property MUST
+   be specified in an iCalendar object that specifies the publication of
+   a calendar user's busy time. This property MUST NOT be specified in
+   an iCalendar object that specifies only a time zone definition or
+   that defines calendar entities that are not group scheduled entities,
+   but are entities only on a single user's calendar.
+
+----------------------------------------------
+
+PercentComplete
+   This property is used by an assignee or delegatee of a to-do
+   to convey the percent completion of a to-do to the Organizer.
+
+----------------------------------------------
+
+RDate
+   This property defines the list of date/times for a
+   recurrence set.
+
+----------------------------------------------
+
+RecurrenceId
+   This property is used in conjunction with the "UID" and
+   "SEQUENCE" property to identify a specific instance of a recurring
+   "VEVENT", "VTODO" or "VJOURNAL" calendar component. The property
+   value is the effective value of the "DTSTART" property of the
+   recurrence instance.
+
+----------------------------------------------
+
+RelatedTo
+   The property is used to represent a relationship or
+   reference between one calendar component and another.
+
+----------------------------------------------
+
+Repeat
+   This property defines the number of time the alarm should be
+   repeated, after the initial trigger.
+
+----------------------------------------------
+
+RRule
+   This property defines a rule or repeating pattern for
+   recurring events, to-dos, or time zone definitions.
+
+----------------------------------------------
+
+Transp
+   This property defines whether an event is transparent or not
+   to busy time searches.
+
+----------------------------------------------
+
+Trigger
+  This property specifies when an alarm will trigger.
+
+----------------------------------------------
+
+XProperty
+   Defines non-standard property
+
+
+
+

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     Object representing the location of an event
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.BwLocation"
+         table="locations">
+    <id name="id" type="integer" column="entityid" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+
+    <version name="seq" column="seq" type="integer" />
+
+    <many-to-one name="creator"
+                 class="org.bedework.calfacade.BwUser"
+                 unique="true">
+      <column name="creatorid" not-null="true" index="location_creator" />
+    </many-to-one>
+
+    <many-to-one name="owner"
+                 class="org.bedework.calfacade.BwUser"
+                 unique="true">
+      <column name="ownerid" not-null="true"
+              index="location_owner" unique-key="location_key" />
+    </many-to-one>
+
+    <property name="access" column="access" type="text" />
+
+    <property name="publick" type="true_false" >
+      <column name="publick" not-null="true" />
+    </property>
+
+    <property name="address" type="string" >
+      <column name="address" not-null="true" unique-key="location_key" />
+    </property>
+    <property name="subaddress" column="subaddress" type="string"/>
+    <property name="link" column="link" type="string"/>
+
+    <set name="events"
+         lazy="true"
+         inverse="true"
+         cascade="all" >
+      <key column="locationid"/>
+      <one-to-many class="org.bedework.calfacade.BwEventObj" />
+    </set>
+  </class>
+
+  <!-- =================================================================
+       Location queries
+       ================================================================= -->
+
+  <query name="countLocationRefs"><![CDATA[
+    select count(*) from org.bedework.calfacade.BwEventObj as ev
+      where ev.location = :ent
+  ]]></query>
+
+  <query name="getLocationRefs"><![CDATA[
+    from org.bedework.calfacade.BwEventObj as ev
+      where ev.location = :ent
+  ]]></query>
+</hibernate-mapping>
+

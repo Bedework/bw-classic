@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jboss-web>
+  <security-domain>java:/jaas/@SECURITY-DOMAIN@</security-domain>
+  <resource-ref>
+    <res-ref-name>jdbc/calDB</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <jndi-name>java:/CalendarDS</jndi-name>
+  </resource-ref>
+
+  <!-- Used at rpi - should cause no problems elsewhere -->
+  <ejb-ref>
+    <ejb-ref-name>rpi/misc/creds</ejb-ref-name>
+    <jndi-name>@CREDSEJB-JNDI-NAME@</jndi-name>
+  </ejb-ref>
+
+  <ejb-ref>
+    <ejb-ref-name>rpi/diradmin</ejb-ref-name>
+    <jndi-name>@DIRADMINEJB-JNDI-NAME@</jndi-name>
+  </ejb-ref>
+</jboss-web>

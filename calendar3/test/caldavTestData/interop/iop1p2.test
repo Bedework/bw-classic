@@ -1,0 +1,14 @@
+DESCRIPTION: Interop - Test 1.2
+
+EXPECT-RESPONSE: 201
+
+METHOD: PUT
+
+AUTH: true
+
+URL: calendar/meeting1.2.ics
+
+CONTENTTYPE: text/calendar
+
+CONTENTFILE: content/1p2.ics
+

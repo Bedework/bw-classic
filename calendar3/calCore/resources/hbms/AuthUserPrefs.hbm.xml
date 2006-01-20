@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     Preferences for an authorised calendar user
+     Don't use lazy initialisation for the prefs. Too much complication
+     at the application level for too little gain.
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.svc.BwAuthUserPrefs"
+         table="authprefs">
+    <id name="id" column="userid" unsaved-value="-1">
+        <generator class="foreign">
+            <param name="property">authUser</param>
+        </generator>
+    </id>
+
+    <one-to-one name="authUser"
+                class="org.bedework.calfacade.svc.BwAuthUser"/>
+
+    <property name="autoAddCategories" type="true_false" >
+      <column name="autoaddCategories" not-null="true" />
+    </property>
+
+    <set name="preferredCategories" table="authprefCategories" >
+      <key>
+        <column name="userid" not-null="true" />
+      </key>
+      <many-to-many class="org.bedework.calfacade.BwCategory"
+                    column="categoryid"/>
+    </set>
+
+    <property name="autoAddLocations" type="true_false" >
+      <column name="autoaddLocations" not-null="true" />
+    </property>
+
+    <set name="preferredLocations" table="authprefLocations" >
+      <key>
+        <column name="userid" not-null="true" />
+      </key>
+      <many-to-many class="org.bedework.calfacade.BwLocation"
+                    column="locationid" />
+    </set>
+
+    <property name="autoAddSponsors" type="true_false" >
+      <column name="autoaddSponsors" not-null="true" />
+    </property>
+
+    <set name="preferredSponsors" table="authprefSponsors" >
+      <key>
+        <column name="userid" not-null="true" />
+      </key>
+      <many-to-many class="org.bedework.calfacade.BwSponsor"
+                    column="sponsorid"
+                    lazy="false"/>
+    </set>
+
+    <property name="autoAddCalendars" type="true_false" >
+      <column name="autoaddCalendars" not-null="true" />
+    </property>
+
+    <set name="preferredCalendars" table="authprefCalendars" >
+      <key>
+        <column name="userid" not-null="true" />
+      </key>
+      <many-to-many class="org.bedework.calfacade.BwCalendar"
+                    column="calendarid"/>
+    </set>
+  </class>
+
+  <!-- This is a cheat to get around some problems. I cannot delete all
+       references to a given sponsor, location etc in one update.
+       SQL allows it - delete from authprefSponsors where sponsorid=?
+
+       I was unable to execute that query. Hibernate 3.1 may allow it.
+       Rather than build the table names into the java and use direct jdbc
+       I added a bogus class and mapped it here.
+    -->
+
+  <class name="org.bedework.calfacade.svc.BwAuthUserPrefsCategory"
+         table="authprefCategories">
+    <id name="id" column="userid" unsaved-value="-1"/>
+    <property name="categoryid" column="categoryid" type="integer"/>
+  </class>
+
+  <class name="org.bedework.calfacade.svc.BwAuthUserPrefsLocation"
+         table="authprefLocations">
+    <id name="id" column="userid" unsaved-value="-1"/>
+    <property name="locationid" column="locationid" type="integer"/>
+  </class>
+
+  <class name="org.bedework.calfacade.svc.BwAuthUserPrefsSponsor"
+         table="authprefSponsors">
+    <id name="id" column="userid" unsaved-value="-1"/>
+    <property name="sponsorid" column="sponsorid" type="integer"/>
+  </class>
+
+  <class name="org.bedework.calfacade.svc.BwAuthUserPrefsCalendar"
+         table="authprefCalendars">
+    <id name="id" column="userid" unsaved-value="-1"/>
+    <property name="calendarid" column="calendarid" type="integer"/>
+  </class>
+
+  <!-- =================================================================
+       Authuser queries
+       ================================================================= -->
+
+  <query name="getPrefsWithSponsor"><![CDATA[
+    from org.bedework.calfacade.svc.BwAuthUserPrefs pref
+          where :sp in elements(pref.preferredSponsors)
+  ]]></query>
+
+  <!-- We want something like this
+  <sql-query name="removeSponsorForAll"><![CDATA[
+    delete from authprefSponsors where sponsorid=:id
+  ]]></sql-query>
+   -->
+
+  <!-- But cheat -->
+  <query name="removeCategoryForAll"><![CDATA[
+    delete from org.bedework.calfacade.svc.BwAuthUserPrefsCategory
+           where categoryid=:id
+  ]]></query>
+
+  <query name="removeLocationForAll"><![CDATA[
+    delete from org.bedework.calfacade.svc.BwAuthUserPrefsLocation
+           where locationid=:id
+  ]]></query>
+
+  <query name="removeSponsorForAll"><![CDATA[
+    delete from org.bedework.calfacade.svc.BwAuthUserPrefsSponsor
+           where sponsorid=:id
+  ]]></query>
+
+  <query name="removeCalendarForAll"><![CDATA[
+    delete from org.bedework.calfacade.svc.BwAuthUserPrefsCalendar
+           where calendarid=:id
+  ]]></query>
+
+</hibernate-mapping>
+

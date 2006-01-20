@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     An alarm in UWCal.
+
+     An alarm may be associated with an event or todo. Only one of the
+     associated ids may be set
+
+     Alarms may be of different types as defined by the RFC.
+       0 -> AUDIO
+       1 -> DISPLAY
+       2 -> EMAIL
+       3 -> PROCEDURE
+
+     If sites want to implement non-standard alarm types use values 1000 and
+     greater to define the type. 4-999 are reserved for expansions to the standard
+
+     The following describes the use of each field and when or how required based
+     on the trigger type
+
+     Field         Description                                Required Optional
+     trigger       This specifies the time for the alarm
+                   in rfc format                              ADEP
+     trigger_start T if we trigger off the start, 'F' for end          ADEP
+     duration      External form of duration                           ADEP
+     repeat        number of repitions                                 ADEP
+     attach        audio file or attachment or exec              P      A E
+     description                                               DE          P
+     summary                                                    E
+     attendees     Set of attendees                             E
+
+     internal use
+     trigger_time  This specifies the time for the next alarm
+                   converted to internal format
+     previous_trigger  Used to determine if we missed an alarm
+     repeat_count  Number of repeats we've done
+     expired       Set to 'T' when we're done - default 'F'
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.BwAlarm"
+         table="alarms"
+         discriminator-value="O">
+    <id name="id" type="integer" column="alarmid" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+
+    <discriminator type="character">
+        <formula>
+            case
+                when eventid is not null then 'E'
+                else 'T'
+            end
+        </formula>
+    </discriminator>
+
+    <version name="sequence" column="sequence" type="long" />
+
+    <property name="alarmType" column="alarm_type" type="integer" />
+
+    <!--
+    <many-to-one name="user" insert="false" update="false"
+                 class="org.bedework.calfacade.BwUser" >
+      <column name="userid"/>
+    </many-to-one>
+    -->
+
+    <many-to-one name="user"
+                 class="org.bedework.calfacade.BwUser"
+                 unique="true" >
+      <column name="userid" not-null="true" index="valarms_user" />
+    </many-to-one>
+
+    <property name="trigger" column="trigger" type="text"/>
+
+    <property name="triggerStart" type="true_false">
+      <column name="trigger_start" not-null="true" />
+    </property>
+
+    <property name="duration" column="duration" type="text"/>
+    <property name="repeat" column="repeat" type="integer" />
+    <property name="attach" column="attach" type="text"/>
+
+    <property name="description" column="description" type="text"/>
+    <property name="summary" column="summary" type="text"/>
+
+    <set name="attendees" table="alarm_attendees"
+         cascade="all-delete-orphan" >
+      <key column="attendeeid"/>
+      <many-to-many class="org.bedework.calfacade.BwAttendee" />
+    </set>
+
+    <property name="triggerTime" column="trigger_time" type="long" />
+    <property name="previousTrigger" column="previous_trigger" type="long" />
+    <property name="repeatCount" column="repeat_count" type="integer" />
+
+    <property name="expired" type="true_false">
+      <column name="expired" not-null="true" />
+    </property>
+
+    <subclass name="org.bedework.calfacade.BwEventAlarm"
+              discriminator-value="E">
+      <many-to-one name="event"
+                   class="org.bedework.calfacade.BwEventObj" >
+        <column name="eventid"/>
+      </many-to-one>
+    </subclass>
+
+    <subclass name="org.bedework.calfacade.BwTodoAlarm"
+              discriminator-value="T">
+      <many-to-one name="todo"
+                   class="org.bedework.calfacade.BwTodo" >
+        <column name="todoid"/>
+      </many-to-one>
+    </subclass>
+  </class>
+
+  <!-- =================================================================
+       Alarm queries
+       ================================================================= -->
+
+  <query name="getAlarms"><![CDATA[
+    from org.bedework.calfacade.BwAlarm as al
+      where al.event = :ev and al.user=:user
+  ]]></query>
+
+  <query name="getUnexpiredAlarmsUser"><![CDATA[
+    from org.bedework.calfacade.BwAlarm as al
+      where al.expired = false and al.user=:user
+  ]]></query>
+
+  <query name="getUnexpiredAlarms"><![CDATA[
+    from org.bedework.calfacade.BwAlarm as al
+      where al.expired = false
+  ]]></query>
+
+  <!-- Return all unexpired alarms for the given user before the given time
+    -->
+  <query name="getUnexpiredAlarmsUserTime"><![CDATA[
+    from org.bedework.calfacade.BwAlarm as al
+      where al.expired = false and al.user=:user and
+            al.triggerTime <= :tt
+  ]]></query>
+
+  <!-- Return all unexpired alarms before the given time
+    -->
+  <query name="getUnexpiredAlarmsTime"><![CDATA[
+    from org.bedework.calfacade.BwAlarm as al
+      where al.expired = false and
+            al.triggerTime <= :tt
+  ]]></query>
+
+  <!-- Delete alarms forthe given event
+    -->
+  <query name="deleteEventAlarms"><![CDATA[
+    delete org.bedework.calfacade.BwAlarm
+      where event = :ev
+  ]]></query>
+</hibernate-mapping>
+

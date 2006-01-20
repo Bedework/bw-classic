@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+  <!-- ====================================================================
+     This is a the Struts configuration for the uwcal client.
+     ====================================================================== -->
+
+<struts-config>
+  <!-- ========== Form Bean Definitions =================================== -->
+  <form-beans>
+    <form-bean      name="calForm"
+                    type="org.bedework.webclient.BwActionForm"/>
+  </form-beans>
+
+  <!-- ========== Global Forward Definitions ============================== -->
+  <global-forwards>
+    <!-- render forwards -->
+    <forward name="initialise" path="/initialise.rdo"/>
+    <forward name="showCals" path="/showCals.rdo"/>
+    <forward name="showManageLocations" path="/showManageLocations.rdo"/>
+    <forward name="showEditLocation" path="/showEditLocation.rdo"/>
+    <forward name="showEditEvent" path="/showEditEvent.rdo"/>
+    <forward name="eventMore" path="/showEventMore.rdo"/>
+    <forward name="initUpload" path="/initUpload.rdo"/>
+
+    <!-- Forward for a new session from some bookmarked link? -->
+    <forward name="gotomain" path="/docs/main.jsp" />
+
+    <forward name="initial" path="/setup.do"/>
+
+    <forward name="doNothing" path="/showMain.rdo" redirect="true" />
+    <forward name="error" path="/showMain.rdo" redirect="true" />
+    <forward name="success" path="/showMain.rdo" redirect="true" />
+    <forward name="cancelled" path="/showMain.rdo" redirect="true" />
+  </global-forwards>
+
+  <!-- ========== Action Mapping Definitions ============================== -->
+  <action-mappings>
+
+    <!-- ===============================================================
+         Render actions - these should be referenced by the rdo suffix to
+         invoke the xslt filter
+         =============================================================== -->
+
+         <!--
+    <action    path="/showMain"
+               name="calForm"
+               scope="session"
+               validate="false"
+               include="/docs/main.jsp"/>
+-->
+    <action    path="/showMain"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/main.jsp"/>
+    </action>
+
+    <action    path="/showCals"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calendars.jsp" />
+    </action>
+
+    <action    path="/showEventMore"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/eventMore.jsp" />
+    </action>
+
+   <action    path="/showAddEvent"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/addEvent.jsp" />
+    </action>
+
+    <action    path="/showEditEvent"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/editEvent.jsp" />
+    </action>
+
+    <action    path="/showEditLocation"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/editLocation.jsp" />
+    </action>
+
+    <action    path="/showFreeBusy"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/freeBusy.jsp" />
+    </action>
+
+    <action    path="/showManageLocations"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/manageLocations.jsp" />
+    </action>
+
+    <action    path="/showEmailOptions"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/emailOptions.jsp" />
+    </action>
+
+    <action    path="/showAlarmOptions"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/alarmOptions.jsp" />
+    </action>
+
+    <action    path="/initUpload"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/upload.jsp" />
+    </action>
+
+    <action    path="/initialise"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/main.jsp" />
+      <forward name="loggedOut" path="/docs/login/logout.html" />
+    </action>
+
+    <!-- ===============================================================
+         These actions do not render - these should be referenced by the do
+         suffix and should redirect to a render action.
+         =============================================================== -->
+
+    <action    path="/setup"
+               type="org.bedework.webclient.BwAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="loggedOut" path="/docs/login/logout.html" />
+    </action>
+
+    <action    path="/selectCalendar"
+               type="org.bedework.webclient.BwCalendarAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="noCalDef" path="/showMain.rdo" redirect="true" />
+    </action>
+
+    <action    path="/setView"
+               type="org.bedework.webclient.BwGoToAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <action    path="/eventView"
+               type="org.bedework.webclient.BwEventAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showEventMore.rdo" redirect="true" />
+    </action>
+
+    <!-- The following action is used for adding events from a form on the main
+         personal calandar page (a la Washington); on error or success, we return to the
+         main.jsp page. -->
+    <action    path="/addEvent"
+               type="org.bedework.webclient.BwAddEventAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <!-- The following 2 actions are used for adding events from an "add event" page
+         (a la Demo, Rensselaer); on error, we return to the
+         addEvent.jsp page. -->
+    <action    path="/initEvent"
+               type="org.bedework.webclient.BwAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showAddEvent.rdo" redirect="true" />
+    </action>
+
+    <action    path="/addEventUsingPage"
+               type="org.bedework.webclient.BwAddEventAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="error" path="/showAddEvent.rdo" redirect="true" />
+      <forward name="doNothing" path="/showAddEvent.rdo" redirect="true" />
+    </action>
+
+    <action    path="/editEvent"
+               type="org.bedework.webclient.BwEditEventAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="edit" path="/showEditEvent.rdo" redirect="true" />
+    </action>
+
+    <action    path="/delEvent"
+               type="org.bedework.webclient.BwDelEventAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <action    path="/addEventRef"
+               type="org.bedework.webclient.BwAddEventRefAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <action    path="/upload"
+               type="org.bedework.webcommon.misc.UploadAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <action    path="/showPage"
+               type="org.bedework.webclient.BwAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/showPage.jsp" />
+    </action>
+
+    <action    path="/getFreeBusy"
+               type="org.bedework.webclient.BwFreeBusyAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showFreeBusy.rdo" redirect="true" />
+    </action>
+
+    <action    path="/setAccess"
+               type="org.bedework.webclient.BwAccessAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <action    path="/manageLocations"
+               type="org.bedework.webclient.BwAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showManageLocations.rdo" redirect="true" />
+    </action>
+
+    <action    path="/addLocation"
+               type="org.bedework.webclient.BwAddLocationAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showManageLocations.rdo" redirect="true" />
+    </action>
+
+    <action    path="/editLoc"
+               type="org.bedework.webclient.BwEditLocationAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="edit" path="/showEditLocation.rdo" redirect="true" />
+      <forward name="success" path="/showManageLocations.rdo" redirect="true" />
+    </action>
+
+    <action    path="/delLocation"
+               type="org.bedework.webclient.BwDelLocationAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="referenced" path="/showManageLocations.rdo" redirect="true" />
+      <forward name="success" path="/showManageLocations.rdo" redirect="true" />
+    </action>
+
+    <!-- ....................... mailing events ........................ -->
+
+    <action    path="/initMailEvent"
+               type="org.bedework.webclient.BwFetchEventAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="notFound" path="/showMain.rdo" redirect="true" />
+      <forward name="success" path="/showEmailOptions.rdo" redirect="true" />
+    </action>
+
+    <action    path="/mailEvent"
+               type="org.bedework.webclient.BwMailEventAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="noEvent" path="/showMain.rdo" redirect="true" />
+      <forward name="retry" path="/showEmailOptions.rdo" redirect="true" />
+      <forward name="success" path="/showMain.rdo" redirect="true" />
+    </action>
+
+    <!-- ....................... event alarms .......................... -->
+
+    <action    path="/initEventAlarm"
+               type="org.bedework.webclient.BwFetchEventAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="notFound" path="/showMain.rdo" redirect="true" />
+      <forward name="success" path="/showAlarmOptions.rdo" redirect="true" />
+    </action>
+
+    <action    path="/setAlarm"
+               type="org.bedework.webclient.BwSetAlarmAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="noEvent" path="/showMain.rdo" redirect="true" />
+      <forward name="retry" path="/showAlarmOptions.rdo" redirect="true" />
+      <forward name="success" path="/showMain.rdo" redirect="true" />
+    </action>
+
+    <!-- ..................... subscriptionss .......................... -->
+
+    <action    path="/subscribe"
+               type="org.bedework.webcommon.subs.SubscribeAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <action    path="/unsubscribe"
+               type="org.bedework.webcommon.subs.UnsubscribeAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <!-- ......................... views .............................. -->
+
+    <action    path="/addView"
+               type="org.bedework.webcommon.views.AddViewAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <action    path="/removeView"
+               type="org.bedework.webcommon.views.DeleteViewAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+  </action-mappings>
+<!--               unknown="true" -->
+
+  <!-- Below will be one or more comments which must not be edited or removed
+       for the portlet build process to succeed. The comment will be replaced
+        by some extra cofiguration.
+       -->
+
+  <!-- Jetspeed2 controller def here -->
+
+  <message-resources parameter="servlet" null="true" />
+
+</struts-config>

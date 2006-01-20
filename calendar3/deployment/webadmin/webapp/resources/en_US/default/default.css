@@ -1,0 +1,398 @@
+body {
+  background-color: white;
+  color: #000000;
+  margin: 0em;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#header {
+  color: #eee;
+  background-color : #333;
+  margin: 0em;
+  padding:  0.5em 1em 0.5em 1em;
+}
+#header a {
+  color: #dde;
+  background-color : transparent;
+}
+#header h1 {
+  font-size: 1.4em;
+  margin: 0.5em 0.5em 0em 0em;
+}
+#header img {
+  padding-top: 0.2em;
+}
+#messages {
+  background-color: inherit;
+  color: #ff0;
+  font-weight: bold;
+}
+#errors {
+  background-color: inherit;
+  color: #f99;
+  font-weight: bold;
+}
+#statusBarTable {
+  margin: 0em;
+  color: black;
+  background-color: #edc;
+  font-size: 0.8em;
+  width: 100%;
+}
+#statusBarTable td.rightCell {
+  text-align: right;
+  padding: 0.2em 1em 0.2em 0em;
+}
+#statusBarTable td.leftCell {
+  color: #666;
+  background-color: #edc;
+  text-align: left;
+  padding: 0.2em 0em 0.2em 1em;
+}
+#statusBarTable span.status {
+  font-weight: bold;
+}
+#statusBarTable a:link,
+#statusBarTable a:active,
+#statusBarTable a:visited {
+  text-decoration : none;
+  color: blue;
+  background-color: transparent;
+}
+#statusBarTable a:hover {
+  text-decoration: none;
+  background-color: #ffe;
+  color: black;
+}
+#content {
+  margin: 0em;
+  padding: 0em 1em 1em 1em;
+}
+#content h2 {
+  margin: 0em;
+  padding: 1em 0.2em 0em 0.2em;
+  font-size: 1.4em;
+}
+#content h3 {
+  margin: 0em;
+  padding: 1em 0.2em 0em 0.2em;
+  font-size: 1.1em;
+}
+#content h4 {
+  margin: 0em;
+  padding: 1em 0.2em 0em 0.2em;
+  font-size: 1em;
+}
+#content .menuTitle {
+  margin: 0em;
+  padding: 1em 0.5em 0em 0.2em;
+}
+#content ol li {
+  padding-bottom: 1em;
+}
+th {
+  text-align: left;
+}
+#mainMenuTable {
+  margin-top: 0em;
+  margin-bottom: 1em;
+  /*width: 100%;*/
+}
+#mainMenuTable th {
+  padding: 0.2em 0.5em 0.2em 0.5em;
+  color: black;
+  background-color: #ccc;
+  text-align: left;
+}
+#mainMenuTable td {
+  padding: 0em;
+  color: black;
+  background-color: #eee;
+  text-align: center;
+}
+#mainMenuTable a:link,
+#mainMenuTable a:active,
+#mainMenuTable a:visited {
+  display: block;
+  padding: 0.2em 1em 0.2em 1em;
+  text-decoration: none;
+  color: #483D8B;
+  background-color: transparent;
+}
+#mainMenuTable a:hover {
+  display: block;
+  padding: 0.2em 1em 0.2em 1em;
+  text-decoration: none;
+  color: #483D8B;
+  background-color: #ffe;
+}
+#mainMenuTable form {
+  display: inline;
+}
+.adminMenu {
+  margin-top: 0em;
+  /*width: 100%;*/
+}
+ul.adminMenu {
+  margin-top: 0;
+}
+ul.adminMenu li {
+  padding: 0.25em 0 0 0;
+}
+ul.adminMenu a:link,
+ul.adminMenu a:active,
+ul.adminMenu a:visited {
+  text-decoration: none;
+  color: #483D8B;
+  background-color: transparent;
+}
+ul.adminMenu a:hover {
+  text-decoration: none;
+  color: #483D8B;
+  background-color: #ff3;
+}
+#commonListTable {
+  margin-bottom: 2em;
+}
+#commonListTable th {
+  padding: 0.2em 1em 0.2em 0.5em;
+  background-color : #ccc;
+  color: black;
+  white-space: nowrap;
+}
+#commonListTable td {
+  vertical-align: top;
+  font-size: 0.9em;
+  padding: 0.2em 1em 0.2em 0.5em;
+  color: black;
+  background-color: #eee;
+}
+table.eventFormTable {
+  margin-bottom: 1em;
+}
+table.eventFormTable td {
+  vertical-align: top;
+  font-size: 0.9em;
+}
+table.eventFormTable th,
+table.eventFormTable td.fieldName {
+  white-space: nowrap;
+  font-weight: bold;
+  background-color : #eee;
+  color: black;
+  padding: 0.2em;
+  font-size: 0.9em;
+}
+table.eventFormTable td.optional {
+  white-space: nowrap;
+  font-style: italic;
+  background-color : #eee;
+  color: black;
+  padding: 0.2em;
+}
+table.eventFormTable td.allField {
+  white-space: nowrap;
+  text-align: right;
+  font-style: italic;
+  background-color : white;
+  color: black;
+  padding: 0.2em;
+}
+table.eventFormTable .dateFields {
+  display: inline;
+}
+table.eventFormTable .timeFields {
+  display: inline;
+  margin-left: 1em;
+}
+.fieldInfo {
+  font-size: 0.9em;
+  font-style: italic;
+}
+table.eventFormTable div.fieldInfo {
+  width: 400px;
+  margin-bottom: 0.5em;
+}
+table.eventFormTable .dateStartEndBox {
+  border: 1px solid #ccb;
+  margin: 4px;
+  padding: 4px;
+}
+table.eventFormTable .dateStartEndBox strong {
+  display: block;
+}
+table.eventFormTable .startDateLabel {
+  margin-left: 26px;
+}
+table.eventFormTable .shown {
+  display: inline;
+}
+table.eventFormTable .hidden,
+.hidden {
+  display: none;
+}
+table.eventFormTable .durationBox {
+  border: 1px solid #ccb;
+  display: inline;
+  margin: 4px;
+  padding: 4px;
+}
+table.eventFormTable .durationBox input {
+  margin-left: 0.5em;
+}
+table.eventFormTable .durationSpacerText {
+  font-weight: bold;
+  margin: 0 1em;
+}
+.autoCompleteMatched {
+  color: black;
+  background-color: white;
+}
+.autoCompleteHover {
+  background-color: #3366cc;
+  color: white;
+}
+.autoCompleteNormal {
+  background-color: white;
+  color: black;
+}
+.autoCompleteCell {
+  color: #3366cc;
+}
+.autoCompleteTable {
+  width: 386px;
+  border-collapse: collapse;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+.autoCompleteTable td {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 0.8em;
+}
+.edit {
+  top: -4px;
+  background: #F8F8F8;
+  border: 1px solid #ccc;
+}
+.highlite {
+  background: #FFF;
+  border: 1px dashed #ccc;
+}
+#sponsorEmailAlert {
+  display: none;
+  background: transparent url('../../resources/email.gif') no-repeat top left;
+  /*position: relative;
+  top: -20px;
+  left: 250px;*/
+  float: left;
+  width: 150px;
+  height: 20px;
+}
+#submitTable input.padRight {
+  padding-right: 1em;
+}
+
+#deleteListTable {
+  margin: 1em 0em 2em 1em;
+}
+#deleteListTable th {
+  text-align: left;
+  padding: 0.2em 1em 0.2em 0.5em;
+}
+#deleteListTable td {
+  vertical-align: top;
+  font-size: 0.9em;
+  padding: 0.2em 1em 0.2em 0.5em;
+}
+#deleteListTable .summary {
+  font-style: italic;
+}
+#calendarTable td,
+#subsTable td {
+  padding: 0 0.5em;
+  vertical-align: top;
+}
+#calendarTable td.cals,
+#subsTable td.cals {
+  border-right: 1px solid #aaa;
+  font-size: 0.9em;
+  width: 200px;
+}
+#calendarTable td.cals {
+  width: 300px;
+}
+#subsTable td.cals {
+  width: 200px;
+}
+#viewsTable {
+  width: 100%;
+  border: 1px solid #eee;
+}
+#viewsTable td {
+  padding: 0 0.5em;
+  vertical-align: top;
+  font-size: 0.9em;
+}
+#content h3.viewName {
+  color: black;
+  background-color: #eee;
+  font-size: 1.1em;
+  padding: 0.25em;
+  margin: 1em 0 0 0;
+}
+#viewsTable td.subs {
+  border-right: 1px solid #aaa;
+  width: 200px;
+}
+p.note {
+  margin: 0;
+  padding: 0;
+  font-size: 0.8em;
+  font-style: italic;
+}
+#calendarTree ul {
+  padding-left: 10px;
+  margin-left: 10px;
+}
+#calendarTree li {
+  padding-top: 0.25em;
+  /*font-weight: bold;*/
+}
+/*#calendarTree li ul li ul li {
+  font-weight: normal;
+}*/
+#calendarTree li.folder {
+  list-style-image: url(../../resources/catIcon.gif);
+}
+#calendarTree li.calendar {
+  list-style-image: url(../../resources/calIcon-sm.gif);
+}
+#calendarTree a:link,
+#calendarTree a:active,
+#calendarTree a:visited {
+  text-decoration: none;
+}
+#calendarTree a:hover {
+  color: black;
+  background-color: #ff3;
+}
+#logoutButton  {
+  display: inline;
+}
+#logoutButton form {
+  display: inline;
+  margin-right: 0.5em;
+}
+.center {
+  text-align: center;
+}
+.smaller {
+  font-size: 0.8em;
+}
+#footer {
+  padding: 1em;
+  margin-top: 2em;
+  text-align: center;
+  border-top: medium groove #eee;
+  font-size: 0.8em;
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     A Todo in UWCal. - largely unimplemented - a place holder for alarms
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.BwTodo"
+         table="todos">
+    <id name="id" type="integer" column="todoid" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+
+    <component name="dtstart"
+               class="org.bedework.calfacade.BwDateTime" >
+      <property name="dateType" column="start_date_type" type="true_false"
+                not-null="true" />
+      <property name="tzid" column="start_tzid" type="string" />
+      <property name="dtval" column="start_dtval" type="string"
+                not-null="true" />
+      <property name="date" column="start_date" type="string"
+                not-null="true" />
+    </component>
+  </class>
+</hibernate-mapping>
+

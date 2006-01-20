@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+
+<!-- ====================== Calendar tools classes ======================
+     This is the ant build file for tools for the UW Calendar.
+
+     This file will probably need no modification as it is assumed that the
+     core of the calendar will be largely site and application independent.
+
+     This build file depends upon properties set by the master build file one
+     level up in the directory tree.
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="uwcal.tools" default="build">
+  <property name="base.name" value="tools"/>
+
+  <target name="init" >
+    <dirname property="org.bedework.tools.base" file="${ant.file}"/>
+    <property name="source.home" location="${org.bedework.tools.base}/src"/>
+  </target>
+
+  <!-- =================================================================
+       The "build" target does a build of all tools classes
+       ================================================================= -->
+
+  <target name="build"
+          depends="init"
+          description="Build calendar tools jars">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+      <include name="org/bedework/tools/**/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/tools/**/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${ical4j.jar}"/>
+      <pathelement location="${digester.jar}"/>
+      <pathelement location="${hibernate.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.calsvci.jar}"/>
+      <pathelement location="${org.bedework.calcore.jar}"/>
+      <pathelement location="${org.bedework.access.jar}"/>
+    </path>
+
+    <!-- ==================== Build Target ============================= -->
+
+    <property name="build.jar.file" location="${org.bedework.tools.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+
+  <!-- ========================== run targets ==========================
+       ================================================================= -->
+
+  <target name="dumpdb"
+          depends="build"
+          description="Run calendar db dump app">
+      <ant antfile="${org.bedework.tools.base}/dumprestore/build.xml" inheritrefs="true"
+           target="dumpdb" >
+        <property name="dump.class" value="org.bedework.tools.dumprestore.dump.Dump" />
+      </ant>
+  </target>
+
+  <target name="restoredb"
+          depends="build"
+          description="Run calendar db restore app">
+      <ant antfile="${org.bedework.tools.base}/dumprestore/build.xml" inheritrefs="true"
+           target="restoredb" >
+        <property name="restore.class" value="org.bedework.tools.dumprestore.restore.Restore" />
+      </ant>
+  </target>
+
+  <target name="initdb"
+          depends="build"
+          description="Run calendar db restore app to init db">
+      <ant antfile="${org.bedework.tools.base}/dumprestore/build.xml" inheritrefs="true"
+           target="initdb" >
+        <property name="restore.class" value="org.bedework.tools.dumprestore.restore.Restore" />
+      </ant>
+  </target>
+
+  <target name="tzconvert"
+          depends="build"
+          description="Run timezone ics file conversion app">
+      <ant antfile="${org.bedework.tools.base}/timezones/build.xml" inheritrefs="true"
+           target="tzconvert" />
+  </target>
+</project>

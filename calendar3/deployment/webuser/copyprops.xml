@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     Copy the user web client application properties from the global config
+     properties file into common application build properties.
+
+     All the property names start with org.bedework.webpersonal
+     The property names for the config process all start with propval.
+     =================================================================== -->
+
+<project name="bwadmin.copyprops" default="copyprops" >
+  <target name="copyprops">
+    <property name="propval.war.name"
+              value="${org.bedework.webpersonal.war.name}" />
+    <property name="propval.ear.name"
+              value="${org.bedework.webpersonal.ear.name}" />
+
+    <property name="propval.env.prefix"
+              value="${org.bedework.webpersonal.env.prefix}" />
+
+    <property name="propval.app.description"
+              value="${org.bedework.webpersonal.app.description}" />
+
+    <property name="propval.app.security.domain"
+              value="${org.bedework.webpersonal.app.security.domain}"/>
+    <property name="propval.app.security.prefix"
+              value="${org.bedework.webpersonal.app.security.prefix}"/>
+    <property name="propval.app.transport.guarantee"
+              value="${org.bedework.webpersonal.app.transport.guarantee}"/>
+
+    <property name="propval.app.display.name"
+              value="${org.bedework.webpersonal.app.display.name}" />
+    <property name="propval.app.context.root"
+              value="${org.bedework.webpersonal.context.root}" />
+    <property name="propval.app.name"
+              value="${org.bedework.webpersonal.app.name}" />
+    <property name="propval.app.version"
+              value="${org.bedework.webpersonal.app.version}" />
+
+    <property name="propval.app.default.contenttype"
+              value="${org.bedework.webpersonal.app.default.contenttype}" />
+    <property name="propval.app.noxslt"
+              value="${org.bedework.webpersonal.app.noxslt}" />
+    <property name="propval.app.resources.dir"
+              value="${org.bedework.webpersonal.app.resources.dir}" />
+    <property name="propval.app.deploy.dir"
+              value="${org.bedework.webpersonal.deploy.dir}" />
+    <property name="propval.app.skinset.name"
+              value="${org.bedework.webpersonal.app.skinset.name}" />
+
+    <property name="propval.app.calfile.name"
+              value="${org.bedework.webpersonal.app.calfile.name}" />
+
+    <!-- Ensure these are set -->
+    <property name="app.public.admin.uri" value="/${org.bedework.webadmin.war.name}" />
+    <property name="app.public.calendar.uri" value="/${org.bedework.webpubevents.war.name}" />
+    <property name="app.personal.calendar.uri" value="/${org.bedework.webpersonal.war.name}" />
+
+    <property name="propval.app.public.admin.uri"
+              value="${app.public.admin.uri}" />
+    <property name="propval.app.public.calendar.uri"
+              value="${app.public.calendar.uri}" />
+    <property name="propval.app.personal.calendar.uri"
+              value="${app.personal.calendar.uri}" />
+
+    <property name="propval.portal.platform"
+              value="${org.bedework.admin.portal.platform}" />
+  </target>
+</project>

@@ -1,0 +1,472 @@
+<!--
+     This build.xml contains targets for starting hsqldb
+     (which listens on port 8887)
+     and starting and stopping Tomcat
+-->
+
+<project name="calendar_quickstart" default="usage" basedir=".">
+  <property environment="env"/>
+
+  <target name="usage" depends="init"
+          description="Describe targets and their usage">
+    <echo message="As distributed the package should be ready to go."/>
+    <echo message="Ensure ant is on your path, (a version is in the" />
+    <echo message="package)"/>
+    <echo message=""/>
+    <echo message="First in one window do"/>
+    <echo message="    ant hsqldb"/>
+    <echo message="This will start the hsqldb server ready for the "/>
+    <echo message="application."/>
+    <echo message=""/>
+    <echo message="In another window do"/>
+    <echo message="    ant tomcatstart"/>
+    <echo message=""/>
+    <echo message="Once tomcat is running you should be able to go to a"/>
+    <echo message="browser and connect to"/>
+    <echo message="    http://localhost:8080/caladmin"/>
+    <echo message="and get a login prompt. Login with user 'caladmin' and"/>
+    <echo message="password 'uwcal'"/>
+    <echo message=""/>
+    <echo message="Connecting to"/>
+    <echo message="    http://localhost:8080/cal"/>
+    <echo message="should give you the public (guest) view of the calendar"/>
+    <echo message="which probably has no events."/>
+    <echo message=""/>
+    <echo message="Try entering them with the admin calendar ('add events')"/>
+    <echo message="and they should appear."/>
+    <echo message=""/>
+    <echo message="To build the calendar do"/>
+    <echo message="    ant deploy    or "/>
+    <echo message="    ant deploy.debug "/>
+    <echo message="which does a build and deploy of all components"/>
+    <echo message=""/>
+    <echo message="To rebuild the calendar do"/>
+    <echo message="    ant clean.deploy    or "/>
+    <echo message="    ant clean.deploy.debug "/>
+    <echo message="which does a clean, build and deploy of all components"/>
+    <echo message=""/>
+    <echo message="Creating a locally configured calendar application"/>
+    <echo message="should involve following the instructions for the"/>
+    <echo message="appsuite target in calendar/build.xml"/>
+    <echo message=""/>
+  </target>
+
+   <!-- The only properties set below should be those directly used to
+        invoke the targets below, in this file.
+        Do not set properties here for tasks invoked in other build
+        files.  Instead, make sure the targets work in calendar/build.xml,
+        then invoke ant on the task in calendar/build.xml.
+
+        For an example, of invoking ant on another build file,
+        see the deploy target, below.
+     -->
+  <target name="init" >
+    <dirname property="quickstart.dir" file="${ant.file}"/>
+
+    <property name="calendar.dir"
+              location="${basedir}/calendar2" />
+
+    <property name="calendar.build.file"
+              location="${calendar.dir}/build.xml" />
+
+    <!-- Overriding this when invoking ant allows different user property
+         files to be included e.g.
+            ant -Dorg.bedework.user.build.properties=/home/me/bedework.properties ...
+            -->
+    <property name="org.bedework.user.build.properties"
+              location="${user.home}/bedework.build.properties" />
+
+    <echo message="Load user properties from ${org.bedework.user.build.properties}" />
+
+    <!-- Load user property definition overrides -->
+    <property file="${org.bedework.user.build.properties}" />
+
+    <!-- Follow with local property definition overrides -->
+    <property file="${calendar.dir}/local.build.properties"/>
+
+    <!-- Then standard build properties -->
+    <property file="${calendar.dir}/build.properties"/>
+
+    <property name="org.bedework.hsqldb.dir"
+              location="${basedir}/hsqldb-1.7.3.3" />
+    <property name="org.bedework.hsqldb.dbname"
+              value="demo/events" />
+
+    <property name="org.bedework.appserver.dir"
+              location="${basedir}/jakarta-tomcat-5.0.28" />
+    <property name="sync4j.dir"
+              location="${basedir}/Sync4j2.2b3" />
+
+    <property name="org.bedework.appserver.deploy.dir"
+              location="${org.bedework.appserver.dir}/webapps" />
+  </target>
+
+  <!-- =================================================================
+       The "deploy" target builds and deploys the applications
+       ================================================================= -->
+
+  <target name="deploy" depends="init"
+          description="builds and deploys the applications">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="deploy" />
+  </target>
+
+  <target name="deploy.debug" depends="init"
+          description="builds and deploys the applications">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="deploy.debug" />
+  </target>
+
+  <!-- =================================================================
+       The "clean.deploy" target cleans, builds and deploys the applications
+       ================================================================= -->
+
+  <target name="clean.deploy" depends="clean"
+          description="cleans, builds and deploys the applications">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="deploy" />
+  </target>
+
+  <target name="clean.deploy.debug" depends="clean"
+          description="cleans, builds and deploys the applications">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="deploy.debug" />
+  </target>
+
+  <target name="clean" depends="init"
+          description="Remove all generated files.">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="clean" />
+  </target>
+
+  <target name="build.tools" depends="clean.deploy.debug"
+          description="cleans, builds and deploys the applications and builds the tools">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="build.tools" />
+  </target>
+
+  <target name="build.dumprestore" depends="init"
+          description="cleans, builds and deploys the applications and builds the tools">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="build.dumprestore" />
+  </target>
+
+  <target name="dumpdb" depends="build.dumprestore,dumpdb.nobuild"
+          description="run dump "/>
+
+  <target name="dumpdb.nobuild" depends="init"
+          description="run dump without a rebuild">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="dumpdb" />
+  </target>
+
+  <target name="restoredb" depends="build.dumprestore,restoredb.nobuild"
+          description="run restore "/>
+
+  <target name="restoredb.nobuild" depends="init"
+          description="run restore without a rebuild">
+    <input message="Restoring will destroy this calendar db. Proceed with restore"
+           validargs="y,n"
+           addproperty="do.restore" />
+    <condition property="do.abort">
+      <equals arg1="n" arg2="${do.restore}"/>
+    </condition>
+    <fail if="do.abort">restore aborted by user.</fail>
+
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+         target="restoredb" />
+  </target>
+
+  <target name="runfix" depends="init"
+          description="run restore ">
+    <input message="Running this will alter this calendar db. Proceed"
+           validargs="y,n"
+           addproperty="do.fix" />
+    <condition property="do.abort">
+      <equals arg1="n" arg2="${do.fix}"/>
+    </condition>
+    <fail if="do.abort">fix aborted by user.</fail>
+
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+         target="runfix" />
+  </target>
+
+  <target name="bld.config" depends="init"
+          description="Build config and deploy module">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="bld.config" />
+  </target>
+
+  <target name="bld.test" depends="init"
+          description="Build and run tests">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+         target="bld.test" />
+  </target>
+
+  <target name="run.test" depends="init"
+          description="Build and run tests">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+         target="run.test" />
+  </target>
+
+  <target name="run.test.debug" depends="init"
+          description="Build and run tests">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+         target="run.test"  >
+      <property name="org.bedework.debug" value="yes" />
+    </ant>
+  </target>
+
+  <target name="testall" depends="clean.deploy.debug,testall.norebuild"
+          description="run junit test suite"/>
+
+  <!-- Rebuild the test suite only -->
+  <target name="testall.norebuild" depends="init"
+          description="run junit test suite without a rebuild of calendar components">
+    <input message="Testall will destroy this calendar db. Proceed with test"
+           validargs="y,n"
+           addproperty="do.testall" />
+    <condition property="do.abort">
+      <equals arg1="n" arg2="${do.testall}"/>
+    </condition>
+    <fail if="do.abort">testall aborted by user.</fail>
+
+    <antcall inheritrefs="true" target="reinitDb" />
+
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="testall.norebuild" />
+  </target>
+
+  <!-- Rebuild the http test suite only -->
+  <target name="httptest" depends="init"
+          description="Run httptest suite" >
+    <input message="httptest will destroy this calendar db. Proceed with test"
+           validargs="y,n"
+           addproperty="do.httptest" />
+    <condition property="do.abort">
+      <equals arg1="n" arg2="${do.httptest}"/>
+    </condition>
+    <fail if="do.abort">httptest aborted by user.</fail>
+
+    <antcall inheritrefs="true" target="reinitDb" />
+
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="bld.httptest" />
+
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="run.httptest" />
+  </target>
+
+  <!-- =================================================================
+       Run the unit test suite
+       ================================================================= -->
+
+  <target name="unittest.initdb" depends="init"
+          description="Run the unit test suite after initdb" >
+    <input message="unittest.initdb will destroy this calendar db. Proceed with test"
+           validargs="y,n"
+           addproperty="do.unittest" />
+    <condition property="do.abort">
+      <equals arg1="n" arg2="${do.unittest}"/>
+    </condition>
+    <fail if="do.abort">unittest aborted by user.</fail>
+
+    <antcall inheritrefs="true" target="reinitDb" />
+
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="unittest" />
+  </target>
+
+  <target name="unittest" depends="init"
+          description="Run the synchml test application" >
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="unittest" />
+  </target>
+
+  <!-- =================================================================
+       Run the synchml test application
+       ================================================================= -->
+
+  <target name="synchmltest.initdb" depends="init"
+          description="Run the synchml test application - initdb only" >
+    <input message="synchmltest.initdb will destroy this calendar db. Proceed with test"
+           validargs="y,n"
+           addproperty="do.synchmltest" />
+    <condition property="do.abort">
+      <equals arg1="n" arg2="${do.synchmltest}"/>
+    </condition>
+    <fail if="do.abort">synchmltest aborted by user.</fail>
+
+    <antcall inheritrefs="true" target="reinitDb" />
+
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="synchmltest.initdb" />
+  </target>
+
+  <target name="synchmltest" depends="init"
+          description="Run the synchml test application" >
+    <input message="synchmltest.initdb will destroy this calendar db. Proceed with test"
+           validargs="y,n"
+           addproperty="do.synchmltest" />
+    <condition property="do.abort">
+      <equals arg1="n" arg2="${do.synchmltest}"/>
+    </condition>
+    <fail if="do.abort">synchmltest aborted by user.</fail>
+
+    <antcall inheritrefs="true" target="reinitDb" />
+
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="synchmltest" />
+  </target>
+
+  <!-- =================================================================
+       Reinitialise the database
+       ================================================================= -->
+
+  <target name="reinitDb" depends="init"
+          description="Reinitialise the database with the schema">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="reinitDb" />
+  </target>
+
+  <!-- ======================== schema target =======================
+       This builds the ddl from the hibernate schema
+       ================================================================= -->
+
+  <target name="schema" depends="init"
+          description="Generate schema from mapping files">
+    <ant antfile="${calendar.build.file}" inheritrefs="true"
+           target="schema" />
+  </target>
+
+  <!-- =================================================================
+       The "hsqldb" target starts the hsqldb server
+       ================================================================= -->
+
+  <target name="hsqldb" depends="init"
+          description="starts the hsqldb server">
+    <echo message="Starting hsqldb"/>
+    <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
+      <classpath>
+        <pathelement path="${org.bedework.hsqldb.dir}/lib/hsqldb.jar"/>
+      </classpath>
+      <arg value="-database"/>
+      <arg value="${org.bedework.hsqldb.dir}/${org.bedework.hsqldb.dbname}"/>
+      <arg value="-port"/>
+      <arg value="8887"/>
+    </java>
+  </target>
+
+  <target name="hsqldb-trace" depends="init"
+          description="starts the hsqldb server">
+    <echo message="Starting hsqldb"/>
+    <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
+      <classpath>
+        <pathelement path="${org.bedework.hsqldb.dir}/lib/hsqldb.jar"/>
+      </classpath>
+      <arg value="-trace"/>
+      <arg value="true"/>
+      <arg value="-silent"/>
+      <arg value="false"/>
+      <arg value="-database"/>
+      <arg value="${org.bedework.hsqldb.dir}/${org.bedework.hsqldb.dbname}"/>
+      <arg value="-port"/>
+      <arg value="8887"/>
+    </java>
+  </target>
+
+  <!-- =================================================================
+       The "hsqldb-mngr" target runs the DatabaseManager class which
+       provides a gui interface to the running hsqldb database.
+       ================================================================= -->
+
+  <target name="hsqldb-mngr" depends="init"
+          description="Runs the DatabaseManager class which provides a
+                       gui interface to the running hsqldb database">
+    <echo message="Starting hsqldb DatabaseManager"/>
+    <echo message="Select type: HSQL Database Engine Server"/>
+    <echo message="Set the URL to jdbc:hsqldb:hsql://localhost:8887"/>
+    <java fork="true" dir="${basedir}"
+          classname="org.hsqldb.util.DatabaseManager">
+      <classpath>
+        <pathelement path="${org.bedework.hsqldb.dir}/lib/hsqldb.jar"/>
+      </classpath>
+    </java>
+  </target>
+
+  <!-- =================================================================
+       The "tomcatstart" target starts Tomcat
+       ================================================================= -->
+
+  <target name="tomcatstart-locale" depends="init"
+          description="starts the tomcat server">
+    <input message="Enter language code: "
+           addproperty="tomcat.locale" />
+
+    <input message="Enter country code: "
+           addproperty="tomcat.country" />
+
+    <echo message="Starting Tomcat from ${org.bedework.appserver.dir}"/>
+    <java fork="true" dir="${basedir}"
+          classname="org.apache.catalina.startup.Bootstrap">
+      <classpath>
+        <pathelement path="${org.bedework.appserver.dir}/bin/bootstrap.jar"/>
+      </classpath>
+      <sysproperty key="catalina.home" value="${org.bedework.appserver.dir}"/>
+      <!--jvmarg value="-Dcatalina.home=${tomcat.dir}"/-->
+      <jvmarg value="-Duser.language=${tomcat.locale}"/>
+      <jvmarg value="-Duser.country=${tomcat.country}"/>
+      <!--
+      <jvmarg value="-Dfile.encoding=ISO-8859-1"/>
+      -->
+      <arg value="start"/>
+    </java>
+  </target>
+
+  <target name="tomcatstart" depends="init"
+          description="starts the tomcat server">
+    <echo message="Starting Tomcat from ${org.bedework.appserver.dir}"/>
+    <java fork="true" dir="${basedir}"
+          classname="org.apache.catalina.startup.Bootstrap">
+      <classpath>
+        <pathelement path="${org.bedework.appserver.dir}/bin/bootstrap.jar"/>
+      </classpath>
+      <sysproperty key="catalina.home" value="${org.bedework.appserver.dir}"/>
+      <!--jvmarg value="-Dcatalina.home=${tomcat.dir}"/-->
+      <arg value="start"/>
+    </java>
+  </target>
+
+  <!-- This target is for use when sync4j is installed -->
+  <target name="tomcatstart-sync4j" depends="init"
+          description="starts the tomcat server with sync4j">
+    <echo message="Starting Tomcat 5.0.16 with sync4j"/>
+    <java fork="true" dir="${basedir}"
+          classname="org.apache.catalina.startup.Bootstrap">
+      <classpath>
+        <pathelement path="${org.bedework.appserver.dir}/bin/bootstrap.jar"/>
+      </classpath>
+      <sysproperty key="catalina.home" value="${org.bedework.appserver.dir}"/>
+      <!--jvmarg value="-Dcatalina.home=${tomcat.dir}"/-->
+      <jvmarg value="-Dsync4j.home=${sync4j.dir}"/>
+      <arg value="start"/>
+    </java>
+  </target>
+
+  <!-- =================================================================
+       The "tomcatstop" target stops Tomcat cleanly
+       ================================================================= -->
+
+  <target name="tomcatstop" depends="init">
+    <echo message="Stopping Tomcat 5.0.16"/>
+    <java fork="true" dir="${basedir}"
+          classname="org.apache.catalina.startup.Bootstrap">
+      <classpath>
+        <pathelement path="${org.bedework.appserver.dir}/bin/bootstrap.jar"/>
+      </classpath>
+      <sysproperty key="catalina.home" value="${org.bedework.appserver.dir}"/>
+      <!--jvmarg value="-Dcatalina.home=${tomcat.dir}"/-->
+      <arg value="stop"/>
+    </java>
+  </target>
+</project>

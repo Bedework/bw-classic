@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<!-- This is the build for the bedework service api component.
+
+     Authors: Mike Douglass   douglm@rpi.edu
+-->
+
+<project name="calsvci.compile" default="build" >
+  <property name="base.name" value="calsvc"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+    <property name="source.home" location="${this.dir}/src"/>
+  </target>
+
+  <target name="build" depends="init"
+          description="Compile bedework service api implementation">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+      <include name="org/bedework/calsvc/**/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/calsvc/**/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${ical4j.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${org.bedework.calsvci.jar}"/>
+      <pathelement location="${org.bedework.calcore.jar}"/>
+      <pathelement location="${org.bedework.common.jar}"/>
+      <pathelement location="${org.bedework.calenv.jar}"/>
+      <pathelement location="${org.bedework.access.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.locale.jar}"/>
+      <pathelement location="${org.bedework.ical.jar}"/>
+      <pathelement location="${org.bedework.mail.jar}"/>
+    </path>
+
+    <!-- ==================== Build Target ============================= -->
+
+    <property name="build.jar.file" location="${org.bedework.calsvc.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+</project>
+

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     Organizers
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.BwOrganizer"
+         table="organizers">
+    <id name="id" type="integer" column="alarmid" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+
+    <version name="seq" column="seq" type="integer" />
+
+    <property name="cn" type="text"/>
+    <property name="dir" type="text"/>
+    <property name="language" type="text"/>
+    <property name="sentBy" column="sent_by" type="text"/>
+    <property name="organizerUri" column="organizer_uri" type="text"/>
+<!--
+    <set name="events"
+         lazy="true"
+         inverse="true"
+         cascade="all" >
+      <key column="organizerid"/>
+      <one-to-many class="org.bedework.calfacade.BwEventObj" />
+    </set>-->
+  </class>
+</hibernate-mapping>
+

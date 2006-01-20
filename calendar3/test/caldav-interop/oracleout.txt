@@ -1,0 +1,3059 @@
+.Config file to be used: "configoraclecaldav.sh"
+--------------------------------------------------------------------------------
+SUMMARY REPORT
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+CalDAV Interop Testing Event - June 2005
+--------------------------------------------------------------------------------
+Pre-Test Cleanup
+--------------------------------------------------------------------------------
+Test 1. Event Creation
+--------------------------------------------------------------------------------
+[STARTING TEST 1.1(CreateMeeting11)]: New single instance meeting.
+[PASSED TEST 1.1] : HTTP status code : 201
+[STARTING TEST 1.2(CreateMeeting12)]: New recurring meeting.
+[PASSED TEST 1.2] : HTTP status code : 201
+[STARTING TEST 1.3(CreateMeeting13)]: New single instance meeting with 2 attendees.
+[PASSED TEST 1.3] : HTTP status code : 201
+[STARTING TEST 1.4(CreateMeeting14)]: New single instance meeting with an alarm.
+[PASSED TEST 1.4] : HTTP status code : 201
+--------------------------------------------------------------------------------
+Test 2. Event Modification
+--------------------------------------------------------------------------------
+[STARTING TEST 2.1(ModifyMeeting21)]: Modify meeting title.
+[PASSED TEST 2.1] : HTTP status code : 201
+[STARTING TEST 2.2(ModifyMeeting22)]: Modify meeting location.
+[PASSED TEST 2.2] : HTTP status code : 201
+[STARTING TEST 2.3(ModifyMeeting23)]: Reschedule meeting to next day.
+[PASSED TEST 2.3] : HTTP status code : 201
+[STARTING TEST 2.4(ModifyMeeting24)]: Add an attendee.
+[PASSED TEST 2.4] : HTTP status code : 201
+[STARTING TEST 2.5(ModifyMeeting25)]: Add an alarm.
+[PASSED TEST 2.5] : HTTP status code : 201
+[STARTING TEST 2.6(ModifyMeeting26)]: Modify title of first instance of recurring meeting.
+[PASSED TEST 2.6] : HTTP status code : 201
+[STARTING TEST 2.7(ModifyMeeting27)]: Modify partstat of 1st instance to DECLINED.
+[PASSED TEST 2.7] : HTTP status code : 201
+[STARTING TEST 2.8(ModifyMeeting28)]: Cancel 4th instance of recurring meeting.
+[PASSED TEST 2.8] : HTTP status code : 201
+[STARTING TEST 2.9(ModifyMeeting29)]: One client changes meeting time, other clients sees the modif.
+[PASSED TEST 2.9] : HTTP status code : 201
+--------------------------------------------------------------------------------
+Test 3. Event Retrieval
+--------------------------------------------------------------------------------
+Test 3.1 Calendar Query Report
+--------------------------------------------------------------------------------
+Test 3.1.1 No Filtering
+--------------------------------------------------------------------------------
+[STARTING TEST 3.1.1.1(Query3111)]: Query all component, return all data.
+[PASSED TEST 3.1.1.1] : HTTP return code: 207
+[STARTING TEST 3.1.1.2(Query3112)]: Query all component, return getetag and all data.
+[PASSED TEST 3.1.1.2] : HTTP return code: 207
+[STARTING TEST 3.1.1.3(Query3113)]: Query all component, return VEVENT.
+[PASSED TEST 3.1.1.3] : HTTP return code: 207
+[STARTING TEST 3.1.1.4(Query3114)]: Query all component, return some properties.
+[PASSED TEST 3.1.1.4] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.1.2 Time-range filtering
+--------------------------------------------------------------------------------
+[STARTING TEST 3.1.2.1(Query3121)]: Query all components within a one day time-range with a non-overridden recurring
+[PASSED TEST 3.1.2.1] : HTTP return code: 207
+[STARTING TEST 3.1.2.2(Query3122)]: Query all components within a one week time-range return VEVENT, with overridden instance
+[PASSED TEST 3.1.2.2] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.1.3 Component based filtering
+--------------------------------------------------------------------------------
+[STARTING TEST 3.1.3.1(Query3131)]: Query all components with VALARM component
+[PASSED TEST 3.1.3.1] : HTTP return code: 207
+[STARTING TEST 3.1.3.2(Query3132)]: Query all components with VALARM whose TRIGGER is within time-range
+[PASSED TEST 3.1.3.2] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.1.4 Property based filtering
+--------------------------------------------------------------------------------
+[STARTING TEST 3.1.4.1(Query3141)]: Query all components that contain ORGANIZER property
+[PASSED TEST 3.1.4.1] : HTTP return code: 207
+[STARTING TEST 3.1.4.2(Query3142)]: Query all components that contain ORGANIZER property with case-insensitive text value
+[PASSED TEST 3.1.4.2] : HTTP return code: 207
+[STARTING TEST 3.1.4.3(Query3143)]: Query all components that contain ORGANIZER property with case-sensitive text value
+[PASSED TEST 3.1.4.3] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.1.5 Parameter based filtering
+--------------------------------------------------------------------------------
+[STARTING TEST 3.1.5.1(Query3151)]: Query all components with DTSTART with a TZID
+[PASSED TEST 3.1.5.1] : HTTP return code: 207
+[STARTING TEST 3.1.5.2(Query3152)]: Query all components with ATTENDEE with PART-STAT=NEEDS-ACTION
+[PASSED TEST 3.1.5.2] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.2 Calendar-multiget report
+--------------------------------------------------------------------------------
+[STARTING TEST 3.2.1(Query321)]: Query a specific href and return all data
+[PASSED TEST 3.2.1] : HTTP return code: 207
+[STARTING TEST 3.2.2(Query322)]: Query multiple hrefs some of which do not exist, return all data
+[PASSED TEST 3.2.2] : HTTP return code: 207
+[STARTING TEST 3.2.3(Query323)]: Query a specific href and return getetag and all calendar data
+[PASSED TEST 3.2.3] : HTTP return code: 207
+[STARTING TEST 3.2.4(Query324)]: Query multiple hrefs some of which dont exist return getetag and all calendar data
+[PASSED TEST 3.2.4] : HTTP return code: 207
+[STARTING TEST 3.2.5(Query325)]: Query specific href, return VEVENT(DTSTART,DTEND,DURATION,SUMMARY,UID,SEQUENCE,RRULE,RDATE,EXRULE,EXDATE,RECURRENCE-ID
+[PASSED TEST 3.2.5] : HTTP return code: 207
+[STARTING TEST 3.2.6(Query326)]: Query multiple hrefs, return VEVENT(DTSTART,DTEND,DURATION,SUMMARY,UID,SEQUENCE,RRULE,RDATE,EXRULE,EXDATE,RECURRENCE-ID
+[PASSED TEST 3.2.6] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 3.3 free-busy-query report
+--------------------------------------------------------------------------------
+[STARTING TEST 3.3.1(Query331)]: free-busy-query time range
+[PASSED TEST 3.3.1] : HTTP return code: 207
+--------------------------------------------------------------------------------
+Test 4. Event Deletion
+--------------------------------------------------------------------------------
+[STARTING TEST 4.1(Delete41)]: Delete single non-recurring meeting.
+[PASSED TEST 4.1] : Delete http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting3.ics(Ret=0)
+[STARTING TEST 4.2(Delete42)]: Delete single recurring meeting.
+[PASSED TEST 4.2] : Delete http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting5.ics(Ret=0)
+[STARTING TEST 4.3(Delete43)]: Delete single recurring meeting with overridden instances.
+[PASSED TEST 4.3] : Delete http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting4.ics(Ret=0)
+[STARTING TEST 4.4(Delete44)]: Delete a non-overriden instance of a recurring meeting.
+[PASSED TEST 4.4] : Delete http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting6.ics(Ret=0)
+[STARTING TEST 4.5(Delete45)]: Delete an overriden instance of a recurring meeting.
+[PASSED TEST 4.5] : Delete http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting7.ics(Ret=0)
+--------------------------------------------------------------------------------
+Test 5. Event Access Control
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+DETAILED REPORT
+--------------------------------------------------------------------------------
+.--------------------------------------------------------------------------------
+.CalDAV Interop Testing Event - June 2005
+.--------------------------------------------------------------------------------
+.Pre-Test Cleanup
+.--------------------------------------------------------------------------------
+.Test 1. Event Creation
+.--------------------------------------------------------------------------------
+.[STARTING TEST 1.1(CreateMeeting11)]: New single instance meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024813Z
+CREATED:20060108T024812Z
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+1+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1
+PRIORITY:0
+LOCATION:Durham
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.1
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m1.899s
+user	0m0.016s
+sys	0m0.040s
+.[PASSED TEST 1.1] : HTTP status code : 201
+.[STARTING TEST 1.2(CreateMeeting12)]: New recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024814Z
+CREATED:20060108T024814Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+0+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+PRIORITY:0
+LOCATION:Durham
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.2
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m1.163s
+user	0m0.024s
+sys	0m0.028s
+.[PASSED TEST 1.2] : HTTP status code : 201
+.[STARTING TEST 1.3(CreateMeeting13)]: New single instance meeting with 2 attendees.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting3
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.3
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting3.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting3.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting3
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024815Z
+CREATED:20060108T024815Z
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1043+1+1+474000495
+X-ORACLE-EVENT-GUID:E1+1043+1+474000495
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.3
+PRIORITY:0
+LOCATION:Durham
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;PARTSTAT=NEEDS-ACTION:mailto:douglm2
+ @rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.3
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.876s
+user	0m0.032s
+sys	0m0.024s
+.[PASSED TEST 1.3] : HTTP status code : 201
+.[STARTING TEST 1.4(CreateMeeting14)]: New single instance meeting with an alarm.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting4
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.4
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-PT15M
+DURATION:PT15M
+REPEAT:2
+DESCRIPTION:A display alarm
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting4.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting4.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting4
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024816Z
+CREATED:20060108T024815Z
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1044+1+1+474000495
+X-ORACLE-EVENT-GUID:E1+1044+1+474000495
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.4
+PRIORITY:0
+LOCATION:Durham
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.4
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.857s
+user	0m0.028s
+sys	0m0.028s
+.[PASSED TEST 1.4] : HTTP status code : 201
+.--------------------------------------------------------------------------------
+.Test 2. Event Modification
+.--------------------------------------------------------------------------------
+.[STARTING TEST 2.1(ModifyMeeting21)]: Modify meeting title.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024817Z
+CREATED:20060108T024812Z
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+1+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Durham
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m1.206s
+user	0m0.028s
+sys	0m0.024s
+.[PASSED TEST 2.1] : HTTP status code : 201
+.[STARTING TEST 2.2(ModifyMeeting22)]: Modify meeting location.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Seattle bis
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024818Z
+CREATED:20060108T024812Z
+DTSTART:20050606T190000Z
+DTEND:20050606T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+1+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.891s
+user	0m0.024s
+sys	0m0.032s
+.[PASSED TEST 2.2] : HTTP status code : 201
+.[STARTING TEST 2.3(ModifyMeeting23)]: Reschedule meeting to next day.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Seattle bis
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050607T190000Z
+DTEND:20050607T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024819Z
+CREATED:20060108T024812Z
+DTSTART:20050607T190000Z
+DTEND:20050607T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+2+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.1bis
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m1.067s
+user	0m0.020s
+sys	0m0.032s
+.[PASSED TEST 2.3] : HTTP status code : 201
+.[STARTING TEST 2.4(ModifyMeeting24)]: Add an attendee.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Seattle bis
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050607T190000Z
+DTEND:20050607T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024820Z
+CREATED:20060108T024812Z
+DTSTART:20050607T190000Z
+DTEND:20050607T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+2+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;PARTSTAT=NEEDS-ACTION:mailto:douglm2
+ @rpi.edu
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.939s
+user	0m0.032s
+sys	0m0.024s
+.[PASSED TEST 2.4] : HTTP status code : 201
+.[STARTING TEST 2.5(ModifyMeeting25)]: Add an alarm.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Seattle bis
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050607T190000Z
+DTEND:20050607T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+ATTENDEE:MAILTO:douglm2@rpi.edu
+BEGIN:VALARM
+TRIGGER:-PT15M
+DURATION:PT15M
+REPEAT:2
+DESCRIPTION:A display alarm
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024821Z
+CREATED:20060108T024812Z
+DTSTART:20050607T190000Z
+DTEND:20050607T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+2+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+ATTENDEE;CUTYPE=INDIVIDUAL;RSVP=TRUE;PARTSTAT=NEEDS-ACTION:mailto:douglm2
+ @rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.1bis
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.933s
+user	0m0.036s
+sys	0m0.020s
+.[PASSED TEST 2.5] : HTTP status code : 201
+.[STARTING TEST 2.6(ModifyMeeting26)]: Modify title of first instance of recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+RDATE;TZID=EST5EDT:20050606T100000
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+RECURRENCE-ID;TZID=EST5EDT:20050606T100000
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+RECURRENCE-ID:20050606T140000Z
+SEQUENCE:0
+DTSTAMP:20060108T024822Z
+CREATED:20060108T024814Z
+DTSTART:20050606T140000Z
+DTEND:20050606T150000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+1+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+PRIORITY:0
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024822Z
+CREATED:20060108T024814Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+0+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+RDATE:20050606T140000Z
+PRIORITY:0
+LOCATION:Durham
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.2
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m0.977s
+user	0m0.032s
+sys	0m0.020s
+.[PASSED TEST 2.6] : HTTP status code : 201
+.[STARTING TEST 2.7(ModifyMeeting27)]: Modify partstat of 1st instance to DECLINED.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+RDATE;TZID=EST5EDT:20050606T100000
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+RECURRENCE-ID;TZID=EST5EDT:20050606T100000
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+RECURRENCE-ID:20050606T140000Z
+SEQUENCE:0
+DTSTAMP:20060108T024823Z
+CREATED:20060108T024814Z
+DTSTART:20050606T140000Z
+DTEND:20050606T150000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+1+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+PRIORITY:0
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024823Z
+CREATED:20060108T024814Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+0+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+RDATE:20050606T140000Z
+PRIORITY:0
+LOCATION:Durham
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.2
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m1.003s
+user	0m0.040s
+sys	0m0.024s
+.[PASSED TEST 2.7] : HTTP status code : 201
+.[STARTING TEST 2.8(ModifyMeeting28)]: Cancel 4th instance of recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+EXDATE;TZID=EST5EDT:20050627T100000
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+RDATE;TZID=EST5EDT:20050606T100000
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+RECURRENCE-ID;TZID=EST5EDT:20050606T100000
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+RECURRENCE-ID:20050606T140000Z
+SEQUENCE:0
+DTSTAMP:20060108T024824Z
+CREATED:20060108T024814Z
+DTSTART:20050606T140000Z
+DTEND:20050606T150000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+1+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+PRIORITY:0
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024824Z
+CREATED:20060108T024814Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+0+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+RDATE:20050606T140000Z
+PRIORITY:0
+LOCATION:Durham
+EXDATE:20050627T140000Z
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.2
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+
+real	0m1.138s
+user	0m0.028s
+sys	0m0.024s
+.[PASSED TEST 2.8] : HTTP status code : 201
+.[STARTING TEST 2.9(ModifyMeeting29)]: One client changes meeting time, other clients sees the modif.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+LOCATION:Seattle bis
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+DTSTART:20050608T190000Z
+DTEND:20050608T200000Z
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: WGetWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics
+WGET OUTPUT:
+--21:49:45--  http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics
+           => `/tmp/wrkdir.14831/wgetwrapper2.out'
+Resolving caldavlinux.oracle.com... 148.87.3.102
+Connecting to caldavlinux.oracle.com|148.87.3.102|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1,248 (1.2K) [text/calendar]
+
+    0K .                                                     100%   62.64 MB/s
+
+21:49:45 (62.64 MB/s) - `/tmp/wrkdir.14831/wgetwrapper2.out' saved [1248/1248]
+
+WGET RESPONSE:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024825Z
+CREATED:20060108T024812Z
+DTSTART:20050608T190000Z
+DTEND:20050608T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+3+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.1bis
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+
+real	0m0.777s
+user	0m0.028s
+sys	0m0.016s
+.[PASSED TEST 2.9] : HTTP status code : 201
+.--------------------------------------------------------------------------------
+.Test 3. Event Retrieval
+.--------------------------------------------------------------------------------
+.Test 3.1 Calendar Query Report
+.--------------------------------------------------------------------------------
+.Test 3.1.1 No Filtering
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.1.1.1(Query3111)]: Query all component, return all data.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:is-defined/></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.498s
+user	0m0.012s
+sys	0m0.016s
+.[PASSED TEST 3.1.1.1] : HTTP return code: 207
+.[STARTING TEST 3.1.1.2(Query3112)]: Query all component, return getetag and all data.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:prop><D:getetag/>
+</D:prop>
+<C:filter><C:comp-filter name="VCALENDAR"><C:is-defined/></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.501s
+user	0m0.016s
+sys	0m0.012s
+.[PASSED TEST 3.1.1.2] : HTTP return code: 207
+.[STARTING TEST 3.1.1.3(Query3113)]: Query all component, return VEVENT.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"/></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:is-defined/></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.499s
+user	0m0.016s
+sys	0m0.012s
+.[PASSED TEST 3.1.1.3] : HTTP return code: 207
+.[STARTING TEST 3.1.1.4(Query3114)]: Query all component, return some properties.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT">
+                                <C:prop name="DTSTART"/>
+                                <C:prop name="DTEND"/>
+                                <C:prop name="DURATION"/>
+                                <C:prop name="SUMMARY"/>
+                                <C:prop name="UID"/>
+                                <C:prop name="SEQUENCE"/>
+                                <C:prop name="RRULE"/>
+                                <C:prop name="RDATE"/>
+                                <C:prop name="EXRULE"/>
+                                <C:prop name="EXDATE"/>
+                                <C:prop name="RECURRENCE-ID"/>
+                            </C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:is-defined/></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.563s
+user	0m0.020s
+sys	0m0.012s
+.[PASSED TEST 3.1.1.4] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.1.2 Time-range filtering
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.1.2.1(Query3121)]: Query all components within a one day time-range with a non-overridden recurring
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT">
+                                <C:prop name="DTSTART"/>
+                                <C:prop name="DTEND"/>
+                                <C:prop name="DURATION"/>
+                                <C:prop name="SUMMARY"/>
+                                <C:prop name="UID"/>
+                                <C:prop name="SEQUENCE"/>
+                                <C:prop name="RRULE"/>
+                                <C:prop name="RDATE"/>
+                                <C:prop name="EXRULE"/>
+                                <C:prop name="EXDATE"/>
+                                <C:prop name="RECURRENCE-ID"/>
+                            </C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range start="20050613T000000Z" end="20050613T235959Z"/></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.482s
+user	0m0.020s
+sys	0m0.008s
+.[PASSED TEST 3.1.2.1] : HTTP return code: 207
+.[STARTING TEST 3.1.2.2(Query3122)]: Query all components within a one week time-range return VEVENT, with overridden instance
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range start="20050606T000000Z" end="20050612T235959Z"/></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.493s
+user	0m0.016s
+sys	0m0.016s
+.[PASSED TEST 3.1.2.2] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.1.3 Component based filtering
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.1.3.1(Query3131)]: Query all components with VALARM component
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VALARM"><C:is-defined/></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.479s
+user	0m0.028s
+sys	0m0.000s
+.[PASSED TEST 3.1.3.1] : HTTP return code: 207
+.[STARTING TEST 3.1.3.2(Query3132)]: Query all components with VALARM whose TRIGGER is within time-range
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VALARM"><C:time-range start="20050606T000000Z" end="20050612T235959Z"/></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.535s
+user	0m0.016s
+sys	0m0.012s
+.[PASSED TEST 3.1.3.2] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.1.4 Property based filtering
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.1.4.1(Query3141)]: Query all components that contain ORGANIZER property
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="ORGANIZER"><C:is-defined/></C:prop-filter></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.506s
+user	0m0.020s
+sys	0m0.012s
+.[PASSED TEST 3.1.4.1] : HTTP return code: 207
+.[STARTING TEST 3.1.4.2(Query3142)]: Query all components that contain ORGANIZER property with case-insensitive text value
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="ORGANIZER"><C:text-match caseless="yes">mailto:</C:text-match></C:prop-filter></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.497s
+user	0m0.016s
+sys	0m0.008s
+.[PASSED TEST 3.1.4.2] : HTTP return code: 207
+.[STARTING TEST 3.1.4.3(Query3143)]: Query all components that contain ORGANIZER property with case-sensitive text value
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="ORGANIZER"><C:text-match caseless="no">mailto:</C:text-match></C:prop-filter></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.494s
+user	0m0.020s
+sys	0m0.012s
+.[PASSED TEST 3.1.4.3] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.1.5 Parameter based filtering
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.1.5.1(Query3151)]: Query all components with DTSTART with a TZID
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="DTSTART"><C:param-filter name="TZID"><C:is-defined/></C:param-filter></C:prop-filter></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.511s
+user	0m0.024s
+sys	0m0.012s
+.[PASSED TEST 3.1.5.1] : HTTP return code: 207
+.[STARTING TEST 3.1.5.2(Query3152)]: Query all components with ATTENDEE with PART-STAT=NEEDS-ACTION
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="ATTENDEE"><C:param-filter name="PARTSTAT"><C:text-match>mailto:douglm2@rpi.edu</C:text-match></C:param-filter></C:prop-filter></C:comp-filter></C:comp-filter></C:filter>
+</C:calendar-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav"/>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.479s
+user	0m0.020s
+sys	0m0.016s
+.[PASSED TEST 3.1.5.2] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.2 Calendar-multiget report
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.2.1(Query321)]: Query a specific href and return all data
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav">
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href>
+      <D:propstat>
+         <D:prop>
+            <D:getlastmodified xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.rfc1123">Sun, 08 Jan 2006 02:48:12 GMT</D:getlastmodified>
+            <D:supported-report-set>
+               <C:calendar-query/>
+               <C:free-busy-query/>
+               <C:calendar-multiget/>
+            </D:supported-report-set>
+            <D:getcontentlength>1248</D:getcontentlength>
+            <C:calendar-data>BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024832Z
+CREATED:20060108T024812Z
+DTSTART:20050608T190000Z
+DTEND:20050608T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+3+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.1bis
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+</C:calendar-data>
+            <D:getetag>W/"3744602265"</D:getetag>
+            <D:creationdate xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.tz">2006-01-07T18:48:12.0-08:00</D:creationdate>
+            <D:owner>
+               <D:href>http://caldavlinux.oracle.com/ocaldav/principals/individuals/ioptest6%40example.com</D:href>
+            </D:owner>
+            <D:getcontenttype>text/calendar; charset="UTF-8"</D:getcontenttype>
+            <D:displayname>CalConnectCalDAVTest.Meeting1.ics</D:displayname>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+      </D:propstat>
+   </D:response>
+</D:multistatus>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.662s
+user	0m0.024s
+sys	0m0.012s
+.[PASSED TEST 3.2.1] : HTTP return code: 207
+.[STARTING TEST 3.2.2(Query322)]: Query multiple hrefs some of which do not exist, return all data
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+
+<D:href>/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href><D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics</D:href><D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.DontexistMeeting11.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav">
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href>
+      <D:propstat>
+         <D:prop>
+            <D:getlastmodified xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.rfc1123">Sun, 08 Jan 2006 02:48:12 GMT</D:getlastmodified>
+            <D:supported-report-set>
+               <C:calendar-query/>
+               <C:free-busy-query/>
+               <C:calendar-multiget/>
+            </D:supported-report-set>
+            <D:getcontentlength>1248</D:getcontentlength>
+            <C:calendar-data>BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024833Z
+CREATED:20060108T024812Z
+DTSTART:20050608T190000Z
+DTEND:20050608T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+3+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.1bis
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+</C:calendar-data>
+            <D:getetag>W/"3744602265"</D:getetag>
+            <D:creationdate xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.tz">2006-01-07T18:48:12.0-08:00</D:creationdate>
+            <D:owner>
+               <D:href>http://caldavlinux.oracle.com/ocaldav/principals/individuals/ioptest6%40example.com</D:href>
+            </D:owner>
+            <D:getcontenttype>text/calendar; charset="UTF-8"</D:getcontenttype>
+            <D:displayname>CalConnectCalDAVTest.Meeting1.ics</D:displayname>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+      </D:propstat>
+   </D:response>
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics</D:href>
+      <D:propstat>
+         <D:prop>
+            <D:getlastmodified xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.rfc1123">Sun, 08 Jan 2006 02:48:14 GMT</D:getlastmodified>
+            <D:supported-report-set>
+               <C:calendar-query/>
+               <C:free-busy-query/>
+               <C:calendar-multiget/>
+            </D:supported-report-set>
+            <D:getcontentlength>2794</D:getcontentlength>
+            <C:calendar-data>BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+RECURRENCE-ID:20050606T140000Z
+SEQUENCE:0
+DTSTAMP:20060108T024833Z
+CREATED:20060108T024814Z
+DTSTART:20050606T140000Z
+DTEND:20050606T150000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+1+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+PRIORITY:0
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024833Z
+CREATED:20060108T024814Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+0+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+RDATE:20050606T140000Z
+PRIORITY:0
+LOCATION:Durham
+EXDATE:20050627T140000Z
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.2
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+</C:calendar-data>
+            <D:getetag>W/"2398291520"</D:getetag>
+            <D:creationdate xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.tz">2006-01-07T18:48:14.0-08:00</D:creationdate>
+            <D:owner>
+               <D:href>http://caldavlinux.oracle.com/ocaldav/principals/individuals/ioptest6%40example.com</D:href>
+            </D:owner>
+            <D:getcontenttype>text/calendar; charset="UTF-8"</D:getcontenttype>
+            <D:displayname>CalConnectCalDAVTest.Meeting2@encoded.ics</D:displayname>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+      </D:propstat>
+   </D:response>
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.DontexistMeeting11.ics</D:href>
+      <D:status>HTTP/1.1 404 Resource not found</D:status>
+   </D:response>
+</D:multistatus>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.906s
+user	0m0.016s
+sys	0m0.008s
+.[PASSED TEST 3.2.2] : HTTP return code: 207
+.[STARTING TEST 3.2.3(Query323)]: Query a specific href and return getetag and all calendar data
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:prop><D:getetag/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+</D:prop>
+<D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav">
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href>
+      <D:propstat>
+         <D:prop>
+            <C:calendar-data>BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024833Z
+CREATED:20060108T024812Z
+DTSTART:20050608T190000Z
+DTEND:20050608T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+3+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.1bis
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+</C:calendar-data>
+            <D:getetag>W/"3744602265"</D:getetag>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+      </D:propstat>
+   </D:response>
+</D:multistatus>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.570s
+user	0m0.024s
+sys	0m0.008s
+.[PASSED TEST 3.2.3] : HTTP return code: 207
+.[STARTING TEST 3.2.4(Query324)]: Query multiple hrefs some of which dont exist return getetag and all calendar data
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:prop><D:getetag/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT"><C:allprop/><C:allcomp/></C:comp></C:comp>
+</C:calendar-data>
+</D:prop>
+<D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href><D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics</D:href><D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.DontexistMeeting11.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav">
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href>
+      <D:propstat>
+         <D:prop>
+            <C:calendar-data>BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024834Z
+CREATED:20060108T024812Z
+DTSTART:20050608T190000Z
+DTEND:20050608T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+3+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.1bis
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+</C:calendar-data>
+            <D:getetag>W/"3744602265"</D:getetag>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+      </D:propstat>
+   </D:response>
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics</D:href>
+      <D:propstat>
+         <D:prop>
+            <C:calendar-data>BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+RECURRENCE-ID:20050606T140000Z
+SEQUENCE:0
+DTSTAMP:20060108T024834Z
+CREATED:20060108T024814Z
+DTSTART:20050606T140000Z
+DTEND:20050606T150000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+1+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+PRIORITY:0
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024834Z
+CREATED:20060108T024814Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+0+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+RDATE:20050606T140000Z
+PRIORITY:0
+LOCATION:Durham
+EXDATE:20050627T140000Z
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.2
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+</C:calendar-data>
+            <D:getetag>W/"2398291520"</D:getetag>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+      </D:propstat>
+   </D:response>
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.DontexistMeeting11.ics</D:href>
+      <D:status>HTTP/1.1 404 Resource not found</D:status>
+   </D:response>
+</D:multistatus>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.844s
+user	0m0.016s
+sys	0m0.008s
+.[PASSED TEST 3.2.4] : HTTP return code: 207
+.[STARTING TEST 3.2.5(Query325)]: Query specific href, return VEVENT(DTSTART,DTEND,DURATION,SUMMARY,UID,SEQUENCE,RRULE,RDATE,EXRULE,EXDATE,RECURRENCE-ID
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT">
+                                <C:prop name="DTSTART"/>
+                                <C:prop name="DTEND"/>
+                                <C:prop name="DURATION"/>
+                                <C:prop name="SUMMARY"/>
+                                <C:prop name="UID"/>
+                                <C:prop name="SEQUENCE"/>
+                                <C:prop name="RRULE"/>
+                                <C:prop name="RDATE"/>
+                                <C:prop name="EXRULE"/>
+                                <C:prop name="EXDATE"/>
+                                <C:prop name="RECURRENCE-ID"/>
+                            </C:comp></C:comp>
+</C:calendar-data>
+
+<D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav">
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href>
+      <D:propstat>
+         <D:prop>
+            <D:getlastmodified xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.rfc1123">Sun, 08 Jan 2006 02:48:12 GMT</D:getlastmodified>
+            <D:supported-report-set>
+               <C:calendar-query/>
+               <C:free-busy-query/>
+               <C:calendar-multiget/>
+            </D:supported-report-set>
+            <D:getcontentlength>1248</D:getcontentlength>
+            <C:calendar-data>BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024835Z
+CREATED:20060108T024812Z
+DTSTART:20050608T190000Z
+DTEND:20050608T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+3+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.1bis
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+</C:calendar-data>
+            <D:getetag>W/"3744602265"</D:getetag>
+            <D:creationdate xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.tz">2006-01-07T18:48:12.0-08:00</D:creationdate>
+            <D:owner>
+               <D:href>http://caldavlinux.oracle.com/ocaldav/principals/individuals/ioptest6%40example.com</D:href>
+            </D:owner>
+            <D:getcontenttype>text/calendar; charset="UTF-8"</D:getcontenttype>
+            <D:displayname>CalConnectCalDAVTest.Meeting1.ics</D:displayname>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+      </D:propstat>
+   </D:response>
+</D:multistatus>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.590s
+user	0m0.016s
+sys	0m0.008s
+.[PASSED TEST 3.2.5] : HTTP return code: 207
+.[STARTING TEST 3.2.6(Query326)]: Query multiple hrefs, return VEVENT(DTSTART,DTEND,DURATION,SUMMARY,UID,SEQUENCE,RRULE,RDATE,EXRULE,EXDATE,RECURRENCE-ID
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:allprop/>
+<C:calendar-data><C:comp name="VCALENDAR"><C:comp name="VEVENT">
+                                <C:prop name="DTSTART"/>
+                                <C:prop name="DTEND"/>
+                                <C:prop name="DURATION"/>
+                                <C:prop name="SUMMARY"/>
+                                <C:prop name="UID"/>
+                                <C:prop name="SEQUENCE"/>
+                                <C:prop name="RRULE"/>
+                                <C:prop name="RDATE"/>
+                                <C:prop name="EXRULE"/>
+                                <C:prop name="EXDATE"/>
+                                <C:prop name="RECURRENCE-ID"/>
+                            </C:comp></C:comp>
+</C:calendar-data>
+
+<D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href><D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics</D:href><D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.DontexistMeeting11.ics</D:href>
+</C:calendar-multiget>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav">
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics</D:href>
+      <D:propstat>
+         <D:prop>
+            <D:getlastmodified xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.rfc1123">Sun, 08 Jan 2006 02:48:12 GMT</D:getlastmodified>
+            <D:supported-report-set>
+               <C:calendar-query/>
+               <C:free-busy-query/>
+               <C:calendar-multiget/>
+            </D:supported-report-set>
+            <D:getcontentlength>1248</D:getcontentlength>
+            <C:calendar-data>BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting1
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024835Z
+CREATED:20060108T024812Z
+DTSTART:20050608T190000Z
+DTEND:20050608T200000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1041+1+3+474000492
+X-ORACLE-EVENT-GUID:E1+1041+1+474000492
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.1bis
+PRIORITY:0
+LOCATION:Seattle bis
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.1bis
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+</C:calendar-data>
+            <D:getetag>W/"3744602265"</D:getetag>
+            <D:creationdate xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.tz">2006-01-07T18:48:12.0-08:00</D:creationdate>
+            <D:owner>
+               <D:href>http://caldavlinux.oracle.com/ocaldav/principals/individuals/ioptest6%40example.com</D:href>
+            </D:owner>
+            <D:getcontenttype>text/calendar; charset="UTF-8"</D:getcontenttype>
+            <D:displayname>CalConnectCalDAVTest.Meeting1.ics</D:displayname>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+      </D:propstat>
+   </D:response>
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.Meeting2%40encoded.ics</D:href>
+      <D:propstat>
+         <D:prop>
+            <D:getlastmodified xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.rfc1123">Sun, 08 Jan 2006 02:48:14 GMT</D:getlastmodified>
+            <D:supported-report-set>
+               <C:calendar-query/>
+               <C:free-busy-query/>
+               <C:calendar-multiget/>
+            </D:supported-report-set>
+            <D:getcontentlength>2794</D:getcontentlength>
+            <C:calendar-data>BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+RECURRENCE-ID:20050606T140000Z
+SEQUENCE:0
+DTSTAMP:20060108T024835Z
+CREATED:20060108T024814Z
+DTSTART:20050606T140000Z
+DTEND:20050606T150000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+1+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2 bis
+PRIORITY:0
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting2%40encoded
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024835Z
+CREATED:20060108T024814Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+1042+1+0+474000494
+X-ORACLE-EVENT-GUID:E1+1042+1+474000494
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 1.2
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+RDATE:20050606T140000Z
+PRIORITY:0
+LOCATION:Durham
+EXDATE:20050627T140000Z
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 1.2
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+</C:calendar-data>
+            <D:getetag>W/"2398291520"</D:getetag>
+            <D:creationdate xmlns:DAT="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" DAT:dt="dateTime.tz">2006-01-07T18:48:14.0-08:00</D:creationdate>
+            <D:owner>
+               <D:href>http://caldavlinux.oracle.com/ocaldav/principals/individuals/ioptest6%40example.com</D:href>
+            </D:owner>
+            <D:getcontenttype>text/calendar; charset="UTF-8"</D:getcontenttype>
+            <D:displayname>CalConnectCalDAVTest.Meeting2@encoded.ics</D:displayname>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+      </D:propstat>
+   </D:response>
+   <D:response>
+      <D:href>http://caldavlinux.oracle.com/ocaldav/home/ioptest6%40example.com/calendars/events/CalConnectCalDAVTest.DontexistMeeting11.ics</D:href>
+      <D:status>HTTP/1.1 404 Resource not found</D:status>
+   </D:response>
+</D:multistatus>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.901s
+user	0m0.020s
+sys	0m0.008s
+.[PASSED TEST 3.2.6] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 3.3 free-busy-query report
+.--------------------------------------------------------------------------------
+.[STARTING TEST 3.3.1(Query331)]: free-busy-query time range
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+<?xml version="1.0" encoding="utf-8" ?>
+<C:free-busy-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<C:time-range start="20050101T000000Z" end="20060501T000000Z"/>
+</C:free-busy-query>
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events -t text/xml -m REPORT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<D:multistatus xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:O="http://xmlns.oracle.com/caldav">
+   <D:response>
+      <D:href>home/ioptest6%40example.com/calendars/events</D:href>
+      <C:calendar-data>BEGIN:VCALENDAR
+PRODID:-//Oracle//FreeBusy
+BEGIN:VFREEBUSY
+DTSTAMP:20060108T024837Z
+UID:1136688517085-1104537600000-1146441600000
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C:mailto:ioptest6@example.com
+DTSTART:20050101T000000Z
+DTEND:20060501T000000Z
+FREEBUSY;FBTYPE=BUSY-TENTATIVE:20050606T140000Z/20050606T150000Z
+FREEBUSY;FBTYPE=BUSY-TENTATIVE:20050606T190000Z/20050606T200000Z
+FREEBUSY;FBTYPE=BUSY-TENTATIVE:20050608T190000Z/20050608T200000Z
+FREEBUSY;FBTYPE=BUSY-TENTATIVE:20050613T140000Z/20050613T150000Z
+FREEBUSY;FBTYPE=BUSY-TENTATIVE:20050620T140000Z/20050620T150000Z
+END:VFREEBUSY
+END:VCALENDAR
+</C:calendar-data>
+   </D:response>
+</D:multistatus>
+DAVTOOL STDERR:
+207 Multi-Status
+
+real	0m0.736s
+user	0m0.020s
+sys	0m0.004s
+.[PASSED TEST 3.3.1] : HTTP return code: 207
+.--------------------------------------------------------------------------------
+.Test 4. Event Deletion
+.--------------------------------------------------------------------------------
+.[STARTING TEST 4.1(Delete41)]: Delete single non-recurring meeting.
+CMD=DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting1.ics -m DELETE -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No content
+CMD=DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting2@encoded.ics -m DELETE -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No content
+CMD=DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting3.ics -m DELETE -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No content
+
+real	0m1.251s
+user	0m0.024s
+sys	0m0.032s
+.[PASSED TEST 4.1] : Delete http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting3.ics(Ret=0)
+.[STARTING TEST 4.2(Delete42)]: Delete single recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting5
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 4.2
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting5.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting5.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting5
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024839Z
+CREATED:20060108T024839Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+16778257+1+0+474000519
+X-ORACLE-EVENT-GUID:E1+16778257+1+474000519
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 4.2
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+PRIORITY:0
+LOCATION:Durham
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 4.2
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+CMD=DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting5.ics -m DELETE -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No content
+
+real	0m1.800s
+user	0m0.044s
+sys	0m0.028s
+.[PASSED TEST 4.2] : Delete http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting5.ics(Ret=0)
+.[STARTING TEST 4.3(Delete43)]: Delete single recurring meeting with overridden instances.
+CMD=DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting4.ics -m DELETE -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No content
+
+real	0m0.421s
+user	0m0.012s
+sys	0m0.016s
+.[PASSED TEST 4.3] : Delete http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting4.ics(Ret=0)
+.[STARTING TEST 4.4(Delete44)]: Delete a non-overriden instance of a recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting6
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 4.4
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting6.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting6.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting6
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024841Z
+CREATED:20060108T024840Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+16778258+1+0+474000520
+X-ORACLE-EVENT-GUID:E1+16778258+1+474000520
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 4.4
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+PRIORITY:0
+LOCATION:Durham
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 4.4
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting6
+EXDATE;TZID=EST5EDT:20050627T100000
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 4.4
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting6.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting6.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting6
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024842Z
+CREATED:20060108T024840Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+16778258+1+0+474000520
+X-ORACLE-EVENT-GUID:E1+16778258+1+474000520
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 4.4
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+PRIORITY:0
+LOCATION:Durham
+EXDATE:20050627T140000Z
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 4.4
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+CMD=DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting6.ics -m DELETE -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No content
+
+real	0m2.445s
+user	0m0.084s
+sys	0m0.048s
+.[PASSED TEST 4.4] : Delete http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting6.ics(Ret=0)
+.[STARTING TEST 4.5(Delete45)]: Delete an overriden instance of a recurring meeting.
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting7
+EXDATE;TZID=EST5EDT:20050627T100000
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+RDATE;TZID=EST5EDT:20050606T100000
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting7
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5 bis
+RECURRENCE-ID;TZID=EST5EDT:20050606T100000
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting7.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting7.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting7
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+RECURRENCE-ID:20050606T140000Z
+SEQUENCE:0
+DTSTAMP:20060108T024844Z
+CREATED:20060108T024843Z
+DTSTART:20050606T140000Z
+DTEND:20050606T150000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+16778259+1+1+474000523
+X-ORACLE-EVENT-GUID:E1+16778259+1+474000523
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5 bis
+PRIORITY:0
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=TRUE;X-ORACLE-SHOWASFREE=BUSY;
+ X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=FA
+ LSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 4.5 bis
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting7
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024844Z
+CREATED:20060108T024843Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+16778259+1+0+474000523
+X-ORACLE-EVENT-GUID:E1+16778259+1+474000523
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+RDATE:20050606T140000Z
+PRIORITY:0
+LOCATION:Durham
+EXDATE:20050627T140000Z
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 4.5
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H10M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+REQUEST FILE DUMP(/tmp/wrkdir.14831/reqfile.txt):
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalConnectCalDAVTest//CalConnectCalDAVTest
+BEGIN:VTIMEZONE
+TZID:EST5EDT
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+UID:CalConnectCalDAVTest.Meeting7
+EXDATE;TZID=EST5EDT:20050606T100000
+LOCATION:Durham
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+RDATE;TZID=EST5EDT:20050606T100000
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting7
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5 bis
+RECURRENCE-ID;TZID=EST5EDT:20050606T100000
+DTSTART;TZID=EST5EDT:20050606T100000
+DTEND;TZID=EST5EDT:20050606T110000
+ATTENDEE;PARTSTAT=DECLINED:MAILTO:douglm@rpi.edu
+END:VEVENT
+END:VCALENDAR
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting7.ics -t text/calendar -m PUT -i /tmp/wrkdir.14831/reqfile.txt -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+201 Created
+COMMAND LINE: DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting7.ics -m GET -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+BEGIN:VCALENDAR
+PRODID:-//ORACLE//NONSGML OCAP10.2.1.0.1 Dev build:2328 - OracleCalDAVSer
+ vlet 10.2.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting7
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+RECURRENCE-ID:20050606T140000Z
+SEQUENCE:0
+DTSTAMP:20060108T024845Z
+CREATED:20060108T024843Z
+DTSTART:20050606T140000Z
+DTEND:20050606T150000Z
+STATUS:TENTATIVE
+X-ORACLE-EVENTINSTANCE-GUID:I1+16778259+1+1+474000523
+X-ORACLE-EVENT-GUID:E1+16778259+1+474000523
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5 bis
+PRIORITY:0
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+ATTENDEE;X-ORACLE-PERSONAL-COMMENT-ISDIRTY=FALSE;X-ORACLE-SHOWASFREE=BUSY
+ ;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CUTYPE=INDIVIDUAL;RSVP=F
+ ALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEPTED:mailto:ioptest6@example.com
+END:VEVENT
+BEGIN:VEVENT
+UID:CalConnectCalDAVTest.Meeting7
+ORGANIZER;X-ORACLE-GUID=07FC24E37F3E5815E0405794071A700C;CN=ioptest6 iopt
+ est6:mailto:ioptest6@example.com
+TRANSP:OPAQUE
+SEQUENCE:0
+DTSTAMP:20060108T024845Z
+CREATED:20060108T024843Z
+DTSTART;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T100000
+DTEND;TZID=/ORACLE/OCAL/EST5EDT_TC:20050606T110000
+STATUS:CONFIRMED
+X-ORACLE-EVENTINSTANCE-GUID:I1+16778259+1+0+474000523
+X-ORACLE-EVENT-GUID:E1+16778259+1+474000523
+X-ORACLE-EVENTTYPE:APPOINTMENT
+SUMMARY:CalConnectCalDAVTest.Meeting 4.5
+RRULE:FREQ=WEEKLY;UNTIL=20050628T000000Z
+RDATE:20050606T140000Z
+PRIORITY:0
+LOCATION:Durham
+EXDATE:20050627T140000Z
+CLASS:PUBLIC
+ATTENDEE;X-ORACLE-SHOWASFREE=BUSY;X-ORACLE-GUID=07FC24E37F3E5815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=FALSE;CN=ioptest6 ioptest6;PARTSTAT=ACCEP
+ TED:mailto:ioptest6@example.com
+ATTENDEE;X-ORACLE-SHOWASFREE=FREE;X-ORACLE-GUID=07FC24E37F325815E04057940
+ 71A700C;CUTYPE=INDIVIDUAL;RSVP=TRUE;CN=Mike Douglass;PARTSTAT=NEEDS-ACTI
+ ON:mailto:douglm@rpi.edu
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:DISPLAY
+DESCRIPTION:CalConnectCalDAVTest.Meeting 4.5
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-P0DT0H15M0S
+ACTION:AUDIO
+END:VALARM
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:/ORACLE/OCAL/EST5EDT_TC
+BEGIN:DAYLIGHT
+RRULE:FREQ=YEARLY;UNTIL=20750407T020000Z;BYMONTH=4;BYDAY=1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0400
+TZOFFSETFROM:-0500
+DTSTART:19910401T020000
+END:DAYLIGHT
+BEGIN:STANDARD
+RRULE:FREQ=YEARLY;UNTIL=20751031T020000Z;BYMONTH=10;BYDAY=-1SU
+TZNAME:Eastern Standard Time\, Eastern Daylight Time
+TZOFFSETTO:-0500
+TZOFFSETFROM:-0400
+DTSTART:19911025T020000
+END:STANDARD
+END:VTIMEZONE
+END:VCALENDAR
+
+DAVTOOL STDERR:
+200 OK
+CMD=DAVToolWrapper http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting7.ics -m DELETE -u ioptest6@example.com -p test1
+DAVTOOL STDOUT:
+
+DAVTOOL STDERR:
+204 No content
+
+real	0m2.891s
+user	0m0.060s
+sys	0m0.076s
+.[PASSED TEST 4.5] : Delete http://caldavlinux.oracle.com/ocaldav/home/ioptest6@example.com/calendars/events/CalConnectCalDAVTest.Meeting7.ics(Ret=0)
+.--------------------------------------------------------------------------------
+.Test 5. Event Access Control
+.--------------------------------------------------------------------------------
+
+real	0m38.277s
+user	0m1.048s
+sys	0m0.772s

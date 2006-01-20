@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+
+<!-- ============= Calendar db interface test classes ==================
+     This is the build.xml for the bedework timezones conversion app
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="bedework.timezones" default="init" >
+  <property name="base.name" value="tools.timezones"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+    <property name="source.home" location="${this.dir}/src"/>
+
+    <path id="lib.class.path">
+      <!-- add any properties we might want -->
+      <pathelement location="${org.bedework.tools.base}/properties" />
+      <pathelement location="${log4j.jar}" />
+      <pathelement location="${org.bedework.tools.jar}" />
+    </path>
+
+    <!-- First try to load properties from user overrides -->
+    <property file="${user.home}/bedework.timezones.properties"/>
+
+    <!-- Load the properties from the properties directory -->
+    <property name="cal.timezones.properties"
+              location="${org.bedework.tools.base}/properties/timezones.properties"/>
+    <echo message="Using db properties in ${cal.timezones.properties}" />
+
+    <property file="${cal.timezones.properties}" />
+
+    <echo message=" " />
+    <echo message="dumping to ${org.bedework.timezones.arg.dumpfile}" />
+
+  </target>
+
+  <target name="tzconvert" depends="init"
+          description="Run bedework timezone conversion app">
+    <pathconvert property="lib.txt.classpath"
+                 refid="lib.class.path"
+                 targetos="unix"  pathsep=":" />
+
+    <echo message="cp: ${lib.txt.classpath}" />
+
+    <java	classname="org.bedework.tools.timezones.Timezones"
+          fork="true"
+          failonerror="true">
+      <classpath refid="lib.class.path" />
+      <arg value="${org.bedework.timezones.arg.debug}" />
+      <arg value="-f" />
+      <arg value="${org.bedework.timezones.arg.dumpfile}" />
+      <arg value="-dir" />
+      <arg value="${org.bedework.timezones.arg.dir}" />
+    </java>
+  </target>
+</project>

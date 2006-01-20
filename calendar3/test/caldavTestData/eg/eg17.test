@@ -1,0 +1,8 @@
+DESCRIPTION: mkcalendar: create a collection
+
+METHOD: MKCALENDAR
+
+AUTH: true
+
+URL: newcol/newcalendar
+

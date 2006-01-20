@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     Views
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.svc.BwView"
+         table="views">
+    <id name="id" type="integer" column="viewid" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+
+    <version name="seq" column="seq" type="integer" />
+
+    <property name="name" column="name" type="text" not-null="true"/>
+
+    <many-to-one name="owner"
+                class="org.bedework.calfacade.BwUser"
+                column="ownerid" not-null="true"
+                index="viewowner" />
+
+    <set name="subscriptions" table="view_subscriptions" lazy="false" >
+      <key column="viewid"/>
+      <many-to-many class="org.bedework.calfacade.svc.BwSubscription"/>
+    </set>
+  </class>
+
+  <!-- =================================================================
+       View queries
+       ================================================================= -->
+
+  <query name="getOwnerViews"><![CDATA[
+    from org.bedework.calfacade.svc.BwView view
+      where view.owner=:owner order by view.name
+  ]]></query>
+</hibernate-mapping>
+

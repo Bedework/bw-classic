@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     SubscriptionS
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.svc.BwSubscription"
+         table="subscriptions">
+    <cache usage="read-write"/>
+    <id name="id" type="integer" column="subscriptionid" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+
+    <version name="seq" column="seq" type="integer" />
+
+    <property name="name" column="name" type="text" not-null="true"/>
+
+    <many-to-one name="owner"
+                class="org.bedework.calfacade.BwUser"
+                column="ownerid" not-null="true"
+                index="subscriptionowner" />
+
+    <property name="uri" column="uri" type="text" not-null="true"/>
+
+    <property name="affectsFreeBusy" type="true_false"
+              column="affects_free_busy" not-null="true" />
+
+    <property name="display" type="true_false"
+              column="display" not-null="true" />
+
+    <property name="internalSubscription" type="true_false"
+              column="internal_Subscription" not-null="true" />
+
+    <property name="calendarDeleted" type="true_false"
+              column="calendar_deleted" not-null="true" />
+  </class>
+
+  <!-- =================================================================
+       Administrative groups queries
+       ================================================================= -->
+
+  <query name="getOwnerSubscriptions"><![CDATA[
+    from org.bedework.calfacade.svc.BwSubscription sub
+      where publick=false and sub.owner=:owner order by sub.name
+  ]]></query>
+
+  <query name="getPublicSubscriptions"><![CDATA[
+    from org.bedework.calfacade.svc.BwSubscription sub
+      where publick=true order by sub.name
+  ]]></query>
+
+  <query name="getOwnerPublicSubscriptions"><![CDATA[
+    from org.bedework.calfacade.svc.BwSubscription sub
+      where publick=true and sub.owner=:owner order by sub.name
+  ]]></query>
+</hibernate-mapping>
+

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- =================================================================
+     object to represent an authorised calendar user - that is a user
+     with some special privilege. This could also be represented by users
+     with roles in a directory.
+
+     NOTE: I believe the constraint on the id requires we create the user
+     first and have an embedded user entry - or at least have an
+     embedded entry which hibernate will create.
+     ================================================================= -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.svc.BwAuthUser"
+         table="auth">
+    <id name="id" column="userid" unsaved-value="-1">
+        <generator class="foreign">
+            <param name="property">user</param>
+        </generator>
+    </id>
+
+    <one-to-one name="user"
+                class="org.bedework.calfacade.BwUser"
+                constrained="true"/>
+    <one-to-one name="prefs"
+                class="org.bedework.calfacade.svc.BwAuthUserPrefs"
+                cascade="all" />
+
+    <property name="usertype" column="usertype" type="integer"/>
+  </class>
+
+  <!-- =================================================================
+       Authuser queries
+       ================================================================= -->
+
+  <query name="getAllAuthUsers"><![CDATA[
+    from org.bedework.calfacade.svc.BwAuthUser au
+      order by au.user.account
+  ]]></query>
+</hibernate-mapping>
+

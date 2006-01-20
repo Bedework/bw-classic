@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     This is the build.xml for the calendar admin client.
+
+     On entry we also require the usual global properties.
+
+     On exit:
+       jar files built for this component
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="webadmin.compile" default="build" >
+  <property name="source.home" location="${org.bedework.webadmin.base}/src"/>
+  <property name="base.name" value="webadmin"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+  </target>
+
+  <!-- =================================================================
+       The "build" target does a build of the web admin component
+       ================================================================= -->
+
+  <target name="build" depends="init"
+          description="Build calendar public events admin client">
+
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+      <include name="org/bedework/webadmin/**/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/webadmin/**/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${servlet.jar}"/>
+      <pathelement location="${struts.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${ical4j.jar}"/>
+
+      <!-- Include the location of the compiled calendar classes -->
+      <pathelement location="${org.bedework.common.jar}"/>
+      <pathelement location="${org.bedework.calenv.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.calsvci.jar}"/>
+      <pathelement location="${org.bedework.ical.jar}"/>
+      <pathelement location="${org.bedework.appcommon.jar}"/>
+      <pathelement location="${org.bedework.webcommon.jar}"/>
+    </path>
+
+    <property name="build.jar.file" location="${org.bedework.webadmin.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+</project>

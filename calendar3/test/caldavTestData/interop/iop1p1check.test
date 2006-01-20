@@ -1,0 +1,10 @@
+DESCRIPTION: Interop - Test 1.1 check
+
+EXPECT-RESPONSE: 0
+
+METHOD: GET
+
+AUTH: true
+
+URL: calendar/meeting1.1.ics
+

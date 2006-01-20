@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     This file builds a runnable application wrapped up as a zip file.
+     Unpacking the zip shoudl result in a directory containing a shell
+     script, a set of jars and any other resources needed.
+
+     Properties we need:
+       app.core.env.pname     core properties source
+       app.run.shellscr       location of the skeleton shell script.
+       app.run.jar.file       application jar file
+       app.run.main.class     main class for application.
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="uwcal.buildsh" default="build">
+  <target name="init">
+    <!-- Destinations - where we build stuff -->
+    <property name="app.dest.home"
+              location="${org.bedework.temp.shellscr.home}/${propval.zip.name}" />
+    <property name="app.dest.lib"
+              location="${app.dest.home}/lib" />
+    <property name="app.dest.classes"
+              location="${app.dest.home}/classes" />
+    <property name="app.dest.properties"
+              location="${app.dest.classes}/properties/calendar" />
+    <property name="app.dest.resources"
+              location="${app.dest.home}/resources" />
+
+    <property name="app.zip.file"
+              location="${dist.home}/${propval.zip.name}.zip" />
+  </target>
+
+  <!-- ================================================================
+       build target
+       ================================================================ -->
+
+  <target name="build" depends="init">
+    <filterset id="property.filters" >
+      <filter token="HIBERNATE-DIALECT"
+              value="${org.bedework.global.hibernate.dialect}" />
+
+      <filter token="DIRECTORY-BROWSING-DISALLOWED"
+              value="${org.bedework.global.directory.browsing.disallowed}" />
+
+      <filter token="APP-DESCRIPTION"
+              value="${propval.app.description}" />
+
+      <filter token="DUMP-CLASS"
+              value="org.bedework.tools.dumprestore.dump.Dump"/>
+      <filter token="RESTORE-CLASS"
+              value="org.bedework.tools.dumprestore.restore.Restore"/>
+
+      <filter token="APP-NAME"
+              value="${propval.app.name}"/>
+      <filter token="APP-VERSION"
+              value="${propval.app.version}"/>
+    </filterset>
+
+    <delete dir="${app.dest.home}" />
+
+    <!-- Library stuff -->
+
+    <mkdir dir="${app.dest.lib}" />
+
+    <!-- core files -->
+    <copy todir="${app.dest.lib}" flatten="yes" >
+      <fileset dir="${org.bedework.temp.jars}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${hibernate.jars.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${digester.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${struts.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+
+    <!-- Some more standard libs -->
+    <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
+    <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
+
+    <!-- Extra libraries specified in calling build file -->
+    <copy todir="${app.dest.lib}" flatten="yes" >
+      <fileset refid="org.bedework.run.jars" />
+    </copy>
+    <copy todir="${app.dest.lib}" flatten="yes" >
+      <fileset refid="org.bedework.run.lib.jars" />
+    </copy>
+
+    <copy todir="${app.dest.classes}"  >
+      <fileset refid="org.bedework.extra.resources" />
+    </copy>
+
+    <!-- add the jdbcdriver if defined -->
+    <antcall target="add.jdbcdriver" inheritRefs="true" />
+
+    <!-- Create the env.properties file -->
+    <mkdir dir="${app.dest.properties}" />
+
+    <copy tofile="${app.dest.properties}/env.properties"
+          file="${org.bedework.config.properties}" />
+
+    <!-- ===============================================================
+                       Add any resource files
+         =============================================================== -->
+
+    <copy tofile="${app.dest.resources}/log4j.xml"
+          file="${org.bedework.runsh.log4j.xml}"
+          failonerror="false" />
+
+    <!-- ===============================================================
+                       Build the classpath
+         =============================================================== -->
+
+    <path id="app.run.path">
+      <fileset dir="${app.dest.lib}">
+        <include name="*.jar"/>
+      </fileset>
+      <pathelement location="${app.dest.resources}" />
+    </path>
+    <pathconvert property="app.run.cp" refid="app.run.path"
+                 targetos="unix" >
+      <map from="${app.dest.lib}" to="./lib"/>
+      <map from="${app.dest.resources}" to="./resources"/>
+    </pathconvert>
+
+    <!-- ===============================================================
+                       Copy and modify the shell script
+         =============================================================== -->
+
+    <copy toDir="${app.dest.home}"
+          file="${app.run.shellscr}" >
+      <filterset>
+        <filter token="CP"
+                value=".:./classes:${app.run.cp}"/>
+      </filterset>
+      <filterset refid="property.filters" />
+    </copy>
+
+    <!-- build the zip file -->
+    <mkdir dir="${dist.home}" />
+    <delete file="${app.zip.file}" />
+
+    <zip destfile="${app.zip.file}" >
+      <zipfileset prefix="${propval.zip.name}" dir="${app.dest.home}" />
+    </zip>
+  </target>
+
+  <target name="add.jdbcdriver" if="propval.app.jdbcdriver.jar">
+    <copy todir="${app.dest.lib}" file="${propval.app.jdbcdriver.jar}"/>
+  </target>
+</project>
+

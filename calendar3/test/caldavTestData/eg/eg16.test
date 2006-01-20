@@ -1,0 +1,8 @@
+DESCRIPTION: mkcol: create a collection
+
+METHOD: MKCOL
+
+AUTH: true
+
+URL: newcol
+

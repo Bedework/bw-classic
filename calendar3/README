@@ -1,0 +1,14 @@
+This is the code and supporting documentation for the UW open source
+Calendar project.  
+
+All files are governed by the license and copyright in the <license> file 
+(which should be prepended to all the files, but we haven't gotten around
+to that yet).  
+
+Before running this software, please read the SECURITY NOTICE in docs/HOWTO.
+
+For more information, see http://www.washington.edu/ucal
+
+-----------
+Greg Barnes
+July 24, 2003

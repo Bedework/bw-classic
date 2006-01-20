@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+  <!-- =================================================================
+     This is a the Struts configuration for the config app.
+     =================================================================== -->
+
+<struts-config>
+  <!-- ========== Form Bean Definitions ================================ -->
+  <form-beans>
+    <form-bean      name="configForm"
+                    type="org.bedework.webconfig.ActionForm"/>
+  </form-beans>
+
+  <!-- ========== Global Forward Definitions ===========================
+       We try to standardize the forwards a bit.
+       "success"  takes us back to the main page
+       "done"     is local to an action and should take us back one level
+                  for example, to the list of events.
+       "continue" should stay on the same page
+       ================================================================= -->
+  <global-forwards>
+    <forward name="initial" path="/setup.do"/>
+    <forward name="error" path="/docs/error.jsp"/>
+    <forward name="success" path="/showMain.rdo" redirect="true"/>
+    <forward name="cancelled" path="/docs/showMain.rdo" redirect="true"/>
+  </global-forwards>
+
+  <!-- ========== Action Mapping Definitions =========================== -->
+  <action-mappings>
+    <action    path="/showMain"
+               type="org.bedework.webconfig.RenderAction"
+               name="configForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/main.jsp"/>
+    </action>
+
+    <action    path="/setup"
+               type="org.bedework.webconfig.RenderAction"
+               unknown="true"
+               name="configForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <action    path="/showUpload"
+               type="org.bedework.webconfig.RenderAction"
+               name="configForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/upload.jsp" />
+    </action>
+
+    <action    path="/showSaved"
+               type="org.bedework.webconfig.RenderAction"
+               name="configForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/save.jsp" />
+    </action>
+
+    <!-- ===============================================================
+                         Config Actions
+         =============================================================== -->
+
+    <action    path="/update"
+               type="org.bedework.webconfig.Action"
+               name="configForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <action    path="/initUpload"
+               type="org.bedework.webconfig.Action"
+               name="configForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showUpload.rdo" redirect="true" />
+    </action>
+
+    <action    path="/upload"
+               type="org.bedework.webconfig.LoadAction"
+               name="configForm"
+               scope="session"
+               validate="false">
+    </action>
+
+    <action    path="/save"
+               type="org.bedework.webconfig.SaveAction"
+               name="configForm"
+               scope="session"
+               validate="false">
+      <forward name="save" path="/showSaved.rdo" redirect="true" />
+    </action>
+  </action-mappings>
+
+  <!-- Below will be one or more comments which must not be edited or removed
+       for the portlet build process to succeed. The comment will be replaced
+        by some extra cofiguration.
+       -->
+
+  <!-- Jetspeed2 controller def here -->
+
+  <message-resources parameter="servlet" null="true" />
+
+</struts-config>

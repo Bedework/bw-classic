@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+
+<!-- ================== Calendar unit test suite ======================
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="cal.unit.test" default="init" >
+  <property name="base.name" value="unittests"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+
+    <property name="org.bedework.test.resources.dir"
+              location="${org.bedework.testsuite.base}/resources"/>
+
+    <property name="junit.fork" value="true"/>
+  </target>
+
+  <!-- =================================================================
+       The "build" target does a build of all test components
+       ================================================================= -->
+
+  <target name="build" depends="init"
+          description="Build calendar unit test suite jars">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+      <include name="org/bedework/tests/**/*.java"/>
+      <exclude name="org/bedework/tests/synchml/**/*.java"/>
+      <exclude name="org/bedework/tests/timers/**/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/tests/**/*.class"/>
+      <exclude name="org/bedework/tests/synchml/**/*.class"/>
+      <exclude name="org/bedework/tests/timers/**/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${servlet.jar}"/>
+      <pathelement location="${httpclient.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${ical4j.jar}"/>
+      <pathelement location="${junit.jar}"/>
+
+      <!-- Include the location of the compiled calendar classes -->
+      <pathelement location="${org.bedework.access.jar}"/>
+      <pathelement location="${org.bedework.locale.jar}"/>
+      <pathelement location="${org.bedework.common.jar}"/>
+      <pathelement location="${org.bedework.http.jar}"/>
+      <pathelement location="${org.bedework.calcore.jar}"/>
+      <pathelement location="${org.bedework.calenv.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.calsvci.jar}"/>
+      <pathelement location="${org.bedework.calsvc.jar}"/>
+      <pathelement location="${org.bedework.ical.jar}"/>
+      <pathelement location="${org.bedework.appcommon.jar}"/>
+      <pathelement location="${org.bedework.webcommon.jar}"/>
+      <pathelement location="${org.bedework.synchmlcommon.jar}"/>
+    </path>
+
+    <property name="build.jar.file" location="${org.bedework.unittest.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+
+  <target name="initRun" depends="build" >
+    <property name="unittest.run.base"
+              location="${org.bedework.temp.test.dir}/unittest"/>
+
+    <property name="unittest.run.lib" location="${unittest.run.base}/lib"/>
+    <property name="unittest.testcases.dir"
+              location="${unittest.run.base}/tests"/>
+    <property name="unittest.run.resources"
+              location="${unittest.run.base}/resources"/>
+
+    <property name="test.data.dir" location="${unittest.run.base}/data"/>
+    <property name="test.reports.dir" location="${unittest.run.base}/reports"/>
+
+    <!-- ................................................................
+                            unpackthe tests jar
+         ............................................................... -->
+    <delete dir="${unittest.testcases.dir}" />
+    <mkdir dir="${unittest.testcases.dir}" />
+    <unjar src="${org.bedework.unittest.jar}" dest="${unittest.testcases.dir}"/>
+
+    <!-- ................................................................
+                            build lib dir
+         ............................................................... -->
+    <delete dir="${unittest.run.lib}" />
+    <mkdir dir="${unittest.run.lib}" />
+
+    <!-- Include jars for hibernate -->
+    <copy todir="${unittest.run.lib}" >
+      <fileset dir="${hibernate.jars.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </copy>
+    <copy todir="${unittest.run.lib}" >
+      <fileset dir="${struts.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </copy>
+    <copy todir="${unittest.run.lib}" file="${servlet.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${ical4j.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${log4j.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${junit.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${httpunit.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${p6spy.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${appserver.jdbcdriver.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.common.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.calcore.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.calenv.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.calfacadeshared.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.access.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.locale.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.calsvci.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.calsvc.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.ical.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.appcommon.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.webcommon.jar}"/>
+    <copy todir="${unittest.run.lib}" file="${org.bedework.synchmlcommon.jar}"/>
+
+    <mkdir dir="${unittest.run.lib}/extras"/>
+    <antcall target="init.extra.lib.files" inheritrefs="yes" />
+
+    <!-- ................................................................
+                            build resources (properties) dir
+         ............................................................... -->
+    <delete dir="${unittest.run.resources}" />
+    <mkdir dir="${unittest.run.resources}" />
+
+    <antcall target="init.debug" inheritrefs="yes" />
+    <antcall target="init.nodebug" inheritrefs="yes" />
+
+    <mkdir dir="${unittest.run.resources}/properties" />
+    <mkdir dir="${unittest.run.resources}/properties/calendar" />
+    <copy tofile="${unittest.run.resources}/properties/calendar/env.properties"
+          file="${org.bedework.config.base}/configs/${org.bedework.clone.default}.properties" />
+
+    <copy todir="${unittest.run.resources}">
+      <fileset dir="${org.bedework.core.base}/resources/properties" />
+    </copy>
+    <copy todir="${unittest.run.resources}">
+      <fileset dir="${org.bedework.core.base}/resources/hbms" />
+    </copy>
+    <!-- Without p6spy -->
+    <copy todir="${unittest.run.resources}"
+          file="${org.bedework.test.resources.dir}/hibernate.properties"
+          overwrite="yes" />
+    <!-- With p6spy
+    <copy tofile="${unittest.run.resources}/hibernate.properties"
+          file="${org.bedework.test.resources.dir}/p6spy.hibernate.properties"
+          overwrite="yes" />
+    <copy tofile="${unittest.run.resources}/spy.properties"
+          file="${org.bedework.test.resources.dir}/unittest.spy.properties"
+          overwrite="yes" />
+          -->
+
+    <delete dir="${test.data.dir}"/>
+    <delete dir="${test.reports.dir}"/>
+    <mkdir dir="${test.data.dir}"/>
+    <mkdir dir="${test.reports.dir}"/>
+
+    <path id="lib.class.path">
+      <fileset dir="${unittest.run.lib}">
+        <include name="*.jar"/>
+      </fileset>
+
+      <pathelement location="${unittest.run.lib}/extras"/>
+
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${uwcal.env.properties.root}" />
+      <pathelement location="${unittest.testcases.dir}" />
+
+      <pathelement location="${unittest.run.resources}" />
+      <pathelement location="${unittest.run.resources}/log4j.xml" />
+    </path>
+  </target>
+
+  <target name="init.debug"  if="org.bedework.debug">
+    <copy tofile="${unittest.run.resources}/log4j.xml"
+          file="${org.bedework.test.resources.dir}/log4j.debug.xml" />
+  </target>
+
+  <target name="init.nodebug"  unless="org.bedework.debug">
+    <copy tofile="${unittest.run.resources}/log4j.xml"
+          file="${org.bedework.test.resources.dir}/log4j.xml" />
+  </target>
+
+  <target name="init.extra.lib.files"  if="org.bedework.test.extra.files">
+    <copy todir="${unittest.run.lib}" >
+      <fileset dir="${org.bedework.test.extra.files}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </copy>
+    <copy todir="${unittest.run.lib}/extras" >
+      <fileset dir="${org.bedework.test.extra.files}"/>
+    </copy>
+  </target>
+
+  <target name="unittest" depends="initRun">
+    <pathconvert property="lib.classpath.string"
+                 pathSep=":">
+      <path refid="lib.class.path" />
+    </pathconvert>
+
+    <echo message="CP=${lib.classpath.string}" />
+    <junit printsummary="no"
+           errorProperty="test.failed"
+           failureProperty="test.failed"
+           fork="${junit.fork}">
+      <classpath>
+        <path refid="lib.class.path"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+      <formatter type="brief" usefile="false"/>
+      <formatter type="xml"/>
+      <test name="${testcase}" todir="${test.data.dir}" if="testcase"/>
+      <batchtest todir="${test.data.dir}" unless="testcase">
+        <fileset dir="${unittest.testcases.dir}" includes="**/*Test.class"/>
+      </batchtest>
+    </junit>
+
+    <junitreport todir="${test.data.dir}">
+      <fileset dir="${test.data.dir}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${test.reports.dir}"/>
+    </junitreport>
+
+    <fail message="Tests failed. Check log and/or reports." if="test.failed"/>
+  </target>
+</project>

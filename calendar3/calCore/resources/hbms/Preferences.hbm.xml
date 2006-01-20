@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     Object to represent calendar user preferences.
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.svc.BwPreferences"
+         table="preferences" >
+    <cache usage="read-write"/>
+    <id name="id" type="integer" column="prefid" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+
+    <version name="seq" column="seq" type="integer" />
+
+    <many-to-one name="owner"
+                class="org.bedework.calfacade.BwUser"
+                column="ownerid" not-null="true" unique="true"
+                index="viewowner" />
+
+    <set name="subscriptions" table="user_subscriptions" lazy="true"
+         cascade="all-delete-orphan" >
+      <cache usage="read-write"/>
+      <key column="prefid"/>
+      <many-to-many class="org.bedework.calfacade.svc.BwSubscription"/>
+    </set>
+
+    <set name="views" table="user_views" lazy="false"
+         cascade="all-delete-orphan" >
+      <cache usage="read-write"/>
+      <key column="prefid"/>
+      <many-to-many class="org.bedework.calfacade.svc.BwView"/>
+    </set>
+
+    <property name="email" column="email" type="string" />
+
+    <many-to-one name="defaultCalendar"
+                 class="org.bedework.calfacade.BwCalendar"
+                 unique="true" >
+      <column name="default_calendarid" />
+    </many-to-one>
+
+    <property name="skinName" column="skin_name" type="string" />
+    <property name="skinStyle" column="skin_style" type="string" />
+    <property name="preferredView" column="preferred_view" type="string" />
+    <property name="preferredViewPeriod" column="preferred_view_period"
+              type="string" />
+    <property name="workDays" column="workdays" type="string" />
+    <property name="workdayStart" column="workday_start" type="integer" />
+    <property name="workdayEnd" column="workday_end" type="integer" />
+    <property name="preferredEndType" column="preferred_endtype" type="string" />
+  </class>
+
+  <!-- =================================================================
+       Preferences queries
+       ================================================================= -->
+
+  <query name="getOwnerPreferences"><![CDATA[
+    from org.bedework.calfacade.svc.BwPreferences p
+      where p.owner=:owner
+  ]]></query>
+
+  <query name="getAllPreferences"><![CDATA[
+    from org.bedework.calfacade.svc.BwPreferences p
+      order by p.owner
+  ]]></query>
+</hibernate-mapping>
+

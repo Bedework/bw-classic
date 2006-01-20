@@ -1,0 +1,10 @@
+DESCRIPTION: Interop - Cleanup after Test 1.1
+
+EXPECT-RESPONSE: 204
+
+METHOD: DELETE
+
+AUTH: true
+
+URL: calendar/meeting1.1.ics
+

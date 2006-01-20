@@ -1,0 +1,49 @@
+System timezones
+
+Download, build and run vciz
+
+*********** More instructions for that
+
+
+Use the tzconvert target to convert the generated timezone info into input for
+bedework.
+
+Use a properties file looking like:
+
+# bedework.timezones.properties
+
+org.bedework.timezones.arg.debug=-debug
+org.bedework.timezones.arg.dumpfile=/home/douglm/data/bwtimezones.xml
+org.bedework.timezones.arg.dir=/home/douglm/drop2/calendar/timezone/vzic/vzic-1.2/zoneinfo
+
+
+Upload the generated data with the admin client
+
+
+How they work.
+
+We have two levels of timezone information, the system level and the user level.
+
+System timezones are those installed by the above process.
+
+User timezones are timezones harvested from events as they are imported into the
+users calendar(s). They also appear there as the result of exporting icalendar
+format events from shared calendars.
+
+For the simple case of non-shared events the process is:
+
+On import (or incoming from caldav) if the event refers to a timezone id we look
+up the id in the repository. This first checks the user timezones and if not
+found there tries the system timezones.
+
+If it's not found and there is a timezone contained in the vcalendar object, we
+add the timezone to the user repository.
+
+On export of an event, we first check to start and end dates. If there is a
+tzid, we look it up and add the timezone information to the vcalendar object.
+
+The minor complication on this lookup is that we supply the owner of the event to
+the lookup and check that users repository rather than the current users.
+
+If the timezone is found we add it to the current users repository.
+

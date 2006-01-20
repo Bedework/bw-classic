@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     Copy the web config application properties from the global config
+     properties file into common application build properties.
+     =================================================================== -->
+
+<project name="bwadmin.copyprops" default="copyprops" >
+  <target name="copyprops">
+    <property name="propval.war.name"
+              value="${org.bedework.webconfig.war.name}" />
+
+    <property name="propval.env.prefix"
+              value="${org.bedework.webconfig.env.prefix}" />
+
+    <property name="propval.app.description"
+              value="${org.bedework.webconfig.app.description}" />
+
+    <property name="propval.app.display.name"
+              value="${org.bedework.webconfig.app.display.name}" />
+    <property name="propval.app.context.root"
+              value="${org.bedework.webconfig.context.root}" />
+    <property name="propval.app.name"
+              value="${org.bedework.webconfig.app.name}" />
+    <property name="propval.app.version"
+              value="${org.bedework.webconfig.app.version}" />
+
+    <property name="propval.app.default.contenttype"
+              value="${org.bedework.webconfig.app.default.contenttype}" />
+    <property name="propval.app.resources.dir"
+              value="${org.bedework.webconfig.app.resources.dir}" />
+    <property name="propval.app.deploy.dir"
+              value="${org.bedework.webpubevents.deploy.dir}" />
+  </target>
+</project>

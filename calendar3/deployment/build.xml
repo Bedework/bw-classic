@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+
+<!-- ===================== Deployment build file =======================
+     This directory and the files within it are to be part of the config
+     and deployment process.
+
+     A number of properties of the form org.bedework.install.XXX will be
+     defined, each indicating that a particualr component is to be deployed.
+
+     Targets below will be executed only if that property is defined.
+
+     Adding a new configuration, e.g. a different portal platform, requires
+     the steps:
+        Create a subdirectory in each components subdirectory,
+        e.g.  webadmin/myportal
+
+        Create any other required resource directories and resources and
+        create a build.xml file to configure and package the component(s).
+
+        Update the config program to load, save and display the new
+        properties for that configuration.
+
+        Add an antcall for each component and a corresponding target
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="deploy.bedework" default="init">
+  <target name="init" >
+    <!-- default to debug off -->
+    <property name="app.debug.val" value="0" />
+
+    <!-- set this for the war builds -->
+    <dirname property="app.root.dir" file="${ant.file}"/>
+
+    <property name="org.bedework.config.properties"
+              location="${org.bedework.config.base}/configs/${org.bedework.clone.name}.properties" />
+
+    <!-- ==================== config properties ========================= -->
+    <echo message="==========================================================" />
+    <echo message="Use clone properties ${org.bedework.config.properties}" />
+    <loadproperties
+          srcFile="${org.bedework.config.properties}" >
+      <filterchain>
+        <expandproperties/>
+      </filterchain>
+    </loadproperties>
+  </target>
+
+  <target name="build.configured" depends="init" >
+    <!-- Clean up before we start -->
+    <delete dir="${org.bedework.temp.wars.home}" />
+
+    <!-- ======================= webconfig ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webconfig/webapp/build.xml"
+         inheritrefs="true" target="build.configured" />
+
+    <antcall target="build.webadmin.webapp" inheritrefs="true" />
+
+    <antcall target="build.webadmin.portal" inheritrefs="true" />
+
+    <antcall target="build.pubevents.webapp" inheritrefs="true" />
+
+    <antcall target="build.pubevents.portal" inheritrefs="true" />
+
+    <antcall target="build.personal.webapp" inheritrefs="true" />
+
+    <antcall target="build.personal.portal" inheritrefs="true" />
+
+    <antcall target="build.public.caldav" inheritrefs="true" />
+
+    <antcall target="build.personal.caldav" inheritrefs="true" />
+
+    <!-- dump restore - always built (until we have a choice of windows/unix. -->
+    <ant antfile="${org.bedework.deployment.base}/dumprestore/shellscr/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
+
+  <!-- =================================================================
+       Targets called by the build.configured target. Each is conditional on a
+       config property and each executes a build file in a subdirectory of
+       this component.
+       ================================================================= -->
+
+  <target name="build.webadmin.webapp" if="org.bedework.webadmin.build.standalone.app" >
+    <!-- ======================= webadmin - standalone ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webadmin/webapp/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
+
+  <target name="build.webadmin.portal" if="org.bedework.webadmin.portal.platform" >
+    <!-- ======================= webadmin - portal ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webadmin/${admin.portal.platform}/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
+
+  <target name="build.pubevents.webapp" if="org.bedework.webpubevents.build.standalone.app" >
+    <!-- ======================= pubevents - standalone ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webpublic/webapp/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
+
+  <target name="build.pubevents.portal" if="org.bedework.webpubevents.portal.platform" >
+    <!-- ======================= pubevents - portal ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webpublic/${pubevents.portal.platform}/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
+
+  <target name="build.personal.webapp" if="org.bedework.webpersonal.build.standalone.app" >
+    <!-- ======================= pubevents - standalone ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webuser/webapp/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
+
+  <target name="build.personal.portal" if="org.bedework.webpersonal.portal.platform" >
+    <!-- ======================= pubevents - portal ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webuser/${personal.portal.platform}/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
+
+  <target name="build.public.caldav" if="org.bedework.install.public.caldav" >
+    <!-- ======================= caldav - public ================= -->
+    <ant antfile="${org.bedework.deployment.base}/publiccaldav/servlet/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
+
+  <target name="build.personal.caldav" if="org.bedework.install.personal.caldav" >
+    <!-- ======================= caldav - user ================= -->
+    <ant antfile="${org.bedework.deployment.base}/usercaldav/servlet/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
+
+  <!-- =================================================================
+                         The deploy target.
+       ================================================================= -->
+
+  <target name="deploy" depends="init" >
+    <!-- Clean up before we start -->
+    <delete dir="${org.bedework.temp.wars.home}" />
+
+    <!-- ======================= webconfig ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webconfig/webapp/build.xml"
+         inheritrefs="true" target="deploy" />
+
+    <antcall target="webadmin.webapp" inheritrefs="true" />
+
+    <antcall target="webadmin.portal" inheritrefs="true" />
+
+    <antcall target="pubevents.webapp" inheritrefs="true" />
+
+    <antcall target="pubevents.portal" inheritrefs="true" />
+
+    <antcall target="personal.webapp" inheritrefs="true" />
+
+    <antcall target="personal.portal" inheritrefs="true" />
+
+    <antcall target="public.caldav" inheritrefs="true" />
+
+    <antcall target="personal.caldav" inheritrefs="true" />
+
+    <!-- copy an index file that sends you to the applications -->
+    <copy file="${app.root.dir}/resources/html/cal.html"
+          todir="${webapp.root.dir}"/>
+
+    <!-- copy libs that the application server needs -->
+    <antcall target="deploy.appserver.jdbcdriver" inheritrefs="true" />
+    <antcall target="deploy.appserver.javatools" inheritrefs="true" />
+  </target>
+
+  <!-- =================================================================
+       Targets called by the deploy target. Each is conditional on a
+       config property and each executes a build file in a subdirectory of
+       this component.
+       ================================================================= -->
+
+  <target name="webadmin.webapp" if="org.bedework.webadmin.build.standalone.app" >
+    <!-- ======================= webadmin - standalone ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webadmin/webapp/build.xml"
+         inheritrefs="true" target="deploy" />
+  </target>
+
+  <target name="webadmin.portal" if="org.bedework.webadmin.portal.platform" >
+    <!-- ======================= webadmin - portal ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webadmin/${admin.portal.platform}/build.xml"
+         inheritrefs="true" target="deploy" />
+  </target>
+
+  <target name="pubevents.webapp" if="org.bedework.webpubevents.build.standalone.app" >
+    <!-- ======================= pubevents - standalone ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webpublic/webapp/build.xml"
+         inheritrefs="true" target="deploy" />
+  </target>
+
+  <target name="pubevents.portal" if="org.bedework.webpubevents.portal.platform" >
+    <!-- ======================= pubevents - portal ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webpublic/${pubevents.portal.platform}/build.xml"
+         inheritrefs="true" target="deploy" />
+  </target>
+
+  <target name="personal.webapp" if="org.bedework.webpersonal.build.standalone.app" >
+    <!-- ======================= pubevents - standalone ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webuser/webapp/build.xml"
+         inheritrefs="true" target="deploy" />
+  </target>
+
+  <target name="personal.portal" if="org.bedework.webpersonal.portal.platform" >
+    <!-- ======================= pubevents - portal ================= -->
+    <ant antfile="${org.bedework.deployment.base}/webuser/${personal.portal.platform}/build.xml"
+         inheritrefs="true" target="deploy" />
+  </target>
+
+  <target name="public.caldav" if="org.bedework.install.public.caldav" >
+    <!-- ======================= caldav - public ================= -->
+    <ant antfile="${org.bedework.deployment.base}/publiccaldav/servlet/build.xml"
+         inheritrefs="true" target="deploy" />
+  </target>
+
+  <target name="personal.caldav" if="org.bedework.install.personal.caldav" >
+    <!-- ======================= caldav - user ================= -->
+    <ant antfile="${org.bedework.deployment.base}/usercaldav/servlet/build.xml"
+         inheritrefs="true" target="deploy" />
+  </target>
+
+  <!-- The cp.xalan task conditionally copies the xalan.jar file, if
+       necessary -->
+  <target name="cp.xalan" if="xalan.in.tomcat.common.endorsed">
+    <copy file="${org.bedework.default.lib}/xalan.jar"
+          todir="${appserver.endorsed.dir}"/>
+  </target>
+
+  <target name="deploy.appserver.jdbcdriver"
+          if="appserver.jdbcdriver.jar" >
+    <!-- copy jdbc jar so datasources work -->
+    <copy todir="${appserver.lib.dir}" file="${appserver.jdbcdriver.jar}"/>
+  </target>
+
+  <target name="deploy.appserver.javatools"
+          if="java.tools.jar" >
+    <!-- copy tools jar so jsps work -->
+    <copy todir="${appserver.lib.dir}" file="${java.tools.jar}"/>
+  </target>
+</project>

@@ -1,0 +1,8 @@
+DESCRIPTION: Simple GET with a space in the uri
+
+METHOD: GET
+
+AUTH: false
+
+URL: General%20Calendars/Construction/CAL-ff808081-05e65fdd-0105-e6604c09-05a6.ics
+

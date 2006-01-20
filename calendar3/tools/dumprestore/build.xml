@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+
+<!-- ============= Calendar db interface test classes ==================
+     This is the build.xml for the uwcal calendar dbi test..
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="cal.db.dumprestore" default="init" >
+  <property name="base.name" value="tools.dumprestore"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+    <property name="source.home" location="${this.dir}/src"/>
+
+    <property name="org.bedework.dump.jdbcdriver.jar"
+              value="${appserver.jdbcdriver.jar}" />
+
+    <property name="dumprestore.run.base"
+              location="${org.bedework.temp.home}/dumprestore"/>
+    <property name="dumprestore.run.resources"
+              location="${org.bedework.temp.home}/dumprestore/resources"/>
+    <delete dir="${dumprestore.run.base}" />
+    <mkdir dir="${dumprestore.run.base}" />
+    <mkdir dir="${dumprestore.run.resources}" />
+
+    <copy todir="${dumprestore.run.resources}">
+      <fileset dir="${org.bedework.core.base}/resources/properties" />
+    </copy>
+    <copy todir="${dumprestore.run.resources}">
+      <fileset dir="${org.bedework.core.base}/resources/hbms" />
+    </copy>
+
+    <path id="lib.dump.class.path">
+      <fileset dir="${org.bedework.temp.jars}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${org.bedework.default.lib}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${hibernate.jars.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${digester.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${struts.dir}">
+        <include name="*.jar"/>
+      </fileset>
+
+      <pathelement location="${org.bedework.dump.jdbcdriver.jar}" />
+
+      <!-- add any properties we might want -->
+      <pathelement location="${dumprestore.run.resources}" />
+      <pathelement location="${org.bedework.tools.base}/properties" />
+
+      <!-- add the mapping file from appsuite -->
+      <pathelement
+          location="${org.bedework.appsuite.base}/resources/properties" />
+      <pathelement
+          location="${dumprestore.run.base}/resources/hibernate.properties"/>
+    </path>
+
+    <property name="org.bedework.restore.jdbcdriver.jar"
+              value="${appserver.jdbcdriver.jar}" />
+
+    <path id="lib.restore.class.path">
+      <fileset dir="${org.bedework.temp.jars}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${org.bedework.default.lib}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${hibernate.jars.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${digester.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${struts.dir}">
+        <include name="*.jar"/>
+      </fileset>
+
+      <pathelement location="${org.bedework.restore.jdbcdriver.jar}" />
+
+      <!-- add any properties we might want -->
+      <pathelement location="${dumprestore.run.resources}" />
+      <pathelement location="${org.bedework.tools.base}/properties" />
+
+      <!-- add the mapping file from appsuite -->
+      <pathelement
+          location="${org.bedework.appsuite.base}/resources/properties" />
+      <pathelement
+          location="${dumprestore.run.base}/resources/hibernate.properties"/>
+    </path>
+  </target>
+
+  <target name="dumpdb" depends="init"
+          description="Run bedework db dump app">
+    <!-- First try to load properties from user overrides -->
+    <property name="org.bedework.dumprestore.properties.file"
+              location="${user.home}/bedework.dumprestore.properties"/>
+    <property file="${org.bedework.dumprestore.properties.file}"/>
+
+    <!-- Load the properties from the properties directory -->
+    <property name="cal.dumprestore.properties"
+              location="${org.bedework.tools.base}/properties/dumprestore.properties"/>
+    <echo message="Using db properties in ${cal.dumprestore.properties}" />
+
+    <property file="${cal.dumprestore.properties}" />
+
+    <echo file="${dumprestore.run.base}/resources/hibernate.properties">
+hibernate.dialect=${org.bedework.dump.arg.hibernate.dialect}
+hibernate.connection.driver_class=${org.bedework.dump.arg.jdbcdriver}
+hibernate.connection.username=${org.bedework.dump.arg.jdbcid}
+hibernate.connection.password=${org.bedework.dump.arg.jdbcpw}
+hibernate.connection.url=${org.bedework.dump.arg.jdbcurl}
+    </echo>
+
+    <pathconvert property="lib.txt.classpath"
+                 refid="lib.dump.class.path"
+                 targetos="unix"  pathsep=":" />
+
+    <echo message="cp: ${lib.txt.classpath}" />
+
+    <echo message=" " />
+    <echo message="dumping to ${org.bedework.dump.arg.dumpfile}" />
+
+    <java	classname="${dump.class}"
+          fork="true"
+          failonerror="true">
+      <classpath refid="lib.dump.class.path" />
+      <arg value="${org.bedework.dump.arg.debug}" />
+      <arg value="-f" />
+      <arg value="${org.bedework.dump.arg.dumpfile}" />
+      <!--
+      <arg value="-Djava.endorsed.dir=${org.bedework.default.lib}/endorsed"/>-->
+    </java>
+  </target>
+
+  <target name="restoredb" depends="init"
+          description="Run UW calendar db restore app">
+    <!-- First try to load properties from user overrides -->
+    <property name="org.bedework.dumprestore.properties.file"
+              location="${user.home}/bedework.dumprestore.properties"/>
+    <property file="${org.bedework.dumprestore.properties.file}"/>
+
+    <!-- Load the properties from the properties directory -->
+    <property name="cal.dumprestore.properties"
+              location="${org.bedework.tools.base}/properties/dumprestore.properties"/>
+    <echo message="Using db properties in ${cal.dumprestore.properties}" />
+
+    <property file="${cal.dumprestore.properties}" />
+
+    <echo message="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" />
+    <echo message="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" />
+    <echo message="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" />
+    <echo message="!!" />
+    <echo message="!! Restoring will change your database." />
+    <echo message="!!" />
+    <echo message="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" />
+    <echo message="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" />
+    <echo message="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" />
+
+    <input message="Proceed with restore?"
+           validargs="y,n"
+           addproperty="do.fix" />
+    <condition property="do.abort">
+      <equals arg1="n" arg2="${do.fix}"/>
+    </condition>
+    <fail if="do.abort">restore aborted by user.</fail>
+
+    <echo file="${dumprestore.run.base}/resources/hibernate.properties">
+hibernate.dialect=${org.bedework.restore.arg.hibernate.dialect}
+hibernate.connection.driver_class=${org.bedework.restore.arg.jdbcdriver}
+hibernate.connection.username=${org.bedework.restore.arg.jdbcid}
+hibernate.connection.password=${org.bedework.restore.arg.jdbcpw}
+hibernate.connection.url=${org.bedework.restore.arg.jdbcurl}
+#
+# Here for better debugging
+#
+hibernate.jdbc.batch_size=0
+    </echo>
+
+    <pathconvert property="lib.txt.classpath"
+                 refid="lib.restore.class.path"
+                 targetos="unix"  pathsep=":" />
+
+    <echo message="cp: ${lib.txt.classpath}" />
+
+    <echo message=" " />
+    <echo message="restoring from ${org.bedework.restore.arg.dumpfile}" />
+
+    <java	classname="${restore.class}"
+          fork="true"
+          failonerror="true">
+      <classpath refid="lib.restore.class.path" />
+      <arg value="${org.bedework.restore.arg.debug}" />
+      <!--
+      <arg value="-printdata" />
+      -->
+      <arg value="-publiccalroot" />
+      <arg value="${org.bedework.env.public.calroot}" />
+      <arg value="-usercalroot" />
+      <arg value="${org.bedework.env.user.calroot}" />
+      <arg value="-defusercal" />
+      <arg value="${org.bedework.env.default.user.calendar}" />
+      <arg value="-deftrashcal" />
+      <arg value="${org.bedework.env.default.trash.calendar}" />
+      <arg value="-supergroup" />
+      <arg value="${org.bedework.restore.supergroup}" />
+      <arg value="-f" />
+      <arg value="${org.bedework.restore.arg.dumpfile}" />
+      <arg value="${org.bedework.restore.arg.hib}" />
+      <arg line="${org.bedework.restore.arg.defaultpubliccal}" />
+      <arg line="${org.bedework.restore.arg.public.user}" />
+      <arg line="${org.bedework.restore.arg.fixowner}" />
+      <arg value="-sysid" />
+      <arg value="${org.bedework.restore.arg.sysid}" />
+      <!--
+      <arg value="-Djava.endorsed.dir=${org.bedework.default.lib}/endorsed"/>-->
+    </java>
+  </target>
+
+  <!-- Initdb is just restoredb with the input data file property set in
+       advance of loading any user defined properties.
+       -->
+  <target name="initdb" depends="init"
+          description="Run bedework db restore app to initialise db">
+    <property name="org.bedework.restore.arg.dumpfile"
+              location="${org.bedework.tools.base}/resources/initbedework.xml"/>
+    <antcall target="restoredb" inheritrefs="true" />
+  </target>
+</project>

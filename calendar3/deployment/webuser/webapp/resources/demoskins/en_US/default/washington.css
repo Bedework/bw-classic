@@ -1,0 +1,451 @@
+body {
+  background-color: #ddd;
+  color: #000000;
+  margin-top: 5px;
+    margin-left: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#header-table { width: 99%; border-width: 0px; text-align: center }
+#logo-cell { width: 10%; }
+#logo-image {
+  width: 90;
+  height: 54;
+  padding-top: 3px;
+}
+#rightheader-cell { width: 90% ; }
+#rightheader-table { width: 100% ; }
+.header-links { text-align: right; }
+.aux { font-size: smaller; font-family: Arial, Helvetica, sans-serif ; }
+#date-header-cell {
+  text-align: center;
+  vertical-align: middle;
+  background-color: #FFFFFF;
+  font-weight: bold;
+}
+#prev-cell { width: 30; text-align: right; vertical-align: middle; }
+#prev-image { width: 30; height: 19; }
+#date-header-text-cell {
+  text-align: center;
+    vertical-align: middle;
+}
+#date-header-text {
+  font-weight: bold;
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#next-cell {
+  width: 30;
+  text-align: left;
+   vertical-align: middle;
+}
+#next-image {
+  width: 30;
+  height: 19;
+}
+#goto-cell {
+  vertical-align: middle;
+  background-color: #fff;
+  text-align: center;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+#goto-cell form {
+  margin: 0em;
+  padding: 0em;
+}
+#navbutton-cell {
+  vertical-align: middle;
+  background-color: #fff;
+  width: 10%;
+}
+#navbutton-table {
+  width: 100%;
+  border-width: 1px;
+}
+#navbutton-row {
+  background-color: #663;
+}
+.navbutton-on {
+  text-align: center;
+  background-color: #cc6;
+  padding: 0.05em 0.8em 0.05em 0.8em;
+}
+.navbutton-off {
+  text-align: center;
+  padding: 0.05em 0.8em 0.05em 0.8em;
+}
+.button-on { text-decoration: none; font-weight: bold; color: #000000; font-family: Arial, Helvetica, sans-serif; }
+.button-off { text-decoration: none; color: #FFFFFF; font-family: Arial, Helvetica, sans-serif; }
+
+#rightheader-table td.no-status {
+  width: 100%;
+  text-align: left;
+  padding: 2px;
+}
+#rightheader-table td.has-status {
+  width: 100%;
+  text-align: left;
+  padding: 2px;
+  background-color: #FFFF00;
+  color: black;
+ }
+#body-table { width: 99%; border-width: 0px; text-align: center; }
+#small-body-table { width: 75%; border-width: 0px; }
+#day-header { background-color: #000000; color: #FFFFFF; font-weight: bold ; text-align: center; font-family: Arial, Helvetica, sans-serif; }
+#eventlist-cell { width: 65% ; vertical-align: top}
+#eventlist-table { width: 100% ; border-width: 0px; }
+#eventlist-table td.eventlist-notime {
+  background-color: #ccc;
+  color: black;
+  text-align: right;
+  font-family: Arial, Helvetica, sans-serif;
+  white-space: nowrap;
+  font-size: 0.9em;
+}
+#eventlist-table td.eventlist-amtime {
+  background-color: #cc6;
+  color: black;
+  text-align: right;
+  font-family: Arial, Helvetica, sans-serif;
+  white-space: nowrap;
+  font-size: 0.9em;
+}
+#eventlist-table td.eventlist-pmtime {
+  background-color: #993;
+  color: black;
+  text-align: right;
+  font-family: Arial, Helvetica, sans-serif;
+  white-space: nowrap;
+  font-size: 0.9em;
+}
+.eventlist-desc {
+  background-color: #FFFFFF;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: left;
+}
+.eventlist-links {
+  background-color: #CCCCCC;
+  text-align: center;
+}
+#rightbody-cell { width: 35% ; vertical-align: top}
+.form-header {
+  background-color: #cc6;
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold ;
+  text-align: center;
+}
+#locationFormTable {
+  margin: 1em;
+}
+#entryform-table {
+  width: 100%;
+  border-width: 0px;
+  background-color: #ccc;
+  border-color: #ddd;
+}
+#entryform-table td {
+  vertical-align: top;
+}
+#entryform-table td.footnoteCell {
+  text-align: left;
+  font-size: 0.8em;
+}
+.form-element {
+  width: 100%;
+  border-width: 0px;
+}
+.std-text {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.required-field { color: #FF0000; font-family: Arial, Helvetica, sans-serif; }
+.location-header { background-color: #333333; color: #FFFFFF; font-family: Arial, Helvetica, sans-serif; font-weight: bold ; text-align: center; }
+.spacer-header { background-color: #DDDDDD; color: #000000; font-family: Arial, Helvetica, sans-serif; font-weight: bold ; text-align: center; }
+.bold { font-weight: bold ; }
+.datetime-header { background-color: #666666; color: #FFFFFF; font-family: Arial, Helvetica, sans-serif; font-weight: bold ; text-align: center ; }
+.field-name { font-weight: bold; font-family: Arial, Helvetica, sans-serif; }
+#submit-cell { background-color: #cc6; text-align: center ; vertical-align: middle; }
+.footnote { font-size: smaller; font-family: Arial, Helvetica, sans-serif; }
+#year-table {
+  width: 100%;
+  border-width: 0px;
+  text-align: center;
+  margin-top: 1em;
+}
+.current-month { width: 25%; vertical-align: top; background: #FFFFCC; }
+#this-month { width: 25%; vertical-align: top; background: #CCFFFF; }
+.month-cell { width: 25%; vertical-align: top; }
+.smallmonth-table { width: 100%; border-width: 0px; font-family: Arial, Helvetica, sans-serif; }
+#year-table td.month-name-cell {
+  background-color: #cc6;
+  font-weight: bold;
+  text-align: center ;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.day-of-week-cell { background-color: #CCCCCC; font-family: Arial, Helvetica, sans-serif; }
+.week-number-cell { text-align: left; background-color: #CCCCCC; }
+.week-number { text-decoration: none; color: #000099; font-family: Arial, Helvetica, sans-serif; }
+.day { font-family: Arial, Helvetica, sans-serif; text-decoration: none; }
+.list-date-header {
+  font-weight: bold;
+  text-align: center ;
+  padding-top: 1em;
+ }
+.list-cell {
+  background-color: #FFFFFF;
+  text-align : left;
+ }
+.weekday { background-color: #CCCCFF; color: #000000; }
+.weekend { background-color: #CCCCFF; color: #000000; }
+.italic-item { color: #000000; font-style: italic }
+.day-item { color: #000000; }
+.month-item { color: #000000; }
+.bold-link-item { color: #0000FF; font-weight: bold }
+.link-item { color: #0000FF }
+.month-link-item { color: #0000FF }
+.month-desc { font-size: smaller; font-family: Arial, Helvetica, sans-serif; }
+.week-desc { }
+.time {
+  font-size: smaller;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #FF0000;
+  white-space: nowrap;
+ }
+.pre { white-space: pre }
+.weekday-back { background: #FFFFFF }
+.weekend-back { background: #FFFFFF }
+.not-a-day { background: #CCCCCC; white-space: pre }
+.month { color: #0000FF; }
+.description { font-weight: bold }
+#current-day { background: #FFFFCC }
+#today { background: #CCFFFF }
+.topcalendar-cell { background: #FFFFFF }
+.subcalendars-cell { background: #CCCCFF }
+
+#calendarGridViewTable {
+  width: 100%;
+  margin: 1em 0em 0em 0em;
+  padding: 0px;
+}
+#calendarGridViewTable th.dayHeading {
+  width: 14%;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #cc6;
+  color: #000;
+  font-family: "Times New Roman", Times, serif;
+  border: 1px solid #ddd;
+  padding: 0.1em;
+}
+#calendarGridViewTable td {
+  width: 14%;
+  vertical-align: top;
+  text-align: left;
+  padding: 0.2em;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: black;
+  font-family: "Times New Roman", Times, serif;
+}
+#calendarGridViewTable td.filler {
+  border: none;
+  background-color: #ccc;
+  color: black;
+}
+#calendarGridViewTable ul {
+  font-size: 0.8em;
+  list-style : none;
+  margin: 0em;
+  padding: 0.3em 0em 0em 0em;
+}
+#calendarGridViewTable ul li {
+  margin: 0em;
+  padding: 0em;
+  display: inline;
+}
+#calendarGridViewTable a.eventLinkA:link,
+#calendarGridViewTable a.eventLinkA:visited,
+#calendarGridViewTable a.eventLinkA:active  {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  background-color: #dadfaf;
+  color: black;
+}
+#calendarGridViewTable a.eventLinkB:link,
+#calendarGridViewTable a.eventLinkB:visited,
+#calendarGridViewTable a.eventLinkB:active  {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  background-color: #edf2bd;
+  color: black;
+}
+#calendarGridViewTable a.eventLinkA:hover,
+#calendarGridViewTable a.eventLinkB:hover{
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  color: black;
+  background-color: #ffe;
+}
+#calendarGridViewTable a.dayLink {
+  display: block;
+  text-align: right;
+  font-weight: bold;
+}
+#calendarGridViewTable a:hover.dayLink {
+  text-decoration: none;
+}
+#calendar-list-table {
+  margin: 1em;
+  width: 70%;
+}
+#calendar-list-table th {
+  background-color: #63C;
+  color: white;
+  padding: 0.1em;
+}
+#calendar-list-table td {
+  vertical-align: top;
+  width: 50%;
+}
+#calendar-list-table td.col2 {
+  padding-left: 1em;
+}
+#calendar-list-table ul {
+  background-color: #CCF;
+  margin: 0em 0em 2em 0em;
+  padding-left: 1.1em;
+}
+.cal-header-text {
+  background-color: white;
+  color: inherit;
+  margin-top: 1em;
+  padding: 0.1em;
+}
+#eventTable {
+  width: 80%;
+  padding: 1em 3em 0em 1em;
+  margin-left: 0em;
+}
+#eventTable th {
+  text-align: left;
+  padding: 0.2em 1em 0.2em 0.2em;
+  vertical-align: top;
+  background-color: #63c;
+  color: #eee;
+  text-align: center;
+}
+#eventTable th.fieldval {
+  width: 100%;
+}
+#eventTable td {
+  text-align: left;
+  padding: 0.5em 1em 0.2em 0.2em;
+  vertical-align: top;
+  font-family: "Times New Roman", Times, serif;
+}
+#eventTable td.buttons {
+  text-align: right;
+}
+#eventTable td.publicPrivate {
+  text-align: center;
+  color: red;
+  background-color: transparent;
+  font-style: italic;
+}
+#eventTable span.editLocation {
+  font-size: 0.9em;
+  font-style: italic;
+}
+#calPageTable {
+  width: 100%;
+  padding-right: 3em;
+  padding-left: 3em;
+}
+#calPageTable th {
+  background-color : #cc6;
+  color: black;
+}
+#calPageTable td {
+  vertical-align: top;
+  background-color: white;
+  width: 50%;
+  padding: 1em;
+}
+#calPageTable td.submit-row {
+  text-align: right;
+  font-size: 0.9em;
+  font-style: italic;
+  padding: 1em;
+}
+#calPageTable h2 {
+  font-size: 1em;
+  background-color: #cc6;
+  color: black;
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+#calPageTable ul {
+  margin-bottom: 2em;
+  margin-top: 0em;
+  padding-left: 0em;
+  list-style-type : none;
+  list-style-position : inside;
+}
+#calPageTable ul li {
+  margin-top: 0.3em;
+  margin-left: 0em;
+}
+#show-all-events-link {
+  margin:  0em 0em 0em 1em;
+}
+#skinSelector {
+  text-align: right;
+  padding-top: 0.5em;
+  font-size: 0.7em;
+  color: #333;
+  background-color: inherit;
+}
+#skinSelector select {
+  font-size: 0.9em;
+  color: #333;
+  background-color: #eee;
+}
+a.buttonDelete {
+  display: block;
+  float: right;
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.8em;
+  padding: 4px;
+  background-color: ButtonFace;
+  color: black;
+  border-top: 2px solid ButtonHighlight;
+  border-left: 2px solid ButtonHighlight;
+  border-right: 2px solid ButtonShadow;
+  border-bottom: 2px solid ButtonShadow;
+}
+a.buttonOther {
+  display: inline;
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.8em;
+  padding: 4px;
+  background-color: ButtonFace;
+  color: black;
+  border-top: 2px solid ButtonHighlight;
+  border-left: 2px solid ButtonHighlight;
+  border-right: 2px solid ButtonShadow;
+  border-bottom: 2px solid ButtonShadow;
+}
+#footerTable address {
+  font-family: "Times New Roman", Times, serif;
+}
+#loggedInAs {
+  text-align: center;
+  margin-bottom: 0em;
+  font-size: 0.9em;
+}
+

@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     This file is imported by build files that want to define all the
+     global settings. It defines a globalDefs target
+     =================================================================== -->
+
+<project name="uwcalGlobalDefs" default="bld.all">
+  <property environment="env"/>
+
+  <target name="globalDefs" >
+    <!-- This may already be set from calling dir -->
+    <dirname property="calendar.dir" file="${ant.file}"/>
+
+    <!-- This needs reinvestigating - there still seem to be problems with xalan
+         If this stays it should be a config property
+
+         For a tomcat deployed version with the broken jvm (1.4.2_03) we need to
+         use a version of xalan in the common/endorsed tomcat directory.
+         Comment this out to stop the copy
+         This may get fixed. See:
+         http://marc.theaimsgroup.com/?l=xml-cocoon-dev&m=104547205330116&w=2
+         http://wiki.cocoondev.org/Wiki.jsp?page=EndorsedLibsProblem
+         http://www.mail-archive.com/users@cocoon.apache.org/msg08191.html
+         -->
+    <property name="xalan.in.tomcat.common.endorsed" value="yes" />
+
+    <!-- comment out to disable build of caldav components.-->
+    <property name="org.bedework.build.caldav" value="yes" />
+
+    <!-- Overriding this when invoking ant allows different user property
+         files to be included e.g.
+            ant -Dorg.bedework.user.build.properties=/home/me/bedework.properties ...
+            -->
+    <property name="org.bedework.user.build.properties"
+              location="${user.home}/bedework.build.properties" />
+
+    <echo message="Load user properties from ${org.bedework.user.build.properties}" />
+
+    <!-- Load user property definition overrides -->
+    <property file="${org.bedework.user.build.properties}" />
+    <property file="${calendar.dir}/local.build.properties"/>
+    <property file="${calendar.dir}/build.properties"/>
+
+    <!-- ===============================================================
+              Properties derived from calendar.dir
+         =============================================================== -->
+
+    <property name="uwcal.home" location="${calendar.dir}" />
+
+    <!-- Where the web-apps skeletons, build files etc reside -->
+    <property name="apps.root.dir" location="${calendar.dir}/apps" />
+    <property name="cal.default.db" location="${calendar.dir}/db" />
+    <property name="org.bedework.default.lib" location="${calendar.dir}/lib" />
+    <property name="html.dir" location="${calendar.dir}/html" />
+
+    <!-- Component locations -->
+
+    <property name="org.bedework.access.base" location="${calendar.dir}/access" />
+    <property name="org.bedework.appcommon.base" location="${calendar.dir}/appcommon" />
+    <property name="org.bedework.caldav.base" location="${calendar.dir}/caldav" />
+    <property name="org.bedework.caldavClientApi.base"
+              location="${calendar.dir}/caldavClientApi" />
+    <property name="org.bedework.calenv.base" location="${calendar.dir}/calEnv" />
+    <property name="org.bedework.calfacade.base" location="${calendar.dir}/calFacade" />
+    <property name="org.bedework.calsvc.base" location="${calendar.dir}/calsvc" />
+    <property name="org.bedework.calsvci.base" location="${calendar.dir}/calsvci" />
+    <property name="org.bedework.common.base" location="${calendar.dir}/common" />
+    <property name="org.bedework.config.base" location="${calendar.dir}/config" />
+    <property name="org.bedework.core.base" location="${calendar.dir}/calCore" />
+    <property name="org.bedework.deployment.base" location="${calendar.dir}/deployment" />
+    <property name="org.bedework.http.base" location="${calendar.dir}/http" />
+    <property name="org.bedework.ical.base" location="${calendar.dir}/icalendar" />
+    <property name="org.bedework.locale.base" location="${calendar.dir}/locale" />
+    <property name="org.bedework.logging.base" location="${calendar.dir}/logging" />
+    <property name="org.bedework.mail.base" location="${calendar.dir}/mail" />
+    <property name="org.bedework.synchml.base" location="${calendar.dir}/synchml" />
+    <property name="org.bedework.testsuite.base" location="${calendar.dir}/test" />
+    <property name="org.bedework.timers.base" location="${calendar.dir}/timers" />
+    <property name="org.bedework.tools.base" location="${calendar.dir}/tools" />
+    <property name="org.bedework.webadmin.base" location="${calendar.dir}/webadmin" />
+    <property name="org.bedework.webclient.base" location="${calendar.dir}/webclient" />
+    <property name="org.bedework.webcommon.base" location="${calendar.dir}/webcommon" />
+
+    <!-- ===============================================================
+              Properties derived from org.bedework.appserver.dir
+         =============================================================== -->
+
+    <property name="org.bedework.appserver.deploy.dir"
+              location="${org.bedework.appserver.dir}/webapps" />
+
+    <!-- ======================= Directory Names =======================
+        These properties generally define file and directory names (or
+        paths) that affect where the build process stores its outputs.
+
+        org.bedework.temp.home  The directory into which the
+                             "compile" target will generate some of their
+                             output. Defaults to "temp".
+
+        dist.home            The name of the base directory in which
+                             distribution files are created.
+                             Defaults to "dist".
+         =============================================================== -->
+
+    <property name="org.bedework.bld.home" location="${calendar.dir}/bldfiles"/>
+    <property name="dist.home" location="${calendar.dir}/dist"/>
+
+    <!-- ===============================================================
+              Properties derived from org.bedework.temp.home
+         =============================================================== -->
+
+    <property name="org.bedework.temp.home" location="${calendar.dir}/temp"/>
+
+    <!-- As application components are built, they copy any needed jars into
+         this directory -->
+    <property name="org.bedework.temp.jars" location="${org.bedework.temp.home}/jars"/>
+
+    <!-- As we build jars temporary files end up under here -->
+    <property name="org.bedework.temp.jartemp.dir"
+              location="${org.bedework.temp.home}/jartemp" />
+
+    <!-- Define an empty dir and fileset -->
+    <property name="org.bedework.empty.dir"
+              location="${org.bedework.temp.home}/empty-dir" />
+    <mkdir dir="${org.bedework.empty.dir}" />
+    <fileset id="empty.fileset" dir="${org.bedework.empty.dir}"
+             excludes="*" />
+
+    <!-- unconfigured applications get built in this directory -->
+    <property name="org.bedework.temp.preconfig.home"
+              location="${org.bedework.temp.home}/preconfig"/>
+
+    <!-- wars get built in this directory -->
+    <property name="org.bedework.temp.wars.home"
+              location="${org.bedework.temp.home}/wars"/>
+
+    <!-- ears get built in this directory -->
+    <property name="org.bedework.temp.ears.home"
+              location="${org.bedework.temp.home}/ears"/>
+
+    <!-- Shell scripts get built in this directory -->
+    <property name="org.bedework.temp.shellscr.home"
+              location="${org.bedework.temp.home}/shellscr"/>
+
+    <!-- ............... test results .................................. -->
+    <property name="org.bedework.temp.test.dir"
+              location="${org.bedework.temp.home}/test"/>
+
+    <property name="org.bedework.test.logs"
+              location="${org.bedework.temp.test.dir}/logs"/>
+
+    <!-- ===============================================================
+              Properties derived from org.bedework.bld.home
+         =============================================================== -->
+
+    <!-- define location of generic build files -->
+    <property name="buildjar" location="${org.bedework.bld.home}/buildjar.xml" />
+    <property name="buildwar" location="${org.bedework.bld.home}/buildwar.xml" />
+    <property name="buildear" location="${org.bedework.bld.home}/buildear.xml" />
+    <property name="org.bedework.buildsh"
+              location="${org.bedework.bld.home}/buildsh.xml" />
+    <property name="buildcoreprops" location="${org.bedework.bld.home}/bldcoreprops.xml" />
+
+    <property name="application.xml"
+              location="${org.bedework.bld.home}/application.xml" />
+
+    <!-- define location of default property files -->
+    <property name="org.bedework.defjars"
+              location="${org.bedework.bld.home}/defjars.properties" />
+
+    <!-- default to empty -->
+    <fileset id="base.resource.files" refid="empty.fileset" />
+
+    <property file="${org.bedework.defjars}"/>
+
+    <!-- Name of the applications property file -->
+    <property name="org.bedework.clone.default" value="democal" />
+
+    <!-- Define where test suite finds resources -->
+    <property name="uwcal.test.env.properties.root"
+              location="${org.bedework.testsuite.base}/resources" />
+
+    <!-- Enable/disable replacement of log4j config during deployment
+         Set this to yes in your home bedework.build.properties file if you
+         want the log4j file overwritten if it already exists.
+      -->
+    <property name="org.bedework.deploy.log4j.config" value="no" />
+  </target>
+</project>
+

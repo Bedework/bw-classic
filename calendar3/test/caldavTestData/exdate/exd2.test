@@ -1,0 +1,14 @@
+DESCRIPTION: Test exdate - update event with exdate
+
+EXPECT-RESPONSE: 204
+
+METHOD: PUT
+
+AUTH: true
+
+URL: calendar/exdate.ics
+
+CONTENTTYPE: text/calendar
+
+CONTENTFILE: exd2.ics
+

@@ -1,0 +1,705 @@
+<caldata>
+  <users>
+    <user>
+      <id>2</id>
+      <account>caladmin</account>
+      <created>2003-09-08 09:13:45.0</created>
+      <logon>2003-09-08 13:39:06.0</logon>
+    </user>
+    <user>
+      <id>3</id>
+      <account>calowner</account>
+      <created>2003-09-08 09:13:45.0</created>
+      <logon>2003-09-08 13:39:06.0</logon>
+    </user>
+    <user>
+      <id>4</id>
+      <account>caluser</account>
+      <created>2003-09-08 09:13:45.0</created>
+      <logon>2003-09-08 13:39:06.0</logon>
+    </user>
+  </users>
+  <locations>
+    <location>
+      <id>1</id>
+      <creator>2</creator>
+      <public>true</public>
+      <address>none</address>
+    </location>
+    <location>
+      <id>2</id>
+      <creator>2</creator>
+      <public>true</public>
+      <address>unknown</address>
+    </location>
+    <location>
+      <id>3</id>
+      <creator>2</creator>
+      <public>true</public>
+      <address>deleted</address>
+      <subaddress>Used as a replacement when the owner of a public location used by others deletes the location</subaddress>
+    </location>
+  </locations>
+  <sponsors>
+    <sponsor>
+      <id>1</id>
+      <creator>2</creator>
+      <public>true</public>
+      <name>none</name>
+    </sponsor>
+    <sponsor>
+      <id>2</id>
+      <creator>2</creator>
+      <public>true</public>
+      <name>unknown</name>
+    </sponsor>
+    <sponsor>
+      <id>3</id>
+      <creator>2</creator>
+      <public>true</public>
+      <name>deleted</name>
+      <phone>Used as a replacement when the owner of a public sponsor used by others deletes the sponsor</phone>
+    </sponsor>
+  </sponsors>
+  <organizers>
+  </organizers>
+  <attendees>
+  </attendees>
+  <alarms>
+  </alarms>
+  <keywords>
+    <keyword>
+      <id>33</id>
+      <creator>2</creator>
+      <public>true</public>
+      <word>Unscheduled Room Closings</word>
+      <title>Unscheduled room closings</title>
+    </keyword>
+    <keyword>
+      <id>35</id>
+      <public>true</public>
+      <word>Academic Calendar</word>
+      <title>Academic Calendar</title>
+    </keyword>
+    <keyword>
+      <id>34</id>
+      <public>true</public>
+      <word>Holidays</word>
+      <title>Holidays</title>
+    </keyword>
+    <keyword>
+      <id>1</id>
+      <public>true</public>
+      <word>Fund Raising</word>
+      <title>An event staged to raise money for a unit or organization.</title>
+    </keyword>
+    <keyword>
+      <id>2</id>
+      <public>true</public>
+      <word>Commencement</word>
+      <title>Any graduation event staged by a University unit or the University as a whole.</title>
+    </keyword>
+    <keyword>
+      <id>3</id>
+      <public>true</public>
+      <word>Concerts</word>
+      <title>A subcalendar of Arts</title>
+    </keyword>
+    <keyword>
+      <id>22</id>
+      <public>true</public>
+      <word>Deadlines</word>
+      <title>Deadlines</title>
+    </keyword>
+    <keyword>
+      <id>24</id>
+      <public>true</public>
+      <word>Conferences</word>
+      <title>A series of meetings around a particular theme that lasts from half a day up to several days.</title>
+    </keyword>
+    <keyword>
+      <id>4</id>
+      <public>true</public>
+      <word>Dance</word>
+      <title>A subcalendar of Arts</title>
+    </keyword>
+    <keyword>
+      <id>6</id>
+      <public>true</public>
+      <word>Exhibits</word>
+      <title>A subcalendar of Arts</title>
+    </keyword>
+    <keyword>
+      <id>7</id>
+      <public>true</public>
+      <word>Films</word>
+      <title>A subcalendar of Arts</title>
+    </keyword>
+    <keyword>
+      <id>25</id>
+      <public>true</public>
+      <word>Forums</word>
+      <title>A meeting that usually involves several speakers on a particular topic and a fair amount of interaction with the audience.</title>
+    </keyword>
+    <keyword>
+      <id>8</id>
+      <public>true</public>
+      <word>Health Services</word>
+      <title>Events sponsored by health sciences units.</title>
+    </keyword>
+    <keyword>
+      <id>50</id>
+      <creator>8</creator>
+      <public>true</public>
+      <word>Scheduled openings/closings</word>
+      <title>General school-wide openings and closings for residence halls, dining halls, and other offices </title>
+    </keyword>
+    <keyword>
+      <id>10</id>
+      <public>true</public>
+      <word>Lectures</word>
+      <title>A larger gathering (more than 50 people) that could be on an academic subject or a more general one, in which most of the communication is from speaker to audience.</title>
+    </keyword>
+    <keyword>
+      <id>29</id>
+      <public>true</public>
+      <word>Meetings</word>
+      <title>A single session of a particular group or organization that lasts less than half a day.</title>
+    </keyword>
+    <keyword>
+      <id>11</id>
+      <public>true</public>
+      <word>Open Houses</word>
+      <title>An event in which a unit or organization invites visitors to their location during specified hours.</title>
+    </keyword>
+    <keyword>
+      <id>12</id>
+      <public>true</public>
+      <word>Theater and Performance</word>
+      <title>A subcalendar of Arts</title>
+    </keyword>
+    <keyword>
+      <id>14</id>
+      <public>true</public>
+      <word>Readings</word>
+      <title>A subcalendar of Arts</title>
+    </keyword>
+    <keyword>
+      <id>15</id>
+      <public>true</public>
+      <word>Sales</word>
+      <title>Sales</title>
+    </keyword>
+    <keyword>
+      <id>16</id>
+      <public>true</public>
+      <word>Seminars</word>
+      <title>A relatively small gathering (less than 50 people), usually on an academic subject, in which the speaker expects a lot of interaction.  For purposes of this calendar, colloquia and symposia are considered seminars.</title>
+    </keyword>
+    <keyword>
+      <id>17</id>
+      <public>true</public>
+      <word>Special Events</word>
+      <title>An event that does not occur on a regular basis and doesn't fit any other category</title>
+    </keyword>
+    <keyword>
+      <id>18</id>
+      <public>true</public>
+      <word>Athletics</word>
+      <title>Competitive events in football, basketball, baseball, etc.</title>
+    </keyword>
+    <keyword>
+      <id>46</id>
+      <public>true</public>
+      <word>Employee Events</word>
+      <title>Retirement counceling, insurance, hmo, etc</title>
+    </keyword>
+    <keyword>
+      <id>20</id>
+      <public>true</public>
+      <word>Tours</word>
+      <title>When a unit offers to guide visitors through their facilities at a specified time.</title>
+    </keyword>
+    <keyword>
+      <id>21</id>
+      <public>true</public>
+      <word>Training</word>
+      <title>A single session or ongoing class sponsored by a unit.</title>
+    </keyword>
+    <keyword>
+      <id>26</id>
+      <public>true</public>
+      <word>Workshops</word>
+      <title>A one-session class on a particular topic.</title>
+    </keyword>
+    <keyword>
+      <id>36</id>
+      <creator>4</creator>
+      <public>true</public>
+      <word>Short Courses</word>
+    </keyword>
+    <keyword>
+      <id>37</id>
+      <public>true</public>
+      <word>Emergencies</word>
+      <title>Campus-wide emergencies</title>
+      <attribute>
+        <attributeid>1</attributeid>
+        <attributename>calcategoryclass</attributename>
+        <attributeval>calalerts</attributeval>
+      </attribute>
+    </keyword>
+    <keyword>
+      <id>38</id>
+      <public>true</public>
+      <word>Unscheduled School Closings</word>
+      <title>Unscheduled campus-wide school closings</title>
+    </keyword>
+    <keyword>
+      <id>39</id>
+      <public>true</public>
+      <word>Other</word>
+      <title>USE ONLY IF NO OTHER CATEGORY EXISTS, and please contact us</title>
+    </keyword>
+    <keyword>
+      <id>40</id>
+      <public>true</public>
+      <word>Religious/Spiritual</word>
+      <title>Religious events</title>
+    </keyword>
+    <keyword>
+      <id>41</id>
+      <public>true</public>
+      <word>Recognitions</word>
+      <title>Awards, dinners, retirement parties</title>
+    </keyword>
+    <keyword>
+      <id>42</id>
+      <public>true</public>
+      <word>Receptions</word>
+      <title>Receptions</title>
+    </keyword>
+    <keyword>
+      <id>43</id>
+      <public>true</public>
+      <word>Social Gatherings</word>
+      <title>Social gatherings too broad to fit into other categories</title>
+    </keyword>
+    <keyword>
+      <id>44</id>
+      <public>true</public>
+      <word>University Governance</word>
+    </keyword>
+    <keyword>
+      <id>45</id>
+      <public>true</public>
+      <word>Discussions</word>
+      <title>Chaired discussions, panel discussions</title>
+    </keyword>
+    <keyword>
+      <id>47</id>
+      <public>true</public>
+      <word>Service outages/changes</word>
+      <title>Service outages/changes</title>
+    </keyword>
+    <keyword>
+      <id>48</id>
+      <public>true</public>
+      <word>Parking</word>
+      <title>Parking</title>
+    </keyword>
+    <keyword>
+      <id>49</id>
+      <public>true</public>
+      <word>Alumni Events</word>
+      <title>Alumni Events</title>
+    </keyword>
+    <keyword>
+      <id>51</id>
+      <creator>8</creator>
+      <public>true</public>
+      <word>Construction</word>
+      <title>Construction events</title>
+    </keyword>
+    <keyword>
+      <id>52</id>
+      <creator>8</creator>
+      <public>true</public>
+      <word>Facilities</word>
+      <title>Campus facilities events </title>
+    </keyword>
+    <keyword>
+      <id>53</id>
+      <creator>8</creator>
+      <public>true</public>
+      <word>Volunteer Opportunities</word>
+      <title>Volunteer Opportunities</title>
+    </keyword>
+    <keyword>
+      <id>54</id>
+      <creator>8</creator>
+      <public>true</public>
+      <word>Student Career Development</word>
+      <title>for Career Development Center </title>
+    </keyword>
+  </keywords>
+  <authusers>
+    <authuser>
+      <id>2</id>
+      <userType>32768</userType>
+      <email>douglm@rpi.edu</email>
+      <preferences>
+        <autoAddKeywords>true</autoAddKeywords>
+        <autoAddLocations>true</autoAddLocations>
+        <autoAddSponsors>true</autoAddSponsors>
+      </preferences>
+    </authuser>
+  </authusers>
+  <events>
+  </events>
+  <eventRefs>
+  </eventRefs>
+  <filters>
+    <notFilter>
+      <id>1</id>
+      <name>All Public Events (except class meetings)</name>
+      <ref>10</ref>
+    </notFilter>
+    <creatorFilter>
+      <id>10</id>
+      <name>events created by notToBeLoadedByDefaultCreator</name>
+      <ref>2</ref>
+    </creatorFilter>
+    <orFilter>
+      <id>2</id>
+      <name>Main Calendars</name>
+    </orFilter>
+    <orFilter>
+      <id>100</id>
+      <name>General Calendars</name>
+      <parent>2</parent>
+    </orFilter>
+    <keyFilter>
+      <id>1000</id>
+      <name>Academic Calendar</name>
+      <parent>100</parent>
+      <ref>35</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1100</id>
+      <name>Alerts</name>
+      <parent>100</parent>
+      <ref>37</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1150</id>
+      <name>Construction</name>
+      <parent>100</parent>
+      <ref>51</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1175</id>
+      <name>Commencement</name>
+      <parent>100</parent>
+      <ref>2</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1200</id>
+      <name>Deadlines</name>
+      <parent>100</parent>
+      <ref>22</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1250</id>
+      <name>Facilities</name>
+      <parent>100</parent>
+      <ref>52</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1300</id>
+      <name>Holidays</name>
+      <parent>100</parent>
+      <ref>34</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1320</id>
+      <name>Parking</name>
+      <parent>100</parent>
+      <ref>48</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1340</id>
+      <name>Room Closings</name>
+      <parent>100</parent>
+      <ref>33</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1360</id>
+      <name>School Closings</name>
+      <parent>100</parent>
+      <ref>38</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1370</id>
+      <name>Service outages/changes</name>
+      <parent>100</parent>
+      <ref>47</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1380</id>
+      <name>Scheduled openings/closings</name>
+      <parent>100</parent>
+      <ref>50</ref>
+    </keyFilter>
+    <orFilter>
+      <id>110</id>
+      <name>Arts</name>
+      <parent>2</parent>
+    </orFilter>
+    <keyFilter>
+      <id>1400</id>
+      <name>Concerts</name>
+      <parent>110</parent>
+      <ref>3</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1500</id>
+      <name>Dance</name>
+      <parent>110</parent>
+      <ref>4</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1700</id>
+      <name>Exhibits</name>
+      <parent>110</parent>
+      <ref>6</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1800</id>
+      <name>Films</name>
+      <parent>110</parent>
+      <ref>7</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>1900</id>
+      <name>Theater</name>
+      <parent>110</parent>
+      <ref>12</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>2000</id>
+      <name>Readings</name>
+      <parent>110</parent>
+      <ref>14</ref>
+    </keyFilter>
+    <orFilter>
+      <id>120</id>
+      <name>Conferences/Meetings</name>
+      <parent>2</parent>
+    </orFilter>
+    <keyFilter>
+      <id>2100</id>
+      <name>Conferences</name>
+      <parent>120</parent>
+      <ref>24</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>2150</id>
+      <name>Discussions</name>
+      <parent>120</parent>
+      <ref>45</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>2200</id>
+      <name>Forums</name>
+      <parent>120</parent>
+      <ref>25</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>2400</id>
+      <name>Meetings</name>
+      <parent>120</parent>
+      <ref>29</ref>
+    </keyFilter>
+    <orFilter>
+      <id>130</id>
+      <name>Training</name>
+      <parent>2</parent>
+    </orFilter>
+    <keyFilter>
+      <id>2530</id>
+      <name>Short Courses</name>
+      <parent>130</parent>
+      <ref>36</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>2540</id>
+      <name>Student Career Development</name>
+      <parent>130</parent>
+      <ref>54</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>2560</id>
+      <name>Training</name>
+      <parent>130</parent>
+      <ref>21</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>2590</id>
+      <name>Workshops</name>
+      <parent>130</parent>
+      <ref>26</ref>
+    </keyFilter>
+    <orFilter>
+      <id>150</id>
+      <name>Lectures/Seminars</name>
+      <parent>2</parent>
+    </orFilter>
+    <keyFilter>
+      <id>3000</id>
+      <name>Lectures</name>
+      <parent>150</parent>
+      <ref>10</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3100</id>
+      <name>Seminars</name>
+      <parent>150</parent>
+      <ref>16</ref>
+    </keyFilter>
+    <orFilter>
+      <id>160</id>
+      <name>Social Events</name>
+      <parent>2</parent>
+    </orFilter>
+    <keyFilter>
+      <id>3200</id>
+      <name>Recognitions</name>
+      <parent>160</parent>
+      <ref>41</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3250</id>
+      <name>Rececptions</name>
+      <parent>160</parent>
+      <ref>42</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3300</id>
+      <name>Religious/Spiritual</name>
+      <parent>160</parent>
+      <ref>40</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3350</id>
+      <name>Social Gatherings</name>
+      <parent>160</parent>
+      <ref>43</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3380</id>
+      <name>Volunteer Opportunities</name>
+      <parent>160</parent>
+      <ref>53</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>170</id>
+      <name>Athletics</name>
+      <parent>2</parent>
+      <ref>18</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>175</id>
+      <name>Alumni Events</name>
+      <parent>2</parent>
+      <ref>49</ref>
+    </keyFilter>
+    <orFilter>
+      <id>180</id>
+      <name>Other Events</name>
+      <parent>2</parent>
+    </orFilter>
+    <keyFilter>
+      <id>3400</id>
+      <name>Fund Raising</name>
+      <parent>180</parent>
+      <ref>1</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3520</id>
+      <name>Employee Events</name>
+      <parent>180</parent>
+      <ref>46</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3550</id>
+      <name>Health Services</name>
+      <parent>180</parent>
+      <ref>8</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3600</id>
+      <name>Open Houses</name>
+      <parent>180</parent>
+      <ref>11</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3700</id>
+      <name>Sales</name>
+      <parent>180</parent>
+      <ref>15</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3800</id>
+      <name>Special Events</name>
+      <parent>180</parent>
+      <ref>17</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>3900</id>
+      <name>Tours</name>
+      <parent>180</parent>
+      <ref>20</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>4100</id>
+      <name>University Governance</name>
+      <parent>180</parent>
+      <ref>44</ref>
+    </keyFilter>
+    <keyFilter>
+      <id>4200</id>
+      <name>Other</name>
+      <parent>180</parent>
+      <ref>39</ref>
+    </keyFilter>
+  </filters>
+  <adminGroups>
+    <adminGroup>
+      <groupname>Admin group 1</groupname>
+      <description><![CDATA[Administrative group 1]]></description>
+      <groupOwner>2</groupOwner>
+      <ownerid>2</ownerid>
+      <groupMembers>
+        <groupMemberId>2</groupMemberId>
+        <groupMemberId>3</groupMemberId>
+      </groupMembers>
+    </adminGroup>
+    <adminGroup>
+      <groupname>Admin Group 2</groupname>
+      <description>Administrative group 2</description>
+      <groupOwner>3</groupOwner>
+      <ownerid>3</ownerid>
+      <groupMembers>
+        <groupMemberId>3</groupMemberId>
+      </groupMembers>
+    </adminGroup>
+  </adminGroups>
+  <dblastmods>
+    <dblastmod>
+      <dbname>pubevents</dbname>
+      <lastmod>2005-09-22 09:35:32.0</lastmod>
+    </dblastmod>
+  </dblastmods>
+</caldata>
+

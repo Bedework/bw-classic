@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     Object to represent a calendar user. These are also the owners of
+     events in the database.
+
+     It would probably be a good thing to define this class with
+     lazy="true". However this adds extra complication to the interface
+     requiring explicit initializations at various places.
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.BwUser"
+         table="users" lazy="false" >
+    <cache usage="read-write"/>
+    <id name="id" type="integer" column="userid" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+
+    <version name="seq" column="seq" type="integer" />
+
+    <property name="account"
+              column="username" type="string" length="20" not-null="true" />
+
+    <property name="instanceOwner" type="true_false" >
+      <column name="instance_owner" index="idx_user_instance_owner" not-null="true" />
+    </property>
+
+    <property name="created" column="created"
+              type="timestamp"/>
+    <property name="logon" column="last_logon"
+              type="timestamp"/>
+    <property name="lastAccess"
+              column="last_access" type="timestamp"/>
+    <property name="lastModify"
+              column="last_modify" type="timestamp"/>
+    <property name="categoryAccess"
+              column="category_access" type="text"/>
+    <property name="sponsorAccess"
+              column="sponsor_access" type="text"/>
+    <property name="locationAccess"
+              column="location_access" type="text"/>
+  </class>
+</hibernate-mapping>
+

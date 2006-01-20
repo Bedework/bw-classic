@@ -1,0 +1,14 @@
+DESCRIPTION: Interop - Test 3.1.1.2 - Query all component, return getetag and all data.
+
+EXPECT-RESPONSE: 207
+
+METHOD: REPORT
+
+AUTH: true
+
+URL: calendar
+
+CONTENTTYPE: text/xml
+
+CONTENTFILE: content/3p1p1p2.xml
+

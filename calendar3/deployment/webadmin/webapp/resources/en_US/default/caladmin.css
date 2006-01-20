@@ -1,0 +1,362 @@
+body { 
+  background-color: white; 
+  color: #000000; 
+  margin: 0em;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 0.8em;
+}
+#header {
+  color:#555;
+  background:#F5F5F5;
+  margin: 0em;
+  padding:1px 3px 3px 20px;
+  border-bottom: 1px solid #bbb;
+  font-size: 1.2em;
+}
+#header a {
+  color:#FDE4E3;
+  text-decoration:none;
+  background-color : transparent;
+}
+#header a:hover {
+	color:#c99;
+	text-decoration:none;
+}
+#header h1 {
+  font-size: 1.2em;
+  margin: 0.5em 0.5em 0em 0em;
+}
+#header img {
+  padding-top: 0.2em;
+}
+#content {
+  color:#555;
+  margin: 0em;
+  padding: 0em 1em 1em 1em; 
+}
+#content h2 {
+  margin: 0em;
+  font-size: 1.3em;
+  color: #555;
+  padding: 0.4em;
+}
+#content ol li {
+  padding-bottom: 1em;
+}
+th {
+  text-align: left;
+}
+tr.alt {
+  background-color: #FBFBFB;
+  color: #333;
+}
+#mainMenuTable {
+  font: 11px/16px verdana, helevetica, arial, sans-serif;
+  border-collapse:	collapse;
+  margin-top: 5px;
+  /*width: 100%;*/  
+  border-left: #bbb solid 1px;
+  width: 100%;
+}
+#mainMenuTable th {
+  padding: 0.3em 0.2em 0.3em 1em;
+  font-size: 1.1em;
+  text-align: left;
+  border-top: #ccc solid 1px;
+  border-right: #ccc dashed 1px;
+  border-bottom: #ccc solid 1px;
+  width: 130px;
+}
+#mainMenuTable td {
+  padding: 0.3em 0.2em 0.3em 1em;
+  text-align: center;
+  border-top: #ccc solid 1px;
+  border-right: #ccc solid 1px;
+  border-bottom: #ccc solid 1px;
+}
+#mainMenuTable tr {
+  background-color: #FBFBFB;
+  color: #333;
+}
+#mainMenuTable tr.alt {
+  background-color: #eee;
+  color: #333;
+}
+#mainMenuTable a:link, 
+#mainMenuTable a:active,
+#mainMenuTable a:visited {
+  display: block;
+  padding: 0.2em 1em 0.2em 1em;
+  text-decoration: none;
+  color: #444;
+  background-color: transparent;
+}
+#mainMenuTable a:hover {
+	text-decoration: none;
+	color: #990000;
+	text-decoration: underline;
+}
+#mainMenuTable form {
+  display: inline;
+}
+#adminMenuTable {
+  font: 11px/16px verdana, helevetica, arial, sans-serif;
+  border-collapse:	collapse;
+  margin-top: 5px;
+  /*width: 100%;*/
+  border-bottom: #ccc solid 1px;
+  border-left: #ccc solid 1px;
+  width: 100%;
+}
+#adminMenuTable th {
+  padding: 0.3em 0.2em 0.3em 1em;
+  font-size: 1.1em;
+  text-align: left;
+  border-top: #ccc solid 1px;
+  border-right: #ccc dashed 1px;
+  width: 230px;
+}
+#adminMenuTable td {
+  padding: 0.3em 0.2em 0.3em 1em;
+  text-align: center;
+  border-top: #ccc solid 1px;
+  border-right: #ccc solid 1px;
+}
+#adminMenuTable tr {
+  background-color: #FBFBFB;
+  color: #333;
+}
+#adminMenuTable tr.alt {
+  background-color: #eee;
+  color: #333;
+}
+#adminMenuTable a:link, 
+#adminMenuTable a:active,
+#adminMenuTable a:visited {
+  display: block;
+  padding: 0.2em 1em 0.2em 1em;
+  text-decoration: none;
+  color: #444;
+  background-color: transparent;
+}
+#adminMenuTable a:hover {
+	text-decoration: none;
+	color: #990000;
+	text-decoration: underline;
+}
+#adminMenuTable  form {
+  display: inline;
+}
+#footer {
+  padding: 1em;
+  margin-top: 2em;
+  text-align: center;
+  border-top: medium groove #eee;
+  font-size: 0.8em;
+}
+img { 
+  border: 0pt none; 
+  display: block; 
+}
+.mainbar {
+	color:#fff;
+	margin:0px;
+	padding:7px 10px 8px;
+	background:#AD7C35;
+}
+#hometopmenu {
+    width: 100%;
+	height:19px;
+	margin:0px;
+	padding:6px 2px 0px 17px;
+	background:#810101;
+	color:#C99F90;
+	font-family:verdana, geneva, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	letter-spacing:-1px;
+	border-top:solid 1px #933;
+	border-bottom:1px solid #600;
+}
+#hometopmenu a {
+	color:#fff;
+	text-decoration:none;
+}
+#hometopmenu a:hover {
+	color:#c99;
+	text-decoration:none;
+}
+#hometopmenu td.leftCell {
+	text-align: left;
+}
+#hometopmenu td.rightCell {
+	text-align: right;
+}
+.autoCompleteMatched
+{
+	color: black;
+	background-color: white;
+}
+.autoCompleteHover
+{
+	background-color: #3366cc;
+	color: white;
+}
+.autoCompleteNormal
+{
+	background-color: white;
+	color: black;
+}
+.autoCompleteCell
+{
+	color: #3366cc;
+}
+.autoCompleteTable
+{
+	width: 386px;
+	border-collapse: collapse;
+	border-left: 1px solid gray;
+	border-right: 1px solid gray;
+	border-bottom: 1px solid gray;
+}
+.autoCompleteTable td
+{
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 0.8em;
+}
+fieldset
+{
+  width: 370px;
+  border: #bbb solid 1px;
+  padding: 25px;
+}
+
+legend
+{
+  color: #555;
+  padding: 5px;
+  font-weight: bold;
+
+}
+.bottom{
+  border-bottom: #bbb solid 1px;
+}
+.nobottom{
+  border: none;
+}
+
+.main{ width: 520px;}
+
+/*Text inputs*/
+.textinput3, .textinputHovered3 {
+	width:79px;
+	height:24px;
+	background:url(input-3.gif) no-repeat left top;
+	border:none;
+	padding:4px 8px;
+}
+
+.textinputHovered3 {
+	background-position:left bottom;
+}
+
+
+
+
+#commonListTable {
+  font: 11px/16px verdana, helevetica, arial, sans-serif;
+  border-collapse:	collapse;
+  margin-top: 15px;
+  /*width: 100%;*/  
+  border-left: #bbb solid 1px;
+  border-right: #ccc solid 1px;
+  width: 100%;  
+}
+#commonListTable th {
+  padding: 0.3em 0.2em 0.3em 1em;
+  font-size: 1.1em;
+  text-align: center;
+  border-top: #ccc solid 1px;
+  border-right: #ccc dashed 1px;
+  border-bottom: #ccc solid 1px;
+  width: 130px;
+}
+#commonListTable td {
+  padding: 0.3em 0.2em 0.3em 1em;
+  text-align: left;
+  border-top: #ccc solid 1px;
+  border-right: #ccc dashed 1px;
+  border-bottom: #ccc solid 1px;
+}
+#commonListTable tr {
+  background-color: #FBFBFB;
+  color: #333;
+}
+#commonListTable tr.alt {
+  background-color: #eee;
+  color: #333;
+}
+#commonListTable a:link, 
+#commonListTable a:active,
+#commonListTable a:visited {
+  display: block;
+  padding: 0.2em 1em 0.2em 1em;
+  text-decoration: none;
+  color: #444;
+  background-color: transparent;
+}
+#commonListTable a:hover {
+	text-decoration: none;
+	color: #990000;
+	text-decoration: underline;
+}
+#commonListTable form {
+  display: inline;
+}
+table.eventFormTable {
+  margin-bottom: 1em;  
+}
+table.eventFormTable td {
+  vertical-align: top;  
+  font-size: 0.8em;
+}
+table.eventFormTable td.fieldName {
+  white-space: nowrap;
+  font-weight: bold;
+  color: black;
+  padding: 0.2em;
+}
+table.eventFormTable td.optional {
+  white-space: nowrap;
+  font-style: italic;
+  background-color : #FBFBFB;
+  color: black;
+  padding: 0.2em;
+}
+table.eventFormTable td.allField {
+  white-space: nowrap;
+  text-align: right;
+  font-style: italic;
+  background-color : white;
+  color: black;
+  padding: 0.2em;
+}
+table.eventFormTable .dateFields {
+  display: inline;
+  font-size: 0.7em;
+}
+table.eventFormTable .timeFields {
+  display: inline;
+  margin-left: 1em;
+}
+.fieldInfo {
+  font-size: 0.8em;
+}
+table.eventFormTable div.fieldInfo {
+  width: 400px;
+  margin-bottom: 0.5em;
+}
+.edit { top: -4px;  background: #F8F8F8; border: 1px solid #ccc;}
+.highlite { background: #FFF; border: 1px dashed #ccc}
+
+#alert { position: absolute; top: 0px; left: 0px; width: 300px; height: 25px; z-index: 1000; visibility: hidden;}

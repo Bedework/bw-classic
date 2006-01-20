@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     A category in Bedework
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.BwCategory"
+         table="categories">
+    <id name="id" type="integer" column="categoryid" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+
+    <version name="seq" column="seq" type="integer" />
+
+    <many-to-one name="creator"
+                 class="org.bedework.calfacade.BwUser"
+                 unique="true">
+      <column name="creatorid" not-null="true" index="idx_cat_creator" />
+    </many-to-one>
+
+    <many-to-one name="owner"
+                 class="org.bedework.calfacade.BwUser"
+                 unique="true">
+      <column name="ownerid" not-null="true"
+              index="idx_cat_owner" unique-key="category_key" />
+    </many-to-one>
+
+    <property name="access" column="access" type="text" />
+
+    <property name="publick" type="true_false" >
+      <column name="publick" not-null="true" />
+    </property>
+
+    <property name="word" type="string" >
+      <column name="word" not-null="true"
+              index="cat_word" unique-key="category_key" />
+    </property>
+    <property name="description" column="description" type="text"/>
+
+    <set name="events" table="event_categories"
+         lazy="true"
+         inverse="true"
+         cascade="all" >
+      <key column="categoryid"/>
+      <many-to-many class="org.bedework.calfacade.BwEventObj"
+                    column="eventid"/>
+    </set>
+  </class>
+
+  <!-- =================================================================
+       Category queries
+       ================================================================= -->
+
+  <query name="countCategoryRefs"><![CDATA[
+    select count(*) from org.bedework.calfacade.BwEventObj as ev
+      where :ent in elements(ev.categories)
+  ]]></query>
+
+  <query name="getCategoryRefs"><![CDATA[
+    from org.bedework.calfacade.BwEventObj as ev
+      where :ent in elements(ev.categories)
+  ]]></query>
+</hibernate-mapping>
+

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     This is the build.xml for the calendar user clients.
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="webclient.compile" default="build" >
+  <property name="source.home" location="${org.bedework.webclient.base}/src"/>
+  <property name="base.name" value="webclient"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+  </target>
+
+  <target name="build"
+          description="Build calendar web client jar">
+
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+      <include name="org/bedework/webclient/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/webclient/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${ical4j.jar}"/>
+      <pathelement location="${servlet.jar}"/>
+      <pathelement location="${struts.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+
+      <!-- Include the location of the compiled calendar classes -->
+      <pathelement location="${org.bedework.access.jar}"/>
+      <pathelement location="${org.bedework.common.jar}"/>
+      <pathelement location="${org.bedework.calenv.jar}"/>
+      <pathelement location="${org.bedework.mail.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.calsvci.jar}"/>
+      <pathelement location="${org.bedework.ical.jar}"/>
+      <pathelement location="${org.bedework.appcommon.jar}"/>
+      <pathelement location="${org.bedework.webcommon.jar}"/>
+    </path>
+
+    <property name="build.jar.file" location="${org.bedework.webclient.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+</project>

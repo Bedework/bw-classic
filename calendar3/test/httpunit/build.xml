@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<!-- ================ Test suite build Targets ======================
+     This is the ant build file for the test suite for the UW Calendar.
+
+     This file will probably need no modification as most of this is largely
+     site and application independent.
+
+     The target of interest is build which should leave some jar files
+     in the temp jar directory..
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="uwcal.testsuite" default="build">
+  <property name="source.home" location="${org.bedework.testsuite.base}/src"/>
+  <property name="base.name" value="httpunit"/>
+
+  <target name="init" >
+    <dirname property="this.dir" file="${ant.file}"/>
+  </target>
+
+  <!-- =================================================================
+       The "build" target does a build of all httpunit test components
+       ================================================================= -->
+
+  <target name="build" depends="init"
+          description="Build calendar httpunit test suite jars">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+     <include name="org/bedework/httpunit/**/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/httpunit/**/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${servlet.jar}"/>
+      <pathelement location="${struts.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${junit.jar}"/>
+      <pathelement location="${httpunit.jar}"/>
+    </path>
+
+    <!-- ==================== Build Target ============================= -->
+
+    <property name="build.jar.file" location="${org.bedework.httpunittest.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+
+  <!-- Clean out any generated files.
+    -->
+  <target name="run" >
+    <property name="httpunit.run.lib"
+              location="${org.bedework.temp.home}/httpunit/lib"/>
+
+    <delete dir="${httpunit.run.lib}" />
+    <mkdir dir="${httpunit.run.lib}" />
+
+    <copy todir="${httpunit.run.lib}" file="${org.bedework.httpunittest.jar}" />
+    <copy todir="${httpunit.run.lib}" file="${junit.jar}" />
+    <copy todir="${httpunit.run.lib}" file="${httpunit.jar}" />
+    <copy todir="${httpunit.run.lib}" file="${jtidy.jar}" />
+
+    <path id="lib.class.path">
+      <fileset dir="${httpunit.run.lib}">
+        <include name="*.jar"/>
+      </fileset>
+
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${org.bedework.testsuite.base}/resources" />
+
+      <!-- add any properties we might want
+      <pathelement location="${org.bedework.testsuite.base}/properties" /> -->
+    </path>
+
+		<java	classname="org.bedework.httpunit.admin.TestAdmin"
+          fork="true"
+          failonerror="true">
+			<classpath refid="lib.class.path" />
+      <!--
+      <arg value="-Djava.endorsed.dir=${org.bedework.default.lib}/endorsed"/>-->
+		</java>
+
+  </target>
+</project>

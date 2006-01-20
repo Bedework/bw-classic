@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<!-- ============= icalendar classes build Targets ============
+     This is the ant build file for the icalendar classes for bedework.
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="bedework.icalendar" default="build">
+  <property name="base.name" value="icalendar"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+    <property name="source.home" location="${this.dir}/src"/>
+  </target>
+
+  <target name="build" depends="init"
+          description="Compile bedework icalendar classes source">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+      <include name="org/bedework/icalendar/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/icalendar/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${ical4j.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.locale.jar}"/>
+      <pathelement location="${org.bedework.common.jar}"/>
+    </path>
+
+    <!-- ==================== Build Target ============================= -->
+
+    <property name="build.jar.file" location="${org.bedework.ical.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+</project>

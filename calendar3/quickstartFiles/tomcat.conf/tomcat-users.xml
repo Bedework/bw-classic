@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<tomcat-users>
+  <role rolename="demo.owner"/>
+  <role rolename="tomcat"/>
+  <role rolename="role1"/>
+  <role rolename="manager"/>
+  <role rolename="demo.user"/>
+  <role rolename="demo.alerts"/>
+  <role rolename="demo.contentadmin"/>
+  <role rolename="admin"/>
+  <role rolename="demo.admin"/>
+  <user username="caluser2" password="uwcal" roles="demo.user"/>
+  <user username="calcontent" password="uwcal" roles="demo.contentadmin"/>
+  <user username="caluser" password="uwcal" roles="demo.user"/>
+  <user username="caluser1" password="uwcal" roles="demo.user"/>
+  <user username="tomcat" password="tomcat" roles="tomcat"/>
+  <user username="caladmin" password="uwcal" roles="demo.admin"/>
+  <user username="calowner" password="uwcal" roles="demo.owner"/>
+  <user username="calowner2" password="uwcal" roles="demo.owner"/>
+  <user username="calowner3" password="uwcal" roles="demo.owner"/>
+  <user username="role1" password="tomcat" roles="role1"/>
+  <user username="both" password="tomcat" roles="tomcat,role1"/>
+  <user username="caluser3" password="uwcal" roles="demo.user"/>
+  <user username="manager" password="VuRyser2" roles="admin,manager"/>
+</tomcat-users>

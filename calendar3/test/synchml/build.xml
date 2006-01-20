@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+
+<!-- ============= Calendar synchml test application ==================
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="cal.synchml.test" default="init" >
+  <property name="synchml.source.home"
+            location="${org.bedework.testsuite.base}/synchml/src"/>
+  <property name="base.name" value="test"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+  </target>
+
+  <!-- =================================================================
+       The "build" target does a build of all test components
+       ================================================================= -->
+
+  <target name="build"
+          depends="init"
+          description="Build calendar synchml test suite jars">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${synchml.source.home}" >
+     <include name="org/bedework/tests/synchml/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/tests/synchml/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${servlet.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${ical4j.jar}"/>
+      <pathelement location="${junit.jar}"/>
+
+      <!-- Include the location of the compiled calendar classes -->
+      <pathelement location="${org.bedework.common.jar}"/>
+      <pathelement location="${org.bedework.calcore.jar}"/>
+      <pathelement location="${org.bedework.calenv.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.calsvci.jar}"/>
+      <pathelement location="${org.bedework.appcommon.jar}"/>
+      <pathelement location="${org.bedework.webcommon.jar}"/>
+      <pathelement location="${org.bedework.synchmlcommon.jar}"/>
+    </path>
+
+    <!-- ==================== Build Target ============================= -->
+
+    <property name="build.jar.file" location="${org.bedework.synchmltest.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+
+  <target name="initRun" depends="build" >
+    <property name="synchmltest.run.base"
+              location="${org.bedework.temp.test.dir}/synchmltest"/>
+
+    <property name="synchmltest.run.lib" location="${synchmltest.run.base}/lib"/>
+
+    <mkdir dir="${synchmltest.run.lib}" />
+
+    <copy todir="${synchmltest.run.lib}" failonerror="false">
+      <fileset dir="${org.bedework.default.lib}" includes="*.jar"/>
+      <fileset dir="${org.bedework.default.lib}/hibernate" includes="*.jar"/>
+      <fileset dir="${struts.dir}" includes="*.jar"/>
+      <fileset dir="${org.bedework.temp.jars}" includes="*.jar"/>
+    </copy>
+    <copy todir="${synchmltest.run.lib}" file="${appserver.jdbcdriver.jar}" />
+
+    <path id="lib.class.path">
+      <fileset dir="${synchmltest.run.lib}">
+        <include name="*.jar"/>
+      </fileset>
+
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${uwcal.env.properties.root}" />
+      <pathelement location="${org.bedework.core.base}/resources/properties" />
+
+      <pathelement location="${org.bedework.testsuite.base}/resources" />
+      <!-- add any properties we might want
+      <pathelement location="${org.bedework.testsuite.base}/properties" /> -->
+    </path>
+  </target>
+
+  <target name="synchmltest.initdb" depends="initRun"
+          description="Init db for synchml test">
+    <pathconvert property="lib.txt.classpath"
+                 refid="lib.class.path"
+                 targetos="unix"  pathsep=":" />
+
+    <echo message="cp: ${lib.txt.classpath}" />
+		<java	classname="org.bedework.tests.synchml.TestSynchml"
+          fork="true"
+          failonerror="true">
+			<classpath refid="lib.class.path" />
+      <arg value="-initdb" />
+		</java>
+  </target>
+
+  <target name="synchmltest" depends="initRun"
+          description="Init db and run synchml test">
+    <pathconvert property="lib.txt.classpath"
+                 refid="lib.class.path"
+                 targetos="unix"  pathsep=":" />
+
+    <echo message="cp: ${lib.txt.classpath}" />
+
+		<java	classname="org.bedework.tests.synchml.TestSynchml"
+          fork="true"
+          failonerror="true">
+			<classpath refid="lib.class.path" />
+      <arg value="-runtest" />
+		</java>
+  </target>
+</project>

@@ -1,0 +1,673 @@
+Todo
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+The EventAnnotation class is causing multiple queries - (polymorphic queries)
+For example, the hql "select count(*) from BwEvents where ..."
+causes 2 queries and a non-unique result exception
+
+Perhaps create a BwEventCommon class then subclass for BwEvent,
+BwEventAnnotation?
+--------------------------------------------------------------------------------
+All times should have a timezone - we need to set the default timezone for the
+system - from an OS value? - or from a config parameter
+
+Floating times should be as the result of an explicit user request.
+--------------------------------------------------------------------------------
+eventIcal
+Need to use action to deliver ical - not stylesheet
+--------------------------------------------------------------------------------
+What was I trying to do with the default access stuff in the principal?
+There must be a better way - or maybe I've got it the wrong way round.
+
+I think I must have decided that the principal was a reasonable place to store
+the default access for that principals locations etc. In effect the principal
+is the container for that stuff.
+--------------------------------------------------------------------------------
+Acl.encode should not encode Ace with inherited = true
+--------------------------------------------------------------------------------
+FiltersRule needs to add Inbox
+CalintfImpl and FiltersRule should use some joint code to create users.
+Try init of empty system then create users through Calintf?
+--------------------------------------------------------------------------------
+lazy="false" is set on calendar objects.
+--------------------------------------------------------------------------------
+Access control not quite right. The requirements are something like:
+
+Changes to access further up the tree should affect subtrees through inheritence
+i.e. on paths
+    /user/douglm/special/calendar1
+    /user/douglm/special/calendar2
+Setting access to read, authenticated on special should allow all authenticated
+users to read calendar1 and calendar2.
+
+However a specific access to calendar2 of none, johnsa should make calendar1
+unreadable to johnsa but not anybody else.
+
+Also a specific access to special of none, johnsa should make calendar1 and
+calendar2 unreadable to johnsa but not anybody else. In addition if I add
+/user/douglm/special/calendar3 it should automatically take the same access
+rights, i.e. johnsa has no access.
+
+What if I already set none,schwag on 'douglm', that is set the default access
+for all my stuff to none, schwag?
+
+It seems that to calculate access we need to go up the tree accumulating
+SPECIFIC access rights till we reach the root - which has the default access.
+
+At that point we determine the access the user has based on those acls.
+
+We should set a flag in the acl indicating if this is an inherited acl. Webdav
+likes to know this. Also when a user is chaging access they want to know if the
+current access is inherited or set in the object. They may want to isolate an
+object from changes above it by explicitly setting access rights.
+
+Also, we need a lot of caching - this is a frequent operation. Within a single
+request, we can build a table of calculated acls with the path (and owner) as
+the key.
+
+Don't forget the case of referenced events. We may be looking in
+    /user/douglm/special/calendar1
+but the actual event may be in
+    /user/johnsa/calendar
+
+(Isn't it the case though, that the path defines the owner)
+
+The frequent searches are going to be for BwCalendar objects. These should be
+cached by hibernate. In additon we should cache all calculated acls for a given
+path, along with a checksum of some kind - the sum of the seq values on the path
+maybe. We could get the whole path - if the sum is the same don't rebuild acl.
+
+Process for checking access becomes something like:
+
+Check the table for the merged access for the current path. For an event the
+path is that of the containing calendar. For calendars it's the path to the
+object itself.
+
+If the path does not exist, create a merged Acl and add it to the table.
+
+For an event if there is any access info in the event create a merged acl.
+For an event with no access info or a calendar just use the path acl.
+
+Check the access against the acl.
+
+This step can be optimised further by keeping the result of checks against that
+path with that principal.
+--------------------------------------------------------------------------------
+Need to ensure update doesn't change the guid
+--------------------------------------------------------------------------------
+Fix the add event link in calendar gui
+--------------------------------------------------------------------------------
+Remove target from BwEvent?
+--------------------------------------------------------------------------------
+Events.getEvent by guid/rid/seq fails because we get same guid in different
+users events. Do we enforce absolute uniqueness - probably
+
+Should probably remove owner from unique key
+--------------------------------------------------------------------------------
+We probably need the equivalent of an event info object at the Calintf level to
+contain transient information about the event. Should hold:
+  a. Overrides
+  b. Allowed access (read/write)
+
+Information can be copied into the EventInfo object.
+--------------------------------------------------------------------------------
+Notes on annotations and overriddes and fetching events.
+Allowing users to annotate shared events introduces enormous complexity to the
+fetching and updating process but seems to be a feature of enterprise systems.
+
+Until we feel this is workable we may want to supress annotations in the user
+interface. HOWEVER, synchml and caldav sort of make this a requirement.
+
+Those protocols have no concept of ownership. If we create a calendar then add
+refeences to events we don't own, either through subscription or adding a
+reference, when we synch the target device will just see a set of events all
+apppearing to be owned by the user. They may go ahead and update such an event
+and we have the choice of preserving those changes as annotations or losing them
+on synch.
+
+We don't need to CREATE annotations on fetch but we do need to FETCH any owned
+by the current user.
+
+I. Single event fetch
+Assume fetch for read:
+
+1. Fetch event. BUT see note about shared annotations. The event may have
+   appeared as the result of an annotation by another user. I don't think we
+   can always know that to be the case - especially if we use other access
+   methods (synchml, caldav)
+2. If event owned by someone else look for an annotation and build proxy if
+   found. NOTE - the recurrence id is null for an annotation of a master event
+
+NOTE - an  annotation of a master will not be reflected in any of the
+instances at this stage.
+
+If it's non recurring or we want master only we're done.
+
+If we're asked to retrieve overrides only we fetch all annotations with
+annotation.master = master. Note that is not the annotation target but the
+ultimate master event we are searching for.
+
+The possibilities:
+A. We're the owner
+  1. Fetch any overrides we own with
+        annotation.master = master and recurrence id not null
+  2. If there are no overrides we're done
+  3. Add proxied overrides to result and return.
+
+B. We're not the owner
+  1. Fetch any overrides we own or owned by the master owner
+        annotation.master = master and recurrence id not null
+  2. If there are no overrides we're done
+  3. Reconstruct proxies for each override and add to result.
+
+It appears the only difference is in the ownership clause.
+
+A third case is we are asked to return all instances associated with an event.
+This may be the case for export of an expanded recurring event. (or maybe
+fetch via caldav?)
+
+We should do the fetch above, then fetch all recurrence instances. Then
+
+For each instance:
+  If there is an overrride create a proxy for the override and add to the result
+  If ther is no override, craete a dummy annotation and proxy and add.
+
+Return the final result.
+
+II Fetching events (date range)
+
+1. Query for events which satisfy the requirements and filter down to events
+   for which we have read access.
+
+2. Query for annotations we own in the range for which master is in
+   the set of retrieved events which we don't own.
+
+   What does this mean? We queried /public/Arts for events none of which we own.
+   We query annotations for the same time range in the same calendar.
+
+3. Build proxies for overriden events
+
+If we got no recurring events in the set we're done so return.
+
+Otherwise:
+1. Fetch any instances in the date range
+
+2. If we were asked for master only return unique master events for which we
+   have access
+
+3. Fetch any overrides with appropriate owneship
+      a. in the same calendar
+      b. with a master in the set of recurring masters we retrieved in step 1
+
+4. Iterate over instances creating dummies for non overriden and attaching
+   overrides where found.
+--------------------------------------------------------------------------------
+Do we share annotations?
+For example:
+We have event A
+
+User P has annotation on A in their calendar. Is that visible to others? I
+believe so - though the referenced event may not be.
+
+User Q sees P:annotation(A) and annotates.
+--------------------------------------------------------------------------------
+Updating an event for which user has read access
+Having fetched it it is up to the client side to create a proxy to an
+unannotated event if the user wants to modify it. So the client does a fetch,
+if we have write access just update the event, if we have read access then
+add an annotation and proxy.
+
+Note that this turns the update into an addition of an annotation at first write.
+--------------------------------------------------------------------------------
+Updates to annotated events by the owner.
+
+Further complications arise if an annotated instance without an override is
+overridden by a user with write access. The original annotation is now invalid.
+First problem is to locate those annotations, second is to figure out what to
+do.
+
+We could add a status to the annotation indicating the underlying object changed.
+Should we retarget the annotation?
+
+In the web client we can warn the user. Send email?
+--------------------------------------------------------------------------------
+Access changed on event.
+If access changed to none the annotated event becomes invisible.
+
+If access changed to write there may still be an anootation attached. We may
+want to allow annotations of events for which user has mod access anyway
+--------------------------------------------------------------------------------
+Add an inbox calendar - do we want outbox? Put proxy in outbox?
+Delete proxy
+--------------------------------------------------------------------------------
+Recurrences - ask that add not be removed - just limit to 1 instance
+     Feb 31st - RFC2445 page 44
+--------------------------------------------------------------------------------
+BwDateTime.makeDtEnd and makeDtStart probably will not work.
+They probably need to set the value after setting the timezone.
+--------------------------------------------------------------------------------
+addEventRef.do
+What form of link do we build. Some form of url to the event
+--------------------------------------------------------------------------------
+Caldav
+** Can set start before end - validate in CalSvc
+
+** Was able to create 2 events - different guids same name
+
+** CaldavComponentNode.init called from lastmod and gets multiple objects
+   besides the inefficiency? We need to handle multiple objects for recurrences
+   A node represents a name so all instances need to be packed into
+   one node - example 7.6.3 shows this
+
+   Filter.query should do this bit I think.
+
+** Need to change back end to support limit-recurrence-set and expand
+   time ranges (why they there anyway)
+
+** getEventsByName needs to get any overrides
+
+** Icalendar.toIcal(Collection) -- add timezones
+
+** What response for mismatched name + guid
+
+** Need to check that a put hasn't changed the calendar (can it?)
+
+** Is 3.1.1.3 working OK? Returning timezone
+
+** Is 3.1.1.4 working OK? Also returning timezone
+
+** Report is ignoring depth
+
+** Initial PUT of recurring event with overrides doesn't work.
+
+** calendar-access in headers
+
+** Was able to create 2 events with same guid and name
+
+** Adding same (recurring) event twice seems to duplicate instances
+   Try exd1 twice
+
+** Hibernate seems to update objects just because they changed. Doesn't need
+   explicit save?
+
+** Message set on bad request exception isn't making it back to client. Try a
+   duplicate guid for example.
+--------------------------------------------------------------------------------
+Caldav question(s)
+
++++
+Is the draft inconsistent (or unclear) around
+4.1 Calendar Object Resource
+
+The vcalendar shown has 3 vevents and 2 uids. Spec say's
+
+Calendar components in a calendar collection that have different UID
+   property values MUST be stored in separate calendar object resources.
+
+So we have 2 resources
+
+5.3.2  says
+
+ The Request-URI on the PUT request MUST include the target collection,
+   where the resource is to be created, plus the name of the resource in
+   the last path segment.
+
+which seems to require 2 urls for each of those resources so they couldn't
+appear in the same vcalendar object?
+
+Or to put it another way caldav requires that each PUT only be for one
+uid?
++++
+What response for attempt to create duplicate guids?
+bad-request + message?
+--------------------------------------------------------------------------------
+Delete in user calendar doesn't work
+--------------------------------------------------------------------------------
+Caused by: java.io.NotSerializableException: org.apache.log4j.Logger
+--------------------------------------------------------------------------------
+Event_Attendees table has wrong column name
+--------------------------------------------------------------------------------
+Recurrences and proxies
+
+1. Don't fetch master event for getEvents - needs a flag on recurrences
+   Fetch if named explicitly - UNLESS we are being asked specifically for
+   unexpanded events
+
+2. Don't use master as first entry
+
+3. Need to fix proxy events.
+--------------------------------------------------------------------------------
+Proxy events and/or annotations
+
+What we're trying to solve here are a number of problems.
+
+First we need to be able to modify an instance of a recurring event without
+losing track of the changes to the master event. Modifying an instance means
+changing the start date for instance but not missing changes to the master event
+attendees.
+
+Another case is very similar - we want to be able to annotate events we don't
+have write access to - for example public events or events owned by a group or
+user.
+
+The mechanism might also be seen as a way of versioning events.
+
+The approach is to create an event object which is empty and point it at the
+target event. It has to be populated with the start date/time and the guid so
+we can find it during the search. The guid is no problem - it never changes, the
+dates are a problem as we'll see later.
+
+Simple fields are relatively simple. For example the description. The process is
+something like -
+
+If the referring event has a value then use that, otherwise use the target event
+value.
+
+A problem occurs when the target event changes. Without tracking all changes to
+the target we can't tell the user what changed. For example, user A annotates
+the description only, then user B changes the target summary then there is no
+need to notify user A. On the other hand if user B changes the description maybe
+we should tell user A.
+
+Collections are harder because we need to track changes to individual elements
+as well as additions and deletions from the collection.
+
+Probably we ought to save only the changes to collections and apply them at each
+retrieval. That requires a field in the collection elements flagging that
+element as a change.
+
+Some implications:
+When we update an event - if the event object is an annotation we need to
+compare every field and see if it differs from the target. If not don't set the
+annotation. The BwEventProxy object will do that for us.
+--------------------------------------------------------------------------------
+Timezones:
+getMergedTimezones might be wrong - seems to assume at least a match in public
+
+Need a two stage lookup in the timezones table
+  1. static public timezone table
+  2. non-static user timezone table
+
+User lookup needs to be the owner of the event which contains the timezone. All
+timezone info can be regarded as public I guess.
+
+We should do a 3 stage lookup.
+  1. In current user's table
+  2. In event owners table if different
+  3. In system table.
+
+Also, for public events don't check any user table?
+
+Is this ok? user was douglm
+     [java] 10:48:52,041 DEBUG [CalSvcTimezones] trace: find timezone with id US/Eastern for owner null
+     [java] 10:48:52,049 DEBUG [CalSvcTimezones] trace: register timezone with id US/Eastern
+     [java] 10:48:52,049 DEBUG [IcalTranslator] Timezone already in db
+
+--------------------------------------------------------------------------------
+Status property
+Use it in the client(s).
+--------------------------------------------------------------------------------
+Use guid (+recurrenceid) to fetch events
+--------------------------------------------------------------------------------
+Fix up messages.
+--------------------------------------------------------------------------------
+Users pluggable interface
+--------------------------------------------------------------------------------
+Preferences - mod/etc
+Move some deploy time configuration stuff into pref.
+--------------------------------------------------------------------------------
+Quotas and limits - entity size and total
+limit x-properties size?
+--------------------------------------------------------------------------------
+Manage calendars.
+
+Use /calendar/initAdd to specify parent
+http://localhost:8080/caladmin/calendar/initAdd.do?calId=123
+
+Then
+http://localhost:8080/caladmin/calendar/update.do?...
+with calendar fields.
+
+To update go to
+http://localhost:8080/caladmin/calendar/fetchForUpdate.do?calId=123
+then on to update
+
+Deletion should start off as update then on to
+http://localhost:8080/caladmin/calendar/delete.do?...
+
+**********************************
+Check that access is limited to calendars to which auth user has at least
+write-content access
+
+Looks like we need to give super users specific access to the calendars.
+
+Also delete needs to clean up beforehand
+  - remove any subscriptions
+  - which means remove subscriptions from views
+--------------------------------------------------------------------------------
+Do add/remove views in admin (and user)
+
+url of form
+http://localhost:8080/caladmin/addView.do?name=All
+--------------------------------------------------------------------------------
+Do add/remove/mod subscriptions
+
+url of form
+http://localhost:8080/ucal/subscribe.do?calid=16&name=Arts[&email=y/n][&freebusy=y/n][&view=Arts|addToDefaultView=y/n]
+
+http://localhost:8080/ucal/unsubscribe.do?name=Arts
+This needs to remove subscription from all views
+--------------------------------------------------------------------------------
+Simplify public events user/owner stuff
+It all seems over complicated. For public events we have 3 users
+1. The authenticated user - for access checks
+2. The owner for objects created by that user - e.g. an admin group
+3. The calendar system owner - for global entities such as prefs
+
+For a personal user they are all the same thing. I think 1 and 2 could become
+the same thing
+
+For public calendars 3 is the owner of the preferences object which defines the
+preferred view etc and also the view and subscription objects.
+--------------------------------------------------------------------------------
+A number of classes need to be marked serializable
+
+Particularly HibSession
+--------------------------------------------------------------------------------
+Argentina holidays has a bunch of x-properties
+--------------------------------------------------------------------------------
+Uploads sort of work. Need to allow specification of receiving calendar.
+--------------------------------------------------------------------------------
+Access control testing
+Caldav access reports probably need fixing
+--------------------------------------------------------------------------------
+ * <p>Some notes on DTSTART and DTEND from caldav mail-list exchanges
+ * <pre>
+ * --------------------------------------------------------------------
+ * rfc2445 is unclear if the DTEND is inclusive or exclusive when both the
+ * DTSTART and DTEND are DATEs.
+ * --------------------------------------------------------------------
+ * Afaik RFC 2445 does not say anything about allday events, but in all
+ * implementations I have seen so far the DTEND is exclusive.
+ *
+ * Example for a one day allday event on Jul 15:
+ *
+ * DTSTART;VALUE=DATE:20050715
+ * DTEND;VALUE=DATE:20050716
+ *
+ * Think of this being another form for midnight to midnight local time:
+ *
+ * DTSTART:20050715T000000
+ * DTEND:20050716T000000
+ *
+ * Carsten
+ * --------------------------------------------------------------------
+ * To find the language about this, you have to look in the (not
+ * intuitively located) VEVENT definition.  It says:
+ *
+ * The "DTSTART" property for a "VEVENT" specifies the inclusive start
+ *  of the event. For recurring events, it also specifies the very first
+ *  instance in the recurrence set. The "DTEND" property for a "VEVENT"
+ *  calendar component specifies the non-inclusive end of the event.
+ *
+ * It doesn't say anything specific about DATE valued events, so DTEND is
+ * always exclusive.
+ *
+ * In practice, Apple's iCal always exports one-day all-day events with an
+ * explicit DTEND of the day after the start.  I scratched my head about
+ * that for a while, too, till I looked in VEVENT.
+ *
+ * Sincerely, Jeffrey Harris
+ * --------------------------------------------------------------------
+ * Which also makes sense with the DATETIME case (i.e. a 'ponctual' event):
+ * "For cases where a "VEVENT" calendar component
+ *    specifies a "DTSTART" property with a DATE-TIME data type but no
+ *    "DTEND" property, the event ends on the same calendar date and time
+ *    of day specified by the "DTSTART" property.
+ *
+ * > In practice, Apple's iCal always exports ....
+ *
+ *
+ * I'm not sure it's 'always'. I think that with our implementation you  might get in
+ * some cases a  one-day DATE valued event without a DTEND.
+ * --------------------------------------------------------------------
+ * Then please see the following mail by Frank Dawson, who is one of the original
+ * authors of rfc 2445:
+ * http://www.imc.org/ietf-calendar/archive1/msg03648.html
+ *
+ * In particular:
+ * >I agree that the RFC does not seem very clear for the DTEND of an event.
+ * >A clarificaiton on the meaning of the term "non-inclusive" would be good.
+ * >Editors?
+ * >I would think that if an event had DTSTART:199900801 and DTEND:19990802
+ * >then that would equal 2 full days of busy time
+ * (from 19990801000000Z to 19990802235959.  Correct?
+ *
+ * We explicitly got feedback to add the "non-inclusive" term.
+ * It means up to "T235959". Yes, you are correct in your interpretation.
+ * Similarly, a DTSTART;VALUE=DATE:19990730 means "-T000000" to "-T235959".
+ *
+ * I found this mail only recently, and so far (from KDE 3.1 until 3.4.2) we
+ * (Korganizer and Kontact resp.)also interpreted non-inclusive to mean that
+ * DTEND should be the first date after the event. A while ago I also talked
+ * with one of the evolution developers and he agreed that if Frank's mail is
+ * true, we might have misunderstood rfc 2445.
+ *
+ * So, the question is now what to do about this. Shall we stick to the
+ * interpretation that "non-inclusive" means that DTEND needs to be first date
+ * after the item? Or shall we use the correct interpretation from now on?
+ *
+ * The reason I'm asking is that we are releasing KDE 3.5 shortly, and currently
+ * I fixed it to use Frank's interpretation.
+ * --------------------------------------------------------------------
+ *
+ * Wow.  You're right, it looks like their intention was for non-inclusive
+ * to mean not including the last minute of but including the rest of the
+ * day.  That's sure not the way I read that language, so lets come up with
+ * better language for 2445bis as Lisa suggests.
+ *
+ * It seems to me that there's lots of iCal data out there with the
+ * "doesn't include the whole day" interpretation, I suspect Outlook does
+ * the same thing.  So I'd suggest we change the language in 2445bis to say
+ * something like:
+ *
+ * "When a DATE value is used for DTEND no time during the given day is
+ * included in the component, so
+ *
+ * DTSTART;VALUE=DATE:20050101
+ * DTEND;VALUE=DATE:20050102
+ *
+ * represents a 24 hour period."
+ *
+ * It's too bad there's data in the wild that means this, I really think
+ * dates for dtends would adhere to common usage better if they were
+ * inclusive, but ce la vies.
+ *
+ * Sincerely, Jeffrey Harris
+ * --------------------------------------------------------------------
+
+But there are other places in rfc 2445 which suggest that the DTEND is the
+last date of the event:
+
+Sec 4.6.1: "The anniversary type of
+   "VEVENT" can span more than one date (i.e, "DTEND" property value is
+   set to a calendar date after the "DTSTART" property value)."
+
+In particular that last sentence says that it's a multi-day event if DTEND is
+not eqal to DTSTART, so your example from below is a two-day event.
+
+Sec 4.6.1: "For cases where a "VEVENT" calendar component specifies a "DTSTART"
+   property with a DATE data type but no "DTEND" property, the events
+   non-inclusive end is the end of the calendar date specified by the
+   "DTSTART" property.
+
+This last sentence is a strong indication that "non-inclusive" was intended to
+be understood the way Frank explained.
+
+The problem then is that DTEND and DURATION are not required. If you have only
+a DTSTART, e.g.
+
+DTSTART;VALUE=DATE:20050101
+
+the above quote says that this is equivalent to
+
+DTSTART;VALUE=DATE:20050101
+DTEND;VALUE=DATE:20050101
+
+How would you have to understand this? And what would be the difference to
+
+DTSTART;VALUE=DATE:20050101
+DTEND;VALUE=DATE:20050102
+
+Cheers, Reinhold
+ * --------------------------------------------------------------------
+If we followed what I believe iCal is doing (and what I have done in
+Chandler, following iCal, but Chandler's not shipping so it can change
+however we want), there would be no semantic difference between the
+three examples above.
+
+I'll freely admit I have lots of special casing in Chandler to deal with
+this oddity, I'd be delighted to get rid of it.  Unfortunately, I think
+given how widespread the above (admittedly not the intended by the
+authors) interpretation is in actual use, we need to work with it for
+VERSION:2.0 iCalendar.
+
+We should probably find out what different implementations are doing
+what with VALUE=DATE events at the upcoming CalConnect...  Perhaps if
+it's just iCal, we could special case anything old iCal data, but that
+sounds like a nightmare to me.
+
+Sincerely, Jeffrey
+ * --------------------------------------------------------------------
+ I treat DTEND as always being exclusive in iCalendar data - even for date-only
+ values. However, when a user edits or creates an 'all-day' event, the
+ displayed end time is actually the inclusive end. So I basically map between
+ inclusive/exclusive values for display purposes because I found inclusive
+ end to be more intuitive for users. i.e it makes more sense that a two day
+ event starts on Monday and ends on Tuesday, than it does to start on Monday
+ and end on Wednesday (the exclusive option).
+
+Cyrus Daboo
+ * --------------------------------------------------------------------
+Unfortunately it's not just iCal. Just to name a few others that do the same
+thing: Evolution, Sunbird, Outlook/MSN and the next release of the Scalix
+server. Some vendors (Microsoft for example) also introduced their own property
+to explicitely mark an event as all-day.
+ * --------------------------------------------------------------------
+ Where does it leave us?
+
+ DATE-TIME start, no end        --  zero time at indicated time
+ DATE-TIME start, DATE end      --  is that allowed, means remainder of day?
+ DATE-TIME start, DATE-TIME end --  from start, up to, not including end
+ DATE start                     --  all day event
+ DATE start, DATE end           --  end - start + 1 all day(s)
+ * --------------------------------------------------------------------
+ * </pre>
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+

@@ -1,0 +1,47 @@
+<!-- This is the build.xml for the bedework common classes component.
+
+     Authors: Mike Douglass   douglm@rpi.edu
+-->
+
+<project name="common.compile" default="build" >
+  <property name="base.name" value="common"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+    <property name="source.home" location="${this.dir}/src"/>
+  </target>
+
+  <target name="build" depends="init"
+          description="Compile bedework common Java sources">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+     <include name="edu/rpi/sss/util/**/*.java"/>
+      <include name="edu/rpi/cct/uwcal/**/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="edu/rpi/sss/util/**/*.class"/>
+      <include name="edu/rpi/cct/uwcal/**/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${servlet.jar}"/>
+      <pathelement location="${struts.jar}"/>
+      <pathelement location="${fop.jar}"/>
+      <pathelement location="${avalon.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${logkit.jar}"/>
+      <pathelement location="${jtidy.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+    </path>
+
+    <!-- ==================== Build Target ============================= -->
+
+    <property name="build.jar.file" location="${org.bedework.common.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+</project>

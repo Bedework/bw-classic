@@ -1,0 +1,14 @@
+DESCRIPTION: Test exdate - add event
+
+EXPECT-RESPONSE: 201
+
+METHOD: PUT
+
+AUTH: true
+
+URL: calendar/exdate.ics
+
+CONTENTTYPE: text/calendar
+
+CONTENTFILE: exd1.ics
+

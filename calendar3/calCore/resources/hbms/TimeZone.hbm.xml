@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+     Object representing timezone information
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.BwTimeZone"
+         table="timezones">
+    <id name="id" type="integer" column="id" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+    <property name="tzid" type="string" >
+      <column name="tzid" not-null="true" />
+    </property>
+
+    <many-to-one name="owner"
+                 class="org.bedework.calfacade.BwUser"
+                 unique="true" >
+      <column name="ownerid" not-null="true" index="timezoneowner" />
+    </many-to-one>
+
+    <property name="publick" type="true_false" >
+      <column name="publick" not-null="true" />
+    </property>
+
+    <property name="vtimezone" column="vtimezone" type="string"/>
+    <property name="jtzid" column="jtzid" type="string"/>
+  </class>
+
+  <!-- =================================================================
+       Timezone queries
+       ================================================================= -->
+
+  <query name="getPublicTimezones"><![CDATA[
+    from org.bedework.calfacade.BwTimeZone as tz
+      where tz.publick = true order by tz.tzid
+  ]]></query>
+
+  <query name="getUserTimezones"><![CDATA[
+    from org.bedework.calfacade.BwTimeZone as tz
+      where tz.publick = false and tz.owner = :owner
+  ]]></query>
+
+  <query name="getMergedTimezones"><![CDATA[
+    from org.bedework.calfacade.BwTimeZone as tz
+      where (tz.publick = true and not exists
+        (from org.bedework.calfacade.BwTimeZone as utz
+            where tz.publick = false and utz.owner = :owner and utz.tzid = tz.tzid)) or
+            (tz.publick = false and tz.owner = :owner)
+      order by tz.tzid
+  ]]></query>
+
+  <query name="getTzByTzid"><![CDATA[
+    from org.bedework.calfacade.BwTimeZone as tz
+      where tz.tzid = :tzid and ((tz.publick = true) or
+                                  (tz.publick = false and tz.owner = :owner))
+  ]]></query>
+
+  <query name="getPublicTzByTzid"><![CDATA[
+    from org.bedework.calfacade.BwTimeZone as tz
+      where tz.tzid = :tzid and tz.publick = true
+  ]]></query>
+
+  <query name="deleteAllPublicTzs"><![CDATA[
+    delete org.bedework.calfacade.BwTimeZone
+      where publick = true
+  ]]></query>
+</hibernate-mapping>
+
