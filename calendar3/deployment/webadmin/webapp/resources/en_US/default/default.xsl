@@ -162,7 +162,7 @@
             <xsl:when test="/bedeworkadmin/page='deleteLocationConfirm'">
               <xsl:call-template name="deleteLocationConfirm"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='modCalendar'">
+            <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='deleteCalendarConfirm'">
               <xsl:apply-templates select="/bedeworkadmin/calendars"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
@@ -1228,6 +1228,9 @@
             <xsl:when test="/bedeworkadmin/page='calendarList'">
               <xsl:call-template name="calendarList"/>
             </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='deleteCalendarConfirm'">
+              <xsl:apply-templates select="/bedeworkadmin/currentCalendar" mode="deleteCalendarConfirm"/>
+            </xsl:when>
             <xsl:when test="/bedeworkadmin/creating='true'">
               <xsl:apply-templates select="/bedeworkadmin/currentCalendar" mode="addCalendar"/>
             </xsl:when>
@@ -1314,12 +1317,9 @@
       <table border="0" width="100%" id="submitTable">
         <tr>
           <td>
-            <input type="submit" name="addCalendar" value="Add Calendar" class="padRight"/>
+            <input type="submit" name="addCalendar" value="Add Calendar/Folder" class="padRight"/>
             <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
             <input type="reset" value="Clear" class="padRight"/>
-          </td>
-          <td align="right">
-            <input type="submit" name="delete" value="Delete Calendar"/>
           </td>
         </tr>
       </table>
@@ -1347,6 +1347,12 @@
           <th>Name:</th>
           <td>
             <xsl:value-of select="name"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Mailing List ID:</th>
+          <td>
+            <xsl:value-of select="mailListId"/>
           </td>
         </tr>
         <tr>
@@ -1384,12 +1390,26 @@
       <table border="0" width="100%" id="submitTable">
         <tr>
           <td>
-            <input type="submit" name="updateCalendar" value="Update Calendar" class="padRight"/>
+            <xsl:choose>
+              <xsl:when test="calendarCollection='true'">
+                <input type="submit" name="updateCalendar" value="Update Calendar" class="padRight"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="updateCalendar" value="Update Folder" class="padRight"/>
+              </xsl:otherwise>
+            </xsl:choose>
             <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
             <input type="reset" value="Reset" class="padRight"/>
           </td>
           <td align="right">
-            <input type="submit" name="delete" value="Delete Calendar"/>
+            <xsl:choose>
+              <xsl:when test="calendarCollection='true'">
+                <input type="submit" name="delete" value="Delete Calendar"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="delete" value="Delete Folder"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
       </table>
@@ -1415,6 +1435,72 @@
         </ul>
       </li>
     </ul>
+  </xsl:template>
+
+  <xsl:template match="currentCalendar" mode="deleteCalendarConfirm">
+    <xsl:choose>
+      <xsl:when test="calendarCollection='true'">
+        <h3>Delete Calendar</h3>
+        <p>
+          The following calendar will be deleted.  Continue?
+        </p>
+      </xsl:when>
+      <xsl:otherwise>
+        <h3>Delete Folder</h3>
+        <p>
+          The following folder <em>and all its contents</em> will be deleted.
+          Continue?
+        </p>
+      </xsl:otherwise>
+    </xsl:choose>
+
+    <form name="delCalForm" action="{$calendar-delete}">
+      <table class="eventFormTable">
+        <tr>
+          <th>Path:</th>
+          <td>
+            <xsl:value-of select="path"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Name:</th>
+          <td>
+            <xsl:value-of select="name"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Summary:</th>
+          <td>
+            <xsl:value-of select="summary"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Description:</th>
+          <td>
+            <xsl:value-of select="desc"/>
+          </td>
+        </tr>
+      </table>
+
+      <table border="0" width="100%" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
+          </td>
+          <td align="right">
+            <xsl:choose>
+              <xsl:when test="calendarCollection='true'">
+                <input type="submit" name="delete" value="Yes: Delete Calendar!"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="delete" value="Yes: Delete Folder!"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+      </table>
+    </form>
+
   </xsl:template>
 
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->

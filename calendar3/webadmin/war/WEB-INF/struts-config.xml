@@ -250,6 +250,7 @@
                validate="false">
       <forward name="inUse" path="/calendar/showReferenced.rdo" redirect="true" />
       <forward name="notFound" path="/calendar/showUpdateList.rdo" redirect="true" />
+      <forward name="cancelled" path="/calendar/showUpdateList.rdo" redirect="true" />
       <forward name="continue" path="/calendar/showUpdateList.rdo" redirect="true" />
     </action>
 
@@ -277,6 +278,7 @@
                scope="session"
                validate="false">
       <forward name="continue" path="/calendar/showUpdateList.rdo" redirect="true" />
+      <forward name="cancelled" path="/calendar/showUpdateList.rdo" redirect="true" />
       <forward name="retry" path="/calendar/showModForm.rdo" redirect="true" />
       <forward name="delete" path="/calendar/showDeleteConfirm.rdo" redirect="true" />
     </action>

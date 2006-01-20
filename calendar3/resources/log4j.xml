@@ -192,6 +192,11 @@
       <priority value="INFO"/>
    </category>
 
+   <!-- hibernate is noisy too -->
+   <category name="org.hibernate">
+      <priority value="INFO"/>
+   </category>
+
    <!-- Set rpi categories -->
 <!--
    <category name="edu.rpi">
