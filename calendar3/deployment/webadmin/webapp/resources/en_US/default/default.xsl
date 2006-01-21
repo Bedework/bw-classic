@@ -1810,8 +1810,16 @@
         </td>
       </tr>
     </table>
-
-    <p><a href="{$view-fetch}">return to views listing</a></p>
+    <table border="0" width="100%" id="submitTable">
+      <tr>
+        <td>
+          <input type="button" name="return" value="Return to Views Listing" class="padRight" onclick="javascript:location.replace('{$view-fetch}')"/>
+        </td>
+        <td align="right">
+          <input type="button" name="delete" value="Delete View" onclick="{$view-fetch}"/>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
   <!--+++++++++++++++ Timezones ++++++++++++++++++++-->
