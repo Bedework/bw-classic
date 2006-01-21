@@ -344,6 +344,13 @@ table.eventFormTable .durationSpacerText {
   border-right: 1px solid #aaa;
   width: 200px;
 }
+#viewsTable table.subscriptionsListSubs {
+  text-align: right;
+  width: 200px;
+}
+#viewsTable table td.arrows {
+  width: 15px;
+}
 p.note {
   margin: 0;
   padding: 0;

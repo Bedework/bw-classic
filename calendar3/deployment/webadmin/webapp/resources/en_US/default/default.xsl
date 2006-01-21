@@ -78,7 +78,7 @@
   <xsl:variable name="calendar-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
   <xsl:variable name="calendar-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calendar/fetchForUpdate/a/@href"/><!-- used -->
   <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/><!-- used -->
-  <!-- subs and views are all good - no need to clean any of these out -->
+  <!-- subs and views are all good - no need to clean any of these out  -->
   <xsl:variable name="subscriptions-fetch" select="/bedeworkadmin/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
   <xsl:variable name="subscriptions-initAdd" select="/bedeworkadmin/urlPrefixes/subscriptions/initAdd/a/@href"/>
@@ -1766,7 +1766,7 @@
         <td class="subs">
           <h3>Available Subscriptions:</h3>
 
-          <table class="subscriptionsList">
+          <table class="subscriptionsListSubs">
             <xsl:for-each select="/bedeworkadmin/subscriptions/subscription">
               <xsl:sort select="name" order="ascending" case-order="upper-first"/>
               <xsl:if test="not(/bedeworkadmin/views/view/subscriptions/subscription/name=name)">
@@ -1774,7 +1774,7 @@
                   <td>
                     <xsl:value-of select="name"/>
                   </td>
-                  <td>
+                  <td class="arrows">
                     <xsl:variable name="subAddName" select="name"/>
                     <a href="{$view-update}&amp;name={$viewName}&amp;add={$subAddName}">
                       <img src="{$resourcesRoot}/resources/arrowRight.gif"
@@ -1789,11 +1789,11 @@
         </td>
         <td class="view">
           <h3>Active Subscriptions:</h3>
-          <table class="subscriptionsList">
+          <table class="subscriptionsListView">
             <xsl:for-each select="/bedeworkadmin/views/view/subscriptions/subscription">
               <xsl:sort select="name" order="ascending" case-order="upper-first"/>
               <tr>
-                <td>
+                <td class="arrows">
                   <xsl:variable name="subRemoveName" select="name"/>
                   <a href="{$view-update}&amp;name={$viewName}&amp;remove={$subRemoveName}">
                     <img src="{$resourcesRoot}/resources/arrowLeft.gif"
