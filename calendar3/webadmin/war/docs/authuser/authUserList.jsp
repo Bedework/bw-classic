@@ -14,13 +14,7 @@
 <authUsers>
   <logic:iterate id="authUser" name="peForm" property="authUsers" >
     <authUser>
-      <bean:define id="account" name="authUser" property="user.account"/>
-      <% rpitemp="/authuser/fetchForUpdate.do?editAuthUserId=" + account;  %>
-      <account>
-        <genurl:link page="<%=rpitemp%>">
-          <bean:write name="authUser" property="user.account" />
-        </genurl:link>
-      </account>
+      <account><bean:write name="authUser" property="user.account" /></account>
       <superUser><bean:write name="authUser" property="superUser"/></superUser>
       <alertUser><bean:write name="authUser" property="alertUser"/></alertUser>
       <publicEventUser><bean:write name="authUser" property="publicEventUser"/></publicEventUser>

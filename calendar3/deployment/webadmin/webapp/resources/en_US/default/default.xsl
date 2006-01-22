@@ -94,7 +94,7 @@
   <xsl:variable name="authuser-showModForm" select="/bedeworkadmin/urlPrefixes/authuser/showModForm/a/@href"/>
   <xsl:variable name="authuser-showUpdateList" select="/bedeworkadmin/urlPrefixes/authuser/showUpdateList/a/@href"/>
   <xsl:variable name="authuser-initUpdate" select="/bedeworkadmin/urlPrefixes/authuser/initUpdate/a/@href"/>
-  <xsl:variable name="authuser-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/authuser/fetchForUpdate/a/@href"/>
+  <xsl:variable name="authuser-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/authuser/fetchForUpdate/a/@href"/><!-- used -->
   <xsl:variable name="authuser-update" select="/bedeworkadmin/urlPrefixes/authuser/update/a/@href"/>
   <xsl:variable name="admingroup-showModForm" select="/bedeworkadmin/urlPrefixes/admingroup/showModForm/a/@href"/>
   <xsl:variable name="admingroup-showModMembersForm" select="/bedeworkadmin/urlPrefixes/admingroup/showModMembersForm/a/@href"/>
@@ -1827,18 +1827,19 @@
   <!--+++++++++++++++ Authuser ++++++++++++++++++++-->
   <xsl:template name="authUserList">
     <h2>Modify Users</h2>
-    <p>Click on the user that you would like to update:</p>
 
     <table id="commonListTable">
       <tr>
-        <th>Userid</th>
+        <th>UserId</th>
         <th>Roles</th>
+        <th colspan="2">update:</th>        
       </tr>
 
       <xsl:for-each select="bedeworkadmin/authUsers/authUser">
+        <xsl:sort select="account" order="ascending" case-order="upper-first"/>
         <tr>
           <td>
-            <xsl:copy-of select="account/*"/>
+            <xsl:value-of select="account"/>
           </td>
           <td>
             <xsl:if test="publicEventUser='true'">
@@ -1850,6 +1851,17 @@
             <xsl:if test="alertUser='true'">
               alert; <xsl:text> </xsl:text>
             </xsl:if>
+          </td>
+          <td>
+            <xsl:variable name="account" select="account"/>
+            <a href="{$authuser-fetchForUpdate}&amp;editAuthUserId={$account}">
+              roles
+            </a>
+          </td>          
+          <td>
+            <a href="">
+              preferences
+            </a>
           </td>
         </tr>
       </xsl:for-each>
