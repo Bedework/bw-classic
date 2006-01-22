@@ -746,6 +746,7 @@
                name="peForm"
                scope="session"
                validate="false">
+      <forward name="cancelled" path="/authuser/showUpdateList.rdo" redirect="true" />
       <forward name="continue" path="/authuser/getAuthUsers.do" redirect="true" />
       <forward name="retry" path="/authuser/showModForm.rdo" />
     </action>

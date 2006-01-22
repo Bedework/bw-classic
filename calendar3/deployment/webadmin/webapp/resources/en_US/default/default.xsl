@@ -315,24 +315,20 @@
         <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
           <li>
             <a href="{$authuser-initUpdate}" >
-              List authorised users
+              Manage authorised users
             </a>
           </li>
         </xsl:if>
         <xsl:if test="/bedeworkadmin/userInfo/adminGroupMaintOk='true'">
           <li>
-            Admin Groups:
-            <a href="{$admingroup-initAdd}">
-              Add
-            </a> |
             <a href="{$admingroup-initUpdate}">
-              Edit / Delete
+              Manage administrative groups
             </a>
           </li>
         </xsl:if>
         <li>
-          <a href="{$admingroup-switch}" >
-            Choose group...
+          <a href="{$admingroup-switch}">
+            Choose/change group...
           </a>
         </li>
       </ul>
@@ -1830,7 +1826,7 @@
 
   <!--+++++++++++++++ Authuser ++++++++++++++++++++-->
   <xsl:template name="authUserList">
-
+    <h2>Modify Users</h2>
     <p>Click on the user that you would like to update:</p>
 
     <table id="commonListTable">
@@ -1861,7 +1857,7 @@
   </xsl:template>
 
   <xsl:template name="modAuthUser">
-
+    <h2>Update User</h2>
     <xsl:variable name="modAuthUserAction" select="/bedeworkadmin/formElements/form/@action"/>
     <form action="{$modAuthUserAction}" method="post">
       <table id="eventFormTable">
@@ -1945,15 +1941,16 @@
       </table>
       <br />
 
-      <input type="submit" name="modAuthUser" value="Update"/>
+      <input type="submit" name="modAuthUser" value="Update" class="padRight"/>
       <input type="reset" value="Reset"/>
+      <input type="submit" name="cancelled" value="Cancel"/>
     </form>
   </xsl:template>
 
 
   <!--+++++++++++++++ Admin Groups ++++++++++++++++++++-->
-
   <xsl:template name="listAdminGroups">
+    <h2>Modify Groups</h2>
     <form name="adminGroupMembersForm" method="post" action="{$admingroup-initUpdate}">
       <xsl:choose>
         <xsl:when test="/bedeworkadmin/groups/showMembers='true'">
@@ -1973,7 +1970,11 @@
 
     <p>Click on the group name to modify the group owner or description.<br/>
     Click "add/remove members" to modify group membership.</p>
-
+    <p>
+      <strong>
+        <a href="{$admingroup-initAdd}">Add a new group</a>
+      </strong>
+    </p>
     <table id="commonListTable">
       <tr>
         <th>Name</th>
@@ -2034,7 +2035,14 @@
   </xsl:template>
 
   <xsl:template name="modAdminGroup">
-
+    <xsl:choose>
+      <xsl:when test="/bedeworkadmin/creating = 'true'">
+        <h2>Add Group</h2>
+      </xsl:when>
+      <xsl:otherwise>
+        <h2>Modify Group</h2>
+      </xsl:otherwise>
+    </xsl:choose>
     <form name="peForm" method="post" action="{$admingroup-update}">
       <table id="adminGroupFormTable">
         <tr>
