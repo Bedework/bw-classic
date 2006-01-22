@@ -16,11 +16,11 @@
     <alerts><html:checkbox property="editAuthUserAlerts" /></alerts>
     <publicEvents><html:checkbox property="editAuthUserPublicEvents" /></publicEvents>
     <superUser><html:checkbox property="editAuthUserSuperUser" /></superUser>
-    <email><html:text property="editAuthUser.email" size="30" /></email>
-    <phone><html:text property="editAuthUser.phone" size="30" /></phone>
-    <dept><html:text property="editAuthUser.dept" size="30" /></dept>
-    <lastname><html:text property="editAuthUser.lastname" size="30" /></lastname>
-    <firstname><html:text property="editAuthUser.firstname" size="30" /></firstname>
+    <email></email><!-- should come from a directory, not internal -->
+    <phone></phone><!-- should come from a directory, not internal -->
+    <dept></dept><!-- should come from a directory, not internal -->
+    <lastname></lastname><!-- should come from a directory, not internal -->
+    <firstname></firstname><!-- should come from a directory, not internal -->
 
     <submitButtons>
       <button type="update">modAuthUser</button>
