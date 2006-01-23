@@ -73,7 +73,7 @@ import javax.servlet.http.HttpServletResponse;
  * <p>Forwards to:<ul>
  *      <li>"error"        some form of fatal error.</li>
  *      <li>"noAccess"     user not authorised.</li>
- *      <li>"notFound"     no such subscription.</li>
+ *      <li>"notFound"     no such user.</li>
  *      <li>"continue"     continue on to update page.</li>
  * </ul>
  *
