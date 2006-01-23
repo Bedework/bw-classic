@@ -62,6 +62,8 @@ import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwOrganizer;
 import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.BwSponsor;
+import org.bedework.calfacade.BwSystem;
+import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwUserInfo;
 import org.bedework.calfacade.filter.BwFilter;
@@ -143,6 +145,10 @@ public class HibRestore implements RestoreIntf {
     ps.executeUpdate();
     ps.close();
 
+    ps = conn.prepareStatement("delete from bedework_settings");
+    ps.executeUpdate();
+    ps.close();
+
     ps = conn.prepareStatement("delete from adminGroupMembers");
     ps.executeUpdate();
     ps.close();
@@ -210,7 +216,7 @@ public class HibRestore implements RestoreIntf {
     ps = conn.prepareStatement("delete from event_categories");
     ps.executeUpdate();
 
-    if (globals.toHibernate) {
+    if (globals.from2p3px) {
       ps = conn.prepareStatement("delete from filters");
       ps.executeUpdate();
       ps.close();
@@ -280,7 +286,7 @@ public class HibRestore implements RestoreIntf {
     ps.executeUpdate();
     ps.close();
 
-    if (!globals.toHibernate) {
+    if (!globals.from2p3px) {
       ps = conn.prepareStatement("delete from lastmods");
       ps.executeUpdate();
       ps.close();
@@ -307,6 +313,14 @@ public class HibRestore implements RestoreIntf {
     }
   }
 
+  public void restoreSyspars(BwSystem o) throws Throwable {
+    openSess();
+
+    sess.save(o);
+
+    closeSess();
+  }
+
   /* (non-Javadoc)
    * @see org.bedework.tools.dumprestore.restore.RestoreIntf#restoreUser(org.bedework.calfacade.BwUser)
    */
@@ -331,13 +345,21 @@ public class HibRestore implements RestoreIntf {
     closeSess();
   }
 
+  public void restoreTimezone(BwTimeZone o) throws Throwable {
+    openSess();
+
+    sess.save(o);
+
+    closeSess();
+  }
+
   /* (non-Javadoc)
    * @see org.bedework.tools.dumprestore.restore.RestoreIntf#restoreAdminGroup(org.bedework.calfacade.svc.BwAdminGroup)
    */
   public void restoreAdminGroup(BwAdminGroup o) throws Throwable {
     openSess();
 
-    if (globals.toHibernate) {
+    if (globals.from2p3px) {
       // No id assigned
       sess.save(o);
     } else {

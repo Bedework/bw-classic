@@ -77,7 +77,7 @@ public class AuthUserRule extends EntityRule {
       if (globals.rintf != null) {
         globals.rintf.restoreAuthUser(au);
 
-        if (globals.toHibernate && (globals.userInfo != null)) {
+        if (globals.from2p3px && (globals.userInfo != null)) {
           globals.userInfo.setUser(au.getUser());
           globals.rintf.restoreUserInfo(globals.userInfo);
           globals.userInfo = null;

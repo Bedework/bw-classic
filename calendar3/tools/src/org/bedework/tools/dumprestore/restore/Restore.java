@@ -53,6 +53,7 @@
 */
 package org.bedework.tools.dumprestore.restore;
 
+import org.bedework.appcommon.TimeZonesParser;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.svc.BwAdminGroup;
@@ -62,6 +63,7 @@ import org.bedework.calfacade.svc.BwView;
 import org.bedework.tools.dumprestore.Defs;
 import org.bedework.tools.dumprestore.restore.rules.RestoreRuleSet;
 
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.Collection;
 import java.util.Iterator;
@@ -120,13 +122,36 @@ public class Restore implements Defs {
    *  =================================================================== */
 
   void open() throws Throwable {
-    globals.timezones = new TimezonesImpl(false, globals.debug);
-
     if (globals.rintf == null) {
 //      globals.rintf = new JdbcRestore();
       globals.rintf = new HibRestore(globals.debug);
       globals.rintf.init(url, driver, id, pw, dbType, globals);
       globals.rintf.open();
+    }
+
+    globals.timezones = new TimezonesImpl(globals.debug,
+                                          globals.getPublicUser(),
+                                          globals.rintf);
+
+    if (globals.from2p3px) {
+      // System prefs are set up by run time pars
+
+      globals.rintf.restoreSyspars(globals.syspars);
+    }
+
+    if (globals.timezonesFilename != null) {
+      TimeZonesParser tzp = new TimeZonesParser(
+             new FileInputStream(globals.timezonesFilename),
+             globals.debug);
+
+      Collection tzis = tzp.getTimeZones();
+
+      Iterator it = tzis.iterator();
+      while (it.hasNext()) {
+        TimeZonesParser.TimeZoneInfo tzi = (TimeZonesParser.TimeZoneInfo)it.next();
+
+        globals.timezones.saveTimeZone(tzi.tzid, tzi.timezone);
+      }
     }
   }
 
@@ -145,7 +170,7 @@ public class Restore implements Defs {
     digester.addRuleSet(new RestoreRuleSet(globals));
     digester.parse(new FileReader(fileName));
 
-    if (globals.toHibernate) {
+    if (globals.from2p3px) {
       makePrefs();
       if (globals.rintf != null) {
         globals.rintf.restoreAdminGroup((BwAdminGroup)globals.getSuperGroup());
@@ -270,12 +295,6 @@ public class Restore implements Defs {
         globals.debugEntity = false;
       } else if (args[i].equals("-noarg")) {
         globals.debug = false;
-      } else if (argpar("-sysid", args, i)) {
-        i++;
-        globals.systemId = args[i];
-      } else if (argpar("-publiccalroot", args, i)) {
-        i++;
-        globals.publicCalendarRoot = args[i];
       } else if (argpar("-supergroup", args, i)) {
         i++;
         globals.superGroupName = args[i];
@@ -283,33 +302,11 @@ public class Restore implements Defs {
         i++;
         globals.defaultPublicCalPath = args[i];
         trace("Setting null event calendars to " + args[i]);
-      } else if (argpar("-usercalroot", args, i)) {
-        i++;
-        globals.userCalendarRoot = args[i];
-      } else if (argpar("-defusercal", args, i)) {
-        i++;
-        globals.userDefaultCalendar = args[i];
-      } else if (argpar("-deftrashcal", args, i)) {
-        i++;
-        globals.defaultTrashCalendar = args[i];
       } else if (argpar("-fixOwner", args, i)) {
         i++;
         globals.fixOwnerAccount = args[i];
-      //} else if (args[i].equals("-concatdesc")) {
-      //  concatdesc = true;
-      //} else if (args[i].equals("-printdata")) {
-      //  printData = true;
-      } else if (args[i].equals("-hib")) {
-        globals.toHibernate = true;
-      } else if (args[i].equals("-nhib")) {
-        globals.toHibernate = false;
-      } else if (argpar("-pu", args, i)) {
-        i++;
-        globals.publicUserAccount = args[i];
-      //} else if (args[i].equals("-jdbc")) {
-      //  jdbcUpdate = true;
-      //} else if (args[i].equals("-njdbc")) {
-      //  jdbcUpdate = false;
+      } else if (args[i].equals("-from2p3px")) {
+        globals.from2p3px = true;
       } else if (argpar("-d", args, i)) {
         i++;
         driver = args[i];
@@ -325,6 +322,69 @@ public class Restore implements Defs {
       } else if (argpar("-f", args, i)) {
         i++;
         fileName = args[i];
+      } else if (argpar("-timezones", args, i)) {
+        i++;
+        globals.timezonesFilename = args[i];
+
+        /* System parameters */
+      } else if (argpar("-sysname", args, i)) {
+        i++;
+        globals.syspars.setName(args[i]);
+      } else if (argpar("-tzid", args, i)) {
+        i++;
+        globals.syspars.setTzid(args[i]);
+      } else if (argpar("-sysid", args, i)) {
+        i++;
+        globals.syspars.setSystemid(args[i]);
+      } else if (argpar("-publiccalroot", args, i)) {
+        i++;
+        globals.syspars.setPublicCalendarRoot(args[i]);
+      } else if (argpar("-usercalroot", args, i)) {
+        i++;
+        globals.syspars.setUserCalendarRoot(args[i]);
+      } else if (argpar("-defusercal", args, i)) {
+        i++;
+        globals.syspars.setUserDefaultCalendar(args[i]);
+      } else if (argpar("-deftrashcal", args, i)) {
+        i++;
+        globals.syspars.setDefaultTrashCalendar(args[i]);
+      } else if (argpar("-definbox", args, i)) {
+        i++;
+        globals.syspars.setUserInbox(args[i]);
+      } else if (argpar("-defoutbox", args, i)) {
+        i++;
+        globals.syspars.setUserOutbox(args[i]);
+
+      } else if (argpar("-pu", args, i)) {
+        i++;
+        globals.syspars.setPublicUser(args[i]);
+
+      } else if (argpar("-dirbrowsing-disallowed", args, i)) {
+        i++;
+        globals.syspars.setDirectoryBrowsingDisallowed("true".equals(args[i]));
+
+      } else if (argpar("-httpconnsperuser", args, i)) {
+        i++;
+        globals.syspars.setHttpConnectionsPerUser(intPar(args[i]));
+      } else if (argpar("-httpconnsperhost", args, i)) {
+        i++;
+        globals.syspars.setHttpConnectionsPerHost(intPar(args[i]));
+      } else if (argpar("-httpconns", args, i)) {
+        i++;
+        globals.syspars.setHttpConnections(intPar(args[i]));
+
+      } else if (argpar("-userauthClass", args, i)) {
+        i++;
+        globals.syspars.setUserauthClass(args[i]);
+      } else if (argpar("-mailerClass", args, i)) {
+        i++;
+        globals.syspars.setMailerClass(args[i]);
+      } else if (argpar("-admingroupsClass", args, i)) {
+        i++;
+        globals.syspars.setAdmingroupsClass(args[i]);
+      } else if (argpar("-usergroupsClass", args, i)) {
+        i++;
+        globals.syspars.setUsergroupsClass(args[i]);
       } else {
         error("Illegal argument: " + args[i]);
         usage();
@@ -333,6 +393,10 @@ public class Restore implements Defs {
     }
 
     return true;
+  }
+
+  private int intPar(String par) throws Throwable {
+    return Integer.parseInt(par);
   }
 
   void usage() {

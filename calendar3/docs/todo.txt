@@ -4,13 +4,7 @@ Todo
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-The EventAnnotation class is causing multiple queries - (polymorphic queries)
-For example, the hql "select count(*) from BwEvents where ..."
-causes 2 queries and a non-unique result exception
-
-Perhaps create a BwEventCommon class then subclass for BwEvent,
-BwEventAnnotation?
+svn
 --------------------------------------------------------------------------------
 All times should have a timezone - we need to set the default timezone for the
 system - from an OS value? - or from a config parameter
@@ -27,13 +21,20 @@ I think I must have decided that the principal was a reasonable place to store
 the default access for that principals locations etc. In effect the principal
 is the container for that stuff.
 --------------------------------------------------------------------------------
-Acl.encode should not encode Ace with inherited = true
+The EventAnnotation class was causing multiple queries - (polymorphic queries)
+For example, the hql "select count(*) from BwEvents where ..."
+caused 2 queries and a non-unique result exception
+
+Fixed by changing the hierarchy, making BwEvent a common base class then
+subclass for BwEventObj and BwEventAnnotation.
 --------------------------------------------------------------------------------
 FiltersRule needs to add Inbox
 CalintfImpl and FiltersRule should use some joint code to create users.
 Try init of empty system then create users through Calintf?
 --------------------------------------------------------------------------------
 lazy="false" is set on calendar objects.
+--------------------------------------------------------------------------------
+Acl.encode should not encode Ace with inherited = true
 --------------------------------------------------------------------------------
 Access control not quite right. The requirements are something like:
 
@@ -102,11 +103,6 @@ Need to ensure update doesn't change the guid
 Fix the add event link in calendar gui
 --------------------------------------------------------------------------------
 Remove target from BwEvent?
---------------------------------------------------------------------------------
-Events.getEvent by guid/rid/seq fails because we get same guid in different
-users events. Do we enforce absolute uniqueness - probably
-
-Should probably remove owner from unique key
 --------------------------------------------------------------------------------
 We probably need the equivalent of an event info object at the Calintf level to
 contain transient information about the event. Should hold:

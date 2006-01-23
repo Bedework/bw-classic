@@ -196,9 +196,22 @@ hibernate.jdbc.batch_size=0
           failonerror="true">
       <classpath refid="lib.restore.class.path" />
       <arg value="${org.bedework.restore.arg.debug}" />
-      <!--
-      <arg value="-printdata" />
-      -->
+      <arg value="-supergroup" />
+      <arg value="${org.bedework.restore.supergroup}" />
+      <arg value="-f" />
+      <arg value="${org.bedework.restore.arg.dumpfile}" />
+      <arg value="${org.bedework.restore.arg.from2p3px}" />
+      <arg line="${org.bedework.restore.arg.fixowner}" />
+      <arg line="${org.bedework.restore.arg.defaultpubliccal}" />
+      <arg line="${org.bedework.restore.arg.timezones}" />
+
+      <arg value="-sysname" />
+      <arg value="${org.bedework.restore.arg.sysname}" />
+      <arg value="-tzid" />
+      <arg value="${org.bedework.restore.arg.tzid}" />
+      <arg value="-sysid" />
+      <arg value="${org.bedework.restore.arg.sysid}" />
+
       <arg value="-publiccalroot" />
       <arg value="${org.bedework.env.public.calroot}" />
       <arg value="-usercalroot" />
@@ -207,16 +220,24 @@ hibernate.jdbc.batch_size=0
       <arg value="${org.bedework.env.default.user.calendar}" />
       <arg value="-deftrashcal" />
       <arg value="${org.bedework.env.default.trash.calendar}" />
-      <arg value="-supergroup" />
-      <arg value="${org.bedework.restore.supergroup}" />
-      <arg value="-f" />
-      <arg value="${org.bedework.restore.arg.dumpfile}" />
-      <arg value="${org.bedework.restore.arg.hib}" />
-      <arg line="${org.bedework.restore.arg.defaultpubliccal}" />
+      <arg value="-definbox" />
+      <arg value="${org.bedework.env.default.user.inbox}" />
+      <arg value="-defoutbox" />
+      <arg value="${org.bedework.env.default.user.outbox}" />
+
       <arg line="${org.bedework.restore.arg.public.user}" />
-      <arg line="${org.bedework.restore.arg.fixowner}" />
-      <arg value="-sysid" />
-      <arg value="${org.bedework.restore.arg.sysid}" />
+
+      <arg line="${org.bedework.restore.arg.dirbrowsing.disallowed}" />
+
+      <arg line="${org.bedework.restore.arg.httpconns.peruser}" />
+      <arg line="${org.bedework.restore.arg.httpconns.perhost}" />
+      <arg line="${org.bedework.restore.arg.httpconns}" />
+
+      <arg line="${org.bedework.restore.arg.userauthClass}" />
+      <arg line="${org.bedework.restore.arg.mailerClass}" />
+      <arg line="${org.bedework.restore.arg.admingroupsClass}" />
+      <arg line="${org.bedework.restore.arg.usergroupsClass}" />
+      <jvmarg value="-Xrunyjpagent:cpu=times,onexit=cpu" />
       <!--
       <arg value="-Djava.endorsed.dir=${org.bedework.default.lib}/endorsed"/>-->
     </java>

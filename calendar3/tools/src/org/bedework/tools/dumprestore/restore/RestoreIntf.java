@@ -59,6 +59,8 @@ import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwOrganizer;
 import org.bedework.calfacade.BwSponsor;
+import org.bedework.calfacade.BwSystem;
+import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwUserInfo;
 import org.bedework.calfacade.filter.BwFilter;
@@ -109,6 +111,13 @@ public interface RestoreIntf {
    */
   public void close() throws Throwable;
 
+  /** Restore system pars
+   *
+   * @param o
+   * @throws Throwable
+   */
+  public void restoreSyspars(BwSystem o) throws Throwable;
+
   /** Restore user
    *
    * @param o
@@ -122,6 +131,13 @@ public interface RestoreIntf {
    * @throws Throwable
    */
   public void restoreUserInfo(BwUserInfo o) throws Throwable;
+
+  /** Restore timezone
+   *
+   * @param o
+   * @throws Throwable
+   */
+  public void restoreTimezone(BwTimeZone o) throws Throwable;
 
   /** Restore an admin group - though not the user entries nor
    * the authuser entries.

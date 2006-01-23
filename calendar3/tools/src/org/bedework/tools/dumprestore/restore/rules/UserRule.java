@@ -73,7 +73,7 @@ public class UserRule extends EntityRule {
     BwUser entity = (BwUser)pop();
     globals.users++;
 
-    if (globals.toHibernate) {
+    if (globals.from2p3px) {
       entity.setCategoryAccess(globals.getDefaultPersonalAccess());
       entity.setLocationAccess(globals.getDefaultPersonalAccess());
       entity.setSponsorAccess(globals.getDefaultPersonalAccess());

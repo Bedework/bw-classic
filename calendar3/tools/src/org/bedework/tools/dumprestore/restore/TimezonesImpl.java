@@ -56,6 +56,7 @@ package org.bedework.tools.dumprestore.restore;
 
 import org.bedework.calfacade.BwUser;
 //import org.bedework.calfacade.BwTimeZone;
+import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.CalFacadeBadDateException;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CalFacadeUtil;
@@ -86,8 +87,11 @@ import org.apache.log4j.Logger;
 class TimezonesImpl implements CalTimezones {
   private transient Logger log;
 
-  private boolean publicAdmin;
   private boolean debug;
+  private boolean publick = true; // current mode
+  private BwUser user;
+
+  private RestoreIntf ri;
 
   private static class TimezoneInfo {
     TimeZone tz;
@@ -106,13 +110,30 @@ class TimezonesImpl implements CalTimezones {
 
   //private transient Logger log;
 
-  TimezonesImpl(boolean publicAdmin, boolean debug)
+  TimezonesImpl(boolean debug, BwUser user, RestoreIntf ri)
           throws CalFacadeException {
-    this.publicAdmin = publicAdmin;
     this.debug = debug;
+    this.user = user;
+    this.ri = ri;
 
     // Force fetch of timezones
     //lookup("not-a-timezone");
+  }
+
+  /** Set current publick mode
+   *
+   * @param val
+   */
+  public void setPublick(boolean val) {
+    publick = val;
+  }
+
+  /** Set current user
+   *
+   * @param val
+   */
+  public void setUser(BwUser val) {
+    user = val;
   }
 
   public void saveTimeZone(String tzid, VTimeZone vtz)
@@ -120,8 +141,27 @@ class TimezonesImpl implements CalTimezones {
     /* For a user update the map to avoid a refetch. For system timezones we will
        force a refresh when we're done.
     */
-    if (publicAdmin) {
-      return;
+
+    BwTimeZone tz = new BwTimeZone();
+
+    tz.setTzid(tzid);
+    tz.setPublick(publick);
+    tz.setOwner(user);
+
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("BEGIN:VCALENDAR\n");
+    sb.append("PRODID:-//RPI//BEDEWORK//US\n");
+    sb.append("VERSION:2.0\n");
+    sb.append(vtz.toString());
+    sb.append("END:VCALENDAR\n");
+
+    tz.setVtimezone(sb.toString());
+
+    try {
+      ri.restoreTimezone(tz);
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
     }
 
     TimezoneInfo tzinfo = (TimezoneInfo)timezones.get(tzid);

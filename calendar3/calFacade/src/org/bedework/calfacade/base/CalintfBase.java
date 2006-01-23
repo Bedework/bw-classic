@@ -64,6 +64,7 @@ import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwStats;
 import org.bedework.calfacade.BwSynchInfo;
 import org.bedework.calfacade.BwSynchState;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeUnimplementedException;
@@ -164,6 +165,10 @@ public class CalintfBase implements Calintf {
    * @throws CalFacadeException if not admin
    */
   public BwStats getStats() throws CalFacadeException {
+    return null;
+  }
+
+  public BwSystem getSyspars() throws CalFacadeException {
     return null;
   }
 

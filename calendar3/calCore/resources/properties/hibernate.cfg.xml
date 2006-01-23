@@ -36,6 +36,7 @@
     <mapping resource="SynchData.hbm.xml"/>
     <mapping resource="SynchInfo.hbm.xml"/>
     <mapping resource="SynchState.hbm.xml"/>
+    <mapping resource="System.hbm.xml"/>
     <mapping resource="TimeZone.hbm.xml"/>
     <mapping resource="Todo.hbm.xml"/>
     <mapping resource="User.hbm.xml"/>

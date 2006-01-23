@@ -89,7 +89,7 @@ public class AdminGroupRule extends EntityRule {
         globals.rintf.restoreAdminGroup(entity);
       }
 
-      if (globals.toHibernate) {
+      if (globals.from2p3px) {
         globals.getSuperGroup().addGroupMember(entity);
       }
     } catch (Throwable t) {

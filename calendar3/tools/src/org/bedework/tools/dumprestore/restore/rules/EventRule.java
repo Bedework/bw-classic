@@ -102,9 +102,9 @@ public class EventRule extends EntityRule {
     }
 
     try {
-      if (globals.toHibernate) {
+      if (globals.from2p3px) {
         if ((entity.getGuid() == null) || (entity.getGuid().length() == 0)) {
-          if (globals.systemId == null) {
+          if (globals.syspars.getSystemid() == null) {
             throw new Exception("You must supply a system id");
           }
 
@@ -115,7 +115,7 @@ public class EventRule extends EntityRule {
             entity.setName(guidPrefix + ".ics");
           }
 
-          String guid = guidPrefix + globals.systemId;
+          String guid = guidPrefix + globals.syspars.getSystemid();
 
           if (globals.debug) {
 //            trace("Set guid for " + entity.getId() + " to " + guid);

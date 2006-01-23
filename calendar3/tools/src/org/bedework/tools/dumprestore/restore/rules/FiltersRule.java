@@ -79,7 +79,7 @@ public class FiltersRule extends RestoreRule {
    * @see org.apache.commons.digester.Rule#end(java.lang.String, java.lang.String)
    */
   public void end(String ns, String name) throws Exception {
-    if (!globals.toHibernate) {
+    if (!globals.from2p3px) {
       // Not converting
       return;
     }
@@ -99,8 +99,8 @@ public class FiltersRule extends RestoreRule {
       BwCalendar userRootCal = new BwCalendar();
       userRootCal.setId(globals.nextCalKey);
       globals.nextCalKey++;
-      userRootCal.setName(globals.userCalendarRoot);
-      userRootCal.setPath("/" + globals.userCalendarRoot);
+      userRootCal.setName(globals.syspars.getUserCalendarRoot());
+      userRootCal.setPath("/" + globals.syspars.getUserCalendarRoot());
       userRootCal.setCreator(globals.getPublicUser());
       userRootCal.setOwner(globals.getPublicUser());
       if (globals.rintf != null) {
@@ -121,6 +121,7 @@ public class FiltersRule extends RestoreRule {
   private void makeUserCals(BwUser u, BwCalendar userRootCal) throws Throwable {
     /* Create a user collection */
 
+    /* Create a folder for the user */
     BwCalendar ucal = new BwCalendar();
     ucal.setId(globals.nextCalKey);
     globals.nextCalKey++;
@@ -131,10 +132,11 @@ public class FiltersRule extends RestoreRule {
     ucal.setCalendar(userRootCal);
     userRootCal.addChild(ucal);
 
+    /* Create a default calendar */
     BwCalendar cal = new BwCalendar();
     cal.setId(globals.nextCalKey);
     globals.nextCalKey++;
-    cal.setName(globals.userDefaultCalendar);
+    cal.setName(globals.syspars.getUserDefaultCalendar());
     cal.setPath(ucal.getPath() + "/" + cal.getName());
     cal.setCreator(u);
     cal.setOwner(u);
@@ -146,10 +148,35 @@ public class FiltersRule extends RestoreRule {
 
     globals.defaultCalendars.put(new Integer(u.getId()), cal);
 
+    /* Add the trash calendar */
     cal = new BwCalendar();
     cal.setId(globals.nextCalKey);
     globals.nextCalKey++;
-    cal.setName(globals.defaultTrashCalendar);
+    cal.setName(globals.syspars.getDefaultTrashCalendar());
+    cal.setPath(ucal.getPath() + "/" + cal.getName());
+    cal.setCreator(u);
+    cal.setOwner(u);
+    cal.setCalendar(ucal);
+    cal.setCalendarCollection(true);
+    ucal.addChild(cal);
+
+    /* Add the inbox */
+    cal = new BwCalendar();
+    cal.setId(globals.nextCalKey);
+    globals.nextCalKey++;
+    cal.setName(globals.syspars.getUserInbox());
+    cal.setPath(ucal.getPath() + "/" + cal.getName());
+    cal.setCreator(u);
+    cal.setOwner(u);
+    cal.setCalendar(ucal);
+    cal.setCalendarCollection(true);
+    ucal.addChild(cal);
+
+    /* Add the outbox */
+    cal = new BwCalendar();
+    cal.setId(globals.nextCalKey);
+    globals.nextCalKey++;
+    cal.setName(globals.syspars.getUserOutbox());
     cal.setPath(ucal.getPath() + "/" + cal.getName());
     cal.setCreator(u);
     cal.setOwner(u);

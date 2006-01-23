@@ -61,6 +61,7 @@ import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwOrganizer;
 import org.bedework.calfacade.BwSponsor;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwUserInfo;
 import org.bedework.calfacade.filter.BwFilter;
@@ -90,11 +91,35 @@ public class RestoreGlobals {
   /** */
   public boolean debugEntity;
 
+  /** We can restore timezone info from this file
+   */
+  public String timezonesFilename;
+
+  /** System parameters object */
+  public BwSystem syspars = new BwSystem();
+
+  /** * /
+  public String publicCalendarRoot;
+  /** * /
+  public String userCalendarRoot;
+  /** * /
+  public String userDefaultCalendar;
+  /** * /
+  public String defaultTrashCalendar;
+
+  /** Account name for owner of public entities* /
+  public String publicUserAccount;
+
+  /** * /
+  public String systemId; // required for fixing guids
+
+  */
+
   /** */
   public CalTimezones timezones;
 
-  /** True if we doing the conversion from 2.3.2 to hibernate (V3) */
-  public boolean toHibernate;
+  /** True if we doing the conversion from 2.3.2 to V3 */
+  public boolean from2p3px;
 
   /** When converting put all admin groups into the new group with this name */
   public String superGroupName;
@@ -117,20 +142,6 @@ public class RestoreGlobals {
   public String defaultPublicCalPath;
   /** */
   public BwCalendar defaultPublicCal;
-
-  /* names from env properties */
-
-  /** */
-  public String publicCalendarRoot;
-  /** */
-  public String userCalendarRoot;
-  /** */
-  public String userDefaultCalendar;
-  /** */
-  public String defaultTrashCalendar;
-
-  /** Account name for owner of public entities*/
-  public String publicUserAccount;
 
   /** User entry for owner of public entities.
    */
@@ -163,9 +174,6 @@ public class RestoreGlobals {
   /** Incremented for each start datetime but end date. We drop the end.
    */
   public int fixedNoEndTime;
-
-  /** */
-  public String systemId; // required for fixing guids
 
   /** Used when converting from 2.3.2 */
   public BwUserInfo userInfo; /* 2.3.2 */
@@ -558,7 +566,7 @@ public class RestoreGlobals {
     classes.put("keyword", "org.bedework.calfacade.BwCategory");
     classes.put("category", "org.bedework.calfacade.BwCategory");
     classes.put("authuser", "org.bedework.calfacade.svc.BwAuthUser");
-    classes.put("event", "org.bedework.calfacade.BwEvent");
+    classes.put("event", "org.bedework.calfacade.BwEventObj");
     classes.put("adminGroup", "org.bedework.calfacade.svc.BwAdminGroup");
     classes.put("user-prefs", "org.bedework.calfacade.svc.BwPreferences");
     classes.put("dblastmod", "org.bedework.tools.dumprestore.BwDbLastmod");
@@ -585,15 +593,15 @@ public class RestoreGlobals {
 
     /* See if it's in the user map first. */
 
-    if (publicUserAccount == null) {
+    if (syspars.getPublicUser() == null) {
       throw new Exception("publicUserAccount must be defined");
     }
 
-    publicUser = usersTbl.get(publicUserAccount);
+    publicUser = usersTbl.get(syspars.getPublicUser());
 
     if (publicUser == null) {
       // Create it
-      publicUser = new BwUser(publicUserAccount);
+      publicUser = new BwUser(syspars.getPublicUser());
       publicUser.setInstanceOwner(true);
       publicUser.setCategoryAccess(getDefaultPublicAccess());
       publicUser.setLocationAccess(getDefaultPublicAccess());

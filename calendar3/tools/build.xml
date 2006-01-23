@@ -48,6 +48,7 @@
       <pathelement location="${org.bedework.calsvci.jar}"/>
       <pathelement location="${org.bedework.calcore.jar}"/>
       <pathelement location="${org.bedework.access.jar}"/>
+      <pathelement location="${org.bedework.appcommon.jar}"/>
     </path>
 
     <!-- ==================== Build Target ============================= -->

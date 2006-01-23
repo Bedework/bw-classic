@@ -85,7 +85,7 @@ public class FilterRule extends EntityRule {
     globals.filtersTbl.put(entity);
 
     try {
-      if (globals.toHibernate) {
+      if (globals.from2p3px) {
         /* We are converting filter definitions into calendar definitions.
          */
         BwCalendar cal = new BwCalendar();
@@ -123,8 +123,8 @@ public class FilterRule extends EntityRule {
 
             // This is the root
             globals.publicCalRoot = cal;
-            globals.publicCalRoot.setName(globals.publicCalendarRoot);
-            globals.publicCalRoot.setPath("/" + globals.publicCalendarRoot);
+            globals.publicCalRoot.setName(globals.syspars.getPublicCalendarRoot());
+            globals.publicCalRoot.setPath("/" + globals.syspars.getPublicCalendarRoot());
 
             globals.publicCalRoot.setAccess(globals.getDefaultPublicCalendarsAccess());
           }

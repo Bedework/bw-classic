@@ -37,6 +37,7 @@
       <pathelement location="${org.bedework.common.jar}"/>
       <pathelement location="${org.bedework.calsvci.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.ical.jar}"/>
       <pathelement location="${org.bedework.locale.jar}"/>
     </path>
 

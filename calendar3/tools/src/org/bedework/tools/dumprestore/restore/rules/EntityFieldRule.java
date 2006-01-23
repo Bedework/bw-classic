@@ -147,7 +147,8 @@ public abstract class EntityFieldRule extends RestoreRule {
                    fldval.substring(6, 8);
 
     /* XXX We need to handle timezones here as well */
-    val.init(false, val.getDtval() + tmval, null, globals.timezones);
+    val.init(false, val.getDtval() + tmval,
+             globals.syspars.getTzid(), globals.timezones);
   }
 
   /** Make an iso date time -- prehib to hib */

@@ -60,7 +60,7 @@
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/xmlParserAPIs.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/ical4j-0.9.17.jar"/>
 	<classpathentry kind="lib" path="lib/commons/commons-httpclient-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/ical4j-0.9.18.jar"/>
 	<classpathentry kind="output" path="eclipse"/>
 </classpath>

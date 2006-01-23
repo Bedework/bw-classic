@@ -965,7 +965,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
       sess.setString("rid", rid);
     }
 
-    debugMsg("Try query " + sb.toString());
+    //debugMsg("Try query " + sb.toString());
   }
 
   /* Return event recurrences within the given date range and calendar for

@@ -63,6 +63,7 @@ import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwStats;
 import org.bedework.calfacade.BwSynchInfo;
 import org.bedework.calfacade.BwSynchState;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.filter.BwFilter;
@@ -119,6 +120,13 @@ public interface Calintf extends Serializable {
    * @throws CalFacadeException if not admin
    */
   public BwStats getStats() throws CalFacadeException;
+
+  /** Get the system pars
+   *
+   * @return BwSystem object
+   * @throws CalFacadeException if not admin
+   */
+  public BwSystem getSyspars() throws CalFacadeException;
 
   /** Get the timezones cache object
    *

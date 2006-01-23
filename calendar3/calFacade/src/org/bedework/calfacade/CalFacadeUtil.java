@@ -502,6 +502,37 @@ public class CalFacadeUtil implements Serializable {
     return (String[])al.toArray(new String[al.size()]);
   }
 
+  /** Given a class name return an object of that class.
+   * The class parameter is used to check that the
+   * named class is an instance of that class.
+   *
+   * @param className String class name
+   * @param cl   Class expected
+   * @return     Object checked to be an instance of that class
+   * @throws CalFacadeException
+   */
+  public static Object getObject(String className, Class cl) throws CalFacadeException {
+    try {
+      Object o = Class.forName(className).newInstance();
+
+      if (o == null) {
+        throw new CalFacadeException("Class " + className + " not found");
+      }
+
+      if (!cl.isInstance(o)) {
+        throw new CalFacadeException("Class " + className +
+                                     " is not a subclass of " +
+                                     cl.getName());
+      }
+
+      return o;
+    } catch (CalFacadeException ce) {
+      throw ce;
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
   /* ====================================================================
              ical utilities
      ==================================================================== */

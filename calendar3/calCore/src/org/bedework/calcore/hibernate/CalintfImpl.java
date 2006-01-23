@@ -68,6 +68,7 @@ import org.bedework.calfacade.BwStats;
 import org.bedework.calfacade.BwSynchData;
 import org.bedework.calfacade.BwSynchInfo;
 import org.bedework.calfacade.BwSynchState;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
@@ -126,6 +127,8 @@ import org.hibernate.SessionFactory;
 public class CalintfImpl implements Calintf, PrivilegeDefs {
   private boolean debug;
 
+  private BwSystem syspars;
+
   private BwStats stats = new BwRWStats();
 
   private CalTimezonesImpl timezones;
@@ -140,15 +143,16 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
    */
   private AccessUtil access;
 
-  /* From core environment properties */
+  /* From core environment properties * /
   private String systemId;
 
   private String publicCalendarRoot;
-  private String publicCalendarRootPath;
   private String userCalendarRoot;
-  private String userCalendarRootPath;
   private String userDefaultCalendar;
   private String defaultTrashCalendar;
+  */
+  private String publicCalendarRootPath;
+  private String userCalendarRootPath;
 
   /** Ensure we don't open while open
    */
@@ -260,23 +264,21 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
       }
 
       /** Define the roots of the calendars.
-       */
+       * /
       publicCalendarRoot = CalEnv.getGlobalProperty("public.calroot");
       userCalendarRoot = CalEnv.getGlobalProperty("user.calroot");
       userDefaultCalendar = CalEnv.getGlobalProperty("default.user.calendar");
       defaultTrashCalendar = CalEnv.getGlobalProperty("default.trash.calendar");
-    } catch (Throwable t) {
-      throw new CalFacadeException(t);
-    }
 
-    publicCalendarRootPath = "/" + publicCalendarRoot;
-    userCalendarRootPath = "/" + userCalendarRoot;
-
-    try {
       systemId = CalEnv.getGlobalProperty("systemid");
+      */
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
+
+    publicCalendarRootPath = "/" + getSyspars().getPublicCalendarRoot();
+    userCalendarRootPath = "/" + getSyspars().getUserCalendarRoot();
+    //systemId = getSyspars().getSystemid();
 
     if (user == null) {
       user = authenticatedUser;
@@ -349,20 +351,37 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return userCreated;
   }
 
-  /** Get the current stats
-   *
-   * @return BwStats object
-   * @throws CalFacadeException if not admin
-   */
   public BwStats getStats() throws CalFacadeException {
     return stats;
   }
 
-  /** Get the timezones cache object
-   *
-   * @return CalTimezones object
-   * @throws CalFacadeException if not admin
-   */
+  public BwSystem getSyspars() throws CalFacadeException {
+    if (syspars == null) {
+      String name;
+
+      try {
+        name = CalEnv.getGlobalProperty("system.name");
+      } catch (Throwable t) {
+        throw new CalFacadeException(t);
+      }
+
+      sess.namedQuery("getSystemPars");
+
+      sess.setString("name", name);
+
+      syspars = (BwSystem)sess.getUnique();
+
+      if (syspars == null) {
+        throw new CalFacadeException("No system parameters with name " + name);
+      }
+      
+      if (debug) {
+      	trace("Read system parameters: " + syspars);
+      }
+    }
+    return syspars;
+  }
+
   public CalTimezones getTimezones() throws CalFacadeException {
     return timezones;
   }
@@ -548,7 +567,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   }
 
   public String getSysid() throws CalFacadeException {
-    return systemId;
+    return getSyspars().getSystemid();
   }
 
   /* ====================================================================
@@ -603,7 +622,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     sess.namedQuery("getCalendarByPath");
 
-    String path =  "/" + userCalendarRoot;
+    String path =  "/" + getSyspars().getUserCalendarRoot();
     sess.setString("path", path);
 
     BwCalendar userrootcal = (BwCalendar)sess.getUnique();
@@ -621,6 +640,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
       throw new CalFacadeException("User calendar already exists at " + path);
     }
 
+    /* Create a folder for the user */
     usercal = new BwCalendar();
     usercal.setName(user.getAccount());
     usercal.setCreator(user);
@@ -632,24 +652,46 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     sess.save(userrootcal);
 
+    /* Create a default calendar */
     BwCalendar cal = new BwCalendar();
-    cal.setName(userDefaultCalendar);
+    cal.setName(getSyspars().getUserDefaultCalendar());
     cal.setCreator(user);
     cal.setOwner(user);
     cal.setPublick(false);
-    cal.setPath(path + "/" + userDefaultCalendar);
+    cal.setPath(path + "/" + getSyspars().getUserDefaultCalendar());
     cal.setCalendar(usercal);
     cal.setCalendarCollection(true);
     usercal.addChild(cal);
 
     /* Add the trash calendar */
-
     cal = new BwCalendar();
-    cal.setName(defaultTrashCalendar);
+    cal.setName(getSyspars().getDefaultTrashCalendar());
     cal.setCreator(user);
     cal.setOwner(user);
     cal.setPublick(false);
-    cal.setPath(path + "/" + defaultTrashCalendar);
+    cal.setPath(path + "/" + getSyspars().getDefaultTrashCalendar());
+    cal.setCalendar(usercal);
+    cal.setCalendarCollection(true);
+    usercal.addChild(cal);
+
+    /* Add the inbox */
+    cal = new BwCalendar();
+    cal.setName(getSyspars().getUserInbox());
+    cal.setCreator(user);
+    cal.setOwner(user);
+    cal.setPublick(false);
+    cal.setPath(path + "/" + getSyspars().getUserInbox());
+    cal.setCalendar(usercal);
+    cal.setCalendarCollection(true);
+    usercal.addChild(cal);
+
+    /* Add the outbox */
+    cal = new BwCalendar();
+    cal.setName(getSyspars().getUserOutbox());
+    cal.setCreator(user);
+    cal.setOwner(user);
+    cal.setPublick(false);
+    cal.setPath(path + "/" + getSyspars().getUserOutbox());
     cal.setCalendar(usercal);
     cal.setCalendarCollection(true);
     usercal.addChild(cal);
@@ -906,11 +948,11 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     StringBuffer sb = new StringBuffer();
 
     sb.append("/");
-    sb.append(userCalendarRoot);
+    sb.append(getSyspars().getUserCalendarRoot());
     sb.append("/");
     sb.append(user.getAccount());
     sb.append("/");
-    sb.append(userDefaultCalendar);
+    sb.append(getSyspars().getUserDefaultCalendar());
 
     return getCalendar(sb.toString());
   }
@@ -919,11 +961,11 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     StringBuffer sb = new StringBuffer();
 
     sb.append("/");
-    sb.append(userCalendarRoot);
+    sb.append(getSyspars().getUserCalendarRoot());
     sb.append("/");
     sb.append(user.getAccount());
     sb.append("/");
-    sb.append(defaultTrashCalendar);
+    sb.append(getSyspars().getDefaultTrashCalendar());
 
     return getCalendar(sb.toString());
   }

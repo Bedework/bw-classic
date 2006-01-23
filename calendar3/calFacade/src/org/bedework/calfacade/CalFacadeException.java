@@ -87,6 +87,13 @@ public class CalFacadeException extends Exception {
   public static final String duplicateGuid =
       "org.bedework.exception.duplicateguid";
 
+  /** Error reading timezones */
+  public static final String timezonesReadError =
+      "org.bedework.error.timezones.readerror";
+
+
+  private String extra;
+
   /** Constrictor
    *
    */
@@ -106,5 +113,21 @@ public class CalFacadeException extends Exception {
    */
   public CalFacadeException(String s) {
     super(s);
+  }
+
+  /**
+   * @param s  - retrieve with getMessage(), property ame
+   * @param extra String extra text
+   */
+  public CalFacadeException(String s, String extra) {
+    super(s);
+    this.extra = extra;
+  }
+
+  /**
+   * @return String extra text
+   */
+  public String getExtra() {
+    return extra;
   }
 }

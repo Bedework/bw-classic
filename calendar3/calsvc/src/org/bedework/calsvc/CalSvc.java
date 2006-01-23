@@ -73,10 +73,12 @@ import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwStats;
 import org.bedework.calfacade.BwSynchInfo;
 import org.bedework.calfacade.BwSynchState;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
@@ -128,6 +130,8 @@ public class CalSvc extends CalSvcI {
   /* The account that owns public entities
    */
   private BwUser publicUser;
+  
+  // Set up by call to getCal()
   private String publicUserAccount;
 
   private BwView currentView;
@@ -289,7 +293,7 @@ public class CalSvc extends CalSvcI {
 
       env = new CalEnv(appPrefix, debug);
 
-      publicUserAccount = CalEnv.getGlobalProperty("public.user");
+      //publicUserAccount = CalEnv.getGlobalProperty("public.user");
 
       if (pars.isGuest() && (pars.getUser() == null)) {
         pars.setUser(env.getAppProperty("run.as.user"));
@@ -322,6 +326,15 @@ public class CalSvc extends CalSvcI {
     }
 
     return getCal().getStats();
+  }
+
+  /** Get the system pars
+   *
+   * @return BwSystem object
+   * @throws CalFacadeException if not admin
+   */
+  public BwSystem getSyspars() throws CalFacadeException {
+    return getCal().getSyspars();
   }
 
   public CalTimezones getTimezones() throws CalFacadeException {
@@ -444,7 +457,7 @@ public class CalSvc extends CalSvcI {
     }
 
     try {
-      userAuth = (UserAuth)CalEnv.getGlobalObject("userauthclass",
+      userAuth = (UserAuth)CalFacadeUtil.getObject(getSyspars().getUserauthClass(),
                                                   UserAuth.class);
     } catch (Throwable t) {
       throw new CalFacadeException(t);
@@ -478,7 +491,7 @@ public class CalSvc extends CalSvcI {
     }
 
     try {
-      userGroups = (Groups)CalEnv.getGlobalObject("usergroupsclass", Groups.class);
+      userGroups = (Groups)CalFacadeUtil.getObject(getSyspars().getUsergroupsClass(), Groups.class);
       userGroups.init(getGroupsCallBack());
     } catch (Throwable t) {
       throw new CalFacadeException(t);
@@ -493,7 +506,7 @@ public class CalSvc extends CalSvcI {
     }
 
     try {
-      adminGroups = (Groups)CalEnv.getGlobalObject("admingroupsclass", Groups.class);
+      adminGroups = (Groups)CalFacadeUtil.getObject(getSyspars().getAdmingroupsClass(), Groups.class);
       adminGroups.init(getGroupsCallBack());
     } catch (Throwable t) {
       throw new CalFacadeException(t);
@@ -1780,8 +1793,7 @@ public class CalSvc extends CalSvcI {
     }
 
     try {
-      cali = (Calintf)CalEnv.getGlobalObject("calintfclass",
-                                             Calintf.class);
+      cali = (Calintf)CalEnv.getGlobalObject("calintfclass", Calintf.class);
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -1798,6 +1810,9 @@ public class CalSvc extends CalSvcI {
                                       pars.getSynchId(),
                                       debug);
 
+      // Prepare for call below.
+      publicUserAccount = cali.getSyspars().getPublicUser();
+      
       BwUser auth;
       if (isPublicAdmin() || isGuest()) {
         auth = getPublicUser();
