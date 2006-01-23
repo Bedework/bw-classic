@@ -320,14 +320,14 @@
         <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
           <li>
             <a href="{$authuser-initUpdate}" >
-              Manage authorised users
+              Manage users
             </a>
           </li>
         </xsl:if>
         <xsl:if test="/bedeworkadmin/userInfo/adminGroupMaintOk='true'">
           <li>
             <a href="{$admingroup-initUpdate}">
-              Manage administrative groups
+              Manage groups
             </a>
           </li>
         </xsl:if>
@@ -1833,10 +1833,16 @@
   <xsl:template name="authUserList">
     <h2>Modify Users</h2>
 
-    <form name="getUserPrefsForm" action="{$prefs-fetchForUpdate}" method="post">
-      <p>Edit user preferences: <input type="text" name="user" size="30"/>
-      <input type="submit" value="go" name="submit"/></p>
-    </form>
+    <div id="authUserInputForms">
+      <form name="getUserRolesForm" action="{$authuser-fetchForUpdate}" method="post">
+        Edit user roles (enter userid): <input type="text" name="editAuthUserId" size="20"/>
+        <input type="submit" value="go" name="submit"/>
+      </form>
+      <form name="getUserPrefsForm" action="{$prefs-fetchForUpdate}" method="post">
+        Edit user preferences (enter userid): <input type="text" name="user" size="20"/>
+        <input type="submit" value="go" name="submit"/>
+      </form>
+    </div>
     
     <table id="commonListTable">
       <tr>

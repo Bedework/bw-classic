@@ -351,6 +351,9 @@ table.eventFormTable .durationSpacerText {
 #viewsTable table td.arrows {
   width: 15px;
 }
+#authUserInputForms {
+  margin: 1em 0;
+}
 p.note {
   margin: 0;
   padding: 0;
