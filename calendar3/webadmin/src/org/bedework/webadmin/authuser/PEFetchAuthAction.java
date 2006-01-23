@@ -96,7 +96,7 @@ public class PEFetchAuthAction extends PEAbstractAction {
     BwAuthUser au = svci.getUserAuth().getUser(userid);
 
     if (au == null) {
-      form.getErr().emit("org.bedework.userid.notfound", userid);
+      form.getErr().emit("org.bedework.client.error.nosuchuserid", userid);
       return "notFound";
     }
     

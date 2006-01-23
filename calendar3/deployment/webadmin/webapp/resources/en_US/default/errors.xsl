@@ -8,13 +8,14 @@
       <xsl:when test="id='org.bedework.pubevents.error.badfield'">
         Please correct your data input for <em><xsl:value-of select="param"/></em>
       </xsl:when>
-
       <xsl:when test="id='org.bedework.client.error.nosuchsponsor'">
         Not found: there is no contact identified by that id.
       </xsl:when>
-
       <xsl:when test="id='org.bedework.client.error.nosuchlocation'">
         Not found: there is no location identified by that id.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.nosuchuserid'">
+        Not found: there is no user identified by the id <em><xsl:value-of select="param"/></em>.
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="id"/> = <xsl:value-of select="param"/>
