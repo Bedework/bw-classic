@@ -1833,6 +1833,11 @@
   <xsl:template name="authUserList">
     <h2>Modify Users</h2>
 
+    <form name="getUserPrefsForm" action="{$prefs-fetchForUpdate}" method="post">
+      <p>Edit user preferences: <input type="text" name="user" size="30"/>
+      <input type="submit" value="go" name="submit"/></p>
+    </form>
+    
     <table id="commonListTable">
       <tr>
         <th>UserId</th>
