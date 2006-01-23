@@ -1983,7 +1983,7 @@
   <!--+++++++++++++++ User Prefs ++++++++++++++++++++-->
   <xsl:template name="modPrefs">
     <h2>Edit User Preferences</h2>
-    <form action="{$prefs-update}" method="post">
+    <form name="userPrefsForm" method="post" action="{$prefs-update}">
       <table id="eventFormTable">
         <tr>
           <td class="fieldName">
@@ -2001,7 +2001,7 @@
           </td>
           <td>
             <xsl:variable name="preferredView" select="/bedeworkadmin/prefs/preferredView"/>
-            <input type="text" value="{$preferredView}" size="40"/>
+            <input type="text" name="view" value="{$preferredView}" size="40"/>
           </td>
         </tr>
         <tr>
@@ -2010,7 +2010,7 @@
           </td>
           <td>
             <xsl:variable name="preferredViewPeriod" select="/bedeworkadmin/prefs/preferredViewPeriod"/>
-            <input type="text" value="{$preferredViewPeriod}" size="40"/>
+            <input type="text" name="viewPeriod" value="{$preferredViewPeriod}" size="40"/>
           </td>
         </tr>
         <tr>
@@ -2019,7 +2019,7 @@
           </td>
           <td>
             <xsl:variable name="skinName" select="/bedeworkadmin/prefs/skinName"/>
-            <input type="text" value="{$skinName}" size="40"/>
+            <input type="text" name="skin" value="{$skinName}" size="40"/>
           </td>
         </tr>
         <tr>
@@ -2028,7 +2028,7 @@
           </td>
           <td>
             <xsl:variable name="skinStyle" select="/bedeworkadmin/prefs/skinStyle"/>
-            <input type="text" value="{$skinStyle}" size="40"/>
+            <input type="text" name="skinStyle" value="{$skinStyle}" size="40"/>
           </td>
         </tr>
       </table>
@@ -2337,12 +2337,12 @@
 
       <xsl:if test="/bedeworkadmin/message">
         <div id="messages">
-          <xsl:apply-templates select="/bedeworkadmin/message"/>
+          <p><xsl:apply-templates select="/bedeworkadmin/message"/></p>
         </div>
       </xsl:if>
       <xsl:if test="/bedeworkadmin/error">
         <div id="errors">
-          <xsl:apply-templates select="/bedeworkadmin/error"/>
+          <p><xsl:apply-templates select="/bedeworkadmin/error"/></p>
         </div>
       </xsl:if>
 
