@@ -102,7 +102,7 @@ public class FetchPrefsAction extends BwAbstractAction {
       }
       BwUser user = svc.findUser(str);
       if (user == null) {
-        form.getErr().emit("org.bedework.client.notfound", str);
+        form.getErr().emit("org.bedework.userid.notfound", str);
         return "notFound";
       }
       prefs = svc.getUserPrefs(user);

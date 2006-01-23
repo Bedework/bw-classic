@@ -68,7 +68,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * <p>Forwards to:<ul>
  *      <li>"noAccess"     user not authorised.</li>
- *      <li>"notFound"     no such event.</li>
+ *      <li>"notFound"     no such user.</li>
  *      <li>"continue"     continue on to update page.</li>
  * </ul>
  *
@@ -95,6 +95,11 @@ public class PEFetchAuthAction extends PEAbstractAction {
 
     BwAuthUser au = svci.getUserAuth().getUser(userid);
 
+    if (au == null) {
+      form.getErr().emit("org.bedework.userid.notfound", userid);
+      return "notFound";
+    }
+    
     if (debug) {
       logIt("Retrieved auth user " + au);
     }
