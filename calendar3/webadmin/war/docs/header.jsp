@@ -130,6 +130,10 @@ try {
       <fetchForUpdate><genurl:link page="/authuser/fetchForUpdate.do?b=de"/></fetchForUpdate>
       <update><genurl:link page="/authuser/update.do?b=de"/></update>
     </authuser>
+    <prefs><!-- only those listed are used here (no need to clean up) -->
+      <fetchForUpdate><genurl:link page="/prefs/fetchForUpdate.do?b=de"/></fetchForUpdate>
+      <update><genurl:link page="/prefs/update.do?b=de"/></update>
+    </prefs>
     <admingroup>
       <showModForm><genurl:link page="/admingroup/showModForm.rdo?b=de"/></showModForm>
       <showModMembersForm><genurl:link page="/admingroup/showModMembersForm.rdo?b=de"/></showModMembersForm>

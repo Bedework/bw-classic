@@ -1431,6 +1431,10 @@ public class BwActionFormBase extends UtilActionForm {
 
     return preferences;
   }
+  
+  public void setPreferences(BwPreferences val) {
+    preferences = val;
+  }
 
   /* ====================================================================
    *                   Categories

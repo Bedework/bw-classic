@@ -96,6 +96,8 @@
   <xsl:variable name="authuser-initUpdate" select="/bedeworkadmin/urlPrefixes/authuser/initUpdate/a/@href"/>
   <xsl:variable name="authuser-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/authuser/fetchForUpdate/a/@href"/><!-- used -->
   <xsl:variable name="authuser-update" select="/bedeworkadmin/urlPrefixes/authuser/update/a/@href"/>
+  <xsl:variable name="prefs-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/prefs/fetchForUpdate/a/@href"/><!-- used -->
+  <xsl:variable name="prefs-update" select="/bedeworkadmin/urlPrefixes/prefs/update/a/@href"/><!-- used -->
   <xsl:variable name="admingroup-showModForm" select="/bedeworkadmin/urlPrefixes/admingroup/showModForm/a/@href"/>
   <xsl:variable name="admingroup-showModMembersForm" select="/bedeworkadmin/urlPrefixes/admingroup/showModMembersForm/a/@href"/>
   <xsl:variable name="admingroup-showUpdateList" select="/bedeworkadmin/urlPrefixes/admingroup/showUpdateList/a/@href"/>
@@ -179,6 +181,9 @@
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='modAuthUser'">
               <xsl:call-template name="modAuthUser"/>
+            </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='modPrefs'">
+              <xsl:call-template name="modPrefs"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='chooseGroup'">
               <xsl:apply-templates select="/bedeworkadmin/groups" mode="chooseGroup"/>
@@ -1859,7 +1864,8 @@
             </a>
           </td>          
           <td>
-            <a href="">
+            <xsl:variable name="user" select="account"/>
+            <a href="{$prefs-fetchForUpdate}&amp;user={$user}">
               preferences
             </a>
           </td>
@@ -1911,7 +1917,7 @@
           </td>
           <td>
             <xsl:copy-of select="/bedeworkadmin/formElements/form/email/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <span class="fieldInfo"></span>
           </td>
         </tr>
         <tr>
@@ -1920,7 +1926,7 @@
           </td>
           <td>
             <xsl:copy-of select="/bedeworkadmin/formElements/form/phone/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <span class="fieldInfo"></span>
           </td>
         </tr>
         <tr>
@@ -1929,7 +1935,7 @@
           </td>
           <td>
             <xsl:copy-of select="/bedeworkadmin/formElements/form/dept/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <span class="fieldInfo"></span>
           </td>
         </tr>
         <tr>
@@ -1938,7 +1944,7 @@
           </td>
           <td>
             <xsl:copy-of select="/bedeworkadmin/formElements/form/lastName/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <span class="fieldInfo"></span>
           </td>
         </tr>
         <tr>
@@ -1947,7 +1953,7 @@
           </td>
           <td>
             <xsl:copy-of select="/bedeworkadmin/formElements/form/firstName/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <span class="fieldInfo"></span>
           </td>
         </tr>
       </table>
@@ -1959,7 +1965,11 @@
     </form>
   </xsl:template>
 
-
+  <!--+++++++++++++++ User Prefs ++++++++++++++++++++-->
+  <xsl:template name="modPrefs">
+    mod prefs
+  </xsl:template>
+  
   <!--+++++++++++++++ Admin Groups ++++++++++++++++++++-->
   <xsl:template name="listAdminGroups">
     <h2>Modify Groups</h2>

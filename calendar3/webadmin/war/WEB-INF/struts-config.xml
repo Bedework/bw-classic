@@ -737,7 +737,7 @@
                name="peForm"
                scope="session"
                validate="false">
-      <forward name="notFound" path="/admin/showMain.rdo" redirect="true" />
+      <forward name="notFound" path="/authuser/showUpdateList.rdo" redirect="true" />
       <forward name="continue" path="/authuser/showModForm.rdo" redirect="true" />
     </action>
 
@@ -747,10 +747,41 @@
                scope="session"
                validate="false">
       <forward name="cancelled" path="/authuser/showUpdateList.rdo" redirect="true" />
-      <forward name="continue" path="/authuser/getAuthUsers.do" redirect="true" />
       <forward name="retry" path="/authuser/showModForm.rdo" />
+      <forward name="continue" path="/authuser/showUpdateList.rdo" redirect="true" />
+    </action>
+    
+    <!-- ===============================================================
+                     User Preferences Actions
+         =============================================================== -->
+
+    <action    path="/prefs/showModForm"
+               type="org.bedework.webadmin.PERenderAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/prefs/modPrefs.jsp"/>
+    </action>
+         
+    <action    path="/prefs/fetchForUpdate"
+               type="org.bedework.webcommon.pref.FetchPrefsAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="notFound" path="/authuser/showUpdateList.rdo" redirect="true" />
+      <forward name="success" path="/prefs/showModForm.rdo" redirect="true" />
     </action>
 
+    <action    path="/prefs/update"
+               type="org.bedework.webcommon.pref.UpdatePrefsAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="cancelled" path="/authuser/showUpdateList.rdo" redirect="true" />
+      <forward name="retry" path="/prefs/showModForm.rdo" />
+      <forward name="success" path="/authuser/showUpdateList.rdo" redirect="true" />
+    </action>         
+         
     <!-- ===============================================================
                      Admin Group Actions
          =============================================================== -->
