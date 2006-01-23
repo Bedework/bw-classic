@@ -320,14 +320,14 @@
         <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
           <li>
             <a href="{$authuser-initUpdate}" >
-              Manage users
+              Manage public event administrators
             </a>
           </li>
         </xsl:if>
         <xsl:if test="/bedeworkadmin/userInfo/adminGroupMaintOk='true'">
           <li>
             <a href="{$admingroup-initUpdate}">
-              Manage groups
+              Manage admin groups
             </a>
           </li>
         </xsl:if>
@@ -336,6 +336,14 @@
             Choose/change group...
           </a>
         </li>
+        <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
+          <li>
+            <form action="{$prefs-fetchForUpdate}" method="post">
+              Edit user preferences (enter userid): <input type="text" name="user" size="15"/>
+              <input type="submit" name="getPrefs" value="go"/>
+            </form>
+          </li>
+        </xsl:if>
       </ul>
     </xsl:if>
   </xsl:template>
@@ -1831,24 +1839,20 @@
 
   <!--+++++++++++++++ Authuser ++++++++++++++++++++-->
   <xsl:template name="authUserList">
-    <h2>Modify Users</h2>
+    <h2>Modify Administrators</h2>
 
     <div id="authUserInputForms">
       <form name="getUserRolesForm" action="{$authuser-fetchForUpdate}" method="post">
-        Edit user roles (enter userid): <input type="text" name="editAuthUserId" size="20"/>
-        <input type="submit" value="go" name="submit"/>
-      </form>
-      <form name="getUserPrefsForm" action="{$prefs-fetchForUpdate}" method="post">
-        Edit user preferences (enter userid): <input type="text" name="user" size="20"/>
+        Edit admin roles by userid: <input type="text" name="editAuthUserId" size="20"/>
         <input type="submit" value="go" name="submit"/>
       </form>
     </div>
-    
+
     <table id="commonListTable">
       <tr>
         <th>UserId</th>
         <th>Roles</th>
-        <th colspan="2">update:</th>        
+        <th></th>
       </tr>
 
       <xsl:for-each select="bedeworkadmin/authUsers/authUser">
@@ -1871,13 +1875,7 @@
           <td>
             <xsl:variable name="account" select="account"/>
             <a href="{$authuser-fetchForUpdate}&amp;editAuthUserId={$account}">
-              roles
-            </a>
-          </td>          
-          <td>
-            <xsl:variable name="user" select="account"/>
-            <a href="{$prefs-fetchForUpdate}&amp;user={$user}">
-              preferences
+              edit
             </a>
           </td>
         </tr>
@@ -1886,7 +1884,7 @@
   </xsl:template>
 
   <xsl:template name="modAuthUser">
-    <h2>Update User</h2>
+    <h2>Update Administrator</h2>
     <xsl:variable name="modAuthUserAction" select="/bedeworkadmin/formElements/form/@action"/>
     <form action="{$modAuthUserAction}" method="post">
       <table id="eventFormTable">
@@ -1980,7 +1978,7 @@
   <xsl:template name="modPrefs">
     mod prefs
   </xsl:template>
-  
+
   <!--+++++++++++++++ Admin Groups ++++++++++++++++++++-->
   <xsl:template name="listAdminGroups">
     <h2>Modify Groups</h2>
@@ -2237,11 +2235,8 @@
           <xsl:when test="/bedeworkadmin/page='views' or /bedeworkadmin/page='modView'">
             Manage Views
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='authUserList'">
-            Manage Authorized Users
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='modAuthUser'">
-            Update Authorized User
+          <xsl:when test="/bedeworkadmin/page='authUserList' or /bedeworkadmin/page='modAuthUser'">
+            Manage Public Events Administrators
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='chooseGroup'">
             Choose Administrative Group

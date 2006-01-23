@@ -110,7 +110,7 @@ public class FetchPrefsAction extends BwAbstractAction {
       prefs = svc.getUserPrefs();
     }
 
-    form.setPreferences(prefs);
+    form.setUserPreferences(prefs);
 
     return "success";
   }

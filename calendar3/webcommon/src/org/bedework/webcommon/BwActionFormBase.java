@@ -358,6 +358,8 @@ public class BwActionFormBase extends UtilActionForm {
 
   private BwPreferences preferences;
 
+  private BwPreferences userPreferences;
+
   /* ====================================================================
    *                   Property methods
    * ==================================================================== */
@@ -1431,9 +1433,21 @@ public class BwActionFormBase extends UtilActionForm {
 
     return preferences;
   }
-  
-  public void setPreferences(BwPreferences val) {
-    preferences = val;
+
+  /** Set preferences for a given user
+   *
+   * @param  val   prefernces
+   */
+  public void setUserPreferences(BwPreferences val) {
+    userPreferences = val;
+  }
+
+  /** Set preferences for a given user
+   *
+   * @return  val   prefernces
+   */
+  public BwPreferences getUserPreferences() {
+    return userPreferences;
   }
 
   /* ====================================================================
