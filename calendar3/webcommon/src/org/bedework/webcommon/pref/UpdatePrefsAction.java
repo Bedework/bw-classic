@@ -138,7 +138,7 @@ public class UpdatePrefsAction extends BwAbstractAction {
     }
 
     svc.updateUserPrefs(prefs);
-
+    form.getMsg().emit("org.bedework.client.message.prefs.updated");
     return "success";
   }
 }

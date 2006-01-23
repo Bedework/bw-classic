@@ -3,10 +3,10 @@
   <xsl:template match="error">
     <xsl:choose>
       <xsl:when test="id='org.bedework.pubevents.error.missingfield'">
-        <xsl:value-of select="param"/> is a required field.
+        Your information is incomplete: please update the fields highlighted below.
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.notitle'">
-        Title is a required field.
+        You must supply a title.
       </xsl:when>
       <xsl:when test="id='org.bedework.error.event.startafterend'">
         The end date for this event occurs before the start date

@@ -401,7 +401,13 @@
     <xsl:variable name="modEventAction" select="/bedeworkadmin/formElements/form/@action"/>
     <form  name="peForm" method="post" action="{$modEventAction}">
       <table class="eventFormTable">
-        <tr>
+        <xsl:variable name="titleClass">
+          <xsl:choose>
+            <xsl:when test="/bedeworkadmin/error[id='org.bedework.validation.error.notitle']">validationError</xsl:when>
+            <xsl:otherwise>normal</xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <tr class="{$titleClass}">
           <td class="fieldName">
             Title:
           </td>
@@ -1976,7 +1982,62 @@
 
   <!--+++++++++++++++ User Prefs ++++++++++++++++++++-->
   <xsl:template name="modPrefs">
-    mod prefs
+    <h2>Edit User Preferences</h2>
+    <form action="{$prefs-update}" method="post">
+      <table id="eventFormTable">
+        <tr>
+          <td class="fieldName">
+            User:
+          </td>
+          <td>
+            <xsl:value-of select="/bedeworkadmin/prefs/user"/>
+            <xsl:variable name="user" select="/bedeworkadmin/prefs/user"/>
+            <input type="hidden" name="user" value="{$user}"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
+            Preferred view:
+          </td>
+          <td>
+            <xsl:variable name="preferredView" select="/bedeworkadmin/prefs/preferredView"/>
+            <input type="text" value="{$preferredView}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
+            Preferred view period:
+          </td>
+          <td>
+            <xsl:variable name="preferredViewPeriod" select="/bedeworkadmin/prefs/preferredViewPeriod"/>
+            <input type="text" value="{$preferredViewPeriod}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
+            Skin name:
+          </td>
+          <td>
+            <xsl:variable name="skinName" select="/bedeworkadmin/prefs/skinName"/>
+            <input type="text" value="{$skinName}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
+            Skin style:
+          </td>
+          <td>
+            <xsl:variable name="skinStyle" select="/bedeworkadmin/prefs/skinStyle"/>
+            <input type="text" value="{$skinStyle}" size="40"/>
+          </td>
+        </tr>
+      </table>
+      <br />
+
+      <input type="submit" name="modPrefs" value="Update" class="padRight"/>
+      <input type="reset" value="Reset"/>
+      <input type="submit" name="cancelled" value="Cancel"/>
+    </form>
   </xsl:template>
 
   <!--+++++++++++++++ Admin Groups ++++++++++++++++++++-->
@@ -2016,8 +2077,7 @@
         <th></th>
       </tr>
       <xsl:for-each select="/bedeworkadmin/groups/group">
-        <xsl:variable name="groupName"><xsl:copy-of select="name/*"/></xsl:variable>
-        <!-- this data (groupname) apparently needs cleaning: there is %0A and other characters in it -->
+        <xsl:variable name="groupName"><xsl:value-of select="name"/></xsl:variable>
         <tr>
           <td>
             <a href="{$admingroup-fetchForUpdate}&amp;adminGroupName={$groupName}">
@@ -2277,12 +2337,12 @@
 
       <xsl:if test="/bedeworkadmin/message">
         <div id="messages">
-          <p><xsl:apply-templates select="/bedeworkadmin/message"/><br/></p>
+          <xsl:apply-templates select="/bedeworkadmin/message"/>
         </div>
       </xsl:if>
       <xsl:if test="/bedeworkadmin/error">
         <div id="errors">
-          <p><xsl:apply-templates select="/bedeworkadmin/error"/><br/></p>
+          <xsl:apply-templates select="/bedeworkadmin/error"/>
         </div>
       </xsl:if>
 

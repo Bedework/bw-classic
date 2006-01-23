@@ -182,6 +182,10 @@ table.eventFormTable td.fieldName {
   padding: 0.2em;
   font-size: 0.9em;
 }
+table.eventFormTable tr.validationError td.fieldName {
+  color: black;
+  background-color: #ee0 !important;
+}
 table.eventFormTable td.optional {
   white-space: nowrap;
   font-style: italic;

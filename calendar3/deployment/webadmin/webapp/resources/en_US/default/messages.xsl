@@ -51,6 +51,9 @@
       <xsl:when test="id='org.bedework.client.message.location.referenced'">
         Location is referenced
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.prefs.updated'">
+        User preferences updated
+      </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="id"/> = <xsl:value-of select="param"/>
       </xsl:otherwise>
