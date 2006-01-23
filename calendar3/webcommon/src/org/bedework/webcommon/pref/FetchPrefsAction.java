@@ -55,7 +55,6 @@
 package org.bedework.webcommon.pref;
 
 import org.bedework.calfacade.BwUser;
-import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
@@ -87,30 +86,24 @@ public class FetchPrefsAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    if (form.getGuest()) {
+    if (!form.getUserAuth().isSuperUser()) {
       return "noAccess"; // First line of defence
     }
 
     CalSvcI svc = form.getCalSvcI();
 
-    BwPreferences prefs;
-
-    String str = request.getParameter("user");
-    if (str != null) {
-      if (!form.getUserAuth().isSuperUser()) {
-        return "noAccess"; // First line of defence
-      }
-      BwUser user = svc.findUser(str);
-      if (user == null) {
-        form.getErr().emit("org.bedework.client.error.nosuchuserid", str);
-        return "notFound";
-      }
-      prefs = svc.getUserPrefs(user);
-    } else {
-      prefs = svc.getUserPrefs();
+    String str = getReqPar(request, "user");
+    if (str == null) {
+      return "success";
     }
 
-    form.setUserPreferences(prefs);
+    BwUser user = svc.findUser(str);
+    if (user == null) {
+      form.getErr().emit("org.bedework.client.error.nosuchuserid", str);
+      return "notFound";
+    }
+
+    form.setUserPreferences(svc.getUserPrefs(user));
 
     return "success";
   }

@@ -92,30 +92,27 @@ public class UpdatePrefsAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    if (form.getGuest()) {
+    if (!form.getUserAuth().isSuperUser()) {
       return "noAccess"; // First line of defence
     }
 
     CalSvcI svc = form.getCalSvcI();
 
-    BwPreferences prefs;
-
-    String str = request.getParameter("user");
-    if (str != null) {
-      if (!form.getUserAuth().isSuperUser()) {
-        return "noAccess"; // First line of defence
-      }
-      BwUser user = svc.findUser(str);
-      if (user == null) {
-        form.getErr().emit("org.bedework.client.notfound", str);
-        return "notFound";
-      }
-      prefs = svc.getUserPrefs(user);
-    } else {
-      prefs = svc.getUserPrefs();
+    String str = getReqPar(request, "user");
+    if (str == null) {
+      form.getErr().emit("org.bedework.client.notfound", str);
+      return "notFound";
     }
 
-    str = request.getParameter("view");
+    BwUser user = svc.findUser(str);
+    if (user == null) {
+      form.getErr().emit("org.bedework.client.notfound", str);
+      return "notFound";
+    }
+
+    BwPreferences prefs = svc.getUserPrefs(user);
+
+    str = getReqPar(request, "view");
     if (str != null) {
       if (svc.findView(str) == null) {
         form.getErr().emit("org.bedework.client.notfound", str);
@@ -125,17 +122,17 @@ public class UpdatePrefsAction extends BwAbstractAction {
       prefs.setPreferredView(str);
     }
 
-    str = request.getParameter("viewPeriod");
+    str = getReqPar(request, "viewPeriod");
     if (str != null) {
       prefs.setPreferredViewPeriod(form.validViewPeriod(str));
     }
 
-    str = request.getParameter("skin");
+    str = getReqPar(request, "skin");
     if (str != null) {
       prefs.setSkinName(str);
     }
 
-    str = request.getParameter("skinStyle");
+    str = getReqPar(request, "skinStyle");
     if (str != null) {
       prefs.setSkinStyle(str);
     }

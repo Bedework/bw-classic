@@ -54,6 +54,7 @@
 
 package edu.rpi.sss.util.jsp;
 
+import edu.rpi.sss.util.Util;
 import edu.rpi.sss.util.log.HttpAppLogger;
 import edu.rpi.sss.util.servlets.HttpServletUtils;
 import edu.rpi.sss.util.servlets.PresentationState;
@@ -1097,6 +1098,17 @@ public abstract class UtilAbstractAction extends Action
   public boolean isPortletRequest(HttpServletRequest req) {
     // JSR 168 requires this attribute be present
     return req.getAttribute("javax.portlet.request") != null;
+  }
+
+  /** Get a request parameter stripped of white space. Return null for zero
+   * length.
+   *
+   * @param req
+   * @param name    name of parameter
+   * @return  String   value
+   */
+  protected String getReqPar(HttpServletRequest req, String name) throws Throwable {
+    return Util.checkNull(req.getParameter(name));
   }
 
   /** Get an integer valued request parameter.

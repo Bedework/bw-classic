@@ -7,13 +7,13 @@
 <%@include file="/docs/header.jsp"%>
 
 <page>modPrefs</page>
-<bean:define id="user" name="peForm" property="userPreferences"/>
+<bean:define id="userPrefs" name="peForm" property="userPreferences"/>
 <prefs>
-  <user></user>
-  <view><bean:write name="user" property="view"/></view>
-  <viewPeriod><bean:write name="user" property="viewPeriod"/></viewPeriod>
-  <skin><bean:write name="user" property="skin"/></skin>
-  <skinStyle><bean:write name="user" property="skinStyle"/></skinStyle>
+  <user><bean:write name="userPrefs" property="owner.account"/></user>
+  <preferredView><bean:write name="userPrefs" property="preferredView"/></preferredView>
+  <preferredViewPeriod><bean:write name="userPrefs" property="preferredViewPeriod"/></preferredViewPeriod>
+  <skinName><bean:write name="userPrefs" property="skinName"/></skinName>
+  <skinStyle><bean:write name="userPrefs" property="skinStyle"/></skinStyle>
 </prefs>
 
 <%@include file="/docs/footer.jsp"%>
