@@ -131,7 +131,7 @@
           <script type='text/javascript' src="{$resourcesRoot}/resources/autoComplete.js"></script>
           <script type='text/javascript' src="{$resourcesRoot}/resources/ui.js"></script>
         </xsl:if>
-        <!--<link rel="icon" type="image/ico" href="{}/favicon.ico" />-->
+        <link rel="icon" type="image/ico" href="{$resourcesRoot}/bedework.ico" />
       </head>
       <body>
         <xsl:call-template name="header"/>
@@ -2277,12 +2277,12 @@
 
       <xsl:if test="/bedeworkadmin/message">
         <div id="messages">
-          <p><xsl:apply-templates select="/bedeworkadmin/message"/></p>
+          <p><xsl:apply-templates select="/bedeworkadmin/message"/><br/></p>
         </div>
       </xsl:if>
       <xsl:if test="/bedeworkadmin/error">
         <div id="errors">
-          <p><xsl:apply-templates select="/bedeworkadmin/error"/></p>
+          <p><xsl:apply-templates select="/bedeworkadmin/error"/><br/></p>
         </div>
       </xsl:if>
 

@@ -2,6 +2,12 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:template match="error">
     <xsl:choose>
+      <xsl:when test="id='org.bedework.pubevents.error.missingfield'">
+        <xsl:value-of select="param"/> is a required field.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.notitle'">
+        Title is a required field.
+      </xsl:when>
       <xsl:when test="id='org.bedework.error.event.startafterend'">
         The end date for this event occurs before the start date
       </xsl:when>
