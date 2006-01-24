@@ -116,6 +116,7 @@ try {
       <fetchForUpdate><genurl:link page="/view/fetchForUpdate.do?b=de"/></fetchForUpdate>
       <addView><genurl:link page="/view/addView.do?b=de"/></addView>
       <update><genurl:link page="/view/update.do?b=de"/></update>
+      <remove><genurl:link page="/view/removeView.do?b=de"/></remove>
     </view>
     <timezones>
       <showUpload><genurl:link page="/timezones/showUpload.rdo?b=de"/></showUpload>

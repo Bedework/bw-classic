@@ -367,11 +367,20 @@
       <forward name="success" path="/docs/view/modView.jsp"/>
     </action>
 
+    <action    path="/view/showDeleteConfirm"
+               type="org.bedework.webadmin.PERenderAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/view/deleteConfirm.jsp" />
+    </action>
+
     <action    path="/view/fetchForUpdate"
                type="org.bedework.webcommon.views.FetchViewAction"
                name="peForm"
                scope="session"
                validate="false">
+      <forward name="delete" path="/view/showDeleteConfirm.rdo" redirect="true" />
       <forward name="success" path="/view/showModForm.rdo" redirect="true" />
     </action>
 

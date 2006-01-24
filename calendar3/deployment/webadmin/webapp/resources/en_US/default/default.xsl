@@ -87,6 +87,7 @@
   <xsl:variable name="view-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/view/fetchForUpdate/a/@href"/>
   <xsl:variable name="view-addView" select="/bedeworkadmin/urlPrefixes/view/addView/a/@href"/>
   <xsl:variable name="view-update" select="/bedeworkadmin/urlPrefixes/view/update/a/@href"/>
+  <xsl:variable name="view-remove" select="/bedeworkadmin/urlPrefixes/view/remove/a/@href"/>
   <!-- === -->
   <xsl:variable name="timezones-showUpload" select="/bedeworkadmin/urlPrefixes/timezones/showUpload/a/@href"/>
   <xsl:variable name="timezones-initUpload" select="/bedeworkadmin/urlPrefixes/timezones/initUpload/a/@href"/>
@@ -175,6 +176,9 @@
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='modView'">
               <xsl:call-template name="modView"/>
+            </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='deleteViewConfirm'">
+              <xsl:call-template name="deleteViewConfirm"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='authUserList'">
               <xsl:call-template name="authUserList"/>
@@ -1771,10 +1775,8 @@
   </xsl:template>
 
   <xsl:template name="modView">
-    <xsl:variable name="viewName" select="/bedeworkadmin/views/view/name"/>
-
     <h2>Update View</h2>
-
+    <xsl:variable name="viewName" select="/bedeworkadmin/views/view/name"/>
     <h3 class="viewName"><xsl:value-of select="$viewName"/></h3>
     <table id="viewsTable">
       <tr>
@@ -1831,10 +1833,25 @@
           <input type="button" name="return" value="Return to Views Listing" class="padRight" onclick="javascript:location.replace('{$view-fetch}')"/>
         </td>
         <td align="right">
-          <input type="button" name="delete" value="Delete View" onclick="{$view-fetch}"/>
+          <input type="button" name="delete" value="Delete View" onclick="javascript:location.replace('{$view-fetchForUpdate}&amp;name={$viewName}&amp;delete=yes')"/>
         </td>
       </tr>
     </table>
+  </xsl:template>
+
+  <xsl:template name="deleteViewConfirm">
+    <h2>Remove View?</h2>
+
+    <xsl:variable name="viewName" select="/bedeworkadmin/views/view/name"/>
+    <p>The following view will be removed. Continue?</p>
+
+    <h3 class="viewName"><xsl:value-of select="$viewName"/></h3>
+    <form name="removeView" action="{$view-remove}">
+      <input type="hidden" name="name" value="{$viewName}"/>
+      <input type="submit" name="delete" value="Yes: Remove View" class="padRight"/>
+      <input type="submit" name="cancelled" value="No: Cancel"/>
+    </form>
+
   </xsl:template>
 
   <!--+++++++++++++++ Timezones ++++++++++++++++++++-->

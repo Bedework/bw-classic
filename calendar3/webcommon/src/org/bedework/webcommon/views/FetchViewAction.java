@@ -104,6 +104,12 @@ public class FetchViewAction extends BwAbstractAction {
     form.setView(view);
     form.setSubscriptions(svc.getSubscriptions());
 
+    String reqpar = request.getParameter("delete");
+
+    if (reqpar != null) {
+      return "delete";
+    }
+
     return "success";
   }
 }
