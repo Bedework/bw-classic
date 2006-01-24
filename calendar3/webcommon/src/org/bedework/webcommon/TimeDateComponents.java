@@ -54,6 +54,7 @@
 
 package org.bedework.webcommon;
 
+import org.bedework.appcommon.CalendarInfo;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CalFacadeUtil;
@@ -96,12 +97,12 @@ public class TimeDateComponents implements Serializable {
   // XXX: Should localize
   private static final String[] DEFAULT_AMPM_LABELS = {"am", "pm"};
 
-  /** default labels for the dates in a month */
-  private static String[] defaultDayLabels =
-      new String[maximumValues(Calendar.DAY_OF_MONTH)];
-  /** default internal values for the dates in a month */
-  private static String[] defaultDayVals =
-      new String[maximumValues(Calendar.DAY_OF_MONTH)];
+  /* * default labels for the dates in a month */
+  //private static String[] defaultDayLabels =
+  //    new String[maximumValues(Calendar.DAY_OF_MONTH)];
+  //** default internal values for the dates in a month */
+  //private static String[] defaultDayVals =
+  //    new String[maximumValues(Calendar.DAY_OF_MONTH)];
 
   /** default labels for the months of the year */
   private static String[] defaultMonthLabels =
@@ -149,6 +150,7 @@ public class TimeDateComponents implements Serializable {
     //XXX some of this needs to be localized still
     Calendar cal = Calendar.getInstance(/* XXX locale?????*/);
 
+    /*
     for (int i = 0, dateOfMonth = cal.getMinimum(Calendar.DAY_OF_MONTH);
          i < defaultDayLabels.length; i++, dateOfMonth++) {
       defaultDayLabels[i] = String.valueOf(dateOfMonth);
@@ -156,6 +158,7 @@ public class TimeDateComponents implements Serializable {
       //XXX assuming max number of days in months is two-digits
       defaultDayVals[i] = twoDigit(dateOfMonth);
     }
+    */
 
     cal.set(Calendar.MONTH, cal.getMinimum(Calendar.MONTH));
     cal.getTime(); // force recompute
@@ -210,12 +213,13 @@ public class TimeDateComponents implements Serializable {
   private transient Logger log;
 
   private CalSvcI svci;
+  private CalendarInfo calInfo;
 
   /** Holds time and date information */
   private Calendar cal;
 
-  private String[] dayLabels;
-  private String[] dayVals;
+  //private String[] dayLabels;
+  //private String[] dayVals;
   private String[] monthLabels;
   private String[] monthVals;
 
@@ -255,6 +259,7 @@ public class TimeDateComponents implements Serializable {
   /** Set up instance of this class using default values.
    *
    * @param svci
+   * @param calInfo
    * @param minuteIncrement  increment for minutes: &le; 1 is all,
    *                        5 is every 5 minutes, etc
    * @param hour24        true if we ignore am/pm and use 24hr clock
@@ -262,115 +267,34 @@ public class TimeDateComponents implements Serializable {
    * @exception TimeDateException If there is something wrong with the minutes
    *                        arrays
    */
-  public TimeDateComponents(CalSvcI svci, int minuteIncrement,
+  public TimeDateComponents(CalSvcI svci,
+                            CalendarInfo calInfo,
+                            int minuteIncrement,
                             boolean hour24,
                             boolean debug) throws TimeDateException {
     if (debug) {
       getLogger().debug("Init TimeDateComponents with hour24= " + hour24);
     }
     this.svci = svci;
-
-    init(defaultDayLabels,
-         defaultDayVals,
-         defaultMonthLabels,
-         defaultMonthVals,
-         hour24 ? defaultHour24Labels : defaultHourLabels,
-         hour24 ? defaultHour24Vals : defaultHourVals,
-         defaultMinuteLabels,
-         defaultMinuteVals,
-         minuteIncrement,
-         DEFAULT_AMPM_LABELS,
-         hour24,
-         debug);
-  }
-
-  /* See XXX note below before getter/setter methods if you want to
-     make this constructor non-private.
-   * /
-  / * * Set up instance of this class.
-   *
-   * @param dayLabels     external array of labels used for timedate
-   * @param dayVals       internal array of values used for timedate
-   * @param monthLabels   external array of labels used for timedate
-   * @param monthVals     internal array of values used for timedate
-   * @param hourLabels    external array of labels used for timedate
-   * @param hourVals      internal array of values used for timedate
-   * @param minuteLabels  external array of labels used for timedate
-   * @param minuteVals    internal array of values used for timedate
-   * @param minuteIncrement  increment for minutes, 0, 1 is all,
-   *                      5 is every 5  inutes etc.
-   * @param ampmLabels    internal array of values used for timedate
-   * @param hour24        true if we ignore am/pm and use 24hr clock
-   * @exception TimeDateException if there is a problem with one of the
-   *    minutes arrays
-   * /
-  private TimeDateComponents(String[] dayLabels,
-                             String[] dayVals,
-                             String[] monthLabels,
-                             String[] monthVals,
-                             String[] hourLabels,
-                             String[] hourVals,
-                             String[] minuteLabels,
-                             String[] minuteVals,
-                             int minuteIncrement,
-                             String[] ampmLabels,
-                             boolean hour24,
-                             boolean debug) throws TimeDateException {
-    init(dayLabels,
-         dayVals,
-         monthLabels,
-         monthVals,
-         hourLabels,
-         hourVals,
-         minuteLabels,
-         minuteVals,
-         minuteIncrement,
-         ampmLabels,
-         hour24,
-         debug);
-  } */
-
-  /** Set up instance of this class
-   *
-   * @param dayLabels     external array of labels used for timedate
-   * @param dayVals       internal array of values used for timedate
-   * @param monthLabels   external array of labels used for timedate
-   * @param monthVals     internal array of values used for timedate
-   * @param hourLabels    external array of labels used for timedate
-   * @param hourVals      internal array of values used for timedate
-   * @param minuteLabels  external array of labels used for timedate
-   * @param minuteVals    internal array of values used for timedate
-   * @param minuteIncrement  increment for minutes, &le; 1 is all,
-   *                      5 is every 5 minutes etc.
-   * @param ampmLabels    internal array of values used for timedate
-   * @param hour24        true if we ignore am/pm and use 24hr clock
-   * @exception TimeDateException if there is a problem with one of the
-   *    minutes arrays
-   */
-  private void init(String[] dayLabels,
-                    String[] dayVals,
-                    String[] monthLabels,
-                    String[] monthVals,
-                    String[] hourLabels,
-                    String[] hourVals,
-                    String[] minuteLabels,
-                    String[] minuteVals,
-                    int minuteIncrement,
-                    String[] ampmLabels,
-                    boolean hour24,
-                    boolean debug) throws TimeDateException {
-    this.dayLabels = dayLabels;
-    this.dayVals = dayVals;
-    this.monthLabels = monthLabels;
-    this.monthVals = monthVals;
-    this.hourLabels = hourLabels;
-    this.hourVals = hourVals;
-
-    setMinutes(minuteLabels, minuteVals, minuteIncrement);
-
-    this.ampmLabels = ampmLabels;
+    this.calInfo = calInfo;
     this.hour24 = hour24;
     //this.debug = debug;
+
+    //dayLabels = defaultDayLabels;
+    //dayVals = defaultDayVals;
+    monthLabels = defaultMonthLabels;
+    monthVals = defaultMonthVals;
+    if (hour24) {
+      hourLabels = defaultHour24Labels;
+      hourVals = defaultHour24Vals;
+    } else {
+      hourLabels = defaultHourLabels;
+      hourVals = defaultHourVals;
+    }
+
+    setMinutes(defaultMinuteLabels, defaultMinuteVals, minuteIncrement);
+
+    this.ampmLabels = DEFAULT_AMPM_LABELS;
   }
 
   /**
@@ -413,6 +337,13 @@ public class TimeDateComponents implements Serializable {
   }
 
   /**
+   * @return CalendarInfo
+   */
+  public CalendarInfo getCalInfo() {
+    return calInfo;
+  }
+
+  /**
    *
    */
   public void resetError() {
@@ -430,14 +361,14 @@ public class TimeDateComponents implements Serializable {
    * @return labels
    */
   public String[] getDayLabels() {
-    return this.dayLabels;
+    return getCalInfo().getDayLabels();
   }
 
   /**
    * @return vals
    */
   public String[] getDayVals() {
-    return this.dayVals;
+    return getCalInfo().getDayVals();
   }
 
   /**
@@ -625,7 +556,7 @@ public class TimeDateComponents implements Serializable {
    */
   public String getDay() {
     // Calendar.DAY_OF_MONTH returns 1-31
-    return dayVals[getCal().get(Calendar.DAY_OF_MONTH) - 1];
+    return getDayVals()[getCal().get(Calendar.DAY_OF_MONTH) - 1];
   }
 
   /**

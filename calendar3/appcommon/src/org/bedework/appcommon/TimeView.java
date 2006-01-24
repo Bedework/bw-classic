@@ -87,6 +87,7 @@ import java.util.Vector;
  */
 public class TimeView implements Serializable {
   protected boolean debug;
+  protected CalendarInfo calInfo;
   protected MyCalendarVO curDay;
   protected CalSvcI cal;
   protected String periodName;
@@ -106,6 +107,7 @@ public class TimeView implements Serializable {
 
   /** Constructor:
    *
+   * @param  calInfo   Object providing calendaring information
    * @param  curDay    MyCalendarVO representing current day.
    * @param  periodName Name of period, capitalized, e.g. Week
    * @param  cal       CalSvcI calendar service interface
@@ -120,7 +122,8 @@ public class TimeView implements Serializable {
    * @param  debug     true for some debugging output
    * @throws CalFacadeException
    */
-  public TimeView(MyCalendarVO curDay,
+  public TimeView(CalendarInfo calInfo,
+                  MyCalendarVO curDay,
                   String periodName,
                   CalSvcI cal,
                   MyCalendarVO firstDay,
@@ -129,6 +132,7 @@ public class TimeView implements Serializable {
                   String nextDate,
                   boolean showData,
                   boolean debug) throws CalFacadeException {
+    this.calInfo = calInfo;
     this.curDay = curDay;
     this.periodName = periodName;
     this.cal = cal;
@@ -422,11 +426,11 @@ public class TimeView implements Serializable {
       initGtpiForMonth(gtpi);
 
       /* Our month entry */
-      TimeViewDailyInfo monthTvdi = new TimeViewDailyInfo();
+      TimeViewDailyInfo monthTvdi = new TimeViewDailyInfo(calInfo);
       initTvdi(monthTvdi, gtpi);
 
       /* Create a year entry */
-      TimeViewDailyInfo yearTvdi = new TimeViewDailyInfo();
+      TimeViewDailyInfo yearTvdi = new TimeViewDailyInfo(calInfo);
       yearTvdi.setCal(gtpi.currentDay);
       yearTvdi.setYear(gtpi.year);
       yearTvdi.setDate(gtpi.currentDay.getDateDigits());
@@ -434,7 +438,7 @@ public class TimeView implements Serializable {
       yearTvdi.setDateLong(gtpi.currentDay.getLongDateString());
 
       for (;;) {
-        TimeViewDailyInfo weekTvdi = new TimeViewDailyInfo();
+        TimeViewDailyInfo weekTvdi = new TimeViewDailyInfo(calInfo);
 
         initTvdi(weekTvdi, gtpi);
 
@@ -467,7 +471,7 @@ public class TimeView implements Serializable {
 
           initGtpiForMonth(gtpi);
 
-          monthTvdi = new TimeViewDailyInfo();
+          monthTvdi = new TimeViewDailyInfo(calInfo);
           initTvdi(monthTvdi, gtpi);
           weeks = new Vector();
         }
@@ -531,7 +535,7 @@ public class TimeView implements Serializable {
     }
 
     while (dayNum != dayOfWeek) {
-      tvdi = new TimeViewDailyInfo();
+      tvdi = new TimeViewDailyInfo(calInfo);
       tvdi.setFiller(true);
 
       days.addElement(tvdi);
@@ -562,7 +566,7 @@ public class TimeView implements Serializable {
       gtpi.isLast = gtpi.last.isSameDate(gtpi.currentDay);
 
       /* Create a day entry */
-      tvdi = new TimeViewDailyInfo();
+      tvdi = new TimeViewDailyInfo(calInfo);
 
       initTvdi(tvdi, gtpi);
 
@@ -602,7 +606,7 @@ public class TimeView implements Serializable {
     /** Pad it out to seven days
      */
     while (days.size() < 7) {
-      tvdi = new TimeViewDailyInfo();
+      tvdi = new TimeViewDailyInfo(calInfo);
       tvdi.setFiller(true);
 
       days.addElement(tvdi);

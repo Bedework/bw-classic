@@ -99,6 +99,27 @@ public interface CalTimezones extends Serializable {
   */
  public TimeZone getTimeZone(final String id) throws CalFacadeException;
 
+ /** Get the default timezone for this system.
+  *
+  * @return default TimeZone or null for none set.
+  * @throws CalFacadeException
+  */
+ public TimeZone getDefaultTimeZone() throws CalFacadeException;
+
+ /** Set the default timezone id for this system.
+  *
+  * @param id
+  * @throws CalFacadeException
+  */
+ public void setDefaultTimeZoneId(String id) throws CalFacadeException;
+
+ /** Get the default timezone id for this system.
+ *
+ * @return String id
+ * @throws CalFacadeException
+ */
+ public String getDefaultTimeZoneId() throws CalFacadeException;
+
  /** Find a timezone object in the database given the id.
   *
   * @param id

@@ -70,6 +70,7 @@ import org.bedework.calfacade.CalFacadeException;
 
 import org.apache.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -94,7 +95,7 @@ class AccessUtil implements PrivilegeDefs {
 
   /* Information created and saved about access on a given path.
    */
-  private class PathInfo {
+  private class PathInfo implements Serializable {
     String path;   // The key
     Acl pathAcl;   // Merged acl for the path.
     char[] encoded;

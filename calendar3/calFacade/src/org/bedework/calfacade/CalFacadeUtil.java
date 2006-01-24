@@ -266,7 +266,7 @@ public class CalFacadeUtil implements Serializable {
       date = isoDateTime(dt);
     }
 
-    dtm.init(dateOnly, date, null, timezones);
+    dtm.init(dateOnly, date, timezones.getDefaultTimeZoneId(), timezones);
 
     return dtm;
   }

@@ -54,6 +54,7 @@
 
 package org.bedework.webcommon;
 
+import org.bedework.appcommon.CalendarInfo;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.ifs.CalTimezones;
@@ -84,14 +85,16 @@ public class EventDates extends EntityDates {
 
   /**
    * @param svci
+   * @param calInfo
    * @param hour24
    * @param minIncrement
    * @param err
    * @param debug
    */
-  public EventDates(CalSvcI svci, boolean hour24, int minIncrement,
+  public EventDates(CalSvcI svci, CalendarInfo calInfo,
+                    boolean hour24, int minIncrement,
                     MessageEmit err, boolean debug) {
-    super(svci, hour24, minIncrement, err, debug);
+    super(svci, calInfo, hour24, minIncrement, err, debug);
   }
 
   /** We set the time date components from the event.

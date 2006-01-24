@@ -55,6 +55,7 @@
 package org.bedework.webcommon;
 
 import org.bedework.appcommon.BedeworkDefs;
+import org.bedework.appcommon.CalendarInfo;
 import org.bedework.appcommon.DayView;
 import org.bedework.appcommon.MonthView;
 import org.bedework.appcommon.MyCalendarVO;
@@ -766,9 +767,17 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public MyCalendarVO getToday() {
     if (today == null) {
+      // XXX locale
       today = new MyCalendarVO();
     }
     return today;
+  }
+
+  /**
+   * @return calendar info
+   */
+  public CalendarInfo getCalInfo() {
+    return getToday().getCalInfo();
   }
 
   /**
@@ -1097,16 +1106,16 @@ public class BwActionFormBase extends UtilActionForm {
 
       switch (curViewPeriod) {
       case BedeworkDefs.dayView:
-        setCurTimeView(new DayView(viewMcDate, getCalSvcI(), debug));
+        setCurTimeView(new DayView(getCalInfo(), viewMcDate, getCalSvcI(), debug));
         break;
       case BedeworkDefs.weekView:
-        setCurTimeView(new WeekView(viewMcDate, getCalSvcI(), debug));
+        setCurTimeView(new WeekView(getCalInfo(), viewMcDate, getCalSvcI(), debug));
         break;
       case BedeworkDefs.monthView:
-        setCurTimeView(new MonthView(viewMcDate, getCalSvcI(), debug));
+        setCurTimeView(new MonthView(getCalInfo(), viewMcDate, getCalSvcI(), debug));
         break;
       case BedeworkDefs.yearView:
-        setCurTimeView(new YearView(viewMcDate, getCalSvcI(),
+        setCurTimeView(new YearView(getCalInfo(), viewMcDate, getCalSvcI(),
                        getShowYearData(), debug));
         break;
       }
@@ -1781,7 +1790,8 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public EventDates getEventDates() {
     if (eventDates == null) {
-      eventDates = new EventDates(getCalSvcI(), hour24, minIncrement, err, debug);
+      eventDates = new EventDates(getCalSvcI(), getCalInfo(),
+                                  hour24, minIncrement, err, debug);
     }
 
     return eventDates;

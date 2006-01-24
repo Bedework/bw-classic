@@ -59,6 +59,11 @@ public class CalendarInfo implements Serializable {
   private int lastDayOfWeek;
   private int numberDaysInWeek;
 
+  /** labels for the dates in a month */
+  private String[] dayLabels;
+  /** internal values for the dates in a month */
+  private String[] dayVals;
+
   /** Constructor
    *
    * @param locale
@@ -117,6 +122,16 @@ public class CalendarInfo implements Serializable {
     } else {
       dayNamesAdjusted = dayNames;
       shortDayNamesAdjusted = shortDayNames;
+    }
+
+    dayLabels = new String[getRangeSize(c, Calendar.DAY_OF_MONTH)];
+    dayVals = new String[getRangeSize(c, Calendar.DAY_OF_MONTH)];
+
+    int dom = c.getMinimum(Calendar.DAY_OF_MONTH);
+    for (int i = 0; i < dayLabels.length; i++) {
+      dayLabels[i] = String.valueOf(dom);
+      dayVals[i] = twoDigit(dom);
+      dom++;
     }
   }
 
@@ -191,5 +206,46 @@ public class CalendarInfo implements Serializable {
    */
   public int getLastDayOfWeek() {
     return lastDayOfWeek;
+  }
+
+  /**
+   * @return labels
+   */
+  public String[] getDayLabels() {
+    return dayLabels;
+  }
+
+  /**
+   * @return vals
+   */
+  public String[] getDayVals() {
+    return dayVals;
+  }
+
+  /** Return the size of the range for a given unit of time
+   *
+   * @param unit      value defined in java.util.Calendar
+   * @return int      size of range
+   */
+  private int getRangeSize(Calendar cal, int unit) {
+    return cal.getMaximum(unit) - cal.getMinimum(unit) + 1;
+  }
+
+  private static String twoDigit(int val) {
+    if (val > 9) {
+      return String.valueOf(val);
+    }
+
+    return "0" + String.valueOf(val);
+  }
+
+  private static String fourDigit(int val) {
+    if (val > 999) {
+      return String.valueOf(val);
+    }
+
+    String strVal = String.valueOf(val);
+
+    return "0000".substring(strVal.length()) + strVal;
   }
 }

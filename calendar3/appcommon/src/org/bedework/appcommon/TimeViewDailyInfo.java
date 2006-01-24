@@ -71,6 +71,8 @@ import org.apache.log4j.Logger;
  * @author  Mike Douglass douglm@rpi.edu
  */
 public class TimeViewDailyInfo implements Serializable {
+  private CalendarInfo calInfo;
+
   /** The view that created this.
    */
   private TimeView view;
@@ -176,6 +178,14 @@ public class TimeViewDailyInfo implements Serializable {
   /** The wrapped events - possibly null
    */
   private Collection eventFormatters;
+
+  /** Constructor:
+   *
+   * @param  calInfo   Object providing calendaring information
+   */
+  public TimeViewDailyInfo(CalendarInfo calInfo) {
+    this.calInfo = calInfo;
+  }
 
   /** The view that created this.
    *
@@ -554,7 +564,7 @@ public class TimeViewDailyInfo implements Serializable {
 
         while (it.hasNext()) {
           eventFormatters.add(new EventFormatter((EventInfo)it.next(), view,
-                              view.getTimezones()));
+                              calInfo, view.getTimezones()));
         }
       }
     } catch (Throwable t) {

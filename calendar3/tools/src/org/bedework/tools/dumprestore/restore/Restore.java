@@ -132,6 +132,7 @@ public class Restore implements Defs {
     globals.timezones = new TimezonesImpl(globals.debug,
                                           globals.getPublicUser(),
                                           globals.rintf);
+    globals.timezones.setDefaultTimeZoneId(globals.syspars.getTzid());
 
     if (globals.from2p3px) {
       // System prefs are set up by run time pars

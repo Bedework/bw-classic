@@ -8,7 +8,9 @@ try {
   <%-- Generates standard calendar values for use in the client for forms, etc --%>
 
   <bean:define id="forLabels" name="calForm" property="forLabels" />
+  <bean:define id="calInfo" name="calForm" property="today.calInfo" />
 
+   <%--
   <daylabels>
     <logic:iterate id="dayLabels" name="calForm" property="forLabels.dayLabels">
       <val><bean:write name="dayLabels"/></val>
@@ -20,13 +22,25 @@ try {
     </logic:iterate>
     <start><bean:write name="calForm" property="viewStartDate.day"/></start>
   </dayvalues>
+  --%>
+  <daylabels>
+    <logic:iterate id="dayLabel" name="calInfo" property="dayLabels">
+      <val><bean:write name="dayLabel"/></val>
+    </logic:iterate>
+  </daylabels>
+  <dayvalues>
+    <logic:iterate id="dayVal" name="calInfo" property="dayVals">
+      <val><bean:write name="dayVal"/></val>
+    </logic:iterate>
+    <start><bean:write name="calForm" property="viewStartDate.day"/></start>
+  </dayvalues>
   <daynames>
-    <logic:iterate id="dayName" name="calForm" property="today.calInfo.dayNamesAdjusted">
+    <logic:iterate id="dayName" name="calInfo" property="dayNamesAdjusted">
       <val><bean:write name="dayName"/></val>
     </logic:iterate>
   </daynames>
   <shortdaynames>
-    <logic:iterate id="shortDayName" name="calForm" property="today.calInfo.shortDayNamesAdjusted">
+    <logic:iterate id="shortDayName" name="calInfo" property="shortDayNamesAdjusted">
       <val><bean:write name="shortDayName"/></val>
     </logic:iterate>
   </shortdaynames>

@@ -65,6 +65,7 @@ import org.bedework.calsvci.CalSvcI;
 public class YearView extends TimeView {
   /** Constructor:
    *
+   * @param  calInfo   Object providing calendaring information
    * @param  curDay    MyCalendarVO representing current day.
    * @param  cal       CalSvcI calendar service interface
    * @param  showData  boolean true if this TimeView can be used to
@@ -74,11 +75,12 @@ public class YearView extends TimeView {
    * @param  debug     true for some debugging output
    * @throws CalFacadeException
    */
-  public YearView(MyCalendarVO curDay,
+  public YearView(CalendarInfo calInfo,
+                  MyCalendarVO curDay,
                   CalSvcI cal,
                   boolean showData,
                   boolean debug) throws CalFacadeException {
-    super(curDay, "Year", cal,
+    super(calInfo, curDay, "Year", cal,
           curDay.getFirstDayOfThisYear(),
           curDay.getLastDayOfThisYear(),
           curDay.getPrevYear().getDateDigits(),

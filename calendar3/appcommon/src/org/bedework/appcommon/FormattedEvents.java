@@ -67,16 +67,19 @@ import java.util.Iterator;
  */
 public class FormattedEvents extends AbstractCollection {
   private Collection events;
+  private CalendarInfo calInfo;
   private CalTimezones ctz;
 
   /** Constructor
    *
    * @param events
+   * @param calInfo
    * @param ctz
    */
   public FormattedEvents(Collection events,
-                         CalTimezones ctz) {
+                         CalendarInfo calInfo, CalTimezones ctz) {
     this.events = events;
+    this.calInfo = calInfo;
     this.ctz = ctz;
   }
 
@@ -102,7 +105,7 @@ public class FormattedEvents extends AbstractCollection {
     public Object next() {
       EventInfo ev = (EventInfo)it.next();
 
-      return new EventFormatter(ev, null, ctz);
+      return new EventFormatter(ev, null, calInfo, ctz);
     }
 
     public void remove() {

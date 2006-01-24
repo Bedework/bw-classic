@@ -347,6 +347,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
                                    CalFacadeDefs.maxReservedSponsorId, debug);
 
     timezones = new CalTimezonesImpl(this, getStats(), publicAdmin, debug);
+    timezones.setDefaultTimeZoneId(getSyspars().getTzid());
 
     return userCreated;
   }
@@ -374,9 +375,9 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
       if (syspars == null) {
         throw new CalFacadeException("No system parameters with name " + name);
       }
-      
+
       if (debug) {
-      	trace("Read system parameters: " + syspars);
+        trace("Read system parameters: " + syspars);
       }
     }
     return syspars;

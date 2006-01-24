@@ -62,7 +62,7 @@ import java.io.Serializable;
 
 import org.apache.log4j.Logger;
 
-/** Object to provide formatting services for an EventVO.
+/** Object to provide formatting services for a BwEvent.
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
@@ -70,6 +70,8 @@ public class EventFormatter implements Serializable {
   /** The event
    */
   private EventInfo eventInfo;
+
+  private CalendarInfo calInfo;
 
   private CalTimezones ctz;
 
@@ -89,12 +91,14 @@ public class EventFormatter implements Serializable {
   /** Constructor
    *
    * @param eventInfo
+   * @param calInfo
    * @param view
    * @param ctz
    */
   public EventFormatter(EventInfo eventInfo, TimeView view,
-                        CalTimezones ctz) {
+                        CalendarInfo calInfo, CalTimezones ctz) {
     this.eventInfo = eventInfo;
+    this.calInfo = calInfo;
     this.ctz= ctz;
   }
 
@@ -107,6 +111,13 @@ public class EventFormatter implements Serializable {
    */
   public EventInfo getEventInfo() {
     return eventInfo;
+  }
+
+  /**
+   * @return CalendarInfo
+   */
+  public CalendarInfo getCalInfo() {
+    return calInfo;
   }
 
   /**
@@ -131,6 +142,7 @@ public class EventFormatter implements Serializable {
    */
   public MyCalendarVO getToday() {
     if (today == null) {
+      // XXX Locale?
       today = new MyCalendarVO();
     }
 
@@ -145,7 +157,7 @@ public class EventFormatter implements Serializable {
   public DateTimeFormatter getStart() {
     try {
       if (start == null) {
-        start = new DateTimeFormatter(getToday().getCalInfo(),
+        start = new DateTimeFormatter(getCalInfo(),
                                       getEvent().getDtstart(), ctz);
       }
     } catch (Throwable t) {
@@ -168,7 +180,7 @@ public class EventFormatter implements Serializable {
   public DateTimeFormatter getEnd() {
     try {
       if (end == null) {
-        end = new DateTimeFormatter(getToday().getCalInfo(),
+        end = new DateTimeFormatter(getCalInfo(),
                                     getEvent().getDtend(),
                                     ctz);
       }

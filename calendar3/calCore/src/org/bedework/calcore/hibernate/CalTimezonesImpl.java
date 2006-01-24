@@ -91,6 +91,9 @@ class CalTimezonesImpl implements CalTimezones {
   private boolean publicAdmin;
   private boolean debug;
 
+  private String defaultTimeZoneId;
+  private transient TimeZone defaultTimeZone;
+
   private static class TimezoneInfo {
     TimeZone tz;
 
@@ -160,6 +163,10 @@ class CalTimezonesImpl implements CalTimezones {
   }
 
   public TimeZone getTimeZone(final String id) throws CalFacadeException {
+    if ((defaultTimeZone != null) && id.equals(defaultTimeZoneId)) {
+      return defaultTimeZone;
+    }
+
     stats.incTzFetches();
     TimezoneInfo tzinfo = lookup(id);
 
@@ -180,7 +187,28 @@ class CalTimezonesImpl implements CalTimezones {
       stats.incSystemTzFetches();
     }
 
+    if ((defaultTimeZone == null) && id.equals(defaultTimeZoneId)) {
+      defaultTimeZone = tzinfo.tz;
+    }
+
     return tzinfo.tz;
+  }
+
+  public TimeZone getDefaultTimeZone() throws CalFacadeException {
+    if ((defaultTimeZone == null) && (defaultTimeZoneId != null)) {
+      defaultTimeZone = getTimeZone(defaultTimeZoneId);
+    }
+
+    return defaultTimeZone;
+  }
+
+  public void setDefaultTimeZoneId(String id) throws CalFacadeException {
+    defaultTimeZone = null;
+    defaultTimeZoneId = id;
+  }
+
+  public String getDefaultTimeZoneId() throws CalFacadeException {
+    return defaultTimeZoneId;
   }
 
   public VTimeZone findTimeZone(final String id, BwUser owner) throws CalFacadeException {

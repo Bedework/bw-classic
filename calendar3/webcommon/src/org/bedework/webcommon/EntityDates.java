@@ -54,6 +54,7 @@
 
 package org.bedework.webcommon;
 
+import org.bedework.appcommon.CalendarInfo;
 import org.bedework.calsvci.CalSvcI;
 
 import edu.rpi.sss.util.log.MessageEmit;
@@ -68,6 +69,7 @@ public class EntityDates {
   protected boolean debug;
 
   protected CalSvcI svci;
+  private CalendarInfo calInfo;
 
   protected boolean hour24;
 
@@ -82,14 +84,17 @@ public class EntityDates {
   /** Constructor
    *
    * @param svci
+   * @param calInfo
    * @param hour24
    * @param minIncrement
    * @param err
    * @param debug
    */
-  public EntityDates(CalSvcI svci, boolean hour24, int minIncrement,
+  public EntityDates(CalSvcI svci, CalendarInfo calInfo,
+                     boolean hour24, int minIncrement,
                      MessageEmit err, boolean debug) {
     this.svci = svci;
+    this.calInfo = calInfo;
     this.hour24 = hour24;
     this.minIncrement = minIncrement;
     this.err = err;
@@ -113,7 +118,7 @@ public class EntityDates {
    */
   public TimeDateComponents getNowTimeComponents() {
     try {
-      TimeDateComponents tc = new TimeDateComponents(svci, minIncrement,
+      TimeDateComponents tc = new TimeDateComponents(svci, calInfo, minIncrement,
                                                      hour24,
                                                      debug);
 

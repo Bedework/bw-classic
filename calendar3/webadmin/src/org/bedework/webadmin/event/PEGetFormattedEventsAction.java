@@ -96,6 +96,7 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
     form.assignAddingEvent(false);
 
     form.setFormattedEvents(new FormattedEvents(getEvents(false, form),
+                                                form.getCalInfo(),
                                                 form.getCalSvcI().getTimezones()));
 
     return "continue";

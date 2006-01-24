@@ -65,15 +65,17 @@ import org.bedework.calsvci.CalSvcI;
 public class MonthView extends TimeView {
   /** Constructor:
    *
+   * @param  calInfo   Object providing calendaring information
    * @param  curDay    MyCalendarVO representing current day.
    * @param  cal       CalSvcI calendar service interface
    * @param  debug     true for some debugging output
    * @throws CalFacadeException
    */
-  public MonthView(MyCalendarVO curDay,
+  public MonthView(CalendarInfo calInfo,
+                   MyCalendarVO curDay,
                    CalSvcI cal,
                    boolean debug) throws CalFacadeException {
-    super(curDay, "Month", cal,
+    super(calInfo, curDay, "Month", cal,
           curDay.getFirstDayOfThisMonth(),
           curDay.getLastDayOfThisMonth(),
           curDay.getPrevMonth().getDateDigits(),
