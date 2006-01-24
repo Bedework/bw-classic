@@ -33,7 +33,6 @@
     <forward name="notFound" path="/admin/showMain.rdo" redirect="true"/>
     <forward name="success" path="/admin/showMain.rdo" redirect="true"/>
     <forward name="cancelled" path="/admin/showMain.rdo" redirect="true"/>
-    <forward name="Cancel" path="/admin/showMain.rdo" redirect="true"/>
   </global-forwards>
 
   <!-- ========== Action Mapping Definitions =========================== -->
