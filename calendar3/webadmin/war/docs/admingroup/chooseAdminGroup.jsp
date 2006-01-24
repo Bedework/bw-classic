@@ -13,19 +13,10 @@
 %>
 
 <groups>
-  <logic:iterate id="adminGroup" name="peForm"
-                 property="userAdminGroups" >
-    <bean:define id="account" name="adminGroup" property="account"/>
-    <% rpitemp="/setup.do?adminGroupName=" + account;  %>
+  <logic:iterate id="adminGroup" name="peForm" property="userAdminGroups" >
     <group>
-      <name>
-        <genurl:link page="<%=rpitemp%>">
-          <bean:write name="adminGroup" property="account" />
-        </genurl:link>
-      </name>
-      <desc>
-        <bean:write name="adminGroup" property="description" />
-      </desc>
+      <name><bean:write name="adminGroup" property="account" /></name>
+      <desc><bean:write name="adminGroup" property="description" /></desc>
     </group>
   </logic:iterate>
 </groups>

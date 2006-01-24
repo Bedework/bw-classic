@@ -1056,14 +1056,14 @@
             <xsl:when test="/bedeworkadmin/creating='true'">
               <td>
                 <input type="submit" name="addSponsor" value="Add Contact" class="padRight"/>
-                <input type="submit" name="forwardto" value="Cancel"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Clear"/>
               </td>
             </xsl:when>
             <xsl:otherwise>
               <td>
                 <input type="submit" name="updateSponsor" value="Update Contact" class="padRight"/>
-                <input type="submit" name="forwardto" value="Cancel" class="padRight"/>
+                <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
                 <input type="reset" value="Reset" class="padRight"/>
               </td>
               <td align="right">
@@ -1174,14 +1174,14 @@
             <xsl:when test="/bedeworkadmin/creating='true'">
               <td>
                 <input type="submit" name="addLocation" value="Add Location" class="padRight"/>
-                <input type="submit" name="forwardto" value="Cancel"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Clear"/>
               </td>
             </xsl:when>
             <xsl:otherwise>
               <td>
                 <input type="submit" name="updateLocation" value="Update Location" class="padRight"/>
-                <input type="submit" name="forwardto" value="Cancel" class="padRight"/>
+                <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
                 <input type="reset" value="Reset" class="padRight"/>
               </td>
               <td align="right">
@@ -2077,7 +2077,7 @@
         <th></th>
       </tr>
       <xsl:for-each select="/bedeworkadmin/groups/group">
-        <xsl:variable name="groupName"><xsl:value-of select="name"/></xsl:variable>
+        <xsl:variable name="groupName" select="name"/>
         <tr>
           <td>
             <a href="{$admingroup-fetchForUpdate}&amp;adminGroupName={$groupName}">
@@ -2115,7 +2115,10 @@
       <xsl:for-each select="group">
         <tr>
           <td>
-            <xsl:copy-of select="name"/>
+            <xsl:variable name="admGroupName" select="name"/>
+            <a href="{$setup}&amp;adminGroupName={$admGroupName}">
+              <xsl:copy-of select="name"/>
+            </a>
           </td>
           <td>
             <xsl:value-of select="desc"/>
