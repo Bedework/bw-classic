@@ -94,14 +94,14 @@ public class DeleteViewAction extends BwAbstractAction {
     String name = request.getParameter("name");
 
     if (name == null) {
-      form.getErr().emit("org.bedework.client.missingfield", "name");
+      form.getErr().emit("org.bedework.client.error.missingfield", "name");
       return "error";
     }
 
     BwView view = svc.findView(name);
 
     if (view == null) {
-      form.getErr().emit("org.bedework.client.notfound", name);
+      form.getErr().emit("org.bedework.client.error.viewnotfound", name);
       return "notFound";
     }
 

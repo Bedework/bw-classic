@@ -88,9 +88,8 @@ public class PEDeleteAuthAction extends PEAbstractAction {
 
     svci.getUserAuth().removeAuth(getAuthUser(form));
 
-    form.getMsg().emit("org.bedework.pubevents.message.authuser.removed");
+    form.getMsg().emit("org.bedework.client.message.authuser.removed");
 
     return "continue";
   }
 }
-

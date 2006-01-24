@@ -95,14 +95,14 @@ public class UnsubscribeAction extends BwAbstractAction {
 
     if (name == null) {
       // Assume no access
-      form.getErr().emit("org.bedework.client.missingfield", "name");
+      form.getErr().emit("org.bedework.client.error.missingfield", "name");
       return "error";
     }
 
     BwSubscription sub = svc.findSubscription(name);
 
     if (sub == null) {
-      form.getErr().emit("org.bedework.client.notfound", name);
+      form.getErr().emit("org.bedework.client.error.nosuchsubscription", name);
       return "notFound";
     }
 

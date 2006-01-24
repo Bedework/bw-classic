@@ -131,7 +131,7 @@ public class IntProperty extends ConfigProperty {
     try {
       setIntVal(Integer.parseInt(getValue()));
     } catch (Throwable t) {
-      err.emit("org.bedework.config.badvalue", getName(), getValue());
+      err.emit("org.bedework.config.error.badvalue", getName(), getValue());
       goodValue = false;
     }
 

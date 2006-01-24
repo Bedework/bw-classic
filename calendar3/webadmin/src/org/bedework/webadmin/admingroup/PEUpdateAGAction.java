@@ -195,22 +195,21 @@ public class PEUpdateAGAction extends PEAbstractAction {
     updAdminGroup.setAccount(Util.checkNull(updAdminGroup.getAccount()));
 
     if (updAdminGroup.getAccount() == null) {
-      form.getErr().emit("org.bedework.pubevents.error.missingfield",
-               "Name");
+      form.getErr().emit("org.bedework.client.error.missingfield", "Name");
       ok = false;
     }
 
     updAdminGroup.setDescription(Util.checkNull(updAdminGroup.getDescription()));
 
     if (updAdminGroup.getDescription() == null) {
-      form.getErr().emit("org.bedework.pubevents.error.missingfield",
+      form.getErr().emit("org.bedework.client.error.missingfield",
                "description");
       ok = false;
     }
 
     String adminGroupGroupOwner = Util.checkNull(form.getAdminGroupGroupOwner());
     if (adminGroupGroupOwner == null) {
-      form.getErr().emit("org.bedework.pubevents.error.missingfield",
+      form.getErr().emit("org.bedework.client.error.missingfield",
                "groupOwnerid");
       ok = false;
     } else {
@@ -222,7 +221,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
       adminGroupEventOwner = updAdminGroup.getAccount();
     }
     if (adminGroupEventOwner == null) {
-      form.getErr().emit("org.bedework.pubevents.error.missingfield",
+      form.getErr().emit("org.bedework.client.error.missingfield",
                "eventOwnerid");
       ok = false;
     } else {
@@ -254,7 +253,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
     updAdminGroup.setDescription(Util.checkNull(updAdminGroup.getDescription()));
 
     if (updAdminGroup.getDescription() == null) {
-      form.getErr().emit("org.bedework.pubevents.error.missingfield",
+      form.getErr().emit("org.bedework.client.error.missingfield",
                "description");
       ok = false;
     }
@@ -265,7 +264,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
       BwUser aggo = svci.findUser(adminGroupGroupOwner);
 
       if (aggo == null) {
-        form.getErr().emit("org.bedework.pubevents.error.notfound",
+        form.getErr().emit("org.bedework.client.error.usernotfound",
                            adminGroupGroupOwner);
         return false;
       }
@@ -294,7 +293,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
       BwUser ageo = svci.findUser(adminGroupEventOwner);
 
       if (ageo == null) {
-        form.getErr().emit("org.bedework.pubevents.error.notfound",
+        form.getErr().emit("org.bedework.client.error.usernotfound",
                            adminGroupEventOwner);
         return false;
       }

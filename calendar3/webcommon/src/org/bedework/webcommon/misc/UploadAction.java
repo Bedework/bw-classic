@@ -127,7 +127,7 @@ public class UploadAction extends BwAbstractAction {
       }
     }
 
-    form.getMsg().emit("org.bedework.message.event.added");
+    form.getMsg().emit("org.bedework.client.message.event.added");
 
     return "success";
   }

@@ -161,7 +161,7 @@ public class UpdateCalendarAction extends BwAbstractAction {
           // Can only change for an empty object.
           if ((cal.getChildren().size() != 0) ||
               form.getCalSvcI().getCalendarInuse(cal)) {
-            form.getErr().emit("org.bedework.validation.error.forbidden");
+            form.getErr().emit("org.bedework.validation.error.forbidden.calmode");
             return false;
           }
         }

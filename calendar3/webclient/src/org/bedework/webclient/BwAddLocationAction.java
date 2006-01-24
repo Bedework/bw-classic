@@ -85,7 +85,7 @@ public class BwAddLocationAction extends BwCalAbstractAction {
 
     form.getCalSvcI().addLocation(l);
 
-    form.getMsg().emit("org.bedework.message.added.locations", 1);
+    form.getMsg().emit("org.bedework.client.message.added.locations", 1);
 
     return "success";
   }

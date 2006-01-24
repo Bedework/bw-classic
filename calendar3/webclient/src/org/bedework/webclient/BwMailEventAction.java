@@ -87,7 +87,7 @@ public class BwMailEventAction extends BwCalAbstractAction {
 
     String recipient = form.getLastEmail();
     if (recipient == null) {
-      form.getErr().emit("org.bedework.error.mail.norecipient", 1);
+      form.getErr().emit("org.bedework.client.error.mail.norecipient", 1);
       return "retry";
     }
 
@@ -108,7 +108,7 @@ public class BwMailEventAction extends BwCalAbstractAction {
 
     mailMessage(emsg, trans.toStringIcal(ev), "event.ics", "text/calendar", form);
 
-    form.getMsg().emit("org.bedework.message.event.mailed");
+    form.getMsg().emit("org.bedework.client.message.event.mailed");
 
     return "success";
   }

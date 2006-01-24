@@ -192,8 +192,7 @@ public class UpdateAction extends BwAbstractAction {
     updgrp.setAccount(Util.checkNull(updgrp.getAccount()));
 
     if (updgrp.getAccount() == null) {
-      err.emit("org.bedework.pubevents.error.missingfield",
-               "Name");
+      err.emit("org.bedework.validation.error.missingfield", "Name");
       ok = false;
     }
 

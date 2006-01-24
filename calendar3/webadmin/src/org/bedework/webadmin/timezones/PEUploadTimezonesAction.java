@@ -109,7 +109,7 @@ public class PEUploadTimezonesAction extends PEAbstractAction {
       svci.saveTimeZone(tzi.tzid, tzi.timezone);
     }
 
-    form.getMsg().emit("org.bedework.pubevents.message.timezones.imported");
+    form.getMsg().emit("org.bedework.client.message.timezones.imported");
 
     return "success";
   }

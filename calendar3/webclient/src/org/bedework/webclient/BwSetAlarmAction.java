@@ -116,7 +116,7 @@ public class BwSetAlarmAction extends BwCalAbstractAction {
 
     String recipient = form.getLastEmail();
     if (!Util.present(recipient)) {
-      form.getErr().emit("org.bedework.error.mail.norecipient", 1);
+      form.getErr().emit("org.bedework.client.error.mail.norecipient", 1);
       return "retry";
     }
 
@@ -139,7 +139,7 @@ public class BwSetAlarmAction extends BwCalAbstractAction {
 
     svci.setAlarm(ev, alarm);
 
-    form.getMsg().emit("org.bedework.message.eventalarmset");
+    form.getMsg().emit("org.bedework.client.message.eventalarmset");
 
     return "success";
   }

@@ -90,7 +90,7 @@ public class PEDeleteSponsorAction extends PEAbstractAction {
     int delResult = form.getCalSvcI().deleteSponsor(sp);
 
     if (delResult == 2) {
-      form.getMsg().emit("org.bedework.client.message.sponsor.referenced");
+      form.getErr().emit("org.bedework.client.error.sponsor.referenced");
       return "inUse";
     }
 

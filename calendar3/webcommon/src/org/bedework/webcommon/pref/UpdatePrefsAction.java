@@ -100,22 +100,22 @@ public class UpdatePrefsAction extends BwAbstractAction {
 
     String str = getReqPar(request, "user");
     if (str == null) {
-      form.getErr().emit("org.bedework.client.notfound", str);
+      form.getErr().emit("org.bedework.client.error.usernotfound", str);
       return "notFound";
     }
 
     BwUser user = svc.findUser(str);
     if (user == null) {
-      form.getErr().emit("org.bedework.client.notfound", str);
+      form.getErr().emit("org.bedework.client.error.usernotfound", str);
       return "notFound";
     }
 
     BwPreferences prefs = svc.getUserPrefs(user);
 
-    str = getReqPar(request, "view");
+    str = getReqPar(request, "preferredView");
     if (str != null) {
       if (svc.findView(str) == null) {
-        form.getErr().emit("org.bedework.client.notfound", str);
+        form.getErr().emit("org.bedework.client.error.viewnotfound", str);
         return "notFound";
       }
 

@@ -94,7 +94,7 @@ public class BwFetchEventAction extends BwCalAbstractAction {
     form.assignCurrentEvent(ev);
 
     if (ei == null) {
-      form.getErr().emit("org.bedework.error.eventnotfound");
+      form.getErr().emit("org.bedework.client.error.eventnotfound");
       return "notFound";
     }
 

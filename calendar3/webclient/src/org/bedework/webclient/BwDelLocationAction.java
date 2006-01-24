@@ -105,16 +105,16 @@ public class BwDelLocationAction extends BwCalAbstractAction {
     int delResult = svci.deleteLocation(loc);
 
     if (delResult == 2) {
-      form.getErr().emit("org.bedework.error.location.referenced");
+      form.getErr().emit("org.bedework.client.error.location.referenced");
       return "referenced";
     }
 
     if (delResult == 1) {
-      form.getErr().emit("org.bedework.error.nosuchlocation", id);
+      form.getErr().emit("org.bedework.client.error.nosuchlocation", id);
       return "doNothing";
     }
 
-    form.getMsg().emit("org.bedework.message.deleted.locations", 1);
+    form.getMsg().emit("org.bedework.client.message.deleted.locations", 1);
 
     return "success";
   }

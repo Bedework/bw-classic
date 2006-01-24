@@ -102,7 +102,7 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
     if (userId != null) {
       user = svci.findUser(userId);
       if (user == null) {
-        form.getErr().emit("org.bedework.error.usernotfound");
+        form.getErr().emit("org.bedework.client.error.usernotfound");
         return "notFound";
       }
     } else {
@@ -122,13 +122,13 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
       try {
         interval = Integer.parseInt(intstr);
       } catch (Throwable t) {
-        form.getErr().emit("org.bedework.error.badinterval");
+        form.getErr().emit("org.bedework.client.error.badinterval");
         return "error";
       }
     }
 
     if (interval <= 0) {
-      form.getErr().emit("org.bedework.error.badinterval");
+      form.getErr().emit("org.bedework.client.error.badinterval");
       return "error";
     }
 
@@ -147,7 +147,7 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
       } else if ("months".equals(intunitStr)) {
         intunit = Calendar.MONTH;
       } else {
-        form.getErr().emit("org.bedework.error.badintervalunit");
+        form.getErr().emit("org.bedework.client.error.badintervalunit");
         return "error";
       }
     }

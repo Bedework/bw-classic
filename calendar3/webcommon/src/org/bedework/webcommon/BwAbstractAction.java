@@ -238,7 +238,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
        */
       form.initFields();
 
-      form.getMsg().emit("org.bedework.message.cancelled");
+      form.getMsg().emit("org.bedework.client.message.cancelled");
       return "cancelled";
     }
 
@@ -251,10 +251,10 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         checkRefresh(form);
       }
     } catch (CalFacadeAccessException cfae) {
-      form.getErr().emit("org.bedework.error.noaccess", "for that action");
+      form.getErr().emit("org.bedework.client.error.noaccess", "for that action");
       forward="noaccess";
     } catch (Throwable t) {
-      form.getErr().emit("org.bedework.error.exc", t.getMessage());
+      form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
       form.getErr().emit(t);
     }
 
@@ -283,7 +283,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
      */
     int subid = getIntReqPar(request, "subid", -1);
     if (subid < 0) {
-      form.getErr().emit("org.bedework.error.missingsubscriptionid");
+      form.getErr().emit("org.bedework.client.error.missingsubscriptionid");
       return null;
     }
 
@@ -292,7 +292,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     BwSubscription sub = svci.getSubscription(subid);
 
     if (sub == null) {
-      form.getErr().emit("org.bedework.error.missingsubscriptionid");
+      form.getErr().emit("org.bedework.client.error.missingsubscriptionid");
       return null;
     }
 
@@ -316,7 +316,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     }
 
     if (ev == null) {
-      form.getErr().emit("org.bedework.error.nosuchevent", /*eid*/guid);
+      form.getErr().emit("org.bedework.client.error.nosuchevent", /*eid*/guid);
       return null;
     } else if (debug) {
       debugMsg("Get event by guid found " + ev.getEvent());
@@ -678,23 +678,17 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
     try {
       ua = form.getCalSvcI().getUserAuth(s.getUser(), par);
-    } catch (Throwable t) {
-      form.getErr().emit("org.bedework.error.exc", t.getMessage());
-      form.getErr().emit(t);
-      return null;
-    }
 
-    form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
+      form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
 
-    if (debug) {
-      try {
+      if (debug) {
         debugMsg("UserAuth says that current user has the type: " +
                  ua.getUsertype());
-      } catch (Throwable t) {
-        form.getErr().emit("org.bedework.error.exc", t.getMessage());
-        form.getErr().emit(t);
-        return null;
       }
+    } catch (Throwable t) {
+      form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
+      form.getErr().emit(t);
+      return null;
     }
 
     return s;

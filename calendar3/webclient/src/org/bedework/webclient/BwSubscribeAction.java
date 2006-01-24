@@ -74,12 +74,12 @@ import javax.servlet.http.HttpServletRequest;
 public class BwSubscribeAction extends BwCalAbstractAction {
   public String doAction(HttpServletRequest request,
                          BwActionForm form) throws Throwable {
-  	/*
+    /*
     CalSvcI svci = form.getCalSvcI();
     if (form.getGuest()) {
       return "doNothing";
     }
-    
+
     boolean subscribe = false;
     String reqpar = request.getParameter("subscribe");
     if (Util.checkNull(reqpar) != null) {
@@ -94,14 +94,14 @@ public class BwSubscribeAction extends BwCalAbstractAction {
       try {
         calid = Integer.parseInt(reqpar);
       } catch (Throwable t) {
-        form.getErr().emit("org.bedework.error.badcalendarid");
+        form.getErr().emit("org.bedework.client.error.badcalendarid");
         return "error";
       }
 
       BwCalendar cal = svci.getCalendar(calid);
 
       if (cal == null) {
-        form.getErr().emit("org.bedework.error.badcalendarid");
+        form.getErr().emit("org.bedework.client.error.badcalendarid");
         return "error";
       }
 

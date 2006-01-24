@@ -100,7 +100,7 @@ public class PEUpdateAuthAction extends PEAbstractAction {
 
     svci.getUserAuth().updateUser(au);
 
-    form.getMsg().emit("org.bedework.pubevents.message.authuser.updated");
+    form.getMsg().emit("org.bedework.client.message.authuser.updated");
 
     return "continue";
   }

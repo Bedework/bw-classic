@@ -94,7 +94,7 @@ public class AddViewAction extends BwAbstractAction {
     String name = request.getParameter("name");
 
     if (name == null) {
-      form.getErr().emit("org.bedework.client.missingfield", "name");
+      form.getErr().emit("org.bedework.client.error.missingfield", "name");
       return "error";
     }
 
@@ -109,7 +109,7 @@ public class AddViewAction extends BwAbstractAction {
     view.setName(name);
 
     if (!svc.addView(view, makeDefaultView)) {
-      form.getErr().emit("org.bedework.client.notadded");
+      form.getErr().emit("org.bedework.client.error.viewnotadded");
       return "notAdded";
     }
 

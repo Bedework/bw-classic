@@ -102,7 +102,7 @@ public abstract class BwCalAbstractAction extends BwAbstractAction {
       /* * Set the objects to null so we get new ones.
        * /
 
-      form.getMsg().emit("org.bedework.message.cancelled");
+      form.getMsg().emit("org.bedework.client.message.cancelled");
       return "cancelled";
     }*/
 

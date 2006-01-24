@@ -124,7 +124,7 @@ public class PEFetchEventAction extends PEAbstractAction {
 
     form.setEventInfo(einf);
     if (einf == null) {
-      form.getErr().emit("org.bedework.pubevents.error.nosuchevent", id);
+      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
       return "notFound";
     }
 

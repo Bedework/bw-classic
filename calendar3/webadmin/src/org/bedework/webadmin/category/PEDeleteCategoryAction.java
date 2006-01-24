@@ -90,16 +90,16 @@ public class PEDeleteCategoryAction extends PEAbstractAction {
     int delResult = form.getCalSvcI().deleteCategory(key);
 
     if (delResult == 2) {
-      form.getMsg().emit("org.bedework.pubevents.message.category.referenced");
+      form.getErr().emit("org.bedework.client.error.category.referenced");
       return "inUse";
     }
 
     if (delResult == 1) {
-       form.getErr().emit("org.bedework.pubevents.error.nosuchcategory", key);
+       form.getErr().emit("org.bedework.client.error.nosuchcategory", key);
       return "notFound";
     }
 
-    form.getMsg().emit("org.bedework.pubevents.message.category.deleted");
+    form.getMsg().emit("org.bedework.client.message.category.deleted");
 
     return "continue";
   }

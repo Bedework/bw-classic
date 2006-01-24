@@ -132,7 +132,7 @@ public class PEUpdateSponsorAction extends PEAbstractAction {
       if (added) {
         form.getMsg().emit("org.bedework.client.message.sponsor.added");
       } else {
-        form.getMsg().emit("org.bedework.client.message.sponsor.alreadyexists");
+        form.getErr().emit("org.bedework.client.error.sponsor.alreadyexists");
       }
     } else {
       form.getMsg().emit("org.bedework.client.message.sponsor.updated");

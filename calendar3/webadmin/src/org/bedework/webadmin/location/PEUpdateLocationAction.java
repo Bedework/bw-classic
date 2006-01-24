@@ -132,7 +132,7 @@ public class PEUpdateLocationAction extends PEAbstractAction {
       if (added) {
         form.getMsg().emit("org.bedework.client.message.locations.added", 1);
       } else {
-        form.getMsg().emit("org.bedework.client.message.location.alreadyexists");
+        form.getErr().emit("org.bedework.client.error.location.alreadyexists");
       }
     } else {
       form.getMsg().emit("org.bedework.client.message.location.updated");
@@ -141,4 +141,3 @@ public class PEUpdateLocationAction extends PEAbstractAction {
     return "continue";
   }
 }
-

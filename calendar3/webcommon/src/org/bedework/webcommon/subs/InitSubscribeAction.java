@@ -111,7 +111,7 @@ public class InitSubscribeAction extends BwAbstractAction {
 
       if (cal == null) {
         // Assume no access
-        form.getErr().emit("org.bedework.client.noaccess");
+        form.getErr().emit("org.bedework.client.error.noaccess");
         return "noAccess";
       }
 

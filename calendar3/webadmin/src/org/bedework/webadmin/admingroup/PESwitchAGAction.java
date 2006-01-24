@@ -89,7 +89,7 @@ public class PESwitchAGAction extends PEAbstractAction {
 
     String temp = checkGroup(request, form, false);
     if (temp == null) {
-      form.getErr().emit("org.bedework.pubevents.error.choosegroupsuppressed");
+      form.getErr().emit("org.bedework.client.error.choosegroupsuppressed");
       return "error";
     }
 

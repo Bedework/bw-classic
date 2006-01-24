@@ -90,7 +90,7 @@ public class BwDelEventAction extends BwCalAbstractAction {
 
     if (id < 0) {
       // Do nothing
-      form.getErr().emit("org.bedework.error.nosuchevent", id);
+      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
       return "doNothing";
     }
 
@@ -100,22 +100,22 @@ public class BwDelEventAction extends BwCalAbstractAction {
 
     if (ei == null) {
       // Do nothing
-      form.getErr().emit("org.bedework.error.nosuchevent", id);
+      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
       return "doNothing";
     }
 
     CalSvcI.DelEventResult delResult = form.getCalSvcI().deleteEvent(ei.getEvent(), true);
 
     if (!delResult.eventDeleted) {
-      form.getMsg().emit("org.bedework.message.nosuchevent", id);
+      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
       return "doNothing";
     }
 
     if (delResult.locationDeleted) {
-      form.getMsg().emit("org.bedework.message.deleted.locations", 1);
+      form.getMsg().emit("org.bedework.client.message.deleted.locations", 1);
     }
 
-    form.getMsg().emit("org.bedework.message.deleted.events", 1);
+    form.getMsg().emit("org.bedework.client.message.deleted.events", 1);
     form.refreshIsNeeded();
 
     return "success";

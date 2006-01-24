@@ -108,7 +108,7 @@ public class UpdateUserInfoAction extends BwAbstractAction {
 
     //svci.getUserAuth().updateUser(au);
 
-    form.getMsg().emit("org.bedework.message.userinfo.updated");
+    form.getMsg().emit("org.bedework.client.message.userinfo.updated");
 
     return "continue";
   }

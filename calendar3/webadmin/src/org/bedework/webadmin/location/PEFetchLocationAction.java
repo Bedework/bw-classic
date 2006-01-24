@@ -107,7 +107,7 @@ public class PEFetchLocationAction extends PEAbstractAction {
     form.assignAddingLocation(false);
     form.setLocation(location);
     if (location == null) {
-      form.getErr().emit("org.bedework.pubevents.error.nosuchlocation", id);
+      form.getErr().emit("org.bedework.client.error.nosuchlocation", id);
       return "notFound";
     }
 

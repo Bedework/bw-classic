@@ -86,7 +86,7 @@ public class BwAddEventRefAction extends BwCalAbstractAction {
 
     if (id < 0) {
       // Do nothing
-      form.getErr().emit("org.bedework.error.nosuchevent", id);
+      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
       return "doNothing";
     }
 
@@ -96,7 +96,7 @@ public class BwAddEventRefAction extends BwCalAbstractAction {
 
     if (ei == null) {
       // Do nothing
-      form.getErr().emit("org.bedework.error.nosuchevent", id);
+      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
       return "doNothing";
     }
 
@@ -108,7 +108,7 @@ public class BwAddEventRefAction extends BwCalAbstractAction {
 
     svci.addEvent(proxy, null);
 
-    form.getMsg().emit("org.bedework.message.added.eventrefs", 1);
+    form.getMsg().emit("org.bedework.client.message.added.eventrefs", 1);
 
     BwGoToAction.gotoDateView(this, form,
                   proxy.getDtstart().getDate().substring(0, 8),

@@ -102,7 +102,7 @@ public class PEDeleteEventAction extends PEAbstractAction {
 
     BwWebUtil.deleteEvent(form, svci.getEvent(eventid).getEvent());
 
-    form.getMsg().emit("org.bedework.pubevents.message.event.deleted");
+    form.getMsg().emit("org.bedework.client.message.event.deleted");
 
     return "continue";
   }

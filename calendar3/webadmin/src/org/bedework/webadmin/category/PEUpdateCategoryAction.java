@@ -119,9 +119,9 @@ public class PEUpdateCategoryAction extends PEAbstractAction {
 //    form.updatePrefs(null, null, null, null);
 
     if (add) {
-      form.getMsg().emit("org.bedework.pubevents.message.category.added");
+      form.getMsg().emit("org.bedework.client.message.category.added");
     } else {
-      form.getMsg().emit("org.bedework.pubevents.message.category.updated");
+      form.getMsg().emit("org.bedework.client.message.category.updated");
     }
 
     return "continue";

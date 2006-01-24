@@ -98,7 +98,7 @@ public class UpdateViewAction extends BwAbstractAction {
     CalSvcI svc = form.getCalSvcI();
     String name = Util.checkNull(request.getParameter("name"));
     if (name == null) {
-      form.getErr().emit("org.bedework.client.missingfield", "name");
+      form.getErr().emit("org.bedework.client.error.missingfield", "name");
       return "error";
     }
 
@@ -109,12 +109,12 @@ public class UpdateViewAction extends BwAbstractAction {
       BwSubscription sub = svc.findSubscription(add);
 
       if (sub == null) {
-        form.getErr().emit("org.bedework.client.notfound", add);
+        form.getErr().emit("org.bedework.client.error.nosuchsubscription", add);
         return "notFound";
       }
 
       if (!svc.addViewSubscription(name, sub)) {
-        form.getErr().emit("org.bedework.client.notfound", name);
+        form.getErr().emit("org.bedework.client.error.viewnotfound", name);
         return "notFound";
       }
     }
@@ -123,13 +123,13 @@ public class UpdateViewAction extends BwAbstractAction {
       BwSubscription sub = svc.findSubscription(remove);
 
       if (sub == null) {
-        form.getErr().emit("org.bedework.client.notfound", remove);
+        form.getErr().emit("org.bedework.client.error.nosuchsubscription", remove);
         return "notFound";
       }
 
 
       if (!svc.removeViewSubscription(name, sub)) {
-        form.getErr().emit("org.bedework.client.notfound", name);
+        form.getErr().emit("org.bedework.client.error.viewnotfound", name);
         return "notFound";
       }
     }
@@ -153,7 +153,7 @@ public class UpdateViewAction extends BwAbstractAction {
     BwView view = svc.findView(name);
 
     if (view == null) {
-      form.getErr().emit("org.bedework.client.notfound", name);
+      form.getErr().emit("org.bedework.client.error.viewnotfound", name);
       return "notFound";
     }
 

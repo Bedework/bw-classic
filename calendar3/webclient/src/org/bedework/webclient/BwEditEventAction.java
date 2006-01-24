@@ -116,7 +116,7 @@ public class BwEditEventAction extends BwCalAbstractAction {
 
     /* XXX Remove when we're happy with access control */
     if (ev.getPublick()) {
-      form.getErr().emit("org.bedework.error.noaccess", "for that action");
+      form.getErr().emit("org.bedework.client.error.noaccess", "for that action");
       return "doNothing";
     }
 

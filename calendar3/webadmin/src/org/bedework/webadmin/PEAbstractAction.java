@@ -124,11 +124,11 @@ public abstract class PEAbstractAction extends BwAbstractAction {
 
     if (reqpar != null) {
       / ** Set the objects to null so we get new ones.
-       * / 
+       * /
       form.initFields();
       form.setEvent(null);
 
-      form.getMsg().emit("org.bedework.message.cancelled");
+      form.getMsg().emit("org.bedework.client.message.cancelled");
       return "cancelled";
     }
     */

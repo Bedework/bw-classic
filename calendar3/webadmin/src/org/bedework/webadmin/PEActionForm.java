@@ -1135,8 +1135,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
         return true;
       }
 
-      err.emit("org.bedework.pubevents.error.missingfield",
-               "Category");
+      err.emit("org.bedework.client.error.missingfield", "Category");
       return false;
     }
 
@@ -1144,7 +1143,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
       BwCategory k = getCalSvcI().getCategory(id);
 
       if (k == null) {
-        err.emit("org.bedework.pubevents.error.missingcategory", id);
+        err.emit("org.bedework.client.error.missingcategory", id);
         return false;
       }
 
@@ -1193,8 +1192,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
       }
 
       if (event.getSponsor() == null) {
-        err.emit("org.bedework.pubevents.error.missingfield",
-                 "Sponsor");
+        err.emit("org.bedework.client.error.missingfield", "Sponsor");
         return false;
       }
 
@@ -1209,8 +1207,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
       if (s == null) {
         // Somebody's faking
         setSponsor(null);
-        err.emit("org.bedework.pubevents.error.missingfield",
-                 "Sponsor");
+        err.emit("org.bedework.client.error.missingfield", "Sponsor");
         return false;
       }
 
@@ -1249,8 +1246,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
       }
 
       if (event.getLocation() == null) {
-        err.emit("org.bedework.pubevents.error.missingfield",
-                 "Location");
+        err.emit("org.bedework.client.error.missingfield", "Location");
         return false;
       }
 
@@ -1266,8 +1262,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
       if ((l == null) || !l.getPublick()) {
         // Somebody's faking
         setLocation(null);
-        err.emit("org.bedework.pubevents.error.missingfield",
-                 "Location");
+        err.emit("org.bedework.client.error.missingfield", "Location");
         return false;
       }
 
@@ -1291,8 +1286,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
 
     if (!calendarId.getChanged()) {
       if (event.getCalendar() == null) {
-        err.emit("org.bedework.pubevents.error.missingfield",
-                 "Calendar");
+        err.emit("org.bedework.client.error.missingfield", "Calendar");
         return false;
       }
 
@@ -1309,8 +1303,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
       if ((c == null) || !c.getPublick() || !c.getCalendarCollection()) {
         // Somebody's faking
         setCalendar(null);
-        err.emit("org.bedework.pubevents.error.missingfield",
-                 "Calendar");
+        err.emit("org.bedework.client.error.missingfield", "Calendar");
         return false;
       }
 
@@ -1337,8 +1330,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
     k.setDescription(Util.checkNull(k.getDescription()));
 
     if (k.getWord() == null) {
-      err.emit("org.bedework.pubevents.error.missingfield",
-               "Category");
+      err.emit("org.bedework.client.error.missingfield", "Category");
       ok = false;
     }
 

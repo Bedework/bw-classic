@@ -107,7 +107,7 @@ public class PEFetchSponsorAction extends PEAbstractAction {
     form.assignAddingSponsor(false);
     form.setSponsor(sponsor);
     if (sponsor == null) {
-      form.getErr().emit("org.bedework.pubevents.error.nosuchsponsor", id);
+      form.getErr().emit("org.bedework.client.error.nosuchsponsor", id);
       return "notFound";
     }
 

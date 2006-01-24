@@ -106,7 +106,7 @@ public class PEFetchCategoryAction extends PEAbstractAction {
 
     form.setCategory(category);
     if (category == null) {
-      form.getErr().emit("org.bedework.pubevents.error.nosuchcategory", id);
+      form.getErr().emit("org.bedework.client.error.nosuchcategory", id);
       return "notFound";
     }
 

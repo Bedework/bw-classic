@@ -169,7 +169,7 @@ public class BooleanProperty extends ConfigProperty {
       } else if (val.equals("true") || val.equals("yes")) {
         booleanVal = true;
       } else {
-        err.emit("org.bedework.config.badvalue", getName(), getValue());
+        err.emit("org.bedework.config.error.badvalue", getName(), getValue());
       }
     }
 

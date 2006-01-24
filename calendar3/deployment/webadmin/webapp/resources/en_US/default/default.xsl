@@ -2001,7 +2001,7 @@
           </td>
           <td>
             <xsl:variable name="preferredView" select="/bedeworkadmin/prefs/preferredView"/>
-            <input type="text" name="view" value="{$preferredView}" size="40"/>
+            <input type="text" name="preferredView" value="{$preferredView}" size="40"/>
           </td>
         </tr>
         <tr>

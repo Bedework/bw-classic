@@ -148,9 +148,9 @@ public class PEUpdateEventAction extends PEAbstractAction {
     form.assignAddingEvent(false);
 
     if (form.getAddingEvent()) {
-      form.getMsg().emit("org.bedework.pubevents.message.event.added");
+      form.getMsg().emit("org.bedework.client.message.event.added");
     } else {
-      form.getMsg().emit("org.bedework.pubevents.message.event.updated");
+      form.getMsg().emit("org.bedework.client.message.event.updated");
     }
     return "continue";
   }

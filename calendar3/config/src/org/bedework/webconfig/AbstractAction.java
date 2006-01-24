@@ -109,7 +109,7 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
     try {
       forward = doAction(request, response, form);
     } catch (Throwable t) {
-      form.getErr().emit("org.bedework.error.exc", t.getMessage());
+      form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
       form.getErr().emit(t);
     }
 
@@ -220,7 +220,7 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
   protected String update(HttpServletRequest request,
                           ActionForm form) throws Throwable {
     /* use the following if checkboxes are employed */
-    /* 
+    /*
     Collection colls = form.getPropertyCollections();
 
     Iterator it = colls.iterator();

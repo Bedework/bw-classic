@@ -105,15 +105,15 @@ public class BwAccessAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    String idstr = request.getParameter("cal");
+    String idstr = getReqPar(request, "cal");
     boolean calid = idstr != null;
 
     if (!calid) {
-      idstr = request.getParameter("event");
+      idstr = getReqPar(request, "event");
     }
 
     if (idstr == null) {
-      form.getErr().emit("org.bedework.error.noentityid");
+      form.getErr().emit("org.bedework.client.error.noentityid");
       return "error";
     }
 
@@ -122,7 +122,7 @@ public class BwAccessAction extends BwCalAbstractAction {
     try {
       id = Integer.parseInt(idstr);
     } catch (Throwable t) {
-      form.getErr().emit("org.bedework.error.badentityid");
+      form.getErr().emit("org.bedework.client.error.badentityid");
       return "error";
     }
 
@@ -135,7 +135,7 @@ public class BwAccessAction extends BwCalAbstractAction {
 
       if (cal == null) {
         // Do nothing
-        form.getErr().emit("org.bedework.error.nosuchcalendar", id);
+        form.getErr().emit("org.bedework.client.error.nosuchcalendar", id);
         return "doNothing";
       }
     } else {
@@ -143,7 +143,7 @@ public class BwAccessAction extends BwCalAbstractAction {
 
       if (ei == null) {
         // Do nothing
-        form.getErr().emit("org.bedework.error.nosuchevent", id);
+        form.getErr().emit("org.bedework.client.error.nosuchevent", id);
         return "doNothing";
       }
 
@@ -153,7 +153,7 @@ public class BwAccessAction extends BwCalAbstractAction {
     String how = request.getParameter("how");
 
     if (how == null) {
-      form.getErr().emit("org.bedework.error.noentityid");
+      form.getErr().emit("org.bedework.client.error.noentityid");
       return "error";
     }
 
@@ -168,10 +168,10 @@ public class BwAccessAction extends BwCalAbstractAction {
       desiredAccess = PrivilegeDefs.privReadFreeBusy;
     } else if (how.equals("d")) {
       //defaultAccess = true;
-      form.getErr().emit("org.bedework.error.unimplemented");
+      form.getErr().emit("org.bedework.client.error.unimplemented");
       return "error";
     } else {
-      form.getErr().emit("org.bedework.error.badhow");
+      form.getErr().emit("org.bedework.client.error.badhow");
       return "error";
     }
 
@@ -184,14 +184,14 @@ public class BwAccessAction extends BwCalAbstractAction {
       whoType = Ace.whoTypeUser;
     } else if (whoTypeStr.equals("group")) {
       whoType = Ace.whoTypeGroup;
-      form.getErr().emit("org.bedework.error.unimplemented");
+      form.getErr().emit("org.bedework.client.error.unimplemented");
       return "error";
     } else if (whoTypeStr.equals("unauth")) {
       whoType = Ace.whoTypeUnauthenticated;
     } else if (whoTypeStr.equals("other")) {
       whoType = Ace.whoTypeOther;
     } else {
-      form.getErr().emit("org.bedework.error.badwhotype");
+      form.getErr().emit("org.bedework.client.error.badwhotype");
       return "error";
     }
 
@@ -200,7 +200,7 @@ public class BwAccessAction extends BwCalAbstractAction {
     if (who != null) {
       BwUser user = svci.findUser(who);
       if (user == null) {
-        form.getErr().emit("org.bedework.error.usernotfound");
+        form.getErr().emit("org.bedework.client.error.usernotfound");
         return "notFound";
       }
     } else {

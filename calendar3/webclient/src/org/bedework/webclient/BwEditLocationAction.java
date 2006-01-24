@@ -110,7 +110,7 @@ public class BwEditLocationAction extends BwCalAbstractAction {
     }
 
     if (loc.getPublick()) {
-      form.getErr().emit("org.bedework.error.noaccess", "for that action");
+      form.getErr().emit("org.bedework.client.error.noaccess", "for that action");
       return "doNothing";
     }
 
