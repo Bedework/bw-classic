@@ -178,6 +178,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
 
     form.setUpdAdminGroup(updgrp);
 
+    form.getMsg().emit("org.bedework.client.message.admingroup.updated");
     return "continue";
   }
 

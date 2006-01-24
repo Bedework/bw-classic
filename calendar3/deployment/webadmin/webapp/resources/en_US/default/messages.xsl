@@ -114,6 +114,9 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.admingroup.updated'">
+        Administrative group updated
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.userinfo.updated'">
         User information updated
       </xsl:when>

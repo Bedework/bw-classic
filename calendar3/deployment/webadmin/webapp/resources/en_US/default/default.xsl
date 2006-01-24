@@ -1840,7 +1840,11 @@
   <!--+++++++++++++++ Timezones ++++++++++++++++++++-->
   <xsl:template name="uploadTimezones">
     <h2>Upload Timezones</h2>
-    <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
+    <form name="peForm" method="post" action="{$timezones-upload}" enctype="multipart/form-data">
+      <input type="file" name="uploadFile" size="40" value=""/>
+      <input type="submit" name="doUpload" value="Upload Timezones"/>
+      <input type="submit" name="cancelled" value="Cancel"/>
+    </form>
   </xsl:template>
 
   <!--+++++++++++++++ Authuser ++++++++++++++++++++-->

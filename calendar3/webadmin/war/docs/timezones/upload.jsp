@@ -8,13 +8,5 @@
 
 <page>uploadTimezones</page>
 
-<formElements>
-  <genurl:form action="timezones/upload" enctype="multipart/form-data">
-    <html:file size="60" property="uploadFile" />
-    <html:submit property="doUpload" value="Upload Timezones"/>
-    <html:submit property="forwardto" value="Cancel"/>
-  </genurl:form>
-</formElements>
-
 <%@include file="/docs/footer.jsp"%>
 
