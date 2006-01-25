@@ -24,6 +24,15 @@
       <xsl:when test="id='org.bedework.pubevents.message.event.updated'">
         Event updated
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.calendar.deleted'">
+        Calendar / folder deleted
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.calendar.added'">
+        Calendar / folder added
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.calendar.updated'">
+        Calendar / folder updated
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.sponsor.deleted'">
         Contact deleted
       </xsl:when>
@@ -32,15 +41,6 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.sponsor.updated'">
         Contact updated
-      </xsl:when>
-      <xsl:when test="id='org.bedework.client.message.calendar.deleted'">
-        Calendar deleted
-      </xsl:when>
-      <xsl:when test="id='org.bedework.client.message.calendar.added'">
-        Calendar added
-      </xsl:when>
-      <xsl:when test="id='org.bedework.client.message.calendar.updated'">
-        Calendar updated
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.sponsor.referenced'">
         Contact is referenced
@@ -88,6 +88,9 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.category.updated'">
         Category updated
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.view.deleted'">
+        View deleted
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.event.mailed'">
         Event has been mailed

@@ -106,7 +106,7 @@ public class DeleteViewAction extends BwAbstractAction {
     }
 
     svc.removeView(view);
-
+    form.getMsg().emit("org.bedework.client.message.view.deleted");
     return "success";
   }
 }
