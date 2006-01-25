@@ -1530,8 +1530,9 @@
           <h3>Public calendars</h3>
           <p class="smaller">
             Select a calendar below to add a <em><strong>new</strong></em>
-            internal subscription or
-            <a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">subscribe to an external calendar</a>.
+            internal subscription. <!-- or
+            <a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">
+            subscribe to an external calendar</a>.-->
           </p>
           <ul id="calendarTree">
             <xsl:apply-templates select="/bedeworkadmin/subscriptions/subscribe/calendars/calendar" mode="subscribe"/>
@@ -1735,7 +1736,7 @@
         </tr>
       </xsl:for-each>
     </table>
-    <h4><a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">Subscribe to a remote calendar</a> (by URI)</h4>
+    <!--<h4><a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">Subscribe to a remote calendar</a> (by URI)</h4>-->
   </xsl:template>
 
   <!--+++++++++++++++ Views ++++++++++++++++++++-->
