@@ -201,6 +201,9 @@
             <xsl:when test="/bedeworkadmin/page='modAdminGroupMembers'">
               <xsl:call-template name="modAdminGroupMembers"/>
             </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='deleteAdminGroupConfirm'">
+              <xsl:call-template name="deleteAdminGroupConfirm"/>
+            </xsl:when>
             <xsl:when test="/bedeworkadmin/page='noGroup'">
               <h2>No administrative group</h2>
               <p>Your userid has not been assigned to an administrative group.
@@ -2084,11 +2087,7 @@
 
     <p>Click on the group name to modify the group owner or description.<br/>
     Click "add/remove members" to modify group membership.</p>
-    <p>
-      <strong>
-        <a href="{$admingroup-initAdd}">Add a new group</a>
-      </strong>
-    </p>
+    <p><input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initAdd}')" value="Add a new group"/></p>
     <table id="commonListTable">
       <tr>
         <th>Name</th>
@@ -2122,6 +2121,7 @@
         </tr>
       </xsl:for-each>
     </table>
+    <p><input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initAdd}')" value="Add a new group"/></p>
   </xsl:template>
 
   <xsl:template match="groups" mode="chooseGroup">
@@ -2226,9 +2226,8 @@
   </xsl:template>
 
   <xsl:template name="modAdminGroupMembers">
-
-    <p><a href="{$admingroup-initUpdate}">return to Admin Group listing</a></p>
-
+    <h2>Update Group Membership</h2>
+    <p>Enter a userid and click "add" or "remove" to change group membership.</p>
     <form name="adminGroupMembersForm" method="post" action="{$admingroup-updateMembers}">
       <table id="adminGroupFormTable">
         <tr>
@@ -2260,6 +2259,20 @@
           </td>
         </tr>
       </table>
+      <p><input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initUpdate}')" value="Return to Admin Group listing"/></p>
+    </form>
+  </xsl:template>
+
+  <xsl:template name="deleteAdminGroupConfirm">
+    <h2>Delete Admin Group?</h2>
+    <p>The following group will be deleted. Continue?</p>
+    <p>
+      <strong><xsl:value-of select="/bedeworkadmin/groups/group/name"/></strong>:
+      <xsl:value-of select="/bedeworkadmin/groups/group/desc"/>
+    </p>
+    <form  name="adminGroupDelete" method="post" action="{$admingroup-delete}">
+      <input type="submit" name="removeAdminGroupOK" value="Yes: Delete!"/>
+      <input type="submit" name="cancelled" value="No: Cancel"/>
     </form>
   </xsl:template>
 
@@ -2326,21 +2339,11 @@
           <xsl:when test="/bedeworkadmin/page='chooseGroup'">
             Choose Administrative Group
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='adminGroupList'">
+          <xsl:when test="/bedeworkadmin/page='adminGroupList' or
+                          /bedeworkadmin/page='modAdminGroup' or
+                          /bedeworkadmin/page='modAdminGroup' or
+                          /bedeworkadmin/page='modAdminGroupMembers'">
             Manage Administrative Groups
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='modAdminGroup'">
-            <xsl:choose>
-              <xsl:when test="/bedeworkadmin/creating = 'true'">
-                Add Administrative Group
-              </xsl:when>
-              <xsl:otherwise>
-                Update Administrative Group
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='modAdminGroupMembers'">
-            Update Administrative Group Members
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='noGroup'">
             No Administrative Group

@@ -89,6 +89,9 @@
       <xsl:when test="id='org.bedework.client.message.category.updated'">
         Category updated
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.subscription.removed'">
+        Subscription removed
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.view.deleted'">
         View deleted
       </xsl:when>
@@ -103,6 +106,9 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.authuser.updated'">
         Administrator updated
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.admingroup.deleted'">
+        Administrative group deleted
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.timezones.imported'">
         Timezones successfully imported

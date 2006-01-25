@@ -107,7 +107,7 @@ public class UnsubscribeAction extends BwAbstractAction {
     }
 
     svc.removeSubscription(sub);
-
+    form.getMsg().emit("org.bedework.client.message.subscription.removed");
     return "success";
   }
 }

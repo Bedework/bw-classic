@@ -1,6 +1,5 @@
 <%@ taglib uri='struts-bean' prefix='bean' %>
 <%@ taglib uri='struts-logic' prefix='logic' %>
-<html:xhtml/>
 
 <group>
   <name><bean:write name="peForm" property="updAdminGroup.account" /></name>

@@ -858,6 +858,7 @@
                validate="false">
       <forward name="inUse" path="/admingroup/showReferenced.rdo" redirect="true" />
       <forward name="notFound" path="/admingroup/showUpdateList.rdo" redirect="true" />
+      <forward name="cancelled" path="/admingroup/showUpdateList.rdo" redirect="true" />
       <forward name="continue" path="/admingroup/showUpdateList.rdo" redirect="true" />
     </action>
 

@@ -68,10 +68,10 @@
         point the event entry at a supplimental web page by entering a URL.
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.notitle'">
-        You must supply a title
+        You must supply a title<br/>
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.nodescription'">
-        You must supply a description
+        You must supply a description<br/>
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.event.startafterend'">
         The end date for this event occurs before the start date
@@ -86,10 +86,10 @@
         You must select a location.  For general use, use "on-campus" or "off-campus".
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.missingfield'">
-        Your information is incomplete: please supply a <em><xsl:value-of select="param"/></em>
+        Your information is incomplete: please supply a <em><xsl:value-of select="param"/></em><br/>
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.missingfield'">
-        Your information is incomplete: please supply a <em><xsl:value-of select="param"/></em>
+        Your information is incomplete: please supply a <em><xsl:value-of select="param"/></em><br/>
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.forbidden.calmode'">
         Access forbidden: you are not allowed to perform that action on calendar <em><xsl:value-of select="param"/></em>

@@ -99,7 +99,7 @@ public class PEDeleteAGAction extends PEAbstractAction {
 
     adgrps.removeGroup(updgrp);
     form.setUpdAdminGroup(null);
-
+    form.getMsg().emit("org.bedework.client.message.admingroup.deleted");
     return "continue";
   }
 }
