@@ -742,7 +742,7 @@
           </tr>
           <tr>
             <td class="fieldName">
-              Contact:
+              Contact (name):
             </td>
             <td>
               <xsl:copy-of select="/bedeworkadmin/formElements/form/sponsor/name/*"/>

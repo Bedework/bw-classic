@@ -80,7 +80,7 @@
         The end date type is invalid for the type of event you are creating
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.nosponsorname'">
-        You must select a contact.  If there is no contact, select "none".
+        You must enter a contact <em>name</em>.
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.nolocationaddress'">
         You must enter a location <em>address</em>.
