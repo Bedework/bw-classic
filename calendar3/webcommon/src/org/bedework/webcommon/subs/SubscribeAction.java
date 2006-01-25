@@ -101,12 +101,12 @@ public class SubscribeAction extends BwAbstractAction {
 
     CalSvcI svc = form.getCalSvcI();
 
-    String viewName = request.getParameter("view");
+    String viewName = getReqPar(request, "view");
     boolean addToDefaultView = false;
 
     if (viewName == null) {
       addToDefaultView = true;
-      String str = request.getParameter("addtodefaultview");
+      String str = getReqPar(request, "addtodefaultview");
       if (str != null) {
         addToDefaultView = str.equals("y");
       }
@@ -116,7 +116,7 @@ public class SubscribeAction extends BwAbstractAction {
       return "retry";
     }
 
-    if (Util.checkNull(request.getParameter("addSubscription")) != null) {
+    if (getReqPar(request, "addSubscription") != null) {
       try {
         svc.addSubscription(sub);
       } catch (CalFacadeException cfe) {
@@ -127,9 +127,9 @@ public class SubscribeAction extends BwAbstractAction {
 
         throw cfe;
       }
-    } else if (Util.checkNull(request.getParameter("updateSubscription")) != null) {
+    } else if (getReqPar(request, "updateSubscription") != null) {
       svc.updateSubscription(sub);
-    } else if (Util.checkNull(request.getParameter("delete")) != null) {
+    } else if (getReqPar(request, "delete") != null) {
       svc.removeSubscription(sub);
     } else {
     }
@@ -150,6 +150,8 @@ public class SubscribeAction extends BwAbstractAction {
 
   private boolean validateSub(BwSubscription sub,
                               BwActionFormBase form) {
+    sub.setName(Util.checkNull(sub.getName()));
+
     if (sub.getName() == null) {
       form.getErr().emit("org.bedework.validation.error.missingfield", "name");
       return false;

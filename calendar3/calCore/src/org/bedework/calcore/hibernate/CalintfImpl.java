@@ -1024,7 +1024,15 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
   public boolean deleteCalendar(BwCalendar val) throws CalFacadeException {
     checkOpen();
-    sess.delete(val);
+
+    BwCalendar parent = val.getCalendar();
+    if (parent == null) {
+      throw new CalFacadeException(CalFacadeException.cannotDeleteCalendarRoot);
+    }
+
+    //sess.delete(val);
+    parent.removeChild(val);
+    sess.update(parent);
 
     return true;
   }

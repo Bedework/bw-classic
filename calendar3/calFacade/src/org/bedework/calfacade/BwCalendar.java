@@ -242,13 +242,6 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
     return calendarCollection;
   }
 
-  /** Add a calendar to the set of children that make up this calendar
-   * @param val   CalendarVO to add
-   */
-  public void addChild(BwCalendar val) {
-    getChildren().add(val);
-  }
-
   /**  Set the set of children
    *
    * @param   val   SortedSet children for this calendar
@@ -271,6 +264,21 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
   /* ====================================================================
    *                   Convenience methods
    * ==================================================================== */
+
+  /** Add a calendar to the set of children that make up this calendar
+   * @param val   CalendarVO to add
+   */
+  public void addChild(BwCalendar val) {
+    getChildren().add(val);
+  }
+
+  /** Remove a calendar from the set of children
+   *
+   * @param val   BwCalendar to remove
+   */
+  public void removeChild(BwCalendar val) {
+    getChildren().remove(val);
+  }
 
   /** Iterate over the children
    *

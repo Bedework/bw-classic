@@ -71,6 +71,10 @@ public class CalFacadeException extends Exception {
   public static final String illegalCalendarCreation =
       "org.bedework.exception.illegalcalendarcreation";
 
+  /** */
+  public static final String cannotDeleteCalendarRoot =
+      "org.bedework.exception.cannotdeletecalendarroot";
+
   /** Somebody tried to create a duplicate subscription */
   public static final String duplicateSubscription =
       "org.bedework.exception.duplicatesubscription";
