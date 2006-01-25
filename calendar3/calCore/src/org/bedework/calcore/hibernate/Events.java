@@ -1030,9 +1030,9 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
     sb.append(qevName);
     sb.append(".dtstart.dtval");
 
-    if (debug) {
-      debugMsg("recurrences query is " + sb);
-    }
+    //if (debug) {
+    //  debugMsg("recurrences query is " + sb);
+    //}
 
     sess.createQuery(sb.toString());
 
@@ -1080,9 +1080,9 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
       }
     }
 
-    if (debug) {
-      debugMsg("recurrences after postexec " + evs.size());
-    }
+    //if (debug) {
+    //  debugMsg("recurrences after postexec " + evs.size());
+    //}
 
     /** Run the events we got through the filters
      */

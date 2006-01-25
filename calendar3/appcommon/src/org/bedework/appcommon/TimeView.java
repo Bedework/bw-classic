@@ -324,7 +324,7 @@ public class TimeView implements Serializable {
    * @return String[]  days of week
    */
   public String[] getDayNamesAdjusted() {
-    return curDay.getCalInfo().getDayNamesAdjusted();
+    return calInfo.getDayNamesAdjusted();
   }
 
   /** Return an array of the short days of the week indexed from 0
@@ -333,7 +333,7 @@ public class TimeView implements Serializable {
    * @return String[]  days of week
    */
   public String[] getShortDayNamesAdjusted() {
-    return curDay.getCalInfo().getShortDayNamesAdjusted();
+    return calInfo.getShortDayNamesAdjusted();
   }
 
   /** Return the dayOfWeek regarded as the first day
@@ -341,7 +341,7 @@ public class TimeView implements Serializable {
    * @return int   firstDayOfWeek
    */
   public int getFirstDayOfWeek() {
-    return curDay.getCalInfo().getFirstDayOfWeek();
+    return calInfo.getFirstDayOfWeek();
   }
 
   /** Class to hold data needed while we build this thing
@@ -412,7 +412,7 @@ public class TimeView implements Serializable {
       gtpi.last = getLastDay();
       gtpi.multi = !gtpi.last.isSameDate(gtpi.first);
       gtpi.currentDay = new MyCalendarVO(gtpi.first.getTime(),
-                                         gtpi.first.getCalInfo().getLocale());
+      		                               calInfo.getLocale());
       gtpi.year = String.valueOf(gtpi.currentDay.getYear());
 
       gtpi.todaysMonth = new MyCalendarVO().getTwoDigitMonth();
@@ -420,7 +420,7 @@ public class TimeView implements Serializable {
       if (debug) {
         debugMsg("getFirstDayOfWeek() = " + getFirstDayOfWeek());
         debugMsg("gtpi.first.getFirstDayOfWeek() = " +
-                  gtpi.first.getCalInfo().getFirstDayOfWeek());
+        		     calInfo.getFirstDayOfWeek());
       }
 
       initGtpiForMonth(gtpi);
@@ -579,12 +579,12 @@ public class TimeView implements Serializable {
 
       /** Is this correct? The days of the week are rotated to adjust for
        *   first day differences. */
-      tvdi.setDayName(gtpi.currentDay.getCalInfo().getDayName(dayOfWeek));
+      tvdi.setDayName(calInfo.getDayName(dayOfWeek));
       tvdi.setFirstDayOfMonth(gtpi.newMonth);
       gtpi.newMonth = false;
 
       tvdi.setFirstDayOfWeek(getFirstDayOfWeek() == dayOfWeek);
-      tvdi.setLastDayOfWeek(gtpi.currentDay.getCalInfo().getLastDayOfWeek() == dayOfWeek);
+      tvdi.setLastDayOfWeek(calInfo.getLastDayOfWeek() == dayOfWeek);
 
       days.addElement(tvdi);
       gtpi.isFirst = false;

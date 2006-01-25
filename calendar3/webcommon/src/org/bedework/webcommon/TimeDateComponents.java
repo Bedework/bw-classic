@@ -61,8 +61,6 @@ import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calsvci.CalSvcI;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.FieldPosition;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -86,127 +84,11 @@ import org.apache.log4j.Logger;
    you should create a superclass, subclass, or sibling to this one.
  */
 public class TimeDateComponents implements Serializable {
-  /** Label that indicates no time is specified */
-  private static final String NO_TIME_LABEL = "None";
-  /** Internal value to show no time is specified */
-  private static final String NO_TIME_VALUE = "-1";
-
   // arrays of values and labels for dropdown menus for various units of time
 
   /** default labels for am and pm */
   // XXX: Should localize
   private static final String[] DEFAULT_AMPM_LABELS = {"am", "pm"};
-
-  /* * default labels for the dates in a month */
-  //private static String[] defaultDayLabels =
-  //    new String[maximumValues(Calendar.DAY_OF_MONTH)];
-  //** default internal values for the dates in a month */
-  //private static String[] defaultDayVals =
-  //    new String[maximumValues(Calendar.DAY_OF_MONTH)];
-
-  /** default labels for the months of the year */
-  private static String[] defaultMonthLabels =
-      new String[maximumValues(Calendar.MONTH)];
-  /** default internal values for the months of the year */
-  private static String[] defaultMonthVals =
-      new String[maximumValues(Calendar.MONTH)];
-
-  // The hour arrays have an extra member to indicate no specified time
-  /** default labels for the hours of the day */
-  private static String[] defaultHourLabels =
-      new String[maximumValues(Calendar.HOUR) + 1];
-  /** default internal values for the hours of the day */
-  private static String[] defaultHourVals =
-      new String[maximumValues(Calendar.HOUR) + 1];
-  /** default labels for the hours of the day (24-hour clock) */
-  private static String[] defaultHour24Labels =
-      new String[maximumValues(Calendar.HOUR_OF_DAY) + 1];
-  /** default internal values for the hours of the day (24-hour clock) */
-  private static String[] defaultHour24Vals =
-      new String[maximumValues(Calendar.HOUR_OF_DAY) + 1];
-
-  /** default labels for the minutes of the hour */
-  private static String[] defaultMinuteLabels =
-      new String[maximumValues(Calendar.MINUTE)];
-  /** default internal values for the minutes of the hour */
-  private static String[] defaultMinuteVals =
-      new String[maximumValues(Calendar.MINUTE)];
-
-  /**
-    Get the maximum number of distinct values for an appropriate unit of time
-    @param unit The unit of time.  Should be one of the constants in
-       <code>java.util.Calendar</code>, such as <code>DAY_OF_MONTH</code>
-    @return the maximum number of distinct values for that unit.  E.g., for
-      <code>DAY_OF_MONTH</code> and a Gregorian calendar, 31
-   */
-  private static int maximumValues(int unit) {
-    Calendar cal = Calendar.getInstance();
-    return cal.getMaximum(unit) - cal.getMinimum(unit) + 1;
-  }
-
-  /** Initialize the arrays of time labels and values */
-  static {
-    /** For convenience, Get localized version of a calendar */
-    //XXX some of this needs to be localized still
-    Calendar cal = Calendar.getInstance(/* XXX locale?????*/);
-
-    /*
-    for (int i = 0, dateOfMonth = cal.getMinimum(Calendar.DAY_OF_MONTH);
-         i < defaultDayLabels.length; i++, dateOfMonth++) {
-      defaultDayLabels[i] = String.valueOf(dateOfMonth);
-
-      //XXX assuming max number of days in months is two-digits
-      defaultDayVals[i] = twoDigit(dateOfMonth);
-    }
-    */
-
-    cal.set(Calendar.MONTH, cal.getMinimum(Calendar.MONTH));
-    cal.getTime(); // force recompute
-
-    for (int i = 0; i < defaultMonthLabels.length; i++) {
-      // this gives abbreviated form of month name
-      defaultMonthLabels[i] = String.valueOf(getComponent(cal, DateFormat.MONTH_FIELD,
-                                                     DateFormat.MEDIUM));
-      //XXX assuming max number of months is two-digits
-      /** Calendar class month numbers start at 0
-       */
-      defaultMonthVals[i] = twoDigit(cal.get(Calendar.MONTH) + 1);
-      cal.add(Calendar.MONTH, 1);
-    }
-
-    defaultHourLabels[0] = NO_TIME_LABEL;
-    defaultHourVals[0] = NO_TIME_VALUE;
-
-    /* Calendar.HOUR is 0 for 12 o'clock.  Skip 0, then add it to the end
-       labeled as 12, but with value 0 */
-    defaultHourLabels[defaultHourLabels.length - 1] =
-        (defaultHourLabels.length-1) + "";
-    defaultHourVals[defaultHourLabels.length - 1] = twoDigit(0);
-
-    for (int i = 1, hour = cal.getMinimum(Calendar.HOUR) + 1;
-         i < defaultHourLabels.length - 1; i++, hour++) {
-      defaultHourLabels[i] = String.valueOf(hour);
-      //XXX assuming max hour is two digits
-      defaultHourVals[i] = twoDigit(hour);
-    }
-
-    defaultHour24Labels[0] = NO_TIME_LABEL;
-    defaultHour24Vals[0] = NO_TIME_VALUE;
-
-    for (int i=1, hourOfDay = cal.getMinimum(Calendar.HOUR_OF_DAY);
-         i < defaultHour24Labels.length; i++, hourOfDay++) {
-      defaultHour24Labels[i] = twoDigit(hourOfDay);
-      //XXX assuming max hour of day is two digits
-      defaultHour24Vals[i] = twoDigit(hourOfDay);
-    }
-
-    for (int i=0, minute = cal.getMinimum(Calendar.MINUTE);
-         i < defaultMinuteLabels.length; i++, minute++) {
-      defaultMinuteLabels[i] = twoDigit(minute);
-      //XXX assuming max number of days in months is two-digits
-      defaultMinuteVals[i] = twoDigit(minute);
-    }
-  }
 
   //private boolean debug;
 
@@ -217,14 +99,6 @@ public class TimeDateComponents implements Serializable {
 
   /** Holds time and date information */
   private Calendar cal;
-
-  //private String[] dayLabels;
-  //private String[] dayVals;
-  private String[] monthLabels;
-  private String[] monthVals;
-
-  private String[] hourLabels;
-  private String[] hourVals;
 
   /* We populate minuteLabels and minuteVals with the appropriate increments. */
   private String[] minuteLabels;
@@ -282,8 +156,9 @@ public class TimeDateComponents implements Serializable {
 
     //dayLabels = defaultDayLabels;
     //dayVals = defaultDayVals;
-    monthLabels = defaultMonthLabels;
-    monthVals = defaultMonthVals;
+    //monthLabels = defaultMonthLabels;
+    //monthVals = defaultMonthVals;
+    /*
     if (hour24) {
       hourLabels = defaultHour24Labels;
       hourVals = defaultHour24Vals;
@@ -291,49 +166,11 @@ public class TimeDateComponents implements Serializable {
       hourLabels = defaultHourLabels;
       hourVals = defaultHourVals;
     }
+    */
 
-    setMinutes(defaultMinuteLabels, defaultMinuteVals, minuteIncrement);
+    setMinutes(minuteIncrement);
 
     this.ampmLabels = DEFAULT_AMPM_LABELS;
-  }
-
-  /**
-    Set the minutes arrays to a subset of the values in two given arrays
-    @param minuteLabels Array from which to draw the labels
-    @param minuteVals Array from which to draw the values
-    @param minuteIncrement Choose the 0th entry in each array, and every
-       minuteIncrement'th one after that
-    @exception TimeDateException If either of the arrays given is not
-       the proper length
-   */
-  public void setMinutes(String[] minuteLabels,
-                         String[] minuteVals,
-                         int minuteIncrement) throws TimeDateException {
-    this.minuteIncrement = (minuteIncrement <= 1) ? 1: minuteIncrement;
-
-    if ((minuteLabels.length != defaultMinuteLabels.length) ||
-        (minuteVals.length != defaultMinuteLabels.length)) {
-      throw new TimeDateException("minute values/labels must have " +
-          defaultMinuteLabels.length +  " entries");
-    }
-
-    if (this.minuteIncrement == 1) {
-      this.minuteLabels = minuteLabels;
-      this.minuteVals = minuteVals;
-    } else {
-      int sz = defaultMinuteLabels.length / this.minuteIncrement;
-
-      this.minuteLabels = new String[sz];
-      this.minuteVals = new String[sz];
-
-      for (int i=0, j=0;
-           j < minuteLabels.length;
-           i++, j += this.minuteIncrement)
-      {
-        this.minuteLabels[i] = minuteLabels[j];
-        this.minuteVals[i] = minuteVals[j];
-      }
-    }
   }
 
   /**
@@ -375,42 +212,48 @@ public class TimeDateComponents implements Serializable {
    * @return labels
    */
   public String[] getMonthLabels() {
-    return this.monthLabels;
+    return getCalInfo().getMonthLabels();
   }
 
   /**
    * @return vals
    */
   public String[] getMonthVals() {
-    return this.monthVals;
+    return getCalInfo().getMonthVals();
   }
 
   /**
    * @return labels
    */
   public String[] getHourLabels() {
-    return this.hourLabels;
+    if (hour24) {
+      return getCalInfo().getHour24Labels();
+    }
+    return getCalInfo().getHourLabels();
   }
 
   /**
    * @return vals
    */
   public String[] getHourVals() {
-    return this.hourVals;
+    if (hour24) {
+      return getCalInfo().getHour24Vals();
+    }
+    return getCalInfo().getHourVals();
   }
 
   /**
    * @return labels
    */
   public String[] getMinuteLabels() {
-    return this.minuteLabels;
+    return minuteLabels;
   }
 
   /**
    * @return vals
    */
   public String[] getMinuteVals() {
-    return this.minuteVals;
+    return minuteVals;
   }
 
   /**
@@ -535,7 +378,7 @@ public class TimeDateComponents implements Serializable {
    */
   public String getMonth() {
     // Calendar.MONTH returns 0-11
-    return monthVals[getCal().get(Calendar.MONTH)];
+    return getCalInfo().getMonthVals()[getCal().get(Calendar.MONTH)];
   }
 
   /** Set the day number
@@ -602,15 +445,20 @@ public class TimeDateComponents implements Serializable {
    * @return String hour
    */
   public String getHour() {
-    /* Calendar.HOUR_OF_DAY returns 0-23; must be adjusted up due NO_TIME_VAL
-       Calendar.HOUR returns 0-11; must adjust due to funny 12/0 problem */
-    if (this.hour24) {
-      return this.hourVals[getCal().get(Calendar.HOUR_OF_DAY) + 1];
-    } else if (getCal().get(Calendar.HOUR) == 0) {
-      return this.hourVals[this.hourVals.length - 1];
-    } else {
-      return this.hourVals[getCal().get(Calendar.HOUR)];
+    String[] vals = getHourVals();
+
+    if (hour24) {
+      return vals[getCal().get(Calendar.HOUR_OF_DAY)];
     }
+
+    /* Calendar.HOUR returns 0-11; must adjust due to funny 12/0 problem */
+    int hr = getCal().get(Calendar.HOUR);
+
+    if (hr == 0) {
+      return vals[vals.length - 1];
+    }
+
+    return vals[hr];
   }
 
   /** Set the minute. Will be rounded to minuteIncrement
@@ -656,7 +504,7 @@ public class TimeDateComponents implements Serializable {
 
   private Calendar getCal() {
     if (cal == null) {
-      cal = Calendar.getInstance(/* XXX locale?????*/);
+      cal = Calendar.getInstance(getCalInfo().getLocale());
     }
 
     return cal;
@@ -665,29 +513,21 @@ public class TimeDateComponents implements Serializable {
   private int validMinute(String val) {
     int imin;
 
-    if ((val == null) || (val.equals(NO_TIME_VALUE))) {
+    if (val == null) {
       return 0;
-    } else {
-      try {
-        imin = Integer.parseInt(val);
-      } catch (NumberFormatException e) {
-        imin = 0;
-      }
+    }
+
+    try {
+      imin = Integer.parseInt(val);
+    } catch (NumberFormatException e) {
+      imin = 0;
     }
 
     if (this.minuteIncrement > 1) {
       return ((imin + 1) / this.minuteIncrement) * this.minuteIncrement;
-    } else {
-      return imin;
-    }
-  }
-
-  private static String twoDigit(int val) {
-    if (val > 9) {
-      return String.valueOf(val);
     }
 
-    return "0" + String.valueOf(val);
+    return imin;
   }
 
   private static String fourDigit(int val) {
@@ -700,24 +540,36 @@ public class TimeDateComponents implements Serializable {
     return "0000".substring(strVal.length()) + strVal;
   }
 
-  /** Get a String representation of a particular time
-   *  field of the object.
-   *
-   * @param field The field to be returned,
-   *        <i>e.g.</i>, <code>MONTH_FIELD</code>.  For possible values, see
-   *       the constants in <code>java.text.DateFormat</code>
-   * @param dateFormat The style of <code>DateFormat</code> to use,
-   *            <i>e.g.</i>, <code>SHORT</code>.  For possible values, see
-   *           the constants in <code>java.text.DateFormat</code>.
-   * @return A <code>String</code> representation of a particular time
-   *             field of the object.
+  /*
+    Set the minutes arrays to a subset of the values in two given arrays
+    @param increment Choose the 0th entry in each array, and every
+       minuteIncrement'th one after that
+    @exception TimeDateException If either of the arrays given is not
+       the proper length
    */
-  private static String getComponent(Calendar cal, int field, int dateFormat) {
-    FieldPosition f = new FieldPosition(field);
-    StringBuffer s = DateFormat.
-        getDateTimeInstance(dateFormat, dateFormat/* XXX ,cal.getLocale() */).
-        format(cal.getTime(), new StringBuffer(), f);
-    return s.substring(f.getBeginIndex(), f.getEndIndex());
+  private void setMinutes(int increment) throws TimeDateException {
+    minuteIncrement = (increment <= 1) ? 1: increment;
+
+    String[] labels = getCalInfo().getMinuteLabels();
+    String[] vals = getCalInfo().getMinuteVals();
+
+    if (minuteIncrement == 1) {
+      minuteLabels = labels;
+      minuteVals = vals;
+      return;
+    }
+
+    int sz = labels.length / minuteIncrement;
+
+    minuteLabels = new String[sz];
+    minuteVals = new String[sz];
+
+    int i = 0;
+    for (int j=0; j < labels.length; j += minuteIncrement) {
+      minuteLabels[i] = labels[j];
+      minuteVals[i] = vals[j];
+      i++;
+    }
   }
 
   /** Get a logger for messages

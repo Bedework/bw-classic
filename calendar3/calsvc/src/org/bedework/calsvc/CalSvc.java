@@ -130,7 +130,7 @@ public class CalSvc extends CalSvcI {
   /* The account that owns public entities
    */
   private BwUser publicUser;
-  
+
   // Set up by call to getCal()
   private String publicUserAccount;
 
@@ -1746,7 +1746,7 @@ public class CalSvc extends CalSvcI {
       return null;
     }
 
-    trace("ev: " + ev);
+    //trace("ev: " + ev);
 
     /* If the event is an event reference (an alias) implant it in an event
      * proxy and return that object.
@@ -1812,7 +1812,7 @@ public class CalSvc extends CalSvcI {
 
       // Prepare for call below.
       publicUserAccount = cali.getSyspars().getPublicUser();
-      
+
       BwUser auth;
       if (isPublicAdmin() || isGuest()) {
         auth = getPublicUser();
