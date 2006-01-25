@@ -402,7 +402,7 @@
 
     <action    path="/view/removeView"
                type="org.bedework.webcommon.views.DeleteViewAction"
-               name="calForm"
+               name="peForm"
                scope="session"
                validate="false">
     </action>
