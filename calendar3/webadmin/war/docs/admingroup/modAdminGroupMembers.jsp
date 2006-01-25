@@ -14,7 +14,10 @@
     <logic:present name="peForm" property="updAdminGroup.groupMembers" >
       <logic:iterate name="peForm" property="updAdminGroup.groupMembers"
                      id="member" >
-        <member><bean:write name="member" property="account" /></member>
+        <member>
+          <account><bean:write name="member" property="account" /></account>
+          <kind><bean:write name="member" property="kind" /></kind>
+        </member>
       </logic:iterate>
     </logic:present>
   </members>

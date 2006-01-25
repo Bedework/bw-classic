@@ -358,6 +358,14 @@ table.eventFormTable .durationSpacerText {
 #authUserInputForms {
   margin: 1em 0;
 }
+#adminGroupFormTable td,
+#adminGroupFormTable th {
+  vertical-align: top;
+}
+#adminGroupFormTable td.fieldName {
+  color: black;
+  background-color: #eee;
+}
 p.note {
   margin: 0;
   padding: 0;

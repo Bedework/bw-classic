@@ -2098,6 +2098,7 @@
         <th></th>
       </tr>
       <xsl:for-each select="/bedeworkadmin/groups/group">
+        <xsl:sort select="name" order="ascending" case-order="upper-first"/>
         <xsl:variable name="groupName" select="name"/>
         <tr>
           <td>
@@ -2110,7 +2111,7 @@
           </td>
           <xsl:if test="/bedeworkadmin/groups/showMembers='true'">
             <td>
-              <xsl:for-each select="members/member">
+              <xsl:for-each select="members/member/account">
                   <xsl:value-of select="."/>&#160;
               </xsl:for-each>
             </td>
@@ -2135,6 +2136,7 @@
       </tr>
 
       <xsl:for-each select="group">
+        <xsl:sort select="name" order="ascending" case-order="upper-first"/>
         <tr>
           <td>
             <xsl:variable name="admGroupName" select="name"/>
@@ -2227,8 +2229,18 @@
 
   <xsl:template name="modAdminGroupMembers">
     <h2>Update Group Membership</h2>
-    <p>Enter a userid and click "add" or "remove" to change group membership.</p>
+    <p>Enter a userid (for user or group) and click "add" to update group membership.
+    Click the trash icon to remove a user from the group.</p>
+
     <form name="adminGroupMembersForm" method="post" action="{$admingroup-updateMembers}">
+      <p>Add member:
+        <input type="text" name="updGroupMember" size="15"/>
+        <input type="radio" value="user" name="kind" checked="checked"/>user
+        <input type="radio" value="group" name="kind"/>group
+        <input type="submit" name="addGroupMember" value="Add"/>
+      </p>
+    </form>
+
       <table id="adminGroupFormTable">
         <tr>
           <td class="fieldName">
@@ -2243,24 +2255,39 @@
             Members:
           </td>
           <td>
-            <xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
-              <xsl:value-of select="."/>&#160;
-            </xsl:for-each>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldName">
-            Add/remove member:
-          </td>
-          <td>
-            <input type="text" name="updGroupMember" size="15"/>
-            <input type="submit" name="addGroupMember" value="Add"/>
-            <input type="submit" name="removeGroupMember" value="Remove"/>
+            <table id="memberAccountList">
+              <xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
+                <xsl:sort select="account" order="ascending" case-order="upper-first"/>
+                <tr>
+                  <td>
+                    <xsl:choose>
+                      <xsl:when test="kind='0'"><img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/></xsl:when>
+                      <xsl:when test="kind='1'"><img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/></xsl:when>
+                      <xsl:when test="kind='3'"></xsl:when>
+                      <xsl:otherwise></xsl:otherwise>
+                    </xsl:choose>
+                  </td>
+                  <td>
+                    <xsl:value-of select="account"/>
+                  </td>
+                  <td>
+                    <xsl:variable name="acct" select="account"/>
+                    <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}" title="remove">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                    </a>
+                  </td>
+                </tr>
+              </xsl:for-each>
+            </table>
           </td>
         </tr>
       </table>
+      <p>
+        <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/> user,
+        <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/> group
+      </p>
       <p><input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initUpdate}')" value="Return to Admin Group listing"/></p>
-    </form>
+
   </xsl:template>
 
   <xsl:template name="deleteAdminGroupConfirm">

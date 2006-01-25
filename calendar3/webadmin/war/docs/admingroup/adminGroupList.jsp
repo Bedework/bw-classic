@@ -18,7 +18,10 @@
           <logic:present name="adminGroup" property="groupMembers" >
             <logic:iterate name="adminGroup" property="groupMembers"
                            id="member" >
-              <member><bean:write name="member" property="account" /></member>
+              <member>
+                <account><bean:write name="member" property="account" /></account>
+                <kind><bean:write name="member" property="kind" /></kind>
+              </member>
             </logic:iterate>
           </logic:present>
         </logic:equal>
