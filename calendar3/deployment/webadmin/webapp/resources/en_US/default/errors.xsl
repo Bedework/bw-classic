@@ -83,7 +83,7 @@
         You must select a contact.  If there is no contact, select "none".
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.nolocationaddress'">
-        You must select a location.  For general use, use "on-campus" or "off-campus".
+        You must enter a location <em>address</em>.
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.missingfield'">
         Your information is incomplete: please supply a <em><xsl:value-of select="param"/></em><br/>

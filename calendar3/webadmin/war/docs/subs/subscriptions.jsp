@@ -4,7 +4,7 @@
 <%@include file="/docs/header.jsp"%>
 
 <page>subscriptions</page>
-<!--fix-->
+
 <subscriptions>
   <logic:iterate name="peForm" property="subscriptions" id="subscription">
     <subscription>

@@ -753,7 +753,7 @@
               Contact Phone Number:
             </td>
             <td>
-              <xsl:copy-of select="/bedeworkadmin/formElements/form/sponsor/phone/*"/>-
+              <xsl:copy-of select="/bedeworkadmin/formElements/form/sponsor/phone/*"/>
               <xsl:text> </xsl:text>
               <span class="fieldInfo">(optional)</span>
             </td>
@@ -1114,6 +1114,7 @@
   <xsl:template name="locationList">
     <p>
       Select the location that you would like to update:
+      <input type="button" name="return" value="Add new location" onclick="javascript:location.replace('{$location-initAdd}')"/>
     </p>
 
     <table id="commonListTable">
@@ -1143,9 +1144,16 @@
   </xsl:template>
 
   <xsl:template name="modLocation">
-    <form action="{$location-update}" method="post">
-      <h2>Location Information</h2>
+    <xsl:choose>
+      <xsl:when test="/bedeworkadmin/creating='true'">
+        <h2>Add Location</h2>
+      </xsl:when>
+      <xsl:otherwise>
+        <h2>Update Location</h2>
+      </xsl:otherwise>
+    </xsl:choose>
 
+    <form action="{$location-update}" method="post">
       <table id="eventFormTable">
         <tr>
           <td class="fieldName">
@@ -2240,54 +2248,53 @@
         <input type="submit" name="addGroupMember" value="Add"/>
       </p>
     </form>
+    <p><input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initUpdate}')" value="Return to Admin Group listing"/></p>
 
-      <table id="adminGroupFormTable">
-        <tr>
-          <td class="fieldName">
-            Name:
-          </td>
-          <td>
-            <xsl:value-of select="/bedeworkadmin/adminGroup/name"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldName">
-            Members:
-          </td>
-          <td>
-            <table id="memberAccountList">
-              <xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
-                <xsl:sort select="account" order="ascending" case-order="upper-first"/>
-                <tr>
-                  <td>
-                    <xsl:choose>
-                      <xsl:when test="kind='0'"><img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/></xsl:when>
-                      <xsl:when test="kind='1'"><img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/></xsl:when>
-                      <xsl:when test="kind='3'"></xsl:when>
-                      <xsl:otherwise></xsl:otherwise>
-                    </xsl:choose>
-                  </td>
-                  <td>
-                    <xsl:value-of select="account"/>
-                  </td>
-                  <td>
-                    <xsl:variable name="acct" select="account"/>
-                    <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}" title="remove">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                    </a>
-                  </td>
-                </tr>
-              </xsl:for-each>
-            </table>
-          </td>
-        </tr>
-      </table>
-      <p>
-        <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/> user,
-        <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/> group
-      </p>
-      <p><input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initUpdate}')" value="Return to Admin Group listing"/></p>
-
+    <table id="adminGroupFormTable">
+      <tr>
+        <td class="fieldName">
+          Name:
+        </td>
+        <td>
+          <xsl:value-of select="/bedeworkadmin/adminGroup/name"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldName">
+          Members:
+        </td>
+        <td>
+          <table id="memberAccountList">
+            <xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
+              <xsl:sort select="account" order="ascending" case-order="upper-first"/>
+              <tr>
+                <td>
+                  <xsl:choose>
+                    <xsl:when test="kind='0'"><img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/></xsl:when>
+                    <xsl:when test="kind='1'"><img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/></xsl:when>
+                    <xsl:when test="kind='3'"></xsl:when>
+                    <xsl:otherwise></xsl:otherwise>
+                  </xsl:choose>
+                </td>
+                <td>
+                  <xsl:value-of select="account"/>
+                </td>
+                <td>
+                  <xsl:variable name="acct" select="account"/>
+                  <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}" title="remove">
+                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                  </a>
+                </td>
+              </tr>
+            </xsl:for-each>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <p>
+      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/> user,
+      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/> group
+    </p>
   </xsl:template>
 
   <xsl:template name="deleteAdminGroupConfirm">
@@ -2320,36 +2327,19 @@
       <h1>
         <xsl:choose>
           <xsl:when test="/bedeworkadmin/page='modEvent' or
-                          /bedeworkadmin/page='eventList'">
-            <xsl:choose>
-              <xsl:when test="/bedeworkadmin/creating='true'">
-                Add a Public Event
-              </xsl:when>
-              <xsl:otherwise>
-                Update a Public Event
-              </xsl:otherwise>
-            </xsl:choose>
+                          /bedeworkadmin/page='eventList' or
+                          /bedeworkadmin/page='displayEvent'">
+            Manage Events
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='displayEvent'">
-            Display Event
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='sponsorList'">
+          <xsl:when test="/bedeworkadmin/page='sponsorList' or
+                          /bedeworkadmin/page='modSponsor' or
+                          /bedeworkadmin/page='deleteSponsorConfirm'">
             Manage Contacts
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='modSponsor'">
-            Update Contact Info
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='deleteSponsorConfirm'">
-            Delete Contact
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='locationList'">
+          <xsl:when test="/bedeworkadmin/page='locationList' or
+                          /bedeworkadmin/page='modLocation' or
+                          /bedeworkadmin/page='deleteLocationConfirm'">
             Manage Locations
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='modLocation'">
-            Update Location
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='deleteLocationConfirm'">
-            Delete Location
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='modCalendar'">
             Manage Calendars
@@ -2376,7 +2366,7 @@
             No Administrative Group
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='uploadTimezones'">
-            Time Zones
+            Manage Time Zones
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='noAccess'">
             Access Denied

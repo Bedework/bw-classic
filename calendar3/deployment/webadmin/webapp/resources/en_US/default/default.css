@@ -295,7 +295,9 @@ table.eventFormTable .durationSpacerText {
 #submitTable input.padRight {
   padding-right: 1em;
 }
-
+#submitTable {
+  margin-top: 1em;
+}
 #deleteListTable {
   margin: 1em 0em 2em 1em;
 }
