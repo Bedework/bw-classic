@@ -61,6 +61,7 @@ import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
 import org.bedework.webcommon.BwSession;
+import org.bedework.webcommon.BwWebUtil;
 
 
 
@@ -120,7 +121,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
     }
 
     CalSvcI svci = form.getCalSvcI();
-    if (!form.validateEvent()) {
+    if (!validateEvent(form)) {
       return "retry";
     }
 
@@ -153,6 +154,38 @@ public class PEUpdateEventAction extends PEAbstractAction {
       form.getMsg().emit("org.bedework.client.message.event.updated");
     }
     return "continue";
+  }
+
+  /* Ensure the event has all required fields and all are valid.
+   *
+   * <p>This method will retrieve any selected contacts, locations and
+   * categories and embed them in the form and event.
+   */
+  private boolean validateEvent(PEActionForm form) throws Throwable {
+    boolean ok = form.validateEventCategory();
+    BwEvent ev = form.getEvent();
+    CalSvcI svci = form.getCalSvcI();
+
+    if (!form.validateEventSponsor()) {
+      ok = false;
+    }
+
+    if (!form.validateEventLocation()) {
+      ok = false;
+    }
+
+    if (!form.validateEventCalendar()) {
+      ok = false;
+    }
+
+    if (!form.getEventDates().updateEvent(ev, svci.getTimezones())) {
+      ok = false;
+    } else {
+      ok = BwWebUtil.validateEvent(svci, ev, true, //  descriptionRequired
+                                   form.getErr());
+    }
+
+    return ok;
   }
 }
 

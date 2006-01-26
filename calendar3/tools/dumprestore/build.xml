@@ -237,7 +237,9 @@ hibernate.jdbc.batch_size=0
       <arg line="${org.bedework.restore.arg.mailerClass}" />
       <arg line="${org.bedework.restore.arg.admingroupsClass}" />
       <arg line="${org.bedework.restore.arg.usergroupsClass}" />
+      <!--
       <jvmarg value="-Xrunyjpagent:cpu=times,onexit=cpu" />
+      -->
       <!--
       <arg value="-Djava.endorsed.dir=${org.bedework.default.lib}/endorsed"/>-->
     </java>

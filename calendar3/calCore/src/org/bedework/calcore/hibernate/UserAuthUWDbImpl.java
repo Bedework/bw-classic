@@ -68,7 +68,7 @@ import java.util.Collection;
 import java.util.TreeSet;
 import org.apache.log4j.Logger;
 
-/** Implementation of UserAuth that handles UW DB tables for authorisation.
+/** Implementation of UserAuth that handles Bedwork DB tables for authorisation.
  *
  * @author Mike Douglass    douglm@rpi.edu
  * @version 1.0

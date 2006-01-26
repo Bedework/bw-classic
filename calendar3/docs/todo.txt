@@ -2,7 +2,9 @@ Todo
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
+Unremovable subscriptions
 --------------------------------------------------------------------------------
+Personal users need default subscriptions and views
 --------------------------------------------------------------------------------
 Finish off moving calendar labelling stuff out of TimeDateComponents
 am/pm etc.
@@ -100,7 +102,6 @@ Need to ensure update doesn't change the guid
 --------------------------------------------------------------------------------
 Fix the add event link in calendar gui
 --------------------------------------------------------------------------------
-Remove target from BwEvent?
 --------------------------------------------------------------------------------
 We probably need the equivalent of an event info object at the Calintf level to
 contain transient information about the event. Should hold:
@@ -321,7 +322,6 @@ bad-request + message?
 --------------------------------------------------------------------------------
 Delete in user calendar doesn't work
 --------------------------------------------------------------------------------
-Caused by: java.io.NotSerializableException: org.apache.log4j.Logger
 --------------------------------------------------------------------------------
 Event_Attendees table has wrong column name
 --------------------------------------------------------------------------------
@@ -419,21 +419,6 @@ limit x-properties size?
 --------------------------------------------------------------------------------
 Manage calendars.
 
-Use /calendar/initAdd to specify parent
-http://localhost:8080/caladmin/calendar/initAdd.do?calId=123
-
-Then
-http://localhost:8080/caladmin/calendar/update.do?...
-with calendar fields.
-
-To update go to
-http://localhost:8080/caladmin/calendar/fetchForUpdate.do?calId=123
-then on to update
-
-Deletion should start off as update then on to
-http://localhost:8080/caladmin/calendar/delete.do?...
-
-**********************************
 Check that access is limited to calendars to which auth user has at least
 write-content access
 

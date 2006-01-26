@@ -83,21 +83,6 @@ import java.util.TreeSet;
  */
 public abstract class BwPrincipal extends BwDbentity
                                   implements AccessPrincipal, Comparator {
-  /** The kind of Principal returned by getKind() */
-
-  /** user */
-  public static final int principalUser = 0;
-
-  /** group */
-  public static final int principalGroup = 1;
-
-  /** host */
-  public static final int principalHost = 2;
-
-  /** Used for db version checks
-   */
-  protected int seq;
-
   /** The internal name by which this principal is identified, unique within
    * its class
    */
@@ -169,22 +154,6 @@ public abstract class BwPrincipal extends BwDbentity
    * @return int kind
    */
   public abstract int getKind();
-
-  /** Set the db version
-   *
-   * @param val   db version number
-   */
-  public void setSeq(int val) {
-    seq = val;
-  }
-
-  /** Get the db version
-   *
-   * @return int    the db version
-   */
-  public int getSeq() {
-    return seq;
-  }
 
   /** Set the unauthenticated state.
    *
@@ -465,19 +434,15 @@ public abstract class BwPrincipal extends BwDbentity
     BwPrincipal p1 = (BwPrincipal)o1;
     BwPrincipal p2 = (BwPrincipal)o2;
 
-    if (p1.account == null) {
-      // Should not happen
-      throw new RuntimeException("Null account for UserVO object id=" +
-                                 p1.getId());
+    if (p1.getKind() < p2.getKind()) {
+      return -1;
     }
 
-    if (p2.account == null) {
-      // Should not happen
-      throw new RuntimeException("Null account for UserVO object id=" +
-                                 p2.getId());
+    if (p1.getKind() > p2.getKind()) {
+      return 1;
     }
 
-    return p1.account.compareTo(p2.account);
+    return CalFacadeUtil.compareStrings(p1.getAccount(), p2.getAccount());
   }
 
   public int hashCode() {

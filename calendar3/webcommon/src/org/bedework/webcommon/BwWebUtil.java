@@ -177,6 +177,11 @@ public class BwWebUtil {
     ev.setSummary(checkNull(ev.getSummary()));
     ev.setDescription(checkNull(ev.getDescription()));
 
+    if (ev.getCalendar() == null) {
+      err.emit("org.bedework.validation.error.nocalendar");
+      ok = false;
+    }
+
     if (ev.getSummary() == null) {
       err.emit("org.bedework.validation.error.notitle");
       ok = false;

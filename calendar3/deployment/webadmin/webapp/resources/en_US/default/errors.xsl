@@ -70,6 +70,9 @@
       <xsl:when test="id='org.bedework.validation.error.notitle'">
         You must supply a title<br/>
       </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.nocalendar'">
+        You must supply the calendar<br/>
+      </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.nodescription'">
         You must supply a description<br/>
       </xsl:when>

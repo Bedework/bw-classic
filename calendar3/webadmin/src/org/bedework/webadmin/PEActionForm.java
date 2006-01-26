@@ -144,9 +144,8 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
 
   /** Set if we appear to be changing the event category.
    */
-//  private CategoryVO oldCategory;
 
-  private IntSelectId keyId;
+  private IntSelectId categoryId;
 
   /* ....................................................................
    *                   Sponsor fields
@@ -396,7 +395,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
     }
 
     /* A is the All box, B is the user preferred values. */
-    keyId = new IntSelectId(id, IntSelectId.AHasPrecedence);
+    categoryId = new IntSelectId(id, IntSelectId.AHasPrecedence);
 
     BwSponsor s = event.getSponsor();
     id = 0;
@@ -525,7 +524,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    */
   public void setCategoryId(int val) {
     if (val >= 0) {
-      keyId.setA(val);
+      categoryId.setA(val);
     }
   }
 
@@ -537,11 +536,11 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    * @return int
    */
   public int getOriginalCategoryId() {
-    if (keyId == null) {
+    if (categoryId == null) {
       return 0;
     }
 
-    return keyId.getOriginalVal();
+    return categoryId.getOriginalVal();
   }
 
   /**
@@ -549,7 +548,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    */
   public void setPrefCategoryId(int val) {
     if (val >= 0) {
-      keyId.setB(val);
+      categoryId.setB(val);
     }
   }
 
@@ -1088,47 +1087,13 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    *                   Validation methods
    * ==================================================================== */
 
-  /** Ensure the event has all required fields and all are valid.
-   *
-   * <p>This method will retrieve any selected contacts, locations and
-   * categories and embed them in the form and event.
-   *
-   * @return boolean   true   event looks OK
-   * @throws Throwable
-   */
-  public boolean validateEvent() throws Throwable {
-    boolean ok = validateEventCategory();
-    BwEvent ev = getEvent();
-
-    if (!validateEventSponsor()) {
-      ok = false;
-    }
-
-    if (!validateEventLocation()) {
-      ok = false;
-    }
-
-    if (!validateEventCalendar()) {
-      ok = false;
-    }
-
-    if (!getEventDates().updateEvent(ev, getCalSvcI().getTimezones())) {
-      ok = false;
-    } else {
-      ok = BwWebUtil.validateEvent(this.getCalSvcI(), ev, true, //  descriptionRequired
-                                   err);
-    }
-
-    return ok;
-  }
-
   /**
    *
    * @return boolean  false means something wrong, message emitted
    * @throws Throwable
    */
   public boolean validateEventCategory() throws Throwable {
-    int id = keyId.getVal();
+    int id = categoryId.getVal();
 
     if (id <= 0) {
       if (getEnv().getAppBoolProperty("app.categoryOptional")) {
@@ -1147,7 +1112,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
         return false;
       }
 
-      if (!keyId.getChanged()) {
+      if (!categoryId.getChanged()) {
         return true;
       }
 
