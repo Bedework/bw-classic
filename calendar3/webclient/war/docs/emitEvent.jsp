@@ -73,14 +73,13 @@
       <bean:define id="location" name="event" property="location"/>
       <location>
         <id><bean:write name="location" property="id"/></id><%--
+            Value: integer - location id --%>
         <address><bean:write name="location" property="address"/></address><%--
           Value: string - physical address of the location --%>
         <link><bean:write name="location" property="link"/></link><%--
             Value: URI - link to a web address for the location --%>
         <logic:present name="detailView" scope="request"><%--
           Only output these attributes if we are in detailed mode... --%>
-          <id><bean:write name="location" property="id"/></id><%--
-            Value: integer - location id --%>
           <subaddress><bean:write name="location" property="subaddress"/></subaddress><%--
             Value: string - more address information --%>
           <creator><bean:write name="location" property="creator.account"/></creator><%--
