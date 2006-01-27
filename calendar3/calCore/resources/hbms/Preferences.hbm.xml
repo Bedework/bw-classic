@@ -20,7 +20,7 @@
     <many-to-one name="owner"
                 class="org.bedework.calfacade.BwUser"
                 column="ownerid" not-null="true" unique="true"
-                index="viewowner" />
+                index="prefowner" />
 
     <set name="subscriptions" table="user_subscriptions" lazy="true"
          cascade="all-delete-orphan" >
@@ -39,8 +39,7 @@
     <property name="email" column="email" type="string" />
 
     <many-to-one name="defaultCalendar"
-                 class="org.bedework.calfacade.BwCalendar"
-                 unique="true" >
+                 class="org.bedework.calfacade.BwCalendar" >
       <column name="default_calendarid" />
     </many-to-one>
 

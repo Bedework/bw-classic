@@ -1814,10 +1814,15 @@ public class CalSvc extends CalSvcI {
       publicUserAccount = cali.getSyspars().getPublicUser();
 
       BwUser auth;
-      if (isPublicAdmin() || isGuest()) {
+// XXX      if (isPublicAdmin() || isGuest()) {
+      if (isGuest()) {
         auth = getPublicUser();
       } else {
         auth = cali.getUser(pars.getAuthUser());
+      }
+
+      if (debug) {
+        trace("Got auth user object " + auth);
       }
       dbi = new CalSvcDb(this, auth);
 

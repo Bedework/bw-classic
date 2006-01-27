@@ -204,6 +204,28 @@ public class CalSvcIPars implements Serializable {
     return authUser == null;
   }
 
+  public String toString() {
+    StringBuffer sb = new StringBuffer("CalSvcIPars{");
+
+    sb.append("authUser=");
+    sb.append(getAuthUser());
+    sb.append(", rights=");
+    sb.append(getRights());
+    sb.append(", user=");
+    sb.append(getUser());
+    sb.append(", publicAdmin=");
+    sb.append(getPublicAdmin());
+    sb.append(", caldav=");
+    sb.append(getCaldav());
+    sb.append(", synchid=");
+    sb.append(getSynchId());
+    sb.append(", debug=");
+    sb.append(getDebug());
+    sb.append("}");
+
+    return sb.toString();
+  }
+
   public Object clone() {
     CalSvcIPars pars = new CalSvcIPars(getAuthUser(),
                                        getRights(),
