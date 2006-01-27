@@ -54,7 +54,6 @@
 
 package edu.rpi.cct.uwcal.caldav;
 
-import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
@@ -111,15 +110,14 @@ import org.w3c.dom.Node;
  * servlet. One of these interfaces is associated with each current session.
  *
  * <p>As a first pass we'll define webdav urls as starting with <br/>
- * /user-name/calendar-name/<br/>
+ * /user/user-name/calendar-name/<br/>
  *
  * <p>uri resolution should be made part of the core calendar allowing all
  * such distinctions to be removed from this code.
  *
  * <p>The part following the above prefix probably determines exactly what is
  * delivered. We may want the entire calendar (or what we show by default) or
- * a single event from the calendar (or does that have the url<br/>
- *   /user-name/event-id.ics<br/>
+ * a single event from the calendar
  *
  *   @author Mike Douglass   douglm @ rpi.edu
  */
@@ -178,21 +176,11 @@ public class CaldavBWIntf extends WebdavNsIntf {
     namespace = namespacePrefix + "/schema";
 
     try {
-      /*
-      if (anonymous) {
-        env = new CalEnv(CalEnv.caldavPublicAppPrefix, debug);
-      } else {
-        env = new CalEnv(CalEnv.caldavPersonalAppPrefix, debug);
-      }
-      */
-
-      publicCalendarRoot = CalEnv.getGlobalProperty("public.calroot");
-      userCalendarRoot = CalEnv.getGlobalProperty("user.calroot");
+      publicCalendarRoot = getSvci().getSyspars().getPublicCalendarRoot();
+      userCalendarRoot = getSvci().getSyspars().getUserCalendarRoot();
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
-
-//    uriGen = new UWCalWebURIgen(namespace);
   }
 
   public void close() throws WebdavIntfException {

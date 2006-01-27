@@ -54,6 +54,7 @@
 
 package org.bedework.appcommon;
 
+import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.EventInfo;
@@ -180,8 +181,12 @@ public class EventFormatter implements Serializable {
   public DateTimeFormatter getEnd() {
     try {
       if (end == null) {
+        BwDateTime dt = getEvent().getDtend();
+        if (dt.getDateType()) {
+          dt = dt.getPreviousDay(ctz);
+        }
         end = new DateTimeFormatter(getCalInfo(),
-                                    getEvent().getDtend(),
+                                    dt,
                                     ctz);
       }
     } catch (Throwable t) {

@@ -328,11 +328,6 @@ public class CalSvc extends CalSvcI {
     return getCal().getStats();
   }
 
-  /** Get the system pars
-   *
-   * @return BwSystem object
-   * @throws CalFacadeException if not admin
-   */
   public BwSystem getSyspars() throws CalFacadeException {
     return getCal().getSyspars();
   }
