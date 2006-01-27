@@ -24,7 +24,7 @@
   <xsl:template match="event">
     <item>
       <title><xsl:value-of select="summary"/> - <xsl:value-of select="substring(start/monthname,1,3)"/><xsl:text> </xsl:text><xsl:value-of select="start/day"/></title>
-      <link><xsl:value-of select="/ucalendar/urlprefix"/>/eventView.do?eventId=<xsl:value-of select="id"/></link>
+      <link><xsl:value-of select="/ucalendar/urlprefix"/>/eventView.do?subid=<xsl:value-of select="subscription/id"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></link>
       <pubDate><xsl:value-of select="substring(start/dayname,1,3)"/>,
                <xsl:value-of select="start/twodigitday"/><xsl:text> </xsl:text>
                <xsl:value-of select="substring(start/monthname,1,3)"/><xsl:text> </xsl:text>

@@ -534,19 +534,19 @@ a.gridAdd {
 #yearCalendarTable  table.yearViewMonthTable td  a  {
   text-decoration: none;
   background-color: inherit;
-  border: 1px solid white;
+  padding: 1;
   color: black;
 }
 #yearCalendarTable  table.yearViewMonthTable td.weekCell a  {
   text-decoration: none;
   background-color: inherit;
-  border: 1px solid #f5f5f5;
+  padding: 1;
   color: black;
 }
 #yearCalendarTable  table.yearViewMonthTable td.monthName a  {
   text-decoration: none;
   background-color: inherit;
-  border: 1px solid #666;
+  padding: 1;
   color: #eee;
 }
 #yearCalendarTable  table.yearViewMonthTable td a:hover  {
@@ -554,6 +554,7 @@ a.gridAdd {
   background-color: #FFC;
   color: black;
   border: 1px solid black;
+  padding: 0;
 }
 #listTable {
   width: 100%;

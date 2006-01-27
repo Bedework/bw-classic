@@ -1064,7 +1064,7 @@
     <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td class="leftCell">
-          Based on the <a href="http://www.washington.edu/ucal/">University of Washington Calendar</a>
+          Based on the <a href="http://www.bedework.org/">Bedework Calendar</a>
         </td>
         <td class="rightCell">
           <form name="styleSelectForm" method="get" action="{$setup}">
