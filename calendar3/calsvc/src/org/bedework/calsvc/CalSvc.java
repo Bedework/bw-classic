@@ -1604,7 +1604,7 @@ public class CalSvc extends CalSvcI {
                        BwEventAlarm alarm) throws CalFacadeException {
     // Do some sort of validation here.
     alarm.setEvent(event);
-    alarm.setUser(getUser());
+    alarm.setOwner(getUser());
     getCal().addAlarm(alarm);
   }
 

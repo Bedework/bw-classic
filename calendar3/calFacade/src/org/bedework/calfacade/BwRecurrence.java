@@ -81,11 +81,11 @@ public class BwRecurrence implements Serializable {
    */
   private Collection exrules;
 
-  /** Collection of DateTimeVO rdate values
+  /** Collection of BwDateTime rdate values
    */
   private Collection rdates;
 
-  /** Collection of DateTimeVO exdate values
+  /** Collection of BwDateTime exdate values
    */
   private Collection exdates;
 

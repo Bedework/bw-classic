@@ -5,7 +5,7 @@
      global settings. It defines a globalDefs target
      =================================================================== -->
 
-<project name="uwcalGlobalDefs" default="bld.all">
+<project name="uwcalGlobalDefs" default="globalDefs">
   <property environment="env"/>
 
   <target name="globalDefs" >
@@ -69,6 +69,7 @@
     <property name="org.bedework.config.base" location="${calendar.dir}/config" />
     <property name="org.bedework.core.base" location="${calendar.dir}/calCore" />
     <property name="org.bedework.deployment.base" location="${calendar.dir}/deployment" />
+    <property name="org.bedework.dumprestore.base" location="${calendar.dir}/dumprestore" />
     <property name="org.bedework.http.base" location="${calendar.dir}/http" />
     <property name="org.bedework.ical.base" location="${calendar.dir}/icalendar" />
     <property name="org.bedework.locale.base" location="${calendar.dir}/locale" />

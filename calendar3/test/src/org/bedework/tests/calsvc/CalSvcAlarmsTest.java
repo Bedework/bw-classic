@@ -302,7 +302,7 @@ public class CalSvcAlarmsTest extends TestCase {
     while (it.hasNext()) {
       BwEventAlarm alarm = (BwEventAlarm)it.next();
 
-      BwUser auser = alarm.getUser();
+      BwUser auser = alarm.getOwner();
       assertNotNull("Expecting non-null alarm for user " + user, auser);
 
       assertEquals("Expecting alarm owned by user " + user,

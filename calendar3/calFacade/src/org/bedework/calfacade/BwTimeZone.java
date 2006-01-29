@@ -53,7 +53,7 @@
 */
 package org.bedework.calfacade;
 
-import java.io.Serializable;
+import org.bedework.calfacade.base.BwOwnedDbentity;
 
 /** Represents a stored timezone. This whole area is somewhat problematical,
  * RFC2554 refers to timezones by tzid but thereis as yet not statndard
@@ -69,22 +69,10 @@ import java.io.Serializable;
  * @author Mike Douglass   douglm@rpi.edu
  *  @version 1.0
  */
-public class BwTimeZone implements Serializable {
-  private int id = CalFacadeDefs.unsavedItemKey;
-
+public class BwTimeZone extends BwOwnedDbentity {
   /** This is the timezone id this is known by.
    */
   private String tzid;
-
-  /* * We store timezones in CalendarVO objects.
-   * /
-  private CalendarVO calendar;
-  */
-
-  /** User who owns this timezone */
-  private BwUser owner;
-
-  private boolean publick;
 
   private String vtimezone; // rfc2554 representation
 
@@ -97,22 +85,6 @@ public class BwTimeZone implements Serializable {
    *
    */
   public BwTimeZone() {
-  }
-
-  /** Set the id for this timezone
-   *
-   * @param val   alarm id
-   */
-  public void setId(int val) {
-    id = val;
-  }
-
-  /** Get the timezone's id
-   *
-   * @return int    the timezone's unique id
-   */
-  public int getId() {
-    return id;
   }
 
   /**  Set the tzid
@@ -129,51 +101,6 @@ public class BwTimeZone implements Serializable {
    */
   public String getTzid() {
     return tzid;
-  }
-
-  /* * Set the timezone's calendar
-   *
-   * @param val    CalendarVO timezone's calendar
-   * /
-  public void setCalendar(CalendarVO val) {
-    calendar = val;
-  }
-
-  /* * Get the timezone's calendar
-   *
-   * @return CalendarVO   the timezone's calendar
-   * /
-  public CalendarVO getCalendar() {
-    return calendar;
-  }*/
-
-  /** Set the timezone public flag
-   *
-   *  @param val    true if the timezone is public
-   */
-  public void setPublick(boolean val) {
-    publick = val;
-  }
-
-  /**
-   * @return boolean true for public
-   */
-  public boolean getPublick() {
-    return publick;
-  }
-
-  /**
-   * @param  val      UserVO timezone owner
-   */
-  public void setOwner(BwUser val) {
-    owner = val;
-  }
-
-  /**
-   * @return UserVO     timezone's owner
-   */
-  public BwUser getOwner() {
-    return owner;
   }
 
   /** Set the vtimezone
@@ -257,16 +184,11 @@ public class BwTimeZone implements Serializable {
   }
 
   public String toString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuffer sb = new StringBuffer("TimeZoneVO{");
 
-    sb.append("TimeZoneVO{id=");
-    sb.append(id);
+    super.toStringSegment(sb);
     sb.append(", tzid=");
     sb.append(tzid);
-    sb.append(", publick=");
-    sb.append(getPublick());
-    sb.append(", owner=");
-    sb.append(owner);
     sb.append(", jtzid=");
     sb.append(jtzid);
     sb.append("}");

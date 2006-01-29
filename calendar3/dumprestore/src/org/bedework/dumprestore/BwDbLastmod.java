@@ -51,52 +51,50 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.calfacade;
+package org.bedework.dumprestore;
 
-import org.bedework.calfacade.base.BwShareableContainedDbentity;
+import java.sql.Timestamp;
 
-/** This will be populated with the Vtodo fields.
+/** Probably not needed for v3
+ * @author douglm
  *
- *  @author Mike Douglass   douglm@rpi.edu
  */
-public class BwTodo extends BwShareableContainedDbentity {
-
-  private BwDateTime dtstart;
-
-  /* ====================================================================
-   *                      Bean methods
-   * ==================================================================== */
-
-  /** Set the event's start
+public class BwDbLastmod {
+  /**
    *
-   *  @param  val   Event's start
    */
-  public void setDtstart(BwDateTime val) {
-    dtstart = val;
-  }
-
-  /** Get the event's start
+  public String dbname;
+  /**
    *
-   *  @return The event's start
    */
-  public BwDateTime getDtstart() {
-    return dtstart;
-  }
-
-  /* ====================================================================
-   *                   Mappng methods
-   * ==================================================================== */
+  public Timestamp lastmod;
 
   /**
-   * @return int type of entity
+   * @return xx
    */
-  public int getEntityType() {
-    return CalFacadeDefs.entityTypeTodo;
+  public String getDbname() {
+    return dbname;
   }
 
-  /* ====================================================================
-   *                   Convenience methods
-   * ==================================================================== */
+  /**
+   * @param val
+   */
+  public void setDbname(String val) {
+    dbname = val;
+  }
 
+  /**
+   * @return xx
+   */
+  public Timestamp getLastmod() {
+    return lastmod;
+  }
+
+  /**
+   * @param val
+   */
+  public void setLastmod(Timestamp val) {
+    lastmod = val;
+  }
 }
 

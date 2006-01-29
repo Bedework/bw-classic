@@ -53,6 +53,7 @@
 */
 package org.bedework.calfacade;
 
+import org.bedework.calfacade.base.BwOwnedDbentity;
 import org.bedework.calfacade.ifs.Attendees;
 import org.bedework.calfacade.ifs.AttendeesI;
 
@@ -70,7 +71,7 @@ import java.util.TreeSet;
  *  @version 1.0
  *  @author Mike Douglass   douglm@rpi.edu
  */
-public abstract class BwAlarm implements AttendeesI, Comparable, Serializable {
+public abstract class BwAlarm extends BwOwnedDbentity implements AttendeesI, Comparable, Serializable {
   /** audio */
   public final static int alarmTypeAudio = 0;
 
@@ -92,13 +93,6 @@ public abstract class BwAlarm implements AttendeesI, Comparable, Serializable {
 
   protected int alarmType;
 
-  protected int id = CalFacadeDefs.unsavedItemKey;
-
-  protected int userid;
-
-  /** The user */
-  protected BwUser user;
-
   protected String trigger;
   protected boolean triggerStart;
   protected boolean triggerDateTime;
@@ -117,8 +111,6 @@ public abstract class BwAlarm implements AttendeesI, Comparable, Serializable {
 
   protected Attendees attendeesHelper;
 
-  protected long sequence;
-
   /* ------------------------- Non-db fields ---------------------------- */
 
   /** Calculated on a call to getTriggerDate()
@@ -133,8 +125,8 @@ public abstract class BwAlarm implements AttendeesI, Comparable, Serializable {
 
   /** Constructor for all fields (for db retrieval)
    *
+   * @param owner         Owner of alarm
    * @param alarmType     type of alarm
-   * @param user          Owner of alarm
    * @param trigger       This specifies the time for the alarm in rfc format
    * @param triggerStart  true if we trigger off the start
    * @param triggerDateTime  true if trigger is a date time value
@@ -150,29 +142,24 @@ public abstract class BwAlarm implements AttendeesI, Comparable, Serializable {
    * @param description   String description
    * @param summary       String summary (email)
    * @param attendees     Collection of attendees
-   * @param sequence      long sequence value
    */
-  public BwAlarm(int alarmType,
-                  BwUser user,
-                  String trigger,
-                  boolean triggerStart,
-                  boolean triggerDateTime,
-                  String duration,
-                  int repeat,
-                  long triggerTime,
-                  long previousTrigger,
-                  int repeatCount,
-                  boolean expired,
-                  String attach,
-                  String description,
-                  String summary,
-                  Collection attendees,
-                  long sequence) {
+  public BwAlarm(BwUser owner,
+                 int alarmType,
+                 String trigger,
+                 boolean triggerStart,
+                 boolean triggerDateTime,
+                 String duration,
+                 int repeat,
+                 long triggerTime,
+                 long previousTrigger,
+                 int repeatCount,
+                 boolean expired,
+                 String attach,
+                 String description,
+                 String summary,
+                 Collection attendees) {
+    super(owner, false);
     this.alarmType = alarmType;
-    this.user = user;
-    if (user != null) {
-      this.userid = user.getId();
-    }
     this.trigger = trigger;
     this.triggerStart = triggerStart;
     this.triggerDateTime = triggerDateTime;
@@ -186,8 +173,6 @@ public abstract class BwAlarm implements AttendeesI, Comparable, Serializable {
     this.description = description;
     this.summary = summary;
     setAttendees(attendees);
-
-    this.sequence = sequence;
   }
 
   /* ====================================================================
@@ -208,59 +193,6 @@ public abstract class BwAlarm implements AttendeesI, Comparable, Serializable {
    */
   public int getAlarmType() {
     return alarmType;
-  }
-
-  /** Set the id for this alarm
-   *
-   * @param val   alarm id
-   */
-  public void setId(int val) {
-    id = val;
-  }
-
-  /** Get the alarm's id
-   *
-   * @return int    the alarm's unique id
-   */
-  public int getId() {
-    return id;
-  }
-
-  /**    Set the userid
-   *
-   * @param val   userid
-   */
-  public void setUserid(int val) {
-    userid = val;
-  }
-
-  /** Get the user id
-   *
-   * @return int    the userid
-   */
-  public int getUserid() {
-    return userid;
-  }
-
-  /** set the user
-   *
-   * @param val  UserVO user
-   */
-  public void setUser(BwUser val) {
-    user = val;
-    if (user == null) {
-      userid = CalFacadeDefs.unsavedItemKey;
-    } else {
-      userid = user.getId();
-    }
-  }
-
-  /** Get the user
-   *
-   * @return UserVO     user, userVO
-   */
-  public BwUser getUser() {
-    return user;
   }
 
   /** Set the trigger - rfc format
@@ -600,21 +532,6 @@ public abstract class BwAlarm implements AttendeesI, Comparable, Serializable {
     return attendees;
   }
 
-  /** Set sequence value
-   *
-   * @param val
-   */
-  public void setSequence(long val) {
-    sequence = val;
-  }
-
-  /**
-   * @return long sequence value
-   */
-  public long getSequence() {
-    return sequence;
-  }
-
   /* ====================================================================
    *                   Mappng methods
    * ==================================================================== */
@@ -718,6 +635,59 @@ Example
      P7W
 --------------------------------------------------------*/
 
+  protected void toStringSegment(StringBuffer sb) {
+    super.toStringSegment(sb);
+    sb.append(", type=");
+    sb.append(alarmTypes[getAlarmType()]);
+
+    sb.append(", trigger(");
+    if (getTriggerStart()) {
+      sb.append("START)=");
+    } else {
+      sb.append("END)=");
+    }
+    sb.append(getTrigger());
+
+    if (getDuration() != null) {
+      sb.append(", duration=");
+      sb.append(getDuration());
+      sb.append(", repeat=");
+      sb.append(getRepeat());
+    }
+
+    if (getAlarmType() == alarmTypeAudio) {
+      if (getAttach() != null) {
+        sb.append(", attach=");
+        sb.append(getAttach());
+      }
+    } else if (getAlarmType() == alarmTypeDisplay) {
+      sb.append(", description=");
+      sb.append(getDescription());
+    } else if (getAlarmType() == alarmTypeEmail) {
+      sb.append(", description=");
+      sb.append(getDescription());
+      sb.append(", summary=");
+      sb.append(getSummary());
+      sb.append(", attendees=[");
+      Iterator it = iterateAttendees();
+      while (it.hasNext()) {
+        sb.append(it.next());
+      }
+      sb.append("]");
+      if (attach != null) {
+        sb.append(", attach=");
+        sb.append(getAttach());
+      }
+    } else if (getAlarmType() == alarmTypeProcedure) {
+      sb.append(", attach=");
+      sb.append(getAttach());
+      if (description != null) {
+        sb.append(", description=");
+        sb.append(getDescription());
+      }
+    }
+  }
+
   /* ====================================================================
    *                      Object methods
    * ==================================================================== */
@@ -747,8 +717,8 @@ Example
   public int hashCode() {
     int hc = 31 * alarmType;
 
-    if (user != null) {
-      hc *= user.hashCode();
+    if (getOwner() != null) {
+      hc *= getOwner().hashCode();
     }
 
     hc *= trigger.hashCode();
@@ -778,28 +748,28 @@ Example
 
     BwAlarm that = (BwAlarm)obj;
 
-    if (that.alarmType != alarmType) {
+    if (that.getAlarmType() != getAlarmType()) {
       return false;
     }
 
-    if (!eqObj(user, that.user)) {
+    if (!eqObj(getOwner(), that.getOwner())) {
       return false;
     }
 
-    if (!eqObj(trigger, that.trigger)) {
+    if (!eqObj(getTrigger(), that.getTrigger())) {
       return false;
     }
 
-    if (that.triggerStart != triggerStart) {
+    if (that.getTriggerStart() != getTriggerStart()) {
       return false;
     }
 
     if (duration != null) {
-      if (!eqObj(duration, that.duration)) {
+      if (!eqObj(getDuration(), that.getDuration())) {
         return false;
       }
 
-      if (that.repeat != repeat) {
+      if (that.getRepeat() != getRepeat()) {
         return false;
       }
     }
@@ -826,71 +796,9 @@ Example
   }
 
   public String toString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuffer sb = new StringBuffer("BwAlarm{");
 
-    sb.append("ValarmVO{id=");
-    sb.append(id);
-
-    sb.append(", type=");
-    sb.append(alarmTypes[alarmType]);
-
-    sb.append(", owner=");
-
-    if (user == null) {
-      sb.append("**********null************");
-    } else {
-      sb.append(user.getAccount());
-    }
-
-    sb.append(", trigger(");
-    if (triggerStart) {
-      sb.append("START)=");
-    } else {
-      sb.append("END)=");
-    }
-    sb.append(trigger);
-
-    if (duration != null) {
-      sb.append(", duration=");
-      sb.append(duration);
-      sb.append(", repeat=");
-      sb.append(repeat);
-    }
-
-    if (alarmType == alarmTypeAudio) {
-      if (attach != null) {
-        sb.append(", attach=");
-        sb.append(attach);
-      }
-    } else if (alarmType == alarmTypeDisplay) {
-      sb.append(", description=");
-      sb.append(description);
-    } else if (alarmType == alarmTypeEmail) {
-      sb.append(", description=");
-      sb.append(description);
-      sb.append(", summary=");
-      sb.append(summary);
-      sb.append(", attendees=[");
-      Iterator it = iterateAttendees();
-      while (it.hasNext()) {
-        sb.append(it.next());
-      }
-      sb.append("]");
-      if (attach != null) {
-        sb.append(", attach=");
-        sb.append(attach);
-      }
-    } else if (alarmType == alarmTypeProcedure) {
-      sb.append(", attach=");
-      sb.append(attach);
-      if (description != null) {
-        sb.append(", description=");
-        sb.append(description);
-      }
-    }
-
-    sb.append(", sequence=");
-    sb.append(sequence);
+    toStringSegment(sb);
     sb.append("}");
 
     return sb.toString();

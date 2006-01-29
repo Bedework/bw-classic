@@ -57,21 +57,21 @@
         </formula>
     </discriminator>
 
-    <version name="sequence" column="sequence" type="long" />
+    <version name="seq" column="sequence" type="integer" />
 
     <property name="alarmType" column="alarm_type" type="integer" />
 
     <!--
-    <many-to-one name="user" insert="false" update="false"
+    <many-to-one name="owner" insert="false" update="false"
                  class="org.bedework.calfacade.BwUser" >
-      <column name="userid"/>
+      <column name="ownerid"/>
     </many-to-one>
     -->
 
-    <many-to-one name="user"
+    <many-to-one name="owner"
                  class="org.bedework.calfacade.BwUser"
                  unique="true" >
-      <column name="userid" not-null="true" index="valarms_user" />
+      <column name="ownerid" not-null="true" index="valarms_user" />
     </many-to-one>
 
     <property name="trigger" column="trigger" type="text"/>
@@ -124,12 +124,12 @@
 
   <query name="getAlarms"><![CDATA[
     from org.bedework.calfacade.BwAlarm as al
-      where al.event = :ev and al.user=:user
+      where al.event = :ev and al.owner=:user
   ]]></query>
 
   <query name="getUnexpiredAlarmsUser"><![CDATA[
     from org.bedework.calfacade.BwAlarm as al
-      where al.expired = false and al.user=:user
+      where al.expired = false and al.owner=:user
   ]]></query>
 
   <query name="getUnexpiredAlarms"><![CDATA[
@@ -141,7 +141,7 @@
     -->
   <query name="getUnexpiredAlarmsUserTime"><![CDATA[
     from org.bedework.calfacade.BwAlarm as al
-      where al.expired = false and al.user=:user and
+      where al.expired = false and al.owner=:user and
             al.triggerTime <= :tt
   ]]></query>
 

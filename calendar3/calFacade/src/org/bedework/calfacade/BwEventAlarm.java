@@ -82,8 +82,8 @@ public class BwEventAlarm extends BwAlarm {
   /** Constructor for all fields (for db retrieval)
    *
    * @param event         EventVO for this alarm - if non-null todo == null
+   * @param owner         Owner of alarm
    * @param alarmType     type of alarm
-   * @param user          Owner of alarm
    * @param trigger       This specifies the time for the alarm in rfc format
    * @param triggerStart  true if we trigger off the start
    * @param triggerDateTime  true if trigger is a date time value
@@ -99,11 +99,10 @@ public class BwEventAlarm extends BwAlarm {
    * @param description   String description
    * @param summary       String summary (email)
    * @param attendees     Collection of attendees
-   * @param sequence      long sequence value
    */
   public BwEventAlarm(BwEvent event,
+                      BwUser owner,
                       int alarmType,
-                      BwUser user,
                       String trigger,
                       boolean triggerStart,
                       boolean triggerDateTime,
@@ -116,19 +115,18 @@ public class BwEventAlarm extends BwAlarm {
                       String attach,
                       String description,
                       String summary,
-                      Collection attendees,
-                      long sequence) {
-    super(alarmType, user, trigger, triggerStart, triggerDateTime,
+                      Collection attendees) {
+    super(owner, alarmType, trigger, triggerStart, triggerDateTime,
           duration, repeat, triggerTime, previousTrigger,
           repeatCount, expired, attach, description,
-          summary, attendees, sequence);
+          summary, attendees);
     setEvent(event);
   }
 
   /** Make an audio alarm
    *
    * @param event
-   * @param user
+   * @param owner
    * @param trigger
    * @param triggerStart
    * @param triggerDateTime
@@ -138,25 +136,25 @@ public class BwEventAlarm extends BwAlarm {
    * @return BwEventAlarm
    */
   public static BwEventAlarm audioAlarm(BwEvent event,
-                                        BwUser user,
+                                        BwUser owner,
                                         String trigger,
                                         boolean triggerStart,
                                         boolean triggerDateTime,
                                         String duration,
                                         int repeat,
                                         String attach) {
-    return new BwEventAlarm(event, alarmTypeAudio, user,
+    return new BwEventAlarm(event, owner, alarmTypeAudio,
                             trigger, triggerStart, triggerDateTime,
                             duration, repeat,
                             0, 0, 0, false,
                             attach,
-                            null, null, null, 0);
+                            null, null, null);
   }
 
   /** Make a display alarm
    *
    * @param event
-   * @param user
+   * @param owner
    * @param trigger
    * @param triggerStart
    * @param triggerDateTime
@@ -166,24 +164,24 @@ public class BwEventAlarm extends BwAlarm {
    * @return BwEventAlarm
    */
   public static BwEventAlarm displayAlarm(BwEvent event,
-                                          BwUser user,
+                                          BwUser owner,
                                           String trigger,
                                           boolean triggerStart,
                                           boolean triggerDateTime,
                                           String duration,
                                           int repeat,
                                           String description) {
-    return new BwEventAlarm(event, alarmTypeDisplay, user,
+    return new BwEventAlarm(event, owner, alarmTypeDisplay,
                             trigger, triggerStart, triggerDateTime,
                             duration, repeat,
                             0, 0, 0, false,
-                            null, description, null, null, 0);
+                            null, description, null, null);
   }
 
   /** Make an email alarm
    *
    * @param event
-   * @param user
+   * @param owner
    * @param trigger
    * @param triggerStart
    * @param triggerDateTime
@@ -196,7 +194,7 @@ public class BwEventAlarm extends BwAlarm {
    * @return BwEventAlarm
    */
   public static BwEventAlarm emailAlarm(BwEvent event,
-                                        BwUser user,
+                                        BwUser owner,
                                         String trigger,
                                         boolean triggerStart,
                                         boolean triggerDateTime,
@@ -206,18 +204,18 @@ public class BwEventAlarm extends BwAlarm {
                                         String description,
                                         String summary,
                                         Collection attendees) {
-    return new BwEventAlarm(event, alarmTypeEmail, user,
+    return new BwEventAlarm(event, owner, alarmTypeEmail,
                             trigger, triggerStart, triggerDateTime,
                             duration, repeat,
                             0, 0, 0, false,
                             attach,
-                            description, summary, attendees, 0);
+                            description, summary, attendees);
   }
 
   /** Make a procedure alarm
    *
    * @param event
-   * @param user
+   * @param owner
    * @param trigger
    * @param triggerStart
    * @param triggerDateTime
@@ -228,7 +226,7 @@ public class BwEventAlarm extends BwAlarm {
    * @return BwEventAlarm
    */
   public static BwEventAlarm procedureAlarm(BwEvent event,
-                                            BwUser user,
+                                            BwUser owner,
                                             String trigger,
                                             boolean triggerStart,
                                             boolean triggerDateTime,
@@ -236,12 +234,12 @@ public class BwEventAlarm extends BwAlarm {
                                             int repeat,
                                             String attach,
                                             String description) {
-    return new BwEventAlarm(event, alarmTypeProcedure, user,
+    return new BwEventAlarm(event, owner, alarmTypeProcedure,
                             trigger, triggerStart, triggerDateTime,
                             duration, repeat,
                             0, 0, 0, false,
                             attach,
-                            description, null, null, 0);
+                            description, null, null);
   }
 
   /* ====================================================================
@@ -362,18 +360,15 @@ public class BwEventAlarm extends BwAlarm {
   }
 
   public String toString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuffer sb = new StringBuffer("BwEventAlarm{");
 
-    sb.append("BwEventAlarm{");
+    toStringSegment(sb);
 
     if (event != null) {
       sb.append(", eventid=");
       sb.append(getEvent().getId());
     }
 
-    sb.append(", ");
-
-    sb.append(super.toString());
     sb.append("}");
 
     return sb.toString();
@@ -382,8 +377,8 @@ public class BwEventAlarm extends BwAlarm {
   public Object clone() {
     try {
       BwEventAlarm a = new BwEventAlarm(null,  //event
-                                        getAlarmType(),
                                         null, // user
+                                        getAlarmType(),
                                         getTrigger(),
                                         getTriggerStart(),
                                         getTriggerDateTime(),
@@ -396,14 +391,12 @@ public class BwEventAlarm extends BwAlarm {
                                         getAttach(),
                                         getDescription(),
                                         getSummary(),
-                                        cloneAttendees(),
-                                        getSequence()
-                                        );
+                                        cloneAttendees());
 
       // Don't clone event , they are cloning us
 
-      if (getUser() != null) {
-        a.setUser((BwUser)getUser().clone());
+      if (getOwner() != null) {
+        a.setOwner((BwUser)getOwner().clone());
       }
 
       return a;

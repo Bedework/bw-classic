@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="access/src"/>
-	<classpathentry kind="src" path="caldavClientApi/src"/>
-	<classpathentry kind="src" path="http/src"/>
-	<classpathentry kind="src" path="logging/src"/>
-	<classpathentry kind="src" path="icalendar/src"/>
-	<classpathentry kind="src" path="calsvc/src"/>
-	<classpathentry kind="src" path="mail/src"/>
 	<classpathentry kind="src" path="appcommon/src"/>
 	<classpathentry kind="src" path="calCore/src"/>
 	<classpathentry kind="src" path="caldav/src"/>
+	<classpathentry kind="src" path="caldavClientApi/src"/>
 	<classpathentry kind="src" path="calEnv/src"/>
 	<classpathentry kind="src" path="calFacade/src"/>
+	<classpathentry kind="src" path="calsvc/src"/>
 	<classpathentry kind="src" path="calsvci/src"/>
 	<classpathentry kind="src" path="common/src"/>
 	<classpathentry kind="src" path="config/src"/>
+	<classpathentry kind="src" path="dumprestore/src"/>
+	<classpathentry kind="src" path="http/src"/>
+	<classpathentry kind="src" path="icalendar/src"/>
 	<classpathentry kind="src" path="locale/src"/>
+	<classpathentry kind="src" path="logging/src"/>
+	<classpathentry kind="src" path="mail/src"/>
 	<classpathentry kind="src" path="synchml/src"/>
 	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="src" path="timers/src"/>

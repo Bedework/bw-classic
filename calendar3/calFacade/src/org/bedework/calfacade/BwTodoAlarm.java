@@ -82,8 +82,8 @@ public class BwTodoAlarm extends BwAlarm {
   /** Constructor for all fields (for db retrieval)
    *
    * @param todo          TodoVO for this alarm - if non-null event == null
+   * @param owner         Owner of alarm
    * @param alarmType     type of alarm
-   * @param user          Owner of alarm
    * @param trigger       This specifies the time for the alarm in rfc format
    * @param triggerStart  true if we trigger off the start
    * @param triggerDateTime  true if trigger is a date time value
@@ -99,11 +99,10 @@ public class BwTodoAlarm extends BwAlarm {
    * @param description   String description
    * @param summary       String summary (email)
    * @param attendees     Collection of attendees
-   * @param sequence      long sequence value
    */
   public BwTodoAlarm(BwTodo todo,
+                     BwUser owner,
                      int alarmType,
-                     BwUser user,
                      String trigger,
                      boolean triggerStart,
                      boolean triggerDateTime,
@@ -116,19 +115,18 @@ public class BwTodoAlarm extends BwAlarm {
                      String attach,
                      String description,
                      String summary,
-                     Collection attendees,
-                     long sequence) {
-    super(alarmType, user, trigger, triggerStart, triggerDateTime,
+                     Collection attendees) {
+    super(owner, alarmType, trigger, triggerStart, triggerDateTime,
           duration, repeat, triggerTime, previousTrigger,
           repeatCount, expired, attach, description,
-          summary, attendees, sequence);
+          summary, attendees);
     this.todo = todo;
   }
 
   /** Make an audio alarm
   *
    * @param todo
-   * @param user
+   * @param owner
    * @param trigger
    * @param triggerStart
    * @param triggerDateTime
@@ -138,25 +136,25 @@ public class BwTodoAlarm extends BwAlarm {
    * @return BwTodoAlarm
    */
   public static BwTodoAlarm audioAlarm(BwTodo todo,
-                                       BwUser user,
+                                       BwUser owner,
                                        String trigger,
                                        boolean triggerStart,
                                        boolean triggerDateTime,
                                        String duration,
                                        int repeat,
                                        String attach) {
-    return new BwTodoAlarm(todo, alarmTypeAudio, user,
+    return new BwTodoAlarm(todo, owner, alarmTypeAudio,
                            trigger, triggerStart, triggerDateTime,
                            duration, repeat,
                            0, 0, 0, false,
                            attach,
-                           null, null, null, 0);
+                           null, null, null);
   }
 
   /** Make a display alarm
   *
    * @param todo
-   * @param user
+   * @param owner
    * @param trigger
    * @param triggerStart
    * @param triggerDateTime
@@ -166,24 +164,24 @@ public class BwTodoAlarm extends BwAlarm {
    * @return BwTodoAlarm
    */
   public static BwTodoAlarm displayAlarm(BwTodo todo,
-                                         BwUser user,
+                                         BwUser owner,
                                          String trigger,
                                          boolean triggerStart,
                                          boolean triggerDateTime,
                                          String duration,
                                          int repeat,
                                          String description) {
-    return new BwTodoAlarm(todo, alarmTypeDisplay, user,
+    return new BwTodoAlarm(todo, owner, alarmTypeDisplay,
                            trigger, triggerStart, triggerDateTime,
                            duration, repeat,
                            0, 0, 0, false,
-                           null, description, null, null, 0);
+                           null, description, null, null);
   }
 
   /** Make an email alarm
   *
    * @param todo
-   * @param user
+   * @param owner
    * @param trigger
    * @param triggerStart
    * @param triggerDateTime
@@ -196,7 +194,7 @@ public class BwTodoAlarm extends BwAlarm {
    * @return BwTodoAlarm
    */
   public static BwTodoAlarm emailAlarm(BwTodo todo,
-                                       BwUser user,
+                                       BwUser owner,
                                        String trigger,
                                        boolean triggerStart,
                                        boolean triggerDateTime,
@@ -206,18 +204,18 @@ public class BwTodoAlarm extends BwAlarm {
                                        String description,
                                        String summary,
                                        Collection attendees) {
-    return new BwTodoAlarm(todo, alarmTypeEmail, user,
+    return new BwTodoAlarm(todo, owner, alarmTypeEmail,
                            trigger, triggerStart, triggerDateTime,
                            duration, repeat,
                            0, 0, 0, false,
                            attach,
-                           description, summary, attendees, 0);
+                           description, summary, attendees);
   }
 
   /** Make a procedure alarm
   *
    * @param todo
-   * @param user
+   * @param owner
    * @param trigger
    * @param triggerStart
    * @param triggerDateTime
@@ -228,7 +226,7 @@ public class BwTodoAlarm extends BwAlarm {
    * @return BwTodoAlarm
    */
   public static BwTodoAlarm procedureAlarm(BwTodo todo,
-                                           BwUser user,
+                                           BwUser owner,
                                            String trigger,
                                            boolean triggerStart,
                                            boolean triggerDateTime,
@@ -236,12 +234,12 @@ public class BwTodoAlarm extends BwAlarm {
                                            int repeat,
                                            String attach,
                                            String description) {
-    return new BwTodoAlarm(todo, alarmTypeProcedure, user,
+    return new BwTodoAlarm(todo, owner, alarmTypeProcedure,
                            trigger, triggerStart, triggerDateTime,
                            duration, repeat,
                            0, 0, 0, false,
                            attach,
-                           description, null, null, 0);
+                           description, null, null);
   }
 
   /* ====================================================================
@@ -348,50 +346,49 @@ public class BwTodoAlarm extends BwAlarm {
   }
 
   public String toString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuffer sb = new StringBuffer("BwTodoAlarm{");
 
-    sb.append("TodoAlarmVO{");
+    toStringSegment(sb);
 
     if (todo != null) {
       sb.append(", todoId=");
       sb.append(todo.getId());
     }
 
-    sb.append(", ");
-
-    sb.append(super.toString());
     sb.append("}");
 
     return sb.toString();
   }
 
   public Object clone() {
-    BwTodoAlarm a = new BwTodoAlarm(null,  //todo
-                                    alarmType,
-                                    null, // user
-                                    trigger,
-                                    triggerStart,
-                                    triggerDateTime,
-                                    duration,
-                                    repeat,
-                                    triggerTime,
-                                    previousTrigger,
-                                    repeatCount,
-                                    expired,
-                                    attach,
-                                    description,
-                                    summary,
-                                    cloneAttendees(),
-                                    sequence
-                                    );
+    try {
+      BwTodoAlarm a = new BwTodoAlarm(null,  //todo
+                                      null, // user
+                                      getAlarmType(),
+                                      getTrigger(),
+                                      getTriggerStart(),
+                                      getTriggerDateTime(),
+                                      getDuration(),
+                                      getRepeat(),
+                                      getTriggerTime(),
+                                      getPreviousTrigger(),
+                                      getRepeatCount(),
+                                      getExpired(),
+                                      getAttach(),
+                                      getDescription(),
+                                      getSummary(),
+                                      cloneAttendees());
 
-    // Don't clone event or todo, they are cloning us
+      // Don't clone event or todo, they are cloning us
 
-    if (user != null) {
-      a.setUser((BwUser)user.clone());
+      if (getOwner() != null) {
+        a.setOwner((BwUser)getOwner().clone());
+      }
+
+      return a;
+    } catch (Throwable t) {
+      throw new RuntimeException(t);
     }
-
-    return a;
   }
 }
 

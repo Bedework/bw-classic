@@ -61,33 +61,6 @@
   <!-- ========================== run targets ==========================
        ================================================================= -->
 
-  <target name="dumpdb"
-          depends="build"
-          description="Run calendar db dump app">
-      <ant antfile="${org.bedework.tools.base}/dumprestore/build.xml" inheritrefs="true"
-           target="dumpdb" >
-        <property name="dump.class" value="org.bedework.tools.dumprestore.dump.Dump" />
-      </ant>
-  </target>
-
-  <target name="restoredb"
-          depends="build"
-          description="Run calendar db restore app">
-      <ant antfile="${org.bedework.tools.base}/dumprestore/build.xml" inheritrefs="true"
-           target="restoredb" >
-        <property name="restore.class" value="org.bedework.tools.dumprestore.restore.Restore" />
-      </ant>
-  </target>
-
-  <target name="initdb"
-          depends="build"
-          description="Run calendar db restore app to init db">
-      <ant antfile="${org.bedework.tools.base}/dumprestore/build.xml" inheritrefs="true"
-           target="initdb" >
-        <property name="restore.class" value="org.bedework.tools.dumprestore.restore.Restore" />
-      </ant>
-  </target>
-
   <target name="tzconvert"
           depends="build"
           description="Run timezone ics file conversion app">

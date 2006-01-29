@@ -96,6 +96,7 @@
                    bld.webadmin,bld.webclient,
                    bld.synchml,bld.caldav,
                    bld.timers,build.tools,
+                   bld.dumprestore,
                    bld.test,bld.config"
           description="Build war and ear files">
     <antcall inheritrefs="true" target="copy.to.jars.repository" />
@@ -234,6 +235,7 @@
                          ${org.bedework.calsvci.base}/src:
                          ${org.bedework.common.base}/src:
                          ${org.bedework.config.base}/src:
+                         ${org.bedework.dumprestore.base}/src:
                          ${org.bedework.http.base}/src:
                          ${org.bedework.ical.base}/src:
                          ${org.bedework.locale.base}/src:
@@ -529,6 +531,13 @@
     </ant>
   </target>
 
+  <target name="bld.dumprestore"
+          depends="init,bld.appcommon"
+          description="Build calendar dumprestore suite">
+    <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
+         target="build" />
+  </target>
+
   <!-- ======================== tools Targets ========================
        This builds the tools
 
@@ -544,17 +553,17 @@
   </target>
 
   <target name="dumpdb" depends="init">
-    <ant antfile="${org.bedework.tools.base}/build.xml" inheritrefs="true"
+    <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
            target="dumpdb" />
   </target>
 
   <target name="restoredb" depends="init">
-    <ant antfile="${org.bedework.tools.base}/build.xml" inheritrefs="true"
+    <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
            target="restoredb" />
   </target>
 
   <target name="initdb" depends="init">
-    <ant antfile="${org.bedework.tools.base}/build.xml" inheritrefs="true"
+    <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
            target="initdb" />
   </target>
 
