@@ -120,6 +120,13 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract BwSystem getSyspars() throws CalFacadeException;
 
+  /** Update the system pars
+   *
+   * @param val BwSystem object
+   * @throws CalFacadeException if not admin
+   */
+  public abstract void updateSyspars(BwSystem val) throws CalFacadeException;
+
   /** Get the timezones cache object
    *
    * @return CalTimezones object

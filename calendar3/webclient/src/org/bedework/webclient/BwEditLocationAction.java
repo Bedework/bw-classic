@@ -103,7 +103,7 @@ public class BwEditLocationAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    BwLocation loc = form.getCalSvcI().getLocation(locationId);
+    BwLocation loc = form.fetchSvci().getLocation(locationId);
 
     if (loc == null) {
       return "doNothing";
@@ -128,7 +128,7 @@ public class BwEditLocationAction extends BwCalAbstractAction {
    */
   public String updateLocation(HttpServletRequest request,
                                BwActionForm form) throws Throwable {
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
     BwLocation loc = form.getEditLocation();
 
     svci.replaceLocation(loc);

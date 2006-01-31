@@ -85,7 +85,7 @@ public class PEUpdateAuthAction extends PEAbstractAction {
       return "noAccess";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     /** We are just updating from the current form values.
      */

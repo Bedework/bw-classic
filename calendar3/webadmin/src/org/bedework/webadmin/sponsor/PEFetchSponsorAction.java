@@ -93,7 +93,7 @@ public class PEFetchSponsorAction extends PEAbstractAction {
 
     BwSponsor sponsor = null;
     if (id >= 0) {
-      sponsor = form.getCalSvcI().getSponsor(id);
+      sponsor = form.fetchSvci().getSponsor(id);
     }
 
     if (debug) {

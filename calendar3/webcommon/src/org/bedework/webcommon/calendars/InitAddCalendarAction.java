@@ -90,7 +90,7 @@ public class InitAddCalendarAction extends BwAbstractAction {
 
     int id = getIntReqPar(request, "calId", -1);
 
-    BwCalendar calendar = form.getCalSvcI().getCalendar(id);
+    BwCalendar calendar = form.fetchSvci().getCalendar(id);
 
     if ((calendar == null) || calendar.getCalendarCollection()) {
       return "notAllowed";

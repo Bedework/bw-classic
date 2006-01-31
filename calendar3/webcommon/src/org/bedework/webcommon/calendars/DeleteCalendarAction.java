@@ -82,7 +82,7 @@ public class DeleteCalendarAction extends BwAbstractAction {
     }
 
     BwCalendar cal = form.getCalendar();
-    int delResult = form.getCalSvcI().deleteCalendar(cal);
+    int delResult = form.fetchSvci().deleteCalendar(cal);
 
     if (delResult == 2) {
       form.getErr().emit("org.bedework.client.error.calendar.referenced");

@@ -87,7 +87,7 @@ public class PEDeleteSponsorAction extends PEAbstractAction {
     }
 
     BwSponsor sp = form.getSponsor();
-    int delResult = form.getCalSvcI().deleteSponsor(sp);
+    int delResult = form.fetchSvci().deleteSponsor(sp);
 
     if (delResult == 2) {
       form.getErr().emit("org.bedework.client.error.sponsor.referenced");

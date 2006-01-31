@@ -120,7 +120,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
       return "copy";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
     if (!validateEvent(form)) {
       return "retry";
     }
@@ -164,7 +164,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
   private boolean validateEvent(PEActionForm form) throws Throwable {
     boolean ok = form.validateEventCategory();
     BwEvent ev = form.getEvent();
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     if (!form.validateEventSponsor()) {
       ok = false;

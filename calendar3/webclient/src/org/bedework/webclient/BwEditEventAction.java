@@ -152,7 +152,7 @@ public class BwEditEventAction extends BwCalAbstractAction {
    */
   public String updateEvent(HttpServletRequest request,
                             BwActionForm form) throws Throwable {
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
     BwEvent ev = form.getEditEvent();
 
     if (!form.getEventDates().updateEvent(ev, svci.getTimezones()) ||
@@ -172,7 +172,7 @@ public class BwEditEventAction extends BwCalAbstractAction {
 
     if (loc == null) {
       if (form.getEventLocationId() != CalFacadeDefs.defaultLocationId) {
-        loc = form.getCalSvcI().getLocation(form.getEventLocationId());
+        loc = form.fetchSvci().getLocation(form.getEventLocationId());
       }
     }
 

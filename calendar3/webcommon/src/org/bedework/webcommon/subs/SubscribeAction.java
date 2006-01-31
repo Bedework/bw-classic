@@ -99,7 +99,7 @@ public class SubscribeAction extends BwAbstractAction {
 
     BwSubscription sub = form.getSubscription();
 
-    CalSvcI svc = form.getCalSvcI();
+    CalSvcI svc = form.fetchSvci();
 
     String viewName = getReqPar(request, "view");
     boolean addToDefaultView = false;

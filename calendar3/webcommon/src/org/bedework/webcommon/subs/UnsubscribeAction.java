@@ -89,7 +89,7 @@ public class UnsubscribeAction extends BwAbstractAction {
       return "noAccess"; // First line of defence
     }
 
-    CalSvcI svc = form.getCalSvcI();
+    CalSvcI svc = form.fetchSvci();
 
     String name = request.getParameter("name");
 

@@ -69,6 +69,7 @@ import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwEventObj;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.svc.BwAdminGroup;
@@ -101,6 +102,9 @@ public class BwActionFormBase extends UtilActionForm {
    * e.g. admin, guest etc.
    */
   private CalEnv env;
+
+  /* This should be a cloned copy only */
+  private BwSystem syspars;
 
   private transient MailerIntf mailer;
 
@@ -365,6 +369,20 @@ public class BwActionFormBase extends UtilActionForm {
    *                   Property methods
    * ==================================================================== */
 
+  /** Set a (cloned) copy of the system parameters
+   * @param val
+   */
+  public void setSyspars(BwSystem val) {
+    syspars = (BwSystem)val.clone();
+  }
+
+  /**
+   * @return BwSystem object
+   */
+  public BwSystem getSyspars() {
+    return syspars;
+  }
+
   /** This will default to the current user. Superusers will be able to
    * specify a creator.
    *
@@ -386,7 +404,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public Collection getInstanceOwners() {
     try {
-      return getCalSvcI().getInstanceOwners();
+      return fetchSvci().getInstanceOwners();
     } catch (Throwable t) {
       err.emit(t);
       return new Vector();
@@ -625,7 +643,7 @@ public class BwActionFormBase extends UtilActionForm {
     try {
       mailer = (MailerIntf)CalEnv.getGlobalObject("mailerclass",
                                                   MailerIntf.class);
-      mailer.init(getCalSvcI(), debug);
+      mailer.init(fetchSvci(), debug);
     } catch (Throwable t) {
       err.emit(t);
     }
@@ -708,7 +726,7 @@ public class BwActionFormBase extends UtilActionForm {
   /**
    * @return svci
    */
-  public CalSvcI getCalSvcI() {
+  public CalSvcI fetchSvci() {
     return calsvci;
   }
 
@@ -718,7 +736,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public UserAuth getUserAuth() {
     try {
-      return getCalSvcI().getUserAuth().getUserAuthRO();
+      return fetchSvci().getUserAuth().getUserAuthRO();
     } catch (Throwable t) {
       err.emit(t);
       return null;
@@ -732,7 +750,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public UserAuth retrieveUserAuth() {
     try {
-      return getCalSvcI().getUserAuth();
+      return fetchSvci().getUserAuth();
     } catch (Throwable t) {
       err.emit(t);
       return null;
@@ -1102,20 +1120,20 @@ public class BwActionFormBase extends UtilActionForm {
     }
 
     try {
-      getCalSvcI().refreshEvents();
+      fetchSvci().refreshEvents();
 
       switch (curViewPeriod) {
       case BedeworkDefs.dayView:
-        setCurTimeView(new DayView(getCalInfo(), viewMcDate, getCalSvcI(), debug));
+        setCurTimeView(new DayView(getCalInfo(), viewMcDate, fetchSvci(), debug));
         break;
       case BedeworkDefs.weekView:
-        setCurTimeView(new WeekView(getCalInfo(), viewMcDate, getCalSvcI(), debug));
+        setCurTimeView(new WeekView(getCalInfo(), viewMcDate, fetchSvci(), debug));
         break;
       case BedeworkDefs.monthView:
-        setCurTimeView(new MonthView(getCalInfo(), viewMcDate, getCalSvcI(), debug));
+        setCurTimeView(new MonthView(getCalInfo(), viewMcDate, fetchSvci(), debug));
         break;
       case BedeworkDefs.yearView:
-        setCurTimeView(new YearView(getCalInfo(), viewMcDate, getCalSvcI(),
+        setCurTimeView(new YearView(getCalInfo(), viewMcDate, fetchSvci(),
                        getShowYearData(), debug));
         break;
       }
@@ -1185,7 +1203,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public Collection getViews() {
     try {
-      return getCalSvcI().getViews();
+      return fetchSvci().getViews();
     } catch (Throwable t) {
       err.emit(t);
       return null;
@@ -1198,7 +1216,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public BwView getCurrentView() {
     try {
-      return getCalSvcI().getCurrentView();
+      return fetchSvci().getCurrentView();
     } catch (Throwable t) {
       err.emit(t);
       return null;
@@ -1264,7 +1282,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public BwCalendar getPublicCalendars() {
     try {
-      return getCalSvcI().getPublicCalendars();
+      return fetchSvci().getPublicCalendars();
     } catch (Throwable t) {
       err.emit(t);
       return null;
@@ -1281,7 +1299,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public Collection getPublicCalendarCollections() {
     try {
-      return getCalSvcI().getPublicCalendarCollections();
+      return fetchSvci().getPublicCalendarCollections();
     } catch (Throwable t) {
       err.emit(t);
       return null;
@@ -1295,7 +1313,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public BwCalendar getCalendars() {
     try {
-      return getCalSvcI().getCalendars();
+      return fetchSvci().getCalendars();
     } catch (Throwable t) {
       err.emit(t);
       return null;
@@ -1312,7 +1330,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public Collection getCalendarCollections() {
     try {
-      return getCalSvcI().getCalendarCollections();
+      return fetchSvci().getCalendarCollections();
     } catch (Throwable t) {
       err.emit(t);
       return null;
@@ -1329,7 +1347,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public Collection getAddContentCalendarCollections() {
     try {
-      return getCalSvcI().getAddContentCalendarCollections();
+      return fetchSvci().getAddContentCalendarCollections();
     } catch (Throwable t) {
       err.emit(t);
       return null;
@@ -1434,7 +1452,7 @@ public class BwActionFormBase extends UtilActionForm {
   public BwPreferences getPreferences() {
     if (preferences == null) {
       try {
-        preferences = getCalSvcI().getUserPrefs();
+        preferences = fetchSvci().getUserPrefs();
       } catch (Throwable t) {
         err.emit(t);
       }
@@ -1734,7 +1752,7 @@ public class BwActionFormBase extends UtilActionForm {
       editEvent = val;
 
       if (val != null) {
-        getEventDates().setFromEvent(val, getCalSvcI().getTimezones());
+        getEventDates().setFromEvent(val, fetchSvci().getTimezones());
       }
     } catch (Throwable t) {
       err.emit(t);
@@ -1790,7 +1808,7 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public EventDates getEventDates() {
     if (eventDates == null) {
-      eventDates = new EventDates(getCalSvcI(), getCalInfo(),
+      eventDates = new EventDates(fetchSvci(), getCalInfo(),
                                   hour24, minIncrement, err, debug);
     }
 

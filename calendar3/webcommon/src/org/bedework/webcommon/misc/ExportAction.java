@@ -98,7 +98,7 @@ public class ExportAction extends BwAbstractAction {
     String guid = Util.checkNull(request.getParameter("guid"));
     int calid = getIntReqPar(request, "calid", -1);
     int subid = getIntReqPar(request, "subid", -1);
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     EventInfo ev = null;
     Collection evs = null;

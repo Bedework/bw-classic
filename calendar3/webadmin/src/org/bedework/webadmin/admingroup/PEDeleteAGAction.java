@@ -87,7 +87,7 @@ public class PEDeleteAGAction extends PEAbstractAction {
       return "noAccess";
     }
 
-    Groups adgrps = form.getCalSvcI().getGroups();
+    Groups adgrps = form.fetchSvci().getGroups();
     form.assignChoosingGroup(false); // reset
 
     BwAdminGroup updgrp = form.getUpdAdminGroup();

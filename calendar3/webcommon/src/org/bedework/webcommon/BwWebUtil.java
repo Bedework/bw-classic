@@ -237,7 +237,7 @@ public class BwWebUtil {
    */
   public static void deleteEvent(BwActionFormBase form,
                           BwEvent event) throws Throwable {
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     svci.deleteEvent(event, false);
 

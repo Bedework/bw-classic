@@ -83,7 +83,7 @@ public class BwAddSponsorAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    form.getCalSvcI().addSponsor(s);
+    form.fetchSvci().addSponsor(s);
 
     return "success";
   }

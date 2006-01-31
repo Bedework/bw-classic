@@ -87,7 +87,7 @@ public class PEFetchAGAction extends PEAbstractAction {
       return "noAccess";
     }
 
-    Groups adgrps = form.getCalSvcI().getAdminGroups();
+    Groups adgrps = form.fetchSvci().getAdminGroups();
     form.assignChoosingGroup(false); // reset
 
     /** User requested an admin group from the list or by entering the name.

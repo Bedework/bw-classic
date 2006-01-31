@@ -85,7 +85,7 @@ public class BwFetchEventAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    EventInfo ei = form.getCalSvcI().getEvent(eventId);
+    EventInfo ei = form.fetchSvci().getEvent(eventId);
     BwEvent ev = null;
 
     if (ei != null) {

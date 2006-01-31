@@ -83,7 +83,7 @@ public class BwAddCategoryAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    form.getCalSvcI().addCategory(cat);
+    form.fetchSvci().addCategory(cat);
 
     return "success";
   }

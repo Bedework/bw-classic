@@ -96,7 +96,7 @@ public class PEUpdateSponsorAction extends PEAbstractAction {
       return "delete";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
     boolean add = form.getAddingSponsor();
 
     /** We are just updating from the current form values.

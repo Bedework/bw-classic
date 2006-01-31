@@ -52,29 +52,26 @@
     to the maximum extent the law permits.
 */
 
-package org.bedework.webadmin.category;
+package org.bedework.webadmin.system;
 
-import org.bedework.calfacade.BwCategory;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
 import org.bedework.webcommon.BwSession;
 
-
-
 import javax.servlet.http.HttpServletRequest;
 
-/** This action fetches a category.
+/** This action fetches a copy of the system parameters
  *
  * <p>Forwards to:<ul>
  *      <li>"noAccess"     user not authorised.</li>
- *      <li>"notFound"     no such event.</li>
+ *      <li>"notFound"     no such user.</li>
  *      <li>"continue"     continue on to update page.</li>
  * </ul>
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
-public class PEFetchCategoryAction extends PEAbstractAction {
+public class FetchSysparsAction extends PEAbstractAction {
   /* (non-Javadoc)
    * @see org.bedework.webadmin.PEAbstractAction#doAction(javax.servlet.http.HttpServletRequest, org.bedework.webcommon.BwSession, org.bedework.webadmin.PEActionForm)
    */
@@ -83,32 +80,13 @@ public class PEFetchCategoryAction extends PEAbstractAction {
                          PEActionForm form) throws Throwable {
     /** Check access
      */
-    if (!form.getAuthorisedUser()) {
+    if (!form.getUserAuth().isSuperUser()) {
       return "noAccess";
     }
 
     CalSvcI svci = form.fetchSvci();
 
-    /** User requested a category from the list. Retrieve it, embed it in
-     * the form so we can display the page
-     */
-    int id = form.getCategoryId();
-
-    BwCategory category = svci.getCategory(id);
-
-    if (debug) {
-      if (category == null) {
-        logIt("No category with id " + id);
-      } else {
-        logIt("Retrieved category " + category.getId());
-      }
-    }
-
-    form.setCategory(category);
-    if (category == null) {
-      form.getErr().emit("org.bedework.client.error.nosuchcategory", id);
-      return "notFound";
-    }
+    form.setSyspars(svci.getSyspars());
 
     return "continue";
   }

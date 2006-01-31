@@ -94,7 +94,7 @@ public class BwDelEventAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     EventInfo ei = svci.getEvent(id);
 
@@ -104,7 +104,7 @@ public class BwDelEventAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    CalSvcI.DelEventResult delResult = form.getCalSvcI().deleteEvent(ei.getEvent(), true);
+    CalSvcI.DelEventResult delResult = form.fetchSvci().deleteEvent(ei.getEvent(), true);
 
     if (!delResult.eventDeleted) {
       form.getErr().emit("org.bedework.client.error.nosuchevent", id);

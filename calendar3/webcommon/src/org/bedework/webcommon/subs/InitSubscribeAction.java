@@ -95,7 +95,7 @@ public class InitSubscribeAction extends BwAbstractAction {
     String calUri = null;
     BwCalendar cal = null;
 
-    CalSvcI svc = form.getCalSvcI();
+    CalSvcI svc = form.fetchSvci();
 
     BwSubscription sub;
 

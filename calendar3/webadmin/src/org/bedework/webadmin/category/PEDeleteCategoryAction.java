@@ -87,7 +87,7 @@ public class PEDeleteCategoryAction extends PEAbstractAction {
     }
 
     BwCategory key = form.getCategory();
-    int delResult = form.getCalSvcI().deleteCategory(key);
+    int delResult = form.fetchSvci().deleteCategory(key);
 
     if (delResult == 2) {
       form.getErr().emit("org.bedework.client.error.category.referenced");

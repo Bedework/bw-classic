@@ -98,7 +98,7 @@ public class BwDelLocationAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     BwLocation loc = svci.getLocation(id);
 

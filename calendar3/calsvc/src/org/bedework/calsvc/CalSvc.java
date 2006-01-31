@@ -332,6 +332,13 @@ public class CalSvc extends CalSvcI {
     return getCal().getSyspars();
   }
 
+  public void updateSyspars(BwSystem val) throws CalFacadeException {
+    if (!isSuper()) {
+      throw new CalFacadeAccessException();
+    }
+    getCal().updateSyspars(val);
+  }
+
   public CalTimezones getTimezones() throws CalFacadeException {
     return getCal().getTimezones();
   }

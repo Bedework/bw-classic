@@ -93,7 +93,7 @@ public class PEFetchLocationAction extends PEAbstractAction {
 
     BwLocation location = null;
     if (id >= 0) {
-      location = form.getCalSvcI().getLocation(id);
+      location = form.fetchSvci().getLocation(id);
     }
 
     if (debug) {

@@ -84,7 +84,7 @@ public class PEDeleteAuthAction extends PEAbstractAction {
       return "noAccess";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     svci.getUserAuth().removeAuth(getAuthUser(form));
 

@@ -98,7 +98,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
       return "delete";
     }
 
-    Groups adgrps = form.getCalSvcI().getGroups();
+    Groups adgrps = form.fetchSvci().getGroups();
     form.assignChoosingGroup(false); // reset
     boolean add = form.getAddingAdmingroup();
 
@@ -109,7 +109,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
       return "done";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     if (request.getParameter("addGroupMember") != null) {
       /** Add a user to the group we are updating.
@@ -146,7 +146,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
       String mbr = form.getUpdGroupMember();
 
       if (mbr != null) {
-        BwUser u = form.getCalSvcI().findUser(mbr);
+        BwUser u = form.fetchSvci().findUser(mbr);
 
         if (u != null) {
           adgrps.removeMember(updgrp, u);
@@ -184,7 +184,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
 
   private boolean validateNewAdminGroup(PEActionForm form) throws Throwable {
     boolean ok = true;
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     BwAdminGroup updAdminGroup = form.getUpdAdminGroup();
 
@@ -240,7 +240,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
 
   private boolean validateAdminGroup(PEActionForm form) throws Throwable {
     boolean ok = true;
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     BwAdminGroup updAdminGroup = form.getUpdAdminGroup();
 

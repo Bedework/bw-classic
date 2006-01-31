@@ -99,7 +99,7 @@ public class BwMailEventAction extends BwCalAbstractAction {
     Message emsg = new Message();
     String[] to = new String[]{recipient};
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     emsg.setMailTo(to);
     emsg.setSubject(ev.getSummary());
@@ -139,7 +139,7 @@ public class BwMailEventAction extends BwCalAbstractAction {
 
     if (val.getFrom() == null) {
       // This should be a property
-      val.setFrom("donotreply-" + form.getCalSvcI().getSysid());
+      val.setFrom("donotreply-" + form.fetchSvci().getSysid());
     }
 
     form.getMailer().post(val);

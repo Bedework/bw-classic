@@ -104,7 +104,7 @@ public class UploadAction extends BwAbstractAction {
 
     InputStream is = upFile.getInputStream();
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     IcalTranslator trans = new IcalTranslator(svci.getIcalCallback(), debug);
 

@@ -95,7 +95,7 @@ public class UpdateViewAction extends BwAbstractAction {
       return "noAccess"; // First line of defence
     }
 
-    CalSvcI svc = form.getCalSvcI();
+    CalSvcI svc = form.fetchSvci();
     String name = Util.checkNull(request.getParameter("name"));
     if (name == null) {
       form.getErr().emit("org.bedework.client.error.missingfield", "name");

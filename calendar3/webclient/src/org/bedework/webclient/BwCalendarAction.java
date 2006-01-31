@@ -69,7 +69,7 @@ public class BwCalendarAction extends BwCalAbstractAction {
    */
   public String doAction(HttpServletRequest request,
                          BwActionForm form) throws Throwable {
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
     String reqpar = request.getParameter("searchString");
 
     if (Util.checkNull(reqpar) != null) {

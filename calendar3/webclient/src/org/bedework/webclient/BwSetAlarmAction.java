@@ -88,7 +88,7 @@ public class BwSetAlarmAction extends BwCalAbstractAction {
       return "noevent";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     BwEventAlarm alarm = new BwEventAlarm();
 

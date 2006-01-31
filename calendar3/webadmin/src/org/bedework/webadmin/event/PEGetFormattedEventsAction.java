@@ -97,7 +97,7 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
 
     form.setFormattedEvents(new FormattedEvents(getEvents(false, form),
                                                 form.getCalInfo(),
-                                                form.getCalSvcI().getTimezones()));
+                                                form.fetchSvci().getTimezones()));
 
     return "continue";
   }
@@ -122,14 +122,14 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
       fromDate = todaysDateTime(form);
     }
 
-    return form.getCalSvcI().getEvents(null, filter, fromDate, null,
+    return form.fetchSvci().getEvents(null, filter, fromDate, null,
                                        CalFacadeDefs.retrieveRecurExpanded);
   }
 
   private BwDateTime todaysDateTime(PEActionForm form) throws Throwable {
     return CalFacadeUtil.getDateTime(new java.util.Date(System.currentTimeMillis()),
                                      true, false,
-                                     form.getCalSvcI().getTimezones());
+                                     form.fetchSvci().getTimezones());
   }
 }
 

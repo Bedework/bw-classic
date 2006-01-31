@@ -523,6 +523,8 @@ public class BwSystem extends BwDbentity implements Comparator {
     sb.append(getUserInbox());
     sb.append("userOutbox=");
     sb.append(getUserOutbox());
+    sb.append("defaultUserViewName=");
+    sb.append(getDefaultUserViewName());
 
     sb.append("publicUser=");
     sb.append(getPublicUser());
@@ -536,6 +538,15 @@ public class BwSystem extends BwDbentity implements Comparator {
     sb.append("httpConnections=");
     sb.append(getHttpConnections());
 
+    sb.append("maxPublicDescriptionLength=");
+    sb.append(getMaxPublicDescriptionLength());
+    sb.append("maxUserDescriptionLength=");
+    sb.append(getMaxUserDescriptionLength());
+    sb.append("maxUserEntitySize=");
+    sb.append(getMaxUserEntitySize());
+    sb.append("defaultUserQuota=");
+    sb.append(getDefaultUserQuota());
+
     sb.append("userauthClass=");
     sb.append(getUserauthClass());
     sb.append("mailerClass=");
@@ -548,5 +559,38 @@ public class BwSystem extends BwDbentity implements Comparator {
     sb.append("}");
 
     return sb.toString();
+  }
+
+  public Object clone() {
+    BwSystem clone = new BwSystem();
+
+    clone.setName(getName());
+    clone.setTzid(getTzid());
+    clone.setSystemid(getSystemid());
+    clone.setPublicCalendarRoot(getPublicCalendarRoot());
+    clone.setUserCalendarRoot(getUserCalendarRoot());
+    clone.setUserDefaultCalendar(getUserDefaultCalendar());
+    clone.setDefaultTrashCalendar(getDefaultTrashCalendar());
+    clone.setUserInbox(getUserInbox());
+    clone.setUserOutbox(getUserOutbox());
+    clone.setDefaultUserViewName(getDefaultUserViewName());
+    clone.setPublicUser(getPublicUser());
+    clone.setDirectoryBrowsingDisallowed(getDirectoryBrowsingDisallowed());
+
+    clone.setHttpConnectionsPerUser(getHttpConnectionsPerUser());
+    clone.setHttpConnectionsPerHost(getHttpConnectionsPerHost());
+    clone.setHttpConnections(getHttpConnections());
+
+    clone.setMaxPublicDescriptionLength(getMaxPublicDescriptionLength());
+    clone.setMaxUserDescriptionLength(getMaxUserDescriptionLength());
+    clone.setMaxUserEntitySize(getMaxUserEntitySize());
+    clone.setDefaultUserQuota(getDefaultUserQuota());
+
+    clone.setUserauthClass(getUserauthClass());
+    clone.setMailerClass(getMailerClass());
+    clone.setAdmingroupsClass(getAdmingroupsClass());
+    clone.setUsergroupsClass(getUsergroupsClass());
+
+    return clone();
   }
 }

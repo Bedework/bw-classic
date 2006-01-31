@@ -52,29 +52,36 @@
     to the maximum extent the law permits.
 */
 
-package org.bedework.webadmin.category;
+package org.bedework.webadmin.system;
 
-import org.bedework.calfacade.BwCategory;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
 import org.bedework.webcommon.BwSession;
 
-
-
 import javax.servlet.http.HttpServletRequest;
 
-/** This action fetches a category.
+/** This action updates the system parameters
+ *
+ * <p>Parameters are:<ul>
+ *      <li>defaultUserViewName</li>
+ *      <li>directoryBrowsingDisallowed</li>
+ *      <li>httpConnectionsPerUser</li>
+ *      <li>httpConnectionsPerHost</li>
+ *      <li>httpConnections</li>
+ *      <li>defaultUserQuota</li>
+ * </ul>
  *
  * <p>Forwards to:<ul>
  *      <li>"noAccess"     user not authorised.</li>
- *      <li>"notFound"     no such event.</li>
+ *      <li>"notFound"     no such user.</li>
  *      <li>"continue"     continue on to update page.</li>
  * </ul>
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
-public class PEFetchCategoryAction extends PEAbstractAction {
+public class UpdateSysparsAction extends PEAbstractAction {
   /* (non-Javadoc)
    * @see org.bedework.webadmin.PEAbstractAction#doAction(javax.servlet.http.HttpServletRequest, org.bedework.webcommon.BwSession, org.bedework.webadmin.PEActionForm)
    */
@@ -83,32 +90,55 @@ public class PEFetchCategoryAction extends PEAbstractAction {
                          PEActionForm form) throws Throwable {
     /** Check access
      */
-    if (!form.getAuthorisedUser()) {
+    if (!form.getUserAuth().isSuperUser()) {
       return "noAccess";
     }
 
     CalSvcI svci = form.fetchSvci();
+    BwSystem syspars = svci.getSyspars();
+    boolean changed = false;
 
-    /** User requested a category from the list. Retrieve it, embed it in
-     * the form so we can display the page
-     */
-    int id = form.getCategoryId();
-
-    BwCategory category = svci.getCategory(id);
-
-    if (debug) {
-      if (category == null) {
-        logIt("No category with id " + id);
-      } else {
-        logIt("Retrieved category " + category.getId());
-      }
+    String str = getReqPar(request, "defaultUserViewName");
+    if (str != null) {
+      syspars.setDefaultUserViewName(str);
+      changed = true;
     }
 
-    form.setCategory(category);
-    if (category == null) {
-      form.getErr().emit("org.bedework.client.error.nosuchcategory", id);
-      return "notFound";
+    Boolean bool = getBooleanReqPar(request, "directoryBrowsingDisallowed");
+    if (bool != null) {
+      syspars.setDirectoryBrowsingDisallowed(bool.booleanValue());
+      changed = true;
     }
+
+    int intVal = getIntReqPar(request, "httpConnectionsPerUser", -1);
+    if (intVal >= 0) {
+      syspars.setHttpConnectionsPerUser(intVal);
+      changed = true;
+    }
+
+    intVal = getIntReqPar(request, "httpConnectionsPerHost", -1);
+    if (intVal >= 0) {
+      syspars.setHttpConnectionsPerHost(intVal);
+      changed = true;
+    }
+
+    intVal = getIntReqPar(request, "httpConnections", -1);
+    if (intVal >= 0) {
+      syspars.setHttpConnections(intVal);
+      changed = true;
+    }
+
+    long longVal = getLongReqPar(request, "defaultUserQuota", -1);
+    if (longVal >= 0) {
+      syspars.setDefaultUserQuota(longVal);
+      changed = true;
+    }
+
+    if (changed) {
+      svci.updateSyspars(syspars);
+    }
+
+    form.setSyspars(svci.getSyspars());
 
     return "continue";
   }

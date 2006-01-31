@@ -173,7 +173,7 @@ public class BwActionForm extends BwActionFormBase {
    */
   public String getSearch() {
     try {
-      return getCalSvcI().getSearch();
+      return fetchSvci().getSearch();
     } catch (Throwable t) {
       err.emit(t);
       return null;
@@ -191,12 +191,12 @@ public class BwActionForm extends BwActionFormBase {
    */
   public boolean getSubscribed(int i) {
     try {
-      BwCalendar cal = getCalSvcI().getCalendar(i);
+      BwCalendar cal = fetchSvci().getCalendar(i);
 
       if (cal == null) {
         return false;
       }
-      return getCalSvcI().getSubscribed(cal);
+      return fetchSvci().getSubscribed(cal);
     } catch (Throwable t) {
       err.emit(t);
       return false;

@@ -100,7 +100,7 @@ public class PEUploadTimezonesAction extends PEAbstractAction {
 
     Collection tzis = tzp.getTimeZones();
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     Iterator it = tzis.iterator();
     while (it.hasNext()) {

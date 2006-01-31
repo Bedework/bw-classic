@@ -78,7 +78,7 @@ public class FetchSubscriptionAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    CalSvcI svc = form.getCalSvcI();
+    CalSvcI svc = form.fetchSvci();
 
     /** User requested a subscription. Retrieve it, embed it in
      * the form so we can display the page

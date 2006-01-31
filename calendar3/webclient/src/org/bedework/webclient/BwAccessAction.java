@@ -126,7 +126,7 @@ public class BwAccessAction extends BwCalAbstractAction {
       return "error";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
     BwCalendar cal = null;
     BwEvent ev = null;
 

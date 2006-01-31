@@ -88,7 +88,7 @@ public class BwAddEventAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     if (!form.getEventDates().updateEvent(ev, svci.getTimezones()) ||
         !BwWebUtil.validateEvent(svci, ev, false, //  descriptionRequired

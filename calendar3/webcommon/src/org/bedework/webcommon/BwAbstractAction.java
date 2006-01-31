@@ -185,7 +185,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       }
 
       /** Show the owner we are administering */
-      form.setAdminUserId(form.getCalSvcI().getUser().getAccount());
+      form.setAdminUserId(form.fetchSvci().getUser().getAccount());
 
       if (debug) {
         logIt("-------- isSuperUser: " + form.getUserAuth().isSuperUser());
@@ -287,7 +287,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       return null;
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     BwSubscription sub = svci.getSubscription(subid);
 
@@ -342,7 +342,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       return null;
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     try {
       Groups adgrps = svci.getGroups();
@@ -494,7 +494,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       return s;
     }
 
-    form.setAdminUserId(form.getCalSvcI().getUser().getAccount());
+    form.setAdminUserId(form.fetchSvci().getUser().getAccount());
 
     return null;
   }
@@ -677,7 +677,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     par.req = request;
 
     try {
-      ua = form.getCalSvcI().getUserAuth(s.getUser(), par);
+      ua = form.fetchSvci().getUserAuth(s.getUser(), par);
 
       form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
 
@@ -883,7 +883,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @throws CalFacadeException
    */
   protected UserAuth retrieveUserAuth(BwActionFormBase form) throws CalFacadeException {
-    return form.getCalSvcI().getUserAuth();
+    return form.fetchSvci().getUserAuth();
   }
 
   /** Update an authorised users preferences to reflect usage.
@@ -998,7 +998,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
      */
     public void in(boolean actionUrl) throws Throwable {
       synchronized (form) {
-        CalSvcI svci = form.getCalSvcI();
+        CalSvcI svci = form.fetchSvci();
         if (svci != null) {
           if (svci.isOpen()) {
             // double-clicking on our links eh?
@@ -1020,7 +1020,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
      * @throws Throwable
      */
     public void out() throws Throwable {
-      CalSvcI svci = form.getCalSvcI();
+      CalSvcI svci = form.fetchSvci();
       if (svci != null) {
         svci.endTransaction();
       }
@@ -1034,7 +1034,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       Throwable t = null;
 
       try {
-        CalSvcI svci = form.getCalSvcI();
+        CalSvcI svci = form.fetchSvci();
         if (svci != null) {
           svci.close();
         }
@@ -1055,7 +1055,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
   private void checkRefresh(BwActionFormBase form) {
     if (!form.isRefreshNeeded()){
       try {
-        if (!form.getCalSvcI().refreshNeeded()) {
+        if (!form.fetchSvci().refreshNeeded()) {
           return;
         }
       } catch (Throwable t) {

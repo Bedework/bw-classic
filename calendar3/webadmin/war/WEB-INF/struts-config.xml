@@ -408,6 +408,34 @@
     </action>
 
     <!-- ===============================================================
+                         Syspars Actions
+         =============================================================== -->
+
+    <action    path="/syspars/show"
+               type="org.bedework.webadmin.PERenderAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/syspars/syspars.jsp"/>
+    </action>
+
+    <action    path="/syspars/fetch"
+               type="org.bedework.webadmin.system.FetchSysparsAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="continue" path="/syspars/show.rdo" redirect="true" />
+    </action>
+
+    <action    path="/syspars/update"
+               type="org.bedework.webadmin.system.UpdateSysparsAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="continue" path="/syspars/show.rdo" redirect="true" />
+    </action>
+
+    <!-- ===============================================================
                          Timezone Actions
          =============================================================== -->
 

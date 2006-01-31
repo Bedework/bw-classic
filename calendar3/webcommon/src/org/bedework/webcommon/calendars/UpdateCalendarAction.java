@@ -101,7 +101,7 @@ public class UpdateCalendarAction extends BwAbstractAction {
       return "delete";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
     boolean add = form.getAddingCalendar();
 
     /** We are just updating from the current form values.
@@ -160,7 +160,7 @@ public class UpdateCalendarAction extends BwAbstractAction {
         if (newCC != cal.getCalendarCollection()) {
           // Can only change for an empty object.
           if ((cal.getChildren().size() != 0) ||
-              form.getCalSvcI().getCalendarInuse(cal)) {
+              form.fetchSvci().getCalendarInuse(cal)) {
             form.getErr().emit("org.bedework.validation.error.forbidden.calmode");
             return false;
           }

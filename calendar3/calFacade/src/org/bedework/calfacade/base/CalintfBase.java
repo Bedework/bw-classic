@@ -172,6 +172,9 @@ public class CalintfBase implements Calintf {
     return null;
   }
 
+  public void updateSyspars(BwSystem val) throws CalFacadeException {
+  }
+
   /** Get the timezones cache object
    *
    * @return CalTimezones object

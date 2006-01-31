@@ -90,7 +90,7 @@ public class BwAddEventRefAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     EventInfo ei = svci.getEvent(id);
 

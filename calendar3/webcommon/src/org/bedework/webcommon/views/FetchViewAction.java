@@ -85,7 +85,7 @@ public class FetchViewAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    CalSvcI svc = form.getCalSvcI();
+    CalSvcI svc = form.fetchSvci();
 
     String name = request.getParameter("name");
 

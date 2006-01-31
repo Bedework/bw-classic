@@ -365,9 +365,9 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
 
     try {
       if (val == null) {
-        getEventDates().setNewEvent(getEvent(), getCalSvcI().getTimezones());
+        getEventDates().setNewEvent(getEvent(), fetchSvci().getTimezones());
       } else {
-        getEventDates().setFromEvent(getEvent(), getCalSvcI().getTimezones());
+        getEventDates().setFromEvent(getEvent(), fetchSvci().getTimezones());
       }
     } catch (Throwable t) {
       err.emit(t);
@@ -566,7 +566,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    */
   public Collection getCategories() {
     try {
-      Collection ks = getCalSvcI().getCategories();
+      Collection ks = fetchSvci().getCategories();
       if (ks == null) {
         return new Vector();
       }
@@ -984,7 +984,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    */
   public boolean getAdminGroupMaintOK() {
     try {
-      return getCalSvcI().getAdminGroups().getGroupMaintOK();
+      return fetchSvci().getAdminGroups().getGroupMaintOK();
    } catch (Throwable t) {
       err.emit(t);
       return false;
@@ -996,7 +996,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    */
   public Collection getAdminGroups() {
     try {
-      return getCalSvcI().getAdminGroups().getAll(showAgMembers);
+      return fetchSvci().getAdminGroups().getAll(showAgMembers);
    } catch (Throwable t) {
       err.emit(t);
       return new Vector();
@@ -1105,7 +1105,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
     }
 
     try {
-      BwCategory k = getCalSvcI().getCategory(id);
+      BwCategory k = fetchSvci().getCategory(id);
 
       if (k == null) {
         err.emit("org.bedework.client.error.missingcategory", id);
@@ -1150,7 +1150,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
           return false;
         }
 
-        getCalSvcI().ensureSponsorExists(s);
+        fetchSvci().ensureSponsorExists(s);
 
         setSponsor(s);
         getEvent().setSponsor(s);
@@ -1168,7 +1168,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
     int id = spId.getVal();
 
     try {
-      BwSponsor s = getCalSvcI().getSponsor(id);
+      BwSponsor s = fetchSvci().getSponsor(id);
       if (s == null) {
         // Somebody's faking
         setSponsor(null);
@@ -1204,7 +1204,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
         }
 
 
-        getCalSvcI().ensureLocationExists(l);
+        fetchSvci().ensureLocationExists(l);
 
         setLocation(l);
         getEvent().setLocation(l);
@@ -1222,7 +1222,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
 
     try {
       int id = locId.getVal();
-      BwLocation l = getCalSvcI().getLocation(id);
+      BwLocation l = fetchSvci().getLocation(id);
 
       if ((l == null) || !l.getPublick()) {
         // Somebody's faking
@@ -1263,7 +1263,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
     try {
       int id = calendarId.getVal();
 
-      BwCalendar c = getCalSvcI().getCalendar(id);
+      BwCalendar c = fetchSvci().getCalendar(id);
 
       if ((c == null) || !c.getPublick() || !c.getCalendarCollection()) {
         // Somebody's faking

@@ -90,7 +90,7 @@ public class FetchPrefsAction extends BwAbstractAction {
       return "noAccess"; // First line of defence
     }
 
-    CalSvcI svc = form.getCalSvcI();
+    CalSvcI svc = form.fetchSvci();
 
     String str = getReqPar(request, "user");
     if (str == null) {

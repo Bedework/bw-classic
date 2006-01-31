@@ -97,7 +97,7 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
                          BwActionForm form) throws Throwable {
     String userId = request.getParameter("userid");
     BwUser user;
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     if (userId != null) {
       user = svci.findUser(userId);

@@ -87,7 +87,7 @@ public class PEDeleteLocationAction extends PEAbstractAction {
     }
 
     BwLocation loc = form.getLocation();
-    int delResult = form.getCalSvcI().deleteLocation(loc);
+    int delResult = form.fetchSvci().deleteLocation(loc);
 
     if (delResult == 2) {
       form.getErr().emit("org.bedework.client.error.location.referenced");

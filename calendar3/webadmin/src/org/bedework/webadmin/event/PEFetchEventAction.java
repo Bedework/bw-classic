@@ -81,7 +81,7 @@ public class PEFetchEventAction extends PEAbstractAction {
   public String doAction(HttpServletRequest request,
                          BwSession sess,
                          PEActionForm form) throws Throwable {
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
     boolean alerts = form.getAlertEvent();
 
     /** Check access and set request parameters

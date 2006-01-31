@@ -87,7 +87,7 @@ public class PEFetchAuthAction extends PEAbstractAction {
       return "noAccess";
     }
 
-    CalSvcI svci = form.getCalSvcI();
+    CalSvcI svci = form.fetchSvci();
 
     /** User requested a user from the list or by entering the id.
      */

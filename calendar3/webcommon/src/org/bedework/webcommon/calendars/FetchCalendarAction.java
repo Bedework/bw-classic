@@ -94,7 +94,7 @@ public class FetchCalendarAction extends BwAbstractAction {
       return "notFound";
     }
 
-    BwCalendar calendar = form.getCalSvcI().getCalendar(id);
+    BwCalendar calendar = form.fetchSvci().getCalendar(id);
 
     if (debug) {
       if (calendar == null) {

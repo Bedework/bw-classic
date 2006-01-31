@@ -383,6 +383,11 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return syspars;
   }
 
+  public void updateSyspars(BwSystem val) throws CalFacadeException {
+    checkOpen();
+    sess.update(val);
+  }
+
   public CalTimezones getTimezones() throws CalFacadeException {
     return timezones;
   }
