@@ -66,6 +66,8 @@ public class DumpUsers extends Dumpling {
     tagStart(objectUser);
 
     principalTags(u);
+    taggedVal("instanceOwner", u.getInstanceOwner());
+    taggedVal("quota", u.getQuota());
 
     tagEnd(objectUser);
 

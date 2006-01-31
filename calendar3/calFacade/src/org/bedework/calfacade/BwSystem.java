@@ -74,13 +74,14 @@ public class BwSystem extends BwDbentity implements Comparator {
   /* The system id */
   private String systemid;
 
-  /* Default calendara names */
+  /* Default calendar names */
   private String publicCalendarRoot;
   private String userCalendarRoot;
   private String userDefaultCalendar;
   private String defaultTrashCalendar;
   private String userInbox;
   private String userOutbox;
+  private String defaultUserViewName;
 
   private String publicUser;
 
@@ -89,6 +90,12 @@ public class BwSystem extends BwDbentity implements Comparator {
   private int httpConnectionsPerUser;
   private int httpConnectionsPerHost;
   private int httpConnections;
+
+  /* Limits */
+  private int maxPublicDescriptionLength = 500;
+  private int maxUserDescriptionLength = 1000;
+  private int maxUserEntitySize = 100000;
+  private long defaultUserQuota = 1000000 * 10; // 10 Meg OK?
 
   private String userauthClass;
   private String mailerClass;
@@ -239,6 +246,22 @@ public class BwSystem extends BwDbentity implements Comparator {
     return userOutbox;
   }
 
+  /** Set the user default view name
+   *
+   * @param val    String
+   */
+  public void setDefaultUserViewName(String val) {
+    defaultUserViewName = val;
+  }
+
+  /** Get the userCalendar
+   *
+   * @return String   userTrashCalendar
+   */
+  public String getDefaultUserViewName() {
+    return defaultUserViewName;
+  }
+
   /** Set the public user
    *
    * @param val    String
@@ -317,6 +340,70 @@ public class BwSystem extends BwDbentity implements Comparator {
    */
   public int getHttpConnections() {
     return httpConnections;
+  }
+
+  /** Set the max description length for public events
+   *
+   * @param val    int max
+   */
+  public void setMaxPublicDescriptionLength(int val) {
+    maxPublicDescriptionLength = val;
+  }
+
+  /**
+   *
+   * @return int
+   */
+  public int getMaxPublicDescriptionLength() {
+    return maxPublicDescriptionLength;
+  }
+
+  /** Set the max description length for user events
+   *
+   * @param val    int max
+   */
+  public void setMaxUserDescriptionLength(int val) {
+    maxUserDescriptionLength = val;
+  }
+
+  /**
+   *
+   * @return int
+   */
+  public int getMaxUserDescriptionLength() {
+    return maxUserDescriptionLength;
+  }
+
+  /** Set the max entity length for users. Probably an estimate
+   *
+   * @param val    int max
+   */
+  public void setMaxUserEntitySize(int val) {
+    maxUserEntitySize = val;
+  }
+
+  /**
+   *
+   * @return int
+   */
+  public int getMaxUserEntitySize() {
+    return maxUserEntitySize;
+  }
+
+  /** Set the default quota for users. Probably an estimate
+   *
+   * @param val    long default
+   */
+  public void setDefaultUserQuota(long val) {
+    defaultUserQuota = val;
+  }
+
+  /**
+   *
+   * @return long
+   */
+  public long getDefaultUserQuota() {
+    return defaultUserQuota;
   }
 
   /** Set the userauth class

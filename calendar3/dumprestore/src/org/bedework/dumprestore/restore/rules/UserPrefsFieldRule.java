@@ -126,6 +126,8 @@ public class UserPrefsFieldRule extends EntityFieldRule {
       globals.curSub.setEmailNotifications(booleanFld());
     } else if (name.equals("sub-calendarDeleted")) {
       globals.curSub.setCalendarDeleted(booleanFld());
+    } else if (name.equals("sub-unremoveable")) {
+      globals.curSub.setUnremoveable(booleanFld());
 
     // view fields
 

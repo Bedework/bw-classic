@@ -616,6 +616,8 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     user.setLocationAccess(access.getDefaultPersonalAccess());
     user.setSponsorAccess(access.getDefaultPersonalAccess());
 
+    user.setQuota(getSyspars().getDefaultUserQuota());
+
     sess.save(user);
 
     /* Add a user collection to the userCalendarRoot and then a default

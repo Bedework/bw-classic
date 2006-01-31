@@ -90,6 +90,8 @@ public class SysparsFieldRule extends EntityFieldRule {
       ent.setUserInbox(stringFld());
     } else if (name.equals("userOutbox")) {
       ent.setUserOutbox(stringFld());
+    } else if (name.equals("defaultUserViewName")) {
+      ent.setDefaultUserViewName(stringFld());
 
     } else if (name.equals("publicUser")) {
       ent.setPublicUser(stringFld());
@@ -103,6 +105,15 @@ public class SysparsFieldRule extends EntityFieldRule {
       ent.setHttpConnectionsPerHost(intFld());
     } else if (name.equals("httpConnections")) {
       ent.setHttpConnections(intFld());
+
+    } else if (name.equals("maxPublicDescriptionLength")) {
+      ent.setMaxPublicDescriptionLength(intFld());
+    } else if (name.equals("maxUserDescriptionLength")) {
+      ent.setMaxUserDescriptionLength(intFld());
+    } else if (name.equals("maxUserEntitySize")) {
+      ent.setMaxUserEntitySize(intFld());
+    } else if (name.equals("defaultUserQuota")) {
+      ent.setDefaultUserQuota(longFld());
 
     } else if (name.equals("userauthClass")) {
       ent.setUserauthClass(stringFld());

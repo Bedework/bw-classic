@@ -26,6 +26,7 @@
     <property name="defaultTrashCalendar" column="defaultTrashCalendar" type="text" />
     <property name="userInbox" column="userInbox" type="text" />
     <property name="userOutbox" column="userOutbox" type="text" />
+    <property name="defaultUserViewName" column="defaultUserViewName" type="text" />
 
     <property name="publicUser" column="public_user" type="text" />
 
@@ -36,6 +37,11 @@
     <property name="httpConnectionsPerUser" column="http_connections_per_user" type="integer" />
     <property name="httpConnectionsPerHost" column="http_connections_per_host" type="integer" />
     <property name="httpConnections" column="http_connections" type="integer" />
+
+    <property name="maxPublicDescriptionLength" column="maxPublicDescriptionLength" type="integer" />
+    <property name="maxUserDescriptionLength" column="maxUserDescriptionLength" type="integer" />
+    <property name="maxUserEntitySize" column="maxUserEntitySize" type="integer" />
+    <property name="defaultUserQuota" column="defaultUserQuota" type="long" />
 
     <property name="userauthClass" column="userauth_class" type="text" />
     <property name="mailerClass" column="mailer_class" type="text" />

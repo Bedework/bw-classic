@@ -43,6 +43,8 @@
               column="sponsor_access" type="text"/>
     <property name="locationAccess"
               column="location_access" type="text"/>
+
+    <property name="quota" type="long"/>
   </class>
 </hibernate-mapping>
 

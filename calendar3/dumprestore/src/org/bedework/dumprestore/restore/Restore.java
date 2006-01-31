@@ -333,6 +333,9 @@ public class Restore implements Defs {
       } else if (argpar("-defoutbox", args, i)) {
         i++;
         globals.syspars.setUserOutbox(args[i]);
+      } else if (argpar("-defuview", args, i)) {
+        i++;
+        globals.syspars.setDefaultUserViewName(args[i]);
 
       } else if (argpar("-pu", args, i)) {
         i++;
@@ -351,6 +354,10 @@ public class Restore implements Defs {
       } else if (argpar("-httpconns", args, i)) {
         i++;
         globals.syspars.setHttpConnections(intPar(args[i]));
+
+      } else if (argpar("-defuquota", args, i)) {
+        i++;
+        globals.syspars.setDefaultUserQuota(longPar(args[i]));
 
       } else if (argpar("-userauthClass", args, i)) {
         i++;
@@ -376,6 +383,10 @@ public class Restore implements Defs {
 
   private int intPar(String par) throws Throwable {
     return Integer.parseInt(par);
+  }
+
+  private long longPar(String par) throws Throwable {
+    return Long.parseLong(par);
   }
 
   void usage() {

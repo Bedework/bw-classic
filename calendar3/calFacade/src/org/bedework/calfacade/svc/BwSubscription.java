@@ -78,6 +78,10 @@ public class BwSubscription extends BwOwnedDbentity {
    */
   private boolean calendarDeleted;
 
+  /** Mark this subscription as unremovable by the user.
+   */
+  private boolean unremoveable;
+
   /* Non-db fields */
 
   /** If an internal subscription this is the calendar.
@@ -222,6 +226,22 @@ public class BwSubscription extends BwOwnedDbentity {
     return calendarDeleted;
   }
 
+  /** Is the subscription unremoveable?
+   *
+   * @param val   boolean true if the subscription is unremoveable
+   */
+  public void setUnremoveable(boolean val) {
+    unremoveable = val;
+  }
+
+  /** Is the subscription unremoveable?
+   *
+   * @return boolean  true if the subscription is unremoveable
+   */
+  public boolean getUnremoveable() {
+    return unremoveable;
+  }
+
   /* ====================================================================
    *                   Non-db methods
    * ==================================================================== */
@@ -363,6 +383,8 @@ public class BwSubscription extends BwOwnedDbentity {
     sb.append(String.valueOf(getName()));
     sb.append(", uri=");
     sb.append(String.valueOf(getUri()));
+    sb.append(", unremoveable=");
+    sb.append(getUnremoveable());
     sb.append(")");
 
     return sb.toString();

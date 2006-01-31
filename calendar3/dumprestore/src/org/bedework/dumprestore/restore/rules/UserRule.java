@@ -77,6 +77,7 @@ public class UserRule extends EntityRule {
       entity.setCategoryAccess(globals.getDefaultPersonalAccess());
       entity.setLocationAccess(globals.getDefaultPersonalAccess());
       entity.setSponsorAccess(globals.getDefaultPersonalAccess());
+      entity.setQuota(globals.syspars.getDefaultUserQuota());
     }
 
     globals.usersTbl.put(entity);

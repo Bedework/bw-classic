@@ -1831,18 +1831,30 @@ public class CalSvc extends CalSvcI {
         prefs.setDefaultCalendar(cal);
 
         // Add default subscription for default calendar.
-        BwSubscription sub = BwSubscription.makeSubscription(cal, cal.getName(), true, true, false);
-        setupOwnedEntity(sub);
+        BwSubscription defSub = BwSubscription.makeSubscription(cal,
+                                              cal.getName(), true, true, false);
+        setupOwnedEntity(defSub);
 
-        prefs.addSubscription(sub);
+        prefs.addSubscription(defSub);
 
         // Add default subscription for trash calendar.
 
         cal = cali.getTrashCalendar();
-        sub = BwSubscription.makeSubscription(cal, cal.getName(), false, false, false);
+        BwSubscription sub = BwSubscription.makeSubscription(cal, cal.getName(),
+                                                             false, false, false);
         setupOwnedEntity(sub);
 
         prefs.addSubscription(sub);
+
+        // Add a default view for the default calendar subscription
+
+        BwView view = new BwView();
+
+        view.setName(getSyspars().getDefaultUserViewName());
+        view.addSubscription(defSub);
+        view.setOwner(auth);
+
+        prefs.addView(view);
 
         dbi.updatePreferences(prefs);
       }

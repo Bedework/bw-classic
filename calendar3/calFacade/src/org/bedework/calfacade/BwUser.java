@@ -59,6 +59,8 @@ package org.bedework.calfacade;
  *  @version 1.0
  */
 public class BwUser extends BwPrincipal {
+  private long quota;
+
   private boolean instanceOwner;
 
   /* ====================================================================
@@ -81,6 +83,21 @@ public class BwUser extends BwPrincipal {
 
   public int getKind() {
     return principalUser;
+  }
+
+  /** Quota for this user. This will have to be an estimate I imagine.
+   *
+   * @param val
+   */
+  public void setQuota(long val) {
+    quota = val;
+  }
+
+  /**
+   * @return long
+   */
+  public long getQuota() {
+    return quota;
   }
 
   /** An instance owner is the owner of an instance of the calendar system.

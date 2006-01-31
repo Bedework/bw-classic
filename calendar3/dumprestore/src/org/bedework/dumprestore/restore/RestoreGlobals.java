@@ -115,23 +115,6 @@ public class RestoreGlobals {
   /** System parameters object */
   public BwSystem syspars = new BwSystem();
 
-  /** * /
-  public String publicCalendarRoot;
-  /** * /
-  public String userCalendarRoot;
-  /** * /
-  public String userDefaultCalendar;
-  /** * /
-  public String defaultTrashCalendar;
-
-  /** Account name for owner of public entities* /
-  public String publicUserAccount;
-
-  /** * /
-  public String systemId; // required for fixing guids
-
-  */
-
   /* Used when processing timezones */
   private CalTimezones tzcache;
 

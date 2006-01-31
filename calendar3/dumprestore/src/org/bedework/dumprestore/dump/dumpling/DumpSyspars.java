@@ -82,6 +82,7 @@ public class DumpSyspars extends Dumpling {
     taggedVal("defaultTrashCalendar", s.getDefaultTrashCalendar());
     taggedVal("userInbox", s.getUserInbox());
     taggedVal("userOutbox", s.getUserOutbox());
+    taggedVal("defaultUserViewName", s.getDefaultUserViewName());
 
     taggedVal("publicUser", s.getPublicUser());
 
@@ -90,6 +91,11 @@ public class DumpSyspars extends Dumpling {
     taggedVal("httpConnectionsPerUser", s.getHttpConnectionsPerUser());
     taggedVal("httpConnectionsPerHost", s.getHttpConnectionsPerHost());
     taggedVal("httpConnections", s.getHttpConnections());
+
+    taggedVal("maxPublicDescriptionLength", s.getMaxPublicDescriptionLength());
+    taggedVal("maxUserDescriptionLength", s.getMaxUserDescriptionLength());
+    taggedVal("maxUserEntitySize", s.getMaxUserEntitySize());
+    taggedVal("defaultUserQuota", s.getDefaultUserQuota());
 
     taggedVal("userauthClass", s.getUserauthClass());
     taggedVal("mailerClass", s.getMailerClass());

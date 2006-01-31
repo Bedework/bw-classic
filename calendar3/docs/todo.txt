@@ -1,15 +1,15 @@
 Todo
 
 --------------------------------------------------------------------------------
-Web-client - ensure no unexpeected data modifications.
---------------------------------------------------------------------------------
 maxDescriptionLength out of BwEvent - into syspars?
---------------------------------------------------------------------------------
-Check all day events are correct in all clients.
 --------------------------------------------------------------------------------
 Unremovable subscriptions
 --------------------------------------------------------------------------------
 Personal users need default subscriptions and views
+--------------------------------------------------------------------------------
+Web-client - ensure no unexpected data modifications.
+--------------------------------------------------------------------------------
+Check all day events are correct in all clients.
 --------------------------------------------------------------------------------
 Finish off moving calendar labelling stuff out of TimeDateComponents
 am/pm etc.

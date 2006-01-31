@@ -79,6 +79,7 @@ public class CalendarRule extends EntityRule {
       if (globals.rintf != null) {
         globals.rintf.restoreCalendar(entity);
       }
+      globals.calendarsTbl.put(new Integer(entity.getId()), entity);
     } catch (Throwable t) {
       throw new Exception(t);
     }
