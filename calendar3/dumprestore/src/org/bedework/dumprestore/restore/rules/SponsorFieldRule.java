@@ -68,17 +68,11 @@ public class SponsorFieldRule extends EntityFieldRule {
   public void field(String name) throws Exception {
     BwSponsor s = (BwSponsor)top();
 
-    if (name.equals("id")) {
-      s.setId(intFld());
-    } else if (name.equals("creator")) {
-      s.setCreator(userFld());
-    } else if (name.equals("owner")) {
-      s.setOwner(userFld());
-    } else if (name.equals("access")) {
-      s.setAccess(stringFld());
-    } else if (name.equals("public")) {
-      s.setPublick(booleanFld());
-    } else if (name.equals("name")) {
+    if (shareableEntityTags(s, name)) {
+      return;
+    }
+
+    if (name.equals("name")) {
       s.setName(stringFld());
     } else if (name.equals("phone")) {
       s.setPhone(stringFld());
@@ -86,6 +80,8 @@ public class SponsorFieldRule extends EntityFieldRule {
       s.setEmail(stringFld());
     } else if (name.equals("link")) {
       s.setLink(stringFld());
+    } else {
+      unknownTag(name);
     }
   }
 }

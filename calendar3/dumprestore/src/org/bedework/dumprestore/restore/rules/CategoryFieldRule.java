@@ -65,24 +65,19 @@ public class CategoryFieldRule extends EntityFieldRule {
     super(globals);
   }
 
-  public void field(String name) throws java.lang.Exception{
+  public void field(String name) throws Exception {
     BwCategory cat = (BwCategory)top();
 
-    if (name.equals("id")) {
-      cat.setId(intFld());
-    } else if (name.equals("creator")) {
-      cat.setCreator(userFld());
-    } else if (name.equals("owner")) {
-      cat.setOwner(userFld());
-    } else if (name.equals("access")) {
-      cat.setAccess(stringFld());
-    } else if (name.equals("public")) {
-      cat.setPublick(booleanFld());
-    } else if (name.equals("word")) {
+    if (shareableEntityTags(cat, name)) {
+      return;
+    }
+
+    if (name.equals("word")) {
       cat.setWord(stringFld());
     } else if (name.equals("description")) {
       cat.setDescription(stringFld());
+    } else {
+      unknownTag(name);
     }
   }
 }
-

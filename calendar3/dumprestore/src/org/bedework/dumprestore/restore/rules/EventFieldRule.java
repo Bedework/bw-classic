@@ -72,11 +72,12 @@ public class EventFieldRule extends EntityFieldRule {
   public void field(String name) throws Exception {
     BwEvent e = (BwEvent)top();
 
-    if (name.equals("id")) {
-      e.setId(intFld());
+    if (shareableContainedEntityTags(e, name)) {
+      return;
+    }
 
     /* pre-hibernate fields */
-    } else if (name.equals("lastmod")) { // pre-hibernate
+    if (name.equals("lastmod")) { // pre-hibernate
       e.setLastmod(isoDateTimeFld());
     } else if (name.equals("created")) {  // pre-hibernate
       e.setCreated(isoDateTimeFld());
@@ -116,8 +117,6 @@ public class EventFieldRule extends EntityFieldRule {
       ((BwEventAnnotation)e).setTarget(target);
     } else if (name.equals("cost")) {
       e.setCost(stringFld());
-    } else if (name.equals("creator")) {
-      e.setCreator(userFld());
     } else if (name.equals("create-date")) {
       e.setCreated(stringFld());
     } else if (name.equals("description")) {
@@ -150,10 +149,6 @@ public class EventFieldRule extends EntityFieldRule {
       e.setLocation(locationFld());
     } else if (name.equals("organizer")) {
       e.setOrganizer(organizerFld());
-    } else if (name.equals("public")) {
-      e.setPublick(booleanFld());
-    } else if (name.equals("seq")) {
-      e.setSeq(intFld());
     } else if (name.equals("sequence")) {
       e.setSequence(intFld());
     } else if (name.equals("sponsor")) {
@@ -180,7 +175,7 @@ public class EventFieldRule extends EntityFieldRule {
     } else if (name.equals("eventCategories")) {
       // Nothing to do.
     } else {
-      warn("Unknown event field " + name);
+      unknownTag(name);
     }
   }
 }

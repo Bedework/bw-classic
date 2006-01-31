@@ -80,12 +80,6 @@ public class DumpCalendars extends Dumpling {
     taggedVal("mailListId", val.getMailListId());
     taggedVal("calendarCollection", val.getCalendarCollection());
 
-    BwCalendar p = val.getCalendar();
-
-    if (p != null) {
-      taggedVal("parent", p.getId());
-    }
-
     tagEnd(objectCalendar);
 
     Iterator children = val.getChildren().iterator();

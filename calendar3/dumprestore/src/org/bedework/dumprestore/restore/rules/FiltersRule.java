@@ -144,7 +144,7 @@ public class FiltersRule extends RestoreRule {
     cal.setCalendarCollection(true);
     ucal.addChild(cal);
 
-    globals.calendars.put(new Integer(cal.getId()), cal);
+    globals.calendarsTbl.put(new Integer(cal.getId()), cal);
 
     globals.defaultCalendars.put(new Integer(u.getId()), cal);
 

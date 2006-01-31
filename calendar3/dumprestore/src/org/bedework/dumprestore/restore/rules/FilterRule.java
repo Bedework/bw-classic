@@ -145,7 +145,7 @@ public class FilterRule extends EntityRule {
           cal.setId(globals.nextCalKey);
           globals.nextCalKey++;
 
-          globals.calendars.put(new Integer(cal.getId()), cal);
+          globals.calendarsTbl.put(new Integer(cal.getId()), cal);
 
           if (entity.getParent() != null) {
             BwCalendar parent = (BwCalendar)globals.filterToCal.get(

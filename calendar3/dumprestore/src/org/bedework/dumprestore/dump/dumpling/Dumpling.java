@@ -54,7 +54,9 @@
 package org.bedework.dumprestore.dump.dumpling;
 
 import org.bedework.calfacade.BwDateTime;
+import org.bedework.calfacade.BwGroup;
 import org.bedework.calfacade.BwPrincipal;
+import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.base.BwDbentity;
 import org.bedework.calfacade.base.BwOwnedDbentity;
 import org.bedework.calfacade.base.BwShareableContainedDbentity;
@@ -63,6 +65,7 @@ import org.bedework.dumprestore.Defs;
 import org.bedework.dumprestore.dump.DumpGlobals;
 
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -160,6 +163,26 @@ public abstract class Dumpling implements Defs {
     taggedVal("sponsor-access", val.getSponsorAccess());
   }
 
+  protected void groupTags(BwGroup val) throws Throwable {
+    principalTags(val);
+    tagStart("groupMembers");
+
+    Collection mbrs = val.getGroupMembers();
+    Iterator mbrsi = mbrs.iterator();
+
+    while (mbrsi.hasNext()) {
+      BwPrincipal pr = (BwPrincipal)mbrsi.next();
+
+      if (pr instanceof BwUser) {
+        taggedVal("groupMemberId", pr.getId());
+      } else {
+        taggedVal("groupMemberGroupId", pr.getId());
+      }
+    }
+
+    tagEnd("groupMembers");
+  }
+
   protected void shareableEntityTags(BwShareableDbentity entity) throws Throwable {
     ownedEntityTags(entity);
 
@@ -172,7 +195,6 @@ public abstract class Dumpling implements Defs {
     shareableEntityTags(entity);
 
     taggedEntityId("calendar", entity.getCalendar());
-    taggedVal("access", entity.getAccess());
   }
 
   protected void ownedEntityTags(BwOwnedDbentity entity) throws Throwable {

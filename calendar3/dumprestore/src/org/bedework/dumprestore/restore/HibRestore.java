@@ -55,6 +55,7 @@ package org.bedework.dumprestore.restore;
 
 
 import org.bedework.calcore.hibernate.HibSession;
+import org.bedework.calfacade.BwAlarm;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
@@ -66,11 +67,14 @@ import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwUserInfo;
+import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAdminGroupEntry;
 import org.bedework.calfacade.svc.BwAuthUser;
 import org.bedework.calfacade.svc.BwPreferences;
+import org.bedework.calfacade.svc.BwSubscription;
+import org.bedework.calfacade.svc.BwView;
 import org.bedework.dumprestore.BwDbLastmod;
 
 import java.sql.Connection;
@@ -285,11 +289,11 @@ public class HibRestore implements RestoreIntf {
     ps.executeUpdate();
     ps.close();
 
-    if (!globals.from2p3px) {
+    /*
       ps = conn.prepareStatement("delete from lastmods");
       ps.executeUpdate();
       ps.close();
-    }
+      */
 
     ps = conn.prepareStatement("SET REFERENTIAL_INTEGRITY TRUE");
     ps.executeUpdate();
@@ -324,11 +328,16 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreUser(org.bedework.calfacade.BwUser)
    */
   public void restoreUser(BwUser o) throws Throwable {
-    openSess();
+    try {
+      openSess();
 
-    sess.save(o, new Integer(o.getId()));
+      sess.save(o, new Integer(o.getId()));
 
-    closeSess();
+      closeSess();
+    } catch (Throwable t) {
+      log.error("Exception restoring user " + o);
+      throw t;
+    }
   }
 
   /** Restore user info
@@ -505,6 +514,34 @@ public class HibRestore implements RestoreIntf {
   public void restoreUserPrefs(BwPreferences o) throws Throwable {
     openSess();
 
+    /* Unset the subscription id - hibernate cascades cause an error
+     * We'll just have to go with a new id
+     */
+    Iterator it = o.iterateSubscriptions();
+    while (it.hasNext()) {
+      BwSubscription sub = (BwSubscription)it.next();
+      sub.setId(CalFacadeDefs.unsavedItemKey);
+
+      globals.subscriptions++;
+    }
+
+    /* Same for views */
+    it = o.iterateViews();
+    while (it.hasNext()) {
+      BwView view = (BwView)it.next();
+      view.setId(CalFacadeDefs.unsavedItemKey);
+
+      globals.views++;
+    }
+
+    sess.save(o, new Integer(o.getId()));
+
+    closeSess();
+  }
+
+  public void restoreAlarm(BwAlarm o) throws Throwable {
+    openSess();
+
     sess.save(o, new Integer(o.getId()));
 
     closeSess();
@@ -572,11 +609,44 @@ public class HibRestore implements RestoreIntf {
     closeSess();
   }
 
+  /* We cannot use hibernate to set the db id here as the save will cascade
+   * down all the children.
+   *
+   * <p>We save a skeleton copy of the calendar structure using direct jdbc
+   * calls then update the structure with hibernate.
+   */
+  public void restoreCalendar(BwCalendar o) throws Throwable {
+    openSess();
+
+    restoreCalendar(o, sess.connection());
+
+    closeSess();
+  }
+
   /* ====================================================================
    *                       Private methods
    * ==================================================================== */
 
   private void restoreCalendars(BwCalendar val, Connection conn) throws Throwable {
+    restoreCalendar(val, conn);
+
+    Collection cals = val.getChildren();
+    if (cals == null) {
+      return;
+    }
+
+    Iterator it = cals.iterator();
+
+    while (it.hasNext()) {
+      BwCalendar cal = (BwCalendar)it.next();
+
+      restoreCalendars(cal, conn);
+    }
+  }
+
+  /* Restore a single calendar. Don't restore children
+   */
+  private void restoreCalendar(BwCalendar val, Connection conn) throws Throwable {
     PreparedStatement ps = null;
 
     try {
@@ -618,19 +688,6 @@ public class HibRestore implements RestoreIntf {
       if (ps != null) {
         ps.close();
       }
-    }
-
-    Collection cals = val.getChildren();
-    if (cals == null) {
-      return;
-    }
-
-    Iterator it = cals.iterator();
-
-    while (it.hasNext()) {
-      BwCalendar cal = (BwCalendar)it.next();
-
-      restoreCalendars(cal, conn);
     }
   }
 

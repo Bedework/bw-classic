@@ -53,30 +53,32 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
-import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.BwTimeZone;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class UserFieldRule extends EntityFieldRule {
-  UserFieldRule(RestoreGlobals globals) {
+public class TimeZoneRule extends EntityRule {
+  /** Constructor
+   *
+   * @param globals
+   */
+  public TimeZoneRule(RestoreGlobals globals) {
     super(globals);
   }
 
-  public void field(String name) throws java.lang.Exception{
-    BwUser u = (BwUser)top();
+  public void end(String ns, String name) throws Exception {
+    BwTimeZone entity = (BwTimeZone)pop();
+    globals.timezones++;
 
-    if (principalTags(u, name)) {
-      return;
-    }
-
-    if (name.equals("calendarid")) {      // 2.3.2
-      // Fix it later
-      globals.subscriptionsTbl.put(u, intFld());
-    } else {
-      unknownTag(name);
+    try {
+      if (globals.rintf != null) {
+        globals.rintf.restoreTimezone(entity);
+      }
+    } catch (Throwable t) {
+      throw new Exception(t);
     }
   }
 }

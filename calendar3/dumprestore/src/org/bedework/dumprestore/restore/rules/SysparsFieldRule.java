@@ -53,28 +53,65 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
-import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class UserFieldRule extends EntityFieldRule {
-  UserFieldRule(RestoreGlobals globals) {
+public class SysparsFieldRule extends EntityFieldRule {
+  SysparsFieldRule(RestoreGlobals globals) {
     super(globals);
   }
 
-  public void field(String name) throws java.lang.Exception{
-    BwUser u = (BwUser)top();
+  public void field(String name) throws Exception {
+    BwSystem ent = (BwSystem)top();
 
-    if (principalTags(u, name)) {
+    if (taggedEntityId(ent, name)) {
       return;
     }
 
-    if (name.equals("calendarid")) {      // 2.3.2
-      // Fix it later
-      globals.subscriptionsTbl.put(u, intFld());
+    if (name.equals("name")) {
+      ent.setName(stringFld());
+    } else if (name.equals("tzid")) {
+      ent.setTzid(stringFld());
+    } else if (name.equals("systemid")) {
+      ent.setSystemid(stringFld());
+    } else if (name.equals("publicCalendarRoot")) {
+      ent.setPublicCalendarRoot(stringFld());
+    } else if (name.equals("userCalendarRoot")) {
+      ent.setUserCalendarRoot(stringFld());
+    } else if (name.equals("userDefaultCalendar")) {
+      ent.setUserDefaultCalendar(stringFld());
+    } else if (name.equals("defaultTrashCalendar")) {
+      ent.setDefaultTrashCalendar(stringFld());
+    } else if (name.equals("userInbox")) {
+      ent.setUserInbox(stringFld());
+    } else if (name.equals("userOutbox")) {
+      ent.setUserOutbox(stringFld());
+
+    } else if (name.equals("publicUser")) {
+      ent.setPublicUser(stringFld());
+
+    } else if (name.equals("directoryBrowsingDisallowed")) {
+      ent.setDirectoryBrowsingDisallowed(booleanFld());
+
+    } else if (name.equals("httpConnectionsPerUser")) {
+      ent.setHttpConnectionsPerUser(intFld());
+    } else if (name.equals("httpConnectionsPerHost")) {
+      ent.setHttpConnectionsPerHost(intFld());
+    } else if (name.equals("httpConnections")) {
+      ent.setHttpConnections(intFld());
+
+    } else if (name.equals("userauthClass")) {
+      ent.setUserauthClass(stringFld());
+    } else if (name.equals("mailerClass")) {
+      ent.setMailerClass(stringFld());
+    } else if (name.equals("admingroupsClass")) {
+      ent.setAdmingroupsClass(stringFld());
+    } else if (name.equals("usergroupsClass")) {
+      ent.setUsergroupsClass(stringFld());
     } else {
       unknownTag(name);
     }

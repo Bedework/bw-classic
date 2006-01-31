@@ -153,7 +153,7 @@ public class EventRule extends EntityRule {
           }
 
           /* Increment the end by one day to take account of current practice */
-          end = end.getNextDay(globals.timezones);
+          end = end.getNextDay(globals.getTzcache());
           entity.setDtend(end);
         } else if (!end.getDateType()) {
           // date start, date-time end --- illegal
@@ -178,7 +178,8 @@ public class EventRule extends EntityRule {
           warn("end before start for " + entity.getId() + " start = " + start +
                " end = " + end);
 
-          end.init(start.getDateType(), start.getDtval(), null, globals.timezones);
+          end.init(start.getDateType(), start.getDtval(), null,
+                   globals.getTzcache());
         }
 
         if (entity.getSummary() == null) {

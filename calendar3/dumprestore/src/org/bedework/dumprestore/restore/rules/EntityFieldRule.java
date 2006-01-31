@@ -59,8 +59,13 @@ import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwGroup;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwOrganizer;
+import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.base.BwDbentity;
+import org.bedework.calfacade.base.BwOwnedDbentity;
+import org.bedework.calfacade.base.BwShareableContainedDbentity;
+import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
@@ -84,8 +89,148 @@ public abstract class EntityFieldRule extends RestoreRule {
    */
   public abstract void field(String name) throws Exception;
 
+  protected void unknownTag(String name) throws Exception {
+    throw new Exception("Unknown tag " + name);
+  }
+
+  protected boolean principalTags(BwPrincipal entity,
+                     String name) throws Exception {
+    if (taggedEntityId(entity, name)) {
+      return true;
+    }
+
+    if (name.equals("account")) {
+      entity.setAccount(stringFld());
+      return true;
+    }
+
+    if (name.equals("created")) {
+      entity.setCreated(timestampFld());
+      return true;
+    }
+
+    if (name.equals("logon")) {
+      entity.setLogon(timestampFld());
+      return true;
+    }
+
+    if (name.equals("lastAccess")) {
+      entity.setLastAccess(timestampFld());
+      return true;
+    }
+
+    if (name.equals("lastModify")) {
+      entity.setLastModify(timestampFld());
+      return true;
+    }
+
+    if (name.equals("category-access")) {
+      entity.setCategoryAccess(stringFld());
+      return true;
+    }
+
+    if (name.equals("location-access")) {
+      entity.setLocationAccess(stringFld());
+      return true;
+    }
+
+    if (name.equals("sponsor-access")) {
+      entity.setSponsorAccess(stringFld());
+      return true;
+    }
+
+    return false;
+  }
+
+  protected boolean groupTags(BwGroup entity,
+                              String name) throws Exception {
+    if (principalTags(entity, name)) {
+      return true;
+    }
+
+    if (name.equals("groupMemberId")) {
+      entity.addGroupMember(userFld());
+      return true;
+    }
+
+    if (name.equals("groupMemberGroupId")) {
+      entity.addGroupMember(groupFld());
+      return true;
+    }
+
+
+    return false;
+  }
+
+  protected boolean shareableContainedEntityTags(BwShareableContainedDbentity entity,
+                     String name) throws Exception {
+    if (shareableEntityTags(entity, name)) {
+      return true;
+    }
+
+    if (name.equals("calendar")) {
+      entity.setCalendar(calendarFld());
+      return true;
+    }
+
+    return false;
+  }
+
+  protected boolean shareableEntityTags(BwShareableDbentity entity,
+                                        String name) throws Exception {
+    if (ownedEntityTags(entity, name)) {
+      return true;
+    }
+
+    if (name.equals("creator")) {
+      entity.setCreator(userFld());
+      return true;
+    }
+
+    if (name.equals("access")) {
+      entity.setAccess(stringFld());
+      return true;
+    }
+
+    return false;
+  }
+
+  protected boolean ownedEntityTags(BwOwnedDbentity entity,
+                                    String name) throws Exception {
+    if (taggedEntityId(entity, name)) {
+      return true;
+    }
+
+    if (name.equals("owner")) {
+      entity.setOwner(userFld());
+      return true;
+    }
+
+    if (name.equals("public")) {
+      entity.setPublick(booleanFld());
+      return true;
+    }
+
+    return false;
+  }
+
+  protected boolean taggedEntityId(BwDbentity entity,
+                                   String name) throws Exception {
+    if (name.equals("id")) {
+      entity.setId(intFld());
+      return true;
+    }
+
+    if (name.equals("seq")) {
+      entity.setSeq(intFld());
+      return true;
+    }
+
+    return false;
+  }
+
   public void body(String namespace, String name, String text)
-      throws java.lang.Exception{
+      throws Exception {
     /*
     if (globals.debug) {
       trace("Save field " + name);
@@ -106,22 +251,26 @@ public abstract class EntityFieldRule extends RestoreRule {
       throw new Exception("No value for " + tagName);
     }
 
-    /** Date should be of form yyyy-MM-dd, convert to yyyyMMdd
-     */
+    try {
+      /** Date should be of form yyyy-MM-dd, convert to yyyyMMdd
+       */
 
-    if ((fldval.length() != 10) ||
-        (fldval.charAt(4) != '-') ||
-        (fldval.charAt(7) != '-')) {
-      throw new Exception("Bad value " + fldval + " for " + tagName);
+      if ((fldval.length() != 10) ||
+          (fldval.charAt(4) != '-') ||
+          (fldval.charAt(7) != '-')) {
+        throw new Exception("Bad value " + fldval + " for " + tagName);
+      }
+
+      String dtval = fldval.substring(0, 4) + fldval.substring(5, 7) +
+      fldval.substring(8, 10);
+
+      BwDateTime dtim = new BwDateTime();
+      dtim.init(true, dtval, null, globals.getTzcache());
+
+      return dtim;
+    } catch (Throwable t) {
+      throw new Exception(t);
     }
-
-    String dtval = fldval.substring(0, 4) + fldval.substring(5, 7) +
-                   fldval.substring(8, 10);
-
-    BwDateTime dtim = new BwDateTime();
-    dtim.init(true, dtval, null, globals.timezones);
-
-    return dtim;
   }
 
   /** prehib to hib */
@@ -130,25 +279,29 @@ public abstract class EntityFieldRule extends RestoreRule {
       throw new Exception("No value for " + tagName);
     }
 
-    if (val == null) {
-      throw new Exception("No date for " + tagName);
+    try {
+      if (val == null) {
+        throw new Exception("No date for " + tagName);
+      }
+
+      /** Time should be of form hh:mm:ss, convert to Thhmmss
+       */
+
+      if ((fldval.length() != 8) ||
+          (fldval.charAt(2) != ':') ||
+          (fldval.charAt(5) != ':')) {
+        throw new Exception("Bad value " + fldval + " for " + tagName);
+      }
+
+      String tmval = "T" + fldval.substring(0, 2) + fldval.substring(3, 5) +
+      fldval.substring(6, 8);
+
+      /* XXX We need to handle timezones here as well */
+      val.init(false, val.getDtval() + tmval,
+          globals.syspars.getTzid(), globals.getTzcache());
+    } catch (Throwable t) {
+      throw new Exception(t);
     }
-
-    /** Time should be of form hh:mm:ss, convert to Thhmmss
-     */
-
-    if ((fldval.length() != 8) ||
-        (fldval.charAt(2) != ':') ||
-        (fldval.charAt(5) != ':')) {
-      throw new Exception("Bad value " + fldval + " for " + tagName);
-    }
-
-    String tmval = "T" + fldval.substring(0, 2) + fldval.substring(3, 5) +
-                   fldval.substring(6, 8);
-
-    /* XXX We need to handle timezones here as well */
-    val.init(false, val.getDtval() + tmval,
-             globals.syspars.getTzid(), globals.timezones);
   }
 
   /** Make an iso date time -- prehib to hib */
@@ -183,10 +336,14 @@ public abstract class EntityFieldRule extends RestoreRule {
       throw new Exception("No value for " + tagName);
     }
 
-    BwDateTime dtim = new BwDateTime();
-    dtim.init(false, fldval, null, globals.timezones);
+    try {
+      BwDateTime dtim = new BwDateTime();
+      dtim.init(false, fldval, null, globals.getTzcache());
 
-    return dtim;
+      return dtim;
+    } catch (Throwable t) {
+      throw new Exception(t);
+    }
   }
 
   protected BwCategory categoryFld() throws Exception {
@@ -215,7 +372,7 @@ public abstract class EntityFieldRule extends RestoreRule {
 
     int id = Integer.parseInt(fldval);
 
-    return (BwCalendar)globals.calendars.get(new Integer(id));
+    return (BwCalendar)globals.calendarsTbl.get(new Integer(id));
   }
 
   protected BwFilter filterFld() throws Exception {

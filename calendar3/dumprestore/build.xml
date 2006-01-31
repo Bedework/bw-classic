@@ -147,6 +147,7 @@
     <property file="${cal.dumprestore.properties}" />
 
     <echo file="${dumprestore.run.base}/resources/hibernate.properties">
+hibernate.query.substitutions true 'T', false 'F', yes 'Y', no 'N'
 hibernate.dialect=${org.bedework.dump.arg.hibernate.dialect}
 hibernate.connection.driver_class=${org.bedework.dump.arg.jdbcdriver}
 hibernate.connection.username=${org.bedework.dump.arg.jdbcid}
@@ -208,6 +209,7 @@ hibernate.connection.url=${org.bedework.dump.arg.jdbcurl}
     <fail if="do.abort">restore aborted by user.</fail>
 
     <echo file="${dumprestore.run.base}/resources/hibernate.properties">
+hibernate.query.substitutions true 'T', false 'F', yes 'Y', no 'N'
 hibernate.dialect=${org.bedework.restore.arg.hibernate.dialect}
 hibernate.connection.driver_class=${org.bedework.restore.arg.jdbcdriver}
 hibernate.connection.username=${org.bedework.restore.arg.jdbcid}

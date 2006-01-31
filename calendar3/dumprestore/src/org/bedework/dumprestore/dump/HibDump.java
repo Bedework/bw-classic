@@ -29,7 +29,10 @@
 package org.bedework.dumprestore.dump;
 
 import org.bedework.calcore.hibernate.HibSession;
+import org.bedework.calfacade.BwGroup;
 import org.bedework.calfacade.BwSystem;
+import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.svc.BwAdminGroup;
 
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -79,7 +82,16 @@ public class HibDump implements DumpIntf {
   }
 
   public Iterator getAdminGroups() throws Throwable {
-    return getObjects("org.bedework.calfacade.svc.BwAdminGroup");
+    sess.createQuery("from " + BwAdminGroup.class.getName());
+
+    Collection c = sess.getList();
+
+    Iterator it = c.iterator();
+    while (it.hasNext()) {
+      getMembers((BwGroup)it.next());
+    }
+
+    return c.iterator();
   }
 
   public Iterator getAlarms() throws Throwable {
@@ -98,7 +110,7 @@ public class HibDump implements DumpIntf {
     getIntSyspars();
 
     sess.createQuery("from org.bedework.calfacade.BwCalendar cal where " +
-                     "cal.path=:path1 or cal.path=:path1");
+                     "cal.path=:path1 or cal.path=:path2");
     sess.setString("path1", "/" + syspars.getPublicCalendarRoot());
     sess.setString("path2", "/" + syspars.getUserCalendarRoot());
 
@@ -161,6 +173,28 @@ public class HibDump implements DumpIntf {
     return getObjects("org.bedework.calfacade.BwDbLastmod");
   }
 
+  /** Start a (possibly long-running) transaction. In the web environment
+   * this might do nothing. The endTransaction method should in some way
+   * check version numbers to detect concurrent updates and fail with an
+   * exception.
+   *
+   * @throws Throwable
+   */
+  public void beginTransaction() throws Throwable {
+    sess.beginTransaction();
+  }
+
+  /** End a (possibly long-running) transaction. In the web environment
+   * this should in some way check version numbers to detect concurrent updates
+   * and fail with an exception.
+   *
+   * @throws Throwable
+   */
+  public void endTransaction() throws Throwable {
+    /* Just commit */
+    sess.commit();
+  }
+
   private Iterator getObjects(String className) throws Throwable {
     sess.createQuery("from " + className);
 
@@ -203,26 +237,17 @@ public class HibDump implements DumpIntf {
     }
   }
 
-  /** Start a (possibly long-running) transaction. In the web environment
-   * this might do nothing. The endTransaction method should in some way
-   * check version numbers to detect concurrent updates and fail with an
-   * exception.
-   *
-   * @throws Throwable
-   */
-  public void beginTransaction() throws Throwable {
-    sess.beginTransaction();
-  }
+  private void getMembers(BwGroup group) throws CalFacadeException {
+    sess.namedQuery("getGroupUserMembers");
+    sess.setEntity("gr", group);
 
-  /** End a (possibly long-running) transaction. In the web environment
-   * this should in some way check version numbers to detect concurrent updates
-   * and fail with an exception.
-   *
-   * @throws Throwable
-   */
-  public void endTransaction() throws Throwable {
-    /* Just commit */
-    sess.commit();
+    Collection ms = sess.getList();
+
+    sess.namedQuery("getGroupGroupMembers");
+    sess.setEntity("gr", group);
+
+    ms.addAll(sess.getList());
+
+    group.setGroupMembers(ms);
   }
 }
-

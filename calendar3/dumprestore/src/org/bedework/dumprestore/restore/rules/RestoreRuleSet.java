@@ -75,9 +75,18 @@ public class RestoreRuleSet extends RuleSetBase {
   }
 
   public void addRuleInstances(Digester d) {
+    d.addRule("caldata/syspars/system", new SysparsRule(globals));
+    d.addRule("caldata/syspars/system/*", new SysparsFieldRule(globals));
+
     UserFieldRule ufr = new UserFieldRule(globals);
     d.addRule("caldata/users/user", new UserRule(globals));
     d.addRule("caldata/users/user/*", ufr);
+
+    d.addRule("caldata/timezones/timezone", new TimeZoneRule(globals));
+    d.addRule("caldata/timezones/timezone/*", new TimeZoneFieldRule(globals));
+
+    d.addRule("caldata/calendars/calendar", new CalendarRule(globals));
+    d.addRule("caldata/calendars/calendar/*", new CalendarFieldRule(globals));
 
     d.addRule("caldata/locations/location", new LocationRule(globals));
     d.addRule("caldata/locations/location/*", new LocationFieldRule(globals));
@@ -120,6 +129,13 @@ public class RestoreRuleSet extends RuleSetBase {
     EventFieldRule efr = new EventFieldRule(globals);
     d.addRule("caldata/events/event", new EventRule(globals));
     d.addRule("caldata/events/event/*", efr);
+
+    AlarmRule alr = new AlarmRule(globals);
+    AlarmFieldRule alfr = new AlarmFieldRule(globals);
+    d.addRule("caldata/alarms/event-alarm", alr);
+    d.addRule("caldata/alarms/event-alarm/*", alfr);
+    d.addRule("caldata/alarms/todo-alarm", alr);
+    d.addRule("caldata/alarms/todo-alarm/*", alfr);
 
     FilterRule fr = new FilterRule(globals);
     d.addRule("caldata/filters/aliasFilter", fr);

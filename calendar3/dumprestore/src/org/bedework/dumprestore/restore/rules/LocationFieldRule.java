@@ -68,22 +68,18 @@ public class LocationFieldRule extends EntityFieldRule {
   public void field(String name) throws Exception {
     BwLocation l = (BwLocation)top();
 
-    if (name.equals("id")) {
-      l.setId(intFld());
-    } else if (name.equals("creator")) {
-      l.setCreator(userFld());
-    } else if (name.equals("owner")) {
-      l.setOwner(userFld());
-    } else if (name.equals("access")) {
-      l.setAccess(stringFld());
-    } else if (name.equals("public")) {
-      l.setPublick(booleanFld());
-    } else if (name.equals("address")) {
+    if (shareableEntityTags(l, name)) {
+      return;
+    }
+
+    if (name.equals("address")) {
       l.setAddress(stringFld());
     } else if (name.equals("subaddress")) {
       l.setSubaddress(stringFld());
     } else if (name.equals("link")) {
       l.setLink(stringFld());
+    } else {
+      unknownTag(name);
     }
   }
 }

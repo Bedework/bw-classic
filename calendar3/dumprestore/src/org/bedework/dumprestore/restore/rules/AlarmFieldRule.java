@@ -53,28 +53,53 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
-import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.BwAlarm;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class UserFieldRule extends EntityFieldRule {
-  UserFieldRule(RestoreGlobals globals) {
+public class AlarmFieldRule extends EntityFieldRule {
+  AlarmFieldRule(RestoreGlobals globals) {
     super(globals);
   }
 
-  public void field(String name) throws java.lang.Exception{
-    BwUser u = (BwUser)top();
+  public void field(String name) throws Exception {
+    BwAlarm ent = (BwAlarm)top();
 
-    if (principalTags(u, name)) {
+    if (ownedEntityTags(ent, name)) {
       return;
     }
 
-    if (name.equals("calendarid")) {      // 2.3.2
-      // Fix it later
-      globals.subscriptionsTbl.put(u, intFld());
+    if (name.equals("trigger-type")) {
+      ent.setAlarmType(intFld());
+    } else if (name.equals("trigger")) {
+      ent.setTrigger(stringFld());
+    } else if (name.equals("trigger-start")) {
+      ent.setTriggerStart(booleanFld());
+    } else if (name.equals("duration")) {
+      ent.setDuration(stringFld());
+    } else if (name.equals("repeat")) {
+      ent.setRepeat(intFld());
+    } else if (name.equals("attach")) {
+      ent.setAttach(stringFld());
+    } else if (name.equals("description")) {
+      ent.setDescription(stringFld());
+    } else if (name.equals("summary")) {
+      ent.setSummary(stringFld());
+    } else if (name.equals("trigger-time")) {
+      ent.setTriggerTime(intFld());
+    } else if (name.equals("previous-trigger")) {
+      ent.setPreviousTrigger(longFld());
+    } else if (name.equals("repeat-count")) {
+      ent.setRepeatCount(intFld());
+    } else if (name.equals("expired")) {
+      ent.setExpired(booleanFld());
+// XXX    } else if (name.equals("event")) {
+// XXX      ((BwEventAlarm)ent).setEvent(eventFld());
+// XXX    } else if (name.equals("todo")) {
+// XXX      ((BwTodoAlarm)ent).setTodo(todoFld());
     } else {
       unknownTag(name);
     }

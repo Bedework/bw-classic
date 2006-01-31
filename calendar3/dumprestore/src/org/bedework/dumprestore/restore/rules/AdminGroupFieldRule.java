@@ -68,7 +68,11 @@ public class AdminGroupFieldRule extends EntityFieldRule {
   public void field(String name) throws Exception {
     BwAdminGroup ag = (BwAdminGroup)top();
 
-    if (name.equals("groupname")) {
+    if (groupTags(ag, name)) {
+      return;
+    }
+
+    if (name.equals("groupname")) {    // 2.3.2
       ag.setAccount(stringFld());
     } else if (name.equals("description")) {
       ag.setDescription(stringFld());
@@ -76,10 +80,9 @@ public class AdminGroupFieldRule extends EntityFieldRule {
       ag.setGroupOwner(userFld());
     } else if (name.equals("ownerid")) {
       ag.setOwner(userFld());
-    } else if (name.equals("groupMemberId")) {
-      ag.addGroupMember(userFld());
-    } else if (name.equals("groupMemberGroupId")) {
-      ag.addGroupMember(groupFld());
+    } else if (name.equals("groupMembers")) {
+    } else {
+      unknownTag(name);
     }
   }
 }

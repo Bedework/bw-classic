@@ -137,10 +137,12 @@ public class DumpAll extends Dumpling {
     new DumpUserPrefs(globals).dumpSection(di.getPreferences());
     di.close();
 
+    /*
     info("Dumping lastmods.");
     di.open();
     new DumpDbLastmods(globals).dumpSection(di.getDbLastmods());
     di.close();
+    */
 
     tagEnd(dumpTag);
   }

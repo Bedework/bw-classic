@@ -53,6 +53,7 @@
 */
 package org.bedework.dumprestore.restore;
 
+import org.bedework.calfacade.BwAlarm;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
@@ -212,6 +213,13 @@ public interface RestoreIntf {
    */
   public void restoreUserPrefs(BwPreferences o) throws Throwable;
 
+  /** Restore alarm
+   *
+   * @param o   Object to restore with id set
+   * @throws Throwable
+   */
+  public void restoreAlarm(BwAlarm o) throws Throwable;
+
   /** Update user.
    *
    * @param user  Object to restore with id set
@@ -239,5 +247,12 @@ public interface RestoreIntf {
    * @throws Throwable
    */
   public void restoreCalendars(BwCalendar val) throws Throwable;
+
+  /** Restore a single calendar
+   *
+   * @param val
+   * @throws Throwable
+   */
+  public void restoreCalendar(BwCalendar val) throws Throwable;
 }
 

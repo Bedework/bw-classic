@@ -67,7 +67,13 @@ public class DumpAlarms extends Dumpling {
   }
 
   private void dumpAlarm(BwAlarm a) throws Throwable {
-    tagStart(objectAlarm);
+    boolean eventAlarm = a instanceof BwEventAlarm;
+
+    if (eventAlarm) {
+      tagStart(objectEventAlarm);
+    } else {
+      tagStart(objectTodoAlarm);
+    }
 
     ownedEntityTags(a);
     taggedVal("trigger-type", a.getAlarmType());
@@ -83,15 +89,15 @@ public class DumpAlarms extends Dumpling {
     taggedVal("repeat-count", a.getRepeatCount());
     taggedVal("expired", a.getExpired());
 
-    if (a instanceof BwEventAlarm) {
+    if (eventAlarm) {
       taggedEntityId("event", ((BwEventAlarm)a).getEvent());
-    }
 
-    if (a instanceof BwTodoAlarm) {
+      tagEnd(objectEventAlarm);
+    } else {
       taggedEntityId("todo", ((BwTodoAlarm)a).getTodo());
-    }
 
-    tagEnd(objectAlarm);
+      tagEnd(objectTodoAlarm);
+    }
 
     globals.valarms++;
   }

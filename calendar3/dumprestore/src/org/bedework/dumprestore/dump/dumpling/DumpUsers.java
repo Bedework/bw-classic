@@ -72,4 +72,3 @@ public class DumpUsers extends Dumpling {
     globals.users++;
   }
 }
-

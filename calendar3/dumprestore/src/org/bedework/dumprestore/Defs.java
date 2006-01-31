@@ -164,7 +164,9 @@ public interface Defs {
   /** */
   public static final String objectAttendee = "attendee";
   /** */
-  public static final String objectAlarm = "alarm";
+  public static final String objectEventAlarm = "event-alarm";
+  /** */
+  public static final String objectTodoAlarm = "todo-alarm";
   /** */
   public static final String objectKeyword = "keyword"; // v2.3.2
   /** */

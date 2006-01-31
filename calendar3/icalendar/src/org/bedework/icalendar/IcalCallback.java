@@ -126,7 +126,7 @@ public interface IcalCallback extends Serializable {
    */
   public URIgen getURIgen() throws CalFacadeException;
 
-  /** Get the timezones cache object
+  /** Get the tzproc cache object
    *
    * @return CalTimezones object
    * @throws CalFacadeException if not admin

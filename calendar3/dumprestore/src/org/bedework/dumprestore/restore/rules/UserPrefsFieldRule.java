@@ -70,11 +70,11 @@ public class UserPrefsFieldRule extends EntityFieldRule {
   public void field(String name) throws java.lang.Exception{
     BwPreferences p = (BwPreferences)top();
 
-    if (name.equals("id")) {
-      p.setId(intFld());
-    } else if (name.equals("owner")) {
-      p.setOwner(userFld());
-    } else if (name.equals("email")) {
+    if (ownedEntityTags(p, name)) {
+      return;
+    }
+
+    if (name.equals("email")) {
       p.setEmail(stringFld());
     } else if (name.equals("default-calendar")) {
       p.setDefaultCalendar(calendarFld());
@@ -107,7 +107,7 @@ public class UserPrefsFieldRule extends EntityFieldRule {
     } else if (name.equals("sub-name")) {
       globals.curSub.setName(stringFld());
     } else if (name.equals("sub-owner")) {
-      if (p.getId() != intFld()) {
+      if (p.getOwner().getId() != intFld()) {
         error("Subscription owners don't match for " + globals.curSub);
         error("  Found owner id " + intFld() + " expected " + p);
       }

@@ -32,9 +32,6 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.dumprestore.dump.DumpGlobals;
 
-
-
-import java.util.Collection;
 import java.util.Iterator;
 
 /** Helper classes for the calendar data dump utility.
@@ -69,7 +66,6 @@ public class DumpAdminGroups extends Dumpling {
   private void dumpAdminGroup(BwAdminGroup ag) throws Throwable {
     tagStart(objectAdminGroup);
 
-    taggedVal("groupname", ag.getAccount());
     taggedVal("description", ag.getDescription());
 
     BwUser u = ag.getGroupOwner();
@@ -84,18 +80,8 @@ public class DumpAdminGroups extends Dumpling {
       taggedVal("ownerid", u.getId());
     }
 
-    tagStart("groupMembers");
+    groupTags(ag);
 
-    Collection mbrs = ag.getGroupMembers();
-    Iterator mbrsi = mbrs.iterator();
-
-    while (mbrsi.hasNext()) {
-      u = (BwUser)mbrsi.next();
-
-      taggedVal("groupMemberId", u.getId());
-    }
-
-    tagEnd("groupMembers");
     tagEnd(objectAdminGroup);
 
     globals.adminGroups++;

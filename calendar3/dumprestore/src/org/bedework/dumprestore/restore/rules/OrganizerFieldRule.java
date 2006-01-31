@@ -68,9 +68,11 @@ public class OrganizerFieldRule extends EntityFieldRule {
   public void field(String name) throws Exception {
     BwOrganizer ent = (BwOrganizer)top();
 
-    if (name.equals("orgid")) {
-      ent.setId(intFld());
-    } else if (name.equals("cn")) {
+    if (taggedEntityId(ent, name)) {
+      return;
+    }
+
+    if (name.equals("cn")) {
       ent.setCn(stringFld());
     } else if (name.equals("dir")) {
       ent.setDir(stringFld());
@@ -82,6 +84,8 @@ public class OrganizerFieldRule extends EntityFieldRule {
       ent.setOrganizerUri(stringFld());
     } else if (name.equals("orgseq")) {
       ent.setSeq(intFld());
+    } else {
+      unknownTag(name);
     }
   }
 }

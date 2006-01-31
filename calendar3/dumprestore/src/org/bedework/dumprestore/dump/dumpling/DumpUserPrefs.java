@@ -68,8 +68,7 @@ public class DumpUserPrefs extends Dumpling {
   private void dumpUserPrefs(BwPreferences p) throws Throwable {
     tagStart(objectUserPrefs);
 
-    taggedVal("id", p.getId());
-    taggedVal("owner", p.getOwner());
+    ownedEntityTags(p);
 
     Collection s = p.getSubscriptions();
 

@@ -359,9 +359,9 @@ public class BwSubscription extends BwOwnedDbentity {
     StringBuffer sb = new StringBuffer("BwSubscription(");
 
     toStringSegment(sb);
-    sb.append("name=");
+    sb.append(", name=");
     sb.append(String.valueOf(getName()));
-    sb.append("uri=");
+    sb.append(", uri=");
     sb.append(String.valueOf(getUri()));
     sb.append(")");
 

@@ -53,28 +53,37 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
-import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class UserFieldRule extends EntityFieldRule {
-  UserFieldRule(RestoreGlobals globals) {
+public class CalendarFieldRule extends EntityFieldRule {
+  CalendarFieldRule(RestoreGlobals globals) {
     super(globals);
   }
 
-  public void field(String name) throws java.lang.Exception{
-    BwUser u = (BwUser)top();
+  public void field(String name) throws Exception {
+    BwCalendar ent = (BwCalendar)top();
 
-    if (principalTags(u, name)) {
+    if (shareableContainedEntityTags(ent, name)) {
       return;
     }
 
-    if (name.equals("calendarid")) {      // 2.3.2
-      // Fix it later
-      globals.subscriptionsTbl.put(u, intFld());
+    if (name.equals("name")) {
+      ent.setName(stringFld());
+    } else if (name.equals("path")) {
+      ent.setPath(stringFld());
+    } else if (name.equals("summary")) {
+      ent.setSummary(stringFld());
+    } else if (name.equals("description")) {
+      ent.setDescription(stringFld());
+    } else if (name.equals("mailListId")) {
+      ent.setDescription(stringFld());
+    } else if (name.equals("calendarCollection")) {
+      ent.setCalendarCollection(booleanFld());
     } else {
       unknownTag(name);
     }
