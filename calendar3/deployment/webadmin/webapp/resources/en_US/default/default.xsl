@@ -576,6 +576,8 @@
         </tr>
 
         <!--  Category  -->
+        <!-- Hide this field for now: we will probably use it in a very different
+             way now that true calendars are implemented.
         <tr>
           <td class="fieldName">
             Category**:
@@ -597,7 +599,7 @@
               <xsl:copy-of select="/bedeworkadmin/formElements/form/category/all/select/*"/>
             </select>
           </td>
-        </tr>
+        </tr> -->
 
         <!--  Description  -->
         <tr>
