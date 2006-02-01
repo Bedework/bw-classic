@@ -417,13 +417,7 @@
     <xsl:variable name="modEventAction" select="/bedeworkadmin/formElements/form/@action"/>
     <form  name="peForm" method="post" action="{$modEventAction}">
       <table class="eventFormTable">
-        <xsl:variable name="titleClass">
-          <xsl:choose>
-            <xsl:when test="/bedeworkadmin/error[id='org.bedework.validation.error.notitle']">validationError</xsl:when>
-            <xsl:otherwise>normal</xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <tr class="{$titleClass}">
+        <tr>
           <td class="fieldName">
             Title:
           </td>
@@ -431,7 +425,6 @@
             <xsl:copy-of select="/bedeworkadmin/formElements/form/title/*"/>
           </td>
         </tr>
-
         <tr>
           <td class="fieldName">
             Calendar**:
@@ -1406,7 +1399,7 @@
         <tr>
           <th>Description:</th>
           <td>
-            <textarea name="calendar.description" width="60" height="20">
+            <textarea name="calendar.description" cols="40" rows="4">
               <xsl:value-of select="desc"/>
             </textarea>
           </td>
