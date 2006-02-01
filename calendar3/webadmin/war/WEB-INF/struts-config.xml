@@ -416,7 +416,7 @@
                name="peForm"
                scope="session"
                validate="false">
-      <forward name="success" path="/docs/syspars/syspars.jsp"/>
+      <forward name="success" path="/docs/system/modSyspars.jsp"/>
     </action>
 
     <action    path="/syspars/fetch"
