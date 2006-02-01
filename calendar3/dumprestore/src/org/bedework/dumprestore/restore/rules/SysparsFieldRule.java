@@ -72,39 +72,52 @@ public class SysparsFieldRule extends EntityFieldRule {
       return;
     }
 
+    /* Any values set in syspars take precedence */
+
     if (name.equals("name")) {
-      ent.setName(stringFld());
+      ent.setName(parval(globals.syspars.getName(), stringFld()));
     } else if (name.equals("tzid")) {
-      ent.setTzid(stringFld());
+      ent.setTzid(parval(globals.syspars.getTzid(), stringFld()));
     } else if (name.equals("systemid")) {
-      ent.setSystemid(stringFld());
+       ent.setSystemid(parval(globals.syspars.getSystemid(), stringFld()));
     } else if (name.equals("publicCalendarRoot")) {
-      ent.setPublicCalendarRoot(stringFld());
+      ent.setPublicCalendarRoot(parval(globals.syspars.getPublicCalendarRoot(),
+                                       stringFld()));
     } else if (name.equals("userCalendarRoot")) {
-      ent.setUserCalendarRoot(stringFld());
+      ent.setUserCalendarRoot(parval(globals.syspars.getUserCalendarRoot(), stringFld()));
     } else if (name.equals("userDefaultCalendar")) {
-      ent.setUserDefaultCalendar(stringFld());
+      ent.setUserDefaultCalendar(parval(globals.syspars.getUserDefaultCalendar(), stringFld()));
     } else if (name.equals("defaultTrashCalendar")) {
-      ent.setDefaultTrashCalendar(stringFld());
+      ent.setDefaultTrashCalendar(parval(globals.syspars.getDefaultTrashCalendar(), stringFld()));
     } else if (name.equals("userInbox")) {
-      ent.setUserInbox(stringFld());
+      ent.setUserInbox(parval(globals.syspars.getUserInbox(), stringFld()));
     } else if (name.equals("userOutbox")) {
-      ent.setUserOutbox(stringFld());
+      ent.setUserOutbox(parval(globals.syspars.getUserOutbox(), stringFld()));
     } else if (name.equals("defaultUserViewName")) {
-      ent.setDefaultUserViewName(stringFld());
+      ent.setDefaultUserViewName(parval(globals.syspars.getDefaultUserViewName(), stringFld()));
 
     } else if (name.equals("publicUser")) {
-      ent.setPublicUser(stringFld());
+      ent.setPublicUser(parval(globals.syspars.getPublicUser(), stringFld()));
 
     } else if (name.equals("directoryBrowsingDisallowed")) {
-      ent.setDirectoryBrowsingDisallowed(booleanFld());
+      if (globals.sysparsSetDefaultUserQuota) {
+        ent.setDirectoryBrowsingDisallowed(globals.syspars.getDirectoryBrowsingDisallowed());
+      } else {
+        ent.setDirectoryBrowsingDisallowed(booleanFld());
+      }
 
     } else if (name.equals("httpConnectionsPerUser")) {
-      ent.setHttpConnectionsPerUser(intFld());
+      ent.setHttpConnectionsPerUser(parval(globals.syspars.getHttpConnectionsPerUser(),
+                                           globals.sysparsSetHttpConnectionsPerUser,
+                                           intFld()));
     } else if (name.equals("httpConnectionsPerHost")) {
-      ent.setHttpConnectionsPerHost(intFld());
+      ent.setHttpConnectionsPerHost(parval(globals.syspars.getHttpConnectionsPerHost(),
+                                           globals.sysparsSetHttpConnectionsPerHost,
+                                           intFld()));
     } else if (name.equals("httpConnections")) {
-      ent.setHttpConnections(intFld());
+      ent.setHttpConnections(parval(globals.syspars.getHttpConnections(),
+                                    globals.sysparsSetHttpConnections,
+                                    intFld()));
 
     } else if (name.equals("maxPublicDescriptionLength")) {
       ent.setMaxPublicDescriptionLength(intFld());
@@ -113,18 +126,38 @@ public class SysparsFieldRule extends EntityFieldRule {
     } else if (name.equals("maxUserEntitySize")) {
       ent.setMaxUserEntitySize(intFld());
     } else if (name.equals("defaultUserQuota")) {
-      ent.setDefaultUserQuota(longFld());
+      if (globals.sysparsSetDefaultUserQuota) {
+        ent.setDefaultUserQuota(globals.syspars.getDefaultUserQuota());
+      } else {
+        ent.setDefaultUserQuota(longFld());
+      }
 
     } else if (name.equals("userauthClass")) {
-      ent.setUserauthClass(stringFld());
+      ent.setUserauthClass(parval(globals.syspars.getUserauthClass(), stringFld()));
     } else if (name.equals("mailerClass")) {
-      ent.setMailerClass(stringFld());
+      ent.setMailerClass(parval(globals.syspars.getMailerClass(), stringFld()));
     } else if (name.equals("admingroupsClass")) {
-      ent.setAdmingroupsClass(stringFld());
+      ent.setAdmingroupsClass(parval(globals.syspars.getAdmingroupsClass(), stringFld()));
     } else if (name.equals("usergroupsClass")) {
-      ent.setUsergroupsClass(stringFld());
+      ent.setUsergroupsClass(parval(globals.syspars.getUsergroupsClass(), stringFld()));
     } else {
       unknownTag(name);
     }
+  }
+
+  private int parval(int sysparVal, boolean isSet, int val) {
+    if (isSet) {
+      return sysparVal;
+    }
+
+    return val;
+  }
+
+  private String parval(String sysparVal, String val) {
+    if (sysparVal != null) {
+      return sysparVal;
+    }
+
+    return val;
   }
 }

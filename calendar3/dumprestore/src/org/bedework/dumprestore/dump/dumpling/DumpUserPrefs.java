@@ -93,7 +93,7 @@ public class DumpUserPrefs extends Dumpling {
         taggedVal("sub-internalSubscription", sub.getInternalSubscription());
         taggedVal("sub-emailNotifications", sub.getEmailNotifications());
         taggedVal("sub-calendarDeleted", sub.getCalendarDeleted());
-        taggedVal("sub-unremoveable=", sub.getUnremoveable());
+        taggedVal("sub-unremoveable", sub.getUnremoveable());
 
         tagEnd("subscription");
         globals.subscriptions++;

@@ -115,6 +115,17 @@ public class RestoreGlobals {
   /** System parameters object */
   public BwSystem syspars = new BwSystem();
 
+  /** Show syspars.setDirectoryBrowsingDisallowed was set */
+  public boolean sysparsSetDirectoryBrowsingDisallowed;
+  /** show syspars.setHttpConnectionsPerUser was set */
+  public boolean sysparsSetHttpConnectionsPerUser;
+  /** show syspars.setHttpConnectionsPerHost was set */
+  public boolean sysparsSetHttpConnectionsPerHost;
+  /** show syspars.setHttpConnections was set */
+  public boolean sysparsSetHttpConnections;
+  /** show syspars.setDefaultUserQuota was set */
+  public boolean sysparsSetDefaultUserQuota;
+
   /* Used when processing timezones */
   private CalTimezones tzcache;
 
@@ -543,6 +554,8 @@ public class RestoreGlobals {
 
   /** for 2.3.2 */
   public HashMap defaultCalendars = new HashMap();
+  /** for 2.3.2 */
+  public HashMap trashCalendars = new HashMap();
 
   /** */
   public HashMap calendarsTbl = new HashMap();
@@ -617,7 +630,8 @@ public class RestoreGlobals {
     tzcache = new TimezonesImpl(debug, getPublicUser(), rintf);
     tzcache.setDefaultTimeZoneId(syspars.getTzid());
 
-    if (timezonesFilename != null) {
+    if (from2p3px && (timezonesFilename != null)) {
+      // Populate from a file
       TimeZonesParser tzp = new TimeZonesParser(
              new FileInputStream(timezonesFilename),
              debug);
@@ -629,6 +643,7 @@ public class RestoreGlobals {
         TimeZonesParser.TimeZoneInfo tzi = (TimeZonesParser.TimeZoneInfo)it.next();
 
         tzcache.saveTimeZone(tzi.tzid, tzi.timezone);
+        timezones++;
       }
     }
 

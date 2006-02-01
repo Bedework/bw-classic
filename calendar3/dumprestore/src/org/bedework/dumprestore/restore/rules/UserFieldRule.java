@@ -76,7 +76,8 @@ public class UserFieldRule extends EntityFieldRule {
       u.setInstanceOwner(booleanFld());
     } else if (name.equals("quota")) {
         u.setQuota(longFld());
-    } else if (name.equals("calendarid")) {      // 2.3.2
+    } else if (name.equals("subscriptions")) {   // XXX 2.3.2
+    } else if (name.equals("calendarid")) {      // XXX 2.3.2
       // Fix it later
       globals.subscriptionsTbl.put(u, intFld());
     } else {

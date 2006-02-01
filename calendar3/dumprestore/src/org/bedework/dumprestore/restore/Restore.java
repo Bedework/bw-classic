@@ -129,6 +129,9 @@ public class Restore implements Defs {
       // System prefs are set up by run time pars
 
       globals.rintf.restoreSyspars(globals.syspars);
+
+      // Ensure timezones get saved
+      globals.getTzcache();
     }
   }
 
@@ -177,11 +180,11 @@ public class Restore implements Defs {
 
     while (it.hasNext()) {
       BwUser o = (BwUser)it.next();
-      BwPreferences p = new BwPreferences();
+      BwPreferences prefs = new BwPreferences();
 
-      p.setId(nextId);
+      prefs.setId(nextId);
       nextId++;
-      p.setOwner(o);
+      prefs.setOwner(o);
 
       if (globals.publicUser.equals(o)) {
         /* Subscribe to all top level collections
@@ -191,18 +194,36 @@ public class Restore implements Defs {
         Iterator calit = root.iterateChildren();
         while (calit.hasNext()) {
           BwCalendar cal = (BwCalendar)calit.next();
-          addSubscription(p, globals.publicUser, cal, true);
+          addSubscription(prefs, globals.publicUser, cal, true);
         }
       } else {
         BwCalendar cal = (BwCalendar)globals.defaultCalendars.get(
             new Integer(o.getId()));
-        p.setDefaultCalendar(cal);
+        prefs.setDefaultCalendar(cal);
 
         // Add default subscription for default calendar.
+        BwSubscription defSub = BwSubscription.makeSubscription(cal,
+                                              cal.getName(), true, true, false);
+        defSub.setOwner(o);
+        prefs.addSubscription(defSub);
+
+        // Add default subscription for trash calendar.
+
+        cal = (BwCalendar)globals.trashCalendars.get(new Integer(o.getId()));
         BwSubscription sub = BwSubscription.makeSubscription(cal, cal.getName(),
-                                                             true, true, false);
+                                                             false, false, false);
         sub.setOwner(o);
-        p.addSubscription(sub);
+        prefs.addSubscription(sub);
+
+        // Add a default view for the default calendar subscription
+
+        curView = new BwView();
+
+        curView.setName(globals.syspars.getDefaultUserViewName());
+        curView.addSubscription(defSub);
+        curView.setOwner(o);
+
+        prefs.addView(curView);
 
         Collection s = globals.subscriptionsTbl.getCalendarids(o);
 
@@ -218,13 +239,13 @@ public class Restore implements Defs {
             Integer calid = (Integer)subit.next();
 
             cal = (BwCalendar)globals.filterToCal.get(calid);
-            addSubscription(p, o, cal, true);
+            addSubscription(prefs, o, cal, true);
           }
         }
       }
 
       if (globals.rintf != null) {
-        globals.rintf.restoreUserPrefs(p);
+        globals.rintf.restoreUserPrefs(prefs);
       }
     }
   }
@@ -344,20 +365,25 @@ public class Restore implements Defs {
       } else if (argpar("-dirbrowsing-disallowed", args, i)) {
         i++;
         globals.syspars.setDirectoryBrowsingDisallowed("true".equals(args[i]));
+        globals.sysparsSetDirectoryBrowsingDisallowed = true;
 
       } else if (argpar("-httpconnsperuser", args, i)) {
         i++;
         globals.syspars.setHttpConnectionsPerUser(intPar(args[i]));
+        globals.sysparsSetHttpConnectionsPerUser = true;
       } else if (argpar("-httpconnsperhost", args, i)) {
         i++;
         globals.syspars.setHttpConnectionsPerHost(intPar(args[i]));
+        globals.sysparsSetHttpConnectionsPerHost = true;
       } else if (argpar("-httpconns", args, i)) {
         i++;
         globals.syspars.setHttpConnections(intPar(args[i]));
+        globals.sysparsSetHttpConnections = true;
 
       } else if (argpar("-defuquota", args, i)) {
         i++;
         globals.syspars.setDefaultUserQuota(longPar(args[i]));
+        globals.sysparsSetDefaultUserQuota = true;
 
       } else if (argpar("-userauthClass", args, i)) {
         i++;

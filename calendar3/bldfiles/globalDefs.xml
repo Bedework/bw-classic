@@ -28,6 +28,10 @@
     <!-- comment out to disable build of caldav components.-->
     <property name="org.bedework.build.caldav" value="yes" />
 
+    <!-- First try to load properties from user dump/restore overrides -->
+    <property name="org.bedework.dumprestore.properties.file"
+              location="${user.home}/bedework.dumprestore.properties"/>
+
     <!-- Overriding this when invoking ant allows different user property
          files to be included e.g.
             ant -Dorg.bedework.user.build.properties=/home/me/bedework.properties ...
@@ -38,9 +42,12 @@
     <echo message="Load user properties from ${org.bedework.user.build.properties}" />
 
     <!-- Load user property definition overrides -->
+    <property file="${org.bedework.dumprestore.properties.file}"/>
     <property file="${org.bedework.user.build.properties}" />
-    <property file="${calendar.dir}/local.build.properties"/>
     <property file="${calendar.dir}/build.properties"/>
+
+    <!-- Name of the configuration property file -->
+    <property name="org.bedework.clone.default" value="democal" />
 
     <!-- ===============================================================
               Properties derived from calendar.dir
@@ -173,9 +180,6 @@
     <fileset id="base.resource.files" refid="empty.fileset" />
 
     <property file="${org.bedework.defjars}"/>
-
-    <!-- Name of the applications property file -->
-    <property name="org.bedework.clone.default" value="democal" />
 
     <!-- Define where test suite finds resources -->
     <property name="uwcal.test.env.properties.root"

@@ -123,6 +123,7 @@
       <pathelement location="${org.bedework.calcore.jar}"/>
       <pathelement location="${org.bedework.access.jar}"/>
       <pathelement location="${org.bedework.appcommon.jar}"/>
+      <pathelement location="${org.bedework.ical.jar}"/>
     </path>
 
     <!-- ==================== Build Target ============================= -->
@@ -134,17 +135,6 @@
 
   <target name="dumpdb" depends="init"
           description="Run bedework db dump app">
-    <!-- First try to load properties from user overrides -->
-    <property name="org.bedework.dumprestore.properties.file"
-              location="${user.home}/bedework.dumprestore.properties"/>
-    <property file="${org.bedework.dumprestore.properties.file}"/>
-
-    <!-- Load the properties from the properties directory -->
-    <property name="cal.dumprestore.properties"
-              location="${org.bedework.dumprestore.base}/properties/dumprestore.properties"/>
-    <echo message="Using db properties in ${cal.dumprestore.properties}" />
-
-    <property file="${cal.dumprestore.properties}" />
 
     <echo file="${dumprestore.run.base}/resources/hibernate.properties">
 hibernate.query.substitutions true 'T', false 'F', yes 'Y', no 'N'
@@ -177,19 +167,7 @@ hibernate.connection.url=${org.bedework.dump.arg.jdbcurl}
   </target>
 
   <target name="restoredb" depends="init"
-          description="Run UW calendar db restore app">
-    <!-- First try to load properties from user overrides -->
-    <property name="org.bedework.dumprestore.properties.file"
-              location="${user.home}/bedework.dumprestore.properties"/>
-    <property file="${org.bedework.dumprestore.properties.file}"/>
-
-    <!-- Load the properties from the properties directory -->
-    <property name="cal.dumprestore.properties"
-              location="${org.bedework.dumprestore.base}/properties/dumprestore.properties"/>
-    <echo message="Using db properties in ${cal.dumprestore.properties}" />
-
-    <property file="${cal.dumprestore.properties}" />
-
+          description="Run Bedework db restore app">
     <echo message="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" />
     <echo message="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" />
     <echo message="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" />
@@ -245,39 +223,48 @@ hibernate.jdbc.batch_size=0
       <arg line="${org.bedework.restore.arg.timezones}" />
 
       <arg value="-sysname" />
-      <arg value="${org.bedework.restore.arg.sysname}" />
+      <arg value="${org.bedework.global.system.name}" />
       <arg value="-tzid" />
-      <arg value="${org.bedework.restore.arg.tzid}" />
+      <arg value="${org.bedework.syspar.tzid}" />
       <arg value="-sysid" />
-      <arg value="${org.bedework.restore.arg.sysid}" />
+      <arg value="${org.bedework.syspar.systemid}" />
 
       <arg value="-publiccalroot" />
-      <arg value="${org.bedework.env.public.calroot}" />
+      <arg value="${org.bedework.syspar.public.calroot}" />
       <arg value="-usercalroot" />
-      <arg value="${org.bedework.env.user.calroot}" />
+      <arg value="${org.bedework.syspar.user.calroot}" />
       <arg value="-defusercal" />
-      <arg value="${org.bedework.env.default.user.calendar}" />
+      <arg value="${org.bedework.syspar.default.user.calendar}" />
       <arg value="-deftrashcal" />
-      <arg value="${org.bedework.env.default.trash.calendar}" />
+      <arg value="${org.bedework.syspar.default.trash.calendar}" />
       <arg value="-definbox" />
-      <arg value="${org.bedework.env.default.user.inbox}" />
+      <arg value="${org.bedework.syspar.default.user.inbox}" />
       <arg value="-defoutbox" />
-      <arg value="${org.bedework.env.default.user.outbox}" />
+      <arg value="${org.bedework.syspar.default.user.outbox}" />
       <arg value="-defuview" />
-      <arg line="${org.bedework.env.default.user.view}" />
+      <arg line="${org.bedework.syspar.default.user.view}" />
 
-      <arg line="${org.bedework.restore.arg.public.user}" />
+      <arg value="-pu" />
+      <arg value="${org.bedework.syspar.public.user}" />
 
-      <arg line="${org.bedework.restore.arg.dirbrowsing.disallowed}" />
+      <arg value="-dirbrowsing-disallowed" />
+      <arg value="${org.bedework.syspar.dirbrowsing.disallowed}" />
 
-      <arg line="${org.bedework.restore.arg.httpconns.peruser}" />
-      <arg line="${org.bedework.restore.arg.httpconns.perhost}" />
-      <arg line="${org.bedework.restore.arg.httpconns}" />
+      <arg value="-httpconnsperuser" />
+      <arg value="${org.bedework.syspar.http.connections.peruser}" />
+      <arg value="-httpconnsperhost" />
+      <arg value="${org.bedework.syspar.http.connections.perhost}" />
+      <arg value="-httpconns" />
+      <arg value="${org.bedework.syspar.http.connections}" />
 
-      <arg line="${org.bedework.restore.arg.userauthClass}" />
-      <arg line="${org.bedework.restore.arg.mailerClass}" />
-      <arg line="${org.bedework.restore.arg.admingroupsClass}" />
-      <arg line="${org.bedework.restore.arg.usergroupsClass}" />
+      <arg value="-userauthClass" />
+      <arg value="${org.bedework.syspar.userauthclass}" />
+      <arg value="-mailerClass" />
+      <arg value="${org.bedework.syspar.mailerclass}" />
+      <arg value="-admingroupsClass" />
+      <arg value="${org.bedework.syspar.admingroupsclass}" />
+      <arg value="-usergroupsClass" />
+      <arg value="${org.bedework.syspar.usergroupsclass}" />
       <!--
       <jvmarg value="-Xrunyjpagent:cpu=times,onexit=cpu" />
       -->

@@ -71,6 +71,7 @@ public class SysparsRule extends EntityRule {
 
   public void end(String ns, String name) throws Exception {
     BwSystem entity = (BwSystem)pop();
+    globals.syspars = entity;
 
     try {
       if (globals.rintf != null) {

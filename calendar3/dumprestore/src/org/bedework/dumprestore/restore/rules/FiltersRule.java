@@ -103,6 +103,7 @@ public class FiltersRule extends RestoreRule {
       userRootCal.setPath("/" + globals.syspars.getUserCalendarRoot());
       userRootCal.setCreator(globals.getPublicUser());
       userRootCal.setOwner(globals.getPublicUser());
+      userRootCal.setAccess(globals.getDefaultPersonalAccess());
       if (globals.rintf != null) {
         globals.rintf.restoreCalendars(userRootCal);
       }
@@ -159,6 +160,8 @@ public class FiltersRule extends RestoreRule {
     cal.setCalendar(ucal);
     cal.setCalendarCollection(true);
     ucal.addChild(cal);
+
+    globals.trashCalendars.put(new Integer(u.getId()), cal);
 
     /* Add the inbox */
     cal = new BwCalendar();

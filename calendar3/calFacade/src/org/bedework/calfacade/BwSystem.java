@@ -591,6 +591,6 @@ public class BwSystem extends BwDbentity implements Comparator {
     clone.setAdmingroupsClass(getAdmingroupsClass());
     clone.setUsergroupsClass(getUsergroupsClass());
 
-    return clone();
+    return clone;
   }
 }

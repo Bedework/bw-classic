@@ -33,10 +33,10 @@
     <!-- set this for the war builds -->
     <dirname property="app.root.dir" file="${ant.file}"/>
 
+    <!-- ==================== config properties =========================
     <property name="org.bedework.config.properties"
               location="${org.bedework.config.base}/configs/${org.bedework.clone.name}.properties" />
 
-    <!-- ==================== config properties ========================= -->
     <echo message="==========================================================" />
     <echo message="Use clone properties ${org.bedework.config.properties}" />
     <loadproperties
@@ -45,6 +45,7 @@
         <expandproperties/>
       </filterchain>
     </loadproperties>
+    -->
   </target>
 
   <target name="build.configured" depends="init" >

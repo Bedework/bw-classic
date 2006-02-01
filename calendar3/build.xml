@@ -29,7 +29,7 @@
      Authors: Mike Douglass   douglm@rpi.edu
 -->
 
-<project name="uwcal" default="bld.all">
+<project name="bedework" default="bld.all">
   <!-- ==================== Basic property Definitions =================
       Each of the following properties are used in the build script.
       Values for these properties are set by the first place they are
@@ -59,6 +59,19 @@
        ================================================================= -->
 
   <target name="init" depends="globalDefs">
+    <!-- ==================== config properties ========================= -->
+    <property name="org.bedework.clone.name" value="${org.bedework.clone.default}" />
+    <property name="org.bedework.config.properties"
+              location="${org.bedework.config.base}/configs/${org.bedework.clone.name}.properties" />
+
+    <echo message="==========================================================" />
+    <echo message="Use config properties ${org.bedework.config.properties}" />
+    <loadproperties
+          srcFile="${org.bedework.config.properties}" >
+      <filterchain>
+        <expandproperties/>
+      </filterchain>
+    </loadproperties>
   </target>
 
   <!-- =================================================================
@@ -121,7 +134,7 @@
      After restarting the servlet container, you can then test bedework.
 
      To build a version for your site you should probably copy and modify the
-                  appsuite/clones/democal.properties
+                  config/configs/democal.properties
      file and change the value of org.bedework.clone.name to the name of your
      new clone.
 
@@ -133,7 +146,6 @@
           description="Deploy applications to servlet container" >
     <ant antfile="${org.bedework.deployment.base}/build.xml" inheritrefs="true"
            target="deploy"  >
-      <property name="org.bedework.clone.name" value="${org.bedework.clone.default}" />
       <property name="app.debug.val" value="9" />
     </ant>
   </target>
@@ -155,7 +167,6 @@
           description="Build configured applications" >
     <ant antfile="${org.bedework.deployment.base}/build.xml" inheritrefs="true"
            target="build.configured" >
-      <property name="org.bedework.clone.name" value="${org.bedework.clone.default}" />
       <property name="app.debug.val" value="9" />
     </ant>
   </target>

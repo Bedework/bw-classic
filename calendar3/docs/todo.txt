@@ -1,11 +1,11 @@
 Todo
 
 --------------------------------------------------------------------------------
-maxDescriptionLength out of BwEvent - into syspars?
+MAKE DEFAULT LOCALE=default
 --------------------------------------------------------------------------------
-Unremovable subscriptions
 --------------------------------------------------------------------------------
-Personal users need default subscriptions and views
+Unremovable subscriptions - add to webadmin
+--------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 Web-client - ensure no unexpected data modifications.
 --------------------------------------------------------------------------------

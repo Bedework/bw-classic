@@ -53,8 +53,14 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.ComponentList;
+import net.fortuna.ical4j.model.component.VTimeZone;
+
 import org.bedework.calfacade.BwTimeZone;
+import org.bedework.calfacade.CalFacadeException;
 import org.bedework.dumprestore.restore.RestoreGlobals;
+import org.bedework.icalendar.IcalTranslator;
 
 /**
  * @author Mike Douglass   douglm@rpi.edu
@@ -73,10 +79,23 @@ public class TimeZoneRule extends EntityRule {
     BwTimeZone entity = (BwTimeZone)pop();
     globals.timezones++;
 
+    Calendar ical = IcalTranslator.getCalendar(entity.getVtimezone());
+    ComponentList cl = ical.getComponents();
+
+    if (cl.size() != 1) {
+      throw new CalFacadeException(CalFacadeException.timezonesReadError,
+                                   cl.size() + " components in Calendar");
+    }
+
+    Object o = cl.get(0);
+    if (!(o instanceof VTimeZone)) {
+      throw new CalFacadeException(CalFacadeException.timezonesReadError,
+                                   "component in Calendar not VTimeZone");
+    }
+
     try {
-      if (globals.rintf != null) {
-        globals.rintf.restoreTimezone(entity);
-      }
+      // Add it to the cache. Will save in db.
+      globals.getTzcache().saveTimeZone(entity.getTzid(), (VTimeZone)o);
     } catch (Throwable t) {
       throw new Exception(t);
     }

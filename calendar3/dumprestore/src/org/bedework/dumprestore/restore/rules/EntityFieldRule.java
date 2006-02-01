@@ -83,6 +83,11 @@ public abstract class EntityFieldRule extends RestoreRule {
   protected transient String tagName;
   protected transient String fldval;
 
+  /* DateTime components */
+  protected boolean dateType;
+  protected String tzid;
+  protected String dtVal;
+
   /**
    * @param name
    * @throws Exception
@@ -338,7 +343,7 @@ public abstract class EntityFieldRule extends RestoreRule {
 
     try {
       BwDateTime dtim = new BwDateTime();
-      dtim.init(false, fldval, null, globals.getTzcache());
+      dtim.init(dateType, dtVal, tzid, globals.getTzcache());
 
       return dtim;
     } catch (Throwable t) {
