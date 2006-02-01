@@ -78,7 +78,7 @@
   <xsl:variable name="calendar-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
   <xsl:variable name="calendar-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calendar/fetchForUpdate/a/@href"/><!-- used -->
   <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/><!-- used -->
-  <!-- subs and views are all good - no need to clean any of these out  -->
+  <!-- all good - no need to clean any of these out  -->
   <xsl:variable name="subscriptions-fetch" select="/bedeworkadmin/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
   <xsl:variable name="subscriptions-initAdd" select="/bedeworkadmin/urlPrefixes/subscriptions/initAdd/a/@href"/>
@@ -88,10 +88,11 @@
   <xsl:variable name="view-addView" select="/bedeworkadmin/urlPrefixes/view/addView/a/@href"/>
   <xsl:variable name="view-update" select="/bedeworkadmin/urlPrefixes/view/update/a/@href"/>
   <xsl:variable name="view-remove" select="/bedeworkadmin/urlPrefixes/view/remove/a/@href"/>
-  <!-- === -->
-  <xsl:variable name="timezones-showUpload" select="/bedeworkadmin/urlPrefixes/timezones/showUpload/a/@href"/>
+  <xsl:variable name="system-fetch" select="/bedeworkadmin/urlPrefixes/system/fetch/a/@href"/>
+  <xsl:variable name="system-update" select="/bedeworkadmin/urlPrefixes/system/update/a/@href"/>
   <xsl:variable name="timezones-initUpload" select="/bedeworkadmin/urlPrefixes/timezones/initUpload/a/@href"/>
   <xsl:variable name="timezones-upload" select="/bedeworkadmin/urlPrefixes/timezones/upload/a/@href"/>
+  <!-- === -->
   <xsl:variable name="authuser-showModForm" select="/bedeworkadmin/urlPrefixes/authuser/showModForm/a/@href"/>
   <xsl:variable name="authuser-showUpdateList" select="/bedeworkadmin/urlPrefixes/authuser/showUpdateList/a/@href"/>
   <xsl:variable name="authuser-initUpdate" select="/bedeworkadmin/urlPrefixes/authuser/initUpdate/a/@href"/>
@@ -176,6 +177,9 @@
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='modView'">
               <xsl:call-template name="modView"/>
+            </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='modSyspars'">
+              <xsl:call-template name="modSyspars"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='deleteViewConfirm'">
               <xsl:call-template name="deleteViewConfirm"/>
@@ -313,6 +317,11 @@
           <li>
             <a href="{$view-fetch}">
               Manage views
+            </a>
+          </li>
+          <li>
+            <a href="{$system-fetch}">
+              Manage system preferences
             </a>
           </li>
           <li>
@@ -1868,6 +1877,87 @@
 
   </xsl:template>
 
+  <!--+++++++++++++++ System Parameters (preferences) ++++++++++++++++++++-->
+  <xsl:template name="modSyspars">
+    <h2>Modify System Parameters</h2>
+    <form name="systemParamsForm" action="{$system-update}" method="post">
+      <table class="eventFormTable">
+        <tr>
+          <th>Default view:</th>
+          <td>
+            <xsl:variable name="defaultView" select="/bedeworkadmin/system/defaultUserViewName"/>
+            <select name="defaultUserViewName">
+              <xsl:for-each select="/bedeworkadmin/views/view">
+                <xsl:variable name="view" select="."/>
+                <xsl:choose>
+                  <xsl:when test="$view = $defaultView">
+                    <option value="{$view}" selected="selected"><xsl:value-of select="$view"/></option>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <option value="{$view}"><xsl:value-of select="$view"/></option>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:for-each>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>Directory browsing disallowed:</th>
+          <td>
+            <xsl:variable name="dirBrowse" select="/bedeworkadmin/system/directoryBrowsingDisallowed"/>
+            <xsl:choose>
+              <xsl:when test="$dirBrowse = 'true'">
+                <input type="radio" name="directoryBrowsingDisallowed" value="true" checked="checked"/> true
+                <input type="radio" name="directoryBrowsingDisallowed" value="false"/> false
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" name="directoryBrowsingDisallowed" value="true"/> true
+                <input type="radio" name="directoryBrowsingDisallowed" value="false" checked="checked"/> false
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+        <tr>
+          <th>Http connections per user:</th>
+          <td>
+            <xsl:variable name="httpPerUser" select="/bedeworkadmin/system/httpConnectionsPerUser"/>
+            <input value="{$httpPerUser}" name="httpConnectionsPerUser" size="20"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Http connections per host:</th>
+          <td>
+            <xsl:variable name="httpPerHost" select="/bedeworkadmin/system/httpConnectionsPerHost"/>
+            <input value="{$httpPerHost}" name="httpConnectionsPerHost" size="20"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Total http connections:</th>
+          <td>
+            <xsl:variable name="httpTotal" select="/bedeworkadmin/system/httpConnections"/>
+            <input value="{$httpTotal}" name="httpConnections" size="20"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Default user quota:</th>
+          <td>
+            <xsl:variable name="defaultUserQuota" select="/bedeworkadmin/system/defaultUserQuota"/>
+            <input value="{$defaultUserQuota}" name="defaultUserQuota" size="20"/>
+          </td>
+        </tr>
+      </table>
+      <table border="0" width="100%" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="updateSystemParams" value="Update" class="padRight"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Reset"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </xsl:template>
+
   <!--+++++++++++++++ Timezones ++++++++++++++++++++-->
   <xsl:template name="uploadTimezones">
     <h2>Upload Timezones</h2>
@@ -2351,6 +2441,9 @@
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='views' or /bedeworkadmin/page='modView'">
             Manage Views
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='modSyspars'">
+            Manage System Preferences
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='authUserList' or /bedeworkadmin/page='modAuthUser'">
             Manage Public Events Administrators

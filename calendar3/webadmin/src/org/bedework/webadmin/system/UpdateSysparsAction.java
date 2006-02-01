@@ -140,6 +140,8 @@ public class UpdateSysparsAction extends PEAbstractAction {
 
     form.setSyspars(svci.getSyspars());
 
+    form.getMsg().emit("org.bedework.client.message.syspars.updated");
+
     return "continue";
   }
 }

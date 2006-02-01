@@ -16,6 +16,7 @@
       <internal><bean:write name="subscription" property="internalSubscription" /></internal>
       <emailNotifications><bean:write name="subscription" property="emailNotifications" /></emailNotifications>
       <calendarDeleted><bean:write name="subscription" property="calendarDeleted" /></calendarDeleted>
+      <unremoveable><bean:write name="subscription" property="unremoveable" /></unremoveable>
     </subscription>
   </logic:iterate>
 

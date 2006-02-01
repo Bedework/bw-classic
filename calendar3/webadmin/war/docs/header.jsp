@@ -118,6 +118,10 @@ try {
       <update><genurl:link page="/view/update.do?b=de"/></update>
       <remove><genurl:link page="/view/removeView.do?b=de"/></remove>
     </view>
+    <system> <!-- only those listed are used here (no need to clean up) -->
+      <fetch><genurl:link page="/syspars/fetch.do?b=de"/></fetch>
+      <update><genurl:link page="/syspars/update.do?b=de"/></update>
+    </system>
     <timezones>
       <showUpload><genurl:link page="/timezones/showUpload.rdo?b=de"/></showUpload>
       <initUpload><genurl:link page="/timezones/initUpload.do?b=de"/></initUpload>

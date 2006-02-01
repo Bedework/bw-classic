@@ -95,6 +95,9 @@
       <xsl:when test="id='org.bedework.client.message.view.deleted'">
         View deleted
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.syspars.updated'">
+        System preferences updated
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.event.mailed'">
         Event has been mailed
       </xsl:when>

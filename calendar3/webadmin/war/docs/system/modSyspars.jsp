@@ -8,13 +8,21 @@
 
 <page>modSyspars</page>
 <bean:define id="systemParams" name="peForm" property="syspars"/>
-<prefs>
+<system>
   <defaultUserViewName><bean:write name="systemParams" property="defaultUserViewName"/></defaultUserViewName>
   <directoryBrowsingDisallowed><bean:write name="systemParams" property="directoryBrowsingDisallowed"/></directoryBrowsingDisallowed>
   <httpConnectionsPerUser><bean:write name="systemParams" property="httpConnectionsPerUser"/></httpConnectionsPerUser>
   <httpConnectionsPerHost><bean:write name="systemParams" property="httpConnectionsPerHost"/></httpConnectionsPerHost>
   <httpConnections><bean:write name="systemParams" property="httpConnections"/></httpConnections>
   <defaultUserQuota><bean:write name="systemParams" property="defaultUserQuota"/></defaultUserQuota>
-</prefs>
+</system>
+
+<views>
+  <logic:iterate name="peForm" property="views" id="view">
+    <view>
+      <name><bean:write name="view" property="name" /></name>
+    </view>
+  </logic:iterate>
+</views>
 
 <%@include file="/docs/footer.jsp"%>
