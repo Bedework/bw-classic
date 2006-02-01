@@ -1608,7 +1608,7 @@
           <th>Name*:</th>
           <td>
             <xsl:variable name="subName" select="name"/>
-            <input value="{$subName}" name="subscription.name" size="60"/>
+            <input type="text" value="{$subName}" name="subscription.name" size="60"/>
           </td>
         </tr>
         <xsl:if test="internal='false'">
@@ -1616,7 +1616,7 @@
             <th>Uri:</th>
             <td>
               <xsl:variable name="subUri" select="uri"/>
-              <input value="{$subUri}" name="subscription.uri" size="60"/>
+              <input type="text" value="{$subUri}" name="subscription.uri" size="60"/>
             </td>
           </tr>
         </xsl:if>
@@ -1631,7 +1631,14 @@
           <th>Style:</th>
           <td>
             <xsl:variable name="subStyle" select="style"/>
-            <input value="{$subStyle}" name="subscription.style" size="60"/>
+            <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Unremoveable:</th>
+          <td>
+            <input type="radio" value="true" name="unremoveable" size="60"/> true
+            <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
           </td>
         </tr>
       </table>
@@ -1663,7 +1670,7 @@
               <th>Uri:</th>
               <td>
                 <xsl:variable name="subUri" select="uri"/>
-                <input value="{$subUri}" name="subscription.uri" size="60"/>
+                <input type="text" value="{$subUri}" name="subscription.uri" size="60"/>
               </td>
             </tr>
           </xsl:when>
@@ -1695,7 +1702,23 @@
           <th>Style:</th>
           <td>
             <xsl:variable name="subStyle" select="style"/>
-            <input value="{$subStyle}" name="subscription.style" size="60"/>
+            <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Unremoveable:</th>
+          <td>
+            <xsl:variable name="subUnremoveable" select="unremoveable"/>
+            <xsl:choose>
+              <xsl:when test="$subUnremoveable = 'true'">
+                <input type="radio" value="true" name="unremoveable" size="60" checked="checked"/> true
+                <input type="radio" value="false" name="unremoveable" size="60"/> false
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" value="true" name="unremoveable" size="60"/> true
+                <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
       </table>
