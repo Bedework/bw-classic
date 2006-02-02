@@ -14,13 +14,14 @@
       <generator class="native"/>
     </id>
     <property name="tzid" type="string" >
-      <column name="tzid" not-null="true" />
+      <column name="tzid" not-null="true" unique-key="timezone-key" />
     </property>
 
     <many-to-one name="owner"
                  class="org.bedework.calfacade.BwUser"
                  unique="true" >
-      <column name="ownerid" not-null="true" index="timezoneowner" />
+      <column name="ownerid" not-null="true" index="timezoneowner"
+              unique-key="timezone-key" />
     </many-to-one>
 
     <property name="publick" type="true_false" >

@@ -910,6 +910,11 @@ public class CalSvc extends CalSvcI {
       throw new CalFacadeException("Unknown subscription" + val.getName());
     }
 
+    if ((sub.getUnremoveable() != val.getUnremoveable()) &&
+         !this.isSuper()) {
+      throw new CalFacadeAccessException();
+    }
+
     val.copyTo(sub);
     dbi.updatePreferences(prefs);
   }

@@ -23,7 +23,8 @@
     <version name="seq" column="seq" type="integer" />
 
     <property name="account"
-              column="username" type="string" length="20" not-null="true" />
+              column="username" type="string" length="20" not-null="true"
+              unique-key="user-key" />
 
     <property name="instanceOwner" type="true_false" >
       <column name="instance_owner" index="idx_user_instance_owner" not-null="true" />
