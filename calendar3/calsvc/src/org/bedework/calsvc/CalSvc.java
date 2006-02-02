@@ -1866,6 +1866,21 @@ public class CalSvc extends CalSvcI {
         dbi.updatePreferences(prefs);
       }
 
+      if (debug) {
+        trace("PublicAdmin: " + pars.getPublicAdmin() + " user: " +
+              pars.getUser());
+      }
+
+      if (pars.getPublicAdmin()) {
+        /* We may be running as a different user. The prefeences we want to see
+         * are those of the user we are running as - i.e. the 'run.as' user for
+         * not those of the authenticated user.
+         */
+        dbi.close();
+        BwUser user = cali.getUser(pars.getUser());
+        dbi = new CalSvcDb(this, user);
+      }
+
       return cali;
     } finally {
       cali.endTransaction();

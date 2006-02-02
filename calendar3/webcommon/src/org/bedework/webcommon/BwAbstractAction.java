@@ -528,6 +528,16 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
                                    true);
   }
 
+  /** Return user we run as.
+   *
+   * @param frm
+   * @return String  run-as user name
+   * @throws Throwable
+   */
+  public String getRunAsUser(UtilActionForm frm) throws Throwable {
+    return JspUtil.getReqProperty(frm.getMres(), "org.bedework.run.as");
+  }
+
   /** get an env object initialised appropriately for our usage.
    *
    * @param frm
@@ -763,23 +773,27 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       HttpSession hsess = request.getSession();
       hsess.setAttribute(BwCallback.cbAttrName, cb);
 
-      svci = new CalSvc();
-      CalSvcIPars pars = new CalSvcIPars(user, access, user, publicAdmin,
-                                         false,    // caldav
-                                         null, // synchId
-                                         debug);
-      svci.init(pars);
-
-      BwWebUtil.setCalSvcI(request, svci);
-
-      form.setCalSvcI(svci);
+      String runAsUser = user;
 
       try {
-        cb.in(true);
-      } catch (Throwable t) {
-        if (t instanceof CalFacadeException) {
-          throw (CalFacadeException)t;
+        svci = new CalSvc();
+        if (publicAdmin || (user == null)) {
+          runAsUser = getRunAsUser(form);
         }
+        CalSvcIPars pars = new CalSvcIPars(user, access, runAsUser, publicAdmin,
+            false,    // caldav
+            null, // synchId
+            debug);
+        svci.init(pars);
+
+        BwWebUtil.setCalSvcI(request, svci);
+
+        form.setCalSvcI(svci);
+
+        cb.in(true);
+      } catch (CalFacadeException cfe) {
+        throw cfe;
+      } catch (Throwable t) {
         throw new CalFacadeException(t);
       }
     }

@@ -16,7 +16,7 @@
     <internal><bean:write name="peForm" property="subscription.internalSubscription" /></internal>
     <emailNotifications><bean:write name="peForm" property="subscription.emailNotifications" /></emailNotifications>
     <calendarDeleted><bean:write name="peForm" property="subscription.calendarDeleted" /></calendarDeleted>
-    <unremoveable><bean:write name="subscription" property="unremoveable" /></unremoveable>
+    <unremoveable><bean:write name="peForm" property="subscription.unremoveable" /></unremoveable>
   </subscription>
 
   <subscribe>
