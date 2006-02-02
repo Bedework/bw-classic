@@ -1701,7 +1701,7 @@
         <tr>
           <th>Unremoveable:</th>
           <td>
-            <xsl:variable name="subUnremoveable" select="unremoveable"/>
+            <xsl:variable name="subUnremoveable" select="subscription.unremoveable"/>
             <xsl:choose>
               <xsl:when test="$subUnremoveable = 'true'">
                 <input type="radio" value="true" name="unremoveable" size="60" checked="checked"/> true
@@ -1896,25 +1896,18 @@
   <!--+++++++++++++++ System Parameters (preferences) ++++++++++++++++++++-->
   <xsl:template name="modSyspars">
     <h2>Modify System Parameters</h2>
+    <p>Do not change unless you know what you're doing.  Changes to these
+       parameters have wide impact on the system.</p>
     <form name="systemParamsForm" action="{$system-update}" method="post">
       <table class="eventFormTable">
         <tr>
-          <th>Default view:</th>
+          <th>Default user view name:</th>
           <td>
-            <xsl:variable name="defaultView" select="/bedeworkadmin/system/defaultUserViewName"/>
-            <select name="defaultUserViewName">
-              <xsl:for-each select="/bedeworkadmin/views/view">
-                <xsl:variable name="view" select="."/>
-                <xsl:choose>
-                  <xsl:when test="$view = $defaultView">
-                    <option value="{$view}" selected="selected"><xsl:value-of select="$view"/></option>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <option value="{$view}"><xsl:value-of select="$view"/></option>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:for-each>
-            </select>
+            <xsl:variable name="defaultViewName" select="/bedeworkadmin/system/defaultUserViewName"/>
+            <input value="{$defaultViewName}" name="defaultUserViewName" size="20"/>
+          </td>
+          <td>
+            Name used for default view created when a new user is added
           </td>
         </tr>
         <tr>
@@ -1923,12 +1916,16 @@
             <xsl:variable name="httpPerUser" select="/bedeworkadmin/system/httpConnectionsPerUser"/>
             <input value="{$httpPerUser}" name="httpConnectionsPerUser" size="20"/>
           </td>
+          <td>
+          </td>
         </tr>
         <tr>
           <th>Http connections per host:</th>
           <td>
             <xsl:variable name="httpPerHost" select="/bedeworkadmin/system/httpConnectionsPerHost"/>
             <input value="{$httpPerHost}" name="httpConnectionsPerHost" size="20"/>
+          </td>
+          <td>
           </td>
         </tr>
         <tr>
@@ -1937,12 +1934,16 @@
             <xsl:variable name="httpTotal" select="/bedeworkadmin/system/httpConnections"/>
             <input value="{$httpTotal}" name="httpConnections" size="20"/>
           </td>
+          <td>
+          </td>
         </tr>
         <tr>
           <th>Default user quota:</th>
           <td>
             <xsl:variable name="defaultUserQuota" select="/bedeworkadmin/system/defaultUserQuota"/>
             <input value="{$defaultUserQuota}" name="defaultUserQuota" size="20"/>
+          </td>
+          <td>
           </td>
         </tr>
       </table>
