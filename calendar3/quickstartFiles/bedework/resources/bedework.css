@@ -1,0 +1,171 @@
+body {
+  background: white url('calendarBg.gif') top left repeat;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+}
+#bodyBlock {
+  width: 719px;
+  margin: 0 auto;
+  padding: 0;
+  color: black;
+  background: white;
+}
+#header {
+  /* background-color is based on #3157A5 */
+  background: transparent url('calShot.gif') top left no-repeat;
+  color: white;
+  width: 719px;
+  margin: 0;
+  padding: 0;
+}
+#header h2 {
+  width: 462px;
+  height: 120px;
+  margin: 0;
+  padding: 15px 0 0 15px;
+}
+#configLabel {
+  width: 717px;
+  height: 20px;
+  margin: 0 0 -2px 0;
+  padding: 2px 0 0 0;
+  color: #666;
+  background: transparent;
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.9em;
+}
+ul.menu {
+  width: 717px;
+  height: 20px;
+  margin: 0 0 -2px 0;
+  padding: 2px 0 0 0;
+  color: #333;
+  background: transparent;
+}
+ul.menu li {
+  display: inline;
+  list-style-type: none;
+  font-size: 12px;
+  padding: 0 0.5em 0 1em;
+  vertical-align: middle;
+  border-left: 1px dotted #999;
+}
+ul.menu li.first {
+  border-left: none;
+}
+#content {
+  width: 677px;
+  min-height: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  color: black;
+  font-size: 0.9em;
+  border-left: 1px solid #ADBAFF;
+  border-right: 1px solid #ADBAFF;
+}
+#content h1 {
+  font-size: 1.4em;
+  margin: 0;
+}
+#content h3 {
+  font-size: 1.2em;
+}
+#content h2 {
+  font-size: 1.3em;
+}
+#clientSelectTable {
+  width: 600px;
+  margin: 0 auto 2em auto;
+  border: 0;
+}
+#clientSelectTable td {
+  text-align: center;
+  font-weight: bold;
+}
+#clientSelectTable img {
+  display: block;
+  margin: 1em auto;
+}
+#clientSelectTable a {
+  text-decoration: none;
+}
+li {
+  padding: 0 0 0.5em 0;
+}
+p.center {
+  text-align: center;
+}
+#footMenu {
+  width: 717px;
+  text-align: left;
+  background: #CCC;
+  color: #666;
+}
+#footer {
+  clear: both;
+  width: 717px;
+  margin: 0 auto;
+  padding: 0;
+  background: #eee;
+  color: black;
+  border-left: 1px solid #ADBAFF;
+  border-right: 1px solid #ADBAFF;
+}
+#footer p {
+  text-align: center;
+  font-size: 12px;
+  margin: 0;
+  padding: 1em;
+  color: #666;
+  background: transparent;
+  border-top: 1px solid #CCC;
+}
+#subFoot {
+  background: transparent url('subFoot.gif') center no-repeat;
+  color: white;
+  width: 717px;
+  margin: 0 auto;
+  padding: 0;
+}
+ul.menu a:link,
+ul.menu a:active,
+ul.menu a:visited {
+  color: #333;
+  background-color: transparent;
+  text-decoration: none;
+}
+#footMenu a:link,
+#footMenu a:active,
+#footMenu a:visited {
+  color: #666;
+  background-color: transparent;
+  text-decoration: none;
+}
+ul.menu a:hover,
+#footMenu a:hover {
+  color: #3157A5;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:link,
+a:active,
+a:visited {
+  color: #3157A5;
+  background-color: transparent;
+}
+a:hover {
+  color: #e33;
+  background-color: transparent;
+}
+a#top:link,
+a#top:active,
+a#top:visited,
+a#top:hover {
+  color: black;
+  background-color: transparent;
+}
+
