@@ -62,19 +62,58 @@ import org.bedework.webconfig.props.ConfigProperty;
  *
  * @author Mike Douglass
  */
-public class Globals extends ConfigCollection {
+public class Syspars extends ConfigCollection {
   /** Constructor
    *
    * @throws Throwable
    */
-  public Globals() throws Throwable {
-    super("globals", "global");
+  public Syspars() throws Throwable {
+    super("syspar", "syspar");
 
-    addProperty(new ConfigProperty("system.name", "system.name", true));
+    addProperty(new ConfigProperty("tzid", "tzid", true));
 
-    addProperty(new ConfigProperty("hibernate.dialect", "hibernate.dialect", true));
+    addProperty(new ConfigProperty("systemid", "systemid", true));
 
-    addProperty(new ConfigProperty("calintfclass", "calintfclass", true));
+    addProperty(new ConfigProperty("public.calroot", "public.calroot",
+                                   true, true));
+
+    addProperty(new ConfigProperty("user.calroot", "user.calroot",
+                                   true, true));
+
+    addProperty(new ConfigProperty("default.user.calendar",
+                                   "default.user.calendar", true));
+
+    addProperty(new ConfigProperty("default.trash.calendar",
+                                   "default.trash.calendar", true));
+
+    addProperty(new ConfigProperty("default.user.inbox",
+                                   "default.user.inbox", true));
+
+    addProperty(new ConfigProperty("default.user.outbox",
+                                   "default.user.outbox", true));
+
+    addProperty(new ConfigProperty("default.user.view",
+                                   "default.user.view", true));
+
+    addProperty(new ConfigProperty("public.user", "public.user", true, true));
+
+    addProperty(new BooleanProperty("dirbrowsingDisallowed",
+                                         "directory.browsing.disallowed",
+                                         true));
+
+    addProperty(new IntProperty("http.connections.peruser", "http connections per user", true, true));
+
+    addProperty(new IntProperty("http.connections.perhost", "http connections per host", true, true));
+
+    addProperty(new IntProperty("http.connections", "http connections", true, true));
+
+    addProperty(new ConfigProperty("userauthclass", "userauthclass", true));
+
+    addProperty(new ConfigProperty("mailerclass", "mailerclass", true));
+
+    addProperty(new ConfigProperty("admingroupsclass", "admingroupsclass", true));
+
+    addProperty(new ConfigProperty("usergroupsclass", "usergroupsclass", true));
   }
 }
 

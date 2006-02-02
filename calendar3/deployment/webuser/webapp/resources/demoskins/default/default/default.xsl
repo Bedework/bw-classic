@@ -168,9 +168,9 @@
 
   <xsl:template name="headSection">
      <title>Bedework: Personal Calendar Client</title>
-      <link rel="stylesheet" href="{$resourcesRoot}/en_US/default/default.css"/>
+      <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
       <meta name="robots" content="noindex,nofollow"/>
-      <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/en_US/default/print.css" />
+      <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
       <!--<link rel="icon" type="image/ico" href="{}/favicon.ico" />-->
       <script language="JavaScript">
         // launches new browser window with print-friendly version of page when

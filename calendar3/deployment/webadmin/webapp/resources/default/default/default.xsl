@@ -127,7 +127,7 @@
       <head>
         <title>Calendar Admin: Events Calendar Administration</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link rel="stylesheet" href="{$resourcesRoot}/en_US/default/default.css"/>
+        <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
         <xsl:if test="/bedeworkadmin/page='modEvent'">
           <script language="JavaScript" type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
           <script type='text/javascript' src="{$resourcesRoot}/resources/autoComplete.js"></script>

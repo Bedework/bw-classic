@@ -41,7 +41,7 @@
     <html lang="en">
       <head>
         <title>Bedework: open-source institutional events calendar - <xsl:value-of select="$currentView"/></title>
-        <link rel="stylesheet" type="text/css" media="screen,all" href="{$appRoot}/en_US/default/bedeworkConfig.css"/>
+        <link rel="stylesheet" type="text/css" media="screen,all" href="{$appRoot}/default/default/bedeworkConfig.css"/>
         <script language="JavaScript" type="text/javascript">
           <![CDATA[
             function setPrevView() {

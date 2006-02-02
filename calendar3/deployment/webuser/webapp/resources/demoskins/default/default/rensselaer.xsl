@@ -163,9 +163,9 @@
 
   <xsl:template name="headSection">
      <title>Rensselaer Personal Calendar</title>
-      <link rel="stylesheet" href="{$resourcesRoot}/en_US/default/rensselaer.css"/>
+      <link rel="stylesheet" href="{$resourcesRoot}/default/default/rensselaer.css"/>
       <meta name="robots" content="noindex,nofollow"/>
-      <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/en_US/default/rensselaer-print.css" />
+      <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/rensselaer-print.css" />
       <link rel="icon" type="image/ico" href="http://www.rpi.edu/favicon.ico" />
       <script language="JavaScript">
         // launches new browser window with print-friendly version of page when

@@ -77,18 +77,19 @@ public class XSLTFilterConfigInfo implements Serializable {
 
   /** Try to obtain from Locale.getDefault()
    */
-  private static final String localeInfoDefault;
   private static final Locale localeDefault = Locale.getDefault();
   private static final String langDefault;
   private static final String countryDefault;
 
+  //private static final String localeInfoDefault;
   static {
     langDefault = localeDefault.getLanguage();
     countryDefault = localeDefault.getCountry();
 
-    localeInfoDefault = makeLocale(langDefault, countryDefault);
+    //localeInfoDefault = makeLocale(langDefault, countryDefault);
   }
 
+  private static final String localeInfoDefault = "default";
   private static final String browserTypeDefault = "default";
   private static final String skinNameDefault = "default";
 

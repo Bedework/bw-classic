@@ -125,16 +125,16 @@
       <head>
         <title>Calendar Admin: Events Calendar Administration</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link rel="stylesheet" href="{$resourcesRoot}/en_US/default/default.css"/>
+        <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
         <xsl:if test="/bedeworkadmin/page='modEvent'">
-          <script language="JavaScript" type="text/javascript" src="{$resourcesRoot}/en_US/default/includes.js"></script>
+          <script language="JavaScript" type="text/javascript" src="{$resourcesRoot}/default/default/includes.js"></script>
           <script language="JavaScript" type="text/javascript">
-	  var location = new Array(<xsl:for-each select="/bedeworkadmin/formElements/location/all/select/option">'<xsl:value-of select="."/>'<xsl:if test="position()!=last()">,</xsl:if></xsl:for-each>);
-	  </script>
+    var location = new Array(<xsl:for-each select="/bedeworkadmin/formElements/location/all/select/option">'<xsl:value-of select="."/>'<xsl:if test="position()!=last()">,</xsl:if></xsl:for-each>);
+    </script>
         </xsl:if>
         <!--<link rel="icon" type="image/ico" href="{}/favicon.ico" />-->
 
-	<script type='text/javascript' src="{$resourcesRoot}/en_US/default/AutoComplete.js"></script>
+  <script type='text/javascript' src="{$resourcesRoot}/default/default/AutoComplete.js"></script>
       </head>
       <body>
         <xsl:call-template name="header"/>

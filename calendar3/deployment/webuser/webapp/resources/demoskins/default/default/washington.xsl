@@ -143,7 +143,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </title>
-        <link rel="stylesheet" href="{$resourcesRoot}/en_US/default/washington.css" />
+        <link rel="stylesheet" href="{$resourcesRoot}/default/default/washington.css" />
   </xsl:template>
 
   <!--==== HEADER ====-->

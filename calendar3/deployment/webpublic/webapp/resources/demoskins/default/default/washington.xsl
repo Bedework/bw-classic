@@ -97,7 +97,7 @@
         - <xsl:value-of select="/ucalendar/event/summary"/>
       </xsl:if>
     </title>
-    <link rel="stylesheet" href="{$resourcesRoot}/en_US/default/washington.css" />
+    <link rel="stylesheet" href="{$resourcesRoot}/default/default/washington.css" />
   </xsl:template>
 
   <!--==== HEADER ====-->
