@@ -54,7 +54,6 @@
 
 package org.bedework.webconfig.collections;
 
-import org.bedework.webconfig.props.BooleanProperty;
 import org.bedework.webconfig.props.IntProperty;
 import org.bedework.webconfig.props.ConfigProperty;
 
@@ -97,10 +96,6 @@ public class Syspars extends ConfigCollection {
 
     addProperty(new ConfigProperty("public.user", "public.user", true, true));
 
-    addProperty(new BooleanProperty("dirbrowsingDisallowed",
-                                         "directory.browsing.disallowed",
-                                         true));
-
     addProperty(new IntProperty("http.connections.peruser", "http connections per user", true, true));
 
     addProperty(new IntProperty("http.connections.perhost", "http connections per host", true, true));
@@ -116,4 +111,3 @@ public class Syspars extends ConfigCollection {
     addProperty(new ConfigProperty("usergroupsclass", "usergroupsclass", true));
   }
 }
-

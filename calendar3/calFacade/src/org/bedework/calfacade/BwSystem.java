@@ -85,8 +85,6 @@ public class BwSystem extends BwDbentity implements Comparator {
 
   private String publicUser;
 
-  private boolean directoryBrowsingDisallowed;
-
   private int httpConnectionsPerUser;
   private int httpConnectionsPerHost;
   private int httpConnections;
@@ -224,7 +222,7 @@ public class BwSystem extends BwDbentity implements Comparator {
 
   /** Get the userCalendar
    *
-   * @return String   userTrashCalendar
+   * @return String   user inbox
    */
   public String getUserInbox() {
     return userInbox;
@@ -238,9 +236,9 @@ public class BwSystem extends BwDbentity implements Comparator {
     userOutbox = val;
   }
 
-  /** Get the userCalendar
+  /** Get the user outbox
    *
-   * @return String   userTrashCalendar
+   * @return String   user outbox
    */
   public String getUserOutbox() {
     return userOutbox;
@@ -254,9 +252,9 @@ public class BwSystem extends BwDbentity implements Comparator {
     defaultUserViewName = val;
   }
 
-  /** Get the userCalendar
+  /** Get the user default view name
    *
-   * @return String   userTrashCalendar
+   * @return String   default view name
    */
   public String getDefaultUserViewName() {
     return defaultUserViewName;
@@ -276,22 +274,6 @@ public class BwSystem extends BwDbentity implements Comparator {
    */
   public String getPublicUser() {
     return publicUser;
-  }
-
-  /** Set the directory browsing disallowed
-   *
-   * @param val    boolean directory browsing disallowed
-   */
-  public void setDirectoryBrowsingDisallowed(boolean val) {
-    directoryBrowsingDisallowed = val;
-  }
-
-  /**
-   *
-   * @return boolean
-   */
-  public boolean getDirectoryBrowsingDisallowed() {
-    return directoryBrowsingDisallowed;
   }
 
   /** Set the max http connections per user
@@ -528,8 +510,6 @@ public class BwSystem extends BwDbentity implements Comparator {
 
     sb.append("publicUser=");
     sb.append(getPublicUser());
-    sb.append("directoryBrowsingDisallowed=");
-    sb.append(getDirectoryBrowsingDisallowed());
 
     sb.append("httpConnectionsPerUser=");
     sb.append(getHttpConnectionsPerUser());
@@ -575,7 +555,6 @@ public class BwSystem extends BwDbentity implements Comparator {
     clone.setUserOutbox(getUserOutbox());
     clone.setDefaultUserViewName(getDefaultUserViewName());
     clone.setPublicUser(getPublicUser());
-    clone.setDirectoryBrowsingDisallowed(getDirectoryBrowsingDisallowed());
 
     clone.setHttpConnectionsPerUser(getHttpConnectionsPerUser());
     clone.setHttpConnectionsPerHost(getHttpConnectionsPerHost());

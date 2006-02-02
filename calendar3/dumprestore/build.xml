@@ -247,9 +247,6 @@ hibernate.jdbc.batch_size=0
       <arg value="-pu" />
       <arg value="${org.bedework.syspar.public.user}" />
 
-      <arg value="-dirbrowsing-disallowed" />
-      <arg value="${org.bedework.syspar.dirbrowsing.disallowed}" />
-
       <arg value="-httpconnsperuser" />
       <arg value="${org.bedework.syspar.http.connections.peruser}" />
       <arg value="-httpconnsperhost" />

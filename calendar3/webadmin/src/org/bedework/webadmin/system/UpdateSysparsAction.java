@@ -104,12 +104,6 @@ public class UpdateSysparsAction extends PEAbstractAction {
       changed = true;
     }
 
-    Boolean bool = getBooleanReqPar(request, "directoryBrowsingDisallowed");
-    if (bool != null) {
-      syspars.setDirectoryBrowsingDisallowed(bool.booleanValue());
-      changed = true;
-    }
-
     int intVal = getIntReqPar(request, "httpConnectionsPerUser", -1);
     if (intVal >= 0) {
       syspars.setHttpConnectionsPerUser(intVal);

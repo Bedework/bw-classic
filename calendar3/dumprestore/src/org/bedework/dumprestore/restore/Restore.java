@@ -362,11 +362,6 @@ public class Restore implements Defs {
         i++;
         globals.syspars.setPublicUser(args[i]);
 
-      } else if (argpar("-dirbrowsing-disallowed", args, i)) {
-        i++;
-        globals.syspars.setDirectoryBrowsingDisallowed("true".equals(args[i]));
-        globals.sysparsSetDirectoryBrowsingDisallowed = true;
-
       } else if (argpar("-httpconnsperuser", args, i)) {
         i++;
         globals.syspars.setHttpConnectionsPerUser(intPar(args[i]));

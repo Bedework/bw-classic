@@ -86,8 +86,6 @@ public class DumpSyspars extends Dumpling {
 
     taggedVal("publicUser", s.getPublicUser());
 
-    taggedVal("directoryBrowsingDisallowed", s.getDirectoryBrowsingDisallowed());
-
     taggedVal("httpConnectionsPerUser", s.getHttpConnectionsPerUser());
     taggedVal("httpConnectionsPerHost", s.getHttpConnectionsPerHost());
     taggedVal("httpConnections", s.getHttpConnections());

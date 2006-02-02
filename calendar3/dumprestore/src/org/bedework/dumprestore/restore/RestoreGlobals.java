@@ -115,8 +115,6 @@ public class RestoreGlobals {
   /** System parameters object */
   public BwSystem syspars = new BwSystem();
 
-  /** Show syspars.setDirectoryBrowsingDisallowed was set */
-  public boolean sysparsSetDirectoryBrowsingDisallowed;
   /** show syspars.setHttpConnectionsPerUser was set */
   public boolean sysparsSetHttpConnectionsPerUser;
   /** show syspars.setHttpConnectionsPerHost was set */

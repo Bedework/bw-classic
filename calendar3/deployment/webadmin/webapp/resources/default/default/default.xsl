@@ -1918,22 +1918,6 @@
           </td>
         </tr>
         <tr>
-          <th>Directory browsing disallowed:</th>
-          <td>
-            <xsl:variable name="dirBrowse" select="/bedeworkadmin/system/directoryBrowsingDisallowed"/>
-            <xsl:choose>
-              <xsl:when test="$dirBrowse = 'true'">
-                <input type="radio" name="directoryBrowsingDisallowed" value="true" checked="checked"/> true
-                <input type="radio" name="directoryBrowsingDisallowed" value="false"/> false
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="radio" name="directoryBrowsingDisallowed" value="true"/> true
-                <input type="radio" name="directoryBrowsingDisallowed" value="false" checked="checked"/> false
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
-        <tr>
           <th>Http connections per user:</th>
           <td>
             <xsl:variable name="httpPerUser" select="/bedeworkadmin/system/httpConnectionsPerUser"/>

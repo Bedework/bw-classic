@@ -10,7 +10,6 @@
 <bean:define id="systemParams" name="peForm" property="syspars"/>
 <system>
   <defaultUserViewName><bean:write name="systemParams" property="defaultUserViewName"/></defaultUserViewName>
-  <directoryBrowsingDisallowed><bean:write name="systemParams" property="directoryBrowsingDisallowed"/></directoryBrowsingDisallowed>
   <httpConnectionsPerUser><bean:write name="systemParams" property="httpConnectionsPerUser"/></httpConnectionsPerUser>
   <httpConnectionsPerHost><bean:write name="systemParams" property="httpConnectionsPerHost"/></httpConnectionsPerHost>
   <httpConnections><bean:write name="systemParams" property="httpConnections"/></httpConnections>

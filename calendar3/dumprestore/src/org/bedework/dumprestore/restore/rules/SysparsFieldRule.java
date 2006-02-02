@@ -99,13 +99,6 @@ public class SysparsFieldRule extends EntityFieldRule {
     } else if (name.equals("publicUser")) {
       ent.setPublicUser(parval(globals.syspars.getPublicUser(), stringFld()));
 
-    } else if (name.equals("directoryBrowsingDisallowed")) {
-      if (globals.sysparsSetDefaultUserQuota) {
-        ent.setDirectoryBrowsingDisallowed(globals.syspars.getDirectoryBrowsingDisallowed());
-      } else {
-        ent.setDirectoryBrowsingDisallowed(booleanFld());
-      }
-
     } else if (name.equals("httpConnectionsPerUser")) {
       ent.setHttpConnectionsPerUser(parval(globals.syspars.getHttpConnectionsPerUser(),
                                            globals.sysparsSetHttpConnectionsPerUser,

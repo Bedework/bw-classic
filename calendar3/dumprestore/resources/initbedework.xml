@@ -14,7 +14,6 @@
       <userOutbox>Outbox</userOutbox>
       <defaultUserViewName>All</defaultUserViewName>
       <publicUser>public-user</publicUser>
-      <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
       <httpConnectionsPerUser>10</httpConnectionsPerUser>
       <httpConnectionsPerHost>50</httpConnectionsPerHost>
       <httpConnections>200</httpConnections>

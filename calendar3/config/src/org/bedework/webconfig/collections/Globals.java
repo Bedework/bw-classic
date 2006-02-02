@@ -55,7 +55,6 @@
 package org.bedework.webconfig.collections;
 
 import org.bedework.webconfig.props.BooleanProperty;
-import org.bedework.webconfig.props.IntProperty;
 import org.bedework.webconfig.props.ConfigProperty;
 
 /** Global properties.
@@ -75,6 +74,9 @@ public class Globals extends ConfigCollection {
     addProperty(new ConfigProperty("hibernate.dialect", "hibernate.dialect", true));
 
     addProperty(new ConfigProperty("calintfclass", "calintfclass", true));
+
+    addProperty(new BooleanProperty("dirbrowsingDisallowed",
+                                         "directory.browsing.disallowed",
+                                         true));
   }
 }
-
