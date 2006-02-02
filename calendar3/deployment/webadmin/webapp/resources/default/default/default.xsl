@@ -1738,6 +1738,7 @@
         <th>URI</th>
         <th>Style</th>
         <th>Display</th>
+        <th>Unremoveable</th>
         <th>External</th>
         <th>Deleted?</th>
       </tr>
@@ -1759,6 +1760,11 @@
           <td class="center">
             <xsl:if test="display='true'">
               <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
+            </xsl:if>
+          </td>
+          <td class="center">
+            <xsl:if test="unremoveable='true'">
+              <img src="{$resourcesRoot}/resources/redCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
             </xsl:if>
           </td>
           <td class="center">
