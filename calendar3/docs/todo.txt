@@ -11,7 +11,7 @@ Web-client - ensure no unexpected data modifications.
 --------------------------------------------------------------------------------
 Check all day events are correct in all clients.
 --------------------------------------------------------------------------------
-Finish off moving calendar labelling stuff out of TimeDateComponents
+Finish off moving calendar labeling stuff out of TimeDateComponents
 am/pm etc.
 --------------------------------------------------------------------------------
 Floating times should be as the result of an explicit user request.
@@ -54,19 +54,19 @@ contain transient information about the event. Should hold:
 
 Information can be copied into the EventInfo object.
 --------------------------------------------------------------------------------
-Notes on annotations and overriddes and fetching events.
+Notes on annotations and overrides and fetching events.
 Allowing users to annotate shared events introduces enormous complexity to the
 fetching and updating process but seems to be a feature of enterprise systems.
 
-Until we feel this is workable we may want to supress annotations in the user
+Until we feel this is workable we may want to suppress annotations in the user
 interface. HOWEVER, synchml and caldav sort of make this a requirement.
 
 Those protocols have no concept of ownership. If we create a calendar then add
-refeences to events we don't own, either through subscription or adding a
-reference, when we synch the target device will just see a set of events all
-apppearing to be owned by the user. They may go ahead and update such an event
+references to events we don't own, either through subscription or adding a
+reference, when we sync the target device will just see a set of events all
+appearing to be owned by the user. They may go ahead and update such an event
 and we have the choice of preserving those changes as annotations or losing them
-on synch.
+on sync.
 
 We don't need to CREATE annotations on fetch but we do need to FETCH any owned
 by the current user.
@@ -112,8 +112,8 @@ fetch via caldav?)
 We should do the fetch above, then fetch all recurrence instances. Then
 
 For each instance:
-  If there is an overrride create a proxy for the override and add to the result
-  If ther is no override, craete a dummy annotation and proxy and add.
+  If there is an override create a proxy for the override and add to the result
+  If there is no override, create a dummy annotation and proxy and add.
 
 Return the final result.
 
@@ -128,7 +128,7 @@ II Fetching events (date range)
    What does this mean? We queried /public/Arts for events none of which we own.
    We query annotations for the same time range in the same calendar.
 
-3. Build proxies for overriden events
+3. Build proxies for overridden events
 
 If we got no recurring events in the set we're done so return.
 
@@ -138,11 +138,11 @@ Otherwise:
 2. If we were asked for master only return unique master events for which we
    have access
 
-3. Fetch any overrides with appropriate owneship
+3. Fetch any overrides with appropriate ownership
       a. in the same calendar
       b. with a master in the set of recurring masters we retrieved in step 1
 
-4. Iterate over instances creating dummies for non overriden and attaching
+4. Iterate over instances creating dummies for non overridden and attaching
    overrides where found.
 --------------------------------------------------------------------------------
 Do we share annotations?
@@ -177,7 +177,7 @@ In the web client we can warn the user. Send email?
 Access changed on event.
 If access changed to none the annotated event becomes invisible.
 
-If access changed to write there may still be an anootation attached. We may
+If access changed to write there may still be an annotation attached. We may
 want to allow annotations of events for which user has mod access anyway
 --------------------------------------------------------------------------------
 Add an inbox calendar - do we want outbox? Put proxy in outbox?
@@ -292,7 +292,7 @@ Another case is very similar - we want to be able to annotate events we don't
 have write access to - for example public events or events owned by a group or
 user.
 
-The mechanism might also be seen as a way of versioning events.
+The mechanism might also be seen as a way of visioning events.
 
 The approach is to create an event object which is empty and point it at the
 target event. It has to be populated with the start date/time and the guid so
