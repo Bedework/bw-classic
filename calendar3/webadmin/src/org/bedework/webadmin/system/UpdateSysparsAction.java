@@ -128,13 +128,26 @@ public class UpdateSysparsAction extends PEAbstractAction {
       changed = true;
     }
 
-    if (changed) {
-      svci.updateSyspars(syspars);
+    str = getReqPar(request, "updateCancelled");
+    if (str != null) {
+      // refetch
+      form.setSyspars(svci.getSyspars());
+      return "cancelled";
     }
 
-    form.setSyspars(svci.getSyspars());
+    if (!changed) {
+      return "nochange";
+    }
 
-    form.getMsg().emit("org.bedework.client.message.syspars.updated");
+    str = getReqPar(request, "updateConfirmed");
+    if (str != null) {
+      svci.updateSyspars(syspars);
+
+      form.setSyspars(svci.getSyspars());
+
+      form.getMsg().emit("org.bedework.client.message.syspars.updated");
+      return "success";
+    }
 
     return "continue";
   }
