@@ -4,14 +4,14 @@ Issues:
 Calendars, categories and filters.
 
 Probably need to split this out from filters. Categories are a basic feature of
-the RFC and we also need to be able to forumlate queries involving them, e.g
+the RFC and we also need to be able to formulate queries involving them, e.g
 
 select events where <in-specific-calendars> and <some other conditions>
 
 --------------------------------------------------------------------------
 Durations
 Specifying an event as a start+duration is part of the RFC. While this can
-be converted to start+end this may pose problems with synch - the event may
+be converted to start+end this may pose problems with sync - the event may
 still look changed to other devices.
 
 Should probably have a duration column added.
