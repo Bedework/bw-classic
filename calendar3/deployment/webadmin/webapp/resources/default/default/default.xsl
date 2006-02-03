@@ -1902,8 +1902,10 @@
   <!--+++++++++++++++ System Parameters (preferences) ++++++++++++++++++++-->
   <xsl:template name="modSyspars">
     <h2>Modify System Parameters</h2>
-    <p>Do not change unless you know what you're doing.  Changes to these
-       parameters have wide impact on the system.</p>
+    <p>
+      Do not change unless you know what you're doing.<br/>
+      Changes to these parameters have wide impact on the system.
+    </p>
     <form name="systemParamsForm" action="{$system-update}" method="post">
       <table class="eventFormTable">
         <tr>

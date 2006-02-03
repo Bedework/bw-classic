@@ -147,6 +147,7 @@ try {
     <editLocation><genurl:rewrite action="editLoc.do"/></editLocation>
     <delLocation><genurl:rewrite action="delLocation.do"/></delLocation>
     <subscribe><genurl:rewrite action="subscribe.do"/></subscribe>
+    <export><genurl:rewrite action="export.do"/></export>
 
     <initEventAlarm><genurl:rewrite action="initEventAlarm.do"/></initEventAlarm>
     <setAlarm><genurl:rewrite action="setAlarm.do"/></setAlarm>

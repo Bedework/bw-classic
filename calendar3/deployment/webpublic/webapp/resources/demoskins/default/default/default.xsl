@@ -55,6 +55,7 @@
   <xsl:variable name="setView" select="/ucalendar/urlPrefixes/setView"/>
   <xsl:variable name="eventView" select="/ucalendar/urlPrefixes/eventView"/>
   <xsl:variable name="addEventRef" select="/ucalendar/urlPrefixes/addEventRef"/>
+  <xsl:variable name="export" select="/ucalendar/urlPrefixes/export"/>
   <xsl:variable name="mailEvent" select="/ucalendar/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/ucalendar/urlPrefixes/showPage"/>
 
@@ -205,7 +206,7 @@
             <img class="addref" src="{$resourcesRoot}/images/demo/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
           </a>
           <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-          <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+          <a href="{$export}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
             <img src="{$resourcesRoot}/images/demo/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
           </a>
         </th>
@@ -759,7 +760,7 @@
           </xsl:variable>
           <xsl:variable name="icalName"
                         select="concat('ucal',$curdate,/ucalendar/periodname,$calcategory,'.ics')"/>
-          <a class="rss" href="{$setup}?nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$icalName}" title="Download all events in current view as iCal - for multiple events, save to disk and import">iCal</a>
+          <a class="rss" href="{$export}?nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$icalName}" title="Download all events in current view as iCal - for multiple events, save to disk and import">iCal</a>
         </td>
       </tr>
     </table>
