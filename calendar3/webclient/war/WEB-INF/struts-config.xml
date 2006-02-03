@@ -170,6 +170,14 @@
       <forward name="noCalDef" path="/showMain.rdo" redirect="true" />
     </action>
 
+    <action    path="/selectView"
+               type="org.bedework.webclient.BwSelectViewAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="noViewDef" path="/showMain.rdo" redirect="true" />
+    </action>
+
     <action    path="/setView"
                type="org.bedework.webclient.BwGoToAction"
                name="calForm"
