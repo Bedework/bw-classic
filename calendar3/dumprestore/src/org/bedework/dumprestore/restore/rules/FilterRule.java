@@ -167,12 +167,7 @@ public class FilterRule extends EntityRule {
           globals.filterToCal.put(new Integer(entity.getId()), cal);
         }
 
-        BwUser filterOwner = globals.getFixOwner();
-        if (filterOwner == null) {
-          error("Filter owner " + globals.fixOwner +
-          " does not exist");
-        }
-        entity.setOwner(filterOwner);
+        entity.setOwner(globals.getPublicUser());
         entity.setPublick(true);
       }
 

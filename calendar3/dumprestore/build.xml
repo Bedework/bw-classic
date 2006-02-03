@@ -218,7 +218,6 @@ hibernate.jdbc.batch_size=0
       <arg value="-f" />
       <arg value="${org.bedework.restore.arg.dumpfile}" />
       <arg value="${org.bedework.restore.arg.from2p3px}" />
-      <arg line="${org.bedework.restore.arg.fixowner}" />
       <arg line="${org.bedework.restore.arg.defaultpubliccal}" />
       <arg line="${org.bedework.restore.arg.timezones}" />
 

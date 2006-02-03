@@ -102,8 +102,6 @@ public class Restore implements Defs {
 
   private RestoreGlobals globals = new RestoreGlobals();
 
-  private BwView curView;
-
   private Digester digester;
 
   /** ===================================================================
@@ -186,6 +184,16 @@ public class Restore implements Defs {
       nextId++;
       prefs.setOwner(o);
 
+      // Create the default view
+
+      BwView curView = new BwView();
+
+      curView.setName(globals.syspars.getDefaultUserViewName()); // XXX
+      curView.setOwner(o);
+
+      prefs.addView(curView);
+      prefs.setPreferredView(curView.getName());
+
       if (globals.publicUser.equals(o)) {
         /* Subscribe to all top level collections
          */
@@ -194,7 +202,7 @@ public class Restore implements Defs {
         Iterator calit = root.iterateChildren();
         while (calit.hasNext()) {
           BwCalendar cal = (BwCalendar)calit.next();
-          addSubscription(prefs, globals.publicUser, cal, true);
+          addSubscription(prefs, curView, o, cal, true, false, true);
         }
       } else {
         BwCalendar cal = (BwCalendar)globals.defaultCalendars.get(
@@ -202,28 +210,12 @@ public class Restore implements Defs {
         prefs.setDefaultCalendar(cal);
 
         // Add default subscription for default calendar.
-        BwSubscription defSub = BwSubscription.makeSubscription(cal,
-                                              cal.getName(), true, true, false);
-        defSub.setOwner(o);
-        prefs.addSubscription(defSub);
+        addSubscription(prefs, curView, o, cal, true, true, false);
 
         // Add default subscription for trash calendar.
 
         cal = (BwCalendar)globals.trashCalendars.get(new Integer(o.getId()));
-        BwSubscription sub = BwSubscription.makeSubscription(cal, cal.getName(),
-                                                             false, false, false);
-        sub.setOwner(o);
-        prefs.addSubscription(sub);
-
-        // Add a default view for the default calendar subscription
-
-        curView = new BwView();
-
-        curView.setName(globals.syspars.getDefaultUserViewName());
-        curView.addSubscription(defSub);
-        curView.setOwner(o);
-
-        prefs.addView(curView);
+        addSubscription(prefs, null, o, cal, false, false, false);
 
         Collection s = globals.subscriptionsTbl.getCalendarids(o);
 
@@ -236,10 +228,8 @@ public class Restore implements Defs {
              * id of a calendar
              * Make up a subscription.
              */
-            Integer calid = (Integer)subit.next();
-
-            cal = (BwCalendar)globals.filterToCal.get(calid);
-            addSubscription(prefs, o, cal, true);
+            cal = (BwCalendar)globals.filterToCal.get((Integer)subit.next());
+            addSubscription(prefs, curView, o, cal, true, false, false);
           }
         }
       }
@@ -253,27 +243,32 @@ public class Restore implements Defs {
   /** Add a subscription to the current users entry.
    *
    * @param p
+   * @param view
    * @param user     BwUser object
    * @param cal      BwCalendar object
-   * @param toplevel
+   * @param publicCalendar
    * @throws Throwable
    */
-  public void addSubscription(BwPreferences p, BwUser user, BwCalendar cal,
-                              boolean toplevel) throws Throwable {
+  private void addSubscription(BwPreferences p, BwView view, BwUser user,
+                               BwCalendar cal, boolean display,
+                               boolean freeBusy,
+                               boolean publicCalendar) throws Throwable {
     globals.subscriptions++;
-    BwSubscription sub = BwSubscription.makeSubscription(cal, cal.getName(), true, false, false);
+    BwSubscription sub = BwSubscription.makeSubscription(cal, cal.getName(),
+                                                         display, freeBusy, false);
     sub.setOwner(user);
     p.addSubscription(sub);
-    if (curView == null) {
-      // One-shot.
-      curView = new BwView();
-      curView.setName(cal.getName());
-      curView.setOwner(user);
-      curView.addSubscription(sub);
-      p.addView(curView);
-      curView = null;
-    } else {
-      curView.addSubscription(sub);
+    if (view != null) {
+      view.addSubscription(sub);
+    }
+
+    if (publicCalendar) {
+      // Also add a single subscription
+      BwView v = new BwView();
+      v.setName(cal.getName());
+      v.setOwner(user);
+      v.addSubscription(sub);
+      p.addView(v);
     }
   }
 
@@ -302,9 +297,6 @@ public class Restore implements Defs {
         i++;
         globals.defaultPublicCalPath = args[i];
         trace("Setting null event calendars to " + args[i]);
-      } else if (argpar("-fixOwner", args, i)) {
-        i++;
-        globals.fixOwnerAccount = args[i];
       } else if (args[i].equals("-from2p3px")) {
         globals.from2p3px = true;
       } else if (argpar("-d", args, i)) {

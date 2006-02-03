@@ -54,14 +54,12 @@
 package org.bedework.dumprestore.restore.rules;
 
 import org.bedework.calfacade.base.BwShareableDbentity;
-import org.bedework.calfacade.BwUser;
 import org.bedework.dumprestore.restore.RestoreGlobals;
-
 
 import org.xml.sax.Attributes;
 
 /**
- * @author Mike Douglass   douglm@rpi.edu
+ * @author Mike Douglass   douglm @ rpi.edu
  * @version 1.0
  */
 public class EntityRule extends RestoreRule {
@@ -111,23 +109,20 @@ public class EntityRule extends RestoreRule {
     try {
       if (entity.getCreator() == null) {
         warn(name + " " + entity.getId() + " has no creator, set to " +
-            globals.getFixOwner().getAccount());
+            globals.getPublicUser().getAccount());
 
-        entity.setCreator(globals.getFixOwner());
+        entity.setCreator(globals.getPublicUser());
       }
 
       if (entity.getOwner() == null) {
-        BwUser owner;
-
-        if (entity.getPublick()) {
-          owner = globals.getPublicUser();
-        } else {
-          owner = globals.getFixOwner();
-        }
         warn(name + " " + entity.getId() + " has no owner, set to " +
-            owner.getAccount());
+            globals.getPublicUser().getAccount());
 
-        entity.setOwner(owner);
+        entity.setOwner(globals.getPublicUser());
+
+        if (!entity.getPublick()) {
+          warn(name + " " + entity.getId() + " is NOT public");
+        }
       }
     } catch (Throwable t) {
       throw new Exception(t);

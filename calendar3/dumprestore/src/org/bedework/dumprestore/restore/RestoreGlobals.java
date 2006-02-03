@@ -165,12 +165,6 @@ public class RestoreGlobals {
   /** Integer filter key -> cal object */
   public HashMap filterToCal = new HashMap();
 
-  /** Account name used to fix missing or changed owners */
-  public String fixOwnerAccount;
-
-  /** Account used to fix missing or changed owners */
-  public BwUser fixOwner;
-
   /** For each of these we update events to have the appropriate calendar id.
    * Any event which already has a calendar id turned up in two calendars.
    */
@@ -684,43 +678,6 @@ public class RestoreGlobals {
     }
 
     return publicUser;
-  }
-
-  /** Get the account used to fix creators and owners of entities
-   *
-   * @return BwUser account
-   * @throws Throwable if account name not defined
-   */
-  public BwUser getFixOwner() throws Throwable {
-    if (fixOwner != null) {
-      return fixOwner;
-    }
-
-    /* See if it's in the user map first. */
-
-    if (fixOwnerAccount == null) {
-      throw new Exception("fixOwnerAccount must be defined");
-    }
-
-    fixOwner = usersTbl.get(fixOwnerAccount);
-
-    if (fixOwner == null) {
-      // Create it
-      fixOwner = new BwUser(fixOwnerAccount);
-      fixOwner.setCategoryAccess(getDefaultPersonalAccess());
-      fixOwner.setLocationAccess(getDefaultPersonalAccess());
-      fixOwner.setSponsorAccess(getDefaultPersonalAccess());
-
-      fixOwner.setId(1);
-
-      if (rintf != null) {
-        rintf.restoreUser(fixOwner);
-      }
-
-      usersTbl.put(fixOwner);
-    }
-
-    return fixOwner;
   }
 
   /** Get the super admin group
