@@ -1028,7 +1028,7 @@
               </xsl:for-each>
             </select>
           </form>
-          <span class="calLinks"><a href="{$selectView}?calId=">show all</a> | <a href="{$showCals}">calendar list</a></span>
+          <span class="calLinks"><a href="{$selectView}">show all</a> | <a href="{$showCals}">calendar list</a></span>
         </td>
       </tr>
     </table>
