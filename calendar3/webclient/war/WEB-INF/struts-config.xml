@@ -100,6 +100,14 @@
       <forward name="success" path="/docs/editLocation.jsp" />
     </action>
 
+    <action    path="/showExportData"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/exportData.jsp" />
+    </action>
+
     <action    path="/showFreeBusy"
                type="org.bedework.webclient.BwRenderAction"
                name="calForm"
@@ -250,6 +258,14 @@
                name="calForm"
                scope="session"
                validate="false">
+    </action>
+
+    <action    path="/export"
+               type="org.bedework.webcommon.misc.ExportAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showExportData.rdo" redirect="true" />
     </action>
 
     <action    path="/showPage"

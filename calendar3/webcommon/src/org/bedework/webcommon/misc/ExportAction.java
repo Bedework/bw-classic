@@ -157,14 +157,14 @@ public class ExportAction extends BwAbstractAction {
       }
     }
 
-    IcalTranslator ical = new IcalTranslator(svci.getIcalCallback());
-
     if (ev != null) {
       evs = new Vector();
 
       evs.add(ev.getEvent());
       evs.addAll(ev.getOverrides());
     }
+
+    IcalTranslator ical = new IcalTranslator(svci.getIcalCallback());
 
     Calendar vcal = ical.toIcal(evs);
 
