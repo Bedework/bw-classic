@@ -366,6 +366,7 @@ public class TimeDateComponents implements Serializable {
    */
   public void setMonth(String val) {
     try {
+      // -1 below because MONTH starts at 0.
       getCal().set(Calendar.MONTH, Integer.parseInt(val) - 1);
     } catch (NumberFormatException e) {
       getCal().set(Calendar.MONTH, 0);
@@ -390,7 +391,7 @@ public class TimeDateComponents implements Serializable {
       getCal().set(Calendar.DAY_OF_MONTH, Integer.parseInt(val));
     } catch (NumberFormatException e) {
       getCal().set(Calendar.DAY_OF_MONTH, 1);
-      fieldInError = "MONTH";
+      fieldInError = "DAY_OF_MONTH";
     }
   }
 

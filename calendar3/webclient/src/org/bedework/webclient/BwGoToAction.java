@@ -161,7 +161,10 @@ public class BwGoToAction extends BwCalAbstractAction {
       /* See if we were given an explicit date as view start date components.
          If so we'll set a new view of the same period as the current.
        */
-      String vsdate = viewStart.getDateTime().getDate().substring(0, 8);
+      String vsdate = viewStart.getDateTime().getDtval().substring(0, 8);
+      if (debug) {
+        action.logIt("vsdate=" + vsdate);
+      }
 
       if (!(vsdate.equals(form.getCurTimeView().getFirstDay().getDateDigits()))) {
         newView = true;

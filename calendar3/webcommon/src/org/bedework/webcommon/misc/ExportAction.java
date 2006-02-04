@@ -68,6 +68,7 @@ import org.bedework.webcommon.EventDates;
 import edu.rpi.sss.util.Util;
 
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.property.Method;
 
 import java.util.Collection;
 import java.util.Vector;
@@ -167,6 +168,8 @@ public class ExportAction extends BwAbstractAction {
     IcalTranslator ical = new IcalTranslator(svci.getIcalCallback());
 
     Calendar vcal = ical.toIcal(evs);
+
+    vcal.getProperties().add(Method.PUBLISH);
 
     form.setVcal(vcal);
 
