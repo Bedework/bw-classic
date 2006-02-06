@@ -106,11 +106,11 @@
           <xsl:when test="/ucalendar/appvar[key='style']/value='red'">
             <link rel="stylesheet" href="{$resourcesRoot}/default/default/red.css"/>
           </xsl:when>
-          <xsl:when test="/ucalendar/appvar[key='style']/value='blue'">
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/blue.css"/>
+          <xsl:when test="/ucalendar/appvar[key='style']/value='green'">
+            <link rel="stylesheet" href="{$resourcesRoot}/default/default/green.css"/>
           </xsl:when>
           <xsl:otherwise>
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/green.css"/>
+            <link rel="stylesheet" href="{$resourcesRoot}/default/default/blue.css"/>
           </xsl:otherwise>
         </xsl:choose>
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
