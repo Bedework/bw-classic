@@ -55,24 +55,20 @@
 package org.bedework.dumprestore.restore;
 
 import org.bedework.calfacade.BwUser;
-//import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.CalFacadeBadDateException;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.ifs.CalTimezones;
-//import org.bedework.icalendar.IcalTranslator;
 
-//import net.fortuna.ical4j.model.Calendar;
-//import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.component.VTimeZone;
-import net.fortuna.ical4j.model.parameter.TzId;
-import net.fortuna.ical4j.model.property.DtEnd;
 import net.fortuna.ical4j.model.TimeZone;
+import net.fortuna.ical4j.util.TimeZones;
 
-//import java.util.Collection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
-//import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
@@ -274,7 +270,22 @@ class TimezonesImpl implements CalTimezones {
     lookup("not-a-timezone");
   }
 
-  public String getUtc(String time, String tzid, TimeZone tz) throws CalFacadeException {
+  private static DateFormat formatTd  = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+  private static Calendar cal = Calendar.getInstance();
+  private static java.util.TimeZone utctz;
+  private static java.util.TimeZone lasttz;
+  private static String lasttzid;
+  static {
+    try {
+      utctz = TimeZone.getTimeZone(TimeZones.UTC_ID);
+    } catch (Throwable t) {
+      throw new RuntimeException("Unable to initialise UTC timezone");
+    }
+  }
+
+  public synchronized String getUtc(String time, String tzid, TimeZone tz) throws CalFacadeException {
+    /* XXX We probably need the ownerid to determine exactly which timezone
+     */
     //if (debug) {
     //  trace("Get utc for " + time + " tzid=" + tzid + " tz =" + tz);
     //}
@@ -285,27 +296,59 @@ class TimezonesImpl implements CalTimezones {
 
     if (CalFacadeUtil.isISODateTime(time)) {
       try {
-        DtEnd dte = new DtEnd();
+        boolean tzchanged = false;
 
-        if ((tz == null) && (tzid != null)) {
-          tz = getTimeZone(tzid);
-
-          //if (debug) {
-          //  trace("--------Got timezone " + tz);
-          //}
-
-          if (tz == null) {
-            throw new CalFacadeBadDateException();
+        if (tz == null) {
+          if (tzid == null) {
+            if ((lasttzid != null) || (lasttz == null)) {
+              lasttz = TimeZone.getDefault();
+              tzchanged = true;
+            }
+          } else {
+            if ((lasttzid == null) || (!lasttzid.equals(tzid))) {
+              lasttz = getTimeZone(tzid);
+              if (lasttz == null) {
+                lasttzid = null;
+                throw new CalFacadeBadDateException();
+              }
+              tzchanged = true;
+            }
           }
-
-          dte.getParameters().add(new TzId(tzid));
-          dte.setTimeZone(tz);
+        } else {
+          // tz supplied
+          if (tz != lasttz) {
+            /* Yes, that's a !=. I'm looking for it being the same object.
+             * If I were sure that equals were correct and fast I'd use
+             * that.
+             */
+            tzchanged = true;
+            tzid = tz.getID();
+            lasttz = tz;
+          }
         }
 
-        dte.setValue(time);
-        dte.setUtc(true);
 
-        return dte.getValue();
+        if (tzchanged) {
+          if (debug) {
+            trace("**********tzchanged");
+          }
+          formatTd.setTimeZone(lasttz);
+          lasttzid = tzid;
+        }
+
+        cal.setTimeZone(utctz);
+        cal.setTime(formatTd.parse(time));
+
+        StringBuffer sb = new StringBuffer();
+        digit4(sb, cal.get(Calendar.YEAR));
+        digit2(sb, cal.get(Calendar.MONTH) + 1); // Month starts at 0
+        digit2(sb, cal.get(Calendar.DAY_OF_MONTH));
+        sb.append('T');
+        digit2(sb, cal.get(Calendar.HOUR_OF_DAY));
+        digit2(sb, cal.get(Calendar.MINUTE));
+        digit2(sb, cal.get(Calendar.SECOND));
+        sb.append('Z');
+        return sb.toString();
       } catch (Throwable t) {
         t.printStackTrace();
         throw new CalFacadeBadDateException();
@@ -322,6 +365,30 @@ class TimezonesImpl implements CalTimezones {
   /* ====================================================================
    *                   Private methods
    * ==================================================================== */
+
+  private void digit2(StringBuffer sb, int val) throws CalFacadeException {
+    if (val > 99) {
+      throw new CalFacadeBadDateException();
+    }
+    if (val < 10) {
+      sb.append("0");
+    }
+    sb.append(val);
+  }
+
+  private void digit4(StringBuffer sb, int val) throws CalFacadeException {
+    if (val > 9999) {
+      throw new CalFacadeBadDateException();
+    }
+    if (val < 10) {
+      sb.append("000");
+    } else if (val < 100) {
+      sb.append("00");
+    } else if (val < 1000) {
+      sb.append("0");
+    }
+    sb.append(val);
+  }
 
   private TimezoneInfo lookup(String id) throws CalFacadeException {
     TimezoneInfo tzinfo;

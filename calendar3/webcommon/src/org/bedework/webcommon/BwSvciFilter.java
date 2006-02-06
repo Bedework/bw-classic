@@ -67,7 +67,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.apache.log4j.Logger;
 
-/** This class must be installed as a filter for a UWCal web application.
+/** This class must be installed as a filter for a Bedework web application.
  *
  * <p>We assume that any CalSvci object must remain open until after the jsp
  * has done its stuff, i.e. after the action returns but before we finally
