@@ -134,8 +134,20 @@
           <script type='text/javascript' src="{$resourcesRoot}/resources/ui.js"></script>
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/bedework.ico" />
+        <script language="JavaScript" type="text/javascript">
+        <xsl:comment>
+        <![CDATA[
+        // places the cursor in the first available form element when the page is loaded
+        // (if a form exists on the page)
+        function focusFirstElement() {
+          if (window.document.forms[0]) {
+            window.document.forms[0].elements[0].focus();
+          }
+        }]]>
+        </xsl:comment>
+      </script>
       </head>
-      <body>
+      <body onLoad="focusFirstElement()">
         <xsl:call-template name="header"/>
         <div id="content">
           <xsl:choose>
