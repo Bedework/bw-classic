@@ -23,14 +23,16 @@
                 index="prefowner" />
 
     <set name="subscriptions" table="user_subscriptions" lazy="true"
-         cascade="all-delete-orphan" >
+         cascade="all-delete-orphan"
+         sort="natural" >
       <cache usage="read-write"/>
       <key column="prefid"/>
       <many-to-many class="org.bedework.calfacade.svc.BwSubscription"/>
     </set>
 
     <set name="views" table="user_views" lazy="false"
-         cascade="all-delete-orphan" >
+         cascade="all-delete-orphan"
+         sort="natural" >
       <cache usage="read-write"/>
       <key column="prefid"/>
       <many-to-many class="org.bedework.calfacade.svc.BwView"/>

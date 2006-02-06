@@ -1432,7 +1432,7 @@ public class CalSvc extends CalSvcI {
           if (calendar == null) {
             // Assume deleted
             sub.setCalendarDeleted(true);
-            getCal().updateUser(getUser());
+            updateSubscription(sub);
           } else {
             sub.setCalendar(calendar);
           }

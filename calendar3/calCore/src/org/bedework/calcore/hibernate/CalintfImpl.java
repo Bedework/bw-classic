@@ -706,7 +706,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     sess.save(usercal);
 
-    sess.save(user);
+    sess.update(user);
   }
 
   public void updateUser() throws CalFacadeException {
@@ -715,7 +715,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
   public void updateUser(BwUser user) throws CalFacadeException {
     checkOpen();
-    sess.save(user);
+    sess.update(user);
   }
 
   public Collection getInstanceOwners() throws CalFacadeException {
@@ -742,7 +742,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     val.setLogon(now);
     val.setLastAccess(now);
-    sess.saveOrUpdate(val);
+    sess.update(val);
   }
 
   /* ====================================================================
