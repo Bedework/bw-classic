@@ -1015,23 +1015,6 @@
           </a>
         </td>
         <td class="rightCell">
-          <form name="selectViewForm" method="get" action="{$selectView}">
-            <select name="viewName" onChange="submit()" >
-              <option>select a view</option>
-              <xsl:for-each select="/ucalendar/views/view">
-                <xsl:variable name="name" select="name"/>
-                <xsl:choose>
-                  <xsl:when test="name=/ucalendar/name">
-                    <option value="{$name}" selected="selected"><xsl:value-of select="name"/></option>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <option value="{$name}"><xsl:value-of select="name"/></option>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:for-each>
-            </select>
-          </form>
-          <span class="calLinks"><a href="{$selectView}">show all</a> | <a href="{$fetchPublicCalendars}">calendar list</a></span>
         </td>
       </tr>
     </table>
@@ -1042,17 +1025,29 @@
        <tr>
          <td class="leftCell">
            <xsl:choose>
-             <xsl:when test="/ucalendar/title!=''">
-               Calendar: <xsl:value-of select="/ucalendar/title"/>
-               <span class="link">[<a href="{$selectView}?calId=">clear</a>]</span>
+             <xsl:when test="/ucalendar/name!=''">
+               View:
+               <form name="selectViewForm" method="get" action="{$selectView}">
+                <select name="viewName" onChange="submit()" >
+                  <xsl:for-each select="/ucalendar/views/view">
+                    <xsl:variable name="name" select="name"/>
+                    <xsl:choose>
+                      <xsl:when test="name=/ucalendar/name">
+                        <option value="{$name}" selected="selected"><xsl:value-of select="name"/></option>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <option value="{$name}"><xsl:value-of select="name"/></option>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:for-each>
+                </select>
+              </form>
+              <span class="calLinks"><a href="{$fetchPublicCalendars}">calendar list</a></span>
              </xsl:when>
              <xsl:when test="/ucalendar/search!=''">
                Current search: <xsl:value-of select="/ucalendar/search"/>
-               <span class="link">[<a href="{$selectView}?calId=">clear</a>]</span>
+               <span class="link">[<a href="{$selectView}">default view</a>]</span>
              </xsl:when>
-             <xsl:otherwise>
-               Current calendar: All
-             </xsl:otherwise>
            </xsl:choose>
          </td>
          <td class="rightCell"><form name="searchForm" method="get" action="{$selectView}">Search: <input type="text" name="searchString" size="30" value=""/><input type="submit" value="go"/></form></td>

@@ -94,7 +94,7 @@ body {
   margin: 0px;
   padding: 0em;
   border-left: 3px solid #aaa;
-  padding: 0.1em 0em 0em 1em;
+  padding: 0.1em 0 0 0.5em;
   white-space: nowrap;
 }
 #searchBarTable .leftCell .link {
@@ -116,6 +116,7 @@ body {
   white-space: nowrap;
 }
 #searchBarTable form {
+  display: inline;
   margin: 0px 0px 1px 0px;
   padding: 0em;
 }
@@ -199,7 +200,7 @@ body {
   margin: 0em;
   width: 10em;
 }
-#navigationBarTable .calLinks {
+#searchBarTable .calLinks {
   white-space: nowrap;
 }
 #eventTable {
