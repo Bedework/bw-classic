@@ -6,7 +6,7 @@
 
   <%-- List of all calendars and subcalendars. --%>
   <calendars>
-     <bean:define id="calendar" name="calForm" property="publicCalendars"
+    <bean:define id="calendar" name="calForm" property="publicCalendars"
              toScope="session" />
     <%@include file="/docs/emitCalendar.jsp"%>
 
