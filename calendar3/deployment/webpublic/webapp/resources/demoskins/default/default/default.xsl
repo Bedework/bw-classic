@@ -338,9 +338,9 @@
               <tr>
                 <xsl:variable name="dateRangeStyle">
                   <xsl:choose>
-                    <xsl:when test="start/date = parent::day/date">
+                    <xsl:when test="substring(start/utcdate,1,8) = parent::day/date">
                       <xsl:choose>
-                        <xsl:when test="(start/hour24 = '0') and (end/hour24 = '0')">dateRangeCrossDay</xsl:when>
+                        <xsl:when test="start/allday = 'true'">dateRangeCrossDay</xsl:when>
                         <xsl:when test="start/hour24 &lt; 6">dateRangeEarlyMorning</xsl:when>
                         <xsl:when test="start/hour24 &lt; 12">dateRangeMorning</xsl:when>
                         <xsl:when test="start/hour24 &lt; 18">dateRangeAfternoon</xsl:when>
@@ -352,6 +352,11 @@
                 </xsl:variable>
                 <td class="{$dateRangeStyle}" style="text-align:right;">
                   <xsl:choose>
+                    <xsl:when test="start/allday = 'true'">
+                      <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                        All day
+                      </a>
+                    </xsl:when>
                     <xsl:when test="start/time!=''">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <xsl:choose>
@@ -365,15 +370,12 @@
                       </xsl:choose>
                       </a>
                     </xsl:when>
-                    <xsl:otherwise>
-                      <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        All day
-                      </a>
-                    </xsl:otherwise>
                   </xsl:choose>
                 </td>
                 <td class="{$dateRangeStyle}" style="text-align:center;padding:0em;">
                   <xsl:choose>
+                    <xsl:when test="end/allday = 'true'"><!-- do nothing -->
+                    </xsl:when>
                     <xsl:when test="end/time!=''">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">-</a>
                     </xsl:when>
@@ -404,7 +406,7 @@
                 </td>
                 <xsl:variable name="descriptionClass">
                   <xsl:choose>
-                    <xsl:when test="contains(summary,'CANCELLED')">description cancelled</xsl:when>
+                    <xsl:when test="priority='cancelled'">description cancelled</xsl:when>
                     <xsl:otherwise>description</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
