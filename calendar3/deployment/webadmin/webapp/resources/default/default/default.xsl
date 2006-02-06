@@ -263,10 +263,14 @@
             Edit / Delete
           </a>
         </td>
+        <!--
+        Disable direct selection by ID; we'll need to find another way
+        of quickly getting to events: search and grid views should be implemented. -->
+        <!--
         <td>
           Event ID:
           <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
-        </td>
+        </td>-->
       </tr>
       <tr>
         <th>Contacts</th>
