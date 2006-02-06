@@ -51,7 +51,7 @@
        urls; allows the application to be used without cookies or within a portal. -->
   <xsl:variable name="setup" select="/ucalendar/urlPrefixes/setup"/>
   <xsl:variable name="selectView" select="/ucalendar/urlPrefixes/selectView"/>
-  <xsl:variable name="showCals" select="/ucalendar/urlPrefixes/showCals"/>
+  <xsl:variable name="fetchPublicCalendars" select="/ucalendar/urlPrefixes/fetchPublicCalendars"/>
   <xsl:variable name="setView" select="/ucalendar/urlPrefixes/setView"/>
   <xsl:variable name="eventView" select="/ucalendar/urlPrefixes/eventView"/>
   <xsl:variable name="addEventRef" select="/ucalendar/urlPrefixes/addEventRef"/>
@@ -1031,7 +1031,7 @@
               </xsl:for-each>
             </select>
           </form>
-          <span class="calLinks"><a href="{$selectView}">show all</a> | <a href="{$showCals}">calendar list</a></span>
+          <span class="calLinks"><a href="{$selectView}">show all</a> | <a href="{$fetchPublicCalendars}">calendar list</a></span>
         </td>
       </tr>
     </table>

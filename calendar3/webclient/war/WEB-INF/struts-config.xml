@@ -60,12 +60,20 @@
       <forward name="success" path="/docs/main.jsp"/>
     </action>
 
+    <action    path="/showPublicCals"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/emitPublicCalendars.jsp" />
+    </action>
+
     <action    path="/showCals"
                type="org.bedework.webclient.BwRenderAction"
                name="calForm"
                scope="session"
                validate="false">
-      <forward name="success" path="/docs/calendars.jsp" />
+      <forward name="success" path="/docs/emitCalendars.jsp" />
     </action>
 
     <action    path="/showEventMore"
@@ -176,6 +184,22 @@
                scope="session"
                validate="false">
       <forward name="noCalDef" path="/showMain.rdo" redirect="true" />
+    </action>
+
+    <action    path="/fetchPublicCalendars"
+               type="org.bedework.webclient.BwAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showPublicCals.rdo" redirect="true" />
+    </action>
+
+    <action    path="/fetchCalendars"
+               type="org.bedework.webclient.BwAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showCals.rdo" redirect="true" />
     </action>
 
     <action    path="/selectView"
