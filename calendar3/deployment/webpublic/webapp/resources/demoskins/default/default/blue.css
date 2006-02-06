@@ -215,7 +215,8 @@ body {
   margin: 0em;
   vertical-align: top;
   padding: 0.5em 0.5em 0.2em 0.5em;
-  background-color: #EDF5F9;
+  background-color: #eee;
+  /*background-color: #EDF5F9;*/
   color: black;
 }
 #eventTable td.fieldval {
@@ -238,7 +239,8 @@ body {
 #eventTable th.fieldname {
   text-align: left;
   padding: 1em 0.5em 1em 0.5em;
-  background-color: #EDF5F9;
+  background-color: #eee;
+  /*background-color: #EDF5F9;*/
   color: black;
 }
 #eventTable th.fieldval {
