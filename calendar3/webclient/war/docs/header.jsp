@@ -126,7 +126,6 @@ try {
   <urlPrefixes>
     <%-- render urls --%>
     <initialise><genurl:rewrite forward="initialise"/></initialise>
-    <showCals><genurl:rewrite forward="showCals"/></showCals>
     <eventMore><genurl:rewrite forward="eventMore"/></eventMore>
     <initUpload><genurl:rewrite forward="initUpload"/></initUpload>
 
@@ -136,6 +135,8 @@ try {
     <setView><genurl:rewrite action="setView.do"/></setView>
     <eventView><genurl:rewrite action="eventView.do"/></eventView>
     <initEvent><genurl:rewrite action="initEvent.do"/></initEvent>
+    <fetchPublicCalendars><genurl:rewrite action="fetchPublicCalendars"/></fetchPublicCalendars>
+    <fetchCalendars><genurl:rewrite action="fetchCalendars"/></fetchCalendars>
     <addEvent><genurl:rewrite action="addEvent.do"/></addEvent>
     <addEventUsingPage><genurl:rewrite action="addEventUsingPage.do"/></addEventUsingPage>
     <editEvent><genurl:rewrite action="editEvent.do"/></editEvent>
