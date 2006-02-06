@@ -1314,7 +1314,7 @@
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="calendars">
-            <xsl:sort select="title" order="ascending" case-order="upper-first"/>
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
           </xsl:apply-templates>
         </ul>
       </xsl:if>
@@ -1601,7 +1601,7 @@
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="subscribe">
-            <xsl:sort select="title" order="ascending" case-order="upper-first"/>
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
           </xsl:apply-templates>
         </ul>
       </xsl:if>
@@ -1759,7 +1759,7 @@
         <th>Deleted?</th>
       </tr>
       <xsl:for-each select="subscription">
-        <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+        <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
         <tr>
           <td>
             <xsl:variable name="subname" select="name"/>
@@ -1816,7 +1816,7 @@
       </tr>
 
       <xsl:for-each select="view">
-        <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+        <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
         <tr>
           <td>
             <xsl:variable name="viewName" select="name"/>
@@ -1846,7 +1846,7 @@
 
           <table class="subscriptionsListSubs">
             <xsl:for-each select="/bedeworkadmin/subscriptions/subscription">
-              <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+              <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
               <xsl:if test="not(/bedeworkadmin/views/view/subscriptions/subscription/name=name)">
                 <tr>
                   <td>
@@ -1869,7 +1869,7 @@
           <h3>Active Subscriptions:</h3>
           <table class="subscriptionsListView">
             <xsl:for-each select="/bedeworkadmin/views/view/subscriptions/subscription">
-              <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+              <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
               <tr>
                 <td class="arrows">
                   <xsl:variable name="subRemoveName" select="name"/>
@@ -2012,7 +2012,7 @@
       </tr>
 
       <xsl:for-each select="bedeworkadmin/authUsers/authUser">
-        <xsl:sort select="account" order="ascending" case-order="upper-first"/>
+        <!--<xsl:sort select="account" order="ascending" case-order="upper-first"/>-->
         <tr>
           <td>
             <xsl:value-of select="account"/>
@@ -2223,7 +2223,7 @@
         <th></th>
       </tr>
       <xsl:for-each select="/bedeworkadmin/groups/group">
-        <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+        <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
         <xsl:variable name="groupName" select="name"/>
         <tr>
           <td>
@@ -2261,7 +2261,7 @@
       </tr>
 
       <xsl:for-each select="group">
-        <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+        <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
         <tr>
           <td>
             <xsl:variable name="admGroupName" select="name"/>
@@ -2383,7 +2383,7 @@
         <td>
           <table id="memberAccountList">
             <xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
-              <xsl:sort select="account" order="ascending" case-order="upper-first"/>
+              <!--<xsl:sort select="account" order="ascending" case-order="upper-first"/>-->
               <tr>
                 <td>
                   <xsl:choose>

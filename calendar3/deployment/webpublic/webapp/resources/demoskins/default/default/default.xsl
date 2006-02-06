@@ -659,7 +659,7 @@
     <h2><a href="{$selectView}?calId={$id}"><xsl:value-of select="title"/></a></h2>
     <ul>
       <xsl:for-each select="calendar">
-        <xsl:sort select="title" order="ascending" case-order="upper-first"/>
+        <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
         <xsl:variable name="id" select="id"/>
         <li><a href="{$selectView}?calId={$id}"><xsl:value-of select="title"/></a></li>
       </xsl:for-each>
