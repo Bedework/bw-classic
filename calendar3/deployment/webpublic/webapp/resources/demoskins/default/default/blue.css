@@ -522,6 +522,7 @@ a.gridAdd {
 }
 #yearCalendarTable table.yearViewMonthTable {
   margin: 0em  1em 0.5em 1em;
+  border: 1px solid #ddd;
 }
 #yearCalendarTable table.yearViewMonthTable td {
   text-align: center;

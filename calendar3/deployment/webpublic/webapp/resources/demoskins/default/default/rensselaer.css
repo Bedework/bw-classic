@@ -674,6 +674,12 @@ a.gridAdd {
   background-color: #ddd;
   padding-left: 0;
 }
+#calendarTree li.folder {
+  list-style-image: url(../../resources/catIcon.gif);
+}
+#calendarTree li.calendar {
+  list-style-image: url(../../resources/calIcon-sm.gif);
+}
 .noEventsCell {
   padding: 1em;
 }

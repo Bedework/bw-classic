@@ -929,25 +929,35 @@
       </tr>
       <tr>
         <td class="leftCell">
-          <xsl:apply-templates select="calendar/calendar[position() &lt;= floor($topLevelCalCount div 2)]"/>
+          <ul class="calendarTree">
+            <xsl:apply-templates select="calendar/calendar[position() &lt;= floor($topLevelCalCount div 2)]" mode="calTree"/>
+          </ul>
         </td>
         <td>
-          <xsl:apply-templates select="calendar/calendar[position() &gt; floor($topLevelCalCount div 2)]"/>
+          <ul class="calendarTree">
+            <xsl:apply-templates select="calendar/calendar[position() &gt; floor($topLevelCalCount div 2)]" mode="calTree"/>
+          </ul>
         </td>
       </tr>
     </table>
   </xsl:template>
 
-  <xsl:template match="calendar">
+  <xsl:template match="calendar" mode="calTree">
+    <xsl:variable name="itemClass">
+      <xsl:choose>
+        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:otherwise>calendar</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="url" select="url"/>
-    <h2><a href="{$setSelection}?calUrl={$url}"><xsl:value-of select="name"/></a></h2>
-    <ul>
-      <xsl:for-each select="calendar">
-        <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
-        <xsl:variable name="url" select="url"/>
-        <li><a href="{$setSelection}?calUrl={$url}"><xsl:value-of select="name"/></a></li>
-      </xsl:for-each>
-    </ul>
+    <li class="{$itemClass}">
+      <a href="{$setSelection}?calUrl={$url}"><xsl:value-of select="name"/></a>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="calTree"/>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <xsl:template name="footer">
