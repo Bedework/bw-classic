@@ -131,7 +131,7 @@ try {
 
     <%-- action urls --%>
     <setup><genurl:rewrite action="setup.do"/></setup>
-    <selectView><genurl:rewrite action="selectView.do"/></selectView>
+    <selectViewPeriod><genurl:rewrite action="selectViewPeriod.do"/></selectViewPeriod>
     <setView><genurl:rewrite action="setView.do"/></setView>
     <eventView><genurl:rewrite action="eventView.do"/></eventView>
     <initEvent><genurl:rewrite action="initEvent.do"/></initEvent>
