@@ -73,7 +73,7 @@ try {
     </logic:iterate>
     <start><bean:write name="calForm" property="viewStartDate.ampm"/></start>
   </ampmvalues>
-</ucalendar>
+</bedework>
 <%
 } catch (Throwable t) {
   t.printStackTrace();

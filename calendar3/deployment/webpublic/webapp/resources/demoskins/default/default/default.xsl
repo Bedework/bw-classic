@@ -41,29 +41,29 @@
        this variable is here for your convenience if you choose to
        reference it explicitly.  It is not used in this stylesheet, however,
        and can be safely removed if you so choose. -->
-  <xsl:variable name="appRoot" select="/ucalendar/approot"/>
+  <xsl:variable name="appRoot" select="/bedework/approot"/>
 
   <!-- URL of html resources (images, css, other html); by default this is
        set to the application root -->
-  <xsl:variable name="resourcesRoot" select="/ucalendar/approot"/>
+  <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
 
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal. -->
-  <xsl:variable name="setup" select="/ucalendar/urlPrefixes/setup"/>
-  <xsl:variable name="setSelection" select="/ucalendar/urlPrefixes/setSelection"/>
-  <xsl:variable name="fetchPublicCalendars" select="/ucalendar/urlPrefixes/fetchPublicCalendars"/>
-  <xsl:variable name="setViewPeriod" select="/ucalendar/urlPrefixes/setViewPeriod"/>
-  <xsl:variable name="eventView" select="/ucalendar/urlPrefixes/eventView"/>
-  <xsl:variable name="addEventRef" select="/ucalendar/urlPrefixes/addEventRef"/>
-  <xsl:variable name="export" select="/ucalendar/urlPrefixes/export"/>
-  <xsl:variable name="mailEvent" select="/ucalendar/urlPrefixes/mailEvent"/>
-  <xsl:variable name="showPage" select="/ucalendar/urlPrefixes/showPage"/>
+  <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
+  <xsl:variable name="setSelection" select="/bedework/urlPrefixes/setSelection"/>
+  <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
+  <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/setViewPeriod"/>
+  <xsl:variable name="eventView" select="/bedework/urlPrefixes/eventView"/>
+  <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
+  <xsl:variable name="export" select="/bedework/urlPrefixes/export"/>
+  <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
+  <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
 
   <!-- Other generally useful global variables -->
   <xsl:variable name="privateCal">/ucal</xsl:variable>
-  <xsl:variable name="prevdate" select="/ucalendar/previousdate"/>
-  <xsl:variable name="nextdate" select="/ucalendar/nextdate"/>
-  <xsl:variable name="curdate" select="/ucalendar/currentdate/date"/>
+  <xsl:variable name="prevdate" select="/bedework/previousdate"/>
+  <xsl:variable name="nextdate" select="/bedework/nextdate"/>
+  <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
   <xsl:variable name="skin">default</xsl:variable>
 
   <!--========= BEGIN DEPRECATED VARIABLES =========-->
@@ -71,7 +71,7 @@
        dummy action (DUMMYACTION.do) and all container or portal generated
        strings; the latter are needed for proper behavior in portal environments
        or if users have cookies turned off, etc.
-  <xsl:variable name="urlPattern" select="/ucalendar/urlpattern"/> -->
+  <xsl:variable name="urlPattern" select="/bedework/urlpattern"/> -->
 
   <!-- All values that follow DUMMYACTION.do in the urlPattern; may include
        session ids (before the query string), a query string, etc.
@@ -93,7 +93,7 @@
   <!-- URL of the web application - includes host, port, and web context.  This
        value was originally prepended to all URLs generated in this stylesheet
        but will probably be deprecated in favor of relative references
-  <xsl:variable name="urlPrefix" select="/ucalendar/urlprefix"/>  -->
+  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>  -->
   <!--========= END DEPRECATED VARIABLES =========-->
 
 
@@ -103,10 +103,10 @@
       <head>
         <title>Calendar of Events</title>
         <xsl:choose>
-          <xsl:when test="/ucalendar/appvar[key='style']/value='red'">
+          <xsl:when test="/bedework/appvar[key='style']/value='red'">
             <link rel="stylesheet" href="{$resourcesRoot}/default/default/red.css"/>
           </xsl:when>
-          <xsl:when test="/ucalendar/appvar[key='style']/value='green'">
+          <xsl:when test="/bedework/appvar[key='style']/value='green'">
             <link rel="stylesheet" href="{$resourcesRoot}/default/default/green.css"/>
           </xsl:when>
           <xsl:otherwise>
@@ -117,39 +117,39 @@
       </head>
       <body>
         <xsl:call-template name="headBar"/>
-        <xsl:if test="/ucalendar/error">
+        <xsl:if test="/bedework/error">
           <div id="errors">
-            <p><xsl:apply-templates select="/ucalendar/error"/></p>
+            <p><xsl:apply-templates select="/bedework/error"/></p>
           </div>
         </xsl:if>
         <!-- <xsl:call-template name="alerts"/> -->
         <xsl:call-template name="tabs"/>
         <xsl:choose>
-          <xsl:when test="/ucalendar/page='event'">
+          <xsl:when test="/bedework/page='event'">
             <!-- show an event -->
-            <xsl:apply-templates select="/ucalendar/event"/>
+            <xsl:apply-templates select="/bedework/event"/>
           </xsl:when>
-          <xsl:when test="/ucalendar/page='calendars'">
+          <xsl:when test="/bedework/page='calendars'">
             <!-- show a list of all calendars -->
-            <xsl:apply-templates select="/ucalendar/calendars"/>
+            <xsl:apply-templates select="/bedework/calendars"/>
           </xsl:when>
-          <xsl:when test="/ucalendar/page='emailOptions'">
+          <xsl:when test="/bedework/page='emailOptions'">
             <xsl:call-template name="emailOptions" />
           </xsl:when>
           <xsl:otherwise>
             <!-- otherwise, show the eventsCalendar -->
             <xsl:call-template name="navigation"/>
-            <xsl:if test="/ucalendar/periodname!='Year'">
+            <xsl:if test="/bedework/periodname!='Year'">
               <xsl:call-template name="searchBar"/>
             </xsl:if>
             <!-- main eventCalendar content -->
             <xsl:choose>
-              <xsl:when test="/ucalendar/periodname='Day'">
+              <xsl:when test="/bedework/periodname='Day'">
                 <xsl:call-template name="listView"/>
               </xsl:when>
-              <xsl:when test="/ucalendar/periodname='Week' or /ucalendar/periodname=''">
+              <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
                 <xsl:choose>
-                  <xsl:when test="/ucalendar/appvar[key='weekViewMode']/value='list'">
+                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
                     <xsl:call-template name="listView"/>
                   </xsl:when>
                   <xsl:otherwise>
@@ -157,9 +157,9 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
-              <xsl:when test="/ucalendar/periodname='Month'">
+              <xsl:when test="/bedework/periodname='Month'">
                 <xsl:choose>
-                  <xsl:when test="/ucalendar/appvar[key='monthViewMode']/value='list'">
+                  <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
                     <xsl:call-template name="listView"/>
                   </xsl:when>
                   <xsl:otherwise>
@@ -300,27 +300,27 @@
   <xsl:template name="listView">
     <table id="listTable" border="0" cellpadding="0" cellspacing="0">
       <xsl:choose>
-        <xsl:when test="count(/ucalendar/eventscalendar/year/month/week/day/event)=0">
+        <xsl:when test="count(/bedework/eventscalendar/year/month/week/day/event)=0">
           <tr>
             <td class="noEventsCell">
               There are no events posted
               <xsl:choose>
-                <xsl:when test="/ucalendar/periodname='Day'">
-                  today<xsl:if test="/ucalendar/title!=''"> for <strong><xsl:value-of select="/ucalendar/title"/></strong></xsl:if><xsl:if test="/ucalendar/search!=''"> for search term <strong>"<xsl:value-of select="/ucalendar/search"/>"</strong></xsl:if>.
+                <xsl:when test="/bedework/periodname='Day'">
+                  today<xsl:if test="/bedework/title!=''"> for <strong><xsl:value-of select="/bedework/title"/></strong></xsl:if><xsl:if test="/bedework/search!=''"> for search term <strong>"<xsl:value-of select="/bedework/search"/>"</strong></xsl:if>.
                 </xsl:when>
-                <xsl:when test="/ucalendar/periodname='Month'">
-                  this month<xsl:if test="/ucalendar/title!=''"> for <strong><xsl:value-of select="/ucalendar/title"/></strong></xsl:if><xsl:if test="/ucalendar/search!=''"> for search term <strong>"<xsl:value-of select="/ucalendar/search"/>"</strong></xsl:if>.
+                <xsl:when test="/bedework/periodname='Month'">
+                  this month<xsl:if test="/bedework/title!=''"> for <strong><xsl:value-of select="/bedework/title"/></strong></xsl:if><xsl:if test="/bedework/search!=''"> for search term <strong>"<xsl:value-of select="/bedework/search"/>"</strong></xsl:if>.
                 </xsl:when>
                 <xsl:otherwise>
-                  this week<xsl:if test="/ucalendar/title!=''"> for <strong><xsl:value-of select="/ucalendar/title"/></strong></xsl:if><xsl:if test="/ucalendar/search!=''"> for search term <strong>"<xsl:value-of select="/ucalendar/search"/>"</strong></xsl:if>.
+                  this week<xsl:if test="/bedework/title!=''"> for <strong><xsl:value-of select="/bedework/title"/></strong></xsl:if><xsl:if test="/bedework/search!=''"> for search term <strong>"<xsl:value-of select="/bedework/search"/>"</strong></xsl:if>.
                 </xsl:otherwise>
               </xsl:choose>
             </td>
           </tr>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:for-each select="/ucalendar/eventscalendar/year/month/week/day[count(event)!=0]">
-            <xsl:if test="/ucalendar/periodname='Week' or /ucalendar/periodname='Month' or /ucalendar/periodname=''">
+          <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[count(event)!=0]">
+            <xsl:if test="/bedework/periodname='Week' or /bedework/periodname='Month' or /bedework/periodname=''">
               <tr>
                 <td colspan="5" class="dateRow">
                    <xsl:variable name="date" select="date"/>
@@ -412,7 +412,7 @@
                 </xsl:variable>
                 <td class="{$descriptionClass}">
                   <xsl:choose>
-                    <xsl:when test="/ucalendar/appvar[key='summaryMode']/value='details'">
+                    <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <strong><xsl:value-of select="summary"/>: </strong>
                         <xsl:value-of select="description"/>&#160;
@@ -442,7 +442,7 @@
                   </xsl:choose>
                 </td>
                 <td class="icons">
-                  <variable name="confId" select="/ucalendar/confirmationid"/>
+                  <variable name="confId" select="/bedework/confirmationid"/>
                   <a href="{$privateCal}/addEventRef.do?eventId={$id}" title="Add event to MyCalendar" target="myCalendar">
                     <img class="addref" src="{$resourcesRoot}/images/demo/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
                   </a>
@@ -463,12 +463,12 @@
   <xsl:template name="weekView">
     <table id="monthCalendarTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <xsl:for-each select="/ucalendar/daynames/val">
+        <xsl:for-each select="/bedework/daynames/val">
           <th class="dayHeading"><xsl:value-of select="."/></th>
         </xsl:for-each>
       </tr>
       <tr>
-        <xsl:for-each select="/ucalendar/eventscalendar/year/month/week/day">
+        <xsl:for-each select="/bedework/eventscalendar/year/month/week/day">
           <xsl:variable name="dayPos" select="position()"/>
           <xsl:if test="filler='false'">
             <td>
@@ -492,11 +492,11 @@
   <xsl:template name="monthView">
     <table id="monthCalendarTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <xsl:for-each select="/ucalendar/daynames/val">
+        <xsl:for-each select="/bedework/daynames/val">
           <th class="dayHeading"><xsl:value-of select="."/></th>
         </xsl:for-each>
       </tr>
-      <xsl:for-each select="/ucalendar/eventscalendar/year/month/week">
+      <xsl:for-each select="/bedework/eventscalendar/year/month/week">
         <tr>
           <xsl:for-each select="day">
            <xsl:variable name="dayPos" select="position()"/>
@@ -532,7 +532,7 @@
     <xsl:variable name="eventClass">
       <xsl:choose>
         <!-- Special styles for the month grid -->
-        <xsl:when test="contains(summary,'CANCELLED')">eventCancelled</xsl:when>
+        <xsl:when test="status='cancelled'">eventCancelled</xsl:when>
         <xsl:when test="calendar/name='Holidays'">holiday</xsl:when>
         <!-- Alternating colors for all standard events -->
         <xsl:when test="position() mod 2 = 1">eventLinkA</xsl:when>
@@ -570,16 +570,16 @@
   <xsl:template name="yearView">
     <table id="yearCalendarTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <xsl:apply-templates select="/ucalendar/eventscalendar/year/month[position() &lt;= 3]"/>
+        <xsl:apply-templates select="/bedework/eventscalendar/year/month[position() &lt;= 3]"/>
       </tr>
       <tr>
-        <xsl:apply-templates select="/ucalendar/eventscalendar/year/month[(position() &gt; 3) and (position() &lt;= 6)]"/>
+        <xsl:apply-templates select="/bedework/eventscalendar/year/month[(position() &gt; 3) and (position() &lt;= 6)]"/>
       </tr>
       <tr>
-        <xsl:apply-templates select="/ucalendar/eventscalendar/year/month[(position() &gt; 6) and (position() &lt;= 9)]"/>
+        <xsl:apply-templates select="/bedework/eventscalendar/year/month[(position() &gt; 6) and (position() &lt;= 9)]"/>
       </tr>
       <tr>
-        <xsl:apply-templates select="/ucalendar/eventscalendar/year/month[position() &gt; 9]"/>
+        <xsl:apply-templates select="/bedework/eventscalendar/year/month[position() &gt; 9]"/>
       </tr>
     </table>
   </xsl:template>
@@ -598,7 +598,7 @@
         </tr>
         <tr>
           <th>&#160;</th>
-          <xsl:for-each select="/ucalendar/shortdaynames/val">
+          <xsl:for-each select="/bedework/shortdaynames/val">
             <th><xsl:value-of select="."/></th>
           </xsl:for-each>
         </tr>
@@ -633,7 +633,7 @@
 
   <!--==== CALENDARS PAGE ====-->
   <xsl:template match="calendars">
-    <xsl:variable name="topLevelCalCount" select="count(/ucalendar/calendars/calendar/calendar)"/>
+    <xsl:variable name="topLevelCalCount" select="count(/bedework/calendars/calendar/calendar)"/>
     <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="2">
@@ -682,7 +682,7 @@
             Email Address:
           </td>
           <td align="left">
-            <xsl:copy-of select="/ucalendar/emailoptionsform/form/email/*"/>
+            <xsl:copy-of select="/bedework/emailoptionsform/form/email/*"/>
           </td>
         </tr>
         <tr>
@@ -690,7 +690,7 @@
             Subject:
           </td>
           <td align="left">
-            <xsl:copy-of select="/ucalendar/emailoptionsform/form/subject/*"/>
+            <xsl:copy-of select="/bedework/emailoptionsform/form/subject/*"/>
           </td>
         </tr>
         <tr>
@@ -743,10 +743,10 @@
       <tr>
         <td width="50" class="imgCell"><img alt="*" src="{$resourcesRoot}/images/demo/spacer.gif" width="50" height="14" border="0"/></td>
         <td align="center" width="100%">
-          <xsl:value-of select="/ucalendar/firstday/longdate"/>
-          <xsl:if test="/ucalendar/periodname!='Day'">
+          <xsl:value-of select="/bedework/firstday/longdate"/>
+          <xsl:if test="/bedework/periodname!='Day'">
             -
-            <xsl:value-of select="/ucalendar/lastday/longdate"/>
+            <xsl:value-of select="/bedework/lastday/longdate"/>
           </xsl:if>
         </td>
         <td width="50" class="imgCell">
@@ -756,12 +756,12 @@
           <a class="rss" href="{$setSelection}?calId=&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
           <xsl:variable name="calcategory">
             <xsl:choose>
-              <xsl:when test="/ucalendar/title=''">all</xsl:when>
-              <xsl:otherwise><xsl:value-of select="translate(/ucalendar/title,' ','')"/></xsl:otherwise>
+              <xsl:when test="/bedework/title=''">all</xsl:when>
+              <xsl:otherwise><xsl:value-of select="translate(/bedework/title,' ','')"/></xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
           <!--<xsl:variable name="icalName"
-                        select="concat('ucal',$curdate,/ucalendar/periodname,$calcategory,'.ics')"/>
+                        select="concat('ucal',$curdate,/bedework/periodname,$calcategory,'.ics')"/>
           <a class="rss" href="{$export}?nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$icalName}" title="Download all events currently displayed as iCal - for multiple events, save to disk and import">iCal</a>
           -->
         </td>
@@ -771,12 +771,12 @@
 
   <xsl:template name="tabs">
     <xsl:choose>
-      <xsl:when test="/ucalendar/page='eventscalendar'">
+      <xsl:when test="/bedework/page='eventscalendar'">
         <table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
           <tr>
             <td>
               <xsl:choose>
-                <xsl:when test="/ucalendar/periodname='Day'">
+                <xsl:when test="/bedework/periodname='Day'">
                   <a href="{$setViewPeriod}?viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-day-on.gif" width="91" height="20" border="0" alt="DAY"/></a>
                 </xsl:when>
                 <xsl:otherwise>
@@ -786,7 +786,7 @@
             </td>
             <td>
               <xsl:choose>
-                <xsl:when test="/ucalendar/periodname='Week' or /ucalendar/periodname=''">
+                <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
                   <a href="{$setViewPeriod}?viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-week-on.gif" width="92" height="20" border="0" alt="WEEK"/></a>
                  </xsl:when>
                 <xsl:otherwise>
@@ -796,7 +796,7 @@
             </td>
             <td>
               <xsl:choose>
-                <xsl:when test="/ucalendar/periodname='Month'">
+                <xsl:when test="/bedework/periodname='Month'">
                   <a href="{$setViewPeriod}?viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-month-on.gif" width="90" height="20" border="0" alt="MONTH"/></a>
                 </xsl:when>
                 <xsl:otherwise>
@@ -806,7 +806,7 @@
             </td>
             <td>
               <xsl:choose>
-                <xsl:when test="/ucalendar/periodname='Year'">
+                <xsl:when test="/bedework/periodname='Year'">
                   <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
                 </xsl:when>
                 <xsl:otherwise>
@@ -820,15 +820,15 @@
             </td>
             <td>
               <xsl:choose>
-                <xsl:when test="/ucalendar/periodname='Day'">
+                <xsl:when test="/bedework/periodname='Day'">
                   <img src="{$resourcesRoot}/images/demo/std-button-listview-off.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
                 </xsl:when>
-                <xsl:when test="/ucalendar/periodname='Year'">
+                <xsl:when test="/bedework/periodname='Year'">
                   <img src="{$resourcesRoot}/images/demo/std-button-calview-off.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
                 </xsl:when>
-                <xsl:when test="/ucalendar/periodname='Month'">
+                <xsl:when test="/bedework/periodname='Month'">
                   <xsl:choose>
-                    <xsl:when test="/ucalendar/appvar[key='monthViewMode']/value='list'">
+                    <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
                       <a href="{$setup}?setappvar=monthViewMode(cal)" title="toggle list/calendar view">
                         <img src="{$resourcesRoot}/images/demo/std-button-calview.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
                       </a>
@@ -842,7 +842,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:choose>
-                    <xsl:when test="/ucalendar/appvar[key='weekViewMode']/value='list'">
+                    <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
                       <a href="{$setup}?setappvar=weekViewMode(cal)" title="toggle list/calendar view">
                         <img src="{$resourcesRoot}/images/demo/std-button-calview.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
                       </a>
@@ -858,15 +858,15 @@
             </td>
             <td class="rightCell">
               <xsl:choose>
-                <xsl:when test="/ucalendar/periodname='Year' or
-                                (/ucalendar/periodname='Month' and
-                                (/ucalendar/appvar[key='monthViewMode']/value='cal' or
-                                 count(/ucalendar/appvar[key='monthViewMode'])=0)) or
-                                (/ucalendar/periodname='Week' and
-                                (/ucalendar/appvar[key='weekViewMode']/value='cal' or
-                                 count(/ucalendar/appvar[key='weekViewMode'])=0))">
+                <xsl:when test="/bedework/periodname='Year' or
+                                (/bedework/periodname='Month' and
+                                (/bedework/appvar[key='monthViewMode']/value='cal' or
+                                 count(/bedework/appvar[key='monthViewMode'])=0)) or
+                                (/bedework/periodname='Week' and
+                                (/bedework/appvar[key='weekViewMode']/value='cal' or
+                                 count(/bedework/appvar[key='weekViewMode'])=0))">
                   <xsl:choose>
-                    <xsl:when test="/ucalendar/appvar[key='summaryMode']/value='details'">
+                    <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <img src="{$resourcesRoot}/images/demo/std-button-summary-off.gif" width="67" height="20" border="0" alt="only summaries of events supported in this view"/>
                     </xsl:when>
                     <xsl:otherwise>
@@ -876,7 +876,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:choose>
-                    <xsl:when test="/ucalendar/appvar[key='summaryMode']/value='details'">
+                    <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$setup}?setappvar=summaryMode(summary)" title="toggle summary/detailed view">
                         <img src="{$resourcesRoot}/images/demo/std-button-summary.gif" width="67" height="20" border="0" alt="toggle summary/detailed view"/>
                       </a>
@@ -937,17 +937,17 @@
           <a href="{$setViewPeriod}?date={$prevdate}"><img src="{$resourcesRoot}/images/demo/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
           <a href="{$setViewPeriod}?date={$nextdate}"><img src="{$resourcesRoot}/images/demo/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
           <xsl:choose>
-            <xsl:when test="/ucalendar/periodname='Day'">
-              <xsl:value-of select="substring(/ucalendar/eventscalendar/year/month/week/day/name,1,3)"/>, <xsl:value-of select="/ucalendar/eventscalendar/year/month/shortname"/>&#160;<xsl:value-of select="/ucalendar/eventscalendar/year/month/week/day/value"/>, <xsl:value-of select="/ucalendar/eventscalendar/year/value"/>
+            <xsl:when test="/bedework/periodname='Day'">
+              <xsl:value-of select="substring(/bedework/eventscalendar/year/month/week/day/name,1,3)"/>, <xsl:value-of select="/bedework/eventscalendar/year/month/shortname"/>&#160;<xsl:value-of select="/bedework/eventscalendar/year/month/week/day/value"/>, <xsl:value-of select="/bedework/eventscalendar/year/value"/>
             </xsl:when>
-            <xsl:when test="/ucalendar/periodname='Week' or /ucalendar/periodname=''">
-              Week of <xsl:value-of select="/ucalendar/eventscalendar/year/month/shortname"/>&#160;<xsl:value-of select="/ucalendar/eventscalendar/year/month/week/day/value"/>, <xsl:value-of select="/ucalendar/eventscalendar/year/value"/>
+            <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
+              Week of <xsl:value-of select="/bedework/eventscalendar/year/month/shortname"/>&#160;<xsl:value-of select="/bedework/eventscalendar/year/month/week/day/value"/>, <xsl:value-of select="/bedework/eventscalendar/year/value"/>
             </xsl:when>
-            <xsl:when test="/ucalendar/periodname='Month'">
-              <xsl:value-of select="/ucalendar/eventscalendar/year/month/longname"/>, <xsl:value-of select="/ucalendar/eventscalendar/year/value"/>
+            <xsl:when test="/bedework/periodname='Month'">
+              <xsl:value-of select="/bedework/eventscalendar/year/month/longname"/>, <xsl:value-of select="/bedework/eventscalendar/year/value"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="/ucalendar/eventscalendar/year/value"/>
+              <xsl:value-of select="/bedework/eventscalendar/year/value"/>
             </xsl:otherwise>
           </xsl:choose>
         </td>
@@ -955,42 +955,42 @@
           <form name="calForm" method="get" action="{$setViewPeriod}">
              <table border="0" cellpadding="0" cellspacing="0">
               <tr>
-                <xsl:if test="/ucalendar/periodname!='Year'">
+                <xsl:if test="/bedework/periodname!='Year'">
                   <td>
                     <select name="viewStartDate.month">
-                      <xsl:for-each select="/ucalendar/monthvalues/val">
+                      <xsl:for-each select="/bedework/monthvalues/val">
                         <xsl:variable name="temp" select="."/>
                         <xsl:variable name="pos" select="position()"/>
                         <xsl:choose>
-                          <xsl:when test="/ucalendar/monthvalues[start=$temp]">
+                          <xsl:when test="/bedework/monthvalues[start=$temp]">
                             <option value="{$temp}" selected="selected">
-                              <xsl:value-of select="/ucalendar/monthlabels/val[position()=$pos]"/>
+                              <xsl:value-of select="/bedework/monthlabels/val[position()=$pos]"/>
                             </option>
                           </xsl:when>
                           <xsl:otherwise>
                             <option value="{$temp}">
-                              <xsl:value-of select="/ucalendar/monthlabels/val[position()=$pos]"/>
+                              <xsl:value-of select="/bedework/monthlabels/val[position()=$pos]"/>
                             </option>
                           </xsl:otherwise>
                         </xsl:choose>
                       </xsl:for-each>
                     </select>
                   </td>
-                  <xsl:if test="/ucalendar/periodname!='Month'">
+                  <xsl:if test="/bedework/periodname!='Month'">
                     <td>
                       <select name="viewStartDate.day">
-                        <xsl:for-each select="/ucalendar/dayvalues/val">
+                        <xsl:for-each select="/bedework/dayvalues/val">
                           <xsl:variable name="temp" select="."/>
                           <xsl:variable name="pos" select="position()"/>
                           <xsl:choose>
-                            <xsl:when test="/ucalendar/dayvalues[start=$temp]">
+                            <xsl:when test="/bedework/dayvalues[start=$temp]">
                               <option value="{$temp}" selected="selected">
-                                <xsl:value-of select="/ucalendar/daylabels/val[position()=$pos]"/>
+                                <xsl:value-of select="/bedework/daylabels/val[position()=$pos]"/>
                               </option>
                             </xsl:when>
                             <xsl:otherwise>
                               <option value="{$temp}">
-                                <xsl:value-of select="/ucalendar/daylabels/val[position()=$pos]"/>
+                                <xsl:value-of select="/bedework/daylabels/val[position()=$pos]"/>
                               </option>
                             </xsl:otherwise>
                           </xsl:choose>
@@ -1000,7 +1000,7 @@
                   </xsl:if>
                 </xsl:if>
                 <td>
-                  <xsl:variable name="temp" select="/ucalendar/yearvalues/start"/>
+                  <xsl:variable name="temp" select="/bedework/yearvalues/start"/>
                   <input type="text" name="viewStartDate.year" maxlength="4" size="4" value="{$temp}"/>
                 </td>
                 <td>
@@ -1026,14 +1026,14 @@
        <tr>
          <td class="leftCell">
            <xsl:choose>
-             <xsl:when test="/ucalendar/name!=''">
+             <xsl:when test="/bedework/name!=''">
                View:
                <form name="selectViewForm" method="get" action="{$setSelection}">
                 <select name="viewName" onChange="submit()" >
-                  <xsl:for-each select="/ucalendar/views/view">
+                  <xsl:for-each select="/bedework/views/view">
                     <xsl:variable name="name" select="name"/>
                     <xsl:choose>
-                      <xsl:when test="name=/ucalendar/name">
+                      <xsl:when test="name=/bedework/name">
                         <option value="{$name}" selected="selected"><xsl:value-of select="name"/></option>
                       </xsl:when>
                       <xsl:otherwise>
@@ -1045,8 +1045,8 @@
               </form>
               <span class="calLinks"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">calendar list</a></span>
              </xsl:when>
-             <xsl:when test="/ucalendar/search!=''">
-               Current search: <xsl:value-of select="/ucalendar/search"/>
+             <xsl:when test="/bedework/search!=''">
+               Current search: <xsl:value-of select="/bedework/search"/>
                <span class="link">[<a href="{$setSelection}">default view</a>]</span>
              </xsl:when>
            </xsl:choose>

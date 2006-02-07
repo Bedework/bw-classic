@@ -10,7 +10,7 @@
 try {
 %>
 
-<ucalendar>
+<bedework>
   <now><%-- The actual date right "now" - this may not be the same as currentdate --%>
     <date><bean:write name="calForm" property="today.dateDigits"/></date><%--
       Value: YYYYMMDD --%>
@@ -131,8 +131,8 @@ try {
 
     <%-- action urls --%>
     <setup><genurl:rewrite action="setup.do"/></setup>
-    <selectViewPeriod><genurl:rewrite action="selectViewPeriod.do"/></selectViewPeriod>
-    <setView><genurl:rewrite action="setView.do"/></setView>
+    <setSelection><genurl:rewrite action="setSelection.do"/></setSelection>
+    <setViewPeriod><genurl:rewrite action="setViewPeriod.do"/></setViewPeriod>
     <eventView><genurl:rewrite action="eventView.do"/></eventView>
     <initEvent><genurl:rewrite action="initEvent.do"/></initEvent>
     <fetchPublicCalendars><genurl:rewrite action="fetchPublicCalendars"/></fetchPublicCalendars>
