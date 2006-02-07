@@ -11,20 +11,20 @@
    <xsl:template match="/">
      <rss version="2.0">
       <channel>
-        <title>Rensselaer <xsl:value-of select="/ucalendar/title"/></title>
-        <link><xsl:value-of select="/ucalendar/urlprefix"/>/selectCalendar.do?calId=170</link>
-        <description>Rensselaer <xsl:value-of select="/ucalendar/title"/> Events</description>
+        <title>Rensselaer <xsl:value-of select="/bedework/title"/></title>
+        <link><xsl:value-of select="/bedework/urlprefix"/>/selectCalendar.do?calId=170</link>
+        <description>Rensselaer <xsl:value-of select="/bedework/title"/> Events</description>
         <language>en-us</language>
         <copyright>Copyright 2003, Rensselaer Polytechnic Institute</copyright>
         <managingEditor>wentod@rpi.edu, Deb Wentorf</managingEditor>
-        <xsl:apply-templates select="/ucalendar//event"/>
+        <xsl:apply-templates select="/bedework//event"/>
       </channel>
     </rss>
   </xsl:template>
   <xsl:template match="event">
     <item>
       <title><xsl:value-of select="summary"/> - <xsl:value-of select="substring(start/monthname,1,3)"/><xsl:text> </xsl:text><xsl:value-of select="start/day"/></title>
-      <link><xsl:value-of select="/ucalendar/urlprefix"/>/eventView.do?eventId=<xsl:value-of select="id"/></link>
+      <link><xsl:value-of select="/bedework/urlprefix"/>/eventView.do?eventId=<xsl:value-of select="id"/></link>
       <pubDate><xsl:value-of select="substring(start/dayname,1,3)"/>,
                <xsl:value-of select="start/twodigitday"/><xsl:text> </xsl:text>
                <xsl:value-of select="substring(start/monthname,1,3)"/><xsl:text> </xsl:text>
