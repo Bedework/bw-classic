@@ -97,7 +97,7 @@ import org.apache.struts.upload.FormFile;
  *
  * @author  Mike Douglass     douglm@rpi.edu
  */
-public class BwActionFormBase extends UtilActionForm {
+public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   /** This object will be set up appropriately for the kind of client,
    * e.g. admin, guest etc.
    */
@@ -283,14 +283,21 @@ public class BwActionFormBase extends UtilActionForm {
   private Calendar vcal;
 
   /* ....................................................................
+   *                       Selection type
+   * .................................................................... */
+
+  // ENUM
+  private String selectionType = selectionTypeView;
+
+  /* ....................................................................
    *                       View period
    * .................................................................... */
 
   private static HashMap viewTypeMap = new HashMap();
 
   static {
-    for (int i = 0; i < BedeworkDefs.viewTypeNames.length; i++) {
-      viewTypeMap.put(BedeworkDefs.viewTypeNames[i], new Integer(i));
+    for (int i = 0; i < BedeworkDefs.viewPeriodNames.length; i++) {
+      viewTypeMap.put(BedeworkDefs.viewPeriodNames[i], new Integer(i));
     }
   }
 
@@ -907,7 +914,7 @@ public class BwActionFormBase extends UtilActionForm {
    * @return names
    */
   public String[] getViewTypeNames() {
-    return BedeworkDefs.viewTypeNames;
+    return BedeworkDefs.viewPeriodNames;
   }
 
   /**
@@ -915,7 +922,7 @@ public class BwActionFormBase extends UtilActionForm {
    * @return view name
    */
   public String getViewTypeName(int i) {
-    return BedeworkDefs.viewTypeNames[i];
+    return BedeworkDefs.viewPeriodNames[i];
   }
 
   /** Index of the view type set when the page was last generated
@@ -989,7 +996,7 @@ public class BwActionFormBase extends UtilActionForm {
       }
     }
 
-    return BedeworkDefs.viewTypeNames[vt];
+    return BedeworkDefs.viewPeriodNames[vt];
   }
 
   /**
@@ -1061,8 +1068,8 @@ public class BwActionFormBase extends UtilActionForm {
 
         curViewPeriod = -1;
 
-        for (int i = 1; i < BedeworkDefs.viewTypeNames.length; i++) {
-          if (BedeworkDefs.viewTypeNames[i].startsWith(vn)) {
+        for (int i = 1; i < BedeworkDefs.viewPeriodNames.length; i++) {
+          if (BedeworkDefs.viewPeriodNames[i].startsWith(vn)) {
             curViewPeriod = i;
             break;
           }
@@ -1191,6 +1198,24 @@ public class BwActionFormBase extends UtilActionForm {
    */
   public boolean getAddingSubscription() {
     return addingSubscription;
+  }
+
+  /* ....................................................................
+   *                       Selection type
+   * .................................................................... */
+
+  /**
+   * @param val
+   */
+  public void setSelectionType(String val) {
+    selectionType = val;
+  }
+
+  /**
+   * @return String
+   */
+  public String getSelectionType() {
+    return selectionType;
   }
 
   /* ====================================================================

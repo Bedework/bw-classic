@@ -195,11 +195,11 @@
     </action>
 
     <action    path="/setSelection"
-               type="org.bedework.webclient.BwSelectViewAction"
+               type="org.bedework.webcommon.misc.SetSelectionAction"
                name="calForm"
                scope="session"
                validate="false">
-      <forward name="noViewDef" path="/showMain.rdo" redirect="true" />
+      <forward name="notFound" path="/showMain.rdo" redirect="true" />
     </action>
 
     <action    path="/setViewPeriod"

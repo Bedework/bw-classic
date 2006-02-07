@@ -136,6 +136,8 @@ public class CalSvc extends CalSvcI {
 
   private BwView currentView;
 
+  private Collection currentSubscriptions;
+
   /** Used to see if applications need to force a refresh
    */
   private long publicLastmod;
@@ -622,6 +624,11 @@ public class CalSvc extends CalSvcI {
       return null;
     }
 
+    if ((path.length() > 1) &&
+        (path.startsWith(CalFacadeDefs.bwUriPrefix))) {
+      path = path.substring(CalFacadeDefs.bwUriPrefix.length());
+    }
+
     if ((path.length() > 1) && path.endsWith("/")) {
       return getCal().getCalendar(path.substring(0, path.length() - 1));
     }
@@ -722,35 +729,6 @@ public class CalSvc extends CalSvcI {
     return true;
   }
 
-  public void setCurrentView(BwView val) throws CalFacadeException {
-    currentView = val;
-  }
-
-  public boolean setCurrentView(String val) throws CalFacadeException {
-    if (val == null) {
-      currentView = null;
-      return true;
-    }
-
-    Iterator it = getPreferences().iterateViews();
-
-    while (it.hasNext()) {
-      BwView view = (BwView)it.next();
-      if (val.equals(view.getName())) {
-        currentView = view;
-
-        if (debug) {
-          trace("view has " + view.getSubscriptions().size() + " subscriptions");
-
-          trace("set view to " + view);
-        }
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   public BwView findView(String val) throws CalFacadeException {
     if (val == null) {
       BwPreferences prefs = getPreferences();
@@ -812,12 +790,54 @@ public class CalSvc extends CalSvcI {
     return true;
   }
 
+  public Collection getViews() throws CalFacadeException {
+    return getPreferences().getViews();
+  }
+
+  /* ====================================================================
+   *                   Current selection
+   * This defines how we select events to display.
+   * ==================================================================== */
+
+  public boolean setCurrentView(String val) throws CalFacadeException {
+    if (val == null) {
+      currentView = null;
+      return true;
+    }
+
+    Iterator it = getPreferences().iterateViews();
+
+    while (it.hasNext()) {
+      BwView view = (BwView)it.next();
+      if (val.equals(view.getName())) {
+        currentView = view;
+        currentSubscriptions = null;
+
+        if (debug) {
+          trace("view has " + view.getSubscriptions().size() + " subscriptions");
+
+          trace("set view to " + view);
+        }
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   public BwView getCurrentView() throws CalFacadeException {
     return currentView;
   }
 
-  public Collection getViews() throws CalFacadeException {
-    return getPreferences().getViews();
+  public void setCurrentSubscriptions(Collection val) throws CalFacadeException {
+    currentSubscriptions = val;
+    if (val != null) {
+      currentView = null;
+    }
+  }
+
+  public Collection getCurrentSubscriptions() throws CalFacadeException {
+    return currentSubscriptions;
   }
 
   /* ====================================================================
@@ -1392,7 +1412,12 @@ public class CalSvc extends CalSvcI {
     if (currentView != null) {
       it = currentView.iterateSubscriptions();
     } else {
-      Collection subs = getSubscriptions();
+      Collection subs = getCurrentSubscriptions();
+      if (subs == null) {
+        // Try set of users subscriptions.
+        subs = getSubscriptions();
+      }
+
       if (subs == null) {
         sub = new BwSubscription();
         sub.setName("All events"); // XXX property?

@@ -55,6 +55,7 @@ package org.bedework.calfacade;
 
 import org.bedework.calfacade.base.BwShareableContainedDbentity;
 
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -322,6 +323,20 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
     }
 
     return true;
+  }
+
+  /** Generate an encoded url referring to this calendar.
+   *
+   * XXX This should not be here
+   * @return String encoded url (or path)
+   * @throws CalFacadeException
+   */
+  public String getEncodedPath() throws CalFacadeException {
+    try {
+      return URLEncoder.encode(getPath(), "UTF-8");
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
   }
 
   /** Create a copy of this object but do not clone the children

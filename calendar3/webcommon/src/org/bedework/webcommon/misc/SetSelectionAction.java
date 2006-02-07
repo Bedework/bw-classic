@@ -52,35 +52,96 @@
     to the maximum extent the law permits.
 */
 
-package org.bedework.webclient;
+package org.bedework.webcommon.misc;
 
+import org.bedework.appcommon.BedeworkDefs;
+import org.bedework.calfacade.BwCalendar;
+import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calsvci.CalSvcI;
+import org.bedework.webcommon.BwAbstractAction;
+import org.bedework.webcommon.BwActionFormBase;
+import org.bedework.webcommon.BwSession;
+
+import java.util.Collection;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-/** This is an action for calendars
+/**
+ * Action to select what will be displayed. If no request par values are found
+ * will switch to default view.
  *
+ * <p>Request parameters<ul>
+ *      <li>"viewName"       Use named view</li>
+ *      <li>"calUrl"         URL of calendar</li>
+ *      <li>"subname"        Name of subscription.</li>
+ * </ul>
+ * <p>Forwards to:<ul>
+ *      <li>"noAccess"     user not authorised.</li>
+ *      <li>"notFound"     no event was found.</li>
+ *      <li>"success"      exported ok.</li>
+ * </ul>
  */
-public class BwSelectViewAction extends BwCalAbstractAction {
-  /* (non-Javadoc)
-   * @see org.bedework.webclient.BwCalAbstractAction#doAction(javax.servlet.http.HttpServletRequest, org.bedework.webclient.BwActionForm)
-   */
+public class SetSelectionAction extends BwAbstractAction {
   public String doAction(HttpServletRequest request,
-                         BwActionForm form) throws Throwable {
+                         HttpServletResponse response,
+                         BwSession sess,
+                         BwActionFormBase form) throws Throwable {
     CalSvcI svci = form.fetchSvci();
 
-    String vname = getReqPar(request, "viewName");
+    String name = getReqPar(request, "subname");
+    if (name != null) {
+      BwSubscription sub = svci.findSubscription(name);
 
-    if (vname == null) {
-      vname = svci.getUserPrefs().getPreferredView();
+      if (sub == null) {
+        form.getErr().emit("org.bedework.client.error.unknownsubscription");
+        return "notFound";
+      }
+
+      Collection c = new Vector();
+      c.add(sub);
+      svci.setCurrentSubscriptions(c);
+      form.setSelectionType(BedeworkDefs.selectionTypeSubscription);
+
+      return "success";
     }
 
-    if (vname == null) {
+    String url = getReqPar(request, "calUrl");
+    if (url != null) {
+      BwCalendar cal = findCalendar(url, form);
+
+      if (cal == null) {
+        form.getErr().emit("org.bedework.client.error.unknowncalendar");
+        return "notFound";
+      }
+
+      BwSubscription sub = new BwSubscription();
+      sub.setName(url);
+      sub.setDisplay(true);
+      sub.setInternalSubscription(true);
+      sub.setCalendar(cal);
+
+      Collection c = new Vector();
+      c.add(sub);
+      svci.setCurrentSubscriptions(c);
+      form.setSelectionType(BedeworkDefs.selectionTypeCalendar);
+
+      return "success";
+    }
+
+    name = getReqPar(request, "viewName");
+
+    if (name == null) {
+      name = svci.getUserPrefs().getPreferredView();
+    }
+
+    if (name == null) {
       form.getErr().emit("org.bedework.client.error.nodefaultview");
       return "noViewDef";
     }
 
-    if (!svci.setCurrentView(vname)) {
+    if (!svci.setCurrentView(name)) {
       form.getErr().emit("org.bedework.client.error.unknownview");
       return "noViewDef";
     }
@@ -89,4 +150,3 @@ public class BwSelectViewAction extends BwCalAbstractAction {
     return "success";
   }
 }
-

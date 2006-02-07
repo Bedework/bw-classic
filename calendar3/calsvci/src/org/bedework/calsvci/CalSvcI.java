@@ -588,21 +588,6 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract boolean removeView(BwView val) throws CalFacadeException;
 
-  /** Set the view we are interested in. null means reset to default.
-   *
-   * @param  val     BwView - null for default
-   * @throws CalFacadeException
-   */
-  public abstract void setCurrentView(BwView val) throws CalFacadeException;
-
-  /** Set the view to the given named view. null means reset to default.
-   *
-   * @param  val     String view name - null for default
-   * @return boolean false - view not found.
-   * @throws CalFacadeException
-   */
-  public abstract boolean setCurrentView(String val) throws CalFacadeException;
-
   /** Find the named view.
    *
    * @param  val     String view name - null means default
@@ -631,6 +616,27 @@ public abstract class CalSvcI implements Serializable {
   public abstract boolean removeViewSubscription(String name,
                                                  BwSubscription sub) throws CalFacadeException;
 
+  /** Return the collection of views - named collections of subscriptions
+   *
+   * @return collection of views
+   * @throws CalFacadeException
+   */
+  public abstract Collection getViews() throws CalFacadeException;
+
+  /* ====================================================================
+   *                   Current selection
+   * This defines how we select events to display.
+   * ==================================================================== */
+
+  /** Set the view to the given named view. Null means reset to default.
+   * Unset current subscriptions.
+   *
+   * @param  val     String view name - null for default
+   * @return boolean false - view not found.
+   * @throws CalFacadeException
+   */
+  public abstract boolean setCurrentView(String val) throws CalFacadeException;
+
   /** Get the current view we have set
    *
    * @return BwView    named Collection of BwSubscription or null for default
@@ -638,12 +644,21 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract BwView getCurrentView() throws CalFacadeException;
 
-  /** Return the collection of views - named collections of subscriptions
+  /** Set the view to the given collection of subscriptions.
+   * Unset current view.
    *
-   * @return collection of views
+   * @param  val     Collection
    * @throws CalFacadeException
    */
-  public abstract Collection getViews() throws CalFacadeException;
+  public abstract void setCurrentSubscriptions(Collection val)
+          throws CalFacadeException;
+
+  /** Get the current subscriptions we have set
+   *
+   * @return Collection of BwSubscription or null
+   * @throws CalFacadeException
+   */
+  public abstract Collection getCurrentSubscriptions() throws CalFacadeException;
 
   /* ====================================================================
    *                   Search and filters

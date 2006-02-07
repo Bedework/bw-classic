@@ -327,6 +327,17 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return ev;
   }
 
+  protected BwCalendar findCalendar(String url,
+                             BwActionFormBase form) throws CalFacadeException {
+    if (url == null) {
+      return null;
+    }
+
+    CalSvcI svci = form.fetchSvci();
+
+    return svci.getCalendar(url);
+  }
+
   /** Return null if group is chosen else return a forward name.
    *
    * @param request   Needed to locate session

@@ -63,7 +63,7 @@ import java.io.Serializable;
 public interface BedeworkDefs extends Serializable {
   /** These names are internal
    */
-  public static final String[] viewTypeNames =
+  public static final String[] viewPeriodNames =
     {"todayView", "dayView", "weekView", "monthView", "yearView"};
 
   /** today */
@@ -81,8 +81,25 @@ public interface BedeworkDefs extends Serializable {
   /** year*/
   public static final int yearView = 4;
 
-  /** The default view - this may be redundent
+  /** XXX - take out of syspars. The default view - this may be redundent
    */
   public static final int defaultView = weekView;
+
+  /* Selection type constants */
+
+  /** Display using a view */
+  public static final String selectionTypeView = "view";
+
+  /** Display using a subscription */
+  public static final String selectionTypeSubscription = "subscription";
+
+  /** Display using a calendar */
+  public static final String selectionTypeCalendar = "calendar";
+
+  /** Display using a search */
+  public static final String selectionTypeSearch = "search";
+
+  /** Display using a 'filter' */
+  public static final String selectionTypeFiltered = "filtered";
 }
 
