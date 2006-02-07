@@ -133,7 +133,7 @@ body {
 }
 #tabsTable .centerCell {
   text-align: right;
-  background : url(images/std-tab-space.gif);
+  background : url(../../images/demo/std-tab-space.gif);
   font-size: 0.8em;
   white-space: nowrap;
   width: 100%;
@@ -147,7 +147,7 @@ body {
   margin-right: 1px;
 }
 #tabsTable .rightCell {
-  background : url(images/std-tab-space.gif);
+  background : url(../../images/demo/std-tab-space.gif);
   padding-right: 0.5em;
 }
 #navigationBarTable {
@@ -677,11 +677,19 @@ a.gridAdd {
 #listTable td.icons img.addref {
   margin-right: 0.5em;
 }
+#calPageTable ul.calendarTree li {
+  font-weight: bold;
+}
+#calPageTable ul.calendarTree li ul li {
+  font-weight: normal;
+}
 #calPageTable ul.calendarTree li.folder {
-  list-style-image: url(../../resources/catIcon.gif);
+  list-style-image: url(../../images/demo/catIcon.gif);
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
 }
 #calPageTable ul.calendarTree li.calendar {
-  list-style-image: url(../../resources/calIcon-sm.gif);
+  list-style-image: url(../../images/demo/calIcon-sm.gif);
 }
 .noEventsCell {
   padding: 1em;
