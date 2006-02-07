@@ -281,6 +281,7 @@ class TimezonesImpl implements CalTimezones {
     } catch (Throwable t) {
       throw new RuntimeException("Unable to initialise UTC timezone");
     }
+    cal.setTimeZone(utctz);
   }
 
   public synchronized String getUtc(String time, String tzid, TimeZone tz) throws CalFacadeException {
@@ -336,7 +337,6 @@ class TimezonesImpl implements CalTimezones {
           lasttzid = tzid;
         }
 
-        cal.setTimeZone(utctz);
         cal.setTime(formatTd.parse(time));
 
         StringBuffer sb = new StringBuffer();

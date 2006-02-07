@@ -51,95 +51,73 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.calfacade;
+package org.bedework.calcore.hibernate;
 
-/** Exception somewhere in the calendar facade
+import org.bedework.calfacade.BwSystem;
+import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.CalintfDefs;
+import org.bedework.calfacade.ifs.Calintf;
+import org.bedework.calfacade.CalFacadeException;
+
+import edu.rpi.cct.uwcal.access.PrivilegeDefs;
+
+import org.apache.log4j.Logger;
+
+import java.io.Serializable;
+
+/** Class used as basis for a number of helper classes.
  *
- * @author Mike Douglass douglm@rpi.edu
+ * @author Mike Douglass   douglm@rpi.edu
  */
-public class CalFacadeException extends Exception {
-  /** Property names used as message value. These should be used to
-   * retrieve a localized message and can also be used to identify the
-   * cause of the exception.
-   */
+class CalintfHelper implements CalintfDefs, PrivilegeDefs, Serializable {
+  protected boolean debug;
 
-  /** Couldn't find calendar */
-  public static final String calendarNotFound =
-      "org.bedework.exception.calendarnotfound";
+  protected Calintf cal;
 
-  /** Somebody tried to create a duplicate calendar */
-  public static final String duplicateCalendar =
-      "org.bedework.exception.duplicatecalendar";
+  protected AccessUtil access;
 
-  /** Somebody tried to create a calendar with children */
-  public static final String calendarNotEmpty =
-      "org.bedework.exception.calendarnotempty";
+  protected BwUser user;
 
-  /** */
-  public static final String illegalCalendarCreation =
-      "org.bedework.exception.illegalcalendarcreation";
+  private transient Logger log;
 
-  /** */
-  public static final String cannotDeleteCalendarRoot =
-      "org.bedework.exception.cannotdeletecalendarroot";
-
-  /** Somebody tried to create a duplicate subscription */
-  public static final String duplicateSubscription =
-      "org.bedework.exception.duplicatesubscription";
-
-  /** Tried to specify end and duration for an event */
-  public static final String endAndDuration =
-      "org.bedework.exception.ical.endandduration";
-
-  /** */
-  public static final String illegalObjectClass =
-      "org.bedework.exception.illegalobjectclass";
-
-  /** The guid for this event already exists */
-  public static final String duplicateGuid =
-      "org.bedework.exception.duplicateguid";
-
-  /** Error reading timezones */
-  public static final String timezonesReadError =
-      "org.bedework.error.timezones.readerror";
-
-
-  private String extra;
-
-  /** Constrictor
+  /** Constructor
    *
+   * @param cal
+   * @param access
+   * @param user
+   * @param debug
    */
-  public CalFacadeException() {
-    super();
+  public CalintfHelper(Calintf cal, AccessUtil access,
+                   BwUser user, boolean debug) {
+    this.cal = cal;
+    this.access = access;
+    this.user = user;
+    this.debug = debug;
   }
 
-  /**
-   * @param t
-   */
-  public CalFacadeException(Throwable t) {
-    super(t);
+  protected HibSession getSess() throws CalFacadeException {
+    return (HibSession)cal.getDbSession();
   }
 
-  /**
-   * @param s
-   */
-  public CalFacadeException(String s) {
-    super(s);
+  protected BwSystem getSyspars() throws CalFacadeException {
+    return cal.getSyspars();
   }
 
-  /**
-   * @param s  - retrieve with getMessage(), property ame
-   * @param extra String extra text
+  /** Get a logger for messages
    */
-  public CalFacadeException(String s, String extra) {
-    super(s);
-    this.extra = extra;
+  protected Logger getLogger() {
+    if (log == null) {
+      log = Logger.getLogger(this.getClass());
+    }
+
+    return log;
   }
 
-  /**
-   * @return String extra text
-   */
-  public String getExtra() {
-    return extra;
+  protected void debugMsg(String msg) {
+    getLogger().debug(msg);
+  }
+
+  protected void trace(String msg) {
+    getLogger().debug(msg);
   }
 }

@@ -324,6 +324,25 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
     return true;
   }
 
+  /** Create a copy of this object but do not clone the children
+   *
+   * @return BwCalendar object
+   */
+  public BwCalendar shallowClone() {
+    return new BwCalendar((BwUser)getOwner().clone(),
+                          getPublick(),
+                          (BwUser)getCreator().clone(),
+                          getAccess(),
+                          getName(),
+                          getPath(),
+                          getSummary(),
+                          getDescription(),
+                          getMailListId(),
+                          getCalendarCollection(),
+                          getCalendar(),
+                          null);
+  }
+
   /* ====================================================================
    *                   Object methods
    * ==================================================================== */

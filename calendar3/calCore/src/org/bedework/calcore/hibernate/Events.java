@@ -64,15 +64,12 @@ import org.bedework.calfacade.BwSynchState;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeUtil;
-import org.bedework.calfacade.CalintfDefs;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.calfacade.ifs.Calintf.DelEventResult;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.icalendar.VEventUtil;
-
-import edu.rpi.cct.uwcal.access.PrivilegeDefs;
 
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.Date;
@@ -81,15 +78,12 @@ import net.fortuna.ical4j.model.PeriodList;
 import net.fortuna.ical4j.model.TimeZone;
 import net.fortuna.ical4j.model.property.DtStart;
 
-import org.apache.log4j.Logger;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.Hibernate;
 import org.hibernate.id.Configurable;
 import org.hibernate.id.UUIDHexGenerator;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -100,49 +94,23 @@ import java.util.TreeSet;
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
-public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
-  private boolean debug;
-
-  private Calintf cal;
-
-  private AccessUtil access;
-
-  private HibSession sess;
-
-  private BwUser user;
-
-  private transient Logger log;
-
+public class Events extends CalintfHelper {
   private UUIDHexGenerator uuidGen;
 
   /** Constructor
    *
    * @param cal
    * @param access
-   * @param sess
    * @param user
    * @param debug
    */
-  public Events(Calintf cal, AccessUtil access, HibSession sess,
-                BwUser user, boolean debug) {
-    this.cal = cal;
-    this.access = access;
-    this.sess = sess;
-    this.user = user;
-    this.debug = debug;
+  public Events(Calintf cal, AccessUtil access, BwUser user, boolean debug) {
+    super(cal, access, user, debug);
 
     Properties uidprops = new Properties();
     uidprops.setProperty("separator", "-");
     uuidGen = new UUIDHexGenerator();
     ((Configurable)uuidGen).configure(Hibernate.STRING, uidprops, null);
-  }
-
-  /** (Re)set the HibSession
-   *
-   * @param val
-   */
-  public void setHibSession(HibSession val) {
-    sess = val;
   }
 
   /** Return one or more events using the guid and optionally a sequence number
@@ -178,6 +146,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
     BwEvent ev = null;
     BwEvent master = null;
     TreeSet ts = new TreeSet();
+    HibSession sess = getSess();
 
     if (rid == null) {
       // First look in the events table for the master.
@@ -356,6 +325,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
    * @throws CalFacadeException
    */
   public BwEvent getEvent(int id) throws CalFacadeException {
+    HibSession sess = getSess();
     Criteria cr = sess.createCriteria(BwEventObj.class);
 
     cr.add(Expression.eq("id", new Integer(id)));
@@ -377,6 +347,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
    */
   public void addEvent(BwEvent val, Collection overrides) throws CalFacadeException {
     RecuridTable recurids = null;
+    HibSession sess = getSess();
 
     if ((overrides != null) && (overrides.size() != 0)) {
       if (!val.getRecurring()) {
@@ -501,7 +472,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
     BwEventAnnotation override = proxy.getRef();
     override.setOwner(user);
 
-    sess.saveOrUpdate(override);
+    getSess().saveOrUpdate(override);
     inst.setOverride(override);
   }
 
@@ -511,6 +482,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
    * @throws CalFacadeException
    */
   public void updateEvent(BwEvent val) throws CalFacadeException {
+    HibSession sess = getSess();
     if (!(val instanceof BwEventProxy)) {
       sess.saveOrUpdate(val);
 
@@ -597,6 +569,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
    * they match.
    */
   private void updateRecurrences(BwEvent val) throws CalFacadeException {
+    HibSession sess = getSess();
     VEvent vev = VEventUtil.toIcalEvent(val, null);
 
     /* Determine the absolute latest date. */
@@ -687,6 +660,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
    * @exception CalFacadeException If there's a database access problem
    */
   public DelEventResult deleteEvent(BwEvent val) throws CalFacadeException {
+    HibSession sess = getSess();
     DelEventResult der = new DelEventResult(false, 0);
 
     der.alarmsDeleted = deleteAlarms(val);
@@ -827,6 +801,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
                               int recurRetrieval,
                               int currentMode, boolean ignoreCreator)
           throws CalFacadeException {
+    HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
 
     //if (debug) {
@@ -920,6 +895,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
    */
   public Collection getEventsByName(BwCalendar cal, String val)
           throws CalFacadeException {
+    HibSession sess = getSess();
     sess.namedQuery("eventsByName");
     sess.setString("name", val);
     sess.setEntity("cal", cal);
@@ -935,6 +911,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
 
   private void eventQuery(Class cl, String guid, String rid, Integer seqnum,
                           boolean masterOnly) throws CalFacadeException {
+    HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
 
     /* SEG:   from Events ev where */
@@ -991,6 +968,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
                                            int currentMode, boolean ignoreCreator,
                                            int recurRetrieval)
           throws CalFacadeException {
+    HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
 
     /* Name of the event in the query */
@@ -1145,6 +1123,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
 
   private void doCalendarEntities(boolean setUser, BwCalendar calendar)
           throws CalFacadeException {
+    HibSession sess = getSess();
     if (setUser) {
       sess.setEntity("user", user);
     }
@@ -1164,7 +1143,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
           throws CalFacadeException {
     if (calendar.getCalendarCollection()) {
       // leaf calendar
-      sess.setEntity("calendar" + calTerm.i, calendar);
+      getSess().setEntity("calendar" + calTerm.i, calendar);
       calTerm.i++;
     } else {
       Iterator it = calendar.getChildren().iterator();
@@ -1396,6 +1375,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
   }
 
   private int deleteAlarms(BwEvent ev) throws CalFacadeException {
+    HibSession sess = getSess();
     sess.namedQuery("deleteEventAlarms");
     sess.setEntity("ev", ev);
 
@@ -1412,7 +1392,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
     while (it.hasNext()) {
       BwEvent ev = (BwEvent)it.next();
 
-      if (access.accessible(ev, desiredAccess,  noAccessReturnsNull)) {
+      if (access.accessible(ev, desiredAccess,  nullForNoAccess)) {
         outevs.add(ev);
       }
     }
@@ -1428,7 +1408,7 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
       return null;
     }
 
-    if (!access.accessible(ev, desiredAccess, noAccessReturnsNull)) {
+    if (!access.accessible(ev, desiredAccess, nullForNoAccess)) {
       return null;
     }
 
@@ -1459,17 +1439,5 @@ public class Events implements CalintfDefs, PrivilegeDefs, Serializable {
     BwEvent getEvent(String rid) {
       return (BwEvent)get(rid);
     }
-  }
-
-  private Logger getLog() {
-    if (log == null) {
-      log = Logger.getLogger(getClass());
-    }
-
-    return log;
-  }
-
-  private void debugMsg(String msg) {
-    getLog().debug(msg);
   }
 }

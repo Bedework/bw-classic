@@ -56,12 +56,9 @@ package org.bedework.calcore.hibernate;
 import org.bedework.calfacade.BwEventProperty;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalintfDefs;
+import org.bedework.calfacade.ifs.Calintf;
 
-import java.io.Serializable;
 import java.util.Collection;
-
-import org.apache.log4j.Logger;
 
 /** Class which handles manipulation of BwEventProperty subclasses which are
  * treated in the same manner, these being Category, Location and Sponsor.
@@ -75,11 +72,7 @@ import org.apache.log4j.Logger;
  * @author douglm
  *
  */
-public class EventProperties implements CalintfDefs, Serializable {
-  private boolean debug;
-
-  private CalintfImpl cal;
-
+public class EventProperties extends CalintfHelper {
   private String keyFieldName;
 
   private String className;
@@ -90,29 +83,29 @@ public class EventProperties implements CalintfDefs, Serializable {
   /* if >= 0 we limit retrievals to ids gretaer than this. */
   private int minId;
 
-  private transient Logger log;
-
   /** Constructor
    *
-   * @param cal           CalintImpl object
+   * @param cal           Calintf object
+   * @param access
+   * @param user
    * @param keyFieldName  Name of entity keyfield
    * @param className     Class of entity
    * @param refQuery      Name of query which returns referring event ids
    * @param minId         if >= 0 we limit retrievals to ids gretaer than this
    * @param debug
    */
-  public EventProperties(CalintfImpl cal,
+  public EventProperties(Calintf cal, AccessUtil access, BwUser user,
                          String keyFieldName,
                          String className,
                          String refQuery,
                          int minId,
                          boolean debug) {
-    this.cal = cal;
+    super(cal, access, user, debug);
+
     this.keyFieldName = keyFieldName;
     this.className = className;
     this.refQuery = refQuery;
     this.minId = minId;
-    this.debug = debug;
   }
 
   /** Return all entities satisfying the conditions.
@@ -306,24 +299,6 @@ public class EventProperties implements CalintfDefs, Serializable {
     }
 
     return refs;
-  }
-
-  private HibSession getSess() throws CalFacadeException {
-    return (HibSession)cal.getDbSession();
-  }
-
-  /** Get a logger for messages
-   */
-  private Logger getLogger() {
-    if (log == null) {
-      log = Logger.getLogger(this.getClass());
-    }
-
-    return log;
-  }
-
-  private void trace(String msg) {
-    getLogger().debug(msg);
   }
 }
 

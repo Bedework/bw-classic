@@ -143,17 +143,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
    */
   private AccessUtil access;
 
-  /* From core environment properties * /
-  private String systemId;
-
-  private String publicCalendarRoot;
-  private String userCalendarRoot;
-  private String userDefaultCalendar;
-  private String defaultTrashCalendar;
-  */
-  private String publicCalendarRootPath;
-  private String userCalendarRootPath;
-
   /** Ensure we don't open while open
    */
   private boolean isOpen;
@@ -170,6 +159,8 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   private BwUser user;
 
   private Events events;
+
+  private Calendars calendars;
 
   private EventProperties categories;
 
@@ -262,23 +253,9 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
       if ((synchId != null) && publicAdmin) {
         throw new CalFacadeException("synch only valid for non admin");
       }
-
-      /** Define the roots of the calendars.
-       * /
-      publicCalendarRoot = CalEnv.getGlobalProperty("public.calroot");
-      userCalendarRoot = CalEnv.getGlobalProperty("user.calroot");
-      userDefaultCalendar = CalEnv.getGlobalProperty("default.user.calendar");
-      defaultTrashCalendar = CalEnv.getGlobalProperty("default.trash.calendar");
-
-      systemId = CalEnv.getGlobalProperty("systemid");
-      */
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
-
-    publicCalendarRootPath = "/" + getSyspars().getPublicCalendarRoot();
-    userCalendarRootPath = "/" + getSyspars().getUserCalendarRoot();
-    //systemId = getSyspars().getSystemid();
 
     if (user == null) {
       user = authenticatedUser;
@@ -301,7 +278,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
         /* Add the user to the database. Presumably this is first logon
          */
         getLogger().info("Add new user " + authenticatedUser);
-        addUser(new BwUser(authenticatedUser));
+        addNewUser(new BwUser(authenticatedUser));
         authUser = getUser(authenticatedUser);
         userCreated = true;
       }
@@ -331,17 +308,19 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     authUser.setGroups(groups.getAllGroups(authUser));
     access.setAuthUser(authUser);
 
-    events = new Events(this, access, sess, this.user, debug);
+    events = new Events(this, access, this.user, debug);
 
-    categories = new EventProperties(this,
+    calendars = new Calendars(this, access, this.user, debug);
+
+    categories = new EventProperties(this, access, this.user,
                                      "word", BwCategory.class.getName(),
                                      "getCategoryRefs",
                                      -1, debug);
-    locations = new EventProperties(this,
+    locations = new EventProperties(this, access, this.user,
                                     "address", BwLocation.class.getName(),
                                      "getLocationRefs",
                                      CalFacadeDefs.maxReservedLocationId, debug);
-    sponsors = new EventProperties(this,
+    sponsors = new EventProperties(this, access, this.user,
                                    "name", BwSponsor.class.getName(),
                                    "getSponsorRefs",
                                    CalFacadeDefs.maxReservedSponsorId, debug);
@@ -349,6 +328,9 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     timezones = new CalTimezonesImpl(this, getStats(), publicAdmin, debug);
     timezones.setDefaultTimeZoneId(getSyspars().getTzid());
 
+    if (userCreated) {
+      calendars.addNewCalendars();
+    }
     return userCreated;
   }
 
@@ -450,9 +432,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
         log.debug("New hibernate session for " + objTimestamp);
       }
       sess = new HibSession(sessFactory, log);
-      if (events != null) {
-        events.setHibSession(sess);
-      }
     } else {
       if (debug) {
         log.debug("Reconnect hibernate session for " + objTimestamp);
@@ -615,6 +594,11 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   }
 
   public void addUser(BwUser user) throws CalFacadeException {
+    addNewUser(user);
+    calendars.addNewCalendars();
+  }
+
+  private void addNewUser(BwUser user) throws CalFacadeException {
     checkOpen();
 
     user.setCategoryAccess(access.getDefaultPersonalAccess());
@@ -624,89 +608,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     user.setQuota(getSyspars().getDefaultUserQuota());
 
     sess.save(user);
-
-    /* Add a user collection to the userCalendarRoot and then a default
-       calendar collection. */
-
-    sess.namedQuery("getCalendarByPath");
-
-    String path =  "/" + getSyspars().getUserCalendarRoot();
-    sess.setString("path", path);
-
-    BwCalendar userrootcal = (BwCalendar)sess.getUnique();
-
-    if (userrootcal == null) {
-      throw new CalFacadeException("No user root at " + path);
-    }
-
-    path += "/" + user.getAccount();
-    sess.namedQuery("getCalendarByPath");
-    sess.setString("path", path);
-
-    BwCalendar usercal = (BwCalendar)sess.getUnique();
-    if (usercal != null) {
-      throw new CalFacadeException("User calendar already exists at " + path);
-    }
-
-    /* Create a folder for the user */
-    usercal = new BwCalendar();
-    usercal.setName(user.getAccount());
-    usercal.setCreator(user);
-    usercal.setOwner(user);
-    usercal.setPublick(false);
-    usercal.setPath(path);
-    usercal.setCalendar(userrootcal);
-    userrootcal.addChild(usercal);
-
-    sess.save(userrootcal);
-
-    /* Create a default calendar */
-    BwCalendar cal = new BwCalendar();
-    cal.setName(getSyspars().getUserDefaultCalendar());
-    cal.setCreator(user);
-    cal.setOwner(user);
-    cal.setPublick(false);
-    cal.setPath(path + "/" + getSyspars().getUserDefaultCalendar());
-    cal.setCalendar(usercal);
-    cal.setCalendarCollection(true);
-    usercal.addChild(cal);
-
-    /* Add the trash calendar */
-    cal = new BwCalendar();
-    cal.setName(getSyspars().getDefaultTrashCalendar());
-    cal.setCreator(user);
-    cal.setOwner(user);
-    cal.setPublick(false);
-    cal.setPath(path + "/" + getSyspars().getDefaultTrashCalendar());
-    cal.setCalendar(usercal);
-    cal.setCalendarCollection(true);
-    usercal.addChild(cal);
-
-    /* Add the inbox */
-    cal = new BwCalendar();
-    cal.setName(getSyspars().getUserInbox());
-    cal.setCreator(user);
-    cal.setOwner(user);
-    cal.setPublick(false);
-    cal.setPath(path + "/" + getSyspars().getUserInbox());
-    cal.setCalendar(usercal);
-    cal.setCalendarCollection(true);
-    usercal.addChild(cal);
-
-    /* Add the outbox */
-    cal = new BwCalendar();
-    cal.setName(getSyspars().getUserOutbox());
-    cal.setCreator(user);
-    cal.setOwner(user);
-    cal.setPublick(false);
-    cal.setPath(path + "/" + getSyspars().getUserOutbox());
-    cal.setCalendar(usercal);
-    cal.setCalendarCollection(true);
-    usercal.addChild(cal);
-
-    sess.save(usercal);
-
-    sess.update(user);
   }
 
   public void updateUser() throws CalFacadeException {
@@ -854,27 +755,19 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   }
 
   /* ====================================================================
-   *                   Calendars and search
+   *                       Calendars
    * ==================================================================== */
 
   public BwCalendar getPublicCalendars() throws CalFacadeException {
     checkOpen();
 
-    sess.namedQuery("getCalendarByPath");
-    sess.setString("path", publicCalendarRootPath);
-    sess.cacheableQuery();
-
-    /* XXX access checks */
-    return (BwCalendar)sess.getUnique();
+    return calendars.getPublicCalendars();
   }
 
   public Collection getPublicCalendarCollections() throws CalFacadeException {
     checkOpen();
 
-    sess.namedQuery("getPublicCalendarCollections");
-    sess.cacheableQuery();
-
-    return access.checkAccess(sess.getList(), privWrite, true);
+    return calendars.getPublicCalendarCollections();
   }
 
   public BwCalendar getCalendars() throws CalFacadeException {
@@ -884,31 +777,20 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     checkOpen();
 
-    sess.namedQuery("getCalendarByPath");
-    sess.setString("path", userCalendarRootPath + "/" + user.getAccount());
-    sess.cacheableQuery();
-
-    return (BwCalendar)sess.getUnique();
+    return calendars.getCalendars();
   }
 
   public Collection getCalendarCollections() throws CalFacadeException {
     checkOpen();
 
-    sess.namedQuery("getUserCalendarCollections");
-    sess.setEntity("owner", user);
-    sess.cacheableQuery();
-
-    return access.checkAccess(sess.getList(), privWrite, true);
+    return calendars.getCalendarCollections();
   }
 
   public Collection getAddContentPublicCalendarCollections()
           throws CalFacadeException {
     checkOpen();
 
-    sess.namedQuery("getPublicCalendarCollections");
-    sess.cacheableQuery();
-
-    return access.checkAccess(sess.getList(), privWriteContent, true);
+    return calendars.getAddContentPublicCalendarCollections();
   }
 
   public Collection getAddContentCalendarCollections()
@@ -919,148 +801,50 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     checkOpen();
 
-    sess.namedQuery("getUserCalendarCollections");
-    sess.setEntity("owner", user);
-    sess.cacheableQuery();
-
-    return access.checkAccess(sess.getList(), privWriteContent, true);
+    return calendars.getAddContentCalendarCollections();
   }
 
   public BwCalendar getCalendar(int val) throws CalFacadeException {
     checkOpen();
 
-    sess.namedQuery("getCalendarById");
-    sess.setInt("id", val);
-    sess.cacheableQuery();
-
-    return (BwCalendar)sess.getUnique();
+    return calendars.getCalendar(val);
   }
 
   public BwCalendar getCalendar(String path) throws CalFacadeException{
     checkOpen();
 
-    sess.namedQuery("getCalendarByPath");
-    sess.setString("path", path);
-    sess.cacheableQuery();
-
-    BwCalendar cal = (BwCalendar)sess.getUnique();
-
-    if (cal != null) {
-      access.accessible(cal, privRead, false);
-    }
-
-    return cal;
+    return calendars.getCalendar(path);
   }
 
   public BwCalendar getDefaultCalendar() throws CalFacadeException {
-    StringBuffer sb = new StringBuffer();
-
-    sb.append("/");
-    sb.append(getSyspars().getUserCalendarRoot());
-    sb.append("/");
-    sb.append(user.getAccount());
-    sb.append("/");
-    sb.append(getSyspars().getUserDefaultCalendar());
-
-    return getCalendar(sb.toString());
+    return calendars.getDefaultCalendar();
   }
 
   public BwCalendar getTrashCalendar() throws CalFacadeException {
-    StringBuffer sb = new StringBuffer();
-
-    sb.append("/");
-    sb.append(getSyspars().getUserCalendarRoot());
-    sb.append("/");
-    sb.append(user.getAccount());
-    sb.append("/");
-    sb.append(getSyspars().getDefaultTrashCalendar());
-
-    return getCalendar(sb.toString());
+    return calendars.getTrashCalendar();
   }
 
   public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {
     checkOpen();
 
-    /* We need write access to the parent */
-    access.accessible(parent, privWrite, false);
-
-    /** Is the parent a calendar collection?
-     */
-/*    sess.namedQuery("countCalendarEventRefs");
-    sess.setEntity("cal", parent);
-
-    Integer res = (Integer)sess.getUnique();
-
-    if (res.intValue() > 0) {*/
-
-    if (parent.getCalendarCollection()) {
-      throw new CalFacadeException(CalFacadeException.illegalCalendarCreation);
-    }
-
-    /* Ensure the path is unique */
-    String path = parent.getPath();
-    if (path == null) {
-      if (parent.getPublick()) {
-        path = "";
-      } else {
-        path = "/users/" + parent.getOwner().getAccount();
-      }
-    }
-
-    path += "/" + val.getName();
-
-    sess.namedQuery("getCalendarByPath");
-    sess.setString("path", path);
-
-    if (sess.getUnique() != null) {
-      throw new CalFacadeException(CalFacadeException.duplicateCalendar);
-    }
-
-    val.setPath(path);
-    val.setOwner(user);
-    val.setCalendar(parent);
-    parent.addChild(val);
-
-    sess.save(parent);
+    calendars.addCalendar(val, parent);
   }
 
   public void updateCalendar(BwCalendar val) throws CalFacadeException {
     checkOpen();
-    sess.update(val);
+    calendars.updateCalendar(val);
   }
 
   public boolean deleteCalendar(BwCalendar val) throws CalFacadeException {
     checkOpen();
 
-    BwCalendar parent = val.getCalendar();
-    if (parent == null) {
-      throw new CalFacadeException(CalFacadeException.cannotDeleteCalendarRoot);
-    }
-
-    //sess.delete(val);
-    parent.removeChild(val);
-    sess.update(parent);
-
-    return true;
+    return calendars.deleteCalendar(val);
   }
 
   public boolean checkCalendarRefs(BwCalendar val) throws CalFacadeException {
     checkOpen();
 
-    sess.namedQuery("countCalendarEventRefs");
-    sess.setEntity("cal", val);
-
-    Integer res = (Integer)sess.getUnique();
-
-    if (debug) {
-      trace(" ----------- count = " + res);
-    }
-
-    if (res == null) {
-      return false;
-    }
-
-    return res.intValue() > 0;
+    return calendars.checkCalendarRefs(val);
   }
 
   /* ====================================================================
@@ -1076,35 +860,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     return null;
   }
-
-  /*
-  public BwFilter getFilter(String name) throws CalFacadeException {
-    checkOpen();
-    if (currentMode != CalintfUtil.guestMode) {
-      return null;
-    }
-
-    sess.createQuery("from " + BwFilter.class.getName() + " as cal " +
-                     "where cal.name = :name");
-    sess.setString("name", name);
-
-    return (BwFilter)sess.getUnique();
-  }
-
-  public BwFilter getFilter(int id) throws CalFacadeException {
-    checkOpen();
-
-/*    Object o = sess.get(FilterVO.class, id);
-    if (o != null) {
-      return (FilterVO)o;
-    }
-* /
-    sess.createQuery("from " + BwFilter.class.getName() + " as cal " +
-                     "where cal.id = :id");
-    sess.setInt("id", id);
-
-    return (BwFilter)sess.getUnique();
-  } */
 
   public void addFilter(BwFilter val) throws CalFacadeException {
     checkOpen();
@@ -1520,18 +1275,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   }
 
   /* ====================================================================
-   *                   Arbitrary query
-   * ==================================================================== */
-
-  /*
-  public Collection arbQuery(String q) throws CalFacadeException {
-    checkOpen();
-    sess.createQuery(q);
-
-    return sess.getList();
-  }*/
-
-  /* ====================================================================
    *                   Private methods
    * ==================================================================== */
 
@@ -1539,11 +1282,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     if (!isOpen) {
       throw new CalFacadeException("Calintf call when closed");
     }
-  }
-
-  /*
-  private void updated(BwUser user) {
-    personalModified.add(user);
   }
 
   /** Get a logger for messages
@@ -1555,11 +1293,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     return log;
   }
-
-  /*
-  private void error(String msg) {
-    getLogger().error(msg);
-  }*/
 
   private void trace(String msg) {
     getLogger().debug(msg);
@@ -1574,15 +1307,5 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     throw new CalFacadeAccessException();
   }
-
-  /* Ensure the current user is not a guest.
-   * /
-  private void requireNotGuest() throws CalFacadeException {
-    if (!user.isGuest())  {
-      return;
-    }
-
-    throw new CalFacadeAccessException();
-  }*/
 }
 
