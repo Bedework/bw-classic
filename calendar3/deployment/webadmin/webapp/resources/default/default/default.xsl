@@ -178,7 +178,10 @@
             <xsl:when test="/bedeworkadmin/page='deleteLocationConfirm'">
               <xsl:call-template name="deleteLocationConfirm"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='deleteCalendarConfirm'">
+            <xsl:when test="/bedeworkadmin/page='calendarList' or
+                            /bedeworkadmin/page='modCalendar' or
+                            /bedeworkadmin/page='deleteCalendarConfirm' or
+                            /bedeworkadmin/page='calendarReferenced'">
               <xsl:apply-templates select="/bedeworkadmin/calendars"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
@@ -1275,7 +1278,8 @@
         </td>
         <td class="calendarContent">
           <xsl:choose>
-            <xsl:when test="/bedeworkadmin/page='calendarList'">
+            <xsl:when test="/bedeworkadmin/page='calendarList' or
+                            /bedeworkadmin/page='calendarReferenced'">
               <xsl:call-template name="calendarList"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='deleteCalendarConfirm'">
@@ -2458,19 +2462,25 @@
                           /bedeworkadmin/page='deleteLocationConfirm'">
             Manage Locations
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='modCalendar'">
+          <xsl:when test="/bedeworkadmin/page='calendarList' or
+                          /bedeworkadmin/page='modCalendar' or
+                          /bedeworkadmin/page='calendarReferenced' or
+                          /bedeworkadmin/page='deleteCalendarConfirm'">
             Manage Calendars
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
+          <xsl:when test="/bedeworkadmin/page='subscriptions' or
+                          /bedeworkadmin/page='modSubscription'">
             Manage Subscriptions
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='views' or /bedeworkadmin/page='modView'">
+          <xsl:when test="/bedeworkadmin/page='views' or
+                          /bedeworkadmin/page='modView'">
             Manage Views
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='modSyspars'">
             Manage System Preferences
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='authUserList' or /bedeworkadmin/page='modAuthUser'">
+          <xsl:when test="/bedeworkadmin/page='authUserList' or
+                          /bedeworkadmin/page='modAuthUser'">
             Manage Public Events Administrators
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='chooseGroup'">

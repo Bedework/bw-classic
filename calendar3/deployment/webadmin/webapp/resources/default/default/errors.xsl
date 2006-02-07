@@ -36,7 +36,7 @@
         Not found: there is no calendar identified by the id <em><xsl:value-of select="param"/></em>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.calendar.referenced'">
-        Cannot delete: the calendar is referenced by events
+        Cannot delete: the calendar is not empty
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unimplemented'">
         Unimplemented: the feature you are trying to use has not been implemented yet
