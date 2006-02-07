@@ -260,7 +260,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </td>
-            <td class="rightCell">
+            <td>
               <xsl:choose>
                 <xsl:when test="/bedework/periodname='Year' or
                                 (/bedework/periodname='Month' and
@@ -293,6 +293,9 @@
                   </xsl:choose>
                 </xsl:otherwise>
               </xsl:choose>
+            </td>
+            <td class="rightCell">
+              <a href="setup.do"><img src="{$resourcesRoot}/images/demo/std-button-refresh.gif" width="69" height="20" border="0" alt="refresh view"/></a>
             </td>
           </tr>
         </table>
@@ -487,7 +490,11 @@
           </a>
         </th>
         <th class="iconRight" rowspan="2">
-          <xsl:variable name="icalName" select="concat($id,'.ics')"/>
+          <xsl:variable name="id" select="id"/>
+          <xsl:variable name="subscriptionId" select="subscription/id"/>
+          <xsl:variable name="guid" select="guid"/>
+          <xsl:variable name="recurrenceId" select="recurrenceId"/>
+          <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
           <a href="{$export}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
             <img src="{$resourcesRoot}/images/rensselaer/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
           </a>
@@ -728,7 +735,7 @@
                   </a>
                 </td>
                 <td class="smallIconRight">
-                  <xsl:variable name="icalName" select="concat($id,'.ics')"/>
+                  <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
                   <a href="{$export}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
                     <img src="{$resourcesRoot}/images/rensselaer/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
                   </a>

@@ -113,6 +113,10 @@ body {
   color: #999;
   background-color: transparent;
 }
+#searchBarTable .leftCell a:hover {
+  color: #b00;
+  background-color: transparent;
+}
 #searchBarTable .rightCell {
   margin: 0px;
   padding: 0em;
@@ -122,6 +126,7 @@ body {
   white-space: nowrap;
 }
 #searchBarTable form {
+  display: inline;
   margin: 0px 0px 1px 0px;
   padding: 0em;
 }
