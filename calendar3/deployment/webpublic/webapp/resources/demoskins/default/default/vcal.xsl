@@ -11,5 +11,5 @@
 <!-- ================= -->
 <!--  vCAL STYLESHEET  -->
 <!-- ================= -->
-<xsl:template match="/"><xsl:value-of select="/ucalendar/vcalendar"/></xsl:template>
+<xsl:template match="/"><xsl:value-of select="/bedework/vcalendar"/></xsl:template>
 </xsl:stylesheet>
