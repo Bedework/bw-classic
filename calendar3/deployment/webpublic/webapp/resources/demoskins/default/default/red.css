@@ -744,3 +744,12 @@ span.time {
   color: #dd0;
   font-style: italic;
 }
+.center {
+  text-align: center;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}

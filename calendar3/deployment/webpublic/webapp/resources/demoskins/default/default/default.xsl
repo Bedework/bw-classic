@@ -655,7 +655,7 @@
               <tr>
                 <xsl:variable name="dateRangeStyle">
                   <xsl:choose>
-                    <xsl:when test="substring(start/utcdate,1,8) = parent::day/date">
+                    <xsl:when test="start/shortdate = parent::day/shortdate">
                       <xsl:choose>
                         <xsl:when test="start/allday = 'true'">dateRangeCrossDay</xsl:when>
                         <xsl:when test="start/hour24 &lt; 6">dateRangeEarlyMorning</xsl:when>
@@ -667,16 +667,21 @@
                     <xsl:otherwise>dateRangeCrossDay</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
-                <td class="{$dateRangeStyle}" style="text-align:right;">
-                  <xsl:choose>
-                    <xsl:when test="start/allday = 'true'">
-                      <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        All day
-                      </a>
-                    </xsl:when>
-                    <xsl:when test="start/time!=''">
+                <xsl:choose>
+                  <xsl:when test="start/allday = 'true' and
+                                  start/shortdate = end/shortdate">
+                    <td class="{$dateRangeStyle} center" colspan="3">
+                      all day
+                    </td>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <td class="{$dateRangeStyle} right">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <xsl:choose>
+                        <xsl:when test="start/allday = 'true' and
+                                        parent::day/shortdate = start/shortdate">
+                          today
+                        </xsl:when>
                         <xsl:when test="parent::day/shortdate != start/shortdate">
                           <span class="littleArrow">&#171;</span>&#160;
                           <xsl:value-of select="start/month"/>/<xsl:value-of select="start/day"/>
@@ -686,26 +691,17 @@
                         </xsl:otherwise>
                       </xsl:choose>
                       </a>
-                    </xsl:when>
-                  </xsl:choose>
-                </td>
-                <td class="{$dateRangeStyle}" style="text-align:center;padding:0em;">
-                  <xsl:choose>
-                    <xsl:when test="end/allday = 'true'"><!-- do nothing -->
-                    </xsl:when>
-                    <xsl:when test="end/time!=''">
+                    </td>
+                    <td class="{$dateRangeStyle} center">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">-</a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      &#160;
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </td>
-                <td class="{$dateRangeStyle}" style="text-align:left;">
-                  <xsl:choose>
-                    <xsl:when  test="end/time!=''">
+                    </td>
+                    <td class="{$dateRangeStyle} left">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <xsl:choose>
+                        <xsl:when test="end/allday = 'true' and
+                                        parent::day/shortdate = end/shortdate">
+                          today
+                        </xsl:when>
                         <xsl:when test="parent::day/shortdate != end/shortdate">
                           <xsl:value-of select="end/month"/>/<xsl:value-of select="end/day"/>
                           &#160;<span class="littleArrow">&#187;</span>
@@ -715,12 +711,9 @@
                         </xsl:otherwise>
                       </xsl:choose>
                       </a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      &#160;
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </td>
+                    </td>
+                  </xsl:otherwise>
+                </xsl:choose>
                 <xsl:variable name="descriptionClass">
                   <xsl:choose>
                     <xsl:when test="priority='cancelled'">description cancelled</xsl:when>

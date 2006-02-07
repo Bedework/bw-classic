@@ -294,11 +294,11 @@
                         <xsl:choose>
                           <xsl:when test="/bedework/title!=''">
                             Calendar: <xsl:value-of select="/bedework/title"/>
-                            <span class="link">[<a href="{$selectView}?calId=">show all calendars</a>]</span>
+                            <span class="link">[<a href="{$setSelection}?calId=">show all calendars</a>]</span>
                           </xsl:when>
                           <xsl:when test="/bedework/search!=''">
                             Current filter: <xsl:value-of select="/bedework/search"/>
-                            <span class="link">[<a href="{$selectView}?calId=">clear</a>]</span>
+                            <span class="link">[<a href="{$setSelection}?calId=">clear</a>]</span>
                           </xsl:when>
                           <xsl:otherwise>
                             No filter (showing all events)
@@ -335,14 +335,7 @@
               </tr>
             </thead>
             <xsl:choose>
-              <xsl:when test="count(/bedework/eventscalendar/year/month/week/day/event)=0">
-                <tr>
-                  <td class="eventlist-desc">
-                    No events this time period
-                  </td>
-                </tr>
-              </xsl:when>
-              <xsl:otherwise>
+              <xsl:when test="/bedework/eventscalendar/year/month/week/day/event">
                 <xsl:choose>
                   <xsl:when test="/bedework[periodname!='Day']">
                     <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day[count(event)!=0]" mode="weekMonthListing"/>
@@ -351,6 +344,13 @@
                     <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day[count(event)!=0]" mode="dayListing"/>
                   </xsl:otherwise>
                 </xsl:choose>
+              </xsl:when>
+              <xsl:otherwise>
+                <tr>
+                  <td class="eventlist-desc">
+                    No events this time period
+                  </td>
+                </tr>
               </xsl:otherwise>
             </xsl:choose>
           </table>
@@ -370,7 +370,7 @@
                     <td align="left">
                       <span class="std-text">Show only events that contain this text:
                       </span>&#160;
-                      <form name="searchForm" method="get" action="{$selectView}">
+                      <form name="searchForm" method="get" action="{$setSelection}">
                         <input type="text" name="searchString" size="30" value=""/>
                         <input type="submit" value="Go"/>
                       </form>
@@ -426,7 +426,7 @@
                         <tr>
                           <td colspan="2">
                             <div class="std-text">
-                              <a href="{$selectView}">All Events</a>
+                              <a href="{$setSelection}">All Events</a>
                             </div>
                           </td>
                         </tr>
@@ -530,6 +530,9 @@
           </span> &#160;
           <span class="aux">
             <span class="aux">
+              <xsl:variable name="subscriptionId" select="subscription/id"/>
+              <xsl:variable name="guid" select="guid"/>
+              <xsl:variable name="recurrenceId" select="recurrenceId"/>
               <a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">More</a> &#160;
             </span>
           </span>
@@ -608,6 +611,9 @@
                 </xsl:choose>
               </td>
               <td class='eventlist-links'>
+                 <xsl:variable name="subscriptionId" select="subscription/id"/>
+                 <xsl:variable name="guid" select="guid"/>
+                 <xsl:variable name="recurrenceId" select="recurrenceId"/>
                  <span class='aux'><span class='aux'><a href="{$eventView}?subid={$subscriptionId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">More</a> &#160;</span></span>
               </td>
             </tr>
@@ -719,10 +725,10 @@
 
   <xsl:template match="calendar" mode="fullList">
     <xsl:variable name="id" select="id"/>
-    <h2><a href="{$selectView}?calId={$id}"><xsl:value-of select="title"/></a></h2>
+    <h2><a href="{$setSelection}?calId={$id}"><xsl:value-of select="title"/></a></h2>
     <ul>
       <xsl:for-each select="calendar">
-        <li><a href="{$selectView}?calId={$id}"><xsl:value-of select="title"/></a></li>
+        <li><a href="{$setSelection}?calId={$id}"><xsl:value-of select="title"/></a></li>
       </xsl:for-each>
     </ul>
   </xsl:template>
@@ -822,7 +828,7 @@
   <xsl:template match="calendar" mode="sideList">
     <xsl:variable name="id" select="id"/>
     <div class="std-text">
-      <a href="{$selectView}?calId={$id}"><xsl:value-of select="title"/></a>
+      <a href="{$setSelection}?calId={$id}"><xsl:value-of select="title"/></a>
     </div>
   </xsl:template>
 
