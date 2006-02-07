@@ -815,10 +815,6 @@
               </xsl:choose>
             </td>
             <td class="centerCell">
-                <a href="setup.do">refresh view</a><!--
-                <span id="featureHighlight">switch view &#8594;</span> -->
-            </td>
-            <td>
               <xsl:choose>
                 <xsl:when test="/bedework/periodname='Day'">
                   <img src="{$resourcesRoot}/images/demo/std-button-listview-off.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
@@ -855,8 +851,6 @@
                   </xsl:choose>
                 </xsl:otherwise>
               </xsl:choose>
-            </td>
-            <td class="rightCell">
               <xsl:choose>
                 <xsl:when test="/bedework/periodname='Year' or
                                 (/bedework/periodname='Month' and
@@ -889,6 +883,9 @@
                   </xsl:choose>
                 </xsl:otherwise>
               </xsl:choose>
+            </td>
+            <td class="rightCell">
+              <a href="setup.do"><img src="{$resourcesRoot}/images/demo/std-button-refresh.gif" width="69" height="20" border="0" alt="refresh view"/></a>
             </td>
           </tr>
         </table>

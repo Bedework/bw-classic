@@ -107,6 +107,10 @@ body {
   color: #999;
   background-color: transparent;
 }
+#searchBarTable .leftCell a:hover {
+  color: #b00;
+  background-color: transparent;
+}
 #searchBarTable .rightCell {
   margin: 0px;
   padding: 0em;
@@ -138,6 +142,9 @@ body {
 #tabsTable .centerCell  a {
   text-decoration: none;
   color: #eee;
+}
+#tabsTable .centerCell  img {
+  margin-right: 1px;
 }
 #tabsTable .rightCell {
   background : url(images/std-tab-space.gif);
@@ -405,7 +412,7 @@ body {
   display: block;
   padding: 0.1em 0.2em 0.1em 0.2em;
   text-decoration: none;
-  background-color: #DEECF2;
+  background-color: #A3C8D9;
   color: black;
 }
 #monthCalendarTable a.eventLinkB:link,
@@ -414,7 +421,7 @@ body {
   display: block;
   padding: 0.1em 0.2em 0.1em 0.2em;
   text-decoration: none;
-  background-color: #F7FAFC;
+  background-color: #DEECF2;
   color: black;
 }
 #monthCalendarTable a.eventCancelled:link,
@@ -603,21 +610,21 @@ a.gridAdd {
 #listTable td.dateRangeMorning {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #F7FAFC;
+  background-color: #F0F9FF;
   color: black;
   white-space: nowrap;
 }
 #listTable td.dateRangeAfternoon {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #EAF5FB;
+  background-color: #DEECF2;
   color: black;
   white-space: nowrap;
 }
 #listTable td.dateRangeEvening {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #DEECF2;
+  background-color: #A3C8D9;
   color: black;
   white-space: nowrap;
 }
@@ -724,4 +731,13 @@ a.gridAdd {
 #featureHighlight {
   color: #dd0;
   font-style: italic;
+}
+/*   LINKS    */
+a:link, a:active, a:visited {
+  color: #2c5f89;
+  background-color: transparent;
+}
+a:hover {
+  color: #b00;
+  background-color: transparent;
 }

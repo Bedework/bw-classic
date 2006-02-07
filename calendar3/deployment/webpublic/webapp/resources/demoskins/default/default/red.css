@@ -107,6 +107,10 @@ body {
   color: #999;
   background-color: transparent;
 }
+#searchBarTable .leftCell a:hover {
+  color: #b00;
+  background-color: transparent;
+}
 #searchBarTable .rightCell {
   margin: 0px;
   padding: 0em;
@@ -138,6 +142,9 @@ body {
 #tabsTable .centerCell  a {
   text-decoration: none;
   color: #eee;
+}
+#tabsTable .centerCell  img {
+  margin-right: 1px;
 }
 #tabsTable .rightCell {
   background : url(images/std-tab-space.gif);
@@ -724,6 +731,10 @@ a:link, a:active {
 }
 a:visited {
   color: #600;
+  background-color: transparent;
+}
+a:hover {
+  color: #b33;
   background-color: transparent;
 }
 span.time {
