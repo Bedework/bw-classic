@@ -672,10 +672,10 @@ a.gridAdd {
 #listTable td.icons img.addref {
   margin-right: 0.5em;
 }
-#calendarTree li.folder {
+#calPageTable ul.calendarTree li.folder {
   list-style-image: url(../../resources/catIcon.gif);
 }
-#calendarTree li.calendar {
+#calPageTable ul.calendarTree li.calendar {
   list-style-image: url(../../resources/calIcon-sm.gif);
 }
 .noEventsCell {
