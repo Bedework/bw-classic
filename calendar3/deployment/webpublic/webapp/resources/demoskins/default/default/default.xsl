@@ -760,9 +760,10 @@
               <xsl:otherwise><xsl:value-of select="translate(/ucalendar/title,' ','')"/></xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
-          <xsl:variable name="icalName"
+          <!--<xsl:variable name="icalName"
                         select="concat('ucal',$curdate,/ucalendar/periodname,$calcategory,'.ics')"/>
-          <a class="rss" href="{$export}?nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$icalName}" title="Download all events in current view as iCal - for multiple events, save to disk and import">iCal</a>
+          <a class="rss" href="{$export}?nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$icalName}" title="Download all events currently displayed as iCal - for multiple events, save to disk and import">iCal</a>
+          -->
         </td>
       </tr>
     </table>
@@ -1042,7 +1043,7 @@
                   </xsl:for-each>
                 </select>
               </form>
-              <span class="calLinks"><a href="{$fetchPublicCalendars}">calendar list</a></span>
+              <span class="calLinks"><a href="{$selectView}">default view</a> | <a href="{$fetchPublicCalendars}">calendar list</a></span>
              </xsl:when>
              <xsl:when test="/ucalendar/search!=''">
                Current search: <xsl:value-of select="/ucalendar/search"/>
@@ -1050,7 +1051,7 @@
              </xsl:when>
            </xsl:choose>
          </td>
-         <td class="rightCell"><form name="searchForm" method="get" action="{$selectView}">Search: <input type="text" name="searchString" size="30" value=""/><input type="submit" value="go"/></form></td>
+         <td class="rightCell"><!--<form name="searchForm" method="get" action="{$selectView}">Search: <input type="text" name="searchString" size="30" value=""/><input type="submit" value="go"/></form>--></td>
        </tr>
     </table>
   </xsl:template>
