@@ -119,6 +119,11 @@ try {
         e.g. <a href="{$urlPrefix}/eventView.do?eventId=8">View Event</a> --%>
   <urlpattern><genurl:rewrite action="DUMMYACTION.DO" /></urlpattern>
 
+  <selectionType><bean:write name="calForm" property="selectionType"/></selectionType><%--
+        Value: view,search,calendar,subscription,filter
+        Used to branch into different presentation depending on the type of
+        output we expect --%>
+
   <personaluri><bean:message key="org.bedework.personal.calendar.uri"/></personaluri>
   <publicuri><bean:message key="org.bedework.public.calendar.uri"/></publicuri>
   <adminuri><bean:message key="org.bedework.public.admin.uri"/></adminuri>
