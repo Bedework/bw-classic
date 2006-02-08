@@ -466,7 +466,23 @@
        <tr>
          <td class="leftCell">
            <xsl:choose>
-             <xsl:when test="/bedework/name!=''">
+             <xsl:when test="/bedework/selectionType = 'calendar'">
+               Calendar:
+               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
+             </xsl:when>
+             <xsl:when test="/bedework/selectionType = 'search'">
+               Current search: <xsl:value-of select="/bedework/search"/>
+               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
+             </xsl:when>
+             <xsl:when test="/bedework/selectionType = 'subscription'">
+               Subscription: (not implemented yet)
+               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
+             </xsl:when>
+             <xsl:when test="/bedework/selectionType = 'filter'">
+               Filter: (not implemented yet)
+               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
+             </xsl:when>
+             <xsl:otherwise><!-- view -->
                View:
                <form name="selectViewForm" method="get" action="{$setSelection}">
                 <select name="viewName" onChange="submit()" >
@@ -484,11 +500,7 @@
                 </select>
               </form>
               <span class="calLinks"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">calendar list</a></span>
-             </xsl:when>
-             <xsl:when test="/bedework/search!=''">
-               Current search: <xsl:value-of select="/bedework/search"/>
-               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
-             </xsl:when>
+             </xsl:otherwise>
            </xsl:choose>
          </td>
          <td class="rightCell"><!--<form name="searchForm" method="get" action="{$setSelection}">Search: <input type="text" name="searchString" size="30" value=""/><input type="submit" value="go"/></form>--></td>
