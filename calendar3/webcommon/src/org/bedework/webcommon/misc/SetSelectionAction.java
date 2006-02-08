@@ -88,45 +88,81 @@ public class SetSelectionAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
+    String forward = trySub(request, form);
+    if (forward != null) {
+      return forward;
+    }
+
+    forward = tryCal(request, form);
+    if (forward != null) {
+      return forward;
+    }
+
+    return doView(request, form);
+  }
+
+  /* Try for a subscription name. Return with forward or null for not found.
+   */
+  private String trySub(HttpServletRequest request,
+                        BwActionFormBase form) throws Throwable {
     CalSvcI svci = form.fetchSvci();
-
     String name = getReqPar(request, "subname");
-    if (name != null) {
-      BwSubscription sub = svci.findSubscription(name);
 
-      if (sub == null) {
-        form.getErr().emit("org.bedework.client.error.unknownsubscription");
-        return "notFound";
-      }
-
-      Collection c = new Vector();
-      c.add(sub);
-      svci.setCurrentSubscriptions(c);
-      form.setSelectionType(BedeworkDefs.selectionTypeSubscription);
-
-      return "success";
+    if (name == null) {
+      return null;
     }
 
+    BwSubscription sub = svci.findSubscription(name);
+
+    if (sub == null) {
+      form.getErr().emit("org.bedework.client.error.unknownsubscription");
+      return "notFound";
+    }
+
+    Collection c = new Vector();
+    c.add(sub);
+    svci.setCurrentSubscriptions(c);
+    form.setSelectionType(BedeworkDefs.selectionTypeSubscription);
+
+    form.refreshIsNeeded();
+    return "success";
+  }
+
+  /* Try for a calendar url. Return with forward or null for not found.
+   */
+  private String tryCal(HttpServletRequest request,
+                        BwActionFormBase form) throws Throwable {
+    CalSvcI svci = form.fetchSvci();
     String url = getReqPar(request, "calUrl");
-    if (url != null) {
-      BwCalendar cal = findCalendar(url, form);
 
-      if (cal == null) {
-        form.getErr().emit("org.bedework.client.error.unknowncalendar");
-        return "notFound";
-      }
-
-      BwSubscription sub = BwSubscription.makeSubscription(cal);
-
-      Collection c = new Vector();
-      c.add(sub);
-      svci.setCurrentSubscriptions(c);
-      form.setSelectionType(BedeworkDefs.selectionTypeCalendar);
-
-      return "success";
+    if (url == null) {
+      return null;
     }
 
-    name = getReqPar(request, "viewName");
+    BwCalendar cal = findCalendar(url, form);
+
+    if (cal == null) {
+      form.getErr().emit("org.bedework.client.error.unknowncalendar");
+      return "notFound";
+    }
+
+    BwSubscription sub = BwSubscription.makeSubscription(cal);
+
+    Collection c = new Vector();
+    c.add(sub);
+    svci.setCurrentSubscriptions(c);
+    form.setSelectionType(BedeworkDefs.selectionTypeCalendar);
+
+    form.refreshIsNeeded();
+    return "success";
+  }
+
+  /* Do the view thing. This is the default
+   */
+  private String doView(HttpServletRequest request,
+                        BwActionFormBase form) throws Throwable {
+    CalSvcI svci = form.fetchSvci();
+    String name = getReqPar(request, "viewName");
 
     if (name == null) {
       name = svci.getUserPrefs().getPreferredView();
@@ -142,6 +178,7 @@ public class SetSelectionAction extends BwAbstractAction {
       return "noViewDef";
     }
 
+    form.setSelectionType(BedeworkDefs.selectionTypeView);
     form.refreshIsNeeded();
     return "success";
   }

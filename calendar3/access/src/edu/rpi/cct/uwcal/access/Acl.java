@@ -501,12 +501,36 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
    *                 Encoding methods
    * ==================================================================== */
 
-  /** Encode this object after manipulation or creation.
+  /** Encode this object after manipulation or creation. Inherited entries
+   * will be skipped.
    *
    * @return char[] encoded value
    * @throws AccessException
    */
   public char[] encode() throws AccessException {
+    startEncoding();
+
+    if (aces != null) {
+      Iterator it = aces.iterator();
+      while (it.hasNext()) {
+        Ace ace = (Ace)it.next();
+
+        if (!ace.getInherited()) {
+          ace.encode(this);
+        }
+      }
+    }
+
+    return getEncoding();
+  }
+
+  /** Encode this object after manipulation or creation. Inherited entries
+   * will NOT be skipped.
+   *
+   * @return char[] encoded value
+   * @throws AccessException
+   */
+  public char[] encodeAll() throws AccessException {
     startEncoding();
 
     if (aces != null) {
