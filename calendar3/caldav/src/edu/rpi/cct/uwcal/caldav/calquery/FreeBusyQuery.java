@@ -145,7 +145,7 @@ public class FreeBusyQuery {
       TimeRange tr = (TimeRange)it.next();
 
       try {
-        BwFreeBusy fb = svci.getFreeBusy(new BwUser(user),
+        BwFreeBusy fb = svci.getFreeBusy(null, new BwUser(user),
                                          tr.getStart(), tr.getEnd());
 
         if (debug) {

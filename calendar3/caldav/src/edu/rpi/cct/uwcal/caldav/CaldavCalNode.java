@@ -132,11 +132,7 @@ public class CaldavCalNode extends CaldavBwNode {
         debugMsg("SEARCH: getEvents in calendar " + cal.getId());
       }
 
-      BwSubscription sub = new BwSubscription();
-      sub.setName(cal.getName());
-      sub.setDisplay(true);
-      sub.setInternalSubscription(true);
-      sub.setCalendar(cal);
+      BwSubscription sub = BwSubscription.makeSubscription(cal);
 
       Collection events = svci.getEvents(sub, CalFacadeDefs.retrieveRecurExpanded);
 

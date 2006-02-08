@@ -755,14 +755,16 @@ public abstract class CalSvcI implements Serializable {
 
   /** Get the free busy for the given principal.
    *
+   * @param cal    Calendar to provide free-busy for. Null for default
+   *               collection (as specified by user).
    * @param who
    * @param start
    * @param end
    * @return BwFreeBusy
    * @throws CalFacadeException
    */
-  public abstract BwFreeBusy getFreeBusy(BwPrincipal who, BwDateTime start,
-                                         BwDateTime end)
+  public abstract BwFreeBusy getFreeBusy(BwCalendar cal, BwPrincipal who,
+                                         BwDateTime start, BwDateTime end)
           throws CalFacadeException;
 
   /* ====================================================================

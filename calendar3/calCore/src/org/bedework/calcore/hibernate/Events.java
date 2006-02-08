@@ -854,6 +854,11 @@ public class Events extends CalintfHelper {
 
     sess.createQuery(sb.toString());
 
+    /* XXX Limit result set size - pagination allows something like:
+       query.setFirstResult(0);
+       query.setMaxResults(10);
+       */
+
     if (startDate != null) {
       sess.setString("fromDate", startDate.getDate());
     }

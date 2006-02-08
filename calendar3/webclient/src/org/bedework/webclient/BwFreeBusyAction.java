@@ -163,7 +163,7 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
         debugMsg("getFreeBusy for start =  " + sdt +
                  " end = " + start.getTime());
       }
-      BwFreeBusy fb1 = svci.getFreeBusy(user,
+      BwFreeBusy fb1 = svci.getFreeBusy(null, user,
                           CalFacadeUtil.getDateTime(sdt, false, true,
                                                     svci.getTimezones()),
                           CalFacadeUtil.getDateTime(start.getTime(), false, true,

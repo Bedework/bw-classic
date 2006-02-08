@@ -266,6 +266,26 @@ public class BwSubscription extends BwOwnedDbentity {
    *                   Factory methods
    * ==================================================================== */
 
+  /** Make a subscription to the calendar object defaulting most fields
+   *
+   * @param  val            BwCalendar the calendar to subscribe to
+   * @return BwSubscription a new subscription object
+   */
+  public static BwSubscription makeSubscription(BwCalendar val) {
+    BwSubscription sub = new BwSubscription();
+
+    sub.setName(val.getName());
+    sub.setUri(CalFacadeDefs.bwUriPrefix + val.getPath());
+    sub.setDisplay(true);
+    sub.setAffectsFreeBusy(true);
+    sub.setInternalSubscription(true);
+    sub.setCalendar(val);
+    sub.setInternalSubscription(true);
+    sub.setEmailNotifications(false);
+
+    return sub;
+  }
+
   /** Make a subscription to the calendar object
    *
    * @param  val            BwCalendar the calendar to subscribe to

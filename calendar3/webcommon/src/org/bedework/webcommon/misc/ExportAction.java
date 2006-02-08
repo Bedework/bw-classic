@@ -125,11 +125,7 @@ public class ExportAction extends BwAbstractAction {
           return "notFound";
         }
 
-        sub = new BwSubscription();
-        sub.setName(cal.getName());
-        sub.setDisplay(true);
-        sub.setInternalSubscription(true);
-        sub.setCalendar(cal);
+        sub = BwSubscription.makeSubscription(cal);
       } else if (subid >= 0) {
         sub = svci.getSubscription(subid);
 

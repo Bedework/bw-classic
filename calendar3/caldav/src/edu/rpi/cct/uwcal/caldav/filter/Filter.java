@@ -53,7 +53,6 @@
 */
 
 package edu.rpi.cct.uwcal.caldav.filter;
-import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calsvci.CalSvcI;
 
@@ -321,12 +320,7 @@ public class Filter {
     Collection events;
 
     try {
-      BwSubscription sub = new BwSubscription();
-      BwCalendar cal = wdnode.getCDURI().getCal();
-      sub.setName(cal.getName());
-      sub.setDisplay(true);
-      sub.setInternalSubscription(true);
-      sub.setCalendar(cal);
+      BwSubscription sub = BwSubscription.makeSubscription(wdnode.getCDURI().getCal());
 
       if (eventq.trange == null) {
         if (debug) {

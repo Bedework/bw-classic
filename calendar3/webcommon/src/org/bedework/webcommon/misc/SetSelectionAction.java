@@ -116,11 +116,7 @@ public class SetSelectionAction extends BwAbstractAction {
         return "notFound";
       }
 
-      BwSubscription sub = new BwSubscription();
-      sub.setName(url);
-      sub.setDisplay(true);
-      sub.setInternalSubscription(true);
-      sub.setCalendar(cal);
+      BwSubscription sub = BwSubscription.makeSubscription(cal);
 
       Collection c = new Vector();
       c.add(sub);

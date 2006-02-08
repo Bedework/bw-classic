@@ -225,7 +225,18 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
   private int organizerId = CalFacadeDefs.unsavedItemKey;
   private BwOrganizer organizer;
 
+  /** */
+  public final static String transparencyOpaque = "OPAQUE";
+  /** */
+  public final static String transparencyTransparent = "TRANSPARENT";
   /** Transparency is used in free/busy time calculation
+   *      transp     = "TRANSP" tranparam ":" transvalue CRLF
+
+     tranparam  = *(";" xparam)
+
+     transvalue = "OPAQUE"      ;Blocks or opaque on busy time searches.
+                / "TRANSPARENT" ;Transparent on busy time searches.
+        ;Default value is OPAQUE
    */
   private String transparency;
 
