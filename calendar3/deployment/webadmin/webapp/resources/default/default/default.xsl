@@ -464,10 +464,12 @@
               </option>
               <xsl:copy-of select="/bedeworkadmin/formElements/form/calendar/all/select/*"/>
             </select>
+            <!-- description of calendar: will be implemented soon -->
+            <!--
             <div id="calendarDescriptionBox">
               Description: <span id="calendarDescription">please select a calendar.</span>
               <a href="" target="calDescriptions">all calendar descriptions</a>
-            </div>
+            </div>-->
           </td>
         </tr>
 
@@ -502,7 +504,7 @@
                 <xsl:copy-of select="/bedeworkadmin/formElements/form/start/day/*"/>
                 <xsl:copy-of select="/bedeworkadmin/formElements/form/start/year/*"/>
               </div>
-              <img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>
+              <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
               <div class="{$timeFieldsClass}" id="startTimeFields">
                 <xsl:copy-of select="/bedeworkadmin/formElements/form/start/hour/*"/>
                 <xsl:copy-of select="/bedeworkadmin/formElements/form/start/minute/*"/>
@@ -536,7 +538,7 @@
                   <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/day/*"/>
                   <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/year/*"/>
                 </div>
-                <img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>
+                <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
                 <div class="{$timeFieldsClass}" id="endTimeFields">
                   <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/hour/*"/>
                   <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/minute/*"/>

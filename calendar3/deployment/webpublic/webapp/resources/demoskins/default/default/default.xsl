@@ -401,7 +401,7 @@
          <td class="leftCell">
            <xsl:choose>
              <xsl:when test="/bedework/selectionState/selectionType = 'calendar'">
-               Calendar:
+               Calendar: <xsl:value-of select="/bedework/selectionState/subscriptions/subscription/calendar/name"/>
                <span class="link">[<a href="{$setSelection}">default view</a>]</span>
              </xsl:when>
              <xsl:when test="/bedework/selectionState/selectionType = 'search'">
