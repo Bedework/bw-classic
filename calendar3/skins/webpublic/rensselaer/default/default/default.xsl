@@ -215,7 +215,7 @@
             <td class="centerCell">
                 &#160;
             </td>
-            <td class="rightCell">
+            <td class="rightCell rssPrint">
              <a href="javascript:window.print()" title="print this view">
                 <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
               </a>
