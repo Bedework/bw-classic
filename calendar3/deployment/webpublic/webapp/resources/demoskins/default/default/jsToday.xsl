@@ -7,11 +7,16 @@
 
        e.g.
        <script src="http://localhost:8080/cal/setView.do?viewType=todayView&skinName=jsToday&contentType=text/javascript&contentName=bedework.js" type="text/javascript"></script>
+
+       You should uncomment the code below that reads "Today's Events" and throw
+       away the following line.  You should modify this stylesheet if you intend
+       to display more than a single day's events.
   -->
   <xsl:variable name="urlprefix" select="/bedework/urlprefix"/>
   <xsl:template match="/">
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;h3&gt;');</xsl:text>
-      <xsl:text disable-output-escaping="yes">document.writeln("Today's Events");</xsl:text>
+      <!--<xsl:text disable-output-escaping="yes">document.writeln("Today's Events");</xsl:text>-->
+      <xsl:text disable-output-escaping="yes">document.writeln("This Period's Events");</xsl:text>
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;/h3&gt;');</xsl:text>
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;ul class="eventFeed"&gt;');</xsl:text>
     <xsl:choose>
