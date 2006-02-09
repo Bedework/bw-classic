@@ -441,10 +441,10 @@
                                count(/bedework/appvar[key='weekViewMode'])=0))">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                    <img src="{$resourcesRoot}/images/std-button-summary-off.gif" width="67" height="21" border="0" alt="only summaries of events supported in this view"/>
+                    <img src="{$resourcesRoot}/images/std-button-summary-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <img src="{$resourcesRoot}/images/std-button-details-off.gif" width="67" height="21" border="0" alt="only summaries of events supported in this view"/>
+                    <img src="{$resourcesRoot}/images/std-button-details-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
@@ -452,18 +452,18 @@
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                     <a href="{$setup}?setappvar=summaryMode(summary)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="67" height="21" border="0" alt="toggle summary/detailed view"/>
+                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$setup}?setappvar=summaryMode(details)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="67" height="21" border="0" alt="toggle summary/detailed view"/>
+                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
-            <a href="setup.do"><img src="{$resourcesRoot}/images/std-button-refresh.gif" width="69" height="21" border="0" alt="refresh view"/></a>
+            <a href="setup.do"><img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
           </td>
        </tr>
     </table>
