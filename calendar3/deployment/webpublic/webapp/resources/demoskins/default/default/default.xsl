@@ -90,6 +90,7 @@
           </xsl:otherwise>
         </xsl:choose>
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
+        <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
       </head>
       <body>
         <xsl:call-template name="headBar"/>

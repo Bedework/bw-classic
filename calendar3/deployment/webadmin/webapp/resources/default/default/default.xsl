@@ -133,7 +133,7 @@
           <script type='text/javascript' src="{$resourcesRoot}/resources/autoComplete.js"></script>
           <script type='text/javascript' src="{$resourcesRoot}/resources/ui.js"></script>
         </xsl:if>
-        <link rel="icon" type="image/ico" href="{$resourcesRoot}/bedework.ico" />
+        <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
         <script language="JavaScript" type="text/javascript">
         <xsl:comment>
         <![CDATA[
