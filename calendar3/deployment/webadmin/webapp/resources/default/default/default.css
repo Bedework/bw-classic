@@ -9,6 +9,7 @@ body {
   background-color : #333;
   margin: 0em;
   padding:  0.5em 1em 0.5em 1em;
+  height: 40px;
 }
 #header a {
   color: #dde;
@@ -20,6 +21,7 @@ body {
 }
 #header img {
   padding-top: 0.2em;
+  border: 0;
 }
 #messages {
   background-color: inherit;

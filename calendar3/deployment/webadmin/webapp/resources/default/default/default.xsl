@@ -2439,15 +2439,15 @@
 
   <xsl:template name="header">
     <div id="header">
-     <!-- Uncomment this code and replace the following logo
-          to brand your administrative interface.
-
-      <img id="logo"
+      <a href="http://www.bedework.org">
+        <img id="logo"
           alt="logo"
-          src="{$resourcesRoot}/resources/caladminlogo.gif"
+          src="{$resourcesRoot}/resources/bedeworkAdminLogo.gif"
           align="right"
-          border="0"/> -->
-
+          width="217"
+          height="40"
+          border="0"/>
+      </a>
       <!-- set the page heading: -->
       <h1>
         <xsl:choose>
