@@ -152,7 +152,7 @@
     </html>
   </xsl:template>
 
-  <!--==== BLOCK (named) TEMPLATES and NAVIGATION  ====-->
+  <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
   <!-- these templates are separated out for convenience and to simplify the default template -->
 
   <xsl:template name="headBar">
@@ -489,7 +489,7 @@
                   <xsl:for-each select="/bedework/views/view">
                     <xsl:variable name="name" select="name"/>
                     <xsl:choose>
-                      <xsl:when test="name=/bedework/name">
+                      <xsl:when test="name=/bedework/selectionState/view/name">
                         <option value="{$name}" selected="selected"><xsl:value-of select="name"/></option>
                       </xsl:when>
                       <xsl:otherwise>
@@ -1000,7 +1000,7 @@
     </li>
   </xsl:template>
 
-<!--==== FOOTER ====-->
+  <!--==== FOOTER ====-->
 
   <xsl:template name="footer">
     <div id="footer">
@@ -1021,13 +1021,12 @@
               <option value="style(blue)">blue</option>
             </select>
           </form>
-          <form name="skinSelectForm" method="get" action="{$setup}">
-            skin selector:
-            <select name="skinNameSticky" onChange="submit()">
-              <option>select a skin</option>
-              <option value="default">Demo</option>
-              <option value="washington">Washington</option>
-              <option value="rensselaer">Rensselaer</option>
+          <form name="skinSelectForm" method="get" action="">
+            skin examples:
+            <select name="skinNameSticky" onchange="window.location = this.value">
+              <option>select a calendar</option>
+              <option value="http://events.rpi.edu">Rensselaer</option>
+              <option value="http://myuw.washington.edu/cal/">Washington</option>
             </select>
           </form>
         </td>

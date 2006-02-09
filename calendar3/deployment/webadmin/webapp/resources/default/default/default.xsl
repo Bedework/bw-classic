@@ -450,7 +450,7 @@
           </td>
           <td>
             <xsl:if test="/bedeworkadmin/formElements/form/calendar/preferred/select/option">
-              <select name="prefCalendarId">
+              <select name="prefCalendarId" onchange="getCalendarDescription(this.value,'please select a calendar.')">
                 <option value="-1">
                   Select preferred:
                 </option>
@@ -458,14 +458,16 @@
               </select>
               or Calendar (all):
             </xsl:if>
-            <select name="calendarId">
+            <select name="calendarId" onchange="getCalendarDescription(this.value,'please select a calendar.')">
               <option value="-1">
                 Select:
               </option>
               <xsl:copy-of select="/bedeworkadmin/formElements/form/calendar/all/select/*"/>
             </select>
-            <xsl:text> </xsl:text>
-            <a href="" target="_blank">Calendar Definitions</a>
+            <div id="calendarDescriptionBox">
+              Description: <span id="calendarDescription">please select a calendar.</span>
+              <a href="" target="calDescriptions">all calendar descriptions</a>
+            </div>
           </td>
         </tr>
 

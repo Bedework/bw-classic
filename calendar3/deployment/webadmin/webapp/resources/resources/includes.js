@@ -40,3 +40,11 @@ function closePopUps() {
     window.clockWindow.close();
   }
 }
+function  getCalendarDescription(calId,defaultMessage) {
+  div = document.getElementById("calendarDescription");
+  if (calId == -1) {
+    div.innerHTML = defaultMessage;
+  } else {
+    div.innerHTML = calId;
+  }
+}

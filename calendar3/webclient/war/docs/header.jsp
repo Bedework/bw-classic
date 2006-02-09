@@ -66,19 +66,6 @@ try {
   <hour24><bean:write name="calForm" property="hour24" /></hour24><%--
     Values: true, false - Flag if we are using 24 hour time --%>
 
-  <logic:present name="calForm" property="currentView" >
-    <name><bean:write name="calForm" property="currentView.name"/></name><%--
-      Value: string - Name of selected view for display --%>
-    <viewid><bean:write name="calForm" property="currentView.id"/></viewid><%--
-      Value: string - String ID of selected view for display --%>
-  </logic:present>
-  <logic:notPresent name="calForm" property="currentView" >
-    <name>All</name>
-    <viewid>-1</viewid>
-  </logic:notPresent>
-  <search><bean:write name="calForm" property="search"/></search><%--
-    Value: string - Current search string for display --%>
-
   <publicview><bean:write name="calForm" property="publicView" /></publicview><%--
     Values: true, false - Flag if we are in the guest (public) view  --%>
   <guest><bean:write name="calForm" property="guest" /></guest><%--
@@ -118,11 +105,6 @@ try {
         Use this value to prefix calls to the application actions in your XSLT.
         e.g. <a href="{$urlPrefix}/eventView.do?eventId=8">View Event</a> --%>
   <urlpattern><genurl:rewrite action="DUMMYACTION.DO" /></urlpattern>
-
-  <selectionType><bean:write name="calForm" property="selectionType"/></selectionType><%--
-        Value: view,search,calendar,subscription,filter
-        Used to branch into different presentation depending on the type of
-        output we expect --%>
 
   <personaluri><bean:message key="org.bedework.personal.calendar.uri"/></personaluri>
   <publicuri><bean:message key="org.bedework.public.calendar.uri"/></publicuri>
@@ -191,6 +173,34 @@ try {
       </logic:equal>
     </appvar>
   </logic:iterate>
+
+  <selectionState><%--
+    What type of information have we selected to display?  Used to
+    branch between different templates in the xsl based on user selections. --%>
+    <selectionType><bean:write name="calForm" property="selectionType"/></selectionType><%--
+        Value: view,search,calendar,subscription,filter
+        Used to branch into different presentation depending on the type of
+        output we expect --%>
+    <view>
+      <logic:present name="calForm" property="currentView" >
+        <name><bean:write name="calForm" property="currentView.name"/></name><%--
+          Value: string - Name of selected view for display --%>
+        <id><bean:write name="calForm" property="currentView.id"/></id><%--
+          Value: string - String ID of selected view for display --%>
+      </logic:present>
+      <logic:notPresent name="calForm" property="currentView" >
+        <name>All</name><%-- change: this should be the default not "All" --%>
+        <id>-1</id>
+      </logic:notPresent>
+    </view>
+    <search><bean:write name="calForm" property="search"/></search><%--
+      Value: string - Current search string for display
+      Note: this will change when proper searching is implemented --%>
+    <subscription></subscription><%--
+      Value: string - currently selected subscription ("calendar" too) --%>
+    <filter></filter> <%-- unimplemented --%>
+  </selectionState>
+
 <%
 } catch (Throwable t) {
   t.printStackTrace();
