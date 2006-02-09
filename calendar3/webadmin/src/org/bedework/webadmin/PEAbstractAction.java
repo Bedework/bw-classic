@@ -55,6 +55,12 @@
 package org.bedework.webadmin;
 
 
+import org.bedework.appcommon.IntSelectId;
+import org.bedework.calfacade.BwCalendar;
+import org.bedework.calfacade.BwCategory;
+import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.BwLocation;
+import org.bedework.calfacade.BwSponsor;
 import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;
@@ -84,55 +90,6 @@ public abstract class PEAbstractAction extends BwAbstractAction {
                          BwActionFormBase frm) throws Throwable {
     PEActionForm form = (PEActionForm)frm;
 
-    /*
-    CalEnv env = getEnv(frm);
-
-    / * Set some options from the environment * /
-    form.setAutoCreateSponsors(env.getAppBoolProperty("app.autocreatesponsors"));
-    form.setAutoCreateLocations(env.getAppBoolProperty("app.autocreatelocations"));
-    form.setAutoDeleteSponsors(env.getAppBoolProperty("app.autodeletesponsors"));
-    form.setAutoDeleteLocations(env.getAppBoolProperty("app.autodeletelocations"));
-
-    if (debug) {
-      logIt("form.getGroupSet()=" + form.getGroupSet());
-    }
-
-    / ** Show the owner we are administering * /
-    form.setAdminUserId(form.getCalSvcI().getUser().getAccount());
-
-    if (debug) {
-      logIt("-------- isSuperUser: " + form.getUserAuth().isSuperUser());
-    }
-
-    if (!form.getAuthorisedUser()) {
-      return "noAccess";
-    }
-
-    String temp = checkGroup(request, form, true);
-    if (temp != null) {
-      if (debug) {
-        logIt("form.getGroupSet()=" + form.getGroupSet());
-      }
-      return temp;
-    }
-
-    / ** Ensure we have prefs and other values for the AuthUser
-     * /
-    setAuthUser(form);
-
-    String reqpar = request.getParameter("cancelled");
-
-    if (reqpar != null) {
-      / ** Set the objects to null so we get new ones.
-       * /
-      form.initFields();
-      form.setEvent(null);
-
-      form.getMsg().emit("org.bedework.client.message.cancelled");
-      return "cancelled";
-    }
-    */
-
     return doAction(request, sess, form);
   }
 
@@ -148,195 +105,64 @@ public abstract class PEAbstractAction extends BwAbstractAction {
                                   BwSession sess,
                                   PEActionForm form) throws Throwable;
 
-  /* ********************************************************************
-                             package methods
-     ******************************************************************** */
-
-  /* * Return null if group is chosen else return a forward name.
-   *
-   * @param request   Needed to locate session
-   * @param form      Action form
-   * @param initCheck true if this is a check to see if we're initialised,
-   *                  otherwise this is an explicit request to change group.
-   * @return String   forward name
-   * /
-  protected String checkGroup(HttpServletRequest request,
-                    PEActionForm form,
-                    boolean initCheck) throws Throwable {
-    if (form.getGroupSet()) {
-      return null;
-    }
-
-    CalSvcI svci = form.getCalSvcI();
-
-    try {
-      Groups adgrps = svci.getGroups();
-
-      if (form.retrieveChoosingGroup()) {
-        /* * This should be the response to presenting a list of groups.
-            We handle it here rather than in a separate action to ensure our
-            client is not trying to bypass the group setting.
-         * /
-
-        String reqpar = request.getParameter("adminGroupName");
-        if (reqpar == null) {
-          // Make them do it again.
-
-          return "chooseGroup";
-        }
-
-        return setGroup(request, form, adgrps, reqpar);
-      }
-
-      /* * If the user is in no group or in one group we just go with that,
-          otherwise we ask them to select the group
-       * /
-
-      Collection adgs;
-
-      BwUser user = svci.findUser(form.getCurrentUser());
-      if (user == null) {
-        return "noAccess";
-      }
-
-      if (initCheck || !form.getUserAuth().isSuperUser()) {
-        // Always restrict to groups we're a member of
-        adgs = adgrps.getGroups(user);
-      } else {
-        adgs = adgrps.getAll();
-      }
-
-      if (adgs.isEmpty()) {
-        /* * If we require that all users be in a group we return to an error
-            page. The only exception will be superUser.
-         * /
-
-        boolean noGroupAllowed =
-            form.getEnv().getAppBoolProperty("app.nogroupallowed");
-        if (form.getUserAuth().isSuperUser() || noGroupAllowed) {
-          form.assignAdminGroup(null);
-          return null;
-        }
-
-        return "noGroupAssigned";
-      }
-
-      if (adgs.size() == 1) {
-        Iterator adgsit = adgs.iterator();
-
-        BwAdminGroup adg = (BwAdminGroup)adgsit.next();
-
-        form.assignAdminGroup(adg);
-        String s = setAdminUser(request, form, adg.getOwner().getAccount(), true);
-
-        if (s != null) {
-          return s;
-        }
-
-        form.setAdminUserId(svci.getUser().getAccount());
-        return null;
-      }
-
-      /* * Go ahead and present the possible groups
-       * /
-      form.setUserAdminGroups(adgs);
-      form.assignChoosingGroup(true); // reset
-
-      return "chooseGroup";
-    } catch (Throwable t) {
-      form.getErr().emit(t);
-      return "error";
-    }
-  }*/
 
   /* ********************************************************************
                              protected methods
      ******************************************************************** */
-/*
-  protected String setAdminUser(HttpServletRequest request,
-                                PEActionForm form,
-                                String user,
-                                boolean isMember) throws Throwable {
-    int access = getAccess(request, getMessages());
 
-//    if (form.getCalSvcI() != null) {
-//      form.getCalSvcI().close();
-//    }
+  protected void initFields(BwActionFormBase frm) {
+    PEActionForm form = (PEActionForm)frm;
+    super.initFields(frm);
+    form.setEventInfo(null);
+    resetEvent(form);
 
-    if (!checkSvci(request, form, form.getSession(), access, user, true,
-                   isMember, debug)) {
-      return "accessError";
-    }
-
-    return null;
+    form.setCategory(null);
+    form.setSponsor(null);
+    form.setLocation(null);
+    form.setUpdGroupMember(null);
   }
 
-  protected BwAuthUser getAuthUser(PEActionForm form) throws CalFacadeException {
-    UserAuth ua = form.retrieveUserAuth();
-    return ua.getUser(form.getCurrentUser());
-  }
-*/
-  /* ********************************************************************
-                             private methods
-     ******************************************************************** */
+  protected void resetEvent(PEActionForm form) {
+    BwEvent event = form.getEditEvent();
 
-  /*
-  private boolean isMember(BwAdminGroup ag,
-                           PEActionForm form) throws Throwable {
-    return ag.isMember(String.valueOf(form.getCurrentUser()));
-  }
-
-  / * Set information associated witht he current auth user.
-   * Set the prefs on each request to reflect other session changes
-   * /
-  private void setAuthUser(PEActionForm form) throws CalFacadeException {
-    BwAuthUser au = getAuthUser(form);
-    BwAuthUserPrefs prefs = au.getPrefs();
-    if (prefs == null) {
-      prefs = new BwAuthUserPrefs();
+    /* Implant the current id(s) in new entries */
+    int id = 0;
+    BwCategory k = event.getFirstCategory();
+    if (k != null) {
+      id = k.getId();
+      form.setCategory(k);
     }
 
-    form.setAuthUserPrefs(prefs);
+    /* A is the All box, B is the user preferred values. */
+    form.assignCategoryId(new IntSelectId(id, IntSelectId.AHasPrecedence));
 
-    int rights = au.getUsertype();
-
-    form.assignAuthUserAlerts((rights & UserAuth.alertUser) != 0);
-    form.assignAuthUserPublicEvents((rights & UserAuth.publicEventUser) != 0);
-    form.assignAuthUserSuperUser((rights & UserAuth.superUser) != 0);
-  }
-
-  private String setGroup(HttpServletRequest request,
-                          PEActionForm form,
-                          Groups adgrps,
-                          String groupName) throws Throwable {
-    if (groupName == null) {
-      // We require a name
-      return "chooseGroup";
-    }
-
-    BwAdminGroup ag = (BwAdminGroup)adgrps.findGroup(groupName);
-
-    if (debug) {
-      if (ag == null) {
-        logIt("No user admin group with name " + groupName);
-      } else {
-        logIt("Retrieved user admin group " + ag.getAccount());
-      }
-    }
-
-    form.assignAdminGroup(ag);
-
-    String s = setAdminUser(request, form, ag.getOwner().getAccount(),
-                            isMember(ag, form));
-
+    BwSponsor s = event.getSponsor();
+    id = 0;
     if (s != null) {
-      return s;
+      id = s.getId();
+      form.setSponsor(s);
     }
 
-    form.setAdminUserId(form.getCalSvcI().getUser().getAccount());
+    form.assignSpId(new IntSelectId(id, IntSelectId.AHasPrecedence));
 
-    return null;
+    BwLocation l = event.getLocation();
+    id = 0;
+    if (l != null) {
+      id = l.getId();
+      form.setLocation(l);
+    }
+
+    form.assignLocId(new IntSelectId(id, IntSelectId.AHasPrecedence));
+
+    BwCalendar c = event.getCalendar();
+    id = 0;
+    if (c != null) {
+      id = c.getId();
+      form.setCalendar(c);
+    }
+
+    form.assignCalendarId(new IntSelectId(id, IntSelectId.AHasPrecedence));
   }
-  */
+
 }
 

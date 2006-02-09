@@ -55,24 +55,19 @@
 package org.bedework.webadmin;
 
 import org.bedework.appcommon.IntSelectId;
-import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
-import org.bedework.calfacade.BwEventObj;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUser;
-import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.webcommon.BwActionFormBase;
-import org.bedework.webcommon.BwWebUtil;
 
 import edu.rpi.sss.util.Util;
 
-//import java.sql.Date;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -95,8 +90,6 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    *                   Application state
    *  ................................................................... */
 
-  private EventInfo eventInfo;
-  private BwEvent event;
 
   /** True if we are adding an alert
    */
@@ -292,6 +285,22 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    *                   Events
    * ==================================================================== */
 
+
+  /** XXX Remove this when the jsp is pointed at the common actions.
+   *
+   * @param val
+   */
+  public void setEvent(BwEvent val) {
+    setEditEvent(val);
+  }
+
+  /**
+   * @return event
+   */
+  public BwEvent getEvent() {
+    return getEditEvent();
+  }
+
   /** Not set - invisible to jsp
    */
   /**
@@ -339,105 +348,6 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
   }
 
   /**
-   * @param val
-   */
-  public void setEventInfo(EventInfo val) {
-    eventInfo = val;
-    if (val == null) {
-      setEvent(null);
-    } else {
-      setEvent(val.getEvent());
-    }
-  }
-
-  /**
-   * @return EventInfo
-   */
-  public EventInfo getEventInfo() {
-    return eventInfo;
-  }
-
-  /**
-   * @param val
-   */
-  public void setEvent(BwEvent val) {
-    event = val;
-
-    try {
-      if (val == null) {
-        getEventDates().setNewEvent(getEvent(), fetchSvci().getTimezones());
-      } else {
-        getEventDates().setFromEvent(getEvent(), fetchSvci().getTimezones());
-      }
-    } catch (Throwable t) {
-      err.emit(t);
-    }
-
-    if (debug) {
-      debugMsg("setEvent(), dates=" + getEventDates());
-    }
-
-    resetEvent();
-  }
-
-  /**
-   *
-   */
-  public void resetEvent() {
-    getEvent(); // Make sure we have one
-
-    /* Implant the current id(s) in new entries */
-    int id = 0;
-    BwCategory k = event.getFirstCategory();
-    if (k != null) {
-      id = k.getId();
-      setCategory(k);
-    }
-
-    /* A is the All box, B is the user preferred values. */
-    categoryId = new IntSelectId(id, IntSelectId.AHasPrecedence);
-
-    BwSponsor s = event.getSponsor();
-    id = 0;
-    if (s != null) {
-      id = s.getId();
-      setSponsor(s);
-    }
-
-    spId = new IntSelectId(id, IntSelectId.AHasPrecedence);
-
-    BwLocation l = event.getLocation();
-    id = 0;
-    if (l != null) {
-      id = l.getId();
-      setLocation(l);
-    }
-
-    locId = new IntSelectId(id, IntSelectId.AHasPrecedence);
-
-    BwCalendar c = event.getCalendar();
-    id = 0;
-    if (c != null) {
-      id = c.getId();
-      setCalendar(c);
-    }
-
-    calendarId = new IntSelectId(id, IntSelectId.AHasPrecedence);
-  }
-
-  /** If an event object exists, return that otherwise create an empty one.
-   *
-   * @return BwEvent  populated event value object
-   */
-  public BwEvent getEvent() {
-    if (event == null) {
-      event = new BwEventObj();
-      eventInfo = new EventInfo(event);
-    }
-    return event;
-  }
-
-  /**
    *
    * @param val Collection of formatted events
    */
@@ -453,31 +363,6 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
   public Collection getFormattedEvents() {
     return formattedEvents;
   }
-
-  /* * Get the i'th category id from the event object. Return &lt; 0 for none.
-   *
-   * @param i        int index into events vector of categories
-   * @return int     Category index or -1
-   * /
-  public int getEventCategoryId(int i) {
-    CategoryVO k = getEvent().getCategory(i);
-
-    if (k == null) {
-      return -1;
-    }
-
-    return k.getId();
-  }
-
-  /* * Get the i'th category from the event object. Return null for none.
-   *
-   * @param i           int index into events vector of keywors
-   * @return CategoryVO  Category object or null
-   * /
-  public CategoryVO getEventCategory(int i) {
-    return getEvent().getCategory(i);
-  }
-  */
 
   /* ====================================================================
    *                   Categories
@@ -515,6 +400,20 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
     }
 
     return category;
+  }
+
+  /**
+   * @param val IntSelectId id object
+   */
+  public void assignCategoryId(IntSelectId val) {
+    categoryId = val;
+  }
+
+  /**
+   * @return IntSelectId id object
+   */
+  public IntSelectId retrieveCategoryId() {
+    return categoryId;
   }
 
   /** We have a preferred and all categories form field. One of them will be
@@ -631,6 +530,20 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
     return sponsor;
   }
 
+  /**
+   * @param val IntSelectId id object
+   */
+  public void assignSpId(IntSelectId val) {
+    spId = val;
+  }
+
+  /**
+   * @return IntSelectId id object
+   */
+  public IntSelectId retrieveSpId() {
+    return spId;
+  }
+
   /** We have a preferred and all sponsors form field. One of them may be
    * unset so we ignore negative values.
    * @see org.bedework.webcommon.BwActionFormBase#setSponsorId(int)
@@ -725,6 +638,20 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
     return location;
   }
 
+  /**
+   * @param val IntSelectId id object
+   */
+  public void assignLocId(IntSelectId val) {
+    locId = val;
+  }
+
+  /**
+   * @return IntSelectId id object
+   */
+  public IntSelectId retrieveLocId() {
+    return locId;
+  }
+
   /** We have a preferred and all locations form field. One of them will be
    * unset so we ignore negative values.
    *
@@ -778,6 +705,20 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
   /* ====================================================================
    *                   Calendars
    * ==================================================================== */
+
+  /**
+   * @param val IntSelectId id object
+   */
+  public void assignCalendarId(IntSelectId val) {
+    calendarId = val;
+  }
+
+  /**
+   * @return IntSelectId id object
+   */
+  public IntSelectId retrieveCalendarId() {
+    return calendarId;
+  }
 
   /** We have a preferred and all calendars form field. One of them will be
    * unset so we ignore negative values.
@@ -1087,200 +1028,6 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    *                   Validation methods
    * ==================================================================== */
 
-  /**
-   *
-   * @return boolean  false means something wrong, message emitted
-   * @throws Throwable
-   */
-  public boolean validateEventCategory() throws Throwable {
-    int id = categoryId.getVal();
-
-    if (id <= 0) {
-      if (getEnv().getAppBoolProperty("app.categoryOptional")) {
-        return true;
-      }
-
-      err.emit("org.bedework.client.error.missingfield", "Category");
-      return false;
-    }
-
-    try {
-      BwCategory k = fetchSvci().getCategory(id);
-
-      if (k == null) {
-        err.emit("org.bedework.client.error.missingcategory", id);
-        return false;
-      }
-
-      if (!categoryId.getChanged()) {
-        return true;
-      }
-
-//    oldCategory = getEvent().getCategory(0);
-
-
-      /* Currently we replace the only category if it exists
-       */
-      BwEvent ev = getEvent();
-      ev.clearCategories();
-      ev.addCategory(k);
-
-      setCategory(k);
-
-      return true;
-    } catch (Throwable t) {
-      err.emit(t);
-      return false;
-    }
-  }
-
-  /** Validate the sponsor provided for an event and embed it in the event and
-   * the form.
-   *
-   * @return boolean  true OK, false not OK and message(s) emitted.
-   * @throws Throwable
-   */
-  public boolean validateEventSponsor() throws Throwable {
-    boolean ok = true;
-
-    if (!spId.getChanged()) {
-      if (getAutoCreateSponsors()) {
-        BwSponsor s = getSponsor();
-        if (!BwWebUtil.validateSponsor(s, err)) {
-          return false;
-        }
-
-        fetchSvci().ensureSponsorExists(s);
-
-        setSponsor(s);
-        getEvent().setSponsor(s);
-      }
-
-      if (event.getSponsor() == null) {
-        err.emit("org.bedework.client.error.missingfield", "Sponsor");
-        return false;
-      }
-
-      return ok;
-    }
-
-    // The user selected one from the list
-    int id = spId.getVal();
-
-    try {
-      BwSponsor s = fetchSvci().getSponsor(id);
-      if (s == null) {
-        // Somebody's faking
-        setSponsor(null);
-        err.emit("org.bedework.client.error.missingfield", "Sponsor");
-        return false;
-      }
-
-      getEvent().setSponsor(s);
-
-      setSponsor(s);
-      return true;
-    } catch (Throwable t) {
-      err.emit(t);
-      return false;
-    }
-  }
-
-  /** Validate the location provided for an event and embed it in the event and
-   * the form.
-   *
-   * @return boolean  true OK, false not OK and message(s) emitted.
-   * @throws Throwable
-   */
-  public boolean validateEventLocation() throws Throwable {
-    boolean ok = true;
-
-    if (!locId.getChanged()) {
-      if (getAutoCreateLocations()) {
-        BwLocation l = getLocation();
-
-        if (!BwWebUtil.validateLocation(l, err)) {
-          return false;
-        }
-
-
-        fetchSvci().ensureLocationExists(l);
-
-        setLocation(l);
-        getEvent().setLocation(l);
-      }
-
-      if (event.getLocation() == null) {
-        err.emit("org.bedework.client.error.missingfield", "Location");
-        return false;
-      }
-
-      return ok;
-    }
-
-    // The user selected one from the list
-
-    try {
-      int id = locId.getVal();
-      BwLocation l = fetchSvci().getLocation(id);
-
-      if ((l == null) || !l.getPublick()) {
-        // Somebody's faking
-        setLocation(null);
-        err.emit("org.bedework.client.error.missingfield", "Location");
-        return false;
-      }
-
-      getEvent().setLocation(l);
-      setLocation(l);
-
-      return true;
-    } catch (Throwable t) {
-      err.emit(t);
-      return false;
-    }
-  }
-
-  /** Validate the calendar provided for an event and embed it in the event and
-   * the form.
-   *
-   * @return boolean  true OK, false not OK and message(s) emitted.
-   */
-  public boolean validateEventCalendar() {
-    boolean ok = true;
-
-    if (!calendarId.getChanged()) {
-      if (event.getCalendar() == null) {
-        err.emit("org.bedework.client.error.missingfield", "Calendar");
-        return false;
-      }
-
-      return ok;
-    }
-
-    // The user selected one from the list
-
-    try {
-      int id = calendarId.getVal();
-
-      BwCalendar c = fetchSvci().getCalendar(id);
-
-      if ((c == null) || !c.getPublick() || !c.getCalendarCollection()) {
-        // Somebody's faking
-        setCalendar(null);
-        err.emit("org.bedework.client.error.missingfield", "Calendar");
-        return false;
-      }
-
-      getEvent().setCalendar(c);
-      setCalendar(c);
-      return true;
-    } catch (Throwable t) {
-      err.emit(t);
-      return false;
-    }
-  }
-
   /** Validate a category entry after add/mod
    *
    * @return bool
@@ -1300,19 +1047,6 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
     }
 
     return ok;
-  }
-
-  /**
-   *
-   */
-  public void initFields() {
-    super.initFields();
-    event = null;
-    category = null;
-//    oldCategory = null;
-    sponsor = null;
-    location = null;
-    updGroupMember = null;
   }
 
   /* ====================================================================

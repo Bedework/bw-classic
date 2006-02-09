@@ -86,11 +86,9 @@ public class PEInitAddAlertAction extends PEAbstractAction {
 
     /** Set the objects to null so we get new ones.
      */
-    form.initFields();
-    form.setEvent(null);
+    initFields(form);
     form.assignAlertEvent(true);
     form.assignAddingEvent(true);
-    form.resetEvent();
 
     return "continue";
   }

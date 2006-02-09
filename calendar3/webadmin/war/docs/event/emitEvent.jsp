@@ -1,3 +1,5 @@
+<%@ taglib uri='struts-logic' prefix='logic' %>
+
 <bean:define id="eventId" name="formattedEvent" property="event.id"/>
 <% String rpitemp="/event/fetchForUpdate.do?eventId=" + eventId; %>
 
@@ -19,8 +21,21 @@
   <desc><bean:write name="formattedEvent" property="event.description" /></desc>
   <link><bean:write name="formattedEvent" property="event.link" /></link>
   <cost><bean:write name="formattedEvent" property="event.cost" /></cost>
-  <location><bean:write name="formattedEvent" property="event.location.address" /></location>
-  <sponsor><bean:write name="formattedEvent" property="event.sponsor.name" /></sponsor>
+
+  <logic:present name="event" property="location">
+    <location><bean:write name="formattedEvent" property="event.location.address" /></location>
+  </logic:present>
+  <logic:notPresent name="event" property="location">
+    <location></location>
+  </logic:notPresent>
+
+  <logic:present name="event" property="sponsor">
+    <sponsor><bean:write name="formattedEvent" property="event.sponsor.name" /></sponsor>
+  </logic:present>
+  <logic:notPresent name="event" property="sponsor">
+    <sponsor></sponsor>
+  </logic:notPresent>
+
   <creator><bean:write name="formattedEvent" property="event.creator.account" /></creator>
 </event>
 

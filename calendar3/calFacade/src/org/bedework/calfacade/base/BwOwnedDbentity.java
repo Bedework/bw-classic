@@ -131,6 +131,16 @@ public class BwOwnedDbentity extends BwDbentity {
     sb.append(getPublick());
   }
 
+   /** Copy this objects fields into the parameter. Don't clone many of the
+    * referenced objects
+    *
+    * @param val
+    */
+   public void shallowCopyTo(BwOwnedDbentity val) {
+     val.setOwner((BwUser)getOwner());
+     val.setPublick(getPublick());
+   }
+
    /** Copy this objects fields into the parameter
     *
     * @param val

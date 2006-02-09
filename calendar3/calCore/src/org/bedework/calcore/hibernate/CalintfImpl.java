@@ -502,8 +502,8 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     }*/
 
     /* Just commit */
-    sess.flush();
     sess.commit();
+//    sess.flush();
   }
 
   public void rollbackTransaction() throws CalFacadeException {
@@ -527,7 +527,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
   public void refreshEvents() throws CalFacadeException {
     checkOpen();
-    sess.flush();
+//    sess.flush();
   }
 
   /*

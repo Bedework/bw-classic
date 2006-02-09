@@ -66,10 +66,6 @@ import java.util.TreeSet;
 /** This class provides information about an event for a specific user and
  * session.
  *
- * <p>This is designed to avoid problems wih persistace engines. In particular
- * objects may be shared among many threads for different users in different
- * contexts. All information in an entity must be the same for any user.
- *
  * <p>This class allows us to handle thread, or user, specific information.
  *
  * @author Mike Douglass       douglm@rpi.edu
@@ -79,15 +75,13 @@ public class EventInfo implements Comparable, Comparator, Serializable {
 
   /** editable is set at retrieval to indicate an event owned by the current
    * user. This only has significance for the personal calendar.
-   *
-   * XXX - not applicable in a shared world?
    */
   protected boolean editable;
 
   protected boolean fromRef;
 
-  /* XXX these need changing
-   *
+  /* ENUM
+   * XXX these need changing
    */
 
   /** actual event entry */

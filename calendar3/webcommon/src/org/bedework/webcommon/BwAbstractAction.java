@@ -236,7 +236,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     if (reqpar != null) {
       /** Set the objects to null so we get new ones.
        */
-      form.initFields();
+      initFields(form);
 
       form.getMsg().emit("org.bedework.client.message.cancelled");
       return "cancelled";
@@ -259,6 +259,9 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     }
 
     return forward;
+  }
+
+  protected void initFields(BwActionFormBase form) {
   }
 
   /** Method to retrieve an event.
@@ -1036,6 +1039,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
             svci.flushAll();
           }
           svci.open();
+          svci.beginTransaction();
         }
       }
     }

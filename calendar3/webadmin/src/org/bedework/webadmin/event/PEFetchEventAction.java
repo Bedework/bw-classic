@@ -101,7 +101,8 @@ public class PEFetchEventAction extends PEAbstractAction {
     /** User requested an event from the list. Retrieve it, embed it in
      * the form so we can display the page
      */
-    int id = form.getEventId();
+    // XXX Needs to change to use guid?
+    int id = this.getIntReqPar(request, "eventId", -1);
 
     if (id <= 0) {
       return "notFound";
@@ -123,6 +124,8 @@ public class PEFetchEventAction extends PEAbstractAction {
         ********************************* */
 
     form.setEventInfo(einf);
+    resetEvent(form);
+
     if (einf == null) {
       form.getErr().emit("org.bedework.client.error.nosuchevent", id);
       return "notFound";

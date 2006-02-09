@@ -97,13 +97,13 @@
     <!-- Note : To disable connection timeouts, set connectionTimeout value
      to -1 -->
 
-	<!-- Note : To use gzip compression you could set the following properties :
+  <!-- Note : To use gzip compression you could set the following properties :
 
-			   compression="on"
-			   compressionMinSize="2048"
-			   noCompressionUserAgents="gozilla, traviata"
-			   compressableMimeType="text/html,text/xml"
-	-->
+         compression="on"
+         compressionMinSize="2048"
+         noCompressionUserAgents="gozilla, traviata"
+         compressableMimeType="text/html,text/xml"
+  -->
 
     <!-- Define a SSL Coyote HTTP/1.1 Connector on port 8443 -->
     <!--
@@ -358,6 +358,43 @@
         -->
 
        <!-- make the cal DataSource available in all contexts -->
+
+       <!-- Uncomment to use p6spy - change settings in
+              common/classes/spy.properties, in particular the location
+              of the log file
+       <DefaultContext>
+          <Resource name="jdbc/calDB" auth="Container"
+                    type="javax.sql.DataSource"/>
+          <ResourceParams name="jdbc/calDB">
+            <parameter>
+              <name>username</name>
+              <value>sa</value>
+            </parameter>
+            <parameter>
+              <name>password</name>
+              <value></value>
+            </parameter>
+            <parameter>
+              <name>driverClassName</name>
+              <value>com.p6spy.engine.spy.P6SpyDriver</value>
+            </parameter>
+            <parameter>
+              <name>url</name>
+              <value>jdbc:hsqldb:hsql://localhost:8887</value>
+            </parameter>
+            <parameter>
+              <name>maxActive</name>
+              <value>8</value>
+            </parameter>
+            <parameter>
+              <name>maxIdle</name>
+              <value>4</value>
+            </parameter>
+          </ResourceParams>
+        </DefaultContext>
+        -->
+
+        <!-- without p6spy-->
        <DefaultContext>
           <Resource name="jdbc/calDB" auth="Container"
                     type="javax.sql.DataSource"/>
@@ -386,11 +423,15 @@
               <name>maxIdle</name>
               <value>4</value>
             </parameter>
+           <parameter>
+            <name>defaultAutoCommit</name>
+              <value>false</value>
+            </parameter>
           </ResourceParams>
         </DefaultContext>
 
         <!-- turn off session persistence by supplying an empty pathname for
-	     these contexts -->
+       these contexts -->
         <Context path="/caladmin" docBase="caladmin" debug="0">
           <Manager
             className="org.apache.catalina.session.StandardManager"
@@ -405,9 +446,9 @@
 
         <Context path="/ucal" docBase="ucal" debug="0">
           <Manager
-	     className="org.apache.catalina.session.StandardManager"
-	     pathname="" />
-	</Context>
+       className="org.apache.catalina.session.StandardManager"
+       pathname="" />
+  </Context>
 
       </Host>
 

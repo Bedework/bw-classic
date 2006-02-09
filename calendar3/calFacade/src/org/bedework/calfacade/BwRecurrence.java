@@ -349,12 +349,31 @@ public class BwRecurrence implements Serializable {
   }
 
   public Object clone() {
-    return new BwRecurrence((Collection)((TreeSet)getRrules()).clone(),
-                            (Collection)((TreeSet)getExrules()).clone(),
-                            (Collection)((TreeSet)getRdates()).clone(),
-                            (Collection)((TreeSet)getExdates()).clone(),
+    return new BwRecurrence(clone(getRrules()),
+                            clone(getExrules()),
+                            clone(getRdates()),
+                            clone(getExdates()),
                             getRecurrenceId(),
                             getLatestDate(),
                             getExpanded());
+  }
+
+  /* ====================================================================
+   *                   Private methods
+   *  =================================================================== */
+
+  private Collection clone(Collection c) {
+    if (c == null) {
+      return null;
+    }
+
+    Iterator cit = c.iterator();
+    TreeSet ts = new TreeSet();
+
+    while (cit.hasNext()) {
+      ts.add(cit.next());
+    }
+
+    return ts;
   }
 }

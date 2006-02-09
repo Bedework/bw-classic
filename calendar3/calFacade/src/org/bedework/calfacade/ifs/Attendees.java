@@ -168,6 +168,23 @@ public class Attendees implements Serializable {
     return (String[])v.toArray(new String[v.size()]);
   }
 
+  /** Return a copy of the collection
+   *
+   * @return Collection of BwAttendee
+   */
+  public Collection copyAttendees() {
+    TreeSet ts = new TreeSet();
+
+    Iterator it = iterateAttendees();
+    while (it.hasNext()) {
+      BwAttendee att = (BwAttendee)it.next();
+
+      ts.add(att);
+    }
+
+    return ts;
+  }
+
   /** Return a clone of the collection
    *
    * @return Collection of BwAttendee

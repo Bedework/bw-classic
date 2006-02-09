@@ -85,7 +85,7 @@ public class PEInitAddLocationAction extends PEAbstractAction {
 
     /** Set the objects to null so we get new ones.
      */
-    form.initFields();
+    initFields(form);
     form.assignAddingLocation(true);
 
     return "continue";

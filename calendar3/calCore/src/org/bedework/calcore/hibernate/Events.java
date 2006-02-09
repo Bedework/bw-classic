@@ -95,7 +95,7 @@ import java.util.TreeSet;
  * @author Mike Douglass   douglm@rpi.edu
  */
 public class Events extends CalintfHelper {
-  private UUIDHexGenerator uuidGen;
+  private transient UUIDHexGenerator uuidGen;
 
   /** Constructor
    *
@@ -106,11 +106,6 @@ public class Events extends CalintfHelper {
    */
   public Events(Calintf cal, AccessUtil access, BwUser user, boolean debug) {
     super(cal, access, user, debug);
-
-    Properties uidprops = new Properties();
-    uidprops.setProperty("separator", "-");
-    uuidGen = new UUIDHexGenerator();
-    ((Configurable)uuidGen).configure(Hibernate.STRING, uidprops, null);
   }
 
   /** Return one or more events using the guid and optionally a sequence number
@@ -726,7 +721,7 @@ public class Events extends CalintfHelper {
       return;
     }
 
-    String guidPrefix = "CAL-" + (String)uuidGen.generate(null, null);
+    String guidPrefix = "CAL-" + (String)getUuidGen().generate(null, null);
 
     if (val.getName() == null) {
       val.setName(guidPrefix + ".ics");
@@ -804,10 +799,9 @@ public class Events extends CalintfHelper {
     HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
 
-    //if (debug) {
-    //  log.debug("getEvents for " + objTimestamp + " start=" +
-    //            startDate + " end=" + endDate);
-    //}
+    if (debug) {
+      trace("getEvents for start=" + startDate + " end=" + endDate);
+    }
 
     /* Name of the event in the query */
     final String qevName = "ev";
@@ -871,7 +865,15 @@ public class Events extends CalintfHelper {
 
     flt.parPass(sess);
 
+    if (debug) {
+      trace(sess.getQueryString());
+    }
+
     Collection es = sess.getList();
+
+    if (debug) {
+      trace("Found " + es.size() + " events");
+    }
 
     es = postGetEvents(es, privRead, noAccessReturnsNull);
 
@@ -1444,5 +1446,17 @@ public class Events extends CalintfHelper {
     BwEvent getEvent(String rid) {
       return (BwEvent)get(rid);
     }
+  }
+
+  private UUIDHexGenerator getUuidGen() {
+    if (uuidGen != null) {
+      return uuidGen;
+    }
+
+    Properties uidprops = new Properties();
+    uidprops.setProperty("separator", "-");
+    uuidGen = new UUIDHexGenerator();
+    ((Configurable)uuidGen).configure(Hibernate.STRING, uidprops, null);
+    return uuidGen;
   }
 }

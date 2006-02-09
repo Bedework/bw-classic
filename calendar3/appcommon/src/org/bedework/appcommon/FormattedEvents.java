@@ -60,6 +60,7 @@ import org.bedework.calfacade.svc.EventInfo;
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Vector;
 
 /** Object to provide a Collection of formatted BwEvent.
  *
@@ -78,7 +79,11 @@ public class FormattedEvents extends AbstractCollection {
    */
   public FormattedEvents(Collection events,
                          CalendarInfo calInfo, CalTimezones ctz) {
-    this.events = events;
+    if (events == null) {
+      this.events = new Vector();
+    } else {
+      this.events = events;
+    }
     this.calInfo = calInfo;
     this.ctz = ctz;
   }

@@ -54,14 +54,21 @@
 
 package org.bedework.webadmin.event;
 
+import org.bedework.calfacade.BwCalendar;
+import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwEventObj;
+import org.bedework.calfacade.BwLocation;
+import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.CalFacadeDefs;
+import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
 import org.bedework.webcommon.BwSession;
 import org.bedework.webcommon.BwWebUtil;
+
+import edu.rpi.sss.util.log.MessageEmit;
 
 
 
@@ -107,21 +114,41 @@ public class PEUpdateEventAction extends PEAbstractAction {
       return "delete";
     }
 
+    BwEvent event = form.getEditEvent();
+
     reqpar = request.getParameter("copy");
 
     if (reqpar != null) {
+      /* Refetch the event and switch it for a cloned copy.
+       * guid must be set to null to avoid dup guid.
+       */
+      EventInfo ei = form.fetchSvci().getEvent(event.getId());
       BwEvent evcopy = new BwEventObj();
-      form.getEvent().copyTo(evcopy);
+      ei.getEvent().shallowCopyTo(evcopy);
 
       evcopy.setId(CalFacadeDefs.unsavedItemKey);
-      form.setEvent(evcopy);
+      evcopy.setGuid(null);
+
+      if (debug) {
+        BwLocation l = evcopy.getLocation();
+        if (l == null) {
+          debugMsg("Copied event has null location");
+        } else {
+          debugMsg("Copied event has location with id " + l.getId());
+        }
+      }
+
+      ei.setEvent(evcopy);
+
+      form.setEventInfo(ei);
+      resetEvent(form);
       form.assignAddingEvent(true);
 
       return "copy";
     }
 
     CalSvcI svci = form.fetchSvci();
-    if (!validateEvent(form)) {
+    if (!validateEvent(form, svci, event, form.getErr())) {
       return "retry";
     }
 
@@ -129,30 +156,30 @@ public class PEUpdateEventAction extends PEAbstractAction {
      * and or categories are available.
      */
 
-    BwEvent ev = form.getEvent();
-
-    ev.setPublick(true);
+    event.setPublick(true);
 
     if (form.getAddingEvent()) {
-      svci.addEvent(ev, null);
+      svci.addEvent(event, null);
     } else {
-      svci.updateEvent(ev);
+      svci.updateEvent(event);
     }
 
     if (!alerts) {
-      updateAuthPrefs(form, ev.getCategories(), ev.getSponsor(), ev.getLocation(),
-                      ev.getCalendar());
+      updateAuthPrefs(form, event.getCategories(), event.getSponsor(),
+                      event.getLocation(),
+                      event.getCalendar());
     }
 
-    form.resetEvent();
-
-    form.assignAddingEvent(false);
+    resetEvent(form);
 
     if (form.getAddingEvent()) {
       form.getMsg().emit("org.bedework.client.message.event.added");
     } else {
       form.getMsg().emit("org.bedework.client.message.event.updated");
     }
+
+    form.assignAddingEvent(false);
+
     return "continue";
   }
 
@@ -161,31 +188,231 @@ public class PEUpdateEventAction extends PEAbstractAction {
    * <p>This method will retrieve any selected contacts, locations and
    * categories and embed them in the form and event.
    */
-  private boolean validateEvent(PEActionForm form) throws Throwable {
-    boolean ok = form.validateEventCategory();
-    BwEvent ev = form.getEvent();
-    CalSvcI svci = form.fetchSvci();
+  private boolean validateEvent(PEActionForm form, CalSvcI svci,
+                                BwEvent event, MessageEmit err)
+          throws Throwable {
+    boolean ok = validateEventCategory(form, svci, event, err);
 
-    if (!form.validateEventSponsor()) {
+    if (!validateEventSponsor(form, svci, event, err)) {
       ok = false;
     }
 
-    if (!form.validateEventLocation()) {
+    if (!validateEventLocation(form, svci, event, err)) {
       ok = false;
     }
 
-    if (!form.validateEventCalendar()) {
+    if (!validateEventCalendar(form, svci, event, err)) {
       ok = false;
     }
 
-    if (!form.getEventDates().updateEvent(ev, svci.getTimezones())) {
+    if (!form.getEventDates().updateEvent(event, svci.getTimezones())) {
       ok = false;
     } else {
-      ok = BwWebUtil.validateEvent(svci, ev, true, //  descriptionRequired
-                                   form.getErr());
+      ok = BwWebUtil.validateEvent(svci, event, true, // ENUM  descriptionRequired
+                                   err);
     }
 
     return ok;
+  }
+
+  /** Validate the calendar provided for an event and embed it in the event and
+   * the form.
+   *
+   * @return boolean  true OK, false not OK and message(s) emitted.
+   */
+  private boolean validateEventCalendar(PEActionForm form, CalSvcI svci,
+                                        BwEvent event, MessageEmit err)
+          throws Throwable {
+    boolean ok = true;
+
+    if (!form.retrieveCalendarId().getChanged()) {
+      if (event.getCalendar() == null) {
+        err.emit("org.bedework.client.error.missingfield", "Calendar");
+        return false;
+      }
+
+      return ok;
+    }
+
+    // The user selected one from the list
+
+    try {
+      int id = form.retrieveCalendarId().getVal();
+
+      BwCalendar c = svci.getCalendar(id);
+
+      if ((c == null) || !c.getPublick() || !c.getCalendarCollection()) {
+        // Somebody's faking
+        form.setCalendar(null);
+        err.emit("org.bedework.client.error.missingfield", "Calendar");
+        return false;
+      }
+
+      event.setCalendar(c);
+      form.setCalendar(c);
+      return true;
+    } catch (Throwable t) {
+      err.emit(t);
+      return false;
+    }
+  }
+
+  /**
+   *
+   * @return boolean  false means something wrong, message emitted
+   * @throws Throwable
+   */
+  private boolean validateEventCategory(PEActionForm form, CalSvcI svci,
+                                        BwEvent event, MessageEmit err)
+          throws Throwable {
+    int id = form.retrieveCategoryId().getVal();
+
+    if (id <= 0) {
+      if (form.getEnv().getAppBoolProperty("app.categoryOptional")) {
+        return true;
+      }
+
+      err.emit("org.bedework.client.error.missingfield", "Category");
+      return false;
+    }
+
+    try {
+      BwCategory cat = svci.getCategory(id);
+
+      if (cat == null) {
+        err.emit("org.bedework.client.error.missingcategory", id);
+        return false;
+      }
+
+      if (!form.retrieveCategoryId().getChanged()) {
+        return true;
+      }
+
+//    oldCategory = getEvent().getCategory(0);
+
+
+      /* Currently we replace the only category if it exists
+       */
+      event.clearCategories();
+      event.addCategory(cat);
+
+      form.setCategory(cat);
+
+      return true;
+    } catch (Throwable t) {
+      err.emit(t);
+      return false;
+    }
+  }
+
+  /** Validate the sponsor provided for an event and embed it in the event and
+   * the form.
+   *
+   * @return boolean  true OK, false not OK and message(s) emitted.
+   * @throws Throwable
+   */
+  private boolean validateEventSponsor(PEActionForm form, CalSvcI svci,
+                                       BwEvent event, MessageEmit err)
+          throws Throwable {
+    boolean ok = true;
+
+    if (!form.retrieveSpId().getChanged()) {
+      if (form.getAutoCreateSponsors()) {
+        BwSponsor s = form.getSponsor();
+        if (!BwWebUtil.validateSponsor(s, err)) {
+          return false;
+        }
+
+        svci.ensureSponsorExists(s);
+
+        form.setSponsor(s);
+        event.setSponsor(s);
+      }
+
+      if (event.getSponsor() == null) {
+        err.emit("org.bedework.client.error.missingfield", "Sponsor");
+        return false;
+      }
+
+      return ok;
+    }
+
+    // The user selected one from the list
+    int id = form.retrieveSpId().getVal();
+
+    try {
+      BwSponsor s = svci.getSponsor(id);
+      if (s == null) {
+        // Somebody's faking
+        form.setSponsor(null);
+        err.emit("org.bedework.client.error.missingfield", "Sponsor");
+        return false;
+      }
+
+      event.setSponsor(s);
+
+      form.setSponsor(s);
+      return true;
+    } catch (Throwable t) {
+      err.emit(t);
+      return false;
+    }
+  }
+
+  /** Validate the location provided for an event and embed it in the event and
+   * the form.
+   *
+   * @return boolean  true OK, false not OK and message(s) emitted.
+   * @throws Throwable
+   */
+  private boolean validateEventLocation(PEActionForm form, CalSvcI svci,
+                                        BwEvent event, MessageEmit err)
+          throws Throwable {
+    boolean ok = true;
+
+    if (!form.retrieveLocId().getChanged()) {
+      if (form.getAutoCreateLocations()) {
+        BwLocation l = form.getLocation();
+
+        if (!BwWebUtil.validateLocation(l, err)) {
+          return false;
+        }
+
+        svci.ensureLocationExists(l);
+
+        form.setLocation(l);
+        event.setLocation(l);
+      }
+
+      if (event.getLocation() == null) {
+        err.emit("org.bedework.client.error.missingfield", "Location");
+        return false;
+      }
+
+      return ok;
+    }
+
+    // The user selected one from the list
+
+    try {
+      int id = form.retrieveLocId().getVal();
+      BwLocation l = svci.getLocation(id);
+
+      if ((l == null) || !l.getPublick()) {
+        // Somebody's faking
+        form.setLocation(null);
+        err.emit("org.bedework.client.error.missingfield", "Location");
+        return false;
+      }
+
+      event.setLocation(l);
+      form.setLocation(l);
+
+      return true;
+    } catch (Throwable t) {
+      err.emit(t);
+      return false;
+    }
   }
 }
 

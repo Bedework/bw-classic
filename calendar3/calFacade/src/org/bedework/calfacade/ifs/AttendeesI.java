@@ -68,6 +68,12 @@ public interface AttendeesI {
    */
   public String[] getAttendeeEmailList();
 
+  /** Return a copy of the collection
+   *
+   * @return Collection of BwAttendee
+   */
+  public Collection copyAttendees();
+
   /** Return a clone of the collection
    *
    * @return Collection of BwAttendee

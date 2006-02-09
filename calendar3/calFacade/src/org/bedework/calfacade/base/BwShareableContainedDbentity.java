@@ -122,12 +122,22 @@ public class BwShareableContainedDbentity extends BwShareableDbentity {
     }
   }
 
+   /** Copy this objects fields into the parameter. Don't clone many of the
+    * referenced objects
+    *
+    * @param val
+    */
+   public void shallowCopyTo(BwShareableContainedDbentity val) {
+     super.shallowCopyTo(val);
+     val.setCalendar((BwCalendar)getCalendar());
+   }
+
    /** Copy this objects fields into the parameter
     *
     * @param val
     */
   public void copyTo(BwShareableContainedDbentity val) {
     super.copyTo(val);
-    val.setCalendar((BwCalendar)getCalendar());
+    val.setCalendar((BwCalendar)getCalendar().clone());
   }
 }

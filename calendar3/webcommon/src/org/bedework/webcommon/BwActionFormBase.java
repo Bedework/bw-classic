@@ -77,6 +77,7 @@ import org.bedework.calfacade.svc.BwAuthUserPrefs;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
+import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.mail.MailerIntf;
@@ -270,7 +271,9 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   private BwEvent editEvent;
 
-  /** For apssing between actions
+  private EventInfo eventInfo;
+
+  /** For passing between actions
    */
   private BwEvent currentEvent;
 
@@ -1776,7 +1779,9 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     try {
       editEvent = val;
 
-      if (val != null) {
+      if (val == null) {
+        getEventDates().setNewEvent(val, fetchSvci().getTimezones());
+      } else {
         getEventDates().setFromEvent(val, fetchSvci().getTimezones());
       }
     } catch (Throwable t) {
@@ -1790,9 +1795,29 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   public BwEvent getEditEvent() {
     if (editEvent == null) {
       editEvent = new BwEventObj();
+      eventInfo = new EventInfo(editEvent);
     }
 
     return editEvent;
+  }
+
+  /**
+   * @param val
+   */
+  public void setEventInfo(EventInfo val) {
+    eventInfo = val;
+    if (val == null) {
+      setEditEvent(null);
+    } else {
+      setEditEvent(val.getEvent());
+    }
+  }
+
+  /**
+   * @return EventInfo
+   */
+  public EventInfo getEventInfo() {
+    return eventInfo;
   }
 
   /** Event passed between actions
@@ -1960,12 +1985,6 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     newSponsor = null;
     viewTypeI = -1;
     //key.reset();
-  }
-
-  /**
-   *
-   */
-  public void initFields() {
   }
 
   /* ====================================================================

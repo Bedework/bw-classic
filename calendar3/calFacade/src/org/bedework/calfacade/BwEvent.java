@@ -863,6 +863,17 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
   }
 
   /* (non-Javadoc)
+   * @see org.bedework.calfacade.ifs.AttendeesI#copyAttendees()
+   */
+  public Collection copyAttendees() {
+    if (attendees == null) {
+      return null;
+    }
+
+    return attendeesHelper.copyAttendees();
+  }
+
+  /* (non-Javadoc)
    * @see org.bedework.calfacade.AttendeesI#cloneAttendees()
    */
   public Collection cloneAttendees() {
@@ -980,6 +991,58 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
     sb.append(getRecurrence());
   }
 
+   /** Copy this objects fields into the parameter. Don't clone many of the
+    * referenced objects
+    *
+    * @param ev
+    */
+   public void shallowCopyTo(BwEvent ev) {
+     super.shallowCopyTo(ev);
+     ev.setName(getName());
+     ev.setSummary(getSummary());
+     ev.setDescription(getDescription());
+     ev.setDtstart(getDtstart());
+     ev.setDtend(getDtend());
+     ev.setEndType(getEndType());
+     ev.setDuration(getDuration());
+     ev.setLink(getLink());
+     ev.setDeleted(getDeleted());
+     ev.setStatus(getStatus());
+     ev.setCost(getCost());
+
+     ev.setOrganizer(getOrganizer());
+
+     ev.setDtstamp(getDtstamp());
+     ev.setLastmod(getLastmod());
+     ev.setCreated(getCreated());
+     ev.setPriority(getPriority());
+     ev.setSequence(getSequence());
+
+     ev.setSponsor(getSponsor());
+
+     ev.setLocation(getLocation());
+
+     ev.setGuid(getGuid());
+     ev.setTransparency(getTransparency());
+
+     /* XXX shallow copy categories */
+     Iterator it = iterateCategories();
+     TreeSet cs = new TreeSet();
+
+     while (it.hasNext()) {
+       BwCategory c = (BwCategory)it.next();
+
+       cs.add(c);
+     }
+
+     ev.setCategories(cs);
+
+     ev.setAttendees(copyAttendees());
+     ev.setRecurring(getRecurring());
+
+     ev.setRecurrence((BwRecurrence)getRecurrence().clone());
+   }
+
   /** Copy this objects fields into the parameter
    *
    * @param ev
@@ -1040,9 +1103,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
     ev.setAttendees(cloneAttendees());
     ev.setRecurring(getRecurring());
 
-    /* This ought to be cloned but it brings with it a
-       whole set of instances. Leave for the moment */
-    ev.setRecurrence(getRecurrence());
+    ev.setRecurrence((BwRecurrence)getRecurrence().clone());
   }
 
   /* ====================================================================

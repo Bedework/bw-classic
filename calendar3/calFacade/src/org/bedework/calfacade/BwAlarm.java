@@ -590,6 +590,17 @@ public abstract class BwAlarm extends BwOwnedDbentity implements AttendeesI, Com
   }
 
   /* (non-Javadoc)
+   * @see org.bedework.calfacade.ifs.AttendeesI#copyAttendees()
+   */
+  public Collection copyAttendees() {
+    if (attendees == null) {
+      return null;
+    }
+
+    return attendeesHelper.copyAttendees();
+  }
+
+  /* (non-Javadoc)
    * @see org.bedework.calfacade.AttendeesI#cloneAttendees()
    */
   public Collection cloneAttendees() {

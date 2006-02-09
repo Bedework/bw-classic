@@ -123,7 +123,7 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
     }
 
     return form.fetchSvci().getEvents(null, filter, fromDate, null,
-                                       CalFacadeDefs.retrieveRecurExpanded);
+                                      CalFacadeDefs.retrieveRecurExpanded);
   }
 
   private BwDateTime todaysDateTime(PEActionForm form) throws Throwable {

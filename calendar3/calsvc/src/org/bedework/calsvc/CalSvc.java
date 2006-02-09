@@ -1439,15 +1439,29 @@ public class CalSvc extends CalSvcI {
     Iterator it;
 
     if (currentView != null) {
+      if (debug) {
+        trace("Use current view \"" + currentView.getName() + "\"");
+      }
+
       it = currentView.iterateSubscriptions();
     } else {
       Collection subs = getCurrentSubscriptions();
       if (subs == null) {
         // Try set of users subscriptions.
+        if (debug) {
+          trace("Use user subscriptions");
+        }
+
         subs = getSubscriptions();
+      } else if (debug) {
+        trace("Use current subscriptions");
       }
 
       if (subs == null) {
+        if (debug) {
+          trace("Make up ALL events");
+        }
+
         sub = new BwSubscription();
         sub.setName("All events"); // XXX property?
         sub.setDisplay(true);

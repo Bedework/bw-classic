@@ -139,6 +139,17 @@ public class BwShareableDbentity extends BwOwnedDbentity {
     sb.append(getAccess());
   }
 
+   /** Copy this objects fields into the parameter. Don't clone many of the
+    * referenced objects
+    *
+    * @param val
+    */
+   public void shallowCopyTo(BwShareableDbentity val) {
+     super.shallowCopyTo(val);
+     val.setCreator((BwUser)getCreator());
+     val.setAccess(getAccess());
+   }
+
    /** Copy this objects fields into the parameter
     *
     * @param val

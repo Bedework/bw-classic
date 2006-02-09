@@ -237,6 +237,9 @@ public class HibSession {
       }
 
       tx = sess.beginTransaction();
+      if (tx == null) {
+        throw new CalFacadeException("Transaction not started");
+      }
     } catch (Throwable t) {
       exc = t;
       throw new CalFacadeException(t);
@@ -254,11 +257,14 @@ public class HibSession {
     }
 
     try {
-      if (tx != null &&
-          !tx.wasCommitted() &&
-          !tx.wasRolledBack()) {
+//      if (tx != null &&
+//          !tx.wasCommitted() &&
+//          !tx.wasRolledBack()) {
+        if (getLogger().isDebugEnabled()) {
+          getLogger().debug("About to comnmit");
+        }
         tx.commit();
-      }
+//      }
 
       tx = null;
     } catch (Throwable t) {
@@ -277,17 +283,15 @@ public class HibSession {
       throw new CalFacadeException(exc);
     }
 */
-    Logger log = getLogger();
-
-    if (log.isDebugEnabled()) {
-      log.debug("Enter rollback");
+    if (getLogger().isDebugEnabled()) {
+      getLogger().debug("Enter rollback");
     }
     try {
       if (tx != null &&
           !tx.wasCommitted() &&
           !tx.wasRolledBack()) {
-        if (log.isDebugEnabled()) {
-          log.debug("About to rollback");
+        if (getLogger().isDebugEnabled()) {
+          getLogger().debug("About to rollback");
         }
         tx.rollback();
       }
@@ -356,6 +360,23 @@ public class HibSession {
       crit = null;
     } catch (Throwable t) {
       handleException(t);
+    }
+  }
+
+  /**
+   * @return query string
+   * @throws CalFacadeException
+   */
+  public String getQueryString() throws CalFacadeException {
+    if (q == null) {
+      return "*** no query ***";
+    }
+
+    try {
+      return q.getQueryString();
+    } catch (Throwable t) {
+      handleException(t);
+      return null;
     }
   }
 
@@ -866,6 +887,9 @@ public class HibSession {
       throw new CalFacadeException(exc);
     }
 
+    if (getLogger().isDebugEnabled()) {
+      getLogger().debug("About to flush");
+    }
     try {
       sess.flush();
     } catch (Throwable t) {
@@ -911,11 +935,9 @@ public class HibSession {
 
   private void handleException(Throwable t) throws CalFacadeException {
     try {
-      Logger log = getLogger();
-
-      if (log.isDebugEnabled()) {
-        log.debug("handleException called");
-        log.error(this, t);
+      if (getLogger().isDebugEnabled()) {
+        getLogger().debug("handleException called");
+        getLogger().error(this, t);
       }
     } catch (Throwable dummy) {}
 
@@ -945,12 +967,10 @@ public class HibSession {
    * @param t   Throwable from the rollback
    */
   private void rollbackException(Throwable t) {
-    Logger log = getLogger();
-
-    if (log.isDebugEnabled()) {
-      log.debug("HibSession: ", t);
+    if (getLogger().isDebugEnabled()) {
+      getLogger().debug("HibSession: ", t);
     }
-    log.error(this, t);
+    getLogger().error(this, t);
   }
 
   protected Logger getLogger() {
