@@ -286,11 +286,13 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   private Calendar vcal;
 
   /* ....................................................................
-   *                       Selection type
+   *                       Selection type and selection
    * .................................................................... */
 
   // ENUM
   private String selectionType = selectionTypeView;
+
+  private Collection currentSubscriptions;
 
   /* ....................................................................
    *                       View period
@@ -1219,6 +1221,25 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   public String getSelectionType() {
     return selectionType;
+  }
+
+  /** Set the current collections of subscriptions defining the display
+   *
+   * @param val Collection of subscriptions
+   */
+  public void assignCurrentSubscriptions(Collection val) {
+    currentSubscriptions = val;
+  }
+
+  /** Return the current collections of subscriptions defining the display
+   *
+   * @return Collection of subscriptions
+   */
+  public Collection getCurrentSubscriptions() {
+    if (currentSubscriptions == null) {
+      currentSubscriptions = new Vector();
+    }
+    return currentSubscriptions;
   }
 
   /* ====================================================================

@@ -196,7 +196,21 @@ try {
     <search><bean:write name="calForm" property="search"/></search><%--
       Value: string - Current search string for display
       Note: this will change when proper searching is implemented --%>
-    <subscription></subscription><%--
+    <subscriptions>
+      <logic:iterate id="sub" name="calForm" property="currentSubscriptions">
+        <subscription>
+          <name><bean:write name="sub" property="name" /></name>
+          <logic:present name="sub" property="calendar" >
+            <calendar>
+              <name><bean:write name="sub" property="calendar.name" /></name>
+            </calendar>
+          </logic:present>
+          <logic:notPresent name="sub" property="calendar" >
+            <calendar><name></name></calendar>
+          </logic:notPresent>
+        </subscription>
+      </logic:iterate>
+    </subscriptions><%--
       Value: string - currently selected subscription ("calendar" too) --%>
     <filter></filter> <%-- unimplemented --%>
   </selectionState>

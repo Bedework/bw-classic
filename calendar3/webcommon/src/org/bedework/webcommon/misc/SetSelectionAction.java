@@ -120,8 +120,9 @@ public class SetSelectionAction extends BwAbstractAction {
     }
 
     Collection c = new Vector();
-    c.add(sub);
+    c.add(sub.clone());
     svci.setCurrentSubscriptions(c);
+    form.assignCurrentSubscriptions(c);
     form.setSelectionType(BedeworkDefs.selectionTypeSubscription);
 
     form.refreshIsNeeded();
@@ -151,6 +152,7 @@ public class SetSelectionAction extends BwAbstractAction {
     Collection c = new Vector();
     c.add(sub);
     svci.setCurrentSubscriptions(c);
+    form.assignCurrentSubscriptions(c);
     form.setSelectionType(BedeworkDefs.selectionTypeCalendar);
 
     form.refreshIsNeeded();
