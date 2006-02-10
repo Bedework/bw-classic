@@ -107,7 +107,8 @@ public class EventInfo implements Comparable, Comparator, Serializable {
    */
   private boolean newEvent;
 
-  /** If this event came from a subscription, this provides the object.
+  /** If this event came from a subscription, this provides the object. If
+   * selected from a calendar it may be null.
    */
   private BwSubscription subscription;
 

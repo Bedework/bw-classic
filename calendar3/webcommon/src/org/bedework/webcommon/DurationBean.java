@@ -61,6 +61,9 @@ public class DurationBean extends BwDuration {
    */
   public void setType(String val) {
     type = val;
+    if (dayTimeDuration.equals(val)) {
+      setWeeks(0);
+    }
   }
 
   /** Get the type
