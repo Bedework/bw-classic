@@ -386,7 +386,7 @@
   <!--++++++++++++++++++ Events ++++++++++++++++++++-->
   <xsl:template name="eventList">
     <h2>Edit Events</h2>
-    <p>Select the event that you would like to update 
+    <p>Select the event that you would like to update
     (or <a href="{$event-initAddEvent}">add a new event</a>):</p>
 
     <form name="peForm" method="post" action="{$event-showUpdateList}">
@@ -567,12 +567,20 @@
                     <xsl:otherwise>hidden</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
+                <xsl:variable name="durationHrMinClass">
+                  <xsl:choose>
+                    <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">hidden</xsl:when>
+                    <xsl:otherwise>shown</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
                 <div class="{$endDurationClass}" id="endDuration">
                   <div class="durationBox">
                     <input type="radio" name="eventDuration.type" value="daytime" checked="checked"/>
                     <xsl:copy-of select="/bedeworkadmin/formElements/form/end/duration/days/*"/>days
-                    <xsl:copy-of select="/bedeworkadmin/formElements/form/end/duration/hours/*"/>hours
-                    <xsl:copy-of select="/bedeworkadmin/formElements/form/end/duration/minutes/*"/>minutes
+                    <span id="durationHrMin" class="{$durationHrMinClass}">
+                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/duration/hours/*"/>hours
+                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/duration/minutes/*"/>minutes
+                    </span>
                   </div>
                   <span class="durationSpacerText">or</span>
                   <div class="durationBox">
@@ -581,13 +589,7 @@
                   </div>
                 </div>
               </div><br/>
-              <xsl:variable name="noDurationClass">
-                <xsl:choose>
-                  <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">hidden</xsl:when>
-                  <xsl:otherwise>dateFields</xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-              <div class="{$noDurationClass}" id="noDuration">
+              <div class="dateFields" id="noDuration">
                 <xsl:choose>
                   <xsl:when test="/bedeworkadmin/formElements/form/end/type='N'">
                     <input type="radio" name="eventEndType" value="N" checked="checked" onClick="changeClass('endDateTime','hidden');changeClass('endDuration','hidden');"/>
