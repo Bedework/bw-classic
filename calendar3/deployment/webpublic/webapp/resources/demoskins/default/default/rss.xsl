@@ -11,12 +11,12 @@
    <xsl:template match="/">
      <rss version="2.0">
       <channel>
-        <title>Rensselaer Events Calendar</title>
+        <title>Bedework Events Calendar</title>
         <link><xsl:value-of select="/bedework/urlprefix"/></link>
-        <description>Rensselaer Events</description>
-        <language>en-us</language>
-        <copyright>Copyright <xsl:value-of select="substring(/bedework/currentdate,1,4)"/>, Rensselaer Polytechnic Institute</copyright>
-        <managingEditor>wentod@rpi.edu, Deb Wentorf</managingEditor>
+        <description>My Site's Events</description>
+        <language>en-US</language>
+        <copyright>Copyright <xsl:value-of select="substring(/bedework/currentdate,1,4)"/>, Your Institution Here</copyright>
+        <managingEditor>editor@mysite.edu, Editor Name</managingEditor>
         <xsl:apply-templates select="/bedework//event"/>
       </channel>
     </rss>

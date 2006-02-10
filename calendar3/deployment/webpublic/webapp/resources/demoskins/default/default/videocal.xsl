@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="html" indent="yes" media-type="text/html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/loose.dtd" standalone="yes"/>
-  <!-- ================ -->
-  <!--  DEFAULT STYLESHEET -->
-  <!-- ================  -->
+  <!-- ======================= -->
+  <!--  VIDEO FEED STYLESHEET  -->
+  <!-- ======================= -->
+  
+  <!-- Run your browser full screen at 800 x 600 and feed this to video.
+       There are better approaches to this, but it's an interesting example. -->
+  
   <!-- DEFINE GLOBAL CONSTANTS -->
-  <xsl:variable name="appRoot" select="/ucalendar/approot"/>
-  <xsl:variable name="urlPrefix" select="/ucalendar/urlprefix"/>
-  <xsl:variable name="prevDate" select="/ucalendar/previousdate"/>
-  <xsl:variable name="nextDate" select="/ucalendar/nextdate"/>
-  <xsl:variable name="curDate" select="/ucalendar/currentdate"/>
+  <xsl:variable name="appRoot" select="/bedework/approot"/>
+  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
+  <xsl:variable name="prevDate" select="/bedework/previousdate"/>
+  <xsl:variable name="nextDate" select="/bedework/nextdate"/>
+  <xsl:variable name="curDate" select="/bedework/currentdate/date"/>
     
   <!-- Duration of each slide in seconds; set this to your preference -->
   <xsl:variable name="slideDuration">10</xsl:variable>
@@ -23,11 +27,11 @@
   <!-- Position of the current day to be displayed -->
   <xsl:variable name="day">
     <xsl:choose>
-      <xsl:when test="/ucalendar/appvar[key='day']">        
+      <xsl:when test="/bedework/appvar[key='day']">        
         <xsl:choose>
-          <xsl:when test="/ucalendar/appvar[key='day']/value > $dayCount">1</xsl:when>
+          <xsl:when test="/bedework/appvar[key='day']/value > $dayCount">1</xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="/ucalendar/appvar[key='day']/value"/>
+            <xsl:value-of select="/bedework/appvar[key='day']/value"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -39,16 +43,16 @@
   <xsl:variable name="nextDay" select="number($day)+1"/>
   
   <!-- Event count for the current day -->
-  <xsl:variable name="eventCount" select="count(/ucalendar/eventscalendar/year/month/week/day[date=$curDate]/event)"/>
+  <xsl:variable name="eventCount" select="count(/bedework/eventscalendar/year/month/week/day[date=$curDate]/event)"/>
   
   <!-- Position of the current event being displayed -->
   <xsl:variable name="event">
     <xsl:choose>
-      <xsl:when test="/ucalendar/appvar[key='event']">        
+      <xsl:when test="/bedework/appvar[key='event']">        
         <xsl:choose>
-          <xsl:when test="/ucalendar/appvar[key='event']/value > $eventCount">1</xsl:when>
+          <xsl:when test="/bedework/appvar[key='event']/value > $eventCount">1</xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="/ucalendar/appvar[key='event']/value"/>
+            <xsl:value-of select="/bedework/appvar[key='event']/value"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -63,8 +67,8 @@
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title>Rensselaer Institutional Calendar of Events</title>
-        <link rel="stylesheet" href="{$appRoot}/en_US/default/videocalLarger.css"/>
+        <title>Event Calendar Video Feed</title>
+        <link rel="stylesheet" href="{$appRoot}/default/default/videocal.css"/>
         <meta name="robots" content="noindex,nofollow"/>
         <script language="JavaScript">
           function today() {
@@ -80,20 +84,20 @@
           }
         </script>
         <xsl:choose>
-          <xsl:when test="/ucalendar/periodname!='Day'">
+          <xsl:when test="/bedework/periodname!='Day'">
             <!-- we're starting up on the wrong view; go to today and begin with the first event;
                  the title slide will display during this switch. -->
-            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/setView.do?viewType=todayView&amp;setappvar=event(1)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
+            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/setViewPeriod.do?viewType=todayView&amp;setappvar=event(1)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
           </xsl:when>
           <xsl:when test="($nextDay > $dayCount) and ($nextEvent > $eventCount)">
             <!-- passed the last day, and all events have been displayed,
                  so start over: go to today, set day=1 and *event=0* to allow 
                  for the title slide "calPlug" -->
-            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/setView.do?viewType=todayView&amp;setappvar=event(0)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>          
+            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/setViewPeriod.do?viewType=todayView&amp;setappvar=event(0)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>          
           </xsl:when>
           <xsl:when test="$nextEvent > $eventCount">
             <!-- passed the last event for the day; go to the next day and set event=1 -->
-            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/setView.do?date={$nextDate}&amp;viewType=dayView&amp;setappvar=event(1)&amp;setappvar=day({$nextDay})&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
+            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/setViewPeriod.do?date={$nextDate}&amp;viewType=dayView&amp;setappvar=event(1)&amp;setappvar=day({$nextDay})&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
           </xsl:when>
           <xsl:otherwise>
             <!-- otherwise, go to the next event on the same day -->
@@ -103,27 +107,37 @@
       </head>
       <body>
         <xsl:choose>
-          <xsl:when test="($eventCount = 0) or ($event = 0) or (/ucalendar/periodname!='Day')">
+          <xsl:when test="($eventCount = 0) or ($event = 0) or (/bedework/periodname!='Day')">
             <div id="calPlug">
               <h1>
-                Rensselaer Institutional<br/>
-                Calendar of Events
+                Bedework Calendar of Events
+                Video Feed
               </h1>
-              <h2>http://j2ee.rpi.edu/cal</h2>
+              <h2>http://www.bedework.org</h2>
             </div>
           </xsl:when>
           <xsl:otherwise>
             <h2 id="calTitle">
-              RENSSELAER'S INSTITUTIONAL CALENDAR OF EVENTS
+              BEDEWORK CALENDAR OF EVENTS
             </h2>
             <h2 id="dayTitle">
-              <xsl:value-of select="/ucalendar/firstday"/><!-- 
+              <xsl:value-of select="/bedework/firstday/longdate"/><!-- 
               <br/>Events: <xsl:value-of select="$event"/> of <xsl:value-of select="$eventCount"/>
               <br/>Days: <xsl:value-of select="$day"/> of <xsl:value-of select="$dayCount"/> -->
             </h2>    
-            <xsl:apply-templates select="/ucalendar/eventscalendar/year/month/week/day[date=$curDate]/event[position()=$event]"/>
+            <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day[date=$curDate]/event[position()=$event]"/>
           </xsl:otherwise>
-        </xsl:choose>
+        </xsl:choose>   
+        <!-- remove the following two divs if used for video -->
+        <div id="getBack">
+          (<a href="setup.do?skinNameSticky=default">restore normal calendar</a>)
+        </div>
+        <div id="info">
+          This stylesheet will rotate through five days of events at ten 
+          second intervals.  It is intended as a video feed.  It's settings 
+          can be set from the top of
+          the videocal.xsl stylesheet.
+        </div>
       </body>
     </html>
   </xsl:template>
@@ -131,15 +145,16 @@
   <!--==== SINGLE EVENT ====-->
   <xsl:template match="event">
     <h1>
-      <xsl:value-of select="shortdesc"/>
+      <xsl:value-of select="summary"/>
     </h1>
-    <xsl:if test="(start/time!='12:00 AM') and (end/time!='12:00 AM')">
+    <xsl:if test="(start/allday = 'false')">
       <div id="time">
+        <!-- this logic needs to be updated for new event model -->
         <xsl:choose>
           <xsl:when test="start/time=''">
             <xsl:value-of select="start/shortdate"/>
           </xsl:when>
-          <xsl:when test="start/date!=/ucalendar/firstday">
+          <xsl:when test="start/date != /bedework/firstday">
             <xsl:value-of select="start/shortdate"/>
             <xsl:value-of select="start/time"/>
           </xsl:when>
@@ -147,14 +162,12 @@
             <xsl:value-of select="start/time"/>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:if test="end/time != '' or end/longdate != start/longdate"> - </xsl:if>
+        -         
         <xsl:if test="end/longdate != start/longdate">
           <xsl:value-of select="end/shortdate"/>
-          <xsl:text> </xsl:text>
+          <xsl:text> </xsl:text>        
         </xsl:if>
-        <xsl:if test="end/time != ''">
-          <xsl:value-of select="end/time"/>
-        </xsl:if>
+        <xsl:value-of select="end/time"/>
       </div>
     </xsl:if>
     <xsl:if test="location/address!='Campus-wide'">
@@ -163,7 +176,7 @@
       </div>
     </xsl:if>
     <div id="description">
-      <xsl:value-of select="longdesc"/>
+      <xsl:value-of select="description"/>
     </div>
   </xsl:template>
 

@@ -1023,19 +1023,17 @@
         </td>
         <td class="rightCell">
           <form name="styleSelectForm" method="get" action="{$setup}">
-            style selector:
             <select name="setappvar" onChange="submit()">
-              <option>choose a style</option>
+              <option>example styles:</option>
               <option value="style(green)">green</option>
               <option value="style(red)">red</option>
               <option value="style(blue)">blue</option>
             </select>
           </form>
           <form name="skinSelectForm" method="get" action="{$setup}">
-            skin examples:
             <input type="hidden" name="setappvar" value="summaryMode(details)"/>
             <select name="skinName" onchange="submit()">
-              <option>select a skin</option>
+              <option>example skins:</option>
               <option value="rss">rss feed</option>
               <option value="jsToday">javascript feed</option>
               <option value="videocal">video feed</option>
@@ -1043,9 +1041,8 @@
             </select>
           </form>
           <form name="skinSelectForm" method="get" action="">
-            production examples:
             <select name="sitePicker" onchange="window.location = this.value">
-              <option>select a calendar</option>
+              <option>production examples:</option>
               <option value="http://events.rpi.edu">Rensselaer</option>
               <option value="http://myuw.washington.edu/cal/">Washington</option>
             </select>
