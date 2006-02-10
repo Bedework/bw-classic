@@ -386,8 +386,10 @@
   <!--++++++++++++++++++ Events ++++++++++++++++++++-->
   <xsl:template name="eventList">
     <h2>Edit Events</h2>
-    <p>Select the event that you would like to update
-    (or <a href="{$event-initAddEvent}">add a new event</a>):</p>
+    <p>
+      Select the event that you would like to update:
+      <input type="button" name="return" value="Add new event" onclick="javascript:location.replace('{$event-initAddEvent}')"/>
+    </p>
 
     <form name="peForm" method="post" action="{$event-showUpdateList}">
       <table>
@@ -1044,6 +1046,7 @@
     <h2>Edit Contacts</h2>
     <p>
       Select the contact you would like to update:
+      <input type="button" name="return" value="Add new contact" onclick="javascript:location.replace('{$sponsor-initAdd}')"/>
     </p>
 
     <table id="commonListTable">
