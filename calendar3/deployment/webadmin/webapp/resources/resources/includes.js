@@ -3,15 +3,18 @@ function changeClass(id, newClass) {
   identity.className=newClass;
 }
 function swapAllDayEvent(obj) {
+  allDayField = document.getElementById("allDayField");
   if (obj.checked) {
     //lets keep it simple for now: just show or hide time fields
     changeClass('startTimeFields','hidden');
     changeClass('endTimeFields','hidden');
     changeClass('durationHrMin','hidden');
+    allDayField.value = "on";
   } else {
     changeClass('startTimeFields','timeFields');
     changeClass('endTimeFields','timeFields');
     changeClass('durationHrMin','shown');
+    allDayField.value = "off";
   }
 }
 function swapDurationType(type) {

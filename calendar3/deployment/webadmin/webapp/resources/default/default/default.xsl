@@ -491,10 +491,12 @@
             </xsl:variable>
             <xsl:choose>
               <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">
-                <input type="checkbox" name="eventStartDate.dateOnly" onchange="swapAllDayEvent(this)" value="on" checked="checked"/>
+                <input type="checkbox" name="allDayFlag" onchange="swapAllDayEvent(this)" value="on" checked="checked"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayField"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="checkbox" name="eventStartDate.dateOnly" onchange="swapAllDayEvent(this)"/>
+                <input type="checkbox" name="allDayFlag" onchange="swapAllDayEvent(this)" value="off"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayField"/>
               </xsl:otherwise>
             </xsl:choose>
             all day event<br/>
@@ -577,6 +579,7 @@
                   <xsl:choose>
                     <xsl:when test="/bedeworkadmin/formElements/form/end/duration/weeks/input/@value = '0'">
                     <!-- we are using day, hour, minute format -->
+                    <!-- must send either no week value or week value of 0 (zero) -->
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')" checked="checked"/>
                         <xsl:variable name="daysStr" select="/bedeworkadmin/formElements/form/end/duration/days/input/@value"/>
