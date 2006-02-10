@@ -542,19 +542,19 @@ a.gridAdd {
 #yearCalendarTable  table.yearViewMonthTable td  a  {
   text-decoration: none;
   background-color: inherit;
-  padding: 1;
+  padding: 1px;
   color: black;
 }
 #yearCalendarTable  table.yearViewMonthTable td.weekCell a  {
   text-decoration: none;
   background-color: inherit;
-  padding: 1;
+  padding: 1px;
   color: black;
 }
 #yearCalendarTable  table.yearViewMonthTable td.monthName a  {
   text-decoration: none;
   background-color: inherit;
-  padding: 1;
+  padding: 1px;
   color: #eee;
 }
 #yearCalendarTable  table.yearViewMonthTable td a:hover  {
