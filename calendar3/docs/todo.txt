@@ -3,9 +3,8 @@ Todo
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
-Views not sorted in selection list
 --------------------------------------------------------------------------------
-Try a change and see if we get mailed.
+When duplicating event - set creator
 --------------------------------------------------------------------------------
 Web-client - ensure no unexpected data modifications.
 --------------------------------------------------------------------------------
@@ -16,8 +15,6 @@ am/pm etc.
 --------------------------------------------------------------------------------
 Floating times should be as the result of an explicit user request.
 --------------------------------------------------------------------------------
-eventIcal
-Need to use action to deliver ical - not stylesheet
 --------------------------------------------------------------------------------
 What was I trying to do with the default access stuff in the principal?
 There must be a better way - or maybe I've got it the wrong way round.
@@ -33,9 +30,6 @@ caused 2 queries and a non-unique result exception
 Fixed by changing the hierarchy, making BwEvent a common base class then
 subclass for BwEventObj and BwEventAnnotation.
 --------------------------------------------------------------------------------
-FiltersRule needs to add Inbox
-CalintfImpl and FiltersRule should use some joint code to create users.
-Try init of empty system then create users through Calintf?
 --------------------------------------------------------------------------------
 lazy="false" is set on calendar objects.
 --------------------------------------------------------------------------------
@@ -55,130 +49,6 @@ contain transient information about the event. Should hold:
 Information can be copied into the EventInfo object.
 --------------------------------------------------------------------------------
 Notes on annotations and overrides and fetching events.
-Allowing users to annotate shared events introduces enormous complexity to the
-fetching and updating process but seems to be a feature of enterprise systems.
-
-Until we feel this is workable we may want to suppress annotations in the user
-interface. HOWEVER, synchml and caldav sort of make this a requirement.
-
-Those protocols have no concept of ownership. If we create a calendar then add
-references to events we don't own, either through subscription or adding a
-reference, when we sync the target device will just see a set of events all
-appearing to be owned by the user. They may go ahead and update such an event
-and we have the choice of preserving those changes as annotations or losing them
-on sync.
-
-We don't need to CREATE annotations on fetch but we do need to FETCH any owned
-by the current user.
-
-I. Single event fetch
-Assume fetch for read:
-
-1. Fetch event. BUT see note about shared annotations. The event may have
-   appeared as the result of an annotation by another user. I don't think we
-   can always know that to be the case - especially if we use other access
-   methods (synchml, caldav)
-2. If event owned by someone else look for an annotation and build proxy if
-   found. NOTE - the recurrence id is null for an annotation of a master event
-
-NOTE - an  annotation of a master will not be reflected in any of the
-instances at this stage.
-
-If it's non recurring or we want master only we're done.
-
-If we're asked to retrieve overrides only we fetch all annotations with
-annotation.master = master. Note that is not the annotation target but the
-ultimate master event we are searching for.
-
-The possibilities:
-A. We're the owner
-  1. Fetch any overrides we own with
-        annotation.master = master and recurrence id not null
-  2. If there are no overrides we're done
-  3. Add proxied overrides to result and return.
-
-B. We're not the owner
-  1. Fetch any overrides we own or owned by the master owner
-        annotation.master = master and recurrence id not null
-  2. If there are no overrides we're done
-  3. Reconstruct proxies for each override and add to result.
-
-It appears the only difference is in the ownership clause.
-
-A third case is we are asked to return all instances associated with an event.
-This may be the case for export of an expanded recurring event. (or maybe
-fetch via caldav?)
-
-We should do the fetch above, then fetch all recurrence instances. Then
-
-For each instance:
-  If there is an override create a proxy for the override and add to the result
-  If there is no override, create a dummy annotation and proxy and add.
-
-Return the final result.
-
-II Fetching events (date range)
-
-1. Query for events which satisfy the requirements and filter down to events
-   for which we have read access.
-
-2. Query for annotations we own in the range for which master is in
-   the set of retrieved events which we don't own.
-
-   What does this mean? We queried /public/Arts for events none of which we own.
-   We query annotations for the same time range in the same calendar.
-
-3. Build proxies for overridden events
-
-If we got no recurring events in the set we're done so return.
-
-Otherwise:
-1. Fetch any instances in the date range
-
-2. If we were asked for master only return unique master events for which we
-   have access
-
-3. Fetch any overrides with appropriate ownership
-      a. in the same calendar
-      b. with a master in the set of recurring masters we retrieved in step 1
-
-4. Iterate over instances creating dummies for non overridden and attaching
-   overrides where found.
---------------------------------------------------------------------------------
-Do we share annotations?
-For example:
-We have event A
-
-User P has annotation on A in their calendar. Is that visible to others? I
-believe so - though the referenced event may not be.
-
-User Q sees P:annotation(A) and annotates.
---------------------------------------------------------------------------------
-Updating an event for which user has read access
-Having fetched it it is up to the client side to create a proxy to an
-unannotated event if the user wants to modify it. So the client does a fetch,
-if we have write access just update the event, if we have read access then
-add an annotation and proxy.
-
-Note that this turns the update into an addition of an annotation at first write.
---------------------------------------------------------------------------------
-Updates to annotated events by the owner.
-
-Further complications arise if an annotated instance without an override is
-overridden by a user with write access. The original annotation is now invalid.
-First problem is to locate those annotations, second is to figure out what to
-do.
-
-We could add a status to the annotation indicating the underlying object changed.
-Should we retarget the annotation?
-
-In the web client we can warn the user. Send email?
---------------------------------------------------------------------------------
-Access changed on event.
-If access changed to none the annotated event becomes invisible.
-
-If access changed to write there may still be an annotation attached. We may
-want to allow annotations of events for which user has mod access anyway
 --------------------------------------------------------------------------------
 Add an inbox calendar - do we want outbox? Put proxy in outbox?
 Delete proxy
@@ -292,7 +162,7 @@ Another case is very similar - we want to be able to annotate events we don't
 have write access to - for example public events or events owned by a group or
 user.
 
-The mechanism might also be seen as a way of visioning events.
+The mechanism might also be seen as a way of versioning events.
 
 The approach is to create an event object which is empty and point it at the
 target event. It has to be populated with the start date/time and the guid so

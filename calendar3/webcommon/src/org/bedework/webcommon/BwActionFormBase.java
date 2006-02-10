@@ -1798,13 +1798,13 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   public void setEditEvent(BwEvent val) {
     try {
-      editEvent = val;
-
       if (val == null) {
+        val = new BwEventObj();
         getEventDates().setNewEvent(val, fetchSvci().getTimezones());
       } else {
         getEventDates().setFromEvent(val, fetchSvci().getTimezones());
       }
+      editEvent = val;
     } catch (Throwable t) {
       err.emit(t);
     }

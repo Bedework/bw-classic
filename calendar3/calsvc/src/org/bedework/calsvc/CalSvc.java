@@ -1425,7 +1425,8 @@ public class CalSvc extends CalSvcI {
           throws CalFacadeException {
     TreeSet ts = new TreeSet();
 
-    if (pars.getPublicAdmin() || (sub != null)) {
+//    if (pars.getPublicAdmin() || (sub != null)) {
+    if (sub != null) {
       BwCalendar cal = null;
       if (sub != null) {
         cal = sub.getCalendar();

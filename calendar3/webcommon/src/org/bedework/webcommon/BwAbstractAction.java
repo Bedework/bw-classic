@@ -55,6 +55,7 @@
 package org.bedework.webcommon;
 
 // I only need this because request.getInitParameterNames doesn't work
+import org.bedework.appcommon.BedeworkDefs;
 import org.bedework.appcommon.UserAuthPar;
 import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwCalendar;
@@ -262,6 +263,33 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
   }
 
   protected void initFields(BwActionFormBase form) {
+  }
+
+  /* Set the view to the given name or the default if null.
+   *
+   * @return false for not found
+   */
+  protected boolean setView(String name,
+                            BwActionFormBase form) throws CalFacadeException {
+    CalSvcI svci = form.fetchSvci();
+
+    if (name == null) {
+      name = svci.getUserPrefs().getPreferredView();
+    }
+
+    if (name == null) {
+      form.getErr().emit("org.bedework.client.error.nodefaultview");
+      return false;
+    }
+
+    if (!svci.setCurrentView(name)) {
+      form.getErr().emit("org.bedework.client.error.unknownview");
+      return false;
+    }
+
+    form.setSelectionType(BedeworkDefs.selectionTypeView);
+    form.refreshIsNeeded();
+    return true;
   }
 
   /** Method to retrieve an event.

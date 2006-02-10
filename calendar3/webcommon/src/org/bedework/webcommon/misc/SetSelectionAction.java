@@ -159,29 +159,14 @@ public class SetSelectionAction extends BwAbstractAction {
     return "success";
   }
 
-  /* Do the view thing. This is the default
+  /* Do the view thing. This is the default action
    */
   private String doView(HttpServletRequest request,
                         BwActionFormBase form) throws Throwable {
-    CalSvcI svci = form.fetchSvci();
-    String name = getReqPar(request, "viewName");
-
-    if (name == null) {
-      name = svci.getUserPrefs().getPreferredView();
-    }
-
-    if (name == null) {
-      form.getErr().emit("org.bedework.client.error.nodefaultview");
+    if (!setView(getReqPar(request, "viewName"), form)) {
       return "noViewDef";
     }
 
-    if (!svci.setCurrentView(name)) {
-      form.getErr().emit("org.bedework.client.error.unknownview");
-      return "noViewDef";
-    }
-
-    form.setSelectionType(BedeworkDefs.selectionTypeView);
-    form.refreshIsNeeded();
     return "success";
   }
 }

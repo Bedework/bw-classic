@@ -41,7 +41,7 @@ import java.util.TreeSet;
 public class BwEntityFilter extends BwFilter {
   protected Collection entities;
 
-  /** True if this is a single entity. Allows query generators todistinguish
+  /** True if this is a single entity. Allows query generators to distinguish
    * between "=" and "IN"
    *
    * @return boolean  true for a single entity

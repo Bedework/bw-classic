@@ -58,6 +58,7 @@ import org.bedework.appcommon.FormattedEvents;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.filter.BwCreatorFilter;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
@@ -108,8 +109,6 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
    */
   private Collection getEvents(boolean alertEvent, PEActionForm form)
           throws Throwable {
-    BwFilter filter = null;
-
     if (alertEvent) {
       /* XXX create a filter which filters on the appropriate field -
          or alternatively switch to a specific calendar.
@@ -122,7 +121,10 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
       fromDate = todaysDateTime(form);
     }
 
-    return form.fetchSvci().getEvents(null, filter, fromDate, null,
+    BwCreatorFilter crefilter = new BwCreatorFilter();
+    crefilter.setCreator(form.fetchSvci().getUser());
+
+    return form.fetchSvci().getEvents(null, crefilter, fromDate, null,
                                       CalFacadeDefs.retrieveRecurExpanded);
   }
 
