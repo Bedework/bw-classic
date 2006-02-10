@@ -549,10 +549,13 @@
         <td class="fieldval">
           <!-- was using abbrev dayname: substring(start/dayname,1,3) -->
           <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text>
-          <span class="time"><xsl:value-of select="start/time"/></span>
-          <xsl:if test="end/time != '' or end/longdate != start/longdate"> - </xsl:if>
+          <xsl:if test="start/allday = 'false'">
+            <span class="time"><xsl:value-of select="start/time"/></span>
+          </xsl:if>
+          <xsl:if test="end/allday = 'false' or end/longdate != start/longdate"> - </xsl:if>
           <xsl:if test="end/longdate != start/longdate"><xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text></xsl:if>
-          <xsl:if test="end/time != ''"><span class="time"><xsl:value-of select="end/time"/></span></xsl:if>
+          <xsl:if test="end/allday = 'false'"><span class="time"><xsl:value-of select="end/time"/></span></xsl:if>
+          <xsl:if test="start/allday = 'true'"><span class="time"><em>(all day)</em></span></xsl:if>
         </td>
       </tr>
       <tr>
@@ -876,13 +879,16 @@
         </xsl:variable>
         <span class="{$eventTipClass}">
           <strong><xsl:value-of select="summary"/></strong><br/>
-          <xsl:if test="start/time != ''">
-            Time: <xsl:value-of select="start/time"/>
-            <xsl:if test="end/time != ''">
-              - <xsl:value-of select="end/time"/>
-            </xsl:if>
-            <br/>
-          </xsl:if>
+          Time: 
+          <xsl:choose>
+            <xsl:when test="start/allday = 'false'">
+              <xsl:value-of select="start/time"/>
+               - <xsl:value-of select="end/time"/>              
+            </xsl:when>
+            <xsl:otherwise>
+              all day
+            </xsl:otherwise>
+          </xsl:choose><br/>
           <xsl:if test="location/address">
             Location: <xsl:value-of select="location/address"/><br/>
           </xsl:if>
@@ -959,7 +965,7 @@
 
   <!--==== CALENDARS PAGE ====-->
   <xsl:template match="calendars">
-    <xsl:variable name="topLevelCalCount" select="count(/bedework/calendars/calendar/calendar)"/>
+    <xsl:variable name="topLevelCalCount" select="count(calendar/calendar)"/>
     <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="2">
@@ -974,12 +980,12 @@
       <tr>
         <td class="leftCell">
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[position() &lt;= floor($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[position() &lt;= ceiling($topLevelCalCount div 2)]" mode="calTree"/>
           </ul>
         </td>
         <td>
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[position() &gt; floor($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[position() &gt; ceiling($topLevelCalCount div 2)]" mode="calTree"/>
           </ul>
         </td>
       </tr>
