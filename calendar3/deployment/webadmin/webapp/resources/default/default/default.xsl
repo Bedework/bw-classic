@@ -385,7 +385,9 @@
 
   <!--++++++++++++++++++ Events ++++++++++++++++++++-->
   <xsl:template name="eventList">
-    <p>Select the event that you would like to update:</p>
+    <h2>Edit Events</h2>
+    <p>Select the event that you would like to update 
+    (or <a href="{$event-initAddEvent}">add a new event</a>):</p>
 
     <form name="peForm" method="post" action="{$event-showUpdateList}">
       <table>
