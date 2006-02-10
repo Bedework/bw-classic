@@ -14,6 +14,26 @@ function swapAllDayEvent(obj) {
     changeClass('durationHrMin','shown');
   }
 }
+function swapDurationType(type) {
+  // get the components we need to manipulate
+  daysDurationElement = document.getElementById("durationDays");
+  hoursDurationElement = document.getElementById("durationHours");
+  minutesDurationElement = document.getElementById("durationMinutes");
+  weeksDurationElement = document.getElementById("durationWeeks");
+  if (type == 'week') {
+    weeksDurationElement.disabled = false;
+    daysDurationElement.disabled = true;
+    hoursDurationElement.disabled = true;
+    minutesDurationElement.disabled = true;
+  } else {
+    daysDurationElement.disabled = false;
+    hoursDurationElement.disabled = false;
+    minutesDurationElement.disabled = false;
+    // we are using day, hour, minute -- zero out the weeks.
+    weeksDurationElement.value = "0";
+    weeksDurationElement.disabled = true;
+  }
+}
 function launchClockMap(url) {
   clockWindow = window.open(url, "clockWindow", "width=410,height=430,scrollbars=no,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
   window.clockWindow.focus();
