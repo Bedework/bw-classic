@@ -134,7 +134,8 @@
         </div>
         <div id="info">
           This stylesheet will rotate through five days of events at ten 
-          second intervals.  It is intended as a video feed.  It's settings 
+          second intervals.  It is intended as a video feed running full screen
+          at 800x600px.  It's settings 
           can be set from the top of
           the videocal.xsl stylesheet.
         </div>

@@ -1007,6 +1007,7 @@
 
   <!--+++++++++++++++ Sponsors (Contacts) ++++++++++++++++++++-->
   <xsl:template name="sponsorList">
+    <h2>Edit Contacts</h2>
     <p>
       Select the contact you would like to update:
     </p>
@@ -1141,6 +1142,7 @@
 
    <!--+++++++++++++++ Locations ++++++++++++++++++++-->
   <xsl:template name="locationList">
+    <h2>Edit Locations</h2>
     <p>
       Select the location that you would like to update:
       <input type="button" name="return" value="Add new location" onclick="javascript:location.replace('{$location-initAdd}')"/>
@@ -1619,7 +1621,7 @@
   </xsl:template>
 
   <xsl:template match="subscription" mode="addSubscription">
-    <h2>Add new subscription</h2>
+    <h2>Add New Subscription</h2>
     <p class="note">*the subsciption name must be unique</p>
     <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
       <table class="eventFormTable">
@@ -1674,7 +1676,7 @@
   </xsl:template>
 
   <xsl:template match="subscription" mode="modSubscription">
-    <h2>Modify subscription</h2>
+    <h2>Modify Subscription</h2>
     <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
       <table class="eventFormTable">
         <tr>
