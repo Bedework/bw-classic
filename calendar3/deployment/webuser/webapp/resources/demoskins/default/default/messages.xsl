@@ -2,10 +2,10 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:template match="message">
     <xsl:choose>
-      <xsl:when test="id='org.bedework.message.cancelled'">
+      <xsl:when test="id='org.bedework.client.message.cancelled'">
           Action cancelled.
       </xsl:when>
-      <xsl:when test="id='org.bedework.message.added.locations'">
+      <xsl:when test="id='org.bedework.client.message.added.locations'">
         <xsl:choose>
           <xsl:when test="param='1'">
             1 location added.
@@ -15,7 +15,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="id='org.bedework.message.added.events'">
+      <xsl:when test="id='org.bedework.client.message.added.events'">
         <xsl:choose>
           <xsl:when test="param='1'">
             1 event added.
@@ -25,7 +25,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="id='org.bedework.message.added.eventrefs'">
+      <xsl:when test="id='org.bedework.client.message.added.eventrefs'">
         <xsl:choose>
           <xsl:when test="param='1'">
             1 public event reference added.
@@ -35,7 +35,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="id='org.bedework.message.added.subscriptions'">
+      <xsl:when test="id='org.bedework.client.message.added.subscriptions'">
         <xsl:choose>
           <xsl:when test="param='1'">
             1 subscription added.
@@ -45,7 +45,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="id='org.bedework.message.deleted.events'">
+      <xsl:when test="id='org.bedework.client.message.deleted.events'">
         <xsl:choose>
           <xsl:when test="param='1'">
             1 event deleted.
@@ -55,7 +55,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="id='org.bedework.message.deleted.eventrefs'">
+      <xsl:when test="id='org.bedework.client.message.deleted.eventrefs'">
         <xsl:choose>
           <xsl:when test="param='1'">
             1 event removed.
@@ -65,7 +65,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="id='org.bedework.message.deleted.locations'">
+      <xsl:when test="id='org.bedework.client.message.deleted.locations'">
         <xsl:choose>
           <xsl:when test="param='1'">
             1 location removed.
@@ -75,7 +75,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="id='org.bedework.message.deleted.subscriptions'">
+      <xsl:when test="id='org.bedework.client.message.deleted.subscriptions'">
         <xsl:choose>
           <xsl:when test="param='1'">
             1 subscription removed.
@@ -85,7 +85,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="id='org.bedework.message.nosuchevent'">
+      <xsl:when test="id='org.bedework.client.message.nosuchevent'">
           Event <xsl:value-of select="param"/> does not exist.
       </xsl:when>
       <xsl:otherwise>
