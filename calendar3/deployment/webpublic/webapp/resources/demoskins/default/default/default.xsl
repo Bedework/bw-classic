@@ -197,7 +197,7 @@
           <a href="javascript:window.print()" title="print this view">
             <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/>
           </a>
-          <a class="rss" href="{$setSelection}?calId=&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
+          <a class="rss" href="{$setSelection}?setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
           <xsl:variable name="calcategory">
             <xsl:choose>
               <xsl:when test="/bedework/title=''">all</xsl:when>
@@ -1033,6 +1033,7 @@
           </form>
           <form name="skinSelectForm" method="get" action="{$setup}">
             skin examples:
+            <input type="hidden" name="setappvar" value="summaryMode(details)"/>
             <select name="skinName" onchange="submit()">
               <option>select a skin</option>
               <option value="rss">rss feed</option>
