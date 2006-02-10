@@ -59,11 +59,9 @@ import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.filter.BwCreatorFilter;
-import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
 import org.bedework.webcommon.BwSession;
-
 
 import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;

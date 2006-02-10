@@ -294,7 +294,8 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
   /** Method to retrieve an event.
    * <p>Request parameters<ul>
-   *      <li>"subid"    subscription id for event.</li>
+   *      <li>"subid"    subscription id for event. < 0 if there is none
+   *                     e.g. displayed directly from calendar.</li>
    *      <li>"guid"     guid of event.</li>
    *      <li>"recurrenceId"   recurrence-id of event instance - possibly null.</li>
    * </ul>
@@ -308,23 +309,18 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    */
   protected EventInfo findEvent(HttpServletRequest request,
                                 BwActionFormBase form) throws Throwable {
-    EventInfo ev = null;
-
-    /* XXX temp set up subscription here - we'll pass it to svci later
-     */
-    int subid = getIntReqPar(request, "subid", -1);
-    if (subid < 0) {
-      form.getErr().emit("org.bedework.client.error.missingsubscriptionid");
-      return null;
-    }
-
     CalSvcI svci = form.fetchSvci();
+    EventInfo ev = null;
+    BwSubscription sub = null;
 
-    BwSubscription sub = svci.getSubscription(subid);
+    int subid = getIntReqPar(request, "subid", -1);
+    if (subid >= 0) {
+      sub = svci.getSubscription(subid);
 
-    if (sub == null) {
-      form.getErr().emit("org.bedework.client.error.missingsubscriptionid");
-      return null;
+      if (sub == null) {
+        form.getErr().emit("org.bedework.client.error.missingsubscriptionid");
+        return null;
+      }
     }
 
     String guid = request.getParameter("guid");

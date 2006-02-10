@@ -6,11 +6,20 @@
 <bean:define id="event" name="eventFmt" property="event" />
 <%-- Output a single event --%>
   <event>
-    <subscription>
-      <id><bean:write name="eventInfo" property="subscription.id"/></id>
-      <affectsFreeBusy><bean:write name="eventInfo" property="subscription.affectsFreeBusy"/></affectsFreeBusy>
-      <style><bean:write name="eventInfo" property="subscription.style"/></style>
-    </subscription>
+    <logic:present  name="event" property="subscription">
+      <subscription>
+        <id><bean:write name="eventInfo" property="subscription.id"/></id>
+        <affectsFreeBusy><bean:write name="eventInfo" property="subscription.affectsFreeBusy"/></affectsFreeBusy>
+        <style><bean:write name="eventInfo" property="subscription.style"/></style>
+      </subscription>
+    </logic:present>
+    <logic:notPresent  name="event" property="subscription">
+      <subscription>
+        <id>-1</id>
+        <affectsFreeBusy>false</affectsFreeBusy>
+        <style></style>
+      </subscription>
+    </logic:notPresent>
     <start><%-- start date and time --%>
       <bean:define id="date" name="eventFmt"
                    property="start"
