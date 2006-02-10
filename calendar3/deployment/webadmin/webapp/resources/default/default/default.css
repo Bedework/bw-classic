@@ -9,7 +9,6 @@ body {
   background-color : #333;
   margin: 0em;
   padding:  0.5em 1em 0.5em 1em;
-  height: 40px;
 }
 #header a {
   color: #dde;
@@ -20,7 +19,7 @@ body {
   margin: 0.5em 0.5em 0em 0em;
 }
 #header img {
-  padding-top: 0.2em;
+  float: right;
   border: 0;
 }
 #messages {
@@ -64,6 +63,16 @@ body {
   text-decoration: none;
   background-color: #ffe;
   color: black;
+}
+#titleBar {
+  font-size: 0.7em;
+  font-weight: bold;
+  letter-spacing: 3px;
+  background-color: #ddd;
+  color: #666;
+  border-top: 1px solid black;
+  border-bottom: 2px solid black;
+  text-align: center;
 }
 #content {
   margin: 0em;
