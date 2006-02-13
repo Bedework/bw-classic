@@ -213,10 +213,10 @@
               </xsl:choose>
             </td>
             <td class="centerCell">
-                &#160;
+              &#160;
             </td>
             <td class="rightCell rssPrint">
-             <a href="javascript:window.print()" title="print this view">
+              <a href="javascript:window.print()" title="print this view">
                 <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
               </a>
               <a class="rss" href="http://helpdesk.rpi.edu/update.do?artcenterkey=255" title="RSS feed">RSS</a>
@@ -358,7 +358,7 @@
          <td class="leftCell">
            <xsl:choose>
              <xsl:when test="/bedework/selectionState/selectionType = 'calendar'">
-               Calendar:
+               Calendar: <xsl:value-of select="/bedework/selectionState/subscriptions/subscription/calendar/name"/>
                <span class="link">[<a href="{$setSelection}">default view</a>]</span>
              </xsl:when>
              <xsl:when test="/bedework/selectionState/selectionType = 'search'">
@@ -512,10 +512,13 @@
         <td class="fieldval">
           <!-- was using abbrev dayname: substring(start/dayname,1,3) -->
           <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text>
-          <span class="time"><xsl:value-of select="start/time"/></span>
-          <xsl:if test="end/time != '' or end/longdate != start/longdate"> - </xsl:if>
+          <xsl:if test="start/allday = 'false'">
+            <span class="time"><xsl:value-of select="start/time"/></span>
+          </xsl:if>
+          <xsl:if test="end/allday = 'false' or end/longdate != start/longdate"> - </xsl:if>
           <xsl:if test="end/longdate != start/longdate"><xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text></xsl:if>
-          <xsl:if test="end/time != ''"><span class="time"><xsl:value-of select="end/time"/></span></xsl:if>
+          <xsl:if test="end/allday = 'false'"><span class="time"><xsl:value-of select="end/time"/></span></xsl:if>
+          <xsl:if test="start/allday = 'true'"><span class="time"><em>(all day)</em></span></xsl:if>
         </td>
       </tr>
       <tr>
@@ -839,13 +842,16 @@
         </xsl:variable>
         <span class="{$eventTipClass}">
           <strong><xsl:value-of select="summary"/></strong><br/>
-          <xsl:if test="start/time != ''">
-            Time: <xsl:value-of select="start/time"/>
-            <xsl:if test="end/time != ''">
-              - <xsl:value-of select="end/time"/>
-            </xsl:if>
-            <br/>
-          </xsl:if>
+          Time:
+          <xsl:choose>
+            <xsl:when test="start/allday = 'false'">
+              <xsl:value-of select="start/time"/>
+               - <xsl:value-of select="end/time"/>
+            </xsl:when>
+            <xsl:otherwise>
+              all day
+            </xsl:otherwise>
+          </xsl:choose><br/>
           <xsl:if test="location/address">
             Location: <xsl:value-of select="location/address"/><br/>
           </xsl:if>
@@ -922,7 +928,7 @@
 
   <!--==== CALENDARS PAGE ====-->
   <xsl:template match="calendars">
-    <xsl:variable name="topLevelCalCount" select="count(/bedework/calendars/calendar/calendar)"/>
+    <xsl:variable name="topLevelCalCount" select="count(calendar/calendar)"/>
     <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="2">
@@ -937,12 +943,12 @@
       <tr>
         <td class="leftCell">
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[position() &lt;= floor($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[position() &lt;= ceiling($topLevelCalCount div 2)]" mode="calTree"/>
           </ul>
         </td>
         <td>
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[position() &gt; floor($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[position() &gt; ceiling($topLevelCalCount div 2)]" mode="calTree"/>
           </ul>
         </td>
       </tr>
@@ -967,6 +973,8 @@
     </li>
   </xsl:template>
 
+  <!--==== FOOTER ====-->
+
   <xsl:template name="footer">
     <div id="footer">
       Maintained by
@@ -983,10 +991,10 @@
     <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td class="leftCell">
-          Based on the <a href="http://www.washington.edu/ucal/">University of Washington Calendar</a>
+          Based on the <a href="http://www.bedework.org/">Bedework Calendar</a>
         </td>
         <td class="rightCell">
-          <form name="skinSelectForm" method="get" action="{$setup}">
+          <!--<form name="skinSelectForm" method="get" action="{$setup}">
             skin selector:
             <select name="skinNameSticky" onChange="submit()">
               <option>select a skin</option>
@@ -994,7 +1002,7 @@
               <option value="washington">Washington</option>
               <option value="rensselaer">Rensselaer</option>
             </select>
-          </form>
+          </form>-->
         </td>
       </tr>
     </table>

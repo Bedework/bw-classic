@@ -828,7 +828,7 @@
       <xsl:for-each select="/bedework/eventscalendar/year/month/week">
         <tr>
           <xsl:for-each select="day">
-           <xsl:variable name="dayPos" select="position()"/>
+            <xsl:variable name="dayPos" select="position()"/>
             <xsl:choose>
               <xsl:when test="filler='true'">
                 <td class="filler">&#160;</td>
@@ -879,11 +879,11 @@
         </xsl:variable>
         <span class="{$eventTipClass}">
           <strong><xsl:value-of select="summary"/></strong><br/>
-          Time: 
+          Time:
           <xsl:choose>
             <xsl:when test="start/allday = 'false'">
               <xsl:value-of select="start/time"/>
-               - <xsl:value-of select="end/time"/>              
+               - <xsl:value-of select="end/time"/>
             </xsl:when>
             <xsl:otherwise>
               all day
