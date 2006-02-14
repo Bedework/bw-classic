@@ -131,8 +131,8 @@
           <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
           <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
-          <script type='text/javascript' src="{$resourcesRoot}/resources/autoComplete.js"></script>
-          <script type='text/javascript' src="{$resourcesRoot}/resources/ui.js"></script>
+          <!--<script type='text/javascript' src="{$resourcesRoot}/resources/autoComplete.js"></script>
+          <script type='text/javascript' src="{$resourcesRoot}/resources/ui.js"></script>-->
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
         <script language="JavaScript" type="text/javascript">
@@ -470,8 +470,7 @@
               <xsl:copy-of select="/bedeworkadmin/formElements/form/calendar/all/select/*"/>
             </select>
             <!-- description of calendar: will be implemented soon -->
-            <!--
-            <div id="calendarDescriptionBox">
+            <!--<div id="calendarDescriptionBox">
               Description: <span id="calendarDescription">please select a calendar.</span>
               <a href="" target="calDescriptions">all calendar descriptions</a>
             </div>-->
@@ -488,17 +487,17 @@
                  page reload. -->
             <xsl:variable name="timeFieldsClass">
               <xsl:choose>
-                <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">hidden</xsl:when>
+                <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">invisible</xsl:when>
                 <xsl:otherwise>timeFields</xsl:otherwise>
               </xsl:choose>
             </xsl:variable>
             <xsl:choose>
               <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">
-                <input type="checkbox" name="allDayFlag" onchange="swapAllDayEvent(this)" value="on" checked="checked"/>
+                <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="on" checked="checked"/>
                 <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayField"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="checkbox" name="allDayFlag" onchange="swapAllDayEvent(this)" value="off"/>
+                <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="off"/>
                 <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayField"/>
               </xsl:otherwise>
             </xsl:choose>
@@ -526,17 +525,17 @@
               <strong>End:</strong>
               <xsl:choose>
                 <xsl:when test="/bedeworkadmin/formElements/form/end/type='E'">
-                  <input type="radio" name="eventEndType" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','hidden');"/>
+                  <input type="radio" name="eventEndType" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="radio" name="eventEndType" value="E" onClick="changeClass('endDateTime','shown');changeClass('endDuration','hidden');"/>
+                  <input type="radio" name="eventEndType" value="E" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:otherwise>
               </xsl:choose>
               Date
               <xsl:variable name="endDateTimeClass">
                 <xsl:choose>
                   <xsl:when test="/bedeworkadmin/formElements/form/end/type='E'">shown</xsl:when>
-                  <xsl:otherwise>hidden</xsl:otherwise>
+                  <xsl:otherwise>invisible</xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
               <div class="{$endDateTimeClass}" id="endDateTime">
@@ -556,28 +555,28 @@
                   <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
                 </div>
               </div><br/>
-              <div id="clock" class="hidden">
+              <div id="clock" class="invisible">
                 <xsl:call-template name="clock"/>
               </div>
               <div class="dateFields">
                 <xsl:choose>
                   <xsl:when test="/bedeworkadmin/formElements/form/end/type='D'">
-                    <input type="radio" name="eventEndType" value="D" checked="checked" onClick="changeClass('endDateTime','hidden');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" value="D" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="D" onClick="changeClass('endDateTime','hidden');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" value="D" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 Duration
                 <xsl:variable name="endDurationClass">
                   <xsl:choose>
                     <xsl:when test="/bedeworkadmin/formElements/form/end/type='D'">shown</xsl:when>
-                    <xsl:otherwise>hidden</xsl:otherwise>
+                    <xsl:otherwise>invisible</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="durationHrMinClass">
                   <xsl:choose>
-                    <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">hidden</xsl:when>
+                    <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">invisible</xsl:when>
                     <xsl:otherwise>shown</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
@@ -630,10 +629,10 @@
               <div class="dateFields" id="noDuration">
                 <xsl:choose>
                   <xsl:when test="/bedeworkadmin/formElements/form/end/type='N'">
-                    <input type="radio" name="eventEndType" value="N" checked="checked" onClick="changeClass('endDateTime','hidden');changeClass('endDuration','hidden');"/>
+                    <input type="radio" name="eventEndType" value="N" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="N" onClick="changeClass('endDateTime','hidden');changeClass('endDuration','hidden');"/>
+                    <input type="radio" name="eventEndType" value="N" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 This event has no duration / end date
@@ -711,7 +710,7 @@
           </td>
           <td>
             <xsl:if test="/bedeworkadmin/formElements/form/location/preferred/select/option">
-              <select name="prefLocationId">
+              <select name="prefLocationId" id="eventFormPrefLocationList">
                 <option value="-1">
                   Select preferred:
                 </option>
@@ -719,7 +718,7 @@
               </select>
               or Location (all):
             </xsl:if>
-            <select name="locationId">
+            <select name="locationId" id="eventFormLocationList">
               <option value="-1">
                 Select:
               </option>
@@ -768,7 +767,7 @@
           </td>
           <td>
             <xsl:if test="/bedeworkadmin/formElements/form/sponsor/preferred/select/option">
-              <select name="prefSponsorId">
+              <select name="prefSponsorId" id="eventFormSponsorList">
                 <option value="-1">
                   Select preferred:
                 </option>option>
@@ -776,7 +775,7 @@
               </select>
               or Contact (all):
             </xsl:if>
-            <select name="sponsorId">
+            <select name="sponsorId" id="eventFormPrefSponsorList">
               <option value="-1">
                 Select:
               </option>
@@ -1011,7 +1010,7 @@
             </xsl:when>
             <xsl:when test="end/endtype = 'duration'">
               <div class="dateFields">
-                <div class="hidden" id="endDuration">
+                <div class="invisible" id="endDuration">
                   <div class="durationBox">
                     <input type="text" name="eventDuration.daysStr" size="2" value="0" onChange="window.document.peForm.durationType[0].checked = true;"/>days
                     <input type="text" name="eventDuration.hoursStr" size="2" value="1" onChange="window.document.peForm.durationType[0].checked = true;"/>hours

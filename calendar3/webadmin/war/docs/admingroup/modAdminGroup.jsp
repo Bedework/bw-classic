@@ -20,7 +20,7 @@
       </logic:notEqual>
     </name>
     <desc>
-      <html:textarea property="updAdminGroup.description" cols="50"  rows="3" />
+      <html:textarea property="updAdminGroup.description" cols="50"  rows="3"></html:textarea>
     </desc>
     <groupOwner>
       <html:text name="peForm" property="adminGroupGroupOwner" />

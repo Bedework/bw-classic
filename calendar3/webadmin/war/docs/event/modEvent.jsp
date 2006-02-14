@@ -142,7 +142,7 @@
       </all>
     </category>
 
-    <desc><html:textarea property="event.description" rows="8" cols="55" styleId="iDesc" styleClass="edit"/></desc>
+    <desc><html:textarea property="event.description" rows="8" cols="55" styleId="iDesc" styleClass="edit"></html:textarea></desc>
     <descLength><bean:write name="peForm" property="maxDescriptionLength" /></descLength>
     <cost><html:text property="event.cost" size="30" styleId="iCost" styleClass="edit"/></cost>
     <link><html:text property="event.link" size="30" styleId="iLink" styleClass="edit"/></link>

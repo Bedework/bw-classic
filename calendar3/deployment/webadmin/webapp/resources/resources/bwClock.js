@@ -5,11 +5,22 @@ var bwClockCurrentType = null;
 
 function bwClockLaunch(type) {
   if ((document.getElementById("clock").className == "shown") && (bwClockCurrentType == type)) {
-    changeClass("clock","hidden"); // if the clock with the same type is showing, toggle it off
+    changeClass("clock","invisible"); // if the clock with the same type is showing, toggle it off
   } else { // otherwise, turn it on and display the correct type
     bwClockRequestedType = type;
     bwClockCurrentType = type;
     changeClass("clock","shown");
+    // the following is for Internet Explorer.  IE draws "windowed" objects
+    // and unwindowed objects on seperate "planes"; windowed objects are always
+    // drawn obove unwindowed objects and select boxes are "windowed";
+    // this is required to make IE not overwrite the clock div with
+    // the select boxes that fall below it on the page.  Note: we set them
+    // to display:hidden (not none) so their space is still occupied (and the
+    // browser window doesn't shift around)
+    changeClass("eventFormPrefLocationList","hidden");
+    changeClass("eventFormLocationList","hidden");
+    changeClass("eventFormSponsorList","hidden");
+    changeClass("eventFormPrefSponsorList","hidden");
     bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
     if (type == 'eventStartDate') {
       bwClockIndicator.innerHTML = "Start Time"
@@ -20,7 +31,11 @@ function bwClockLaunch(type) {
 }
 
 function bwClockClose() {
-  changeClass("clock","hidden");
+  changeClass("clock","invisible");
+  changeClass("eventFormPrefLocationList","shown");
+  changeClass("eventFormLocationList","shown");
+  changeClass("eventFormSponsorList","shown");
+  changeClass("eventFormPrefSponsorList","shown");
 }
 
 function bwClockUpdateDateTimeForm(type,val) {

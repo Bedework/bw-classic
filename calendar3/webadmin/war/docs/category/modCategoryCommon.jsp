@@ -18,7 +18,7 @@
       Description:
     </td>
     <td>
-      <html:textarea property="category.description"  rows="3" cols="55" />
+      <html:textarea property="category.description"  rows="3" cols="55" ></html:textarea>
       <span class="fieldInfo">(optional)</span>
     </td>
   </tr>

@@ -242,18 +242,18 @@ table.eventFormTable .startDateLabel {
 table.eventFormTable .shown {
   display: inline;
 }
-table.eventFormTable .hidden,
-.hidden {
+table.eventFormTable .invisible,
+.invisible {
   display: none;
 }
-table.eventFormTable .durationBox {
+.hidden {
+  visibility: hidden;
+}
+table.eventFormTable div.durationBox {
   border: 1px solid #ccb;
   display: inline;
   margin: 4px;
   padding: 4px;
-}
-table.eventFormTable .durationBox input {
-  margin-left: 0.5em;
 }
 table.eventFormTable .durationSpacerText {
   font-weight: bold;
