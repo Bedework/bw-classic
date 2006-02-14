@@ -184,12 +184,6 @@
       <forward name="copy" path="/event/showModForm.rdo" redirect="true" />
     </action>
 
-    <action    path="/event/showClockMap"
-               name="peForm"
-               scope="session"
-               validate="false"
-               include="/docs/event/clockMap.jsp"/>
-
     <!-- ===============================================================
                          Calendar Actions
          =============================================================== -->

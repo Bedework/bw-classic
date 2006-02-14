@@ -67,7 +67,6 @@ try {
       <fetchForUpdate><genurl:link page="/event/fetchForUpdate.do?b=de"/></fetchForUpdate>
       <fetchUpdateList><genurl:link page="/event/fetchUpdateList.do?b=de"/></fetchUpdateList>
       <update><genurl:link page="/event/update.do?b=de"/></update>
-      <showClockMap><genurl:link page="/event/showClockMap.do?b=de"/></showClockMap>
     </event>
     <sponsor>
       <showSponsor><genurl:link page="/sponsor/showSponsor.do?b=de"/></showSponsor>
