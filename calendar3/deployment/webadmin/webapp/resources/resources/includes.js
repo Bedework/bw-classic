@@ -37,10 +37,10 @@ function swapDurationType(type) {
     weeksDurationElement.disabled = true;
   }
 }
-function launchClockMap(url) {
-  clockWindow = window.open(url, "clockWindow", "width=410,height=430,scrollbars=no,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
-  window.clockWindow.focus();
-}
+//function launchClockMap(url) {
+//  clockWindow = window.open(url, "clockWindow", "width=410,height=430,scrollbars=no,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
+//  window.clockWindow.focus();
+//}
 function closePopUps() {
   if (window.clockWindow) {
     window.clockWindow.close();

@@ -1,0 +1,79 @@
+#bwClock {
+  position: absolute;
+  left: 40px;
+  z-index: +1;
+  text-align: center;
+}
+#bwClockClock {
+  width: 380px;
+  height: 380px;
+  padding: 2px;
+  margin: 0 auto;
+  vertical-align: middle;
+}
+#bwClockCover {
+ /* special effect - used to cover the pixelated edge where the h2 below meets
+    the anti-aliased clock edge */
+  position: absolute;
+  top: 130px;
+  left: 360px;
+  height: 24px;
+  width: 12px;
+  color: white;
+  background-color: black;
+}
+#bwClockBox {
+  position: absolute;
+  top: 130px;
+  left: 360px;
+  z-index: -1;
+  width: 180px;
+  color: black;
+  background-color: #ffe;
+  border: 2px solid black;
+}
+#bwClockBox h2 {
+  font-size: 12px;
+  text-align: center;
+  margin: 0;
+  padding: 2px 0;
+  color: #eee;
+  background-color: #000;
+}
+#bwClockDateTypeIndicator {
+  font-weight: bold;
+  font-style: italic;
+  display: block;
+  margin: 1em;
+  padding:0 ;
+}
+#bwClockTime {
+  display: block;
+  width: 100%;
+  font-size: 0.9em;
+  font-weight: bold;
+  margin: 0.5em 0 3em 0;
+  padding: 0;
+}
+#bwClockCloseButton {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  display: block;
+  margin: 0;
+  padding:0 ;
+}
+#bwClockCloseButton a {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+  border: 1px solid #333;
+  margin: 0;
+  padding:0 4px ;
+  text-decoration: none;
+  color: #333;
+  background-color: white;
+}
+#bwClockCloseButton a:hover {
+  color: #eee;
+  background-color: #333;
+}

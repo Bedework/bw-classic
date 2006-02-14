@@ -306,6 +306,9 @@ table.eventFormTable #calendarDescriptionBox a {
   background: #FFF;
   border: 1px dashed #ccc;
 }
+#clock {
+  position: relative;
+}
 #sponsorEmailAlert {
   display: none;
   background: transparent url('../../resources/email.gif') no-repeat top left;

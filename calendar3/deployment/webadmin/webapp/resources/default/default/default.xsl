@@ -48,7 +48,6 @@
   <xsl:variable name="event-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/event/fetchForDisplay/a/@href"/>
   <xsl:variable name="event-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/event/fetchForUpdate/a/@href"/>
   <xsl:variable name="event-update" select="/bedeworkadmin/urlPrefixes/event/update/a/@href"/>
-  <xsl:variable name="event-showClockMap" select="/bedeworkadmin/urlPrefixes/event/showClockMap/a/@href"/>
   <xsl:variable name="sponsor-showSponsor" select="/bedeworkadmin/urlPrefixes/sponsor/showSponsor/a/@href"/>
   <xsl:variable name="sponsor-showReferenced" select="/bedeworkadmin/urlPrefixes/sponsor/showReferenced/a/@href"/>
   <xsl:variable name="sponsor-showModForm" select="/bedeworkadmin/urlPrefixes/sponsor/showModForm/a/@href"/>
@@ -129,7 +128,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
         <xsl:if test="/bedeworkadmin/page='modEvent'">
-          <script language="JavaScript" type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
+          <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
           <script type='text/javascript' src="{$resourcesRoot}/resources/autoComplete.js"></script>
           <script type='text/javascript' src="{$resourcesRoot}/resources/ui.js"></script>
         </xsl:if>
@@ -518,7 +519,7 @@
                   <xsl:copy-of select="/bedeworkadmin/formElements/form/start/ampm/*"/>
                 </xsl:if>
                 <xsl:text> </xsl:text>
-                <a href="javascript:launchClockMap('showClockMap.do?dateType=eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
               </div>
             </div>
             <div class="dateStartEndBox">
@@ -552,9 +553,12 @@
                     <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/ampm/*"/>
                   </xsl:if>
                   <xsl:text> </xsl:text>
-                  <a href="javascript:launchClockMap('showClockMap.do?dateType=eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                  <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
                 </div>
               </div><br/>
+              <div id="clock" class="hidden">
+                <xsl:call-template name="clock"/>
+              </div>
               <div class="dateFields">
                 <xsl:choose>
                   <xsl:when test="/bedeworkadmin/formElements/form/end/type='D'">
@@ -872,6 +876,72 @@
         </tr>
       </table>
     </form>
+  </xsl:template>
+
+  <xsl:template name="clock">
+    <div id="bwClock">
+      <!-- Bedework 24-Hour Clock time selection widget
+           used with resources/bwClock.js and resources/bwClock.css -->
+      <div id="bwClockClock">
+        <img id="clockMap" src="{$resourcesRoot}/resources/clockMap.gif" width="368" height="368" border="0" alt="" usemap="#bwClockMap" />
+      </div>
+      <div id="bwClockCover">
+        <!-- this is a special effect div used simply to cover the pixelated edge
+             where the clock meets the clock box title -->
+      </div>
+      <div id="bwClockBox">
+        <h2>
+          Bedework 24-Hour Clock
+        </h2>
+        <div id="bwClockDateTypeIndicator">
+          type
+        </div>
+        <div id="bwClockTime">
+          select time
+        </div>
+        <div id="bwClockCloseButton">
+          close <a href="javascript:bwClockClose();">X</a>
+        </div>
+      </div>
+      <map name="bwClockMap" id="bwClockMap">
+        <area shape="poly" alt="minute 00:55" coords="156,164, 169,155, 156,107, 123,128" href="javascript:bwClockUpdateDateTimeForm('minute','55')" />
+        <area shape="poly" alt="minute 00:50" coords="150,175, 156,164, 123,128, 103,161" href="javascript:bwClockUpdateDateTimeForm('minute','50')" />
+        <area shape="poly" alt="minute 00:45" coords="150,191, 150,175, 103,161, 103,206" href="javascript:bwClockUpdateDateTimeForm('minute','45')" />
+        <area shape="poly" alt="minute 00:40" coords="158,208, 150,191, 105,206, 123,237" href="javascript:bwClockUpdateDateTimeForm('minute','40')" />
+        <area shape="poly" alt="minute 00:35" coords="171,218, 158,208, 123,238, 158,261" href="javascript:bwClockUpdateDateTimeForm('minute','35')" />
+        <area shape="poly" alt="minute 00:30" coords="193,218, 172,218, 158,263, 209,263" href="javascript:bwClockUpdateDateTimeForm('minute','30')" />
+        <area shape="poly" alt="minute 00:25" coords="209,210, 193,218, 209,261, 241,240" href="javascript:bwClockUpdateDateTimeForm('minute','25')" />
+        <area shape="poly" alt="minute 00:20" coords="216,196, 209,210, 241,240, 261,206" href="javascript:bwClockUpdateDateTimeForm('minute','20')" />
+        <area shape="poly" alt="minute 00:15" coords="216,178, 216,196, 261,206, 261,159" href="javascript:bwClockUpdateDateTimeForm('minute','15')" />
+        <area shape="poly" alt="minute 00:10" coords="209,164, 216,178, 261,159, 240,126" href="javascript:bwClockUpdateDateTimeForm('minute','10')" />
+        <area shape="poly" alt="minute 00:05" coords="196,155, 209,164, 238,126, 206,107" href="javascript:bwClockUpdateDateTimeForm('minute','05')" />
+        <area shape="poly" alt="minute 00:00" coords="169,155, 196,155, 206,105, 156,105" href="javascript:bwClockUpdateDateTimeForm('minute','00')" />
+        <area shape="poly" alt="11 PM, 2300 hour" coords="150,102, 172,96, 158,1, 114,14" href="javascript:bwClockUpdateDateTimeForm('hour','23')" />
+        <area shape="poly" alt="10 PM, 2200 hour" coords="131,114, 150,102, 114,14, 74,36" href="javascript:bwClockUpdateDateTimeForm('hour','22')" />
+        <area shape="poly" alt="9 PM, 2100 hour" coords="111,132, 131,114, 74,36, 40,69" href="javascript:bwClockUpdateDateTimeForm('hour','21')" />
+        <area shape="poly" alt="8 PM, 2000 hour" coords="101,149, 111,132, 40,69, 15,113" href="javascript:bwClockUpdateDateTimeForm('hour','20')" />
+        <area shape="poly" alt="7 PM, 1900 hour" coords="95,170, 101,149, 15,113, 1,159" href="javascript:bwClockUpdateDateTimeForm('hour','19')" />
+        <area shape="poly" alt="6 PM, 1800 hour" coords="95,196, 95,170, 0,159, 0,204" href="javascript:bwClockUpdateDateTimeForm('hour','18')" />
+        <area shape="poly" alt="5 PM, 1700 hour" coords="103,225, 95,196, 1,205, 16,256" href="javascript:bwClockUpdateDateTimeForm('hour','17')" />
+        <area shape="poly" alt="4 PM, 1600 hour" coords="116,245, 103,225, 16,256, 41,298" href="javascript:bwClockUpdateDateTimeForm('hour','16')" />
+        <area shape="poly" alt="3 PM, 1500 hour" coords="134,259, 117,245, 41,298, 76,332" href="javascript:bwClockUpdateDateTimeForm('hour','15')" />
+        <area shape="poly" alt="2 PM, 1400 hour" coords="150,268, 134,259, 76,333, 121,355" href="javascript:bwClockUpdateDateTimeForm('hour','14')" />
+        <area shape="poly" alt="1 PM, 1300 hour" coords="169,273, 150,268, 120,356, 165,365" href="javascript:bwClockUpdateDateTimeForm('hour','13')" />
+        <area shape="poly" alt="Noon, 1200 hour" coords="193,273, 169,273, 165,365, 210,364" href="javascript:bwClockUpdateDateTimeForm('hour','12')" />
+        <area shape="poly" alt="11 AM, 1100 hour" coords="214,270, 193,273, 210,363, 252,352" href="javascript:bwClockUpdateDateTimeForm('hour','11')" />
+        <area shape="poly" alt="10 AM, 1000 hour" coords="232,259, 214,270, 252,352, 291,330" href="javascript:bwClockUpdateDateTimeForm('hour','10')" />
+        <area shape="poly" alt="9 AM, 0900 hour" coords="251,240, 232,258, 291,330, 323,301" href="javascript:bwClockUpdateDateTimeForm('hour','09')" />
+        <area shape="poly" alt="8 AM, 0800 hour" coords="263,219, 251,239, 323,301, 349,261" href="javascript:bwClockUpdateDateTimeForm('hour','08')" />
+        <area shape="poly" alt="7 AM, 0700 hour" coords="269,194, 263,219, 349,261, 363,212" href="javascript:bwClockUpdateDateTimeForm('hour','07')" />
+        <area shape="poly" alt="6 AM, 0600 hour" coords="269,172, 269,193, 363,212, 363,155" href="javascript:bwClockUpdateDateTimeForm('hour','06')" />
+        <area shape="poly" alt="5 AM, 0500 hour" coords="263,150, 269,172, 363,155, 351,109" href="javascript:bwClockUpdateDateTimeForm('hour','05')" />
+        <area shape="poly" alt="4 AM, 0400 hour" coords="251,130, 263,150, 351,109, 325,68" href="javascript:bwClockUpdateDateTimeForm('hour','04')" />
+        <area shape="poly" alt="3 AM, 0300 hour" coords="234,112, 251,130, 325,67, 295,37" href="javascript:bwClockUpdateDateTimeForm('hour','03')" />
+        <area shape="poly" alt="2 AM, 0200 hour" coords="221,102, 234,112, 295,37, 247,11" href="javascript:bwClockUpdateDateTimeForm('hour','02')" />
+        <area shape="poly" alt="1 AM, 0100 hour" coords="196,96, 221,102, 247,10, 209,-1, 201,61, 206,64, 205,74, 199,75" href="javascript:bwClockUpdateDateTimeForm('hour','01')" />
+        <area shape="poly" alt="Midnight, 0000 hour" coords="172,96, 169,74, 161,73, 161,65, 168,63, 158,-1, 209,-1, 201,61, 200,62, 206,64, 205,74, 198,75, 196,96, 183,95" href="javascript:bwClockUpdateDateTimeForm('hour','00')" />
+      </map>
+    </div>
   </xsl:template>
 
   <xsl:template match="event" mode="displayEvent">
