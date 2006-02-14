@@ -59,70 +59,92 @@ window.onload = function() {
     var ct = 1;
 
   var vTitleId = document.getElementById('iTitle')
-    vTitleId.onfocus = function () { cclick(this);  }
-    vTitleId.onblur = function () { cblur(this);  }
-    vTitleId.onmouseover = function () { cmover(this);  }
-    vTitleId.onmouseout = function () { cmout(this);  }
+    if (vTitleId != null) {
+      vTitleId.onfocus = function () { cclick(this);  }
+      vTitleId.onblur = function () { cblur(this);  }
+      vTitleId.onmouseover = function () { cmover(this);  }
+      vTitleId.onmouseout = function () { cmout(this);  }
+    }
 
   var vDescId = document.getElementById('iDesc')
-    vDescId.onfocus = function () { cclick(this);  }
-    vDescId.onblur = function () { cblur(this);  }
-    vDescId.onmouseover = function () { cmover(this);  }
-    vDescId.onmouseout = function () { cmout(this);  }
+    if (vDescId != null) {
+      vDescId.onfocus = function () { cclick(this);  }
+      vDescId.onblur = function () { cblur(this);  }
+      vDescId.onmouseover = function () { cmover(this);  }
+      vDescId.onmouseout = function () { cmout(this);  }
+    }
 
   var vCostId = document.getElementById('iCost')
-    vCostId.onfocus = function () { cclick(this);  }
-    vCostId.onblur = function () { cblur(this);  }
-    vCostId.onmouseover = function () { cmover(this);  }
-    vCostId.onmouseout = function () { cmout(this);  }
+    if (vCostId != null) {
+      vCostId.onfocus = function () { cclick(this);  }
+      vCostId.onblur = function () { cblur(this);  }
+      vCostId.onmouseover = function () { cmover(this);  }
+      vCostId.onmouseout = function () { cmout(this);  }
+    }
 
   var vLinkId = document.getElementById('iLink')
-    vLinkId.onfocus = function () { cclick(this);  }
-    vLinkId.onblur = function () { cblur(this);  }
-    vLinkId.onmouseover = function () { cmover(this);  }
-    vLinkId.onmouseout = function () { cmout(this);  }
+    if (vLinkId != null) {
+      vLinkId.onfocus = function () { cclick(this);  }
+      vLinkId.onblur = function () { cblur(this);  }
+      vLinkId.onmouseover = function () { cmover(this);  }
+      vLinkId.onmouseout = function () { cmout(this);  }
+    }
 
   var vAreaCodeId = document.getElementById('iAreaCode')
-    vAreaCodeId.onfocus = function () { cclick(this);  }
-    vAreaCodeId.onblur = function () { cblur(this);  }
-    vAreaCodeId.onmouseover = function () { cmover(this);  }
-    vAreaCodeId.onmouseout = function () { cmout(this);  }
+    if (vAreaCodeId != null) {
+      vAreaCodeId.onfocus = function () { cclick(this);  }
+      vAreaCodeId.onblur = function () { cblur(this);  }
+      vAreaCodeId.onmouseover = function () { cmover(this);  }
+      vAreaCodeId.onmouseout = function () { cmout(this);  }
+    }
 
   var vPhoneAId = document.getElementById('iPhoneA')
-    vPhoneAId.onfocus = function () { cclick(this);  }
-    vPhoneAId.onblur = function () { cblur(this);  }
-    vPhoneAId.onmouseover = function () { cmover(this);  }
-    vPhoneAId.onmouseout = function () { cmout(this);  }
+    if (vPhoneAId != null) {
+      vPhoneAId.onfocus = function () { cclick(this);  }
+      vPhoneAId.onblur = function () { cblur(this);  }
+      vPhoneAId.onmouseover = function () { cmover(this);  }
+      vPhoneAId.onmouseout = function () { cmout(this);  }
+    }
 
   var vPhoneBId = document.getElementById('iPhoneB')
-    vPhoneBId.onfocus = function () { cclick(this);  }
-    vPhoneBId.onblur = function () { cblur(this);  }
-    vPhoneBId.onmouseover = function () { cmover(this);  }
-    vPhoneBId.onmouseout = function () { cmout(this);  }
+    if (vPhoneBId != null) {
+      vPhoneBId.onfocus = function () { cclick(this);  }
+      vPhoneBId.onblur = function () { cblur(this);  }
+      vPhoneBId.onmouseover = function () { cmover(this);  }
+      vPhoneBId.onmouseout = function () { cmout(this);  }
+    }
 
   var vCLinkId = document.getElementById('iCLink')
-    vCLinkId.onfocus = function () { cclick(this);  }
-    vCLinkId.onblur = function () { cblur(this);  }
-    vCLinkId.onmouseover = function () { cmover(this);  }
-    vCLinkId.onmouseout = function () { cmout(this);  }
+    if (vCLinkId != null) {
+      vCLinkId.onfocus = function () { cclick(this);  }
+      vCLinkId.onblur = function () { cblur(this);  }
+      vCLinkId.onmouseover = function () { cmover(this);  }
+      vCLinkId.onmouseout = function () { cmout(this);  }
+    }
 
   var vEmailId = document.getElementById('iEmail')
-    vEmailId.onfocus = function () { cclick(this);  }
-    vEmailId.onblur = function () { cblur(this);  }
-    vEmailId.onmouseover = function () { cmover(this);  }
-    vEmailId.onmouseout = function () { cmout(this);  }
+    if (vEmailId != null) {
+      vEmailId.onfocus = function () { cclick(this);  }
+      vEmailId.onblur = function () { cblur(this);  }
+      vEmailId.onmouseover = function () { cmover(this);  }
+      vEmailId.onmouseout = function () { cmout(this);  }
+    }
 
   var vAddPhoneId = document.getElementById('iAddPhone')
-    vAddPhoneId.onfocus = function () { cclick(this);  }
-    vAddPhoneId.onblur = function () { cblur(this);  }
-    vAddPhoneId.onmouseover = function () { cmover(this);  }
-    vAddPhoneId.onmouseout = function () { cmout(this);  }
+    if (vAddPhoneId != null) {
+      vAddPhoneId.onfocus = function () { cclick(this);  }
+      vAddPhoneId.onblur = function () { cblur(this);  }
+      vAddPhoneId.onmouseover = function () { cmover(this);  }
+      vAddPhoneId.onmouseout = function () { cmout(this);  }
+    }
 
   var vLocLinkId = document.getElementById('iLocLink')
-    vLocLinkId.onfocus = function () { cclick(this);  }
-    vLocLinkId.onblur = function () { cblur(this);  }
-    vLocLinkId.onmouseover = function () { cmover(this);  }
-    vLocLinkId.onmouseout = function () { cmout(this);  }
+    if (vLocLinkId != null) {
+      vLocLinkId.onfocus = function () { cclick(this);  }
+      vLocLinkId.onblur = function () { cblur(this);  }
+      vLocLinkId.onmouseover = function () { cmover(this);  }
+      vLocLinkId.onmouseout = function () { cmout(this);  }
+    }
  }
 
 
