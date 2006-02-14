@@ -899,8 +899,11 @@
         <div id="bwClockTime">
           select time
         </div>
+        <div id="bwClockCloseText">
+          close
+        </div>
         <div id="bwClockCloseButton">
-          close <a href="javascript:bwClockClose();">X</a>
+          <a href="javascript:bwClockClose();">X</a>
         </div>
       </div>
       <map name="bwClockMap" id="bwClockMap">

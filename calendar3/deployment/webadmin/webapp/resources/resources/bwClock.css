@@ -1,23 +1,21 @@
 #bwClock {
   position: absolute;
-  left: 40px;
-  z-index: +1;
-  text-align: center;
+  z-index: +1000;
 }
 #bwClockClock {
+  position: absolute;
   width: 380px;
   height: 380px;
   padding: 2px;
   margin: 0 auto;
-  vertical-align: middle;
 }
 #bwClockCover {
  /* special effect - used to cover the pixelated edge where the h2 below meets
     the anti-aliased clock edge */
   position: absolute;
   top: 130px;
-  left: 360px;
-  height: 24px;
+  left: 355px;
+  height: 21px;
   width: 12px;
   color: white;
   background-color: black;
@@ -25,9 +23,10 @@
 #bwClockBox {
   position: absolute;
   top: 130px;
-  left: 360px;
+  left: 350px;
   z-index: -1;
   width: 180px;
+  text-align: center;
   color: black;
   background-color: #ffe;
   border: 2px solid black;
@@ -55,17 +54,19 @@
   margin: 0.5em 0 3em 0;
   padding: 0;
 }
-#bwClockCloseButton {
+#bwClockCloseText {
+  position: absolute;
+  bottom: 5px;
+  right: 28px;
+  margin: 0;
+}
+#bwClockCloseButton a {
   position: absolute;
   bottom: 5px;
   right: 5px;
   display: block;
-  margin: 0;
-  padding:0 ;
-}
-#bwClockCloseButton a {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 1em;
+  font-size: 10px;
   border: 1px solid #333;
   margin: 0;
   padding:0 4px ;
