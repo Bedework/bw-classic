@@ -146,7 +146,9 @@ public class BwOwnedDbentity extends BwDbentity {
     * @param val
     */
   public void copyTo(BwOwnedDbentity val) {
-    val.setOwner((BwUser)getOwner().clone());
+  	if (getOwner() != null) {
+      val.setOwner((BwUser)getOwner().clone());
+  	}
     val.setPublick(getPublick());
   }
 }

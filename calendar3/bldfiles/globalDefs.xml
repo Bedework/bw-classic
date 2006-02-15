@@ -55,6 +55,10 @@
 
     <property name="uwcal.home" location="${calendar.dir}" />
 
+    <!-- This is the default location for the canoo files.
+      -->
+    <property name="webtest.home" location="${calendar.dir}/../webtest" />
+
     <!-- Where the web-apps skeletons, build files etc reside -->
     <property name="apps.root.dir" location="${calendar.dir}/apps" />
     <property name="cal.default.db" location="${calendar.dir}/db" />
@@ -89,6 +93,7 @@
     <property name="org.bedework.webadmin.base" location="${calendar.dir}/webadmin" />
     <property name="org.bedework.webclient.base" location="${calendar.dir}/webclient" />
     <property name="org.bedework.webcommon.base" location="${calendar.dir}/webcommon" />
+    <property name="org.bedework.webtest.base" location="${calendar.dir}/webtest" />
 
     <!-- ===============================================================
               Properties derived from org.bedework.appserver.dir

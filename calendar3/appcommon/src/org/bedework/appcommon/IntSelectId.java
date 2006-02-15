@@ -101,6 +101,16 @@ public class IntSelectId implements Serializable {
    * @param preferred
    */
   public IntSelectId(int originalValue, int preferred) {
+    reset(originalValue, preferred);
+  }
+
+  /** Reset an object with the given original value indicating which of A
+   * or B have preference.
+   *
+   * @param originalValue
+   * @param preferred
+   */
+  public void reset(int originalValue, int preferred) {
     this.originalValue = originalValue;
     this.newValue = originalValue;
     precedence = preferred;

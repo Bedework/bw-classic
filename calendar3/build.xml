@@ -587,6 +587,12 @@
        This builds the test suite
        ================================================================= -->
 
+  <target name="webtest.all" depends="init"
+          description="Run the full webtest suite">
+      <ant antfile="${org.bedework.webtest.base}/build.xml" inheritrefs="true"
+           target="all" />
+  </target>
+
   <target name="bld.test"
           depends="init,bld.core,bld.appcommon,bld.synchml"
           description="Build all calendar test jars">

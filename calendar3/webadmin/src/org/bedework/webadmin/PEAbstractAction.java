@@ -134,7 +134,7 @@ public abstract class PEAbstractAction extends BwAbstractAction {
     }
 
     /* A is the All box, B is the user preferred values. */
-    form.assignCategoryId(new IntSelectId(id, IntSelectId.AHasPrecedence));
+    form.retrieveCategoryId().reset(id, IntSelectId.AHasPrecedence);
 
     BwSponsor s = event.getSponsor();
     id = 0;
@@ -143,7 +143,7 @@ public abstract class PEAbstractAction extends BwAbstractAction {
       form.setSponsor(s);
     }
 
-    form.assignSpId(new IntSelectId(id, IntSelectId.AHasPrecedence));
+    form.retrieveSpId().reset(id, IntSelectId.AHasPrecedence);
 
     BwLocation l = event.getLocation();
     id = 0;
@@ -152,7 +152,7 @@ public abstract class PEAbstractAction extends BwAbstractAction {
       form.setLocation(l);
     }
 
-    form.assignLocId(new IntSelectId(id, IntSelectId.AHasPrecedence));
+    form.retrieveLocId().reset(id, IntSelectId.AHasPrecedence);
 
     BwCalendar c = event.getCalendar();
     id = 0;
@@ -161,7 +161,7 @@ public abstract class PEAbstractAction extends BwAbstractAction {
       form.setCalendar(c);
     }
 
-    form.assignCalendarId(new IntSelectId(id, IntSelectId.AHasPrecedence));
+    form.retrieveCalendarId().reset(id, IntSelectId.AHasPrecedence);
   }
 
 }

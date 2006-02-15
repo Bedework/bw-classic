@@ -382,6 +382,9 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
   }
 
   public int hashCode() {
+  	if (getPath() == null) {
+  		return 1;
+  	}
     return getPath().hashCode();
   }
 

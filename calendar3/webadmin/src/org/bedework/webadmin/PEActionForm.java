@@ -138,7 +138,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
   /** Set if we appear to be changing the event category.
    */
 
-  private IntSelectId categoryId;
+  private IntSelectId categoryId = new IntSelectId(-1, IntSelectId.AHasPrecedence);
 
   /* ....................................................................
    *                   Sponsor fields
@@ -146,7 +146,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
 
   private BwSponsor sponsor;
 
-  private IntSelectId spId;
+  private IntSelectId spId = new IntSelectId(-1, IntSelectId.AHasPrecedence);
 
   /* ....................................................................
    *                   Locations
@@ -154,13 +154,13 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
 
   private BwLocation location;
 
-  private IntSelectId locId;
+  private IntSelectId locId = new IntSelectId(-1, IntSelectId.AHasPrecedence);
 
   /* ....................................................................
    *                   Calendars
    * .................................................................... */
 
-  private IntSelectId calendarId;
+  private IntSelectId calendarId = new IntSelectId(-1, IntSelectId.AHasPrecedence);
 
   /* ....................................................................
    *                   Events
@@ -403,13 +403,6 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
   }
 
   /**
-   * @param val IntSelectId id object
-   */
-  public void assignCategoryId(IntSelectId val) {
-    categoryId = val;
-  }
-
-  /**
    * @return IntSelectId id object
    */
   public IntSelectId retrieveCategoryId() {
@@ -531,13 +524,6 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
   }
 
   /**
-   * @param val IntSelectId id object
-   */
-  public void assignSpId(IntSelectId val) {
-    spId = val;
-  }
-
-  /**
    * @return IntSelectId id object
    */
   public IntSelectId retrieveSpId() {
@@ -639,13 +625,6 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
   }
 
   /**
-   * @param val IntSelectId id object
-   */
-  public void assignLocId(IntSelectId val) {
-    locId = val;
-  }
-
-  /**
    * @return IntSelectId id object
    */
   public IntSelectId retrieveLocId() {
@@ -705,13 +684,6 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
   /* ====================================================================
    *                   Calendars
    * ==================================================================== */
-
-  /**
-   * @param val IntSelectId id object
-   */
-  public void assignCalendarId(IntSelectId val) {
-    calendarId = val;
-  }
 
   /**
    * @return IntSelectId id object

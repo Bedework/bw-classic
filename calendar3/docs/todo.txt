@@ -1,8 +1,23 @@
 Todo
 
 --------------------------------------------------------------------------------
+Installing webtest
+
+1. Download build.zip from http://webtest.canoo.com/webtest/manual/Downloads.html
+
+2. Create a directory webtest in the quickstart at the same level as calendar3
+
+3. Unzip build.zip into that directory
+
+++++++++++++
+into svn
+calendar3/webtest   (recurse)
+
+--------------------------------------------------------------------------------
+update quickstart stuff
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
+Admin delete event button doesn't work.
 --------------------------------------------------------------------------------
 When duplicating event - set creator
 --------------------------------------------------------------------------------

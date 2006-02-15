@@ -888,12 +888,11 @@ public class CalSvc extends CalSvcI {
     BwPreferences prefs = getPreferences();
     checkOwnerOrSuper(prefs);
 
+    // XXX clone?   val = (BwSubscription)val.clone(); // Avoid hibernate
     setupOwnedEntity(val);
-    val = (BwSubscription)val.clone(); // Avoid hibernate
 
+    trace("************* add subscription " + val);
     prefs.addSubscription(val);
-
-    dbi.updatePreferences(prefs);
   }
 
   public BwSubscription findSubscription(String name) throws CalFacadeException {
