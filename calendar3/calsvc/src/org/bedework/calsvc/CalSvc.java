@@ -359,6 +359,7 @@ public class CalSvc extends CalSvcI {
 
   public void addUser(BwUser user) throws CalFacadeException {
     getCal().addUser(user);
+    initUser(getCal().getUser(user.getAccount()), getCal());
   }
 
   public void flushAll() throws CalFacadeException {
@@ -637,7 +638,7 @@ public class CalSvc extends CalSvcI {
   }
 
   public BwCalendar getDefaultCalendar() throws CalFacadeException {
-    return getCal().getDefaultCalendar();
+    return getCal().getDefaultCalendar(getUser());
   }
 
   public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {
@@ -1902,41 +1903,7 @@ public class CalSvc extends CalSvcI {
       dbi = new CalSvcDb(this, auth);
 
       if (userCreated) {
-        // Add preferences
-        BwPreferences prefs = new BwPreferences();
-
-        BwCalendar cal = cali.getDefaultCalendar();
-
-        prefs.setOwner(auth);
-        prefs.setDefaultCalendar(cal);
-
-        // Add default subscription for default calendar.
-        BwSubscription defSub = BwSubscription.makeSubscription(cal,
-                                              cal.getName(), true, true, false);
-        setupOwnedEntity(defSub);
-
-        prefs.addSubscription(defSub);
-
-        // Add default subscription for trash calendar.
-
-        cal = cali.getTrashCalendar();
-        BwSubscription sub = BwSubscription.makeSubscription(cal, cal.getName(),
-                                                             false, false, false);
-        setupOwnedEntity(sub);
-
-        prefs.addSubscription(sub);
-
-        // Add a default view for the default calendar subscription
-
-        BwView view = new BwView();
-
-        view.setName(getSyspars().getDefaultUserViewName());
-        view.addSubscription(defSub);
-        view.setOwner(auth);
-
-        prefs.addView(view);
-
-        dbi.updatePreferences(prefs);
+      	initUser(auth, cali);
       }
 
       if (debug) {
@@ -1945,7 +1912,7 @@ public class CalSvc extends CalSvcI {
       }
 
       if (pars.getPublicAdmin()) {
-        /* We may be running as a different user. The prefeences we want to see
+        /* We may be running as a different user. The preferences we want to see
          * are those of the user we are running as - i.e. the 'run.as' user for
          * not those of the authenticated user.
          */
@@ -1959,6 +1926,46 @@ public class CalSvc extends CalSvcI {
       cali.endTransaction();
       cali.close();
     }
+  }
+  
+  private void initUser(BwUser user, Calintf cali) throws CalFacadeException {
+    // Add preferences
+    BwPreferences prefs = new BwPreferences();
+
+    BwCalendar cal = cali.getDefaultCalendar(user);
+
+    prefs.setOwner(user);
+    prefs.setDefaultCalendar(cal);
+
+    // Add default subscription for default calendar.
+    BwSubscription defSub = BwSubscription.makeSubscription(cal,
+                                          cal.getName(), true, true, false);
+    defSub.setOwner(user);
+    setupOwnedEntity(defSub);
+
+    prefs.addSubscription(defSub);
+
+    // Add default subscription for trash calendar.
+
+    cal = cali.getTrashCalendar(user);
+    BwSubscription sub = BwSubscription.makeSubscription(cal, cal.getName(),
+                                                         false, false, false);
+    sub.setOwner(user);
+    setupOwnedEntity(sub);
+
+    prefs.addSubscription(sub);
+
+    // Add a default view for the default calendar subscription
+
+    BwView view = new BwView();
+
+    view.setName(getSyspars().getDefaultUserViewName());
+    view.addSubscription(defSub);
+    view.setOwner(user);
+
+    prefs.addView(view);
+
+    dbi.updatePreferences(prefs);
   }
 
   private BwUser currentUser() throws CalFacadeException {

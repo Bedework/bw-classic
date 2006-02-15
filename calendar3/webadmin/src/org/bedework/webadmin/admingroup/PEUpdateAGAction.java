@@ -118,27 +118,31 @@ public class PEUpdateAGAction extends PEAbstractAction {
       if (mbr != null) {
         BwUser u = svci.findUser(mbr);
 
-        if (u != null) {
-          /* Ensure the authorised user exists - create an entry if not
-           *
-           * @param val      BwUser account
-           */
-          UserAuth uauth = svci.getUserAuth();
-
-          BwAuthUser au = uauth.getUser(u.getAccount());
-
-          if ((au != null) && (au.getUsertype() == UserAuth.noPrivileges)) {
-            return "notAllowed";
-          }
-
-          if (au == null) {
-            au = new BwAuthUser(u,
-                                UserAuth.publicEventUser);
-            uauth.updateUser(au);
-          }
-
-          adgrps.addMember(updgrp, u);
+        if (u == null) {
+        	u = new BwUser(mbr);
+        	svci.addUser(u);
+          u = svci.findUser(mbr);
         }
+        
+        /* Ensure the authorised user exists - create an entry if not
+         *
+         * @param val      BwUser account
+         */
+        UserAuth uauth = svci.getUserAuth();
+        
+        BwAuthUser au = uauth.getUser(u.getAccount());
+        
+        if ((au != null) && (au.getUsertype() == UserAuth.noPrivileges)) {
+        	return "notAllowed";
+        }
+        
+        if (au == null) {
+        	au = new BwAuthUser(u,
+        			UserAuth.publicEventUser);
+        	uauth.updateUser(au);
+        }
+        
+        adgrps.addMember(updgrp, u);
       }
     } else if (request.getParameter("removeGroupMember") != null) {
       /** Remove a user from the group we are updating.

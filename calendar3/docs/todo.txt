@@ -16,6 +16,10 @@ calendar3/webtest   (recurse)
 --------------------------------------------------------------------------------
 update quickstart stuff
 --------------------------------------------------------------------------------
+After error (try deleting subscription) - jump to main menu gets null pointer
+in HibSession.isOpen(HibSession.java:120)
+
+Probably because we threw session away. Get a new one?
 --------------------------------------------------------------------------------
 Admin delete event button doesn't work.
 --------------------------------------------------------------------------------

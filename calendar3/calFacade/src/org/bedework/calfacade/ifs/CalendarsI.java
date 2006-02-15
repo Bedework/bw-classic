@@ -1,6 +1,7 @@
 package org.bedework.calfacade.ifs;
 
 import org.bedework.calfacade.BwCalendar;
+import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
 
 import java.io.Serializable;
@@ -103,19 +104,21 @@ public interface CalendarsI extends Serializable {
    */
   public BwCalendar getCalendar(String path) throws CalFacadeException;
 
-  /** Get the default calendar for the current user.
+  /** Get the default calendar for the given user.
    *
+   * @param  user     
    * @return BwCalendar null for unknown calendar
    * @throws CalFacadeException
    */
-  public BwCalendar getDefaultCalendar() throws CalFacadeException;
+  public BwCalendar getDefaultCalendar(BwUser user) throws CalFacadeException;
 
-  /** Get the trash calendar for the current user.
+  /** Get the trash calendar for the given user.
    *
+   * @param  user     
    * @return BwCalendar null for unknown calendar
    * @throws CalFacadeException
    */
-  public BwCalendar getTrashCalendar() throws CalFacadeException;
+  public BwCalendar getTrashCalendar(BwUser user) throws CalFacadeException;
 
   /** Add a calendar object
    *

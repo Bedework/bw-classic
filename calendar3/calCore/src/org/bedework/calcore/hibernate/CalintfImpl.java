@@ -816,12 +816,12 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return calendars.getCalendar(path);
   }
 
-  public BwCalendar getDefaultCalendar() throws CalFacadeException {
-    return calendars.getDefaultCalendar();
+  public BwCalendar getDefaultCalendar(BwUser user) throws CalFacadeException {
+    return calendars.getDefaultCalendar(user);
   }
 
-  public BwCalendar getTrashCalendar() throws CalFacadeException {
-    return calendars.getTrashCalendar();
+  public BwCalendar getTrashCalendar(BwUser user) throws CalFacadeException {
+    return calendars.getTrashCalendar(user);
   }
 
   public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {

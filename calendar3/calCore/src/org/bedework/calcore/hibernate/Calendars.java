@@ -277,7 +277,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     return cal;
   }
 
-  public BwCalendar getDefaultCalendar() throws CalFacadeException {
+  public BwCalendar getDefaultCalendar(BwUser user) throws CalFacadeException {
     StringBuffer sb = new StringBuffer();
 
     sb.append("/");
@@ -290,7 +290,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     return getCalendar(sb.toString());
   }
 
-  public BwCalendar getTrashCalendar() throws CalFacadeException {
+  public BwCalendar getTrashCalendar(BwUser user) throws CalFacadeException {
     StringBuffer sb = new StringBuffer();
 
     sb.append("/");
