@@ -17,10 +17,10 @@ function bwClockLaunch(type) {
     // the select boxes that fall below it on the page.  Note: we set them
     // to display:hidden (not none) so their space is still occupied (and the
     // browser window doesn't shift around)
-    changeClass("eventFormPrefLocationList","hidden");
-    changeClass("eventFormLocationList","hidden");
-    changeClass("eventFormSponsorList","hidden");
-    changeClass("eventFormPrefSponsorList","hidden");
+   changeClass("eventFormPrefLocationList","hidden");
+   changeClass("eventFormLocationList","hidden");
+   changeClass("eventFormSponsorList","hidden");
+   changeClass("eventFormPrefSponsorList","hidden");
     bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
     if (type == 'eventStartDate') {
       bwClockIndicator.innerHTML = "Start Time"
