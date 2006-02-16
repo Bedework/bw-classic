@@ -88,9 +88,10 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
   /** Called after a user has been added to the system.
    *
+   * @param user
    * @throws CalFacadeException
    */
-  public void addNewCalendars() throws CalFacadeException {
+  public void addNewCalendars(BwUser user) throws CalFacadeException {
     HibSession sess = getSess();
 
     /* Add a user collection to the userCalendarRoot and then a default

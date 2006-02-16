@@ -143,6 +143,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
         }
         
         adgrps.addMember(updgrp, u);
+        updgrp.addGroupMember(u);
       }
     } else if (request.getParameter("removeGroupMember") != null) {
       /** Remove a user from the group we are updating.
@@ -174,13 +175,14 @@ public class PEUpdateAGAction extends PEAbstractAction {
     }
 
     /** Refetch the group
-     */
+     * /
 
     updgrp = (BwAdminGroup)adgrps.findGroup(updgrp.getAccount());
 
     adgrps.getMembers(updgrp);
 
     form.setUpdAdminGroup(updgrp);
+    */
 
     form.getMsg().emit("org.bedework.client.message.admingroup.updated");
     return "continue";

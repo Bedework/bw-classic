@@ -53,6 +53,8 @@ subclass for BwEventObj and BwEventAnnotation.
 lazy="false" is set on calendar objects.
 --------------------------------------------------------------------------------
 Acl.encode should not encode Ace with inherited = true
+
+Check this - update made
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 Need to ensure update doesn't change the guid

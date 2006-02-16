@@ -329,7 +329,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     timezones.setDefaultTimeZoneId(getSyspars().getTzid());
 
     if (userCreated) {
-      calendars.addNewCalendars();
+      calendars.addNewCalendars(authUser);
     }
     return userCreated;
   }
@@ -595,7 +595,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
   public void addUser(BwUser user) throws CalFacadeException {
     addNewUser(user);
-    calendars.addNewCalendars();
+    calendars.addNewCalendars(user);
   }
 
   private void addNewUser(BwUser user) throws CalFacadeException {
