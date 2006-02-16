@@ -145,17 +145,16 @@ public class PEUpdateAGAction extends PEAbstractAction {
         adgrps.addMember(updgrp, u);
         updgrp.addGroupMember(u);
       }
-    } else if (request.getParameter("removeGroupMember") != null) {
+    } else if (getReqPar(request, "removeGroupMember") != null) {
       /** Remove a user from the group we are updating.
        */
-      String mbr = form.getUpdGroupMember();
+      String mbr = getReqPar(request, "removeGroupMember");
 
-      if (mbr != null) {
-        BwUser u = form.fetchSvci().findUser(mbr);
+      BwUser u = form.fetchSvci().findUser(mbr);
 
-        if (u != null) {
-          adgrps.removeMember(updgrp, u);
-        }
+      if (u != null) {
+      	adgrps.removeMember(updgrp, u);
+      	updgrp.removeGroupMember(u);
       }
     } else if (add) {
       if (!validateNewAdminGroup(form)) {
