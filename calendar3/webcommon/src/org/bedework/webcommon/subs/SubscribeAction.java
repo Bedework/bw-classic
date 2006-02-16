@@ -78,6 +78,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * <p>Forwards to:<ul>
  *      <li>"error"        some form of fatal error.</li>
+ *      <li>"reffed"       subscription is referenced.</li>
  *      <li>"noAccess"     user not authorised.</li>
  *      <li>"cancelled"    for a cancelled request.</li>
  *      <li>"success"      subscribed ok.</li>
@@ -95,6 +96,10 @@ public class SubscribeAction extends BwAbstractAction {
                          BwActionFormBase form) throws Throwable {
     if (form.getGuest()) {
       return "noAccess"; // First line of defence
+    }
+    
+    if (getReqPar(request, "delete") != null) {
+    	return unsubscribe(request, form);
     }
 
     BwSubscription sub = form.getSubscription();
@@ -138,8 +143,6 @@ public class SubscribeAction extends BwAbstractAction {
       }
     } else if (getReqPar(request, "updateSubscription") != null) {
       svc.updateSubscription(sub);
-    } else if (getReqPar(request, "delete") != null) {
-      svc.removeSubscription(sub);
     } else {
     }
 

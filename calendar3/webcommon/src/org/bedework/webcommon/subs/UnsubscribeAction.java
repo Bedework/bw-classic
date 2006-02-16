@@ -53,8 +53,6 @@
 */
 package org.bedework.webcommon.subs;
 
-import org.bedework.calfacade.svc.BwSubscription;
-import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;
@@ -70,6 +68,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * <p>Forwards to:<ul>
  *      <li>"error"        some form of fatal error.</li>
+ *      <li>"reffed"       subscription is referenced.</li>
  *      <li>"noAccess"     user not authorised.</li>
  *      <li>"notFound"     no such subscription.</li>
  *      <li>"success"      subscribed ok.</li>
@@ -85,29 +84,6 @@ public class UnsubscribeAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    if (form.getGuest()) {
-      return "noAccess"; // First line of defence
-    }
-
-    CalSvcI svc = form.fetchSvci();
-
-    String name = request.getParameter("name");
-
-    if (name == null) {
-      // Assume no access
-      form.getErr().emit("org.bedework.client.error.missingfield", "name");
-      return "error";
-    }
-
-    BwSubscription sub = svc.findSubscription(name);
-
-    if (sub == null) {
-      form.getErr().emit("org.bedework.client.error.nosuchsubscription", name);
-      return "notFound";
-    }
-
-    svc.removeSubscription(sub);
-    form.getMsg().emit("org.bedework.client.message.subscription.removed");
-    return "success";
+  	return unsubscribe(request, form);
   }
 }

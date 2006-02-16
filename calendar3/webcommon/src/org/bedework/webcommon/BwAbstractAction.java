@@ -71,6 +71,7 @@ import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUser;
 import org.bedework.calfacade.svc.BwAuthUserPrefs;
 import org.bedework.calfacade.svc.BwSubscription;
+import org.bedework.calfacade.svc.BwView;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.calsvc.CalSvc;
@@ -290,6 +291,53 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     form.setSelectionType(BedeworkDefs.selectionTypeView);
     form.refreshIsNeeded();
     return true;
+  }
+  
+  protected String unsubscribe(HttpServletRequest request,
+                            	 BwActionFormBase form) throws Throwable {
+    if (form.getGuest()) {
+      return "noAccess"; // First line of defence
+    }
+
+    CalSvcI svc = form.fetchSvci();
+
+    String name = request.getParameter("name");
+
+    if (name == null) {
+      // Assume no access
+      form.getErr().emit("org.bedework.client.error.missingfield", "name");
+      return "error";
+    }
+
+    BwSubscription sub = svc.findSubscription(name);
+
+    if (sub == null) {
+      form.getErr().emit("org.bedework.client.error.nosuchsubscription", name);
+      return "notFound";
+    }
+    
+    if (sub.getUnremoveable() && !form.getUserAuth().isSuperUser()) {
+      return "noAccess"; // Only super user can remove the unremovable
+    }
+    
+  	Iterator it = svc.getViews().iterator();
+  	boolean reffed = false;
+  	while (it.hasNext()) {
+  		BwView v = (BwView)it.next();
+  		if (v.getSubscriptions().contains(sub)) {
+  			form.getErr().emit("org.bedework.client.error.subscription.reffed", 
+  					               v.getName());
+  			reffed = true;
+  		}
+  	}
+  	
+  	if (reffed) {
+  		return "reffed";
+  	}
+
+    svc.removeSubscription(sub);
+    form.getMsg().emit("org.bedework.client.message.subscription.removed");
+    return "success";
   }
 
   /** Method to retrieve an event.

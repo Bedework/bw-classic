@@ -919,7 +919,7 @@ public class CalSvc extends CalSvcI {
     checkOwnerOrSuper(prefs);
 
     prefs.getSubscriptions().remove(val);
-    dbi.updatePreferences(prefs);
+    //dbi.updatePreferences(prefs);
   }
 
   public void updateSubscription(BwSubscription val) throws CalFacadeException {

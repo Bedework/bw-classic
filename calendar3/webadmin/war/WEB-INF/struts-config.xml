@@ -330,6 +330,7 @@
                validate="false">
       <forward name="cancelled" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="retry" path="/subs/showSubs.rdo" redirect="true"/>
+      <forward name="reffed" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="success" path="/subs/showSubs.rdo" redirect="true" />
     </action>
 
