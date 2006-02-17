@@ -9,6 +9,7 @@
 <page>modSyspars</page>
 <bean:define id="systemParams" name="peForm" property="syspars"/>
 <system>
+  <tzid><bean:write name="systemParams" property="tzid"/></tzid>
   <defaultUserViewName><bean:write name="systemParams" property="defaultUserViewName"/></defaultUserViewName>
   <httpConnectionsPerUser><bean:write name="systemParams" property="httpConnectionsPerUser"/></httpConnectionsPerUser>
   <httpConnectionsPerHost><bean:write name="systemParams" property="httpConnectionsPerHost"/></httpConnectionsPerHost>

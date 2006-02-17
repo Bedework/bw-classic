@@ -270,7 +270,7 @@
       <tr>
         <th>Events</th>
         <td>
-          <a href="{$event-initAddEvent}" >
+          <a id="addEventLink" href="{$event-initAddEvent}" >
             Add
           </a>
         </td>
@@ -291,7 +291,7 @@
       <tr>
         <th>Contacts</th>
         <td>
-          <a href="{$sponsor-initAdd}" >
+          <a id="addSponsorLink" href="{$sponsor-initAdd}" >
             Add
           </a>
         </td>
@@ -304,7 +304,7 @@
       <tr>
         <th>Locations</th>
         <td>
-          <a href="{$location-initAdd}" >
+          <a id="addLocationLink" href="{$location-initAdd}" >
             Add
           </a>
         </td>
@@ -2052,6 +2052,16 @@
     </p>
     <form name="systemParamsForm" action="{$system-update}" method="post">
       <table class="eventFormTable">
+        <tr>
+          <th>Default timezone:</th>
+          <td>
+            <xsl:variable name="tzid" select="/bedeworkadmin/system/tzid"/>
+            <input value="{$tzid}" name="tzid" size="20"/>
+          </td>
+          <td>
+            Default timezone id for date/time values. This should normally be your local timezone
+          </td>
+        </tr>
         <tr>
           <th>Default user view name:</th>
           <td>
