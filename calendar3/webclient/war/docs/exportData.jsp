@@ -12,7 +12,7 @@ try {
 <page>exportData</page>
 
 <logic:present name="calForm" property="vcal" >
-<vcalendar><![CDATA[<bean:write name="calForm" property="vcal" />
+<vcalendar><![CDATA[<bean:write filter="no" name="calForm" property="vcal" />
 ]]>
 </vcalendar>
 </logic:present>
