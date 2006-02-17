@@ -55,8 +55,8 @@
 package org.bedework.icalendar;
 
 import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.svc.EventInfo;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
@@ -79,6 +79,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -169,12 +170,14 @@ public class IcalTranslator implements Serializable {
     if (val == null) {
       return null;
     }
+    
+    HashMap added = new HashMap();
 
     try {
       Calendar cal = newIcal();
 
       /* Add referenced timezones to the calendar */
-      addIcalTimezones(cal, val);
+      addIcalTimezones(cal, val, added);
 
       /* Add it to the calendar */
       cal.getComponents().add(toIcalEvent(val));
@@ -197,16 +200,18 @@ public class IcalTranslator implements Serializable {
     if ((vals == null) || (vals.size() == 0)) {
       return null;
     }
+    
+    HashMap added = new HashMap();
 
     try {
       Calendar cal = newIcal();
 
-      /* Add referenced timezones to the calendar */
-      //addIcalTimezones(cal, val);
-
       Iterator it = vals.iterator();
       while (it.hasNext()) {
         BwEvent val = (BwEvent)it.next();
+
+        /* Add referenced timezones to the calendar */
+        addIcalTimezones(cal, val, added);
 
         /* Add it to the calendar */
         cal.getComponents().add(toIcalEvent(val));
@@ -483,36 +488,41 @@ public class IcalTranslator implements Serializable {
   /* If the start or end date references a timezone, we retrieve the timezone definition
    * and add it to the calendar.
    */
-  private void addIcalTimezones(Calendar cal, BwEvent ev) throws CalFacadeException {
-    VTimeZone vtz;
-    String stzid = ev.getDtstart().getTzid();
+  private void addIcalTimezones(Calendar cal, BwEvent ev, 
+                                HashMap added) throws CalFacadeException {
+    BwUser owner = ev.getOwner();
 
-    if (debug) {
-      debugMsg("Look for timezone with id " + stzid);
-    }
-
-    if (stzid != null) {
-      vtz = cb.findTimeZone(stzid, ev.getOwner());
-      if (vtz != null) {
-        if (debug) {
-          debugMsg("found timezone with id " + stzid);
-        }
-        cal.getComponents().add(vtz);
-      } else if (debug) {
-        debugMsg("Didn't find timezone with id " + stzid);
-      }
-    }
+    addIcalTimezone(cal, ev.getDtstart().getTzid(), owner, added);
 
     if (ev.getEndType() == BwEvent.endTypeDate) {
-      String etzid = ev.getDtend().getTzid();
-
-      if ((etzid != null) && !CalFacadeUtil.eqObjval(etzid, stzid)) {
-        vtz = cb.findTimeZone(etzid, ev.getOwner());
-        if (vtz != null) {
-          cal.getComponents().add(vtz);
-        }
-      }
+      addIcalTimezone(cal, ev.getDtend().getTzid(), owner, added);
     }
+  }
+  
+  private void addIcalTimezone(Calendar cal, String tzid, 
+                               BwUser owner, 
+                               HashMap added) throws CalFacadeException {
+    VTimeZone vtz;
+    
+    if ((tzid == null) || added.containsKey(tzid)) {
+      return;
+    }
+
+    if (debug) {
+      debugMsg("Look for timezone with id " + tzid);
+    }
+    
+    vtz = cb.findTimeZone(tzid, owner);
+    if (vtz != null) {
+      if (debug) {
+        debugMsg("found timezone with id " + tzid);
+      }
+      cal.getComponents().add(vtz);
+    } else if (debug) {
+      debugMsg("Didn't find timezone with id " + tzid);
+    }
+    
+    added.put(tzid, null);
   }
 
   private Logger getLog() {

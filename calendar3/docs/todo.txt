@@ -14,6 +14,11 @@ into svn
 calendar3/webtest   (recurse)
 
 --------------------------------------------------------------------------------
+Testing:
+Add events at boundaries - start/end of day, week, month.
+
+Switch displays and ensure they turn up.
+--------------------------------------------------------------------------------
 update quickstart stuff
 --------------------------------------------------------------------------------
 After error (try deleting subscription) - jump to main menu gets null pointer

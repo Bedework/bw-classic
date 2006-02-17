@@ -161,7 +161,8 @@ public class ExportAction extends BwAbstractAction {
       evs.addAll(ev.getOverrides());
     }
 
-    IcalTranslator ical = new IcalTranslator(svci.getIcalCallback());
+    IcalTranslator ical = new IcalTranslator(svci.getIcalCallback(), 
+                                             form.getDebug());
 
     Calendar vcal = ical.toIcal(evs);
 
