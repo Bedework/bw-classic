@@ -455,7 +455,10 @@
           </td>
           <td>
             <xsl:if test="/bedeworkadmin/formElements/form/calendar/preferred/select/option">
+              <!--
               <select name="prefCalendarId" onchange="getCalendarDescription(this.value,'please select a calendar.')">
+              -->
+              <select name="prefCalendarId" >
                 <option value="-1">
                   Select preferred:
                 </option>
@@ -463,7 +466,10 @@
               </select>
               or Calendar (all):
             </xsl:if>
+            <!--
             <select name="calendarId" onchange="getCalendarDescription(this.value,'please select a calendar.')">
+            -->
+            <select name="calendarId" >
               <option value="-1">
                 Select:
               </option>
