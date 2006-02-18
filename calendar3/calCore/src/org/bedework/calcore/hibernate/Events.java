@@ -1335,6 +1335,9 @@ public class Events extends CalintfHelper {
      * (DTSTART <= start AND DTSTART+DURATION > start) OR
      * (DTSTART >= start AND DTSTART < end) OR
      * (DTEND   > start AND DTEND <= end)
+     * 
+     * XXX This is wrong??? Last should be
+     * XXX (DTEND   > start AND DTEND < end)
      *
      *  case 1 has the event starting between the dates.
      *  case 2 has the event ending between the dates.
@@ -1368,15 +1371,22 @@ public class Events extends CalintfHelper {
     sb.append(" < :toDate)) or ((");
 
     // case 3
+    /*
     sb.append(endField);
     sb.append(" > :fromDate) and (");
     sb.append(endField);
     sb.append(" <= :toDate)))");
+    */
+    sb.append(endField);
+    sb.append(" > :fromDate) and (");
+    sb.append(endField);
+    sb.append(" < :toDate)))");
 
     /*
     (((ev.dtstart.datePart <= :fromDate) and (ev.dtend.datePart > :fromDate)) or
      ((ev.dtstart.datePart >= :fromDate) and (ev.dtstart.datePart < :toDate)) or
-     ((ev.dtend.datePart > :fromDate) and (ev.dtend.datePart <= :toDate)))
+     XXX ((ev.dtend.datePart > :fromDate) and (ev.dtend.datePart <= :toDate)))
+     ((ev.dtend.datePart >= :fromDate) and (ev.dtend.datePart < :toDate)))
     */
     return true;
   }

@@ -269,7 +269,7 @@ public class TimeView implements Serializable {
     Vector v = new Vector();
 //    Dur oneDay = new Dur(1, 0, 0, 0);
     BwDateTime startDt = CalFacadeUtil.getDateTime(date.getDateDigits(),
-                                                cal.getTimezones());
+                                                   cal.getTimezones());
 
 //    BwDateTime endDt = BwDateTime.makeDateTime(startDt.makeDtStart(), true, oneDay);
     BwDateTime endDt = startDt.getNextDay(cal.getTimezones());
@@ -283,7 +283,7 @@ public class TimeView implements Serializable {
       events = cal.getEvents(null, null,
                              CalFacadeUtil.getDateTime(firstDay.getDateDigits(),
                                   cal.getTimezones()),
-                             CalFacadeUtil.getDateTime(lastDay.getDateDigits(),
+                             CalFacadeUtil.getDateTime(lastDay.getTomorrow().getDateDigits(),
                                   cal.getTimezones()),
                                   CalFacadeDefs.retrieveRecurExpanded);
     }
@@ -300,6 +300,9 @@ public class TimeView implements Serializable {
          1.   (((evStart <= :start) and (evEnd > :start)) or
          2.    ((evStart >= :start) and (evStart < :end)) or
          3.    ((evEnd > :start) and (evEnd <= :end)))
+         
+         XXX followed caldav which might be wrong. Try
+         3.    ((evEnd > :start) and (evEnd < :end)))
       */
 
       int evstSt = evStart.compareTo(start);
@@ -309,8 +312,14 @@ public class TimeView implements Serializable {
 
       if (((evstSt <= 0) && (evendSt > 0)) ||
           ((evstSt >= 0) && (evStart.compareTo(end) < 0)) ||
-          ((evendSt > 0) && (evEnd.compareTo(end) <= 0))) {
+          //((evendSt > 0) && (evEnd.compareTo(end) <= 0))) {
+          ((evendSt > 0) && (evEnd.compareTo(end) < 0))) {
         // Passed the tests.
+        if (debug) {
+          debugMsg("Event passed range " + start + "-" + end +
+                   " with dates " + evStart + "-" + evEnd +
+                   ": " + ev.getSummary());
+        }
         v.add(ei);
       }
     }

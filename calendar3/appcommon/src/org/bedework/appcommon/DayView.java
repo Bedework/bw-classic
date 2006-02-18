@@ -77,7 +77,7 @@ public class DayView extends TimeView {
                  boolean debug) throws CalFacadeException {
     super(calInfo, curDay, "Day", cal,
           curDay,
-          curDay.getTomorrow(),
+          curDay,
           curDay.getYesterday().getDateDigits(),
           curDay.getTomorrow().getDateDigits(),
           true,

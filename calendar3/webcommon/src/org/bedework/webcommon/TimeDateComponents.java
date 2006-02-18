@@ -277,10 +277,11 @@ public class TimeDateComponents implements Serializable {
     return dateOnly;
   }
 
-  /** Sets this object's current date to now.  The time is not set.
+  /** Sets this object's current date to now. 
    */
   public void setNow() {
     setDateTime(new Date(System.currentTimeMillis()));
+    getCal().set(Calendar.SECOND, 0);
   }
 
   /** Set this object's date.
@@ -289,21 +290,23 @@ public class TimeDateComponents implements Serializable {
    */
   public void setDateTime(Date val) {
     getCal().setTime(val);
+    getCal().set(Calendar.SECOND, 0);
     isAm = getCal().get(Calendar.AM_PM) == Calendar.AM;
   }
 
   /** Sets this object's current time from the given DateTimeVO value.
    *
-   * @param val    DateTimeVO value.
+   * @param val    BwDateTime value.
    */
   public void setDateTime(BwDateTime val) {
     try {
       getCal().setTime(CalFacadeUtil.getDate(val));
+      getCal().set(Calendar.SECOND, 0);
       // Should set UTC
       setDateOnly(val.getDateType());
       isAm = getCal().get(Calendar.AM_PM) == Calendar.AM;
     } catch (Throwable t) {
-      fieldInError = "DateTimeVO";
+      fieldInError = "BwDateTime";
     }
   }
 

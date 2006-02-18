@@ -93,11 +93,13 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
   private static Dur oneDayForward = new Dur(1, 0, 0, 0);
   private static Dur oneDayBack = new Dur(-1, 0, 0, 0);
 
-  /** This is adjusted to make searching easier. There are a number of
+  /** This is a UTC datetime value to make searching easier. There are a number of
    * complications to dates, the end date is specified as non-inclusive
    * but there are a number of boundary problems to watch out for.
+   * 
+   * <p>For date only values this field has a zero time appended so that simple
+   * string comparisons will work.
    */
-//  private String datePart; // For indexing
   private String date; // For indexing
 
   /** Constructor
