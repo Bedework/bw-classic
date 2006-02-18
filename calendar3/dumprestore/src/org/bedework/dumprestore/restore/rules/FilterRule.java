@@ -107,6 +107,9 @@ public class FilterRule extends EntityRule {
           cal.setCalendarCollection(true);
           globals.calLeaves.add(entity);
           globals.catCalTbl.put(catf.getCategory().getId(), cal);
+          if (globals.debug) {
+            trace("Save calendar with id " + cal.getId());
+          }
         } else if (entity instanceof BwCreatorFilter) {
           cal.setCalendarCollection(true);
           globals.calLeaves.add(entity);
@@ -136,6 +139,10 @@ public class FilterRule extends EntityRule {
           cal = null;
           globals.calMapErrors++;
         } else if (entity instanceof RestoreGlobals.AliasFilter) {
+          error("Unable to map filter " + entity);
+          cal = null;
+          globals.calMapErrors++;
+        } else {
           error("Unable to map filter " + entity);
           cal = null;
           globals.calMapErrors++;

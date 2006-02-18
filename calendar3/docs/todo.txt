@@ -19,6 +19,11 @@ Add events at boundaries - start/end of day, week, month.
 
 Switch displays and ensure they turn up.
 --------------------------------------------------------------------------------
+Restore makes a date type then turns it into datetime. Screws tz caching.
+Save values and fix up at end?
+--------------------------------------------------------------------------------
+2.3.2 dump needs to dump filters before events.
+--------------------------------------------------------------------------------
 update quickstart stuff
 --------------------------------------------------------------------------------
 After error (try deleting subscription) - jump to main menu gets null pointer

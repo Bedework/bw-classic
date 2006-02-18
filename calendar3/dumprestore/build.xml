@@ -261,6 +261,8 @@ hibernate.jdbc.batch_size=0
       <arg value="${org.bedework.syspar.admingroupsclass}" />
       <arg value="-usergroupsClass" />
       <arg value="${org.bedework.syspar.usergroupsclass}" />
+      <jvmarg value="-mx128m" />
+      <jvmarg value="-ms128m" />
       <!--
       <jvmarg value="-Xrunyjpagent:cpu=times,onexit=cpu" />
       -->

@@ -58,9 +58,7 @@ import org.bedework.calfacade.BwRWStats;
 import org.bedework.calfacade.BwStats;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwTimeZone;
-import org.bedework.calfacade.CalFacadeBadDateException;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.icalendar.IcalTranslator;
@@ -68,43 +66,21 @@ import org.bedework.icalendar.IcalTranslator;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.component.VTimeZone;
-import net.fortuna.ical4j.model.parameter.TzId;
-import net.fortuna.ical4j.model.property.DtEnd;
 import net.fortuna.ical4j.model.TimeZone;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
-
 /** Handle timezones for bedework.
  *
  * @author Mike Douglass       douglm@rpi.edu
  */
-class CalTimezonesImpl implements CalTimezones {
+class CalTimezonesImpl extends CalTimezones {
   private Calintf cal;
   private BwRWStats stats;
 
-  private transient Logger log;
-
   private boolean publicAdmin;
-  private boolean debug;
-
-  private String defaultTimeZoneId;
-  private transient TimeZone defaultTimeZone;
-
-  private static class TimezoneInfo {
-    TimeZone tz;
-
-    boolean publick;
-
-    /* If tz was derived from a db object, this is the data */
-    VTimeZone vtz;
-  }
-
-  /* Map of user TimezoneInfo */
-  private HashMap timezones = new HashMap();
 
   private static volatile HashMap systemTimezones = new HashMap();
   private static volatile boolean systemTimezonesInitialised = false;
@@ -113,10 +89,10 @@ class CalTimezonesImpl implements CalTimezones {
 
   CalTimezonesImpl(Calintf cal, BwStats stats, boolean publicAdmin, boolean debug)
           throws CalFacadeException {
+    super(debug);
     this.cal = cal;
     this.stats = (BwRWStats)stats;
     this.publicAdmin = publicAdmin;
-    this.debug = debug;
 
     // Force fetch of timezones
     //lookup("not-a-timezone");
@@ -135,30 +111,13 @@ class CalTimezonesImpl implements CalTimezones {
     }
 
     TimezoneInfo tzinfo = (TimezoneInfo)timezones.get(tzid);
+    TimeZone tz = new TimeZone(vtz);
 
     if (tzinfo == null) {
-      tzinfo = new TimezoneInfo();
-    }
-
-    tzinfo.vtz = vtz;
-    tzinfo.tz = new TimeZone(vtz);
-    timezones.put(tzid, tzinfo);
-  }
-
-  public void registerTimeZone(String id, TimeZone timezone)
-      throws CalFacadeException {
-    if (debug) {
-      trace("register timezone with id " + id);
-    }
-
-    TimezoneInfo tzinfo = (TimezoneInfo)timezones.get(id);
-
-    if (tzinfo == null) {
-      tzinfo = new TimezoneInfo();
-      tzinfo.tz = timezone;
-      timezones.put(id, tzinfo);
+      tzinfo = new TimezoneInfo(tz, vtz);
+      timezones.put(tzid, tzinfo);
     } else {
-      tzinfo.tz = timezone;
+      tzinfo.init(tz, vtz);
     }
   }
 
@@ -176,39 +135,19 @@ class CalTimezonesImpl implements CalTimezones {
         return null;
       }
 
-      tzinfo = new TimezoneInfo();
-
-      tzinfo.vtz = vTimeZone;
-      tzinfo.tz = new TimeZone(vTimeZone);
+      tzinfo = new TimezoneInfo(new TimeZone(vTimeZone), vTimeZone);
       timezones.put(id, tzinfo);
     }
 
-    if (tzinfo.publick) {
+    if (tzinfo.getPublick()) {
       stats.incSystemTzFetches();
     }
 
     if ((defaultTimeZone == null) && id.equals(defaultTimeZoneId)) {
-      defaultTimeZone = tzinfo.tz;
+      defaultTimeZone = tzinfo.getTz();
     }
 
-    return tzinfo.tz;
-  }
-
-  public TimeZone getDefaultTimeZone() throws CalFacadeException {
-    if ((defaultTimeZone == null) && (defaultTimeZoneId != null)) {
-      defaultTimeZone = getTimeZone(defaultTimeZoneId);
-    }
-
-    return defaultTimeZone;
-  }
-
-  public void setDefaultTimeZoneId(String id) throws CalFacadeException {
-    defaultTimeZone = null;
-    defaultTimeZoneId = id;
-  }
-
-  public String getDefaultTimeZoneId() throws CalFacadeException {
-    return defaultTimeZoneId;
+    return tzinfo.getTz();
   }
 
   public VTimeZone findTimeZone(final String id, BwUser owner) throws CalFacadeException {
@@ -218,8 +157,8 @@ class CalTimezonesImpl implements CalTimezones {
 
     TimezoneInfo tzinfo = lookup(id);
 
-    if ((tzinfo != null) && (tzinfo.vtz != null)) {
-      return tzinfo.vtz;
+    if ((tzinfo != null) && (tzinfo.getVtz() != null)) {
+      return tzinfo.getVtz();
     }
 
     VTimeZone vTimeZone = cal.getTimeZone(id, owner);
@@ -227,10 +166,7 @@ class CalTimezonesImpl implements CalTimezones {
       return null;
     }
 
-    tzinfo = new TimezoneInfo();
-
-    tzinfo.vtz = vTimeZone;
-    tzinfo.tz = new TimeZone(vTimeZone);
+    tzinfo = new TimezoneInfo(new TimeZone(vTimeZone), vTimeZone);
     timezones.put(id, tzinfo);
 
     return vTimeZone;
@@ -248,55 +184,6 @@ class CalTimezonesImpl implements CalTimezones {
 
     // force refresh now
     lookup("not-a-timezone");
-  }
-
-  public String getUtc(String time, String tzid, TimeZone tz) throws CalFacadeException {
-    //if (debug) {
-    //  trace("Get utc for " + time + " tzid=" + tzid + " tz =" + tz);
-    //}
-    if (CalFacadeUtil.isISODateTimeUTC(time)) {
-      // Already UTC
-      return time;
-    }
-
-    if (CalFacadeUtil.isISODateTime(time)) {
-      try {
-        DtEnd dte = new DtEnd();
-
-        if ((tz == null) && (tzid != null)) {
-          tz = getTimeZone(tzid);
-
-          //if (debug) {
-          //  trace("--------Got timezone " + tz);
-          //}
-
-          if (tz == null) {
-            throw new CalFacadeBadDateException();
-          }
-        } else if ((tz != null) && (tzid == null)) {
-          tzid = tz.getID();
-        }
-
-        if (tzid != null) {
-          dte.getParameters().add(new TzId(tzid));
-          dte.setTimeZone(tz);
-        }
-
-        dte.setValue(time);
-        dte.setUtc(true);
-
-        return dte.getValue();
-      } catch (Throwable t) {
-        t.printStackTrace();
-        throw new CalFacadeBadDateException();
-      }
-    }
-
-    if (CalFacadeUtil.isISODate(time)) {
-      return time + "T000000Z";
-    }
-
-    throw new CalFacadeBadDateException();
   }
 
   /* ====================================================================
@@ -323,10 +210,7 @@ class CalTimezonesImpl implements CalTimezones {
               throw new CalFacadeException("Incorrectly stored timezone");
             }
 
-            tzinfo = new TimezoneInfo();
-
-            tzinfo.vtz = vtz;
-            tzinfo.tz = new TimeZone(vtz);
+            tzinfo = new TimezoneInfo(new TimeZone(vtz), vtz, true);
             systemTimezones.put(btz.getTzid(), tzinfo);
           }
 
@@ -337,27 +221,11 @@ class CalTimezonesImpl implements CalTimezones {
 
     tzinfo = (TimezoneInfo)systemTimezones.get(id);
 
-    if (tzinfo != null) {
-      tzinfo.publick = true;
-    } else {
+    if (tzinfo == null) {
       tzinfo = (TimezoneInfo)timezones.get(id);
     }
 
     return tzinfo;
-  }
-
-  /* Get a logger for messages
-   */
-  private Logger getLogger() {
-    if (log == null) {
-      log = Logger.getLogger(this.getClass());
-    }
-
-    return log;
-  }
-
-  private void trace(String msg) {
-    getLogger().debug("trace: " + msg);
   }
 }
 
