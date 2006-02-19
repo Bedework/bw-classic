@@ -280,7 +280,7 @@ public abstract class CalTimezones implements Serializable {
    * @throws CalFacadeException for bad parameters or timezone
    */
   public synchronized String getUtc(String time, String tzid, TimeZone tz) 
-  throws CalFacadeException {
+          throws CalFacadeException {
     /* XXX We probably need the ownerid to determine exactly which timezone
      */
     //if (debug) {
@@ -300,21 +300,35 @@ public abstract class CalTimezones implements Serializable {
     try {
       boolean tzchanged = false;
       
+      /* If we get a null timezone and id we are being asked for the default.
+       * If we get a null tz and the tzid is the default id same again.
+       * 
+       * Otherwise we are asked for something other than the default.
+       * 
+       * So lasttzid is either 
+       *    1. null - never been called
+       *    2. the default tzid
+       *    3. Some other tzid.
+       */
+      
       if (tz == null) {
         if (tzid == null) {
-          if ((lasttzid != null) || (lasttz == null)) {
-            lasttz = TimeZone.getDefault();
-            tzchanged = true;
-          }
-        } else {
-          if ((lasttzid == null) || (!lasttzid.equals(tzid))) {
+          tzid = getDefaultTimeZoneId();
+        }
+        
+        if ((lasttzid == null) || (!lasttzid.equals(tzid))) {
+          if (tzid.equals(getDefaultTimeZoneId())) {
+            lasttz = getDefaultTimeZone();
+          } else {
             lasttz = getTimeZone(tzid);
-            if (lasttz == null) {
-              lasttzid = null;
-              throw new CalFacadeBadDateException();
-            }
-            tzchanged = true;
           }
+          
+          if (lasttz == null) {
+            lasttzid = null;
+            throw new CalFacadeBadDateException();
+          }
+          tzchanged = true;
+          lasttzid = tzid;
         }
       } else {
         // tz supplied

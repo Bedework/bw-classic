@@ -19,14 +19,8 @@ Add events at boundaries - start/end of day, week, month.
 
 Switch displays and ensure they turn up.
 --------------------------------------------------------------------------------
-date time bug has events on boundary showing up in adjacent days. In day view
-they show up twice in the display, indicating we are processing more than one
-days worth of stuff. Why gernate 2 or more days for a single day view?
-
-Or is that a boundary condition?
+Same url - eg week tab still causes fetch of events
 --------------------------------------------------------------------------------
-Restore makes a date type then turns it into datetime. Screws tz caching.
-Save values and fix up at end?
 --------------------------------------------------------------------------------
 2.3.2 dump needs to dump filters before events.
 --------------------------------------------------------------------------------
