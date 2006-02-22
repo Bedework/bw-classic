@@ -262,6 +262,10 @@ table.eventFormTable .durationSpacerText {
 #calDescriptionsLink {
   font-size: 0.8em;
 }
+#flatCalendarDescriptions {
+  font-size: 0.9em;
+  padding: 0.2em;
+}
 .autoCompleteMatched {
   color: black;
   background-color: white;
@@ -430,6 +434,15 @@ p.note {
 }
 .smaller {
   font-size: 0.8em;
+}
+/* even and odd -- for coloring table rows and the like */
+.even {
+  background-color: #eee;
+  color: black;
+}
+.odd {
+  background-color: transparent;
+  color: black;
 }
 #footer {
   padding: 1em;

@@ -1670,9 +1670,34 @@
   <xsl:template name="calendarDescriptions">
     <h2>Calendar Information</h2>
     <ul>
-      <li>Select an item from the calendar list on the left to view information
-      about that calendar or folder.</li>
+      <li>Select an item from the calendar tree on the left to view all information
+      about that calendar or folder.  The tree on the left represents the calendar
+      heirarchy.</li>
     </ul>
+
+    <p><strong>All Calendar Descriptions:</strong></p>
+    <table id="flatCalendarDescriptions" cellspacing="0">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+      <xsl:for-each select="//calendar">
+        <xsl:variable name="descClass">
+          <xsl:choose>
+            <xsl:when test="position() mod 2 = 0">even</xsl:when>
+            <xsl:otherwise>odd</xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <tr class="{$descClass}">
+          <td>
+            <xsl:value-of select="name"/>
+          </td>
+          <td>
+            <xsl:value-of select="desc"/>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="displayCalendar">
