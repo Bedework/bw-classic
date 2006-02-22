@@ -113,12 +113,25 @@ public interface Calintf extends CalendarsI {
                       String synchId,
                       boolean debug) throws CalFacadeException;
 
-  /** Get the current stats
+  /** Get the current system (not db) stats
    *
    * @return BwStats object
    * @throws CalFacadeException if not admin
    */
   public BwStats getStats() throws CalFacadeException;
+
+  /** Enable/disable db statistics 
+   *
+   * @param enable       boolean true to turn on db statistics collection
+   * @throws CalFacadeException if not admin
+   */
+  public void setStats(boolean enable) throws CalFacadeException;
+
+  /** Dump db statistics 
+   *
+   * @throws CalFacadeException if not admin
+   */
+  public void dumpStats() throws CalFacadeException;
 
   /** Get the system pars
    *

@@ -51,38 +51,51 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.calfacade;
 
-import org.bedework.calfacade.base.BwShareableDbentity;
+package org.bedework.webcommon.misc;
 
-/** Base for those classes that can be a property of an event and are all
- * treated in the same manner, being Category, Location and Sponsor.
+import org.bedework.calsvci.CalSvcI;
+import org.bedework.webcommon.BwAbstractAction;
+import org.bedework.webcommon.BwActionFormBase;
+import org.bedework.webcommon.BwSession;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Action to display statistics.
+ * 
+ * <p>Parameters are one of:<ul>
+ *      <li>"enable"            Enable stats</li>
+ *      <li>"disable"           Disable stats</li>
+ *      <li>"dump"              Dump stats</li>
+ * </ul>
  *
- * <p>Each has a single field which together with the owner makes a unique
- * key and all operations on those classes are the same.
- *
- * @author Mike Douglass
- * @version 1.0
+ * <p>Forwards to:<ul>
+ *      <li>"retry"        email options still not valid.</li>
+ *      <li>"noEvent"      no event was selected.</li>
+ *      <li>"success"      mailed (or queued) ok.</li>
+ * </ul>
  */
-public class BwEventProperty extends BwShareableDbentity {
-  /** Constructor
-   *
-   */
-  public BwEventProperty() {
-    super();
-  }
+public class StatisticsAction extends BwAbstractAction {
+  public String doAction(HttpServletRequest request,
+                         HttpServletResponse response,
+                         BwSession sess,
+                         BwActionFormBase form) throws Throwable {
+    /*if (form.getGuest()) {
+      return "noAccess"; // First line of defence
+    }*/
 
-  /** Create a BwEventProperty specifying all fields
-   *
-   * @param owner          BwUser user who owns the entity
-   * @param publick       boolean true if the event is viewable by everyone
-   * @param creator        BwUser user who created the entity
-   * @param access
-   */
-  public BwEventProperty(BwUser owner,
-                         boolean publick,
-                         BwUser creator,
-                         String access) {
-    super(owner, publick, creator, access);
+    CalSvcI svci = form.fetchSvci();
+
+    if (getReqPar(request, "enable") != null) {
+      svci.setStats(true);
+    } else if (getReqPar(request, "disable") != null) {
+      svci.setStats(false);
+    } else if (getReqPar(request, "dump") != null) {
+      svci.dumpStats();
+    } 
+
+    return "success";
   }
 }

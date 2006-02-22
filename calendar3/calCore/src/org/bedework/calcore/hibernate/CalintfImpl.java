@@ -92,6 +92,7 @@ import net.fortuna.ical4j.model.component.VTimeZone;
 import org.apache.log4j.Logger;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.stat.Statistics;
 import org.hibernate.SessionFactory;
 
 /** Implementation of CalIntf which uses hibernate as its persistance engine.
@@ -201,6 +202,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
    * <p>It might be better to find some other approach for the j2ee world.
    */
   private static SessionFactory sessFactory;
+  private static Statistics dbStats;
 
   static {
     /** Get a new hibernate session factory. This is configured from an
@@ -336,6 +338,22 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
   public BwStats getStats() throws CalFacadeException {
     return stats;
+  }
+
+  public void setStats(boolean enable) throws CalFacadeException {
+    if (!enable && (dbStats == null)) {
+      return;
+    }
+    
+    if (dbStats == null) {
+      dbStats = sessFactory.getStatistics();
+    }
+    
+    dbStats.setStatisticsEnabled(enable);
+  }
+  
+  public void dumpStats() throws CalFacadeException {
+    DbStatistics.dumpStats(dbStats);
   }
 
   public BwSystem getSyspars() throws CalFacadeException {

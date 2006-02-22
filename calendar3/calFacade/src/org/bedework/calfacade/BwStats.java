@@ -68,6 +68,10 @@ public class BwStats implements Serializable {
   protected int systemTzFetches;
 
   protected int tzStores;
+  
+  protected double eventFetchTime;
+  
+  protected long eventFetches;
 
   /**
    * @return int   total num timezone fetches.
@@ -90,6 +94,20 @@ public class BwStats implements Serializable {
     return tzStores;
   }
 
+  /**
+   * @return double   event fetch millis.
+   */
+  public double getEventFetchTime() {
+    return eventFetchTime;
+  }
+
+  /**
+   * @return long   event fetches.
+   */
+  public long getEventFetches() {
+    return eventFetches;
+  }
+
   public String toString() {
     StringBuffer sb = new StringBuffer();
 
@@ -97,6 +115,9 @@ public class BwStats implements Serializable {
     format(sb, "tzFetches: ", getTzFetches());
     format(sb, "systemTzFetches: ", getSystemTzFetches());
     format(sb, "tzStores: ", getTzStores());
+    
+    format(sb, "event fetch time: ", getEventFetchTime());
+    format(sb, "event fetches: ", getEventFetches());
 
     return sb.toString();
   }
@@ -113,6 +134,13 @@ public class BwStats implements Serializable {
     }
 
     sb.append(val);
+  }
+
+  private void format(StringBuffer sb, String name, double val) {
+    pad(sb, name, maxnamepad);
+    sb.append(": ");
+    pad(sb, String.valueOf(val), maxvalpad);
+    sb.append("\n");
   }
 
   private void format(StringBuffer sb, String name, int val) {

@@ -132,6 +132,7 @@
 
     <set name="categories" table="event_categories"
          lazy="true" >
+      <cache usage="read-write"/>
       <key column="eventid"/>
       <many-to-many class="org.bedework.calfacade.BwCategory"
                     column="categoryid"/>

@@ -1,6 +1,8 @@
 Todo
 
 --------------------------------------------------------------------------------
+Lost the exrules from the recurrence info hbm - add them
+--------------------------------------------------------------------------------
 Installing webtest
 
 1. Download build.zip from http://webtest.canoo.com/webtest/manual/Downloads.html
@@ -21,6 +23,7 @@ Switch displays and ensure they turn up.
 --------------------------------------------------------------------------------
 Same url - eg week tab still causes fetch of events
 --------------------------------------------------------------------------------
+Watch for same event appearing in different calendars through ref.
 --------------------------------------------------------------------------------
 2.3.2 dump needs to dump filters before events.
 --------------------------------------------------------------------------------

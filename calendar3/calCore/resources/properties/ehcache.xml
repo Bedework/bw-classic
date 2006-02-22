@@ -74,10 +74,39 @@
         overflowToDisk="true"
         />
 
-    <!-- Subscription cache - these change infrequently and we should be able to cache all entries
-         in use
+    <!-- categories cache - these change infrequently
         -->
-    <cache name="org.bedework.calfacade.svc.BwSubscription"
+    <cache name="org.bedework.calfacade.BwCategory"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="600"
+        overflowToDisk="true"
+        />
+
+    <!-- event.categories cache - these change infrequently
+        -->
+    <cache name="org.bedework.calfacade.BwEventObj.categories"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="600"
+        overflowToDisk="true"
+        />
+
+    <!-- locations cache - these change infrequently
+        -->
+    <cache name="org.bedework.calfacade.BwLocation"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="600"
+        overflowToDisk="true"
+        />
+
+    <!-- sponsors cache - these change infrequently
+        -->
+    <cache name="org.bedework.calfacade.BwSponsor"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"
@@ -112,11 +141,22 @@
         overflowToDisk="true"
         />
 
+    <!-- Subscription cache - these change infrequently and we should be able to cache all entries
+         in use
+        -->
+    <cache name="org.bedework.calfacade.svc.BwSubscription"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="600"
+        overflowToDisk="true"
+        />
+
     <!-- users cache - these change infrequently but are referenced frequently, usually many
          times a query.
         -->
 
-    <cache name="org.bedework.calfacade.BwUsers"
+    <cache name="org.bedework.calfacade.BwUser"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"

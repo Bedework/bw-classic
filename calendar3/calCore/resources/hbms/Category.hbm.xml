@@ -10,6 +10,8 @@
 <hibernate-mapping>
   <class name="org.bedework.calfacade.BwCategory"
          table="categories">
+    <cache usage="read-write"/>
+
     <id name="id" type="integer" column="categoryid" unsaved-value="-1">
       <generator class="native"/>
     </id>
@@ -40,15 +42,6 @@
               index="cat_word" unique-key="category_key" />
     </property>
     <property name="description" column="description" type="text"/>
-
-    <set name="events" table="event_categories"
-         lazy="true"
-         inverse="true"
-         cascade="all" >
-      <key column="categoryid"/>
-      <many-to-many class="org.bedework.calfacade.BwEventObj"
-                    column="eventid"/>
-    </set>
   </class>
 
   <!-- =================================================================

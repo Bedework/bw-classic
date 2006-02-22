@@ -307,6 +307,13 @@
                validate="false">
     </action>
 
+    <action    path="/stats"
+               type="org.bedework.webcommon.misc.StatisticsAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+    </action>
+
     <action    path="/manageLocations"
                type="org.bedework.webclient.BwAction"
                name="calForm"

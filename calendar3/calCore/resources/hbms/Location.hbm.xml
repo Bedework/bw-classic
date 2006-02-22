@@ -10,6 +10,8 @@
 <hibernate-mapping>
   <class name="org.bedework.calfacade.BwLocation"
          table="locations">
+    <cache usage="read-write"/>
+
     <id name="id" type="integer" column="entityid" unsaved-value="-1">
       <generator class="native"/>
     </id>
@@ -40,14 +42,6 @@
     </property>
     <property name="subaddress" column="subaddress" type="string"/>
     <property name="link" column="link" type="string"/>
-
-    <set name="events"
-         lazy="true"
-         inverse="true"
-         cascade="all" >
-      <key column="locationid"/>
-      <one-to-many class="org.bedework.calfacade.BwEventObj" />
-    </set>
   </class>
 
   <!-- =================================================================
