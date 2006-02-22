@@ -496,11 +496,13 @@
             <xsl:choose>
               <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">
                 <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="on" checked="checked"/>
-                <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayField"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayStartDateField"/>
+                <input type="hidden" name="eventEndDate.dateOnly" value="on" id="allDayEndDateField"/>
               </xsl:when>
               <xsl:otherwise>
                 <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="off"/>
-                <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayField"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayStartDateField"/>
+                <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField"/>
               </xsl:otherwise>
             </xsl:choose>
             all day event<br/>
