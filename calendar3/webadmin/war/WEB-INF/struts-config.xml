@@ -212,6 +212,14 @@
       <forward name="success" path="/docs/calendar/modCalendar.jsp"/>
     </action>
 
+    <action    path="/calendar/showDescriptionList"
+               type="org.bedework.webadmin.PERenderAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calendar/calendarDescriptions.jsp"/>
+    </action>
+
     <action    path="/calendar/showUpdateList"
                type="org.bedework.webadmin.PERenderAction"
                name="peForm"

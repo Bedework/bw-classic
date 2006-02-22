@@ -98,6 +98,7 @@ try {
     </location>
     <calendar>
       <fetch><genurl:link page="/calendar/showUpdateList.rdo?b=de"/></fetch><!-- keep -->
+      <fetchDescriptions><genurl:link page="/calendar/showDescriptionList.rdo?b=de"/></fetchDescriptions><!-- keep -->
       <initAdd><genurl:link page="/calendar/initAdd.do?b=de"/></initAdd><!-- keep -->
       <delete><genurl:link page="/calendar/delete.do?b=de"/></delete>
       <fetchForDisplay><genurl:link page="/calendar/fetchForDisplay.do?b=de"/></fetchForDisplay>

@@ -1,5 +1,5 @@
 function changeClass(id, newClass) {
-  identity=document.getElementById(id);
+  identity = document.getElementById(id);
   identity.className=newClass;
 }
 function swapAllDayEvent(obj) {
@@ -38,17 +38,8 @@ function swapDurationType(type) {
   }
 }
 
-function closePopUps() {
-  if (window.clockWindow) {
-    window.clockWindow.close();
-  }
+// launch a simple window for displaying information; no header or status bar
+function launchSimpleWindow(URL) {
+  simpleWindow = window.open(URL, "simpleWindow", "width=800,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
+  window.simpleWindow.focus();
 }
-
-//function  getCalendarDescription(calId,defaultMessage) {
-//  div = document.getElementById("calendarDescription");
-//  if (calId == -1) {
-//    div.innerHTML = defaultMessage;
-//  } else {
-//    div.innerHTML = calId;
-//  }
-//}

@@ -72,6 +72,7 @@
   <xsl:variable name="location-update" select="/bedeworkadmin/urlPrefixes/location/update/a/@href"/>
   <!-- cals should all be good -->
   <xsl:variable name="calendar-fetch" select="/bedeworkadmin/urlPrefixes/calendar/fetch/a/@href"/><!-- used -->
+  <xsl:variable name="calendar-fetchDescriptions" select="/bedeworkadmin/urlPrefixes/calendar/fetchDescriptions/a/@href"/><!-- used -->
   <xsl:variable name="calendar-initAdd" select="/bedeworkadmin/urlPrefixes/calendar/initAdd/a/@href"/><!-- used -->
   <xsl:variable name="calendar-delete" select="/bedeworkadmin/urlPrefixes/calendar/delete/a/@href"/>
   <xsl:variable name="calendar-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
@@ -131,8 +132,10 @@
           <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
           <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
-          <!--<script type='text/javascript' src="{$resourcesRoot}/resources/autoComplete.js"></script>
-          <script type='text/javascript' src="{$resourcesRoot}/resources/ui.js"></script>-->
+        </xsl:if>
+        <xsl:if test="/bedeworkadmin/page='calendarDescriptions' or
+                      /bedeworkadmin/page='displayCalendar'">
+          <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
         <script language="JavaScript" type="text/javascript">
@@ -180,6 +183,8 @@
               <xsl:call-template name="deleteLocationConfirm"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='calendarList' or
+                            /bedeworkadmin/page='calendarDescriptions' or
+                            /bedeworkadmin/page='displayCalendar' or
                             /bedeworkadmin/page='modCalendar' or
                             /bedeworkadmin/page='deleteCalendarConfirm' or
                             /bedeworkadmin/page='calendarReferenced'">
@@ -455,10 +460,7 @@
           </td>
           <td>
             <xsl:if test="/bedeworkadmin/formElements/form/calendar/preferred/select/option">
-              <!--
-              <select name="prefCalendarId" onchange="getCalendarDescription(this.value,'please select a calendar.')">
-              -->
-              <select name="prefCalendarId" >
+              <select name="prefCalendarId">
                 <option value="-1">
                   Select preferred:
                 </option>
@@ -466,20 +468,14 @@
               </select>
               or Calendar (all):
             </xsl:if>
-            <!--
-            <select name="calendarId" onchange="getCalendarDescription(this.value,'please select a calendar.')">
-            -->
-            <select name="calendarId" >
+            <select name="calendarId">
               <option value="-1">
                 Select:
               </option>
               <xsl:copy-of select="/bedeworkadmin/formElements/form/calendar/all/select/*"/>
             </select>
-            <!-- description of calendar: will be implemented soon -->
-            <!--<div id="calendarDescriptionBox">
-              Description: <span id="calendarDescription">please select a calendar.</span>
-              <a href="" target="calDescriptions">all calendar descriptions</a>
-            </div>-->
+            <xsl:text> </xsl:text>
+            <span id="calDescriptionsLink"><a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a></span>
           </td>
         </tr>
 
@@ -646,7 +642,25 @@
             </div>
           </td>
         </tr>
-
+        <!--  Status  -->
+        <tr>
+          <td class="fieldName">
+            Status:
+          </td>
+          <td>
+            <xsl:choose>
+              <xsl:when test="/bedeworkadmin/formElements/form/status = 'TENTATIVE'">
+                <input type="radio" name="status" value="CONFIRMED"/>confirmed <input type="radio" name="status" value="TENTATIVE" checked="checked"/>tentative <input type="radio" name="status" value="CANCELLED"/>cancelled
+              </xsl:when>
+              <xsl:when test="/bedeworkadmin/formElements/form/status = 'CANCELLED'">
+                <input type="radio" name="status" value="CONFIRMED"/>confirmed <input type="radio" name="status" value="TENTATIVE"/>tentative <input type="radio" name="status" value="CANCELLED" checked="checked"/>cancelled
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" name="status" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="status" value="TENTATIVE"/>tentative <input type="radio" name="status" value="CANCELLED"/>cancelled
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
         <!--  Category  -->
         <!-- Hide this field for now: we will probably use it in a very different
              way now that true calendars are implemented.
@@ -1397,7 +1411,15 @@
         <td class="cals">
           <h3>Public calendars</h3>
           <ul id="calendarTree">
-            <xsl:apply-templates select="calendar" mode="calendars"/>
+            <xsl:choose>
+              <xsl:when test="/bedeworkadmin/page='calendarDescriptions' or
+                              /bedeworkadmin/page='displayCalendar'">
+                <xsl:apply-templates select="calendar" mode="listForDisplay"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:apply-templates select="calendar" mode="listForUpdate"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </ul>
         </td>
         <td class="calendarContent">
@@ -1405,6 +1427,12 @@
             <xsl:when test="/bedeworkadmin/page='calendarList' or
                             /bedeworkadmin/page='calendarReferenced'">
               <xsl:call-template name="calendarList"/>
+            </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='calendarDescriptions'">
+              <xsl:call-template name="calendarDescriptions"/>
+            </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='displayCalendar'">
+              <xsl:apply-templates select="/bedeworkadmin/currentCalendar" mode="displayCalendar"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='deleteCalendarConfirm'">
               <xsl:apply-templates select="/bedeworkadmin/currentCalendar" mode="deleteCalendarConfirm"/>
@@ -1421,7 +1449,7 @@
     </table>
   </xsl:template>
 
-  <xsl:template match="calendar" mode="calendars">
+  <xsl:template match="calendar" mode="listForUpdate">
     <xsl:variable name="id" select="id"/>
     <xsl:variable name="itemClass">
       <xsl:choose>
@@ -1441,7 +1469,29 @@
       </xsl:if>
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar" mode="calendars">
+          <xsl:apply-templates select="calendar" mode="listForUpdate">
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
+          </xsl:apply-templates>
+        </ul>
+      </xsl:if>
+    </li>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="listForDisplay">
+    <xsl:variable name="id" select="id"/>
+    <xsl:variable name="itemClass">
+      <xsl:choose>
+        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:otherwise>calendar</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <li class="{$itemClass}">
+      <a href="{$calendar-fetchForDisplay}&amp;calId={$id}" title="display">
+        <xsl:value-of select="name"/>
+      </a>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="listForDisplay">
             <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
           </xsl:apply-templates>
         </ul>
@@ -1613,6 +1663,44 @@
         </ul>
       </li>
     </ul>
+  </xsl:template>
+
+  <xsl:template name="calendarDescriptions">
+    <h2>Calendar Information</h2>
+    <ul>
+      <li>Select an item from the calendar list on the left to view information
+      about that calendar or folder.</li>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="currentCalendar" mode="displayCalendar">
+    <h2>Calendar Information</h2>
+    <table class="eventFormTable">
+      <tr>
+        <th>Name:</th>
+        <td>
+          <xsl:value-of select="name"/>
+        </td>
+      </tr>
+      <tr>
+        <th>Path:</th>
+        <td>
+          <xsl:value-of select="path"/>
+        </td>
+      </tr>
+      <tr>
+        <th>Summary:</th>
+        <td>
+          <xsl:value-of select="summary"/>
+        </td>
+      </tr>
+      <tr>
+        <th>Description:</th>
+        <td>
+          <xsl:value-of select="desc"/>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="deleteCalendarConfirm">
@@ -2600,6 +2688,10 @@
                           /bedeworkadmin/page='calendarReferenced' or
                           /bedeworkadmin/page='deleteCalendarConfirm'">
             Manage Calendars
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='calendarDescriptions' or
+                          /bedeworkadmin/page='displayCalendar'">
+            Public Calendars
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='subscriptions' or
                           /bedeworkadmin/page='modSubscription'">
