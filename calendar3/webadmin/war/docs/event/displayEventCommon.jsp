@@ -46,6 +46,7 @@
   </logic:present>
   <desc><bean:write name="peForm" property="event.description"/></desc>
 
+  <status><bean:write name="peForm" property="event.status"/></status>
   <link><bean:write name="peForm" property="event.link"/></link>
   <cost><bean:write name="peForm" property="event.cost"/></cost>
 

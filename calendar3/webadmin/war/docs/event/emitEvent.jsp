@@ -19,6 +19,7 @@
     </logic:present>
   </calendar>
   <desc><bean:write name="formattedEvent" property="event.description" /></desc>
+  <status><bean:write name="formattedEvent" property="event.status" /></status>
   <link><bean:write name="formattedEvent" property="event.link" /></link>
   <cost><bean:write name="formattedEvent" property="event.cost" /></cost>
 

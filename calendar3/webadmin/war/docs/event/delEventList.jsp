@@ -5,15 +5,6 @@
 
 <page>deleteEventList</page>
 
-<%--
-  This is wrong
-<events>
-  <logic:iterate id="fevent" name="peForm" property="formattedEvents" >
-    <%@include file="/docs/event/emitEvent.jsp"%>
-  </logic:iterate>
-</events>
---%>
-
 <formElements>
   <genurl:form action="delEvent" >
      <html:submit property="delEvents" value="Delete"/>

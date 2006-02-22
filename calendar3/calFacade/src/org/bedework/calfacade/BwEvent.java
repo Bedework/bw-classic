@@ -482,7 +482,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
   }
 
   /** Set the event's status - must be one of
-   *
+   *  CONFIRMED, TENTATIVE, or CANCELLED
    *
    *  @param val     status
    */
