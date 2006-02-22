@@ -266,6 +266,9 @@ table.eventFormTable .durationSpacerText {
   font-size: 0.9em;
   padding: 0.2em;
 }
+#flatCalendarDescriptions td {
+  padding: 0.2em;
+}
 .autoCompleteMatched {
   color: black;
   background-color: white;
