@@ -83,7 +83,7 @@ public abstract class CalTimezones implements Serializable {
   protected String defaultTimeZoneId;
   protected transient TimeZone defaultTimeZone;
 
-  protected static class TimezoneInfo {
+  protected static class TimezoneInfo implements Serializable {
     TimeZone tz;
 
     /* If tz was derived from a db object, this is the data */

@@ -104,6 +104,8 @@ public class TimeView implements Serializable {
   /** set on the first call to getTimePeriodInfo
    */
   private TimeViewDailyInfo[] tvdis;
+  
+  private static final TimezoneCache tzcache = new TimezoneCache(false);
 
   /** Constructor:
    *
@@ -268,13 +270,19 @@ public class TimeView implements Serializable {
   public Collection getDaysEvents(MyCalendarVO date) throws Throwable {
     Vector v = new Vector();
 //    Dur oneDay = new Dur(1, 0, 0, 0);
+    long millis = System.currentTimeMillis();
+    
+    tzcache.setSysTimezones(cal.getTimezones());
     BwDateTime startDt = CalFacadeUtil.getDateTime(date.getDateDigits(),
-                                                   cal.getTimezones());
+                                                   tzcache);
+//                                                   cal.getTimezones());
 
-//    BwDateTime endDt = BwDateTime.makeDateTime(startDt.makeDtStart(), true, oneDay);
-    BwDateTime endDt = startDt.getNextDay(cal.getTimezones());
+//    BwDateTime endDt = startDt.getNextDay(cal.getTimezones());
+    BwDateTime endDt = startDt.getNextDay(tzcache);
     String start = startDt.getDate();
     String end = endDt.getDate();
+    
+    debugMsg("Did UTC stuff in " + (System.currentTimeMillis() - millis));
 
     //if (debug) {
     //  debugMsg("Get days events in range " + start + " to " + end);
@@ -282,10 +290,12 @@ public class TimeView implements Serializable {
     if (events == null) {
       events = cal.getEvents(null, null,
                              CalFacadeUtil.getDateTime(firstDay.getDateDigits(),
-                                  cal.getTimezones()),
+//                                                     cal.getTimezones()),
+                                                       tzcache),
                              CalFacadeUtil.getDateTime(lastDay.getTomorrow().getDateDigits(),
-                                  cal.getTimezones()),
-                                  CalFacadeDefs.retrieveRecurExpanded);
+//                                                     cal.getTimezones()),
+                                                       tzcache),
+                             CalFacadeDefs.retrieveRecurExpanded);
     }
 
     Iterator it = events.iterator();
