@@ -99,6 +99,7 @@ import edu.rpi.cct.uwcal.common.URIgen;
 import edu.rpi.cct.uwcal.resources.Resources;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -1422,13 +1423,13 @@ public class CalSvc extends CalSvcI {
    * ==================================================================== */
 
   public EventInfo getEvent(int eventId) throws CalFacadeException {
-    return postProcess(getCal().getEvent(eventId), null);
+    return postProcess(getCal().getEvent(eventId), null, null);
   }
 
   public Collection getEvent(String guid, String recurrenceId,
                              int recurRetrieval) throws CalFacadeException {
     return postProcess(getCal().getEvent(guid, recurrenceId, null, recurRetrieval),
-                       null);
+                       (BwSubscription)null);
   }
 
   public Collection getEvents(BwSubscription sub,
@@ -1453,17 +1454,16 @@ public class CalSvc extends CalSvcI {
                          sub);
     }
 
-    // Iterate over the subscriptions and merge the results.
-    Iterator it;
+    Collection subs = null;
 
     if (currentView != null) {
       if (debug) {
         trace("Use current view \"" + currentView.getName() + "\"");
       }
 
-      it = currentView.iterateSubscriptions();
+      subs = currentView.getSubscriptions();
     } else {
-      Collection subs = getCurrentSubscriptions();
+      subs = getCurrentSubscriptions();
       if (subs == null) {
         // Try set of users subscriptions.
         if (debug) {
@@ -1489,9 +1489,22 @@ public class CalSvc extends CalSvcI {
                                               endDate, recurRetrieval),
                            sub);
       }
-
-      it = subs.iterator();
     }
+    
+    /* Iterate over the subscriptions and merge the results.
+     * 
+     * First we iterate over the subscriptions looking for internal calendars.
+     * These we accumulate as children of a single calendar allowing a single
+     * query for all calendars.
+     * 
+     * We will then iterate again to handle external calendars. (Not implemented)
+     */
+    Iterator it = subs.iterator();
+    BwCalendar internal = new BwCalendar();
+    setupSharableEntity(internal);
+    
+    // For locating subscriptions from calendar
+    HashMap sublookup = new HashMap();
 
     while (it.hasNext()) {
       sub = (BwSubscription)it.next();
@@ -1525,13 +1538,16 @@ public class CalSvc extends CalSvcI {
         }
 
         if (calendar != null) {
-          ts.addAll(postProcess(getCal().getEvents(calendar, filter,
-                                                   startDate, endDate,
-                                                   recurRetrieval),
-                                sub));
+          internal.addChild(calendar);
+          sublookup.put(new Integer(calendar.getId()), sub);
         }
       }
     }
+    
+    ts.addAll(postProcess(getCal().getEvents(internal, filter,
+                          startDate, endDate,
+                          recurRetrieval),
+              sublookup));
 
     return ts;
   }
@@ -1833,7 +1849,8 @@ public class CalSvc extends CalSvcI {
     return mailer;
   }*/
 
-  private EventInfo postProcess(BwEvent ev, BwSubscription sub)
+  private EventInfo postProcess(BwEvent ev, BwSubscription sub, 
+                                HashMap sublookup)
           throws CalFacadeException {
     if (ev == null) {
       return null;
@@ -1849,7 +1866,13 @@ public class CalSvc extends CalSvcI {
     }
 
     EventInfo ei = new EventInfo(ev);
-    ei.setSubscription(sub);
+    
+    if (sub != null) {
+      ei.setSubscription(sub);
+    } else if (sublookup != null) {
+      BwCalendar cal = ev.getCalendar();
+      ei.setSubscription((BwSubscription)sublookup.get(new Integer(cal.getId())));
+    }
     ei.setRecurrenceId(ev.getRecurrence().getRecurrenceId());
 
     return ei;
@@ -1863,7 +1886,22 @@ public class CalSvc extends CalSvcI {
 
     while (it.hasNext()) {
       BwEvent ev = (BwEvent)it.next();
-      EventInfo ei = postProcess(ev, sub);
+      EventInfo ei = postProcess(ev, sub, null);
+      v.addElement(ei);
+    }
+
+    return v;
+  }
+
+  private Collection postProcess(Collection evs, HashMap sublookup)
+          throws CalFacadeException {
+    Vector v = new Vector();
+
+    Iterator it = evs.iterator();
+
+    while (it.hasNext()) {
+      BwEvent ev = (BwEvent)it.next();
+      EventInfo ei = postProcess(ev, null, sublookup);
       v.addElement(ei);
     }
 
