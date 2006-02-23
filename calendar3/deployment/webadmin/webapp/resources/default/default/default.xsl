@@ -397,7 +397,7 @@
       <input type="button" name="return" value="Add new event" onclick="javascript:location.replace('{$event-initAddEvent}')"/>
     </p>
 
-    <form name="peForm" method="post" action="{$event-showUpdateList}">
+    <form name="peForm" method="post" action="{$event-initUpdateEvent}">
       <table>
         <tr>
           <td style="padding-right: 1em;">Show:</td>
