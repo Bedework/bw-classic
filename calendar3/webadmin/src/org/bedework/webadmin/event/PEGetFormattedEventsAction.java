@@ -94,18 +94,19 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
     form.assignAlertEvent(false);
     form.assignAddingEvent(false);
 
-    form.setFormattedEvents(new FormattedEvents(getEvents(false, form),
+    form.setFormattedEvents(new FormattedEvents(getEvents(request, false, form),
                                                 form.getCalInfo(),
                                                 form.fetchSvci().getTimezones()));
 
     return "continue";
   }
 
-  /** Return events, if doing alerts we pick them out otherwise exclude them
+  /* Return events, if doing alerts we pick them out otherwise exclude them
    *
    * @return Collection  populated event value objects
    */
-  private Collection getEvents(boolean alertEvent, PEActionForm form)
+  private Collection getEvents(HttpServletRequest request,
+                               boolean alertEvent, PEActionForm form)
           throws Throwable {
     if (alertEvent) {
       /* XXX create a filter which filters on the appropriate field -
@@ -119,8 +120,17 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
       fromDate = todaysDateTime(form);
     }
 
-    BwCreatorFilter crefilter = new BwCreatorFilter();
-    crefilter.setCreator(form.fetchSvci().getUser());
+    BwCreatorFilter crefilter = null;
+    boolean ignoreCreator = "yes".equals(getReqPar(request, "ignoreCreator"));
+    
+    if (!form.getUserAuth().isSuperUser()) {
+      ignoreCreator = false;
+    }
+    
+    if (!ignoreCreator) {
+      crefilter = new BwCreatorFilter();
+      crefilter.setCreator(form.fetchSvci().getUser());
+    }
 
     return form.fetchSvci().getEvents(null, crefilter, fromDate, null,
                                       CalFacadeDefs.retrieveRecurExpanded);
@@ -132,4 +142,3 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
                                      form.fetchSvci().getTimezones());
   }
 }
-
