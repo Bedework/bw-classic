@@ -238,6 +238,9 @@
             <xsl:when test="/bedeworkadmin/page='uploadTimezones'">
               <xsl:call-template name="uploadTimezones"/>
             </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='showSysStats'">
+              <xsl:apply-templates select="/bedeworkadmin/sysStats" mode="showSysStats"/>
+            </xsl:when>
             <xsl:when test="/bedeworkadmin/page='noAccess'">
               <h2>No Access</h2>
               <p>
@@ -2693,6 +2696,38 @@
       <input type="submit" name="removeAdminGroupOK" value="Yes: Delete!"/>
       <input type="submit" name="cancelled" value="No: Cancel"/>
     </form>
+  </xsl:template>
+
+  <!--+++++++++++++++ System Stats ++++++++++++++++++++-->
+
+  <xsl:template match="sysStats" mode="showSysStats">
+    <h2>System Statistics</h2>
+
+    <a href="/caladmin/stats/update.do?enable=yes">enable stats collection</a>
+
+    <table id="statsTable" cellpadding="0">
+      <xsl:for-each select="*">
+        <xsl:choose>
+          <xsl:when test="name(.) = 'header'">
+            <tr>
+              <th colspan="2">
+                <xsl:value-of select="."/>
+              </th>
+            </tr>
+          </xsl:when>
+          <xsl:otherwise>
+            <tr>
+              <td class="label">
+                <xsl:value-of select="label"/>
+              </td>
+              <td class="value">
+                <xsl:value-of select="value"/>
+              </td>
+            </tr>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each>
+    </table>
   </xsl:template>
 
   <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
