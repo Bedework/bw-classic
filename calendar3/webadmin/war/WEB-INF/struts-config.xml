@@ -152,7 +152,8 @@
                name="peForm"
                scope="session"
                validate="false">
-      <forward name="continue" path="/event/initUpdateEvent.do" redirect="true" />
+      <forward name="cancelled" path="/event/showModForm.rdo" redirect="true" />
+      <forward name="continue" path="/admin/showMain.rdo" redirect="true" />
     </action>
 
     <action    path="/event/fetchForDisplay"
@@ -234,6 +235,7 @@
                name="peForm"
                scope="session"
                validate="false">
+      <forward name="cancelled" path="/calendar/showUpdateList.rdo" redirect="true" />
       <forward name="success" path="/docs/calendar/deleteConfirm.jsp" />
     </action>
 

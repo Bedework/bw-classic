@@ -161,7 +161,8 @@
             <xsl:when test="/bedeworkadmin/page='modEvent'">
               <xsl:call-template name="modEvent"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='displayEvent'">
+            <xsl:when test="/bedeworkadmin/page='displayEvent' or
+                            /bedeworkadmin/page='deleteEventConfirm'">
               <xsl:apply-templates select="/bedeworkadmin/event" mode="displayEvent"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='sponsorList'">
@@ -970,40 +971,53 @@
   </xsl:template>
 
   <xsl:template match="event" mode="displayEvent">
-    <h2>Event Information</h2>
+    <xsl:choose>
+      <xsl:when test="/bedeworkadmin/page='deleteEventConfirm'">
+        <h2>Ok to delete this event?</h2>
+        <p style="width: 400px;">Note: we do not encourage deletion of old but correct events; we prefer to keep
+           old events for historical reasons.  Please remove only those events
+           that are truly erroneous.</p>
+        <p id="confirmButtons">
+          <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
+        </p>
+      </xsl:when>
+      <xsl:otherwise>
+        <h2>Event Information</h2>
+      </xsl:otherwise>
+    </xsl:choose>
 
     <table class="eventFormTable">
       <tr>
-        <td class="fieldName">
+        <th>
           ID:
-        </td>
+        </th>
         <td>
           <xsl:value-of select="id"/>
         </td>
       </tr>
 
       <tr>
-        <td class="fieldName">
+        <th>
           Title:
-        </td>
+        </th>
         <td>
           <xsl:value-of select="title"/>
         </td>
       </tr>
 
       <tr>
-        <td class="fieldName">
+        <th>
           Calendar:
-        </td>
+        </th>
         <td>
           <xsl:value-of select="calendar"/>
         </td>
       </tr>
 
       <tr>
-        <td class="fieldName">
+        <th>
           Start:
-        </td>
+        </th>
         <td>
           <xsl:value-of select="start/year"/>-<xsl:value-of select="start/month"/>-<xsl:value-of select="start/day"/>
           <xsl:text> </xsl:text>
@@ -1021,9 +1035,9 @@
         </td>
       </tr>
       <tr>
-        <td class="fieldName">
+        <th>
           End:
-        </td>
+        </th>
         <td>
           <xsl:choose>
             <xsl:when test="end/endtype = 'none'">
@@ -1060,38 +1074,38 @@
       </tr>
 
       <!--  Category  -->
-      <tr>
-        <td class="fieldName">
+      <!--<tr>
+        <th>
           Category:
-        </td>
+        </th>
         <td>
           <xsl:value-of select="category"/>
         </td>
-      </tr>
+      </tr>-->
 
       <!--  Description  -->
       <tr>
-        <td class="fieldName">
+        <th>
           Description:
-        </td>
+        </th>
         <td>
           <xsl:value-of select="desc"/>
         </td>
       </tr>
       <!-- Cost -->
       <tr>
-        <td class="optional">
+        <th class="optional">
           Price:
-        </td>
+        </th>
         <td>
           <xsl:value-of select="cost"/>
         </td>
       </tr>
       <!-- Url -->
       <tr>
-        <td class="optional">
+        <th class="optional">
           URL:
-        </td>
+        </th>
         <td>
           <xsl:variable name="eventLink" select="link"/>
           <a href="{$eventLink}"><xsl:value-of select="link"/></a>
@@ -1099,9 +1113,9 @@
       </tr>
       <!-- Location -->
       <tr>
-        <td class="fieldName">
+        <th>
           Location:
-        </td>
+        </th>
         <td>
           <xsl:value-of select="location"/>
         </td>
@@ -1109,9 +1123,9 @@
 
       <!-- Sponsor -->
       <tr>
-        <td class="fieldName">
+        <th>
           Contact:
-        </td>
+        </th>
         <td>
           <xsl:value-of select="sponsor"/>
         </td>
@@ -1119,9 +1133,9 @@
 
       <!-- Owner -->
       <tr>
-        <td class="fieldName">
+        <th>
           Owner:
-        </td>
+        </th>
         <td>
           <xsl:value-of select="creator"/>
         </td>
@@ -1247,12 +1261,12 @@
   </xsl:template>
 
   <xsl:template name="deleteSponsorConfirm">
-    <p>
-      <h2>Ok to delete this contact?</h2>
+    <h2>Ok to delete this contact?</h2>
+    <p id="confirmButtons">
       <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
     </p>
 
-    <table id="commonListTable">
+    <table class="eventFormTable">
       <tr>
         <th>Name</th>
         <td><xsl:value-of select="/bedeworkadmin/sponsor/name" /></td>
@@ -1363,7 +1377,7 @@
                 <input type="reset" value="Reset" class="padRight"/>
               </td>
               <td align="right">
-                <input type="submit" name="delete" value="Delete Contact"/>
+                <input type="submit" name="delete" value="Delete Location"/>
               </td>
             </xsl:otherwise>
           </xsl:choose>
@@ -1374,15 +1388,17 @@
 
   <xsl:template name="deleteLocationConfirm">
     <h2>Ok to delete this location?</h2>
-    <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
+    <p id="confirmButtons">
+      <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
+    </p>
 
-    <table id="eventFormTable">
+    <table class="eventFormTable">
         <tr>
           <td class="fieldName">
             Address:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/location/address/*"/>
+            <xsl:value-of select="/bedeworkadmin/location/address"/>
           </td>
         </tr>
         <tr>
@@ -1390,8 +1406,7 @@
             Subaddress:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/location/subaddress/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <xsl:value-of select="/bedeworkadmin/location/subaddress"/>
           </td>
         </tr>
         <tr>

@@ -11,12 +11,10 @@
 <%@include file="/docs/event/displayEventCommon.jsp"%>
 
 <formElements>
-  <deleteConfirm>
-    <genurl:form action="event/delete.do" >
-      <html:submit property="cancelled" value="Cancel"/>
-      <html:submit property="deleteEventOK" value="Delete"/>
-    </genurl:form>
-  </deleteConfirm>
+  <genurl:form action="event/delete.do" >
+    <html:submit property="cancelled" value="Cancel"/>
+    <html:submit property="deleteEventOK" value="Delete"/>
+  </genurl:form>
 </formElements>
 
 <%@include file="/docs/footer.jsp"%>

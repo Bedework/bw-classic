@@ -179,7 +179,7 @@ ul.adminMenu a:hover {
   background-color: #eee;
 }
 table.eventFormTable {
-  margin-bottom: 1em;
+  margin: 1em 0;
 }
 table.eventFormTable td {
   vertical-align: top;
@@ -258,6 +258,9 @@ table.eventFormTable div.durationBox {
 table.eventFormTable .durationSpacerText {
   font-weight: bold;
   margin: 0 1em;
+}
+#confirmButtons {
+  margin: 1em 0 !important;
 }
 #calDescriptionsLink {
   font-size: 0.8em;

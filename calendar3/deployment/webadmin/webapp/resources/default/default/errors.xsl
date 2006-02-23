@@ -113,10 +113,10 @@
         Not found: there is no contact <em><xsl:value-of select="param"/></em>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.sponsor.referenced'">
-        Cannot delete: the sponsor is referenced by events
+        Cannot delete: the contact is referenced by events
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.sponsor.alreadyexists'">
-        Cannot add: the sponsor already exists
+        Cannot add: the contact already exists
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nosuchlocation'">
         Not found: there is no location identified by the id <em><xsl:value-of select="param"/></em>
