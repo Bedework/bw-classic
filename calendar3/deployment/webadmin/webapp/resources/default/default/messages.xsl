@@ -21,7 +21,7 @@
       <xsl:when test="id='org.bedework.client.message.event.added'">
         Event added
       </xsl:when>
-      <xsl:when test="id='org.bedework.pubevents.message.event.updated'">
+      <xsl:when test="id='org.bedework.client.message.event.updated'">
         Event updated
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.calendar.deleted'">
