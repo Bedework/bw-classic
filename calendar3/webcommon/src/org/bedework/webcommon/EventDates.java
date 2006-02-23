@@ -167,13 +167,25 @@ public class EventDates extends EntityDates {
 
       BwDateTime end = getEndDate().getDateTime();
       end.setDateType(val.getDtstart().getDateType());
-
+      
       if ((getEndType() == null) ||
           (getEndType().length() != 1)) {
         err.emit("org.bedework.validation.error.invalid.endtype");
         return false;
       }
       val.setEndType(getEndType().charAt(0));
+
+      if (val.getDtstart().getDateType() &&
+          (val.getEndType() == BwEvent.endTypeDuration)) {
+        getDuration().setHours(0);
+        getDuration().setMinutes(0);
+        getDuration().setSeconds(0);
+        
+        if (getDuration().isZero()) {
+          err.emit("org.bedework.validation.error.invalid.duration");
+          return false;
+        }
+      }
 
       if (val.getEndType() == BwEvent.endTypeDate) {
         if (end.getDateType()) {

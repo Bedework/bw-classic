@@ -243,6 +243,17 @@ public class BwDuration implements Serializable {
 
     return new Duration(d);
   }
+  
+  public boolean isZero() {
+    if (getWeeks() != 0) {
+      return false;
+    }
+    
+    return ((getDays() == 0) && 
+            (getHours() == 0) &&
+            (getMinutes() == 0) &&
+            (getSeconds() == 0));
+  }
 
   /* ====================================================================
    *                        Object methods
