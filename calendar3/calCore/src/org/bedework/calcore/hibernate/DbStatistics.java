@@ -53,12 +53,17 @@
 */
 package org.bedework.calcore.hibernate;
 
+import java.util.Collection;
+import java.util.Vector;
+
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEventObj;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
+import org.bedework.calfacade.BwStats;
 import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.BwStats.StatsEntry;
 
 import org.apache.log4j.Logger;
 
@@ -72,160 +77,120 @@ import org.hibernate.stat.Statistics;
  * @author Mike Douglass   douglm@rpi.edu
  */
 public class DbStatistics {
-  private static final int lcolw = 50;
-  
   public static void dumpStats(Statistics dbStats) {
-    /* XXX this ought to be property driven to some extent. The cache stats in
-     * particular.
-     */
     if (dbStats == null) {
       return;
     }
-    
-    Logger log = Logger.getLogger(DbStatistics.class);
-    
-    log.debug(lpad("Number of connection requests: " , lcolw) + 
-              dbStats.getConnectCount());
-    log.debug(lpad("Session flushes: " , lcolw) + 
-              dbStats.getFlushCount());
-    log.debug(lpad("Transactions: " , lcolw) +
-              dbStats.getTransactionCount());
-    log.debug(lpad("Successful transactions: " , lcolw) + 
-              dbStats.getSuccessfulTransactionCount());
-    log.debug(lpad("Sessions opened: " , lcolw) +
-              dbStats.getSessionOpenCount());
-    log.debug(lpad("Sessions closed: " , lcolw) +
-              dbStats.getSessionCloseCount());
-    log.debug(lpad("Queries executed: " , lcolw) + 
-              dbStats.getQueryExecutionCount());
-    log.debug(lpad("Slowest query time: " , lcolw) + 
-              dbStats.getQueryExecutionMaxTime());
-    
-    log.debug(" "); 
-    log.debug(lpad("Collection statistics" , lcolw)); 
-    log.debug(" "); 
-    
-    log.debug(lpad("Collections fetched: " , lcolw) +
-              dbStats.getCollectionFetchCount());
-    log.debug(lpad("Collections loaded: " , lcolw) +
-              dbStats.getCollectionLoadCount());
-    log.debug(lpad("Collections rebuilt: " , lcolw) +
-              dbStats.getCollectionRecreateCount());
-    log.debug(lpad("Collections batch deleted: " , lcolw) +
-              dbStats.getCollectionRemoveCount());
-    log.debug(lpad("Collections batch updated: " , lcolw) +
-              dbStats.getCollectionUpdateCount());
-    
-    log.debug(" "); 
-    log.debug(lpad("Object statistics" , lcolw)); 
-    log.debug(" "); 
-    
-    log.debug(lpad("Objects fetched: " , lcolw) +
-              dbStats.getEntityFetchCount());
-    log.debug(lpad("Objects loaded: " , lcolw) +
-              dbStats.getEntityLoadCount());
-    log.debug(lpad("Objects inserted: " , lcolw) +
-              dbStats.getEntityInsertCount());
-    log.debug(lpad("Objects deleted: " , lcolw) +
-              dbStats.getEntityDeleteCount());
-    log.debug(lpad("Objects updated: " , lcolw) +
-              dbStats.getEntityUpdateCount());
 
-    log.debug(" "); 
-    log.debug(lpad("Cache statistics" , lcolw)); 
-    log.debug(" "); 
-    
+    Logger log = Logger.getLogger(DbStatistics.class);
+
+    log.debug(BwStats.toString(getStats(dbStats)));
+  }
+
+  public static Collection getStats(Statistics dbStats) {
+    /* XXX this ought to be property driven to some extent. The cache stats in
+     * particular.
+     */
+    Vector v = new Vector();
+
+    if (dbStats == null) {
+      return v;
+    }
+
+    v.add(new StatsEntry("Number of connection requests", dbStats.getConnectCount()));
+    v.add(new StatsEntry("Session flushes", dbStats.getFlushCount()));
+    v.add(new StatsEntry("Transactions", dbStats.getTransactionCount()));
+    v.add(new StatsEntry("Successful transactions", dbStats.getSuccessfulTransactionCount()));
+    v.add(new StatsEntry("Sessions opened", dbStats.getSessionOpenCount()));
+    v.add(new StatsEntry("Sessions closed", dbStats.getSessionCloseCount()));
+    v.add(new StatsEntry("Queries executed", dbStats.getQueryExecutionCount()));
+    v.add(new StatsEntry("Slowest query time", dbStats.getQueryExecutionMaxTime()));
+
+    v.add(new StatsEntry("Collection statistics"));
+
+    v.add(new StatsEntry("Collections fetched", dbStats.getCollectionFetchCount()));
+    v.add(new StatsEntry("Collections loaded", dbStats.getCollectionLoadCount()));
+    v.add(new StatsEntry("Collections rebuilt", dbStats.getCollectionRecreateCount()));
+    v.add(new StatsEntry("Collections batch deleted", dbStats.getCollectionRemoveCount()));
+    v.add(new StatsEntry("Collections batch updated", dbStats.getCollectionUpdateCount()));
+
+    v.add(new StatsEntry("Object statistics"));
+
+    v.add(new StatsEntry("Objects fetched", dbStats.getEntityFetchCount()));
+    v.add(new StatsEntry("Objects loaded", dbStats.getEntityLoadCount()));
+    v.add(new StatsEntry("Objects inserted", dbStats.getEntityInsertCount()));
+    v.add(new StatsEntry("Objects deleted", dbStats.getEntityDeleteCount()));
+    v.add(new StatsEntry("Objects updated", dbStats.getEntityUpdateCount()));
+
+    v.add(new StatsEntry("Cache statistics"));
+
     double chit = dbStats.getQueryCacheHitCount();
     double cmiss = dbStats.getQueryCacheMissCount();
-    
-    log.debug(lpad("Cache hit count: " , lcolw) + chit);
-    log.debug(lpad("Cache miss count: " , lcolw) + cmiss);
-    log.debug(lpad("Cache hit ratio: " , lcolw) + chit / (chit + cmiss));
 
-    entityStats(dbStats, BwCalendar.class, log);
-    entityStats(dbStats, BwCategory.class, log);
-    entityStats(dbStats, BwEventObj.class, log);
-    entityStats(dbStats, BwLocation.class, log);
-    entityStats(dbStats, BwSponsor.class, log);
-    entityStats(dbStats, BwUser.class, log);
+    v.add(new StatsEntry("Cache hit count", chit));
+    v.add(new StatsEntry("Cache miss count", cmiss));
+    v.add(new StatsEntry("Cache hit ratio", chit / (chit + cmiss)));
 
-    collectionStats(dbStats, BwCalendar.class, "children", log);
-    collectionStats(dbStats, BwEventObj.class, "categories", log);
-    collectionStats(dbStats, BwEventObj.class, "attendees", log);
-    collectionStats(dbStats, BwEventObj.class, "rrules", log);
-    //collectionStats(dbStats, BwEventObj.class, "exrules", log);
-    collectionStats(dbStats, BwEventObj.class, "rdates", log);
-    collectionStats(dbStats, BwEventObj.class, "exdates", log);
+    entityStats(v, dbStats, BwCalendar.class);
+    entityStats(v, dbStats, BwCategory.class);
+    entityStats(v, dbStats, BwEventObj.class);
+    entityStats(v, dbStats, BwLocation.class);
+    entityStats(v, dbStats, BwSponsor.class);
+    entityStats(v, dbStats, BwUser.class);
+
+    collectionStats(v, dbStats, BwCalendar.class, "children");
+    collectionStats(v, dbStats, BwEventObj.class, "categories");
+    collectionStats(v, dbStats, BwEventObj.class, "attendees");
+    collectionStats(v, dbStats, BwEventObj.class, "rrules");
+    //collectionStats(v, dbStats, BwEventObj.class, "exrules");
+    collectionStats(v, dbStats, BwEventObj.class, "rdates");
+    collectionStats(v, dbStats, BwEventObj.class, "exdates");
+
+    return v;
   }
-  
-  private static void entityStats(Statistics dbStats, Class cl, Logger log) {
+
+  private static void entityStats(Collection c, Statistics dbStats,
+                                  Class cl) {
     String name = cl.getName();
-    
-    log.debug(" "); 
-    log.debug(lpad("Statistics for " + name , lcolw)); 
-    log.debug(" "); 
-    
+
+    c.add(new StatsEntry("Statistics for " + name));
+
     EntityStatistics eStats = dbStats.getEntityStatistics(name);
 
-    log.debug(lpad("Fetched: " , lcolw) + eStats.getFetchCount());
-    log.debug(lpad("Loaded: " , lcolw) + eStats.getLoadCount());
-    log.debug(lpad("Inserted: " , lcolw) + eStats.getInsertCount());
-    log.debug(lpad("Deleted: " , lcolw) + eStats.getDeleteCount());
-    log.debug(lpad("Updated: " , lcolw) + eStats.getUpdateCount());
+    c.add(new StatsEntry("Fetched", eStats.getFetchCount()));
+    c.add(new StatsEntry("Loaded", eStats.getLoadCount()));
+    c.add(new StatsEntry("Inserted", eStats.getInsertCount()));
+    c.add(new StatsEntry("Deleted", eStats.getDeleteCount()));
+    c.add(new StatsEntry("Updated", eStats.getUpdateCount()));
   }
-  
-  private static void collectionStats(Statistics dbStats, Class cl, 
-                                      String cname, Logger log) {
+
+  private static void collectionStats(Collection c, Statistics dbStats, Class cl,
+                                      String cname) {
     String name = cl.getName() + "." + cname;
-    
-    log.debug(" "); 
-    log.debug(lpad("Statistics for " + name , lcolw)); 
-    log.debug(" "); 
-    
+
+    c.add(new StatsEntry("Statistics for " + name));
+
     CollectionStatistics cStats = dbStats.getCollectionStatistics(name);
 
-    log.debug(lpad("Fetched: " , lcolw) + cStats.getFetchCount());
-    log.debug(lpad("Loaded: " , lcolw) + cStats.getLoadCount());
-    log.debug(lpad("Recreated: " , lcolw) + cStats.getRecreateCount());
-    log.debug(lpad("Removed: " , lcolw) + cStats.getRemoveCount());
-    log.debug(lpad("Updated: " , lcolw) + cStats.getUpdateCount());
+    c.add(new StatsEntry("Fetched", cStats.getFetchCount()));
+    c.add(new StatsEntry("Loaded", cStats.getLoadCount()));
+    c.add(new StatsEntry("Recreated", cStats.getRecreateCount()));
+    c.add(new StatsEntry("Removed", cStats.getRemoveCount()));
+    c.add(new StatsEntry("Updated", cStats.getUpdateCount()));
   }
-  
-  private static void secondLevelStats(Statistics dbStats, String name, 
-                                       Logger log) {
-    log.debug(" "); 
-    log.debug(lpad("Second level statistics for " + name , lcolw)); 
-    log.debug(" "); 
-    
+
+  private static void secondLevelStats(Collection c, Statistics dbStats,
+                                       String name) {
+    c.add(new StatsEntry("Second level statistics for " + name));
+
     SecondLevelCacheStatistics slStats = dbStats.getSecondLevelCacheStatistics(name);
 
-    log.debug(lpad("Elements in memory: " , lcolw) + slStats.getElementCountInMemory());
-    log.debug(lpad("Element on disk: " , lcolw) + slStats.getElementCountOnDisk());
-    log.debug(lpad("Entries: " , lcolw) + slStats.getEntries());
-    log.debug(lpad("Hit count: " , lcolw) + slStats.getHitCount());
-    log.debug(lpad("Miss count: " , lcolw) + slStats.getMissCount());
-    log.debug(lpad("Put count: " , lcolw) + slStats.getPutCount());
-    log.debug(lpad("Memory size: " , lcolw) + slStats.getSizeInMemory());
-  }
-
-  private final static String padder = "                    " +
-                                       "                    " +
-                                       "                    " +
-                                       "                    ";
-  
-  private final static int padderLen = padder.length();
-  
-  private static String lpad(String s, int len) {
-    int l = len - s.length();
-    
-    if (l > padderLen) {
-      return padder + s;
-    }
-    
-    if (l < 0) {
-      return s;
-    }
-    
-    return padder.substring(0, l) + s;
+    c.add(new StatsEntry("Elements in memory", slStats.getElementCountInMemory()));
+    c.add(new StatsEntry("Element on disk", slStats.getElementCountOnDisk()));
+    //c.add(new StatsEntry("Entries", slStats.getEntries()));
+    c.add(new StatsEntry("Hit count", slStats.getHitCount()));
+    c.add(new StatsEntry("Miss count", slStats.getMissCount()));
+    c.add(new StatsEntry("Put count", slStats.getPutCount()));
+    c.add(new StatsEntry("Memory size", slStats.getSizeInMemory()));
   }
 }

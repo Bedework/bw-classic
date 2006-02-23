@@ -324,28 +324,40 @@ public class CalSvc extends CalSvcI {
   }
 
   public BwStats getStats() throws CalFacadeException {
-    //if (!pars.getPublicAdmin()) {
-    //  throw new CalFacadeAccessException();
-    //}
+    if (!pars.getPublicAdmin()) {
+      throw new CalFacadeAccessException();
+    }
 
     return getCal().getStats();
   }
 
-  public void setStats(boolean enable) throws CalFacadeException {
-    //if (!pars.getPublicAdmin()) {
-    //  throw new CalFacadeAccessException();
-    //}
+  public void setDbStatsEnabled(boolean enable) throws CalFacadeException {
+    if (!pars.getPublicAdmin()) {
+      throw new CalFacadeAccessException();
+    }
 
-    getCal().setStats(enable);
+    getCal().setDbStatsEnabled(enable);
   }
 
-  public void dumpStats() throws CalFacadeException {
-    //if (!pars.getPublicAdmin()) {
-    //  throw new CalFacadeAccessException();
-    //}
+  public boolean getDbStatsEnabled() throws CalFacadeException {
+    return getCal().getDbStatsEnabled();
+  }
+  
+  public void dumpDbStats() throws CalFacadeException {
+    if (!pars.getPublicAdmin()) {
+      throw new CalFacadeAccessException();
+    }
     
     trace(getStats().toString());
-    getCal().dumpStats();
+    getCal().dumpDbStats();
+  }
+  
+  public Collection getDbStats() throws CalFacadeException {
+    if (!pars.getPublicAdmin()) {
+      throw new CalFacadeAccessException();
+    }
+    
+    return getCal().getDbStats();
   }
 
   public BwSystem getSyspars() throws CalFacadeException {

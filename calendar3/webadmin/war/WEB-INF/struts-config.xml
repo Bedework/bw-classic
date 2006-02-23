@@ -946,6 +946,27 @@
                validate="false">
       <forward name="continue"  path="/admingroup/showChooseGroup.rdo" redirect="true" />
     </action>
+
+    <!-- ===============================================================
+                     Stats Actions
+         =============================================================== -->
+
+    <action    path="/stats/show"
+               type="org.bedework.webadmin.PERenderAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/system/showSysStats.jsp" />
+    </action>
+
+    <action    path="/stats/update"
+               type="org.bedework.webcommon.misc.StatisticsAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="continue"  path="/stats/show.rdo" redirect="true" />
+      <forward name="success"  path="/stats/show.rdo" redirect="true" />
+    </action>
   </action-mappings>
 
   <!-- Below will be one or more comments which must not be edited or removed

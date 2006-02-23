@@ -139,6 +139,19 @@ public abstract class CalTimezones implements Serializable {
 
   /* Map of user TimezoneInfo */
   protected HashMap timezones = new HashMap();
+  
+  /* Cache date only UTC values - we do a lot of those but the number of
+   * different dates should be limited.
+   * 
+   * We have one cache per timezone
+   */
+  private HashMap dateCaches = new HashMap();
+
+  private HashMap defaultDateCache = new HashMap();
+  
+  private long datesCached;
+  private long dateCacheHits;
+  private long dateCacheMisses;
 
   protected CalTimezones(boolean debug) {
     this.debug = debug;
@@ -229,14 +242,17 @@ public abstract class CalTimezones implements Serializable {
    */
   public abstract VTimeZone findTimeZone(final String id, BwUser owner) throws CalFacadeException;
   
-  /** Clear all public timezone objects
+  /** Clear all public timezone objects. Implementing classes should call this.
    *
    * <p>Will remove all public timezones in preparation for a replacement
    * (presumably)
    *
    * @throws CalFacadeException
    */
-  public abstract void clearPublicTimezones() throws CalFacadeException;
+  public void clearPublicTimezones() throws CalFacadeException {
+    dateCaches.clear();
+    defaultDateCache.clear();
+  }
   
   /** Refresh the public timezone table - presumably after a call to clearPublicTimezones.
    * and many calls to saveTimeZone.
@@ -290,8 +306,36 @@ public abstract class CalTimezones implements Serializable {
       // Already UTC
       return time;
     }
+
+    String dateKey = null;
+    HashMap cache = null;
     
     if (CalFacadeUtil.isISODate(time)) {
+      /* See if we have it cached */
+      
+      if (tzid == null) {
+        cache = defaultDateCache;
+      } else if (tzid.equals(getDefaultTimeZoneId())) {
+        cache = defaultDateCache;
+      } else {
+        cache = (HashMap)dateCaches.get(tzid);
+        if (cache == null) {
+          cache = new HashMap();
+          dateCaches.put(tzid, cache);
+        }
+      }
+      
+      String utc = (String)cache.get(time);
+      
+      if (utc != null) {
+        dateCacheHits++;
+        return utc;
+      }
+
+      /* Not in the cache - calculate it */
+      
+      dateCacheMisses++;
+      dateKey = time;
       time += "T000000";
     } else if (!CalFacadeUtil.isISODateTime(time)) {
       throw new CalFacadeBadDateException();
@@ -363,13 +407,42 @@ public abstract class CalTimezones implements Serializable {
       digit2(sb, cal.get(Calendar.MINUTE));
       digit2(sb, cal.get(Calendar.SECOND));
       sb.append('Z');
-      return sb.toString();
+      
+      String utc = sb.toString();
+      
+      if (dateKey != null) {
+        cache.put(dateKey, utc);
+        datesCached++;
+      }
+      
+      return utc;
     } catch (Throwable t) {
       t.printStackTrace();
       throw new CalFacadeBadDateException();
     }
   }
   
+  /**
+   * @return Number of utc values cached
+   */
+  public long getDatesCached() {
+    return datesCached;
+  }
+  
+  /**
+   * @return date cache hits
+   */
+  public long getDateCacheHits() {
+    return dateCacheHits;
+  }
+  
+  /**
+   * @return data cache misses.
+   */
+  public long getDateCacheMisses() {
+    return dateCacheMisses;
+  }
+    
   /* ====================================================================
    *                   protected methods
    * ==================================================================== */

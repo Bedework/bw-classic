@@ -189,9 +189,6 @@ class TimezonesImpl extends CalTimezones {
     return null;
   }
 
-  public void clearPublicTimezones() throws CalFacadeException {
-  }
-
   public void refreshTimezones() throws CalFacadeException {
     synchronized (this) {
       //systemTimezonesInitialised = false;

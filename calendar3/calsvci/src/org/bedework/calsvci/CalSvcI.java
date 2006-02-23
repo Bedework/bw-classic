@@ -118,13 +118,27 @@ public abstract class CalSvcI implements Serializable {
    * @param enable       boolean true to turn on db statistics collection
    * @throws CalFacadeException if not admin
    */
-  public abstract void setStats(boolean enable) throws CalFacadeException;
+  public abstract void setDbStatsEnabled(boolean enable) throws CalFacadeException;
+
+  /**  
+   *
+   * @return boolean true if statistics collection enabled
+   * @throws CalFacadeException if not admin
+   */
+  public abstract boolean getDbStatsEnabled() throws CalFacadeException;
 
   /** Dump db statistics 
    *
    * @throws CalFacadeException if not admin
    */
-  public abstract void dumpStats() throws CalFacadeException;
+  public abstract void dumpDbStats() throws CalFacadeException;
+
+  /** Get db statistics 
+   *
+   * @return Collection of BwStats.StatsEntry objects
+   * @throws CalFacadeException if not admin
+   */
+  public abstract Collection getDbStats() throws CalFacadeException;
 
   /** Get the system pars
    *

@@ -54,6 +54,9 @@
 
 package org.bedework.webcommon.misc;
 
+import java.util.Collection;
+
+import org.bedework.calfacade.BwStats;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
@@ -69,6 +72,7 @@ import javax.servlet.http.HttpServletResponse;
  *      <li>"enable"            Enable stats</li>
  *      <li>"disable"           Disable stats</li>
  *      <li>"dump"              Dump stats</li>
+ *      <li>"fetch"             fetch stats</li>
  * </ul>
  *
  * <p>Forwards to:<ul>
@@ -89,11 +93,21 @@ public class StatisticsAction extends BwAbstractAction {
     CalSvcI svci = form.fetchSvci();
 
     if (getReqPar(request, "enable") != null) {
-      svci.setStats(true);
+      svci.setDbStatsEnabled(true);
     } else if (getReqPar(request, "disable") != null) {
-      svci.setStats(false);
+      svci.setDbStatsEnabled(false);
     } else if (getReqPar(request, "dump") != null) {
-      svci.dumpStats();
+      svci.dumpDbStats();
+    } else if (getReqPar(request, "fetch") != null) {
+      BwStats stats = svci.getStats();
+      
+      Collection c = stats.getStats();
+      
+      c.addAll(svci.getDbStats());
+      
+      form.assignSysStats(c);
+
+      return "continue";
     } 
 
     return "success";

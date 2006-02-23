@@ -168,10 +168,18 @@ public class CalintfBase implements Calintf {
     return null;
   }
 
-  public void setStats(boolean enable) throws CalFacadeException {
+  public void setDbStatsEnabled(boolean enable) throws CalFacadeException {
   }
 
-  public void dumpStats() throws CalFacadeException {
+  public boolean getDbStatsEnabled() throws CalFacadeException {
+    return false;
+  }
+
+  public void dumpDbStats() throws CalFacadeException {
+  }
+  
+  public Collection getDbStats() throws CalFacadeException {
+    return null;
   }
 
   public BwSystem getSyspars() throws CalFacadeException {

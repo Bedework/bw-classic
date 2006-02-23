@@ -136,9 +136,9 @@ public class TimezoneCache extends CalTimezones {
 
     HashMap cache;
     
-    if (tz == null) {
+    if (tzid == null) {
       cache = defaultCache;
-    } else if (tz.equals(getDefaultTimeZoneId())) {
+    } else if (tzid.equals(getDefaultTimeZoneId())) {
       cache = defaultCache;
     } else {
       cache = (HashMap)caches.get(tzid);

@@ -174,6 +174,7 @@ class CalTimezonesImpl extends CalTimezones {
 
   public void clearPublicTimezones() throws CalFacadeException {
     cal.clearPublicTimezones();
+    super.clearPublicTimezones();
   }
 
   public void refreshTimezones() throws CalFacadeException {

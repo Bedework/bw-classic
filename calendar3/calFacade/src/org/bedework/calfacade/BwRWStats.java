@@ -79,4 +79,39 @@ public class BwRWStats extends BwStats {
   public void incTzStores() {
     tzStores++;
   }
+
+  /**
+   * @param  val  double event fetch millis.
+   */
+  public void incEventFetchTime(double val) {
+    eventFetchTime += val;
+  }
+
+  /**
+   * @param val   long event fetches.
+   */
+  public void incEventFetches(long val) {
+    eventFetches += val;
+  }
+
+  /**
+   * @param val   number of utc values cached
+   */
+  public void setDatesCached(long val) {
+    datesCached = val;
+  }
+
+  /**
+   * @param val    date cache hits
+   */
+  public void setDateCacheHits(long val) {
+    dateCacheHits = val;
+  }
+
+  /**
+   * @param val   data cache misses.
+   */
+  public void setDateCacheMisses(long val) {
+    dateCacheMisses = val;
+  }
 }

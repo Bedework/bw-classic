@@ -105,7 +105,7 @@ public class TimeView implements Serializable {
    */
   private TimeViewDailyInfo[] tvdis;
   
-  private static final TimezoneCache tzcache = new TimezoneCache(false);
+  //private static final TimezoneCache tzcache = new TimezoneCache(false);
 
   /** Constructor:
    *
@@ -269,15 +269,14 @@ public class TimeView implements Serializable {
    */
   public Collection getDaysEvents(MyCalendarVO date) throws Throwable {
     Vector v = new Vector();
+    CalTimezones tzcache = cal.getTimezones();
 //    Dur oneDay = new Dur(1, 0, 0, 0);
     long millis = System.currentTimeMillis();
     
-    tzcache.setSysTimezones(cal.getTimezones());
+    //tzcache.setSysTimezones(cal.getTimezones());
     BwDateTime startDt = CalFacadeUtil.getDateTime(date.getDateDigits(),
                                                    tzcache);
-//                                                   cal.getTimezones());
 
-//    BwDateTime endDt = startDt.getNextDay(cal.getTimezones());
     BwDateTime endDt = startDt.getNextDay(tzcache);
     String start = startDt.getDate();
     String end = endDt.getDate();
@@ -290,10 +289,8 @@ public class TimeView implements Serializable {
     if (events == null) {
       events = cal.getEvents(null, null,
                              CalFacadeUtil.getDateTime(firstDay.getDateDigits(),
-//                                                     cal.getTimezones()),
                                                        tzcache),
                              CalFacadeUtil.getDateTime(lastDay.getTomorrow().getDateDigits(),
-//                                                     cal.getTimezones()),
                                                        tzcache),
                              CalFacadeDefs.retrieveRecurExpanded);
     }

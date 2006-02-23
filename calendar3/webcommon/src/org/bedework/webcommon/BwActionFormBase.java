@@ -107,6 +107,8 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   /* This should be a cloned copy only */
   private BwSystem syspars;
 
+  private Collection sysStats;
+  
   private transient MailerIntf mailer;
 
   /** True if we should auto-create sponsors. Some sites may wish to control
@@ -394,7 +396,39 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   public BwSystem getSyspars() {
     return syspars;
   }
+  
+  /** Set system statistics 
+  *
+  * @param val      Collection of BwStats.StatsEntry objects
+  */
+  public void assignSysStats(Collection val) {
+    sysStats = val;
+  }
 
+  /** Get system statistics 
+  *
+  * @return Collection of BwStats.StatsEntry objects
+  */
+  public Collection getSysStats() {
+    if (sysStats == null) {
+      sysStats = new Vector();
+    }
+    
+    return sysStats;
+  }
+
+  /** Get system statistics enabled state 
+  *
+   * @return boolean true if statistics collection enabled
+  */
+  public boolean getSysStatsEnabled() {
+    try {
+      return fetchSvci().getDbStatsEnabled();
+    } catch (Throwable t) {
+      return false;
+    }
+  }
+  
   /** This will default to the current user. Superusers will be able to
    * specify a creator.
    *

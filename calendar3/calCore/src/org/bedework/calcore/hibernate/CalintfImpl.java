@@ -337,10 +337,22 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   }
 
   public BwStats getStats() throws CalFacadeException {
+    if (stats == null) {
+      return null;
+    }
+    
+    BwRWStats rwstats = (BwRWStats)stats;
+    
+    if (timezones != null) {
+      rwstats.setDateCacheHits(timezones.getDateCacheHits());
+      rwstats.setDateCacheMisses(timezones.getDateCacheMisses());
+      rwstats.setDatesCached(timezones.getDatesCached());
+    }
+    
     return stats;
   }
 
-  public void setStats(boolean enable) throws CalFacadeException {
+  public void setDbStatsEnabled(boolean enable) throws CalFacadeException {
     if (!enable && (dbStats == null)) {
       return;
     }
@@ -351,9 +363,21 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     
     dbStats.setStatisticsEnabled(enable);
   }
+
+  public boolean getDbStatsEnabled() throws CalFacadeException {
+    if (dbStats == null) {
+      return false;
+    }
+    
+    return dbStats.isStatisticsEnabled();
+  }
   
-  public void dumpStats() throws CalFacadeException {
+  public void dumpDbStats() throws CalFacadeException {
     DbStatistics.dumpStats(dbStats);
+  }
+  
+  public Collection getDbStats() throws CalFacadeException {
+    return DbStatistics.getStats(dbStats);
   }
 
   public BwSystem getSyspars() throws CalFacadeException {
