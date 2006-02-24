@@ -360,9 +360,19 @@
             </a>
           </li>
           <li>
-            <a href="{$stats-update}&amp;fetch=yes">
-              System statistics
-            </a>
+            System statistics:
+            <ul>
+              <li>
+                <a href="{$stats-update}&amp;fetch=yes">
+                  admin web client
+                </a>
+              </li>
+              <li>
+                <a href="{$publicCal}/stats.do" target="pubClient">
+                  public web client
+                </a>
+              </li>
+            </ul>
           </li>
         </ul>
       </xsl:if>
