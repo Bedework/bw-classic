@@ -92,6 +92,7 @@
   <xsl:variable name="system-update" select="/bedeworkadmin/urlPrefixes/system/update/a/@href"/>
   <xsl:variable name="timezones-initUpload" select="/bedeworkadmin/urlPrefixes/timezones/initUpload/a/@href"/>
   <xsl:variable name="timezones-upload" select="/bedeworkadmin/urlPrefixes/timezones/upload/a/@href"/>
+  <xsl:variable name="stats-fetch" select="/bedeworkadmin/urlPrefixes/stats/fetch/a/@href"/>
   <!-- === -->
   <xsl:variable name="authuser-showModForm" select="/bedeworkadmin/urlPrefixes/authuser/showModForm/a/@href"/>
   <xsl:variable name="authuser-showUpdateList" select="/bedeworkadmin/urlPrefixes/authuser/showUpdateList/a/@href"/>
@@ -356,6 +357,11 @@
           <li>
             <a href="{$timezones-initUpload}" >
               Upload and replace system timezones
+            </a>
+          </li>
+          <li>
+            <a href="{$stats-fetch}">
+              System statistics
             </a>
           </li>
         </ul>
@@ -2703,8 +2709,17 @@
   <xsl:template match="sysStats" mode="showSysStats">
     <h2>System Statistics</h2>
 
-    <a href="/caladmin/stats/update.do?enable=yes">enable stats collection</a>
-
+    <p>
+      Stats collection:
+    </p>
+    <ul>
+      <li>
+        <a href="update.do?enable=yes">enable</a> |
+        <a href="update.do?disable=yes">disable</a>
+      </li>
+      <li><a href="update.do?fetch=yes">fetch statistics</a></li>
+      <li><a href="update.do?dump=yes">dump stats to log</a></li>
+    </ul>
     <table id="statsTable" cellpadding="0">
       <xsl:for-each select="*">
         <xsl:choose>

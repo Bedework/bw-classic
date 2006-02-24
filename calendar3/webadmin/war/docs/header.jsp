@@ -122,6 +122,9 @@ try {
       <fetch><genurl:link page="/syspars/fetch.do?b=de"/></fetch>
       <update><genurl:link page="/syspars/update.do?b=de"/></update>
     </system>
+    <stats>
+      <fetch><genurl:link page="/stats/fetch.do?b=de"/></fetch>
+    </stats>
     <timezones>
       <showUpload><genurl:link page="/timezones/showUpload.rdo?b=de"/></showUpload>
       <initUpload><genurl:link page="/timezones/initUpload.do?b=de"/></initUpload>
