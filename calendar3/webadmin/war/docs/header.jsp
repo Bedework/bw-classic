@@ -123,7 +123,7 @@ try {
       <update><genurl:link page="/syspars/update.do?b=de"/></update>
     </system>
     <stats>
-      <fetch><genurl:link page="/stats/fetch.do?b=de"/></fetch>
+      <update><genurl:link page="/stats/update.do?b=de"/></update>
     </stats>
     <timezones>
       <showUpload><genurl:link page="/timezones/showUpload.rdo?b=de"/></showUpload>

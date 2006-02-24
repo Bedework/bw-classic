@@ -92,7 +92,7 @@
   <xsl:variable name="system-update" select="/bedeworkadmin/urlPrefixes/system/update/a/@href"/>
   <xsl:variable name="timezones-initUpload" select="/bedeworkadmin/urlPrefixes/timezones/initUpload/a/@href"/>
   <xsl:variable name="timezones-upload" select="/bedeworkadmin/urlPrefixes/timezones/upload/a/@href"/>
-  <xsl:variable name="stats-fetch" select="/bedeworkadmin/urlPrefixes/stats/fetch/a/@href"/>
+  <xsl:variable name="stats-update" select="/bedeworkadmin/urlPrefixes/stats/update/a/@href"/>
   <!-- === -->
   <xsl:variable name="authuser-showModForm" select="/bedeworkadmin/urlPrefixes/authuser/showModForm/a/@href"/>
   <xsl:variable name="authuser-showUpdateList" select="/bedeworkadmin/urlPrefixes/authuser/showUpdateList/a/@href"/>
@@ -360,7 +360,7 @@
             </a>
           </li>
           <li>
-            <a href="{$stats-fetch}">
+            <a href="{$stats-update}&amp;fetch=yes">
               System statistics
             </a>
           </li>
@@ -2714,11 +2714,11 @@
     </p>
     <ul>
       <li>
-        <a href="update.do?enable=yes">enable</a> |
-        <a href="update.do?disable=yes">disable</a>
+        <a href="{$stats-update}&amp;enable=yes">enable</a> |
+        <a href="{$stats-update}&amp;disable=yes">disable</a>
       </li>
-      <li><a href="update.do?fetch=yes">fetch statistics</a></li>
-      <li><a href="update.do?dump=yes">dump stats to log</a></li>
+      <li><a href="{$stats-update}&amp;fetch=yes">fetch statistics</a></li>
+      <li><a href="{$stats-update}&amp;dump=yes">dump stats to log</a></li>
     </ul>
     <table id="statsTable" cellpadding="0">
       <xsl:for-each select="*">
