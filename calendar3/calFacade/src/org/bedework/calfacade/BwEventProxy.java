@@ -171,7 +171,7 @@ public class BwEventProxy extends BwEvent {
 
   /** Set the owner
    *
-   * @param val     UserVO owner of the entity
+   * @param val     BwUser owner of the entity
    */
   public void setOwner(BwUser val) {
     throw new RuntimeException("Immutable");

@@ -354,9 +354,9 @@ public class Events extends CalintfHelper {
 
     assignGuid(val);
 
-    /* The guid must not exist in the system. The above call assigns a guid if
+    /* The guid must not exist in the same calendar. The above call assigns a guid if
      * one wasn't assigned already. However, the event may have come with a guid
-     * (caldav, import, etc) so we need to cehck here.
+     * (caldav, import, etc) so we need to check here.
      *
      * It also ensures our guid allocation is working OK
      */

@@ -1551,7 +1551,7 @@ public class CalSvc extends CalSvcI {
 
         if (calendar != null) {
           internal.addChild(calendar);
-          sublookup.put(new Integer(calendar.getId()), sub);
+          putSublookup(sublookup, sub, calendar);
         }
       }
     }
@@ -1562,6 +1562,19 @@ public class CalSvc extends CalSvcI {
               sublookup));
 
     return ts;
+  }
+  
+  private void putSublookup(HashMap sublookup, BwSubscription sub, BwCalendar cal) {
+    if (cal.getCalendarCollection()) {
+      // Leaf node
+      sublookup.put(new Integer(cal.getId()), sub);
+      return;
+    }
+    
+    Iterator it = cal.iterateChildren();
+    while (it.hasNext()) {
+      putSublookup(sublookup, sub, (BwCalendar)it.next());
+    }
   }
 
   public DelEventResult deleteEvent(BwEvent event,
@@ -1598,7 +1611,13 @@ public class CalSvc extends CalSvcI {
                                     Collection overrides) throws CalFacadeException {
     EventUpdateResult updResult = new EventUpdateResult();
 
-    setupSharableEntity(event);
+    if (event instanceof BwEventProxy) {
+      BwEventProxy proxy = (BwEventProxy)event;
+      BwEvent override = proxy.getTarget();
+      setupSharableEntity(override);
+    } else {
+      setupSharableEntity(event);
+    }
 
     BwLocation loc = event.getLocation();
     BwSponsor sp = event.getSponsor();

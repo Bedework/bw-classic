@@ -6,14 +6,14 @@
 <bean:define id="event" name="eventFmt" property="event" />
 <%-- Output a single event --%>
   <event>
-    <logic:present  name="event" property="subscription">
+    <logic:present  name="eventInfo" property="subscription">
       <subscription>
         <id><bean:write name="eventInfo" property="subscription.id"/></id>
         <affectsFreeBusy><bean:write name="eventInfo" property="subscription.affectsFreeBusy"/></affectsFreeBusy>
         <style><bean:write name="eventInfo" property="subscription.style"/></style>
       </subscription>
     </logic:present>
-    <logic:notPresent  name="event" property="subscription">
+    <logic:notPresent  name="eventInfo" property="subscription">
       <subscription>
         <id>-1</id>
         <affectsFreeBusy>false</affectsFreeBusy>
