@@ -90,6 +90,7 @@
             <link rel="stylesheet" href="{$resourcesRoot}/default/default/blue.css"/>
           </xsl:otherwise>
         </xsl:choose>
+        <link rel="stylesheet" type="text/css" href="{$resourcesRoot}/default/default/common.css" />
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
       </head>
@@ -109,7 +110,7 @@
           </xsl:when>
           <xsl:when test="/bedework/page='showSysStats'">
             <!-- show system stats -->
-            <xsl:apply-templates select="/bedework/sysStats"/>
+            <xsl:call-template name="stats"/>
           </xsl:when>
           <xsl:when test="/bedework/page='calendars'">
             <!-- show a list of all calendars -->
@@ -1016,44 +1017,45 @@
   </xsl:template>
 
   <!--+++++++++++++++ System Stats ++++++++++++++++++++-->
+  <xsl:template name="stats">
+    <div id="stats">
+      <h2>System Statistics</h2>
 
-  <xsl:template match="sysStats" mode="showSysStats">
-    <h2>System Statistics</h2>
-
-    <p>
-      Stats collection:
-    </p>
-    <ul>
-      <li>
-        <a href="{$stats}&amp;enable=yes">enable</a> |
-        <a href="{$stats}&amp;disable=yes">disable</a>
-      </li>
-      <li><a href="{$stats}&amp;fetch=yes">fetch statistics</a></li>
-      <li><a href="{$stats}&amp;dump=yes">dump stats to log</a></li>
-    </ul>
-    <table id="statsTable" cellpadding="0">
-      <xsl:for-each select="*">
-        <xsl:choose>
-          <xsl:when test="name(.) = 'header'">
-            <tr>
-              <th colspan="2">
-                <xsl:value-of select="."/>
-              </th>
-            </tr>
-          </xsl:when>
-          <xsl:otherwise>
-            <tr>
-              <td class="label">
-                <xsl:value-of select="label"/>
-              </td>
-              <td class="value">
-                <xsl:value-of select="value"/>
-              </td>
-            </tr>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
-    </table>
+      <p>
+        Stats collection:
+      </p>
+      <ul>
+        <li>
+          <a href="{$stats}&amp;enable=yes">enable</a> |
+          <a href="{$stats}&amp;disable=yes">disable</a>
+        </li>
+        <li><a href="{$stats}&amp;fetch=yes">fetch statistics</a></li>
+        <li><a href="{$stats}&amp;dump=yes">dump stats to log</a></li>
+      </ul>
+      <table id="statsTable" cellpadding="0">
+        <xsl:for-each select="/bedework/sysStats/*">
+          <xsl:choose>
+            <xsl:when test="name(.) = 'header'">
+              <tr>
+                <th colspan="2">
+                  <xsl:value-of select="."/>
+                </th>
+              </tr>
+            </xsl:when>
+            <xsl:otherwise>
+              <tr>
+                <td class="label">
+                  <xsl:value-of select="label"/>
+                </td>
+                <td class="value">
+                  <xsl:value-of select="value"/>
+                </td>
+              </tr>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
+      </table>
+    </div>
   </xsl:template>
 
   <!--==== FOOTER ====-->
