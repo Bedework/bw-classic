@@ -91,74 +91,81 @@
         </xsl:if>
         <!-- <xsl:call-template name="alerts"/> -->
         <xsl:call-template name="tabs"/>
-        <xsl:choose>
-          <xsl:when test="/bedework/page='event'">
-            <!-- show an event -->
-            <xsl:apply-templates select="/bedework/event"/>
-          </xsl:when>
-          <xsl:when test="/bedework/page='addEvent'">
-            <xsl:call-template name="addEvent"/>
-          </xsl:when>
-          <xsl:when test="/bedework/page='editEvent'">
-            <!-- edit an event -->
-            <xsl:apply-templates select="/bedework/eventform"/>
-          </xsl:when>
-          <xsl:when test="/bedework/page='alarmOptions'">
-            <xsl:call-template name="alarmOptions" />
-          </xsl:when>
-          <xsl:when test="/bedework/page='upload'">
-            <xsl:call-template name="upload" />
-          </xsl:when>
-          <xsl:when test="/bedework/page='manageLocations'">
-            <xsl:call-template name="manageLocations" />
-          </xsl:when>
-          <xsl:when test="/bedework/page='editLocation'">
-            <!-- edit an event -->
-            <xsl:apply-templates select="/bedework/locationform"/>
-          </xsl:when>
-          <xsl:when test="/bedework/page='calendars'">
-            <!-- show a list of all calendars and manage subscriptions -->
-            <xsl:apply-templates select="/bedework/calendars"/>
-          </xsl:when>
-          <xsl:when test="/bedework/page='other'">
-            <!-- show an arbitrary page -->
-            <xsl:call-template name="selectPage"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <!-- otherwise, show the eventsCalendar -->
-            <xsl:call-template name="navigation"/>
-            <xsl:call-template name="userBar"/>
-            <!-- main eventCalendar content -->
+        <div id="bodyBlock">
+          <div id="leftMenus">
+            test
+          </div>
+          <div id="bodyContent">
             <xsl:choose>
-              <xsl:when test="/bedework/periodname='Day'">
-                <xsl:call-template name="listView"/>
+              <xsl:when test="/bedework/page='event'">
+                <!-- show an event -->
+                <xsl:apply-templates select="/bedework/event"/>
               </xsl:when>
-              <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
-                <xsl:choose>
-                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                    <xsl:call-template name="listView"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:call-template name="weekView"/>
-                  </xsl:otherwise>
-                </xsl:choose>
+              <xsl:when test="/bedework/page='addEvent'">
+                <xsl:call-template name="addEvent"/>
               </xsl:when>
-              <xsl:when test="/bedework/periodname='Month'">
-                <xsl:choose>
-                  <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-                    <xsl:call-template name="listView"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:call-template name="monthView"/>
-                  </xsl:otherwise>
-                </xsl:choose>
+              <xsl:when test="/bedework/page='editEvent'">
+                <!-- edit an event -->
+                <xsl:apply-templates select="/bedework/eventform"/>
+              </xsl:when>
+              <xsl:when test="/bedework/page='alarmOptions'">
+                <xsl:call-template name="alarmOptions" />
+              </xsl:when>
+              <xsl:when test="/bedework/page='upload'">
+                <xsl:call-template name="upload" />
+              </xsl:when>
+              <xsl:when test="/bedework/page='manageLocations'">
+                <xsl:call-template name="manageLocations" />
+              </xsl:when>
+              <xsl:when test="/bedework/page='editLocation'">
+                <!-- edit an event -->
+                <xsl:apply-templates select="/bedework/locationform"/>
+              </xsl:when>
+              <xsl:when test="/bedework/page='calendars'">
+                <!-- show a list of all calendars and manage subscriptions -->
+                <xsl:apply-templates select="/bedework/calendars"/>
+              </xsl:when>
+              <xsl:when test="/bedework/page='other'">
+                <!-- show an arbitrary page -->
+                <xsl:call-template name="selectPage"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:call-template name="yearView"/>
+                <!-- otherwise, show the eventsCalendar -->
+                <xsl:call-template name="navigation"/>
+                <xsl:call-template name="userBar"/>
+                <!-- main eventCalendar content -->
+                <xsl:choose>
+                  <xsl:when test="/bedework/periodname='Day'">
+                    <xsl:call-template name="listView"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
+                    <xsl:choose>
+                      <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
+                        <xsl:call-template name="listView"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:call-template name="weekView"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:when>
+                  <xsl:when test="/bedework/periodname='Month'">
+                    <xsl:choose>
+                      <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
+                        <xsl:call-template name="listView"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:call-template name="monthView"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:call-template name="yearView"/>
+                  </xsl:otherwise>
+                </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
-          </xsl:otherwise>
-        </xsl:choose>
+          </div>
+        </div>
         <!-- footer -->
         <xsl:call-template name="footer"/>
       </body>
@@ -812,11 +819,11 @@
         </xsl:variable>
         <span class="{$eventTipClass}">
           <strong><xsl:value-of select="summary"/></strong><br/>
-          Time: 
+          Time:
           <xsl:choose>
             <xsl:when test="start/allday = 'false'">
               <xsl:value-of select="start/time"/>
-               - <xsl:value-of select="end/time"/>              
+               - <xsl:value-of select="end/time"/>
             </xsl:when>
             <xsl:otherwise>
               all day

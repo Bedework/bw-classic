@@ -1091,6 +1091,7 @@
           <form name="skinSelectForm" method="get" action="">
             <select name="sitePicker" onchange="window.location = this.value">
               <option>production examples:</option>
+              <option value="http://events.dal.ca/">Dalhousie</option>
               <option value="http://events.rpi.edu">Rensselaer</option>
               <option value="http://myuw.washington.edu/cal/">Washington</option>
             </select>
