@@ -141,6 +141,7 @@ try {
     <setAlarm><genurl:rewrite action="setAlarm.do"/></setAlarm>
     <addEventRef><genurl:rewrite action="addEventRef.do"/></addEventRef>
     <upload><genurl:rewrite action="upload.do"/></upload>
+    <stats><genurl:rewrite action="stats.do?be=d"/></stats>
   </urlPrefixes><%--
         actionUrlPrefixes are used to generate appropriately encoded urls for
         calls into the application; these are required for use within portals --%>

@@ -58,6 +58,7 @@
   <xsl:variable name="export" select="/bedework/urlPrefixes/export"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
+  <xsl:variable name="stats" select="/bedework/urlPrefixes/stats"/>
 
   <!-- Other generally useful global variables -->
   <xsl:variable name="privateCal">/ucal</xsl:variable>
@@ -105,6 +106,10 @@
           <xsl:when test="/bedework/page='event'">
             <!-- show an event -->
             <xsl:apply-templates select="/bedework/event"/>
+          </xsl:when>
+          <xsl:when test="/bedework/page='showSysStats'">
+            <!-- show system stats -->
+            <xsl:apply-templates select="/bedework/sysStats"/>
           </xsl:when>
           <xsl:when test="/bedework/page='calendars'">
             <!-- show a list of all calendars -->
@@ -1008,6 +1013,47 @@
         </ul>
       </xsl:if>
     </li>
+  </xsl:template>
+
+  <!--+++++++++++++++ System Stats ++++++++++++++++++++-->
+
+  <xsl:template match="sysStats" mode="showSysStats">
+    <h2>System Statistics</h2>
+
+    <p>
+      Stats collection:
+    </p>
+    <ul>
+      <li>
+        <a href="{$stats}&amp;enable=yes">enable</a> |
+        <a href="{$stats}&amp;disable=yes">disable</a>
+      </li>
+      <li><a href="{$stats}&amp;fetch=yes">fetch statistics</a></li>
+      <li><a href="{$stats}&amp;dump=yes">dump stats to log</a></li>
+    </ul>
+    <table id="statsTable" cellpadding="0">
+      <xsl:for-each select="*">
+        <xsl:choose>
+          <xsl:when test="name(.) = 'header'">
+            <tr>
+              <th colspan="2">
+                <xsl:value-of select="."/>
+              </th>
+            </tr>
+          </xsl:when>
+          <xsl:otherwise>
+            <tr>
+              <td class="label">
+                <xsl:value-of select="label"/>
+              </td>
+              <td class="value">
+                <xsl:value-of select="value"/>
+              </td>
+            </tr>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each>
+    </table>
   </xsl:template>
 
   <!--==== FOOTER ====-->

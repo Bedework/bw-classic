@@ -307,13 +307,6 @@
                validate="false">
     </action>
 
-    <action    path="/stats"
-               type="org.bedework.webcommon.misc.StatisticsAction"
-               name="calForm"
-               scope="session"
-               validate="false">
-    </action>
-
     <action    path="/manageLocations"
                type="org.bedework.webclient.BwAction"
                name="calForm"
@@ -346,6 +339,25 @@
                validate="false">
       <forward name="referenced" path="/showManageLocations.rdo" redirect="true" />
       <forward name="success" path="/showManageLocations.rdo" redirect="true" />
+    </action>
+
+    <!-- ....................... system stats .......................... -->
+
+    <action    path="/showStats"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/showSysStats.jsp" />
+    </action>
+
+    <action    path="/stats"
+               type="org.bedework.webcommon.misc.StatisticsAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="continue"  path="/showStats.rdo" redirect="true" />
+      <forward name="success"  path="/showStats.rdo" redirect="true" />
     </action>
 
     <!-- ....................... mailing events ........................ -->
