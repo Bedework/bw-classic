@@ -1,0 +1,21 @@
+#stats {
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 1em;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#statsTable {
+  margin: 1em 0 0 4em;
+  width: 300px;
+}
+#statsTable th {
+  padding: 0.5em;
+  background-color: #eee;
+  color: black;
+}
+#statsTable td.label {
+  text-align: right;
+  padding-right: 2em;
+}
