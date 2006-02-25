@@ -54,6 +54,7 @@
 
 package org.bedework.icalendar;
 
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwUser;
@@ -108,15 +109,14 @@ public interface IcalCallback extends Serializable {
   /** Return a Collection of EventInfo objects. More than one for a recurring
    * event with overrides.
    *
+   * @param cal       calendar to search
    * @param guid
    * @param rid
-   * @param seqnum
    * @param recurRetrieval Takes value defined in CalFacadeDefs.
    * @return Collection of EventInfo
    * @throws CalFacadeException
    */
-  public Collection getEvent(String guid, String rid,
-                             Integer seqnum,
+  public Collection getEvent(BwCalendar cal, String guid, String rid,
                              int recurRetrieval) throws CalFacadeException;
 
   /** URIgen object used to provide ALTREP values - or null for no altrep

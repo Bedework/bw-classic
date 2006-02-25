@@ -255,7 +255,8 @@ public class Synchml {
    * @throws CalFacadeException
    */
   public boolean updateEvent(VEvent val) throws CalFacadeException {
-    updateEvent(BwEventUtil.toEvent(svci.getIcalCallback(), null, val, debug).getEvent());
+    // FIXME - We need a subscription to the calendar we are synching - second par
+    updateEvent(BwEventUtil.toEvent(svci.getIcalCallback(), null, null, val, debug).getEvent());
 
     return true;
   }
@@ -268,7 +269,8 @@ public class Synchml {
    * @throws CalFacadeException
    */
   public boolean deleteEvent(VEvent val) throws CalFacadeException {
-    return deleteEvent(BwEventUtil.toEvent(svci.getIcalCallback(), null, val, debug).getEvent());
+    // FIXME - We need a subscription to the calendar we are synching - second par
+    return deleteEvent(BwEventUtil.toEvent(svci.getIcalCallback(), null, null, val, debug).getEvent());
   }
 
   /* --------------------------------------------------------------------
@@ -352,7 +354,8 @@ public class Synchml {
           }
 
           String evData = synchData.getEventData();
-          Collection c = trans.fromIcal(evData);
+          // FIXME - We need a subscription to the calendar we are synching - second par
+          Collection c = trans.fromIcal(null, evData);
           if (c.size() != 1) {
             throw new CalFacadeException("Invalid event data: " + evData);
           }
@@ -437,7 +440,8 @@ public class Synchml {
    * @throws CalFacadeException
    */
   public boolean addEvent(BwEvent val) throws CalFacadeException {
-    svci.addEvent(val, null);
+    // FIXME - We need a subscription to the calendar we are synching - first par
+    svci.addEvent(null, val, null);
 
     return true;
   }
@@ -478,7 +482,8 @@ public class Synchml {
    * @throws CalFacadeException
    */
   public BwEvent findEvent(String val) throws CalFacadeException {
-    Collection eis = svci.getEvent(val, null, CalFacadeDefs.retrieveRecurMaster);
+    // FIXME - We need a subscription (first par) to the calendar (second par)
+    Collection eis = svci.getEvent(null, null, val, null, CalFacadeDefs.retrieveRecurMaster);
     if ((eis == null) || (eis.size() == 0)) {
       return null;
     }
@@ -519,7 +524,8 @@ public class Synchml {
                                 svci.getTimezones()));
     ev.setSummary("Temp");
 
-    svci.addEvent(ev, null);
+    // FIXME - We need a subscription to the calendar we are synching - first par
+    svci.addEvent(null, ev, null);
 
     return ev.getGuid();
   }

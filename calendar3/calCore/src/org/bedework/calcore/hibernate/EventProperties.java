@@ -95,12 +95,13 @@ public class EventProperties extends CalintfHelper {
    * @param debug
    */
   public EventProperties(Calintf cal, AccessUtil access, BwUser user,
+                         int currentMode, boolean ignoreCreator,
                          String keyFieldName,
                          String className,
                          String refQuery,
-                         int minId,
+                         int minId, 
                          boolean debug) {
-    super(cal, access, user, debug);
+    super(cal, access, user, currentMode, ignoreCreator, debug);
 
     this.keyFieldName = keyFieldName;
     this.className = className;
@@ -176,15 +177,11 @@ public class EventProperties extends CalintfHelper {
   /** Return an entity with the given id
    *
    * @param id            int id of the entity
-   * @param currentMode   mode we are in (guest etc)
-   * @param ignoreCreator true if we ignore creator
    * @return BwEventProperty object representing the entity in question
    *                     null if it doesn't exist.
    * @throws CalFacadeException
    */
-  public BwEventProperty get(int id,
-                             int currentMode,
-                             boolean ignoreCreator) throws CalFacadeException {
+  public BwEventProperty get(int id) throws CalFacadeException {
     HibSession sess = getSess();
 
     StringBuffer qstr = new StringBuffer("from ");

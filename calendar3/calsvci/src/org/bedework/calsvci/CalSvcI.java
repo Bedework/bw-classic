@@ -1070,19 +1070,24 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract EventInfo getEvent(int eventId) throws CalFacadeException;
 
-  /** Return one or more events for the current user using the guid as a key.
+  /** Return one or more events for the current user using the calendar, guid
+   * and the recurrence id as a key.
    *
    * <p>For non-recurring events, one and only one event should be reurned.
    * For recurring events, the 'master' event defining the rules together
    * with any exceptions should be returned.
    *
+   * @param   sub       BwSubscription object
+   * @param   cal       BwCalendar object
    * @param   guid      String guid for the event
    * @param   recurrenceId String recurrence id or null
    * @param recurRetrieval Takes value defined in CalFacadeDefs.
    * @return  Collection of EventInfo objects representing event(s).
    * @throws CalFacadeException
    */
-  public abstract Collection getEvent(String guid, String recurrenceId,
+  public abstract Collection getEvent(BwSubscription sub, BwCalendar cal, 
+                                      String guid, 
+                                      String recurrenceId,
                                       int recurRetrieval)
         throws CalFacadeException;
 
@@ -1189,13 +1194,15 @@ public abstract class CalSvcI implements Serializable {
    * a number of fields should have been copied from that event. Other fields
    * will come from the target.
    *
+   * @param cal          BwCalendar defining recipient calendar
    * @param event        BwEvent object to be added
    * @param overrides    Collection of BwEventProxy objects which override instances
    *                     of the new event
    * @return EventUpdateResult Counts of changes.
    * @throws CalFacadeException
    */
-  public abstract EventUpdateResult addEvent(BwEvent event,
+  public abstract EventUpdateResult addEvent(BwCalendar cal,
+                                             BwEvent event,
                                              Collection overrides) throws CalFacadeException;
 
   /** Update an event.

@@ -159,7 +159,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
     event.setPublick(true);
 
     if (form.getAddingEvent()) {
-      svci.addEvent(event, null);
+      svci.addEvent(event.getCalendar(), event, null);
     } else {
       svci.updateEvent(event);
     }

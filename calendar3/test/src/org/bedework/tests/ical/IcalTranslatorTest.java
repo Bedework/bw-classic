@@ -54,6 +54,7 @@
 
 package org.bedework.tests.ical;
 
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.svc.EventInfo;
@@ -206,7 +207,8 @@ public class IcalTranslatorTest extends TestCase {
       calOut.output(ical, out);
       System.out.println("===========================================");
 
-      Collection c = makeEvents(icalTrans, icalText);
+      BwCalendar cal = svciUtil.getSvci(privateUser1).getCalendar();
+      Collection c = makeEvents(icalTrans, cal, icalText);
       Iterator it = c.iterator();
 
       while (it.hasNext()) {
@@ -224,14 +226,16 @@ public class IcalTranslatorTest extends TestCase {
    *                       Private methods.
    * ==================================================================== */
 
-  /** Get a Collection of EventInfo
+  /* Get a Collection of EventInfo
    *
    * @param icalTrans
+   * @param cal
    * @param calText
    * @return Collection
    * @throws Throwable
    */
   private Collection makeEvents(IcalTranslator icalTrans,
+                                BwCalendar cal,
                                 String[] calText) throws Throwable {
     StringBuffer sb = new StringBuffer();
 
@@ -242,7 +246,7 @@ public class IcalTranslatorTest extends TestCase {
 
     svciUtil.open(privateUser1);
     try {
-      return icalTrans.fromIcal(sb.toString());
+      return icalTrans.fromIcal(cal, sb.toString());
     } finally {
       svciUtil.close(privateUser1);
     }

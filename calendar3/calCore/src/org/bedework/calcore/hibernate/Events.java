@@ -67,7 +67,7 @@ import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
-import org.bedework.calfacade.ifs.Calintf.DelEventResult;
+import org.bedework.calfacade.ifs.EventsI;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.icalendar.VEventUtil;
 
@@ -94,7 +94,7 @@ import java.util.TreeSet;
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
-public class Events extends CalintfHelper {
+public class Events extends CalintfHelper implements EventsI {
   private transient UUIDHexGenerator uuidGen;
 
   /** Constructor
@@ -104,39 +104,12 @@ public class Events extends CalintfHelper {
    * @param user
    * @param debug
    */
-  public Events(Calintf cal, AccessUtil access, BwUser user, boolean debug) {
-    super(cal, access, user, debug);
+  public Events(Calintf cal, AccessUtil access, BwUser user, 
+                int currentMode, boolean ignoreCreator, boolean debug) {
+    super(cal, access, user, currentMode, ignoreCreator, debug);
   }
 
-  /** Return one or more events using the guid and optionally a sequence number
-   * and recurrence-id as a key.
-   *
-   * <p>For non-recurring events, one and only one event should be returned
-   * for any given guid.
-   *
-   * <p>For recurring events, the guid defines the 'master' event defining
-   * the rules together with any exceptions.
-   *
-   * <p>The sequence number and the recurrence id define a particular instance
-   * of a recurrence.
-   *
-   * <p>To specify the master entry provide a null recurrenceId or use the
-   * recurRetrieval parameter.
-   *
-   * <p>If a recurrence id is given and recurRetrieval=retrieveRecurMaster the
-   * associated master event will be returned rather than the instance or any
-   * override.
-   *
-   * @param   guid      String guid for the event
-   * @param   rid       String recurrence id, null for non-recurring, null valued for
-   *                    master or non-null-valued for particular occurrence.
-   * @param   seqnum    Integer sequence nbr
-   * @param recurRetrieval Takes value defined in CalFacadeDefs.
-   * @return  Collection   objects representing event - possibly with overrides.
-   * @throws CalFacadeException
-   */
-  public Collection getEvent(String guid, String rid,
-                             Integer seqnum,
+  public Collection getEvent(BwCalendar calendar, String guid, String rid,
                              int recurRetrieval) throws CalFacadeException {
     BwEvent ev = null;
     BwEvent master = null;
@@ -145,7 +118,7 @@ public class Events extends CalintfHelper {
 
     if (rid == null) {
       // First look in the events table for the master.
-      eventQuery(BwEventObj.class, guid, rid, seqnum, true);
+      eventQuery(BwEventObj.class, calendar, guid, rid, true);
 
       /* There should be one only */
 
@@ -159,7 +132,7 @@ public class Events extends CalintfHelper {
 
       if (!user.equals(ev.getOwner())) {
         // XXX that check prevents annotation by owner - is that OK?
-        eventQuery(BwEventAnnotation.class, guid, rid, seqnum, true);
+        eventQuery(BwEventAnnotation.class, calendar, guid, rid, true);
         BwEventAnnotation ann = (BwEventAnnotation)postGetEvent((BwEvent)sess.getUnique(),
                                                             privRead, noAccessReturnsNull);
 
@@ -207,7 +180,7 @@ public class Events extends CalintfHelper {
       }
       */
       if (recurRetrieval == CalFacadeDefs.retrieveRecurOverrides) {
-        eventQuery(BwEventAnnotation.class, guid, rid, seqnum, false);
+        eventQuery(BwEventAnnotation.class, calendar, guid, rid, false);
 
         Collection ovs = sess.getList();
         Collection overrides = new TreeSet();
@@ -238,17 +211,9 @@ public class Events extends CalintfHelper {
       sb.append(" rec ");
       sb.append(" where rec.master=:master ");
 
-      if (seqnum != null) {
-        sb.append(" and rec.master.sequence=:seq ");
-      }
-
       sess.createQuery(sb.toString());
 
       sess.setEntity("master", master);
-
-      if (seqnum != null) {
-        sess.setInt("seq", seqnum.intValue());
-      }
 
       Collection instances = sess.getList();
 
@@ -265,7 +230,7 @@ public class Events extends CalintfHelper {
 
     /* Rid is non-null - look first for an override then for the instance.
      */
-    eventQuery(BwEventAnnotation.class, guid, rid, seqnum, false);
+    eventQuery(BwEventAnnotation.class, calendar, guid, rid, false);
     BwEventAnnotation override = (BwEventAnnotation)sess.getUnique();
 
     BwEventProxy proxy;
@@ -281,19 +246,11 @@ public class Events extends CalintfHelper {
       sb.append(" rec ");
       sb.append(" where rec.master.guid=:guid ");
 
-      if (seqnum != null) {
-        sb.append(" and rec.master.sequence=:seq ");
-      }
-
       sb.append(" and rec.recurrenceId=:rid ");
 
       sess.createQuery(sb.toString());
 
       sess.setString("guid", guid);
-
-      if (seqnum != null) {
-        sess.setInt("seq", seqnum.intValue());
-      }
 
       sess.setString("rid", rid);
 
@@ -313,12 +270,6 @@ public class Events extends CalintfHelper {
     return ts;
   }
 
-  /** Return a single event
-   *
-   * @param   id          int id of the event
-   * @return  EventVO   value object representing event.
-   * @throws CalFacadeException
-   */
   public BwEvent getEvent(int id) throws CalFacadeException {
     HibSession sess = getSess();
     Criteria cr = sess.createCriteria(BwEventObj.class);
@@ -334,13 +285,8 @@ public class Events extends CalintfHelper {
     return ev;
   }
 
-  /** Add an event to the database.
-   *
-   * @param val   BwEvent object to be added
-   * @param overrides
-   * @throws CalFacadeException
-   */
-  public void addEvent(BwEvent val, Collection overrides) throws CalFacadeException {
+  public void addEvent(BwEvent val, 
+                       Collection overrides) throws CalFacadeException {
     RecuridTable recurids = null;
     HibSession sess = getSess();
 
@@ -360,7 +306,8 @@ public class Events extends CalintfHelper {
      *
      * It also ensures our guid allocation is working OK
      */
-    sess.namedQuery("getGuidCount");
+    sess.namedQuery("getGuidCountCalendar");
+    sess.setEntity("cal", val.getCalendar());
     sess.setString("guid", val.getGuid());
 
     Collection refs = sess.getList();
@@ -460,22 +407,6 @@ public class Events extends CalintfHelper {
     sess.saveOrUpdate(val);
   }
 
-  /* Called when adding an event with overrides
-   */
-  private void addOverride(BwEventProxy proxy,
-                           BwRecurrenceInstance inst) throws CalFacadeException {
-    BwEventAnnotation override = proxy.getRef();
-    override.setOwner(user);
-
-    getSess().saveOrUpdate(override);
-    inst.setOverride(override);
-  }
-
-  /** Replace an event with the same id in the database.
-   *
-   * @param val   EventVO object to be replaced
-   * @throws CalFacadeException
-   */
   public void updateEvent(BwEvent val) throws CalFacadeException {
     HibSession sess = getSess();
     if (!(val instanceof BwEventProxy)) {
@@ -556,104 +487,6 @@ public class Events extends CalintfHelper {
     proxy.setRefChanged(false);
   }
 
-  /* XXX This is a bit brute force but it will do for the moment. We have to turn a
-   * set of rules into a set of changes. If we'd preserved the rules prior to this I
-   * guess we could figure out the differences without querying the db.
-   *
-   * For the moment create a whole set of instances and then query the db to see if
-   * they match.
-   */
-  private void updateRecurrences(BwEvent val) throws CalFacadeException {
-    HibSession sess = getSess();
-    VEvent vev = VEventUtil.toIcalEvent(val, null);
-
-    /* Determine the absolute latest date. */
-    Date latest = VEventUtil.getLatestRecurrenceDate(vev, debug);
-
-    if (latest == null) {
-      /* Unlimited recurrences. No more to do here
-       * We could optionally choose to limit these to say 3 years
-       */
-      return;
-    }
-
-    CalTimezones tzs = cal.getTimezones();
-    DtStart vstart = vev.getStartDate();
-
-    String stzid = CalFacadeUtil.getTzid(vstart);
-    TimeZone stz = null;
-    if (stzid != null) {
-      stz = tzs.getTimeZone(stzid);
-    }
-
-    val.getRecurrence().setLatestDate(tzs.getUtc(latest.toString(), stzid, stz));
-
-    /* Get all the times for this event. - this could be a problem. Need to
-       limit the number. Should we do this in chunks, stepping through the
-       whole period?
-     */
-
-    Date start = vev.getStartDate().getDate();
-    PeriodList pl = vev.getConsumedTime(start, latest);
-    Iterator it = pl.iterator();
-    boolean dateOnly = val.getDtstart().getDateType();
-
-    Collection updated = new TreeSet();
-
-    while (it.hasNext()) {
-      Period p = (Period)it.next();
-
-      BwDateTime rstart = new BwDateTime();
-      rstart.init(dateOnly, p.getStart().toString(), stzid, tzs);
-      BwDateTime rend = new BwDateTime();
-      rend.init(dateOnly, p.getEnd().toString(), stzid, tzs);
-
-      BwRecurrenceInstance ri = new BwRecurrenceInstance();
-
-
-      ri.setDtstart(rstart);
-      ri.setDtend(rend);
-      ri.setRecurrenceId(ri.getDtstart().getDate());
-      ri.setMaster(val);
-
-      updated.add(ri);
-    }
-
-    StringBuffer sb = new StringBuffer();
-
-    sb.append("from ");
-    sb.append(BwRecurrenceInstance.class.getName());
-    sb.append(" where master=:master");
-
-    sess.createQuery(sb.toString());
-    sess.setEntity("master", val);
-    Collection current = sess.getList();
-
-    it = updated.iterator();
-    while (it.hasNext()) {
-      BwRecurrenceInstance ri = (BwRecurrenceInstance)it.next();
-
-      if (!current.contains(ri)) {
-        sess.save(ri);
-      }
-    }
-
-    it = current.iterator();
-    while (it.hasNext()) {
-      BwRecurrenceInstance ri = (BwRecurrenceInstance)it.next();
-
-      if (!updated.contains(ri)) {
-        sess.delete(ri);
-      }
-    }
-  }
-
-  /** Delete an event
-   *
-   * @param val                BwEvent object to be deleted
-   * @return DelEventResult    result.
-   * @exception CalFacadeException If there's a database access problem
-   */
   public DelEventResult deleteEvent(BwEvent val) throws CalFacadeException {
     HibSession sess = getSess();
     DelEventResult der = new DelEventResult(false, 0);
@@ -711,90 +544,9 @@ public class Events extends CalintfHelper {
     return der;
   }
 
-  /** Assign a guid to an event. A noop if this event already has a guid.
-   *
-   * @param val      EventVO object
-   * @throws CalFacadeException
-   */
-  public void assignGuid(BwEvent val) throws CalFacadeException {
-    if (val == null) {
-      return;
-    }
-
-    String guidPrefix = "CAL-" + (String)getUuidGen().generate(null, null);
-
-    if (val.getName() == null) {
-      val.setName(guidPrefix + ".ics");
-    }
-
-    if (val.getGuid() != null) {
-      return;
-    }
-
-    String guid = guidPrefix + cal.getSysid();
-
-    val.setGuid(guid);
-  }
-
-  /** Return the events within the given date range. If this is not a public
-   * admin view we apply any filters.
-   *
-   * <p>This should really be a UNION query but hibernate doesn't currently
-   * support these. However, most queries are for a single days events,
-   * repeated to obtain a week or month, and returns a small number of objects.
-   *
-   * <p>Appropriately enabled caching should reduce db interactions to an
-   * acceptable level.
-   *
-   * <p>We try to build something like the following:
-   *
-   * from EventVO where
-   *     [ ( <in-date-range> ) and ]       if date(s) given
-   *
-   *   one of:
-   *  A: for personal
-   *    ( ( public = false and creator = user) or
-   *      [ and <not-in-blocked-events> ]
-   *
-   * B: for guest
-   *    ( public = true )
-   *
-   * C: for public admin
-   *    ( public = true and creator = user)
-   *
-   * followed by
-   *    [ and <filter-expr> ]
-   *
-   * <filter-expr>
-   * 1. Not null but inexpressable - post process
-   *
-   * 2. Not null but (partially) expressible
-   *    Add sql but possibly post-process
-   *     e.g.  A and B and C
-   *     if any of A, B, C are expressible add to query
-   *
-   * 3. null - add nothing
-   *
-   * <p>All parameters may be null implying all events for this object.
-   * Start or end or both may be null.<ul>
-   * <li>startDate=null,endDate=null means all</li>
-   * <li>startDate=null means all less than endDate</li>
-   * <li>endDate=null means all including and after startDate</li>
-   *
-   * @param calendar     BwCalendar object restricting search or null.
-   * @param filter       BwFilter object restricting search or null.
-   * @param startDate    DateTimeVO start - may be null
-   * @param endDate      DateTimeVO end - may be null.
-   * @param recurRetrieval Takes value defined in.CalFacadeDefs
-   * @param currentMode
-   * @param ignoreCreator
-   * @return Collection  populated event value objects
-   * @throws CalFacadeException
-   */
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
                               BwDateTime startDate, BwDateTime endDate,
-                              int recurRetrieval,
-                              int currentMode, boolean ignoreCreator)
+                              int recurRetrieval)
           throws CalFacadeException {
     HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
@@ -891,15 +643,18 @@ public class Events extends CalintfHelper {
     return es;
   }
 
-  /** Get events given the calendar and String name. Return null for not
-   * found. For non-recurring there should be only one event. Otherwise we
-   * return the master event and overrides.
-   *
-   * @param cal        BwCalendar object
-   * @param val        String possible name
-   * @return Collection of BwEvent or null
-   * @throws CalFacadeException
-   */
+  public boolean editable(BwEvent val) throws CalFacadeException {
+    if (currentMode == CalintfUtil.guestMode) {
+      return false;
+    }
+
+    if (val.getPublick() != (currentMode == CalintfUtil.publicAdminMode)) {
+      return false;
+    }
+
+    return user.equals(val.getCreator());
+  }
+
   public Collection getEventsByName(BwCalendar cal, String val)
           throws CalFacadeException {
     HibSession sess = getSess();
@@ -916,7 +671,135 @@ public class Events extends CalintfHelper {
    *                   Private methods
    * ==================================================================== */
 
-  private void eventQuery(Class cl, String guid, String rid, Integer seqnum,
+  /** Assign a guid to an event. A noop if this event already has a guid.
+   *
+   * @param val      BwEvent object
+   * @throws CalFacadeException
+   */
+  private void assignGuid(BwEvent val) throws CalFacadeException {
+    if (val == null) {
+      return;
+    }
+
+    String guidPrefix = "CAL-" + (String)getUuidGen().generate(null, null);
+
+    if (val.getName() == null) {
+      val.setName(guidPrefix + ".ics");
+    }
+
+    if (val.getGuid() != null) {
+      return;
+    }
+
+    String guid = guidPrefix + cal.getSysid();
+
+    val.setGuid(guid);
+  }
+
+  /* Called when adding an event with overrides
+   */
+  private void addOverride(BwEventProxy proxy,
+                           BwRecurrenceInstance inst) throws CalFacadeException {
+    BwEventAnnotation override = proxy.getRef();
+    override.setOwner(user);
+
+    getSess().saveOrUpdate(override);
+    inst.setOverride(override);
+  }
+
+  /* XXX This is a bit brute force but it will do for the moment. We have to turn a
+   * set of rules into a set of changes. If we'd preserved the rules prior to this I
+   * guess we could figure out the differences without querying the db.
+   *
+   * For the moment create a whole set of instances and then query the db to see if
+   * they match.
+   */
+  private void updateRecurrences(BwEvent val) throws CalFacadeException {
+    HibSession sess = getSess();
+    VEvent vev = VEventUtil.toIcalEvent(val, null);
+
+    /* Determine the absolute latest date. */
+    Date latest = VEventUtil.getLatestRecurrenceDate(vev, debug);
+
+    if (latest == null) {
+      /* Unlimited recurrences. No more to do here
+       * We could optionally choose to limit these to say 3 years
+       */
+      return;
+    }
+
+    CalTimezones tzs = cal.getTimezones();
+    DtStart vstart = vev.getStartDate();
+
+    String stzid = CalFacadeUtil.getTzid(vstart);
+    TimeZone stz = null;
+    if (stzid != null) {
+      stz = tzs.getTimeZone(stzid);
+    }
+
+    val.getRecurrence().setLatestDate(tzs.getUtc(latest.toString(), stzid, stz));
+
+    /* Get all the times for this event. - this could be a problem. Need to
+       limit the number. Should we do this in chunks, stepping through the
+       whole period?
+     */
+
+    Date start = vev.getStartDate().getDate();
+    PeriodList pl = vev.getConsumedTime(start, latest);
+    Iterator it = pl.iterator();
+    boolean dateOnly = val.getDtstart().getDateType();
+
+    Collection updated = new TreeSet();
+
+    while (it.hasNext()) {
+      Period p = (Period)it.next();
+
+      BwDateTime rstart = new BwDateTime();
+      rstart.init(dateOnly, p.getStart().toString(), stzid, tzs);
+      BwDateTime rend = new BwDateTime();
+      rend.init(dateOnly, p.getEnd().toString(), stzid, tzs);
+
+      BwRecurrenceInstance ri = new BwRecurrenceInstance();
+
+
+      ri.setDtstart(rstart);
+      ri.setDtend(rend);
+      ri.setRecurrenceId(ri.getDtstart().getDate());
+      ri.setMaster(val);
+
+      updated.add(ri);
+    }
+
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("from ");
+    sb.append(BwRecurrenceInstance.class.getName());
+    sb.append(" where master=:master");
+
+    sess.createQuery(sb.toString());
+    sess.setEntity("master", val);
+    Collection current = sess.getList();
+
+    it = updated.iterator();
+    while (it.hasNext()) {
+      BwRecurrenceInstance ri = (BwRecurrenceInstance)it.next();
+
+      if (!current.contains(ri)) {
+        sess.save(ri);
+      }
+    }
+
+    it = current.iterator();
+    while (it.hasNext()) {
+      BwRecurrenceInstance ri = (BwRecurrenceInstance)it.next();
+
+      if (!updated.contains(ri)) {
+        sess.delete(ri);
+      }
+    }
+  }
+
+  private void eventQuery(Class cl, BwCalendar calendar, String guid, String rid, 
                           boolean masterOnly) throws CalFacadeException {
     HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
@@ -925,11 +808,8 @@ public class Events extends CalintfHelper {
     sb.append("from ");
     sb.append(cl.getName());
     sb.append(" ev ");
-    sb.append(" where ev.guid=:guid ");
-
-    if (seqnum != null) {
-      sb.append(" and ev.sequence=:seq ");
-    }
+    sb.append(" where ev.calendar=:cal ");
+    sb.append(" and ev.guid=:guid ");
 
     if (masterOnly) {
       sb.append(" and ev.recurrence.recurrenceId is null ");
@@ -939,11 +819,8 @@ public class Events extends CalintfHelper {
 
     sess.createQuery(sb.toString());
 
+    sess.setEntity("cal", calendar);
     sess.setString("guid", guid);
-
-    if (seqnum != null) {
-      sess.setInt("seq", seqnum.intValue());
-    }
 
     if (! masterOnly && (rid != null)) {
       sess.setString("rid", rid);

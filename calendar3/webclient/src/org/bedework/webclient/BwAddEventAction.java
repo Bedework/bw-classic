@@ -130,7 +130,7 @@ public class BwAddEventAction extends BwCalAbstractAction {
       ev.setLocation(null);
     }
 
-    svci.addEvent(ev, null);
+    svci.addEvent(ev.getCalendar(), ev, null);
 
     form.resetNewEvent();
     form.resetNewLocation();

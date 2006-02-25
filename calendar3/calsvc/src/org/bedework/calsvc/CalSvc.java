@@ -1438,10 +1438,11 @@ public class CalSvc extends CalSvcI {
     return postProcess(getCal().getEvent(eventId), null, null);
   }
 
-  public Collection getEvent(String guid, String recurrenceId,
+  public Collection getEvent(BwSubscription sub, BwCalendar cal, 
+                             String guid, String recurrenceId,
                              int recurRetrieval) throws CalFacadeException {
-    return postProcess(getCal().getEvent(guid, recurrenceId, null, recurRetrieval),
-                       (BwSubscription)null);
+    return postProcess(getCal().getEvent(cal, guid, recurrenceId, recurRetrieval),
+                       sub);
   }
 
   public Collection getEvents(BwSubscription sub,
@@ -1521,38 +1522,11 @@ public class CalSvc extends CalSvcI {
     while (it.hasNext()) {
       sub = (BwSubscription)it.next();
 
-      if (sub.getInternalSubscription() && !sub.getCalendarDeleted()) {
-        BwCalendar calendar = sub.getCalendar();
-
-        if (calendar == null) {
-          String path;
-          String uri = sub.getUri();
-
-          if (uri.startsWith(CalFacadeDefs.bwUriPrefix)) {
-            path = uri.substring(CalFacadeDefs.bwUriPrefix.length());
-          } else {
-            // Shouldn't happen?
-            path = uri;
-          }
-
-          if (debug) {
-            trace("Search for calendar \"" + path + "\"");
-          }
-
-          calendar = getCal().getCalendar(path);
-          if (calendar == null) {
-            // Assume deleted
-            sub.setCalendarDeleted(true);
-            updateSubscription(sub);
-          } else {
-            sub.setCalendar(calendar);
-          }
-        }
-
-        if (calendar != null) {
-          internal.addChild(calendar);
-          putSublookup(sublookup, sub, calendar);
-        }
+      BwCalendar calendar = getSubCalendar(sub);
+      
+      if (calendar != null) {
+        internal.addChild(calendar);
+        putSublookup(sublookup, sub, calendar);
       }
     }
     
@@ -1562,6 +1536,43 @@ public class CalSvc extends CalSvcI {
               sublookup));
 
     return ts;
+  }
+  
+  private BwCalendar getSubCalendar(BwSubscription sub) throws CalFacadeException {
+    if (!sub.getInternalSubscription() || sub.getCalendarDeleted()) {
+      return null;
+    }
+    
+    BwCalendar calendar = sub.getCalendar();
+    
+    if (calendar != null) {
+      return calendar;
+    }
+    
+    String path;
+    String uri = sub.getUri();
+    
+    if (uri.startsWith(CalFacadeDefs.bwUriPrefix)) {
+      path = uri.substring(CalFacadeDefs.bwUriPrefix.length());
+    } else {
+      // Shouldn't happen?
+      path = uri;
+    }
+    
+    if (debug) {
+      trace("Search for calendar \"" + path + "\"");
+    }
+    
+    calendar = getCal().getCalendar(path);
+    if (calendar == null) {
+      // Assume deleted
+      sub.setCalendarDeleted(true);
+      updateSubscription(sub);
+    } else {
+      sub.setCalendar(calendar);
+    }
+    
+    return calendar;
   }
   
   private void putSublookup(HashMap sublookup, BwSubscription sub, BwCalendar cal) {
@@ -1607,7 +1618,8 @@ public class CalSvc extends CalSvcI {
     return der;
   }
 
-  public EventUpdateResult addEvent(BwEvent event,
+  public EventUpdateResult addEvent(BwCalendar cal,
+                                    BwEvent event,
                                     Collection overrides) throws CalFacadeException {
     EventUpdateResult updResult = new EventUpdateResult();
 
@@ -1630,21 +1642,23 @@ public class CalSvc extends CalSvcI {
       updResult.locationsAdded++;
     }
 
-    /* If no calendar has been assigned to this event set it to the default
+    /* If no calendar has been assigned for this event set it to the default
      * calendar for non-public events or reject it for public events.
      */
 
-    if (event.getCalendar() == null) {
+    if (cal == null) {
       if (event.getPublick()) {
         throw new CalFacadeException("No calendar assigned");
       }
 
-      event.setCalendar(getPreferences().getDefaultCalendar());
+      cal = getPreferences().getDefaultCalendar();
     }
 
-    if (!event.getCalendar().getCalendarCollection()) {
+    if (!cal.getCalendarCollection()) {
       throw new CalFacadeAccessException();
     }
+    
+    event.setCalendar(cal);
 
     event.setDtstamp(new DtStamp(new DateTime(true)).getValue());
     event.setLastmod(new LastModified(new DateTime(true)).getValue());
@@ -2143,10 +2157,10 @@ public class CalSvc extends CalSvcI {
       return l;
     }
 
-    public Collection getEvent(String guid, String rid,
-                               Integer seq,
+    public Collection getEvent(BwCalendar cal, String guid, String rid,
                                int recurRetrieval) throws CalFacadeException {
-      return CalSvc.this.getEvent(guid, rid, recurRetrieval);
+      return CalSvc.this.getEvent(BwSubscription.makeSubscription(cal), cal, guid, 
+                                  rid, recurRetrieval);
     }
 
     public URIgen getURIgen() throws CalFacadeException {

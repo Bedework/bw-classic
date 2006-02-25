@@ -78,9 +78,10 @@ class Calendars extends CalintfHelper implements CalendarsI {
    * @param debug
    * @throws CalFacadeException
    */
-  public Calendars(Calintf cal, AccessUtil access, BwUser user, boolean debug)
+  public Calendars(Calintf cal, AccessUtil access, BwUser user, 
+                   int currentMode, boolean ignoreCreator, boolean debug)
                   throws CalFacadeException {
-    super(cal, access, user, debug);
+    super(cal, access, user, currentMode, ignoreCreator, debug);
 
     publicCalendarRootPath = "/" + getSyspars().getPublicCalendarRoot();
     userCalendarRootPath = "/" + getSyspars().getUserCalendarRoot();

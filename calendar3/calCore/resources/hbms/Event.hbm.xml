@@ -209,10 +209,16 @@
       where ev.name = :name and ev.calendar = :cal
   ]]></query>
 
-  <!-- Use this to see if a guid exists. The count should be zero or one -->
+  <!-- Use this to see if a guid exists. -->
   <query name="getGuidCount"><![CDATA[
     select count(*) from org.bedework.calfacade.BwEventObj as ev
       where ev.guid = :guid
+  ]]></query>
+
+  <!-- Use this to see if a guid exists in a calendar. The count should be zero or one -->
+  <query name="getGuidCountCalendar"><![CDATA[
+    select count(*) from org.bedework.calfacade.BwEventObj as ev
+      where ev.calendar=:cal and ev.guid = :guid
   ]]></query>
 </hibernate-mapping>
 

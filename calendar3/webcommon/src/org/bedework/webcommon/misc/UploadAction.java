@@ -54,6 +54,7 @@
 
 package org.bedework.webcommon.misc;
 
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
@@ -89,6 +90,19 @@ public class UploadAction extends BwAbstractAction {
       return "noAccess"; // First line of defence
     }
 
+    CalSvcI svci = form.fetchSvci();
+    BwCalendar cal = null;
+
+    int calId = getIntReqPar(request, "calId", -1);
+    if (calId >= 0) {
+      cal = svci.getCalendar(calId);
+    }
+
+    if (cal == null) {
+      form.getErr().emit("org.bedework.client.error.missingcalendar");
+      return null;
+    }
+
     FormFile upFile = form.getUploadFile();
 
     if (upFile == null) {
@@ -104,11 +118,9 @@ public class UploadAction extends BwAbstractAction {
 
     InputStream is = upFile.getInputStream();
 
-    CalSvcI svci = form.fetchSvci();
-
     IcalTranslator trans = new IcalTranslator(svci.getIcalCallback(), debug);
 
-    Collection objs = trans.fromIcal(new InputStreamReader(is));
+    Collection objs = trans.fromIcal(cal, new InputStreamReader(is));
 
     Iterator it = objs.iterator();
 
@@ -120,7 +132,7 @@ public class UploadAction extends BwAbstractAction {
         BwEvent ev = ei.getEvent();
 
         if (ei.getNewEvent()) {
-          svci.addEvent(ev, ei.getOverrides());
+          svci.addEvent(cal, ev, ei.getOverrides());
         } else {
           svci.updateEvent(ev);
         }

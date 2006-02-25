@@ -54,6 +54,7 @@
 
 package org.bedework.icalendar;
 
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
@@ -131,6 +132,7 @@ public class BwEventUtil extends IcalUtil {
    * the vevent and set all absent fields to null in the BwEvent.
    *
    * @param cb          IcalCallback object
+   * @param cal
    * @param evs         Events we already converted - used to check for overrides.
    * @param val         VEvent object
    * @param debug
@@ -138,6 +140,7 @@ public class BwEventUtil extends IcalUtil {
    * @throws CalFacadeException
    */
   public static EventInfo toEvent(IcalCallback cb,
+                                  BwCalendar cal, 
                                   Collection evs,
                                   VEvent val,
                                   boolean debug) throws CalFacadeException {
@@ -231,7 +234,7 @@ public class BwEventUtil extends IcalUtil {
         /* FIXME I think this is wrong. We probably want to provide
          * expansions etc.
          */
-        Collection eis = cb.getEvent(guid, rid, null,
+        Collection eis = cb.getEvent(cal, guid, rid, 
                                      CalFacadeDefs.retrieveRecurMaster);
         if ((eis == null) || (eis.size() == 0)) {
           // do nothing

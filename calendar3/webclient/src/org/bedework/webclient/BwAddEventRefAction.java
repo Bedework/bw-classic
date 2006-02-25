@@ -55,7 +55,6 @@
 package org.bedework.webclient;
 
 import org.bedework.appcommon.BedeworkDefs;
-import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwEventProxy;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
@@ -82,31 +81,22 @@ public class BwAddEventRefAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    int id = form.getEventId();
-
-    if (id < 0) {
-      // Do nothing
-      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
-      return "doNothing";
-    }
-
     CalSvcI svci = form.fetchSvci();
 
-    EventInfo ei = svci.getEvent(id);
+    EventInfo ei = findEvent(request, form);
 
     if (ei == null) {
       // Do nothing
-      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
       return "doNothing";
     }
 
     /* Create an event to act as a reference to the targeted event and copy
      * the appropriate fields from the target
      */
-    BwEvent proxy = BwEventProxy.makeAnnotation(ei.getEvent(),
+    BwEventProxy proxy = BwEventProxy.makeAnnotation(ei.getEvent(),
                                                 ei.getEvent().getOwner());
 
-    svci.addEvent(proxy, null);
+    svci.addEvent(null, proxy.getTarget(), null);
 
     form.getMsg().emit("org.bedework.client.message.added.eventrefs", 1);
 

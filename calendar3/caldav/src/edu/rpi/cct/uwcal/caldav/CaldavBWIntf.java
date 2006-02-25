@@ -267,7 +267,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
   public void delete(WebdavNsNode node) throws WebdavIntfException {
     try {
-      CaldavBwNode uwnode = getUwnode(node);
+      CaldavBwNode uwnode = getBwnode(node);
 
       if (!(uwnode instanceof CaldavComponentNode)) {
         throw WebdavIntfException.unauthorized();
@@ -297,7 +297,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
   public Iterator getChildren(WebdavNsNode node)
       throws WebdavIntfException {
     try {
-      CaldavBwNode uwnode = getUwnode(node);
+      CaldavBwNode uwnode = getBwnode(node);
 
       Vector v = new Vector();
 
@@ -378,7 +378,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
   public Enumeration getProperties(WebdavNsNode node)
       throws WebdavIntfException {
     try {
-      CaldavBwNode uwnode = getUwnode(node);
+      CaldavBwNode uwnode = getBwnode(node);
 
       return WebdavProperty.getEnumeration(uwnode.getProperties(namespace));
     } catch (WebdavIntfException we) {
@@ -402,7 +402,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
         return null;
       }
 
-      CaldavBwNode uwnode = getUwnode(node);
+      CaldavBwNode uwnode = getBwnode(node);
 
       return uwnode.getContent();
     } catch (WebdavIntfException we) {
@@ -500,11 +500,12 @@ public class CaldavBWIntf extends WebdavNsIntf {
       pcr.node = node;
       pcr.created = create;
 
-      CaldavBwNode uwnode = getUwnode(node);
-      CaldavURI cdUri = uwnode.getCDURI();
+      CaldavBwNode bwnode = getBwnode(node);
+      CaldavURI cdUri = bwnode.getCDURI();
       String entityName = cdUri.getEntityName();
+      BwCalendar cal = cdUri.getCal();
 
-      Collection c = trans.fromIcal(new MyReader(contentRdr));
+      Collection c = trans.fromIcal(cal, new MyReader(contentRdr));
 
       /** if more than one event these must all be instances of the same recurrence, i.e the
        * uid must be the same for each.
@@ -545,8 +546,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
           if (evinfo.getNewEvent()) {
             pcr.created = true;
             ev.setName(entityName);
-            ev.setCalendar(cdUri.getCal());
-            svci.addEvent(ev, evinfo.getOverrides());
+            svci.addEvent(cal, ev, evinfo.getOverrides());
 
             StringBuffer sb = new StringBuffer(cdUri.getPath());
             sb.append("/");
@@ -633,7 +633,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
    */
   public void makeCollection(HttpServletRequest req, WebdavNsNode node) throws WebdavIntfException {
     try {
-      CaldavBwNode uwnode = getUwnode(node);
+      CaldavBwNode uwnode = getBwnode(node);
       CaldavURI cdUri = uwnode.getCDURI();
 
       /* The uri should have an entity name representing the new collection
@@ -821,7 +821,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
   }
 
   public void emitAcl(WebdavNsNode node) throws WebdavIntfException {
-    CaldavBwNode uwnode = getUwnode(node);
+    CaldavBwNode uwnode = getBwnode(node);
     CaldavURI cdUri = uwnode.getCDURI();
     Collection aces = null;
 
@@ -986,7 +986,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
   public void generatePropResourcetype(WebdavNsNode node)
           throws WebdavIntfException {
-    CaldavBwNode uwnode = getUwnode(node);
+    CaldavBwNode uwnode = getBwnode(node);
 
     if (debug) {
       debugMsg("generatePropResourcetype for " +
@@ -1030,7 +1030,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
    */
   public Collection query(WebdavNsNode wdnode, int retrieveRecur,
                           Filter fltr) throws WebdavIntfException {
-    CaldavBwNode node = getUwnode(wdnode);
+    CaldavBwNode node = getBwnode(wdnode);
     CalSvcI svci = getSvci();
     Collection events;
 
@@ -1103,7 +1103,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
   public Collection getFreeBusy(WebdavNsNode wdnode,
                                 FreeBusyQuery freeBusy) throws WebdavIntfException {
     try {
-      CaldavBwNode uwnode = getUwnode(wdnode);
+      CaldavBwNode uwnode = getBwnode(wdnode);
       if (!(uwnode instanceof CaldavCalNode)) {
         throw WebdavIntfException.badRequest();
       }
@@ -1436,7 +1436,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
     uriMap.put(wi.getPath(), wi);
   }
 
-  private CaldavBwNode getUwnode(WebdavNsNode node)
+  private CaldavBwNode getBwnode(WebdavNsNode node)
       throws WebdavIntfException {
     if (!(node instanceof CaldavBwNode)) {
       throw new WebdavIntfException("Not a valid node object " +

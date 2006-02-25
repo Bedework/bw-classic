@@ -54,6 +54,7 @@
 
 package org.bedework.icalendar;
 
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
@@ -262,15 +263,16 @@ public class IcalTranslator implements Serializable {
    * <p>Because an icalendar object can contain 0 or more VEvents we return
    * a collection of events which may be empty.
    *
+   * @param cal       calendar
    * @param val
    * @return Collection
    * @throws CalFacadeException
    */
-  public Collection fromIcal(String val) throws CalFacadeException {
+  public Collection fromIcal(BwCalendar cal, String val) throws CalFacadeException {
     try {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
-      return fromIcal(bldr.build(new UnfoldingReader(new StringReader(val))));
+      return fromIcal(cal, bldr.build(new UnfoldingReader(new StringReader(val))));
     } catch (ParserException pe) {
       if (debug) {
         error(pe);
@@ -285,16 +287,17 @@ public class IcalTranslator implements Serializable {
 
   /** Convert the Icalendar reader to a Collection of Calendar objects
    *
+   * @param cal       calendar
    * @param rdr
    * @return Collection
    * @throws CalFacadeException
    */
-  public Collection fromIcal(Reader rdr) throws CalFacadeException {
+  public Collection fromIcal(BwCalendar cal, Reader rdr) throws CalFacadeException {
     try {
       System.setProperty("ical4j.unfolding.relaxed", "true");
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
-      return fromIcal(bldr.build(new UnfoldingReader(rdr)));
+      return fromIcal(cal, bldr.build(new UnfoldingReader(rdr)));
     } catch (ParserException pe) {
       if (debug) {
         error(pe);
@@ -309,11 +312,12 @@ public class IcalTranslator implements Serializable {
 
   /** Convert the Calendar to a Collection of calendar objects.
    *
+   * @param cal       calendar
    * @param val
    * @return Collection
    * @throws CalFacadeException
    */
-  public Collection fromIcal(Calendar val) throws CalFacadeException {
+  public Collection fromIcal(BwCalendar cal, Calendar val) throws CalFacadeException {
     Vector objs = new Vector();
 
     if (val == null) {
@@ -328,7 +332,7 @@ public class IcalTranslator implements Serializable {
       Object o = it.next();
 
       if (o instanceof VEvent) {
-        EventInfo ev = BwEventUtil.toEvent(cb, objs, (VEvent)o, debug);
+        EventInfo ev = BwEventUtil.toEvent(cb, cal, objs, (VEvent)o, debug);
 
         if (ev != null) {
           objs.add(ev);

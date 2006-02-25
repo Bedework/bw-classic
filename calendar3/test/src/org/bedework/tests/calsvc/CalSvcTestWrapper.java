@@ -356,7 +356,7 @@ public class CalSvcTestWrapper extends CalSvc {
       log("Set event calendar to " + ev.getCalendar());
     }
 
-    addEvent(ev, null);
+    addEvent(null, ev, null);
 
     return ev.getId();
   }

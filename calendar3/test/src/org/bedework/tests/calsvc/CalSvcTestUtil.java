@@ -504,11 +504,7 @@ public class CalSvcTestUtil extends TestCase {
         ev.addCategory(cat);
       }
 
-//      if (calendar == null) {
-        ev.setCalendar(svci.getCalendar());
-//      }
-
-      svci.addEvent(ev, null);
+      svci.addEvent(svci.getCalendar(), ev, null);
       log("Created event, id=" + ev.getId());
       return ev.getId();
     } catch (Throwable t) {

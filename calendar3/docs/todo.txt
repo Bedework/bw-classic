@@ -1,6 +1,34 @@
 Todo
 
 --------------------------------------------------------------------------------
+Remove references to getEvent(id)
+--------------------------------------------------------------------------------
+Changes caused by use of calendar id.
+The last round of changes were caused by the need to make the guid unique only
+within the context of a calendar collection. This requires that the calendar
+id be part of the event key.
+
+All of the url for fetching single events need to change. There are about 8 of
+them in the public default stylesheet.
+
+The changes were relatively simple:
+   Change all occurrences of
+      subid={$subscriptionId}&amp;
+    to
+      subid={$subscriptionId}&amp;calid={$calendarId}&amp;
+   In 2-3 places you need to define calendarId. Look for occurences of
+      <xsl:variable name="subscriptionId" select="subscription/id"/>
+   and immediately following add
+      <xsl:variable name="calendarId" select="calendar/id"/>
+
+A further change is to look for the addEventRef.do url and change the text
+      eventId={$id}
+   to
+      subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}
+that is, make it the same form as the others. (I found 2 of these)
+
+These changes will also be required in the user client stylesheet.
+--------------------------------------------------------------------------------
 Lost the exrules from the recurrence info hbm - add them
 --------------------------------------------------------------------------------
 Installing webtest

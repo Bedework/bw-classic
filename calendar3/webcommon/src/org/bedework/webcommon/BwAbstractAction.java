@@ -78,8 +78,6 @@ import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
 
-import edu.rpi.sss.util.Util;
-
 import edu.rpi.sss.util.jsp.JspUtil;
 import edu.rpi.sss.util.jsp.SessionListener;
 import edu.rpi.sss.util.jsp.UtilAbstractAction;
@@ -370,16 +368,32 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         return null;
       }
     }
+    
+    int calId = getIntReqPar(request, "calid", -1);
+    BwCalendar cal = null;
 
-    String guid = request.getParameter("guid");
+    if (calId < 0) {
+      form.getErr().emit("org.bedework.client.error.missingsubscriptionid");
+      return null;
+    }
+    
+    cal = svci.getCalendar(calId);
+    
+    if (cal == null) {
+      // Assume no access
+      form.getErr().emit("org.bedework.client.error.noaccess");
+      return null;
+    }
 
-    if (Util.checkNull(guid) != null) {
+    String guid = getReqPar(request, "guid");
+
+    if (guid != null) {
       if (debug) {
         debugMsg("Get event by guid");
       }
-      String rid = Util.checkNull(request.getParameter("recurrenceId"));
+      String rid = getReqPar(request, "recurrenceId");
       int retMethod = CalFacadeDefs.retrieveRecurMaster;
-      Collection evs = svci.getEvent(guid, rid, retMethod);
+      Collection evs = svci.getEvent(sub, cal, guid, rid, retMethod);
       if (debug) {
         debugMsg("Get event by guid found " + evs.size());
       }
@@ -396,8 +410,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     } else if (debug) {
       debugMsg("Get event by guid found " + ev.getEvent());
     }
-
-    ev.setSubscription(sub);
 
     return ev;
   }

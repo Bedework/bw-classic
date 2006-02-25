@@ -310,19 +310,24 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     authUser.setGroups(groups.getAllGroups(authUser));
     access.setAuthUser(authUser);
 
-    events = new Events(this, access, this.user, debug);
+    events = new Events(this, access, this.user, currentMode, 
+                        ignoreCreator, debug);
 
-    calendars = new Calendars(this, access, this.user, debug);
+    calendars = new Calendars(this, access, this.user, currentMode, 
+                              ignoreCreator, debug);
 
-    categories = new EventProperties(this, access, this.user,
+    categories = new EventProperties(this, access, this.user, currentMode, 
+                                     ignoreCreator, 
                                      "word", BwCategory.class.getName(),
                                      "getCategoryRefs",
                                      -1, debug);
-    locations = new EventProperties(this, access, this.user,
+    locations = new EventProperties(this, access, this.user, currentMode, 
+                                    ignoreCreator, 
                                     "address", BwLocation.class.getName(),
-                                     "getLocationRefs",
+                                    "getLocationRefs",
                                      CalFacadeDefs.maxReservedLocationId, debug);
-    sponsors = new EventProperties(this, access, this.user,
+    sponsors = new EventProperties(this, access, this.user, currentMode, 
+                                   ignoreCreator, 
                                    "name", BwSponsor.class.getName(),
                                    "getSponsorRefs",
                                    CalFacadeDefs.maxReservedSponsorId, debug);
@@ -927,7 +932,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   public BwCategory getCategory(int id) throws CalFacadeException {
     checkOpen();
 
-    return (BwCategory)categories.get(id, currentMode, ignoreCreator);
+    return (BwCategory)categories.get(id);
   }
 
   public BwCategory findCategory(BwCategory val) throws CalFacadeException {
@@ -976,7 +981,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   public BwLocation getLocation(int id) throws CalFacadeException {
     checkOpen();
 
-    return (BwLocation)locations.get(id, currentMode, ignoreCreator);
+    return (BwLocation)locations.get(id);
   }
 
   public BwLocation findLocation(BwLocation val) throws CalFacadeException {
@@ -1025,7 +1030,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   public BwSponsor getSponsor(int id) throws CalFacadeException {
     checkOpen();
 
-    return (BwSponsor)sponsors.get(id, currentMode, ignoreCreator);
+    return (BwSponsor)sponsors.get(id);
   }
 
   public BwSponsor findSponsor(BwSponsor val) throws CalFacadeException {
@@ -1069,8 +1074,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
                               int recurRetrieval)
           throws CalFacadeException {
     return events.getEvents(calendar, filter,
-                            startDate, endDate, recurRetrieval,
-                            currentMode, ignoreCreator);
+                            startDate, endDate, recurRetrieval);
   }
 
   public BwEvent getEvent(int id) throws CalFacadeException {
@@ -1078,11 +1082,10 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return events.getEvent(id);
   }
 
- public Collection getEvent(String guid, String rid,
-                           Integer seqnum,
+ public Collection getEvent(BwCalendar calendar, String guid, String rid,
                            int recurRetrieval) throws CalFacadeException {
     checkOpen();
-    return events.getEvent(guid, rid, seqnum, recurRetrieval);
+    return events.getEvent(calendar, guid, rid, recurRetrieval);
   }
 
   public void addEvent(BwEvent val,
@@ -1104,22 +1107,8 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   public boolean editable(BwEvent val) throws CalFacadeException {
     checkOpen();
 
-    if (currentMode == CalintfUtil.guestMode) {
-      return false;
-    }
-
-    if (val.getPublick() != (currentMode == CalintfUtil.publicAdminMode)) {
-      return false;
-    }
-
-    return user.equals(val.getCreator());
+    return events.editable(val);
   }
-
-  /* ====================================================================
-   *                       Caldav support
-   * Caldav as it stands at the moment requires that we save the arbitary
-   * names clients might assign to events.
-   * ==================================================================== */
 
   public Collection getEventsByName(BwCalendar cal, String val)
           throws CalFacadeException {

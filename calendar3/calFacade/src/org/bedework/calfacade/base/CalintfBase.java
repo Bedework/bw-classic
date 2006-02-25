@@ -693,8 +693,7 @@ public class CalintfBase implements Calintf {
     throw new CalFacadeUnimplementedException();
   }
 
-  public Collection getEvent(String guid, String rid,
-                             Integer seqnum,
+  public Collection getEvent(BwCalendar calendar, String guid, String rid,
                              int recurRetrieval) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
