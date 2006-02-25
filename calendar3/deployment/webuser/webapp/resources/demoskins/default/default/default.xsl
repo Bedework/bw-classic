@@ -235,6 +235,11 @@
         <td>Subscriptions</td>
       </tr>
     </table>
+    <ul>
+      <li><a href="{$initEvent}">Add Event</a></li>
+      <li><a href="{$manageLocations}">Manage Locations</a></li>
+      <li><a href="{$fetchPublicCalendars}">Manage Subscriptions</a></li>
+    </ul>
   </xsl:template>
   
   <xsl:template name="tabs">
@@ -528,10 +533,6 @@
               </xsl:otherwise>
             </xsl:choose>
             <a href="setup.do"><img src="{$resourcesRoot}/images/demo/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
-           <!--<a href="{$initEvent}">Add Event</a> |
-           <a href="{$manageLocations}">Manage Locations</a> |
-           <a href="{$fetchPublicCalendars}">Manage Subscriptions</a>-->
-           <!-- <form name="calForm" method="get" action="{$setSelection}">Search: <input type="text" name="searchString" size="30" value=""/><input type="submit" value="go"/></form> -->
          </td>
        </tr>
     </table>
