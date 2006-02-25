@@ -46,3 +46,36 @@ function launchSimpleWindow(URL) {
   simpleWindow = window.open(URL, "simpleWindow", "width=800,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
   window.simpleWindow.focus();
 }
+
+function startDateCalWidgetCallback(date, month, year) {
+  if (String(month).length == 1) {
+      month = '0' + month;
+  }
+  if (String(date).length == 1) {
+      date = '0' + date;
+  }    
+  today = new Date();
+  if (year < today.getFullYear()) {
+    alert("You may not create an event in a previous year.");
+  } else {
+    document.peForm['eventStartDate.month'].value = month;
+    document.peForm['eventStartDate.day'].value = date;
+    document.peForm['eventStartDate.year'].value = year;
+  }
+}
+function endDateCalWidgetCallback(date, month, year) {
+  if (String(month).length == 1) {
+      month = '0' + month;
+  }
+  if (String(date).length == 1) {
+      date = '0' + date;
+  }    
+  today = new Date();
+  if (year < today.getFullYear()) {
+    alert("You may not create an event in a previous year.");
+  } else {
+    document.peForm['eventEndDate.month'].value = month;
+    document.peForm['eventEndDate.day'].value = date;
+    document.peForm['eventEndDate.year'].value = year;
+  }
+}
