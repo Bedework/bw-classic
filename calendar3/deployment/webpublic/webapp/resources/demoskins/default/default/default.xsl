@@ -180,15 +180,9 @@
         </td>
       </tr>
     </table>
-    <table width="100%" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td><img alt="" src="{$resourcesRoot}/images/std-title-left.gif" width="8" height="16" border="0"/></td>
-        <td width="50%"><img alt="" src="{$resourcesRoot}/images/std-title-space.gif" width="100%" height="16" border="0"/></td>
-        <td><img src="{$resourcesRoot}/images/std-title.gif" width="485" height="16" border="0" alt="Calendar of Events"/></td>
-        <td width="50%"><img alt="" src="{$resourcesRoot}/images/std-title-space.gif" width="100%" height="16" border="0"/></td>
-        <td><img alt="" src="{$resourcesRoot}/images/std-title-right.gif" width="9" height="16" border="0"/></td>
-      </tr>
-    </table>
+    <div id="calendarOfEventsTitle">
+      CALENDAR of EVENTS
+    </div>
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="dateBarTable">
       <tr>
         <td width="50" class="imgCell"><img alt="*" src="{$resourcesRoot}/images/spacer.gif" width="50" height="14" border="0"/></td>
