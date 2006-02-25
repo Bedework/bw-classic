@@ -182,7 +182,7 @@
       <forward name="continue" path="/event/showModForm.rdo" redirect="true" />
       <forward name="retry" path="/event/showModForm.rdo" redirect="true" />
       <forward name="delete" path="/event/showDeleteConfirm.rdo" redirect="true" />
-      <forward name="cancelled" path="/event/showUpdateList.rdo" redirect="true" />
+      <forward name="cancelled" path="/event/initUpdateEvent.do" redirect="true" />
       <forward name="copy" path="/event/showModForm.rdo" redirect="true" />
     </action>
 
