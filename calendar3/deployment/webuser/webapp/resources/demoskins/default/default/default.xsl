@@ -89,83 +89,84 @@
             <p><xsl:apply-templates select="/bedework/error"/></p>
           </div>
         </xsl:if>
-        <!-- <xsl:call-template name="alerts"/> -->
-        <xsl:call-template name="tabs"/>
-        <div id="bodyBlock">
-          <div id="leftMenus">
-            test
-          </div>
-          <div id="bodyContent">
-            <xsl:choose>
-              <xsl:when test="/bedework/page='event'">
-                <!-- show an event -->
-                <xsl:apply-templates select="/bedework/event"/>
-              </xsl:when>
-              <xsl:when test="/bedework/page='addEvent'">
-                <xsl:call-template name="addEvent"/>
-              </xsl:when>
-              <xsl:when test="/bedework/page='editEvent'">
-                <!-- edit an event -->
-                <xsl:apply-templates select="/bedework/eventform"/>
-              </xsl:when>
-              <xsl:when test="/bedework/page='alarmOptions'">
-                <xsl:call-template name="alarmOptions" />
-              </xsl:when>
-              <xsl:when test="/bedework/page='upload'">
-                <xsl:call-template name="upload" />
-              </xsl:when>
-              <xsl:when test="/bedework/page='manageLocations'">
-                <xsl:call-template name="manageLocations" />
-              </xsl:when>
-              <xsl:when test="/bedework/page='editLocation'">
-                <!-- edit an event -->
-                <xsl:apply-templates select="/bedework/locationform"/>
-              </xsl:when>
-              <xsl:when test="/bedework/page='calendars'">
-                <!-- show a list of all calendars and manage subscriptions -->
-                <xsl:apply-templates select="/bedework/calendars"/>
-              </xsl:when>
-              <xsl:when test="/bedework/page='other'">
-                <!-- show an arbitrary page -->
-                <xsl:call-template name="selectPage"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <!-- otherwise, show the eventsCalendar -->
-                <xsl:call-template name="navigation"/>
-                <xsl:call-template name="userBar"/>
-                <!-- main eventCalendar content -->
-                <xsl:choose>
-                  <xsl:when test="/bedework/periodname='Day'">
-                    <xsl:call-template name="listView"/>
-                  </xsl:when>
-                  <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
-                    <xsl:choose>
-                      <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                        <xsl:call-template name="listView"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:call-template name="weekView"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:when>
-                  <xsl:when test="/bedework/periodname='Month'">
-                    <xsl:choose>
-                      <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-                        <xsl:call-template name="listView"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:call-template name="monthView"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:call-template name="yearView"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:otherwise>
-            </xsl:choose>
-          </div>
-        </div>
+        <table id="bodyBlock" cellspacing="0">
+          <tr>
+            <td id="leftMenus">
+              <xsl:call-template name="leftMenus"/>
+            </td>
+            <td id="bodyContent">
+              <xsl:call-template name="tabs"/>
+              <xsl:choose>
+                <xsl:when test="/bedework/page='event'">
+                  <!-- show an event -->
+                  <xsl:apply-templates select="/bedework/event"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='addEvent'">
+                  <xsl:call-template name="addEvent"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='editEvent'">
+                  <!-- edit an event -->
+                  <xsl:apply-templates select="/bedework/eventform"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='alarmOptions'">
+                  <xsl:call-template name="alarmOptions" />
+                </xsl:when>
+                <xsl:when test="/bedework/page='upload'">
+                  <xsl:call-template name="upload" />
+                </xsl:when>
+                <xsl:when test="/bedework/page='manageLocations'">
+                  <xsl:call-template name="manageLocations" />
+                </xsl:when>
+                <xsl:when test="/bedework/page='editLocation'">
+                  <!-- edit an event -->
+                  <xsl:apply-templates select="/bedework/locationform"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='calendars'">
+                  <!-- show a list of all calendars and manage subscriptions -->
+                  <xsl:apply-templates select="/bedework/calendars"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='other'">
+                  <!-- show an arbitrary page -->
+                  <xsl:call-template name="selectPage"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <!-- otherwise, show the eventsCalendar -->
+                  <xsl:call-template name="navigation"/>
+                  <xsl:call-template name="userBar"/>
+                  <!-- main eventCalendar content -->
+                  <xsl:choose>
+                    <xsl:when test="/bedework/periodname='Day'">
+                      <xsl:call-template name="listView"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
+                      <xsl:choose>
+                        <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
+                          <xsl:call-template name="listView"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:call-template name="weekView"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:when>
+                    <xsl:when test="/bedework/periodname='Month'">
+                      <xsl:choose>
+                        <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
+                          <xsl:call-template name="listView"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:call-template name="monthView"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:call-template name="yearView"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:otherwise>
+              </xsl:choose>
+            </td>
+          </tr>
+        </table>
         <!-- footer -->
         <xsl:call-template name="footer"/>
       </body>
@@ -226,6 +227,16 @@
     </div>
   </xsl:template>
 
+  <xsl:template name="leftMenus">
+    <table id="leftTabs" cellspacing="0">
+      <tr>    
+        <td class="selected first">Main</td>  
+        <td>Calendars</td>
+        <td>Subscriptions</td>
+      </tr>
+    </table>
+  </xsl:template>
+  
   <xsl:template name="tabs">
     <xsl:choose>
       <xsl:when test="/bedework/page='eventscalendar'">
@@ -272,10 +283,6 @@
               </xsl:choose>
             </td>
             <td class="centerCell">
-                <a href="setup.do">refresh view</a><!-- <a href="http://www.rpi.edu/dept/cct/apps/pubeventsxml/calendarfeatures.html">login</a> -->
-                <!-- <span id="featureHighlight">switch view &#8594;</span> -->
-            </td>
-            <td class="centerCell">
                 <a href="{$initUpload}">upload</a><!-- <a href="http://www.rpi.edu/dept/cct/apps/pubeventsxml/calendarfeatures.html">login</a> -->
                 <!-- <span id="featureHighlight">switch view &#8594;</span> -->
             </td>
@@ -285,77 +292,9 @@
               </a>
               <a class="rss" href="{$setSelection}?calId=&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
             </td>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Day'">
-                  <img src="{$resourcesRoot}/images/demo/std-button-listview-off.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
-                </xsl:when>
-                <xsl:when test="/bedework/periodname='Year'">
-                  <img src="{$resourcesRoot}/images/demo/std-button-calview-off.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
-                </xsl:when>
-                <xsl:when test="/bedework/periodname='Month'">
-                  <xsl:choose>
-                    <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-                      <a href="{$setup}?setappvar=monthViewMode(cal)" title="toggle list/calendar view">
-                        <img src="{$resourcesRoot}/images/demo/std-button-calview.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
-                      </a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <a href="{$setup}?setappvar=monthViewMode(list)" title="toggle list/calendar view">
-                        <img src="{$resourcesRoot}/images/demo/std-button-listview.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
-                      </a>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                      <a href="{$setup}?setappvar=weekViewMode(cal)" title="toggle list/calendar view">
-                        <img src="{$resourcesRoot}/images/demo/std-button-calview.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
-                      </a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <a href="{$setup}?setappvar=weekViewMode(list)" title="toggle list/calendar view">
-                        <img src="{$resourcesRoot}/images/demo/std-button-listview.gif" width="46" height="20" border="0" alt="toggle list/calendar view"/>
-                      </a>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
+            
             <td class="rightCell">
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Year' or
-                                (/bedework/periodname='Month' and
-                                (/bedework/appvar[key='monthViewMode']/value='cal' or
-                                 count(/bedework/appvar[key='monthViewMode'])=0)) or
-                                (/bedework/periodname='Week' and
-                                (/bedework/appvar[key='weekViewMode']/value='cal' or
-                                 count(/bedework/appvar[key='weekViewMode'])=0))">
-                  <xsl:choose>
-                    <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                      <img src="{$resourcesRoot}/images/demo/std-button-summary-off.gif" width="67" height="20" border="0" alt="only summaries of events supported in this view"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <img src="{$resourcesRoot}/images/demo/std-button-details-off.gif" width="67" height="20" border="0" alt="only summaries of events supported in this view"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                      <a href="{$setup}?setappvar=summaryMode(summary)" title="toggle summary/detailed view">
-                        <img src="{$resourcesRoot}/images/demo/std-button-summary.gif" width="67" height="20" border="0" alt="toggle summary/detailed view"/>
-                      </a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <a href="{$setup}?setappvar=summaryMode(details)" title="toggle summary/detailed view">
-                        <img src="{$resourcesRoot}/images/demo/std-button-details.gif" width="67" height="20" border="0" alt="toggle summary/detailed view"/>
-                      </a>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
+              &#160;
             </td>
           </tr>
         </table>
@@ -385,16 +324,6 @@
         </table>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="alerts">
-    <table id="alertsTable">
-      <tr>
-        <td>
-          I'm an alert
-        </td>
-      </tr>
-    </table>
   </xsl:template>
 
   <xsl:template name="navigation">
@@ -530,9 +459,78 @@
            </xsl:choose> -->
          </td>
          <td class="rightCell">
-           <a href="{$initEvent}">Add Event</a> |
+           <xsl:choose>
+            <xsl:when test="/bedework/periodname='Day'">
+              <img src="{$resourcesRoot}/images/demo/std-button-listview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+            </xsl:when>
+            <xsl:when test="/bedework/periodname='Year'">
+              <img src="{$resourcesRoot}/images/demo/std-button-calview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+            </xsl:when>
+            <xsl:when test="/bedework/periodname='Month'">
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
+                  <a href="{$setup}?setappvar=monthViewMode(cal)" title="toggle list/calendar view">
+                    <img src="{$resourcesRoot}/images/demo/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$setup}?setappvar=monthViewMode(list)" title="toggle list/calendar view">
+                    <img src="{$resourcesRoot}/images/demo/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
+                  <a href="{$setup}?setappvar=weekViewMode(cal)" title="toggle list/calendar view">
+                    <img src="{$resourcesRoot}/images/demo/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$setup}?setappvar=weekViewMode(list)" title="toggle list/calendar view">
+                    <img src="{$resourcesRoot}/images/demo/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
+           <xsl:choose>
+              <xsl:when test="/bedework/periodname='Year' or
+                              (/bedework/periodname='Month' and
+                              (/bedework/appvar[key='monthViewMode']/value='cal' or
+                               count(/bedework/appvar[key='monthViewMode'])=0)) or
+                              (/bedework/periodname='Week' and
+                              (/bedework/appvar[key='weekViewMode']/value='cal' or
+                               count(/bedework/appvar[key='weekViewMode'])=0))">
+                <xsl:choose>
+                  <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
+                    <img src="{$resourcesRoot}/images/demo/std-button-summary-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <img src="{$resourcesRoot}/images/demo/std-button-details-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:choose>
+                  <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
+                    <a href="{$setup}?setappvar=summaryMode(summary)" title="toggle summary/detailed view">
+                      <img src="{$resourcesRoot}/images/demo/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    </a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <a href="{$setup}?setappvar=summaryMode(details)" title="toggle summary/detailed view">
+                      <img src="{$resourcesRoot}/images/demo/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    </a>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:otherwise>
+            </xsl:choose>
+            <a href="setup.do"><img src="{$resourcesRoot}/images/demo/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
+           <!--<a href="{$initEvent}">Add Event</a> |
            <a href="{$manageLocations}">Manage Locations</a> |
-           <a href="{$fetchPublicCalendars}">Manage Subscriptions</a>
+           <a href="{$fetchPublicCalendars}">Manage Subscriptions</a>-->
            <!-- <form name="calForm" method="get" action="{$setSelection}">Search: <input type="text" name="searchString" size="30" value=""/><input type="submit" value="go"/></form> -->
          </td>
        </tr>
