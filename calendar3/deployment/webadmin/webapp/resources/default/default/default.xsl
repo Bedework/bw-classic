@@ -539,18 +539,20 @@
               </div>
               <script language="JavaScript" type="text/javascript">
               <xsl:comment>
-                dynCalendarWidget = new dynCalendar('dynCalendarWidget', 'startDateCalWidgetCallback');
+                startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback');
               </xsl:comment>
               </script>
               <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
               <div class="{$timeFieldsClass}" id="startTimeFields">
-                <xsl:copy-of select="/bedeworkadmin/formElements/form/start/hour/*"/>
-                <xsl:copy-of select="/bedeworkadmin/formElements/form/start/minute/*"/>
-                <xsl:if test="/bedeworkadmin/formElements/form/start/ampm">
-                  <xsl:copy-of select="/bedeworkadmin/formElements/form/start/ampm/*"/>
-                </xsl:if>
-                <xsl:text> </xsl:text>
-                <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                <span id="calWidgetStartTimeHider" class="show">
+                  <xsl:copy-of select="/bedeworkadmin/formElements/form/start/hour/*"/>
+                  <xsl:copy-of select="/bedeworkadmin/formElements/form/start/minute/*"/>
+                  <xsl:if test="/bedeworkadmin/formElements/form/start/ampm">
+                    <xsl:copy-of select="/bedeworkadmin/formElements/form/start/ampm/*"/>
+                  </xsl:if>
+                  <xsl:text> </xsl:text>
+                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                </span>
               </div>
             </div>
             <div class="dateStartEndBox">
@@ -578,18 +580,20 @@
                 </div>                
                 <script language="JavaScript" type="text/javascript">
                 <xsl:comment>
-                  dynCalendarWidget = new dynCalendar('dynCalendarWidget', 'endDateCalWidgetCallback');
+                  endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback');
                 </xsl:comment>
                 </script>
                 <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
                 <div class="{$timeFieldsClass}" id="endTimeFields">
-                  <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/hour/*"/>
-                  <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/minute/*"/>
-                  <xsl:if test="/bedeworkadmin/formElements/form/end/dateTime/ampm">
-                    <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/ampm/*"/>
-                  </xsl:if>
-                  <xsl:text> </xsl:text>
-                  <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                  <span id="calWidgetEndTimeHider" class="show">
+                    <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/hour/*"/>
+                    <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/minute/*"/>
+                    <xsl:if test="/bedeworkadmin/formElements/form/end/dateTime/ampm">
+                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/ampm/*"/>
+                    </xsl:if>
+                    <xsl:text> </xsl:text>
+                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                  </span>
                 </div>
               </div><br/>
               <div id="clock" class="invisible">

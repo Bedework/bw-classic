@@ -7,7 +7,7 @@
 *
 *
 * Modifications for inclusion in Bedework calendar system 
-* by Arlen Johnson 2006
+* by Arlen Johnson 2006 
 */
 
 /**
@@ -360,6 +360,10 @@
 	function dynCalendar_hideLayer()
 	{
 		this._getLayer().style.visibility = 'hidden';
+    
+    // for Bedework event editing; reveal time fields when cal widget is hidden
+    changeClass('calWidgetStartTimeHider','shown');
+    changeClass('calWidgetEndTimeHider','shown');
 	}
 
 /**
@@ -370,6 +374,12 @@
 	function dynCalendar_showLayer()
 	{
 		this._getLayer().style.visibility = 'visible';
+    
+    // for Bedework event editing; hide time fields when cal widget is visible
+    // to avoid IE rendering oddities (IE always displays the "windowed" layer
+    // above everything else -- that includes select boxes.
+    changeClass('calWidgetStartTimeHider','invisible');
+    changeClass('calWidgetEndTimeHider','invisible');
 	}
 
 /**
