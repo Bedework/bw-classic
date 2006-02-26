@@ -1077,12 +1077,12 @@
           </form>
           <form name="skinSelectForm" method="get" action="{$setup}">
             <input type="hidden" name="setappvar" value="summaryMode(details)"/>
-            <select name="skinName" onchange="submit()">
+            <select name="skinPicker" onchange="window.location = this.value">
               <option>example skins:</option>
-              <option value="rss">rss feed</option>
-              <option value="jsToday">javascript feed</option>
-              <option value="videocal">video feed</option>
-              <option value="default">reset to calendar default</option>
+              <option value="{$setViewPeriod}?viewType=weekView&amp;skinName=rss&amp;setappvar=summaryMode(details)">rss feed</option>
+              <option value="{$setViewPeriod}?viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedework.js">javascript feed</option>
+              <option value="{$setViewPeriod}?viewType=todayView&amp;skinName=videocal">video feed</option>
+              <option value="{$setup}?skinName=default">reset to calendar default</option>
             </select>
           </form>
           <form name="skinSelectForm" method="get" action="">
