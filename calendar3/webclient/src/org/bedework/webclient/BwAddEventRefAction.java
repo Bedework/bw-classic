@@ -55,6 +55,7 @@
 package org.bedework.webclient;
 
 import org.bedework.appcommon.BedeworkDefs;
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEventProxy;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
@@ -96,7 +97,9 @@ public class BwAddEventRefAction extends BwCalAbstractAction {
     BwEventProxy proxy = BwEventProxy.makeAnnotation(ei.getEvent(),
                                                 ei.getEvent().getOwner());
 
-    svci.addEvent(null, proxy.getTarget(), null);
+    BwCalendar cal = svci.getPreferredCalendar();
+    proxy.setOwner(svci.getUser());
+    svci.addEvent(cal, proxy, null);
 
     form.getMsg().emit("org.bedework.client.message.added.eventrefs", 1);
 

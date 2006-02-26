@@ -667,8 +667,17 @@ public class CalSvc extends CalSvcI {
     return getCal().getCalendar(path);
   }
 
-  public BwCalendar getDefaultCalendar() throws CalFacadeException {
-    return getCal().getDefaultCalendar(getUser());
+  /** set the default calendar for the current user.
+   *
+   * @param  val    BwCalendar
+   * @throws CalFacadeException
+   */
+  public void setPreferredCalendar(BwCalendar  val) throws CalFacadeException {
+    getPreferences().setDefaultCalendar(val);
+  }
+
+  public BwCalendar getPreferredCalendar() throws CalFacadeException {
+    return getPreferences().getDefaultCalendar();
   }
 
   public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {
@@ -1625,7 +1634,7 @@ public class CalSvc extends CalSvcI {
 
     if (event instanceof BwEventProxy) {
       BwEventProxy proxy = (BwEventProxy)event;
-      BwEvent override = proxy.getTarget();
+      BwEvent override = proxy.getRef();
       setupSharableEntity(override);
     } else {
       setupSharableEntity(event);
@@ -1664,7 +1673,13 @@ public class CalSvc extends CalSvcI {
     event.setLastmod(new LastModified(new DateTime(true)).getValue());
     event.setCreated(new Created(new DateTime(true)).getValue());
 
-    getCal().addEvent(event, overrides);
+    if (event instanceof BwEventProxy) {
+      BwEventProxy proxy = (BwEventProxy)event;
+      BwEvent override = proxy.getRef();
+      getCal().addEvent(override, overrides);
+    } else {
+      getCal().addEvent(event, overrides);
+    }
 
     if (isPublicAdmin()) {
       /* Mail event to any subscribers */

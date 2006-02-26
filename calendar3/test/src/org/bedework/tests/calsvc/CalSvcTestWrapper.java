@@ -256,7 +256,7 @@ public class CalSvcTestWrapper extends CalSvc {
    */
   public BwCalendar getCalendar() throws Throwable {
     if (!isPublic) {
-      return getDefaultCalendar();
+      return getPreferredCalendar();
     }
 
     if (publicCal != null) {

@@ -104,7 +104,9 @@ public interface CalendarsI extends Serializable {
    */
   public BwCalendar getCalendar(String path) throws CalFacadeException;
 
-  /** Get the default calendar for the given user.
+  /** Get the default calendar for the given user. This is determined by the
+   * name for the default calendar assigned to the system, not by any user 
+   * preferences. This is normally used at initialisation of a new user.
    *
    * @param  user     
    * @return BwCalendar null for unknown calendar

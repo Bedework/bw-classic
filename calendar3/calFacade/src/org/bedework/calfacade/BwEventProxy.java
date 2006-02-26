@@ -174,7 +174,10 @@ public class BwEventProxy extends BwEvent {
    * @param val     BwUser owner of the entity
    */
   public void setOwner(BwUser val) {
-    throw new RuntimeException("Immutable");
+    if (!CalFacadeUtil.eqObjval(ref.getOwner(), val)) {
+      ref.setOwner(val);
+      setRefChanged(true);
+    }
   }
 
   /**

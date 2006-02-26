@@ -549,12 +549,19 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract BwCalendar getCalendar(String path) throws CalFacadeException;
 
+  /** set the default calendar for the current user.
+   *
+   * @param  val    BwCalendar
+   * @throws CalFacadeException
+   */
+  public abstract void setPreferredCalendar(BwCalendar  val) throws CalFacadeException;
+
   /** Get the default calendar for the current user.
    *
    * @return BwCalendar null for unknown calendar
    * @throws CalFacadeException
    */
-  public abstract BwCalendar getDefaultCalendar() throws CalFacadeException;
+  public abstract BwCalendar getPreferredCalendar() throws CalFacadeException;
 
   /** Add a calendar object
    *
