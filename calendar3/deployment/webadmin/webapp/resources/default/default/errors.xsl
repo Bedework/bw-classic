@@ -127,6 +127,10 @@
       <xsl:when test="id='org.bedework.client.error.location.referenced'">
         Cannot delete: the location is referenced by events
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.subscription.reffed'">
+        <p>Cannot delete: the subscription is included in view <em><xsl:value-of select="param"/></em>.<br/>
+        You must remove the subscription from this view before deleting.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nosuchuserid'">
         Not found: there is no user identified by the id <em><xsl:value-of select="param"/></em>
       </xsl:when>

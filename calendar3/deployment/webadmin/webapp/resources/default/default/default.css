@@ -33,6 +33,10 @@ body {
   color: #f99;
   font-weight: bold;
 }
+#errors em {
+  background-color: inherit;
+  color: #ff9;
+}
 #statusBarTable {
   margin: 0em;
   color: black;
