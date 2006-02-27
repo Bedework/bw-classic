@@ -886,6 +886,7 @@
           </xsl:choose>
         </xsl:variable>
         <span class="{$eventTipClass}">
+          <xsl:if test="status='CANCELLED'"><span class="eventTipStatus">CANCELLED</span></xsl:if>
           <strong><xsl:value-of select="summary"/></strong><br/>
           Time:
           <xsl:choose>

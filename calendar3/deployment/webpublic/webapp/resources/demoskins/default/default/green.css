@@ -486,6 +486,14 @@ body {
   padding: 4px;
   border: 1px solid #333;
 }
+#monthCalendarTable a:hover span.eventTipStatus {
+  display: block;
+  color: white;
+  background-color: #333;
+  padding: 2px;
+  margin-bottom: 6px;
+  text-align: center;
+}
 a.gridAdd {
   display: block;
   float: right;
