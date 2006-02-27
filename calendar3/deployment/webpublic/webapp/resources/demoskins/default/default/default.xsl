@@ -518,6 +518,7 @@
       <tr>
         <th class="fieldname">Event:</th>
         <th class="fieldval">
+          <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
           <xsl:choose>
             <xsl:when test="link != ''">
               <xsl:variable name="link" select="link"/>
@@ -737,15 +738,18 @@
                 </xsl:choose>
                 <xsl:variable name="descriptionClass">
                   <xsl:choose>
-                    <xsl:when test="priority='cancelled'">description cancelled</xsl:when>
+                    <xsl:when test="status='CANCELLED'">description cancelled</xsl:when>
                     <xsl:otherwise>description</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
                 <td class="{$descriptionClass}">
+                  <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        <strong><xsl:value-of select="summary"/>: </strong>
+                        <strong>
+                          <xsl:value-of select="summary"/>:
+                        </strong>
                         <xsl:value-of select="description"/>&#160;
                         <em>
                           <xsl:value-of select="location/address"/>
@@ -864,7 +868,7 @@
     <xsl:variable name="eventClass">
       <xsl:choose>
         <!-- Special styles for the month grid -->
-        <xsl:when test="status='cancelled'">eventCancelled</xsl:when>
+        <xsl:when test="status='CANCELLED'">eventCancelled</xsl:when>
         <xsl:when test="calendar/name='Holidays'">holiday</xsl:when>
         <!-- Alternating colors for all standard events -->
         <xsl:when test="position() mod 2 = 1">eventLinkA</xsl:when>
@@ -873,6 +877,7 @@
     </xsl:variable>
     <li>
       <a href="{$eventView}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass}">
+        <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
         <xsl:value-of select="summary"/>
         <xsl:variable name="eventTipClass">
           <xsl:choose>

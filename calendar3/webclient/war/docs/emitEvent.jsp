@@ -130,7 +130,9 @@
           </category>
         </logic:iterate>
       </logic:present>
-    </categories>
+    </categories><%--
+          Value: string, only one of CONFIRMED, TENTATIVE, or CANCELLED --%>
+    <status><bean:write name="event" property="status" /></status>
     <logic:present name="detailView" scope="request"><%--
       Only output these attributes if we are in detailed mode... --%>
       <description><bean:write name="event" property="description"/></description><%--
