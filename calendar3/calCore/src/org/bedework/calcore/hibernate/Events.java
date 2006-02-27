@@ -115,6 +115,17 @@ public class Events extends CalintfHelper implements EventsI {
     BwEvent master = null;
     TreeSet ts = new TreeSet();
     HibSession sess = getSess();
+    
+    /* This (seems) to work as follows:
+     * 
+     * First try to retrieve the event from the events table.
+     * 
+     * If not there try the annotations table. If it's there, it's a reference
+     * to an event owned by somebody else. Otherwise we drew a blank.
+     * 
+     * If we want the recurrences and the event is recurring we go on to try to
+     * retrieve the rest.
+     */
 
     if (rid == null) {
       // First look in the events table for the master.
@@ -125,13 +136,8 @@ public class Events extends CalintfHelper implements EventsI {
       ev = postGetEvent((BwEvent)sess.getUnique(), privRead, noAccessReturnsNull);
 
       if (ev == null) {
-        return ts;
-      }
-
-      master = ev;
-
-      if (!user.equals(ev.getOwner())) {
-        // XXX that check prevents annotation by owner - is that OK?
+        /* Look for an annotation to that event by the current user.
+         */
         eventQuery(BwEventAnnotation.class, calendar, guid, rid, true);
         BwEventAnnotation ann = (BwEventAnnotation)postGetEvent((BwEvent)sess.getUnique(),
                                                             privRead, noAccessReturnsNull);
@@ -140,6 +146,12 @@ public class Events extends CalintfHelper implements EventsI {
           ev = new BwEventProxy(ann);
         }
       }
+      
+      if (ev == null) {
+        return ts;
+      }
+      
+      master = ev;
 
       ts.add(ev);
       if ((recurRetrieval == CalFacadeDefs.retrieveRecurMaster) ||
@@ -202,7 +214,7 @@ public class Events extends CalintfHelper implements EventsI {
       }
 
       /* We want all instances. Get them and return.
-       * Note that the overrides come wit the instances.
+       * Note that the overrides come with the instances.
        */
       StringBuffer sb = new StringBuffer();
 
