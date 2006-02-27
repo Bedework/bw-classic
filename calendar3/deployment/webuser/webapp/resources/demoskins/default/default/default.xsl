@@ -91,8 +91,8 @@
         </xsl:if>
         <table id="bodyBlock" cellspacing="0">
           <tr>
-            <td id="leftMenus">
-              <xsl:call-template name="leftMenus"/>
+            <td id="sideBar">
+              <xsl:call-template name="sideBar"/>
             </td>
             <td id="bodyContent">
               <xsl:call-template name="tabs"/>
@@ -219,6 +219,9 @@
       </tr>
     </table>
     <div id="curDateRange">
+      <div id="sideBarOpenCloseIcon">
+        <img alt="" src="{$resourcesRoot}/images/demo/std-sidebarclose-icon.gif" width="13" height="13" border="0" align="left"/>
+      </div>
       <xsl:value-of select="/bedework/firstday/longdate"/>
       <xsl:if test="/bedework/periodname!='Day'">
         -
@@ -227,8 +230,8 @@
     </div>
   </xsl:template>
 
-  <xsl:template name="leftMenus">
-    <table id="leftTabs" cellspacing="0">
+  <xsl:template name="sideBar">
+    <table id="sideBarTabs" cellspacing="0">
       <tr>
         <td class="selected first">Main</td>
         <td>Calendars</td>
