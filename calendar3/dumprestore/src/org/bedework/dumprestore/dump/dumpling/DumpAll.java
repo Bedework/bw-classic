@@ -120,6 +120,11 @@ public class DumpAll extends Dumpling {
     new DumpEvents(globals).dumpSection(di.getEvents());
     di.close();
 
+    info("Dumping event annotations.");
+    di.open();
+    new DumpEvents(globals).dumpSection(di.getEventAnnotations());
+    di.close();
+
     /*
     info("Dumping filters.");
     di.open();

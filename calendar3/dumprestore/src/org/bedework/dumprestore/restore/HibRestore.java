@@ -140,6 +140,7 @@ public class HibRestore implements RestoreIntf {
   public void open() throws Throwable {
     openSess();
 
+    /* This doesn't work - at least with mysql
     Connection conn = sess.connection();
 
     PreparedStatement ps = null;
@@ -293,11 +294,12 @@ public class HibRestore implements RestoreIntf {
       ps = conn.prepareStatement("delete from lastmods");
       ps.executeUpdate();
       ps.close();
-      */
+      * /
 
     ps = conn.prepareStatement("SET REFERENTIAL_INTEGRITY TRUE");
     ps.executeUpdate();
     ps.close();
+    */
 
     closeSess();
   }

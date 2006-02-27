@@ -58,10 +58,10 @@ import java.util.Iterator;
  * <li>BwAuthUser</li>
  * <li>BwAuthUserPrefs</li>
  * <li>BwEvent</li>
+ * <li>BwEventAnnotation</li>
  * <li>BwAdminGroup</li>
  * <li>BwPreferences + BwSubscription + BwView</li>
  *
- * <li>BwEventAnnotation</li>
  * <li>BwFilter</li>
  * <li>BwRecurrenceInstance</li>
  * <li>BwSynchData</li>

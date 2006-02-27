@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- This is the main build file for UW Calendar which can be used in
+<!-- This is the main build file for bedework which can be used in
      conjunction with Ant (http://jakarta.apache.org/ant/) to
      build, deploy, and distribute the UW calendar project. Type
      "ant -projecthelp" to see a list of ant targets.
@@ -16,7 +16,7 @@
      modify the application specific properties and html/jsp pages to create
      a customized application.
 
-     This file will only need mofification to add a specific target for your
+     This file will only need modification to add a specific target for your
      new application. These targets should be added in the appsuite
      section of the file.
 
@@ -657,11 +657,13 @@
           file="${org.bedework.testsuite.base}/resources/log4j.xml" />
     <property name="org.bedework.schema.hibernate.properties"
               location="${org.bedework.testsuite.base}/resources/hibernate.properties" />
-    <copy todir="${schema.run.resources}"
+    <copy tofile="${schema.run.resources}/hibernate.properties"
           file="${org.bedework.schema.hibernate.properties}" />
 
+          <!--
     <property name="org.bedework.hibernate.schema.properties"
               location="${schema.run.resources}/hibernate.properties" />
+              -->
 
     <path id="schema.cp">
       <fileset dir="${org.bedework.default.lib}">
@@ -705,7 +707,7 @@
     <!-- text="no" causes task to create db. Requires db system to be running
          and jdbc drivers on class path
          -->
-    <schemaexport properties="${org.bedework.hibernate.schema.properties}"
+    <schemaexport properties="${schema.run.resources}/hibernate.properties"
                   quiet="no"
                   text="${schema.text.only}"
                   drop="no"

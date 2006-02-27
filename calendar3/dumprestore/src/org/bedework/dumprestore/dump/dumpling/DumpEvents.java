@@ -55,19 +55,47 @@ public class DumpEvents extends Dumpling {
    * @see org.bedework.dumprestore.dump.dumpling.Dumpling#dumpSection(java.util.Iterator)
    */
   public void dumpSection(Iterator it) throws Throwable {
-    tagStart(sectionEvents);
+    boolean taggedStart = false;
+    boolean annotations = false;
 
     while (it.hasNext()) {
       BwEvent e = (BwEvent)it.next();
+      
+      if (!taggedStart) {
+        if (e instanceof BwEventAnnotation) {
+          tagStart(sectionEventAnnotations);
+          annotations = true;
+        } else {
+          tagStart(sectionEvents);
+        }
+        
+        taggedStart = true;
+      }
 
       dumpEvent(e);
     }
 
-    tagEnd(sectionEvents);
+    if (annotations) {
+      tagEnd(sectionEventAnnotations);
+    } else {
+      tagEnd(sectionEvents);
+    }
   }
 
   private void dumpEvent(BwEvent e) throws Throwable {
-    tagStart(objectEvent);
+    BwEventAnnotation ann = null;
+
+    if (e instanceof BwEventAnnotation) {
+      ann = (BwEventAnnotation)e;
+      taggedVal("target", ann.getTarget().getId());
+      taggedVal("master", ann.getMaster().getId());
+    }
+    
+    if (ann == null) {
+      tagStart(objectEvent);
+    } else {
+      tagStart(objectEventAnnotation);
+    }
 
     shareableContainedEntityTags(e);
 
@@ -158,13 +186,17 @@ public class DumpEvents extends Dumpling {
       tagEnd("eventRecurrence");
     }
 
-    if (e instanceof BwEventAnnotation) {
-      taggedVal("target", ((BwEventAnnotation)e).getId());
+    if (ann == null) {
+      tagEnd(objectEvent);
+      
+      globals.events++;
+    } else {
+      taggedVal("target", ann.getTarget().getId());
+      taggedVal("master", ann.getMaster().getId());
+      tagEnd(objectEventAnnotation);
+      
+      globals.eventAnnotations++;
     }
-
-    tagEnd(objectEvent);
-
-    globals.events++;
   }
 }
 

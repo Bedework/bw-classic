@@ -114,6 +114,8 @@ public interface Defs {
   /** */
   public static final String sectionEvents = "events";
   /** */
+  public static final String sectionEventAnnotations = "event-annotations";
+  /** */
   public static final String sectionAdminGroups = "adminGroups";
   /** */
   public static final String sectionUserPrefs = "user-preferences";
@@ -175,6 +177,8 @@ public interface Defs {
   public static final String objectAuthUser = "authuser";
   /** */
   public static final String objectEvent = "event";
+  /** */
+  public static final String objectEventAnnotation = "event-annotation";
   /** */
   public static final String objectAdminGroup = "adminGroup";
   /** */

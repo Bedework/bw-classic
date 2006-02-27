@@ -88,8 +88,9 @@ public class DumpGlobals {
 
   /** */
   public int events;
+  
   /** */
-  public int eventRefs;
+  public int eventAnnotations;
 
   /** */
   public int adminGroups;
@@ -116,7 +117,7 @@ public class DumpGlobals {
     System.out.println("       categories: " + categories);
     System.out.println("        authusers: " + authusers);
     System.out.println("           events: " + events);
-    System.out.println("        eventRefs: " + eventRefs);
+    System.out.println(" eventAnnotations: " + eventAnnotations);
     System.out.println("          filters: " + filters);
     System.out.println("      adminGroups: " + adminGroups);
   }
