@@ -101,7 +101,6 @@
             <p><xsl:apply-templates select="/bedework/error"/></p>
           </div>
         </xsl:if>
-        <!-- <xsl:call-template name="alerts"/> -->
         <xsl:call-template name="tabs"/>
         <xsl:choose>
           <xsl:when test="/bedework/page='event'">
@@ -187,11 +186,22 @@
       <tr>
         <td width="50" class="imgCell"><img alt="*" src="{$resourcesRoot}/images/spacer.gif" width="50" height="14" border="0"/></td>
         <td align="center" width="100%">
-          <xsl:value-of select="/bedework/firstday/longdate"/>
-          <xsl:if test="/bedework/periodname!='Day'">
-            -
-            <xsl:value-of select="/bedework/lastday/longdate"/>
-          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="/bedework/page='event'">
+              Event Information
+            </xsl:when>
+            <xsl:when test="/bedework/page='showSysStats' or
+                            /bedework/page='calendars'">
+              &#160;
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="/bedework/firstday/longdate"/>
+              <xsl:if test="/bedework/periodname!='Day'">
+                -
+                <xsl:value-of select="/bedework/lastday/longdate"/>
+              </xsl:if>
+            </xsl:otherwise>
+          </xsl:choose>
         </td>
         <td width="50" class="imgCell">
           <a href="javascript:window.print()" title="print this view">
@@ -292,16 +302,6 @@
         </table>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="alerts">
-    <table id="alertsTable">
-      <tr>
-        <td>
-          I'm an alert
-        </td>
-      </tr>
-    </table>
   </xsl:template>
 
   <xsl:template name="navigation">
