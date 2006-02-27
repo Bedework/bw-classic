@@ -308,8 +308,8 @@
     <table border="0" cellpadding="0" cellspacing="0" id="navigationBarTable">
       <tr>
         <td class="leftCell">
-          <a href="{$setViewPeriod}?date={$prevdate}"><img src="{$resourcesRoot}/images/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
-          <a href="{$setViewPeriod}?date={$nextdate}"><img src="{$resourcesRoot}/images/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
+          <a id="prevViewPeriod" href="{$setViewPeriod}?date={$prevdate}"><img src="{$resourcesRoot}/images/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
+          <a id="nextViewPeriod" href="{$setViewPeriod}?date={$nextdate}"><img src="{$resourcesRoot}/images/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
           <xsl:choose>
             <xsl:when test="/bedework/periodname='Day'">
               <xsl:value-of select="substring(/bedework/eventscalendar/year/month/week/day/name,1,3)"/>, <xsl:value-of select="/bedework/eventscalendar/year/month/shortname"/>&#160;<xsl:value-of select="/bedework/eventscalendar/year/month/week/day/value"/>, <xsl:value-of select="/bedework/eventscalendar/year/value"/>
