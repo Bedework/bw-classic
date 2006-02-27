@@ -132,9 +132,9 @@
         <xsl:if test="/bedeworkadmin/page='modEvent'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
-          <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>          
+          <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
           <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
-          <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>          
+          <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
           <script type="text/javascript" src="{$resourcesRoot}/resources/browserSniffer.js"></script>
         </xsl:if>
         <xsl:if test="/bedeworkadmin/page='calendarDescriptions' or
@@ -577,7 +577,7 @@
                   <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/month/*"/>
                   <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/day/*"/>
                   <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/year/*"/>
-                </div>                
+                </div>
                 <script language="JavaScript" type="text/javascript">
                 <xsl:comment>
                   endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback');
@@ -1965,6 +1965,8 @@
           <th>Name*:</th>
           <td>
             <xsl:value-of select="name"/>
+            <xsl:variable name="subName" select="name"/>
+            <input type="hidden" value="{$subName}" name="name"/>
           </td>
         </tr>
         <xsl:choose>
