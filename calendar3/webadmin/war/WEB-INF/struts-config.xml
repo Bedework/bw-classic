@@ -411,6 +411,8 @@
                name="peForm"
                scope="session"
                validate="false">
+      <forward name="cancelled" path="/view/showViews.rdo" redirect="true" />
+      <forward name="success" path="/view/showViews.rdo" redirect="true" />
     </action>
 
     <!-- ===============================================================

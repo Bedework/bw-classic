@@ -2190,7 +2190,11 @@
           <input type="button" name="return" value="Return to Views Listing" onclick="javascript:location.replace('{$view-fetch}')"/>
         </td>
         <td align="right">
-          <input type="button" name="delete" value="Delete View" onclick="javascript:location.replace('{$view-fetchForUpdate}&amp;name={$viewName}&amp;delete=yes')"/>
+          <form name="deleteViewForm" action="{$view-fetchForUpdate}" method="post">
+            <input type="submit" name="deleteButton" value="Delete View"/>
+            <input type="hidden" name="name" value="{$viewName}"/>
+            <input type="hidden" name="delete" value="yes"/>
+          </form>
         </td>
       </tr>
     </table>
