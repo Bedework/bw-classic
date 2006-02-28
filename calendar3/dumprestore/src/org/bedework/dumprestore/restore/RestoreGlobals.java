@@ -105,6 +105,8 @@ public class RestoreGlobals {
   /** */
   public boolean debug;
 
+  public static int mapUser0 = 1;
+  
   /** */
   public boolean debugEntity;
 
@@ -385,7 +387,17 @@ public class RestoreGlobals {
      * @param val
      */
     public void put(BwUser val) {
-      put(new Integer(val.getId()), val);
+      int id = val.getId();
+      if (id ==0) {
+        id = mapUser0;
+        val.setId(id);
+      }
+      
+      Integer keyid = new Integer(id);
+      if (get(keyid) != null) {
+        throw new RuntimeException("User already in table with id " + id);
+      }
+      put(keyid, val);
       nameMap.put(val.getAccount(), val);
     }
 
@@ -394,6 +406,9 @@ public class RestoreGlobals {
      * @return BwUser
      */
     public BwUser get(int id) {
+      if (id ==0) {
+        id = mapUser0;
+      }
       return (BwUser)get(new Integer(id));
     }
 
@@ -668,7 +683,8 @@ public class RestoreGlobals {
       publicUser.setLocationAccess(getDefaultPublicAccess());
       publicUser.setSponsorAccess(getDefaultPublicAccess());
 
-      publicUser.setId(0);
+      // Reserved id 1 for this user.
+      publicUser.setId(1);
 
       if (rintf != null) {
         rintf.restoreUser(publicUser);

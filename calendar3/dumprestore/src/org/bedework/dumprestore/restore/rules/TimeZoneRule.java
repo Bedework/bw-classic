@@ -83,12 +83,14 @@ public class TimeZoneRule extends EntityRule {
     ComponentList cl = ical.getComponents();
 
     if (cl.size() != 1) {
+      error("Exception restoring " + entity);
       throw new CalFacadeException(CalFacadeException.timezonesReadError,
                                    cl.size() + " components in Calendar");
     }
 
     Object o = cl.get(0);
     if (!(o instanceof VTimeZone)) {
+      error("Exception restoring " + entity);
       throw new CalFacadeException(CalFacadeException.timezonesReadError,
                                    "component in Calendar not VTimeZone");
     }
@@ -97,6 +99,7 @@ public class TimeZoneRule extends EntityRule {
       // Add it to the cache. Will save in db.
       globals.getTzcache().saveTimeZone(entity.getTzid(), (VTimeZone)o);
     } catch (Throwable t) {
+      error("Exception restoring " + entity);
       throw new Exception(t);
     }
   }

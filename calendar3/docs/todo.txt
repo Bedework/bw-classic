@@ -1,6 +1,14 @@
 Todo
 
 --------------------------------------------------------------------------------
+MySql
+
+Have to edit schema then source it
+Map user 0 on to user 1.
+???
+Add driver jar to tomcat common/lib
+Need to change vtimezone def to text
+--------------------------------------------------------------------------------
 Remove references to getEvent(id)
 --------------------------------------------------------------------------------
 Changes caused by use of calendar id.

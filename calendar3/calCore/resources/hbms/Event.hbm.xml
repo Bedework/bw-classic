@@ -119,10 +119,10 @@
 
     <property name="name" column="eventname" type="text"/>
 
-    <!-- (ownerid +) calendarid + guid + sequence + recurrence-id is a unique key. -->
-    <property name="guid" type="text" unique-key="event-key" />
+    <!-- (ownerid +) calendarid + guid + recurrence-id is a unique key. -->
+    <property name="guid" type="string" length="500" unique-key="event-key" />
 
-    <property name="sequence" type="integer" unique-key="event-key" />
+    <property name="sequence" type="integer" />
 
     <property name="transparency" column="transparency" type="text"/>
 

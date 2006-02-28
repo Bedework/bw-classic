@@ -666,9 +666,11 @@
               -->
 
     <path id="schema.cp">
+      <!--
       <fileset dir="${org.bedework.default.lib}">
          <include name="**/*.jar"/>
       </fileset>
+      -->
       <!--
       <fileset dir="${org.bedework.temp.jars}">
          <include name="*.jar"/>

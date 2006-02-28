@@ -28,7 +28,7 @@
       <column name="publick" not-null="true" />
     </property>
 
-    <property name="vtimezone" column="vtimezone" type="string"/>
+    <property name="vtimezone" column="vtimezone" type="text"/>
     <property name="jtzid" column="jtzid" type="string"/>
   </class>
 

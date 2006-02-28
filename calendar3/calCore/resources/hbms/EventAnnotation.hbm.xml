@@ -9,7 +9,7 @@
      changes to that event.
 
      This definition differs from The event definition only in that all
-     files (except the index and sequence) may be null and the event does
+     fields (except the index and sequence) may be null and the event does
      not have a reference to another event.
      =================================================================== -->
 
@@ -92,7 +92,7 @@
     <many-to-one name="calendar"
                  class="org.bedework.calfacade.BwCalendar"
                  column="calendarid"
-                 index="idx_eventann_calendar" />
+                 index="idx_eventann_calendar" unique-key="eventann-key" />
 
     <property name="dtstamp" column="dtstamp" type="string" />
 
@@ -120,10 +120,10 @@
 
     <property name="name" column="eventname" type="text"/>
 
-    <!-- guid + sequence + recurrence-id is a unique key. -->
-    <property name="guid" type="text" unique-key="eventann-key" />
+    <!-- calendar + guid + recurrence-id is a unique key. -->
+    <property name="guid" type="string" length="500" unique-key="eventann-key" />
 
-    <property name="sequence" type="integer" unique-key="eventann-key" />
+    <property name="sequence" type="integer" />
 
     <property name="transparency" column="transparency" type="text"/>
 

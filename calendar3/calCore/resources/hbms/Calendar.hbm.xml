@@ -37,8 +37,12 @@
     </property>
 
     <property name="name" column="name" type="text" not-null="true"/>
+
+    <!-- I wanted to specify unique="true" on this but mysql complains.
+      -->
     <property name="path" column="path" type="text" not-null="true"
-              index="calpath" unique="true" lazy="false" />
+              index="calpath" lazy="false" />
+
     <property name="summary" column="summary" type="text"/>
     <property name="description" column="description" type="text"/>
     <property name="mailListId" column="mail_list_id" type="text"/>
