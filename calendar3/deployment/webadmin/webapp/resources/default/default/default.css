@@ -324,10 +324,8 @@ table.eventFormTable .durationSpacerText {
   width: 150px;
   height: 20px;
 }
-#submitTable input.padRight {
-  padding-right: 1em;
-}
 #submitTable {
+  width: 98%; /* less than 100% helps avoid IE weirdness */
   margin-top: 1em;
 }
 #deleteListTable {

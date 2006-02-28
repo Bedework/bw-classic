@@ -909,21 +909,21 @@
         </xsl:if>
       </table>
 
-      <table border="0" width="100%" id="submitTable">
+      <table border="0" id="submitTable">
         <tr>
           <xsl:choose>
             <xsl:when test="/bedeworkadmin/creating='true'">
               <td>
-                <input type="submit" name="addEvent" value="Add Event" class="padRight"/>
+                <input type="submit" name="addEvent" value="Add Event"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Clear"/>
               </td>
             </xsl:when>
             <xsl:otherwise>
               <td>
-                <input type="submit" name="updateEvent" value="Update Event" class="padRight"/>
-                <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
-                <input type="reset" value="Reset" class="padRight"/>
+                <input type="submit" name="updateEvent" value="Update Event"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="reset" value="Reset"/>
                 <input type="submit" name="copy" value="Duplicate Event"/>
               </td>
               <td align="right">
@@ -1269,21 +1269,21 @@
         </tr>
       </table>
 
-      <table border="0" width="100%" id="submitTable">
+      <table border="0" id="submitTable">
         <tr>
           <xsl:choose>
             <xsl:when test="/bedeworkadmin/creating='true'">
               <td>
-                <input type="submit" name="addSponsor" value="Add Contact" class="padRight"/>
+                <input type="submit" name="addSponsor" value="Add Contact"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Clear"/>
               </td>
             </xsl:when>
             <xsl:otherwise>
               <td>
-                <input type="submit" name="updateSponsor" value="Update Contact" class="padRight"/>
-                <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
-                <input type="reset" value="Reset" class="padRight"/>
+                <input type="submit" name="updateSponsor" value="Update Contact"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="reset" value="Reset"/>
               </td>
               <td align="right">
                 <input type="submit" name="delete" value="Delete Contact"/>
@@ -1396,21 +1396,21 @@
         </tr>
       </table>
 
-      <table border="0" width="100%" id="submitTable">
+      <table border="0" id="submitTable">
         <tr>
           <xsl:choose>
             <xsl:when test="/bedeworkadmin/creating='true'">
               <td>
-                <input type="submit" name="addLocation" value="Add Location" class="padRight"/>
+                <input type="submit" name="addLocation" value="Add Location"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Clear"/>
               </td>
             </xsl:when>
             <xsl:otherwise>
               <td>
-                <input type="submit" name="updateLocation" value="Update Location" class="padRight"/>
-                <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
-                <input type="reset" value="Reset" class="padRight"/>
+                <input type="submit" name="updateLocation" value="Update Location"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="reset" value="Reset"/>
               </td>
               <td align="right">
                 <input type="submit" name="delete" value="Delete Location"/>
@@ -1595,12 +1595,12 @@
         </tr>
       </table>
 
-      <table border="0" width="100%" id="submitTable">
+      <table border="0" id="submitTable">
         <tr>
           <td>
-            <input type="submit" name="addCalendar" value="Add Calendar/Folder" class="padRight"/>
-            <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
-            <input type="reset" value="Clear" class="padRight"/>
+            <input type="submit" name="addCalendar" value="Add Calendar/Folder"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Clear"/>
           </td>
         </tr>
       </table>
@@ -1668,19 +1668,19 @@
         </tr>
       </table>
 
-      <table border="0" width="100%" id="submitTable">
+      <table border="0" id="submitTable">
         <tr>
           <td>
             <xsl:choose>
               <xsl:when test="calendarCollection='true'">
-                <input type="submit" name="updateCalendar" value="Update Calendar" class="padRight"/>
+                <input type="submit" name="updateCalendar" value="Update Calendar"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="submit" name="updateCalendar" value="Update Folder" class="padRight"/>
+                <input type="submit" name="updateCalendar" value="Update Folder"/>
               </xsl:otherwise>
             </xsl:choose>
-            <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
-            <input type="reset" value="Reset" class="padRight"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Reset"/>
           </td>
           <td align="right">
             <xsl:choose>
@@ -1826,10 +1826,10 @@
         </tr>
       </table>
 
-      <table border="0" width="100%" id="submitTable">
+      <table border="0" id="submitTable">
         <tr>
           <td>
-            <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
           </td>
           <td align="right">
             <xsl:choose>
@@ -1945,10 +1945,10 @@
           </td>
         </tr>
       </table>
-      <table border="0" width="100%" id="submitTable">
+      <table border="0" id="submitTable">
         <tr>
           <td>
-            <input type="submit" name="addSubscription" value="Add Subscription" class="padRight"/>
+            <input type="submit" name="addSubscription" value="Add Subscription"/>
             <input type="submit" name="cancelled" value="Cancel"/>
             <input type="reset" value="Clear"/>
           </td>
@@ -2027,12 +2027,12 @@
           </td>
         </tr>
       </table>
-      <table border="0" width="100%" id="submitTable">
+      <table border="0" id="submitTable">
         <tr>
           <td>
-            <input type="submit" name="updateSubscription" value="Update Subscription" class="padRight"/>
-            <input type="submit" name="cancelled" value="Cancel" class="padRight"/>
-            <input type="reset" value="Reset" class="padRight"/>
+            <input type="submit" name="updateSubscription" value="Update Subscription"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Reset"/>
           </td>
           <td align="right">
             <input type="submit" name="delete" value="Delete Subscription"/>
@@ -2184,10 +2184,10 @@
         </td>
       </tr>
     </table>
-    <table border="0" width="100%" id="submitTable">
+    <table border="0" id="submitTable">
       <tr>
         <td>
-          <input type="button" name="return" value="Return to Views Listing" class="padRight" onclick="javascript:location.replace('{$view-fetch}')"/>
+          <input type="button" name="return" value="Return to Views Listing" onclick="javascript:location.replace('{$view-fetch}')"/>
         </td>
         <td align="right">
           <input type="button" name="delete" value="Delete View" onclick="javascript:location.replace('{$view-fetchForUpdate}&amp;name={$viewName}&amp;delete=yes')"/>
@@ -2205,7 +2205,7 @@
     <h3 class="viewName"><xsl:value-of select="$viewName"/></h3>
     <form name="removeView" action="{$view-remove}">
       <input type="hidden" name="name" value="{$viewName}"/>
-      <input type="submit" name="delete" value="Yes: Remove View" class="padRight"/>
+      <input type="submit" name="delete" value="Yes: Remove View"/>
       <input type="submit" name="cancelled" value="No: Cancel"/>
     </form>
 
@@ -2277,10 +2277,10 @@
           </td>
         </tr>
       </table>
-      <table border="0" width="100%" id="submitTable">
+      <table border="0" id="submitTable">
         <tr>
           <td>
-            <input type="submit" name="updateSystemParams" value="Update" class="padRight"/>
+            <input type="submit" name="updateSystemParams" value="Update"/>
             <input type="submit" name="cancelled" value="Cancel"/>
             <input type="reset" value="Reset"/>
           </td>
@@ -2430,7 +2430,7 @@
       </table>
       <br />
 
-      <input type="submit" name="modAuthUser" value="Update" class="padRight"/>
+      <input type="submit" name="modAuthUser" value="Update"/>
       <input type="reset" value="Reset"/>
       <input type="submit" name="cancelled" value="Cancel"/>
     </form>
@@ -2490,7 +2490,7 @@
       </table>
       <br />
 
-      <input type="submit" name="modPrefs" value="Update" class="padRight"/>
+      <input type="submit" name="modPrefs" value="Update"/>
       <input type="reset" value="Reset"/>
       <input type="submit" name="cancelled" value="Cancel"/>
     </form>
@@ -2634,17 +2634,17 @@
           </td>
         </tr>
       </table>
-      <table border="0" width="100%" id="submitTable">
+      <table border="0" id="submitTable">
         <tr>
           <td>
             <xsl:choose>
               <xsl:when test="/bedeworkadmin/creating = 'true'">
-                <input type="submit" name="updateAdminGroup" value="Add Admin Group" class="padRight"/>
+                <input type="submit" name="updateAdminGroup" value="Add Admin Group"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Clear"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="submit" name="updateAdminGroup" value="Update Admin Group" class="padRight"/>
+                <input type="submit" name="updateAdminGroup" value="Update Admin Group"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Reset"/>
               </xsl:otherwise>
