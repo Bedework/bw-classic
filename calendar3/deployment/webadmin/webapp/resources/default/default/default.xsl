@@ -1246,7 +1246,7 @@
           </td>
           <td>
             <xsl:copy-of select="/bedeworkadmin/formElements/form/phone/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
         <tr>
@@ -1255,7 +1255,7 @@
           </td>
           <td>
             <xsl:copy-of select="/bedeworkadmin/formElements/form/link/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
         <tr>
@@ -1264,7 +1264,7 @@
           </td>
           <td>
             <xsl:copy-of select="/bedeworkadmin/formElements/form/email/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
       </table>
@@ -1382,7 +1382,7 @@
           </td>
           <td>
             <xsl:copy-of select="/bedeworkadmin/formElements/form/subaddress/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
         <tr>
@@ -1391,7 +1391,7 @@
           </td>
           <td>
             <xsl:copy-of select="/bedeworkadmin/formElements/form/link/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
       </table>
