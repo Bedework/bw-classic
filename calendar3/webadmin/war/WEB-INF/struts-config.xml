@@ -563,9 +563,9 @@
                name="peForm"
                scope="session"
                validate="false">
-      <forward name="continue" path="/sponsor/showModForm.rdo" redirect="true" />
+      <forward name="continue" path="/sponsor/showUpdateList.rdo" redirect="true" />
       <forward name="retry" path="/sponsor/showModForm.rdo" redirect="true" />
-      <forward name="cancelled" path="/sponsor/initUpdate.do" redirect="true" />
+      <forward name="cancelled" path="/sponsor/showUpdateList.rdo" redirect="true" />
       <forward name="delete" path="/sponsor/showDeleteConfirm.rdo" redirect="true" />
     </action>
 
@@ -663,8 +663,8 @@
                name="peForm"
                scope="session"
                validate="false">
-      <forward name="cancelled" path="/location/initUpdate.do" redirect="true" />
-      <forward name="continue" path="/location/showModForm.rdo" redirect="true" />
+      <forward name="cancelled" path="/location/showUpdateList.rdo" redirect="true" />
+      <forward name="continue" path="/location/showUpdateList.rdo" redirect="true" />
       <forward name="retry" path="/location/showModForm.rdo" redirect="true" />
       <forward name="delete" path="/location/showDeleteConfirm.rdo" redirect="true" />
     </action>
