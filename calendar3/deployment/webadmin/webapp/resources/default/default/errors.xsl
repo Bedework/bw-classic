@@ -135,11 +135,17 @@
         <p>Cannot delete: the subscription is included in view <em><xsl:value-of select="param"/></em>.<br/>
         You must remove the subscription from this view before deleting.</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.error.timezones.readerror'">
+        <p>Timzone error: could not read file</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nosuchuserid'">
-        Not found: there is no user identified by the id <em><xsl:value-of select="param"/></em>
+        <p>Not found: there is no user identified by the id <em><xsl:value-of select="param"/></em></p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.usernotfound'">
         Not found: the user <em><xsl:value-of select="param"/></em> was not found
+      </xsl:when>
+      <xsl:when test="id='edu.rpi.sss.util.error.exc'">
+        Utility package error: <em><xsl:value-of select="param"/></em>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="id"/> = <xsl:value-of select="param"/>

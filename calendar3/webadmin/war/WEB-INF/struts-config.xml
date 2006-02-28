@@ -435,12 +435,13 @@
       <forward name="continue" path="/syspars/show.rdo" redirect="true" />
     </action>
 
+    <!-- on update, pass back through fetch action to refresh -->
     <action    path="/syspars/update"
                type="org.bedework.webadmin.system.UpdateSysparsAction"
                name="peForm"
                scope="session"
                validate="false">
-      <forward name="continue" path="/syspars/show.rdo" redirect="true" />
+      <forward name="continue" path="/syspars/fetch.do" redirect="true" />
     </action>
 
     <!-- ===============================================================

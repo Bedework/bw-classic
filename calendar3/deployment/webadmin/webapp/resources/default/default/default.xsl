@@ -2386,7 +2386,7 @@
             <xsl:copy-of select="/bedeworkadmin/formElements/form/superUser/*"/>
           </td>
         </tr>
-        <tr>
+        <!--<tr>
           <td class="optional">
             Email:
           </td>
@@ -2430,7 +2430,7 @@
             <xsl:copy-of select="/bedeworkadmin/formElements/form/firstName/*"/>
             <span class="fieldInfo"></span>
           </td>
-        </tr>
+        </tr>-->
       </table>
       <br />
 
