@@ -629,12 +629,12 @@
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')" checked="checked"/>
                         <xsl:variable name="daysStr" select="/bedeworkadmin/formElements/form/end/duration/days/input/@value"/>
-                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" onchange="zeroOutWeeks()" id="durationDays"/>days
+                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays"/>days
                         <span id="durationHrMin" class="{$durationHrMinClass}">
                           <xsl:variable name="hoursStr" select="/bedeworkadmin/formElements/form/end/duration/hours/input/@value"/>
-                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" onchange="zeroOutWeeks()" id="durationHours"/>hours
+                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours"/>hours
                           <xsl:variable name="minutesStr" select="/bedeworkadmin/formElements/form/end/duration/minutes/input/@value"/>
-                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" onchange="zeroOutWeeks()" id="durationMinutes"/>minutes
+                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes"/>minutes
                         </span>
                       </div>
                       <span class="durationSpacerText">or</span>
@@ -649,12 +649,12 @@
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')"/>
                         <xsl:variable name="daysStr" select="/bedeworkadmin/formElements/form/end/duration/days/input/@value"/>
-                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" onchange="zeroOutWeeks()" id="durationDays" disabled="true"/>days
+                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="true"/>days
                         <span id="durationHrMin" class="{$durationHrMinClass}">
                           <xsl:variable name="hoursStr" select="/bedeworkadmin/formElements/form/end/duration/hours/input/@value"/>
-                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" onchange="zeroOutWeeks()" id="durationHours" disabled="true"/>hours
+                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="true"/>hours
                           <xsl:variable name="minutesStr" select="/bedeworkadmin/formElements/form/end/duration/minutes/input/@value"/>
-                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" onchange="zeroOutWeeks()" id="durationMinutes" disabled="true"/>minutes
+                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="true"/>minutes
                         </span>
                       </div>
                       <span class="durationSpacerText">or</span>
