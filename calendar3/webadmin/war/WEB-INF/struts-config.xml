@@ -152,8 +152,8 @@
                name="peForm"
                scope="session"
                validate="false">
-      <forward name="cancelled" path="/event/showModForm.rdo" redirect="true" />
-      <forward name="continue" path="/admin/showMain.rdo" redirect="true" />
+      <forward name="cancelled" path="/event/initUpdateEvent.do" redirect="true" />
+      <forward name="continue" path="/event/initUpdateEvent.do" redirect="true" />
     </action>
 
     <action    path="/event/fetchForDisplay"

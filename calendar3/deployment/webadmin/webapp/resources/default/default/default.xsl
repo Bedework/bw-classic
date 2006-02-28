@@ -1245,7 +1245,7 @@
             Contact Phone Number:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/phone/*"/> -
+            <xsl:copy-of select="/bedeworkadmin/formElements/form/phone/*"/>
             <span class="fieldInfo">(optional)</span>
           </td>
         </tr>
