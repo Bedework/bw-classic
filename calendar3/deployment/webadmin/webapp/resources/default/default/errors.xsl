@@ -82,6 +82,10 @@
       <xsl:when test="id='org.bedework.validation.error.invalid.endtype'">
         The <em>end date type</em> is invalid for the type of event you are creating
       </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.duration'">
+        <em>Invalid duration</em> - you may not have a zero-length duration
+        for an all day event.
+      </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.nosponsorname'">
         You must enter a contact <em>name</em>.
       </xsl:when>
