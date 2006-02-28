@@ -9,7 +9,7 @@
         Error: no access
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.missingsubscriptionid'">
-        You must supply a subscription name
+        You must supply a subscription <em>name</em>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nosuchsubscription'">
         Not found: there is no user identified by the name <em><xsl:value-of select="param"/></em>
@@ -64,23 +64,23 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.toolong.description'">
         Your description is too long.  Please limit your entry to
-        <xsl:value-of select="param"/> characters.  You may also wish to
-        point the event entry at a supplimental web page by entering a URL.
+        <em><xsl:value-of select="param"/></em> characters.  You may also wish to
+        point the event entry at a supplimental web page by entering a <em>URL</em>.
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.notitle'">
-        You must supply a title<br/>
+        You must supply a <em>title</em><br/>
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.nocalendar'">
-        You must supply the calendar<br/>
+        You must supply the <em>calendar</em><br/>
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.nodescription'">
-        You must supply a description<br/>
+        You must supply a <em>description</em><br/>
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.event.startafterend'">
-        The end date for this event occurs before the start date
+        The <em>end date</em> for this event occurs before the <em>start date</em>
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.invalid.endtype'">
-        The end date type is invalid for the type of event you are creating
+        The <em>end date type</em> is invalid for the type of event you are creating
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.nosponsorname'">
         You must enter a contact <em>name</em>.
