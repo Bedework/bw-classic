@@ -70,7 +70,8 @@ import org.apache.struts.upload.FormFile;
  *
  * <p>Forwards to:<ul>
  *      <li>"noAccess"     user not authorised.</li>
- *      <li>"error"        some sort of error.</li>
+ *      <li>"error"        some sort of fatal error.</li>
+ *      <li>"failed"       for some reason.</li>
  *      <li>"success"      processed.</li>
  * </ul>
  *
@@ -98,7 +99,14 @@ public class PEUploadTimezonesAction extends PEAbstractAction {
 
     TimeZonesParser tzp = new TimeZonesParser(upFile.getInputStream(), debug);
 
-    Collection tzis = tzp.getTimeZones();
+    Collection tzis = null;
+    try {
+      tzis = tzp.getTimeZones();
+    } catch (Throwable t) {
+      // XXX Could probably do better figuring out what the error is
+      form.getErr().emit("org.bedework.error.timezones.readerror");
+      return "failed";
+    }
 
     CalSvcI svci = form.fetchSvci();
 

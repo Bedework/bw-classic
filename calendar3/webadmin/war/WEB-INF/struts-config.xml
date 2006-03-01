@@ -469,6 +469,7 @@
                name="peForm"
                scope="session"
                validate="false">
+    <forward name="failed" path="/admin/showMain.rdo" redirect="true"/>
     </action>
 
 
