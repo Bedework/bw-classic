@@ -223,15 +223,13 @@ public class PEUpdateEventAction extends PEAbstractAction {
   private boolean validateEventCalendar(PEActionForm form, CalSvcI svci,
                                         BwEvent event, MessageEmit err)
           throws Throwable {
-    boolean ok = true;
-
     if (!form.retrieveCalendarId().getChanged()) {
       if (event.getCalendar() == null) {
         err.emit("org.bedework.client.error.missingfield", "Calendar");
         return false;
       }
 
-      return ok;
+      return true;
     }
 
     // The user selected one from the list
@@ -314,8 +312,6 @@ public class PEUpdateEventAction extends PEAbstractAction {
   private boolean validateEventSponsor(PEActionForm form, CalSvcI svci,
                                        BwEvent event, MessageEmit err)
           throws Throwable {
-    boolean ok = true;
-
     if (!form.retrieveSpId().getChanged()) {
       if (form.getAutoCreateSponsors()) {
         BwSponsor s = form.getSponsor();
@@ -334,7 +330,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
         return false;
       }
 
-      return ok;
+      return true;
     }
 
     // The user selected one from the list
@@ -368,8 +364,6 @@ public class PEUpdateEventAction extends PEAbstractAction {
   private boolean validateEventLocation(PEActionForm form, CalSvcI svci,
                                         BwEvent event, MessageEmit err)
           throws Throwable {
-    boolean ok = true;
-
     if (!form.retrieveLocId().getChanged()) {
       if (form.getAutoCreateLocations()) {
         BwLocation l = form.getLocation();
@@ -389,7 +383,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
         return false;
       }
 
-      return ok;
+      return true;
     }
 
     // The user selected one from the list
@@ -415,4 +409,3 @@ public class PEUpdateEventAction extends PEAbstractAction {
     }
   }
 }
-

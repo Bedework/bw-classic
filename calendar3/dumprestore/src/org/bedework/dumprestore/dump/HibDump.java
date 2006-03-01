@@ -29,10 +29,23 @@
 package org.bedework.dumprestore.dump;
 
 import org.bedework.calcore.hibernate.HibSession;
+import org.bedework.calfacade.BwCategory;
+import org.bedework.calfacade.BwEventAnnotation;
+import org.bedework.calfacade.BwEventObj;
 import org.bedework.calfacade.BwGroup;
+import org.bedework.calfacade.BwLocation;
+import org.bedework.calfacade.BwOrganizer;
+import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwSystem;
+import org.bedework.calfacade.BwTimeZone;
+import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.svc.BwAdminGroup;
+import org.bedework.calfacade.svc.BwPreferences;
+import org.bedework.calfacade.svc.BwSubscription;
+import org.bedework.calfacade.svc.BwView;
+import org.bedework.dumprestore.BwDbLastmod;
 
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -118,59 +131,59 @@ public class HibDump implements DumpIntf {
   }
 
   public Iterator getCategories() throws Throwable {
-    return getObjects("org.bedework.calfacade.BwCategory");
+    return getObjects(BwCategory.class.getName());
   }
 
   public Iterator getEvents() throws Throwable {
-    return getObjects("org.bedework.calfacade.BwEventObj");
+    return getObjects(BwEventObj.class.getName());
   }
 
   public Iterator getEventAnnotations() throws Throwable {
-    return getObjects("org.bedework.calfacade.BwEventAnnotations");
+    return getObjects(BwEventAnnotation.class.getName());
   }
 
   public Iterator getFilters() throws Throwable {
-    return getObjects("org.bedework.calfacade.filter.BwFilter");
+    return getObjects(BwFilter.class.getName());
   }
 
   public Iterator getLocations() throws Throwable {
-    return getObjects("org.bedework.calfacade.BwLocation");
+    return getObjects(BwLocation.class.getName());
   }
 
   public Iterator getOrganizers() throws Throwable {
-    return getObjects("org.bedework.calfacade.BwOrganizer");
+    return getObjects(BwOrganizer.class.getName());
   }
 
   public Iterator getPreferences() throws Throwable {
-    return getObjects("org.bedework.calfacade.svc.BwPreferences");
+    return getObjects(BwPreferences.class.getName());
   }
 
   public Iterator getSponsors() throws Throwable {
-    return getObjects("org.bedework.calfacade.BwSponsor");
+    return getObjects(BwSponsor.class.getName());
   }
 
   public Iterator getSubscriptions() throws Throwable {
-    return getObjects("org.bedework.calfacade.svc.BwSubscription");
+    return getObjects(BwSubscription.class.getName());
   }
 
   public Iterator getSyspars() throws Throwable {
-    return getObjects("org.bedework.calfacade.BwSystem");
+    return getObjects(BwSystem.class.getName());
   }
 
   public Iterator getTimeZones() throws Throwable {
-    return getObjects("org.bedework.calfacade.BwTimeZone");
+    return getObjects(BwTimeZone.class.getName());
   }
 
   public Iterator getUsers() throws Throwable {
-    return getObjects("org.bedework.calfacade.BwUser");
+    return getObjects(BwUser.class.getName());
   }
 
   public Iterator getViews() throws Throwable {
-    return getObjects("org.bedework.calfacade.svc.BwView");
+    return getObjects(BwView.class.getName());
   }
 
   public Iterator getDbLastmods() throws Throwable {
-    return getObjects("org.bedework.calfacade.BwDbLastmod");
+    return getObjects(BwDbLastmod.class.getName());
   }
 
   /** Start a (possibly long-running) transaction. In the web environment
