@@ -65,7 +65,7 @@ import java.io.Serializable;
  * @author  Mike Douglass douglm @ rpi.edu
  */
 public class IntSelectId implements Serializable {
-  /** Neither A nor B has precedence
+  /** ENUM Neither A nor B has precedence
    */
   public static final int NoneHasPrecedence = 0;
 
@@ -114,6 +114,7 @@ public class IntSelectId implements Serializable {
     this.originalValue = originalValue;
     this.newValue = originalValue;
     precedence = preferred;
+    changed = false;
   }
 
   /** Set the A value
