@@ -43,6 +43,8 @@ import java.util.Iterator;
  * @version 1.0
  */
 public class DumpEvents extends Dumpling {
+  protected boolean annotations;
+  
   /** Constructor
    *
    * @param globals
@@ -55,24 +57,14 @@ public class DumpEvents extends Dumpling {
    * @see org.bedework.dumprestore.dump.dumpling.Dumpling#dumpSection(java.util.Iterator)
    */
   public void dumpSection(Iterator it) throws Throwable {
-    boolean taggedStart = false;
-    boolean annotations = false;
+    if (annotations) {
+      tagStart(sectionEventAnnotations);
+    } else {
+      tagStart(sectionEvents);
+    }
 
     while (it.hasNext()) {
-      BwEvent e = (BwEvent)it.next();
-      
-      if (!taggedStart) {
-        if (e instanceof BwEventAnnotation) {
-          tagStart(sectionEventAnnotations);
-          annotations = true;
-        } else {
-          tagStart(sectionEvents);
-        }
-        
-        taggedStart = true;
-      }
-
-      dumpEvent(e);
+      dumpEvent((BwEvent)it.next());
     }
 
     if (annotations) {

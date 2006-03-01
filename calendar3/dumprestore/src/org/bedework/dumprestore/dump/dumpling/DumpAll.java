@@ -122,7 +122,7 @@ public class DumpAll extends Dumpling {
 
     info("Dumping event annotations.");
     di.open();
-    new DumpEvents(globals).dumpSection(di.getEventAnnotations());
+    new DumpEventAnnotations(globals).dumpSection(di.getEventAnnotations());
     di.close();
 
     /*
