@@ -53,6 +53,7 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
+import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
@@ -107,9 +108,11 @@ public class UserPrefsFieldRule extends EntityFieldRule {
     } else if (name.equals("sub-name")) {
       globals.curSub.setName(stringFld());
     } else if (name.equals("sub-owner")) {
-      if (p.getOwner().getId() != intFld()) {
+      BwUser sowner = userFld();
+      
+      if (!p.getOwner().equals(sowner)) {
         error("Subscription owners don't match for " + globals.curSub);
-        error("  Found owner id " + intFld() + " expected " + p);
+        error("  Found owner " + sowner + " expected " + p.getOwner());
       }
       globals.curSub.setOwner(p.getOwner());
     } else if (name.equals("sub-uri")) {
@@ -142,9 +145,11 @@ public class UserPrefsFieldRule extends EntityFieldRule {
     } else if (name.equals("view-name")) {
       globals.curView.setName(stringFld());
     } else if (name.equals("view-owner")) {
-      if (p.getOwner().getId() != intFld()) {
-        error("Viewowners don't match for " + globals.curView);
-        error("  Found owner id " + intFld() + " expected " + p.getOwner());
+      BwUser vowner = userFld();
+      
+      if (!p.getOwner().equals(vowner)) {
+        error("View owners don't match for " + globals.curView);
+        error("  Found owner " + vowner + " expected " + p.getOwner());
       }
       globals.curView.setOwner(p.getOwner());
     } else if (name.equals("view-subscriptions")) {
