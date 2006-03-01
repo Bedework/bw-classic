@@ -91,6 +91,10 @@ public class EventRule extends EntityRule {
 
     globals.events++;
 
+    if (globals.debug) {
+      trace("Restore event # " + globals.events);
+    }
+
     fixSharableEntity(entity, "Event");
 
     /* If it's an alias, save an entry in the alia table then remove the dummy target.

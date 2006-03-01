@@ -770,13 +770,13 @@ public class HibSession {
     }
   }
 
-  /** Save a new object with the given id. This should only be used for
+  /* * Save a new object with the given id. This should only be used for
    * restoring the db from a save or for assigned keys.
    *
    * @param obj
    * @param id
    * @throws CalFacadeException
-   */
+   * /
   public void save(Object obj, Serializable id) throws CalFacadeException {
     if (exc != null) {
       // Didn't hear me last time?
@@ -788,7 +788,7 @@ public class HibSession {
     } catch (Throwable t) {
       handleException(t);
     }
-  }
+  }*/
 
   /** Delete an object
    *

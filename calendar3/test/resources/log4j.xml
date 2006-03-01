@@ -87,7 +87,7 @@
    </category>
  -->
 
-   <!-- Hide all the hibernate stuff - below are some finer categories -->
+   <!-- Hide all the hibernate stuff - below are some finer categories
    <category name="org.hibernate">
       <priority value="INFO"/>
    </category>
@@ -107,11 +107,7 @@
    <category name="org.hibernate.cfg">
       <priority value="INFO"/>
    </category>
-
-   <!-- Set washington categories -->
-   <category name="edu.washington">
-     <priority value="DEBUG"/>
-   </category>
+    -->
 
    <!--
       | An example of enabling the custom TRACE level priority that is used

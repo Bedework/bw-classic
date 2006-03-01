@@ -23,12 +23,12 @@
     <mapping resource="AuthUser.hbm.xml"/>
     <mapping resource="AuthUserPrefs.hbm.xml"/>
     <mapping resource="Calendar.hbm.xml"/>
+    <mapping resource="Organizer.hbm.xml"/>
     <mapping resource="Event.hbm.xml"/>
     <mapping resource="EventAnnotation.hbm.xml"/>
     <mapping resource="Filter.hbm.xml"/>
     <mapping resource="Category.hbm.xml"/>
     <mapping resource="Location.hbm.xml"/>
-    <mapping resource="Organizer.hbm.xml"/>
     <mapping resource="Preferences.hbm.xml"/>
     <mapping resource="RecurrenceInstance.hbm.xml"/>
     <mapping resource="Sponsor.hbm.xml"/>

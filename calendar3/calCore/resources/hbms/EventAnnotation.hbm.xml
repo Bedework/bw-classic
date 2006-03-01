@@ -86,7 +86,6 @@
     <many-to-one name="organizer"
                  class="org.bedework.calfacade.BwOrganizer"
                  column="organizerid"
-                 cascade="all,delete-orphan"
                  unique="true"/>
 
     <many-to-one name="calendar"
@@ -200,12 +199,12 @@
     </component>
 
     <many-to-one name="target"
-                 class="org.bedework.calfacade.BwEventObj" lazy="true" >
+                 class="org.bedework.calfacade.BwEventObj" lazy="proxy" >
       <column name="targetid" />
     </many-to-one>
 
     <many-to-one name="master"
-                 class="org.bedework.calfacade.BwEventObj" lazy="true" >
+                 class="org.bedework.calfacade.BwEventObj" lazy="proxy" >
       <column name="masterid" />
     </many-to-one>
   </class>

@@ -1,0 +1,5 @@
+This directory is a place to put jdbc driver jar files.
+
+The schema build process and other tools include all jar files in this
+directory on the class path.
+

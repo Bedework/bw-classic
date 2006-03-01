@@ -64,9 +64,6 @@
           location="${dumprestore.run.base}/resources/hibernate.properties"/>
     </path>
 
-    <property name="org.bedework.restore.jdbcdriver.jar"
-              value="${appserver.jdbcdriver.jar}" />
-
     <path id="lib.restore.class.path">
       <fileset dir="${org.bedework.temp.jars}">
         <include name="*.jar"/>
@@ -84,7 +81,10 @@
         <include name="*.jar"/>
       </fileset>
 
-      <pathelement location="${org.bedework.restore.jdbcdriver.jar}" />
+      <!-- jdbc drivers -->
+      <fileset dir="${org.bedework.jdbc.lib}">
+        <include name="*.jar"/>
+      </fileset>
 
       <!-- add any properties we might want -->
       <pathelement location="${dumprestore.run.resources}" />

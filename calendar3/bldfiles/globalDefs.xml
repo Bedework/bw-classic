@@ -63,6 +63,7 @@
     <property name="apps.root.dir" location="${calendar.dir}/apps" />
     <property name="cal.default.db" location="${calendar.dir}/db" />
     <property name="org.bedework.default.lib" location="${calendar.dir}/lib" />
+    <property name="org.bedework.jdbc.lib" location="${org.bedework.default.lib}/jdbc" />
     <property name="html.dir" location="${calendar.dir}/html" />
 
     <!-- Component locations -->

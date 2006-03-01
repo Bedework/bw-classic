@@ -81,7 +81,6 @@
     <many-to-one name="organizer"
                  class="org.bedework.calfacade.BwOrganizer"
                  column="organizerid"
-                 cascade="all,delete-orphan"
                  unique="true"
                  not-null="false" />
 

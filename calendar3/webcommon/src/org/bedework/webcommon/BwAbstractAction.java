@@ -373,7 +373,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     BwCalendar cal = null;
 
     if (calId < 0) {
-      form.getErr().emit("org.bedework.client.error.missingsubscriptionid");
+      form.getErr().emit("org.bedework.client.error.missingcalendarid");
       return null;
     }
     

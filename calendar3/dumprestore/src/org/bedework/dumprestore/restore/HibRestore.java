@@ -54,7 +54,6 @@
 package org.bedework.dumprestore.restore;
 
 
-import org.bedework.calcore.hibernate.HibSession;
 import org.bedework.calfacade.BwAlarm;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
@@ -84,8 +83,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.hibernate.FlushMode;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.cfg.Configuration;
 
 /** Class which restores via jdbc.
@@ -98,8 +99,14 @@ public class HibRestore implements RestoreIntf {
 
   private RestoreGlobals globals;
 
-  private HibSession sess;
+  //private HibSession sess;
   private SessionFactory sessFactory;
+  
+  
+  private Session hibSess;
+  private StatelessSession sess;
+  
+  private int adminGroupId = 1;
 
   private transient Logger log;
 
@@ -321,7 +328,7 @@ public class HibRestore implements RestoreIntf {
   public void restoreSyspars(BwSystem o) throws Throwable {
     openSess();
 
-    sess.save(o);
+    save(o);
 
     closeSess();
   }
@@ -333,7 +340,8 @@ public class HibRestore implements RestoreIntf {
     try {
       openSess();
 
-      sess.save(o, new Integer(o.getId()));
+      //sess.save(o, new Integer(o.getId()));
+      save(o);
 
       closeSess();
     } catch (Throwable t) {
@@ -350,7 +358,7 @@ public class HibRestore implements RestoreIntf {
   public void restoreUserInfo(BwUserInfo o) throws Throwable {
     openSess();
 
-    sess.save(o);
+    save(o);
 
     closeSess();
   }
@@ -358,7 +366,7 @@ public class HibRestore implements RestoreIntf {
   public void restoreTimezone(BwTimeZone o) throws Throwable {
     openSess();
 
-    sess.save(o);
+    save(o);
 
     closeSess();
   }
@@ -371,10 +379,11 @@ public class HibRestore implements RestoreIntf {
 
     if (globals.from2p3px) {
       // No id assigned
-      sess.save(o);
-    } else {
-      sess.save(o, new Integer(o.getId()));
+      o.setId(adminGroupId);
+      adminGroupId++;
     }
+    
+    save(o);
 
     log.debug("Saved admin group " + o);
 
@@ -394,7 +403,7 @@ public class HibRestore implements RestoreIntf {
 
       log.debug("About to save " + entry);
 
-      sess.save(entry);
+      save(entry);
 
       closeSess();
     }
@@ -404,33 +413,37 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreAuthUser(org.bedework.calfacade.svc.BwAuthUser)
    */
   public void restoreAuthUser(BwAuthUser o) throws Throwable {
-    openSess();
+    openHibSess();
 
-    sess.save(o);
+//    if (o.getId() <= 0) {
+//      o.setId(o.getUser().getId());
+//    }
+    
+    hibSave(o);
 
-    closeSess();
+    closeHibSess();
   }
 
   /* (non-Javadoc)
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreEvent(org.bedework.calfacade.BwEvent)
    */
   public void restoreEvent(BwEvent o) throws Throwable {
-    openSess();
+    openHibSess();
 
-    sess.save(o, new Integer(o.getId()));
+    hibSave(o);
 
-    closeSess();
+    closeHibSess();
   }
 
   /* (non-Javadoc)
    * @see org.bedework.dumprestore.restore.RestoreIntf#update(org.bedework.calfacade.BwEvent)
    */
   public void update(BwEvent o) throws Throwable {
-    openSess();
+    openHibSess();
 
-    sess.saveOrUpdate(o);
+    hibSess.update(o);
 
-    closeSess();
+    closeHibSess();
   }
 
   /* (non-Javadoc)
@@ -439,7 +452,7 @@ public class HibRestore implements RestoreIntf {
   public void restoreCategory(BwCategory o) throws Throwable {
     openSess();
 
-    sess.save(o, new Integer(o.getId()));
+    save(o);
 
     closeSess();
   }
@@ -455,16 +468,16 @@ public class HibRestore implements RestoreIntf {
     sb.append(BwLocation.class.getName());
     sb.append(" ent where ent.address=:address and ent.owner=:owner");
 
-    sess.createQuery(sb.toString());
-    sess.setString("address", o.getAddress());
-    sess.setEntity("owner", o.getOwner());
-
-    Integer i = (Integer)sess.getUnique();
+    Query q = sess.createQuery(sb.toString());
+    q.setString("address", o.getAddress());
+    q.setEntity("owner", o.getOwner());
+    
+    Integer i = (Integer)q.uniqueResult();
 
     if (i == null) {
       // no entry with that key
 
-      sess.save(o, new Integer(o.getId()));
+      save(o);
     }
 
     closeSess();
@@ -480,16 +493,16 @@ public class HibRestore implements RestoreIntf {
     sb.append(BwSponsor.class.getName());
     sb.append(" ent where ent.name=:name and ent.owner=:owner");
 
-    sess.createQuery(sb.toString());
-    sess.setString("name", o.getName());
-    sess.setEntity("owner", o.getOwner());
+    Query q = sess.createQuery(sb.toString());
+    q.setString("name", o.getName());
+    q.setEntity("owner", o.getOwner());
 
-    Integer i = (Integer)sess.getUnique();
+    Integer i = (Integer)q.uniqueResult();
 
     if (i == null) {
       // no entry with that key
 
-      sess.save(o, new Integer(o.getId()));
+      save(o);
     }
 
     closeSess();
@@ -498,23 +511,23 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void restoreOrganizer(BwOrganizer o) throws Throwable {
-    openSess();
+    openHibSess();
 
-    sess.save(o, new Integer(o.getId()));
+    hibSave(o);
 
-    closeSess();
+    closeHibSess();
   }
 
   public void restoreFilter(BwFilter o) throws Throwable {
-    openSess();
+    openHibSess();
 
-    sess.save(o, new Integer(o.getId()));
+    hibSave(o);
 
-    closeSess();
+    closeHibSess();
   }
 
   public void restoreUserPrefs(BwPreferences o) throws Throwable {
-    openSess();
+    openHibSess();
 
     /* Unset the subscription id - hibernate cascades cause an error
      * We'll just have to go with a new id
@@ -536,23 +549,23 @@ public class HibRestore implements RestoreIntf {
       globals.views++;
     }
 
-    sess.save(o, new Integer(o.getId()));
+    hibSave(o);
 
-    closeSess();
+    closeHibSess();
   }
 
   public void restoreAlarm(BwAlarm o) throws Throwable {
-    openSess();
+    openHibSess();
 
-    sess.save(o, new Integer(o.getId()));
+    hibSave(o);
 
-    closeSess();
+    closeHibSess();
   }
 
   public void update(BwUser user) throws Throwable {
     openSess();
 
-    sess.saveOrUpdate(user);
+    sess.update(user);
 
     closeSess();
   }
@@ -560,7 +573,7 @@ public class HibRestore implements RestoreIntf {
   public void restoreDbLastmod(BwDbLastmod o) throws Throwable {
     openSess();
 
-    sess.save(o);
+    save(o);
 
     closeSess();
   }
@@ -695,16 +708,35 @@ public class HibRestore implements RestoreIntf {
 
   private synchronized void openSess() throws Throwable {
     if (sess == null) {
-      sess = new HibSession(sessFactory, log);
-      sess.setFlushMode(FlushMode.COMMIT);
-    } else {
-      sess.reconnect();
+      sess = sessFactory.openStatelessSession();
     }
     sess.beginTransaction();
   }
 
+  private synchronized void openHibSess() throws Throwable {
+    if (hibSess == null) {
+      hibSess = sessFactory.openSession();
+    }
+    hibSess.beginTransaction();
+  }
+
+  private synchronized void closeHibSess() throws Throwable {
+    hibSess.getTransaction().commit();
+    try {
+      if (hibSess != null) {
+        hibSess.close();
+        //hibSess.disconnect();
+      }
+   // } catch (Throwable t) {
+      // Discard session if we get errors on close.
+//      sess = null;
+    } finally {
+      hibSess = null;
+    }
+  }
+
   private synchronized void closeSess() throws Throwable {
-    sess.commit();
+//    sess.commit();
     try {
       if (sess != null) {
         sess.close();
@@ -716,6 +748,14 @@ public class HibRestore implements RestoreIntf {
     } finally {
       sess = null;
     }
+  }
+  
+  private void hibSave(Object o) throws Throwable {
+    hibSess.save(o);
+  }
+  
+  private void save(Object o) throws Throwable {
+    sess.insert(o);
   }
 
   /* Start a (possibly long-running) transaction. In the web environment

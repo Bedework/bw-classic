@@ -10,7 +10,7 @@
      groups.
 
      To facilitate this the build process is driven by a set of properties
-     in appsuite/clones.
+     in config/configs.
 
      You shouldn't need to modify base files or applications. Instead,
      modify the application specific properties and html/jsp pages to create
@@ -665,17 +665,17 @@
               location="${schema.run.resources}/hibernate.properties" />
               -->
 
+    <mkdir dir="${schema.run.resources}/hbms" />
+    <copy todir="${schema.run.resources}/hbms" >
+      <fileset dir="${org.bedework.core.base}/resources/hbms">
+        <include name="*.hbm.xml"/>
+      </fileset>
+    </copy>
+
     <path id="schema.cp">
-      <!--
-      <fileset dir="${org.bedework.default.lib}">
+      <fileset dir="${org.bedework.jdbc.lib}">
          <include name="**/*.jar"/>
       </fileset>
-      -->
-      <!--
-      <fileset dir="${org.bedework.temp.jars}">
-         <include name="*.jar"/>
-      </fileset>
-      -->
       <fileset dir="${hibernate.jars.dir}">
          <include name="**/*.jar"/>
       </fileset>
@@ -690,6 +690,7 @@
 
       <pathelement location="${org.bedework.core.base}/resources"/>
       <pathelement location="${schema.run.resources}"/>
+      <pathelement location="${schema.run.resources}/hbms"/>
       <pathelement location="${schema.run.resources}/hibernate.properties"/>
       <!--
       <fileset dir="${org.bedework.hsqldb.dir}/lib">
@@ -697,6 +698,9 @@
       </fileset>
       -->
     </path>
+
+    <copy todir="${schema.run.resources}/hbms"
+          file="${org.bedework.core.base}/resources/properties/hibernate.cfg.xml" />
 
     <property name="cp" refid="schema.cp" />
     <echo message="***************cp: ${cp}"/>
@@ -714,10 +718,8 @@
                   text="${schema.text.only}"
                   drop="no"
                   delimiter=";"
-                  output="schema-export.sql">
-                  <fileset dir="${org.bedework.core.base}/resources/hbms">
-                    <include name="*.hbm.xml"/>
-                  </fileset>
+                  output="schema-export.sql"
+                  config="${schema.run.resources}/hbms/hibernate.cfg.xml">
     </schemaexport>
   </target>
 

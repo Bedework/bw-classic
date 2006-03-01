@@ -1539,6 +1539,14 @@ public class CalSvc extends CalSvcI {
       }
     }
     
+    if (internal.getChildren().size() == 0) {
+      if (debug) {
+        trace("No children for internal calendar");
+      }
+      
+      return ts;
+    }
+    
     ts.addAll(postProcess(getCal().getEvents(internal, filter,
                           startDate, endDate,
                           recurRetrieval),
