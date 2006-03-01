@@ -23,7 +23,7 @@
     <version name="seq" column="seq" type="integer" />
 
     <property name="account"
-              column="username" type="string" length="20" not-null="true"
+              column="username" type="string" length="100" not-null="true"
               unique-key="user-key" />
 
     <property name="instanceOwner" type="true_false" >
