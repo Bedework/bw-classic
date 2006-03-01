@@ -51,7 +51,13 @@
         <include name="*.jar"/>
       </fileset>
 
-      <pathelement location="${org.bedework.dump.jdbcdriver.jar}" />
+      <!-- local jdbc drivers -->
+      <fileset dir="${org.bedework.jdbc.lib}">
+        <include name="*.jar"/>
+      </fileset>
+
+      <!-- Include the quickstart jdbc driver -->
+      <pathelement location="${hsqldb.jdbcdriver.jar}"/>
 
       <!-- add any properties we might want -->
       <pathelement location="${dumprestore.run.resources}" />
@@ -81,10 +87,13 @@
         <include name="*.jar"/>
       </fileset>
 
-      <!-- jdbc drivers -->
+      <!-- local jdbc drivers -->
       <fileset dir="${org.bedework.jdbc.lib}">
         <include name="*.jar"/>
       </fileset>
+
+      <!-- Include the quickstart jdbc driver -->
+      <pathelement location="${hsqldb.jdbcdriver.jar}"/>
 
       <!-- add any properties we might want -->
       <pathelement location="${dumprestore.run.resources}" />

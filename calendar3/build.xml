@@ -673,9 +673,15 @@
     </copy>
 
     <path id="schema.cp">
+      <!-- Include any local jdbc drivers -->
       <fileset dir="${org.bedework.jdbc.lib}">
          <include name="**/*.jar"/>
       </fileset>
+
+      <!-- Include the quickstart jdbc driver -->
+      <pathelement location="${hsqldb.jdbcdriver.jar}"/>
+
+      <!-- Need the hibernate stuff -->
       <fileset dir="${hibernate.jars.dir}">
          <include name="**/*.jar"/>
       </fileset>
@@ -685,18 +691,16 @@
       <fileset dir="${struts.dir}">
          <include name="commons*.jar"/>
       </fileset>
+
+      <!-- Need the classes we are trying to persist -->
       <pathelement location="${org.bedework.access.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
 
+      <!-- The xml schema files -->
       <pathelement location="${org.bedework.core.base}/resources"/>
       <pathelement location="${schema.run.resources}"/>
       <pathelement location="${schema.run.resources}/hbms"/>
       <pathelement location="${schema.run.resources}/hibernate.properties"/>
-      <!--
-      <fileset dir="${org.bedework.hsqldb.dir}/lib">
-         <include name="*.jar"/>
-      </fileset>
-      -->
     </path>
 
     <copy todir="${schema.run.resources}/hbms"
