@@ -67,7 +67,7 @@ import java.util.TreeSet;
  * inside calendar collections. The flag calendarCollection is set true if
  * if this is intended to hold a collection of calendar objects.
  *
- *   @author Mike Douglass douglm@rpi.edu
+ *   @author Mike Douglass douglm @ rpi.edu
  *  @version 1.0
  */
 public class BwCalendar extends BwShareableContainedDbentity implements Comparable {

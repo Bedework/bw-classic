@@ -395,7 +395,7 @@ public class ErrorEmitSvlt implements MessageEmit {
   }
 
   protected void debugMsg(String pname, String ptype, String pval) {
-    debugOut("Error emitted: property=" + pname +
+    debugOut("Emitted: property=" + pname +
              " ptype=" + ptype +
              " val(s)=" + pval);
   }

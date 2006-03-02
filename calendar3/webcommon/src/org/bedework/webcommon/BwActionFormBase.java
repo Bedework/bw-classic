@@ -87,8 +87,11 @@ import edu.rpi.sss.util.jsp.UtilActionForm;
 
 import net.fortuna.ical4j.model.Calendar;
 
+import java.text.Collator;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.TreeMap;
 import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionMapping;
@@ -104,6 +107,9 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   private CalEnv env;
 
+  // XXX locale - needs to be changed when locale changes
+  private Collator listCollator = Collator.getInstance();
+  
   /* This should be a cloned copy only */
   private BwSystem syspars;
 
@@ -1028,7 +1034,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
 
     val = Util.checkNull(val);
     if (val != null) {
-      Integer i = (Integer)viewTypeMap.get(viewType);
+      Integer i = (Integer)viewTypeMap.get(val);
 
       if (i != null) {
         vt = i.intValue();
@@ -1430,7 +1436,17 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   public Collection getAddContentCalendarCollections() {
     try {
-      return fetchSvci().getAddContentCalendarCollections();
+      TreeMap tm = new TreeMap(listCollator);
+      
+      Iterator it = fetchSvci().getAddContentCalendarCollections().iterator();
+      
+      while (it.hasNext()) {
+        BwCalendar cal = (BwCalendar)it.next();
+        tm.put(cal.getName(), cal);
+      }
+
+      return tm.values();
+//      return fetchSvci().getAddContentCalendarCollections();
     } catch (Throwable t) {
       err.emit(t);
       return null;
