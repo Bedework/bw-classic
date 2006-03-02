@@ -51,6 +51,9 @@
           <html:options property="yearVals"/>
         </html:select>
       </year>
+      <yearText>
+        <html:text property="eventStartDate.year" size="4"/>
+      </yearText>
       <hour>
         <html:select property="eventStartDate.hour">
           <html:options labelProperty="eventStartDate.hourLabels"
@@ -90,7 +93,10 @@
           <html:select property="eventEndDate.year">
             <html:options property="yearVals"/>
           </html:select>
-        </year>
+          </year>
+        <yearText>
+          <html:text property="eventEndDate.year" size="4"/>
+        </yearText>
         <hour>
           <html:select property="eventEndDate.hour">
             <html:options labelProperty="eventEndDate.hourLabels"

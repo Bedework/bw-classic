@@ -535,7 +535,14 @@
                 <span class="startDateLabel">Date </span>
                 <xsl:copy-of select="/bedeworkadmin/formElements/form/start/month/*"/>
                 <xsl:copy-of select="/bedeworkadmin/formElements/form/start/day/*"/>
-                <xsl:copy-of select="/bedeworkadmin/formElements/form/start/year/*"/>
+                <xsl:choose>
+                  <xsl:when test="/bedeworkadmin/creating = 'true'">
+                    <xsl:copy-of select="/bedeworkadmin/formElements/form/start/year/*"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:copy-of select="/bedeworkadmin/formElements/form/start/yearText/*"/>
+                  </xsl:otherwise>
+                </xsl:choose>
               </div>
               <script language="JavaScript" type="text/javascript">
               <xsl:comment>
@@ -576,7 +583,14 @@
                 <div class="dateFields">
                   <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/month/*"/>
                   <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/day/*"/>
-                  <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/year/*"/>
+                  <xsl:choose>
+                    <xsl:when test="/bedeworkadmin/creating = 'true'">
+                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/year/*"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/yearText/*"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </div>
                 <script language="JavaScript" type="text/javascript">
                 <xsl:comment>
@@ -2470,7 +2484,50 @@
           </td>
           <td>
             <xsl:variable name="preferredViewPeriod" select="/bedeworkadmin/prefs/preferredViewPeriod"/>
-            <input type="text" name="viewPeriod" value="{$preferredViewPeriod}" size="40"/>
+            <select name="viewPeriod">
+              <!-- picking the selected item could be done with javascript. for
+                   now, this will do.  -->
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'dayView'">
+                  <option value="dayView" selected="selected">day</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="dayView">day</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'todayView'">
+                  <option value="todayView" selected="selected">today</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="todayView">today</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'weekView'">
+                  <option value="weekView" selected="selected">week</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="weekView">week</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'monthView'">
+                  <option value="monthView" selected="selected">month</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="monthView">month</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'yearView'">
+                  <option value="yearView" selected="selected">year</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="yearView">year</option>
+                </xsl:otherwise>
+              </xsl:choose>
+            </select>
           </td>
         </tr>
         <tr>
