@@ -58,11 +58,19 @@ package org.bedework.calfacade;
  * @author Mike Douglass douglm@rpi.edu
  */
 public class CalFacadeException extends Exception {
-  /** Property names used as message value. These should be used to
+  /* Property names used as message value. These should be used to
    * retrieve a localized message and can also be used to identify the
    * cause of the exception.
    */
+  
+  /* ****************** Admin groups ****************************** */
+  
+  /** The admin group already exists */
+  public static final String duplicateAdminGroup =
+      "org.bedework.exception.duplicateadmingroup";
 
+  /* ****************** Calendars ****************************** */
+  
   /** Couldn't find calendar */
   public static final String calendarNotFound =
       "org.bedework.exception.calendarnotfound";
@@ -83,6 +91,8 @@ public class CalFacadeException extends Exception {
   public static final String cannotDeleteCalendarRoot =
       "org.bedework.exception.cannotdeletecalendarroot";
 
+  /* ****************** Subscriptions ****************************** */
+  
   /** Somebody tried to create a duplicate subscription */
   public static final String duplicateSubscription =
       "org.bedework.exception.duplicatesubscription";
@@ -91,19 +101,24 @@ public class CalFacadeException extends Exception {
   public static final String endAndDuration =
       "org.bedework.exception.ical.endandduration";
 
-  /** */
-  public static final String illegalObjectClass =
-      "org.bedework.exception.illegalobjectclass";
-
+  /* ****************** Events ****************************** */
+  
   /** The guid for this event already exists */
   public static final String duplicateGuid =
       "org.bedework.exception.duplicateguid";
 
+  /* ****************** Timezones ****************************** */
+  
   /** Error reading timezones */
   public static final String timezonesReadError =
       "org.bedework.error.timezones.readerror";
 
+  /* ****************** Misc ****************************** */
 
+  /** */
+  public static final String illegalObjectClass =
+      "org.bedework.exception.illegalobjectclass";
+  
   private String extra;
 
   /** Constrictor

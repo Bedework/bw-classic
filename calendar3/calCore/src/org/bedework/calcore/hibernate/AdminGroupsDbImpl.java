@@ -172,6 +172,9 @@ public class AdminGroupsDbImpl implements AdminGroups {
    * ==================================================================== */
 
   public void addGroup(BwGroup group) throws CalFacadeException {
+    if (findGroup(group.getAccount()) != null) {
+      throw new CalFacadeException(CalFacadeException.duplicateAdminGroup);
+    }
     getSess().save(group);
   }
 

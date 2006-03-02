@@ -55,6 +55,7 @@
 package org.bedework.webadmin.admingroup;
 
 import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.ifs.Groups;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUser;
@@ -161,7 +162,19 @@ public class PEUpdateAGAction extends PEAbstractAction {
         return "retry";
       }
 
-      adgrps.addGroup(updgrp);
+      try {
+        adgrps.addGroup(updgrp);
+      } catch (CalFacadeException cfe) {
+        if (CalFacadeException.duplicateAdminGroup.equals(cfe.getMessage())) {
+          form.getErr().emit("org.bedework.error.duplicate.admingroup", 
+                             updgrp.getAccount());
+          return "retry";
+        } else {
+          throw cfe;
+        }
+      }
+      
+      form.assignAddingAdmingroup(false);
     } else {
       if (!validateAdminGroup(form)) {
         return "retry";

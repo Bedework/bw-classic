@@ -113,6 +113,7 @@ public class PEFetchAGAction extends PEAbstractAction {
 
     adgrps.getMembers(ag);
     form.setUpdAdminGroup(ag);
+    form.assignAddingAdmingroup(false);
 
     return "continue";
   }
