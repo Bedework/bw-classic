@@ -348,7 +348,7 @@ public abstract class EntityFieldRule extends RestoreRule {
     String dtval = fldval.substring(0, 4) + fldval.substring(5, 7) +
                    fldval.substring(8, 10) +
                    "T" + fldval.substring(11, 13) + fldval.substring(14, 16) +
-                   fldval.substring(17, 19);
+                   fldval.substring(17, 19) + "Z";
 
     return dtval;
   }

@@ -73,7 +73,7 @@ import javax.servlet.http.HttpServletResponse;
  *      <li>"error"        some form of fatal error.</li>
  *      <li>"noAccess"     user not authorised.</li>
  *      <li>"notFound"     no such user.</li>
- *      <li>"continue"     continue on to update page.</li>
+ *      <li>"success"     continue on to update page.</li>
  * </ul>
  *
  * @author Mike Douglass   douglm@rpi.edu
@@ -94,7 +94,7 @@ public class FetchPrefsAction extends BwAbstractAction {
 
     String str = getReqPar(request, "user");
     if (str == null) {
-      return "success";
+      return "notFound";
     }
 
     BwUser user = svc.findUser(str);
