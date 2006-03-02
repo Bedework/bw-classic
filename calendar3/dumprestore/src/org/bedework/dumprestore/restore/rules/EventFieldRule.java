@@ -132,7 +132,7 @@ public class EventFieldRule extends EntityFieldRule {
     } else if (name.equals("start-tzid")) {
       tzid = stringFld();
     } else if (name.equals("start-dtval")) {
-      dtVal = stringFld();
+      dtVal = fixedDateTimeFld();
     } else if (name.equals("start-date")) {
       // Could compare given UTC time
       e.setDtstart(dateTimeFld());
@@ -144,7 +144,7 @@ public class EventFieldRule extends EntityFieldRule {
     } else if (name.equals("end-tzid")) {
       tzid = stringFld();
     } else if (name.equals("end-dtval")) {
-      dtVal = stringFld();
+      dtVal = fixedDateTimeFld();
     } else if (name.equals("end-date")) {
       // Could compare given UTC time
       e.setDtend(dateTimeFld());

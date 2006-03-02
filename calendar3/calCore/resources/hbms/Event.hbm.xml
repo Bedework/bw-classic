@@ -39,9 +39,9 @@
       <property name="dateType" column="start_date_type" type="true_false"
                 not-null="true" />
       <property name="tzid" column="start_tzid" type="string" />
-      <property name="dtval" column="start_dtval" type="string"
+      <property name="dtval" column="start_dtval" type="string" length="16"
                 not-null="true" />
-      <property name="date" column="start_date" type="string"
+      <property name="date" column="start_date" type="string" length="16"
                 not-null="true"
                 index="idx_event_start" />
     </component>
@@ -52,8 +52,8 @@
                class="org.bedework.calfacade.BwDateTime" >
       <property name="dateType" column="end_date_type" type="true_false" />
       <property name="tzid" column="end_tzid" type="string" />
-      <property name="dtval" column="end_dtval" type="string" />
-      <property name="date" column="end_date" type="string"
+      <property name="dtval" column="end_dtval" type="string" length="16" />
+      <property name="date" column="end_date" type="string" length="16"
                 index="idx_event_end" />
     </component>
 
@@ -95,11 +95,11 @@
     <property name="dtstamp" column="dtstamp" type="string" />
 
     <property name="lastmod" type="string" >
-      <column name="lastmod" not-null="true" />
+      <column name="lastmod" length="16" not-null="true" />
     </property>
 
     <property name="created" type="string">
-      <column name="created" not-null="true" />
+      <column name="created" length="16" not-null="true" />
     </property>
 
     <property name="priority" type="integer" >

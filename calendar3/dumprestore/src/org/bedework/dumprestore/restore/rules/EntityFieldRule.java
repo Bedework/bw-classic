@@ -249,6 +249,22 @@ public abstract class EntityFieldRule extends RestoreRule {
   public void end(String ns, String name) throws Exception {
     field(name);
   }
+  
+  protected String fixedDateTimeFld() throws Exception {
+    String dtVal = stringFld();
+    if ((dtVal.length() == 8) || 
+          ((dtVal.charAt(13) == '0') && (dtVal.charAt(14) == '0'))) {
+      return dtVal;
+    }
+    
+    String prefix = dtVal.substring(0, 13);
+    
+    if (dtVal.length() == 16) { 
+       return prefix + "00Z"; 
+     }
+    
+    return prefix + "00"; 
+  }
 
   /** prehib to hib */
   protected BwDateTime dateFld() throws Exception {
@@ -299,7 +315,8 @@ public abstract class EntityFieldRule extends RestoreRule {
       }
 
       String tmval = "T" + fldval.substring(0, 2) + fldval.substring(3, 5) +
-      fldval.substring(6, 8);
+      //fldval.substring(6, 8);
+      "00"; // seconds always 0
 
       /* XXX We need to handle timezones here as well */
       val.init(false, val.getDtval() + tmval,
