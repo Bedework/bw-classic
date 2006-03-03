@@ -32,9 +32,9 @@
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;/ul&gt;');</xsl:text>
   </xsl:template>
   <xsl:template match="event">
-    <xsl:variable name="strippedSummary" select='translate(translate(summary,"&apos;","&#180;"),"&#xA;"," ")'/>
+    <xsl:variable name="strippedSummary" select='translate(translate(summary,"&apos;",""),"&#xA;"," ")'/>
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;li&gt;');</xsl:text>
-    <xsl:text disable-output-escaping="yes">document.writeln('    &lt;a href="</xsl:text><xsl:value-of select="$urlprefix"/><xsl:text disable-output-escaping="yes">/eventView.do?subid=</xsl:text><xsl:value-of select="subscription/id"/><xsl:text disable-output-escaping="yes">&amp;guid=</xsl:text><xsl:value-of select="guid"/><xsl:text disable-output-escaping="yes">&amp;recurrenceId=</xsl:text><xsl:value-of select="recurrenceId"/><xsl:text disable-output-escaping="yes">&amp;skinName=default" target="_top"&gt;</xsl:text><xsl:value-of select="$strippedSummary" disable-output-escaping="yes"/><xsl:text disable-output-escaping="yes">&lt;/a&gt;');</xsl:text>
+    <xsl:text disable-output-escaping="yes">document.writeln('    &lt;a href="</xsl:text><xsl:value-of select="$urlprefix"/><xsl:text disable-output-escaping="yes">/eventView.do?subid=</xsl:text><xsl:value-of select="subscription/id"/><xsl:text disable-output-escaping="yes">&amp;guid=</xsl:text><xsl:value-of select="guid"/><xsl:text disable-output-escaping="yes">&amp;recurrenceId=</xsl:text><xsl:value-of select="recurrenceId"/><xsl:text disable-output-escaping="yes">&amp;calid=</xsl:text><xsl:value-of select="calendar/id"/><xsl:text disable-output-escaping="yes">&amp;skinName=default" target="_top"&gt;</xsl:text><xsl:value-of select="$strippedSummary" disable-output-escaping="yes"/><xsl:text disable-output-escaping="yes">&lt;/a&gt;');</xsl:text>
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;/li&gt;');</xsl:text>
   </xsl:template>
 </xsl:stylesheet>
