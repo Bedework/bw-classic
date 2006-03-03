@@ -116,6 +116,7 @@ public class PEUpdateCategoryAction extends PEAbstractAction {
       svci.replaceCategory(k);
     }
 
+    form.assignAddingCategory(false);
 //    form.updatePrefs(null, null, null, null);
 
     if (add) {

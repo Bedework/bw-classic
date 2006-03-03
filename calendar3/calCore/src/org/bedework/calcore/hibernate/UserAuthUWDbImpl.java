@@ -606,7 +606,7 @@ public class UserAuthUWDbImpl implements UserAuth {
       return;
     }
 
-    getSess().saveOrUpdate(prefs);
+    sess.saveOrUpdate(prefs);
   }
 
   public void setAutoAddSponsors(BwAuthUser user, boolean val)

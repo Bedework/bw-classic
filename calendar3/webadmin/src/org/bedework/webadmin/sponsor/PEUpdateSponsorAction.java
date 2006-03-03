@@ -126,6 +126,7 @@ public class PEUpdateSponsorAction extends PEAbstractAction {
       svci.replaceSponsor(sp);
     }
 
+    form.assignAddingSponsor(false);
     updateAuthPrefs(form, null, sp, null, null);
 
     if (add) {

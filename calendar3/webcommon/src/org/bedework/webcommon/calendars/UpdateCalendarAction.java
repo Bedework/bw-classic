@@ -123,7 +123,9 @@ public class UpdateCalendarAction extends BwAbstractAction {
       svci.updateCalendar(cal);
     }
 
-    updateAuthPrefs(form, null, null, null, cal);
+    if (cal.getCalendarCollection()) {
+      updateAuthPrefs(form, null, null, null, cal);
+    }
 
     if (add) {
       form.getMsg().emit("org.bedework.client.message.calendar.added");

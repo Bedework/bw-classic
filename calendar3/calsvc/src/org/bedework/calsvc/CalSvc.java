@@ -689,6 +689,14 @@ public class CalSvc extends CalSvcI {
   }
 
   public void updateCalendar(BwCalendar val) throws CalFacadeException {
+    // Ensure it's not in prefs if it's a folder
+    if (!val.getCalendarCollection()) {
+      if (pars.getPublicAdmin()) {
+        /* Remove from preferences */
+        getUserAuth().removeCalendar(null, val);
+      }
+    }
+    
     getCal().updateCalendar(val);
   }
 
@@ -699,8 +707,10 @@ public class CalSvc extends CalSvcI {
       return 2;
     }
 
-    /* Remove from preferences */
-    getUserAuth().removeCalendar(null, val);
+    if (pars.getPublicAdmin()) {
+      /* Remove from preferences */
+      getUserAuth().removeCalendar(null, val);
+    }
 
     /* Attempt to delete
      */

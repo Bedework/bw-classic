@@ -126,6 +126,7 @@ public class PEUpdateLocationAction extends PEAbstractAction {
       svci.replaceLocation(loc);
     }
 
+    form.assignAddingLocation(false);
     updateAuthPrefs(form, null, null, loc, null);
 
     if (add) {
