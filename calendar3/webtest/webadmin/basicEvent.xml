@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE project SYSTEM "../WebTest.dtd"[
+  <!ENTITY configAdmin     SYSTEM "../ent/configAdmin.xml">
+]>
+<!-- temp setup -->
+
+<project name="basicEvent" basedir="." default="main">
+  <property name="webtest.home" location="/home/douglm/drop2/webtest/1.7" />
+
+  <import file="${webtest.home}/lib/taskdef.xml"/>
+
+  <!-- Import useful macros -->
+  <import file="adminMacros.xml"/>
+
+  <target name="main" depends="tryCreateEvent" />
+
+  <target name="tryCreateEvent" >
+    <webtest name="tryCreateEvent">
+      &configAdmin;
+
+      <steps>
+        <adminLogin />
+
+        <verifyAdminMainPage />
+
+        <invoke description="go to add event Page"
+                url="#{mainurlAddEvent}" />
+
+        <newEventTitle />
+
+        <setInputField description="Set the summary input field"
+                       htmlId="iTitle"
+                       value="#{eventTitle}" />
+
+        <!-- Click the add event button and ensure we got an error -->
+        <clickButton description="Click the add button for an error"
+                     name="addEvent" />
+
+        <verifyAdminAddEventError />
+
+        <setSelectField description="Set the calendar"
+                        name="calendarId"
+                        optionIndex="1" />
+
+        <!-- Default date/time for the moment -->
+
+        <setInputField description="Set the description input field"
+                       htmlId="iDesc"
+                       value="Description for event created by webtest" />
+
+        <!-- Default cost for the moment -->
+        <!-- Default link for the moment -->
+
+        <setSelectField description="Set the location"
+                        name="locationId"
+                        optionIndex="1" />
+
+        <setSelectField description="Set the sponsor"
+                        name="sponsorId"
+                        optionIndex="1" />
+
+        <!-- Click the add event button and ensure we get to edit events page -->
+        <clickButton description="Click the add button for an error"
+                     name="addEvent" />
+
+        <verifyAdminEditEvents/>
+
+        <!-- locate our event -->
+        <findEditEvent title="#{editEventTitle}" />
+
+        <invoke description="go to edit event Page"
+                url="#{editEventUrl}" />
+      </steps>
+    </webtest>
+  </target>
+</project>
+
+

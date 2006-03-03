@@ -1,0 +1,11 @@
+<config host="localhost"
+        port="8080"
+        protocol="http"
+        basepath=""
+        defaultPropertyType="dynamic"
+        resultpath="${user.home}/webtest-results"
+        showhtmlparseroutput="yes"
+        summary="yes"
+        saveresponse="yes">
+</config>
+

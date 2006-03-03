@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE project SYSTEM "../WebTest.dtd"[
+  <!ENTITY configAdmin     SYSTEM "../ent/configAdmin.xml">
+]>
+<!-- temp setup -->
+
+<project name="basicLocation" basedir="." default="main">
+  <property name="webtest.home" location="/home/douglm/drop2/webtest/1.7" />
+
+  <import file="${webtest.home}/lib/taskdef.xml"/>
+
+  <!-- Import useful macros -->
+  <import file="adminMacros.xml"/>
+
+  <target name="main" depends="tryCreateLocation" />
+
+  <target name="tryCreateLocation" >
+    <webtest name="tryCreateLocation">
+      &configAdmin;
+
+      <steps>
+        <adminLogin />
+
+        <verifyAdminMainPage />
+
+        <invoke description="go to add location Page"
+                url="#{mainurlAddLocation}" />
+
+        <newLocAddress />
+
+        <setInputField description="Set the address input field"
+                       name="location.address"
+                       value="#{locAddress}" />
+
+        <!-- Click the add location button -->
+        <clickButton description="Click the add button"
+                     name="addLocation" />
+
+        <!--  We should verify it added OK -->
+      </steps>
+    </webtest>
+  </target>
+</project>
+
+

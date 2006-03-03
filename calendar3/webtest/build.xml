@@ -1,0 +1,23 @@
+<!-- This is the build.xml for the bedework common classes component.
+
+     Authors: Mike Douglass   douglm@rpi.edu
+-->
+
+<project name="webtest" default="all" >
+  <property name="base.name" value="webtest"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+  </target>
+
+  <target name="all" depends="init,webadmin"
+          description="Run all tests" />
+
+  <target name="webadmin" depends="init"
+          description="Run webadmin tests" />
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+    <exec dir="${webtest.home}/bin" executable="webtest.sh" os="Windows" output="dir.txt">
+  <arg line="/c dir"/>
+</exec>
+  </target>
+</project>
