@@ -60,6 +60,8 @@ import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.EventInfo;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
@@ -143,8 +145,8 @@ public class EventFormatter implements Serializable {
    */
   public MyCalendarVO getToday() {
     if (today == null) {
-      // XXX Locale?
-      today = new MyCalendarVO();
+      Locale loc = Locale.getDefault();  // XXX Locale
+      today = new MyCalendarVO(new Date(System.currentTimeMillis()), loc);
     }
 
     return today;

@@ -60,7 +60,8 @@ import org.bedework.appcommon.BedeworkDefs;
 import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.webcommon.TimeDateComponents;
 
-
+import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -114,16 +115,20 @@ public class BwGoToAction extends BwCalAbstractAction {
 
     MyCalendarVO dt;
     TimeView tv = form.getCurTimeView();
+    Locale loc = Locale.getDefault();  // XXX Locale
 
     if (newViewTypeI == BedeworkDefs.todayView) {
       // dt = new MyCalendarVO(new Date(System.currentTimeMillis()));
-      dt = new MyCalendarVO();
+      Date jdt = new Date(System.currentTimeMillis());
+      dt = new MyCalendarVO(jdt, loc);
       newView = true;
       newViewTypeI = BedeworkDefs.dayView;
     } else if (date == null) {
       if (newViewTypeI == BedeworkDefs.dayView) {
         // selected specific day to display from personal event entry screen.
-        dt = new MyCalendarVO(form.getViewStartDate().getDateTime());
+        
+        Date jdt = CalFacadeUtil.getDate(form.getViewStartDate().getDateTime());
+        dt = new MyCalendarVO(jdt, loc);
         newView = true;
       } else {
         if (debug) {
@@ -138,7 +143,8 @@ public class BwGoToAction extends BwCalAbstractAction {
         action.logIt("Date=" + date + ": go with that");
       }
 
-      dt = new MyCalendarVO(CalFacadeUtil.fromISODate(date));
+      Date jdt = CalFacadeUtil.fromISODate(date);
+      dt = new MyCalendarVO(jdt, loc);
       newView = true;
     }
 
@@ -169,7 +175,8 @@ public class BwGoToAction extends BwCalAbstractAction {
       if (!(vsdate.equals(form.getCurTimeView().getFirstDay().getDateDigits()))) {
         newView = true;
         newViewTypeI = form.getCurViewPeriod();
-        dt = new MyCalendarVO(CalFacadeUtil.fromISODate(vsdate));
+        Date jdt = CalFacadeUtil.fromISODate(vsdate);
+        dt = new MyCalendarVO(jdt, loc);
       }
     }
 

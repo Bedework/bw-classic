@@ -89,8 +89,10 @@ import net.fortuna.ical4j.model.Calendar;
 
 import java.text.Collator;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.TreeMap;
 import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
@@ -837,8 +839,8 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   public MyCalendarVO getToday() {
     if (today == null) {
-      // XXX locale
-      today = new MyCalendarVO();
+      Locale loc = Locale.getDefault();  // XXX Locale
+      today = new MyCalendarVO(new Date(System.currentTimeMillis()), loc);
     }
     return today;
   }
@@ -1124,7 +1126,8 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
           curViewPeriod = BedeworkDefs.weekView;
         }
 
-        setViewMcDate(new MyCalendarVO());
+        Locale loc = Locale.getDefault();  // XXX Locale
+        setViewMcDate(new MyCalendarVO(new Date(System.currentTimeMillis()), loc));
         refreshView();
       }
     } catch (Throwable t) {

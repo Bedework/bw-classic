@@ -67,7 +67,9 @@ import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Vector;
 
 /** This class represents a view of the calendar from a startDate to an
@@ -431,7 +433,10 @@ public class TimeView implements Serializable {
       		                               calInfo.getLocale());
       gtpi.year = String.valueOf(gtpi.currentDay.getYear());
 
-      gtpi.todaysMonth = new MyCalendarVO().getTwoDigitMonth();
+      Locale loc = Locale.getDefault(); // XXX Locale
+      gtpi.todaysMonth = new MyCalendarVO(   // XXX Expensive??
+                                          new Date(System.currentTimeMillis()), 
+                                          loc).getTwoDigitMonth();
 
       if (debug) {
         debugMsg("getFirstDayOfWeek() = " + getFirstDayOfWeek());

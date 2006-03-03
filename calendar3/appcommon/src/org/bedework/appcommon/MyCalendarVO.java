@@ -28,10 +28,6 @@
  */
 package org.bedework.appcommon;
 
-import org.bedework.calfacade.BwDateTime;
-import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalFacadeUtil;
-
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.FieldPosition;
@@ -60,20 +56,6 @@ public class MyCalendarVO implements Serializable {
 
   private DateFormat isoformat = new SimpleDateFormat("yyyyMMdd");
 
-  /** Create a MyCalendarVO object representing the current date and time.
-   */
-  public MyCalendarVO() {
-    this(new Date(System.currentTimeMillis()), Locale.getDefault());
-  }
-
-  /** Create a MyCalendarVO object representing a particular date and time.
-   *
-   * @param date   Non-null Date object.
-   */
-  public MyCalendarVO(Date date) {
-    this(date, Locale.getDefault());
-  }
-
   /** Create a MyCalendarVO object representing a particular date and time
    * in the given locale.
    *
@@ -88,16 +70,6 @@ public class MyCalendarVO implements Serializable {
     calendar = Calendar.getInstance(loc);
 
     calendar.setTime(date);
-  }
-
-  /** Create a MyCalendarVO object representing a particular DateTime
-   * object.
-   *
-   * @param dtm   Non-null BwDateTime object.
-   * @throws CalFacadeException
-   */
-  public MyCalendarVO(BwDateTime dtm) throws CalFacadeException {
-    this(CalFacadeUtil.getDate(dtm));
   }
 
   /** Create a MyCalendarVO object representing a particular date and time.

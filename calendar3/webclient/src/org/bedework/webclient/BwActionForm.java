@@ -54,6 +54,9 @@
 
 package org.bedework.webclient;
 
+import java.util.Date;
+import java.util.Locale;
+
 import org.bedework.appcommon.CheckData;
 import org.bedework.appcommon.EventFormatter;
 import org.bedework.appcommon.MyCalendarVO;
@@ -150,7 +153,8 @@ public class BwActionForm extends BwActionFormBase {
    */
   public void setDate(String val) {
     if (!CheckData.checkDateString(val)) {
-      date = new MyCalendarVO().getDateDigits();
+      Locale loc = Locale.getDefault();  // XXX Locale
+      date = new MyCalendarVO(new Date(System.currentTimeMillis()), loc).getDateDigits();
     } else {
       date = val;
     }
