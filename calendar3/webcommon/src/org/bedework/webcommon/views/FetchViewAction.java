@@ -72,6 +72,7 @@ import javax.servlet.http.HttpServletResponse;
  *      <li>"error"        some form of fatal error.</li>
  *      <li>"noAccess"     user not authorised.</li>
  *      <li>"notFound"     no such subscription.</li>
+ *      <li>"retry"        try again.</li>
  *      <li>"success"      subscribed ok.</li>
  * </ul>
  *
@@ -87,11 +88,11 @@ public class FetchViewAction extends BwAbstractAction {
                          BwActionFormBase form) throws Throwable {
     CalSvcI svc = form.fetchSvci();
 
-    String name = request.getParameter("name");
+    String name = getReqPar(request, "name");
 
     if (name == null) {
       form.getErr().emit("org.bedework.client.error.missingfield", "name");
-      return "error";
+      return "retry";
     }
 
     BwView view = svc.findView(name);
@@ -104,7 +105,7 @@ public class FetchViewAction extends BwAbstractAction {
     form.setView(view);
     form.setSubscriptions(svc.getSubscriptions());
 
-    String reqpar = request.getParameter("delete");
+    String reqpar = getReqPar(request, "delete");
 
     if (reqpar != null) {
       return "delete";

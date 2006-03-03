@@ -91,16 +91,16 @@ public class AddViewAction extends BwAbstractAction {
     }
 
     CalSvcI svc = form.fetchSvci();
-    String name = request.getParameter("name");
+    String name = getReqPar(request, "name");
 
     if (name == null) {
       form.getErr().emit("org.bedework.client.error.missingfield", "name");
-      return "error";
+      return "notAdded";
     }
 
     boolean makeDefaultView = false;
 
-    String str = request.getParameter("makedefaultview");
+    String str = getReqPar(request, "makedefaultview");
     if (str != null) {
       makeDefaultView = str.equals("y");
     }

@@ -387,6 +387,7 @@
                scope="session"
                validate="false">
       <forward name="delete" path="/view/showDeleteConfirm.rdo" redirect="true" />
+      <forward name="retry" path="/view/showViews.rdo" redirect="true" />
       <forward name="success" path="/view/showModForm.rdo" redirect="true" />
     </action>
 
@@ -395,6 +396,7 @@
                name="peForm"
                scope="session"
                validate="false">
+      <forward name="retry" path="/view/showModForm.rdo" redirect="true" />
       <forward name="success" path="/view/showModForm.rdo" redirect="true" />
     </action>
 
@@ -403,6 +405,7 @@
                name="peForm"
                scope="session"
                validate="false">
+      <forward name="notAdded" path="/view/showViews.rdo" redirect="true" />
       <forward name="success" path="/view/showModForm.rdo" redirect="true" />
     </action>
 
@@ -412,6 +415,7 @@
                scope="session"
                validate="false">
       <forward name="cancelled" path="/view/showViews.rdo" redirect="true" />
+      <forward name="retry" path="/view/showViews.rdo" redirect="true" />
       <forward name="success" path="/view/showViews.rdo" redirect="true" />
     </action>
 

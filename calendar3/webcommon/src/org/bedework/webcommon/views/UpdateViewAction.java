@@ -60,8 +60,6 @@ import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;
 
-import edu.rpi.sss.util.Util;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -78,6 +76,7 @@ import javax.servlet.http.HttpServletResponse;
  *      <li>"error"        some form of fatal error.</li>
  *      <li>"noAccess"     user not authorised.</li>
  *      <li>"notAdded"     duplicate or bad name.</li>
+ *      <li>"retry"        try again.</li>
  *      <li>"success"      subscribed ok.</li>
  * </ul>
  *
@@ -96,14 +95,15 @@ public class UpdateViewAction extends BwAbstractAction {
     }
 
     CalSvcI svc = form.fetchSvci();
-    String name = Util.checkNull(request.getParameter("name"));
+    String name = getReqPar(request, "name");
+    
     if (name == null) {
       form.getErr().emit("org.bedework.client.error.missingfield", "name");
-      return "error";
+      return "retry";
     }
 
-    String add = Util.checkNull(request.getParameter("add"));
-    String remove = Util.checkNull(request.getParameter("remove"));
+    String add = getReqPar(request, "add");
+    String remove = getReqPar(request, "remove");
 
     if (add != null) {
       BwSubscription sub = svc.findSubscription(add);
