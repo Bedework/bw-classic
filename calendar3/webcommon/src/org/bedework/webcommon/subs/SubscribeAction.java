@@ -117,7 +117,7 @@ public class SubscribeAction extends BwAbstractAction {
       }
     }
 
-    Boolean bool = getBooleanReqPar(request, "unremovable");
+    Boolean bool = getBooleanReqPar(request, "unremoveable");
     if (bool != null) {
       if (!form.getUserAuth().isSuperUser()) {
         return "noAccess"; // Only super user for that flag

@@ -352,6 +352,7 @@ public class BwSubscription extends BwOwnedDbentity {
     sub.setDisplay(getDisplay());
     sub.setAffectsFreeBusy(getAffectsFreeBusy());
     sub.setEmailNotifications(getEmailNotifications());
+    sub.setUnremoveable(getUnremoveable());
   }
 
   /* ====================================================================

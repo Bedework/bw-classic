@@ -1952,7 +1952,7 @@
           </td>
         </tr>
         <tr>
-          <th>Unremoveable:</th>
+          <th>Unremovable:</th>
           <td>
             <input type="radio" value="true" name="unremoveable" size="60"/> true
             <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
@@ -2025,11 +2025,10 @@
           </td>
         </tr>
         <tr>
-          <th>Unremoveable:</th>
+          <th>Unremovable:</th>
           <td>
-            <xsl:variable name="subUnremoveable" select="subscription.unremoveable"/>
             <xsl:choose>
-              <xsl:when test="$subUnremoveable = 'true'">
+              <xsl:when test="unremoveable='true'">
                 <input type="radio" value="true" name="unremoveable" size="60" checked="checked"/> true
                 <input type="radio" value="false" name="unremoveable" size="60"/> false
               </xsl:when>
@@ -2064,7 +2063,7 @@
         <th>URI</th>
         <th>Style</th>
         <th>Display</th>
-        <th>Unremoveable</th>
+        <th>Unremovable</th>
         <th>External</th>
         <th>Deleted?</th>
       </tr>
