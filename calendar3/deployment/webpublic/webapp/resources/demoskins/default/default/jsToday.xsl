@@ -3,10 +3,10 @@
   <xsl:output method="html" omit-xml-declaration="yes" indent="no" media-type="text/javascript" standalone="yes"/>
   <!-- usage: call the javascript feed from an html file by embedding the
        following script tag:
-       <script src="http://yourservername/cal/setView.do?viewType=todayView&skinName=jsToday&contentType=text/javascript&contentName=bedework.js" type="text/javascript"></script>
+       <script src="http://yourservername/cal/setViewPeriod.do?viewType=todayView&skinName=jsToday&contentType=text/javascript&contentName=bedework.js" type="text/javascript"></script>
 
        e.g.
-       <script src="http://localhost:8080/cal/setView.do?viewType=todayView&skinName=jsToday&contentType=text/javascript&contentName=bedework.js" type="text/javascript"></script>
+       <script src="http://localhost:8080/cal/setViewPeriod.do?viewType=todayView&skinName=jsToday&contentType=text/javascript&contentName=bedework.js" type="text/javascript"></script>
 
        You should uncomment the code below that reads "Today's Events" and throw
        away the following line.  You should modify this stylesheet if you intend
