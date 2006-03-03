@@ -145,6 +145,11 @@ public class BwGoToAction extends BwCalAbstractAction {
 
       Date jdt = CalFacadeUtil.fromISODate(date);
       dt = new MyCalendarVO(jdt, loc);
+      if (!checkDateInRange(form, dt.getYear())) {
+        // Set it to today
+        jdt = new Date(System.currentTimeMillis());
+        dt = new MyCalendarVO(jdt, loc);
+      }
       newView = true;
     }
 
@@ -167,16 +172,20 @@ public class BwGoToAction extends BwCalAbstractAction {
       /* See if we were given an explicit date as view start date components.
          If so we'll set a new view of the same period as the current.
        */
-      String vsdate = viewStart.getDateTime().getDtval().substring(0, 8);
-      if (debug) {
-        action.logIt("vsdate=" + vsdate);
-      }
-
-      if (!(vsdate.equals(form.getCurTimeView().getFirstDay().getDateDigits()))) {
-        newView = true;
-        newViewTypeI = form.getCurViewPeriod();
-        Date jdt = CalFacadeUtil.fromISODate(vsdate);
-        dt = new MyCalendarVO(jdt, loc);
+      int year = viewStart.getCalYear();
+      
+      if (checkDateInRange(form, year)) {
+        String vsdate = viewStart.getDateTime().getDtval().substring(0, 8);
+        if (debug) {
+          action.logIt("vsdate=" + vsdate);
+        }
+        
+        if (!(vsdate.equals(form.getCurTimeView().getFirstDay().getDateDigits()))) {
+          newView = true;
+          newViewTypeI = form.getCurViewPeriod();
+          Date jdt = CalFacadeUtil.fromISODate(vsdate);
+          dt = new MyCalendarVO(jdt, loc);
+        }
       }
     }
 
@@ -200,5 +209,18 @@ public class BwGoToAction extends BwCalAbstractAction {
 
     form.getEventStartDate().setDateTime(tv.getCurDay().getTime());
     form.getEventEndDate().setDateTime(tv.getCurDay().getTime());
+  }
+  
+  private static boolean checkDateInRange(BwActionForm form,
+                                   int year) throws Throwable {
+    // XXX make system parameters for allowable start/end year
+    int thisYear = form.getToday().getYear();
+    
+    if ((year < thisYear - 10) || (year > thisYear + 10)) {
+      form.getErr().emit("org.bedework.client.error.baddate");
+      return false;
+    }
+    
+    return true;
   }
 }

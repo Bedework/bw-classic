@@ -338,10 +338,24 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return "success";
   }
 
-  /** Method to retrieve an event.
+  /** Method to retrieve an event. An event is identified by the calendar + 
+   * guid + recurrence id. We also take the subscription id as a parameter so
+   * we can pass it along in the result for display purposes.
+   * 
+   * <p>We cannot just take the calendar from the subscription, because the
+   * calendar has to be the actual collection containing the event. A 
+   * subscription may be to higher up the tree (i.e. a folder).
+   * 
+   * <p>We need to also allow the calendar path instead of the id. External
+   * calendars don't have an id. This means changing the api (again) and 
+   * changing the urls (again).
+   * 
+   * <p>It may be more appropriate to simply encode a url to the event.
+   * 
    * <p>Request parameters<ul>
    *      <li>"subid"    subscription id for event. < 0 if there is none
    *                     e.g. displayed directly from calendar.</li>
+   *      <li>"calid"    id of calendar to search.</li>
    *      <li>"guid"     guid of event.</li>
    *      <li>"recurrenceId"   recurrence-id of event instance - possibly null.</li>
    * </ul>

@@ -79,14 +79,14 @@ import org.apache.log4j.Logger;
  *
  * @author Mike Douglass douglm@rpi.edu
  */
-public class HibSession {
+public class HibSession implements Serializable {
   transient Logger log;
 
   Session sess;
-  Transaction tx;
+  transient Transaction tx;
 
-  Query q;
-  Criteria crit;
+  transient Query q;
+  transient Criteria crit;
 
   /** Exception from this session. */
   Throwable exc;

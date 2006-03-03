@@ -351,6 +351,13 @@ public class TimeDateComponents implements Serializable {
     return fourDigit(getCal().get(Calendar.YEAR));
   }
 
+  /**
+   * @return int year
+   */
+  public int getCalYear() {
+    return getCal().get(Calendar.YEAR);
+  }
+
   /* XXX
      In the get methods below, we try to translate real values to the
      'values' in the arrays defined above (e.g., dayVals).
