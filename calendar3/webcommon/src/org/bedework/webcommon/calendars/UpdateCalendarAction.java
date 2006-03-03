@@ -165,6 +165,8 @@ public class UpdateCalendarAction extends BwAbstractAction {
             return false;
           }
         }
+        
+        cal.setCalendarCollection(newCC);
       }
     }
 
