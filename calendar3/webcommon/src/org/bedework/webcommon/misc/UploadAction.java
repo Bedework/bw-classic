@@ -99,8 +99,14 @@ public class UploadAction extends BwAbstractAction {
     }
 
     if (cal == null) {
-      form.getErr().emit("org.bedework.client.error.missingcalendar");
-      return null;
+      if (getPublicAdmin(form)) {
+        // Must specify a calendar for public events
+        form.getErr().emit("org.bedework.client.error.missingcalendar");
+        return "retry";
+      }
+      
+      // Use preferred calendar
+      cal = svci.getPreferredCalendar();
     }
 
     FormFile upFile = form.getUploadFile();
@@ -113,7 +119,7 @@ public class UploadAction extends BwAbstractAction {
     String fileName = upFile.getFileName();
 
     if ((fileName == null) || (fileName.length() == 0)) {
-      return null;
+      return "retry";
     }
 
     InputStream is = upFile.getInputStream();

@@ -64,7 +64,7 @@ import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.data.CalendarParserImpl;
 import net.fortuna.ical4j.data.ParserException;
-import net.fortuna.ical4j.data.UnfoldingReader;
+//import net.fortuna.ical4j.data.UnfoldingReader;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.component.VTimeZone;
@@ -272,7 +272,8 @@ public class IcalTranslator implements Serializable {
     try {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
-      return fromIcal(cal, bldr.build(new UnfoldingReader(new StringReader(val))));
+      //return fromIcal(cal, bldr.build(new UnfoldingReader(new StringReader(val))));
+      return fromIcal(cal, bldr.build(new StringReader(val), true));
     } catch (ParserException pe) {
       if (debug) {
         error(pe);
@@ -294,10 +295,11 @@ public class IcalTranslator implements Serializable {
    */
   public Collection fromIcal(BwCalendar cal, Reader rdr) throws CalFacadeException {
     try {
-      System.setProperty("ical4j.unfolding.relaxed", "true");
+      //System.setProperty("ical4j.unfolding.relaxed", "true");
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
-      return fromIcal(cal, bldr.build(new UnfoldingReader(rdr)));
+      //return fromIcal(cal, bldr.build(new UnfoldingReader(rdr)));
+      return fromIcal(cal, bldr.build(rdr, true));
     } catch (ParserException pe) {
       if (debug) {
         error(pe);

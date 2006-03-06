@@ -328,6 +328,10 @@ public class Events extends CalintfHelper implements EventsI {
     if (ct.intValue() > 0) {
       throw new CalFacadeException(CalFacadeException.duplicateGuid);
     }
+    
+    if (val.getOrganizer() != null) {
+      sess.saveOrUpdate(val.getOrganizer());
+    }
 
     sess.save(val);
 
