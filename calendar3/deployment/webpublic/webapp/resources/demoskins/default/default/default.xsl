@@ -581,7 +581,7 @@
       </tr>
       <tr>
         <td class="fieldname">Description:</td>
-        <td colspan="2" class="fieldval">
+        <td colspan="2" class="fieldval description">
           <xsl:value-of select="description"/>
         </td>
       </tr>

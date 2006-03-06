@@ -32,9 +32,36 @@
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;/ul&gt;');</xsl:text>
   </xsl:template>
   <xsl:template match="event">
-    <xsl:variable name="strippedSummary" select='translate(translate(summary,"&apos;",""),"&#xA;"," ")'/>
+    <!--<xsl:variable name="strippedSummary" select='translate(translate(summary,"&apos;",""),"&#xA;"," ")'/>-->
+    <xsl:variable name="aposStrippedSummary">
+      <xsl:call-template name="replace">
+        <xsl:with-param name="string" select="summary"/>
+        <xsl:with-param name="pattern" select='"&apos;"'/>
+        <xsl:with-param name="replacement" select='"\&apos;"'/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="strippedSummary" select='translate($aposStrippedSummary,"&#xA;"," ")'/>
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;li&gt;');</xsl:text>
     <xsl:text disable-output-escaping="yes">document.writeln('    &lt;a href="</xsl:text><xsl:value-of select="$urlprefix"/><xsl:text disable-output-escaping="yes">/eventView.do?subid=</xsl:text><xsl:value-of select="subscription/id"/><xsl:text disable-output-escaping="yes">&amp;guid=</xsl:text><xsl:value-of select="guid"/><xsl:text disable-output-escaping="yes">&amp;recurrenceId=</xsl:text><xsl:value-of select="recurrenceId"/><xsl:text disable-output-escaping="yes">&amp;calid=</xsl:text><xsl:value-of select="calendar/id"/><xsl:text disable-output-escaping="yes">&amp;skinName=default" target="_top"&gt;</xsl:text><xsl:value-of select="$strippedSummary" disable-output-escaping="yes"/><xsl:text disable-output-escaping="yes">&lt;/a&gt;');</xsl:text>
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;/li&gt;');</xsl:text>
+  </xsl:template>
+  <xsl:template name="replace">
+    <xsl:param name="string" select="''"/>
+    <xsl:param name="pattern" select="''"/>
+    <xsl:param name="replacement" select="''"/>
+    <xsl:choose>
+      <xsl:when test="$pattern != '' and $string != '' and contains($string, $pattern)">
+        <xsl:value-of select="substring-before($string, $pattern)"/>
+        <xsl:copy-of select="$replacement"/>
+        <xsl:call-template name="replace">
+          <xsl:with-param name="string" select="substring-after($string, $pattern)"/>
+          <xsl:with-param name="pattern" select="$pattern"/>
+          <xsl:with-param name="replacement" select="$replacement"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$string"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 </xsl:stylesheet>
