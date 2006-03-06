@@ -582,7 +582,13 @@
       <tr>
         <td class="fieldname">Description:</td>
         <td colspan="2" class="fieldval description">
-          <xsl:value-of select="description"/>
+          <!--<xsl:value-of select="description"/>-->
+          <xsl:variable name="lineBreaks"><br/></xsl:variable>
+          <xsl:call-template name="replace">
+            <xsl:with-param name="string" select="description"/>
+            <xsl:with-param name="pattern" select="'&#xA;'"/>
+            <xsl:with-param name="replacement" select="$lineBreaks"/>
+          </xsl:call-template>
         </td>
       </tr>
        <xsl:if test="cost!=''">
@@ -1059,6 +1065,30 @@
         </xsl:for-each>
       </table>
     </div>
+  </xsl:template>
+
+  <!--==== UTILITY TEMPLATES ====-->
+
+  <!-- search and replace template taken from
+       http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
+  <xsl:template name="replace">
+    <xsl:param name="string" select="''"/>
+    <xsl:param name="pattern" select="''"/>
+    <xsl:param name="replacement" select="''"/>
+    <xsl:choose>
+      <xsl:when test="$pattern != '' and $string != '' and contains($string, $pattern)">
+        <xsl:value-of select="substring-before($string, $pattern)"/>
+        <xsl:copy-of select="$replacement"/>
+        <xsl:call-template name="replace">
+          <xsl:with-param name="string" select="substring-after($string, $pattern)"/>
+          <xsl:with-param name="pattern" select="$pattern"/>
+          <xsl:with-param name="replacement" select="$replacement"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$string"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!--==== FOOTER ====-->
