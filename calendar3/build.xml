@@ -573,6 +573,11 @@
            target="restoredb" />
   </target>
 
+  <target name="restoredb-nousers" depends="init">
+    <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
+           target="restoredb-nousers" />
+  </target>
+
   <target name="initdb" depends="init">
     <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
            target="initdb" />

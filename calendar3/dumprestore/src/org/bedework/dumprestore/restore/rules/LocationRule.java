@@ -91,6 +91,7 @@ public class LocationRule extends EntityRule {
         }
       }
     } catch (Throwable t) {
+      warn("Unable to restore " + entity + " with owner " + entity.getOwner());
       throw new Exception(t);
     }
   }

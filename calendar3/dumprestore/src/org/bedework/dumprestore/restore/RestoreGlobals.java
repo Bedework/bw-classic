@@ -239,6 +239,14 @@ public class RestoreGlobals {
   /** counter */
   public int alarms;
 
+  /** If true we should discard all but users in onlyUsers 
+   * This helps when building demo data
+   */
+  public boolean onlyUsers;
+
+  /** Users we preserve */
+  public HashMap onlyUsersMap = new HashMap();
+  
   /** counter */
   public static class SubscriptionsMap extends HashMap {
     /** For 2.3.2 conversion

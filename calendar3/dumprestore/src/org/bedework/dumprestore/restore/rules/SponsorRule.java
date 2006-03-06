@@ -91,6 +91,7 @@ public class SponsorRule extends EntityRule {
         }
       }
     } catch (Throwable t) {
+      warn("Unable to restore " + entity);
       throw new Exception(t);
     }
   }

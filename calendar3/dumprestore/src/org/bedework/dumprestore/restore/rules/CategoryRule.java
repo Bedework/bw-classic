@@ -82,6 +82,7 @@ public class CategoryRule extends EntityRule {
         globals.rintf.restoreCategory(entity);
       }
     } catch (Throwable t) {
+      warn("Unable to restore " + entity);
       throw new Exception(t);
     }
   }

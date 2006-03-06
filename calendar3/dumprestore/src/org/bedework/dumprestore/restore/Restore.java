@@ -354,6 +354,19 @@ public class Restore implements Defs {
         i++;
         globals.syspars.setPublicUser(args[i]);
 
+      } else if (argpar("-onlyusers", args, i)) {
+        i++;
+        if (args[i].equals("*")) {
+          // means ignore this par
+        } else {
+          globals.onlyUsers = true;
+          String[] users = args[i].split(",");
+          for (int oui = 0; oui < users.length; oui++) {
+            info("Only user: " + users[oui]);
+            globals.onlyUsersMap.put(users[oui], users[oui]);
+          }
+        }
+
       } else if (argpar("-httpconnsperuser", args, i)) {
         i++;
         globals.syspars.setHttpConnectionsPerUser(intPar(args[i]));
@@ -438,6 +451,10 @@ public class Restore implements Defs {
 
   protected void error(String msg) {
     getLog().error(msg);
+  }
+
+  protected void info(String msg) {
+    getLog().info(msg);
   }
 
   protected void trace(String msg) {

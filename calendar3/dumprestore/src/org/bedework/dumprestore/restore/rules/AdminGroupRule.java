@@ -70,9 +70,9 @@ public class AdminGroupRule extends EntityRule {
   }
 
   public void end(String ns, String name) throws Exception {
-    try {
-      BwAdminGroup entity = (BwAdminGroup)pop();
+    BwAdminGroup entity = (BwAdminGroup)pop();
 
+    try {
       if (entity.getGroupOwner() == null) {
         error("Missing group owner for admin group " + entity);
         return;
@@ -93,6 +93,7 @@ public class AdminGroupRule extends EntityRule {
         globals.getSuperGroup().addGroupMember(entity);
       }
     } catch (Throwable t) {
+      error("Unable to restore admin group " + entity);
       throw new Exception(t);
     }
   }

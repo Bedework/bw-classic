@@ -67,6 +67,8 @@ import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwUserInfo;
 import org.bedework.calfacade.CalFacadeDefs;
+import org.bedework.calfacade.base.BwOwnedDbentity;
+import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAdminGroupEntry;
@@ -145,170 +147,6 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#open()
    */
   public void open() throws Throwable {
-    openSess();
-
-    /* This doesn't work - at least with mysql
-    Connection conn = sess.connection();
-
-    PreparedStatement ps = null;
-
-    ps = conn.prepareStatement("SET REFERENTIAL_INTEGRITY FALSE");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from bedework_settings");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from adminGroupMembers");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from adminGroups");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from alarms");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from alarm_attendees");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from attendees");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from auth");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from authprefcalendars");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from authprefCategories");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from authprefLocations");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from authprefs");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from authprefSponsors");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from calendars");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from categories");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from eventrrules");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from events");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from event_attendees");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from event_categories");
-    ps.executeUpdate();
-
-    if (globals.from2p3px) {
-      ps = conn.prepareStatement("delete from filters");
-      ps.executeUpdate();
-      ps.close();
-
-      ps = conn.prepareStatement("delete from filter_categories");
-      ps.executeUpdate();
-      ps.close();
-
-      ps = conn.prepareStatement("delete from filter_creators");
-      ps.executeUpdate();
-      ps.close();
-
-      ps = conn.prepareStatement("delete from filter_locations");
-      ps.executeUpdate();
-      ps.close();
-
-      ps = conn.prepareStatement("delete from filter_sponsors");
-      ps.executeUpdate();
-      ps.close();
-    }
-
-    ps = conn.prepareStatement("delete from locations");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from organizers");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from preferences");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from sponsors");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from subscriptions");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from synchdata");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from synchinfo");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from synchstate");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from timezones");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from todos");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from users");
-    ps.executeUpdate();
-    ps.close();
-
-    ps = conn.prepareStatement("delete from user_subscriptions");
-    ps.executeUpdate();
-    ps.close();
-
-    /*
-      ps = conn.prepareStatement("delete from lastmods");
-      ps.executeUpdate();
-      ps.close();
-      * /
-
-    ps = conn.prepareStatement("SET REFERENTIAL_INTEGRITY TRUE");
-    ps.executeUpdate();
-    ps.close();
-    */
-
-    closeSess();
   }
 
   /* (non-Javadoc)
@@ -337,6 +175,11 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreUser(org.bedework.calfacade.BwUser)
    */
   public void restoreUser(BwUser o) throws Throwable {
+    if (globals.onlyUsers && 
+        (globals.onlyUsersMap.get(o.getAccount()) == null)) {
+      return;
+    }
+    
     try {
       openSess();
 
@@ -356,6 +199,11 @@ public class HibRestore implements RestoreIntf {
    * @throws Throwable
    */
   public void restoreUserInfo(BwUserInfo o) throws Throwable {
+    if (globals.onlyUsers && 
+        (globals.onlyUsersMap.get(o.getUser().getAccount()) == null)) {
+      return;
+    }
+    
     openSess();
 
     save(o);
@@ -364,6 +212,10 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void restoreTimezone(BwTimeZone o) throws Throwable {
+    if (!checkOnlyUser(o)) {
+      return;
+    }
+    
     openSess();
 
     save(o);
@@ -383,6 +235,12 @@ public class HibRestore implements RestoreIntf {
       adminGroupId++;
     }
     
+    if (globals.onlyUsers) {
+      if (globals.onlyUsersMap.get(o.getGroupOwner().getAccount()) == null) {
+        o.setGroupOwner(globals.getPublicUser());
+      }
+    }
+    
     save(o);
 
     log.debug("Saved admin group " + o);
@@ -394,12 +252,20 @@ public class HibRestore implements RestoreIntf {
     Collection c = o.getGroupMembers();
     Iterator it = c.iterator();
     while (it.hasNext()) {
+      BwPrincipal pr = (BwPrincipal)it.next();
+      
+      if (globals.onlyUsers && 
+          (pr instanceof BwUser) &&
+          (globals.onlyUsersMap.get(((BwUser)pr).getAccount()) == null)) {
+        continue;
+      }
+            
       openSess();
 
       BwAdminGroupEntry entry = new BwAdminGroupEntry();
 
       entry.setGrp(o);
-      entry.setMember((BwPrincipal)it.next());
+      entry.setMember(pr);
 
       log.debug("About to save " + entry);
 
@@ -413,6 +279,11 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreAuthUser(org.bedework.calfacade.svc.BwAuthUser)
    */
   public void restoreAuthUser(BwAuthUser o) throws Throwable {
+    if (globals.onlyUsers && 
+        (globals.onlyUsersMap.get(o.getUser().getAccount()) == null)) {
+      return;
+    }
+    
     openHibSess();
 
 //    if (o.getId() <= 0) {
@@ -428,6 +299,10 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreEvent(org.bedework.calfacade.BwEvent)
    */
   public void restoreEvent(BwEvent o) throws Throwable {
+    if (!checkOnlyUser(o)) {
+      return;
+    }
+    
     openHibSess();
 
     hibSave(o);
@@ -439,6 +314,10 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#update(org.bedework.calfacade.BwEvent)
    */
   public void update(BwEvent o) throws Throwable {
+    if (!checkOnlyUser(o)) {
+      return;
+    }
+    
     openHibSess();
 
     hibSess.update(o);
@@ -450,6 +329,10 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreCategory(org.bedework.calfacade.BwCategory)
    */
   public void restoreCategory(BwCategory o) throws Throwable {
+    if (!checkOnlyUser(o)) {
+      return;
+    }
+    
     openSess();
 
     save(o);
@@ -461,6 +344,10 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreLocation(org.bedework.calfacade.BwLocation)
    */
   public Integer restoreLocation(BwLocation o) throws Throwable {
+    if (!checkOnlyUser(o)) {
+      return null;
+    }
+    
     openSess();
 
     StringBuffer sb = new StringBuffer();
@@ -486,6 +373,10 @@ public class HibRestore implements RestoreIntf {
   }
 
   public Integer restoreSponsor(BwSponsor o) throws Throwable {
+    if (!checkOnlyUser(o)) {
+      return null;
+    }
+    
     openSess();
 
     StringBuffer sb = new StringBuffer();
@@ -527,6 +418,10 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void restoreUserPrefs(BwPreferences o) throws Throwable {
+    if (!checkOnlyUser(o)) {
+      return;
+    }
+    
     openHibSess();
 
     /* Unset the subscription id - hibernate cascades cause an error
@@ -555,6 +450,10 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void restoreAlarm(BwAlarm o) throws Throwable {
+    if (!checkOnlyUser(o)) {
+      return;
+    }
+    
     openHibSess();
 
     hibSave(o);
@@ -563,6 +462,11 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void update(BwUser user) throws Throwable {
+    if (globals.onlyUsers && 
+        (globals.onlyUsersMap.get(user.getAccount()) == null)) {
+      return;
+    }
+    
     openSess();
 
     sess.update(user);
@@ -615,6 +519,10 @@ public class HibRestore implements RestoreIntf {
    * calls then update the structure with hibernate.
    */
   public void restoreCalendars(BwCalendar o) throws Throwable {
+    if (!checkOnlyUser(o)) {
+      return;
+    }
+    
     openSess();
 
     restoreCalendars(o, sess.connection());
@@ -631,6 +539,10 @@ public class HibRestore implements RestoreIntf {
    * calls then update the structure with hibernate.
    */
   public void restoreCalendar(BwCalendar o) throws Throwable {
+    if (!checkOnlyUser(o)) {
+      return;
+    }
+    
     openSess();
 
     restoreCalendar(o, sess.connection());
@@ -643,6 +555,10 @@ public class HibRestore implements RestoreIntf {
    * ==================================================================== */
 
   private void restoreCalendars(BwCalendar val, Connection conn) throws Throwable {
+    if (!checkOnlyUser(val)) {
+      return;
+    }
+    
     restoreCalendar(val, conn);
 
     Collection cals = val.getChildren();
@@ -662,6 +578,10 @@ public class HibRestore implements RestoreIntf {
   /* Restore a single calendar. Don't restore children
    */
   private void restoreCalendar(BwCalendar val, Connection conn) throws Throwable {
+    if (!checkOnlyUser(val)) {
+      return;
+    }
+    
     PreparedStatement ps = null;
 
     try {
@@ -736,7 +656,7 @@ public class HibRestore implements RestoreIntf {
   }
 
   private synchronized void closeSess() throws Throwable {
-//    sess.commit();
+    sess.getTransaction().commit();
     try {
       if (sess != null) {
         sess.close();
@@ -775,6 +695,34 @@ public class HibRestore implements RestoreIntf {
     /* Just commit * /
     sess.commit();
   }*/
+  
+  private boolean checkOnlyUser(BwOwnedDbentity ent) {
+    if (!globals.onlyUsers) {
+      return true;
+    }
+    
+    if (globals.onlyUsersMap.get(ent.getOwner().getAccount()) == null) {
+      return false;
+    }
+    
+    return true;
+  }
+  
+  private boolean checkOnlyUser(BwShareableDbentity ent) {
+    if (!globals.onlyUsers) {
+      return true;
+    }
+    
+    if (globals.onlyUsersMap.get(ent.getOwner().getAccount()) == null) {
+      return false;
+    }
+    
+    if (globals.onlyUsersMap.get(ent.getCreator().getAccount()) == null) {
+      ent.setCreator(ent.getOwner());
+    }
+    
+    return true;
+  }
 
   private String boolVal(boolean val) {
     if (val) {
@@ -784,5 +732,3 @@ public class HibRestore implements RestoreIntf {
     return "F";
   }
 }
-
-
