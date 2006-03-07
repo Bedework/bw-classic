@@ -13,6 +13,7 @@
     <!-- Define properties based on admin properties -->
     <property name="propval.war.name"
               value="${org.bedework.webadmin.war.name}" />
+
     <property name="propval.ear.name"
               value="${org.bedework.webadmin.ear.name}" />
 
@@ -61,9 +62,6 @@
               value="${app.public.calendar.uri}" />
     <property name="propval.app.personal.calendar.uri"
               value="${app.personal.calendar.uri}" />
-
-    <property name="propval.portal.platform"
-              value="${org.bedework.admin.portal.platform}" />
 
     <property name="propval.app.jetspeed2.admin.roles"
               value="${org.bedework.webadmin.app.jetspeed2.roles}" />

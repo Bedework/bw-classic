@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<project name="buildApplicationxml" basedir="." default="build">
+  <!-- ===============================================================
+       This macro, through a series of repeated updates, adds a number of
+       java module declarations to an application.xml, one per jar file in
+       the supplied library directory.
+       =============================================================== -->
+  <macrodef name="buildAppXml">
+      <attribute name="lib.dir"/>
+      <attribute name="target.file" default="${org.bedework.temp.home}/META-INF/application.xml"/>
+
+    <sequential>
+      <path id="org.bedework.java.modules.path">
+        <fileset dir="${lib.dir}">
+          <include name="**/*.jar" />
+        </fileset>
+      </path>
+
+      <pathconvert refid="org.bedework.java.modules.path"
+                   property="org.bedework.java.modules"
+                   dirsep="/"
+                   pathsep="PATHSEP">
+        <map from="${lib.dir}/" to=""/>
+      </pathconvert>
+
+      <!--<echo message="org.bedework.java.modules = ${org.bedework.java.modules}" />-->
+
+      <replace file="${target.file}">
+        <replacetoken><![CDATA[<!-- java modules go here -->]]></replacetoken>
+        <replacevalue><![CDATA[<module>
+   <java>-- java modules property goes here --</java>
+  </module>]]></replacevalue>
+      </replace>
+
+      <replace file="${target.file}">
+        <replacefilter token="-- java modules property goes here --"
+                       value="${rpi.java.modules}"/>
+      </replace>
+
+      <replace file="${target.file}">
+        <replacetoken>PATHSEP</replacetoken>
+        <replacevalue><![CDATA[</java>
+  </module>
+
+ <module>
+   <java>]]></replacevalue>
+    </sequential>
+  </macrodef>
+
+</project>
+

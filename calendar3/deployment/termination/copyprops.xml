@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     Copy the application properties from the global config
+     properties file into common application build properties.
+     =================================================================== -->
+
+<project name="bwadmin.copyprops" default="copyprops" >
+  <target name="copyprops">
+    <!-- Define properties based on global properties -->
+
+    <!-- Use the admin value for the single ear file we build. -->
+    <property name="propval.ear.name"
+              value="${org.bedework.webadmin.ear.name}" />
+
+    <property name="propval.app.security.domain"
+              value="${org.bedework.webadmin.app.security.domain}"/>
+  </target>
+</project>

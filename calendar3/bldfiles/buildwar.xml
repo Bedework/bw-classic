@@ -42,22 +42,26 @@
      =================================================================== -->
 
 <project name="uwcal.buildwar" default="build" >
-  <target name="init">
+  <target name="init" depends="init.common,init.j2ee,init.standalone" />
+
+  <target name="init.common">
     <condition property="org.bedework.build.for.jetspeed2">
       <equals arg1="jetspeed2" arg2="${propval.portal.platform}"/>
     </condition>
 
+    <condition property="org.bedework.build.for.jboss">
+      <equals arg1="jboss" arg2="${org.bedework.global.j2ee.platform}"/>
+    </condition>
+
     <!-- Destinations - where we build an unwrapped war -->
     <property name="app.dest.home"
-              location="${org.bedework.temp.wars.home}/${propval.war.name}" />
+              location="${org.bedework.temp.wars.home}/${propval.war.name}.war" />
     <property name="app.dest.war"
               location="${app.dest.home}/war" />
     <property name="app.dest.docs"
               location="${app.dest.war}/docs" />
     <property name="app.dest.webinf"
               location="${app.dest.war}/WEB-INF" />
-    <property name="app.dest.lib"
-              location="${app.dest.webinf}/lib" />
     <property name="app.dest.classes"
               location="${app.dest.webinf}/classes" />
     <property name="app.dest.properties"
@@ -75,7 +79,17 @@
               value="${app.sou.dir}/war/WEB-INF/web.xml" />
     <property name="app.sou.properties"
               location="${app.sou.dir}/war/WEB-INF/classes/servlet.properties" />
-   </target>
+  </target>
+
+  <target name="init.standalone" if="org.bedework.global.build.standalone.app">
+    <property name="app.dest.lib"
+              location="${app.dest.webinf}/lib" />
+  </target>
+
+  <target name="init.j2ee" if="org.bedework.global.j2ee.platform">
+    <property name="app.dest.lib"
+              location="${org.bedework.temp.home}/ear/lib" />
+  </target>
 
   <target name="build" depends="init">
     <delete dir="${app.dest.home}" />
@@ -246,8 +260,9 @@
          basedir="${app.dest.war}"
          excludes="${app.dest.web.xml}" />
 
-    <!-- build the ear file for a j2ee app -->
+    <!-- build the ear file for a j2ee app
     <antcall target="build.ear" inheritRefs="true" />
+    -->
   </target>
 
   <target name="add.jdbcdriver" if="app.jdbcdriver.jar">
@@ -361,7 +376,7 @@
        We create an uodated jboss-web.xml file (for jboss) and a ear
        ================================================================= -->
 
-  <target name="jboss-stuff" if="cal.j2ee.jboss">
+  <target name="jboss-stuff" if="org.bedework.build.for.jboss">
     <copy todir="${app.dest.webinf}"
           file="${app.sou.dir}/war/WEB-INF/jboss-web.xml">
       <filterset refid="property.filters" />

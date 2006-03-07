@@ -62,8 +62,5 @@
               value="${app.public.calendar.uri}" />
     <property name="propval.app.personal.calendar.uri"
               value="${app.personal.calendar.uri}" />
-
-    <property name="propval.portal.platform"
-              value="${org.bedework.admin.portal.platform}" />
   </target>
 </project>
