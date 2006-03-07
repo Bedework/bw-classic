@@ -91,9 +91,18 @@
         </xsl:if>
         <table id="bodyBlock" cellspacing="0">
           <tr>
-            <td id="sideBar">
-              <xsl:call-template name="sideBar"/>
-            </td>
+            <xsl:choose>
+              <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
+                <td id="sideBarClosed">
+                  <img src="{$resourcesRoot}/images/demo/space.gif" width="1" height="1" border="0" alt="*"/>
+                </td>
+              </xsl:when>
+              <xsl:otherwise>
+                <td id="sideBar">
+                  <xsl:call-template name="sideBar"/>
+                </td>
+              </xsl:otherwise>
+            </xsl:choose>
             <td id="bodyContent">
               <xsl:call-template name="tabs"/>
               <xsl:choose>
@@ -220,7 +229,18 @@
     </table>
     <div id="curDateRange">
       <div id="sideBarOpenCloseIcon">
-        <img alt="" src="{$resourcesRoot}/images/demo/std-sidebarclose-icon.gif" width="13" height="13" border="0" align="left"/>
+        <xsl:choose>
+          <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
+            <a href="?setappvar=sidebar(opened)">
+              <img alt="open sidebar" src="{$resourcesRoot}/images/demo/std-sidebaropen-icon.gif" width="13" height="13" border="0" align="left"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="?setappvar=sidebar(closed)">
+              <img alt="close sidebar" src="{$resourcesRoot}/images/demo/std-sidebarclose-icon.gif" width="13" height="13" border="0" align="left"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
       </div>
       <xsl:value-of select="/bedework/firstday/longdate"/>
       <xsl:if test="/bedework/periodname!='Day'">
@@ -292,8 +312,7 @@
               </xsl:choose>
             </td>
             <td class="centerCell">
-                <a href="{$initUpload}">upload</a><!-- <a href="http://www.rpi.edu/dept/cct/apps/pubeventsxml/calendarfeatures.html">login</a> -->
-                <!-- <span id="featureHighlight">switch view &#8594;</span> -->
+              &#160;
             </td>
             <td class="rssPrint">
               <a href="javascript:window.print()" title="print this view">
