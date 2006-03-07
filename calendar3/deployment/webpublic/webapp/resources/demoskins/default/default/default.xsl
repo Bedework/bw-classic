@@ -583,11 +583,10 @@
         <td class="fieldname">Description:</td>
         <td colspan="2" class="fieldval description">
           <!--<xsl:value-of select="description"/>-->
-          <xsl:variable name="lineBreaks"><br/></xsl:variable>
           <xsl:call-template name="replace">
             <xsl:with-param name="string" select="description"/>
             <xsl:with-param name="pattern" select="'&#xA;'"/>
-            <xsl:with-param name="replacement" select="$lineBreaks"/>
+            <xsl:with-param name="replacement"><br/></xsl:with-param>
           </xsl:call-template>
         </td>
       </tr>

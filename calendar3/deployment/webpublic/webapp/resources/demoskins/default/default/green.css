@@ -474,6 +474,8 @@ body {
   color: black;
   padding: 4px;
   border: 1px solid #333;
+  /*opacity: .80;
+  filter: alpha(opacity=80);*/
 }
 #monthCalendarTable a:hover span.eventTipReverse {
   display: block;
@@ -485,6 +487,8 @@ body {
   color: black;
   padding: 4px;
   border: 1px solid #333;
+  opacity: .80;
+  filter: alpha(opacity=80);
 }
 #monthCalendarTable a:hover span.eventTipStatus {
   display: block;
