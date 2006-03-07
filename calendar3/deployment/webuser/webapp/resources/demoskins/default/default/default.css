@@ -116,6 +116,7 @@ body {
 #bodyBlock td {
   margin: 0;
   padding: 0;
+  vertical-align: top;
 }
 #bodyBlock td#sideBar {
   width: 200px;
@@ -127,6 +128,7 @@ body {
 }
 #sideBarOpenCloseIcon {
   position: absolute;
+  left: 32px;
   padding-top: 3px;
 }
 #bodyBlock td#sideBar #sideBarTabs {
@@ -142,6 +144,7 @@ body {
   padding: 0 0.5em;
   margin: 0;
   vertical-align: middle;
+  text-align: center;
   border-top: 1px solid #333;
   border-bottom: 1px solid #333;
   border-left: 1px solid #333;
@@ -154,6 +157,9 @@ body {
   background-color: white;
   border-bottom: none;
   padding-bottom: 1px;
+}
+#bodyBlock td#sideBar #sideBarMenu li {
+  font-size: 0.9em;
 }
 #userBarTable {
   margin: 0;

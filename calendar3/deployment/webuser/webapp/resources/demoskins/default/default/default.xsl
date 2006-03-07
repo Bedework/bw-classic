@@ -233,15 +233,16 @@
   <xsl:template name="sideBar">
     <table id="sideBarTabs" cellspacing="0">
       <tr>
-        <td class="selected first">Main</td>
+        <td class="selected first">Menu</td>
         <td>Calendars</td>
-        <td>Subscriptions</td>
       </tr>
     </table>
-    <ul>
+    <ul id="sideBarMenu">
       <li><a href="{$initEvent}">Add Event</a></li>
+      <li><a href="{$initUpload}">Upload Events (iCal)</a></li>
       <li><a href="{$manageLocations}">Manage Locations</a></li>
       <li><a href="{$fetchPublicCalendars}">Manage Subscriptions</a></li>
+      <li>Preferences</li>
     </ul>
   </xsl:template>
 
