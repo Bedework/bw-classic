@@ -7,9 +7,4 @@
     <res-type>javax.sql.DataSource</res-type>
     <jndi-name>java:/CalendarDS</jndi-name>
   </resource-ref>
-
-  <ejb-ref>
-    <ejb-ref-name>rpi/misc/creds</ejb-ref-name>
-    <jndi-name>@CREDSEJB-JNDI-NAME@</jndi-name>
-  </ejb-ref>
 </jboss-web>

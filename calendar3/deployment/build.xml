@@ -26,7 +26,13 @@
      =================================================================== -->
 
 <project name="deploy.bedework" default="init">
+  <property name="base.name" value="deployment"/>
+
   <target name="init" >
+    <dirname property="this.build.dir" file="${ant.file}"/>
+
+    <property name="source.home" location="${this.build.dir}/src"/>
+
     <!-- default to debug off -->
     <property name="app.debug.val" value="0" />
 
@@ -48,7 +54,34 @@
     -->
   </target>
 
-  <target name="build.configured" depends="init" >
+  <target name="build" depends="init"
+          description="Compile deployment Java sources">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+     <include name="org/bedework/deployment/*.java"/>
+      <include name="org/bedework/deployment/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/deployment/*.class"/>
+      <include name="org/bedework/deployment/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${ant.jar}"/>
+    </path>
+
+    <!-- ==================== Build Target ============================= -->
+
+    <property name="build.jar.file" location="${org.bedework.deployment.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+
+  <target name="build.configured" depends="build" >
     <!-- Clean up before we start -->
     <delete dir="${org.bedework.temp.wars.home}" />
 
@@ -89,7 +122,7 @@
                          The deploy target.
        ================================================================= -->
 
-  <target name="deploy" depends="init" >
+  <target name="deploy" depends="build" >
     <!-- Clean up before we start -->
     <delete dir="${org.bedework.temp.wars.home}" />
 

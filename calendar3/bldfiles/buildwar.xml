@@ -54,10 +54,8 @@
     </condition>
 
     <!-- Destinations - where we build an unwrapped war -->
-    <property name="app.dest.home"
-              location="${org.bedework.temp.wars.home}/${propval.war.name}.war" />
     <property name="app.dest.war"
-              location="${app.dest.home}/war" />
+              location="${org.bedework.temp.wars.home}/${propval.war.name}.war" />
     <property name="app.dest.docs"
               location="${app.dest.war}/docs" />
     <property name="app.dest.webinf"
@@ -88,11 +86,11 @@
 
   <target name="init.j2ee" if="org.bedework.global.j2ee.platform">
     <property name="app.dest.lib"
-              location="${org.bedework.temp.home}/ear/lib" />
+              location="${org.bedework.temp.home}/earlib" />
   </target>
 
   <target name="build" depends="init">
-    <delete dir="${app.dest.home}" />
+    <delete dir="${app.dest.war}" />
 
     <!-- Add modifed login pages -->
     <copy todir="${app.dest.docs}/login" failonerror="false" >

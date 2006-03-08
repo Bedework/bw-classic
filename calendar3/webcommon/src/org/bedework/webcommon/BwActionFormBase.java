@@ -110,7 +110,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   private CalEnv env;
 
   // XXX locale - needs to be changed when locale changes
-  private Collator listCollator = Collator.getInstance();
+  private transient Collator listCollator;
   
   /* This should be a cloned copy only */
   private BwSystem syspars;
@@ -1439,7 +1439,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   public Collection getAddContentCalendarCollections() {
     try {
-      TreeMap tm = new TreeMap(listCollator);
+      TreeMap tm = new TreeMap(getListCollator());
       
       Iterator it = fetchSvci().getAddContentCalendarCollections().iterator();
       
@@ -2138,6 +2138,15 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
       err.emit(t);
       return new Vector();
     }
+  }
+  
+  // XXX locale - needs to be changed when locale changes
+  private Collator getListCollator() {
+    if (listCollator == null) {
+      listCollator = Collator.getInstance();
+    }
+    
+    return listCollator;
   }
 }
 

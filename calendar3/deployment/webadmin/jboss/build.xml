@@ -24,11 +24,6 @@
        ================================================================= -->
 
   <target name="deploy" depends="init,build.configured" >
-    <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}" />
-    <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}">
-      <fileset dir="${app.resources.dir}" />
-    </copy>
-
     <echo message="***************************************************************" />
     <echo message="Readying app ${propval.war.name}.war for jboss deployment" />
     <echo message="***************************************************************" />
