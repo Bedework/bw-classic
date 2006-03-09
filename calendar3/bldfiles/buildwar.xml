@@ -379,6 +379,19 @@
           file="${app.sou.dir}/war/WEB-INF/jboss-web.xml">
       <filterset refid="property.filters" />
     </copy>
+    <antcall target="jboss-virtual-host" inheritRefs="true" />
+  </target>
+
+  <target name="jboss-virtual-host" if="org.bedework.global.virtual.host">
+    <replace file="${app.dest.webinf}/jboss-web.xml">
+      <replacetoken><![CDATA[<!-- Virtual host -->]]></replacetoken>
+      <replacevalue><![CDATA[<virtual-host>@VIRTUAL-HOST@</virtual-host>>
+      ]]>
+      </replacevalue>
+    </replace>
+    <replace file="${app.dest.webinf}/jboss-web.xml">
+      <replacefilter token="@VIRTUAL-HOST@" value="${org.bedework.global.virtual.host}"/>
+    </replace>
   </target>
 
   <target name="build.ear" if="cal.j2ee">

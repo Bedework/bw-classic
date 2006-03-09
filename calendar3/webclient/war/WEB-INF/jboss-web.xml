@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <jboss-web>
+  <!-- Virtual host -->
+
   <security-domain>java:/jaas/rpiLdap</security-domain>
   <resource-ref>
     <res-ref-name>jdbc/calDB</res-ref-name>

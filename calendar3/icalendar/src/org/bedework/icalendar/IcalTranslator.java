@@ -358,7 +358,7 @@ public class IcalTranslator implements Serializable {
     try {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
-      return bldr.build(new StringReader(val));
+      return bldr.build(new StringReader(val), true);
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -378,7 +378,7 @@ public class IcalTranslator implements Serializable {
     try {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
-      Calendar cal = bldr.build(new StringReader(val));
+      Calendar cal = bldr.build(new StringReader(val), true);
       Vector evs = new Vector();
 
       if (cal == null) {
