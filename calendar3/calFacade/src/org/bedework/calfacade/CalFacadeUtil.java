@@ -64,7 +64,6 @@ import java.io.Serializable;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -124,7 +123,9 @@ public class CalFacadeUtil implements Serializable {
    * @return String "yyyyMMdd"
    */
   public static String isoDate(Date val) {
-    return isoDateFormat.format(val);
+    synchronized (isoDateFormat) {
+      return isoDateFormat.format(val);
+    }
   }
 
   /** Turn Date into "yyyyMMddTHHmmss"
@@ -133,7 +134,9 @@ public class CalFacadeUtil implements Serializable {
    * @return String "yyyyMMddTHHmmss"
    */
   public static String isoDateTime(Date val) {
-    return isoDateTimeFormat.format(val);
+    synchronized (isoDateTimeFormat) {
+      return isoDateTimeFormat.format(val);
+    }
   }
 
   /** Turn Date into "yyyyMMddTHHmmssZ"
@@ -142,7 +145,9 @@ public class CalFacadeUtil implements Serializable {
    * @return String "yyyyMMddTHHmmssZ"
    */
   public static String isoDateTimeUTC(Date val) {
-    return isoDateTimeUTCFormat.format(val);
+    synchronized (isoDateTimeUTCFormat) {
+      return isoDateTimeUTCFormat.format(val);
+    }
   }
 
   /** Get Date from "yyyyMMdd"
@@ -153,7 +158,9 @@ public class CalFacadeUtil implements Serializable {
    */
   public static Date fromISODate(String val) throws CalFacadeException {
     try {
-      return isoDateFormat.parse(val);
+      synchronized (isoDateFormat) {
+        return isoDateFormat.parse(val);
+      }
     } catch (Throwable t) {
       throw new CalFacadeBadDateException();
     }
@@ -167,7 +174,25 @@ public class CalFacadeUtil implements Serializable {
    */
   public static Date fromISODateTime(String val) throws CalFacadeException {
     try {
-      return isoDateTimeFormat.parse(val);
+      synchronized (isoDateTimeFormat) {
+        return isoDateTimeFormat.parse(val);
+      }
+    } catch (Throwable t) {
+      throw new CalFacadeBadDateException();
+    }
+  }
+
+  /** Get Date from "yyyyMMddThhmmssZ"
+   *
+   * @param val String "yyyyMMddThhmmssZ"
+   * @return Date
+   * @throws CalFacadeException
+   */
+  public static Date fromISODateTimeUTC(String val) throws CalFacadeException {
+    try {
+      synchronized (isoDateTimeUTCFormat) {
+        return isoDateTimeUTCFormat.parse(val);
+      }
     } catch (Throwable t) {
       throw new CalFacadeBadDateException();
     }
@@ -181,7 +206,7 @@ public class CalFacadeUtil implements Serializable {
    */
   public static boolean isISODate(String val) throws CalFacadeException {
     try {
-      isoDateFormat.parse(val);
+      fromISODate(val);
       return true;
     } catch (Throwable t) {
       return false;
@@ -196,7 +221,7 @@ public class CalFacadeUtil implements Serializable {
    */
   public static boolean isISODateTimeUTC(String val) throws CalFacadeException {
     try {
-      isoDateTimeUTCFormat.parse(val);
+      fromISODateTimeUTC(val);
       return true;
     } catch (Throwable t) {
       return false;
@@ -211,7 +236,7 @@ public class CalFacadeUtil implements Serializable {
    */
   public static boolean isISODateTime(String val) throws CalFacadeException {
     try {
-      isoDateTimeFormat.parse(val);
+      fromISODateTime(val);
       return true;
     } catch (Throwable t) {
       return false;
@@ -230,14 +255,14 @@ public class CalFacadeUtil implements Serializable {
 
     try {
       if (val.getDateType()) {
-        return isoDateFormat.parse(dtval);
+        return fromISODate(dtval);
       }
 
       if (dtval.endsWith("Z")) {
-        return isoDateTimeUTCFormat.parse(dtval);
+        return fromISODateTimeUTC(dtval);
       }
 
-      return isoDateTimeFormat.parse(dtval);
+      return fromISODateTime(dtval);
     } catch (Throwable t) {
       throw new CalFacadeBadDateException();
     }
@@ -299,15 +324,17 @@ public class CalFacadeUtil implements Serializable {
     boolean dateOnly = false;
 
     try {
-      dt = isoDateTimeUTCFormat.parse(val);
+      dt = fromISODateTimeUTC(val);
       UTC = true;
-    } catch (ParseException pe1) {
+    } catch (CalFacadeBadDateException bde1) {
       try {
-        dt = isoDateTimeFormat.parse(val);
-      } catch (ParseException pe2) {
+        dt = fromISODateTime(val);
+      } catch (CalFacadeBadDateException bde2) {
         try {
-          dt = isoDateFormat.parse(val);
+          dt = fromISODate(val);
           dateOnly = true;
+        } catch (CalFacadeException ce) {
+          throw ce;
         } catch (Throwable t) {
           throw new CalFacadeException(t);
         }

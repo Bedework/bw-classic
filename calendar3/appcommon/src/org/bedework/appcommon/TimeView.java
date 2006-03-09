@@ -283,7 +283,9 @@ public class TimeView implements Serializable {
     String start = startDt.getDate();
     String end = endDt.getDate();
     
-    debugMsg("Did UTC stuff in " + (System.currentTimeMillis() - millis));
+    if (debug) {
+      debugMsg("Did UTC stuff in " + (System.currentTimeMillis() - millis));
+    }
 
     //if (debug) {
     //  debugMsg("Get days events in range " + start + " to " + end);

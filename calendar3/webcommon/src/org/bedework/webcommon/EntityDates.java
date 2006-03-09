@@ -54,6 +54,8 @@
 
 package org.bedework.webcommon;
 
+import java.io.Serializable;
+
 import org.bedework.appcommon.CalendarInfo;
 import org.bedework.calsvci.CalSvcI;
 
@@ -65,7 +67,7 @@ import edu.rpi.sss.util.log.MessageEmit;
  *
  * This is the base class for entity specific classes.
  */
-public class EntityDates {
+public class EntityDates implements Serializable {
   protected boolean debug;
 
   protected CalSvcI svci;
