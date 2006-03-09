@@ -98,7 +98,7 @@
         <xsl:call-template name="headBar"/>
         <xsl:if test="/bedework/error">
           <div id="errors">
-            <p><xsl:apply-templates select="/bedework/error"/></p>
+            <xsl:apply-templates select="/bedework/error"/>
           </div>
         </xsl:if>
         <xsl:call-template name="tabs"/>
