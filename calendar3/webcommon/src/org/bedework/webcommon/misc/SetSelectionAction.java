@@ -79,7 +79,8 @@ import javax.servlet.http.HttpServletResponse;
  * </ul>
  * <p>Forwards to:<ul>
  *      <li>"noAccess"     user not authorised.</li>
- *      <li>"notFound"     no event was found.</li>
+ *      <li>"notFound"     no calendar or subscription was found.</li>
+ *      <li>"noViewDef"    no view defined</li>
  *      <li>"success"      exported ok.</li>
  * </ul>
  */

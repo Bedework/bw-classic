@@ -21,6 +21,9 @@
       <xsl:when test="id='org.bedework.client.error.unknowncalendar'">
           Unknown calendar
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknownview'">
+          Unknown view
+      </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="id"/> = <xsl:value-of select="param"/>
       </xsl:otherwise>
