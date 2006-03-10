@@ -66,6 +66,8 @@ import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Locale;
 
 /** Class to format and provide segments of dates and times.
  *
@@ -80,9 +82,20 @@ public class DateTimeFormatter implements Serializable {
   //private MyCalendarVO cal;
   private GregorianCalendar cal;
 
-  private DateFormat longDateFormatter;
-  private DateFormat shortDateFormatter;
-  private DateFormat shortTimeFormatter;
+  private static HashMap formattersTbl = new HashMap();
+
+  /* What we store in the table */
+  private static class Formatters {
+    DateFormat longDateFormatter;
+    DateFormat shortDateFormatter;
+    DateFormat shortTimeFormatter;
+    
+    Formatters(Locale loc) {
+      longDateFormatter = DateFormat.getDateInstance(DateFormat.LONG, loc);
+      shortDateFormatter = DateFormat.getDateInstance(DateFormat.SHORT, loc);
+      shortTimeFormatter = DateFormat.getTimeInstance(DateFormat.SHORT, loc);
+    }
+  }
 
   /** Constructor
    *
@@ -202,8 +215,11 @@ public class DateTimeFormatter implements Serializable {
    *
    * @return String    month name for this object
    */
-  public String getMonthName() {
-    return getComponent(DateFormat.MONTH_FIELD, getLongDateFormatter());
+  public synchronized String getMonthName() {
+    Formatters fmt = getFormatters();
+    FieldPosition f = new FieldPosition(DateFormat.MONTH_FIELD);
+    StringBuffer s = fmt.longDateFormatter.format(cal.getTime(), new StringBuffer(), f);
+    return s.substring(f.getBeginIndex(), f.getEndIndex());
   }
 
   /** Get the day of the month for this object. A value between 1-31
@@ -356,8 +372,9 @@ public class DateTimeFormatter implements Serializable {
    * @return String        Short representation of the date
    *            represented by this object.
    */
-  public String getDateString() {
-    return getShortDateFormatter().format(cal.getTime());
+  public synchronized String getDateString() {
+    Formatters fmt = getFormatters();
+    return fmt.shortDateFormatter.format(cal.getTime());
   }
 
   /**  Get a long String representation of the date
@@ -365,8 +382,9 @@ public class DateTimeFormatter implements Serializable {
    * @return String        long representation of the date
    *            represented by this object.
    */
-  public String getLongDateString() {
-    return getLongDateFormatter().format(cal.getTime());
+  public synchronized String getLongDateString() {
+    Formatters fmt = getFormatters();
+    return fmt.longDateFormatter.format(cal.getTime());
   }
 
   /**  Get a short String representation of the time of day
@@ -375,56 +393,21 @@ public class DateTimeFormatter implements Serializable {
    *            represented by this object.
    *            If there is no time, returns a zero length string.
    */
-  public String getTimeString() {
-    return getShortTimeFormatter().format(cal.getTime());
+  public synchronized String getTimeString() {
+    Formatters fmt = getFormatters();
+    return fmt.shortTimeFormatter.format(cal.getTime());
   }
 
-  /** Get a long formatter for date
-   *
-   * @return DateFormat long formatter ready for processing.
-   */
-  private DateFormat getLongDateFormatter() {
-    if (longDateFormatter != null) {
-      return longDateFormatter;
+  private Formatters getFormatters() {
+    Locale loc = calInfo.getLocale();
+    
+    Formatters fmt = (Formatters)formattersTbl.get(loc);
+    
+    if (fmt == null) {
+      fmt = new Formatters(loc);
+      formattersTbl.put(loc, fmt);
     }
-    longDateFormatter = DateFormat.getDateInstance(DateFormat.LONG);
-    return longDateFormatter;
-  }
-
-  /** Get a short formatter for date
-   *
-   * @return DateFormat short formatter ready for processing.
-   */
-  private DateFormat getShortDateFormatter() {
-    if (shortDateFormatter != null) {
-      return shortDateFormatter;
-    }
-    shortDateFormatter = DateFormat.getDateInstance(DateFormat.SHORT);
-    return shortDateFormatter;
-  }
-
-  /** Get a short formatter for time
-   *
-   * @return DateFormat short formatter ready for processing.
-   */
-  private DateFormat getShortTimeFormatter() {
-    if (shortTimeFormatter != null) {
-      return shortTimeFormatter;
-    }
-    shortTimeFormatter = DateFormat.getTimeInstance(DateFormat.SHORT);
-    return shortTimeFormatter;
-  }
-
-  /** Get a String representation of a particular time
-   *  field of the object.
-   *
-   * @param field Index of the field to be returned,
-   * @param formatter - an appropriate formatter
-   * @return String field from the object.
-   */
-  private String getComponent(int field, DateFormat formatter) {
-    FieldPosition f = new FieldPosition(field);
-    StringBuffer s = formatter.format(cal.getTime(), new StringBuffer(), f);
-    return s.substring(f.getBeginIndex(), f.getEndIndex());
+    
+    return fmt;
   }
 }
