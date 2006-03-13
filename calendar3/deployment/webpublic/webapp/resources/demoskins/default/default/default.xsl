@@ -269,7 +269,7 @@
               </xsl:choose>
             </td>
             <td class="centerCell">
-              &#160;
+              &#160;<!--<img src="{$resourcesRoot}/images/std-button-today.gif" width="46" height="17" border="0" alt="TODAY"/>-->
             </td>
             <td class="rightCell">
               &#160;
@@ -293,7 +293,7 @@
               <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
             </td>
             <td class="centerCell">
-                &#160;
+              &#160;<!--<img src="{$resourcesRoot}/images/std-button-today.gif" width="46" height="17" border="0" alt="TODAY"/>-->
             </td>
             <td class="rightCell">
               &#160;

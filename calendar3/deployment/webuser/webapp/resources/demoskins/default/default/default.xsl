@@ -94,7 +94,7 @@
             <xsl:choose>
               <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
                 <td id="sideBarClosed">
-                  <img src="{$resourcesRoot}/images/demo/space.gif" width="1" height="1" border="0" alt="*"/>
+                  <img src="{$resourcesRoot}/images/demo/spacer.gif" width="1" height="1" border="0" alt="*"/>
                 </td>
               </xsl:when>
               <xsl:otherwise>
@@ -942,47 +942,50 @@
 
   <!--==== CALENDAR LISTING / MANAGE SUBSCRIPTIONS ====-->
   <xsl:template match="calendars">
-    <xsl:variable name="topLevelCalCount" select="count(/bedework/calendars/calendar)"/>
-    <form name="subscriptionForm" method="post" action="{$subscribe}" id="subscriptions">
-      <input type="hidden" name="confirmationid" value="{$confId}"/>
-      <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
-        <tr>
-          <th colspan="2">
-            Calendar Subscriptions
-          </th>
-        </tr>
-        <tr>
-          <td colspan="2" class="infoCell">
-            Subscribe to these calendars by checking the boxes, then click the Submit button &#62;&#62;&#160;
-            <input name="submit" type="submit" value="Submit"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="leftCell">
-            <xsl:apply-templates select="calendar[position() &lt;= floor($topLevelCalCount div 2)]" mode="fullList"/>
-          </td>
-          <td>
-            <xsl:apply-templates select="calendar[position() &gt; floor($topLevelCalCount div 2)]" mode="fullList"/>
-          </td>
-        </tr>
-      </table>
-    </form>
+    <xsl:variable name="publicCalCount" select="count(calendar[name='public']/calendar)"/>
+    <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <th colspan="2">
+          Calendar Subscriptions
+        </th>
+      </tr>
+      <tr>
+        <td colspan="2" class="infoCell">
+          Add and remove subscriptions to public calendars
+        </td>
+      </tr>
+      <tr>
+        <td class="leftCell">
+          <ul class="calendarTree">
+            <xsl:apply-templates select="calendar[name='public']/calendar[position() &lt;= ceiling($publicCalCount div 2)]" mode="calTree"/>
+          </ul>
+        </td>
+        <td>
+          <ul class="calendarTree">
+            <xsl:apply-templates select="calendar[name='public']/calendar[position() &gt; ceiling($publicCalCount div 2)]" mode="calTree"/>
+          </ul>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
-  <xsl:template match="calendar" mode="fullList">
+  <xsl:template match="calendar" mode="calTree">
+   <xsl:variable name="itemClass">
+      <xsl:choose>
+        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:otherwise>calendar</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="id" select="id"/>
-    <h2>
-      <xsl:copy-of select="form/checkbox/*" />
-      <xsl:value-of select="title"/>
-    </h2>
-    <ul>
-      <xsl:for-each select="calendar">
-        <li>
-          <xsl:copy-of select="form/checkbox/*" />
-          <xsl:value-of select="title"/>
-        </li>
-      </xsl:for-each>
-    </ul>
+    <xsl:variable name="name" select="name"/>
+    <li class="{$itemClass}">
+      <a href="{$subscribe}?calid={$id}&amp;name={$name}"><xsl:value-of select="name"/></a>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="calTree"/>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <!--==== SINGLE EVENT ====-->

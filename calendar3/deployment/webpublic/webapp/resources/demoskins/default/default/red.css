@@ -131,14 +131,6 @@ body {
   background-color: #333;
   color: #eee;
 }
-#tabsTable .centerCell {
-  text-align: right;
-  background : url(../../images/demo/std-tab-space.gif);
-  font-size: 0.8em;
-  white-space: nowrap;
-  width: 100%;
-  padding-right: 0.5em;
-}
 #tabsTable .centerCell  a {
   text-decoration: none;
   color: #eee;

@@ -5,6 +5,14 @@
   color: #ff9;
   font-weight: bold;
 }
+#tabsTable .centerCell {
+  text-align: left;
+  background : url(../../images/demo/std-tab-space.gif);
+  font-size: 0.8em;
+  white-space: nowrap;
+  width: 100%;
+  padding: 0 1em;
+}
 #calendarOfEventsTitle {
   font-family: Arial, sans-serif;
   font-size: 8pt;

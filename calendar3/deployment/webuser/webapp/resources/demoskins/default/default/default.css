@@ -170,7 +170,7 @@ body {
   font-size: 0.9em;
   padding-bottom: 0.5em;
 }
-#bodyBlock td#bodyContent {  
+#bodyBlock td#bodyContent {
   border-right: 2px solid #333;
   border-bottom: 2px solid #aaa;
   border-left: 1px solid #333;
@@ -407,20 +407,26 @@ form#subscriptions {
 #calPageTable td.leftCell {
   border-right : thin dashed #999;
 }
-#calPageTable h2 {
-  font-size: 1.2em;
+
+#calPageTable ul.calendarTree li {
+  font-weight: bold;
+}
+#calPageTable ul.calendarTree li ul li {
+  font-weight: normal;
+}
+#calPageTable ul.calendarTree li.folder {
+  list-style-image: url(../../images/demo/catIcon.gif);
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+#calPageTable ul.calendarTree li.calendar {
+  list-style-image: url(../../images/demo/calIcon-sm.gif);
 }
 #calPageTable td.infoCell {
   background-color: #eee;
   color: black;
   text-align: center;
   padding: 4px;
-}
-#calPageTable li {
-  list-style-type : none;
-}
-#calPageTable li input[type="checkbox"] {
-  margin-right: 0.5em;
 }
 #dayCalendarTable {
   width: 100%;
