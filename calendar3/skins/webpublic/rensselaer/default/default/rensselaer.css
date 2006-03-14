@@ -665,14 +665,13 @@ a.gridAdd {
   font-weight: bold;
   text-decoration : none;
 }
-#listTable td.smallIconLeft {
+#listTable td.icons {
   color: black;
   background-color: #ddd;
+  white-space: nowrap;
 }
-#listTable td.smallIconRight {
-  color: black;
-  background-color: #ddd;
-  padding-left: 0;
+#listTable td.icons img.addref {
+  margin-right: 0.5em;
 }
 #calPageTable ul.calendarTree li {
   font-weight: bold;

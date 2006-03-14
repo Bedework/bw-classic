@@ -3,22 +3,26 @@
   <xsl:template match="error">
     <xsl:choose>
       <xsl:when test="id='edu.rpi.sss.util.error.exc'">
-          An exception occurred: <xsl:value-of select="param"/>
+          An exception occurred:<br/>
+          <em><xsl:value-of select="param"/></em>
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.nosuchevent'">
-          Event <xsl:value-of select="param"/> does not exist.
+      <xsl:when test="id='org.bedework.client.error.nosuchevent'">
+          Event does not exist:<br/><em><xsl:value-of select="param"/></em>
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.baddates'">
-          Improperly formatted date(s): <xsl:value-of select="param"/>
+      <xsl:when test="id='org.bedework.client.error.baddate'">
+          The date you have entered is out of range.
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.noaccess'">
-          You have insufficient access <xsl:value-of select="param"/>
+      <xsl:when test="id='org.bedework.client.error.noaccess'">
+          You have insufficient access to make that request
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.notitle'">
-          Please supply a title for your event (required).
+      <xsl:when test="id='org.bedework.client.error.missingsubscriptionid'">
+          The request cannot be processed: missing subscription ID.
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.location.referenced'">
-          Location is in use.  It cannot be deleted while referenced by an event.
+      <xsl:when test="id='org.bedework.client.error.unknowncalendar'">
+          Unknown calendar
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknownview'">
+          Unknown view
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="id"/> = <xsl:value-of select="param"/>

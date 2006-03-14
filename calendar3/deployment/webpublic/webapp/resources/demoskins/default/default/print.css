@@ -6,9 +6,6 @@ body {
   margin: 0in;
   font-size: 10pt;
 }
-@page {
-  margin:  0in;
-}
 tr {
   page-break-inside: avoid;
 }

@@ -582,7 +582,6 @@
       <tr>
         <td class="fieldname">Description:</td>
         <td colspan="2" class="fieldval description">
-          <!--<xsl:value-of select="description"/>-->
           <xsl:call-template name="replace">
             <xsl:with-param name="string" select="description"/>
             <xsl:with-param name="pattern" select="'&#xA;'"/>

@@ -32,7 +32,6 @@
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;/ul&gt;');</xsl:text>
   </xsl:template>
   <xsl:template match="event">
-    <!--<xsl:variable name="strippedSummary" select='translate(translate(summary,"&apos;",""),"&#xA;"," ")'/>-->
     <xsl:variable name="aposStrippedSummary">
       <xsl:call-template name="replace">
         <xsl:with-param name="string" select="summary"/>
