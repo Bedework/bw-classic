@@ -2764,9 +2764,18 @@
                 </td>
                 <td>
                   <xsl:variable name="acct" select="account"/>
-                  <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}" title="remove">
-                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                  </a>
+                  <xsl:choose>
+                    <xsl:when test="kind='0'">
+                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
+                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                      </a>
+                    </xsl:when>
+                    <xsl:when test="kind='1'">
+                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=group" title="remove">
+                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                      </a>
+                    </xsl:when>
+                  </xsl:choose>
                 </td>
               </tr>
             </xsl:for-each>
