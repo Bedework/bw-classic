@@ -109,6 +109,9 @@ public abstract class MethodBase {
    */
   public abstract void init();
 
+  private SimpleDateFormat httpDateFormatter = 
+      new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss ");
+
   /**
    * @param req
    * @param resp
@@ -462,7 +465,9 @@ public abstract class MethodBase {
       return null;
     }
 
-    return new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss ").format(val) + "GMT";
+    synchronized (httpDateFormatter) {
+      return httpDateFormatter.format(val) + "GMT";
+    }
   }
 
   /** Entity tags are defined in RFC2068 - they are supposed to provide some

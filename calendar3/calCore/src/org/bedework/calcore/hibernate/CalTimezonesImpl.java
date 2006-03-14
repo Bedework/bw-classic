@@ -114,10 +114,10 @@ class CalTimezonesImpl extends CalTimezones {
     TimeZone tz = new TimeZone(vtz);
 
     if (tzinfo == null) {
-      tzinfo = new TimezoneInfo(tz, vtz);
+      tzinfo = new TimezoneInfo(tz);
       timezones.put(tzid, tzinfo);
     } else {
-      tzinfo.init(tz, vtz);
+      tzinfo.init(tz);
     }
   }
 
@@ -135,7 +135,7 @@ class CalTimezonesImpl extends CalTimezones {
         return null;
       }
 
-      tzinfo = new TimezoneInfo(new TimeZone(vTimeZone), vTimeZone);
+      tzinfo = new TimezoneInfo(new TimeZone(vTimeZone));
       timezones.put(id, tzinfo);
     }
 
@@ -157,8 +157,8 @@ class CalTimezonesImpl extends CalTimezones {
 
     TimezoneInfo tzinfo = lookup(id);
 
-    if ((tzinfo != null) && (tzinfo.getVtz() != null)) {
-      return tzinfo.getVtz();
+    if ((tzinfo != null) && (tzinfo.getTz().getVTimeZone() != null)) {
+      return tzinfo.getTz().getVTimeZone();
     }
 
     VTimeZone vTimeZone = cal.getTimeZone(id, owner);
@@ -166,8 +166,12 @@ class CalTimezonesImpl extends CalTimezones {
       return null;
     }
 
-    tzinfo = new TimezoneInfo(new TimeZone(vTimeZone), vTimeZone);
-    timezones.put(id, tzinfo);
+    if (tzinfo != null) {
+      tzinfo.init(new TimeZone(vTimeZone));
+    } else {
+      tzinfo = new TimezoneInfo(new TimeZone(vTimeZone));
+      timezones.put(id, tzinfo);
+    }
 
     return vTimeZone;
   }
@@ -211,7 +215,12 @@ class CalTimezonesImpl extends CalTimezones {
               throw new CalFacadeException("Incorrectly stored timezone");
             }
 
-            tzinfo = new TimezoneInfo(new TimeZone(vtz), vtz, true);
+            /* Don't save the vtimezone, there are a lot and it's a significant
+             * amount of space. We probably only look at 2-3 of them after this.
+             * The find timezone method will look it up again if requested and
+             * cache it at that point.
+             */
+            tzinfo = new TimezoneInfo(new TimeZone(vtz), true);
             systemTimezones.put(btz.getTzid(), tzinfo);
           }
 

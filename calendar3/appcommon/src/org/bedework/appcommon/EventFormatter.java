@@ -171,7 +171,7 @@ public class EventFormatter implements Serializable {
   }
 
   /** Get the event's ending date and time. If the value is a date only object
-   * we decrement the date by 1 day to comply with accepted practice - that i,
+   * we decrement the date by 1 day to comply with accepted practice - that is,
    * the displayed date for a 1 day event has the end date equal to the start.
    *
    * <p>Internally we store a 1 day event with the end date 1 day after the

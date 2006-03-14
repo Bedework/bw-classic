@@ -64,7 +64,9 @@ import org.bedework.calfacade.ifs.CalTimezones;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -86,11 +88,17 @@ public class DateTimeFormatter implements Serializable {
 
   /* What we store in the table */
   private static class Formatters {
+    DateFormat dayFormatter;
+    DateFormat shortDayFormatter;
+    
     DateFormat longDateFormatter;
     DateFormat shortDateFormatter;
     DateFormat shortTimeFormatter;
     
     Formatters(Locale loc) {
+      dayFormatter = new SimpleDateFormat("EEEE", loc);
+      shortDayFormatter = new SimpleDateFormat("E", loc);
+      
       longDateFormatter = DateFormat.getDateInstance(DateFormat.LONG, loc);
       shortDateFormatter = DateFormat.getDateInstance(DateFormat.SHORT, loc);
       shortTimeFormatter = DateFormat.getTimeInstance(DateFormat.SHORT, loc);
@@ -367,6 +375,35 @@ public class DateTimeFormatter implements Serializable {
     return cal.get(Calendar.AM_PM);
   }
 
+  /**  Get a short String representation of the day represented by the parameter
+   *
+   * @param  val           Date
+   * @param  loc           Locale
+   * @return String        Short representation of the day
+   *                       represented by this object.
+   */
+  public static String getShortDayName(Date val, Locale loc) {
+    Formatters fmt = getFormatters(loc);
+    
+    synchronized (fmt) {
+      return fmt.shortDayFormatter.format(val);
+    }
+  }
+
+  /**  Get a String representation of the day represented by the parameter
+   *
+   * @param  val           Date
+   * @param  loc           Locale
+   * @return String        Representation of the day represented by this object.
+   */
+  public static String getDayName(Date val, Locale loc) {
+    Formatters fmt = getFormatters(loc);
+    
+    synchronized (fmt) {
+      return fmt.dayFormatter.format(val);
+    }
+  }
+
   /**  Get a short String representation of the date
    *
    * @return String        Short representation of the date
@@ -401,6 +438,17 @@ public class DateTimeFormatter implements Serializable {
   private Formatters getFormatters() {
     Locale loc = calInfo.getLocale();
     
+    Formatters fmt = (Formatters)formattersTbl.get(loc);
+    
+    if (fmt == null) {
+      fmt = new Formatters(loc);
+      formattersTbl.put(loc, fmt);
+    }
+    
+    return fmt;
+  }
+
+  private static Formatters getFormatters(Locale loc) {
     Formatters fmt = (Formatters)formattersTbl.get(loc);
     
     if (fmt == null) {

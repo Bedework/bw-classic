@@ -52,9 +52,9 @@ public class MyCalendarVO implements Serializable {
    */
   private Calendar calendar;
 
-  private static CalendarInfo calInfo;
+  private static CalendarInfo calInfo; // XXX locale - should be table with locale as key
 
-  private DateFormat isoformat = new SimpleDateFormat("yyyyMMdd");
+  private static DateFormat isoformat = new SimpleDateFormat("yyyyMMdd");
 
   /** Create a MyCalendarVO object representing a particular date and time
    * in the given locale.
@@ -343,7 +343,9 @@ public class MyCalendarVO implements Serializable {
    * @return String  date in the form <code>YYYYMMDD</code>
    */
   public String getDateDigits() {
-    return getFormattedDateString(isoformat);
+    synchronized (isoformat) {
+      return getFormattedDateString(isoformat);
+    }
   }
 
   /** ===================================================================
@@ -539,8 +541,10 @@ public class MyCalendarVO implements Serializable {
    * @return boolean true if that is same as this
    */
   public boolean isSameDate(MyCalendarVO that) {
-    return getFormattedDateString(isoformat).equals(
-          that.getFormattedDateString(isoformat));
+    synchronized (isoformat) {
+      return getFormattedDateString(isoformat).equals(
+            that.getFormattedDateString(isoformat));
+    }
   }
 
   /**

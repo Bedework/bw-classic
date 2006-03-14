@@ -86,28 +86,22 @@ public abstract class CalTimezones implements Serializable {
   protected static class TimezoneInfo implements Serializable {
     TimeZone tz;
 
-    /* If tz was derived from a db object, this is the data */
-    VTimeZone vtz;
-
     boolean publick;
     
     /**
      * @param tz
-     * @param vtz
      */
-    public TimezoneInfo(TimeZone tz, VTimeZone vtz) {
-      init(tz, vtz);
+    public TimezoneInfo(TimeZone tz) {
+      init(tz);
     }
     
     /** Constructor
      * 
      * @param tz
-     * @param vtz
      * @param publick
      */
-    public TimezoneInfo(TimeZone tz, VTimeZone vtz, boolean publick) {
-      this.tz = tz;
-      this.vtz = vtz;
+    public TimezoneInfo(TimeZone tz, boolean publick) {
+      init(tz);
       this.publick = publick;
     }
     
@@ -116,17 +110,12 @@ public abstract class CalTimezones implements Serializable {
      * @param tz
      * @param vtz
      */
-    public void init(TimeZone tz, VTimeZone vtz) {
+    public void init(TimeZone tz) {
       this.tz = tz;
-      this.vtz = vtz;
     }
     
     public TimeZone getTz() {
       return tz;
-    }
-    
-    public VTimeZone getVtz() {
-      return vtz;
     }
     
     /**
@@ -185,7 +174,7 @@ public abstract class CalTimezones implements Serializable {
     TimezoneInfo tzinfo = (TimezoneInfo)timezones.get(id);
     
     if (tzinfo == null) {
-      tzinfo = new TimezoneInfo(timezone, null);
+      tzinfo = new TimezoneInfo(timezone);
       timezones.put(id, tzinfo);
     } else {
       tzinfo.tz = timezone;

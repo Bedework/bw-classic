@@ -90,6 +90,8 @@ public class HibSession implements Serializable {
 
   /** Exception from this session. */
   Throwable exc;
+  
+  private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
   /** Set up for a hibernate interaction. Throw the object away on exception.
    *
@@ -474,9 +476,9 @@ public class HibSession implements Serializable {
 
     try {
       // Remove any time component
-      java.sql.Date dt = java.sql.Date.valueOf(
-          new SimpleDateFormat("yyyy-MM-dd").format(parVal));
-      q.setDate(parName, dt);
+      synchronized (dateFormatter) {
+        q.setDate(parName, java.sql.Date.valueOf(dateFormatter.format(parVal)));
+      }
     } catch (Throwable t) {
       handleException(t);
     }

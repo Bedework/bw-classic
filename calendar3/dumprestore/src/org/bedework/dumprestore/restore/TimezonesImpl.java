@@ -133,10 +133,10 @@ class TimezonesImpl extends CalTimezones {
     TimeZone tz = new TimeZone(vtz);
 
     if (tzinfo == null) {
-      tzinfo = new TimezoneInfo(tz, vtz);
+      tzinfo = new TimezoneInfo(tz);
       timezones.put(tzid, tzinfo);
     } else {
-      tzinfo.init(tz, vtz);
+      tzinfo.init(tz);
     }
   }
 
@@ -168,8 +168,8 @@ class TimezonesImpl extends CalTimezones {
 
     TimezoneInfo tzinfo = lookup(id);
 
-    if ((tzinfo != null) && (tzinfo.getVtz() != null)) {
-      return tzinfo.getVtz();
+    if ((tzinfo != null) && (tzinfo.getTz().getVTimeZone() != null)) {
+      return tzinfo.getTz().getVTimeZone();
     }
 
     /* Do we need to look up anything?

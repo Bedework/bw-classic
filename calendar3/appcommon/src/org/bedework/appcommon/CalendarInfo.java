@@ -31,9 +31,10 @@ package org.bedework.appcommon;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.FieldPosition;
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /** Class to hold localized calendar info.
@@ -95,8 +96,8 @@ public class CalendarInfo implements Serializable {
     /** Set the localized names
      */
 
-    SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", getLocale());
-    SimpleDateFormat shortDayFormat = new SimpleDateFormat("E", getLocale());
+//    SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", getLocale());
+//    SimpleDateFormat shortDayFormat = new SimpleDateFormat("E", getLocale());
 
     Calendar c = Calendar.getInstance(getLocale());
     ArrayList dow = new ArrayList();
@@ -118,8 +119,9 @@ public class CalendarInfo implements Serializable {
     for (int i = 0; i < 7; i++) {
       c.set(Calendar.DAY_OF_WEEK, i + 1);
 
-      dayNames[i] = dayFormat.format(c.getTime());
-      shortDayNames[i] = shortDayFormat.format(c.getTime());
+      Date dt = c.getTime();
+      dayNames[i] = DateTimeFormatter.getDayName(dt, getLocale());
+      shortDayNames[i] = DateTimeFormatter.getShortDayName(dt, getLocale());
       dow.add(dayNames[i]);
       sdow.add(shortDayNames[i]);
     }
