@@ -35,7 +35,7 @@ body {
 }
 #photo {
   height: 103px;
-  background : url(../../images/rensselaer/metacal-photo.jpg) no-repeat right;
+  background : url(../../images/metacal-photo.jpg) no-repeat right;
 }
 #photo h2 {
   display: none;
