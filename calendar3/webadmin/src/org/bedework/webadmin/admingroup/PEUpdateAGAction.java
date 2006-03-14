@@ -54,6 +54,7 @@
 
 package org.bedework.webadmin.admingroup;
 
+import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.ifs.Groups;
@@ -71,6 +72,15 @@ import edu.rpi.sss.util.Util;
 import javax.servlet.http.HttpServletRequest;
 
 /** This action updates an admin group
+ *
+ * <p>Parameters are:<ul>
+ *      <li>"delete"           Delete current admin group</li>
+ *      <li>"addGroupMember"   Add member to current group</li>
+ *      <li>"removeGroupMember"  Remove member from current group.</li>
+ *      <li>"kind"             Kind of member, "group" or "user".</li>
+ *      <li>"view"             Optional name of view to which we add subscription.</li>
+ *      <li>"addtodefaultview" Optional y/n to add to default view.</li>
+ * </ul>
  *
  * <p>Forwards to:<ul>
  *      <li>"noAccess"     user not authorised.</li>
@@ -93,9 +103,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
       return "noAccess";
     }
 
-    String reqpar = request.getParameter("delete");
-
-    if (reqpar != null) {
+    if (getReqPar(request, "delete") != null) {
       return "delete";
     }
 
@@ -116,12 +124,28 @@ public class PEUpdateAGAction extends PEAbstractAction {
       /** Add a user to the group we are updating.
        */
       String mbr = form.getUpdGroupMember();
-      if (mbr != null) {
-        BwUser u = svci.findUser(mbr);
+      if (mbr == null) {
+        return "continue";
+      }
 
+      String kind = getReqPar(request, "kind");
+      if (!validateKind(kind, form)) {
+        return "retry";
+      }
+
+      if (updgrp.isMember(mbr, "group".equals(kind))) {
+        form.getErr().emit("org.bedework.error.alreadymember", mbr);
+        return "retry";
+      }
+        
+      BwPrincipal newMbr = null;
+      
+      if ("user".equals(kind)) {
+        BwUser u = svci.findUser(mbr);
+        
         if (u == null) {
-        	u = new BwUser(mbr);
-        	svci.addUser(u);
+          u = new BwUser(mbr);
+          svci.addUser(u);
           u = svci.findUser(mbr);
         }
         
@@ -134,28 +158,49 @@ public class PEUpdateAGAction extends PEAbstractAction {
         BwAuthUser au = uauth.getUser(u.getAccount());
         
         if ((au != null) && (au.getUsertype() == UserAuth.noPrivileges)) {
-        	return "notAllowed";
+          return "notAllowed";
         }
         
         if (au == null) {
-        	au = new BwAuthUser(u,
-        			UserAuth.publicEventUser);
-        	uauth.updateUser(au);
+          au = new BwAuthUser(u, UserAuth.publicEventUser);
+          uauth.updateUser(au);
         }
         
-        adgrps.addMember(updgrp, u);
-        updgrp.addGroupMember(u);
+        newMbr = u;
+      } else {
+        // group
+        newMbr = (BwAdminGroup)adgrps.findGroup(mbr);
+        
+        if (newMbr == null) {
+          form.getErr().emit("org.bedework.error.unknowgroup", mbr);
+          return "retry";
+        }
       }
+      
+      adgrps.addMember(updgrp, newMbr);
+      updgrp.addGroupMember(newMbr);
     } else if (getReqPar(request, "removeGroupMember") != null) {
-      /** Remove a user from the group we are updating.
+      /** Remove a user or group from the group we are updating.
        */
       String mbr = getReqPar(request, "removeGroupMember");
 
-      BwUser u = form.fetchSvci().findUser(mbr);
+      String kind = getReqPar(request, "kind");
+      if (!validateKind(kind, form)) {
+        return "retry";
+      }
 
-      if (u != null) {
-      	adgrps.removeMember(updgrp, u);
-      	updgrp.removeGroupMember(u);
+      BwPrincipal oldMbr = null;
+
+      if ("user".equals(kind)) {
+        oldMbr = form.fetchSvci().findUser(mbr);
+      } else {
+        // group
+        oldMbr = (BwAdminGroup)adgrps.findGroup(mbr);
+      }
+
+      if (oldMbr != null) {
+        adgrps.removeMember(updgrp, oldMbr);
+        updgrp.removeGroupMember(oldMbr);
       }
     } else if (add) {
       if (!validateNewAdminGroup(form)) {
@@ -321,6 +366,20 @@ public class PEUpdateAGAction extends PEAbstractAction {
     }
 
     return ok;
+  }
+  
+  private boolean validateKind(String kind, PEActionForm form) {
+    if (kind == null) {
+      form.getErr().emit("org.bedework.error.missingreqpar", "kind");
+      return false;
+    }
+
+    if ("group".equals(kind) || "user".equals(kind)) {
+      return true;
+    }
+    
+    form.getErr().emit("org.bedework.error.badrequest", kind);
+    return false;
   }
 
   private BwUser getUser(CalSvcI svci, String account) throws Throwable {

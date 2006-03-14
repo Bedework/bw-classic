@@ -115,16 +115,19 @@ public class BwGroup extends BwPrincipal {
   /** Return true if the account name is in the group members.
    *
    * @param account
+   * @param group     boolean true if we're testing for a group.
    * @return true if the account name is in the group members.
    */
-  public boolean isMember(String account) {
+  public boolean isMember(String account, boolean group) {
     Iterator it = getGroupMembers().iterator();
 
     while (it.hasNext()) {
       BwPrincipal mbr = (BwPrincipal)it.next();
 
       if (mbr.getAccount().equals(account)) {
-        return true;
+        if (group == (mbr instanceof BwGroup)) {
+          return true;
+        }
       }
     }
 

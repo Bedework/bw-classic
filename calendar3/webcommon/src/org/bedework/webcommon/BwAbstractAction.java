@@ -613,7 +613,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
   private boolean isMember(BwAdminGroup ag,
                             BwActionFormBase form) throws Throwable {
-    return ag.isMember(String.valueOf(form.getCurrentUser()));
+    return ag.isMember(String.valueOf(form.getCurrentUser()), false);
   }
 
   /** Override to return true if this is an admin client

@@ -92,7 +92,7 @@ public class PEFetchAGAction extends PEAbstractAction {
 
     /** User requested an admin group from the list or by entering the name.
      */
-    String account = request.getParameter("adminGroupName");
+    String account = getReqPar(request, "adminGroupName");
     if (account == null) {
       return "notFound";
     }
