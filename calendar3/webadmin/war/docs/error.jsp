@@ -41,7 +41,7 @@
       </genurl:form>
     </div>
     <div id="footer">
-      Based on the <a href="http://www.washington.edu/ucal/">University of Washington Calendar</a>
+      Based on the <a href="http://www.bedework.org/">Bedework Calendar</a>
     </div>
   </body>
 </html>

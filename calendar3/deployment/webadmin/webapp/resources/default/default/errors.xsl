@@ -147,6 +147,9 @@
       <xsl:when test="id='org.bedework.error.duplicate.admingroup'">
         Error: duplicate admin group.  <em><xsl:value-of select="param"/></em> already exists.
       </xsl:when>
+      <xsl:when test="id='org.bedework.error.unknowgroup'">
+        Error: unknown admin group:  <em><xsl:value-of select="param"/></em>
+      </xsl:when>
       <xsl:when test="id='edu.rpi.sss.util.error.exc'">
         Utility package error: <em><xsl:value-of select="param"/></em>
       </xsl:when>

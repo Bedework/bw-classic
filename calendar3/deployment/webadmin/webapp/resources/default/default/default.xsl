@@ -2749,35 +2749,40 @@
         <td>
           <table id="memberAccountList">
             <xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
-              <!--<xsl:sort select="account" order="ascending" case-order="upper-first"/>-->
-              <tr>
-                <td>
-                  <xsl:choose>
-                    <xsl:when test="kind='0'"><img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/></xsl:when>
-                    <xsl:when test="kind='1'"><img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/></xsl:when>
-                    <xsl:when test="kind='3'"></xsl:when>
-                    <xsl:otherwise></xsl:otherwise>
-                  </xsl:choose>
-                </td>
-                <td>
-                  <xsl:value-of select="account"/>
-                </td>
-                <td>
-                  <xsl:variable name="acct" select="account"/>
-                  <xsl:choose>
-                    <xsl:when test="kind='0'">
-                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
-                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                      </a>
-                    </xsl:when>
-                    <xsl:when test="kind='1'">
+              <xsl:choose>
+                <xsl:when test="kind='0'"><!-- kind = user -->
+                  <tr>
+                    <td>
+                      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                    </td>
+                    <td>
+                      <xsl:value-of select="account"/>
+                    </td>
+                    <td>
+                      <xsl:variable name="acct" select="account"/>
+                        <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
+                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                        </a>
+                    </td>
+                  </tr>
+                </xsl:when>
+                <xsl:otherwise><!-- kind = group -->
+                  <tr>
+                    <td>
+                      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+                    </td>
+                    <td>
+                      <strong><xsl:value-of select="account"/></strong>
+                    </td>
+                    <td>
+                      <xsl:variable name="acct" select="account"/>
                       <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=group" title="remove">
                         <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
                       </a>
-                    </xsl:when>
-                  </xsl:choose>
-                </td>
-              </tr>
+                    </td>
+                  </tr>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:for-each>
           </table>
         </td>
@@ -2785,7 +2790,7 @@
     </table>
     <p>
       <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/> user,
-      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/> group
+      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/><xsl:text> </xsl:text><strong>group</strong>
     </p>
   </xsl:template>
 
