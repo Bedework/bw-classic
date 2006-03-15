@@ -211,6 +211,14 @@ public class AdminGroupsDbImpl implements AdminGroups {
       val = findGroup(val.getAccount());
     }
     */
+    
+    /* val must not already be present on any paths to the root. 
+     * We'll assume the possibility of more than one parent.
+     */
+    
+    if (!checkPathForSelf(group, val)) {
+      throw new CalFacadeException(CalFacadeException.alreadyOnAdminGroupPath);
+    }
 
     ag.addGroupMember(val);
 
@@ -348,6 +356,40 @@ public class AdminGroupsDbImpl implements AdminGroups {
 
     return user;
   }*/
+  
+  private boolean checkPathForSelf(BwGroup group, 
+                                   BwPrincipal val) throws CalFacadeException {
+    if (group.equals(val)) {
+      return false;
+    }
+    
+    /* get all parents of group and try again */
+    
+    HibSession sess = getSess();
+
+    /* Want this
+    sess.createQuery("from " + BwAdminGroup.class.getName() + " ag " +
+                     "where mbr in elements(ag.groupMembers)");
+    sess.setEntity("mbr", val);
+    */
+
+    sess.namedQuery("getGroupParents");
+    sess.setInt("grpid", group.getId());
+
+    Collection parents = sess.getList();
+
+    Iterator it = parents.iterator();
+    
+    while (it.hasNext()) {
+      BwAdminGroup g = (BwAdminGroup)it.next();
+      
+      if (!checkPathForSelf(g, val)) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
 
   private HibSession getSess() throws CalFacadeException {
     return (HibSession)cb.getDbSession();

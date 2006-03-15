@@ -68,6 +68,10 @@ public class CalFacadeException extends Exception {
   /** The admin group already exists */
   public static final String duplicateAdminGroup =
       "org.bedework.exception.duplicateadmingroup";
+  
+  /** The admin group is already on the path to the root (makes a loop) */
+  public static final String alreadyOnAdminGroupPath =
+      "org.bedework.exception.alreadyonadmingrouppath";
 
   /* ****************** Calendars ****************************** */
   

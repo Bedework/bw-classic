@@ -58,6 +58,9 @@
                     type="true_false" />
     </composite-id>
 
+    <property name="groupId" column="groupid"
+              type="integer" insert="false" update="false"/>
+
     <!--
     <id name="groupId" column="groupid" unsaved-value="-1">
       <generator class="foreign">
@@ -100,6 +103,14 @@
           org.bedework.calfacade.BwUser u
         where u.id = age.memberId and
              age.grp=:gr and age.memberIsGroup=false
+  ]]></query>
+
+  <query name="getGroupParents"><![CDATA[
+    select ag from
+          org.bedework.calfacade.svc.BwAdminGroupEntry age,
+          org.bedework.calfacade.svc.BwAdminGroup ag
+        where ag.id = age.groupId and
+             age.memberId=:grpid
   ]]></query>
 
   <query name="getGroupGroupMembers"><![CDATA[
