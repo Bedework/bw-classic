@@ -944,7 +944,7 @@
                validate="false">
       <forward name="cancelled" path="/admingroup/showUpdateList.rdo" redirect="true" />
       <forward name="continue" path="/admingroup/showModMembersForm.rdo" redirect="true" />
-      <forward name="retry" path="/admingroup/showModMembersForm.rdo" />
+      <forward name="retry" path="/admingroup/showModMembersForm.rdo" redirect="true" />
     </action>
 
     <action    path="/admingroup/switch"
