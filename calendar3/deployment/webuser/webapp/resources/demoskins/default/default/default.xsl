@@ -1402,7 +1402,9 @@
           <td class="fieldname">Location:</td>
           <td class="fieldval" align="left">
             <span class="std-text">choose: </span>
-            <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/*"/>
+            <span id="eventFormLocationList">
+              <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/*"/>
+            </span>
             <span class="std-text"> or add new: </span>
             <xsl:copy-of select="/bedework/formElements/form/location/locationtext/*"/>
           </td>

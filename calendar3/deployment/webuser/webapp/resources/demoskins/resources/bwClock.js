@@ -17,10 +17,10 @@ function bwClockLaunch(type) {
     // the select boxes that fall below it on the page.  Note: we set them
     // to display:hidden (not none) so their space is still occupied (and the
     // browser window doesn't shift around)
-   changeClass("eventFormPrefLocationList","hidden");
+   //changeClass("eventFormPrefLocationList","hidden");
    changeClass("eventFormLocationList","hidden");
-   changeClass("eventFormSponsorList","hidden");
-   changeClass("eventFormPrefSponsorList","hidden");
+   //changeClass("eventFormSponsorList","hidden");
+   //changeClass("eventFormPrefSponsorList","hidden");
     bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
     if (type == 'eventStartDate') {
       bwClockIndicator.innerHTML = "Start Time"
@@ -32,10 +32,10 @@ function bwClockLaunch(type) {
 
 function bwClockClose() {
   changeClass("clock","invisible");
-  changeClass("eventFormPrefLocationList","shown");
+  //changeClass("eventFormPrefLocationList","shown");
   changeClass("eventFormLocationList","shown");
-  changeClass("eventFormSponsorList","shown");
-  changeClass("eventFormPrefSponsorList","shown");
+  //changeClass("eventFormSponsorList","shown");
+  //changeClass("eventFormPrefSponsorList","shown");
 }
 
 function bwClockUpdateDateTimeForm(type,val) {
@@ -43,11 +43,11 @@ function bwClockUpdateDateTimeForm(type,val) {
     try {
       if (type == 'minute') {
         var fieldName = bwClockRequestedType + ".minute"
-        window.document.peForm[fieldName].value = val;
+        window.document.addEventForm[fieldName].value = val;
         bwClockMinute = val;
       } else {
         var fieldName = bwClockRequestedType + ".hour"
-        window.document.peForm[fieldName].value = val;
+        window.document.addEventForm[fieldName].value = val;
         bwClockHour = val;
       }
       if (bwClockHour && bwClockMinute) {
