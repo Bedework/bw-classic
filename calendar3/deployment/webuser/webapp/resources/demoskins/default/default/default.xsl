@@ -94,7 +94,7 @@
             <xsl:choose>
               <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
                 <td id="sideBarClosed">
-                  <img src="{$resourcesRoot}/images/demo/spacer.gif" width="1" height="1" border="0" alt="*"/>
+                  <img src="{$resourcesRoot}/resources/spacer.gif" width="1" height="1" border="0" alt="*"/>
                 </td>
               </xsl:when>
               <xsl:otherwise>
@@ -186,18 +186,18 @@
 
   <xsl:template name="headSection">
      <title>Bedework: Personal Calendar Client</title>
-      <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
       <meta name="robots" content="noindex,nofollow"/>
+      <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
       <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
-      <!--<link rel="icon" type="image/ico" href="{}/favicon.ico" />-->
-      <script language="JavaScript">
-        // launches new browser window with print-friendly version of page when
-        // print icon is clicked
-        function launchPrintWindow(URL) {
-          printWindow = window.open(URL, "printWindow", "width=640,height=500,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=yes,toolbar=yes");
-          window.printWindow.focus();
-        }
-      </script>
+      <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
+      <xsl:if test="/bedework/page='addEvent' or /bedework/page='editEvent'">
+        <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
+        <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
+        <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
+        <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
+        <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
+        <script type="text/javascript" src="{$resourcesRoot}/resources/browserSniffer.js"></script>
+      </xsl:if>
   </xsl:template>
 
   <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
@@ -208,7 +208,7 @@
     </h1>
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
       <tr>
-        <td colspan="3" id="logoCell"><a href="http://www.bedework.org/"><img src="{$resourcesRoot}/images/demo/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
+        <td colspan="3" id="logoCell"><a href="http://www.bedework.org/"><img src="{$resourcesRoot}/resources/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
         <td colspan="2" id="schoolLinksCell">
           <h2>Personal Calendar</h2>
           <a href="{$publicCal}">Public Calendar</a> |
@@ -222,9 +222,9 @@
     </table>
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td width="50%"><img alt="" src="{$resourcesRoot}/images/demo/metacal-topBorder.gif" width="100%" height="23" border="0"/></td>
-        <td><img src="{$resourcesRoot}/images/demo/metacal-topTitlePersonal.gif" width="221" height="23" border="0" alt="Bedework Personal Events Calendar"/></td>
-        <td width="50%"><img alt="" src="{$resourcesRoot}/images/demo/metacal-topBorder.gif" width="100%" height="23" border="0"/></td>
+        <td width="50%"><img alt="" src="{$resourcesRoot}/resources/metacal-topBorder.gif" width="100%" height="23" border="0"/></td>
+        <td><img src="{$resourcesRoot}/resources/metacal-topTitlePersonal.gif" width="221" height="23" border="0" alt="Bedework Personal Events Calendar"/></td>
+        <td width="50%"><img alt="" src="{$resourcesRoot}/resources/metacal-topBorder.gif" width="100%" height="23" border="0"/></td>
       </tr>
     </table>
     <div id="curDateRange">
@@ -232,12 +232,12 @@
         <xsl:choose>
           <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
             <a href="?setappvar=sidebar(opened)">
-              <img alt="open sidebar" src="{$resourcesRoot}/images/demo/std-sidebaropen-icon.gif" width="13" height="13" border="0" align="left"/>
+              <img alt="open sidebar" src="{$resourcesRoot}/resources/std-sidebaropen-icon.gif" width="13" height="13" border="0" align="left"/>
             </a>
           </xsl:when>
           <xsl:otherwise>
             <a href="?setappvar=sidebar(closed)">
-              <img alt="close sidebar" src="{$resourcesRoot}/images/demo/std-sidebarclose-icon.gif" width="13" height="13" border="0" align="left"/>
+              <img alt="close sidebar" src="{$resourcesRoot}/resources/std-sidebarclose-icon.gif" width="13" height="13" border="0" align="left"/>
             </a>
           </xsl:otherwise>
         </xsl:choose>
@@ -274,40 +274,40 @@
             <td>
               <xsl:choose>
                 <xsl:when test="/bedework/periodname='Day'">
-                  <a href="{$setViewPeriod}?viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-day-on.gif" width="91" height="20" border="0" alt="DAY"/></a>
+                  <a href="{$setViewPeriod}?viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-on.gif" width="91" height="20" border="0" alt="DAY"/></a>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$setViewPeriod}?viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
+                  <a href="{$setViewPeriod}?viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
             <td>
               <xsl:choose>
                 <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
-                  <a href="{$setViewPeriod}?viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-week-on.gif" width="92" height="20" border="0" alt="WEEK"/></a>
+                  <a href="{$setViewPeriod}?viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-on.gif" width="92" height="20" border="0" alt="WEEK"/></a>
                  </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$setViewPeriod}?viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
+                  <a href="{$setViewPeriod}?viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
                  </xsl:otherwise>
               </xsl:choose>
             </td>
             <td>
               <xsl:choose>
                 <xsl:when test="/bedework/periodname='Month'">
-                  <a href="{$setViewPeriod}?viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-month-on.gif" width="90" height="20" border="0" alt="MONTH"/></a>
+                  <a href="{$setViewPeriod}?viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-on.gif" width="90" height="20" border="0" alt="MONTH"/></a>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$setViewPeriod}?viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
+                  <a href="{$setViewPeriod}?viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
             <td>
               <xsl:choose>
                 <xsl:when test="/bedework/periodname='Year'">
-                  <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
+                  <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
+                  <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
@@ -316,7 +316,7 @@
             </td>
             <td class="rssPrint">
               <a href="javascript:window.print()" title="print this view">
-                <img alt="print this view" src="{$resourcesRoot}/images/demo/std-print-icon.gif" width="20" height="14" border="0"/> print
+                <img alt="print this view" src="{$resourcesRoot}/resources/std-print-icon.gif" width="20" height="14" border="0"/> print
               </a>
               <a class="rss" href="{$setSelection}?calId=&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
             </td>
@@ -331,16 +331,16 @@
         <table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
           <tr>
             <td>
-              <a href="{$setViewPeriod}?viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
+              <a href="{$setViewPeriod}?viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
             </td>
             <td>
-              <a href="{$setViewPeriod}?viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
+              <a href="{$setViewPeriod}?viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
             </td>
             <td>
-              <a href="{$setViewPeriod}?viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
+              <a href="{$setViewPeriod}?viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
             </td>
             <td>
-              <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/demo/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
+              <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
             </td>
             <td class="centerCell">
                 &#160;<!--<a href="http://www.rpi.edu/dept/cct/apps/pubeventsxml/calendarfeatures.html">login</a>-->
@@ -358,8 +358,8 @@
     <table border="0" cellpadding="0" cellspacing="0" id="navigationBarTable">
       <tr>
         <td class="leftCell">
-          <a href="{$setViewPeriod}?date={$prevdate}"><img src="{$resourcesRoot}/images/demo/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
-          <a href="{$setViewPeriod}?date={$nextdate}"><img src="{$resourcesRoot}/images/demo/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
+          <a href="{$setViewPeriod}?date={$prevdate}"><img src="{$resourcesRoot}/resources/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
+          <a href="{$setViewPeriod}?date={$nextdate}"><img src="{$resourcesRoot}/resources/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
           <xsl:choose>
             <xsl:when test="/bedework/periodname='Day'">
               <xsl:value-of select="substring(/bedework/eventscalendar/year/month/week/day/name,1,3)"/>, <xsl:value-of select="/bedework/eventscalendar/year/month/shortname"/>&#160;<xsl:value-of select="/bedework/eventscalendar/year/month/week/day/value"/>, <xsl:value-of select="/bedework/eventscalendar/year/value"/>
@@ -436,7 +436,7 @@
         </td>
         <td class="todayButton">
           <a href="{$setViewPeriod}?viewType=todayView&amp;date={$curdate}">
-            <img src="{$resourcesRoot}/images/demo/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
+            <img src="{$resourcesRoot}/resources/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
           </a>
         </td>
         <!--
@@ -489,21 +489,21 @@
          <td class="rightCell">
            <xsl:choose>
             <xsl:when test="/bedework/periodname='Day'">
-              <img src="{$resourcesRoot}/images/demo/std-button-listview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+              <img src="{$resourcesRoot}/resources/std-button-listview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
             </xsl:when>
             <xsl:when test="/bedework/periodname='Year'">
-              <img src="{$resourcesRoot}/images/demo/std-button-calview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+              <img src="{$resourcesRoot}/resources/std-button-calview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
             </xsl:when>
             <xsl:when test="/bedework/periodname='Month'">
               <xsl:choose>
                 <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
                   <a href="{$setup}?setappvar=monthViewMode(cal)" title="toggle list/calendar view">
-                    <img src="{$resourcesRoot}/images/demo/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                    <img src="{$resourcesRoot}/resources/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
                   </a>
                 </xsl:when>
                 <xsl:otherwise>
                   <a href="{$setup}?setappvar=monthViewMode(list)" title="toggle list/calendar view">
-                    <img src="{$resourcesRoot}/images/demo/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                    <img src="{$resourcesRoot}/resources/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
                   </a>
                 </xsl:otherwise>
               </xsl:choose>
@@ -512,12 +512,12 @@
               <xsl:choose>
                 <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
                   <a href="{$setup}?setappvar=weekViewMode(cal)" title="toggle list/calendar view">
-                    <img src="{$resourcesRoot}/images/demo/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                    <img src="{$resourcesRoot}/resources/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
                   </a>
                 </xsl:when>
                 <xsl:otherwise>
                   <a href="{$setup}?setappvar=weekViewMode(list)" title="toggle list/calendar view">
-                    <img src="{$resourcesRoot}/images/demo/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                    <img src="{$resourcesRoot}/resources/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
                   </a>
                 </xsl:otherwise>
               </xsl:choose>
@@ -533,10 +533,10 @@
                                count(/bedework/appvar[key='weekViewMode'])=0))">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                    <img src="{$resourcesRoot}/images/demo/std-button-summary-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
+                    <img src="{$resourcesRoot}/resources/std-button-summary-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <img src="{$resourcesRoot}/images/demo/std-button-details-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
+                    <img src="{$resourcesRoot}/resources/std-button-details-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
@@ -544,18 +544,18 @@
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                     <a href="{$setup}?setappvar=summaryMode(summary)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/images/demo/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                      <img src="{$resourcesRoot}/resources/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$setup}?setappvar=summaryMode(details)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/images/demo/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                      <img src="{$resourcesRoot}/resources/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
-            <a href="setup.do"><img src="{$resourcesRoot}/images/demo/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
+            <a href="setup.do"><img src="{$resourcesRoot}/resources/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
          </td>
        </tr>
     </table>
@@ -1068,7 +1068,7 @@
         <th class="icon" rowspan="2">
           <xsl:variable name="icalName" select="concat($guid,'.ics')"/>
           <a href="{$eventView}?subid={$subscriptionId}&amp;&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$icalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-            <img src="{$resourcesRoot}/images/demo/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
+            <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
           </a><!-- <br />
           [<a href="">help</a>] -->
         </th>
@@ -1181,21 +1181,21 @@
           </td>
         </tr>
         <tr>
-          <td class="fieldName">
+          <td class="fieldname">
             Date &amp; Time:
           </td>
-          <td>
+          <td class="fieldval">
             <!-- Set the timefields class for the first load of the page;
                  subsequent changes will take place using javascript without a
                  page reload. -->
             <xsl:variable name="timeFieldsClass">
               <xsl:choose>
-                <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">invisible</xsl:when>
+                <xsl:when test="/bedework/formElements/form/allDay/input/@checked='checked'">invisible</xsl:when>
                 <xsl:otherwise>timeFields</xsl:otherwise>
               </xsl:choose>
             </xsl:variable>
             <xsl:choose>
-              <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">
+              <xsl:when test="/bedework/formElements/form/allDay/input/@checked='checked'">
                 <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="on" checked="checked"/>
                 <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayStartDateField"/>
                 <input type="hidden" name="eventEndDate.dateOnly" value="on" id="allDayEndDateField"/>
@@ -1211,14 +1211,14 @@
               <strong>Start:</strong>
               <div class="dateFields">
                 <span class="startDateLabel">Date </span>
-                <xsl:copy-of select="/bedeworkadmin/formElements/form/start/month/*"/>
-                <xsl:copy-of select="/bedeworkadmin/formElements/form/start/day/*"/>
+                <xsl:copy-of select="/bedework/formElements/form/start/month/*"/>
+                <xsl:copy-of select="/bedework/formElements/form/start/day/*"/>
                 <xsl:choose>
-                  <xsl:when test="/bedeworkadmin/creating = 'true'">
-                    <xsl:copy-of select="/bedeworkadmin/formElements/form/start/year/*"/>
+                  <xsl:when test="/bedework/creating = 'true'">
+                    <xsl:copy-of select="/bedework/formElements/form/start/year/*"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:copy-of select="/bedeworkadmin/formElements/form/start/yearText/*"/>
+                    <xsl:copy-of select="/bedework/formElements/form/start/yearText/*"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </div>
@@ -1230,10 +1230,10 @@
               <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
               <div class="{$timeFieldsClass}" id="startTimeFields">
                 <span id="calWidgetStartTimeHider" class="show">
-                  <xsl:copy-of select="/bedeworkadmin/formElements/form/start/hour/*"/>
-                  <xsl:copy-of select="/bedeworkadmin/formElements/form/start/minute/*"/>
-                  <xsl:if test="/bedeworkadmin/formElements/form/start/ampm">
-                    <xsl:copy-of select="/bedeworkadmin/formElements/form/start/ampm/*"/>
+                  <xsl:copy-of select="/bedework/formElements/form/start/hour/*"/>
+                  <xsl:copy-of select="/bedework/formElements/form/start/minute/*"/>
+                  <xsl:if test="/bedework/formElements/form/start/ampm">
+                    <xsl:copy-of select="/bedework/formElements/form/start/ampm/*"/>
                   </xsl:if>
                   <xsl:text> </xsl:text>
                   <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
@@ -1243,7 +1243,7 @@
             <div class="dateStartEndBox">
               <strong>End:</strong>
               <xsl:choose>
-                <xsl:when test="/bedeworkadmin/formElements/form/end/type='E'">
+                <xsl:when test="/bedework/formElements/form/end/type='E'">
                   <input type="radio" name="eventEndType" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:when>
                 <xsl:otherwise>
@@ -1253,20 +1253,20 @@
               Date
               <xsl:variable name="endDateTimeClass">
                 <xsl:choose>
-                  <xsl:when test="/bedeworkadmin/formElements/form/end/type='E'">shown</xsl:when>
+                  <xsl:when test="/bedework/formElements/form/end/type='E'">shown</xsl:when>
                   <xsl:otherwise>invisible</xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
               <div class="{$endDateTimeClass}" id="endDateTime">
                 <div class="dateFields">
-                  <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/month/*"/>
-                  <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/day/*"/>
+                  <xsl:copy-of select="/bedework/formElements/form/end/dateTime/month/*"/>
+                  <xsl:copy-of select="/bedework/formElements/form/end/dateTime/day/*"/>
                   <xsl:choose>
-                    <xsl:when test="/bedeworkadmin/creating = 'true'">
-                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/year/*"/>
+                    <xsl:when test="/bedework/creating = 'true'">
+                      <xsl:copy-of select="/bedework/formElements/form/end/dateTime/year/*"/>
                     </xsl:when>
                     <xsl:otherwise>
-                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/yearText/*"/>
+                      <xsl:copy-of select="/bedework/formElements/form/end/dateTime/yearText/*"/>
                     </xsl:otherwise>
                   </xsl:choose>
                 </div>
@@ -1278,10 +1278,10 @@
                 <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
                 <div class="{$timeFieldsClass}" id="endTimeFields">
                   <span id="calWidgetEndTimeHider" class="show">
-                    <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/hour/*"/>
-                    <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/minute/*"/>
-                    <xsl:if test="/bedeworkadmin/formElements/form/end/dateTime/ampm">
-                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/ampm/*"/>
+                    <xsl:copy-of select="/bedework/formElements/form/end/dateTime/hour/*"/>
+                    <xsl:copy-of select="/bedework/formElements/form/end/dateTime/minute/*"/>
+                    <xsl:if test="/bedework/formElements/form/end/dateTime/ampm">
+                      <xsl:copy-of select="/bedework/formElements/form/end/dateTime/ampm/*"/>
                     </xsl:if>
                     <xsl:text> </xsl:text>
                     <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
@@ -1293,7 +1293,7 @@
               </div>
               <div class="dateFields">
                 <xsl:choose>
-                  <xsl:when test="/bedeworkadmin/formElements/form/end/type='D'">
+                  <xsl:when test="/bedework/formElements/form/end/type='D'">
                     <input type="radio" name="eventEndType" value="D" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:when>
                   <xsl:otherwise>
@@ -1303,36 +1303,36 @@
                 Duration
                 <xsl:variable name="endDurationClass">
                   <xsl:choose>
-                    <xsl:when test="/bedeworkadmin/formElements/form/end/type='D'">shown</xsl:when>
+                    <xsl:when test="/bedework/formElements/form/end/type='D'">shown</xsl:when>
                     <xsl:otherwise>invisible</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="durationHrMinClass">
                   <xsl:choose>
-                    <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">invisible</xsl:when>
+                    <xsl:when test="/bedework/formElements/form/allDay/input/@checked='checked'">invisible</xsl:when>
                     <xsl:otherwise>shown</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
                 <div class="{$endDurationClass}" id="endDuration">
                   <xsl:choose>
-                    <xsl:when test="/bedeworkadmin/formElements/form/end/duration/weeks/input/@value = '0'">
+                    <xsl:when test="/bedework/formElements/form/end/duration/weeks/input/@value = '0'">
                     <!-- we are using day, hour, minute format -->
                     <!-- must send either no week value or week value of 0 (zero) -->
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')" checked="checked"/>
-                        <xsl:variable name="daysStr" select="/bedeworkadmin/formElements/form/end/duration/days/input/@value"/>
+                        <xsl:variable name="daysStr" select="/bedework/formElements/form/end/duration/days/input/@value"/>
                         <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays"/>days
                         <span id="durationHrMin" class="{$durationHrMinClass}">
-                          <xsl:variable name="hoursStr" select="/bedeworkadmin/formElements/form/end/duration/hours/input/@value"/>
+                          <xsl:variable name="hoursStr" select="/bedework/formElements/form/end/duration/hours/input/@value"/>
                           <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours"/>hours
-                          <xsl:variable name="minutesStr" select="/bedeworkadmin/formElements/form/end/duration/minutes/input/@value"/>
+                          <xsl:variable name="minutesStr" select="/bedework/formElements/form/end/duration/minutes/input/@value"/>
                           <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes"/>minutes
                         </span>
                       </div>
                       <span class="durationSpacerText">or</span>
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')"/>
-                        <xsl:variable name="weeksStr" select="/bedeworkadmin/formElements/form/end/duration/weeks/input/@value"/>
+                        <xsl:variable name="weeksStr" select="/bedework/formElements/form/end/duration/weeks/input/@value"/>
                         <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="true"/>weeks
                       </div>
                     </xsl:when>
@@ -1340,19 +1340,19 @@
                       <!-- we are using week format -->
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')"/>
-                        <xsl:variable name="daysStr" select="/bedeworkadmin/formElements/form/end/duration/days/input/@value"/>
+                        <xsl:variable name="daysStr" select="/bedework/formElements/form/end/duration/days/input/@value"/>
                         <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="true"/>days
                         <span id="durationHrMin" class="{$durationHrMinClass}">
-                          <xsl:variable name="hoursStr" select="/bedeworkadmin/formElements/form/end/duration/hours/input/@value"/>
+                          <xsl:variable name="hoursStr" select="/bedework/formElements/form/end/duration/hours/input/@value"/>
                           <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="true"/>hours
-                          <xsl:variable name="minutesStr" select="/bedeworkadmin/formElements/form/end/duration/minutes/input/@value"/>
+                          <xsl:variable name="minutesStr" select="/bedework/formElements/form/end/duration/minutes/input/@value"/>
                           <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="true"/>minutes
                         </span>
                       </div>
                       <span class="durationSpacerText">or</span>
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')" checked="checked"/>
-                        <xsl:variable name="weeksStr" select="/bedeworkadmin/formElements/form/end/duration/weeks/input/@value"/>
+                        <xsl:variable name="weeksStr" select="/bedework/formElements/form/end/duration/weeks/input/@value"/>
                         <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks"/>weeks
                       </div>
                     </xsl:otherwise>
@@ -1361,7 +1361,7 @@
               </div><br/>
               <div class="dateFields" id="noDuration">
                 <xsl:choose>
-                  <xsl:when test="/bedeworkadmin/formElements/form/end/type='N'">
+                  <xsl:when test="/bedework/formElements/form/end/type='N'">
                     <input type="radio" name="eventEndType" value="N" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:when>
                   <xsl:otherwise>
@@ -1375,15 +1375,15 @@
         </tr>
         <!--  Status  -->
         <tr>
-          <td class="fieldName">
+          <td class="fieldname">
             Status:
           </td>
-          <td>
+          <td class="fieldval">
             <xsl:choose>
-              <xsl:when test="/bedeworkadmin/formElements/form/status = 'TENTATIVE'">
+              <xsl:when test="/bedework/formElements/form/status = 'TENTATIVE'">
                 <input type="radio" name="event.status" value="CONFIRMED"/>confirmed <input type="radio" name="event.status" value="TENTATIVE" checked="checked"/>tentative <input type="radio" name="event.status" value="CANCELLED"/>cancelled
               </xsl:when>
-              <xsl:when test="/bedeworkadmin/formElements/form/status = 'CANCELLED'">
+              <xsl:when test="/bedework/formElements/form/status = 'CANCELLED'">
                 <input type="radio" name="event.status" value="CONFIRMED"/>confirmed <input type="radio" name="event.status" value="TENTATIVE"/>tentative <input type="radio" name="event.status" value="CANCELLED" checked="checked"/>cancelled
               </xsl:when>
               <xsl:otherwise>
@@ -1912,7 +1912,8 @@
     <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td class="leftCell">
-          <a href="http://www.bedework.org/">Bedework Calendar</a>
+          <a href="http://www.bedework.org/">Bedework Calendar</a> |
+          <a href="/ucal/showMain.rdo?refreshXslt=yes">refresh XSLT</a>
         </td>
         <td class="rightCell">
           <!--<form name="skinSelectForm" method="get" action="{$setup}">

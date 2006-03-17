@@ -47,13 +47,20 @@ function launchSimpleWindow(URL) {
   window.simpleWindow.focus();
 }
 
+// launches new browser window with print-friendly version of page when
+// print icon is clicked
+function launchPrintWindow(URL) {
+  printWindow = window.open(URL, "printWindow", "width=640,height=500,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=yes,toolbar=yes");
+  window.printWindow.focus();
+}
+
 function startDateCalWidgetCallback(date, month, year) {
   if (String(month).length == 1) {
       month = '0' + month;
   }
   if (String(date).length == 1) {
       date = '0' + date;
-  }    
+  }
   today = new Date();
   if (year < today.getFullYear()) {
     alert("You may not create an event in a previous year.");
@@ -69,7 +76,7 @@ function endDateCalWidgetCallback(date, month, year) {
   }
   if (String(date).length == 1) {
       date = '0' + date;
-  }    
+  }
   today = new Date();
   if (year < today.getFullYear()) {
     alert("You may not create an event in a previous year.");
