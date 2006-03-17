@@ -266,7 +266,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
     int id = form.retrieveCategoryId().getVal();
 
     if (id <= 0) {
-      if (form.getEnv().getAppBoolProperty("app.categoryOptional")) {
+      if (form.getEnv().getAppBoolProperty("categoryOptional")) {
         return true;
       }
 

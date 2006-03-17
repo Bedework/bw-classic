@@ -78,7 +78,7 @@ import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
 
-import edu.rpi.sss.util.jsp.JspUtil;
+//import edu.rpi.sss.util.jsp.JspUtil;
 import edu.rpi.sss.util.jsp.SessionListener;
 import edu.rpi.sss.util.jsp.UtilAbstractAction;
 import edu.rpi.sss.util.jsp.UtilActionForm;
@@ -86,6 +86,7 @@ import edu.rpi.sss.util.jsp.UtilActionForm;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -114,7 +115,11 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     BwActionFormBase form = (BwActionFormBase)frm;
     String adminUserId = null;
 
-    boolean guestMode = getGuestMode(frm);
+    CalEnv env = getEnv(request, form);
+    setSessionAttr(request, "org.bedework.logprefix",
+                   env.getAppProperty("logprefix"));
+
+    boolean guestMode = env.getAppBoolProperty("guestmode");
 
     if (guestMode) {
       form.assignCurrentUser(null);
@@ -124,12 +129,12 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         adminUserId = form.getCurrentUser();
       }
     }
-
+    
     if (getPublicAdmin(form)) {
       /** We may want to masquerade as a different user
        */
 
-      String temp = request.getParameter("adminUserId");
+      String temp = getReqPar(request, "adminUserId");
 
       if (temp != null) {
         adminUserId = temp;
@@ -142,11 +147,8 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     sess.setAttribute(UWCalCallback.cbAttrName, cb);
     */
 
-    BwSession s = getState(request,
-                              form,
-                              messages,
-                              adminUserId,
-                              getPublicAdmin(form));
+    BwSession s = getState(request, form, messages, adminUserId,
+                           getPublicAdmin(form));
 
     if (s == null) {
       /* An error should have been emitted. The superclass will return an
@@ -173,12 +175,11 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
     if (getPublicAdmin(form)) {
       /* Set some options from the environment */
-      CalEnv env = getEnv(form);
 
-      form.setAutoCreateSponsors(env.getAppBoolProperty("app.autocreatesponsors"));
-      form.setAutoCreateLocations(env.getAppBoolProperty("app.autocreatelocations"));
-      form.setAutoDeleteSponsors(env.getAppBoolProperty("app.autodeletesponsors"));
-      form.setAutoDeleteLocations(env.getAppBoolProperty("app.autodeletelocations"));
+      form.setAutoCreateSponsors(env.getAppBoolProperty("autocreatesponsors"));
+      form.setAutoCreateLocations(env.getAppBoolProperty("autocreatelocations"));
+      form.setAutoDeleteSponsors(env.getAppBoolProperty("autodeletesponsors"));
+      form.setAutoDeleteLocations(env.getAppBoolProperty("autodeletelocations"));
 
       if (debug) {
         logIt("form.getGroupSet()=" + form.getGroupSet());
@@ -212,7 +213,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       form.setAutoDeleteSponsors(true);
       form.setAutoDeleteLocations(true);
 
-      String refreshAction = form.getEnv().getAppOptProperty("app.refresh.action");
+      String refreshAction = form.getEnv().getAppOptProperty("refresh.action");
 
       if (refreshAction == null) {
         refreshAction = form.getActionPath();
@@ -220,7 +221,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
       if (refreshAction != null) {
         setRefreshInterval(request, response,
-                           form.getEnv().getAppIntProperty("app.refresh.interval"),
+                           form.getEnv().getAppIntProperty("refresh.interval"),
                            refreshAction, form);
       }
 
@@ -448,8 +449,8 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @return String   forward name
    */
   protected String checkGroup(HttpServletRequest request,
-                    BwActionFormBase form,
-                    boolean initCheck) throws Throwable {
+                              BwActionFormBase form,
+                              boolean initCheck) throws Throwable {
     if (form.getGroupSet()) {
       return null;
     }
@@ -499,7 +500,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
          */
 
         boolean noGroupAllowed =
-            form.getEnv().getAppBoolProperty("app.nogroupallowed");
+            form.getEnv().getAppBoolProperty("nogroupallowed");
         if (form.getUserAuth().isSuperUser() || noGroupAllowed) {
           form.assignAdminGroup(null);
           return null;
@@ -612,7 +613,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
   }
 
   private boolean isMember(BwAdminGroup ag,
-                            BwActionFormBase form) throws Throwable {
+                           BwActionFormBase form) throws Throwable {
     return ag.isMember(String.valueOf(form.getCurrentUser()), false);
   }
 
@@ -622,52 +623,59 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @return boolean  true for a public events admin client
    * @throws Throwable
    */
-  public boolean getPublicAdmin(UtilActionForm frm) throws Throwable {
-    return JspUtil.getBoolProperty(frm.getMres(),
-        "org.bedework.publicadmin",
-        false);
-  }
-
-  /** Override to return true if this is a client running in guest mode
-   *
-   * @param frm
-   * @return boolean  true for guest mode
-   * @throws Throwable
-   */
-  public boolean getGuestMode(UtilActionForm frm) throws Throwable {
-    return JspUtil.getBoolProperty(frm.getMres(),
-                                   "org.bedework.guestmode",
-                                   true);
-  }
-
-  /** Return user we run as.
-   *
-   * @param frm
-   * @return String  run-as user name
-   * @throws Throwable
-   */
-  public String getRunAsUser(UtilActionForm frm) throws Throwable {
-    return JspUtil.getReqProperty(frm.getMres(), "org.bedework.run.as");
+  public boolean getPublicAdmin(BwActionFormBase frm) throws Throwable {
+    return frm.getEnv().getAppBoolProperty("publicadmin");
   }
 
   /** get an env object initialised appropriately for our usage.
    *
+   * @param request    HttpServletRequest
    * @param frm
    * @return CalEnv object - also implanted in form.
    * @throws Throwable
    */
-  public CalEnv getEnv(BwActionFormBase frm) throws Throwable {
+  private CalEnv getEnv(HttpServletRequest request,
+                        BwActionFormBase frm) throws Throwable {
     CalEnv env = frm.getEnv();
     if (env != null) {
       return env;
     }
 
-    String envPrefix = JspUtil.getReqProperty(frm.getMres(),
-                                              "org.bedework.envprefix");
+    HttpSession session = request.getSession();
+    ServletContext sc = session.getServletContext();
+    
+    String appName = sc.getInitParameter("bwappname");
+    
+    if ((appName == null) || (appName.length() == 0)) {
+      appName = "unknown-app-name";
+    }
+    
+    String envPrefix = "org.bedework.app." + appName + ".";
 
     env = new CalEnv(envPrefix, debug);
     frm.assignEnv(env);
+    
     return env;
+  }
+
+  /** Get a prefix for the loggers.
+   *
+   * @param request    HttpServletRequest
+   * @return  String    log prefix
+   */
+  protected String getLogPrefix(HttpServletRequest request) {
+    try {
+      String pfx = (String)getSessionAttr(request, "org.bedework.logprefix");
+
+      if (pfx == null) {
+        return "NOT-SET";
+      }
+
+      return pfx;
+    } catch (Throwable t) {
+      error(t);
+      return "LOG-PREFIX-EXCEPTION";
+    }
   }
 
   /** This is the routine which does the work.
@@ -720,9 +728,9 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
       form.assignNewSession(true);
 
-      CalEnv env = getEnv(form);
-      String appName = env.getAppProperty("app.name");
-      String appRoot = env.getAppProperty("app.root");
+      CalEnv env = getEnv(request, form);
+      String appName = env.getAppProperty("name");
+      String appRoot = env.getAppProperty("root");
 
       /** The actual session class used is possibly site dependent
        */
@@ -732,10 +740,10 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
       BwWebUtil.setState(request, s);
 
-      form.setHour24(env.getAppBoolProperty("app.hour24"));
-      form.setMinIncrement(env.getAppIntProperty("app.minincrement"));
+      form.setHour24(env.getAppBoolProperty("hour24"));
+      form.setMinIncrement(env.getAppIntProperty("minincrement"));
       if (!admin) {
-        form.assignShowYearData(env.getAppBoolProperty("app.showyeardata"));
+        form.assignShowYearData(env.getAppBoolProperty("showyeardata"));
       }
 
       setSessionAttr(request, "cal.pubevents.client.uri",
@@ -890,12 +898,15 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       try {
         svci = new CalSvc();
         if (publicAdmin || (user == null)) {
-          runAsUser = getRunAsUser(form);
+          runAsUser = form.getEnv().getAppProperty("run.as.user");
         }
-        CalSvcIPars pars = new CalSvcIPars(user, access, runAsUser, publicAdmin,
-            false,    // caldav
-            null, // synchId
-            debug);
+        
+        CalSvcIPars pars = new CalSvcIPars(user, access, runAsUser, 
+                                           form.getEnv().getAppPrefix(),
+                                           publicAdmin,
+                                           false,    // caldav
+                                           null, // synchId
+                                           debug);
         svci.init(pars);
 
         BwWebUtil.setCalSvcI(request, svci);

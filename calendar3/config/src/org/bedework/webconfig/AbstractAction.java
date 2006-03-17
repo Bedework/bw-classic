@@ -151,8 +151,8 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
     if (s != null) {
     } else {
       CalEnv env = getEnv(form);
-      String appName = env.getAppProperty("app.name");
-      String appRoot = env.getAppProperty("app.root");
+      String appName = env.getAppProperty("name");
+      String appRoot = env.getAppProperty("root");
 
       s = new BwSessionImpl(form.getCurrentUser(), appRoot, appName,
                             form.getPresentationState(), messages,

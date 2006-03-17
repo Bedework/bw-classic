@@ -17,6 +17,11 @@
   </context-param>
 
   <context-param>
+    <param-name>bwappname</param-name>
+    <param-value>@BW-APP-NAME@</param-value>
+  </context-param>
+
+  <context-param>
     <param-name>debug</param-name>
     <param-value>@RPI-DEBUG@</param-value>
   </context-param>

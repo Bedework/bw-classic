@@ -5,13 +5,11 @@
      =================================================================== -->
 
 <project name="app.deploy" default="deploy" >
-  <import file="../copyprops.xml" />
-
-  <target name="init" depends="copyprops">
+  <target name="init">
     <dirname property="this.dir" file="${ant.file}"/>
 
     <property name="app.ear.file"
-              location="${dist.home}/${propval.ear.name}.ear" />
+              location="${dist.home}/${propval.app.ear.name}.ear" />
     <property name="app.resources.dir"
               location="${this.dir}/../webapp/resources" />
   </target>

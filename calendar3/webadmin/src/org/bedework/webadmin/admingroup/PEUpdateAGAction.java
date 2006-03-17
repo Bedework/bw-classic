@@ -289,7 +289,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
                "eventOwnerid");
       ok = false;
     } else {
-      String prefix = getEnv(form).getAppProperty("app.admingroupsidprefix");
+      String prefix = form.getEnv().getAppProperty("admingroupsidprefix");
 
       if (!adminGroupEventOwner.startsWith(prefix)) {
         adminGroupEventOwner = prefix + adminGroupEventOwner;
@@ -347,7 +347,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
       return ok;
     }
 
-    String prefix = getEnv(form).getAppProperty("app.admingroupsidprefix");
+    String prefix = form.getEnv().getAppProperty("admingroupsidprefix");
 
     if (!adminGroupEventOwner.startsWith(prefix)) {
       adminGroupEventOwner = prefix + adminGroupEventOwner;

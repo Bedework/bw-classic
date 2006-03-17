@@ -83,6 +83,25 @@ public class CalSvcTestWrapper extends CalSvc {
    */
   BwCalendar publicCal;
 
+  /* Get an object with one of these as a parameter to use the getApp
+     methods.
+   */
+
+  /** property prefix for web admin client */
+  public static final String webAdminAppPrefix = "org.bedework.webadmin.";
+
+  /** property prefix for web public client */
+  public static final String webPublicAppPrefix = "org.bedework.webpubevents.";
+
+  /** property prefix for web personal client */
+  public static final String webPersonalAppPrefix = "org.bedework.webpersonal.";
+
+  /** property prefix for public caldav client */
+  public static final String caldavPublicAppPrefix = "org.bedework.caldav.public.";
+
+  /** property prefix for personal caldav client */
+  public static final String caldavPersonalAppPrefix = "org.bedework.caldav.user.";
+
   //private boolean debug = true;
 
   /**
@@ -100,8 +119,19 @@ public class CalSvcTestWrapper extends CalSvc {
     //this.debug = debug;
     isPublic = publicEvents;
     this.user = user;
+    String envPrefix;
+    
+    if (publicEvents) {
+      envPrefix = webAdminAppPrefix;
+    } else if (user == null) {
+      envPrefix = webPublicAppPrefix;
+    } else {
+      envPrefix = webPersonalAppPrefix;
+    }
 
-    CalSvcIPars pars = new CalSvcIPars(user, access, user, publicEvents,
+    CalSvcIPars pars = new CalSvcIPars(user, access, user, 
+                                       envPrefix,
+                                       publicEvents,
                                        false,    // caldav
                                        null, // synch
                                        debug);

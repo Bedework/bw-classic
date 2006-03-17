@@ -72,6 +72,10 @@ public class CalSvcIPars implements Serializable {
   /** The current user - null for guest
    */
   private String user;
+  
+  /** Environment properties prefix - e.g. "org.bedework.webpersonal."
+   */
+  private String envPrefix;
 
   /** True if this is for public admin
    */
@@ -95,6 +99,7 @@ public class CalSvcIPars implements Serializable {
    * @param rights      int rights as defined in
    *                     org.bedework.calfacade.svc.UserAuth
    * @param user        String user to act as
+   * @param enzPrefix   String Environment properties prefix
    * @param publicAdmin true for admin
    * @param caldav      true if via caldav
    * @param synchId     non-null if this is for synchronization. Identifies the
@@ -104,6 +109,7 @@ public class CalSvcIPars implements Serializable {
   public CalSvcIPars(String authUser,
                      int rights,
                      String user,
+                     String envPrefix,
                      boolean publicAdmin,
                      boolean caldav,
                      String synchId,
@@ -111,6 +117,7 @@ public class CalSvcIPars implements Serializable {
     this.authUser = authUser;
     this.rights = rights;
     this.user = user;
+    this.envPrefix = envPrefix;
     this.publicAdmin = publicAdmin;
     this.caldav = caldav;
     this.synchId = synchId;
@@ -143,6 +150,20 @@ public class CalSvcIPars implements Serializable {
    */
   public String getUser() {
     return user;
+  }
+
+  /**
+   * @param val String envPrefix
+   */
+  public void setEnvPrefix(String  val) {
+    envPrefix = val;
+  }
+
+  /**
+   * @return String current envPrefix
+   */
+  public String getEnvPrefix() {
+    return envPrefix;
   }
 
   /**
@@ -230,6 +251,7 @@ public class CalSvcIPars implements Serializable {
     CalSvcIPars pars = new CalSvcIPars(getAuthUser(),
                                        getRights(),
                                        getUser(),
+                                       getEnvPrefix(),
                                        getPublicAdmin(),
                                        getCaldav(),
                                        getSynchId(),

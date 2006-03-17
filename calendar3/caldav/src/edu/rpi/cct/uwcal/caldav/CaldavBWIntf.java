@@ -54,6 +54,7 @@
 
 package edu.rpi.cct.uwcal.caldav;
 
+import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
@@ -87,8 +88,8 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
 import edu.rpi.cct.webdav.servlet.shared.WebdavTags;
 
+import edu.rpi.sss.util.jsp.JspUtil;
 import edu.rpi.sss.util.xml.QName;
-
 
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -125,6 +126,9 @@ public class CaldavBWIntf extends WebdavNsIntf {
   /** Namespace prefix based on the request url.
    */
   private String namespacePrefix;
+
+  /* Prefix for out properties */
+  private String envPrefix;
 
   /** Namespace based on the request url.
    */
@@ -171,11 +175,23 @@ public class CaldavBWIntf extends WebdavNsIntf {
                    Properties props,
                    boolean debug) throws WebdavIntfException {
     super.init(servlet, req, props, debug);
-
-    namespacePrefix = WebdavUtils.getUrlPrefix(req);
-    namespace = namespacePrefix + "/schema";
-
+    
+    String contextRoot = JspUtil.getContext(req);
+    
+    if ((contextRoot != null) && (contextRoot.startsWith("/"))) {
+      contextRoot = contextRoot.substring(1);
+    }
+    
+    if ((contextRoot == null) || (contextRoot.length() == 0)) {
+      contextRoot = "root";
+    }
+    
     try {
+      envPrefix = CalEnv.getProperty("org.bedework.envprefix." + contextRoot);
+      
+      namespacePrefix = WebdavUtils.getUrlPrefix(req);
+      namespace = namespacePrefix + "/schema";
+
       publicCalendarRoot = getSvci().getSyspars().getPublicCalendarRoot();
       userCalendarRoot = getSvci().getSyspars().getUserCalendarRoot();
     } catch (Throwable t) {
@@ -1166,6 +1182,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
        */
       CalSvcIPars pars = new CalSvcIPars(account, UserAuth.noPrivileges,
                                          account,
+                                         envPrefix,
                                          publicMode,
                                          true,    // caldav
                                          null, // synchId

@@ -63,25 +63,6 @@ public class CalEnv implements Serializable {
    */
   public static final String globalPrefix = "org.bedework.global.";
 
-  /* Get an object with one of these as a parameter to use the getApp
-     methods.
-   */
-
-  /** property prefix for web admin client */
-  public static final String webAdminAppPrefix = "org.bedework.webadmin.";
-
-  /** property prefix for web public client */
-  public static final String webPublicAppPrefix = "org.bedework.webpubevents.";
-
-  /** property prefix for web personal client */
-  public static final String webPersonalAppPrefix = "org.bedework.webpersonal.";
-
-  /** property prefix for public caldav client */
-  public static final String caldavPublicAppPrefix = "org.bedework.caldav.public.";
-
-  /** property prefix for personal caldav client */
-  public static final String caldavPersonalAppPrefix = "org.bedework.caldav.user.";
-
   private String appPrefix;
 
   /** Constructor. Create a caldav object using the given prefix.
@@ -92,7 +73,6 @@ public class CalEnv implements Serializable {
    */
   public CalEnv(String appPrefix, boolean debug) throws CalEnvException {
     this.appPrefix = appPrefix;
-
   }
 
   private static Properties getPr() throws CalEnvException {
@@ -148,6 +128,14 @@ public class CalEnv implements Serializable {
         }
       }
     }
+  }
+  
+  /** Return current app prefix
+   * 
+   * @return String app prefix
+   */
+  public String getAppPrefix() {
+    return appPrefix;
   }
 
   /** Return all properties from the global environment.

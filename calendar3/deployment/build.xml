@@ -81,7 +81,18 @@
     <ant antfile="${buildjar}" inheritRefs="true" target="build" />
   </target>
 
-  <target name="build.configured" depends="build" >
+  <target name="deftasks" >
+    <path id="app.xml.cp">
+      <pathelement location="${org.bedework.deployment.jar}"/>
+    </path>
+
+    <taskdef name="forEachApp"
+             classname="org.bedework.deployment.ForEachAppTask">
+      <classpath refid="app.xml.cp"/>
+    </taskdef>
+  </target>
+
+  <target name="build.configured" depends="build,deftasks" >
     <!-- Clean up before we start -->
     <delete dir="${org.bedework.temp.wars.home}" />
 
@@ -122,7 +133,7 @@
                          The deploy target.
        ================================================================= -->
 
-  <target name="deploy" depends="build" >
+  <target name="deploy" depends="build,deftasks" >
     <!-- Clean up before we start -->
     <delete dir="${org.bedework.temp.wars.home}" />
 
@@ -148,11 +159,8 @@
        ================================================================= -->
 
   <target name="deploy.standalone.apps" if="org.bedework.global.build.standalone.app" >
-    <!-- ======================= webconfig - only standalone ================= -->
-    <ant antfile="${org.bedework.deployment.base}/webconfig/webapp/build.xml"
-         inheritrefs="true" target="deploy" />
-
-    <deploy.apps kind="webapp" />
+    <property name="org.bedework.deploy.kind" value="webapp" />
+    <antcall target="deploy.apps.target" inheritrefs="true" />
   </target>
 
   <target name="deploy.portal.apps" if="org.bedework.global.portal.platform" >
@@ -216,9 +224,39 @@
     </sequential>
   </macrodef>
 
+  <target name="deploy.apps.target">
+    <forEachApp names="${org.bedework.install.app.names}"
+                types="${org.bedework.install.app.types}"
+                prefix="org.bedework.deploy">
+      <sequential>
+        <propertyset id="app-properties">
+          <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
+          <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
+        </propertyset>
+
+        <ant antfile="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
+             inheritrefs="true" target="deploy" >
+          <propertyset refid="app-properties" />
+        </ant>
+      </sequential>
+    </forEachApp>
+  </target>
+
   <macrodef name="deploy.apps">
       <attribute name="kind" />
     <sequential>
+      <forEachApp names="${org.bedework.install.app.names}"
+                  types="${org.bedework.install.app.types}"
+                  prefix="org.bedework.deploy">
+        <sequential>
+          <property name="prefix" value="org.bedework.${org.bedework.deploy.type}" />
+          <propertyset id="app-properties">
+            <propertyref prefix="${prefix}"/>
+            <globmapper from="${prefix}*" to="propval*"/>
+          </propertyset>
+        </sequential>
+      </forEachApp>
+
       <!-- ======================= webadmin ================= -->
       <ant antfile="${org.bedework.deployment.base}/webadmin/@{kind}/build.xml"
            inheritrefs="true" target="deploy" />

@@ -55,7 +55,7 @@
 
     <!-- Destinations - where we build an unwrapped war -->
     <property name="app.dest.war"
-              location="${org.bedework.temp.wars.home}/${propval.war.name}.war" />
+              location="${org.bedework.temp.wars.home}/${propval.app.war.name}.war" />
     <property name="app.dest.docs"
               location="${app.dest.war}/docs" />
     <property name="app.dest.webinf"
@@ -70,7 +70,7 @@
               location="${app.dest.webinf}/web.xml" />
 
     <property name="app.war.file"
-              location="${dist.home}/${propval.war.name}.war" />
+              location="${dist.home}/${propval.app.war.name}.war" />
 
     <!-- These may have been set already -->
     <property name="app.web.xml"
@@ -112,14 +112,14 @@
          =============================================================== -->
 
     <filterset id="property.filters" >
+      <filter token="BW-APP-NAME"
+              value="${org.bedework.deploy.name}"/>
+
       <filter token="HIBERNATE-DIALECT"
               value="${org.bedework.global.hibernate.dialect}" />
 
       <filter token="DIRECTORY-BROWSING-DISALLOWED"
               value="${org.bedework.global.directory.browsing.disallowed}" />
-
-      <filter token="ENV-PREFIX"
-              value="${propval.env.prefix}" />
 
       <filter token="APP-DESCRIPTION"
               value="${propval.app.description}" />
@@ -156,11 +156,11 @@
       <filter token="CALFILE-NAME"
               value="${propval.app.calfile.name}" /> -->
       <filter token="ADMIN-URI"
-              value="${propval.app.public.admin.uri}" />
+              value="${org.bedework.global.public.admin.uri}" />
       <filter token="PUBEVENTS-URI"
-              value="${propval.app.public.calendar.uri}" />
+              value="${org.bedework.global.public.calendar.uri}" />
       <filter token="PERSONAL-URI"
-              value="${propval.app.personal.calendar.uri}" />
+              value="${org.bedework.global.personal.calendar.uri}" />
     </filterset>
 
     <available file="${app.sou.dir}/properties" type="dir"
@@ -326,7 +326,7 @@
 
   <target name="add.jetspeed2" if="org.bedework.build.for.jetspeed2" >
     <copy todir="${app.dest.webinf}"
-          file="${org.bedework.portal.resources.dir}/jetspeed2/${propval.war.name}/portlet.xml"
+          file="${org.bedework.portal.resources.dir}/jetspeed2/${propval.app.war.name}/portlet.xml"
           overwrite="yes"
           failonerror="no" />
     <copy todir="${app.dest.webinf}"

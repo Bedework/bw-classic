@@ -532,7 +532,7 @@ public abstract class UtilAbstractAction extends Action
     sb.append(":");
     sb.append(getSessionId(request));
     sb.append(":");
-    sb.append(getLogPrefix());
+    sb.append(getLogPrefix(request));
 
     return new LogEntryImpl(sb, this);
   }
@@ -556,8 +556,7 @@ public abstract class UtilAbstractAction extends Action
   /* (non-Javadoc)
    * @see edu.rpi.sss.util.log.HttpAppLogger#logRequest(javax.servlet.http.HttpServletRequest)
    */
-  public void logRequest(HttpServletRequest request)
-               throws Throwable {
+  public void logRequest(HttpServletRequest request) throws Throwable {
     LogEntry le = getLogEntry(request, "REQUEST");
 
     le.append(request.getRemoteAddr());
@@ -615,9 +614,10 @@ public abstract class UtilAbstractAction extends Action
 
   /** Get a prefix for the loggers.
    *
+   * @param request    HttpServletRequest
    * @return  String    log prefix
    */
-  private String getLogPrefix() {
+  protected String getLogPrefix(HttpServletRequest request) {
     try {
       if (logPrefix == null) {
         logPrefix = JspUtil.getProperty(getMessages(),

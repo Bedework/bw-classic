@@ -18,7 +18,7 @@
   <target name="init">
     <!-- Destinations - where we build stuff -->
     <property name="app.dest.home"
-              location="${org.bedework.temp.shellscr.home}/${propval.zip.name}" />
+              location="${org.bedework.temp.shellscr.home}/${propval.app.zip.name}" />
     <property name="app.dest.lib"
               location="${app.dest.home}/lib" />
     <property name="app.dest.classes"
@@ -29,7 +29,7 @@
               location="${app.dest.home}/resources" />
 
     <property name="app.zip.file"
-              location="${dist.home}/${propval.zip.name}.zip" />
+              location="${dist.home}/${propval.app.zip.name}.zip" />
   </target>
 
   <!-- ================================================================
@@ -147,7 +147,7 @@
     <delete file="${app.zip.file}" />
 
     <zip destfile="${app.zip.file}" >
-      <zipfileset prefix="${propval.zip.name}" dir="${app.dest.home}" />
+      <zipfileset prefix="${propval.app.zip.name}" dir="${app.dest.home}" />
     </zip>
   </target>
 

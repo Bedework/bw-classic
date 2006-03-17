@@ -13,6 +13,11 @@
   </context-param>
 
   <context-param>
+    <param-name>bwappname</param-name>
+    <param-value>@BW-APP-NAME@</param-value>
+  </context-param>
+
+  <context-param>
     <param-name>debug</param-name>
     <param-value>@RPI-DEBUG@</param-value>
   </context-param>
@@ -180,6 +185,7 @@
     <res-auth>Container</res-auth>
   </resource-ref>
 
+  <!-- Don't use roles - any authenticated user
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>CalendarAdmin</web-resource-name>
@@ -191,6 +197,21 @@
       <role-name>@SECURITY-PREFIX@.contentadmin</role-name>
       <role-name>@SECURITY-PREFIX@.alerts</role-name>
       <role-name>@SECURITY-PREFIX@.owner</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <description>no description</description>
+      <transport-guarantee>@TRANSPORT-GUARANTEE@</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  -->
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>CalendarAdmin</web-resource-name>
+      <description>Public events Administration</description>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>*</role-name>
     </auth-constraint>
     <user-data-constraint>
       <description>no description</description>

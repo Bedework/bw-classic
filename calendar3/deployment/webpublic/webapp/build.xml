@@ -5,12 +5,10 @@
      =================================================================== -->
 
 <project name="bwpublic.deploy" default="deploy" >
-  <import file="../copyprops.xml" />
-
-  <target name="init" depends="copyprops">
+  <target name="init">
     <!-- and define some properties based on those -->
     <property name="app.war.file"
-              location="${dist.home}/${propval.war.name}.war" />
+              location="${dist.home}/${propval.app.war.name}.war" />
 
     <dirname property="this.dir" file="${ant.file}"/>
 

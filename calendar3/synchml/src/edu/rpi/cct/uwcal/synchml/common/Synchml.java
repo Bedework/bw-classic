@@ -124,6 +124,7 @@ public class Synchml {
     this.debug = debug;
     CalSvcIPars pars = new CalSvcIPars(account, UserAuth.noPrivileges,
                                        account,
+                                       null,     // XXX Requires an env prefix
                                        false,    // public
                                        false,    // caldav
                                        deviceId, // synchId

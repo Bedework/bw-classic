@@ -1104,7 +1104,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
         String vn;
 
         try {
-          vn = getEnv().getAppOptProperty("app.default.view");
+          vn = getEnv().getAppOptProperty("default.view");
           if (vn == null) {
             vn = "week";
           }

@@ -276,27 +276,7 @@ public class CalSvc extends CalSvcI {
     }
 
     try {
-      String appPrefix = null;
-
-      if (pars.getPublicAdmin()) {
-        appPrefix = CalEnv.webAdminAppPrefix;
-      } else if (pars.isGuest()) {
-        if (pars.getCaldav()) {
-          appPrefix = CalEnv.caldavPublicAppPrefix;
-        } else {
-          appPrefix = CalEnv.webPublicAppPrefix;
-        }
-      } else {
-        if (pars.getCaldav()) {
-          appPrefix = CalEnv.caldavPersonalAppPrefix;
-        } else {
-          appPrefix = CalEnv.webPersonalAppPrefix;
-        }
-      }
-
-      env = new CalEnv(appPrefix, debug);
-
-      //publicUserAccount = CalEnv.getGlobalProperty("public.user");
+      env = new CalEnv(pars.getEnvPrefix(), debug);
 
       if (pars.isGuest() && (pars.getUser() == null)) {
         pars.setUser(env.getAppProperty("run.as.user"));
@@ -306,9 +286,9 @@ public class CalSvc extends CalSvcI {
         //adminAutoDeleteSponsors = env.getAppBoolProperty("app.autodeletesponsors");
         //adminAutoDeleteLocations = env.getAppBoolProperty("app.autodeletelocations");
 
-        adminCanEditAllPublicCategories = env.getAppBoolProperty("app.allowEditAllCategories");
-        adminCanEditAllPublicLocations = env.getAppBoolProperty("app.allowEditAllLocations");
-        adminCanEditAllPublicSponsors = env.getAppBoolProperty("app.allowEditAllSponsors");
+        adminCanEditAllPublicCategories = env.getAppBoolProperty("allowEditAllCategories");
+        adminCanEditAllPublicLocations = env.getAppBoolProperty("allowEditAllLocations");
+        adminCanEditAllPublicSponsors = env.getAppBoolProperty("allowEditAllSponsors");
       }
 
       timezones = getCal().getTimezones();
