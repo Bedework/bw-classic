@@ -2947,9 +2947,9 @@
         <td class="leftCell">
           <a href="{$setup}">Main Menu</a> |
           <a href="{$publicCal}" target="calendar">Launch Calendar</a> |
-          <a href="{$logout}">Log Out</a> |
+          <a href="{$logout}">Log Out</a>
           <!-- Enable the following two items when debugging skins only -->
-          <a href="?refreshXslt=yes">Refresh XSL</a> |
+          | <a href="?refreshXslt=yes">Refresh XSL</a> |
           <a href="?noxslt=yes">Show XML</a> (view source)
         </td>
         <xsl:if test="/bedeworkadmin/userInfo/user">

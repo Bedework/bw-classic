@@ -7,9 +7,11 @@
   doctype-public="-//W3C//DTD HTML 3.2 Final//EN"
   standalone="yes"
 />
-  <!-- ================ -->
-  <!--  PDA STYLESHEET -->
-  <!-- ================  -->
+  <!-- ============================ -->
+  <!-- PDA STYLESHEET               -->
+  <!-- designed for Palm Treo 600   -->
+  <!-- ============================ -->
+
   <!-- DEFINE GLOBAL CONSTANTS -->
   <!-- URL of html resources (images, css, other html); by default this is
        set to the application root -->

@@ -1173,11 +1173,223 @@
         </tr>
         <tr>
           <td class="fieldname">
-            Title/Summary:
+            Title:
           </td>
           <td class="fieldval">
             <xsl:variable name="title" select="/bedework/eventform/form/title/input/@value"/>
             <input type="text" name="newEvent.summary" size="80" value="{$title}"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
+            Date &amp; Time:
+          </td>
+          <td>
+            <!-- Set the timefields class for the first load of the page;
+                 subsequent changes will take place using javascript without a
+                 page reload. -->
+            <xsl:variable name="timeFieldsClass">
+              <xsl:choose>
+                <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">invisible</xsl:when>
+                <xsl:otherwise>timeFields</xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">
+                <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="on" checked="checked"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayStartDateField"/>
+                <input type="hidden" name="eventEndDate.dateOnly" value="on" id="allDayEndDateField"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="off"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayStartDateField"/>
+                <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            all day event<br/>
+            <div class="dateStartEndBox">
+              <strong>Start:</strong>
+              <div class="dateFields">
+                <span class="startDateLabel">Date </span>
+                <xsl:copy-of select="/bedeworkadmin/formElements/form/start/month/*"/>
+                <xsl:copy-of select="/bedeworkadmin/formElements/form/start/day/*"/>
+                <xsl:choose>
+                  <xsl:when test="/bedeworkadmin/creating = 'true'">
+                    <xsl:copy-of select="/bedeworkadmin/formElements/form/start/year/*"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:copy-of select="/bedeworkadmin/formElements/form/start/yearText/*"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </div>
+              <script language="JavaScript" type="text/javascript">
+              <xsl:comment>
+                startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback');
+              </xsl:comment>
+              </script>
+              <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
+              <div class="{$timeFieldsClass}" id="startTimeFields">
+                <span id="calWidgetStartTimeHider" class="show">
+                  <xsl:copy-of select="/bedeworkadmin/formElements/form/start/hour/*"/>
+                  <xsl:copy-of select="/bedeworkadmin/formElements/form/start/minute/*"/>
+                  <xsl:if test="/bedeworkadmin/formElements/form/start/ampm">
+                    <xsl:copy-of select="/bedeworkadmin/formElements/form/start/ampm/*"/>
+                  </xsl:if>
+                  <xsl:text> </xsl:text>
+                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                </span>
+              </div>
+            </div>
+            <div class="dateStartEndBox">
+              <strong>End:</strong>
+              <xsl:choose>
+                <xsl:when test="/bedeworkadmin/formElements/form/end/type='E'">
+                  <input type="radio" name="eventEndType" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="radio" name="eventEndType" value="E" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              Date
+              <xsl:variable name="endDateTimeClass">
+                <xsl:choose>
+                  <xsl:when test="/bedeworkadmin/formElements/form/end/type='E'">shown</xsl:when>
+                  <xsl:otherwise>invisible</xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <div class="{$endDateTimeClass}" id="endDateTime">
+                <div class="dateFields">
+                  <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/month/*"/>
+                  <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/day/*"/>
+                  <xsl:choose>
+                    <xsl:when test="/bedeworkadmin/creating = 'true'">
+                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/year/*"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/yearText/*"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </div>
+                <script language="JavaScript" type="text/javascript">
+                <xsl:comment>
+                  endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback');
+                </xsl:comment>
+                </script>
+                <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
+                <div class="{$timeFieldsClass}" id="endTimeFields">
+                  <span id="calWidgetEndTimeHider" class="show">
+                    <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/hour/*"/>
+                    <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/minute/*"/>
+                    <xsl:if test="/bedeworkadmin/formElements/form/end/dateTime/ampm">
+                      <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/ampm/*"/>
+                    </xsl:if>
+                    <xsl:text> </xsl:text>
+                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                  </span>
+                </div>
+              </div><br/>
+              <div id="clock" class="invisible">
+                <xsl:call-template name="clock"/>
+              </div>
+              <div class="dateFields">
+                <xsl:choose>
+                  <xsl:when test="/bedeworkadmin/formElements/form/end/type='D'">
+                    <input type="radio" name="eventEndType" value="D" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <input type="radio" name="eventEndType" value="D" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+                Duration
+                <xsl:variable name="endDurationClass">
+                  <xsl:choose>
+                    <xsl:when test="/bedeworkadmin/formElements/form/end/type='D'">shown</xsl:when>
+                    <xsl:otherwise>invisible</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="durationHrMinClass">
+                  <xsl:choose>
+                    <xsl:when test="/bedeworkadmin/formElements/form/allDay/input/@checked='checked'">invisible</xsl:when>
+                    <xsl:otherwise>shown</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <div class="{$endDurationClass}" id="endDuration">
+                  <xsl:choose>
+                    <xsl:when test="/bedeworkadmin/formElements/form/end/duration/weeks/input/@value = '0'">
+                    <!-- we are using day, hour, minute format -->
+                    <!-- must send either no week value or week value of 0 (zero) -->
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')" checked="checked"/>
+                        <xsl:variable name="daysStr" select="/bedeworkadmin/formElements/form/end/duration/days/input/@value"/>
+                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays"/>days
+                        <span id="durationHrMin" class="{$durationHrMinClass}">
+                          <xsl:variable name="hoursStr" select="/bedeworkadmin/formElements/form/end/duration/hours/input/@value"/>
+                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours"/>hours
+                          <xsl:variable name="minutesStr" select="/bedeworkadmin/formElements/form/end/duration/minutes/input/@value"/>
+                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes"/>minutes
+                        </span>
+                      </div>
+                      <span class="durationSpacerText">or</span>
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')"/>
+                        <xsl:variable name="weeksStr" select="/bedeworkadmin/formElements/form/end/duration/weeks/input/@value"/>
+                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="true"/>weeks
+                      </div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <!-- we are using week format -->
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')"/>
+                        <xsl:variable name="daysStr" select="/bedeworkadmin/formElements/form/end/duration/days/input/@value"/>
+                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="true"/>days
+                        <span id="durationHrMin" class="{$durationHrMinClass}">
+                          <xsl:variable name="hoursStr" select="/bedeworkadmin/formElements/form/end/duration/hours/input/@value"/>
+                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="true"/>hours
+                          <xsl:variable name="minutesStr" select="/bedeworkadmin/formElements/form/end/duration/minutes/input/@value"/>
+                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="true"/>minutes
+                        </span>
+                      </div>
+                      <span class="durationSpacerText">or</span>
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')" checked="checked"/>
+                        <xsl:variable name="weeksStr" select="/bedeworkadmin/formElements/form/end/duration/weeks/input/@value"/>
+                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks"/>weeks
+                      </div>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </div>
+              </div><br/>
+              <div class="dateFields" id="noDuration">
+                <xsl:choose>
+                  <xsl:when test="/bedeworkadmin/formElements/form/end/type='N'">
+                    <input type="radio" name="eventEndType" value="N" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <input type="radio" name="eventEndType" value="N" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+                This event has no duration / end date
+              </div>
+            </div>
+          </td>
+        </tr>
+        <!--  Status  -->
+        <tr>
+          <td class="fieldName">
+            Status:
+          </td>
+          <td>
+            <xsl:choose>
+              <xsl:when test="/bedeworkadmin/formElements/form/status = 'TENTATIVE'">
+                <input type="radio" name="event.status" value="CONFIRMED"/>confirmed <input type="radio" name="event.status" value="TENTATIVE" checked="checked"/>tentative <input type="radio" name="event.status" value="CANCELLED"/>cancelled
+              </xsl:when>
+              <xsl:when test="/bedeworkadmin/formElements/form/status = 'CANCELLED'">
+                <input type="radio" name="event.status" value="CONFIRMED"/>confirmed <input type="radio" name="event.status" value="TENTATIVE"/>tentative <input type="radio" name="event.status" value="CANCELLED" checked="checked"/>cancelled
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" name="event.status" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="event.status" value="TENTATIVE"/>tentative <input type="radio" name="event.status" value="CANCELLED"/>cancelled
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
         <tr>
@@ -1233,6 +1445,76 @@
         </tr>
       </table>
     </form>
+  </xsl:template>
+
+  <xsl:template name="clock">
+    <div id="bwClock">
+      <!-- Bedework 24-Hour Clock time selection widget
+           used with resources/bwClock.js and resources/bwClock.css -->
+      <div id="bwClockClock">
+        <img id="clockMap" src="{$resourcesRoot}/resources/clockMap.gif" width="368" height="368" border="0" alt="" usemap="#bwClockMap" />
+      </div>
+      <div id="bwClockCover">
+        <!-- this is a special effect div used simply to cover the pixelated edge
+             where the clock meets the clock box title -->
+      </div>
+      <div id="bwClockBox">
+        <h2>
+          Bedework 24-Hour Clock
+        </h2>
+        <div id="bwClockDateTypeIndicator">
+          type
+        </div>
+        <div id="bwClockTime">
+          select time
+        </div>
+        <div id="bwClockCloseText">
+          close
+        </div>
+        <div id="bwClockCloseButton">
+          <a href="javascript:bwClockClose();">X</a>
+        </div>
+      </div>
+      <map name="bwClockMap" id="bwClockMap">
+        <area shape="rect" alt="close clock" title="close clock" coords="160,167, 200,200" href="javascript:bwClockClose()"/>
+        <area shape="poly" alt="minute 00:55" title="minute 00:55" coords="156,164, 169,155, 156,107, 123,128" href="javascript:bwClockUpdateDateTimeForm('minute','55')" />
+        <area shape="poly" alt="minute 00:50" title="minute 00:50" coords="150,175, 156,164, 123,128, 103,161" href="javascript:bwClockUpdateDateTimeForm('minute','50')" />
+        <area shape="poly" alt="minute 00:45" title="minute 00:45" coords="150,191, 150,175, 103,161, 103,206" href="javascript:bwClockUpdateDateTimeForm('minute','45')" />
+        <area shape="poly" alt="minute 00:40" title="minute 00:40" coords="158,208, 150,191, 105,206, 123,237" href="javascript:bwClockUpdateDateTimeForm('minute','40')" />
+        <area shape="poly" alt="minute 00:35" title="minute 00:35" coords="171,218, 158,208, 123,238, 158,261" href="javascript:bwClockUpdateDateTimeForm('minute','35')" />
+        <area shape="poly" alt="minute 00:30" title="minute 00:30" coords="193,218, 172,218, 158,263, 209,263" href="javascript:bwClockUpdateDateTimeForm('minute','30')" />
+        <area shape="poly" alt="minute 00:25" title="minute 00:25" coords="209,210, 193,218, 209,261, 241,240" href="javascript:bwClockUpdateDateTimeForm('minute','25')" />
+        <area shape="poly" alt="minute 00:20" title="minute 00:20" coords="216,196, 209,210, 241,240, 261,206" href="javascript:bwClockUpdateDateTimeForm('minute','20')" />
+        <area shape="poly" alt="minute 00:15" title="minute 00:15" coords="216,178, 216,196, 261,206, 261,159" href="javascript:bwClockUpdateDateTimeForm('minute','15')" />
+        <area shape="poly" alt="minute 00:10" title="minute 00:10" coords="209,164, 216,178, 261,159, 240,126" href="javascript:bwClockUpdateDateTimeForm('minute','10')" />
+        <area shape="poly" alt="minute 00:05" title="minute 00:05" coords="196,155, 209,164, 238,126, 206,107" href="javascript:bwClockUpdateDateTimeForm('minute','05')" />
+        <area shape="poly" alt="minute 00:00" title="minute 00:00" coords="169,155, 196,155, 206,105, 156,105" href="javascript:bwClockUpdateDateTimeForm('minute','00')" />
+        <area shape="poly" alt="11 PM, 2300 hour" title="11 PM, 2300 hour" coords="150,102, 172,96, 158,1, 114,14" href="javascript:bwClockUpdateDateTimeForm('hour','23')" />
+        <area shape="poly" alt="10 PM, 2200 hour" title="10 PM, 2200 hour" coords="131,114, 150,102, 114,14, 74,36" href="javascript:bwClockUpdateDateTimeForm('hour','22')" />
+        <area shape="poly" alt="9 PM, 2100 hour" title="9 PM, 2100 hour" coords="111,132, 131,114, 74,36, 40,69" href="javascript:bwClockUpdateDateTimeForm('hour','21')" />
+        <area shape="poly" alt="8 PM, 2000 hour" title="8 PM, 2000 hour" coords="101,149, 111,132, 40,69, 15,113" href="javascript:bwClockUpdateDateTimeForm('hour','20')" />
+        <area shape="poly" alt="7 PM, 1900 hour" title="7 PM, 1900 hour" coords="95,170, 101,149, 15,113, 1,159" href="javascript:bwClockUpdateDateTimeForm('hour','19')" />
+        <area shape="poly" alt="6 PM, 1800 hour" title="6 PM, 1800 hour" coords="95,196, 95,170, 0,159, 0,204" href="javascript:bwClockUpdateDateTimeForm('hour','18')" />
+        <area shape="poly" alt="5 PM, 1700 hour" title="5 PM, 1700 hour" coords="103,225, 95,196, 1,205, 16,256" href="javascript:bwClockUpdateDateTimeForm('hour','17')" />
+        <area shape="poly" alt="4 PM, 1600 hour" title="4 PM, 1600 hour" coords="116,245, 103,225, 16,256, 41,298" href="javascript:bwClockUpdateDateTimeForm('hour','16')" />
+        <area shape="poly" alt="3 PM, 1500 hour" title="3 PM, 1500 hour" coords="134,259, 117,245, 41,298, 76,332" href="javascript:bwClockUpdateDateTimeForm('hour','15')" />
+        <area shape="poly" alt="2 PM, 1400 hour" title="2 PM, 1400 hour" coords="150,268, 134,259, 76,333, 121,355" href="javascript:bwClockUpdateDateTimeForm('hour','14')" />
+        <area shape="poly" alt="1 PM, 1300 hour" title="1 PM, 1300 hour" coords="169,273, 150,268, 120,356, 165,365" href="javascript:bwClockUpdateDateTimeForm('hour','13')" />
+        <area shape="poly" alt="Noon, 1200 hour" title="Noon, 1200 hour" coords="193,273, 169,273, 165,365, 210,364" href="javascript:bwClockUpdateDateTimeForm('hour','12')" />
+        <area shape="poly" alt="11 AM, 1100 hour" title="11 AM, 1100 hour" coords="214,270, 193,273, 210,363, 252,352" href="javascript:bwClockUpdateDateTimeForm('hour','11')" />
+        <area shape="poly" alt="10 AM, 1000 hour" title="10 AM, 1000 hour" coords="232,259, 214,270, 252,352, 291,330" href="javascript:bwClockUpdateDateTimeForm('hour','10')" />
+        <area shape="poly" alt="9 AM, 0900 hour" title="9 AM, 0900 hour" coords="251,240, 232,258, 291,330, 323,301" href="javascript:bwClockUpdateDateTimeForm('hour','09')" />
+        <area shape="poly" alt="8 AM, 0800 hour" title="8 AM, 0800 hour" coords="263,219, 251,239, 323,301, 349,261" href="javascript:bwClockUpdateDateTimeForm('hour','08')" />
+        <area shape="poly" alt="7 AM, 0700 hour" title="7 AM, 0700 hour" coords="269,194, 263,219, 349,261, 363,212" href="javascript:bwClockUpdateDateTimeForm('hour','07')" />
+        <area shape="poly" alt="6 AM, 0600 hour" title="6 AM, 0600 hour" coords="269,172, 269,193, 363,212, 363,155" href="javascript:bwClockUpdateDateTimeForm('hour','06')" />
+        <area shape="poly" alt="5 AM, 0500 hour" title="5 AM, 0500 hour" coords="263,150, 269,172, 363,155, 351,109" href="javascript:bwClockUpdateDateTimeForm('hour','05')" />
+        <area shape="poly" alt="4 AM, 0400 hour" title="4 AM, 0400 hour" coords="251,130, 263,150, 351,109, 325,68" href="javascript:bwClockUpdateDateTimeForm('hour','04')" />
+        <area shape="poly" alt="3 AM, 0300 hour" title="3 AM, 0300 hour" coords="234,112, 251,130, 325,67, 295,37" href="javascript:bwClockUpdateDateTimeForm('hour','03')" />
+        <area shape="poly" alt="2 AM, 0200 hour" title="2 AM, 0200 hour" coords="221,102, 234,112, 295,37, 247,11" href="javascript:bwClockUpdateDateTimeForm('hour','02')" />
+        <area shape="poly" alt="1 AM, 0100 hour" title="1 AM, 0100 hour" coords="196,96, 221,102, 247,10, 209,-1, 201,61, 206,64, 205,74, 199,75" href="javascript:bwClockUpdateDateTimeForm('hour','01')" />
+        <area shape="poly" alt="Midnight, 0000 hour" title="Midnight, 0000 hour" coords="172,96, 169,74, 161,73, 161,65, 168,63, 158,-1, 209,-1, 201,61, 200,62, 206,64, 205,74, 198,75, 196,96, 183,95" href="javascript:bwClockUpdateDateTimeForm('hour','00')" />
+      </map>
+    </div>
   </xsl:template>
 
   <!--==== EDIT EVENT ====-->
