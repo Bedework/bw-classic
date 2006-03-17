@@ -3,6 +3,7 @@
 <%@ taglib uri='struts-logic' prefix='logic' %>
 <%@ taglib uri='struts-html' prefix='html' %>
 <%@ taglib uri='struts-genurl' prefix='genurl' %>
+<html:xhtml/>
 
 <%-- Load the header common to all pages --%>
 <%@ include file="header.jsp" %>
@@ -84,18 +85,21 @@
 </views>
 
 <%-- Produce date and time form elements for personal calendar to be used
-     for creating the personal event entry form. --%>
+     for creating the personal event entry form.  Uncomment this code to
+     use an entry form on a page other than the formal "add event" page. --%>
+
+<%--
 <logic:equal name="calForm" property="guest" value="false">
   <eventform>
     <genurl:form action="addEvent">
       <title>
-        <html:text property="newEvent.summary"/></input>
+        <html:text property="newEvent.summary"/>
       </title>
       <description>
         <html:textarea property="newEvent.description"/>
       </description>
       <link>
-        <html:text property="newEvent.link"/></input>
+        <html:text property="newEvent.link"/>
       </link>
       <location>
         <locationmenu>
@@ -106,7 +110,7 @@
           </html:select>
         </locationmenu>
         <locationtext>
-          <html:text property="newLocation.address" /></input>
+          <html:text property="newLocation.address" />
         </locationtext>
       </location>
       <startdate>
@@ -168,6 +172,7 @@
     </genurl:form>
   </eventform>
 </logic:equal>
+--%>
 
 <%@ include file="footer.jsp" %>
 

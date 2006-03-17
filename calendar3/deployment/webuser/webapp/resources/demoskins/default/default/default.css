@@ -382,6 +382,42 @@ th#commonHeader {
   color: black;
   background-color: white;
 }
+#commonTable td.allField {
+  white-space: nowrap;
+  text-align: right;
+  font-style: italic;
+  background-color : white;
+  color: black;
+  padding: 0.2em;
+}
+#commonTable .dateFields {
+  display: inline;
+}
+#commonTable .timeFields {
+  display: inline;
+  margin-left: 1em;
+}
+#commonTable .dateStartEndBox {
+  border: 1px solid #ccb;
+  margin: 4px;
+  padding: 4px;
+}
+#commonTable .dateStartEndBox strong {
+  display: block;
+}
+#commonTable .startDateLabel {
+  margin-left: 26px;
+}
+#commonTable div.durationBox {
+  border: 1px solid #ccb;
+  display: inline;
+  margin: 4px;
+  padding: 4px;
+}
+#commonTable .durationSpacerText {
+  font-weight: bold;
+  margin: 0 1em;
+}
 #clock {
   position: relative;
 }

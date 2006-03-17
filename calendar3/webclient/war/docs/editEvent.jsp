@@ -2,6 +2,7 @@
 <%@ taglib uri='struts-logic' prefix='logic' %>
 <%@ taglib uri='struts-html' prefix='html' %>
 <%@ taglib uri='struts-genurl' prefix='genurl' %>
+<html:xhtml/>
 
 <%@ include file="header.jsp" %>
 
@@ -10,7 +11,7 @@ try {
 %>
 
 <page>editEvent</page>
-<eventform>
+<formElements>
   <id><bean:write name="calForm" property="editEvent.id"/></id>
   <genurl:form action="editEvent">
     <title>
@@ -91,7 +92,7 @@ try {
       </logic:notEqual>
     </endtime>
   </genurl:form>
-</eventform>
+</formElements>
 
 <%
 } catch (Throwable t) {

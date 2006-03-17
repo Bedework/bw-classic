@@ -115,7 +115,7 @@
                 </xsl:when>
                 <xsl:when test="/bedework/page='editEvent'">
                   <!-- edit an event -->
-                  <xsl:apply-templates select="/bedework/eventform"/>
+                  <xsl:apply-templates select="/bedework/formElements"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='alarmOptions'">
                   <xsl:call-template name="alarmOptions" />
@@ -1393,46 +1393,24 @@
           </td>
         </tr>
         <tr>
-          <td class="fieldname">
-            Start Date/Time:
-          </td>
-          <td class="fieldval">
-            <xsl:copy-of select="/bedework/eventform/form/startdate/*"/>
-            <span class="std-text">at  </span>
-            <xsl:copy-of select="/bedework/eventform/form/starttime/*"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            End Date/Time:
-          </td>
-          <td class="fieldval">
-            <xsl:copy-of select="/bedework/eventform/form/enddate/*"/>
-            <span class="std-text">at  </span>
-            <xsl:copy-of select="/bedework/eventform/form/endtime/*"/>
-          </td>
-        </tr>
-        <tr>
           <td class="fieldname">Description:</td>
           <td class="fieldval">
-            <textarea name="newEvent.description" rows="10" cols="60">
-              <xsl:value-of select="/bedework/eventform/form/description/textarea"/>
-            </textarea>
+            <xsl:copy-of select="/bedeworkadmin/formElements/form/desc/*"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname">Location:</td>
           <td class="fieldval" align="left">
             <span class="std-text">choose: </span>
-            <xsl:copy-of select="/bedework/eventform/form/location/locationmenu/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/*"/>
             <span class="std-text"> or add new: </span>
-            <xsl:copy-of select="/bedework/eventform/form/location/locationtext/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/location/locationtext/*"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname">Event Link:</td>
           <td class="fieldval">
-            <xsl:variable name="link" select="/bedework/eventform/form/link/input/@value"/>
+            <xsl:variable name="link" select="/bedework/formElements/form/link/input/@value"/>
             <input type="text" name="newEvent.link" size="80" value="{$link}"/>
           </td>
         </tr>
@@ -1518,7 +1496,7 @@
   </xsl:template>
 
   <!--==== EDIT EVENT ====-->
-  <xsl:template match="eventform">
+  <xsl:template match="formElements">
     <form name="editEventForm" method="post" action="{$editEvent}" id="standardForm">
       <input type="hidden" name="updateEvent" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>

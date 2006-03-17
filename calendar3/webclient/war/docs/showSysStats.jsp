@@ -1,8 +1,6 @@
 <%@ taglib uri='struts-bean' prefix='bean' %>
 <%@ taglib uri='struts-logic' prefix='logic' %>
 <%@ taglib uri='struts-genurl' prefix='genurl' %>
-<%@ taglib uri='struts-html' prefix='html' %>
-<html:xhtml/>
 
 <%@include file="/docs/header.jsp"%>
 
