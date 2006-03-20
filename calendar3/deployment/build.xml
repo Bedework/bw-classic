@@ -118,15 +118,20 @@
     <ant antfile="${org.bedework.deployment.base}/webconfig/webapp/build.xml"
          inheritrefs="true" target="build.configured" />
 
-    <build.configured.apps kind="webapp" />
+    <property name="org.bedework.deploy.kind" value="webapp" />
+    <antcall target="build.configured.apps" inheritrefs="true" />
   </target>
 
   <target name="build.portal.apps" if="org.bedework.global.portal.platform" >
-    <build.configured.apps kind="${org.bedework.global.portal.platform}" />
+    <property name="org.bedework.deploy.kind"
+              value="${org.bedework.global.portal.platform}" />
+    <antcall target="build.configured.apps" inheritrefs="true" />
   </target>
 
   <target name="build.j2ee.apps" if="org.bedework.global.j2ee.platform" >
-    <build.configured.apps kind="${org.bedework.global.j2ee.platform}" />
+    <property name="org.bedework.deploy.kind"
+              value="${org.bedework.global.j2ee.platform}" />
+    <antcall target="build.configured.apps" inheritrefs="true" />
   </target>
 
   <!-- =================================================================
@@ -160,15 +165,19 @@
 
   <target name="deploy.standalone.apps" if="org.bedework.global.build.standalone.app" >
     <property name="org.bedework.deploy.kind" value="webapp" />
-    <antcall target="deploy.apps.target" inheritrefs="true" />
+    <antcall target="deploy.apps" inheritrefs="true" />
   </target>
 
   <target name="deploy.portal.apps" if="org.bedework.global.portal.platform" >
-    <deploy.apps kind="${org.bedework.global.portal.platform}" />
+    <property name="org.bedework.deploy.kind"
+              value="${org.bedework.global.portal.platform}" />
+    <antcall target="deploy.apps" inheritrefs="true" />
   </target>
 
   <target name="deploy.j2ee.apps" if="org.bedework.global.j2ee.platform" >
-    <deploy.apps kind="${org.bedework.global.j2ee.platform}" />
+    <property name="org.bedework.deploy.kind"
+              value="${org.bedework.global.j2ee.platform}" />
+    <antcall target="deploy.apps" inheritrefs="true" />
   </target>
 
   <!-- The cp.xalan task conditionally copies the xalan.jar file, if
@@ -195,36 +204,29 @@
        config property and each executes a build file in a subdirectory of
        this component.
        ================================================================= -->
-  <macrodef name="build.configured.apps">
-      <attribute name="kind" />
-    <sequential>
-      <!-- ======================= webadmin ================= -->
-      <ant antfile="${org.bedework.deployment.base}/webadmin/@{kind}/build.xml"
-           inheritrefs="true" target="build.configured" />
+  <target name="build.configured.apps">
+    <forEachApp names="${org.bedework.install.app.names}"
+                types="${org.bedework.install.app.types}"
+                prefix="org.bedework.deploy">
+      <sequential>
+        <propertyset id="app-properties">
+          <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
+          <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
+        </propertyset>
 
-      <!-- ======================= pubevents ================= -->
-      <ant antfile="${org.bedework.deployment.base}/webpublic/@{kind}/build.xml"
-           inheritrefs="true" target="build.configured" />
+        <ant antfile="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
+             inheritrefs="true" target="build.configured" >
+          <propertyset refid="app-properties" />
+        </ant>
+      </sequential>
+    </forEachApp>
 
-      <!-- ======================= personal ================= -->
-      <ant antfile="${org.bedework.deployment.base}/webuser/@{kind}/build.xml"
-           inheritrefs="true" target="build.configured" />
+    <!-- ======================= termination tasks ================= -->
+    <ant antfile="${org.bedework.deployment.base}/termination/${org.bedework.deploy.kind}/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
 
-      <!-- ======================= caldav - public ================= -->
-      <ant antfile="${org.bedework.deployment.base}/publiccaldav/@{kind}/build.xml"
-           inheritrefs="true" target="build.configured" />
-
-      <!-- ======================= caldav - user ================= -->
-      <ant antfile="${org.bedework.deployment.base}/usercaldav/@{kind}/build.xml"
-           inheritrefs="true" target="build.configured" />
-
-      <!-- ======================= termination tasks ================= -->
-      <ant antfile="${org.bedework.deployment.base}/termination/@{kind}/build.xml"
-           inheritrefs="true" target="build.configured" />
-    </sequential>
-  </macrodef>
-
-  <target name="deploy.apps.target">
+  <target name="deploy.apps">
     <forEachApp names="${org.bedework.install.app.names}"
                 types="${org.bedework.install.app.types}"
                 prefix="org.bedework.deploy">
@@ -240,46 +242,9 @@
         </ant>
       </sequential>
     </forEachApp>
+
+    <!-- ======================= termination tasks ================= -->
+    <ant antfile="${org.bedework.deployment.base}/termination/${org.bedework.deploy.kind}/build.xml"
+         inheritrefs="true" target="deploy" />
   </target>
-
-  <macrodef name="deploy.apps">
-      <attribute name="kind" />
-    <sequential>
-      <forEachApp names="${org.bedework.install.app.names}"
-                  types="${org.bedework.install.app.types}"
-                  prefix="org.bedework.deploy">
-        <sequential>
-          <property name="prefix" value="org.bedework.${org.bedework.deploy.type}" />
-          <propertyset id="app-properties">
-            <propertyref prefix="${prefix}"/>
-            <globmapper from="${prefix}*" to="propval*"/>
-          </propertyset>
-        </sequential>
-      </forEachApp>
-
-      <!-- ======================= webadmin ================= -->
-      <ant antfile="${org.bedework.deployment.base}/webadmin/@{kind}/build.xml"
-           inheritrefs="true" target="deploy" />
-
-      <!-- ======================= pubevents ================= -->
-      <ant antfile="${org.bedework.deployment.base}/webpublic/@{kind}/build.xml"
-           inheritrefs="true" target="deploy" />
-
-      <!-- ======================= personal ================= -->
-      <ant antfile="${org.bedework.deployment.base}/webuser/@{kind}/build.xml"
-           inheritrefs="true" target="deploy" />
-
-      <!-- ======================= caldav - public ================= -->
-      <ant antfile="${org.bedework.deployment.base}/publiccaldav/@{kind}/build.xml"
-           inheritrefs="true" target="deploy" />
-
-      <!-- ======================= caldav - user ================= -->
-      <ant antfile="${org.bedework.deployment.base}/usercaldav/@{kind}/build.xml"
-           inheritrefs="true" target="deploy" />
-
-      <!-- ======================= termination tasks ================= -->
-      <ant antfile="${org.bedework.deployment.base}/termination/@{kind}/build.xml"
-           inheritrefs="true" target="deploy" />
-    </sequential>
-  </macrodef>
 </project>

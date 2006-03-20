@@ -64,6 +64,7 @@ import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.data.CalendarParserImpl;
 import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.data.UnfoldingReader;
 //import net.fortuna.ical4j.data.UnfoldingReader;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.VEvent;
@@ -272,8 +273,10 @@ public class IcalTranslator implements Serializable {
     try {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
+      UnfoldingReader ufrdr = new UnfoldingReader(new StringReader(val), true);
+      
       //return fromIcal(cal, bldr.build(new UnfoldingReader(new StringReader(val))));
-      return fromIcal(cal, bldr.build(new StringReader(val), true));
+      return fromIcal(cal, bldr.build(ufrdr));
     } catch (ParserException pe) {
       if (debug) {
         error(pe);
@@ -299,7 +302,7 @@ public class IcalTranslator implements Serializable {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
       //return fromIcal(cal, bldr.build(new UnfoldingReader(rdr)));
-      return fromIcal(cal, bldr.build(rdr, true));
+      return fromIcal(cal, bldr.build(new UnfoldingReader(rdr, true)));
     } catch (ParserException pe) {
       if (debug) {
         error(pe);
@@ -358,7 +361,9 @@ public class IcalTranslator implements Serializable {
     try {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
-      return bldr.build(new StringReader(val), true);
+      UnfoldingReader ufrdr = new UnfoldingReader(new StringReader(val), true);
+      
+      return bldr.build(ufrdr);
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -378,7 +383,9 @@ public class IcalTranslator implements Serializable {
     try {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
-      Calendar cal = bldr.build(new StringReader(val), true);
+      UnfoldingReader ufrdr = new UnfoldingReader(new StringReader(val), true);
+      
+      Calendar cal = bldr.build(ufrdr);
       Vector evs = new Vector();
 
       if (cal == null) {

@@ -9,7 +9,7 @@
     <dirname property="this.dir" file="${ant.file}"/>
 
     <property name="app.ear.file"
-              location="${dist.home}/${propval.app.ear.name}.ear" />
+              location="${dist.home}/${org.bedework.global.ear.name}.ear" />
     <property name="app.resources.dir"
               location="${this.dir}/../webapp/resources" />
   </target>

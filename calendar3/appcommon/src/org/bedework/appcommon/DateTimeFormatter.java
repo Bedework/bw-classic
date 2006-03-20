@@ -84,7 +84,7 @@ public class DateTimeFormatter implements Serializable {
   //private MyCalendarVO cal;
   private GregorianCalendar cal;
 
-  private static HashMap formattersTbl = new HashMap();
+  private static volatile HashMap formattersTbl = new HashMap();
 
   /* What we store in the table */
   private static class Formatters {
@@ -223,11 +223,13 @@ public class DateTimeFormatter implements Serializable {
    *
    * @return String    month name for this object
    */
-  public synchronized String getMonthName() {
+  public String getMonthName() {
     Formatters fmt = getFormatters();
     FieldPosition f = new FieldPosition(DateFormat.MONTH_FIELD);
-    StringBuffer s = fmt.longDateFormatter.format(cal.getTime(), new StringBuffer(), f);
-    return s.substring(f.getBeginIndex(), f.getEndIndex());
+    synchronized (fmt) {
+      StringBuffer s = fmt.longDateFormatter.format(cal.getTime(), new StringBuffer(), f);
+      return s.substring(f.getBeginIndex(), f.getEndIndex());
+    }
   }
 
   /** Get the day of the month for this object. A value between 1-31
@@ -409,9 +411,12 @@ public class DateTimeFormatter implements Serializable {
    * @return String        Short representation of the date
    *            represented by this object.
    */
-  public synchronized String getDateString() {
+  public String getDateString() {
     Formatters fmt = getFormatters();
-    return fmt.shortDateFormatter.format(cal.getTime());
+
+    synchronized (fmt) {
+      return fmt.shortDateFormatter.format(cal.getTime());
+    }
   }
 
   /**  Get a long String representation of the date
@@ -419,9 +424,12 @@ public class DateTimeFormatter implements Serializable {
    * @return String        long representation of the date
    *            represented by this object.
    */
-  public synchronized String getLongDateString() {
+  public String getLongDateString() {
     Formatters fmt = getFormatters();
-    return fmt.longDateFormatter.format(cal.getTime());
+
+    synchronized (fmt) {
+      return fmt.longDateFormatter.format(cal.getTime());
+    }
   }
 
   /**  Get a short String representation of the time of day
@@ -430,32 +438,30 @@ public class DateTimeFormatter implements Serializable {
    *            represented by this object.
    *            If there is no time, returns a zero length string.
    */
-  public synchronized String getTimeString() {
+  public String getTimeString() {
     Formatters fmt = getFormatters();
-    return fmt.shortTimeFormatter.format(cal.getTime());
+
+    synchronized (fmt) {
+      return fmt.shortTimeFormatter.format(cal.getTime());
+    }
   }
 
   private Formatters getFormatters() {
     Locale loc = calInfo.getLocale();
     
-    Formatters fmt = (Formatters)formattersTbl.get(loc);
-    
-    if (fmt == null) {
-      fmt = new Formatters(loc);
-      formattersTbl.put(loc, fmt);
-    }
-    
-    return fmt;
+    return getFormatters(loc);
   }
 
   private static Formatters getFormatters(Locale loc) {
-    Formatters fmt = (Formatters)formattersTbl.get(loc);
+    synchronized (formattersTbl) {
+      Formatters fmt = (Formatters)formattersTbl.get(loc);
+      
+      if (fmt == null) {
+        fmt = new Formatters(loc);
+        formattersTbl.put(loc, fmt);
+      }
     
-    if (fmt == null) {
-      fmt = new Formatters(loc);
-      formattersTbl.put(loc, fmt);
+      return fmt;
     }
-    
-    return fmt;
   }
 }

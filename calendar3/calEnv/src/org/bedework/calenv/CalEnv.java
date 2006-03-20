@@ -55,7 +55,7 @@ public class CalEnv implements Serializable {
   private static final String propertiesFile =
       "/properties/calendar/env.properties";
 
-  private static Properties pr;
+  private static volatile Properties pr;
 
   private static volatile Integer lockit = new Integer(0);
 
