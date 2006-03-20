@@ -90,6 +90,11 @@ public class BwAddEventAction extends BwCalAbstractAction {
 
     CalSvcI svci = form.fetchSvci();
 
+    if (ev.getCalendar() == null) {
+      // Set the default calendar
+      ev.setCalendar(svci.getPreferredCalendar());
+    }
+
     if (!form.getEventDates().updateEvent(ev, svci.getTimezones()) ||
         !BwWebUtil.validateEvent(svci, ev, false, //  descriptionRequired
                                  form.getErr())) {
