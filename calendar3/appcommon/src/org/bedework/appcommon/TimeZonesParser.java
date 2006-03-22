@@ -70,9 +70,9 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -137,21 +137,21 @@ public class TimeZonesParser implements Serializable {
 
     DirClass rootDir = parseTzDefs(new InputStreamReader(inStr));
 
-    Vector v = new Vector();
+    ArrayList al = new ArrayList();
 
-    doDir(v, rootDir, "");
+    doDir(al, rootDir, "");
 
-    return v;
+    return al;
   }
 
-  private String doDir(Vector v, DirClass dir, String indent) throws CalFacadeException {
+  private String doDir(ArrayList al, DirClass dir, String indent) throws CalFacadeException {
     if (debug) {
       trace(indent + "Dir: " + dir.cal.getName());
     }
 
     Iterator dit = dir.dirs.iterator();
     while (dit.hasNext()) {
-      doDir(v, (DirClass)dit.next(), indent + "  ");
+      doDir(al, (DirClass)dit.next(), indent + "  ");
     }
 
     Iterator tzit = dir.tzs.iterator();
@@ -176,7 +176,7 @@ public class TimeZonesParser implements Serializable {
       tzi.timezone = (VTimeZone)o;
       tzi.tzid = IcalUtil.getProperty(tzi.timezone, Property.TZID).getValue();
 
-      v.add(tzi);
+      al.add(tzi);
 
       if (debug) {
         trace(indent + "tzid: " + tzi.tzid);
@@ -189,11 +189,11 @@ public class TimeZonesParser implements Serializable {
   private static class DirClass {
     BwCalendar cal; // The name will be set according to the dir/name
 
-    Collection dirs = new Vector();
+    Collection dirs = new ArrayList();
 
     /* Collection of Calendar obects
      */
-    Collection tzs = new Vector();
+    Collection tzs = new ArrayList();
   }
 
   private DirClass parseTzDefs(Reader rdr) throws CalFacadeException {

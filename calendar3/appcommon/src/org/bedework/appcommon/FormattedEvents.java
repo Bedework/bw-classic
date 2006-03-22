@@ -58,9 +58,9 @@ import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.EventInfo;
 
 import java.util.AbstractCollection;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 /** Object to provide a Collection of formatted BwEvent.
  *
@@ -80,7 +80,7 @@ public class FormattedEvents extends AbstractCollection {
   public FormattedEvents(Collection events,
                          CalendarInfo calInfo, CalTimezones ctz) {
     if (events == null) {
-      this.events = new Vector();
+      this.events = new ArrayList();
     } else {
       this.events = events;
     }

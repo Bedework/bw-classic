@@ -14,8 +14,8 @@ try {
 
 <emailoptionsform>
   <genurl:form action="mailEvent">
-    <email><html:text name="calForm" property="lastEmail"/></input></email>
-    <subject><html:text name="calForm" property="lastSubject" /></input></subject>
+    <email><html:text name="calForm" property="lastEmail"/></email>
+    <subject><html:text name="calForm" property="lastSubject" /></subject>
   </genurl:form>
 </emailoptionsform>
 

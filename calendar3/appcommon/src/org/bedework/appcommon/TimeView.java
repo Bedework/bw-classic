@@ -66,11 +66,11 @@ import org.bedework.calsvci.CalSvcI;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Vector;
 
 /** This class represents a view of the calendar from a startDate to an
  * endDate. The getTimePeriodInfo method always returns a tree structure
@@ -270,7 +270,7 @@ public class TimeView implements Serializable {
    * @throws Throwable
    */
   public Collection getDaysEvents(MyCalendarVO date) throws Throwable {
-    Vector v = new Vector();
+    ArrayList al = new ArrayList();
     CalTimezones tzcache = cal.getTimezones();
 //    Dur oneDay = new Dur(1, 0, 0, 0);
     long millis = System.currentTimeMillis();
@@ -331,11 +331,11 @@ public class TimeView implements Serializable {
                    " with dates " + evStart + "-" + evEnd +
                    ": " + ev.getSummary());
         }
-        v.add(ei);
+        al.add(ei);
       }
     }
 
-    return v;
+    return al;
   }
 
   /** Return an array of the days of the week indexed from 0
@@ -425,8 +425,8 @@ public class TimeView implements Serializable {
     try {
       GtpiData gtpi = new GtpiData();
 
-      Vector months = new Vector();
-      Vector weeks = new Vector();
+      ArrayList months = new ArrayList();
+      ArrayList weeks = new ArrayList();
 
       gtpi.first = getFirstDay();
       gtpi.last = getLastDay();
@@ -466,7 +466,7 @@ public class TimeView implements Serializable {
         initTvdi(weekTvdi, gtpi);
 
         weekTvdi.setEntries(getOneWeekTvdi(gtpi));
-        weeks.addElement(weekTvdi);
+        weeks.add(weekTvdi);
 
         if (getFirstDayOfWeek() == gtpi.currentDay.getDayOfWeek()) {
           gtpi.weekOfYear++;
@@ -483,7 +483,7 @@ public class TimeView implements Serializable {
           monthTvdi.setEntries(
              (TimeViewDailyInfo[])weeks.toArray(new TimeViewDailyInfo[
                   weeks.size()]));
-          months.addElement(monthTvdi);
+          months.add(monthTvdi);
 
           if (gtpi.isLast) {
             break;
@@ -496,7 +496,7 @@ public class TimeView implements Serializable {
 
           monthTvdi = new TimeViewDailyInfo(calInfo);
           initTvdi(monthTvdi, gtpi);
-          weeks = new Vector();
+          weeks = new ArrayList();
         }
       }
 
@@ -546,7 +546,7 @@ public class TimeView implements Serializable {
    * @throws Throwable
    */
   private TimeViewDailyInfo[] getOneWeekTvdi(GtpiData gtpi) throws Throwable {
-    Vector days = new Vector();
+    ArrayList days = new ArrayList();
     TimeViewDailyInfo tvdi;
 
     /** First see if we need to insert leading fillers */
@@ -561,7 +561,7 @@ public class TimeView implements Serializable {
       tvdi = new TimeViewDailyInfo(calInfo);
       tvdi.setFiller(true);
 
-      days.addElement(tvdi);
+      days.add(tvdi);
       dayNum++;
 
       if (debug) {
@@ -609,7 +609,7 @@ public class TimeView implements Serializable {
       tvdi.setFirstDayOfWeek(getFirstDayOfWeek() == dayOfWeek);
       tvdi.setLastDayOfWeek(calInfo.getLastDayOfWeek() == dayOfWeek);
 
-      days.addElement(tvdi);
+      days.add(tvdi);
       gtpi.isFirst = false;
 
       gtpi.prevTvdi = tvdi;
@@ -632,7 +632,7 @@ public class TimeView implements Serializable {
       tvdi = new TimeViewDailyInfo(calInfo);
       tvdi.setFiller(true);
 
-      days.addElement(tvdi);
+      days.add(tvdi);
     }
 
     return (TimeViewDailyInfo[])days.toArray(new TimeViewDailyInfo[

@@ -13,9 +13,9 @@ try {
 <page>editLocation</page>
 <locationform>
   <genurl:form action="editLoc">
-    <address><html:text property="editLocation.address"/></input></address>
+    <address><html:text property="editLocation.address"/></address>
     <subaddress><html:textarea property="editLocation.subaddress" rows="8" cols="55"/></subaddress>
-    <link><html:text property="editLocation.link" /></input></link>
+    <link><html:text property="editLocation.link" /></link>
     <id><bean:write name="calForm" property="editLocation.id"/></id>
   </genurl:form>
 </locationform>

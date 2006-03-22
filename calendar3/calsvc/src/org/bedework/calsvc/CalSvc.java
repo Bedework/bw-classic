@@ -98,11 +98,11 @@ import org.bedework.icalendar.TimeZoneRegistryImpl;
 import edu.rpi.cct.uwcal.common.URIgen;
 import edu.rpi.cct.uwcal.resources.Resources;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
-import java.util.Vector;
 
 import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.DateTime;
@@ -1005,7 +1005,7 @@ public class CalSvc extends CalSvcI {
     if (cal != null) {
       BwSubscription sub = BwSubscription.makeSubscription(cal);
 
-      subs = new Vector();
+      subs = new ArrayList();
       subs.add(sub);
     } else if (!currentUser().equals(who)) {
       subs = getSubscriptions();
@@ -1938,32 +1938,32 @@ public class CalSvc extends CalSvcI {
 
   private Collection postProcess(Collection evs, BwSubscription sub)
           throws CalFacadeException {
-    Vector v = new Vector();
+    ArrayList al = new ArrayList();
 
     Iterator it = evs.iterator();
 
     while (it.hasNext()) {
       BwEvent ev = (BwEvent)it.next();
       EventInfo ei = postProcess(ev, sub, null);
-      v.addElement(ei);
+      al.add(ei);
     }
 
-    return v;
+    return al;
   }
 
   private Collection postProcess(Collection evs, HashMap sublookup)
           throws CalFacadeException {
-    Vector v = new Vector();
+    ArrayList al = new ArrayList();
 
     Iterator it = evs.iterator();
 
     while (it.hasNext()) {
       BwEvent ev = (BwEvent)it.next();
       EventInfo ei = postProcess(ev, null, sublookup);
-      v.addElement(ei);
+      al.add(ei);
     }
 
-    return v;
+    return al;
   }
 
   private BwPreferences getPreferences() throws CalFacadeException {

@@ -204,11 +204,11 @@ public class HibRestore implements RestoreIntf {
       return;
     }
     
-    openSess();
+    openHibSess();
 
-    save(o);
+    hibSave(o);
 
-    closeSess();
+    closeHibSess();
   }
 
   public void restoreTimezone(BwTimeZone o) throws Throwable {

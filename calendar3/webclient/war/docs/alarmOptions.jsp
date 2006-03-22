@@ -44,37 +44,37 @@ try {
     </alarmtime>
     <alarmTriggerSelectorDate>
       <html:radio name="calForm" property="alarmTriggerByDate"
-                   value="true" /></input>
+                   value="true" />
     </alarmTriggerSelectorDate>
     <alarmTriggerSelectorDuration>
       <html:radio name="calForm" property="alarmTriggerByDate"
-                      value="false" /></input>
+                      value="false" />
     </alarmTriggerSelectorDuration>
     <alarmduration>
-      <days><html:text size="5" maxlength="5" name="calForm" property="triggerDuration.daysStr"/></input></days>
-      <hours><html:text size="3" maxlength="3" name="calForm" property="triggerDuration.hoursStr"/></input></hours>
-      <minutes><html:text size="3" maxlength="3" name="calForm" property="triggerDuration.minutesStr"/></input></minutes>
-      <seconds><html:text size="3" maxlength="3" name="calForm" property="triggerDuration.secondsStr"/></input></seconds>
-      <weeks><html:text size="3" maxlength="3" name="calForm" property="triggerDuration.weeksStr"/></input></weeks>
+      <days><html:text size="5" maxlength="5" name="calForm" property="triggerDuration.daysStr"/></days>
+      <hours><html:text size="3" maxlength="3" name="calForm" property="triggerDuration.hoursStr"/></hours>
+      <minutes><html:text size="3" maxlength="3" name="calForm" property="triggerDuration.minutesStr"/></minutes>
+      <seconds><html:text size="3" maxlength="3" name="calForm" property="triggerDuration.secondsStr"/></seconds>
+      <weeks><html:text size="3" maxlength="3" name="calForm" property="triggerDuration.weeksStr"/></weeks>
     </alarmduration>
     <alarmDurationBefore>
       <html:radio name="calForm" property="triggerDuration.negative"
-                      value="true" /></input>
+                      value="true" />
     </alarmDurationBefore>
     <alarmDurationAfter>
       <html:radio name="calForm" property="triggerDuration.negative"
-                      value="false" /></input>
+                      value="false" />
     </alarmDurationAfter>
     <alarmDurationRelStart>
       <html:radio name="calForm" property="alarmRelStart"
-                      value="true" /></input>
+                      value="true" />
     </alarmDurationRelStart>
     <alarmDurationRelEnd>
       <html:radio name="calForm" property="alarmRelStart"
-                      value="false" /></input>
+                      value="false" />
     </alarmDurationRelEnd>
-    <email><html:text name="calForm" property="lastEmail"/></input></email>
-    <subject><html:text name="calForm" property="lastSubject" /></input></subject>
+    <email><html:text name="calForm" property="lastEmail"/></email>
+    <subject><html:text name="calForm" property="lastSubject" /></subject>
   </genurl:form>
 </alarmoptionsform>
 

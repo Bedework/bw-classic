@@ -54,7 +54,6 @@
 
 package edu.rpi.cct.uwcal.caldav;
 
-import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
@@ -88,7 +87,6 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
 import edu.rpi.cct.webdav.servlet.shared.WebdavTags;
 
-import edu.rpi.sss.util.jsp.JspUtil;
 import edu.rpi.sss.util.xml.QName;
 
 import java.io.IOException;
@@ -96,13 +94,16 @@ import java.io.LineNumberReader;
 import java.io.Reader;
 import java.net.URI;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.Vector;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -176,18 +177,17 @@ public class CaldavBWIntf extends WebdavNsIntf {
                    boolean debug) throws WebdavIntfException {
     super.init(servlet, req, props, debug);
     
-    String contextRoot = JspUtil.getContext(req);
-    
-    if ((contextRoot != null) && (contextRoot.startsWith("/"))) {
-      contextRoot = contextRoot.substring(1);
-    }
-    
-    if ((contextRoot == null) || (contextRoot.length() == 0)) {
-      contextRoot = "root";
-    }
-    
     try {
-      envPrefix = CalEnv.getProperty("org.bedework.envprefix." + contextRoot);
+      HttpSession session = req.getSession();
+      ServletContext sc = session.getServletContext();
+      
+      String appName = sc.getInitParameter("bwappname");
+      
+      if ((appName == null) || (appName.length() == 0)) {
+        appName = "unknown-app-name";
+      }
+      
+      envPrefix = "org.bedework.app." + appName + ".";
       
       namespacePrefix = WebdavUtils.getUrlPrefix(req);
       namespace = namespacePrefix + "/schema";
@@ -315,11 +315,11 @@ public class CaldavBWIntf extends WebdavNsIntf {
     try {
       CaldavBwNode uwnode = getBwnode(node);
 
-      Vector v = new Vector();
+      ArrayList al = new ArrayList();
 
       if (!uwnode.getCollection()) {
         // Don't think we should have been called
-        return v.iterator();
+        return al.iterator();
       }
 
       if (debug) {
@@ -361,7 +361,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
             debugMsg("Add child as calendar");
           }
 
-          v.addElement(new CaldavCalNode(wi, svci, trans, debug));
+          al.add(new CaldavCalNode(wi, svci, trans, debug));
         } else {
           if (debug) {
             debugMsg("Add child as component");
@@ -369,11 +369,11 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
           CaldavComponentNode cnode = new CaldavComponentNode(wi, svci, trans, debug);
           cnode.addEvent(ev);
-          v.addElement(cnode);
+          al.add(cnode);
         }
       }
 
-      return v.iterator();
+      return al.iterator();
     } catch (WebdavIntfException we) {
       throw we;
     } catch (Throwable t) {
@@ -712,7 +712,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
     int whoType;
     String who;
 
-    Vector aces = new Vector();
+    ArrayList aces = new ArrayList();
   }
 
   public AclInfo startAcl(String uri) throws WebdavIntfException {
@@ -1064,7 +1064,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
        If there is no calendar name for the event we just give it the default.
      */
 
-    Collection evnodes = new Vector();
+    Collection evnodes = new ArrayList();
     HashMap evnodeMap = new HashMap();
 
     try {
@@ -1131,7 +1131,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
       getSvci();
 
       Iterator it = freeBusy.getFreeBusy(svci, user).iterator();
-      Collection nodes = new Vector();
+      Collection nodes = new ArrayList();
 
       while (it.hasNext()) {
         BwFreeBusy fb = (BwFreeBusy)it.next();

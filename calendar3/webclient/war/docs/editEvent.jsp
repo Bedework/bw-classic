@@ -15,13 +15,13 @@ try {
   <id><bean:write name="calForm" property="editEvent.id"/></id>
   <genurl:form action="editEvent">
     <title>
-      <html:text property="editEvent.summary"/></input>
+      <html:text property="editEvent.summary"/>
     </title>
     <description>
       <html:textarea property="editEvent.description" rows="8" cols="55"/>
     </description>
     <link>
-      <html:text property="editEvent.link" /></input>
+      <html:text property="editEvent.link" />
     </link>
     <location>
       <locationmenu>
@@ -32,7 +32,7 @@ try {
         </html:select>
       </locationmenu>
       <locationtext>
-        <html:text property="laddress" /></input>
+        <html:text property="laddress" />
       </locationtext>
     </location>
     <startdate>

@@ -57,9 +57,10 @@ package org.bedework.appcommon;
 import org.bedework.calfacade.svc.EventInfo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+
 import org.apache.log4j.Logger;
 
 /** This class allows a TimeView class to provide information about each day
@@ -556,10 +557,10 @@ public class TimeViewDailyInfo implements Serializable {
 
       if (eventFormatters == null) {
         if (events == null) {
-          return new Vector();
+          return new ArrayList();
         }
 
-        eventFormatters = new Vector();
+        eventFormatters = new ArrayList();
         Iterator it = events.iterator();
 
         while (it.hasNext()) {
