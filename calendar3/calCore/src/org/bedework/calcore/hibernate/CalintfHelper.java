@@ -76,8 +76,6 @@ class CalintfHelper implements CalintfDefs, PrivilegeDefs, Serializable {
 
   protected AccessUtil access;
 
-  protected BwUser user;
-
   protected int currentMode = CalintfUtil.guestMode;
   
   protected boolean ignoreCreator;
@@ -92,11 +90,10 @@ class CalintfHelper implements CalintfDefs, PrivilegeDefs, Serializable {
    * @param debug
    */
   public CalintfHelper(Calintf cal, AccessUtil access,
-                       BwUser user, int currentMode, boolean ignoreCreator, 
+                       int currentMode, boolean ignoreCreator, 
                        boolean debug) {
     this.cal = cal;
     this.access = access;
-    this.user = user;
     this.currentMode = currentMode;
     this.ignoreCreator = ignoreCreator;
     this.debug = debug;
@@ -108,6 +105,10 @@ class CalintfHelper implements CalintfDefs, PrivilegeDefs, Serializable {
 
   protected BwSystem getSyspars() throws CalFacadeException {
     return cal.getSyspars();
+  }
+  
+  protected BwUser getUser() throws CalFacadeException {
+    return cal.getUser();
   }
 
   /** Get a logger for messages

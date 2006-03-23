@@ -310,23 +310,23 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     authUser.setGroups(groups.getAllGroups(authUser));
     access.setAuthUser(authUser);
 
-    events = new Events(this, access, this.user, currentMode, 
+    events = new Events(this, access, currentMode, 
                         ignoreCreator, debug);
 
-    calendars = new Calendars(this, access, this.user, currentMode, 
+    calendars = new Calendars(this, access, currentMode, 
                               ignoreCreator, debug);
 
-    categories = new EventProperties(this, access, this.user, currentMode, 
+    categories = new EventProperties(this, access, currentMode, 
                                      ignoreCreator, 
                                      "word", BwCategory.class.getName(),
                                      "getCategoryRefs",
                                      -1, debug);
-    locations = new EventProperties(this, access, this.user, currentMode, 
+    locations = new EventProperties(this, access, currentMode, 
                                     ignoreCreator, 
                                     "address", BwLocation.class.getName(),
                                     "getLocationRefs",
                                      CalFacadeDefs.maxReservedLocationId, debug);
-    sponsors = new EventProperties(this, access, this.user, currentMode, 
+    sponsors = new EventProperties(this, access, currentMode, 
                                    ignoreCreator, 
                                    "name", BwSponsor.class.getName(),
                                    "getSponsorRefs",

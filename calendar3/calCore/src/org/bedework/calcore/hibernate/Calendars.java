@@ -78,10 +78,10 @@ class Calendars extends CalintfHelper implements CalendarsI {
    * @param debug
    * @throws CalFacadeException
    */
-  public Calendars(Calintf cal, AccessUtil access, BwUser user, 
+  public Calendars(Calintf cal, AccessUtil access, 
                    int currentMode, boolean ignoreCreator, boolean debug)
                   throws CalFacadeException {
-    super(cal, access, user, currentMode, ignoreCreator, debug);
+    super(cal, access, currentMode, ignoreCreator, debug);
 
     publicCalendarRootPath = "/" + getSyspars().getPublicCalendarRoot();
     userCalendarRootPath = "/" + getSyspars().getUserCalendarRoot();
@@ -208,7 +208,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     HibSession sess = getSess();
 
     sess.namedQuery("getCalendarByPath");
-    sess.setString("path", userCalendarRootPath + "/" + user.getAccount());
+    sess.setString("path", userCalendarRootPath + "/" + getUser().getAccount());
     sess.cacheableQuery();
 
     BwCalendar cal = (BwCalendar)sess.getUnique();
@@ -220,7 +220,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     HibSession sess = getSess();
 
     sess.namedQuery("getUserCalendarCollections");
-    sess.setEntity("owner", user);
+    sess.setEntity("owner", getUser());
     sess.cacheableQuery();
 
     return access.checkAccess(sess.getList(), privWrite, noAccessReturnsNull);
@@ -241,7 +241,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     HibSession sess = getSess();
 
     sess.namedQuery("getUserCalendarCollections");
-    sess.setEntity("owner", user);
+    sess.setEntity("owner", getUser());
     sess.cacheableQuery();
 
     return access.checkAccess(sess.getList(), privWriteContent, noAccessReturnsNull);
@@ -344,7 +344,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     }
 
     val.setPath(path);
-    val.setOwner(user);
+    val.setOwner(getUser());
     val.setCalendar(parent);
     parent.addChild(val);
 

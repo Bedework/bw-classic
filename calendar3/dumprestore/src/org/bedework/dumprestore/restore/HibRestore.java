@@ -410,11 +410,14 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void restoreFilter(BwFilter o) throws Throwable {
-    openHibSess();
-
-    hibSave(o);
-
-    closeHibSess();
+    if (false) {
+      // XXX need fixing and we're not using them yet
+      openHibSess();
+      
+      hibSave(o);
+      
+      closeHibSess();
+    }
   }
 
   public void restoreUserPrefs(BwPreferences o) throws Throwable {

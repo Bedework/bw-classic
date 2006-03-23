@@ -94,14 +94,14 @@ public class EventProperties extends CalintfHelper {
    * @param minId         if >= 0 we limit retrievals to ids gretaer than this
    * @param debug
    */
-  public EventProperties(Calintf cal, AccessUtil access, BwUser user,
+  public EventProperties(Calintf cal, AccessUtil access, 
                          int currentMode, boolean ignoreCreator,
                          String keyFieldName,
                          String className,
                          String refQuery,
                          int minId, 
                          boolean debug) {
-    super(cal, access, user, currentMode, ignoreCreator, debug);
+    super(cal, access, currentMode, ignoreCreator, debug);
 
     this.keyFieldName = keyFieldName;
     this.className = className;

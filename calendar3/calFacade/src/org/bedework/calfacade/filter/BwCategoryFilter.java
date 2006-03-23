@@ -64,6 +64,12 @@ public class BwCategoryFilter extends BwEntityFilter {
     sb.append(id);
     sb.append(", name=");
     sb.append(getName());
+    sb.append(", parent=");
+    if (parent == null) {
+      sb.append("null");
+    } else {
+      sb.append(parent.getId());
+    }
     sb.append("}");
 
     return sb.toString();

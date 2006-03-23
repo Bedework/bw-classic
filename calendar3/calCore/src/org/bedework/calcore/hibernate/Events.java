@@ -61,7 +61,6 @@ import org.bedework.calfacade.BwEventObj;
 import org.bedework.calfacade.BwEventProxy;
 import org.bedework.calfacade.BwRecurrenceInstance;
 import org.bedework.calfacade.BwSynchState;
-import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.filter.BwFilter;
@@ -104,9 +103,9 @@ public class Events extends CalintfHelper implements EventsI {
    * @param user
    * @param debug
    */
-  public Events(Calintf cal, AccessUtil access, BwUser user, 
+  public Events(Calintf cal, AccessUtil access, 
                 int currentMode, boolean ignoreCreator, boolean debug) {
-    super(cal, access, user, currentMode, ignoreCreator, debug);
+    super(cal, access, currentMode, ignoreCreator, debug);
   }
 
   public Collection getEvent(BwCalendar calendar, String guid, String rid,
@@ -468,7 +467,7 @@ public class Events extends CalintfHelper implements EventsI {
       mstr = ((BwEventAnnotation)mstr).getTarget();
     }
 
-    if (mstr.getOwner().equals(user) && mstr.getRecurring()) {
+    if (mstr.getOwner().equals(getUser()) && mstr.getRecurring()) {
       // Our own and a recurring event - retrieve the instance
       // from the recurrences table
       StringBuffer sb = new StringBuffer();
@@ -668,7 +667,7 @@ public class Events extends CalintfHelper implements EventsI {
       return false;
     }
 
-    return user.equals(val.getCreator());
+    return getUser().equals(val.getCreator());
   }
 
   public Collection getEventsByName(BwCalendar cal, String val)
@@ -717,7 +716,7 @@ public class Events extends CalintfHelper implements EventsI {
   private void addOverride(BwEventProxy proxy,
                            BwRecurrenceInstance inst) throws CalFacadeException {
     BwEventAnnotation override = proxy.getRef();
-    override.setOwner(user);
+    override.setOwner(getUser());
 
     getSess().saveOrUpdate(override);
     inst.setOverride(override);
@@ -1025,7 +1024,7 @@ public class Events extends CalintfHelper implements EventsI {
           throws CalFacadeException {
     HibSession sess = getSess();
     if (setUser) {
-      sess.setEntity("user", user);
+      sess.setEntity("user", getUser());
     }
 
     if (calendar != null) {
@@ -1122,7 +1121,7 @@ public class Events extends CalintfHelper implements EventsI {
       override.setDtend(end);
       override.setDuration(BwDateTime.makeDuration(start, end).toString());
       override.setCreator(mstr.getCreator());
-      override.setOwner(user);
+      override.setOwner(getUser());
 
       return new BwEventProxy(override);
     }
@@ -1143,7 +1142,7 @@ public class Events extends CalintfHelper implements EventsI {
       boolean newOverride = true;
 
       if (instOverride != null) {
-        if (instOverride.getOwner().equals(user)) {
+        if (instOverride.getOwner().equals(getUser())) {
           // It's our own override.
           override = instOverride;
           newOverride = false;
@@ -1169,7 +1168,7 @@ public class Events extends CalintfHelper implements EventsI {
         override.setDtend(end);
         override.setDuration(BwDateTime.makeDuration(start, end).toString());
         override.setCreator(mstr.getCreator());
-        override.setOwner(user);
+        override.setOwner(getUser());
 
         override.getRecurrence().setRecurrenceId(inst.getRecurrenceId());
         override.setRecurrenceChanged(true);
