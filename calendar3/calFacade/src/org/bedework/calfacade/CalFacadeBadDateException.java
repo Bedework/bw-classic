@@ -62,7 +62,7 @@ public class CalFacadeBadDateException extends CalFacadeException {
    *
    */
   public CalFacadeBadDateException() {
-    super();
+    super(badDate);
   }
 
   /** Constructor
@@ -78,6 +78,6 @@ public class CalFacadeBadDateException extends CalFacadeException {
    * @param s String
    */
   public CalFacadeBadDateException(String s) {
-    super(s);
+    super(badDate, s);
   }
 }

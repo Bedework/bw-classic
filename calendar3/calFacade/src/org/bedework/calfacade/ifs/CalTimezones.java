@@ -299,7 +299,7 @@ public abstract class CalTimezones implements Serializable {
     String dateKey = null;
     HashMap cache = null;
     
-    if (CalFacadeUtil.isISODate(time)) {
+    if ((time.length() == 8) && CalFacadeUtil.isISODate(time)) {
       /* See if we have it cached */
       
       if (tzid == null) {
@@ -327,7 +327,7 @@ public abstract class CalTimezones implements Serializable {
       dateKey = time;
       time += "T000000";
     } else if (!CalFacadeUtil.isISODateTime(time)) {
-      throw new CalFacadeBadDateException();
+      throw new CalFacadeBadDateException(time);
     }
     
     try {
@@ -358,7 +358,7 @@ public abstract class CalTimezones implements Serializable {
           
           if (lasttz == null) {
             lasttzid = null;
-            throw new CalFacadeBadDateException();
+            throw new CalFacadeException(CalFacadeException.unknownTimezone, tzid);
           }
           tzchanged = true;
           lasttzid = tzid;
@@ -405,9 +405,11 @@ public abstract class CalTimezones implements Serializable {
       }
       
       return utc;
+    } catch (CalFacadeException cfe) {
+      throw cfe;
     } catch (Throwable t) {
       t.printStackTrace();
-      throw new CalFacadeBadDateException();
+      throw new CalFacadeBadDateException(time);
     }
   }
   

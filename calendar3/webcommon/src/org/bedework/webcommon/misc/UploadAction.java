@@ -56,6 +56,7 @@ package org.bedework.webcommon.misc;
 
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.icalendar.IcalTranslator;
@@ -122,30 +123,37 @@ public class UploadAction extends BwAbstractAction {
       return "retry";
     }
 
-    InputStream is = upFile.getInputStream();
+    try {
+      // To catch some of the parser errors
 
-    IcalTranslator trans = new IcalTranslator(svci.getIcalCallback(), debug);
-
-    Collection objs = trans.fromIcal(cal, new InputStreamReader(is));
-
-    Iterator it = objs.iterator();
-
-    while (it.hasNext()) {
-      Object o = it.next();
-
-      if (o instanceof EventInfo) {
-        EventInfo ei = (EventInfo)o;
-        BwEvent ev = ei.getEvent();
-
-        if (ei.getNewEvent()) {
-          svci.addEvent(cal, ev, ei.getOverrides());
-        } else {
-          svci.updateEvent(ev);
+      InputStream is = upFile.getInputStream();
+      
+      IcalTranslator trans = new IcalTranslator(svci.getIcalCallback(), debug);
+      
+      Collection objs = trans.fromIcal(cal, new InputStreamReader(is));
+      
+      Iterator it = objs.iterator();
+      
+      while (it.hasNext()) {
+        Object o = it.next();
+        
+        if (o instanceof EventInfo) {
+          EventInfo ei = (EventInfo)o;
+          BwEvent ev = ei.getEvent();
+          
+          if (ei.getNewEvent()) {
+            svci.addEvent(cal, ev, ei.getOverrides());
+          } else {
+            svci.updateEvent(ev);
+          }
         }
       }
+    } catch (CalFacadeException cfe) {
+      form.getErr().emit(cfe.getMessage(), cfe.getExtra());
+      return "baddata";
     }
 
-    form.getMsg().emit("org.bedework.client.message.event.added");
+    form.getMsg().emit("org.bedework.message.added.events", 1);
 
     return "success";
   }

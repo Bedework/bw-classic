@@ -61,6 +61,9 @@ public class CalFacadeException extends Exception {
   /* Property names used as message value. These should be used to
    * retrieve a localized message and can also be used to identify the
    * cause of the exception.
+   * 
+   * Every CalFacadeException should have one of these as the getMessage()
+   * value.
    */
   
   /* ****************** Admin groups ****************************** */
@@ -116,6 +119,14 @@ public class CalFacadeException extends Exception {
   /** Error reading timezones */
   public static final String timezonesReadError =
       "org.bedework.error.timezones.readerror";
+  
+  /** Unknown timezones */
+  public static final String unknownTimezone =
+      "org.bedework.error.unknown.timezone";
+  
+  /** Bad date */
+  public static final String badDate =
+      "org.bedework.error.bad.date";
 
   /* ****************** Misc ****************************** */
 
@@ -125,7 +136,7 @@ public class CalFacadeException extends Exception {
   
   private String extra;
 
-  /** Constrictor
+  /** Constructor
    *
    */
   public CalFacadeException() {

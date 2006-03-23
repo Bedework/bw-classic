@@ -98,6 +98,7 @@ import net.fortuna.ical4j.model.property.RRule;
 import net.fortuna.ical4j.model.property.Sequence;
 import net.fortuna.ical4j.model.property.Status;
 import net.fortuna.ical4j.model.property.Summary;
+import net.fortuna.ical4j.model.property.Transp;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Url;
 import net.fortuna.ical4j.model.PropertyList;
@@ -497,6 +498,10 @@ public class BwEventUtil extends IcalUtil {
           /* ------------------- Summary -------------------- */
 
           ev.setSummary(pval);
+        } else if (prop instanceof Transp) {
+          /* ------------------- Transp -------------------- */
+
+          ev.setTransparency(pval);
         } else if (prop instanceof Uid) {
           /* ------------------- Uid -------------------- */
 

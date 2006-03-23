@@ -26,6 +26,9 @@
       <xsl:when test="id='org.bedework.error.mail.norecipient'">
           You must supply a recipient.
       </xsl:when>
+      <xsl:when test="id='org.bedework.error.unknown.timezone'">
+          Unknown timezone <xsl:value-of select="param"/>
+      </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="id"/> = <xsl:value-of select="param"/>
       </xsl:otherwise>

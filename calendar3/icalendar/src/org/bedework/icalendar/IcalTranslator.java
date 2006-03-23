@@ -270,6 +270,8 @@ public class IcalTranslator implements Serializable {
    * @throws CalFacadeException
    */
   public Collection fromIcal(BwCalendar cal, String val) throws CalFacadeException {
+    return fromIcal(cal, new StringReader(val));
+    /*
     try {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
@@ -286,7 +288,7 @@ public class IcalTranslator implements Serializable {
       throw cfe;
     } catch (Throwable t) {
       throw new CalFacadeException(t);
-    }
+    }*/
   }
 
   /** Convert the Icalendar reader to a Collection of Calendar objects
@@ -298,7 +300,7 @@ public class IcalTranslator implements Serializable {
    */
   public Collection fromIcal(BwCalendar cal, Reader rdr) throws CalFacadeException {
     try {
-      //System.setProperty("ical4j.unfolding.relaxed", "true");
+      setSystemProperties();
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
       //return fromIcal(cal, bldr.build(new UnfoldingReader(rdr)));
@@ -359,11 +361,14 @@ public class IcalTranslator implements Serializable {
    */
   public static Calendar getCalendar(String val) throws CalFacadeException {
     try {
+      setSystemProperties();
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
       UnfoldingReader ufrdr = new UnfoldingReader(new StringReader(val), true);
       
       return bldr.build(ufrdr);
+    } catch (CalFacadeException cfe) {
+      throw cfe;
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -381,6 +386,7 @@ public class IcalTranslator implements Serializable {
    */
   public Collection toVEvent(String val) throws CalFacadeException {
     try {
+      setSystemProperties();
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
       UnfoldingReader ufrdr = new UnfoldingReader(new StringReader(val), true);
@@ -405,6 +411,8 @@ public class IcalTranslator implements Serializable {
       }
 
       return evs;
+    } catch (CalFacadeException cfe) {
+      throw cfe;
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -536,6 +544,16 @@ public class IcalTranslator implements Serializable {
     }
     
     added.put(tzid, null);
+  }
+  
+  private static void setSystemProperties() throws CalFacadeException {
+    try {
+      System.setProperty("ical4j.unfolding.relaxed", "true");
+      System.setProperty("ical4j.parsing.relaxed", "true");
+      System.setProperty("ical4j.compatibility.outlook", "true");
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
   }
 
   private Logger getLog() {

@@ -275,6 +275,7 @@
                name="calForm"
                scope="session"
                validate="false">
+    <forward name="baddata" path="/showMain.rdo" redirect="true" />
     </action>
 
     <action    path="/export"
