@@ -77,7 +77,8 @@ public class CalintfUtil implements CalintfDefs {
     boolean publicEvents = (currentMode == guestMode) ||
                            (currentMode == publicAdminMode);
 
-    boolean all = (currentMode == guestMode) || ignoreCreator;
+    //boolean all = (currentMode == guestMode) || ignoreCreator;
+    boolean all = publicEvents || ignoreCreator;
     boolean setUser = false;
 
     sb.append("(");

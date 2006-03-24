@@ -88,13 +88,13 @@ import edu.rpi.sss.util.jsp.UtilActionForm;
 import net.fortuna.ical4j.model.Calendar;
 
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.TreeMap;
-import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
@@ -419,7 +419,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   */
   public Collection getSysStats() {
     if (sysStats == null) {
-      sysStats = new Vector();
+      sysStats = new ArrayList();
     }
     
     return sysStats;
@@ -461,7 +461,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
       return fetchSvci().getInstanceOwners();
     } catch (Throwable t) {
       err.emit(t);
-      return new Vector();
+      return new ArrayList();
     }
   }
 
@@ -1214,7 +1214,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   public Collection getSubscriptions() {
     if (subscriptions == null) {
-      subscriptions = new Vector();
+      subscriptions = new ArrayList();
     }
     return subscriptions;
   }
@@ -1280,7 +1280,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   public Collection getCurrentSubscriptions() {
     if (currentSubscriptions == null) {
-      currentSubscriptions = new Vector();
+      currentSubscriptions = new ArrayList();
     }
     return currentSubscriptions;
   }
@@ -2086,7 +2086,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
         t.printStackTrace();
       }
       err.emit(t);
-      return new Vector();
+      return new ArrayList();
     }
   }
 
@@ -2111,7 +2111,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
         t.printStackTrace();
       }
       err.emit(t);
-      return new Vector();
+      return new ArrayList();
     }
   }
 
@@ -2136,7 +2136,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
         t.printStackTrace();
       }
       err.emit(t);
-      return new Vector();
+      return new ArrayList();
     }
   }
   

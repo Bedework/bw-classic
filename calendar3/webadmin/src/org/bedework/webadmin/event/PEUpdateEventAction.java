@@ -207,9 +207,9 @@ public class PEUpdateEventAction extends PEAbstractAction {
 
     if (!form.getEventDates().updateEvent(event, svci.getTimezones())) {
       ok = false;
-    } else {
-      ok = BwWebUtil.validateEvent(svci, event, true, // ENUM  descriptionRequired
-                                   err);
+    } else if (!BwWebUtil.validateEvent(svci, event, true, // ENUM  descriptionRequired
+                                        err)) {
+      ok = false;
     }
 
     return ok;

@@ -62,8 +62,8 @@ import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -120,7 +120,7 @@ public class SetSelectionAction extends BwAbstractAction {
       return "notFound";
     }
 
-    Collection c = new Vector();
+    Collection c = new ArrayList();
     c.add(sub.clone());
     svci.setCurrentSubscriptions(c);
     form.assignCurrentSubscriptions(c);
@@ -150,7 +150,7 @@ public class SetSelectionAction extends BwAbstractAction {
 
     BwSubscription sub = BwSubscription.makeSubscription(cal);
 
-    Collection c = new Vector();
+    Collection c = new ArrayList();
     c.add(sub);
     svci.setCurrentSubscriptions(c);
     form.assignCurrentSubscriptions(c);

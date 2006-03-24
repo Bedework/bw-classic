@@ -68,9 +68,9 @@ import org.hibernate.Transaction;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
@@ -622,7 +622,7 @@ public class HibSession implements Serializable {
       }
 
       if (l == null) {
-        return new Vector();
+        return new ArrayList();
       }
 
       return l;

@@ -76,10 +76,6 @@ public class CalEnv implements Serializable {
   }
 
   private static Properties getPr() throws CalEnvException {
-    if (pr != null) {
-      return pr;
-    }
-
     synchronized (lockit) {
       if (pr != null) {
         return pr;
