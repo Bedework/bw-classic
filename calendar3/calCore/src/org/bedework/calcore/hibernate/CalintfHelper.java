@@ -77,8 +77,6 @@ class CalintfHelper implements CalintfDefs, PrivilegeDefs, Serializable {
   protected AccessUtil access;
 
   protected int currentMode = CalintfUtil.guestMode;
-  
-  protected boolean ignoreCreator;
 
   private transient Logger log;
 
@@ -90,12 +88,11 @@ class CalintfHelper implements CalintfDefs, PrivilegeDefs, Serializable {
    * @param debug
    */
   public CalintfHelper(Calintf cal, AccessUtil access,
-                       int currentMode, boolean ignoreCreator, 
+                       int currentMode,  
                        boolean debug) {
     this.cal = cal;
     this.access = access;
     this.currentMode = currentMode;
-    this.ignoreCreator = ignoreCreator;
     this.debug = debug;
   }
 

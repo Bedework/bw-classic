@@ -108,10 +108,6 @@ public class CalintfBase implements Calintf {
    */
   private boolean isOpen;
 
-  /** True if this is superuser access - probably doesn't mean anything.
-   */
-  private boolean superUser;
-
   /** Ignore owner for superuser
    */
 //  private boolean ignoreCreator;
@@ -128,21 +124,15 @@ public class CalintfBase implements Calintf {
   public boolean init(String authenticatedUser,
                       String user,
                       boolean publicAdmin,
-                      boolean superUser,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException {
     this.debug = debug;
     boolean userCreated = false;
 
-    if (authenticatedUser == null) {
-      this.superUser = false;  // be safe
-    }
-
     try {
       objTimestamp = new Timestamp(System.currentTimeMillis());
 
-      this.superUser = superUser;
       this.synchId = synchId;
 
       if ((synchId != null) && publicAdmin) {
@@ -157,6 +147,13 @@ public class CalintfBase implements Calintf {
     }
 
     return userCreated;
+  }
+
+  public void setSuperUser(boolean val) {
+  }
+  
+  public boolean getSuperUser() {
+    return false;
   }
 
   /** Get the current stats
@@ -895,16 +892,6 @@ public class CalintfBase implements Calintf {
 
   protected void trace(String msg) {
     getLogger().debug(msg);
-  }
-
-  /* Ensure the current user has super user access.
-   */
-  protected void requireSuper() throws CalFacadeException {
-    if ((currentMode == CalintfDefs.publicAdminMode) && superUser) {
-      return;
-    }
-
-    throw new CalFacadeAccessException();
   }
 
   /* Ensure the current user is not a guest.

@@ -125,6 +125,8 @@ public class CalSvc extends CalSvcI {
   private boolean debug;
 
   private boolean open;
+  
+  private boolean superUser;
 
   //private BwFilter currentFilter;
 
@@ -301,6 +303,14 @@ public class CalSvc extends CalSvcI {
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
+  }
+
+  public void setSuperUser(boolean val) {
+    superUser = val;
+  }
+  
+  public boolean getSuperUser() {
+    return superUser;
   }
 
   public BwStats getStats() throws CalFacadeException {
@@ -566,6 +576,11 @@ public class CalSvc extends CalSvcI {
 
   public void saveTimeZone(String tzid, VTimeZone vtz)
           throws CalFacadeException {
+    // Not sure we want this. public admins may want to add timezones
+    if (isPublicAdmin() && !isSuper()) {
+      throw new CalFacadeAccessException();
+    }
+    
     timezones.saveTimeZone(tzid, vtz);
   }
 
@@ -583,6 +598,10 @@ public class CalSvc extends CalSvcI {
   }
 
   public void clearPublicTimezones() throws CalFacadeException {
+    if (isPublicAdmin() && !isSuper()) {
+      throw new CalFacadeAccessException();
+    }
+    
     timezones.clearPublicTimezones();
   }
 
@@ -1242,9 +1261,9 @@ public class CalSvc extends CalSvcI {
    * @throws CalFacadeException
    */
   public boolean addLocation(BwLocation val) throws CalFacadeException {
-    updateOK(val);
-
     setupSharableEntity(val);
+
+    updateOK(val);
 
     if (findLocation(val) != null) {
       return false;
@@ -1347,9 +1366,9 @@ public class CalSvc extends CalSvcI {
   }
 
   public boolean addSponsor(BwSponsor val) throws CalFacadeException {
-    updateOK(val);
-
     setupSharableEntity(val);
+
+    updateOK(val);
 
     if (findSponsor(val) != null) {
       return false;
@@ -1994,7 +2013,6 @@ public class CalSvc extends CalSvcI {
       boolean userCreated = cali.init(pars.getAuthUser(),
                                       pars.getUser(),
                                       pars.getPublicAdmin(),
-                                      pars.isSuperUser(),
                                       getGroups(),
                                       pars.getSynchId(),
                                       debug);
@@ -2104,7 +2122,7 @@ public class CalSvc extends CalSvcI {
   /* See if current authorised user has super user access.
    */
   private boolean isSuper() throws CalFacadeException {
-    return pars.getPublicAdmin() && pars.isSuperUser();
+    return pars.getPublicAdmin() && superUser;
   }
 
   /* See if current authorised is a guest.

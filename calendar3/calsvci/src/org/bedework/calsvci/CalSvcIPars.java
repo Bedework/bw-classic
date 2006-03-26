@@ -54,8 +54,6 @@
 
 package org.bedework.calsvci;
 
-import org.bedework.calfacade.svc.UserAuth;
-
 import java.io.Serializable;
 
 /** These are global parameters used by the CalSvc interface.
@@ -66,8 +64,6 @@ public class CalSvcIPars implements Serializable {
   /** The authenticated user - null for guest
    */
   private String authUser;
-
-  private int rights;
 
   /** The current user - null for guest
    */
@@ -96,8 +92,6 @@ public class CalSvcIPars implements Serializable {
   /** Constructor for this object.
    *
    * @param authUser    String authenticated user of the application
-   * @param rights      int rights as defined in
-   *                     org.bedework.calfacade.svc.UserAuth
    * @param user        String user to act as
    * @param enzPrefix   String Environment properties prefix
    * @param publicAdmin true for admin
@@ -107,7 +101,6 @@ public class CalSvcIPars implements Serializable {
    * @param debug       boolean true to turn on debugging trace
    */
   public CalSvcIPars(String authUser,
-                     int rights,
                      String user,
                      String envPrefix,
                      boolean publicAdmin,
@@ -115,7 +108,6 @@ public class CalSvcIPars implements Serializable {
                      String synchId,
                      boolean debug) {
     this.authUser = authUser;
-    this.rights = rights;
     this.user = user;
     this.envPrefix = envPrefix;
     this.publicAdmin = publicAdmin;
@@ -129,13 +121,6 @@ public class CalSvcIPars implements Serializable {
    */
   public String getAuthUser() {
     return authUser;
-  }
-
-  /**
-   * @return int rights
-   */
-  public int getRights() {
-    return rights;
   }
 
   /**
@@ -194,30 +179,6 @@ public class CalSvcIPars implements Serializable {
     return debug;
   }
 
-  /** Check for public events owner user
-   *
-   * @return boolean    true for public events owner user
-   */
-  public boolean isOwnerUser() {
-    return (rights & UserAuth.publicEventUser) != 0;
-  }
-
-  /** Check for content admin user
-   *
-   * @return boolean    true for content admin user
-   */
-  public boolean isContentAdminUser() {
-    return (rights & UserAuth.contentAdminUser) != 0;
-  }
-
-  /** Check for priv user
-   *
-   * @return boolean    true for super user
-   */
-  public boolean isSuperUser() {
-    return (rights & UserAuth.superUser) != 0;
-  }
-
   /**
    * @return boolean true for guest
    */
@@ -230,8 +191,6 @@ public class CalSvcIPars implements Serializable {
 
     sb.append("authUser=");
     sb.append(getAuthUser());
-    sb.append(", rights=");
-    sb.append(getRights());
     sb.append(", user=");
     sb.append(getUser());
     sb.append(", publicAdmin=");
@@ -249,7 +208,6 @@ public class CalSvcIPars implements Serializable {
 
   public Object clone() {
     CalSvcIPars pars = new CalSvcIPars(getAuthUser(),
-                                       getRights(),
                                        getUser(),
                                        getEnvPrefix(),
                                        getPublicAdmin(),

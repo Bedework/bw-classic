@@ -95,7 +95,6 @@ public interface Calintf extends CalendarsI, EventsI {
    *                             or null for guest
    * @param user        String user we are acting as. If null we use authUser
    * @param publicAdmin boolean true if this is a public events admin app
-   * @param superUser   boolean true if this is a super user
    * @param groups      Object allowing interface to determine user groups.
    * @param synchId     non-null if this is for synchronization. Identifies the
    *                    client end.
@@ -106,10 +105,21 @@ public interface Calintf extends CalendarsI, EventsI {
   public boolean init(String authenticatedUser,
                       String user,
                       boolean publicAdmin,
-                      boolean superUser,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException;
+
+  /** Called after init to flag this user as a super user. 
+   *
+   * @param val       true for a super user
+   */
+  public void setSuperUser(boolean val);
+
+  /** Called after init to flag this user as a super user. 
+   *
+   * @return boolean true if super user
+   */
+  public boolean getSuperUser();
 
   /** Get the current system (not db) stats
    *

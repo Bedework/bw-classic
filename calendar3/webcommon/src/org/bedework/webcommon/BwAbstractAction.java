@@ -705,11 +705,11 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @return UWCalSession null on failure
    * @throws Throwable
    */
-  public synchronized BwSession getState(HttpServletRequest request,
-                                         BwActionFormBase form,
-                                         MessageResources messages,
-                                         String adminUserId,
-                                         boolean admin) throws Throwable {
+  private synchronized BwSession getState(HttpServletRequest request,
+                                          BwActionFormBase form,
+                                          MessageResources messages,
+                                          String adminUserId,
+                                          boolean admin) throws Throwable {
     BwSession s = BwWebUtil.getState(request);
     HttpSession sess = request.getSession(false);
 
@@ -797,10 +797,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     checkSvci(request, form, s, access, adminUserId,
               getPublicAdmin(form), false, debug);
 
-    /** Somewhere up there we may have to do more for user auth in the
-        session. This is where we can figure out this is a first call.
-     */
-
+    /*
     UserAuth ua = null;
     UserAuthPar par = new UserAuthPar();
     par.svlt = servlet;
@@ -820,6 +817,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       form.getErr().emit(t);
       return null;
     }
+    */
 
     return s;
   }
@@ -842,14 +840,14 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @return boolean      false for problems.
    * @throws CalFacadeException
    */
-  protected boolean checkSvci(HttpServletRequest request,
-                              BwActionFormBase form,
-                              BwSession sess,
-                              int access,
-                              String user,
-                              boolean publicAdmin,
-                              boolean canSwitch,
-                              boolean debug) throws CalFacadeException {
+  private boolean checkSvci(HttpServletRequest request,
+                            BwActionFormBase form,
+                            BwSession sess,
+                            int access,
+                            String user,
+                            boolean publicAdmin,
+                            boolean canSwitch,
+                            boolean debug) throws CalFacadeException {
     /** Do some checks first
      */
     String authUser = String.valueOf(form.getCurrentUser());
@@ -882,6 +880,9 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         debugMsg("CalSvcI-- Obtained from session for user " +
                           svci.getUser());
       }
+      
+      // XXX access - disable use of roles
+      access = svci.getUserAuth().getUsertype();
     } else {
       if (debug) {
         debugMsg(".CalSvcI-- get new object for user " + user);
@@ -901,7 +902,8 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
           runAsUser = form.getEnv().getAppProperty("run.as.user");
         }
         
-        CalSvcIPars pars = new CalSvcIPars(user, access, runAsUser, 
+        CalSvcIPars pars = new CalSvcIPars(user, //access, 
+                                           runAsUser, 
                                            form.getEnv().getAppPrefix(),
                                            publicAdmin,
                                            false,    // caldav
@@ -914,13 +916,37 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         form.setCalSvcI(svci);
 
         cb.in(true);
+
+        UserAuth ua = null;
+        UserAuthPar par = new UserAuthPar();
+        par.svlt = servlet;
+        par.req = request;
+
+        try {
+          ua = svci.getUserAuth(user, par);
+
+          form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
+          svci.setSuperUser((ua.getUsertype() & UserAuth.superUser) != 0);
+
+          // XXX access - disable use of roles
+          access = ua.getUsertype();
+          
+          if (debug) {
+            debugMsg("UserAuth says that current user has the type: " +
+                     ua.getUsertype());
+          }
+        } catch (Throwable t) {
+          form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
+          form.getErr().emit(t);
+          return false;
+        }
       } catch (CalFacadeException cfe) {
         throw cfe;
       } catch (Throwable t) {
         throw new CalFacadeException(t);
       }
     }
-
+    
     form.assignUserVO((BwUser)svci.getUser().clone());
 
     if (publicAdmin) {
@@ -956,8 +982,8 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * the same thing.
    *
    * <p>They are there because some servlet containers (jetty for one)
-   * appear to be broken. Role mapping does not appear to work reliably.
-   * Thsi seems to have something to do with jetty doing internal redirects
+   * appeared to be broken. Role mapping does not appear to work reliably.
+   * This seems to have something to do with jetty doing internal redirects
    * to handle login. In the process it seems to lose the appropriate servlet
    * context and with it the mapping of roles.
    *
@@ -966,9 +992,8 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @return int access
    * @throws CalFacadeException
    */
-  protected int getAccess(HttpServletRequest req,
-                          MessageResources messages)
-         throws CalFacadeException {
+  private int getAccess(HttpServletRequest req,
+                        MessageResources messages) throws CalFacadeException {
     int access = 0;
 
     /** This form works with broken containers.
@@ -993,7 +1018,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       access += UserAuth.publicEventUser;
     }
 
-    /** This is how it out to look
+    /** This is how it ought to look
     if (req.isUserInRole("admin")) {
       access += UserAuth.superUser;
     }

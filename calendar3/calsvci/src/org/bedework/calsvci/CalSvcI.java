@@ -106,6 +106,18 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract void init(CalSvcIPars pars) throws CalFacadeException;
 
+  /** Called after init to flag this user as a super user. 
+   *
+   * @param val       true for a super user
+   */
+  public abstract void setSuperUser(boolean val);
+
+  /** Called after init to flag this user as a super user. 
+   *
+   * @return boolean true if super user
+   */
+  public abstract boolean getSuperUser();
+
   /** Get the current stats
    *
    * @return BwStats object

@@ -95,13 +95,13 @@ public class EventProperties extends CalintfHelper {
    * @param debug
    */
   public EventProperties(Calintf cal, AccessUtil access, 
-                         int currentMode, boolean ignoreCreator,
+                         int currentMode, 
                          String keyFieldName,
                          String className,
                          String refQuery,
                          int minId, 
                          boolean debug) {
-    super(cal, access, currentMode, ignoreCreator, debug);
+    super(cal, access, currentMode, debug);
 
     this.keyFieldName = keyFieldName;
     this.className = className;
@@ -188,7 +188,7 @@ public class EventProperties extends CalintfHelper {
     qstr.append(className);
     qstr.append(" ent where ");
     boolean setUser = CalintfUtil.appendPublicOrCreatorTerm(qstr, "ent",
-                                      currentMode, ignoreCreator);
+                                      currentMode, cal.getSuperUser());
     qstr.append(" and ent.id=:id");
 
     sess.createQuery(qstr.toString());

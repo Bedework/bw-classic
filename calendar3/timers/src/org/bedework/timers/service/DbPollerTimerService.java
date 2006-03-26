@@ -54,8 +54,6 @@
 
 package org.bedework.timers.service;
 
-
-import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
@@ -139,7 +137,7 @@ public class DbPollerTimerService {
 
   private void init() throws Throwable {
     svci = new CalSvc();
-    CalSvcIPars pars = new CalSvcIPars(account, UserAuth.superUser,
+    CalSvcIPars pars = new CalSvcIPars(account, 
                                        account,
                                        null,   // XXX needs envPrefix
                                        true,    // public

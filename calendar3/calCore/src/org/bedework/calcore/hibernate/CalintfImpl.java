@@ -169,10 +169,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
   private EventProperties sponsors;
 
-  /** True if this is superuser access
-   */
-  private boolean superUser;
-
   private int currentMode = CalintfUtil.guestMode;
 
   /** Non-null if this is for synchronization. Identifies the client end.
@@ -182,10 +178,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   /** Prevent updates.
    */
   //sprivate boolean readOnly;
-
-  /** Ignore owner for superuser
-   */
-  private boolean ignoreCreator;
 
   /** Current hibernate session - exists only across one user interaction
    */
@@ -230,25 +222,19 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   public boolean init(String authenticatedUser,
                       String user,
                       boolean publicAdmin,
-                      boolean superUser,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException {
     this.debug = debug;
     boolean userCreated = false;
 
-    if (authenticatedUser == null) {
-      this.superUser = false;  // be safe
-    }
-
     BwUser authUser;
 
     try {
-      access = new AccessUtil(superUser, debug);
+      access = new AccessUtil(debug);
 
       objTimestamp = new Timestamp(System.currentTimeMillis());
 
-      this.superUser = superUser;
       this.synchId = synchId;
       log = Logger.getLogger(getClass());
 
@@ -262,8 +248,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     if (user == null) {
       user = authenticatedUser;
     }
-
-    ignoreCreator = false;
 
     if (authenticatedUser == null) {
       // Unauthenticated use
@@ -295,7 +279,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
       getLogger().info("Authenticated user " + authenticatedUser +
                        " logged on");
-      ignoreCreator = superUser;
 
       if (authenticatedUser.equals(user)) {
         this.user = authUser;
@@ -310,24 +293,19 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     authUser.setGroups(groups.getAllGroups(authUser));
     access.setAuthUser(authUser);
 
-    events = new Events(this, access, currentMode, 
-                        ignoreCreator, debug);
+    events = new Events(this, access, currentMode, debug);
 
-    calendars = new Calendars(this, access, currentMode, 
-                              ignoreCreator, debug);
+    calendars = new Calendars(this, access, currentMode, debug);
 
     categories = new EventProperties(this, access, currentMode, 
-                                     ignoreCreator, 
                                      "word", BwCategory.class.getName(),
                                      "getCategoryRefs",
                                      -1, debug);
     locations = new EventProperties(this, access, currentMode, 
-                                    ignoreCreator, 
                                     "address", BwLocation.class.getName(),
                                     "getLocationRefs",
                                      CalFacadeDefs.maxReservedLocationId, debug);
     sponsors = new EventProperties(this, access, currentMode, 
-                                   ignoreCreator, 
                                    "name", BwSponsor.class.getName(),
                                    "getSponsorRefs",
                                    CalFacadeDefs.maxReservedSponsorId, debug);
@@ -339,6 +317,14 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
       calendars.addNewCalendars(authUser);
     }
     return userCreated;
+  }
+
+  public void setSuperUser(boolean val) {
+    access.setSuperUser(val);
+  }
+  
+  public boolean getSuperUser() {
+    return access.getSuperUser();
   }
 
   public BwStats getStats() throws CalFacadeException {
@@ -717,10 +703,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     BwTimeZone tz = new BwTimeZone();
 
-    if (currentMode == CalintfUtil.publicAdminMode) {
-      requireSuper();
-    }
-
     if (currentMode == CalintfUtil.guestMode) {
       throw new CalFacadeAccessException();
     }
@@ -794,7 +776,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
   public void clearPublicTimezones() throws CalFacadeException {
     checkOpen();
-    requireSuper();
 
     /* Delete all public timezones */
     sess.namedQuery("deleteAllPublicTzs");
@@ -1327,16 +1308,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
   private void trace(String msg) {
     getLogger().debug(msg);
-  }
-
-  /* Ensure the current user has super user access.
-   */
-  private void requireSuper() throws CalFacadeException {
-    if ((currentMode == CalintfUtil.publicAdminMode) && superUser) {
-      return;
-    }
-
-    throw new CalFacadeAccessException();
   }
 }
 

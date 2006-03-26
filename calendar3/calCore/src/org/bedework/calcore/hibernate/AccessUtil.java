@@ -107,8 +107,7 @@ class AccessUtil implements PrivilegeDefs {
    *                   Constructor
    * ==================================================================== */
 
-  AccessUtil(boolean superUser, boolean debug) throws CalFacadeException {
-    this.superUser = superUser;
+  AccessUtil(boolean debug) throws CalFacadeException {
     this.debug = debug;
     try {
       access = new Access(debug);
@@ -117,6 +116,14 @@ class AccessUtil implements PrivilegeDefs {
     }
   }
 
+  void setSuperUser(boolean val) {
+    superUser = val;
+  }
+  
+  boolean getSuperUser() {
+    return superUser;
+  }
+  
   void setAuthUser(BwUser val) {
     authUser = val;
   }

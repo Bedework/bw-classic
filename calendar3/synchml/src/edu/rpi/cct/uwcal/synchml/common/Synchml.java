@@ -63,7 +63,6 @@ import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.svc.EventInfo;
-import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
@@ -122,7 +121,7 @@ public class Synchml {
     svci = new CalSvc();
     this.deviceId = deviceId;
     this.debug = debug;
-    CalSvcIPars pars = new CalSvcIPars(account, UserAuth.noPrivileges,
+    CalSvcIPars pars = new CalSvcIPars(account, 
                                        account,
                                        null,     // XXX Requires an env prefix
                                        false,    // public

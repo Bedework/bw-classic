@@ -104,8 +104,8 @@ public class Events extends CalintfHelper implements EventsI {
    * @param debug
    */
   public Events(Calintf cal, AccessUtil access, 
-                int currentMode, boolean ignoreCreator, boolean debug) {
-    super(cal, access, currentMode, ignoreCreator, debug);
+                int currentMode, boolean debug) {
+    super(cal, access, currentMode, debug);
   }
 
   public Collection getEvent(BwCalendar calendar, String guid, String rid,
@@ -599,7 +599,7 @@ public class Events extends CalintfHelper implements EventsI {
     sb.append(" (");
 
     boolean setUser = doCalendarClause(sb, qevName, calendar,
-                                       currentMode, ignoreCreator);
+                                       currentMode, cal.getSuperUser());
 
     sb.append(") ");
 
@@ -649,7 +649,7 @@ public class Events extends CalintfHelper implements EventsI {
     es = flt.postExec(es);
 
     Collection rs = getLimitedRecurrences(calendar, filter, startDate, endDate,
-                                          currentMode, ignoreCreator,
+                                          currentMode, cal.getSuperUser(),
                                           recurRetrieval);
     if (rs != null) {
       es.addAll(rs);

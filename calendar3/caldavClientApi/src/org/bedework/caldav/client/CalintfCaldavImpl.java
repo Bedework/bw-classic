@@ -108,12 +108,11 @@ public class CalintfCaldavImpl extends CalintfBase {
   public boolean init(String authenticatedUser,
                       String user,
                       boolean publicAdmin,
-                      boolean superUser,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException {
     boolean userAdded = super.init(authenticatedUser, user, publicAdmin,
-                                   superUser, groups, synchId, debug);
+                                   groups, synchId, debug);
 
     if (httpManager == null) {
       synchronized (this) {

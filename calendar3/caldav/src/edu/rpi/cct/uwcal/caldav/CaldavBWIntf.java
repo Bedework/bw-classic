@@ -60,7 +60,6 @@ import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.svc.EventInfo;
-import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
@@ -1180,7 +1179,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
       /* account is what we authenticated with.
        * user, if non-null, is the user calendar we want to access.
        */
-      CalSvcIPars pars = new CalSvcIPars(account, UserAuth.noPrivileges,
+      CalSvcIPars pars = new CalSvcIPars(account, 
                                          account,
                                          envPrefix,
                                          publicMode,
