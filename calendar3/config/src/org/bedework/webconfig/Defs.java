@@ -59,6 +59,26 @@ package org.bedework.webconfig;
  * @author Mike Douglass
  */
 public interface Defs {
+  /** This prefix never changes */
+  public static final String envPrefix = "org.bedework.app.bwconfig.";
+  
+  public static final String webconfigType = "webconfig";
+  public static final String webadminType = "webadmin";
+  public static final String webpublicType = "webpublic";
+  public static final String webuserType = "webuser";
+  public static final String publiccaldavType = "publiccaldav";
+  public static final String usercaldavType = "usercaldav";
+  
+  /** Valid types of application */
+  public static final String[] appTypes = {
+    webconfigType,
+    webadminType,
+    webpublicType,
+    webuserType,
+    publiccaldavType,
+    usercaldavType
+  };
+  
   /** Default properties file (built in to application) */
   public final static String defaultProperties = "/properties/calendar/default-bedework.properties"; 
   
@@ -78,4 +98,7 @@ public interface Defs {
   
   /** Multi-value property - radio or select */
   public final static int typeMultiple = 4; 
+  
+  /** Comment */
+  public final static int typeComment = 5; 
 }

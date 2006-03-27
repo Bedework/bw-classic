@@ -51,11 +51,9 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
 package org.bedework.webconfig.collections;
 
 import org.bedework.webconfig.props.BooleanProperty;
-import org.bedework.webconfig.props.ConfigProperty;
 
 /** Global properties.
  *
@@ -69,14 +67,31 @@ public class Globals extends ConfigCollection {
   public Globals() throws Throwable {
     super("globals", "global");
 
-    addProperty(new ConfigProperty("system.name", "system.name", true));
+    requiredText("system.name", "system.name");
 
-    addProperty(new ConfigProperty("hibernate.dialect", "hibernate.dialect", true));
+    requiredText("hibernate.dialect", "hibernate.dialect");
 
-    addProperty(new ConfigProperty("calintfclass", "calintfclass", true));
+    requiredText("calintfclass", "calintfclass");
 
-    addProperty(new BooleanProperty("dirbrowsingDisallowed",
-                                         "directory.browsing.disallowed",
-                                         true));
+    requiredBoolean("dirbrowsingDisallowed", "directory.browsing.disallowed");
+
+    optBoolean("buildStandaloneApp", "build.standalone.app");
+    
+    BooleanProperty jetspeedportlet = optBoolean("jetspeedPortlet", 
+                                                 "build.jetspeed.portlet");
+
+    requiredText("jetspeed2.roles", "app.jetspeed2.roles", jetspeedportlet);
+
+    optBoolean("uportalPortlet", "build.uportal.portlet");
+
+    BooleanProperty j2ee = optBoolean("j2ee.deploy", "deploy.j2ee");
+
+    requiredText("ear", "ear.name", j2ee);
+
+    comment("uris to cross link apps - of dubious usefulness");
+    
+    requiredText("public.admin.uri", "public.admin.uri");
+    requiredText("public.calendar.uri", "public.calendar.uri");
+    requiredText("personal.calendar.uri", "personal.calendar.uri");
   }
 }

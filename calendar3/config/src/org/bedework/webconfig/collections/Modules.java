@@ -54,8 +54,6 @@
 
 package org.bedework.webconfig.collections;
 
-import org.bedework.webconfig.props.BooleanProperty;
-
 /** The modules to build.
  *
  * @author Mike Douglass
@@ -68,17 +66,8 @@ public class Modules extends ConfigCollection {
   public Modules() throws Throwable {
     super("modules", "install");
 
-    addProperty(new BooleanProperty("adminwebclient", "admin.web", true));
+    requiredOrderedList("app.names", "app.names");
 
-    addProperty(new BooleanProperty("publicwebclient", "public.web", true));
-
-    addProperty(new BooleanProperty("personalwebclient", "personal.web", true));
-
-    addProperty(new BooleanProperty("publiccaldav", "public.caldav", true));
-
-    addProperty(new BooleanProperty("personalcaldav", "personal.caldav", true));
-
-    addProperty(new BooleanProperty("advanced", "advanced", true));
+    requiredOrderedMultiList("app.types", "app.types", appTypes);
   }
 }
-

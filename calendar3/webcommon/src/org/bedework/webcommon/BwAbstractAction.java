@@ -78,8 +78,6 @@ import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
 
-//import edu.rpi.sss.util.jsp.JspUtil;
-import edu.rpi.sss.util.jsp.SessionListener;
 import edu.rpi.sss.util.jsp.UtilAbstractAction;
 import edu.rpi.sss.util.jsp.UtilActionForm;
 
@@ -103,6 +101,9 @@ import org.apache.struts.util.MessageResources;
  * @author  Mike Douglass  douglm@rpi.edu
  */
 public abstract class BwAbstractAction extends UtilAbstractAction {
+  /** Name of the init parameter holding our name */
+  private static final String appNameInitParameter = "rpiappname";
+  
   public String getId() {
     return getClass().getName();
   }
@@ -712,7 +713,8 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
                                           boolean admin) throws Throwable {
     BwSession s = BwWebUtil.getState(request);
     HttpSession sess = request.getSession(false);
-
+    String appName = getAppName(sess);
+    
     if (s != null) {
       if (debug) {
         debugMsg("getState-- obtainedfrom session");
@@ -729,14 +731,13 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       form.assignNewSession(true);
 
       CalEnv env = getEnv(request, form);
-      String appName = env.getAppProperty("name");
       String appRoot = env.getAppProperty("root");
 
       /** The actual session class used is possibly site dependent
        */
       s = new BwSessionImpl(form.getCurrentUser(), appRoot, appName,
-                               form.getPresentationState(), messages,
-                               form.getSchemeHostPort(), debug);
+                            form.getPresentationState(), messages,
+                            form.getSchemeHostPort(), debug);
 
       BwWebUtil.setState(request, s);
 
@@ -764,7 +765,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
       String raddr = request.getRemoteAddr();
       String rhost = request.getRemoteHost();
-      SessionListener.setId(appName); // First time will have no name
       info("===============" + appName + ": New session (" +
                        s.getSessionNum() + ") from " +
                        rhost + "(" + raddr + ")");
@@ -820,6 +820,17 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     */
 
     return s;
+  }
+  
+  private String getAppName(HttpSession sess) {
+    ServletContext sc = sess.getServletContext();
+
+    String appname = sc.getInitParameter(appNameInitParameter);
+    if (appname == null) {
+      appname = "?";
+    }
+    
+    return appname;
   }
 
   /** Ensure we have a CalAdminSvcI object for the given user.

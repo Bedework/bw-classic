@@ -52,55 +52,102 @@
     to the maximum extent the law permits.
 */
 
-package org.bedework.webconfig.collections;
+package org.bedework.webconfig.props;
 
-/** Global properties.
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import edu.rpi.sss.util.Util;
+import edu.rpi.sss.util.log.MessageEmit;
+
+/** A property has a name - used by the web application for the tag, a value
+ * and a suffix which is appended to the prefix defined by the collection of
+ * which the property is a member.
  *
+ * <p>For example the property defining the app root for the web admin client
+ * has an internal tag name "approot" and a suffix of "app.app-name.root". The prefix for
+ * the collection of a webadmin set of properties would be "org.bedework."
+ * giving a property name of "org.bedework.app.Caladmin.root"
+ *
+ * <p>This type is an ordered list of arbitrary text values
+ * 
  * @author Mike Douglass
  */
-public class Webpublic extends ConfigCollection {
+public class OrderedListProperty extends ConfigProperty {
+  private List listValues;
+
   /** Constructor
    *
-   * @param onlyIf   BooleanProperty - display collection only if true
-   * @throws Throwable
+   * @param name    String name
+   * @param suffix  String suffix
+   * @param required boolean true for a required field
    */
-  public Webpublic(String name) throws Throwable {
-    super(name, "app." + name);
+  public OrderedListProperty(String name, String suffix, boolean required) {
+    super(name, suffix, required, false);
+  }
 
-    requiredText("defaultContentType", "app.default.contenttype");
+  /** This is overrridden for validity checking
+   *
+   * @param val    String value
+   */
+  public void setValue(String val) {
+    super.setValue(val);
+    listValues = null;
+  }
 
-    requiredText("war", "war.name");
+  /** Get the values
+  *
+  * @return Collection of values
+  */
+ public Collection getValues() {
+    if (listValues == null) {
+      try {
+        listValues = Util.getList(getValue(), false);
+      } catch (Throwable t) {
+        goodValue = false;
+        listValues = new LinkedList();
+      }
+    }
+    
+    return listValues;
+  }
 
-    requiredText("context.root", "context.root");
+  /** Get an iterator over the values
+   *
+   * @return iterator over values
+   */
+  public Iterator iterateValues() {
+    return getValues().iterator();
+  }
+  
+  /**
+   * @return int size of list
+   */
+  public int size() {
+    return getValues().size();
+  }
 
-    requiredText("app.root", "app.root");
+  /** Called at update to set the error flag and emit a message
+   *
+   * @param err    MessageEmit object for error messages
+   * @return boolean true for ok
+   */
+  public boolean validate(MessageEmit err) {
+    goodValue = true;
 
-    requiredText("resources.dir", "app.resources.dir");
+    if (!getShow()) {
+      return true;
+    }
 
-    requiredText("deploy.dir", "deploy.dir");
+    try {
+      listValues = Util.getList(getValue(), false);
+    } catch (Throwable t) {
+      err.emit("org.bedework.config.error.badvalue", getName(), getValue());
+      goodValue = false;
+    }
 
-    requiredText("web.xml", "app.web.xml");
-
-    requiredText("description", "app.description");
-
-    requiredText("display.name", "app.display.name");
-
-    requiredText("name", "app.name");
-
-    requiredText("run-as", "run.as.user");
-
-    requiredBoolean("hour24", "app.hour24");
-
-    requiredInt("minincrement", "app.minincrement");
-
-    requiredText("skinset.name", "app.skinset.name");
-
-    requiredBoolean("showyeardata", "app.showyeardata");
-
-    requiredText("default.view", "app.default.view");
-
-    requiredInt("refresh.interval", "app.refresh.interval");
-
-    requiredText("refresh.action", "app.refresh.action");
+    return goodValue;
   }
 }

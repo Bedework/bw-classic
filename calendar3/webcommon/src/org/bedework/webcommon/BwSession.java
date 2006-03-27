@@ -71,17 +71,11 @@ public interface BwSession extends Serializable {
    *  =================================================================== */
 
   /** This may not be entirely correct so should be used with care.
-   *
-   * @param val
-   */
-  public void setSessionNum(int val);
-
-  /** This may not be entirely correct so should be used with care.
    * Really just provides some measure of use.
    *
-   * @return in session number
+   * @return long session number
    */
-  public int getSessionNum();
+  public long getSessionNum();
 
   /** The current user
    *

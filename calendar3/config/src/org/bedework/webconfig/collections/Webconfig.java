@@ -54,9 +54,6 @@
 
 package org.bedework.webconfig.collections;
 
-import org.bedework.webconfig.props.BooleanProperty;
-import org.bedework.webconfig.props.ConfigProperty;
-
 /** Web config client properties.
  *
  * @author Mike Douglass
@@ -66,30 +63,28 @@ public class Webconfig extends ConfigCollection {
    *
    * @throws Throwable
    */
-  public Webconfig() throws Throwable {
-    super("Webconfig", "webconfig", false);
+  public Webconfig(String name) throws Throwable {
+    super(name, "app." + name, false);
 
-    addProperty(new ConfigProperty("defaultContentType", "app.default.contenttype", true));
+    requiredText("defaultContentType", "app.default.contenttype");
 
-    addProperty(new BooleanProperty("standalone.app", "build.standalone.app", true));
+    requiredText("war", "war.name");
 
-    addProperty(new ConfigProperty("war", "war.name", true));
+    requiredText("context.root", "context.root");
 
-    addProperty(new ConfigProperty("context.root", "context.root", true));
+    requiredText("app.root", "app.root");
 
-    addProperty(new ConfigProperty("app.root", "app.root", true));
+    requiredText("resources.dir", "app.resources.dir");
 
-    addProperty(new ConfigProperty("resources.dir", "app.resources.dir", true));
+    requiredText("deploy.dir", "deploy.dir");
 
-    addProperty(new ConfigProperty("deploy.dir", "deploy.dir", true));
+    requiredText("envprefix", "env.prefix");
 
-    addProperty(new ConfigProperty("envprefix", "env.prefix", true));
+    requiredText("description", "app.description");
 
-    addProperty(new ConfigProperty("description", "app.description", true));
+    requiredText("display.name", "app.display.name");
 
-    addProperty(new ConfigProperty("display.name", "app.display.name", true));
-
-    addProperty(new ConfigProperty("name", "app.name", true));
+    requiredText("name", "app.name");
   }
 }
 

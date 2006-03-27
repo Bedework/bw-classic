@@ -54,8 +54,13 @@
 
 package org.bedework.webconfig.collections;
 
+import org.bedework.webconfig.Defs;
 import org.bedework.webconfig.props.BooleanProperty;
+import org.bedework.webconfig.props.CommentProperty;
 import org.bedework.webconfig.props.ConfigProperty;
+import org.bedework.webconfig.props.IntProperty;
+import org.bedework.webconfig.props.OrderedListProperty;
+import org.bedework.webconfig.props.OrderedMultiListProperty;
 
 import edu.rpi.sss.util.log.MessageEmit;
 
@@ -76,7 +81,7 @@ import java.util.Vector;
  *
  * @author Mike Douglass
  */
-public class ConfigCollection implements Serializable {
+public class ConfigCollection implements Defs, Serializable {
   private String name;
   private String prefix;
   private BooleanProperty onlyIf;
@@ -158,6 +163,121 @@ public class ConfigCollection implements Serializable {
       pmap = new Hashtable();
     }
     return properties;
+  }
+  
+  /** Add a required boolean property to the collection
+   *
+   * @param name
+   * @param suffix
+   * @return  BooleanProperty
+   * @throws Throwable
+   */
+  public BooleanProperty requiredBoolean(String name, String suffix) throws Throwable {
+    BooleanProperty prop = new BooleanProperty(name, suffix, true);
+    addProperty(prop);
+    
+    return prop;
+  }
+  
+  /** Add an optional boolean property to the collection
+   *
+   * @param name
+   * @param suffix
+   * @return  BooleanProperty
+   * @throws Throwable
+   */
+  public BooleanProperty optBoolean(String name, String suffix) throws Throwable {
+    BooleanProperty prop = new BooleanProperty(name, suffix, false);
+    addProperty(prop);
+    
+    return prop;
+  }
+  
+  /** Add a required int property to the collection
+   *
+   * @param name
+   * @param suffix
+   * @return  IntProperty
+   * @throws Throwable
+   */
+  public IntProperty requiredInt(String name, String suffix) throws Throwable {
+    IntProperty prop = new IntProperty(name, suffix, true);
+    addProperty(prop);
+    
+    return prop;
+  }
+  
+  /** Add a required text property to the collection
+   *
+   * @param name
+   * @param suffix
+   * @return  ConfigProperty
+   * @throws Throwable
+   */
+  public ConfigProperty requiredText(String name, String suffix) throws Throwable {
+    ConfigProperty prop = new ConfigProperty(name, suffix, true);
+    addProperty(prop);
+    
+    return prop;
+  }
+  
+  /** Add a required text property to the collection
+   *
+   * @param name
+   * @param suffix
+   * @param onlyIf     BooleanProperty - if true this field is displayed and used
+   * @return  ConfigProperty
+   * @throws Throwable
+   */
+  public ConfigProperty requiredText(String name, String suffix,
+                                     BooleanProperty onlyIf) throws Throwable {
+    ConfigProperty prop = new ConfigProperty(name, suffix, true, onlyIf);
+    addProperty(prop);
+    
+    return prop;
+  }
+  
+  /** Add a required ordered list property to the collection
+   *
+   * @param name
+   * @param suffix
+   * @return
+   * @throws Throwable
+   */
+  public OrderedListProperty requiredOrderedList(String name, 
+                                                 String suffix) throws Throwable {
+    OrderedListProperty prop = new OrderedListProperty(name, suffix, true);
+    addProperty(prop);
+    
+    return prop;
+  }
+  
+  /** Add a required ordered multi list property to the collection
+   *
+   * @param name
+   * @param suffix
+   * @param possibleValues String[] array of allowable values
+   * @return
+   * @throws Throwable
+   */
+  public OrderedMultiListProperty requiredOrderedMultiList(String name, 
+                                                           String suffix,
+                                                           String[] possibleValues) 
+               throws Throwable {
+    OrderedMultiListProperty prop = new OrderedMultiListProperty(name, suffix, true, 
+                                                                 possibleValues);
+    addProperty(prop);
+    
+    return prop;
+  }
+ 
+  /** Add a comment to the collection
+   *
+   * @param val
+   * @throws Throwable
+   */
+  public void comment(String val) throws Throwable {
+    addProperty(new CommentProperty(val));
   }
 
   /** Add a property to the collection

@@ -55,9 +55,12 @@
 package org.bedework.webconfig.props;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
+import edu.rpi.sss.util.Util;
 import edu.rpi.sss.util.log.MessageEmit;
 
 /** A property has a name - used by the web application for the tag, a value
@@ -65,13 +68,17 @@ import edu.rpi.sss.util.log.MessageEmit;
  * which the property is a member.
  *
  * <p>For example the property defining the app root for the web admin client
- * has an internal tag name "approot" and a suffix of "app.root". The prefix for
- * the collection of webadmin properties would be "org.bedework.webadmin"
- * giving a property name of "org.bedework.webadmin.app.root"
+ * has an internal tag name "approot" and a suffix of "app.app-name.root". The prefix for
+ * the collection of a webadmin set of properties would be "org.bedework."
+ * giving a property name of "org.bedework.app.Caladmin.root"
  *
+ * <p>This type is an ordered list of specified text values
+ * 
  * @author Mike Douglass
  */
-public class MultiProperty extends ConfigProperty {
+public class OrderedMultiListProperty extends ConfigProperty {
+  private List listValues;
+
   private List possibleValues;
 
   /** Constructor
@@ -81,10 +88,19 @@ public class MultiProperty extends ConfigProperty {
    * @param required boolean true for a required field
    * @param possibleValues String[] array of allowable values
    */
-  public MultiProperty(String name, String suffix, boolean required,
-                             String[] possibleValues) {
+  public OrderedMultiListProperty(String name, String suffix, boolean required,
+                                  String[] possibleValues) {
     super(name, suffix, required, false);
     this.possibleValues = Arrays.asList(possibleValues);
+  }
+
+  /** This is overrridden for validity checking
+   *
+   * @param val    String value
+   */
+  public void setValue(String val) {
+    super.setValue(val);
+    listValues = null;
   }
 
   /** Called at update to set the error flag and emit a message
@@ -99,20 +115,70 @@ public class MultiProperty extends ConfigProperty {
       return true;
     }
 
-    if (!possibleValues.contains(getValue())) {
+    try {
+      listValues = Util.getList(getValue(), false);
+    } catch (Throwable t) {
       err.emit("org.bedework.config.error.badvalue", getName(), getValue());
       goodValue = false;
+      return goodValue;
     }
-
+    
+    Iterator it = iterateValues();
+    while (it.hasNext()) {
+      if (!possibleValues.contains(it.next())) {
+        err.emit("org.bedework.config.error.badvalue", getName(), getValue());
+        goodValue = false;
+      }
+    }
+    
     return goodValue;
+  }
+
+  /** Get the values
+   *
+   * @return Collection of values
+   */
+  public Collection getValues() {
+    if (listValues == null) {
+      try {
+        listValues = Util.getList(getValue(), false);
+      } catch (Throwable t) {
+        goodValue = false;
+        listValues = new LinkedList();
+      }
+    }
+    
+    return listValues;
+  }
+
+  /** Get an iterator over the values
+   *
+   * @return iterator over values
+   */
+  public Iterator iterateValues() {
+    return getValues().iterator();
+  }
+  
+  /**
+   * @return int size of list
+   */
+  public int size() {
+    return getValues().size();
+  }
+  
+  /** Get the allowable values
+   *
+   * @return Collection of possible values
+   */
+  public Collection getPossibleValues() {
+    return possibleValues;
   }
 
   /** Iterate over the allowable values
    *
    * @return Iterator over allowable values
    */
-  public Iterator getPossibleValues() {
+  public Iterator iteratePossibleValues() {
     return possibleValues.iterator();
   }
 }
-

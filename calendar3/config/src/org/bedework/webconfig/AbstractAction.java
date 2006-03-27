@@ -67,11 +67,11 @@ import org.bedework.webconfig.collections.Webadmin;
 import org.bedework.webconfig.collections.Webconfig;
 import org.bedework.webconfig.collections.Webpersonal;
 import org.bedework.webconfig.collections.Webpublic;
-import org.bedework.webconfig.props.BooleanProperty;
 import org.bedework.webconfig.props.ConfigProperty;
+import org.bedework.webconfig.props.OrderedListProperty;
+import org.bedework.webconfig.props.OrderedMultiListProperty;
 
 import edu.rpi.sss.util.Util;
-import edu.rpi.sss.util.jsp.JspUtil;
 import edu.rpi.sss.util.jsp.UtilAbstractAction;
 import edu.rpi.sss.util.jsp.UtilActionForm;
 
@@ -169,12 +169,48 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
     ConfigCollection modules = new Modules();
     form.addPropertyCollection(modules);
     form.addPropertyCollection(new Globals());
-    form.addPropertyCollection(new Webconfig());
-    form.addPropertyCollection(new Webadmin((BooleanProperty)modules.findProperty("adminwebclient")));
-    form.addPropertyCollection(new Webpublic((BooleanProperty)modules.findProperty("publicwebclient")));
-    form.addPropertyCollection(new Webpersonal((BooleanProperty)modules.findProperty("personalwebclient")));
-    form.addPropertyCollection(new Caldavpublic((BooleanProperty)modules.findProperty("publiccaldav")));
-    form.addPropertyCollection(new Caldavpersonal((BooleanProperty)modules.findProperty("personalcaldav")));
+    
+    /* Ensure module names and types same size */
+    
+    OrderedListProperty moduleNames = 
+      (OrderedListProperty)modules.findProperty("app.names");
+    
+    OrderedMultiListProperty moduleTypes = 
+      (OrderedMultiListProperty)modules.findProperty("app.types");
+      
+    debugMsg("sizes - names=" + moduleNames.size() + " types=" + moduleTypes.size());
+    
+    if (moduleNames.size() != moduleTypes.size()) {
+      form.getErr().emit("org.bedework.config.error.badmodulenames", 
+                         moduleNames.getValue(), moduleTypes.getValue());
+      return;
+    }
+    
+    Iterator nmit = moduleNames.iterateValues();
+    Iterator typeit = moduleTypes.iterateValues();
+    
+    while (nmit.hasNext()) {
+      String nm = (String)nmit.next();
+      String type = (String)typeit.next();
+      
+      debugMsg("generate app properties - name=" + nm + " type=" + type);
+      
+      if (type.equals(webconfigType)) {
+        form.addPropertyCollection(new Webconfig(nm));
+      } else if (type.equals(webadminType)) {
+        form.addPropertyCollection(new Webadmin(nm));
+      } else if (type.equals(webpublicType)) {
+        form.addPropertyCollection(new Webpublic(nm));
+      } else if (type.equals(webuserType)) {
+        form.addPropertyCollection(new Webpersonal(nm));
+      } else if (type.equals(publiccaldavType)) {
+        form.addPropertyCollection(new Caldavpublic(nm));
+      } else if (type.equals(usercaldavType)) {
+        form.addPropertyCollection(new Caldavpersonal(nm));
+      } else {
+        form.getErr().emit("org.bedework.config.error.application", type);
+      }
+    }
 
     if (pr != null) {
       Collection cs = form.getPropertyCollections();
@@ -276,9 +312,6 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
     if (env != null) {
       return env;
     }
-
-    String envPrefix = JspUtil.getReqProperty(frm.getMres(),
-                                              "org.bedework.envprefix");
 
     env = new CalEnv(envPrefix, debug);
     frm.assignEnv(env);

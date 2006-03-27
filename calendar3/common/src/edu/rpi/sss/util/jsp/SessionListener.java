@@ -60,16 +60,21 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.ServletContext;
 
 import java.util.Enumeration;
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 
 /** A class to listen for session start and end. Note this may not work too
  * well in a clustered environment because the counts should be shared.
  */
 public class SessionListener implements HttpSessionListener {
-  private static volatile int activeSessions = 0;
-  private static volatile long totalSessions = 0;
+  private static class Counts {
+    int activeSessions = 0;
+    long totalSessions = 0;
+  }
+  
+  private static volatile HashMap countsMap = new HashMap();
   private static boolean logActive = true;
-  private static String id = "";
 
   /** Name of the init parameter holding our name */
   private static final String appNameInitParameter = "rpiappname";
@@ -82,16 +87,19 @@ public class SessionListener implements HttpSessionListener {
    * @see javax.servlet.http.HttpSessionListener#sessionCreated(javax.servlet.http.HttpSessionEvent)
    */
   public void sessionCreated(HttpSessionEvent se) {
-    activeSessions++;
-    totalSessions++;
     HttpSession session = se.getSession();
     ServletContext sc = session.getServletContext();
+    String appname = getAppName(session);
+    Counts ct = getCounts(appname);
+    
+    ct.activeSessions++;
+    ct.totalSessions++;
 
     if (logActive) {
       logSessionCounts(session, true);
-      sc.log("========= New session(" + id +
-             "): " + activeSessions + " active, " +
-             totalSessions + " total. vm(used, max)=(" +
+      sc.log("========= New session(" + appname +
+             "): " + ct.activeSessions + " active, " +
+             ct.totalSessions + " total. vm(used, max)=(" +
             Runtime.getRuntime().freeMemory()/(1024 * 1024) + "M, " +
             Runtime.getRuntime().totalMemory()/(1024 * 1024) + "M)");
     }
@@ -110,15 +118,19 @@ public class SessionListener implements HttpSessionListener {
 
   /* Session Invalidation Event */
   public void sessionDestroyed(HttpSessionEvent se) {
-    if (activeSessions > 0) {
-      activeSessions--;
-    }
     HttpSession session = se.getSession();
     ServletContext sc = session.getServletContext();
+    String appname = getAppName(session);
+    Counts ct = getCounts(appname);
+    
+    if (ct.activeSessions > 0) {
+      ct.activeSessions--;
+    }
+    
     if (logActive) {
       logSessionCounts(session, false);
-      sc.log("========= Session destroyed(" + id +
-             "): " + activeSessions + " active. vm(used, max)=(" +
+      sc.log("========= Session destroyed(" + appname +
+             "): " + ct.activeSessions + " active. vm(used, max)=(" +
             Runtime.getRuntime().freeMemory()/(1024 * 1024) + "M, " +
             Runtime.getRuntime().totalMemory()/(1024 * 1024) + "M)");
     }
@@ -131,31 +143,6 @@ public class SessionListener implements HttpSessionListener {
     logActive = val;
   }
 
-  /**
-   * @return int num active sessions
-   */
-  public static int getActiveSessions() {
-    return activeSessions;
-  }
-
-  /**
-   * @return long total sessions
-   */
-  public static long getTotalSessions() {
-    return totalSessions;
-  }
-
-  /**
-   * @param val String id
-   */
-  public static void setId(String val) {
-    if (val != null) {
-      id = val;
-    } else {
-      id = "";
-    }
-  }
-
   /** Log the session counters for applications that maintain them.
    *
    * @param sess       HttpSession for the session id
@@ -165,12 +152,8 @@ public class SessionListener implements HttpSessionListener {
                                   boolean start) {
     Logger log = Logger.getLogger(this.getClass());
     StringBuffer sb;
-    ServletContext sc = sess.getServletContext();
-
-    String appname = sc.getInitParameter(appNameInitParameter);
-    if (appname == null) {
-      appname = "?";
-    }
+    String appname = getAppName(sess);
+    Counts ct = getCounts(appname);
 
     if (start) {
       sb = new StringBuffer("SESSION-START:");
@@ -182,9 +165,9 @@ public class SessionListener implements HttpSessionListener {
     sb.append(":");
     sb.append(appname);
     sb.append(":");
-    sb.append(activeSessions);
+    sb.append(ct.activeSessions);
     sb.append(":");
-    sb.append(totalSessions);
+    sb.append(ct.totalSessions);
     sb.append(":");
     sb.append(Runtime.getRuntime().freeMemory()/(1024 * 1024));
     sb.append("M:");
@@ -192,6 +175,34 @@ public class SessionListener implements HttpSessionListener {
     sb.append("M");
 
     log.info(sb.toString());
+  }
+  
+  private Counts getCounts(String name) {
+    try {
+      synchronized (countsMap) {
+        Counts c = (Counts)countsMap.get(name);
+        
+        if (c == null) {
+          c = new Counts();
+          countsMap.put(name, c);
+        }
+        
+        return c;
+      }
+    } catch (Throwable t) {
+      return new Counts();
+    }
+  }
+  
+  private String getAppName(HttpSession sess) {
+    ServletContext sc = sess.getServletContext();
+
+    String appname = sc.getInitParameter(appNameInitParameter);
+    if (appname == null) {
+      appname = "?";
+    }
+    
+    return appname;
   }
 
   /** Get the session id for the loggers.

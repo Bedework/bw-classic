@@ -52,55 +52,55 @@
     to the maximum extent the law permits.
 */
 
-package org.bedework.webconfig.collections;
+package org.bedework.webconfig.props;
 
-/** Global properties.
+/** A property has a name - used by the web application for the tag, a value
+ * and a suffix which is appended to the prefix defined by the collection of
+ * which the property is a member.
  *
+ * <p>For example the property defining the app root for the web admin client
+ * has an internal tag name "approot" and a suffix of "app.root". The prefix for
+ * the collection of webadmin properties would be "org.bedework.webadmin"
+ * giving a property name of "org.bedework.webadmin.app.root"
+ *
+ * <p>A comment propert is just that - text to be inserted as a comment in the 
+ * resulting properties file.
+ * 
  * @author Mike Douglass
  */
-public class Webpublic extends ConfigCollection {
+public class CommentProperty extends ConfigProperty {
+  private String value;
+
   /** Constructor
    *
-   * @param onlyIf   BooleanProperty - display collection only if true
-   * @throws Throwable
+   * @param value    String
    */
-  public Webpublic(String name) throws Throwable {
-    super(name, "app." + name);
+  public CommentProperty(String val) {
+    super("comment", "comment", true, false);
+    value = val;
+  }
 
-    requiredText("defaultContentType", "app.default.contenttype");
+  /** Other property types override this
+   *
+   * @return int type of property
+   */
+  public int getType() {
+    return typeComment;
+  }
 
-    requiredText("war", "war.name");
+  /** This is overrridden for validity checking
+   *
+   * @param val    String value
+   */
+  public void setValue(String val) {
+    value = val;
+  }
 
-    requiredText("context.root", "context.root");
-
-    requiredText("app.root", "app.root");
-
-    requiredText("resources.dir", "app.resources.dir");
-
-    requiredText("deploy.dir", "deploy.dir");
-
-    requiredText("web.xml", "app.web.xml");
-
-    requiredText("description", "app.description");
-
-    requiredText("display.name", "app.display.name");
-
-    requiredText("name", "app.name");
-
-    requiredText("run-as", "run.as.user");
-
-    requiredBoolean("hour24", "app.hour24");
-
-    requiredInt("minincrement", "app.minincrement");
-
-    requiredText("skinset.name", "app.skinset.name");
-
-    requiredBoolean("showyeardata", "app.showyeardata");
-
-    requiredText("default.view", "app.default.view");
-
-    requiredInt("refresh.interval", "app.refresh.interval");
-
-    requiredText("refresh.action", "app.refresh.action");
+  /** Get the name
+   *
+   * @return String name used for tags.
+   */
+  public String getValue() {
+    return value;
   }
 }

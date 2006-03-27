@@ -54,10 +54,6 @@
 
 package org.bedework.webconfig.collections;
 
-import org.bedework.webconfig.props.BooleanProperty;
-import org.bedework.webconfig.props.IntProperty;
-import org.bedework.webconfig.props.ConfigProperty;
-
 /** Web personal client properties.
  *
  * @author Mike Douglass
@@ -68,67 +64,51 @@ public class Webpersonal extends ConfigCollection {
    * @param onlyIf   BooleanProperty - display collection only if true
    * @throws Throwable
    */
-  public Webpersonal(BooleanProperty onlyIf) throws Throwable {
-    super("webpersonal", "webpersonal", onlyIf);
+  public Webpersonal(String name) throws Throwable {
+    super(name, "app." + name);
 
-    addProperty(new ConfigProperty("defaultContentType", "app.default.contenttype", true));
+    requiredText("defaultContentType", "app.default.contenttype");
 
-    addProperty(new BooleanProperty("standalone.app", "build.standalone.app", true));
+    requiredText("war", "war.name");
 
-    BooleanProperty jetspeedportlet = new BooleanProperty("jetspeedPortlet", "build.jetspeed.portlet", true);
-    addProperty(jetspeedportlet);
+    requiredText("context.root", "context.root");
 
-    BooleanProperty uportalportlet = new BooleanProperty("uportalPortlet", "build.uportal.portlet", true);
-    addProperty(uportalportlet);
+    requiredText("app.root", "app.root");
 
-    addProperty(new ConfigProperty("war", "war.name", true));
+    requiredText("resources.dir", "app.resources.dir");
 
-    BooleanProperty j2ee = new BooleanProperty("j2ee.deploy", "deploy.j2ee", true);
+    requiredText("deploy.dir", "deploy.dir");
 
-    addProperty(j2ee);
+    requiredText("web.xml", "app.web.xml");
 
-    addProperty(new ConfigProperty("ear", "ear.name", true, j2ee));
+    requiredText("security.domain", "app.security.domain");
 
-    addProperty(new ConfigProperty("context.root", "context.root", true));
+    requiredText("security.prefix", "app.security.prefix");
 
-    addProperty(new ConfigProperty("app.root", "app.root", true));
-
-    addProperty(new ConfigProperty("resources.dir", "app.resources.dir", true));
-
-    addProperty(new ConfigProperty("deploy.dir", "deploy.dir", true));
-
-    addProperty(new ConfigProperty("envprefix", "env.prefix", true));
-
-    addProperty(new ConfigProperty("web.xml", "app.web.xml", true));
-
-    addProperty(new ConfigProperty("security.domain", "app.security.domain", true));
-
-    addProperty(new ConfigProperty("security.prefix", "app.security.prefix", true));
-
-    addProperty(new ConfigProperty("transport.guarantee", "app.transport.guarantee", true));
+    requiredText("transport.guarantee", "app.transport.guarantee");
 
     // We really want this to set the value of the above to NONE or CONFIDENTIAL
-    //addProperty(new BooleanProperty("ssl", "use.ssl", true));
+    //addProperty(new BooleanProperty("ssl", "use.ssl");
 
-    addProperty(new ConfigProperty("description", "app.description", true));
+    requiredText("description", "app.description");
 
-    addProperty(new ConfigProperty("display.name", "app.display.name", true));
+    requiredText("display.name", "app.display.name");
 
-    addProperty(new ConfigProperty("name", "app.name", true));
+    requiredText("name", "app.name");
 
-    addProperty(new BooleanProperty("hour24", "app.hour24", true));
+    requiredBoolean("hour24", "app.hour24");
 
-    addProperty(new IntProperty("minincrement", "app.minincrement", true));
+    requiredInt("minincrement", "app.minincrement");
 
-    addProperty(new ConfigProperty("skinset.name", "app.skinset.name", true));
+    requiredText("skinset.name", "app.skinset.name");
 
-    addProperty(new BooleanProperty("showyeardata", "app.showyeardata", true));
+    requiredBoolean("showyeardata", "app.showyeardata");
 
-    addProperty(new ConfigProperty("default.view", "app.default.view", true));
+    requiredText("default.view", "app.default.view");
 
-    addProperty(new IntProperty("refresh.interval", "app.refresh.interval", true));
+    requiredInt("refresh.interval", "app.refresh.interval");
 
-    addProperty(new ConfigProperty("refresh.action", "app.refresh.action", true));
+    requiredText("refresh.action", "app.refresh.action");
   }
 }
 

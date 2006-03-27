@@ -54,10 +54,6 @@
 
 package org.bedework.webconfig.collections;
 
-import org.bedework.webconfig.props.BooleanProperty;
-import org.bedework.webconfig.props.IntProperty;
-import org.bedework.webconfig.props.ConfigProperty;
-
 /** Web admin client properties.
  *
  * @author Mike Douglass
@@ -68,77 +64,58 @@ public class Webadmin extends ConfigCollection {
    * @param onlyIf   BooleanProperty - display collection only if true
    * @throws Throwable
    */
-  public Webadmin(BooleanProperty onlyIf) throws Throwable {
-    super("Webadmin", "webadmin", onlyIf);
+  public Webadmin(String name) throws Throwable {
+    super(name, "app." + name);
 
-    addProperty(new ConfigProperty("defaultContentType", "app.default.contenttype", true));
+    requiredText("defaultContentType", "app.default.contenttype");
 
-    addProperty(new BooleanProperty("standalone.app", "build.standalone.app", true));
+    requiredText("war", "war.name");
 
-    BooleanProperty jetspeedportlet = new BooleanProperty("jetspeedPortlet", "build.jetspeed.portlet", true);
-    addProperty(jetspeedportlet);
+    requiredText("context.root", "context.root");
 
-    addProperty(new ConfigProperty("jetspeed2.roles", "app.jetspeed2.roles", true, jetspeedportlet));
+    requiredText("app.root", "app.root");
 
-    BooleanProperty uportalportlet = new BooleanProperty("uportalPortlet", "build.uportal.portlet", true);
-    addProperty(uportalportlet);
+    requiredText("resources.dir", "app.resources.dir");
 
-    addProperty(new ConfigProperty("war", "war.name", true));
+    requiredText("deploy.dir", "deploy.dir");
 
-    BooleanProperty j2ee = new BooleanProperty("j2ee.deploy", "deploy.j2ee", true);
+    requiredText("security.domain", "app.security.domain");
 
-    addProperty(j2ee);
+    requiredText("security.prefix", "app.security.prefix");
 
-    addProperty(new ConfigProperty("ear", "ear.name", true, j2ee));
-
-    addProperty(new ConfigProperty("context.root", "context.root", true));
-
-    addProperty(new ConfigProperty("app.root", "app.root", true));
-
-    addProperty(new ConfigProperty("resources.dir", "app.resources.dir", true));
-
-    addProperty(new ConfigProperty("deploy.dir", "deploy.dir", true));
-
-    addProperty(new ConfigProperty("envprefix", "env.prefix", true));
-
-    addProperty(new ConfigProperty("security.domain", "app.security.domain", true));
-
-    addProperty(new ConfigProperty("security.prefix", "app.security.prefix", true));
-
-    addProperty(new ConfigProperty("transport.guarantee", "app.transport.guarantee", true));
+    requiredText("transport.guarantee", "app.transport.guarantee");
 
     // We really want this to set the value of the above to NONE or CONFIDENTIAL
     //addProperty(new BooleanProperty("ssl", "use.ssl", true));
 
-    addProperty(new ConfigProperty("description", "app.description", true));
+    requiredText("description", "app.description");
 
-    addProperty(new ConfigProperty("display.name", "app.display.name", true));
+    requiredText("display.name", "app.display.name");
 
-    addProperty(new ConfigProperty("name", "app.name", true));
+    requiredText("name", "app.name");
 
-    addProperty(new BooleanProperty("noGroupAllowed", "app.nogroupallowed", true));
+    requiredBoolean("noGroupAllowed", "app.nogroupallowed");
 
-    addProperty(new BooleanProperty("autocreatesponsors", "app.autocreatesponsors", true));
+    requiredBoolean("autocreatesponsors", "app.autocreatesponsors");
 
-    addProperty(new BooleanProperty("autodeletesponsors", "app.autodeletesponsors", true));
+    requiredBoolean("autodeletesponsors", "app.autodeletesponsors");
 
-    addProperty(new BooleanProperty("autocreatelocations", "app.autocreatelocations", true));
+    requiredBoolean("autocreatelocations", "app.autocreatelocations");
 
-    addProperty(new BooleanProperty("autodeletelocations", "app.autodeletelocations", true));
+    requiredBoolean("autodeletelocations", "app.autodeletelocations");
 
-    addProperty(new BooleanProperty("allowEditAllCategories", "app.allowEditAllCategories", true));
+    requiredBoolean("allowEditAllCategories", "app.allowEditAllCategories");
 
-    addProperty(new BooleanProperty("allowEditAllLocations", "app.allowEditAllLocations", true));
+    requiredBoolean("allowEditAllLocations", "app.allowEditAllLocations");
 
-    addProperty(new BooleanProperty("allowEditAllSponsors", "app.allowEditAllSponsors", true));
+    requiredBoolean("allowEditAllSponsors", "app.allowEditAllSponsors");
 
-    addProperty(new BooleanProperty("categoryOptional", "app.categoryOptional", true));
+    requiredBoolean("categoryOptional", "app.categoryOptional");
 
-    addProperty(new BooleanProperty("hour24", "app.hour24", true));
+    requiredBoolean("hour24", "app.hour24");
 
-    addProperty(new IntProperty("minincrement", "app.minincrement", true));
+    requiredInt("minincrement", "app.minincrement");
 
-    addProperty(new ConfigProperty("admingroupsidprefix", "app.admingroupsidprefix", true));
+    requiredText("admingroupsidprefix", "app.admingroupsidprefix");
   }
 }
-

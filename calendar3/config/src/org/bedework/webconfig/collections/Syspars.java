@@ -54,9 +54,6 @@
 
 package org.bedework.webconfig.collections;
 
-import org.bedework.webconfig.props.IntProperty;
-import org.bedework.webconfig.props.ConfigProperty;
-
 /** Global properties.
  *
  * @author Mike Douglass
@@ -69,45 +66,43 @@ public class Syspars extends ConfigCollection {
   public Syspars() throws Throwable {
     super("syspar", "syspar");
 
-    addProperty(new ConfigProperty("tzid", "tzid", true));
+    requiredText("tzid", "tzid");
 
-    addProperty(new ConfigProperty("systemid", "systemid", true));
+    requiredText("systemid", "systemid");
 
-    addProperty(new ConfigProperty("public.calroot", "public.calroot",
-                                   true, true));
+    requiredText("public.calroot", "public.calroot");
 
-    addProperty(new ConfigProperty("user.calroot", "user.calroot",
-                                   true, true));
+    requiredText("user.calroot", "user.calroot");
 
-    addProperty(new ConfigProperty("default.user.calendar",
-                                   "default.user.calendar", true));
+    requiredText("default.user.calendar",
+                                   "default.user.calendar");
 
-    addProperty(new ConfigProperty("default.trash.calendar",
-                                   "default.trash.calendar", true));
+    requiredText("default.trash.calendar",
+                                   "default.trash.calendar");
 
-    addProperty(new ConfigProperty("default.user.inbox",
-                                   "default.user.inbox", true));
+    requiredText("default.user.inbox",
+                                   "default.user.inbox");
 
-    addProperty(new ConfigProperty("default.user.outbox",
-                                   "default.user.outbox", true));
+    requiredText("default.user.outbox",
+                                   "default.user.outbox");
 
-    addProperty(new ConfigProperty("default.user.view",
-                                   "default.user.view", true));
+    requiredText("default.user.view",
+                                   "default.user.view");
 
-    addProperty(new ConfigProperty("public.user", "public.user", true, true));
+    requiredText("public.user", "public.user");
 
-    addProperty(new IntProperty("http.connections.peruser", "http connections per user", true, true));
+    requiredInt("http.connections.peruser", "http connections per user");
 
-    addProperty(new IntProperty("http.connections.perhost", "http connections per host", true, true));
+    requiredInt("http.connections.perhost", "http connections per host");
 
-    addProperty(new IntProperty("http.connections", "http connections", true, true));
+    requiredInt("http.connections", "http connections");
 
-    addProperty(new ConfigProperty("userauthclass", "userauthclass", true));
+    requiredText("userauthclass", "userauthclass");
 
-    addProperty(new ConfigProperty("mailerclass", "mailerclass", true));
+    requiredText("mailerclass", "mailerclass");
 
-    addProperty(new ConfigProperty("admingroupsclass", "admingroupsclass", true));
+    requiredText("admingroupsclass", "admingroupsclass");
 
-    addProperty(new ConfigProperty("usergroupsclass", "usergroupsclass", true));
+    requiredText("usergroupsclass", "usergroupsclass");
   }
 }

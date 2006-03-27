@@ -59,8 +59,11 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 /**
 *
@@ -401,5 +404,40 @@ public class Util {
    */
   public static boolean present(String val) {
     return checkNull(val) != null;
+  }
+
+  /** Turn a comma separated list into a List.
+   * Throws exception for invalid list.
+   * 
+   * @param val     String comma separated list
+   * @param emptyOk Empty elements are OK
+   * @return List of elements, never null
+   * @throws Throwable for invalid list
+   */
+  public static List getList(String val, boolean emptyOk) throws Throwable {
+    List l = new LinkedList();
+
+    if ((val == null) || (val.length() == 0)) {
+      return l;
+    }
+
+    StringTokenizer st = new StringTokenizer(val, ",", false);
+    while (st.hasMoreTokens()) {
+      String token = st.nextToken().trim();
+
+      if ((token == null) || (token.length() == 0)) {
+        if (!emptyOk) {
+          // No empty strings
+
+          throw new Exception("List has an empty element.");
+        }
+        l.add("");
+      } else {
+        // Got non-empty element
+        l.add(token);
+      }
+    }
+
+    return l;
   }
 }

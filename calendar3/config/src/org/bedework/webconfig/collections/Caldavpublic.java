@@ -54,9 +54,6 @@
 
 package org.bedework.webconfig.collections;
 
-import org.bedework.webconfig.props.BooleanProperty;
-import org.bedework.webconfig.props.ConfigProperty;
-
 /** Caldav public events server properties.
  *
  * @author Mike Douglass
@@ -67,28 +64,20 @@ public class Caldavpublic extends ConfigCollection {
    * @param onlyIf   BooleanProperty - display collection only if true
    * @throws Throwable
    */
-  public Caldavpublic(BooleanProperty onlyIf) throws Throwable {
-    super("calDAV-public", "caldav.public", onlyIf);
+  public Caldavpublic(String name) throws Throwable {
+    super(name, "app." + name);
 
-    addProperty(new ConfigProperty("war", "war.name", true));
+    requiredText("war", "war.name");
 
-    BooleanProperty j2ee = new BooleanProperty("j2ee.deploy", "deploy.j2ee", true);
+    requiredText("context.root", "context.root");
 
-    addProperty(j2ee);
+    requiredText("deploy.dir", "deploy.dir");
 
-    addProperty(new ConfigProperty("ear", "ear.name", true, j2ee));
+    requiredText("description", "app.description");
 
-    addProperty(new ConfigProperty("context.root", "context.root", true));
+    requiredText("display.name", "app.display.name");
 
-    addProperty(new ConfigProperty("deploy.dir", "deploy.dir", true));
-
-    addProperty(new ConfigProperty("envprefix", "env.prefix", true));
-
-    addProperty(new ConfigProperty("description", "app.description", true));
-
-    addProperty(new ConfigProperty("display.name", "app.display.name", true));
-
-    addProperty(new ConfigProperty("name", "app.name", true));
+    requiredText("name", "app.name");
   }
 }
 

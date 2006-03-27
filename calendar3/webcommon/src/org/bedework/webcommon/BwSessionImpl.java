@@ -58,6 +58,7 @@ import edu.rpi.sss.util.servlets.PresentationState;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.util.MessageResources;
@@ -65,21 +66,22 @@ import org.apache.struts.util.MessageResources;
 /** This ought to be made pluggable. We need a session factory which uses
  * CalEnv to figure out which implementation to use.
  *
- * <p>This class represents a session for the UWCal web interface.
+ * <p>This class represents a session for the Bedework web interface.
  * Some user state will be retained here.
  * We also provide a number of methods which act as the interface between
  * the web world and the calendar world.
  *
- * <p>The UW web interface has session support that may not be applicable
- * to all potential users of this application. We should try to interface to
- * it through this.
- *
  * @author Mike Douglass   douglm@rpi.edu
  */
 public class BwSessionImpl implements BwSession {
-  /** Not valid in the j2ee world but it's only used to count sessions.
+  /** Not completely valid in the j2ee world but it's only used to count sessions.
    */
-  private static int sessionNum = 0;
+  private static class Counts {
+    long totalSessions = 0;
+  }
+  
+  private static volatile HashMap countsMap = new HashMap();
+  private long sessionNum = 0;
 
   /** True if we want debugging output
    */
@@ -101,7 +103,7 @@ public class BwSessionImpl implements BwSession {
    */
   private PresentationState ps;
 
-  /** Constructor for a UWCalSession
+  /** Constructor for a Session
    *
    * @param user       String user id
    * @param appRoot
@@ -160,7 +162,7 @@ public class BwSessionImpl implements BwSession {
       }
     }
 
-    sessionNum++;
+    setSessionNum(appName);
   }
 
   /* ======================================================================
@@ -168,16 +170,9 @@ public class BwSessionImpl implements BwSession {
    * ====================================================================== */
 
   /* (non-Javadoc)
-   * @see org.bedework.webcommon.BwSession#setSessionNum(int)
-   */
-  public void setSessionNum(int val) {
-    sessionNum = val;
-  }
-
-  /* (non-Javadoc)
    * @see org.bedework.webcommon.BwSession#getSessionNum()
    */
-  public int getSessionNum() {
+  public long getSessionNum() {
     return sessionNum;
   }
 
@@ -265,6 +260,23 @@ public class BwSessionImpl implements BwSession {
       return !(uri == null || uri.startsWith("/") || new URI(uri).isAbsolute());
     } catch (URISyntaxException e) {  // not a URI at all
       return false;
+    }
+  }
+  
+  private void setSessionNum(String name) {
+    try {
+      synchronized (countsMap) {
+        Counts c = (Counts)countsMap.get(name);
+        
+        if (c == null) {
+          c = new Counts();
+          countsMap.put(name, c);
+        }
+        
+        sessionNum = c.totalSessions;
+        c.totalSessions++;
+      }
+    } catch (Throwable t) {
     }
   }
 }
