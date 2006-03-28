@@ -110,7 +110,7 @@
           org.bedework.calfacade.svc.BwAdminGroupEntry age,
           org.bedework.calfacade.svc.BwAdminGroup ag
         where ag.id = age.groupId and
-             age.memberId=:grpid
+             age.memberId=:grpid and age.memberIsGroup=true
   ]]></query>
 
   <query name="getGroupGroupMembers"><![CDATA[
