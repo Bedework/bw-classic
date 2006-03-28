@@ -63,6 +63,7 @@ import org.bedework.webconfig.collections.Caldavpublic;
 import org.bedework.webconfig.collections.ConfigCollection;
 import org.bedework.webconfig.collections.Globals;
 import org.bedework.webconfig.collections.Modules;
+import org.bedework.webconfig.collections.Syspars;
 import org.bedework.webconfig.collections.Webadmin;
 import org.bedework.webconfig.collections.Webconfig;
 import org.bedework.webconfig.collections.Webpersonal;
@@ -84,7 +85,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts.util.MessageResources;
 
-/** There are 3 opeations for this simple client <ul>
+/** There are 3 operations for this simple client <ul>
  * <li>load properties</li>
  * <li>refresh</li>
  * <li>save properties</li>
@@ -111,12 +112,6 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
     } catch (Throwable t) {
       form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
       form.getErr().emit(t);
-    }
-
-    if (form.getPropertyCollections().size() == 0) {
-      // Load the default properties
-      Properties pr = Util.getPropertiesFromResource(defaultProperties);
-      resetProperties(pr, form);
     }
 
     return forward;
@@ -160,15 +155,40 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
 
       BwWebUtil.setState(request, s);
     }
+    
+    boolean changed = false;
+    
+    if (form.getPropertyCollections().size() == 0) {
+      changed = true;
+    } else {
+      changed = modulesChanged(form);
+    }
+    
+    if (changed) {
+      resetProperties(form);
+    }
   }
 
-  protected void resetProperties(Properties pr,
-                                 ActionForm form) throws Throwable {
+  protected void resetProperties(ActionForm form) throws Throwable {
     form.setPropertyCollections(null); // reinit
 
     ConfigCollection modules = new Modules();
     form.addPropertyCollection(modules);
-    form.addPropertyCollection(new Globals());
+    
+    ConfigCollection globals = new Globals();
+    form.addPropertyCollection(globals);
+    
+    ConfigCollection syspars = new Syspars();
+    form.addPropertyCollection(syspars);
+
+    Properties pr = form.getProperties();
+    
+    /* Initialise those two as they may affect the rest. */
+    if (pr != null) {
+      modules.initialise(pr, form.getErr());
+      globals.initialise(pr, form.getErr());
+      syspars.initialise(pr, form.getErr());
+    }
     
     /* Ensure module names and types same size */
     
@@ -225,12 +245,51 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
     }
   }
 
-  protected boolean saveProperties(Properties pr,
-                                   ActionForm form) throws Throwable {
+  protected ConfigCollection findCollection(String name, 
+                                            ActionForm form) throws Throwable {
+    Collection c = form.getPropertyCollections();
+
+    Iterator it = c.iterator();
+
+    while (it.hasNext()) {
+      ConfigCollection coll = (ConfigCollection)it.next();
+
+      if (name.equals(coll.getName())) {
+        return coll;
+      }
+    }
+
+    return null;
+  }
+
+  protected boolean modulesChanged(ActionForm form) throws Throwable {
+    ConfigCollection modules = findCollection(modulesCollectionName, form);
+    
+    if (modules == null) {
+      return false;
+    }
+    
+    OrderedListProperty moduleNames = 
+      (OrderedListProperty)modules.findProperty("app.names");
+    
+    OrderedMultiListProperty moduleTypes = 
+      (OrderedMultiListProperty)modules.findProperty("app.types");
+
+    boolean changed = moduleNames.getChanged() || moduleTypes.getChanged();
+    
+    moduleNames.resetChanged();
+    moduleTypes.resetChanged();
+    
+    return changed;
+  }
+
+  protected boolean saveProperties(ActionForm form) throws Throwable {
     Collection c = form.getPropertyCollections();
 
     Iterator it = c.iterator();
     boolean ok = true;
+    Properties pr = new Properties();
+    form.setProperties(pr);
 
     while (it.hasNext()) {
       ConfigCollection coll = (ConfigCollection)it.next();

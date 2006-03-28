@@ -64,7 +64,7 @@ public class Modules extends ConfigCollection {
    * @throws Throwable
    */
   public Modules() throws Throwable {
-    super("modules", "install");
+    super(modulesCollectionName, "install");
 
     requiredOrderedList("app.names", "app.names");
 

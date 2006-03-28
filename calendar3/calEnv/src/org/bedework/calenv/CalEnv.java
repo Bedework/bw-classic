@@ -139,7 +139,7 @@ public class CalEnv implements Serializable {
    * @return Properties    global properties object
    * @throws CalEnvException
    */
-  public Properties getProperties() throws CalEnvException {
+  public static Properties getProperties() throws CalEnvException {
     return getPr();
   }
 

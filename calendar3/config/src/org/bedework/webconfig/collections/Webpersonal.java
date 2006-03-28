@@ -67,48 +67,54 @@ public class Webpersonal extends ConfigCollection {
   public Webpersonal(String name) throws Throwable {
     super(name, "app." + name);
 
-    requiredText("defaultContentType", "app.default.contenttype");
+    requiredText("defaultContentType", "default.contenttype");
 
     requiredText("war", "war.name");
 
     requiredText("context.root", "context.root");
 
-    requiredText("app.root", "app.root");
+    requiredText("app.root", "root");
 
-    requiredText("resources.dir", "app.resources.dir");
+    //requiredText("resources.dir", "app.resources.dir");
 
     requiredText("deploy.dir", "deploy.dir");
 
-    requiredText("web.xml", "app.web.xml");
+    requiredText("web.xml", "web.xml");
 
-    requiredText("security.domain", "app.security.domain");
+    requiredText("security.domain", "security.domain");
 
-    requiredText("security.prefix", "app.security.prefix");
+    requiredText("security.prefix", "security.prefix");
 
-    requiredText("transport.guarantee", "app.transport.guarantee");
+    requiredText("transport.guarantee", "transport.guarantee");
 
     // We really want this to set the value of the above to NONE or CONFIDENTIAL
     //addProperty(new BooleanProperty("ssl", "use.ssl");
 
-    requiredText("description", "app.description");
+    requiredText("description", "description");
 
-    requiredText("display.name", "app.display.name");
+    requiredText("display.name", "display.name");
 
-    requiredText("name", "app.name");
+    requiredText("name", "name");
 
-    requiredBoolean("hour24", "app.hour24");
+    requiredBoolean("hour24", "hour24");
 
-    requiredInt("minincrement", "app.minincrement");
+    requiredInt("minincrement", "minincrement");
 
-    requiredText("skinset.name", "app.skinset.name");
+    requiredText("skinset.name", "skinset.name");
 
-    requiredBoolean("showyeardata", "app.showyeardata");
+    requiredBoolean("showyeardata", "showyeardata");
 
-    requiredText("default.view", "app.default.view");
+    requiredText("default.view", "default.view");
 
-    requiredInt("refresh.interval", "app.refresh.interval");
+    requiredInt("refresh.interval", "refresh.interval");
 
-    requiredText("refresh.action", "app.refresh.action");
+    requiredText("refresh.action", "refresh.action");
+
+    hiddenBoolean("guestmode", "guestmode");
+
+    hiddenBoolean("publicadmin", "publicadmin");
+
+    requiredText("logprefix", "logprefix");
   }
 }
 

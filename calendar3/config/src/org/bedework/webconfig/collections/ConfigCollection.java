@@ -179,6 +179,21 @@ public class ConfigCollection implements Defs, Serializable {
     return prop;
   }
   
+  /** Add a hidden boolean property to the collection
+   *
+   * @param name
+   * @param suffix
+   * @return  BooleanProperty
+   * @throws Throwable
+   */
+  public BooleanProperty hiddenBoolean(String name, String suffix) throws Throwable {
+    BooleanProperty prop = new BooleanProperty(name, suffix, true);
+    prop.setHidden(true);
+    addProperty(prop);
+    
+    return prop;
+  }
+  
   /** Add an optional boolean property to the collection
    *
    * @param name
@@ -216,6 +231,21 @@ public class ConfigCollection implements Defs, Serializable {
    */
   public ConfigProperty requiredText(String name, String suffix) throws Throwable {
     ConfigProperty prop = new ConfigProperty(name, suffix, true);
+    addProperty(prop);
+    
+    return prop;
+  }
+  
+  /** Add a hidden text property to the collection
+   *
+   * @param name
+   * @param suffix
+   * @return  ConfigProperty
+   * @throws Throwable
+   */
+  public ConfigProperty hiddenText(String name, String suffix) throws Throwable {
+    ConfigProperty prop = new ConfigProperty(name, suffix, true);
+    prop.setHidden(true);
     addProperty(prop);
     
     return prop;
@@ -405,6 +435,54 @@ public class ConfigCollection implements Defs, Serializable {
     }
 
     return goodValues;
+  }
+
+  /* ====================================================================
+   *                   Object methods
+   * ==================================================================== */
+
+  public int compareTo(Object o) {
+    if (!(o instanceof ConfigCollection)) {
+      return -1;
+    }
+
+    if (this == o) {
+      return 0;
+    }
+
+    ConfigCollection that = (ConfigCollection)o;
+
+    return getName().compareTo(that.getName());
+  }
+
+  /* We always use the compareTo method
+   */
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+
+    return compareTo(obj) == 0;
+  }
+
+  public int hashCode() {
+    int hc = 1;
+
+    if (getName() != null) {
+      hc *= getName().hashCode();
+    }
+
+    return hc;
+  }
+
+  public String toString() {
+    StringBuffer sb = new StringBuffer("ConfigCollection{");
+
+    sb.append("name=");
+    sb.append(getName());
+    sb.append("}");
+
+    return sb.toString();
   }
 }
 

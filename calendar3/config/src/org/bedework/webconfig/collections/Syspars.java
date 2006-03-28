@@ -74,20 +74,15 @@ public class Syspars extends ConfigCollection {
 
     requiredText("user.calroot", "user.calroot");
 
-    requiredText("default.user.calendar",
-                                   "default.user.calendar");
+    requiredText("default.user.calendar", "default.user.calendar");
 
-    requiredText("default.trash.calendar",
-                                   "default.trash.calendar");
+    requiredText("default.trash.calendar", "default.trash.calendar");
 
-    requiredText("default.user.inbox",
-                                   "default.user.inbox");
+    requiredText("default.user.inbox", "default.user.inbox");
 
-    requiredText("default.user.outbox",
-                                   "default.user.outbox");
+    requiredText("default.user.outbox", "default.user.outbox");
 
-    requiredText("default.user.view",
-                                   "default.user.view");
+    requiredText("default.user.view", "default.user.view");
 
     requiredText("public.user", "public.user");
 

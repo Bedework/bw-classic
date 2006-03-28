@@ -67,55 +67,63 @@ public class Webadmin extends ConfigCollection {
   public Webadmin(String name) throws Throwable {
     super(name, "app." + name);
 
-    requiredText("defaultContentType", "app.default.contenttype");
+    requiredText("defaultContentType", "default.contenttype");
 
     requiredText("war", "war.name");
 
     requiredText("context.root", "context.root");
 
-    requiredText("app.root", "app.root");
+    requiredText("app.root", "root");
 
-    requiredText("resources.dir", "app.resources.dir");
+    //requiredText("resources.dir", "app.resources.dir");
 
     requiredText("deploy.dir", "deploy.dir");
 
-    requiredText("security.domain", "app.security.domain");
+    requiredText("security.domain", "security.domain");
 
-    requiredText("security.prefix", "app.security.prefix");
+    requiredText("security.prefix", "security.prefix");
 
-    requiredText("transport.guarantee", "app.transport.guarantee");
+    requiredText("transport.guarantee", "transport.guarantee");
 
     // We really want this to set the value of the above to NONE or CONFIDENTIAL
     //addProperty(new BooleanProperty("ssl", "use.ssl", true));
 
-    requiredText("description", "app.description");
+    requiredText("description", "description");
 
-    requiredText("display.name", "app.display.name");
+    requiredText("display.name", "display.name");
 
-    requiredText("name", "app.name");
+    requiredText("name", "name");
 
-    requiredBoolean("noGroupAllowed", "app.nogroupallowed");
+    requiredBoolean("noGroupAllowed", "nogroupallowed");
 
-    requiredBoolean("autocreatesponsors", "app.autocreatesponsors");
+    requiredBoolean("autocreatesponsors", "autocreatesponsors");
 
-    requiredBoolean("autodeletesponsors", "app.autodeletesponsors");
+    requiredBoolean("autodeletesponsors", "autodeletesponsors");
 
-    requiredBoolean("autocreatelocations", "app.autocreatelocations");
+    requiredBoolean("autocreatelocations", "autocreatelocations");
 
-    requiredBoolean("autodeletelocations", "app.autodeletelocations");
+    requiredBoolean("autodeletelocations", "autodeletelocations");
 
-    requiredBoolean("allowEditAllCategories", "app.allowEditAllCategories");
+    requiredBoolean("allowEditAllCategories", "allowEditAllCategories");
 
-    requiredBoolean("allowEditAllLocations", "app.allowEditAllLocations");
+    requiredBoolean("allowEditAllLocations", "allowEditAllLocations");
 
-    requiredBoolean("allowEditAllSponsors", "app.allowEditAllSponsors");
+    requiredBoolean("allowEditAllSponsors", "allowEditAllSponsors");
 
-    requiredBoolean("categoryOptional", "app.categoryOptional");
+    requiredBoolean("categoryOptional", "categoryOptional");
 
-    requiredBoolean("hour24", "app.hour24");
+    requiredBoolean("hour24", "hour24");
 
-    requiredInt("minincrement", "app.minincrement");
+    requiredInt("minincrement", "minincrement");
 
-    requiredText("admingroupsidprefix", "app.admingroupsidprefix");
+    requiredText("admingroupsidprefix", "admingroupsidprefix");
+
+    hiddenBoolean("guestmode", "guestmode");
+
+    hiddenBoolean("publicadmin", "publicadmin");
+
+    requiredText("logprefix", "logprefix");
+
+    requiredText("run.as.user", "run.as.user");
   }
 }

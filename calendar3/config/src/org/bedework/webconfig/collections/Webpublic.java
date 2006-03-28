@@ -67,40 +67,46 @@ public class Webpublic extends ConfigCollection {
   public Webpublic(String name) throws Throwable {
     super(name, "app." + name);
 
-    requiredText("defaultContentType", "app.default.contenttype");
+    requiredText("defaultContentType", "default.contenttype");
 
     requiredText("war", "war.name");
 
     requiredText("context.root", "context.root");
 
-    requiredText("app.root", "app.root");
+    requiredText("app.root", "root");
 
-    requiredText("resources.dir", "app.resources.dir");
+    //requiredText("resources.dir", "app.resources.dir");
 
     requiredText("deploy.dir", "deploy.dir");
 
-    requiredText("web.xml", "app.web.xml");
+    requiredText("web.xml", "web.xml");
 
-    requiredText("description", "app.description");
+    requiredText("description", "description");
 
-    requiredText("display.name", "app.display.name");
+    requiredText("display.name", "display.name");
 
-    requiredText("name", "app.name");
+    requiredText("name", "name");
+
+    requiredBoolean("hour24", "hour24");
+
+    requiredInt("minincrement", "minincrement");
+
+    requiredText("skinset.name", "skinset.name");
+
+    requiredBoolean("showyeardata", "showyeardata");
+
+    requiredText("default.view", "default.view");
+
+    requiredInt("refresh.interval", "refresh.interval");
+
+    requiredText("refresh.action", "refresh.action");
+
+    hiddenBoolean("guestmode", "guestmode");
+
+    hiddenBoolean("publicadmin", "publicadmin");
+
+    requiredText("logprefix", "logprefix");
 
     requiredText("run-as", "run.as.user");
-
-    requiredBoolean("hour24", "app.hour24");
-
-    requiredInt("minincrement", "app.minincrement");
-
-    requiredText("skinset.name", "app.skinset.name");
-
-    requiredBoolean("showyeardata", "app.showyeardata");
-
-    requiredText("default.view", "app.default.view");
-
-    requiredInt("refresh.interval", "app.refresh.interval");
-
-    requiredText("refresh.action", "app.refresh.action");
   }
 }

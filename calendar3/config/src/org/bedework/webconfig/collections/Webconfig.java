@@ -66,25 +66,28 @@ public class Webconfig extends ConfigCollection {
   public Webconfig(String name) throws Throwable {
     super(name, "app." + name, false);
 
-    requiredText("defaultContentType", "app.default.contenttype");
+    requiredText("defaultContentType", "default.contenttype");
 
     requiredText("war", "war.name");
 
     requiredText("context.root", "context.root");
 
-    requiredText("app.root", "app.root");
+    requiredText("app.root", "root");
 
-    requiredText("resources.dir", "app.resources.dir");
+    //requiredText("resources.dir", "app.resources.dir");
 
     requiredText("deploy.dir", "deploy.dir");
 
-    requiredText("envprefix", "env.prefix");
+    requiredText("description", "description");
 
-    requiredText("description", "app.description");
+    requiredText("display.name", "display.name");
 
-    requiredText("display.name", "app.display.name");
+    requiredText("name", "name");
 
-    requiredText("name", "app.name");
+    hiddenBoolean("guestmode", "guestmode");
+
+    hiddenBoolean("publicadmin", "publicadmin");
+
+    requiredText("logprefix", "logprefix");
   }
 }
-

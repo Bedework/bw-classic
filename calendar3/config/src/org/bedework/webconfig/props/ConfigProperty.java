@@ -78,7 +78,10 @@ public class ConfigProperty implements Defs, Serializable {
   private String value;
   private String suffix;
   private boolean required;
+  private boolean changed;
+  private boolean hidden;   // A hidden - constant - property
   private BooleanProperty onlyIf;
+  
   private boolean advanced;
 
   private String groupName;
@@ -157,6 +160,7 @@ public class ConfigProperty implements Defs, Serializable {
    * @param val    String value
    */
   public void setValue(String val) {
+    changed = true;
     value = val;
   }
 
@@ -184,14 +188,33 @@ public class ConfigProperty implements Defs, Serializable {
     return required;
   }
 
+  /** Get the changed flag
+   *
+   * @return boolean changed
+   */
+  public boolean getChanged() {
+    return changed;
+  }
+
+  /** Reset the changed flag
+   */
+  public void resetChanged() {
+    changed = false;
+  }
+
   /** Get the show flag
    *
    * @return boolean show/not show
    */
   public boolean getShow() {
+    if (hidden) {
+      return false;
+    }
+    
     if (onlyIf != null) {
       return onlyIf.getBooleanVal();
     }
+    
     return true;
   }
 
@@ -209,6 +232,22 @@ public class ConfigProperty implements Defs, Serializable {
    */
   public boolean getGoodValue() {
     return goodValue;
+  }
+
+  /** Set the hidden flag
+   *
+   * @param val    boolean
+   */
+  public void setHidden(boolean val) {
+    hidden = val;
+  }
+
+  /** Return the state of the hidden flag
+   *
+   * @return boolean true for hidden
+   */
+  public boolean getHidden() {
+    return hidden;
   }
 
   /** Set the group name

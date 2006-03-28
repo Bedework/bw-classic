@@ -88,6 +88,7 @@ public class LoadAction extends AbstractAction {
 
     InputStream is = upFile.getInputStream();
     Properties pr = new Properties();
+    form.setProperties(pr);
     
     try {
       pr.load(is);
@@ -96,7 +97,7 @@ public class LoadAction extends AbstractAction {
       return "error";
     }
     
-    resetProperties(pr, form);
+    resetProperties(form);
 
     return "success";
   }

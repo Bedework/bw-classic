@@ -73,11 +73,18 @@ public class Caldavpublic extends ConfigCollection {
 
     requiredText("deploy.dir", "deploy.dir");
 
-    requiredText("description", "app.description");
+    requiredText("description", "description");
 
-    requiredText("display.name", "app.display.name");
+    requiredText("display.name", "display.name");
 
-    requiredText("name", "app.name");
+    requiredText("name", "name");
+
+    hiddenBoolean("guestmode", "guestmode");
+
+    hiddenBoolean("publicadmin", "publicadmin");
+
+    requiredText("logprefix", "logprefix");
+
+    requiredText("run.as.user", "run.as.user");
   }
 }
-

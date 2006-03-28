@@ -135,7 +135,14 @@ public class ActionForm extends UtilActionForm {
    * @return Properties set from form values.
    */
   public Properties getProperties() {
-   return properties;
+    if (properties == null) {
+      try {
+        properties = (Properties)CalEnv.getProperties().clone();
+      } catch (Throwable t) {
+        getErr().emit(t);
+      }
+    }
+    return properties;
   }
 
 	/** Add a collection

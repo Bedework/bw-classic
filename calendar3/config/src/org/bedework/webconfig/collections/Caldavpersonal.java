@@ -73,20 +73,25 @@ public class Caldavpersonal extends ConfigCollection {
 
     requiredText("deploy.dir", "deploy.dir");
 
-    requiredText("security.domain", "app.security.domain");
+    requiredText("security.domain", "security.domain");
 
-    requiredText("security.prefix", "app.security.prefix");
+    requiredText("security.prefix", "security.prefix");
 
-    requiredText("transport.guarantee", "app.transport.guarantee");
+    requiredText("transport.guarantee", "transport.guarantee");
 
     // We really want this to set the value of the above to NONE or CONFIDENTIAL
     //addProperty(new BooleanProperty("ssl", "use.ssl", true));
 
-    requiredText("description", "app.description");
+    requiredText("description", "description");
 
-    requiredText("display.name", "app.display.name");
+    requiredText("display.name", "display.name");
 
-    requiredText("name", "app.name");
+    requiredText("name", "name");
+
+    hiddenBoolean("guestmode", "guestmode");
+
+    hiddenBoolean("publicadmin", "publicadmin");
+
+    requiredText("logprefix", "logprefix");
   }
 }
-

@@ -79,8 +79,11 @@ public interface Defs {
     usercaldavType
   };
   
+  /** */
+  public static final String modulesCollectionName = "modules";
+  
   /** Default properties file (built in to application) */
-  public final static String defaultProperties = "/properties/calendar/default-bedework.properties"; 
+  //public final static String defaultProperties = "/properties/calendar/default-bedework.properties"; 
   
   /* Types for properties */
     
