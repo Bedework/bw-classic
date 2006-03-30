@@ -162,12 +162,13 @@ class AccessUtil implements PrivilegeDefs {
 
   /** Change the access to the given calendar entity using the supplied aces.
    *
-   * @param o        Calendar object
+   * @param ent      BwShareableDbentity 
    * @param aces     Collection of ace objects
    * @throws CalFacadeException
    */
-  public void changeAccess(Object o, Collection aces) throws CalFacadeException {
-    Collection oldAces = getAces(o);
+  public void changeAccess(BwShareableDbentity ent, 
+                           Collection aces) throws CalFacadeException {
+    Collection oldAces = getAces(ent);
 
     try {
       Acl acl = new Acl(debug);
@@ -181,9 +182,7 @@ class AccessUtil implements PrivilegeDefs {
         acl.addAce(ace);
       }
 
-      BwShareableDbentity sdbe = (BwShareableDbentity)o;
-
-      sdbe.setAccess(new String(acl.encode()));
+      ent.setAccess(new String(acl.encode()));
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -196,14 +195,8 @@ class AccessUtil implements PrivilegeDefs {
    * @return Collection
    * @throws CalFacadeException
    */
-  public Collection getAces(Object o) throws CalFacadeException {
-    if (!(o instanceof BwShareableDbentity)) {
-      throw new CalFacadeException(CalFacadeException.illegalObjectClass);
-    }
-
-    BwShareableDbentity sdbe = (BwShareableDbentity)o;
-
-    return getAces(sdbe, privWriteAcl);
+  public Collection getAces(BwShareableDbentity ent) throws CalFacadeException {
+    return getAces(ent, privWriteAcl);
   }
 
   /** Return a Collection of the objects after checking access

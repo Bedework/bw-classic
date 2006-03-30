@@ -54,6 +54,8 @@
 
 package edu.rpi.cct.uwcal.caldav;
 
+import org.bedework.davdefs.CaldavDefs;
+
 import edu.rpi.sss.util.xml.QName;
 
 /** Define ICal tags for XMlEmit.
@@ -62,7 +64,7 @@ import edu.rpi.sss.util.xml.QName;
  */
 public class ICalTags {
   /** */
-  public static final String namespace = CaldavUWDef.icalNamespace;
+  public static final String namespace = CaldavDefs.icalNamespace;
 
   /** */
   public static final QName completed = new QName(namespace,

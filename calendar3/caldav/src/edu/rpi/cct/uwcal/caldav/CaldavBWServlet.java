@@ -68,7 +68,7 @@ import javax.servlet.ServletConfig;
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
-public class CaldavUWServlet extends WebdavServlet {
+public class CaldavBWServlet extends WebdavServlet {
 //  private ServletConfig config;
 
   /** Global resources for the servlet - not to be modified.

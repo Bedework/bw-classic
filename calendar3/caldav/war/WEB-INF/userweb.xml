@@ -19,7 +19,7 @@
   <servlet>
     <servlet-name>action</servlet-name>
     <servlet-class>
-      edu.rpi.cct.uwcal.caldav.CaldavUWServlet
+      edu.rpi.cct.uwcal.caldav.CaldavBWServlet
     </servlet-class>
     <init-param>
       <param-name>application</param-name>

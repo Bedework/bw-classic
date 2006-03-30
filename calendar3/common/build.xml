@@ -35,7 +35,6 @@
       <pathelement location="${log4j.jar}"/>
       <pathelement location="${logkit.jar}"/>
       <pathelement location="${jtidy.jar}"/>
-      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
     </path>
 
     <!-- ==================== Build Target ============================= -->

@@ -54,11 +54,12 @@
 
 package edu.rpi.cct.webdav.servlet.common;
 
+import org.bedework.davdefs.WebdavTags;
+
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
 import edu.rpi.cct.webdav.servlet.shared.WebdavStatusCode;
-import edu.rpi.cct.webdav.servlet.shared.WebdavTags;
 import edu.rpi.sss.util.xml.QName;
 
 import org.w3c.dom.Document;
@@ -375,6 +376,7 @@ public class PropFindMethod extends MethodBase {
           closeTag(WebdavTags.owner);
         } else if (tag.equals(WebdavTags.supportedPrivilegeSet)) {
           // access 5.2
+          getNsIntf().emitSupportedPrivSet(node);
         } else if (tag.equals(WebdavTags.currentUserPrivilegeSet)) {
           // access 5.3
         } else if (tag.equals(WebdavTags.acl)) {

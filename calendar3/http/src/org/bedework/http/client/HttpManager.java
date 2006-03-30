@@ -53,7 +53,7 @@
 */
 package org.bedework.http.client;
 
-import org.bedework.calenv.CalEnv;
+//import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.CalFacadeException;
 
 import org.apache.commons.httpclient.HostConfiguration;
@@ -68,9 +68,9 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
  * @author Mike Douglass  douglm @ rpi.edu
  */
 public class HttpManager extends MultiThreadedHttpConnectionManager {
-  private int maxConnectionsPerUser;
-  private int maxConnectionsPerHost;
-  private int maxConnections;
+//  private int maxConnectionsPerUser;
+//  private int maxConnectionsPerHost;
+//  private int maxConnections;
 
   private String clientClassName;
   /** Constructor - will deliver clients of given class.
@@ -80,9 +80,11 @@ public class HttpManager extends MultiThreadedHttpConnectionManager {
    */
   public HttpManager(String clientClassName) throws CalFacadeException {
     try {
+      /* XXX These are system parameters - make them constructor pars
       maxConnectionsPerUser = CalEnv.getGlobalIntProperty("http.connections.peruser");
       maxConnectionsPerHost = CalEnv.getGlobalIntProperty("http.connections.perhost");
       maxConnections = CalEnv.getGlobalIntProperty("http.connections");
+      */
 
       this.clientClassName = clientClassName;
     } catch (Throwable t) {

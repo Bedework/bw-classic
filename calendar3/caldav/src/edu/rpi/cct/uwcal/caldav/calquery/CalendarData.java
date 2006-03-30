@@ -56,9 +56,9 @@ package edu.rpi.cct.uwcal.caldav.calquery;
 
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.davdefs.CaldavTags;
 
 import edu.rpi.cct.uwcal.caldav.CaldavComponentNode;
-import edu.rpi.cct.uwcal.caldav.CaldavTags;
 import edu.rpi.cct.uwcal.caldav.TimeRange;
 import edu.rpi.cct.webdav.servlet.common.MethodBase;
 import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;

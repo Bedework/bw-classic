@@ -50,72 +50,47 @@
     Institute, nor the authors of the software are liable for any indirect,
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
-*/
-
-package edu.rpi.cct.uwcal.common;
-
-import org.bedework.calfacade.BwLocation;
-import org.bedework.calfacade.BwSponsor;
-import org.bedework.calfacade.CalFacadeException;
-
-import java.io.Serializable;
-import java.net.URI;
-
-/** This interface defines methods used to return uris which will provide access
- * to entities located somewhere in the implementing calendar system.
- *
- * <p>For example, a call to getLocationURI(loc) might return something like<br/>
- *     "http://cal.myplace.edu/ucal/locations.do?id=1234"
- *
- * <p>Implementing classes will be used by services like the synch process
- * which needs to embed usable urls in the generated Icalendar objects.
- *
- * <p>In addition, there is a corresponding method which will return a
- * dummy object representing the referenced entity. This allows services,
- * when presented with such a uri, to retrieve the actual entity without a
- * web interaction.
- *
- * @author Mike Douglass   douglm@rpi.edu
  */
-public interface URIgen extends Serializable {
-  /** Get a uri for the location
-   *
-   * @param val
-   * @return URI
-   * @throws CalFacadeException
-   */
-  public URI getLocationURI(BwLocation val) throws CalFacadeException;
+package edu.rpi.cct.uwcal.caldav;
 
-  /** Attempt to create a dummy object representing the given URI.
-   * Throw an exception if this is not a URI representing a location.
-   *
-   * <p>No web or network interactions need take place. - some implementations
-   * may choose to return a real object.
-   *
-   * @param val     URI referencing a single location
-   * @return LocationVO object with id filled in
-   * @throws CalFacadeException
-   */
-  public BwLocation getLocation(URI val) throws CalFacadeException;
+import org.bedework.appcommon.AccessUtil;
+import edu.rpi.sss.util.xml.XmlEmit;
 
-  /** Get a uri for the sponsor
+/**
+ * @author douglm
+ *
+ */
+public class EmitAccess extends AccessUtil {
+  private String namespacePrefix;
+  
+  /** Acls use tags in the webdav and caldav namespace. For use over caldav
+   * we shoud supply the uris. Otherwise a null namespace will be used.
    *
-   * @param val
-   * @return URI
-   * @throws CalFacadeException
+   * @param wdNamespace
+   * @param cdNamespace
+   * @param xml
    */
-  public URI getSponsorURI(BwSponsor val) throws CalFacadeException;
+  public EmitAccess(String namespacePrefix, XmlEmit xml) {
+    super(xml);
+    
+    this.namespacePrefix = namespacePrefix;
+  }
 
-  /** Attempt to create a dummy object representing the given URI.
-   * Throw an exception if this is not a URI representing a sponsor.
+  /** Override this to construct urls from the parameter
    *
-   * <p>No web or network interactions need take place. - some implementations
-   * may choose to return a real object.
-   *
-   * @param val     URI referencing a single sponsor
-   * @return SponsorVO object with id filled in
-   * @throws CalFacadeException
+   * @param who String
+   * @return String href
    */
-  public BwSponsor getSponsor(URI val) throws CalFacadeException;
+  public String makeUserHref(String who) {
+    return namespacePrefix + "/principals/users/" + who;
+  }
+
+  /** Override this to construct urls from the parameter
+   *
+   * @param who String
+   * @return String href
+   */
+  public String makeGroupHref(String who) {
+    return namespacePrefix + "/principals/groups/" + who;
+  }
 }
-

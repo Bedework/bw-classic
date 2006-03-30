@@ -68,8 +68,8 @@ import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
 import org.bedework.icalendar.BwEventUtil;
 import org.bedework.icalendar.IcalTranslator;
+import org.bedework.icalendar.URIgen;
 
-import edu.rpi.cct.uwcal.common.URIgen;
 
 import net.fortuna.ical4j.model.component.VEvent;
 

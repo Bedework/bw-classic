@@ -56,9 +56,9 @@ package org.bedework.tests.webcommon;
 
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
+import org.bedework.icalendar.URIgen;
 import org.bedework.webcommon.BwWebURIgen;
 
-import edu.rpi.cct.uwcal.common.URIgen;
 
 
 import java.net.URI;

@@ -74,6 +74,7 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
@@ -683,15 +684,16 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
    *                   Access
    * ==================================================================== */
 
-  public void changeAccess(Object o, Collection aces) throws CalFacadeException {
+  public void changeAccess(BwShareableDbentity ent, 
+                           Collection aces) throws CalFacadeException {
     checkOpen();
-    access.changeAccess(o, aces);
-    sess.saveOrUpdate(o);
+    access.changeAccess(ent, aces);
+    sess.saveOrUpdate(ent);
   }
 
-  public Collection getAces(Object o) throws CalFacadeException {
+  public Collection getAces(BwShareableDbentity ent) throws CalFacadeException {
     checkOpen();
-    return access.getAces(o);
+    return access.getAces(ent);
   }
 
   /* ====================================================================

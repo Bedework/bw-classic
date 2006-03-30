@@ -51,46 +51,45 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
+package org.bedework.http.client.caldav;
 
-package edu.rpi.cct.uwcal.caldav;
+import org.bedework.http.client.DepthHttpMethod;
 
-import edu.rpi.cct.webdav.servlet.common.MkcolMethod;
-import edu.rpi.cct.webdav.servlet.shared.WebdavException;
+import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.httpclient.HttpConnection;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpState;
 
-import org.bedework.davdefs.CaldavTags;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+/** The PropFind method
+*
+* @author Mike Douglass  douglm @ rpi.edu
+*/
+public class PropFindMethod extends DepthHttpMethod {
 
-/** Class called to handle MKCOL
- *
- *   @author Mike Douglass   douglm@rpi.edu
- */
-public class CDMkcolMethod extends MkcolMethod {
-  protected int processDoc(HttpServletRequest req,
-                           Document doc) throws WebdavException {
-    if (!"MKCALENDAR".equalsIgnoreCase(req.getMethod())) {
-      return HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
-    }
+  /** Constructor
+   *
+   * @param uri
+   */
+  public PropFindMethod(String uri) {
+    super(uri);
+  }
 
-    try {
-      Element root = doc.getDocumentElement();
+  /**
+   * @param depth
+   * @param uri
+   */
+  public PropFindMethod(int depth, String uri) {
+    super(depth, uri);
+  }
 
-      if (nodeMatches(root, CaldavTags.mkcalendar)) {
-        return HttpServletResponse.SC_OK;
-      }
+  public String getName() {
+    return "PROPFIND";
+  }
 
-      return HttpServletResponse.SC_BAD_REQUEST;
-    } catch (Throwable t) {
-      System.err.println(t.getMessage());
-      if (debug) {
-        t.printStackTrace();
-      }
-
-      return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-    }
+  public void addRequestHeaders(HttpState st, HttpConnection conn)
+          throws IOException, HttpException {
+    super.addRequestHeaders(st, conn);
+    setRequestHeader("Content-Type", "text/xml");
   }
 }
-

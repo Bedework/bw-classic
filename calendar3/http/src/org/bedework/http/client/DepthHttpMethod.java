@@ -87,6 +87,7 @@ public abstract class DepthHttpMethod extends EntityEnclosingMethod {
 
   public void addRequestHeaders(HttpState st, HttpConnection conn)
           throws IOException, HttpException {
+    super.addRequestHeaders(st, conn);
     setRequestHeader("Depth", String.valueOf(depth));
   }
 

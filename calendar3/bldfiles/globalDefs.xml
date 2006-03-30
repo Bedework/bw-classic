@@ -80,6 +80,7 @@
     <property name="org.bedework.common.base" location="${calendar.dir}/common" />
     <property name="org.bedework.config.base" location="${calendar.dir}/config" />
     <property name="org.bedework.core.base" location="${calendar.dir}/calCore" />
+    <property name="org.bedework.davdefs.base" location="${calendar.dir}/davdefs" />
     <property name="org.bedework.deployment.base" location="${calendar.dir}/deployment" />
     <property name="org.bedework.dumprestore.base" location="${calendar.dir}/dumprestore" />
     <property name="org.bedework.http.base" location="${calendar.dir}/http" />

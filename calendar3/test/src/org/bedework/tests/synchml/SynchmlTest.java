@@ -55,9 +55,9 @@
 package org.bedework.tests.synchml;
 
 import org.bedework.calfacade.BwEvent;
+import org.bedework.icalendar.URIgen;
 import org.bedework.webcommon.BwWebURIgen;
 
-import edu.rpi.cct.uwcal.common.URIgen;
 import edu.rpi.cct.uwcal.synchml.common.IcalSynchState;
 import edu.rpi.cct.uwcal.synchml.common.Synchml;
 

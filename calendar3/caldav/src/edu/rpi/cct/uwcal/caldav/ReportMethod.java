@@ -55,6 +55,8 @@
 package edu.rpi.cct.uwcal.caldav;
 
 import org.bedework.calfacade.CalFacadeDefs;
+import org.bedework.davdefs.CaldavTags;
+import org.bedework.davdefs.WebdavTags;
 
 import edu.rpi.cct.uwcal.caldav.calquery.CalendarData;
 import edu.rpi.cct.uwcal.caldav.calquery.FreeBusyQuery;
@@ -68,7 +70,6 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 import edu.rpi.cct.webdav.servlet.shared.WebdavStatusCode;
-import edu.rpi.cct.webdav.servlet.shared.WebdavTags;
 import edu.rpi.sss.util.xml.XmlUtil;
 
 import org.w3c.dom.Document;

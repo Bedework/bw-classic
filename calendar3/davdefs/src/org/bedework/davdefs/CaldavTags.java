@@ -52,7 +52,7 @@
     to the maximum extent the law permits.
 */
 
-package edu.rpi.cct.uwcal.caldav;
+package org.bedework.davdefs;
 
 import edu.rpi.sss.util.xml.QName;
 
@@ -60,7 +60,7 @@ import edu.rpi.sss.util.xml.QName;
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
-public class CaldavTags implements CaldavUWDef {
+public class CaldavTags implements CaldavDefs {
   /**   */
   public static final QName allcomp = new QName(caldavNamespace,
                                                 "allcomp");

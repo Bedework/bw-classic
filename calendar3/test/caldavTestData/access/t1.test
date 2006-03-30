@@ -1,0 +1,14 @@
+DESCRIPTION: Try supported-privilege-set
+
+EXPECT-RESPONSE: 201
+
+METHOD: PROPFIND
+
+AUTH: true
+
+URL: Calendar
+
+CONTENTTYPE: text/xml
+
+CONTENTFILE: content/t1.xml
+

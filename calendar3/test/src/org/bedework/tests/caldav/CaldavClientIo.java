@@ -129,8 +129,17 @@ public class CaldavClientIo {
    * @throws Throwable
    */
   public int sendRequest(String method, String url, String user, String pw,
-                          Header[] hdrs, String contentType, int contentLen,
-                          byte[] content) throws Throwable {
+                         Header[] hdrs, String contentType, int contentLen,
+                         byte[] content) throws Throwable {
+    int sz = 0;
+    if (content != null) {
+      sz = content.length;
+    }
+    
+    System.out.println("About to send request: method=" + method +
+                       " contentLen=" + contentLen +
+                       " content.length=" + sz);
+    
     client.setMethodName(method, url);
 
     HttpMethod meth = client.getMethod();
@@ -152,7 +161,6 @@ public class CaldavClientIo {
     if (contentType == null) {
       contentType = "text/xml";
     }
-
 
     if (content != null) {
       client.setContent(content, contentType);

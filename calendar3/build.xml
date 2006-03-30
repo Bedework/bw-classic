@@ -101,8 +101,8 @@
      =================================================================== -->
 
   <target name="bld.all"
-          depends="bld.locale,bld.access,bld.calfacade,
-                   bld.calenv,bld.ical,bld.common,bld.core,
+          depends="bld.locale,bld.common,bld.access,bld.davdefs,bld.calfacade,
+                   bld.calenv,bld.ical,bld.core,
                    bld.http,bld.caldavclientapi,
                    bld.calsvci,bld.mail,bld.logging,
                    bld.calsvc,bld.appcommon,
@@ -246,6 +246,7 @@
                          ${org.bedework.calsvci.base}/src:
                          ${org.bedework.common.base}/src:
                          ${org.bedework.config.base}/src:
+                         ${org.bedework.davdefs.base}/src:
                          ${org.bedework.dumprestore.base}/src:
                          ${org.bedework.http.base}/src:
                          ${org.bedework.ical.base}/src:
@@ -274,6 +275,17 @@
       <header><![CDATA[${product.name} ${product.version}<br/>API Documentation]]></header>
     </javadoc>
 
+  </target>
+
+  <!-- ======================== appcommon target =======================
+       This builds a jar file which provides application support.
+       ================================================================= -->
+
+  <target name="bld.appcommon"
+          depends="init,bld.access,bld.calsvci,bld.davdefs"
+          description="Build calendar service interface classes jar">
+      <ant antfile="${org.bedework.appcommon.base}/build.xml" inheritrefs="true"
+           target="build" />
   </target>
 
   <!-- ======================== calfacade target =========================
@@ -338,9 +350,20 @@
        ================================================================= -->
 
   <target name="bld.common"
-          depends="init,bld.calfacade,bld.locale"
+          depends="init,bld.locale"
           description="Build calendar common classes jar">
       <ant antfile="${org.bedework.common.base}/build.xml" inheritrefs="true"
+           target="build" />
+  </target>
+
+  <!-- ======================== davdefs target =========================
+       This builds some global webdav and caldav definitions
+       ================================================================= -->
+
+  <target name="bld.davdefs"
+          depends="bld.common"
+          description="Build calendar davdefs jars" >
+      <ant antfile="${org.bedework.davdefs.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
 
@@ -360,7 +383,7 @@
        ================================================================= -->
 
   <target name="bld.caldavclientapi"
-          depends="init,bld.http,bld.calfacade"
+          depends="init,bld.http,bld.davdefs,bld.calfacade"
           description="Build calendar caldav client api classes jar">
       <ant antfile="${org.bedework.caldavClientApi.base}/build.xml" inheritrefs="true"
            target="build" />
@@ -418,17 +441,6 @@
           depends="init,bld.common,bld.locale"
           description="Build icalendar classes jar">
       <ant antfile="${org.bedework.ical.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-
-  <!-- ======================== appcommon target =======================
-       This builds a jar file which provides application support.
-       ================================================================= -->
-
-  <target name="bld.appcommon"
-          depends="init,bld.calsvci"
-          description="Build calendar service interface classes jar">
-      <ant antfile="${org.bedework.appcommon.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
 
@@ -502,7 +514,7 @@
        ================================================================= -->
 
   <target name="bld.caldav" if="org.bedework.build.caldav"
-          depends="init,bld.appcommon"
+          depends="init,bld.davdefs,bld.appcommon"
           description="Build calendar caldav suite">
     <ant antfile="${org.bedework.caldav.base}/build.xml" inheritrefs="true"
            target="build" />

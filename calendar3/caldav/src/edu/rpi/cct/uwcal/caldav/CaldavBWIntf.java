@@ -51,9 +51,9 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
 package edu.rpi.cct.uwcal.caldav;
 
+import org.bedework.appcommon.AccessUtil;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
@@ -63,18 +63,17 @@ import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
+import org.bedework.davdefs.CaldavDefs;
+import org.bedework.davdefs.CaldavTags;
+import org.bedework.davdefs.WebdavTags;
 import org.bedework.icalendar.IcalMalformedException;
 import org.bedework.icalendar.IcalTranslator;
 
 import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.Acl;
-import edu.rpi.cct.uwcal.access.Privilege;
 
 import edu.rpi.cct.uwcal.caldav.filter.Filter;
 import edu.rpi.cct.uwcal.caldav.calquery.FreeBusyQuery;
-//import edu.rpi.cct.uwcal.common.URIgen;
-
-//import edu.rpi.cct.uwcal.webcommon.UWCalWebURIgen;
 
 import edu.rpi.cct.webdav.servlet.common.MethodBase;
 import edu.rpi.cct.webdav.servlet.common.WebdavServlet;
@@ -84,9 +83,6 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
-import edu.rpi.cct.webdav.servlet.shared.WebdavTags;
-
-import edu.rpi.sss.util.xml.QName;
 
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -126,6 +122,8 @@ public class CaldavBWIntf extends WebdavNsIntf {
   /** Namespace prefix based on the request url.
    */
   private String namespacePrefix;
+  
+  private EmitAccess emitAccess;
 
   /* Prefix for out properties */
   private String envPrefix;
@@ -193,6 +191,8 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
       publicCalendarRoot = getSvci().getSyspars().getPublicCalendarRoot();
       userCalendarRoot = getSvci().getSyspars().getUserCalendarRoot();
+      
+      emitAccess = new EmitAccess(namespacePrefix, xml);
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -217,8 +217,8 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
   public void addNamespace() throws WebdavIntfException {
     try {
-      xml.addNs(CaldavUWDef.caldavNamespace);
-      xml.addNs(CaldavUWDef.icalNamespace);
+      xml.addNs(CaldavDefs.caldavNamespace);
+      xml.addNs(CaldavDefs.icalNamespace);
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -768,22 +768,6 @@ public class CaldavBWIntf extends WebdavNsIntf {
     }
   }
 
-  private static final QName[] privTags = {
-    WebdavTags.all,              // privAll = 0;
-    WebdavTags.read,             // privRead = 1;
-    WebdavTags.readAcl,          // privReadAcl = 2;
-    WebdavTags.readCurrentUserPrivilegeSet,  // privReadCurrentUserPrivilegeSet = 3;
-    CaldavTags.readFreeBusy,     // privReadFreeBusy = 4;
-    WebdavTags.write,            // privWrite = 5;
-    WebdavTags.writeAcl,         // privWriteAcl = 6;
-    WebdavTags.writeProperties,  // privWriteProperties = 7;
-    WebdavTags.writeContent,     // privWriteContent = 8;
-    WebdavTags.bind,             // privBind = 9;
-    WebdavTags.unbind,           // privUnbind = 10;
-    WebdavTags.unlock,           // privUnlock = 11;
-    null                         // privNone = 12;
-  };
-
   public void parsePrivilege(AclInfo ainfo, Node nd,
                              boolean grant) throws WebdavIntfException {
     CdAclInfo info = (CdAclInfo)ainfo;
@@ -798,8 +782,9 @@ public class CaldavBWIntf extends WebdavNsIntf {
     int priv;
 
     findPriv: {
-      for (priv = 0; priv < privTags.length; priv++) {
-        if (MethodBase.nodeMatches(el, privTags[priv])) {
+      // ENUM
+      for (priv = 0; priv < AccessUtil.privTags.length; priv++) {
+        if (MethodBase.nodeMatches(el, AccessUtil.privTags[priv])) {
           break findPriv;
         }
       }
@@ -835,6 +820,33 @@ public class CaldavBWIntf extends WebdavNsIntf {
     }
   }
 
+  public void emitAcl(WebdavNsNode node) throws WebdavIntfException {
+    CaldavBwNode uwnode = getBwnode(node);
+    CaldavURI cdUri = uwnode.getCDURI();
+    Collection aces = null;
+
+    try {
+      if (cdUri.isCalendar()) {
+        aces = getSvci().getAces(cdUri.getCal());
+      } else {
+        aces = getSvci().getAces(((CaldavComponentNode)node).getEvent());
+      }
+
+      emitAccess.emitAces(aces);
+    } catch (Throwable t) {
+      throw new WebdavIntfException(t);
+    }
+  }
+  
+  public void emitSupportedPrivSet(WebdavNsNode node) throws WebdavIntfException {
+    try {
+      emitAccess.emitSupportedPrivSet();
+    } catch (Throwable t) {
+      throw new WebdavIntfException(t);
+    }
+  }
+
+  /*
   public void emitAcl(WebdavNsNode node) throws WebdavIntfException {
     CaldavBwNode uwnode = getBwnode(node);
     CaldavURI cdUri = uwnode.getCDURI();
@@ -919,7 +931,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
            <!ELEMENT principal (href)
                   | all | authenticated | unauthenticated
                   | property | self)>
-    */
+    * /
 
     if (whoType == Ace.whoTypeUser) {
       xml.property(WebdavTags.href, makeUserHref(ace.getWho()));
@@ -947,6 +959,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
       xml.closeTag(WebdavTags.invert);
     }
   }
+  */
 
   /** This class is the result of interpreting a principal url
    */

@@ -55,11 +55,11 @@
 package edu.rpi.cct.uwcal.caldav.filter;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calsvci.CalSvcI;
+import org.bedework.davdefs.CaldavTags;
 
 import edu.rpi.cct.uwcal.caldav.CaldavBWIntf;
 import edu.rpi.cct.uwcal.caldav.CaldavComponentNode;
 import edu.rpi.cct.uwcal.caldav.CalDavParseUtil;
-import edu.rpi.cct.uwcal.caldav.CaldavTags;
 import edu.rpi.cct.uwcal.caldav.CaldavBwNode;
 import edu.rpi.cct.uwcal.caldav.TimeRange;
 import edu.rpi.cct.webdav.servlet.common.MethodBase;

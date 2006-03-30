@@ -52,45 +52,17 @@
     to the maximum extent the law permits.
 */
 
-package edu.rpi.cct.uwcal.caldav;
+package org.bedework.davdefs;
 
-import edu.rpi.cct.webdav.servlet.common.MkcolMethod;
-import edu.rpi.cct.webdav.servlet.shared.WebdavException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.bedework.davdefs.CaldavTags;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-/** Class called to handle MKCOL
+/** Some caldav definitions
  *
  *   @author Mike Douglass   douglm@rpi.edu
  */
-public class CDMkcolMethod extends MkcolMethod {
-  protected int processDoc(HttpServletRequest req,
-                           Document doc) throws WebdavException {
-    if (!"MKCALENDAR".equalsIgnoreCase(req.getMethod())) {
-      return HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
-    }
+public interface CaldavDefs {
+  /** */
+  public static final String caldavNamespace = "urn:ietf:params:xml:ns:caldav";
 
-    try {
-      Element root = doc.getDocumentElement();
-
-      if (nodeMatches(root, CaldavTags.mkcalendar)) {
-        return HttpServletResponse.SC_OK;
-      }
-
-      return HttpServletResponse.SC_BAD_REQUEST;
-    } catch (Throwable t) {
-      System.err.println(t.getMessage());
-      if (debug) {
-        t.printStackTrace();
-      }
-
-      return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-    }
-  }
+  /** */
+  public static final String icalNamespace = "http://www.w3.org/2002/12/cal/ical#";
 }
 

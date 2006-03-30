@@ -61,7 +61,6 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.ifs.CalTimezones;
 
-import edu.rpi.cct.uwcal.common.URIgen;
 
 import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.TimeZone;

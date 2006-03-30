@@ -10,10 +10,10 @@
      leave a report in tests.reports.dir.
 
      Authors: Mike Douglass   douglm@rpi.edu
-     	      Greg Barnes
+            Greg Barnes
      =================================================================== -->
 
-<project name="uwcal.testsuite" default="test">
+<project name="bedework.testsuite" default="test">
   <property name="source.home" location="${org.bedework.testsuite.base}/src"/>
   <property name="base.name" value="test"/>
 

@@ -54,6 +54,8 @@
 
 package edu.rpi.cct.webdav.servlet.shared;
 
+import org.bedework.davdefs.WebdavTags;
+
 import edu.rpi.sss.util.xml.XmlEmit;
 import edu.rpi.sss.util.xml.XmlUtil;
 import edu.rpi.cct.webdav.servlet.common.MethodBase;
@@ -535,6 +537,12 @@ public abstract class WebdavNsIntf implements Serializable {
    * @throws WebdavIntfException
    */
   public abstract void emitAcl(WebdavNsNode node) throws WebdavIntfException;
+
+  /**
+   * @param node
+   * @throws WebdavIntfException
+   */
+  public abstract void emitSupportedPrivSet(WebdavNsNode node) throws WebdavIntfException;
 
   /* ====================================================================
    *                Property value methods

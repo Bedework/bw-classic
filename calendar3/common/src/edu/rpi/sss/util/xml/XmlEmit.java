@@ -162,6 +162,19 @@ public class XmlEmit {
    * @param tag
    * @throws IOException
    */
+  public void closeTagNoblanks(QName tag) throws IOException {
+    indent -= 2;
+    if (indent < 0) {
+      indent = 0;
+    }
+    closeTagSameLine(tag);
+    newline();
+  }
+
+  /**
+   * @param tag
+   * @throws IOException
+   */
   public void closeTagSameLine(QName tag) throws IOException {
     lb();
     wtr.write("/");
@@ -264,6 +277,10 @@ public class XmlEmit {
     return (String)nsMap.get(ns);
   }
 
+  public void newline() throws IOException {
+    wtr.write("\n");
+  }
+
   /* Write out the tag name, adding the ns abbreviation.
    * Also add the namespace declarations if this is the first tag
    *
@@ -327,10 +344,6 @@ public class XmlEmit {
 
   private void rb() throws IOException {
     wtr.write(">");
-  }
-
-  private void newline() throws IOException {
-    wtr.write("\n");
   }
 
   /* size of buffer used for copying content to response.

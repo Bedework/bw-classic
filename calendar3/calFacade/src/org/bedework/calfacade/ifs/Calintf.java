@@ -64,6 +64,7 @@ import org.bedework.calfacade.BwSynchState;
 import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.Groups;
 
@@ -354,20 +355,21 @@ public interface Calintf extends CalendarsI, EventsI {
 
   /** Change the access to the given calendar entity.
    *
-   * @param o        Calendar object
+   * @param ent      BwShareableDbentity 
    * @param aces     Collection of ace
    * @throws CalFacadeException
    */
-  public void changeAccess(Object o, Collection aces) throws CalFacadeException;
+  public void changeAccess(BwShareableDbentity ent, 
+                           Collection aces) throws CalFacadeException;
 
   /** Return the ace representing the allowed access for the given object. This
    * may be derived from an object higher up the tree.
    *
-   * @param o
+   * @param ent
    * @return Collection
    * @throws CalFacadeException
    */
-  public Collection getAces(Object o) throws CalFacadeException;
+  public Collection getAces(BwShareableDbentity ent) throws CalFacadeException;
 
   /* ====================================================================
    *                   Timezones

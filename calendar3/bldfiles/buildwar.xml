@@ -233,6 +233,7 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.calsvc.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.ical.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.common.jar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.davdefs.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appcommon.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.webcommon.jar}" />
 

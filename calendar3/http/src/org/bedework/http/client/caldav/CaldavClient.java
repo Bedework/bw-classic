@@ -79,6 +79,8 @@ public class CaldavClient extends Client {
   public void setMethodName(String name, String uri) throws CalFacadeException {
     if ("REPORT".equals(name)) {
       setMethod(new ReportMethod(uri));
+    } else if ("PROPFIND".equals(name)) {
+      setMethod(new PropFindMethod(uri));
     } else {
       super.setMethodName(name, uri);
     }

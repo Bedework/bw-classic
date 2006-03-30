@@ -95,7 +95,7 @@ public class TestCalDav {
   private static int port = 8080;
 
   private static String user = "douglm";
-  private static String pw= "bedework";
+  private static String pw = "bedework";
 
   private static final String fileRepository = "/home/douglm/calendar3/test/caldavTestData/eg";
 

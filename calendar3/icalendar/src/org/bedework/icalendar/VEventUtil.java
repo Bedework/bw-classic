@@ -63,7 +63,6 @@ import org.bedework.calfacade.BwRecurrence;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.CalFacadeException;
 
-import edu.rpi.cct.uwcal.common.URIgen;
 
 import net.fortuna.ical4j.model.CategoryList;
 import net.fortuna.ical4j.model.component.VEvent;

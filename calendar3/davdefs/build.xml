@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- This is the ant build file for the access control suite.
+<!-- This is the ant build file for the davdefs module.
 
      This file will probably need no modification as it is assumed that the
      core of the calendar will be largely site and application independent.
@@ -16,8 +16,8 @@
      Authors: Mike Douglass   douglm@rpi.edu
 -->
 
-<project name="uwcal.access" default="build">
-  <property name="source.home" location="${org.bedework.access.base}/src"/>
+<project name="bedework.davdefs" default="build">
+  <property name="source.home" location="${org.bedework.davdefs.base}/src"/>
   <property name="base.name" value="access"/>
 
   <target name="init">
@@ -32,28 +32,26 @@
        ================================================================= -->
 
   <target name="build" depends="init"
-          description="Compile access control classes">
+          description="Compile dav defs classes">
     <!-- ==================== Sources and classes ====================== -->
 
     <fileset id="base.java.sources" dir="${source.home}" >
-      <include name="edu/rpi/cct/uwcal/access/**/*.java"/>
+      <include name="org/bedework/davdefs/**/*.java"/>
     </fileset>
 
     <patternset id="base.class.patternset">
-      <include name="edu/rpi/cct/uwcal/access/**/*.class"/>
+      <include name="org/bedework/davdefs/**/*.class"/>
     </patternset>
 
     <!-- ==================== Compilation Classpath ==================== -->
 
     <path id="compile.classpath">
       <pathelement location="${org.bedework.common.jar}"/>
-      <pathelement location="${org.bedework.locale.jar}"/>
-      <pathelement location="${log4j.jar}"/>
     </path>
 
     <!-- ==================== Build Target ============================= -->
 
-    <property name="build.jar.file" location="${org.bedework.access.jar}" />
+    <property name="build.jar.file" location="${org.bedework.davdefs.jar}" />
 
     <ant antfile="${buildjar}" inheritRefs="true" target="build" />
   </target>

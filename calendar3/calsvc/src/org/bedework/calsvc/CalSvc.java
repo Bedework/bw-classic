@@ -93,9 +93,9 @@ import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
 import org.bedework.icalendar.IcalCallback;
 import org.bedework.icalendar.TimeZoneRegistryImpl;
+import org.bedework.icalendar.URIgen;
 //import org.bedework.mail.MailerIntf;
 
-import edu.rpi.cct.uwcal.common.URIgen;
 import edu.rpi.cct.uwcal.resources.Resources;
 
 import java.util.ArrayList;
@@ -562,12 +562,13 @@ public class CalSvc extends CalSvcI {
    *                   Access
    * ==================================================================== */
 
-  public void changeAccess(Object o, Collection aces) throws CalFacadeException {
-    getCal().changeAccess(o, aces);
+  public void changeAccess(BwShareableDbentity ent, 
+                           Collection aces) throws CalFacadeException {
+    getCal().changeAccess(ent, aces);
   }
 
-  public Collection getAces(Object o) throws CalFacadeException {
-    return getCal().getAces(o);
+  public Collection getAces(BwShareableDbentity ent) throws CalFacadeException {
+    return getCal().getAces(ent);
   }
 
   /* ====================================================================

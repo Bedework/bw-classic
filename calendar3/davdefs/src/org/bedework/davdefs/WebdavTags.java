@@ -51,8 +51,7 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
-package edu.rpi.cct.webdav.servlet.shared;
+package org.bedework.davdefs;
 
 import edu.rpi.sss.util.xml.QName;
 

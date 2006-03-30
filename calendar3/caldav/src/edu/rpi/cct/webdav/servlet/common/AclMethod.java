@@ -54,11 +54,12 @@
 
 package edu.rpi.cct.webdav.servlet.common;
 
+import org.bedework.davdefs.WebdavTags;
+
 import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
-import edu.rpi.cct.webdav.servlet.shared.WebdavTags;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

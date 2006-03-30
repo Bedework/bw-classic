@@ -57,8 +57,8 @@ package org.bedework.webcommon;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.icalendar.URIgen;
 
-import edu.rpi.cct.uwcal.common.URIgen;
 
 import java.net.URI;
 import java.util.regex.Matcher;

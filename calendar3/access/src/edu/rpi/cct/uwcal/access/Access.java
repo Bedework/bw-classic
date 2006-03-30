@@ -55,15 +55,15 @@ package edu.rpi.cct.uwcal.access;
 
 import java.io.Serializable;
 
-/** Class to handle access control for the calendar. Because we may be
- * evaluating access frequently we try do so without creating (many) objects.
+/** Class to handle access control. Because we may be evaluating access 
+ * frequently we try do so without creating (many) objects.
  *
  * <p>This class is created for a session or perhaps a thread and reused to
  * evaluate access. For the manipulation of acls when changing them or
  * displaying allowed access, efficiency isn't such a  great concern so we
  * will normally represent the access as a  number of objects.
  *
- *  @author Mike Douglass   douglm@rpi.edu
+ *  @author Mike Douglass   douglm @ rpi.edu
  */
 public class Access implements Serializable {
   private boolean debug;
@@ -148,6 +148,15 @@ public class Access implements Serializable {
    */
   public Privilege makePriv(int priv) {
     return acl.makePriv(priv);
+  }
+
+  /** Get the Privileges object from the defautl acl
+   *
+   * @param privs Privileges 
+   * @return Privilege object defining access
+   */
+  public static Privileges getPrivs() {
+    return acl.getPrivs();
   }
 
   /** Evaluating an ACL

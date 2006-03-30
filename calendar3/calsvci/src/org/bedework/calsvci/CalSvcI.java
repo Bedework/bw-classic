@@ -70,6 +70,7 @@ import org.bedework.calfacade.BwSynchState;
 import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Groups;
@@ -400,22 +401,22 @@ public abstract class CalSvcI implements Serializable {
    * ==================================================================== */
 
   /** Change the access to the given calendar entity.
-   *
-   * @param o        Calendar object
-   * @param aces     Collection of ace
-   * @throws CalFacadeException
-   */
-  public abstract void changeAccess(Object o, Collection aces)
-      throws CalFacadeException;
+  *
+  * @param ent      BwShareableDbentity 
+  * @param aces     Collection of ace
+  * @throws CalFacadeException
+  */
+ public abstract void changeAccess(BwShareableDbentity ent, 
+                                   Collection aces) throws CalFacadeException;
 
-  /** Return the ace representing the allowed access for the given object. This
-   * may be derived from an object higher up the tree.
-   *
-   * @param o
-   * @return Collection of ace objects
-   * @throws CalFacadeException
-   */
-  public abstract Collection getAces(Object o) throws CalFacadeException;
+ /** Return the ace representing the allowed access for the given object. This
+  * may be derived from an object higher up the tree.
+  *
+  * @param ent
+  * @return Collection
+  * @throws CalFacadeException
+  */
+ public abstract Collection getAces(BwShareableDbentity ent) throws CalFacadeException;
 
   /* ====================================================================
    *                   Timezones

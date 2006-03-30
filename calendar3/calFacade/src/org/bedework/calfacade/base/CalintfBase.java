@@ -368,12 +368,13 @@ public class CalintfBase implements Calintf {
    *                   Access
    * ==================================================================== */
 
-  public void changeAccess(Object o, Collection aces) throws CalFacadeException {
+  public void changeAccess(BwShareableDbentity ent, 
+                           Collection aces) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
 
-  public Collection getAces(Object o) throws CalFacadeException {
+  public Collection getAces(BwShareableDbentity ent) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
