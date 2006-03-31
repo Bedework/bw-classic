@@ -314,6 +314,11 @@
         <include name="*"/>
       </fileset>
     </copy>
+    <copy todir="${app.dest.webinf}/tlds" >
+      <fileset dir="${org.bedework.default.lib}/tlds">
+        <include name="*"/>
+      </fileset>
+    </copy>
 
     <antcall target="add.xalan" inheritRefs="true" />
     <antcall target="add.jetspeed2" inheritRefs="true" />
@@ -323,6 +328,7 @@
         <include name="*.jar"/>
       </fileset>
     </copy>
+    <copy todir="${app.dest.lib}" file="${servlet.jsp.jar}"/>
   </target>
 
   <target name="add.jetspeed2" if="org.bedework.build.for.jetspeed2" >

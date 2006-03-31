@@ -11,7 +11,7 @@ try {
 %>
 
 <page>addEvent</page>
-<%@ include file="addEventForm.jsp" %>
+<%@ include file="event/addEventForm.jsp" %>
 
 <%
 } catch (Throwable t) {

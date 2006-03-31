@@ -126,7 +126,7 @@ public class BwOrganizer extends BwDbentity {
     return cn;
   }
 
-  /** Set the dir
+  /** Set the dir (directory url for lookup)
    *
    *  @param  val   String dir
    */

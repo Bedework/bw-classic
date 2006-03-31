@@ -155,6 +155,11 @@
       <taglib-uri>struts-template</taglib-uri>
       <taglib-location>/WEB-INF/tlds/struts-template.tld</taglib-location>
     </taglib>
+
+    <taglib>
+      <taglib-uri>bedework</taglib-uri>
+      <taglib-location>/WEB-INF/tlds/bedework.tld</taglib-location>
+    </taglib>
   </jsp-config>
 
   <!-- JDBC DataSources (java:comp/env/jdbc) -->

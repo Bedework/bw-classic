@@ -81,7 +81,7 @@
                name="calForm"
                scope="session"
                validate="false">
-      <forward name="success" path="/docs/eventMore.jsp" />
+      <forward name="success" path="/docs/event/eventMore.jsp" />
     </action>
 
    <action    path="/showAddEvent"
@@ -89,7 +89,7 @@
                name="calForm"
                scope="session"
                validate="false">
-      <forward name="success" path="/docs/addEvent.jsp" />
+      <forward name="success" path="/docs/event/addEvent.jsp" />
     </action>
 
     <action    path="/showEditEvent"
@@ -97,7 +97,7 @@
                name="calForm"
                scope="session"
                validate="false">
-      <forward name="success" path="/docs/editEvent.jsp" />
+      <forward name="success" path="/docs/event/editEvent.jsp" />
     </action>
 
     <action    path="/showEditLocation"

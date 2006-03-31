@@ -56,7 +56,7 @@
                                          property="eventFormatters" >
                             <bean:define id="eventFormatter" name="eventFmt"
                                          toScope="request" />
-                            <jsp:include page="emitEvent.jsp" />
+                            <jsp:include page="event/emitEvent.jsp" />
                           </logic:iterate>
                         </logic:notEmpty>
                       </logic:notEqual>
