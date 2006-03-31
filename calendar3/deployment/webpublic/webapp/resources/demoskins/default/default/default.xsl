@@ -172,7 +172,7 @@
           <h2>Public Calendar</h2>
           <a href="{$privateCal}">Personal Calendar</a> |
           <a href="http://www.yourschoolhere.edu">School Home</a> |
-          <a href="http://www.washington.edu/ucal/">Other Link</a> |
+          <a href="http://www.bedework.org/">Other Link</a> |
           <a href="http://helpdesk.rpi.edu/update.do?catcenterkey=51">
             Example Calendar Help
           </a>

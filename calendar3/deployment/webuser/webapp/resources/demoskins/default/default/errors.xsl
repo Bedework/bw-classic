@@ -5,28 +5,28 @@
       <xsl:when test="id='edu.rpi.sss.util.error.exc'">
           An exception occurred: <xsl:value-of select="param"/>
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.exc'">
+      <xsl:when test="id='org.bedework.client.error.exc'">
           An exception occurred: <xsl:value-of select="param"/>
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.nosuchevent'">
+      <xsl:when test="id='org.bedework.client.error.nosuchevent'">
           Event <xsl:value-of select="param"/> does not exist.
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.baddates'">
+      <xsl:when test="id='org.bedework.client.error.baddates'">
           Improperly formatted date(s): <xsl:value-of select="param"/>
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.noaccess'">
+      <xsl:when test="id='org.bedework.client.error.noaccess'">
           You have insufficient access <xsl:value-of select="param"/>
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.notitle'">
+      <xsl:when test="id='org.bedework.validation.error.notitle'">
           Please supply a title for your event (required).
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.location.referenced'">
+      <xsl:when test="id='org.bedework.client.error.location.referenced'">
           Location is in use.  It cannot be deleted while referenced by an event.
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.mail.norecipient'">
+      <xsl:when test="id='org.bedework.client.error.mail.norecipient'">
           You must supply a recipient.
       </xsl:when>
-      <xsl:when test="id='org.bedework.error.unknown.timezone'">
+      <xsl:when test="id='org.bedework.client.error.unknown.timezone'">
           Unknown timezone <xsl:value-of select="param"/>
       </xsl:when>
       <xsl:otherwise>

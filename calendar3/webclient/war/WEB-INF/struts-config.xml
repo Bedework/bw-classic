@@ -25,6 +25,7 @@
     <forward name="showEditEvent" path="/showEditEvent.rdo"/>
     <forward name="eventMore" path="/showEventMore.rdo"/>
     <forward name="initUpload" path="/initUpload.rdo"/>
+    <forward name="showMsgErr" path="/showMsgErr.rdo"/>
 
     <!-- Forward for a new session from some bookmarked link? -->
     <forward name="gotomain" path="/docs/main.jsp" />
@@ -163,6 +164,14 @@
                validate="false">
       <forward name="success" path="/docs/main.jsp" />
       <forward name="loggedOut" path="/docs/login/logout.html" />
+    </action>
+
+    <action    path="/showMsgErr"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/showMsgErr.jsp"/>
     </action>
 
     <!-- ===============================================================
