@@ -84,5 +84,5 @@ try {
 }
 %>
 
-<%@ include file="footer.jsp" %>
+<%@ include file="/docs/footer.jsp" %>
 

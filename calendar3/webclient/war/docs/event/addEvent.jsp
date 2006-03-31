@@ -4,14 +4,14 @@
 <%@ taglib uri='struts-genurl' prefix='genurl' %>
 <html:xhtml/>
 
-<%@ include file="header.jsp" %>
+<%@ include file="/docs/header.jsp" %>
 
 <%
 try {
 %>
 
 <page>addEvent</page>
-<%@ include file="event/addEventForm.jsp" %>
+<%@ include file="/docs/event/addEventForm.jsp" %>
 
 <%
 } catch (Throwable t) {
@@ -19,5 +19,5 @@ try {
 }
 %>
 
-<%@ include file="footer.jsp" %>
+<%@ include file="/docs/footer.jsp" %>
 

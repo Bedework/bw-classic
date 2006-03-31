@@ -6,7 +6,7 @@
 <html:xhtml/>
 
 <%-- Load the header common to all pages --%>
-<%@ include file="header.jsp" %>
+<%@ include file="/docs/header.jsp" %>
 
 <%-- the <page> element allows us to branch in our XSLT based on what page
     (what "state") we are in.  The value is hard coded into the top-level
@@ -56,7 +56,7 @@
                                          property="eventFormatters" >
                             <bean:define id="eventFormatter" name="eventFmt"
                                          toScope="request" />
-                            <jsp:include page="event/emitEvent.jsp" />
+                            <jsp:include page="/docs/event/emitEvent.jsp" />
                           </logic:iterate>
                         </logic:notEmpty>
                       </logic:notEqual>
@@ -174,5 +174,5 @@
 </logic:equal>
 --%>
 
-<%@ include file="footer.jsp" %>
+<%@ include file="/docs/footer.jsp" %>
 

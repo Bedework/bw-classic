@@ -1,7 +1,7 @@
 <%@ taglib uri='struts-bean' prefix='bean' %>
 <%@ taglib uri='struts-logic' prefix='logic' %>
 
-<%@ include file="header.jsp" %>
+<%@ include file="/docs/header.jsp" %>
   <page>calendars</page>
 
   <%-- List of all calendars and subcalendars. --%>
@@ -11,4 +11,4 @@
     <%@include file="/docs/emitCalendar.jsp"%>
   </calendars>
 
-<%@ include file="footer.jsp" %>
+<%@ include file="/docs/footer.jsp" %>

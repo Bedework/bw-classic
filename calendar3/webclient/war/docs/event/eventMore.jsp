@@ -1,7 +1,7 @@
 <%@ taglib uri='struts-bean' prefix='bean' %>
 <%@ taglib uri='struts-logic' prefix='logic' %>
 
-<%@ include file="header.jsp" %>
+<%@ include file="/docs/header.jsp" %>
 <%
 try {
 %>
@@ -13,11 +13,11 @@ try {
                  property="curEventFmt"
                  toScope="request"/>
 
-    <%@ include file="event/emitEvent.jsp" %>
+    <%@ include file="/docs/event/emitEvent.jsp" %>
 <%
 } catch (Throwable t) {
   t.printStackTrace();
 }
 %>
 
-<%@ include file="footer.jsp" %>
+<%@ include file="/docs/footer.jsp" %>

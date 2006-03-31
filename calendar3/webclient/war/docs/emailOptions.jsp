@@ -4,7 +4,7 @@
 <%@ taglib uri='struts-genurl' prefix='genurl' %>
 <html:xhtml/>
 
-<%@ include file="header.jsp" %>
+<%@ include file="/docs/header.jsp" %>
 
 <%
 try {
@@ -25,5 +25,5 @@ try {
 }
 %>
 
-<%@ include file="footer.jsp" %>
+<%@ include file="/docs/footer.jsp" %>
 

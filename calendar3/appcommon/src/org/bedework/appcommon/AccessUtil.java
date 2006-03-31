@@ -100,6 +100,14 @@ public class AccessUtil implements Serializable {
     this.xml = xml;
   }
 
+  /** (Re)set the xml writer
+   *
+   * @param val      xml Writer
+   */
+  public void setXml(XmlEmit val) {
+    xml = val;
+  }
+
   /** Override this to construct urls from the parameter
    *
    * @param who String

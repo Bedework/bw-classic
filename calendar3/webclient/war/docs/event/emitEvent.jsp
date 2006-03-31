@@ -3,8 +3,8 @@
 <%@ taglib uri='bedework' prefix='bw' %>
 
 <bean:define id="eventFmt" name="eventFormatter" scope="request" />
-<bean:define id="eventInfo" name="eventFmt" property="eventInfo" />
-<bean:define id="event" name="eventFmt" property="event" />
+<bean:define id="eventInfo" name="eventFmt" property="eventInfo" toScope="request"  />
+<bean:define id="event" name="eventFmt" property="event" toScope="request"  />
 <%-- Output a single event. This page handles fields common to all views --%>
   <event>
     <logic:present  name="eventInfo" property="subscription">
@@ -25,13 +25,13 @@
       <bean:define id="date" name="eventFmt"
                    property="start"
                    toScope="request" />
-      <%@ include file="emitDate.jsp" %>
+      <%@ include file="/docs/event/emitDate.jsp" %>
     </start>
     <end><%-- end date and time --%>
       <bean:define id="date" name="eventFmt"
                    property="end"
                    toScope="request" />
-      <%@ include file="emitDate.jsp" %>
+      <%@ include file="/docs/event/emitDate.jsp" %>
     </end>
     <id><bean:write name="event" property="id"/></id><%--
       Value: integer - event id --%>
@@ -77,16 +77,16 @@
           Value: string, only one of CONFIRMED, TENTATIVE, or CANCELLED --%>
     <logic:notPresent name="detailView" scope="request"><%-- look for short form --%>
       <logic:notPresent name="allView" scope="request">
-        <jsp:include page="event/emitEventShort.jsp"/>
+        <jsp:include page="/docs/event/emitEventShort.jsp"/>
       </logic:notPresent>
     </logic:notPresent>
 
     <logic:present name="detailView" scope="request">
-      <jsp:include page="event/emitEventDetail.jsp"/>
+      <jsp:include page="/docs/event/emitEventDetail.jsp"/>
     </logic:present>
 
     <logic:present name="allView" scope="request">
-      <jsp:include page="event/emitEventDetail.jsp"/>
-      <jsp:include page="event/emitEventAll.jsp"/>
+      <jsp:include page="/docs/event/emitEventDetail.jsp"/>
+      <jsp:include page="/docs/event/emitEventAll.jsp"/>
     </logic:present>
   </event>
