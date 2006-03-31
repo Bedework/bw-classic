@@ -68,6 +68,8 @@ import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.Groups;
 
+import edu.rpi.cct.uwcal.access.Acl;
+
 import java.util.Collection;
 
 import net.fortuna.ical4j.model.component.VTimeZone;
@@ -362,14 +364,14 @@ public interface Calintf extends CalendarsI, EventsI {
   public void changeAccess(BwShareableDbentity ent, 
                            Collection aces) throws CalFacadeException;
 
-  /** Return the ace representing the allowed access for the given object. This
+  /** Return the acl representing the allowed access for the given object. This
    * may be derived from an object higher up the tree.
    *
    * @param ent
-   * @return Collection
+   * @return Acl
    * @throws CalFacadeException
    */
-  public Collection getAces(BwShareableDbentity ent) throws CalFacadeException;
+  public Acl getAcl(BwShareableDbentity ent) throws CalFacadeException;
 
   /* ====================================================================
    *                   Timezones

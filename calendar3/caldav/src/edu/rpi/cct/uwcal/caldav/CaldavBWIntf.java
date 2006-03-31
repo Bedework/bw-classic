@@ -71,6 +71,7 @@ import org.bedework.icalendar.IcalTranslator;
 
 import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.Acl;
+import edu.rpi.cct.uwcal.access.Privileges;
 
 import edu.rpi.cct.uwcal.caldav.filter.Filter;
 import edu.rpi.cct.uwcal.caldav.calquery.FreeBusyQuery;
@@ -147,9 +148,6 @@ public class CaldavBWIntf extends WebdavNsIntf {
   /** We store CaldavURI objects here
    */
   private HashMap uriMap = new HashMap();
-
-  /**  Used for creating ace objects */
-  private static Acl acl = new Acl();
 
   /** An object representing the current users access
    */
@@ -791,7 +789,8 @@ public class CaldavBWIntf extends WebdavNsIntf {
       throw WebdavIntfException.badRequest();
     }
 
-    info.aces.add(new Ace(info.who, info.notWho, info.whoType, acl.makePriv(priv)));
+    info.aces.add(new Ace(info.who, info.notWho, info.whoType, 
+                          Privileges.makePriv(priv)));
   }
 
   public void updateAccess(AclInfo ainfo) throws WebdavIntfException {
@@ -823,16 +822,16 @@ public class CaldavBWIntf extends WebdavNsIntf {
   public void emitAcl(WebdavNsNode node) throws WebdavIntfException {
     CaldavBwNode uwnode = getBwnode(node);
     CaldavURI cdUri = uwnode.getCDURI();
-    Collection aces = null;
+    Acl acl = null;
 
     try {
       if (cdUri.isCalendar()) {
-        aces = getSvci().getAces(cdUri.getCal());
+        acl = getSvci().getAcl(cdUri.getCal());
       } else {
-        aces = getSvci().getAces(((CaldavComponentNode)node).getEvent());
+        acl = getSvci().getAcl(((CaldavComponentNode)node).getEvent());
       }
 
-      emitAccess.emitAces(aces);
+      emitAccess.emitAcl(acl);
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }

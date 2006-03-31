@@ -53,8 +53,8 @@
 */
 package edu.rpi.cct.uwcal.access;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
 
 /** Define the properties of a privilege for the calendar.
  *
@@ -82,7 +82,7 @@ public class Privilege implements PrivilegeDefs {
 
   private char encoding;
 
-  private Vector containedPrivileges = new Vector();
+  private ArrayList containedPrivileges = new ArrayList();
 
   /** Constructor
    *

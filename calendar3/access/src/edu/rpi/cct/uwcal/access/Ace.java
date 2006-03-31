@@ -373,14 +373,12 @@ public class Ace implements Serializable, Comparable {
    *
    * @param acl
    * @param privs
-   * @param getPrivileges
    * @param name
    * @param whoType
    * @return boolean true if we find a match
    * @throws AccessException
    */
   public boolean decode(EncodedAcl acl,
-                        Privileges privs,
                         boolean getPrivileges,
                         String name, int whoType) throws AccessException {
     acl.rewind();
@@ -389,9 +387,9 @@ public class Ace implements Serializable, Comparable {
       decodeWhoType(acl);
 
       if ((whoType != getWhoType()) || !whoMatch(name)) {
-        skipHow(acl, privs);
+        skipHow(acl);
       } else {
-        decodeHow(acl, privs, getPrivileges);
+        decodeHow(acl, getPrivileges);
         return true;
       }
     }
@@ -406,15 +404,13 @@ public class Ace implements Serializable, Comparable {
    * manipulation rather than evaluation.
    *
    * @param acl
-   * @param privs
    * @param getPrivileges
    * @throws AccessException
    */
   public void decode(EncodedAcl acl,
-                     Privileges privs,
                      boolean getPrivileges) throws AccessException {
     decodeWhoType(acl);
-    decodeHow(acl, privs, getPrivileges);
+    decodeHow(acl, getPrivileges);
   }
 
   /* ====================================================================
@@ -658,19 +654,17 @@ public class Ace implements Serializable, Comparable {
     setWho(acl.getString());
   }
 
-  private void skipHow(EncodedAcl acl,
-                       Privileges privs) throws AccessException {
-    privs.skip(acl);
+  private void skipHow(EncodedAcl acl) throws AccessException {
+    Privileges.skip(acl);
   }
 
   private void decodeHow(EncodedAcl acl,
-                         Privileges privs,
                          boolean getPrivileges) throws AccessException {
     int pos = acl.getPos();
-    setHow(privs.fromEncoding(acl));
+    setHow(Privileges.fromEncoding(acl));
     if (getPrivileges) {
       acl.setPos(pos);
-      setPrivs(privs.getPrivs(acl));
+      setPrivs(Privileges.getPrivs(acl));
     }
   }
 }

@@ -85,7 +85,7 @@ public class BwEventAction extends BwCalAbstractAction {
 
     // Not export - just set up for display
 
-    EventFormatter ef = new EventFormatter(ev,
+    EventFormatter ef = new EventFormatter(form.fetchSvci(), ev,
                                            form.getCurTimeView(),
                                            form.getCalInfo(),
                                            form.fetchSvci().getTimezones());

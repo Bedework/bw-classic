@@ -53,6 +53,7 @@
 */
 package org.bedework.calcore.hibernate;
 
+import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.access.PrivilegeDefs;
 
 import org.bedework.calenv.CalEnv;
@@ -691,9 +692,9 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     sess.saveOrUpdate(ent);
   }
 
-  public Collection getAces(BwShareableDbentity ent) throws CalFacadeException {
+  public Acl getAcl(BwShareableDbentity ent) throws CalFacadeException {
     checkOpen();
-    return access.getAces(ent);
+    return access.getAcl(ent);
   }
 
   /* ====================================================================

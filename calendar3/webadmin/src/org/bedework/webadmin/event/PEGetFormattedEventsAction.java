@@ -94,7 +94,8 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
     form.assignAlertEvent(false);
     form.assignAddingEvent(false);
 
-    form.setFormattedEvents(new FormattedEvents(getEvents(request, false, form),
+    form.setFormattedEvents(new FormattedEvents(form.fetchSvci(), 
+                                                getEvents(request, false, form),
                                                 form.getCalInfo(),
                                                 form.fetchSvci().getTimezones()));
 

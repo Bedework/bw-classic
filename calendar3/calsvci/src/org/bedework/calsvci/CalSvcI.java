@@ -81,6 +81,7 @@ import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.icalendar.IcalCallback;
 
+import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.resources.Resources;
 
 import java.io.Serializable;
@@ -413,10 +414,10 @@ public abstract class CalSvcI implements Serializable {
   * may be derived from an object higher up the tree.
   *
   * @param ent
-  * @return Collection
+  * @return Acl
   * @throws CalFacadeException
   */
- public abstract Collection getAces(BwShareableDbentity ent) throws CalFacadeException;
+ public abstract Acl getAcl(BwShareableDbentity ent) throws CalFacadeException;
 
   /* ====================================================================
    *                   Timezones

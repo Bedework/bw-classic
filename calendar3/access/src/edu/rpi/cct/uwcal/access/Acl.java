@@ -82,8 +82,6 @@ import org.apache.log4j.Logger;
 public class Acl extends EncodedAcl implements PrivilegeDefs {
   boolean debug;
 
-  Privileges privs;
-
   private TreeSet aces;
 
   private transient Logger log;
@@ -104,7 +102,6 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
    */
   public Acl(boolean debug) {
     this.debug = debug;
-    privs = new Privileges();
   }
 
   /** Turn debugging on/off
@@ -183,7 +180,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
     getPrivileges: {
       if (!authenticated) {
-        if (ace.decode(this, privs, false, null, Ace.whoTypeUnauthenticated)) {
+        if (ace.decode(this, false, null, Ace.whoTypeUnauthenticated)) {
           privileges = ace.getHow();
         }
 
@@ -191,7 +188,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       }
 
       if (isOwner) {
-        if (ace.decode(this, privs, false, null, Ace.whoTypeOwner)) {
+        if (ace.decode(this, false, null, Ace.whoTypeOwner)) {
           privileges = ace.getHow();
         } else {
           privileges = defaultOwnerPrivileges;
@@ -201,7 +198,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       }
 
       // Not owner - look for user
-      if (ace.decode(this, privs, false, who.getAccount(), Ace.whoTypeUser)) {
+      if (ace.decode(this, false, who.getAccount(), Ace.whoTypeUser)) {
         privileges = ace.getHow();
         if (debug) {
           debugsb.append("... For user got: " + new String(privileges));
@@ -220,7 +217,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
           if (debug) {
             debugsb.append("...Try access for group " + group);
           }
-          if (ace.decode(this, privs, false, group, Ace.whoTypeGroup)) {
+          if (ace.decode(this, false, group, Ace.whoTypeGroup)) {
             privileges = mergePrivileges(privileges, ace.getHow());
           }
         }
@@ -235,7 +232,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       }
 
       // "other" access set?
-      if (ace.decode(this, privs, false, null, Ace.whoTypeOther)) {
+      if (ace.decode(this, false, null, Ace.whoTypeOther)) {
         privileges = ace.getHow();
 
         if (debug) {
@@ -302,13 +299,6 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
     return aces;
   }
 
-  /**
-   * @return Privileges
-   */
-  public Privileges getPrivs() {
-    return privs;
-  }
-
   /** Set the ace collection for this acl
    *
    * @param val    Collection of aces
@@ -339,14 +329,6 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
     aces.add(val);
   }
 
-  /**
-   * @param privType
-   * @return Privilege
-   */
-  public Privilege makePriv(int privType) {
-    return privs.makePriv(privType);
-  }
-
   /** Set to default access
    *
    */
@@ -354,10 +336,10 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
     aces = null; // reset
 
     addAce(new Ace(null, false, Ace.whoTypeOwner,
-                   privs.makePriv(Privileges.privAll)));
+                   Privileges.makePriv(Privileges.privAll)));
 
     addAce(new Ace(null, false, Ace.whoTypeOther,
-                   privs.makePriv(Privileges.privNone)));
+                   Privileges.makePriv(Privileges.privNone)));
   }
 
   /** Remove access for a given 'who' entry
@@ -420,7 +402,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       while (hasMore()) {
         Ace ace = new Ace();
 
-        ace.decode(this, privs, true);
+        ace.decode(this, true);
 
         ts.add(ace);
       }
@@ -451,7 +433,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
     while (hasMore()) {
       Ace ace = new Ace();
 
-      ace.decode(this, privs, true);
+      ace.decode(this, true);
       ace.setInherited(true);
 
       if (aces == null) {

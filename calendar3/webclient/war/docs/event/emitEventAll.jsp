@@ -1,5 +1,7 @@
 <%@ taglib uri='struts-bean' prefix='bean' %>
 <%@ taglib uri='struts-logic' prefix='logic' %>
+<%@ taglib uri='bedework' prefix='bw' %>
+
     <%-- Output any additional event fields for full format displays --%>
     <logic:present  name="event" property="organizer">
       <bean:define id="organizer" name="event" property="organizer"/>
@@ -32,4 +34,6 @@
                mailto url --%>
       </organizer>
     </logic:iterate>
+    <bw:emitText name="eventFormatter" property="xmlAccess" tagName="access"
+                 filter="no"/>
 

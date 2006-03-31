@@ -564,8 +564,9 @@ public class TimeViewDailyInfo implements Serializable {
         Iterator it = events.iterator();
 
         while (it.hasNext()) {
-          eventFormatters.add(new EventFormatter((EventInfo)it.next(), view,
-                              calInfo, view.getTimezones()));
+          eventFormatters.add(new EventFormatter(view.getSvcI(), 
+                                                 (EventInfo)it.next(), view,
+                                                 calInfo, view.getTimezones()));
         }
       }
     } catch (Throwable t) {

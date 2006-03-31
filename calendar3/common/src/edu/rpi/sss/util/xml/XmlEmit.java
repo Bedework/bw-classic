@@ -68,6 +68,8 @@ import javax.servlet.http.HttpServletResponse;
 public class XmlEmit {
   private Writer wtr;
   private boolean mustEmitNS;
+  
+  private boolean noHeaders = false;
 
   /** We need to map the namespaces onto a set of reasonable abbreviations
    * for the generated xml. New set created each request
@@ -87,8 +89,18 @@ public class XmlEmit {
    * during the first phase and emit xml afetr startEmit is called.
    */
   public XmlEmit() {
+    this(false);
+  }
+
+  /** construct an object which will be used to collect namespace names
+   * during the first phase and emit xml afetr startEmit is called.
+   * 
+   * @param noHeaders    boolean true to suppress headers
+   */
+  public XmlEmit(boolean noHeaders) {
     nsMap = new HashMap();
     nsIndex = 0;
+    this.noHeaders = noHeaders;
   }
 
   /** Emit any headers and namespace declarations
@@ -107,9 +119,12 @@ public class XmlEmit {
    */
   public void startEmit(Writer wtr) throws IOException {
     this.wtr = wtr;
-    mustEmitNS = true;
-
-    writeHeader();
+    
+    if (!noHeaders) {
+      mustEmitNS = true;
+      
+      writeHeader();
+    }
     newline();
   }
 
@@ -301,7 +316,7 @@ public class XmlEmit {
 
     wtr.write(tag.getLocalPart());
 
-    if (mustEmitNS) {
+    if (!noHeaders && mustEmitNS) {
       Iterator nss = nsMap.keySet().iterator();
 
       while (nss.hasNext()) {

@@ -56,6 +56,7 @@ package org.bedework.appcommon;
 
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.EventInfo;
+import org.bedework.calsvci.CalSvcI;
 
 import java.util.AbstractCollection;
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class FormattedEvents extends AbstractCollection {
   private Collection events;
   private CalendarInfo calInfo;
   private CalTimezones ctz;
+  private CalSvcI svci;
 
   /** Constructor
    *
@@ -77,7 +79,7 @@ public class FormattedEvents extends AbstractCollection {
    * @param calInfo
    * @param ctz
    */
-  public FormattedEvents(Collection events,
+  public FormattedEvents(CalSvcI svci, Collection events,
                          CalendarInfo calInfo, CalTimezones ctz) {
     if (events == null) {
       this.events = new ArrayList();
@@ -86,6 +88,7 @@ public class FormattedEvents extends AbstractCollection {
     }
     this.calInfo = calInfo;
     this.ctz = ctz;
+    this.svci = svci;
   }
 
   public Iterator iterator() {
@@ -110,7 +113,7 @@ public class FormattedEvents extends AbstractCollection {
     public Object next() {
       EventInfo ev = (EventInfo)it.next();
 
-      return new EventFormatter(ev, null, calInfo, ctz);
+      return new EventFormatter(svci, ev, null, calInfo, ctz);
     }
 
     public void remove() {

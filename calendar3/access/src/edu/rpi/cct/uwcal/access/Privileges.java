@@ -100,63 +100,59 @@ public class Privileges implements PrivilegeDefs {
      frequently it is usually better to expand.
    */
 
-  private Privilege[] privs;
-
-  /** Constructor
-   *
-   */
-  public Privileges() {
-    privs = new Privilege[privMaxType + 1];
-
+  private final static Privilege[] privs = new Privilege[privMaxType + 1];
+  
+  static {
     privs[privAll] = new Privilege("all", "All privileges", false, false,
-                    privAll);
+                                   privAll);
 
     privs[privRead] = new Privilege("read", "Read any calendar object", false, false,
-                    privRead);
-
+                                    privRead);
+    
     privs[privReadAcl] = new Privilege("read-acl", "Read calendar accls", false, false,
-                    privReadAcl);
-
+                                       privReadAcl);
+    
     privs[privReadCurrentUserPrivilegeSet] =
       new Privilege("read-current-user-privilege-set",
                     "Read current user privilege set property", false, false,
                     privReadCurrentUserPrivilegeSet);
-
-    privs[privReadFreeBusy] = new Privilege("view-free-busy", "View a users free busy information", false, false,
-                    privReadFreeBusy);
-
+    
+    privs[privReadFreeBusy] = new Privilege("view-free-busy", 
+                                            "View a users free busy information", 
+                                            false, false, privReadFreeBusy);
+    
     privs[privWrite] = new Privilege("write", "Write any calendar object", false, false,
-                    privWrite);
-
+                                     privWrite);
+    
     privs[privWriteAcl] = new Privilege("write-acl", "Write ACL", false, false,
-                    privWriteAcl);
-
+                                        privWriteAcl);
+    
     privs[privWriteProperties] = new Privilege("write-properties", "Write calendar properties", false, false,
-                    privWriteProperties);
-
+                                               privWriteProperties);
+    
     privs[privWriteContent] = new Privilege("write-content", "Write calendar content", false, false,
-                    privWriteContent);
-
+                                            privWriteContent);
+    
     privs[privBind] = new Privilege("create", "Create a calendar object", false, false,
-                    privBind);
-
+                                    privBind);
+    
     privs[privUnbind] = new Privilege("delete", "Delete a calendar object", false, false,
-                    privUnbind);
-
+                                      privUnbind);
+    
     privs[privUnlock] = new Privilege("unlock", "Remove a lock", false, false,
-                    privUnlock);
-
+                                      privUnlock);
+    
     privs[privNone] = (Privilege)privs[privAll].clone();
     privs[privNone].setDenial(true);
-
+    
     privs[privAll].addContainedPrivilege(privs[privRead]);
     privs[privAll].addContainedPrivilege(privs[privWrite]);
     privs[privAll].addContainedPrivilege(privs[privUnlock]);
-
+    
     privs[privRead].addContainedPrivilege(privs[privReadAcl]);
     privs[privRead].addContainedPrivilege(privs[privReadCurrentUserPrivilegeSet]);
     privs[privRead].addContainedPrivilege(privs[privReadFreeBusy]);
-
+    
     privs[privWrite].addContainedPrivilege(privs[privWriteAcl]);
     privs[privWrite].addContainedPrivilege(privs[privWriteProperties]);
     privs[privWrite].addContainedPrivilege(privs[privWriteContent]);
@@ -164,17 +160,23 @@ public class Privileges implements PrivilegeDefs {
     privs[privWrite].addContainedPrivilege(privs[privUnbind]);
   }
 
+  /** Constructor
+   *
+   */
+  private Privileges() {
+  }
+
   /**
    * @return Privilege defining all access
    */
-  public Privilege getPrivAll() {
+  public static Privilege getPrivAll() {
     return privs[privAll];
   }
 
   /**
    * @return Privilege defining no access
    */
-  public Privilege getPrivNone() {
+  public static Privilege getPrivNone() {
     return privs[privNone];
   }
 
@@ -183,7 +185,7 @@ public class Privileges implements PrivilegeDefs {
    * @param privType int access
    * @return Privilege defining access
    */
-  public Privilege makePriv(int privType) {
+  public static Privilege makePriv(int privType) {
     return (Privilege)privs[privType].clone();
   }
 
@@ -194,7 +196,7 @@ public class Privileges implements PrivilegeDefs {
    * @return char[] access flags
    * @throws AccessException
    */
-  public char[] fromEncoding(EncodedAcl acl) throws AccessException {
+  public static char[] fromEncoding(EncodedAcl acl) throws AccessException {
     char[] privStates = {
       unspecified,   // privAll
       unspecified,   // privRead
@@ -235,7 +237,7 @@ public class Privileges implements PrivilegeDefs {
    * @param acl
    * @throws AccessException
    */
-  public void skip(EncodedAcl acl) throws AccessException {
+  public static void skip(EncodedAcl acl) throws AccessException {
     while (acl.hasMore()) {
       if (acl.getChar() == ' ') {
         break;
@@ -250,7 +252,7 @@ public class Privileges implements PrivilegeDefs {
    * @return Collection
    * @throws AccessException
    */
-  public Collection getPrivs(EncodedAcl acl) throws AccessException {
+  public static Collection getPrivs(EncodedAcl acl) throws AccessException {
     Vector v = new Vector();
 
     while (acl.hasMore()) {
@@ -271,7 +273,7 @@ public class Privileges implements PrivilegeDefs {
     return v;
   }
 
-  private void setState(char[] states, Privilege p, boolean denial) {
+  private static void setState(char[] states, Privilege p, boolean denial) {
     if (!denial) {
       states[p.getIndex()] = allowed;
     } else {
@@ -289,7 +291,7 @@ public class Privileges implements PrivilegeDefs {
   /* Works its way down the tree of privileges finding the highest entry
    * that matches the privilege in the acl.
    */
-  private Privilege findPriv(Privilege p, EncodedAcl acl)
+  private static Privilege findPriv(Privilege p, EncodedAcl acl)
           throws AccessException {
     if (p.match(acl)) {
       return p;
@@ -307,49 +309,5 @@ public class Privileges implements PrivilegeDefs {
 
     return null;
   }
-
-  /* ====================================================================
-   *                   Object methods
-   * ==================================================================== */
-/*
-  public int hashCode() {
-    return 31 * entityId * entityType;
-  }
-
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-
-    if (obj == null) {
-      return false;
-    }
-
-    if (!(obj instanceof AttendeeVO)) {
-      return false;
-    }
-
-    AttendeePK that = (AttendeePK)obj;
-
-    return (entityId == that.entityId) &&
-           (entityType == that.entityType);
-  }
-  */
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer();
-
-    sb.append("AclVO{");
-//    sb.append(entityId);
-    sb.append("}");
-
-    return sb.toString();
-  }
-
-  /*
-  public Object clone() {
-    return new AttendeePK(getEntityId(),
-                          getEntityType());
-  }*/
 }
 

@@ -61,10 +61,10 @@ import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
 
 import edu.rpi.cct.uwcal.access.Ace;
-import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.access.PrivilegeDefs;
+import edu.rpi.cct.uwcal.access.Privileges;
 
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -93,9 +93,6 @@ import javax.servlet.http.HttpServletRequest;
  *  @author Mike Douglass   douglm@rpi.edu
  */
 public class BwAccessAction extends BwCalAbstractAction {
-  /**  Used for creating ace objects */
-  private static Acl acl = new Acl();
-
   /* (non-Javadoc)
    * @see org.bedework.webclient.BwCalAbstractAction#doAction(javax.servlet.http.HttpServletRequest, org.bedework.webclient.BwActionForm)
    */
@@ -207,14 +204,14 @@ public class BwAccessAction extends BwCalAbstractAction {
       who = null;
     }
 
-    Vector v = new Vector();
-    v.add(new Ace(who, false, whoType, acl.makePriv(desiredAccess)));
+    ArrayList aces = new ArrayList();
+    aces.add(new Ace(who, false, whoType, Privileges.makePriv(desiredAccess)));
 
     if (calid) {
-      svci.changeAccess(cal, v);
+      svci.changeAccess(cal, aces);
       svci.updateCalendar(cal);
     } else {
-      svci.changeAccess(ev, v);
+      svci.changeAccess(ev, aces);
       svci.updateEvent(ev);
     }
     return "success";

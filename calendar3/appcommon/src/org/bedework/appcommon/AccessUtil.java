@@ -57,14 +57,15 @@ import org.bedework.calfacade.CalFacadeException;
 import org.bedework.davdefs.CaldavTags;
 import org.bedework.davdefs.WebdavTags;
 
-import edu.rpi.cct.uwcal.access.Access;
 import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.access.Privilege;
+import edu.rpi.cct.uwcal.access.Privileges;
 import edu.rpi.sss.util.xml.QName;
 import edu.rpi.sss.util.xml.XmlEmit;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -98,6 +99,25 @@ public class AccessUtil implements Serializable {
    */
   public AccessUtil(XmlEmit xml) {
     this.xml = xml;
+  }
+  
+  public static String getXmlString(Acl acl) throws CalFacadeException {
+    try {
+      XmlEmit xml = new XmlEmit(true);  // no headers
+      StringWriter su = new StringWriter();
+      xml.startEmit(su);
+      AccessUtil au = new AccessUtil(xml);
+      
+      au.emitAcl(acl);
+      
+      su.close();
+      
+      return su.toString();
+    } catch (CalFacadeException cfe) {
+      throw cfe;
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
   }
 
   /** (Re)set the xml writer
@@ -169,7 +189,7 @@ public class AccessUtil implements Serializable {
     try {
       xml.openTag(WebdavTags.supportedPrivilegeSet);
       
-      emitSupportedPriv(Access.getPrivs().getPrivAll());
+      emitSupportedPriv(Privileges.getPrivAll());
       
       xml.closeTag(WebdavTags.supportedPrivilegeSet);
     } catch (Throwable t) {

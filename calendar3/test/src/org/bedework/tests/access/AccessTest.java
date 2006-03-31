@@ -92,8 +92,8 @@ public class AccessTest extends TestCase {
       auserInGroup.addGroup(agroup);
       auserInGroup.addGroup(bgroup);
 
-      Privilege read = acl.makePriv(Privileges.privRead);
-      Privilege write = acl.makePriv(Privileges.privWrite);
+      Privilege read = Privileges.makePriv(Privileges.privRead);
+      Privilege write = Privileges.makePriv(Privileges.privWrite);
 
       Privilege[] privSetRead = {read};
       Privilege[] privSetReadWrite = {read, write};
@@ -112,7 +112,7 @@ public class AccessTest extends TestCase {
       /* read others - i.e. not owner */
       acl.clear();
       acl.addAce(new Ace(null, false, Ace.whoTypeOther,
-                         acl.makePriv(Privileges.privRead)));
+                         Privileges.makePriv(Privileges.privRead)));
       encoded = logEncoded(acl, "read others");
       tryDecode(encoded, "read others");
       tryEvaluateAccess(owner, owner, privSetReadWrite, encoded, true,
@@ -127,12 +127,12 @@ public class AccessTest extends TestCase {
       /* read for group "agroup", rw for user "auser" */
       acl.clear();
       Ace ace = new Ace("agroup", false, Ace.whoTypeGroup,
-                        acl.makePriv(Privileges.privRead));
+                        Privileges.makePriv(Privileges.privRead));
       acl.addAce(ace);
 
       ace = new Ace("auser", false, Ace.whoTypeUser);
-      ace.addPriv(acl.makePriv(Privileges.privRead));
-      ace.addPriv(acl.makePriv(Privileges.privWrite));
+      ace.addPriv(Privileges.makePriv(Privileges.privRead));
+      ace.addPriv(Privileges.makePriv(Privileges.privWrite));
       acl.addAce(ace);
       encoded = logEncoded(acl, "read g=agroup,rw auser");
       tryDecode(encoded, "read g=agroup,rw auser");

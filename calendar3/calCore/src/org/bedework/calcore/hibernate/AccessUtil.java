@@ -168,11 +168,8 @@ class AccessUtil implements PrivilegeDefs {
    */
   public void changeAccess(BwShareableDbentity ent, 
                            Collection aces) throws CalFacadeException {
-    Collection oldAces = getAces(ent);
-
     try {
-      Acl acl = new Acl(debug);
-      acl.setAces(oldAces);
+      Acl acl = getAces(ent, privWriteAcl);
 
       Iterator it = aces.iterator();
       while (it.hasNext()) {
@@ -188,15 +185,24 @@ class AccessUtil implements PrivilegeDefs {
     }
   }
 
-  /** Return the aces representing the allowed access for the given object. This
+  /** Return the acl representing the allowed access for the given object. This
    * may be derived from an object higher up the tree.
    *
-   * @param o
-   * @return Collection
+   * @param ent
+   * @return Acl
    * @throws CalFacadeException
    */
-  public Collection getAces(BwShareableDbentity ent) throws CalFacadeException {
-    return getAces(ent, privWriteAcl);
+  public Acl getAcl(BwShareableDbentity ent) throws CalFacadeException {
+    try {
+      return getAces(ent, privReadAcl);
+    } catch (CalFacadeAccessException cae) {
+      Acl acl = new Acl();
+      acl.defaultAccess();
+      
+      return acl;
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
   }
 
   /** Return a Collection of the objects after checking access
@@ -263,7 +269,7 @@ class AccessUtil implements PrivilegeDefs {
    * @return Collection of merged Ace or null for no access
    * @throws CalFacadeException
    */
-  Collection getAces(BwShareableDbentity ent, int desiredAccess)
+  Acl getAces(BwShareableDbentity ent, int desiredAccess)
           throws CalFacadeException {
     if (ent == null) {
       return null;
@@ -287,7 +293,7 @@ class AccessUtil implements PrivilegeDefs {
       Acl acl = new Acl();
       acl.decode(aclChars);
 
-      return acl.getAces();
+      return acl;
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }

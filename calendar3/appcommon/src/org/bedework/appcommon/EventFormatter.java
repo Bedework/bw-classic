@@ -58,12 +58,15 @@ import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.EventInfo;
+import org.bedework.calsvci.CalSvcI;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
+
+import edu.rpi.cct.uwcal.access.Acl;
 
 /** Object to provide formatting services for a BwEvent.
  *
@@ -77,20 +80,24 @@ public class EventFormatter implements Serializable {
   private CalendarInfo calInfo;
 
   private CalTimezones ctz;
+  
+  private CalSvcI svci;
 
   /** The view currently in place.
    */
   //private TimeView view;
 
-  /** Set so that questions can be asked about the time */
+  /* Set so that questions can be asked about the time */
   private MyCalendarVO today;
 
-  /** Set dynamically on request to represent start date/time */
+  /* Set dynamically on request to represent start date/time */
   private DateTimeFormatter start;
 
-  /** Set dynamically on request to represent end date/time */
+  /* Set dynamically on request to represent end date/time */
   private DateTimeFormatter end;
 
+  private String xmlAccess;
+  
   /** Constructor
    *
    * @param eventInfo
@@ -98,11 +105,12 @@ public class EventFormatter implements Serializable {
    * @param view
    * @param ctz
    */
-  public EventFormatter(EventInfo eventInfo, TimeView view,
+  public EventFormatter(CalSvcI svci, EventInfo eventInfo, TimeView view,
                         CalendarInfo calInfo, CalTimezones ctz) {
     this.eventInfo = eventInfo;
     this.calInfo = calInfo;
     this.ctz= ctz;
+    this.svci = svci;
   }
 
   /** =====================================================================
@@ -196,6 +204,19 @@ public class EventFormatter implements Serializable {
     }
 
     return end;
+  }
+  
+  public String getXmlAccess() {
+    try {
+      if (xmlAccess == null) {
+        Acl acl = svci.getAcl(getEvent());
+        xmlAccess = AccessUtil.getXmlString(acl);
+      }
+    } catch (Throwable t) {
+      error(t);
+    }
+
+    return xmlAccess;
   }
 
   /* ===================================================================

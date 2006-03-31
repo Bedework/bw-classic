@@ -161,6 +161,13 @@ public class TimeView implements Serializable {
   public CalTimezones getTimezones() throws CalFacadeException {
     return cal.getTimezones();
   }
+  
+  /**
+   * @return CalSvcI
+   */
+  public CalSvcI getSvcI() {
+    return cal;
+  }
 
   /** Override this for a single day view
    *
