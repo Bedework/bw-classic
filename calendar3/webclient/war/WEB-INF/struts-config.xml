@@ -415,18 +415,66 @@
 
     <!-- ..................... subscriptionss .......................... -->
 
-    <action    path="/subscribe"
-               type="org.bedework.webcommon.subs.SubscribeAction"
+     <action    path="/subs/showSubs"
+               type="org.bedework.webclient.BwRenderAction"
                name="calForm"
                scope="session"
                validate="false">
+      <forward name="success" path="/docs/subs/subscriptions.jsp"/>
     </action>
 
-    <action    path="/unsubscribe"
-               type="org.bedework.webcommon.subs.UnsubscribeAction"
+    <action    path="/subs/showModForm"
+               type="org.bedework.webclient.BwRenderAction"
                name="calForm"
                scope="session"
                validate="false">
+      <forward name="success" path="/docs/subs/modSubscription.jsp"/>
+    </action>
+
+    <action    path="/subs/fetch"
+               type="org.bedework.webcommon.subs.GetSubscriptionsAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/subs/showSubs.rdo" redirect="true" />
+    </action>
+
+    <action    path="/subs/fetchForUpdate"
+               type="org.bedework.webcommon.subs.FetchSubscriptionAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="notFound" path="/admin/showMain.rdo" redirect="true" />
+      <forward name="continue" path="/subs/showModForm.rdo" redirect="true" />
+    </action>
+
+    <action    path="/subs/initAdd"
+               type="org.bedework.webcommon.subs.InitSubscribeAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="cancelled" path="/subs/showSubs.rdo" redirect="true"/>
+      <forward name="success" path="/subs/showModForm.rdo" redirect="true" />
+    </action>
+
+
+    <action    path="/subs/subscribe"
+               type="org.bedework.webcommon.subs.SubscribeAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="cancelled" path="/subs/showSubs.rdo" redirect="true"/>
+      <forward name="retry" path="/subs/showModForm.rdo" redirect="true"/>
+      <forward name="reffed" path="/subs/showSubs.rdo" redirect="true"/>
+      <forward name="success" path="/subs/showSubs.rdo" redirect="true" />
+    </action>
+
+    <action    path="/subs/unsubscribe"
+               type="org.bedework.webcommon.subs.UnsubscribeAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/subs/showSubs.rdo" redirect="true" />
     </action>
 
     <!-- ......................... views .............................. -->

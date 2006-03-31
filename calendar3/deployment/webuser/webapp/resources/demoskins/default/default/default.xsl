@@ -54,11 +54,15 @@
   <xsl:variable name="addLocation" select="/bedework/urlPrefixes/addLocation"/>
   <xsl:variable name="editLocation" select="/bedework/urlPrefixes/editLocation"/>
   <xsl:variable name="delLocation" select="/bedework/urlPrefixes/delLocation"/>
-  <xsl:variable name="subscribe" select="/bedework/urlPrefixes/subscribe"/>
   <xsl:variable name="initEventAlarm" select="/bedework/urlPrefixes/initEventAlarm"/>
   <xsl:variable name="setAlarm" select="/bedework/urlPrefixes/setAlarm"/>
   <xsl:variable name="initUpload" select="/bedework/urlPrefixes/initUpload"/>
   <xsl:variable name="upload" select="/bedework/urlPrefixes/upload"/>
+
+  <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch/a/@href"/>
+  <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
+  <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd/a/@href"/>
+  <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/subscriptions/subscribe/a/@href"/>
 
   <!-- URL of the web application - includes web context
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/> -->
@@ -130,8 +134,10 @@
                   <!-- edit an event -->
                   <xsl:apply-templates select="/bedework/locationform"/>
                 </xsl:when>
+                <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
+                  <xsl:apply-templates select="/bedework/subscriptions"/>
+                </xsl:when>
                 <xsl:when test="/bedework/page='calendars'">
-                  <!-- show a list of all calendars and manage subscriptions -->
                   <xsl:apply-templates select="/bedework/calendars"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='other'">
@@ -261,7 +267,7 @@
       <li><a href="{$initEvent}">Add Event</a></li>
       <li><a href="{$initUpload}">Upload Events (iCal)</a></li>
       <li><a href="{$manageLocations}">Manage Locations</a></li>
-      <li><a href="{$fetchPublicCalendars}">Manage Subscriptions</a></li>
+      <li><a href="{$subscriptions-fetch}">Manage Subscriptions</a></li>
       <li>Preferences</li>
     </ul>
   </xsl:template>
@@ -941,6 +947,7 @@
   </xsl:template>
 
   <!--==== CALENDAR LISTING / MANAGE SUBSCRIPTIONS ====-->
+  <!-- DEPRECATED
   <xsl:template match="calendars">
     <xsl:variable name="publicCalCount" select="count(calendar[name='public']/calendar)"/>
     <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
@@ -986,7 +993,7 @@
         </ul>
       </xsl:if>
     </li>
-  </xsl:template>
+  </xsl:template> -->
 
   <!--==== SINGLE EVENT ====-->
   <xsl:template match="event">
@@ -1775,6 +1782,253 @@
         </tr>
       </table>
     </form>
+  </xsl:template>
+
+  <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->
+  <xsl:template match="subscriptions">
+    <table id="subsTable">
+      <tr>
+        <td class="cals">
+          <h3>Public calendars</h3>
+          <p class="smaller">
+            Select a calendar below to add a <em><strong>new</strong></em>
+            internal subscription. <!-- or
+            <a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">
+            subscribe to an external calendar</a>.-->
+          </p>
+          <ul id="calendarTree">
+            <xsl:apply-templates select="/bedeworkadmin/subscriptions/subscribe/calendars/calendar" mode="subscribe"/>
+          </ul>
+        </td>
+        <td class="subs">
+          <xsl:choose>
+            <xsl:when test="/bedeworkadmin/page='subscriptions'">
+              <xsl:call-template name="subscriptionList"/>
+            </xsl:when>
+            <xsl:when test="/bedeworkadmin/creating='true'">
+              <xsl:apply-templates select="subscription" mode="addSubscription"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="subscription" mode="modSubscription"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </td>
+      </tr>
+    </table>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="subscribe">
+    <xsl:variable name="id" select="id"/>
+    <xsl:variable name="itemClass">
+      <xsl:choose>
+        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:otherwise>calendar</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <li class="{$itemClass}">
+      <a href="{$subscriptions-initAdd}&amp;calId={$id}">
+        <xsl:value-of select="name"/>
+      </a>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="subscribe">
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
+          </xsl:apply-templates>
+        </ul>
+      </xsl:if>
+    </li>
+  </xsl:template>
+
+  <xsl:template match="subscription" mode="addSubscription">
+    <h2>Add New Subscription</h2>
+    <p class="note">*the subsciption name must be unique</p>
+    <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
+      <table class="eventFormTable">
+        <tr>
+          <th>Name*:</th>
+          <td>
+            <xsl:variable name="subName" select="name"/>
+            <input type="text" value="{$subName}" name="subscription.name" size="60"/>
+          </td>
+        </tr>
+        <xsl:if test="internal='false'">
+          <tr>
+            <th>Uri:</th>
+            <td>
+              <xsl:variable name="subUri" select="uri"/>
+              <input type="text" value="{$subUri}" name="subscription.uri" size="60"/>
+            </td>
+          </tr>
+        </xsl:if>
+        <tr>
+          <th>Display:</th>
+          <td>
+            <input type="radio" value="true" name="subscription.display"/> yes
+            <input type="radio" value="false" name="subscription.display" checked="checked"/> no
+          </td>
+        </tr>
+        <tr>
+          <th>Style:</th>
+          <td>
+            <xsl:variable name="subStyle" select="style"/>
+            <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Unremovable:</th>
+          <td>
+            <input type="radio" value="true" name="unremoveable" size="60"/> true
+            <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
+          </td>
+        </tr>
+      </table>
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="addSubscription" value="Add Subscription"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Clear"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </xsl:template>
+
+  <xsl:template match="subscription" mode="modSubscription">
+    <h2>Modify Subscription</h2>
+    <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
+      <table class="eventFormTable">
+        <tr>
+          <th>Name*:</th>
+          <td>
+            <xsl:value-of select="name"/>
+            <xsl:variable name="subName" select="name"/>
+            <input type="hidden" value="{$subName}" name="name"/>
+          </td>
+        </tr>
+        <xsl:choose>
+          <xsl:when test="internal='false'">
+            <tr>
+              <th>Uri:</th>
+              <td>
+                <xsl:variable name="subUri" select="uri"/>
+                <input type="text" value="{$subUri}" name="subscription.uri" size="60"/>
+              </td>
+            </tr>
+          </xsl:when>
+          <xsl:otherwise>
+            <tr>
+              <th>Uri:</th>
+              <td>
+                <xsl:value-of select="uri"/>
+              </td>
+            </tr>
+          </xsl:otherwise>
+        </xsl:choose>
+        <tr>
+          <th>Display:</th>
+          <td>
+            <xsl:choose>
+              <xsl:when test="display='true'">
+                <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
+                <input type="radio" value="false" name="subscription.display"/> no
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" value="true" name="subscription.display"/> yes
+                <input type="radio" value="false" name="subscription.display" checked="checked"/> no
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+        <tr>
+          <th>Style:</th>
+          <td>
+            <xsl:variable name="subStyle" select="style"/>
+            <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Unremovable:</th>
+          <td>
+            <xsl:choose>
+              <xsl:when test="unremoveable='true'">
+                <input type="radio" value="true" name="unremoveable" size="60" checked="checked"/> true
+                <input type="radio" value="false" name="unremoveable" size="60"/> false
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" value="true" name="unremoveable" size="60"/> true
+                <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+      </table>
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="updateSubscription" value="Update Subscription"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Reset"/>
+          </td>
+          <td align="right">
+            <input type="submit" name="delete" value="Delete Subscription"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </xsl:template>
+
+  <xsl:template name="subscriptionList">
+    <h3>Current subscriptions</h3>
+    <table id="commonListTable">
+      <tr>
+        <th>Name</th>
+        <th>URI</th>
+        <th>Style</th>
+        <th>Display</th>
+        <th>Unremovable</th>
+        <th>External</th>
+        <th>Deleted?</th>
+      </tr>
+      <xsl:for-each select="subscription">
+        <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
+        <tr>
+          <td>
+            <xsl:variable name="subname" select="name"/>
+            <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}">
+              <xsl:value-of select="name"/>
+            </a>
+          </td>
+          <td>
+            <xsl:value-of select="uri"/>
+          </td>
+          <td>
+            <xsl:value-of select="style"/>
+          </td>
+          <td class="center">
+            <xsl:if test="display='true'">
+              <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
+            </xsl:if>
+          </td>
+          <td class="center">
+            <xsl:if test="unremoveable='true'">
+              <img src="{$resourcesRoot}/resources/redCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
+            </xsl:if>
+          </td>
+          <td class="center">
+            <xsl:if test="internal='false'">
+              <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
+            </xsl:if>
+          </td>
+          <td class="center">
+            <xsl:if test="calendarDeleted='true'">
+              <img src="{$resourcesRoot}/resources/redCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
+            </xsl:if>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+    <!--<h4><a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">Subscribe to a remote calendar</a> (by URI)</h4>-->
   </xsl:template>
 
   <!--==== ALARM OPTIONS ====-->

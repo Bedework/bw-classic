@@ -134,7 +134,12 @@ try {
     <addLocation><genurl:rewrite action="addLocation.do"/></addLocation>
     <editLocation><genurl:rewrite action="editLoc.do"/></editLocation>
     <delLocation><genurl:rewrite action="delLocation.do"/></delLocation>
-    <subscribe><genurl:rewrite action="subscribe.do"/></subscribe>
+    <subscriptions> <!-- only those listed are used here (no need to clean up) -->
+      <fetch><genurl:link page="/subs/fetch.do?b=de"/></fetch>
+      <fetchForUpdate><genurl:link page="/subs/fetchForUpdate.do?b=de"/></fetchForUpdate>
+      <initAdd><genurl:link page="/subs/initAdd.do?b=de"/></initAdd>
+      <subscribe><genurl:link page="/subs/subscribe.do?b=de"/></subscribe>
+    </subscriptions>
     <export><genurl:rewrite action="export.do"/></export>
 
     <initEventAlarm><genurl:rewrite action="initEventAlarm.do"/></initEventAlarm>
