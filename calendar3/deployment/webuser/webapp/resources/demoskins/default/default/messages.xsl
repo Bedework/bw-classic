@@ -5,7 +5,7 @@
       <xsl:when test="id='org.bedework.client.message.cancelled'">
           Action cancelled.
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.message.added.locations'">
+      <xsl:when test="id='org.bedework.client.message.locations.added'">
         <xsl:choose>
           <xsl:when test="param='1'">
             1 location added.

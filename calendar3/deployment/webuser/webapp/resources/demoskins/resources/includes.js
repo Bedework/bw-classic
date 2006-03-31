@@ -65,9 +65,9 @@ function startDateCalWidgetCallback(date, month, year) {
   if (year < today.getFullYear()) {
     alert("You may not create an event in a previous year.");
   } else {
-    document.addEventForm['eventStartDate.month'].value = month;
-    document.addEventForm['eventStartDate.day'].value = date;
-    document.addEventForm['eventStartDate.year'].value = year;
+    document.eventForm['eventStartDate.month'].value = month;
+    document.eventForm['eventStartDate.day'].value = date;
+    document.eventForm['eventStartDate.year'].value = year;
   }
 }
 function endDateCalWidgetCallback(date, month, year) {
@@ -81,8 +81,8 @@ function endDateCalWidgetCallback(date, month, year) {
   if (year < today.getFullYear()) {
     alert("You may not create an event in a previous year.");
   } else {
-    document.addEventForm['eventEndDate.month'].value = month;
-    document.addEventForm['eventEndDate.day'].value = date;
-    document.addEventForm['eventEndDate.year'].value = year;
+    document.eventForm['eventEndDate.month'].value = month;
+    document.eventForm['eventEndDate.day'].value = date;
+    document.eventForm['eventEndDate.year'].value = year;
   }
 }

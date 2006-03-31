@@ -105,7 +105,7 @@ public class UploadAction extends BwAbstractAction {
         form.getErr().emit("org.bedework.client.error.missingcalendar");
         return "retry";
       }
-      
+
       // Use preferred calendar
       cal = svci.getPreferredCalendar();
     }
@@ -127,20 +127,20 @@ public class UploadAction extends BwAbstractAction {
       // To catch some of the parser errors
 
       InputStream is = upFile.getInputStream();
-      
+
       IcalTranslator trans = new IcalTranslator(svci.getIcalCallback(), debug);
-      
+
       Collection objs = trans.fromIcal(cal, new InputStreamReader(is));
-      
+
       Iterator it = objs.iterator();
-      
+
       while (it.hasNext()) {
         Object o = it.next();
-        
+
         if (o instanceof EventInfo) {
           EventInfo ei = (EventInfo)o;
           BwEvent ev = ei.getEvent();
-          
+
           if (ei.getNewEvent()) {
             svci.addEvent(cal, ev, ei.getOverrides());
           } else {
@@ -153,7 +153,7 @@ public class UploadAction extends BwAbstractAction {
       return "baddata";
     }
 
-    form.getMsg().emit("org.bedework.message.added.events", 1);
+    form.getMsg().emit("org.bedework.client.message.added.events", 1);
 
     return "success";
   }

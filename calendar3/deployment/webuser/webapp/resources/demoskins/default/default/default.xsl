@@ -1164,7 +1164,7 @@
 
  <!--==== ADD EVENT ====-->
   <xsl:template name="addEvent">
-    <form name="addEventForm" method="post" action="{$addEventUsingPage}" id="standardForm">
+    <form name="eventForm" method="post" action="{$addEventUsingPage}" id="standardForm">
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
       <table id="commonTable" cellpadding="0" cellspacing="0">
@@ -1499,7 +1499,7 @@
 
   <!--==== EDIT EVENT ====-->
   <xsl:template match="formElements">
-    <form name="editEventForm" method="post" action="{$editEvent}" id="standardForm">
+    <form name="eventForm" method="post" action="{$editEvent}" id="standardForm">
       <input type="hidden" name="updateEvent" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
@@ -1507,8 +1507,8 @@
         <tr>
           <th colspan="2" id="commonHeader">
             <div id="eventActions">
-              <xsl:variable name="subscriptionId" select="subscription/id"/>
-              <xsl:variable name="calendarId" select="calendar/id"/>
+              <xsl:variable name="subscriptionId" select="subscriptionId"/>
+              <xsl:variable name="calendarId" select="calendarId"/>
               <xsl:variable name="guid" select="guid"/>
               <xsl:variable name="recurrenceId" select="recurrenceId"/>
               <a href="{$eventView}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
@@ -1523,60 +1523,246 @@
         </tr>
         <tr>
           <td class="fieldname">
-            Title/Summary:
+            Title:
           </td>
           <td class="fieldval">
-            <xsl:variable name="title" select="/bedework/eventform/form/title/input/@value"/>
+            <xsl:variable name="title" select="form/title/input/@value"/>
             <input type="text" name="editEvent.summary" size="80" value="{$title}"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Start Date/Time:
+            Date &amp; Time:
           </td>
           <td class="fieldval">
-            <xsl:copy-of select="/bedework/eventform/form/startdate/*"/>
-            <span class="std-text">at  </span>
-            <xsl:copy-of select="/bedework/eventform/form/starttime/*"/>
+            <!-- Set the timefields class for the first load of the page;
+                 subsequent changes will take place using javascript without a
+                 page reload. -->
+            <xsl:variable name="timeFieldsClass">
+              <xsl:choose>
+                <xsl:when test="form/allDay/input/@checked='checked'">invisible</xsl:when>
+                <xsl:otherwise>timeFields</xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="form/allDay/input/@checked='checked'">
+                <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="on" checked="checked"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayStartDateField"/>
+                <input type="hidden" name="eventEndDate.dateOnly" value="on" id="allDayEndDateField"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="off"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayStartDateField"/>
+                <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            all day event<br/>
+            <div class="dateStartEndBox">
+              <strong>Start:</strong>
+              <div class="dateFields">
+                <span class="startDateLabel">Date </span>
+                <xsl:copy-of select="form/start/month/*"/>
+                <xsl:copy-of select="form/start/day/*"/>
+                <xsl:choose>
+                  <xsl:when test="/bedework/creating = 'true'">
+                    <xsl:copy-of select="form/start/year/*"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:copy-of select="form/start/yearText/*"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </div>
+              <script language="JavaScript" type="text/javascript">
+              <xsl:comment>
+                startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback');
+              </xsl:comment>
+              </script>
+              <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
+              <div class="{$timeFieldsClass}" id="startTimeFields">
+                <span id="calWidgetStartTimeHider" class="show">
+                  <xsl:copy-of select="form/start/hour/*"/>
+                  <xsl:copy-of select="form/start/minute/*"/>
+                  <xsl:if test="form/start/ampm">
+                    <xsl:copy-of select="form/start/ampm/*"/>
+                  </xsl:if>
+                  <xsl:text> </xsl:text>
+                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                </span>
+              </div>
+            </div>
+            <div class="dateStartEndBox">
+              <strong>End:</strong>
+              <xsl:choose>
+                <xsl:when test="form/end/type='E'">
+                  <input type="radio" name="eventEndType" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="radio" name="eventEndType" value="E" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              Date
+              <xsl:variable name="endDateTimeClass">
+                <xsl:choose>
+                  <xsl:when test="form/end/type='E'">shown</xsl:when>
+                  <xsl:otherwise>invisible</xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <div class="{$endDateTimeClass}" id="endDateTime">
+                <div class="dateFields">
+                  <xsl:copy-of select="form/end/dateTime/month/*"/>
+                  <xsl:copy-of select="form/end/dateTime/day/*"/>
+                  <xsl:choose>
+                    <xsl:when test="/bedework/creating = 'true'">
+                      <xsl:copy-of select="form/end/dateTime/year/*"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:copy-of select="form/end/dateTime/yearText/*"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </div>
+                <script language="JavaScript" type="text/javascript">
+                <xsl:comment>
+                  endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback');
+                </xsl:comment>
+                </script>
+                <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
+                <div class="{$timeFieldsClass}" id="endTimeFields">
+                  <span id="calWidgetEndTimeHider" class="show">
+                    <xsl:copy-of select="form/end/dateTime/hour/*"/>
+                    <xsl:copy-of select="form/end/dateTime/minute/*"/>
+                    <xsl:if test="form/end/dateTime/ampm">
+                      <xsl:copy-of select="form/end/dateTime/ampm/*"/>
+                    </xsl:if>
+                    <xsl:text> </xsl:text>
+                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                  </span>
+                </div>
+              </div><br/>
+              <div id="clock" class="invisible">
+                <xsl:call-template name="clock"/>
+              </div>
+              <div class="dateFields">
+                <xsl:choose>
+                  <xsl:when test="form/end/type='D'">
+                    <input type="radio" name="eventEndType" value="D" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <input type="radio" name="eventEndType" value="D" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+                Duration
+                <xsl:variable name="endDurationClass">
+                  <xsl:choose>
+                    <xsl:when test="form/end/type='D'">shown</xsl:when>
+                    <xsl:otherwise>invisible</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="durationHrMinClass">
+                  <xsl:choose>
+                    <xsl:when test="form/allDay/input/@checked='checked'">invisible</xsl:when>
+                    <xsl:otherwise>shown</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <div class="{$endDurationClass}" id="endDuration">
+                  <xsl:choose>
+                    <xsl:when test="form/end/duration/weeks/input/@value = '0'">
+                    <!-- we are using day, hour, minute format -->
+                    <!-- must send either no week value or week value of 0 (zero) -->
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')" checked="checked"/>
+                        <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
+                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays"/>days
+                        <span id="durationHrMin" class="{$durationHrMinClass}">
+                          <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
+                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours"/>hours
+                          <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
+                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes"/>minutes
+                        </span>
+                      </div>
+                      <span class="durationSpacerText">or</span>
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')"/>
+                        <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
+                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="true"/>weeks
+                      </div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <!-- we are using week format -->
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')"/>
+                        <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
+                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="true"/>days
+                        <span id="durationHrMin" class="{$durationHrMinClass}">
+                          <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
+                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="true"/>hours
+                          <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
+                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="true"/>minutes
+                        </span>
+                      </div>
+                      <span class="durationSpacerText">or</span>
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')" checked="checked"/>
+                        <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
+                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks"/>weeks
+                      </div>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </div>
+              </div><br/>
+              <div class="dateFields" id="noDuration">
+                <xsl:choose>
+                  <xsl:when test="form/end/type='N'">
+                    <input type="radio" name="eventEndType" value="N" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <input type="radio" name="eventEndType" value="N" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+                This event has no duration / end date
+              </div>
+            </div>
+          </td>
+        </tr>
+        <!--  Status  -->
+        <tr>
+          <td class="fieldname">
+            Status:
+          </td>
+          <td class="fieldval">
+            <xsl:choose>
+              <xsl:when test="form/status = 'TENTATIVE'">
+                <input type="radio" name="editEvent.status" value="CONFIRMED"/>confirmed <input type="radio" name="editEvent.status" value="TENTATIVE" checked="checked"/>tentative <input type="radio" name="editEvent.status" value="CANCELLED"/>cancelled
+              </xsl:when>
+              <xsl:when test="form/status = 'CANCELLED'">
+                <input type="radio" name="editEvent.status" value="CONFIRMED"/>confirmed <input type="radio" name="editEvent.status" value="TENTATIVE"/>tentative <input type="radio" name="editEvent.status" value="CANCELLED" checked="checked"/>cancelled
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" name="editEvent.status" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="editEvent.status" value="TENTATIVE"/>tentative <input type="radio" name="editEvent.status" value="CANCELLED"/>cancelled
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
         <tr>
-          <td class="fieldname">
-            End Date/Time:
-          </td>
+          <td class="fieldname">Description:</td>
           <td class="fieldval">
-            <xsl:copy-of select="/bedework/eventform/form/enddate/*"/>
-            <span class="std-text">at  </span>
-            <xsl:copy-of select="/bedework/eventform/form/endtime/*"/>
+            <xsl:copy-of select="/bedeworkadmin/formElements/form/desc/*"/>
           </td>
         </tr>
         <tr>
-          <td class="fieldname">
-            Description:
-          </td>
-          <td class="fieldval">
-            <textarea name="editEvent.description" rows="10" cols="60">
-              <xsl:value-of select="/bedework/eventform/form/description/textarea"/>
-            </textarea>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            Location:
-          </td>
+          <td class="fieldname">Location:</td>
           <td class="fieldval" align="left">
-            <span class="std-text">choose </span>
-            <xsl:copy-of select="/bedework/eventform/form/location/locationmenu/*"/>
-            <span class="std-text"><span class="bold">or</span> add </span>
-            <xsl:copy-of select="/bedework/eventform/form/location/locationtext/*"/>
+            <span class="std-text">choose: </span>
+            <span id="eventFormLocationList">
+              <xsl:copy-of select="form/location/locationmenu/*"/>
+            </span>
+            <span class="std-text"> or add new: </span>
+            <xsl:copy-of select="form/location/locationtext/*"/>
           </td>
         </tr>
         <tr>
-          <td class="fieldname">
-            Event Link:
-          </td>
+          <td class="fieldname">Event Link:</td>
           <td class="fieldval">
-            <xsl:variable name="link" select="/bedework/eventform/form/link/input/@value"/>
+            <xsl:variable name="link" select="form/link/input/@value"/>
             <input type="text" name="editEvent.link" size="80" value="{$link}"/>
           </td>
         </tr>

@@ -43,11 +43,11 @@ function bwClockUpdateDateTimeForm(type,val) {
     try {
       if (type == 'minute') {
         var fieldName = bwClockRequestedType + ".minute"
-        window.document.addEventForm[fieldName].value = val;
+        window.document.eventForm[fieldName].value = val;
         bwClockMinute = val;
       } else {
         var fieldName = bwClockRequestedType + ".hour"
-        window.document.addEventForm[fieldName].value = val;
+        window.document.eventForm[fieldName].value = val;
         bwClockHour = val;
       }
       if (bwClockHour && bwClockMinute) {

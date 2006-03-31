@@ -20,6 +20,9 @@
       <xsl:when test="id='org.bedework.validation.error.notitle'">
           Please supply a title for your event (required).
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.missingcalendarid'">
+          Missing event's calendar id (required).
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.location.referenced'">
           Location is in use.  It cannot be deleted while referenced by an event.
       </xsl:when>

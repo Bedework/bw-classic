@@ -108,7 +108,7 @@ try {
     <subscriptions> <!-- only those listed are used here (no need to clean up) -->
       <fetch><genurl:link page="/subs/fetch.do?b=de"/></fetch>
       <fetchForUpdate><genurl:link page="/subs/fetchForUpdate.do?b=de"/></fetchForUpdate>
-      <initAdd><genurl:link page="/subs/initAdd.rdo?b=de"/></initAdd>
+      <initAdd><genurl:link page="/subs/initAdd.do?b=de"/></initAdd>
       <subscribe><genurl:link page="/subs/subscribe.do?b=de"/></subscribe>
     </subscriptions>
     <view> <!-- only those listed are used here (no need to clean up) -->

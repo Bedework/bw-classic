@@ -141,7 +141,7 @@ public class BwAddEventAction extends BwCalAbstractAction {
     form.resetNewLocation();
     form.getEventDates().setNewEvent(form.getNewEvent(), svci.getTimezones());
 
-    form.getMsg().emit("org.bedework.message.added.events", 1);
+    form.getMsg().emit("org.bedework.client.message.added.events", 1);
 
     form.refreshIsNeeded();
 
