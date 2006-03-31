@@ -32,7 +32,18 @@
                mailto url --%>
         <bw:emitText name="attendee" property="delegatedTo"/><%--
                mailto url --%>
-      </organizer>
+        <bw:emitText name="attendee" property="dir"/><%--
+              Value: URI - link to a directory for lookup --%>
+        <bw:emitText name="attendee" property="member"/>
+        <bw:emitText name="attendee" property="language"/><%--
+            Value: string - language code --%>
+        <bw:emitText name="attendee" property="sentBy"/><%--
+          Value: string - usually mailto url --%>
+        <rsvp><bean:write name="attendee" property="rsvp"/></rsvp>
+        <bw:emitText name="attendee" property="role"/>
+        <bw:emitText name="attendee" property="partstat"/>
+        <bw:emitText name="attendee" property="attendeeUri"/>
+      </attendee>
     </logic:iterate>
     <bw:emitText name="eventFormatter" property="xmlAccess" tagName="access"
                  filter="no"/>
