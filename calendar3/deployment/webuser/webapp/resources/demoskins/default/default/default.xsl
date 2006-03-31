@@ -1862,7 +1862,10 @@
     <form method="post" action="{$upload}" id="standardForm"  enctype="multipart/form-data">
       <table id="commonTable" cellpadding="0" cellspacing="0">
         <tr>
-          <td>
+          <tr>
+            <th colspan="2" id="commonHeader">Upload iCAL File</th>
+          </tr>
+          <td class="fieldname">
             Filename:
           </td>
           <td align="left">
