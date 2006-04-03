@@ -1,13 +1,15 @@
 <%@ taglib uri='struts-bean' prefix='bean' %>
 <%@ taglib uri='struts-logic' prefix='logic' %>
+<%@ taglib uri='bedework' prefix='bw' %>
 
 <calendar>
   <id><bean:write name="calendar" property="id" /></id>
-  <name><bean:write name="calendar" property="name" /></name>
-  <path><bean:write name="calendar" property="path" /></path>
-  <desc><bean:write name="calendar" property="description" /></desc>
+  <bw:emitText name="calendar" property="name" />
+  <bw:emitText name="calendar" property="path" />
+  <bw:emitText name="calendar" property="description" tagName="desc" />
   <calendarCollection><bean:write name="calendar" property="calendarCollection" /></calendarCollection>
-  <mailListId><bean:write name="calendar" property="mailListId" /></mailListId>
+  <bw:emitText name="calendar" property="mailListId" />
+  <bw:emitCurrentPrivs name="calendar" property="currentAccess" />
 
   <logic:iterate name="calendar" property="children" id="cal">
     <bean:define id="calendar" name="cal" toScope="session" />

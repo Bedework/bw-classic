@@ -53,10 +53,12 @@
 */
 package org.bedework.webcommon.taglib;
 
+import org.bedework.appcommon.AccessAppUtil;
+
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.JspTagException;
-
-import org.apache.struts.taglib.TagUtils;
 
 /** A simple Tag to emit a tagged text object. This tag has the
  * attributes, <ul>
@@ -70,20 +72,14 @@ import org.apache.struts.taglib.TagUtils;
  *
  * @author Mike Douglass
  */
-public class EmitTextTag extends NameScopePropertyTag {
+public class EmitCurrentPrivsTag extends NameScopePropertyTag {
   /** Optional attribute: name of outer tag */
   private String tagName;
-
-  /** Optional attribute: for those who like tidy xml 
-   * If specified we add teh value after a new line. */
-  private String indent = null;
-
-  private boolean filter = true;
   
   /**
    * Constructor
    */
-  public EmitTextTag() {
+  public EmitCurrentPrivsTag() {
   }
   
   /** Called at end of Tag
@@ -93,7 +89,7 @@ public class EmitTextTag extends NameScopePropertyTag {
   public int doEndTag() throws JspTagException {
     try {
       /* Try to retrieve the value */
-      String val = getString(false);
+      String val = getXmlAccess((CurrentAccess)getObject(false));
 
       JspWriter out = pageContext.getOut();
 
@@ -104,34 +100,28 @@ public class EmitTextTag extends NameScopePropertyTag {
       // Assume we're indented for the first tag
       out.print('<');
       out.print(tagName);
-      
-      if (indent != null) {
-        out.println('>');
-        if (val != null) {
-          out.print(indent);
-          out.print("  ");
-          out.println(formatted(val));
-        }
-        out.print(indent);
-        out.println("</");
-      } else {
-        out.print('>');
-        if (val != null) {
-          out.print(formatted(val));
-        }
-        out.print("</");
+      out.print('>');
+      if (val != null) {
+        out.print(val);
       }
-
+      out.print("</");
       out.print(tagName);
       out.println('>');
     } catch(Throwable t) {
       throw new JspTagException("Error: " + t.getMessage());
     } finally {
       tagName = null; // reset for next time.
-      filter = true; // reset for next time.
     }
 
     return EVAL_PAGE;
+  }
+  
+  private String getXmlAccess(CurrentAccess ca) throws Throwable {
+    if (ca == null) {
+      return null;
+    }
+    
+    return AccessAppUtil.getCurrentPrivSetString(ca.privileges);
   }
 
   public void setTagName(String val) {
@@ -140,29 +130,5 @@ public class EmitTextTag extends NameScopePropertyTag {
 
   public String getTagName() {
     return tagName;
-  }
-
-  public void setIndent(String val) {
-    indent = val;
-  }
-
-  public String getIndent() {
-    return indent;
-  }
-  
-  public void setFilter(boolean val) {
-    filter = val;
-  }
-  
-  public boolean getFilter() {
-    return filter;
-  }
-  
-  private String formatted(String val) {
-    if (filter) {
-      return TagUtils.getInstance().filter(val);
-    }
-    
-    return val;
   }
 }

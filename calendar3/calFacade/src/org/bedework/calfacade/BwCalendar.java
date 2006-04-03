@@ -55,6 +55,8 @@ package org.bedework.calfacade;
 
 import org.bedework.calfacade.base.BwShareableContainedDbentity;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Iterator;
@@ -99,6 +101,11 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
 
   /** The children of this calendar */
   private Collection children;
+  
+  /* This field must only be used for cloned copies of an entity as it is 
+   * specific to a current thread.
+   */
+  private CurrentAccess currentAccess;
 
   /** Constructor
    */
@@ -260,6 +267,18 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
       children = new TreeSet();
     }
     return children;
+  }
+
+  /* ====================================================================
+   *                   Transient object methods
+   * ==================================================================== */
+
+  public void setCurrentAccess(CurrentAccess val) {
+    currentAccess = val;
+  }
+
+  public CurrentAccess getCurrentAccess() {
+    return currentAccess;
   }
 
   /* ====================================================================

@@ -59,6 +59,8 @@ import org.bedework.calfacade.ifs.CalendarsI;
 import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.calfacade.CalFacadeException;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -420,13 +422,18 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
   private BwCalendar cloneAndCheckOne(BwCalendar subroot, int desiredAccess,
                            boolean nullForNoAccess) throws CalFacadeException {
-    if (!access.accessible(subroot, desiredAccess, nullForNoAccess)) {
+    CurrentAccess ca = access.checkAccess(subroot, desiredAccess, 
+                                          nullForNoAccess);
+    
+    if (!ca.accessAllowed) {
       return null;
     }
 
     BwCalendar cal = (BwCalendar)subroot.clone();
     // XXX Temp fix - add id to the clone
     cal.setId(subroot.getId());
+    
+    cal.setCurrentAccess(ca);
 
     Iterator it = subroot.iterateChildren();
     while (it.hasNext()) {

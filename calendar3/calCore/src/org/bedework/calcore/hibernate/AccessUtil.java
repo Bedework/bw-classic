@@ -57,6 +57,7 @@ import edu.rpi.cct.uwcal.access.Access;
 import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.access.PrivilegeDefs;
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
 import org.bedework.calfacade.base.BwShareableContainedDbentity;
 import org.bedework.calfacade.base.BwShareableDbentity;
@@ -235,13 +236,23 @@ class AccessUtil implements PrivilegeDefs {
    */
   boolean accessible(BwShareableDbentity ent, int desiredAccess,
                     boolean nullForNoAccess) throws CalFacadeException {
+    return checkAccess(ent, desiredAccess, nullForNoAccess).accessAllowed;
+  }
+
+  /* Check access for the given entity. Returns the current access
+   */
+  CurrentAccess checkAccess(BwShareableDbentity ent, int desiredAccess,
+                      boolean nullForNoAccess) throws CalFacadeException {
     if (ent == null) {
-      return false;
+      return new CurrentAccess();
     }
 
     if ((authUser != null) && superUser) {
       // Nobody can stop us - BWAAA HAA HAA
-      return true;
+      CurrentAccess ca = new CurrentAccess();
+      ca.accessAllowed = true;
+      
+      return ca;
     }
 
     if (debug) {
@@ -253,12 +264,8 @@ class AccessUtil implements PrivilegeDefs {
 
     char[] aclChars = getAclChars((BwShareableDbentity)ent);
 
-    if (checkAccess(aclChars, ent.getOwner(), desiredAccess,
-                    nullForNoAccess)) {
-      return true;
-    }
-
-    return false;
+    return checkAccess(aclChars, ent.getOwner(), desiredAccess,
+                    nullForNoAccess);
   }
 
   /** This does access checking for shareable objects and returns the merged
@@ -309,33 +316,30 @@ class AccessUtil implements PrivilegeDefs {
    * @param desiredAccess int access we want
    * @param returnResult  if true we return false for no access else throw
    *                    an exception
+   * @return CurrentAccess   access + allowed/disallowed
    */
-  private boolean checkAccess(char[] aclChars, BwUser owner, int desiredAccess,
+  private CurrentAccess checkAccess(char[] aclChars, BwUser owner, int desiredAccess,
                               boolean returnResult) throws CalFacadeException {
 
-    boolean allowed;
-
     try {
+      CurrentAccess ca;
       if (desiredAccess == privRead) {
-        allowed = access.checkRead(authUser, owner.getAccount(),
-                                   aclChars);
+        ca = access.checkRead(authUser, owner.getAccount(),
+                              aclChars);
       } else if (desiredAccess == privWrite) {
-        allowed = access.checkReadWrite(authUser, owner.getAccount(),
-                                        aclChars);
+        ca = access.checkReadWrite(authUser, owner.getAccount(),
+                                   aclChars);
       } else {
         /* Do it the awkward way */
-        allowed = access.evaluateAccess(authUser, owner.getAccount(),
-                                        desiredAccess, aclChars);
+        ca = access.evaluateAccess(authUser, owner.getAccount(),
+                                   desiredAccess, aclChars);
       }
 
-      if (!allowed) {
-        if (returnResult) {
-          return false;
-        }
+      if (!ca.accessAllowed && !returnResult) {
         throw new CalFacadeAccessException();
       }
 
-      return true;
+      return ca;
     } catch (CalFacadeException cfe) {
       throw cfe;
     } catch (Throwable t) {

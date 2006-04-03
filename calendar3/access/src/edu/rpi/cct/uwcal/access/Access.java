@@ -55,6 +55,8 @@ package edu.rpi.cct.uwcal.access;
 
 import java.io.Serializable;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+
 /** Class to handle access control. Because we may be evaluating access 
  * frequently we try do so without creating (many) objects.
  *
@@ -183,11 +185,11 @@ public class Access implements Serializable {
    * @param owner    String owner of object
    * @param how      Privilege set definign desired access
    * @param aclString String defining current acls for object
-   * @return boolean allowed/disallowed
+   * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
-  public boolean evaluateAccess(AccessPrincipal who, String owner,
-                                Privilege[] how, String aclString)
+  public CurrentAccess evaluateAccess(AccessPrincipal who, String owner,
+                                      Privilege[] how, String aclString)
           throws AccessException {
     return new Acl(debug).evaluateAccess(who, owner, how, aclString.toCharArray());
   }
@@ -198,11 +200,11 @@ public class Access implements Serializable {
    * @param owner    String owner of object
    * @param how      Privilege set defining desired access
    * @param aclChars char[] defining current acls for object
-   * @return boolean allowed/disallowed
+   * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
-  public boolean evaluateAccess(AccessPrincipal who, String owner,
-                                Privilege[] how, char[] aclChars)
+  public CurrentAccess evaluateAccess(AccessPrincipal who, String owner,
+                                      Privilege[] how, char[] aclChars)
           throws AccessException {
     return new Acl(debug).evaluateAccess(who, owner, how, aclChars);
   }
@@ -212,11 +214,11 @@ public class Access implements Serializable {
    * @param who      Acl.Principal defining who is trying to get access
    * @param owner    String owner of object
    * @param aclChars char[] defining current acls for object
-   * @return boolean allowed/disallowed
+   * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
-  public boolean checkRead(AccessPrincipal who, String owner,
-                           char[] aclChars)
+  public CurrentAccess checkRead(AccessPrincipal who, String owner,
+                                 char[] aclChars)
           throws AccessException {
     return new Acl(debug).evaluateAccess(who, owner, privSetRead, aclChars);
   }
@@ -226,11 +228,11 @@ public class Access implements Serializable {
    * @param who      Acl.Principal defining who is trying to get access
    * @param owner    String owner of object
    * @param aclChars char[] defining current acls for object
-   * @return boolean allowed/disallowed
+   * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
-  public boolean checkReadWrite(AccessPrincipal who, String owner,
-                                char[] aclChars)
+  public CurrentAccess checkReadWrite(AccessPrincipal who, String owner,
+                                      char[] aclChars)
           throws AccessException {
     return new Acl(debug).evaluateAccess(who, owner, privSetReadWrite, aclChars);
   }
@@ -241,11 +243,11 @@ public class Access implements Serializable {
    * @param owner    String owner of object
    * @param priv     int desired access as defined above
    * @param aclChars char[] defining current acls for object
-   * @return boolean allowed/disallowed
+   * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
-  public boolean evaluateAccess(AccessPrincipal who, String owner,
-                                int priv, char[] aclChars)
+  public CurrentAccess evaluateAccess(AccessPrincipal who, String owner,
+                                      int priv, char[] aclChars)
           throws AccessException {
     return new Acl(debug).evaluateAccess(who, owner,
                                          new Privilege[]{Privileges.makePriv(priv)},

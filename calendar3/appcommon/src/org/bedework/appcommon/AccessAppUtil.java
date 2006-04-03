@@ -60,6 +60,7 @@ import org.bedework.davdefs.WebdavTags;
 import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.access.Privilege;
+import edu.rpi.cct.uwcal.access.PrivilegeDefs;
 import edu.rpi.cct.uwcal.access.Privileges;
 import edu.rpi.sss.util.xml.QName;
 import edu.rpi.sss.util.xml.XmlEmit;
@@ -74,7 +75,7 @@ import java.util.Iterator;
  *
  *  @author Mike Douglass   douglm @ rpi.edu
  */
-public class AccessUtil implements Serializable {
+public class AccessAppUtil implements Serializable {
   public static final QName[] privTags = {
     WebdavTags.all,              // privAll = 0;
     WebdavTags.read,             // privRead = 1;
@@ -97,16 +98,16 @@ public class AccessUtil implements Serializable {
    *
    * @param xml
    */
-  public AccessUtil(XmlEmit xml) {
+  public AccessAppUtil(XmlEmit xml) {
     this.xml = xml;
   }
   
-  public static String getXmlString(Acl acl) throws CalFacadeException {
+  public static String getXmlAclString(Acl acl) throws CalFacadeException {
     try {
       XmlEmit xml = new XmlEmit(true);  // no headers
       StringWriter su = new StringWriter();
       xml.startEmit(su);
-      AccessUtil au = new AccessUtil(xml);
+      AccessAppUtil au = new AccessAppUtil(xml);
       
       au.emitAcl(acl);
       
@@ -196,6 +197,65 @@ public class AccessUtil implements Serializable {
       throw new CalFacadeException(t);
     }
   }
+  
+  /** Produce an xml representation of current user privileges from an array
+   * of allowed/disallowed/unspecified flags indexed by a privilege index.
+   * 
+   * @param privs    char[] of allowed/disallowed
+   * @throws CalFacadeException
+   */
+  public void emitCurrentPrivSet(char[] privileges) throws CalFacadeException {
+    try {
+      xml.openTag(WebdavTags.currentUserPrivilegeSet);
+      
+      for (int pi = 0; pi < privileges.length; pi++) {
+        if (privileges[pi] == PrivilegeDefs.allowed) {
+          // XXX further work - don't emit abstract privs or contained privs.
+          QName pr = privTags[pi];
+          
+          if (pr != null) {
+            xml.propertyTagVal(WebdavTags.privilege, pr);
+          }
+        }
+      }
+      
+      xml.closeTag(WebdavTags.currentUserPrivilegeSet);
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+  
+  /** Produce an xml representation of current user privileges from an array
+   * of allowed/disallowed/unspecified flags indexed by a privilege index,
+   * returning the representation a a String
+   * 
+   * @param privs    char[] of allowed/disallowed
+   * @return String xml 
+   * @throws CalFacadeException
+   */
+  public static String getCurrentPrivSetString(char[] privileges) 
+          throws CalFacadeException {
+    try {
+      XmlEmit xml = new XmlEmit(true);  // no headers
+      StringWriter su = new StringWriter();
+      xml.startEmit(su);
+      AccessAppUtil au = new AccessAppUtil(xml);
+      
+      au.emitCurrentPrivSet(privileges);
+      
+      su.close();
+      
+      return su.toString();
+    } catch (CalFacadeException cfe) {
+      throw cfe;
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
+  /* ====================================================================
+   *                   Private methods
+   * ==================================================================== */
 
   private void emitSupportedPriv(Privilege priv) throws Throwable {
     xml.openTag(WebdavTags.supportedPrivilege);

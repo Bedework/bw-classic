@@ -62,6 +62,7 @@ import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.access.Privilege;
 import edu.rpi.cct.uwcal.access.Privileges;
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
 import junit.framework.TestCase;
 
@@ -72,8 +73,6 @@ import junit.framework.TestCase;
  */
 public class AccessTest extends TestCase {
   boolean debug = true;
-
-  Acl acl = new Acl(debug);
 
   /**
    *
@@ -99,6 +98,8 @@ public class AccessTest extends TestCase {
       Privilege[] privSetReadWrite = {read, write};
 
       /* See what we get when we encode a null - that's default - acl. */
+
+      Acl acl = new Acl(debug);
 
       char[] encoded = logEncoded(acl, "default encoded");
       tryDecode(encoded, "default");
@@ -153,12 +154,12 @@ public class AccessTest extends TestCase {
   private void tryEvaluateAccess(BwPrincipal who, BwPrincipal owner,
                                  Privilege[] how,char[] encoded,
                                  boolean expected, String title) throws Throwable {
-    boolean allowed = acl.evaluateAccess(who, owner.getAccount(), how, encoded);
+    CurrentAccess ca = new Acl().evaluateAccess(who, owner.getAccount(), how, encoded);
 
     if (debug) {
-      log(title + " got " + allowed + " and expected " + expected);
+      log(title + " got " + ca.accessAllowed + " and expected " + expected);
     }
-    assertEquals(title, expected, allowed);
+    assertEquals(title, expected, ca.accessAllowed);
   }
 
   private void tryDecode(char[] encoded, String title) throws Throwable {

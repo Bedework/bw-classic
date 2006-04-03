@@ -53,14 +53,14 @@
  */
 package edu.rpi.cct.uwcal.caldav;
 
-import org.bedework.appcommon.AccessUtil;
+import org.bedework.appcommon.AccessAppUtil;
 import edu.rpi.sss.util.xml.XmlEmit;
 
 /**
  * @author douglm
  *
  */
-public class EmitAccess extends AccessUtil {
+public class EmitAccess extends AccessAppUtil {
   private String namespacePrefix;
   
   /** Acls use tags in the webdav and caldav namespace. For use over caldav

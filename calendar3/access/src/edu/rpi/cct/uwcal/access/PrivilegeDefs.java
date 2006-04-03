@@ -75,6 +75,7 @@ public interface PrivilegeDefs extends Serializable {
    */
   public static final char unspecified = '1';
 
+  // ENUM
   /** Define a privilege type index
    */
 

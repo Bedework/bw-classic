@@ -53,7 +53,7 @@
 */
 package edu.rpi.cct.uwcal.caldav;
 
-import org.bedework.appcommon.AccessUtil;
+import org.bedework.appcommon.AccessAppUtil;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
@@ -781,8 +781,8 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
     findPriv: {
       // ENUM
-      for (priv = 0; priv < AccessUtil.privTags.length; priv++) {
-        if (MethodBase.nodeMatches(el, AccessUtil.privTags[priv])) {
+      for (priv = 0; priv < AccessAppUtil.privTags.length; priv++) {
+        if (MethodBase.nodeMatches(el, AccessAppUtil.privTags[priv])) {
           break findPriv;
         }
       }

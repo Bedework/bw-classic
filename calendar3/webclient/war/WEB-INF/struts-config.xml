@@ -433,7 +433,7 @@
 
     <action    path="/subs/fetch"
                type="org.bedework.webcommon.subs.GetSubscriptionsAction"
-               name="peForm"
+               name="calForm"
                scope="session"
                validate="false">
       <forward name="success" path="/subs/showSubs.rdo" redirect="true" />
@@ -441,7 +441,7 @@
 
     <action    path="/subs/fetchForUpdate"
                type="org.bedework.webcommon.subs.FetchSubscriptionAction"
-               name="peForm"
+               name="calForm"
                scope="session"
                validate="false">
       <forward name="notFound" path="/admin/showMain.rdo" redirect="true" />
@@ -450,7 +450,7 @@
 
     <action    path="/subs/initAdd"
                type="org.bedework.webcommon.subs.InitSubscribeAction"
-               name="peForm"
+               name="calForm"
                scope="session"
                validate="false">
       <forward name="cancelled" path="/subs/showSubs.rdo" redirect="true"/>
@@ -460,7 +460,7 @@
 
     <action    path="/subs/subscribe"
                type="org.bedework.webcommon.subs.SubscribeAction"
-               name="peForm"
+               name="calForm"
                scope="session"
                validate="false">
       <forward name="cancelled" path="/subs/showSubs.rdo" redirect="true"/>
@@ -471,7 +471,7 @@
 
     <action    path="/subs/unsubscribe"
                type="org.bedework.webcommon.subs.UnsubscribeAction"
-               name="peForm"
+               name="calForm"
                scope="session"
                validate="false">
       <forward name="success" path="/subs/showSubs.rdo" redirect="true" />

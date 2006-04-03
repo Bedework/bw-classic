@@ -118,6 +118,21 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
   public void clear() {
     aces = null;
   }
+  
+  /** Result of evaluating access to an object for a principal
+   */
+  public static class CurrentAccess {
+    /**  Allowed access for each privilege type 
+     * @see PrivilegeDefs
+     */
+    public char[] privileges = null;
+
+    /** Privileges desired */
+    public Privilege[] desiredAccess;
+
+    /** Was it succesful */
+    public boolean accessAllowed;
+  }
 
   /** Evaluating an ACL
    *
@@ -151,15 +166,16 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
    * @param owner
    * @param how
    * @param acl
-   * @return boolean true for access allowed
+   * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
-  public synchronized boolean evaluateAccess(AccessPrincipal who, String owner,
-                                             Privilege[] how, char[] acl)
+  public CurrentAccess evaluateAccess(AccessPrincipal who, String owner,
+                                      Privilege[] how, char[] acl)
           throws AccessException {
     boolean authenticated = !who.getUnauthenticated();
     boolean isOwner = false;
-    char[] privileges = null;
+    CurrentAccess ca = new CurrentAccess();
+    ca.desiredAccess = how;
 
     setEncoded(acl);
 
@@ -181,7 +197,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
     getPrivileges: {
       if (!authenticated) {
         if (ace.decode(this, false, null, Ace.whoTypeUnauthenticated)) {
-          privileges = ace.getHow();
+          ca.privileges = ace.getHow();
         }
 
         break getPrivileges;
@@ -189,9 +205,9 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
       if (isOwner) {
         if (ace.decode(this, false, null, Ace.whoTypeOwner)) {
-          privileges = ace.getHow();
+          ca.privileges = ace.getHow();
         } else {
-          privileges = defaultOwnerPrivileges;
+          ca.privileges = defaultOwnerPrivileges;
         }
 
         break getPrivileges;
@@ -199,9 +215,9 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
       // Not owner - look for user
       if (ace.decode(this, false, who.getAccount(), Ace.whoTypeUser)) {
-        privileges = ace.getHow();
+        ca.privileges = ace.getHow();
         if (debug) {
-          debugsb.append("... For user got: " + new String(privileges));
+          debugsb.append("... For user got: " + new String(ca.privileges));
         }
 
         break getPrivileges;
@@ -218,14 +234,14 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
             debugsb.append("...Try access for group " + group);
           }
           if (ace.decode(this, false, group, Ace.whoTypeGroup)) {
-            privileges = mergePrivileges(privileges, ace.getHow());
+            ca.privileges = mergePrivileges(ca.privileges, ace.getHow());
           }
         }
       }
 
-      if (privileges != null) {
+      if (ca.privileges != null) {
         if (debug) {
-          debugsb.append("...For groups got: " + new String(privileges));
+          debugsb.append("...For groups got: " + new String(ca.privileges));
         }
 
         break getPrivileges;
@@ -233,37 +249,42 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
       // "other" access set?
       if (ace.decode(this, false, null, Ace.whoTypeOther)) {
-        privileges = ace.getHow();
+        ca.privileges = ace.getHow();
 
         if (debug) {
-          debugsb.append("...For other got: " + new String(privileges));
+          debugsb.append("...For other got: " + new String(ca.privileges));
         }
 
         break getPrivileges;
       }
     } // getPrivileges
 
-    if (privileges == null) {
+    if (ca.privileges == null) {
       if (debug) {
         debugMsg(debugsb.toString() + "...Check access denied (noprivs)");
       }
-      return false;
+      return ca;
     }
 
-    for (int i = 0; i < how.length; i++) {
-      char priv = privileges[how[i].getIndex()];
-      if (priv == unspecified) {
+    ca.privileges = (char[])ca.privileges.clone();
+    for (int pi = 0; pi < ca.privileges.length; pi++) {
+      if (ca.privileges[pi] == unspecified) {
         if (isOwner) {
-          priv = allowed;
+          ca.privileges[pi] = allowed;
         } else {
-          priv = denied;
+          ca.privileges[pi] = denied;
         }
       }
+    }
+    
+    for (int i = 0; i < how.length; i++) {
+      char priv = ca.privileges[how[i].getIndex()];
+
       if (priv != allowed) {
         if (debug) {
           debugMsg(debugsb.toString() + "...Check access denied (!allowed)");
         }
-        return false;
+        return ca;
       }
     }
 
@@ -271,7 +292,8 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       debugMsg(debugsb.toString() + "...Check access allowed");
     }
 
-    return true;
+    ca.accessAllowed = true;
+    return ca;
   }
 
   private char[] mergePrivileges(char[] current, char[] morePriv) {
