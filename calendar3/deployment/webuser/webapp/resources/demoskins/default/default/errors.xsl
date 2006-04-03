@@ -32,6 +32,9 @@
       <xsl:when test="id='org.bedework.client.error.unknown.timezone'">
           Unknown timezone <xsl:value-of select="param"/>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.subscription.reffed'">
+          Cannot remove: the subscription is referenced by View "<xsl:value-of select="param"/>"
+      </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="id"/> = <xsl:value-of select="param"/>
       </xsl:otherwise>

@@ -1038,7 +1038,7 @@
                 </xsl:choose>
               </xsl:when>
               <xsl:otherwise>
-                <a href="{$fetchPublicCalendars}">
+                <a href="{$subscriptions-fetch}">
                   Manage Subscriptions
                 </a>
               </xsl:otherwise>
@@ -1797,15 +1797,15 @@
             subscribe to an external calendar</a>.-->
           </p>
           <ul id="calendarTree">
-            <xsl:apply-templates select="/bedeworkadmin/subscriptions/subscribe/calendars/calendar" mode="subscribe"/>
+            <xsl:apply-templates select="/bedework/subscriptions/subscribe/calendars/calendar" mode="subscribe"/>
           </ul>
         </td>
         <td class="subs">
           <xsl:choose>
-            <xsl:when test="/bedeworkadmin/page='subscriptions'">
+            <xsl:when test="/bedework/page='subscriptions'">
               <xsl:call-template name="subscriptionList"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/creating='true'">
+            <xsl:when test="/bedework/creating='true'">
               <xsl:apply-templates select="subscription" mode="addSubscription"/>
             </xsl:when>
             <xsl:otherwise>
@@ -1843,7 +1843,7 @@
     <h2>Add New Subscription</h2>
     <p class="note">*the subsciption name must be unique</p>
     <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
-      <table class="eventFormTable">
+      <table class="commonTable">
         <tr>
           <th>Name*:</th>
           <td>
@@ -1897,7 +1897,7 @@
   <xsl:template match="subscription" mode="modSubscription">
     <h2>Modify Subscription</h2>
     <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
-      <table class="eventFormTable">
+      <table class="commonTable">
         <tr>
           <th>Name*:</th>
           <td>
@@ -1980,7 +1980,7 @@
 
   <xsl:template name="subscriptionList">
     <h3>Current subscriptions</h3>
-    <table id="commonListTable">
+    <table id="commonTable">
       <tr>
         <th>Name</th>
         <th>URI</th>

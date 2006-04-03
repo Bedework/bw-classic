@@ -5,6 +5,23 @@ body {
   color : black;
   padding: 0.75em 1em 0em 1em;
 }
+/* Generic selectors*/
+h2 {
+  margin: 0em;
+  padding: 1em 0.2em 0em 0.2em;
+  font-size: 1.4em;
+}
+h3 {
+  margin: 0em;
+  padding: 1em 0.2em 0em 0.2em;
+  font-size: 1.1em;
+}
+h4 {
+  margin: 0em;
+  padding: 1em 0.2em 0em 0.2em;
+  font-size: 1em;
+}
+/* Header IDs and classes */
 #logoTable {
   padding: 0em;
   margin: 0em;
@@ -317,7 +334,8 @@ body {
   color: black;
   background-color: #ffa;
 }
-th#commonHeader {
+th#commonHeader,
+#commonTable th#commonHeader {
   /*background-color: black;
   color: #eee;*/
   background-color: #ccc;
@@ -356,6 +374,7 @@ th#commonHeader {
   color: black;
   width: 100%;
 }
+#commonTable th,
 #commonTable th.fieldname {
   text-align: left;
   padding: 1em 0.5em 0.5em 0.5em;
@@ -433,48 +452,6 @@ th#commonHeader {
 form#subscriptions {
   margin: 0;
   padding: 0;
-}
-#calPageTable {
-  width: 100%;
-  font-size: 100%;
-  margin: 0;
-  padding: 0;
-}
-#calPageTable td {
-  width: 50%;
-  vertical-align: top;
-  padding: 0.5em 2em 1em 3em;
-}
-#calPageTable th {
-  padding: 4px 0;
-  font-size: 1.2em;
-  background-color: #ccc;
-  color: black;
-  font-weight: bold;
-}
-#calPageTable td.leftCell {
-  border-right : thin dashed #999;
-}
-
-#calPageTable ul.calendarTree li {
-  font-weight: bold;
-}
-#calPageTable ul.calendarTree li ul li {
-  font-weight: normal;
-}
-#calPageTable ul.calendarTree li.folder {
-  list-style-image: url(../../resources/catIcon.gif);
-  padding-top: 0.25em;
-  padding-bottom: 0.25em;
-}
-#calPageTable ul.calendarTree li.calendar {
-  list-style-image: url(../../resources/calIcon-sm.gif);
-}
-#calPageTable td.infoCell {
-  background-color: #eee;
-  color: black;
-  text-align: center;
-  padding: 4px;
 }
 #dayCalendarTable {
   width: 100%;
@@ -856,6 +833,58 @@ a.gridAdd {
 .noEventsCell {
   padding: 1em;
 }
+/* Calendars and Subscriptions */
+#calendarTable td,
+#subsTable td {
+  padding: 0 0.5em;
+  vertical-align: top;
+}
+#calendarTable td.cals,
+#subsTable td.cals {
+  border-right: 1px solid #aaa;
+  font-size: 0.9em;
+  width: 200px;
+}
+#calendarTable td.cals {
+  width: 300px;
+}
+#subsTable td.cals {
+  width: 200px;
+}
+#calendarTree ul {
+  padding-left: 10px;
+  margin-left: 10px;
+}
+#calendarTree li {
+  padding-top: 0.25em;
+  /*font-weight: bold;*/
+}
+#calendarTree li.folder {
+  list-style-image: url(../../resources/catIcon.gif);
+}
+#calendarTree li.calendar {
+  list-style-image: url(../../resources/calIcon-sm.gif);
+}
+#calendarTree a:link,
+#calendarTree a:active,
+#calendarTree a:visited {
+  text-decoration: none;
+}
+#calendarTree a:hover {
+  color: black;
+  background-color: #ff3;
+}
+#submitTable {
+  width: 98%; /* less than 100% helps avoid IE weirdness */
+  margin-top: 1em;
+}
+p.note {
+  margin: 0;
+  padding: 0 0 1em 0;
+  font-size: 0.8em;
+  font-style: italic;
+}
+/* Footer */
 #footer {
   font-size: 0.7em;
   text-align : center;
