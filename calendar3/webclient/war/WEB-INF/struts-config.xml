@@ -374,7 +374,7 @@
     <!-- ....................... mailing events ........................ -->
 
     <action    path="/initMailEvent"
-               type="org.bedework.webclient.BwFetchEventAction"
+               type="org.bedework.webclient.BwEventAction"
                name="calForm"
                scope="session"
                validate="false">
@@ -395,7 +395,7 @@
     <!-- ....................... event alarms .......................... -->
 
     <action    path="/initEventAlarm"
-               type="org.bedework.webclient.BwFetchEventAction"
+               type="org.bedework.webclient.BwEventAction"
                name="calForm"
                scope="session"
                validate="false">
