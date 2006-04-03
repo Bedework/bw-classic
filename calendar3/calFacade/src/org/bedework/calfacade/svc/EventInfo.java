@@ -57,6 +57,8 @@ import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwEventAlarm;
 import org.bedework.calfacade.BwEventAnnotation;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
@@ -68,7 +70,7 @@ import java.util.TreeSet;
  *
  * <p>This class allows us to handle thread, or user, specific information.
  *
- * @author Mike Douglass       douglm@rpi.edu
+ * @author Mike Douglass       douglm @ rpi.edu
  */
 public class EventInfo implements Comparable, Comparator, Serializable {
   protected BwEvent event;
@@ -126,6 +128,11 @@ public class EventInfo implements Comparable, Comparator, Serializable {
   /** If non-null this event comes from a recurrence
    */
   private String recurrenceId;
+  
+  /* This object contains information giving the current users access rights to
+   * the entity.
+   */
+  private CurrentAccess currentAccess;
 
   /**
    *
@@ -302,6 +309,22 @@ public class EventInfo implements Comparable, Comparator, Serializable {
    */
   public String getRecurrenceId() {
     return recurrenceId;
+  }
+  
+  /* Set the current users access rights.
+   * 
+   * @param val  CurrentAccess
+   */
+  public void setCurrentAccess(CurrentAccess val) {
+    currentAccess = val;
+  }
+  
+  /* Get the current users access rights.
+   * 
+   * @return  CurrentAccess
+   */
+  public CurrentAccess getCurrentAccess() {
+    return currentAccess;
   }
 
   /* ====================================================================

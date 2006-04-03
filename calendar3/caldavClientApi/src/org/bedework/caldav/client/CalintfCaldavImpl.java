@@ -62,6 +62,7 @@ import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwStats;
+import org.bedework.calfacade.CoreEventInfo;
 //import org.bedework.calfacade.BwSynchData;
 import org.bedework.calfacade.BwSynchInfo;
 import org.bedework.calfacade.BwSynchState;
@@ -576,7 +577,7 @@ public class CalintfCaldavImpl extends CalintfBase {
    *                   Events
    * ==================================================================== */
 
-  public BwEvent getEvent(int id) throws CalFacadeException {
+  public CoreEventInfo getEvent(int id) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }

@@ -79,6 +79,7 @@ import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.CoreEventInfo;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
@@ -1928,10 +1929,10 @@ public class CalSvc extends CalSvcI {
     return mailer;
   }*/
 
-  private EventInfo postProcess(BwEvent ev, BwSubscription sub, 
+  private EventInfo postProcess(CoreEventInfo cei, BwSubscription sub, 
                                 HashMap sublookup)
           throws CalFacadeException {
-    if (ev == null) {
+    if (cei == null) {
       return null;
     }
 
@@ -1940,6 +1941,8 @@ public class CalSvc extends CalSvcI {
     /* If the event is an event reference (an alias) implant it in an event
      * proxy and return that object.
      */
+    BwEvent ev = cei.getEvent();
+    
     if (ev instanceof BwEventAnnotation) {
       ev = new BwEventProxy((BwEventAnnotation)ev);
     }
@@ -1953,34 +1956,33 @@ public class CalSvc extends CalSvcI {
       ei.setSubscription((BwSubscription)sublookup.get(new Integer(cal.getId())));
     }
     ei.setRecurrenceId(ev.getRecurrence().getRecurrenceId());
+    ei.setCurrentAccess(cei.getCurrentAccess());
 
     return ei;
   }
 
-  private Collection postProcess(Collection evs, BwSubscription sub)
+  private Collection postProcess(Collection ceis, BwSubscription sub)
           throws CalFacadeException {
     ArrayList al = new ArrayList();
 
-    Iterator it = evs.iterator();
+    Iterator it = ceis.iterator();
 
     while (it.hasNext()) {
-      BwEvent ev = (BwEvent)it.next();
-      EventInfo ei = postProcess(ev, sub, null);
+      EventInfo ei = postProcess((CoreEventInfo)it.next(), sub, null);
       al.add(ei);
     }
 
     return al;
   }
 
-  private Collection postProcess(Collection evs, HashMap sublookup)
+  private Collection postProcess(Collection ceis, HashMap sublookup)
           throws CalFacadeException {
     ArrayList al = new ArrayList();
 
-    Iterator it = evs.iterator();
+    Iterator it = ceis.iterator();
 
     while (it.hasNext()) {
-      BwEvent ev = (BwEvent)it.next();
-      EventInfo ei = postProcess(ev, null, sublookup);
+      EventInfo ei = postProcess((CoreEventInfo)it.next(), null, sublookup);
       al.add(ei);
     }
 

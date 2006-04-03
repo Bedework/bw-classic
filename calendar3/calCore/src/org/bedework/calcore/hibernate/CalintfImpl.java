@@ -75,6 +75,7 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.CoreEventInfo;
 import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
@@ -1061,7 +1062,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
                             startDate, endDate, recurRetrieval);
   }
 
-  public BwEvent getEvent(int id) throws CalFacadeException {
+  public CoreEventInfo getEvent(int id) throws CalFacadeException {
     checkOpen();
     return events.getEvent(id);
   }
@@ -1088,11 +1089,11 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return events.deleteEvent(val);
   }
 
-  public boolean editable(BwEvent val) throws CalFacadeException {
+  /*public boolean editable(BwEvent val) throws CalFacadeException {
     checkOpen();
 
     return events.editable(val);
-  }
+  }*/
 
   public Collection getEventsByName(BwCalendar cal, String val)
           throws CalFacadeException {

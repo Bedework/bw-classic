@@ -55,6 +55,7 @@ package org.bedework.calcore.hibernate;
 
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.CoreEventInfo;
 import org.bedework.calfacade.filter.BwAndFilter;
 import org.bedework.calfacade.filter.BwCategoryFilter;
 import org.bedework.calfacade.filter.BwCreatorFilter;
@@ -245,7 +246,7 @@ public class Filters implements Serializable {
   /** Pass 4 the post execution pass allows the filters to process the
    * result and handle any filters that could not be handled by the query.
    *
-   * @param val         Collection to be filtered
+   * @param val         Collection of CoreEventInfo to be filtered
    * @return Collection filtered
    * @throws CalFacadeException
    */
@@ -258,10 +259,11 @@ public class Filters implements Serializable {
     ArrayList l = new ArrayList();
 
     while (it.hasNext()) {
-      BwEvent ev = (BwEvent)it.next();
+      CoreEventInfo cei = (CoreEventInfo)it.next();
+      BwEvent ev = cei.getEvent();
 
       if (matches(filter, ev)) {
-        l.add(ev);
+        l.add(cei);
       }
     }
 

@@ -69,4 +69,5 @@
           Value: URI - link to sponsor web page --%>
       </sponsor>
     </logic:present>
+    <bw:emitCurrentPrivs name="eventInfo" property="currentAccess" />
 

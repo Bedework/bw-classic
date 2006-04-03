@@ -1088,6 +1088,9 @@ public abstract class CalSvcI implements Serializable {
    * @param   eventId   int id of the event
    * @return  EventInfo   value object representing event.
    * @throws CalFacadeException
+   * 
+   * @deprecated - other calendar systems won't support this. Doesn't make sense
+   *               for recurring events.
    */
   public abstract EventInfo getEvent(int eventId) throws CalFacadeException;
 

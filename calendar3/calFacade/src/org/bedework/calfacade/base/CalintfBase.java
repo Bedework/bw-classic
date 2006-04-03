@@ -70,6 +70,7 @@ import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeUnimplementedException;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CalintfDefs;
+import org.bedework.calfacade.CoreEventInfo;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
@@ -688,7 +689,7 @@ public class CalintfBase implements Calintf {
    *                   Events
    * ==================================================================== */
 
-  public BwEvent getEvent(int id) throws CalFacadeException {
+  public CoreEventInfo getEvent(int id) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }

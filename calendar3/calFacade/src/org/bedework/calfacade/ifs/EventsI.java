@@ -4,6 +4,7 @@ import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.CoreEventInfo;
 import org.bedework.calfacade.filter.BwFilter;
 
 import java.io.Serializable;
@@ -40,7 +41,7 @@ public interface EventsI extends Serializable {
    * @param   rid       String recurrence id, null for non-recurring, null valued for
    *                    master or non-null-valued for particular occurrence.
    * @param recurRetrieval Takes value defined in CalFacadeDefs.
-   * @return  Collection of EventInfo objects representing event(s).
+   * @return  Collection of CoreEventInfo objects representing event(s).
    * @throws CalFacadeException
    */
   public Collection getEvent(BwCalendar calendar, String guid, String rid,
@@ -48,11 +49,14 @@ public interface EventsI extends Serializable {
 
   /** Return a single event for the current user
    *
-   * @param   eventId   int id of the event
-   * @return  EventVO   value object representing event.
+   * @param   eventId       int id of the event
+   * @return  CoreEventInfo object representing event.
    * @throws CalFacadeException
+   * 
+   * @deprecated - other calendar systems won't support this. Doesn't make sense
+   *               for recurring events.
    */
-  public BwEvent getEvent(int eventId) throws CalFacadeException;
+  public CoreEventInfo getEvent(int eventId) throws CalFacadeException;
 
   /** Add an event to the database. The id and uid will be set in the parameter
    * object.
@@ -123,7 +127,7 @@ public interface EventsI extends Serializable {
    * @param startDate    DateTimeVO start - may be null
    * @param endDate      DateTimeVO end - may be null.
    * @param recurRetrieval Takes value defined in CalFacadeDefs
-   * @return Collection  populated event value objects
+   * @return Collection  of CoreEventInfo objects
    * @throws CalFacadeException
    */
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
@@ -131,13 +135,13 @@ public interface EventsI extends Serializable {
                               int recurRetrieval)
           throws CalFacadeException;
 
-  /** Return true if this event is editable by the current user
+  /* * Return true if this event is editable by the current user
    *
    * @param val                EventVO object to be tested
    * @return boolean
    * @throws CalFacadeException
-   */
-  public boolean editable(BwEvent val) throws CalFacadeException;
+   * /
+  public boolean editable(BwEvent val) throws CalFacadeException;*/
 
   /* ====================================================================
    *                       Caldav support
