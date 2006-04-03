@@ -241,7 +241,7 @@
          (a la Demo, Rensselaer); on error, we return to the
          addEvent.jsp page. -->
     <action    path="/initEvent"
-               type="org.bedework.webclient.BwAction"
+               type="org.bedework.webclient.BwInitEventAction"
                name="calForm"
                scope="session"
                validate="false">

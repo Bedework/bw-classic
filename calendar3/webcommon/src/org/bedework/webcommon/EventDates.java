@@ -62,6 +62,8 @@ import org.bedework.calsvci.CalSvcI;
 
 import edu.rpi.sss.util.log.MessageEmit;
 
+import java.util.Date;
+
 /** The dates (and/or duration which define when an event happens. These are
  * stored in objects which allow manipulation of indiviual date and time
  * components.
@@ -123,6 +125,18 @@ public class EventDates extends EntityDates {
       }
       err.emit(t);
     }
+  }
+
+  /** We set the time date components from the date.
+   *
+   * <p>If the end date is a date only value it is adjusted backwards by one
+   * day to take account of accepted practice.
+   *
+   * @param val
+   */
+  public void setFromDate(Date val) {
+    getStartDate().setDateTime(val);
+    getEndDate().setDateTime(val);
   }
 
   /** We set the time date components to be today. The end date is

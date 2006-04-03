@@ -1926,6 +1926,14 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    * They will be distinguished by the action called.
    * ==================================================================== */
 
+  /** Assign event dates based on parameter
+   *
+   * @param dt     Date object representing date
+   */
+  public void assignEventDates(Date dt) {
+    getEventDates().setFromDate(dt);
+  }
+
   /** Return an object containing the dates.
    *
    * @return EventDates  object representing date/times and duration
