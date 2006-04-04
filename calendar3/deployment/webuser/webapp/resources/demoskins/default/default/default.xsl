@@ -1001,7 +1001,7 @@
     <xsl:variable name="calendarId" select="calendar/id"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
-    <table id="commonTable" cellpadding="0" cellspacing="0">
+    <table id="commonTable" cellspacing="0">
       <tr>
         <th colspan="3" id="commonHeader">
           <div id="eventActions">
@@ -1174,7 +1174,7 @@
     <form name="eventForm" method="post" action="{$addEventUsingPage}" id="standardForm">
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
-      <table id="commonTable" cellpadding="0" cellspacing="0">
+      <table id="commonTable" cellspacing="0">
         <tr>
           <th colspan="2" id="commonHeader">Add Event</th>
         </tr>
@@ -1512,7 +1512,7 @@
       <input type="hidden" name="updateEvent" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
-      <table id="commonTable" cellpadding="0" cellspacing="0">
+      <table id="commonTable" cellspacing="0">
         <tr>
           <th colspan="2" id="commonHeader">
             <div id="eventActions">
@@ -1878,13 +1878,13 @@
             <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
           </td>
         </tr>
-        <tr>
+        <!--<tr>
           <th>Unremovable:</th>
           <td>
             <input type="radio" value="true" name="unremoveable" size="60"/> true
             <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
           </td>
-        </tr>
+        </tr>-->
       </table>
       <table border="0" id="submitTable">
         <tr>
@@ -1951,7 +1951,7 @@
             <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
           </td>
         </tr>
-        <tr>
+        <!--<tr>
           <th>Unremovable:</th>
           <td>
             <xsl:choose>
@@ -1965,7 +1965,7 @@
               </xsl:otherwise>
             </xsl:choose>
           </td>
-        </tr>
+        </tr>-->
       </table>
       <table border="0" id="submitTable">
         <tr>
@@ -1984,7 +1984,7 @@
 
   <xsl:template name="subscriptionList">
     <h3>Current subscriptions</h3>
-    <table id="commonTable">
+    <table id="commonTable" cellspacing="0">
       <tr>
         <th>Name</th>
         <th>URI</th>
@@ -2039,7 +2039,7 @@
   <xsl:template name="alarmOptions">
     <form method="get" action="{$setAlarm}" id="standardForm">
       <input type="hidden" name="updateAlarmOptions" value="true"/>
-      <table id="commonTable" cellpadding="0" cellspacing="0">
+      <table id="commonTable" cellspacing="0">
         <tr>
           <th colspan="2" id="commonHeader">Alarm options</th>
         </tr>
@@ -2084,7 +2084,6 @@
         </tr>
         <tr>
           <td>
-            <span class="required-field" title="required">*</span>
             Email Address:
           </td>
           <td align="left">
@@ -2106,11 +2105,6 @@
             <input name="cancelled" type="submit" value="Cancel"/>
           </td>
         </tr>
-        <tr>
-          <td class="footnoteCell">
-            <span style="color:red;">*</span> = required field
-          </td>
-        </tr>
       </table>
     </form>
   </xsl:template>
@@ -2118,7 +2112,7 @@
   <!--==== UPLOAD ====-->
   <xsl:template name="upload">
     <form method="post" action="{$upload}" id="standardForm"  enctype="multipart/form-data">
-      <table id="commonTable" cellpadding="0" cellspacing="0">
+      <table id="commonTable" cellspacing="0">
         <tr>
           <tr>
             <th colspan="2" id="commonHeader">Upload iCAL File</th>
@@ -2145,13 +2139,13 @@
   <xsl:template name="emailOptions">
     <form method="get" action="{$mailEvent}" id="standardForm">
       <input type="hidden" name="updateEmailOptions" value="true"/>
-      <table id="commonTable" cellpadding="0" cellspacing="0">
+      <table id="commonTable" cellspacing="0">
         <tr>
           <th colspan="2" id="commonHeader">Update email options</th>
         </tr>
         <tr>
           <td>
-            <span class="required-field" title="required">*</span>
+
             Email Address:
           </td>
           <td align="left">
@@ -2173,11 +2167,6 @@
             <input name="cancelled" type="submit" value="Cancel"/>
           </td>
         </tr>
-        <tr>
-          <td class="footnoteCell">
-            <span style="color:red;">*</span> = required field
-          </td>
-        </tr>
       </table>
     </form>
   </xsl:template>
@@ -2186,19 +2175,15 @@
   <xsl:template name="manageLocations">
     <form name="addLocationForm" method="post" action="{$addLocation}" id="standardForm">
       <input type="hidden" name="confirmationid" value="{$confId}"/>
-      <table border="0" id="commonTable">
-        <colgroup>
-          <col span="1" class="fieldname"/>
-          <col span="1" class="fieldval"/>
-       </colgroup>
+      <table id="commonTable" cellspacing="0">
         <tr>
           <th colspan="2" id="commonHeader">Manage Locations</th>
         </tr>
         <tr>
-          <th colspan="2" class="form-header">Add Location</th>
+          <th colspan="2">Add Location</th>
         </tr>
         <tr>
-          <td>
+          <td class="fieldname">
             Main Address:
           </td>
           <td>
@@ -2206,7 +2191,7 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="fieldname">
             Subaddress:
           </td>
           <td>
@@ -2214,7 +2199,7 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="fieldname">
             Location Link:
           </td>
           <td>
@@ -2222,13 +2207,14 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2" class="plain">
+          <td></td>
+          <td class="padMe">
             <input name="submit" type="submit" value="Submit Location"/>&#160;
             <input name="cancelled" type="submit" value="Cancel"/>
           </td>
         </tr>
         <tr>
-          <th colspan="2" class="form-header">Edit/Delete Locations</th>
+          <th colspan="2">Edit/Delete Locations</th>
         </tr>
         <td colspan="2" class="plain">
           <ul>
@@ -2250,7 +2236,7 @@
     <form name="editLocationForm" method="post" action="{$editLocation}" id="standardForm">
       <input type="hidden" name="updateLocation" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
-      <table id="commonTable" cellpadding="0" cellspacing="0">
+      <table id="commonTable" cellspacing="0">
         <tr>
           <th colspan="2" id="commonHeader">
             <xsl:variable name="locId" select="/bedework/locationform/form/id"/>
@@ -2261,8 +2247,7 @@
           </th>
         </tr>
         <tr>
-          <td>
-            <span class="required-field" title="required">*</span>
+          <td class="fieldname">
             Address:
           </td>
           <td align="left">
@@ -2270,7 +2255,7 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="fieldname">
             Subaddress:
           </td>
           <td align="left">
@@ -2278,21 +2263,18 @@
           </td>
         </tr>
         <tr>
-          <td>Location's URL:</td>
+          <td class="fieldname">
+            Location's URL:
+          </td>
           <td>
             <xsl:copy-of select="/bedework/locationform/form/link/*"/>
           </td>
         </tr>
         <tr>
           <td>&#160;</td>
-          <td>
+          <td class="padMe">
             <input name="submit" type="submit" value="Submit Location"/>&#160;
             <input name="cancelled" type="submit" value="Cancel"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="footnoteCell">
-            <span style="color:red;">*</span> = required field
           </td>
         </tr>
       </table>

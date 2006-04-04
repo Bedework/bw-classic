@@ -324,24 +324,15 @@ h4 {
 #messages p,
 #errors p {
   margin: 0;
-  padding: 0;
+  padding: 2px 0;
 }
 #messages {
   color: black;
-  background-color: #ffe;
+  background-color: #ffa;
 }
 #errors {
   color: black;
   background-color: #ffa;
-}
-th#commonHeader,
-#commonTable th#commonHeader {
-  /*background-color: black;
-  color: #eee;*/
-  background-color: #ccc;
-  color: #333;
-  padding: 0.2em 0.5em;
-  text-align: left;
 }
 #standardForm {
   margin: 0;
@@ -353,19 +344,27 @@ th#commonHeader,
   margin: 0px;
   padding: 0px;
 }
-#commonTable td.fieldval,
-#commonTable col.fieldval {
+th#commonHeader,
+#commonTable th#commonHeader {
+  /*background-color: black;
+  color: #eee;*/
+  background-color: #ccc;
+  color: #333;
+  padding: 0.2em 0.5em;
+  text-align: left;
+}
+#commonTable td.fieldval {
   margin: 0em;
   vertical-align: top;
   padding: 0.5em 0.5em 0.2em 1em;
 }
-#commonTable td.fieldname,
-#commonTable col.fieldname {
+#commonTable td.fieldname {
   margin: 0em;
   vertical-align: top;
   padding: 0.5em 0.5em 0.2em 0.5em;
   color: black;
   background-color: #eee;
+  white-space: nowrap;
 }
 #commonTable th.fieldval {
   text-align: left;
@@ -377,9 +376,11 @@ th#commonHeader,
 #commonTable th,
 #commonTable th.fieldname {
   text-align: left;
-  padding: 1em 0.5em 0.5em 0.5em;
-  background-color: #eee;
+  vertical-align: top;
+  padding: 0.5em;
+  background-color: #ddd;
   color: black;
+  white-space: nowrap;
 }
 #commonTable th.icon {
   margin: 0em;
@@ -396,10 +397,6 @@ th#commonHeader,
 #commonTable #eventActions {
   float: right;
   clear: none;
-}
-#commonTable td.plain {
-  color: black;
-  background-color: white;
 }
 #commonTable td.allField {
   white-space: nowrap;
@@ -448,6 +445,9 @@ th#commonHeader,
 }
 .hidden {
   visibility: hidden;
+}
+.padMe {
+  padding: 1em 0 !important;
 }
 form#subscriptions {
   margin: 0;

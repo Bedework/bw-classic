@@ -18,7 +18,7 @@
           <p>Please correct your dates: the end date/time is before the start date/time.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.noaccess'">
-          <p>You have insufficient access <em><xsl:value-of select="param"/></em></p>
+          <p>You have insufficient access <xsl:value-of select="param"/>.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.notitle'">
           <p>Please supply a title for your event (required).</p>
