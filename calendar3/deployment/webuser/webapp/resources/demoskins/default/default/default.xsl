@@ -85,12 +85,12 @@
         <xsl:call-template name="headBar"/>
         <xsl:if test="/bedework/message">
           <div id="messages">
-            <p><xsl:apply-templates select="/bedework/message"/></p>
+            <xsl:apply-templates select="/bedework/message"/>
           </div>
         </xsl:if>
         <xsl:if test="/bedework/error">
           <div id="errors">
-            <p><xsl:apply-templates select="/bedework/error"/></p>
+            <xsl:apply-templates select="/bedework/error"/>
           </div>
         </xsl:if>
         <table id="bodyBlock" cellspacing="0">
@@ -219,7 +219,7 @@
           <h2>Personal Calendar</h2>
           <a href="{$publicCal}">Public Calendar</a> |
           <a href="http://www.yourschoolhere.edu">School Home</a> |
-          <a href="http://www.washington.edu/ucal/">Other Link</a> |
+          <a href="http://www.bedework.org/">Other Link</a> |
           <a href="http://helpdesk.rpi.edu/update.do?catcenterkey=51">
             Example Calendar Help
           </a>
@@ -1402,7 +1402,9 @@
         <tr>
           <td class="fieldname">Description:</td>
           <td class="fieldval">
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/desc/*"/>
+            <textarea name="newEvent.description" cols="60" rows="4">
+              <xsl:value-of select="/bedework/formElements/form/desc/textarea"/>
+            </textarea>
           </td>
         </tr>
         <tr>
@@ -1752,7 +1754,9 @@
         <tr>
           <td class="fieldname">Description:</td>
           <td class="fieldval">
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/desc/*"/>
+            <textarea name="editEvent.description" cols="60" rows="4">
+              <xsl:value-of select="/bedework/formElements/form/desc/textarea"/>
+            </textarea>
           </td>
         </tr>
         <tr>
@@ -1986,9 +1990,9 @@
         <th>URI</th>
         <th>Style</th>
         <th>Display</th>
-        <th>Unremovable</th>
+        <!--<th>Unremovable</th>
         <th>External</th>
-        <th>Deleted?</th>
+        <th>Deleted?</th>-->
       </tr>
       <xsl:for-each select="subscription">
         <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
@@ -2010,7 +2014,7 @@
               <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
             </xsl:if>
           </td>
-          <td class="center">
+          <!--<td class="center">
             <xsl:if test="unremoveable='true'">
               <img src="{$resourcesRoot}/resources/redCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
             </xsl:if>
@@ -2024,7 +2028,7 @@
             <xsl:if test="calendarDeleted='true'">
               <img src="{$resourcesRoot}/resources/redCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
             </xsl:if>
-          </td>
+          </td>-->
         </tr>
       </xsl:for-each>
     </table>
@@ -2336,7 +2340,7 @@
       <tr>
         <td class="leftCell">
           <a href="http://www.bedework.org/">Bedework Calendar</a> |
-          <a href="/ucal/showMain.rdo?refreshXslt=yes">refresh XSLT</a>
+          <a href="?refreshXslt=yes">refresh XSLT</a>
         </td>
         <td class="rightCell">
           <!--<form name="skinSelectForm" method="get" action="{$setup}">

@@ -3,40 +3,43 @@
   <xsl:template match="error">
     <xsl:choose>
       <xsl:when test="id='edu.rpi.sss.util.error.exc'">
-          An exception occurred: <xsl:value-of select="param"/>
+          <p>An exception occurred: <em><xsl:value-of select="param"/></em></p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.exc'">
-          An exception occurred: <xsl:value-of select="param"/>
+          <p>An exception occurred: <em><xsl:value-of select="param"/></em></p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nosuchevent'">
-          Event <xsl:value-of select="param"/> does not exist.
+          <p>Event <xsl:value-of select="param"/> does not exist.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.baddates'">
-          Improperly formatted date(s): <xsl:value-of select="param"/>
+          <p>Improperly formatted date(s): <em><xsl:value-of select="param"/></em></p>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.event.startafterend'">
+          <p>Please correct your dates: the end date/time is before the start date/time.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.noaccess'">
-          You have insufficient access <xsl:value-of select="param"/>
+          <p>You have insufficient access <em><xsl:value-of select="param"/></em></p>
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.notitle'">
-          Please supply a title for your event (required).
+          <p>Please supply a title for your event (required).</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.missingcalendarid'">
-          Missing event's calendar id (required).
+          <p>Missing event's calendar id (required).</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.location.referenced'">
-          Location is in use.  It cannot be deleted while referenced by an event.
+          <p>Location is in use.  It cannot be deleted while referenced by an event.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.mail.norecipient'">
-          You must supply a recipient.
+          <p>You must supply a recipient.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unknown.timezone'">
-          Unknown timezone <xsl:value-of select="param"/>
+          <p>Unknown timezone <em><xsl:value-of select="param"/></em></p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.subscription.reffed'">
-          Cannot remove: the subscription is referenced by View "<xsl:value-of select="param"/>"
+          <p>Cannot remove: the subscription is referenced by View "<em><xsl:value-of select="param"/></em>"</p>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="id"/> = <xsl:value-of select="param"/>
+        <p><xsl:value-of select="id"/> = <xsl:value-of select="param"/></p>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

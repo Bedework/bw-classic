@@ -1587,7 +1587,7 @@
         <tr>
           <th>Description:</th>
           <td>
-            <textarea name="calendar.description" width="60" height="20">
+            <textarea name="calendar.description" cols="40" rows="4">
               <xsl:value-of select="desc"/>
             </textarea>
           </td>

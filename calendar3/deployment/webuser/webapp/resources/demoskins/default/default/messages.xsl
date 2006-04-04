@@ -3,93 +3,93 @@
   <xsl:template match="message">
     <xsl:choose>
       <xsl:when test="id='org.bedework.client.message.cancelled'">
-          Action cancelled.
+          <p>Action cancelled.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.locations.added'">
         <xsl:choose>
           <xsl:when test="param='1'">
-            1 location added.
+            <p>1 location added.</p>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="param"/> locations added.
+            <p><xsl:value-of select="param"/> locations added.</p>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.added.events'">
         <xsl:choose>
           <xsl:when test="param='1'">
-            1 event added.
+            <p>1 event added.</p>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="param"/> events added.
+            <p><xsl:value-of select="param"/> events added.</p>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.added.eventrefs'">
         <xsl:choose>
           <xsl:when test="param='1'">
-            1 public event reference added.
+            <p>1 public event reference added.</p>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="param"/> public event references added.
+            <p><xsl:value-of select="param"/> public event references added.</p>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.added.subscriptions'">
         <xsl:choose>
           <xsl:when test="param='1'">
-            1 subscription added.
+            <p>1 subscription added.</p>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="param"/> subscriptions added.
+            <p><xsl:value-of select="param"/> subscriptions added.</p>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.deleted.events'">
         <xsl:choose>
           <xsl:when test="param='1'">
-            1 event deleted.
+            <p>1 event deleted.</p>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="param"/> events deleted.
+            <p><xsl:value-of select="param"/> events deleted.</p>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.deleted.eventrefs'">
         <xsl:choose>
           <xsl:when test="param='1'">
-            1 event removed.
+            <p>1 event removed.</p>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="param"/> events removed.
+            <p><xsl:value-of select="param"/> events removed.</p>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.deleted.locations'">
         <xsl:choose>
           <xsl:when test="param='1'">
-            1 location removed.
+            <p>1 location removed.</p>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="param"/> locations removed.
+            <p><xsl:value-of select="param"/> locations removed.</p>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.deleted.subscriptions'">
         <xsl:choose>
           <xsl:when test="param='1'">
-            1 subscription removed.
+            <p>1 subscription removed.</p>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="param"/> subscriptions removed.
+            <p><xsl:value-of select="param"/> subscriptions removed.</p>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.nosuchevent'">
-          Event <xsl:value-of select="param"/> does not exist.
+          <p>Event <em><xsl:value-of select="param"/></em> does not exist.</p>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="id"/> = <xsl:value-of select="param"/>
+        <p><xsl:value-of select="id"/> = <xsl:value-of select="param"/></p>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
