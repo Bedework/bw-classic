@@ -191,27 +191,24 @@
   <!--==== HEAD SECTION  ====-->
 
   <xsl:template name="headSection">
-     <title>Bedework: Personal Calendar Client</title>
-      <meta name="robots" content="noindex,nofollow"/>
-      <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
-      <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
-      <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
-      <xsl:if test="/bedework/page='addEvent' or /bedework/page='editEvent'">
-        <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
-        <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
-        <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
-        <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
-        <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
-        <script type="text/javascript" src="{$resourcesRoot}/resources/browserSniffer.js"></script>
-      </xsl:if>
+    <title>Bedework: Personal Calendar Client</title>
+    <meta name="robots" content="noindex,nofollow"/>
+    <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
+    <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
+    <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
+    <xsl:if test="/bedework/page='addEvent' or /bedework/page='editEvent'">
+      <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
+      <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
+      <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/browserSniffer.js"></script>
+    </xsl:if>
   </xsl:template>
 
   <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
 
   <xsl:template name="headBar">
-    <h1 id="titleBar">
-      BEDEWORK PERSONAL CLIENT
-    </h1>
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
       <tr>
         <td colspan="3" id="logoCell"><a href="http://www.bedework.org/"><img src="{$resourcesRoot}/resources/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
@@ -1001,9 +998,22 @@
     <xsl:variable name="calendarId" select="calendar/id"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
+    <h2>
+      <xsl:choose>
+        <xsl:when test="link != ''">
+          <xsl:variable name="link" select="link"/>
+          <a href="{$link}">
+            <xsl:value-of select="summary"/>
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="summary"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </h2>
     <table id="commonTable" cellspacing="0">
       <tr>
-        <th colspan="3" id="commonHeader">
+        <th colspan="3" class="commonHeader">
           <div id="eventActions">
             <xsl:choose>
               <xsl:when test="kind='0'">
@@ -1045,41 +1055,33 @@
             </xsl:choose>
           </div>
           <xsl:choose>
-            <xsl:when test="kind='0'">
-              Private Event
+            <xsl:when test="calendar/owner = /bedework/user">
+              Personal Event
             </xsl:when>
-            <xsl:when test="kind='1'">
+            <xsl:otherwise>
               Public Event
-            </xsl:when>
-            <xsl:otherwise>
-              Public Event from Subscription
             </xsl:otherwise>
           </xsl:choose>
         </th>
       </tr>
-      <tr>
-        <th class="fieldname">Event:</th>
-        <th class="fieldval">
-          <xsl:choose>
-            <xsl:when test="link != ''">
-              <xsl:variable name="link" select="link"/>
-              <a href="{$link}">
+      <!--<tr>
+        <td class="fieldname">Title:</td>
+        <td class="fieldval">
+          <strong>
+            <xsl:choose>
+              <xsl:when test="link != ''">
+                <xsl:variable name="link" select="link"/>
+                <a href="{$link}">
+                  <xsl:value-of select="summary"/>
+                </a>
+              </xsl:when>
+              <xsl:otherwise>
                 <xsl:value-of select="summary"/>
-              </a>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="summary"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </th>
-        <th class="icon" rowspan="2">
-          <xsl:variable name="icalName" select="concat($guid,'.ics')"/>
-          <a href="{$eventView}?subid={$subscriptionId}&amp;&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$icalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-            <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
-          </a><!-- <br />
-          [<a href="">help</a>] -->
-        </th>
-      </tr>
+              </xsl:otherwise>
+            </xsl:choose>
+          </strong>
+        </td>
+      </tr>-->
       <tr>
         <td class="fieldname">When:</td>
         <td class="fieldval">
@@ -1090,6 +1092,13 @@
           <xsl:if test="end/longdate != start/longdate"><xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text></xsl:if>
           <xsl:if test="end/time != ''"><span class="time"><xsl:value-of select="end/time"/></span></xsl:if>
         </td>
+        <th class="icon" rowspan="2">
+          <xsl:variable name="icalName" select="concat($guid,'.ics')"/>
+          <a href="{$eventView}?subid={$subscriptionId}&amp;&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$icalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+            <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
+          </a><!-- <br />
+          [<a href="">help</a>] -->
+        </th>
       </tr>
       <tr>
         <td class="fieldname">Where:</td>
@@ -1174,10 +1183,8 @@
     <form name="eventForm" method="post" action="{$addEventUsingPage}" id="standardForm">
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
+      <h2>Add Event</h2>
       <table id="commonTable" cellspacing="0">
-        <tr>
-          <th colspan="2" id="commonHeader">Add Event</th>
-        </tr>
         <tr>
           <td class="fieldname">
             Title:
@@ -1512,9 +1519,10 @@
       <input type="hidden" name="updateEvent" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
+      <h2>Edit Event</h2>
       <table id="commonTable" cellspacing="0">
         <tr>
-          <th colspan="2" id="commonHeader">
+          <th colspan="2" class="commonHeader">
             <div id="eventActions">
               <xsl:variable name="subscriptionId" select="subscriptionId"/>
               <xsl:variable name="calendarId" select="calendarId"/>
@@ -1527,7 +1535,7 @@
                 Delete Event
               </a>
             </div>
-            Edit Event
+            Personal Event
           </th>
         </tr>
         <tr>
@@ -1790,6 +1798,7 @@
 
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->
   <xsl:template match="subscriptions">
+    <h2>Manage Subscriptions</h2>
     <table id="subsTable">
       <tr>
         <td class="cals">
@@ -1844,12 +1853,12 @@
   </xsl:template>
 
   <xsl:template match="subscription" mode="addSubscription">
-    <h2>Add New Subscription</h2>
+    <h3>Add New Subscription</h3>
     <p class="note">*the subsciption name must be unique</p>
     <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
-      <table class="commonTable">
+      <table id="commonTable" cellspacing="0">
         <tr>
-          <th>Name*:</th>
+          <td class="fieldname">Name:</td>
           <td>
             <xsl:variable name="subName" select="name"/>
             <input type="text" value="{$subName}" name="subscription.name" size="60"/>
@@ -1857,7 +1866,7 @@
         </tr>
         <xsl:if test="internal='false'">
           <tr>
-            <th>Uri:</th>
+            <td class="fieldname">Uri:</td>
             <td>
               <xsl:variable name="subUri" select="uri"/>
               <input type="text" value="{$subUri}" name="subscription.uri" size="60"/>
@@ -1865,21 +1874,21 @@
           </tr>
         </xsl:if>
         <tr>
-          <th>Display:</th>
+          <td class="fieldname">Display:</td>
           <td>
             <input type="radio" value="true" name="subscription.display"/> yes
             <input type="radio" value="false" name="subscription.display" checked="checked"/> no
           </td>
         </tr>
         <tr>
-          <th>Style:</th>
+          <td class="fieldname">Style:</td>
           <td>
             <xsl:variable name="subStyle" select="style"/>
             <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
           </td>
         </tr>
         <!--<tr>
-          <th>Unremovable:</th>
+          <td class="fieldname">Unremovable:</td>
           <td>
             <input type="radio" value="true" name="unremoveable" size="60"/> true
             <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
@@ -1899,11 +1908,11 @@
   </xsl:template>
 
   <xsl:template match="subscription" mode="modSubscription">
-    <h2>Modify Subscription</h2>
+    <h3>Modify Subscription</h3>
     <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
-      <table class="commonTable">
+      <table id="commonTable" cellspacing="0">
         <tr>
-          <th>Name*:</th>
+          <td class="fieldname">Name:</td>
           <td>
             <xsl:value-of select="name"/>
             <xsl:variable name="subName" select="name"/>
@@ -1913,7 +1922,7 @@
         <xsl:choose>
           <xsl:when test="internal='false'">
             <tr>
-              <th>Uri:</th>
+              <td class="fieldname">Uri:</td>
               <td>
                 <xsl:variable name="subUri" select="uri"/>
                 <input type="text" value="{$subUri}" name="subscription.uri" size="60"/>
@@ -1922,7 +1931,7 @@
           </xsl:when>
           <xsl:otherwise>
             <tr>
-              <th>Uri:</th>
+              <td class="fieldname">Uri:</td>
               <td>
                 <xsl:value-of select="uri"/>
               </td>
@@ -1930,7 +1939,7 @@
           </xsl:otherwise>
         </xsl:choose>
         <tr>
-          <th>Display:</th>
+          <td class="fieldname">Display:</td>
           <td>
             <xsl:choose>
               <xsl:when test="display='true'">
@@ -1945,14 +1954,14 @@
           </td>
         </tr>
         <tr>
-          <th>Style:</th>
+          <td class="fieldname">Style:</td>
           <td>
             <xsl:variable name="subStyle" select="style"/>
             <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
           </td>
         </tr>
         <!--<tr>
-          <th>Unremovable:</th>
+          <td class="fieldname">Unremovable:</td>
           <td>
             <xsl:choose>
               <xsl:when test="unremoveable='true'">
@@ -2041,7 +2050,7 @@
       <input type="hidden" name="updateAlarmOptions" value="true"/>
       <table id="commonTable" cellspacing="0">
         <tr>
-          <th colspan="2" id="commonHeader">Alarm options</th>
+          <th colspan="2" class="commonHeader">Alarm options</th>
         </tr>
         <tr>
           <td class="fieldname">
@@ -2112,11 +2121,9 @@
   <!--==== UPLOAD ====-->
   <xsl:template name="upload">
     <form method="post" action="{$upload}" id="standardForm"  enctype="multipart/form-data">
+      <h2>Upload iCAL File</h2>
       <table id="commonTable" cellspacing="0">
         <tr>
-          <tr>
-            <th colspan="2" id="commonHeader">Upload iCAL File</th>
-          </tr>
           <td class="fieldname">
             Filename:
           </td>
@@ -2141,7 +2148,7 @@
       <input type="hidden" name="updateEmailOptions" value="true"/>
       <table id="commonTable" cellspacing="0">
         <tr>
-          <th colspan="2" id="commonHeader">Update email options</th>
+          <th colspan="2" class="commonHeader">Update email options</th>
         </tr>
         <tr>
           <td>
@@ -2175,12 +2182,10 @@
   <xsl:template name="manageLocations">
     <form name="addLocationForm" method="post" action="{$addLocation}" id="standardForm">
       <input type="hidden" name="confirmationid" value="{$confId}"/>
+      <h2>Manage Locations</h2>
       <table id="commonTable" cellspacing="0">
         <tr>
-          <th colspan="2" id="commonHeader">Manage Locations</th>
-        </tr>
-        <tr>
-          <th colspan="2">Add Location</th>
+          <th class="commonHeader" colspan="2">Add Location</th>
         </tr>
         <tr>
           <td class="fieldname">
@@ -2214,7 +2219,7 @@
           </td>
         </tr>
         <tr>
-          <th colspan="2">Edit/Delete Locations</th>
+          <th class="commonHeader" colspan="2">Edit/Delete Locations</th>
         </tr>
         <td colspan="2" class="plain">
           <ul>
@@ -2236,9 +2241,10 @@
     <form name="editLocationForm" method="post" action="{$editLocation}" id="standardForm">
       <input type="hidden" name="updateLocation" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
+      <h2>Manage Locations</h2>
       <table id="commonTable" cellspacing="0">
         <tr>
-          <th colspan="2" id="commonHeader">
+          <th colspan="2" class="commonHeader">
             <xsl:variable name="locId" select="/bedework/locationform/form/id"/>
             <div id="eventActions">
               <a href="{$delLocation}?locationId={$locId}">Delete Location</a>
@@ -2322,6 +2328,7 @@
       <tr>
         <td class="leftCell">
           <a href="http://www.bedework.org/">Bedework Calendar</a> |
+          <a href="?noxslt=yes">show XML</a> |
           <a href="?refreshXslt=yes">refresh XSLT</a>
         </td>
         <td class="rightCell">

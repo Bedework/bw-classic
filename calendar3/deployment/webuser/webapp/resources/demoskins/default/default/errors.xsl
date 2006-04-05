@@ -38,6 +38,9 @@
       <xsl:when test="id='org.bedework.client.error.subscription.reffed'">
           <p>Cannot remove: the subscription is referenced by View "<em><xsl:value-of select="param"/></em>"</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.exception.duplicatesubscription'">
+          <p>A subscription by that name already exists.</p>
+      </xsl:when>
       <xsl:otherwise>
         <p><xsl:value-of select="id"/> = <xsl:value-of select="param"/></p>
       </xsl:otherwise>
