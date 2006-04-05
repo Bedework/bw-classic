@@ -44,6 +44,9 @@
     <public><bean:write name="event" property="publick"/></public>
     <editable><bean:write name="eventInfo" property="editable"/></editable><%--
       Value: true,false - true if user can edit (and delete) event, false otherwise --%>
+    <logic:present  name="event" property="target">
+      <isAnnotation/>
+    </logic:present>
     <kind><bean:write name="eventInfo" property="kind"/></kind><%--
       Value: 0 - actual event entry
              1 - 'added event' from a reference

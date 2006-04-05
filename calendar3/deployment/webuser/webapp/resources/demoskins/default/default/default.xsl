@@ -726,7 +726,17 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <xsl:choose>
-      <xsl:when test="kind='0'">
+      <xsl:when test="isAnnotation">
+        <xsl:choose>
+          <xsl:when test="recurring=true">
+            <a href="{$delEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;confirmationid={$confId}">Remove All</a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{$delEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Remove</a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:when test="calendar/owner = /bedework/userid">
         <a href="{$editEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">Edit</a> |
         <xsl:choose>
           <xsl:when test="recurring=true">
@@ -737,18 +747,8 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="kind='1'">
-        <xsl:choose>
-          <xsl:when test="recurring=true">
-            <a href="{$delEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;confirmationid={$confId}">Remove All</a>
-          </xsl:when>
-          <xsl:otherwise>
-            <a href="{$delEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Remove</a>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
       <xsl:otherwise>
-        <a href="{$fetchPublicCalendars}">Subscription</a>
+        <a href="{$subscriptions-fetch}">Subscription</a>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -863,11 +863,11 @@
           Calendar: <xsl:value-of select="calendar/name"/>
           Type:
           <xsl:choose>
-            <xsl:when test="kind='0'">
-              personal event, editable
-            </xsl:when>
-            <xsl:when test="kind='1'">
+            <xsl:when test="isAnnotation">
               public event
+            </xsl:when>
+            <xsl:when test="calendar/owner = /bedework/userid">
+              personal event, editable
             </xsl:when>
             <xsl:otherwise>
               subscription
@@ -1016,7 +1016,21 @@
         <th colspan="3" class="commonHeader">
           <div id="eventActions">
             <xsl:choose>
-              <xsl:when test="kind='0'">
+              <xsl:when test="isAnnotation">
+                <xsl:choose>
+                  <xsl:when test="recurring=true">
+                    <a href="{$delEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;confirmationid={$confId}">
+                      Remove All (recurring)
+                    </a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <a href="{$delEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                      Remove
+                    </a>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:when test="calendar/owner = /bedework/userid">
                 <a href="{$editEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
                   Edit Event
                 </a> |
@@ -1033,20 +1047,6 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
-              <xsl:when test="kind='1'">
-                <xsl:choose>
-                  <xsl:when test="recurring=true">
-                    <a href="{$delEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;confirmationid={$confId}">
-                      Remove All (recurring)
-                    </a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <a href="{$delEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
-                      Remove
-                    </a>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:when>
               <xsl:otherwise>
                 <a href="{$subscriptions-fetch}">
                   Manage Subscriptions
@@ -1055,11 +1055,14 @@
             </xsl:choose>
           </div>
           <xsl:choose>
-            <xsl:when test="calendar/owner = /bedework/user">
+            <xsl:when test="isAnnotation">
+              Public Event
+            </xsl:when>
+            <xsl:when test="calendar/owner = /bedework/userid">
               Personal Event
             </xsl:when>
             <xsl:otherwise>
-              Public Event
+              Public Event from Subscription
             </xsl:otherwise>
           </xsl:choose>
         </th>
