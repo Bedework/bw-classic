@@ -21,7 +21,7 @@
 
   <subscribe>
     <!-- List of calendars to subscribe to-->
-    <%@include file="/docs/calendar/emitCalendars.jsp"%>
+    <%@include file="/docs/calendar/emitPublicCalendars.jsp"%>
   </subscribe>
 </subscriptions>
 
