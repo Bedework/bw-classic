@@ -167,8 +167,14 @@ public class AccessAppUtil implements Serializable {
         while (it.hasNext()) {
           Ace ace = (Ace)it.next();
 
-          emitAce(ace, true);
-          emitAce(ace, false);
+          boolean aceOpen = emitAce(ace, true, false);
+          if (emitAce(ace, false, aceOpen)) {
+            aceOpen = true;
+          }
+
+          if (aceOpen) {
+            xml.closeTag(WebdavTags.ace);
+          }
         }
       }
 
@@ -179,7 +185,7 @@ public class AccessAppUtil implements Serializable {
       throw new CalFacadeException(t);
     }
   }
-  
+
   /** Produce an xml representation of supported privileges. This is the same
    * at all points in the system and is identical to the webdav/caldav 
    * requirements.
@@ -278,9 +284,9 @@ public class AccessAppUtil implements Serializable {
     xml.closeTag(WebdavTags.supportedPrivilege);
   }
   
-  private void emitAce(Ace ace, boolean denials) throws Throwable {
+  private boolean emitAce(Ace ace, boolean denials, boolean aceOpen) throws Throwable {
     Collection privs = ace.getPrivs();
-    boolean emittedWho = false;
+    boolean tagOpen = false;
 
     QName tag;
     if (denials) {
@@ -294,25 +300,29 @@ public class AccessAppUtil implements Serializable {
       Privilege p = (Privilege)it.next();
 
       if (denials == p.getDenial()) {
-        if (!emittedWho) {
+        if (!aceOpen) {
+          xml.openTag(WebdavTags.ace);
+
           emitAceWho(ace);
-          emittedWho = true;
+          aceOpen = true;
         }
 
-        xml.openTag(tag);
+        if (!tagOpen) {
+          xml.openTag(tag);
+          tagOpen = true;
+        }
         xml.emptyTag(privTags[p.getIndex()]);
-        xml.closeTag(tag);
       }
     }
-
-    if (emittedWho) {
-      xml.closeTag(WebdavTags.ace);
+    
+    if (tagOpen) {
+      xml.closeTag(tag);
     }
+    
+    return aceOpen;
   }
 
   private void emitAceWho(Ace ace) throws Throwable {
-    xml.openTag(WebdavTags.ace);
-
     boolean invert = ace.getNotWho();
 
     if (ace.getWhoType() == Ace.whoTypeOther) {

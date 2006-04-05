@@ -57,7 +57,7 @@
     <name>emitCurrentPrivs</name>
     <tagclass>org.bedework.webcommon.taglib.EmitCurrentPrivsTag</tagclass>
     <bodycontent>empty</bodycontent>
-    <info>Emit txt in a tag</info>
+    <info>Emit xml version of current privs in a tag</info>
 
     <attribute>
       <name>name</name>
@@ -79,6 +79,31 @@
 
     <attribute>
       <name>tagName</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>emitAcl</name>
+    <tagclass>org.bedework.webcommon.taglib.EmitAclTag</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>Emit xml version of acl in a tag</info>
+
+    <attribute>
+      <name>name</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
       <required>false</required>
       <rtexprvalue>false</rtexprvalue>
     </attribute>

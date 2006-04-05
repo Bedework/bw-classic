@@ -63,6 +63,7 @@ import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 /** Class to encapsulate most of what we do with calendars
  *
@@ -203,7 +204,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     sess.namedQuery("getPublicCalendarCollections");
     sess.cacheableQuery();
 
-    return access.checkAccess(sess.getList(), privWrite, true);
+    return postGet(sess.getList(), privWrite);
   }
 
   public BwCalendar getCalendars() throws CalFacadeException {
@@ -225,7 +226,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     sess.setEntity("owner", getUser());
     sess.cacheableQuery();
 
-    return access.checkAccess(sess.getList(), privWrite, noAccessReturnsNull);
+    return postGet(sess.getList(), privWrite);
   }
 
   public Collection getAddContentPublicCalendarCollections()
@@ -259,7 +260,9 @@ class Calendars extends CalintfHelper implements CalendarsI {
     BwCalendar cal = (BwCalendar)sess.getUnique();
 
     if (cal != null) {
-      access.accessible(cal, privRead, false);
+      // Need to clone for this
+      //cal.setCurrentAccess(access.checkAccess(cal, privRead, false));
+      access.checkAccess(cal, privRead, false);
     }
 
     return cal;
@@ -275,7 +278,9 @@ class Calendars extends CalintfHelper implements CalendarsI {
     BwCalendar cal = (BwCalendar)sess.getUnique();
 
     if (cal != null) {
-      access.accessible(cal, privRead, false);
+      // Need to clone for this
+      //cal.setCurrentAccess(access.checkAccess(cal, privRead, false));
+      access.checkAccess(cal, privRead, false);
     }
 
     return cal;
@@ -311,7 +316,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     HibSession sess = getSess();
 
     /* We need write access to the parent */
-    access.accessible(parent, privWrite, false);
+    access.checkAccess(parent, privWrite, false);
 
     /** Is the parent a calendar collection?
      */
@@ -409,6 +414,28 @@ class Calendars extends CalintfHelper implements CalendarsI {
   /* ====================================================================
    *                   Private methods
    * ==================================================================== */
+
+  /* Return a Collection of the calendars after checking access
+   *
+   */
+  private Collection postGet(Collection cals, int desiredAccess)
+             throws CalFacadeException {
+    TreeSet out = new TreeSet();
+
+    Iterator it = cals.iterator();
+
+    while (it.hasNext()) {
+      BwCalendar cal = (BwCalendar)it.next();
+      CurrentAccess ca = access.checkAccess(cal, desiredAccess, 
+                                            noAccessReturnsNull);
+      if (ca != null) {
+        //cal.setCurrentAccess(ca);
+        out.add(cal);
+      }
+    }
+
+    return out;
+  }
 
   /* Returns the cloned (sub)tree of calendars to which user has access
    *

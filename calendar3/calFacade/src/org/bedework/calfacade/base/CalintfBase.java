@@ -85,8 +85,6 @@ import net.fortuna.ical4j.model.component.VTimeZone;
 
 import org.apache.log4j.Logger;
 
-import edu.rpi.cct.uwcal.access.Acl;
-
 /** Base Implementation of CalIntf which throws exceptions for most methods.
 *
 * @author Mike Douglass   douglm@rpi.edu
@@ -373,11 +371,6 @@ public class CalintfBase implements Calintf {
 
   public void changeAccess(BwShareableDbentity ent, 
                            Collection aces) throws CalFacadeException {
-    checkOpen();
-    throw new CalFacadeUnimplementedException();
-  }
-
-  public Acl getAcl(BwShareableDbentity ent) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }

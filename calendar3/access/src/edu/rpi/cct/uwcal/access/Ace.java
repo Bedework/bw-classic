@@ -342,6 +342,32 @@ public class Ace implements Serializable, Comparable {
     return inherited;
   }
 
+  /** Return an ace which matches the name and whoType.
+   *
+   * @param acl
+   * @param name
+   * @param whoType
+   * @return Ace   if we find a match else null
+   * @throws AccessException
+   */
+  public static Ace find(Acl acl,
+                         String name, int whoType) throws AccessException {
+    Iterator it = acl.getAces().iterator();
+    
+    while (it.hasNext()) {
+      Ace ace = (Ace)it.next();
+
+      if ((whoType == ace.getWhoType()) &&
+          ((whoType == whoTypeUnauthenticated) ||
+           (whoType == whoTypeOwner) || 
+            ace.whoMatch(name))) {
+        return ace;
+      }
+    }
+
+    return null;
+  }
+  
   /* ====================================================================
    *                 Decoding methods
    * ==================================================================== */
@@ -367,7 +393,7 @@ public class Ace implements Serializable, Comparable {
    * pretty clear that matching a user is more specific than matching a
    * group but what's the inverted meaning?
    *
-   * <p>If .getPrivileges is true the Collection of privilege objects
+   * <p>If getPrivileges is true the Collection of privilege objects
    * defining the ace will be returned. This is needed for acl
    * manipulation rather than evaluation.
    *

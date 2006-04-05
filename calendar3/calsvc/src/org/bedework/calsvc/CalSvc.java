@@ -97,7 +97,6 @@ import org.bedework.icalendar.TimeZoneRegistryImpl;
 import org.bedework.icalendar.URIgen;
 //import org.bedework.mail.MailerIntf;
 
-import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.resources.Resources;
 
 import java.util.ArrayList;
@@ -567,10 +566,6 @@ public class CalSvc extends CalSvcI {
   public void changeAccess(BwShareableDbentity ent, 
                            Collection aces) throws CalFacadeException {
     getCal().changeAccess(ent, aces);
-  }
-
-  public Acl getAcl(BwShareableDbentity ent) throws CalFacadeException {
-    return getCal().getAcl(ent);
   }
 
   /* ====================================================================
@@ -1736,7 +1731,7 @@ public class CalSvc extends CalSvcI {
 
   public Collection findEventsByName(BwCalendar cal, String val)
           throws CalFacadeException {
-    return getCal().getEventsByName(cal, val);
+    return postProcess(getCal().getEventsByName(cal, val), (BwSubscription)null);
   }
 
   /* ====================================================================

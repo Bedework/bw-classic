@@ -467,7 +467,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
             client is not trying to bypass the group setting.
          */
 
-        String reqpar = request.getParameter("adminGroupName");
+        String reqpar = getReqPar(request, "adminGroupName");
         if (reqpar == null) {
           // Make them do it again.
 
@@ -590,6 +590,9 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     }
 
     BwAdminGroup ag = (BwAdminGroup)adgrps.findGroup(groupName);
+    if (ag != null) {
+      adgrps.getMembers(ag);
+    }
 
     if (debug) {
       if (ag == null) {
@@ -932,24 +935,26 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         UserAuthPar par = new UserAuthPar();
         par.svlt = servlet;
         par.req = request;
-
-        try {
-          ua = svci.getUserAuth(user, par);
-
-          form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
-          svci.setSuperUser((ua.getUsertype() & UserAuth.superUser) != 0);
-
-          // XXX access - disable use of roles
-          access = ua.getUsertype();
-          
-          if (debug) {
-            debugMsg("UserAuth says that current user has the type: " +
-                     ua.getUsertype());
+        
+        if (publicAdmin) {
+          try {
+            ua = svci.getUserAuth(user, par);
+            
+            form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
+            svci.setSuperUser((ua.getUsertype() & UserAuth.superUser) != 0);
+            
+            // XXX access - disable use of roles
+            access = ua.getUsertype();
+            
+            if (debug) {
+              debugMsg("UserAuth says that current user has the type: " +
+                       ua.getUsertype());
+            }
+          } catch (Throwable t) {
+            form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
+            form.getErr().emit(t);
+            return false;
           }
-        } catch (Throwable t) {
-          form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
-          form.getErr().emit(t);
-          return false;
         }
       } catch (CalFacadeException cfe) {
         throw cfe;

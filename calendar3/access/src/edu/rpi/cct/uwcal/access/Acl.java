@@ -87,7 +87,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
   private transient Logger log;
 
   /** Used while evaluating access */
-  private Ace ace = new Ace();
+//  private Ace ace = new Ace();
 
   /** Constructor
    *
@@ -122,6 +122,11 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
   /** Result of evaluating access to an object for a principal
    */
   public static class CurrentAccess {
+    /** The Acl used to evaluate the access. We should not necessarily 
+     * make this available to the client.
+     */
+    public Acl acl;
+    
     /**  Allowed access for each privilege type 
      * @see PrivilegeDefs
      */
@@ -176,7 +181,9 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
     boolean isOwner = false;
     CurrentAccess ca = new CurrentAccess();
     ca.desiredAccess = how;
+    ca.acl = this;
 
+    /*
     setEncoded(acl);
 
     if (authenticated) {
@@ -249,6 +256,95 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
       // "other" access set?
       if (ace.decode(this, false, null, Ace.whoTypeOther)) {
+        ca.privileges = ace.getHow();
+
+        if (debug) {
+          debugsb.append("...For other got: " + new String(ca.privileges));
+        }
+
+        break getPrivileges;
+      }
+    } // getPrivileges
+    */
+    decode(acl);
+
+    if (authenticated) {
+      isOwner = who.getAccount().equals(owner);
+    }
+
+    StringBuffer debugsb = null;
+
+    if (debug) {
+      debugsb = new StringBuffer("Check access for '");
+      debugsb.append(new String(acl));
+      debugsb.append("' with authenticated = ");
+      debugsb.append(authenticated);
+      debugsb.append(" isOwner = ");
+      debugsb.append(isOwner);
+    }
+
+    Ace ace;
+    
+    getPrivileges: {
+      if (!authenticated) {
+        ace = Ace.find(this, null, Ace.whoTypeUnauthenticated);
+        if (ace != null) {
+          ca.privileges = ace.getHow();
+        }
+
+        break getPrivileges;
+      }
+
+      if (isOwner) {
+        ace = Ace.find(this, null, Ace.whoTypeOwner);
+        if (ace != null) {
+          ca.privileges = ace.getHow();
+        } else {
+          ca.privileges = defaultOwnerPrivileges;
+        }
+
+        break getPrivileges;
+      }
+
+      // Not owner - look for user
+      ace = Ace.find(this, who.getAccount(), Ace.whoTypeUser);
+      if (ace != null) {
+        ca.privileges = ace.getHow();
+        if (debug) {
+          debugsb.append("... For user got: " + new String(ca.privileges));
+        }
+
+        break getPrivileges;
+      }
+
+      // No specific user access - look for group access
+
+      if (who.getGroupNames() != null) {
+        Iterator it = who.getGroupNames().iterator();
+
+        while (it.hasNext()) {
+          String group = (String)it.next();
+          if (debug) {
+            debugsb.append("...Try access for group " + group);
+          }
+          ace = Ace.find(this, group, Ace.whoTypeGroup);
+          if (ace != null) {
+            ca.privileges = mergePrivileges(ca.privileges, ace.getHow());
+          }
+        }
+      }
+
+      if (ca.privileges != null) {
+        if (debug) {
+          debugsb.append("...For groups got: " + new String(ca.privileges));
+        }
+
+        break getPrivileges;
+      }
+
+      // "other" access set?
+      ace = Ace.find(this, null, Ace.whoTypeOther);
+      if (ace != null) {
         ca.privileges = ace.getHow();
 
         if (debug) {

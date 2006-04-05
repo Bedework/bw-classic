@@ -104,6 +104,18 @@ public class Privilege implements PrivilegeDefs {
     setIndex(index);
   }
 
+  /** Constructor for non-abstract non-denial
+   *
+   * @param name
+   * @param description
+   * @param index
+   */
+  public Privilege(String name,
+                   String description,
+                   int index) {
+    this(name, description, false, false, index);
+  }
+
   /**
    * @param val
    */

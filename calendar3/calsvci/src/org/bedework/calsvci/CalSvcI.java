@@ -81,7 +81,6 @@ import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.icalendar.IcalCallback;
 
-import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.resources.Resources;
 
 import java.io.Serializable;
@@ -409,15 +408,6 @@ public abstract class CalSvcI implements Serializable {
   */
  public abstract void changeAccess(BwShareableDbentity ent, 
                                    Collection aces) throws CalFacadeException;
-
- /** Return the ace representing the allowed access for the given object. This
-  * may be derived from an object higher up the tree.
-  *
-  * @param ent
-  * @return Acl
-  * @throws CalFacadeException
-  */
- public abstract Acl getAcl(BwShareableDbentity ent) throws CalFacadeException;
 
   /* ====================================================================
    *                   Timezones
@@ -1242,7 +1232,7 @@ public abstract class CalSvcI implements Serializable {
    * the synch state. What we need is in effect a reverse event ref - I guess
    * a new purpose, which indicates the event is hidden for this user.
    *
-   * @param  event          EventVO object
+   * @param  event          BwEvent object
    * @return  boolean       false for no such item.
    * @throws CalFacadeException
    */
@@ -1261,7 +1251,7 @@ public abstract class CalSvcI implements Serializable {
    *
    * @param cal        CalendarVO object
    * @param val        String possible name
-   * @return Collection of EventVO or null
+   * @return Collection of EventInfo or null
    * @throws CalFacadeException
    */
   public abstract Collection findEventsByName(BwCalendar cal, String val)

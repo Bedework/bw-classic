@@ -248,6 +248,14 @@ public class HibSession implements Serializable {
     }
   }
 
+  /** Return true if we have a transaction started
+   * 
+   * @return boolean
+   */
+  public boolean transactionStarted() {
+    return tx != null;
+  }
+  
   /** Commit a transaction
    *
    * @throws CalFacadeException

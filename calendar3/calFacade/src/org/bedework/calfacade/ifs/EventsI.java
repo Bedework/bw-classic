@@ -155,7 +155,7 @@ public interface EventsI extends Serializable {
    *
    * @param cal        CalendarVO object
    * @param val        String possible name
-   * @return Collection of EventVO or null
+   * @return Collection  of CoreEventInfo objects
    * @throws CalFacadeException
    */
   public Collection getEventsByName(BwCalendar cal, String val)

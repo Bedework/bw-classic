@@ -10,6 +10,7 @@
   <calendarCollection><bean:write name="calendar" property="calendarCollection" /></calendarCollection>
   <bw:emitText name="calendar" property="mailListId" />
   <bw:emitCurrentPrivs name="calendar" property="currentAccess" />
+  <bw:emitAcl name="calendar" property="currentAccess" />
 
   <logic:iterate name="calendar" property="children" id="cal">
     <bean:define id="calendar" name="cal" toScope="session" />

@@ -55,6 +55,7 @@
 package edu.rpi.cct.uwcal.caldav;
 
 import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.svc.EventInfo;
 
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.icalendar.ComponentWrapper;
@@ -80,7 +81,8 @@ import java.util.Vector;
  */
 public class CaldavComponentNode extends CaldavBwNode {
   /* The only event or the master */
-  private BwEvent event;
+//  private BwEvent event;
+  private EventInfo eventInfo;
 
   /* Collection of BwEvent for this node
    * Only 1 for non-recurring
@@ -125,8 +127,8 @@ public class CaldavComponentNode extends CaldavBwNode {
     init(true);
 
     try {
-      if ((event != null) && (vevent == null)) {
-        Calendar ical = trans.toIcal(event);
+      if ((eventInfo != null) && (vevent == null)) {
+        Calendar ical = trans.toIcal(eventInfo.getEvent());
         if (events.size() == 1) {
           this.ical = ical; // Save doing it again
         }
@@ -159,7 +161,7 @@ public class CaldavComponentNode extends CaldavBwNode {
     }
 
     try {
-      if ((event == null) && exists) {
+      if ((eventInfo == null) && exists) {
         String entityName = cdURI.getEntityName();
 
         if (entityName == null) {
@@ -180,27 +182,29 @@ public class CaldavComponentNode extends CaldavBwNode {
         } else {
           if (events.size() == 1) {
             /* Non recurring or no overrides */
-            event = (BwEvent)events.iterator().next();
+            eventInfo = (EventInfo)events.iterator().next();
           } else {
             /* Find the master */
             // XXX Check the guids here?
             Iterator it = events.iterator();
             while (it.hasNext()) {
-              BwEvent ev = (BwEvent)it.next();
+              EventInfo ei = (EventInfo)it.next();
 
-              if (ev.getRecurring()) {
-                event = ev;
+              if (ei.getEvent().getRecurring()) {
+                eventInfo = ei;
               }
             }
 
-            if (event == null) {
+            if (eventInfo == null) {
               throw new WebdavIntfException("Missing master for " + cdURI);
             }
           }
         }
       }
 
-      if (event != null) {
+      if (eventInfo != null) {
+        BwEvent event = eventInfo.getEvent();
+        
         creDate = event.getCreated();
         lastmodDate = event.getLastmod();
       }
@@ -225,13 +229,13 @@ public class CaldavComponentNode extends CaldavBwNode {
 
   /** Returns the only event or the master event for a recurrence
    *
-   * @return BwEvent
+   * @return EventInfo
    * @throws WebdavIntfException
    */
-  public BwEvent getEvent() throws WebdavIntfException {
+  public EventInfo getEventInfo() throws WebdavIntfException {
     init(true);
 
-    return event;
+    return eventInfo;
   }
 
   /**
@@ -244,7 +248,7 @@ public class CaldavComponentNode extends CaldavBwNode {
     try {
       if (ical == null) {
         if (events.size() == 1) {
-          ical = trans.toIcal(event);
+          ical = trans.toIcal(eventInfo.getEvent());
         } else {
           // recurring
           ical = trans.toIcal(events);

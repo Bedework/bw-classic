@@ -170,7 +170,7 @@ class AccessUtil implements PrivilegeDefs {
   public void changeAccess(BwShareableDbentity ent, 
                            Collection aces) throws CalFacadeException {
     try {
-      Acl acl = getAces(ent, privWriteAcl);
+      Acl acl = checkAccess(ent, privWriteAcl, false).acl;
 
       Iterator it = aces.iterator();
       while (it.hasNext()) {
@@ -181,26 +181,6 @@ class AccessUtil implements PrivilegeDefs {
       }
 
       ent.setAccess(new String(acl.encode()));
-    } catch (Throwable t) {
-      throw new CalFacadeException(t);
-    }
-  }
-
-  /** Return the acl representing the allowed access for the given object. This
-   * may be derived from an object higher up the tree.
-   *
-   * @param ent
-   * @return Acl
-   * @throws CalFacadeException
-   */
-  public Acl getAcl(BwShareableDbentity ent) throws CalFacadeException {
-    try {
-      return getAces(ent, privReadAcl);
-    } catch (CalFacadeAccessException cae) {
-      Acl acl = new Acl();
-      acl.defaultAccess();
-      
-      return acl;
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -223,7 +203,7 @@ class AccessUtil implements PrivilegeDefs {
 
     while (it.hasNext()) {
       BwShareableDbentity sdbe = (BwShareableDbentity)it.next();
-      if (accessible(sdbe, desiredAccess, nullForNoAccess)) {
+      if (checkAccess(sdbe, desiredAccess, nullForNoAccess).accessAllowed) {
         out.add(sdbe);
       }
     }
@@ -231,53 +211,10 @@ class AccessUtil implements PrivilegeDefs {
     return out;
   }
 
-  /* Check access for the given entity. Returns the character representation of
-   * the ace array.
-   */
-  boolean accessible(BwShareableDbentity ent, int desiredAccess,
-                    boolean nullForNoAccess) throws CalFacadeException {
-    return checkAccess(ent, desiredAccess, nullForNoAccess).accessAllowed;
-  }
-
   /* Check access for the given entity. Returns the current access
    */
   CurrentAccess checkAccess(BwShareableDbentity ent, int desiredAccess,
-                      boolean nullForNoAccess) throws CalFacadeException {
-    if (ent == null) {
-      return new CurrentAccess();
-    }
-
-    if ((authUser != null) && superUser) {
-      // Nobody can stop us - BWAAA HAA HAA
-      CurrentAccess ca = new CurrentAccess();
-      ca.accessAllowed = true;
-      
-      return ca;
-    }
-
-    if (debug) {
-      String cname = ent.getClass().getName();
-      getLog().debug("Check access for object " +
-                     cname.substring(cname.lastIndexOf(".") + 1) +
-                     " with id " + ent.getId());
-    }
-
-    char[] aclChars = getAclChars((BwShareableDbentity)ent);
-
-    return checkAccess(aclChars, ent.getOwner(), desiredAccess,
-                    nullForNoAccess);
-  }
-
-  /** This does access checking for shareable objects and returns the merged
-   * list of ace objects.
-   *
-   * @param ent          BwShareableDbentity object
-   * @param desiredAccess int access we want
-   * @return Collection of merged Ace or null for no access
-   * @throws CalFacadeException
-   */
-  Acl getAces(BwShareableDbentity ent, int desiredAccess)
-          throws CalFacadeException {
+                      boolean returnResult) throws CalFacadeException {
     if (ent == null) {
       return null;
     }
@@ -289,52 +226,25 @@ class AccessUtil implements PrivilegeDefs {
                      " with id " + ent.getId());
     }
 
-    char[] aclChars = getAclChars((BwShareableContainedDbentity)ent);
-
-    if ((authUser == null) || !superUser) {
-      // Need to check access
-      checkAccess(aclChars, ent.getOwner(), desiredAccess, false);
-    }
-
-    try {
-      Acl acl = new Acl();
-      acl.decode(aclChars);
-
-      return acl;
-    } catch (Throwable t) {
-      throw new CalFacadeException(t);
-    }
-  }
-
-  /* This does access checking given an acl string and owner.
-   *
-   * XXX Should we save the result of previous checks for a given
-   *      acl string + principal + owner + desiredAccess?
-   *
-   * @param aclChars    char[] defining current acls for object
-   * @param owner       BwUser owner of the object
-   * @param desiredAccess int access we want
-   * @param returnResult  if true we return false for no access else throw
-   *                    an exception
-   * @return CurrentAccess   access + allowed/disallowed
-   */
-  private CurrentAccess checkAccess(char[] aclChars, BwUser owner, int desiredAccess,
-                              boolean returnResult) throws CalFacadeException {
-
     try {
       CurrentAccess ca;
+      String account = ent.getOwner().getAccount();
+      
+      char[] aclChars = getAclChars(ent);
+
       if (desiredAccess == privRead) {
-        ca = access.checkRead(authUser, owner.getAccount(),
-                              aclChars);
+        ca = access.checkRead(authUser, account, aclChars);
       } else if (desiredAccess == privWrite) {
-        ca = access.checkReadWrite(authUser, owner.getAccount(),
-                                   aclChars);
+        ca = access.checkReadWrite(authUser, account, aclChars);
       } else {
-        /* Do it the awkward way */
-        ca = access.evaluateAccess(authUser, owner.getAccount(),
-                                   desiredAccess, aclChars);
+        ca = access.evaluateAccess(authUser, account, desiredAccess, aclChars);
       }
 
+      if ((authUser != null) && superUser) {
+        // Nobody can stop us - BWAAA HAA HAA
+        ca.accessAllowed = true; 
+      }
+      
       if (!ca.accessAllowed && !returnResult) {
         throw new CalFacadeAccessException();
       }

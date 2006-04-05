@@ -288,7 +288,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
       CaldavComponentNode cnode = (CaldavComponentNode)uwnode;
 
-      BwEvent ev = cnode.getEvent();
+      BwEvent ev = cnode.getEventInfo().getEvent();
 
       if (ev != null) {
         if (debug) {
@@ -807,7 +807,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
         svci.changeAccess(cal, info.aces);
         svci.updateCalendar(cal);
       } else {
-        BwEvent ev = ((CaldavComponentNode)node).getEvent();
+        BwEvent ev = ((CaldavComponentNode)node).getEventInfo().getEvent();
 
         svci.changeAccess(ev, info.aces);
         svci.updateEvent(ev);
@@ -826,9 +826,9 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
     try {
       if (cdUri.isCalendar()) {
-        acl = getSvci().getAcl(cdUri.getCal());
+        acl = cdUri.getCal().getCurrentAccess().acl;
       } else {
-        acl = getSvci().getAcl(((CaldavComponentNode)node).getEvent());
+        acl = ((CaldavComponentNode)node).getEventInfo().getCurrentAccess().acl;
       }
 
       emitAccess.emitAcl(acl);

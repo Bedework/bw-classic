@@ -103,43 +103,42 @@ public class Privileges implements PrivilegeDefs {
   private final static Privilege[] privs = new Privilege[privMaxType + 1];
   
   static {
-    privs[privAll] = new Privilege("all", "All privileges", false, false,
-                                   privAll);
+    privs[privAll] = new Privilege("all", "All privileges", privAll);
 
-    privs[privRead] = new Privilege("read", "Read any calendar object", false, false,
-                                    privRead);
+    privs[privRead] = new Privilege("read", "Read any calendar object", privRead);
     
-    privs[privReadAcl] = new Privilege("read-acl", "Read calendar accls", false, false,
+    privs[privReadAcl] = new Privilege("read-acl", "Read calendar accls", 
                                        privReadAcl);
     
     privs[privReadCurrentUserPrivilegeSet] =
       new Privilege("read-current-user-privilege-set",
-                    "Read current user privilege set property", false, false,
+                    "Read current user privilege set property", 
                     privReadCurrentUserPrivilegeSet);
     
     privs[privReadFreeBusy] = new Privilege("view-free-busy", 
                                             "View a users free busy information", 
-                                            false, false, privReadFreeBusy);
+                                            privReadFreeBusy);
     
-    privs[privWrite] = new Privilege("write", "Write any calendar object", false, false,
+    privs[privWrite] = new Privilege("write", "Write any calendar object", 
                                      privWrite);
     
-    privs[privWriteAcl] = new Privilege("write-acl", "Write ACL", false, false,
-                                        privWriteAcl);
+    privs[privWriteAcl] = new Privilege("write-acl", "Write ACL", privWriteAcl);
     
-    privs[privWriteProperties] = new Privilege("write-properties", "Write calendar properties", false, false,
+    privs[privWriteProperties] = new Privilege("write-properties", 
+                                               "Write calendar properties", 
                                                privWriteProperties);
     
-    privs[privWriteContent] = new Privilege("write-content", "Write calendar content", false, false,
+    privs[privWriteContent] = new Privilege("write-content", 
+                                            "Write calendar content", 
                                             privWriteContent);
     
-    privs[privBind] = new Privilege("create", "Create a calendar object", false, false,
+    privs[privBind] = new Privilege("create", "Create a calendar object", 
                                     privBind);
     
-    privs[privUnbind] = new Privilege("delete", "Delete a calendar object", false, false,
+    privs[privUnbind] = new Privilege("delete", "Delete a calendar object", 
                                       privUnbind);
     
-    privs[privUnlock] = new Privilege("unlock", "Remove a lock", false, false,
+    privs[privUnlock] = new Privilege("unlock", "Remove a lock", 
                                       privUnlock);
     
     privs[privNone] = (Privilege)privs[privAll].clone();

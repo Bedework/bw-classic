@@ -209,7 +209,8 @@ public class EventFormatter implements Serializable {
   public String getXmlAccess() {
     try {
       if (xmlAccess == null) {
-        Acl acl = svci.getAcl(getEvent());
+//        Acl acl = svci.getAcl(getEvent());
+        Acl acl = eventInfo.getCurrentAccess().acl;
         xmlAccess = AccessAppUtil.getXmlAclString(acl);
       }
     } catch (Throwable t) {
