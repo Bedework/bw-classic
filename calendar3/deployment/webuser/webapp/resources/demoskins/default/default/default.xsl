@@ -254,12 +254,6 @@
   </xsl:template>
 
   <xsl:template name="sideBar">
-    <table id="sideBarTabs" cellspacing="0">
-      <tr>
-        <td class="selected first">Menu</td>
-        <td>Calendars</td>
-      </tr>
-    </table>
     <ul id="sideBarMenu">
       <li><a href="{$initEvent}">Add Event</a></li>
       <li><a href="{$initUpload}">Upload Events (iCal)</a></li>

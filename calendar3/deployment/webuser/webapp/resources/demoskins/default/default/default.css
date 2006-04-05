@@ -149,6 +149,7 @@ h4 {
   border-left: 2px solid #333;
   border-right: 3px groove #ddd;
   border-bottom: 2px solid #aaa;
+  border-top: 1px solid #333;
   vertical-align: top;
   padding: 0;
 }
@@ -165,7 +166,7 @@ h4 {
   position: absolute;
   left: 32px;
   padding-top: 3px;
-}
+}/*
 #bodyBlock td#sideBar #sideBarTabs {
   width: 200px;
   height: 24px;
@@ -192,7 +193,7 @@ h4 {
   background-color: white;
   border-bottom: none;
   padding-bottom: 1px;
-}
+}*/
 #bodyBlock td#sideBar #sideBarMenu li {
   font-size: 0.9em;
   padding-bottom: 0.5em;
