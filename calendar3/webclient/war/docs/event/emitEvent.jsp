@@ -92,4 +92,6 @@
       <jsp:include page="/docs/event/emitEventDetail.jsp"/>
       <jsp:include page="/docs/event/emitEventAll.jsp"/>
     </logic:present>
+
+    <bw:emitCurrentPrivs name="eventInfo" property="currentAccess" />
   </event>
