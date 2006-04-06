@@ -312,28 +312,6 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract Collection getInstanceOwners() throws CalFacadeException;
 
-  /** Returns the current user preferences.
-   *
-   * @return BwPreferences   prefs for the current user
-   * @throws CalFacadeException
-   */
-  public abstract BwPreferences getUserPrefs() throws CalFacadeException;
-
-  /** Returns the given user preferences.
-   *
-   * @param user
-   * @return BwPreferences   prefs for the given user
-   * @throws CalFacadeException
-   */
-  public abstract BwPreferences getUserPrefs(BwUser user) throws CalFacadeException;
-
-  /** Update the current user preferences.
-   *
-   * @param  val     BwPreferences prefs for the current user
-   * @throws CalFacadeException
-   */
-  public abstract void updateUserPrefs(BwPreferences val) throws CalFacadeException;
-
   /** Get a UserAuth object which allows the application to determine what
    * special rights the user has.
    *
@@ -395,6 +373,32 @@ public abstract class CalSvcI implements Serializable {
    * @throws CalFacadeException
    */
   public abstract boolean refreshNeeded() throws CalFacadeException;
+
+  /* ====================================================================
+   *                   Preferences
+   * ==================================================================== */
+
+  /** Returns the current user preferences.
+   *
+   * @return BwPreferences   prefs for the current user
+   * @throws CalFacadeException
+   */
+  public abstract BwPreferences getUserPrefs() throws CalFacadeException;
+
+  /** Returns the given user preferences.
+   *
+   * @param user
+   * @return BwPreferences   prefs for the given user
+   * @throws CalFacadeException
+   */
+  public abstract BwPreferences getUserPrefs(BwUser user) throws CalFacadeException;
+
+  /** Update the current user preferences.
+   *
+   * @param  val     BwPreferences prefs for the current user
+   * @throws CalFacadeException
+   */
+  public abstract void updateUserPrefs(BwPreferences val) throws CalFacadeException;
 
   /* ====================================================================
    *                   Access

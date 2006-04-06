@@ -2157,4 +2157,3 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     return listCollator;
   }
 }
-

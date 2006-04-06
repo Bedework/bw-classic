@@ -508,7 +508,7 @@ public class BwAuthUserPrefs implements Serializable {
       Iterator it = ts.iterator();
 
       while (it.hasNext()) {
-        nts.add((BwCalendar)((BwCalendar)it.next()).clone());
+        nts.add((BwCalendar)((BwCalendar)it.next()).shallowClone());
       }
     }
 

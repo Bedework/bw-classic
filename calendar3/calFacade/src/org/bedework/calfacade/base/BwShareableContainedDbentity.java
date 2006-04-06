@@ -138,6 +138,6 @@ public class BwShareableContainedDbentity extends BwShareableDbentity {
     */
   public void copyTo(BwShareableContainedDbentity val) {
     super.copyTo(val);
-    val.setCalendar((BwCalendar)getCalendar().clone());
+    val.setCalendar((BwCalendar)getCalendar().shallowClone());
   }
 }

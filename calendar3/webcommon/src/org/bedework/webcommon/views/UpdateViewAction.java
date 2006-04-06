@@ -127,7 +127,6 @@ public class UpdateViewAction extends BwAbstractAction {
         return "notFound";
       }
 
-
       if (!svc.removeViewSubscription(name, sub)) {
         form.getErr().emit("org.bedework.client.error.viewnotfound", name);
         return "notFound";

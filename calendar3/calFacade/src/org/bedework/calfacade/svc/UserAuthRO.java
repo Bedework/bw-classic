@@ -70,7 +70,8 @@ public class UserAuthRO implements UserAuth {
    * @exception CalFacadeException If there's a problem
    */
   public void initialise(String userid, CallBack cb,
-                         Object val) throws CalFacadeException {
+                         Object val,
+                         boolean debug) throws CalFacadeException {
     throw new CalFacadeException("Method not accessible");
   }
 
@@ -96,7 +97,8 @@ public class UserAuthRO implements UserAuth {
    * @exception CalFacadeException If there's a problem
    */
   public void initialise(String userid, CallBack cb,
-                         int val) throws CalFacadeException {
+                         int val,
+                         boolean debug) throws CalFacadeException {
     throw new CalFacadeException("Method not accessible");
   }
 

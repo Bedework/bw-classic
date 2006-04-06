@@ -127,7 +127,8 @@ public class UserAuthUWDbImpl implements UserAuth {
    * @exception CalFacadeException If there's a problem
    */
   public void initialise(String userid, CallBack cb,
-                         Object val) throws CalFacadeException {
+                         Object val,
+                         boolean debug) throws CalFacadeException {
     curUser = userid;
     this.cb = cb;
 
@@ -135,7 +136,7 @@ public class UserAuthUWDbImpl implements UserAuth {
       curUsertype = getUsertype(userid);
     }
     userAuthRO = null;
-    debug = getLogger().isDebugEnabled();
+    this.debug = debug;
   }
 
   /** Initialise the implementing object with an access level.
@@ -149,7 +150,8 @@ public class UserAuthUWDbImpl implements UserAuth {
    * @exception CalFacadeException If there's a problem
    */
   public void initialise(String userid, CallBack cb,
-                         int val) throws CalFacadeException {
+                         int val,
+                         boolean debug) throws CalFacadeException {
     curUser = userid;
     this.cb = cb;
 
@@ -157,7 +159,7 @@ public class UserAuthUWDbImpl implements UserAuth {
       curUsertype = getUsertype(userid);
     }
     userAuthRO = null;
-    debug = getLogger().isDebugEnabled();
+    this.debug = debug;
   }
 
   /** Reinitialise the implementing object on subsequent entries.

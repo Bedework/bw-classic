@@ -464,18 +464,6 @@ public class CalSvc extends CalSvcI {
     return publicUser;
   }
 
-  public BwPreferences getUserPrefs() throws CalFacadeException {
-    return dbi.getPreferences();
-  }
-
-  public BwPreferences getUserPrefs(BwUser user) throws CalFacadeException {
-    return dbi.fetchPreferences(user);
-  }
-
-  public void updateUserPrefs(BwPreferences  val) throws CalFacadeException {
-    dbi.updatePreferences(val);
-  }
-
   public UserAuth getUserAuth(String user, Object par) throws CalFacadeException {
     if (userAuth != null) {
       //userAuth.reinitialise(getUserAuthCallBack());
@@ -489,7 +477,7 @@ public class CalSvc extends CalSvcI {
       throw new CalFacadeException(t);
     }
 
-    userAuth.initialise(user, getUserAuthCallBack(), par);
+    userAuth.initialise(user, getUserAuthCallBack(), par, debug);
 
     return userAuth;
   }
@@ -557,6 +545,22 @@ public class CalSvc extends CalSvcI {
 
     publicLastmod = lastmod;
     return true;
+  }
+
+  /* ====================================================================
+   *                   Preferences
+   * ==================================================================== */
+
+  public BwPreferences getUserPrefs() throws CalFacadeException {
+    return dbi.getPreferences();
+  }
+
+  public BwPreferences getUserPrefs(BwUser user) throws CalFacadeException {
+    return dbi.fetchPreferences(user);
+  }
+
+  public void updateUserPrefs(BwPreferences  val) throws CalFacadeException {
+    dbi.updatePreferences(val);
   }
 
   /* ====================================================================

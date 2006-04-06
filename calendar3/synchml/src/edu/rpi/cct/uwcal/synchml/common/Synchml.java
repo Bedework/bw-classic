@@ -270,7 +270,10 @@ public class Synchml {
    */
   public boolean deleteEvent(VEvent val) throws CalFacadeException {
     // FIXME - We need a subscription to the calendar we are synching - second par
-    return deleteEvent(BwEventUtil.toEvent(svci.getIcalCallback(), null, null, val, debug).getEvent());
+    return deleteEvent(BwEventUtil.toEvent(svci.getIcalCallback(), 
+                                           null,  // BwCalendar 
+                                           null,  // overrides 
+                                           val, debug).getEvent());
   }
 
   /* --------------------------------------------------------------------

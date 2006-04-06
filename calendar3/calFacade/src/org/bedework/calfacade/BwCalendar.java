@@ -381,7 +381,7 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
    *                   Object methods
    * ==================================================================== */
 
-  /** Comapre this calendar and an object
+  /** Compare this calendar and an object
    *
    * @param  o    object to compare.
    * @return int -1, 0, 1
@@ -411,7 +411,7 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
     StringBuffer sb = new StringBuffer("BwCalendar{");
 
     toStringSegment(sb);
-    sb.append("name=");
+    sb.append(", name=");
     sb.append(String.valueOf(getName()));
     sb.append(", path=");
     sb.append(String.valueOf(getPath()));
@@ -423,7 +423,29 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
     sb.append(String.valueOf(getMailListId()));
     sb.append(", calendarCollection=");
     sb.append(String.valueOf(getCalendarCollection()));
+
+    sb.append(", children(");
+    Iterator it = iterateChildren();
+    boolean donech = false;
+    
+    while (it.hasNext()) {
+      BwCalendar ch = (BwCalendar)it.next();
+      
+      if (!donech) {
+        donech = true;
+      } else {
+        sb.append(", ");
+      }
+      
+      sb.append(ch.getPath());
+    }
     sb.append(")");
+    
+    if (getCurrentAccess() != null) {
+      sb.append(", currentAccess=");
+      sb.append(getCurrentAccess());
+    }
+    sb.append("}");
 
     return sb.toString();
   }

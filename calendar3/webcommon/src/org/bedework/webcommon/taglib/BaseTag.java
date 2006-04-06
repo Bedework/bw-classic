@@ -57,7 +57,7 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.apache.struts.util.RequestUtils;
+import org.apache.struts.taglib.TagUtils;
 
 /** Base for simple Tags which provides some commonly used methods
  *
@@ -78,7 +78,7 @@ public class BaseTag extends TagSupport {
                              String property, boolean required)
       throws JspTagException {
     try {
-      Object o = RequestUtils.lookup(pageContext, name, property, scope);
+      Object o = TagUtils.getInstance().lookup(pageContext, name, property, scope);
       if (o == null) {
         if (required) {
           throw new JspTagException("Unable to find " + name +

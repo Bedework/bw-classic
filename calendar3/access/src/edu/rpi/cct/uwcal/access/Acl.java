@@ -137,6 +137,18 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
     /** Was it succesful */
     public boolean accessAllowed;
+    
+    public String toString() {
+      StringBuffer sb = new StringBuffer("CurrentAccess{");
+      sb.append("acl=");
+      sb.append(acl);
+      
+      sb.append("accessAllowed=");
+      sb.append(accessAllowed);
+      sb.append("}");
+
+      return sb.toString();
+    }
   }
 
   /** Evaluating an ACL

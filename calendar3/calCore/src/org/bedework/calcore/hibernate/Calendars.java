@@ -456,7 +456,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
       return null;
     }
 
-    BwCalendar cal = (BwCalendar)subroot.clone();
+    BwCalendar cal = (BwCalendar)subroot.shallowClone();
     // XXX Temp fix - add id to the clone
     cal.setId(subroot.getId());
     

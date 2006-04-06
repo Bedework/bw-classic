@@ -78,16 +78,32 @@ public class BwPreferences extends BwOwnedDbentity {
    */
   private int workdayStart;
 
-  /** Time in minutes for workday end, e.g. 17:30 is 1050
+  /* Time in minutes for workday end, e.g. 17:30 is 1050
    */
   private int workdayEnd;
 
-  /** When adding events do we prefer end date ("date")
+  /* When adding events do we prefer end date ("date")
    *  or duration ("duration"). Note the values this field takes
    *  are internal values only - not meant for display.
    */
   private String preferredEndType;
+  
+  /** Value identifying an extra simple user mode - we just do stuff without
+   * asking
+   */
+  public static final int extraSimpleMode = 0;
+  
+  /** Value identifying a simple user mode - we hide some stuff but make
+   * fewer assumptions
+   */
+  public static final int simpleMode = 1;
+  
+  /** Value identifying an advanced user mode - reveal it in all its glory
+   */
+  public static final int advancedMode = 2;
 
+  private int userMode;
+  
   /** Constructor
    *
    */
@@ -274,6 +290,20 @@ public class BwPreferences extends BwOwnedDbentity {
    */
   public String getPreferredEndType() {
     return preferredEndType;
+  }
+
+  /**
+   * @param val
+   */
+  public void setUserMode(int val) {
+    userMode = val;
+  }
+
+  /**
+   * @return int user mode
+   */
+  public int getUserMode() {
+    return userMode;
   }
 
   /* ====================================================================

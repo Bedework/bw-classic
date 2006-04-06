@@ -147,7 +147,8 @@ public interface UserAuth extends Serializable {
    * @exception CalFacadeException If there's a problem
    */
   public void initialise(String userid, CallBack cb,
-                         Object val) throws CalFacadeException;
+                         Object val,
+                         boolean debug) throws CalFacadeException;
 
   /** Initialise the implementing object with an access level.
    *
@@ -171,7 +172,8 @@ public interface UserAuth extends Serializable {
    * @exception CalFacadeException If there's a problem
    */
   public void initialise(String userid, CallBack cb,
-                         int val) throws CalFacadeException;
+                         int val,
+                         boolean debug) throws CalFacadeException;
 
   /** ===================================================================
    *  The following return the state of the current user.
