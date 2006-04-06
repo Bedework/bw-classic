@@ -788,6 +788,35 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return appname;
   }
 
+  /* We should probably return false for a portlet
+   *  (non-Javadoc)
+   * @see edu.rpi.sss.util.jsp.UtilAbstractAction#logOutCleanup(javax.servlet.http.HttpServletRequest)
+   */
+  protected boolean logOutCleanup(HttpServletRequest request,
+                                  UtilActionForm form) {
+    HttpSession hsess = request.getSession();
+    BwCallback cb = (BwCallback)hsess.getAttribute(BwCallback.cbAttrName);
+    
+    if (cb == null) {
+      if (form.getDebug()) {
+        debugMsg("No cb object for logout");
+      }
+    } else {
+      if (form.getDebug()) {
+        debugMsg("cb object found for logout");
+      }
+      try {
+        cb.out();
+      } catch (Throwable t) {}
+      
+      try {
+        cb.close();
+      } catch (Throwable t) {}
+    }
+    
+    return true;
+  }
+
   /** Ensure we have a CalAdminSvcI object for the given user.
    *
    * <p>For an admin client with a super user we may switch to a different

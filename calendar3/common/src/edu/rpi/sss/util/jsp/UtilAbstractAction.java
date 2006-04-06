@@ -312,7 +312,7 @@ public abstract class UtilAbstractAction extends Action
          Everything is set up and ready to go. Execute something
          ---------------------------------------------------------------- */
 
-      forward = checkLogOut(request);
+      forward = checkLogOut(request, form);
       if (forward != null) {
         // Disable xslt filters
         response.setContentType("text/html");
@@ -655,18 +655,29 @@ public abstract class UtilAbstractAction extends Action
    *               Check logout
    * ==================================================================== */
 
+  /** Clean up - we're about to logout
+   *
+   * @param request    HttpServletRequest
+   * @return boolean true for OK to log out. False - not allowed - ignore it.
+   */
+  protected boolean logOutCleanup(HttpServletRequest request,
+                                  UtilActionForm form) {
+    return true;
+  }
+
   /** Check for logout request.
    *
    * @param request    HttpServletRequest
    * @return null for continue, forwardLoggedOut to end session.
    */
-  protected String checkLogOut(HttpServletRequest request)
+  protected String checkLogOut(HttpServletRequest request,
+                               UtilActionForm form)
                throws Throwable {
     String temp = request.getParameter(requestLogout);
     if (temp != null) {
       HttpSession sess = request.getSession(false);
 
-      if (sess != null) {
+      if ((sess != null) && logOutCleanup(request, form)) {
         sess.invalidate();
       }
       return forwardLoggedOut;
