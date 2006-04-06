@@ -73,26 +73,30 @@ h4 {
 }
 #curDateRangeTable {
   width: 100%;
-  background-color: #663;
+  background-color: #339;
   color : #eee;
-  padding-top: 3px;
-  padding-bottom: 1px;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
   margin: 0em;
-  line-height: 1.5em;
   font-weight : bold;
   text-align : center;
   vertical-align: middle;
   white-space: nowrap;
 }
+#curDateRangeTable td {
+  padding-top: 3px;
+  padding-bottom: 1px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+#curDateRangeTable td.sideBarOpenCloseIcon {
+  width: 200px;
+}
 #curDateRangeTable td.date {
-  width: 100%;
   font-weight : bold;
   text-align : center;
   white-space: nowrap;
 }
 #curDateRangeTable td.rssPrint {
+  width: 200px;
   font-weight : bold;
   text-align : right;
   white-space: nowrap;
@@ -149,12 +153,20 @@ h4 {
 }
 #bodyBlock td#sideBar {
   width: 200px;
+  font-size: 0.8em;
   border-left: 2px solid #333;
   border-right: 3px groove #ddd;
   border-bottom: 2px solid #aaa;
   border-top: 1px solid #333;
   vertical-align: top;
   padding: 0;
+}
+#bodyBlock td#sideBar h3 {
+  color: #eee;
+  background-color: #333;
+  font-weight: normal;
+  margin: 0;
+  padding: 2px 4px;
 }
 #bodyBlock td#sideBarClosed {
   width: 1px;
@@ -169,39 +181,8 @@ h4 {
   float: left;
   margin: 3px 0;
   vertical-align: middle;
-  /*position: absolute;
-  left: 32px;
-  padding-top: 3px;*/
-}/*
-#bodyBlock td#sideBar #sideBarTabs {
-  width: 200px;
-  height: 24px;
-  margin: 0;
-  padding: 0;
-  color: black;
-  background-color: #ddd;
 }
-#bodyBlock td#sideBar #sideBarTabs td {
-  font-size: 12px;
-  padding: 0 0.5em;
-  margin: 0;
-  vertical-align: middle;
-  text-align: center;
-  border-top: 1px solid #333;
-  border-bottom: 1px solid #333;
-  border-left: 1px solid #333;
-}
-#bodyBlock td#sideBar #sideBarTabs td.first {
-  border-left: none;
-}
-#bodyBlock td#sideBar #sideBarTabs td.selected {
-  color: black;
-  background-color: white;
-  border-bottom: none;
-  padding-bottom: 1px;
-}*/
 #bodyBlock td#sideBar #sideBarMenu li {
-  font-size: 0.9em;
   padding-bottom: 0.5em;
 }
 #bodyBlock td#bodyContent {
@@ -234,9 +215,6 @@ h4 {
   color: #999;
   background-color: transparent;
 }
-#utilBarTable .logout {
-  font-size: 0.8em;
-}
 #utilBarTable .rightCell {
   margin: 0;
   padding: 0.1em 0.2em 0 0;
@@ -259,19 +237,24 @@ h4 {
 #tabsTable td {
   white-space: nowrap;
 }
-#tabsTable .centerCell {
+/* #tabsTable .centerCell {
   text-align: left;
   background : url(../../resources/std-tab-space.gif);
-  width: 100%;
   padding-left: 0.5em;
-}
+}*/
 #tabsTable a {
   background-color: inherit;
   color: #ccc;
 }
 #tabsTable .rightCell {
+  width: 100%;
   background : url(../../resources/std-tab-space.gif);
   padding: 0 0.5em;
+  text-align: right;
+}
+#tabsTable .logout {
+  padding-left: 0.5em;
+  font-size: 0.8em;
 }
 #navigationBarTable {
   font-size: 0.8em;
@@ -880,26 +863,26 @@ a.gridAdd {
 #subsTable td.cals {
   width: 200px;
 }
-#calendarTree ul {
+.calendarTree ul {
   padding-left: 10px;
   margin-left: 10px;
 }
-#calendarTree li {
+.calendarTree li {
   padding-top: 0.25em;
   /*font-weight: bold;*/
 }
-#calendarTree li.folder {
+.calendarTree li.folder {
   list-style-image: url(../../resources/catIcon.gif);
 }
-#calendarTree li.calendar {
+.calendarTree li.calendar {
   list-style-image: url(../../resources/calIcon-sm.gif);
 }
-#calendarTree a:link,
-#calendarTree a:active,
-#calendarTree a:visited {
+.calendarTree a:link,
+.calendarTree a:active,
+.calendarTree a:visited {
   text-decoration: none;
 }
-#calendarTree a:hover {
+.calendarTree a:hover {
   color: black;
   background-color: #ff3;
 }

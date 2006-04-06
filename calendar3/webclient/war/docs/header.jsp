@@ -221,6 +221,23 @@ try {
     <filter></filter> <%-- unimplemented --%>
   </selectionState>
 
+<%-- ****************************************************************
+      the following code should not be produced in the public client
+     **************************************************************** --%>
+    <myViews>
+    </myViews>
+
+    <myCalendars>
+      <jsp:include page="/docs/calendar/emitCalendars.jsp"/>
+    </myCalendars>
+
+    <mySubscriptions>
+      <jsp:include page="/docs/subs/emitSubscriptions.jsp"/>
+    </mySubscriptions>
+
+    <myPreferences>
+    </myPreferences>
+
 <%
 } catch (Throwable t) {
   t.printStackTrace();

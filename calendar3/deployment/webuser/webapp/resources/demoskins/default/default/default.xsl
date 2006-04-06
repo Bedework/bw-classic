@@ -231,7 +231,7 @@
       </tr>
     </table>
     <table id="curDateRangeTable"  cellspacing="0">
-      <td>
+      <td class="sideBarOpenCloseIcon">
         <xsl:choose>
           <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
             <a href="?setappvar=sidebar(opened)">
@@ -262,6 +262,30 @@
   </xsl:template>
 
   <xsl:template name="sideBar">
+    <h3>views</h3>
+    <ul id="myViews">
+      <li><a href="{$setSelection}">default view</a></li>
+    </ul>
+
+    <h3>calendars</h3>
+    <ul class="calendarTree">
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="myCalendars"/>
+    </ul>
+
+    <h3>subscriptions</h3>
+    <ul class="calendarTree">
+      <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
+      <xsl:choose>
+        <xsl:when test="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]">
+          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]" mode="mySubscriptions"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <li class="none">no subscriptions</li>
+        </xsl:otherwise>
+      </xsl:choose>
+    </ul>
+
+    <h3>options</h3>
     <ul id="sideBarMenu">
       <li><a href="{$initEvent}">Add Event</a></li>
       <li><a href="{$initUpload}">Upload Events (iCal)</a></li>
@@ -316,11 +340,8 @@
                 </xsl:otherwise>
               </xsl:choose>
             </td>
-            <td class="centerCell">
-              &#160;
-            </td>
             <td class="rightCell">
-              Welcome
+              welcome
               <xsl:text> </xsl:text>
               <strong><xsl:value-of select="/bedework/userid"/></strong>
               <xsl:text> </xsl:text>
@@ -344,11 +365,8 @@
             <td>
               <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
             </td>
-            <td class="centerCell">
-                &#160;<!--<a href="http://www.rpi.edu/dept/cct/apps/pubeventsxml/calendarfeatures.html">login</a>-->
-            </td>
             <td class="rightCell">
-              Welcome
+              welcome
               <xsl:text> </xsl:text>
               <strong><xsl:value-of select="/bedework/userid"/></strong>
               <xsl:text> </xsl:text>
@@ -940,55 +958,6 @@
       </table>
     </td>
   </xsl:template>
-
-  <!--==== CALENDAR LISTING / MANAGE SUBSCRIPTIONS ====-->
-  <!-- DEPRECATED
-  <xsl:template match="calendars">
-    <xsl:variable name="publicCalCount" select="count(calendar[name='public']/calendar)"/>
-    <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <th colspan="2">
-          Calendar Subscriptions
-        </th>
-      </tr>
-      <tr>
-        <td colspan="2" class="infoCell">
-          Add and remove subscriptions to public calendars
-        </td>
-      </tr>
-      <tr>
-        <td class="leftCell">
-          <ul class="calendarTree">
-            <xsl:apply-templates select="calendar[name='public']/calendar[position() &lt;= ceiling($publicCalCount div 2)]" mode="calTree"/>
-          </ul>
-        </td>
-        <td>
-          <ul class="calendarTree">
-            <xsl:apply-templates select="calendar[name='public']/calendar[position() &gt; ceiling($publicCalCount div 2)]" mode="calTree"/>
-          </ul>
-        </td>
-      </tr>
-    </table>
-  </xsl:template>
-
-  <xsl:template match="calendar" mode="calTree">
-   <xsl:variable name="itemClass">
-      <xsl:choose>
-        <xsl:when test="calendarCollection='false'">folder</xsl:when>
-        <xsl:otherwise>calendar</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="id" select="id"/>
-    <xsl:variable name="name" select="name"/>
-    <li class="{$itemClass}">
-      <a href="{$subscribe}?calid={$id}&amp;name={$name}"><xsl:value-of select="name"/></a>
-      <xsl:if test="calendar">
-        <ul>
-          <xsl:apply-templates select="calendar" mode="calTree"/>
-        </ul>
-      </xsl:if>
-    </li>
-  </xsl:template> -->
 
   <!--==== SINGLE EVENT ====-->
   <xsl:template match="event">
@@ -1810,7 +1779,7 @@
             <a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">
             subscribe to an external calendar</a>.-->
           </p>
-          <ul id="calendarTree">
+          <ul class="calendarTree">
             <xsl:apply-templates select="/bedework/subscriptions/subscribe/calendars/calendar" mode="subscribe"/>
           </ul>
         </td>
@@ -1851,6 +1820,29 @@
         </ul>
       </xsl:if>
     </li>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="myCalendars">
+    <!-- supress Inbox and Outbox for the moment -->
+    <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
+      <xsl:variable name="id" select="id"/>
+      <xsl:variable name="itemClass">
+        <xsl:choose>
+          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <li class="{$itemClass}">
+        <!--<a href="{$subscriptions-initAdd}&amp;calId={$id}">-->
+          <xsl:value-of select="name"/>
+        <!--</a>-->
+        <xsl:if test="calendar">
+          <ul>
+            <xsl:apply-templates select="calendar" mode="myCalendars"/>
+          </ul>
+        </xsl:if>
+      </li>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="subscription" mode="addSubscription">
@@ -2043,6 +2035,15 @@
       </xsl:for-each>
     </table>
     <!--<h4><a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">Subscribe to a remote calendar</a> (by URI)</h4>-->
+  </xsl:template>
+
+  <xsl:template match="subscription" mode="mySubscriptions">
+    <li class="calendar">
+      <!--<xsl:variable name="subname" select="name"/>
+      <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}">-->
+        <xsl:value-of select="name"/>
+      <!--</a>-->
+    </li>
   </xsl:template>
 
   <!--==== ALARM OPTIONS ====-->

@@ -11,19 +11,10 @@ try {
 <page>subscriptions</page>
 
 <subscriptions>
-  <logic:iterate name="calForm" property="subscriptions" id="subscription">
-    <subscription>
-      <bw:emitText name="subscription" property="name" />
-      <bw:emitText name="subscription" property="uri" />
-      <affectsFreeBusy><bean:write name="subscription" property="affectsFreeBusy" /></affectsFreeBusy>
-      <display><bean:write name="subscription" property="display" /></display>
-      <bw:emitText name="subscription" property="style" />
-      <internal><bean:write name="subscription" property="internalSubscription" /></internal>
-      <emailNotifications><bean:write name="subscription" property="emailNotifications" /></emailNotifications>
-      <calendarDeleted><bean:write name="subscription" property="calendarDeleted" /></calendarDeleted>
-      <unremoveable><bean:write name="subscription" property="unremoveable" /></unremoveable>
-    </subscription>
-  </logic:iterate>
+  <%-- this is now permanently in header.jsp so the code is being duplicated;
+       we should consolidate the subscriptions code by removing it here --
+       just produce the "subscribe" list below.  --%>
+  <%@include file="/docs/subs/emitSubscriptions.jsp"%>
 
   <subscribe>
     <!-- List of calendars to subscribe to-->

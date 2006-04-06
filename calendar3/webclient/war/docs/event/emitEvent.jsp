@@ -93,5 +93,9 @@
       <jsp:include page="/docs/event/emitEventAll.jsp"/>
     </logic:present>
 
+
+    <%-- ****************************************************************
+          the following code should not be produced in the public client
+         **************************************************************** --%>
     <bw:emitCurrentPrivs name="eventInfo" property="currentAccess" />
   </event>
