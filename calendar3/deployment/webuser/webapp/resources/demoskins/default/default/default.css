@@ -71,36 +71,39 @@ h4 {
   color: #333;
   text-decoration: none;
 }
-/*#titleBar {
-  display: none;
-}*/
-#curDateRange {
+#curDateRangeTable {
+  width: 100%;
   background-color: #663;
   color : #eee;
-  padding-top: 2px;
+  padding-top: 3px;
   padding-bottom: 1px;
   padding-left: 0.5em;
   padding-right: 0.5em;
   margin: 0em;
+  line-height: 1.5em;
+  font-weight : bold;
+  text-align : center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+#curDateRangeTable td.date {
+  width: 100%;
   font-weight : bold;
   text-align : center;
   white-space: nowrap;
 }
-.rssPrint {
-  margin: 0;
-  padding-right: 1em;
+#curDateRangeTable td.rssPrint {
   font-weight : bold;
   text-align : right;
   white-space: nowrap;
 }
-.rssPrint img {
-  display: inline;
+#curDateRangeTable td.rssPrint img {
   position: relative;
   top: 3px;
 }
-.rssPrint a:link,
-.rssPrint a:active,
-.rssPrint a:visited {
+#curDateRangeTable td.rssPrint a:link,
+#curDateRangeTable td.rssPrint a:active,
+#curDateRangeTable td.rssPrint a:visited {
   font-size: 10px;
   color: #eee;
   background-color: transparent;
@@ -111,13 +114,13 @@ h4 {
   position: relative;
   top: -3px;
 }
-.rssPrint a:hover {
+#curDateRangeTable td.rssPrint a:hover {
   color: #663;
   background-color: #fff;
 }
-.rssPrint a.rss:link,
-.rssPrint a.rss:active,
-.rssPrint a.rss:visited {
+#curDateRangeTable td.rssPrint a.rss:link,
+#curDateRangeTable td.rssPrint a.rss:active,
+#curDateRangeTable td.rssPrint a.rss:visited {
   font-size: 10px;
   font-weight: bold;
   color: #444;
@@ -131,7 +134,7 @@ h4 {
   top: -3px;
   border: solid 1px #666;
 }
-.rssPrint a.rss:hover {
+#curDateRangeTable td.rssPrint a.rss:hover {
   color: #900;
   background-color: #fff;
 }
@@ -163,9 +166,12 @@ h4 {
   background-color: #ddd;
 }
 #sideBarOpenCloseIcon {
-  position: absolute;
+  float: left;
+  margin: 3px 0;
+  vertical-align: middle;
+  /*position: absolute;
   left: 32px;
-  padding-top: 3px;
+  padding-top: 3px;*/
 }/*
 #bodyBlock td#sideBar #sideBarTabs {
   width: 200px;
@@ -205,39 +211,39 @@ h4 {
   vertical-align: top;
   padding: 0;
 }
-#userBarTable {
+#utilBarTable {
   margin: 0;
   padding: 0;
   background-color : #eee;
   color: black;
   font-size: 0.9em;
 }
-#userBarTable .leftCell {
+#utilBarTable .leftCell {
   margin: 0;
   padding: 0;
   padding: 0.2em 0 0.2em 1em;
   white-space: nowrap;
 }
-#userBarTable .leftCell .link {
+#utilBarTable .leftCell .link {
   font-size: 0.8em;
   padding-left: 1em;
   color: #999;
   background-color: transparent;
 }
-#userBarTable .leftCell a {
+#utilBarTable .leftCell a {
   color: #999;
   background-color: transparent;
 }
-#userBarTable .logout {
+#utilBarTable .logout {
   font-size: 0.8em;
 }
-#userBarTable .rightCell {
+#utilBarTable .rightCell {
   margin: 0;
   padding: 0.1em 0.2em 0 0;
   text-align: right;
   white-space: nowrap;
 }
-#userBarTable form {
+#utilBarTable form {
   margin: 0px 0px 1px 0px;
   padding: 0em;
 }
@@ -248,21 +254,24 @@ h4 {
   vertical-align: bottom;
   background-color: #333;
   color: #eee;
+  font-size: 0.8em;
+}
+#tabsTable td {
+  white-space: nowrap;
 }
 #tabsTable .centerCell {
   text-align: left;
   background : url(../../resources/std-tab-space.gif);
-  font-size: 0.8em;
-  white-space: nowrap;
   width: 100%;
   padding-left: 0.5em;
 }
-#tabsTable .centerCell  a {
+#tabsTable a {
+  background-color: inherit;
   color: #ccc;
 }
 #tabsTable .rightCell {
   background : url(../../resources/std-tab-space.gif);
-  padding-right: 0.5em;
+  padding: 0 0.5em;
 }
 #navigationBarTable {
   font-size: 0.8em;

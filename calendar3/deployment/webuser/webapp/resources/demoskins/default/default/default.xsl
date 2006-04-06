@@ -147,7 +147,7 @@
                 <xsl:otherwise>
                   <!-- otherwise, show the eventsCalendar -->
                   <xsl:call-template name="navigation"/>
-                  <xsl:call-template name="userBar"/>
+                  <xsl:call-template name="utilBar"/>
                   <!-- main eventCalendar content -->
                   <xsl:choose>
                     <xsl:when test="/bedework/periodname='Day'">
@@ -230,8 +230,8 @@
         <td width="50%"><img alt="" src="{$resourcesRoot}/resources/metacal-topBorder.gif" width="100%" height="23" border="0"/></td>
       </tr>
     </table>
-    <div id="curDateRange">
-      <div id="sideBarOpenCloseIcon">
+    <table id="curDateRangeTable"  cellspacing="0">
+      <td>
         <xsl:choose>
           <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
             <a href="?setappvar=sidebar(opened)">
@@ -244,13 +244,21 @@
             </a>
           </xsl:otherwise>
         </xsl:choose>
-      </div>
-      <xsl:value-of select="/bedework/firstday/longdate"/>
-      <xsl:if test="/bedework/periodname!='Day'">
-        -
-        <xsl:value-of select="/bedework/lastday/longdate"/>
-      </xsl:if>
-    </div>
+      </td>
+      <td class="date">
+        <xsl:value-of select="/bedework/firstday/longdate"/>
+        <xsl:if test="/bedework/periodname!='Day'">
+          -
+          <xsl:value-of select="/bedework/lastday/longdate"/>
+        </xsl:if>
+      </td>
+      <td class="rssPrint">
+        <a href="javascript:window.print()" title="print this view">
+          <img alt="print this view" src="{$resourcesRoot}/resources/std-print-icon.gif" width="20" height="14" border="0"/> print
+        </a>
+        <a class="rss" href="{$setSelection}?calId=&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
+      </td>
+    </table>
   </xsl:template>
 
   <xsl:template name="sideBar">
@@ -311,15 +319,12 @@
             <td class="centerCell">
               &#160;
             </td>
-            <td class="rssPrint">
-              <a href="javascript:window.print()" title="print this view">
-                <img alt="print this view" src="{$resourcesRoot}/resources/std-print-icon.gif" width="20" height="14" border="0"/> print
-              </a>
-              <a class="rss" href="{$setSelection}?calId=&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
-            </td>
-
             <td class="rightCell">
-              &#160;
+              Welcome
+              <xsl:text> </xsl:text>
+              <strong><xsl:value-of select="/bedework/userid"/></strong>
+              <xsl:text> </xsl:text>
+              <span class="logout"><a href="{$setup}?logout=true">logout</a></span>
             </td>
           </tr>
         </table>
@@ -343,7 +348,11 @@
                 &#160;<!--<a href="http://www.rpi.edu/dept/cct/apps/pubeventsxml/calendarfeatures.html">login</a>-->
             </td>
             <td class="rightCell">
-              &#160;
+              Welcome
+              <xsl:text> </xsl:text>
+              <strong><xsl:value-of select="/bedework/userid"/></strong>
+              <xsl:text> </xsl:text>
+              <span class="logout"><a href="{$setup}?logout=true">logout</a></span>
             </td>
           </tr>
         </table>
@@ -460,15 +469,10 @@
     </table>
   </xsl:template>
 
-  <xsl:template name="userBar">
-    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="userBarTable">
+  <xsl:template name="utilBar">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="utilBarTable">
        <tr>
          <td class="leftCell">
-           Logged in as:
-           <xsl:text> </xsl:text>
-           <strong><xsl:value-of select="/bedework/userid"/></strong>
-           <xsl:text> </xsl:text>
-           <span class="logout"><a href="{$setup}?logout=true">logout</a></span>
            <!--<xsl:choose>
              <xsl:when test="/bedework/title!=''">
                Calendar: <xsl:value-of select="/bedework/title"/>

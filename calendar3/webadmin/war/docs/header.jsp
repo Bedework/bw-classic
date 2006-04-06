@@ -3,6 +3,7 @@
 <%@ taglib uri='struts-logic' prefix='logic' %>
 <%@ taglib uri='struts-html' prefix='html' %>
 <%@ taglib uri='struts-genurl' prefix='genurl' %>
+<%@ taglib uri='bedework' prefix='bw' %>
 <html:xhtml/>
 <%
 try {
@@ -191,13 +192,8 @@ try {
     </logic:notEqual>
 
     <!-- user and group -->
-    <logic:equal name="peForm" property="userAuth.contentAdminUser" value="true" >
-      <user><bean:write name="peForm" property="adminUserId" /></user>
-      <logic:present name="peForm" property="adminGroup" >
-        <group><bean:write name="peForm" property="adminGroup.account" /></group>
-      </logic:present>
-    </logic:equal>
-
+    <bw:emitText name="peForm" property="adminUserId" tagName="user"/>
+    <bw:emitText name="peForm" property="adminGroup.account" tagName="group"/>
   </userInfo>
 
   <logic:iterate id="appvar" name="peForm" property="appVars">
