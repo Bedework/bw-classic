@@ -42,7 +42,7 @@
           <p>A subscription by that name already exists.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nodefaultview'">
-          No default view defined
+          <p>No default view defined</p>
       </xsl:when>
       <xsl:otherwise>
         <p><xsl:value-of select="id"/> = <xsl:value-of select="param"/></p>

@@ -43,7 +43,7 @@ h4 {
 }
 #logoTable img {
   display: inline;
-  padding: 0 0 1px 5px;
+  padding: 0 0 2px 5px;
 }
 #logoTable #schoolLinksCell {
   vertical-align: bottom;
@@ -73,7 +73,8 @@ h4 {
 }
 #curDateRangeTable {
   width: 100%;
-  background-color: #339;
+  height: 26px;
+  background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
   color : #eee;
   margin: 0em;
   font-weight : bold;
@@ -82,12 +83,14 @@ h4 {
   white-space: nowrap;
 }
 #curDateRangeTable td {
-  padding-top: 3px;
+  padding-top: 5px;
   padding-bottom: 1px;
   padding-left: 0.5em;
   padding-right: 0.5em;
 }
 #curDateRangeTable td.sideBarOpenCloseIcon {
+  background: url(../../resources/glassFill-02-leftBorder.gif) no-repeat top left;
+  color: inherit;
   width: 200px;
 }
 #curDateRangeTable td.date {
@@ -96,6 +99,8 @@ h4 {
   white-space: nowrap;
 }
 #curDateRangeTable td.rssPrint {
+  background: url(../../resources/glassFill-02-rightBorder.gif) no-repeat top right;
+  color: inherit;
   width: 200px;
   font-weight : bold;
   text-align : right;
@@ -155,15 +160,15 @@ h4 {
   width: 200px;
   font-size: 0.8em;
   border-left: 2px solid #333;
-  border-right: 3px groove #ddd;
+  border-right: 1px solid #333;
   border-bottom: 2px solid #aaa;
-  border-top: 1px solid #333;
+  border-top: 4px solid #333;
   vertical-align: top;
   padding: 0;
 }
 #bodyBlock td#sideBar h3 {
   color: #eee;
-  background-color: #333;
+  background: #333 url(../../resources/glassFill-03.gif) repeat-x bottom;
   font-weight: normal;
   margin: 0;
   padding: 2px 4px;
@@ -171,11 +176,10 @@ h4 {
 #bodyBlock td#sideBarClosed {
   width: 1px;
   border-left: 2px solid #333;
-  border-right: 3px groove #ddd;
   border-bottom: 2px solid #aaa;
   padding: 0;
   color: black;
-  background-color: #ddd;
+  background-color: #333;
 }
 #sideBarOpenCloseIcon {
   float: left;
@@ -188,7 +192,6 @@ h4 {
 #bodyBlock td#bodyContent {
   border-right: 2px solid #333;
   border-bottom: 2px solid #aaa;
-  border-left: 1px solid #333;
   vertical-align: top;
   padding: 0;
 }
@@ -227,7 +230,6 @@ h4 {
 }
 #tabsTable {
   margin: 0em;
-  padding: 4px 0px 0px 0px;
   text-align: center;
   vertical-align: bottom;
   background-color: #333;
@@ -235,13 +237,9 @@ h4 {
   font-size: 0.8em;
 }
 #tabsTable td {
+  padding-top: 4px;
   white-space: nowrap;
 }
-/* #tabsTable .centerCell {
-  text-align: left;
-  background : url(../../resources/std-tab-space.gif);
-  padding-left: 0.5em;
-}*/
 #tabsTable a {
   background-color: inherit;
   color: #ccc;
@@ -249,7 +247,7 @@ h4 {
 #tabsTable .rightCell {
   width: 100%;
   background : url(../../resources/std-tab-space.gif);
-  padding: 0 0.5em;
+  padding-right: 0.5em;
   text-align: right;
 }
 #tabsTable .logout {
@@ -279,10 +277,10 @@ h4 {
   margin-bottom: 0em;
 }
 #navigationBarTable td.todayButton {
-  padding: 1em 1em 0em 1em;
+  padding: 1em 1em 0 1em;
 }
 #navigationBarTable td.gotoForm {
-  padding: 1em 0em 0em 1em;
+  padding: 1em 0.5em 0 0;
 }
 #navigationBarTable td.leftCell {
   text-align: left;
@@ -319,24 +317,29 @@ h4 {
 #errors {
   font-size: 0.8em;
   margin: 0em;
-  padding: 0.2em 0 0.2em 1em;
-  border-left : 2px solid #333;
-  border-right : 2px solid #333;
+  padding: 0.3em 0 0.3em 1em;
+  border-left : 1px solid #333;
+  border-right : 1px solid #333;
   border-bottom: 1px solid Gray;
+  color: black;
+  background: #d8e118 url(../../resources/glassFill-message.gif) repeat-x bottom;
 }
 #messages p,
 #errors p {
   margin: 0;
   padding: 2px 0;
 }
+/*
+make no distinction in this stylesheet - yellow is good for both errors and
+messages.
 #messages {
   color: black;
-  background-color: #ffa;
+  background: #d8e118 url(../../resources/glassFill-message.gif) repeat-x bottom;
 }
 #errors {
   color: black;
-  background-color: #ffa;
-}
+  background: #FF8B86 url(../../resources/glassFill-error.gif) repeat-x bottom;
+}*/
 #standardForm {
   margin: 0;
   padding: 0;
@@ -348,6 +351,22 @@ h4 {
   font-size: 0.9em;
   margin: 0px;
   padding: 0px;
+}
+#commonTable th {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em;
+  background-color: #ddd;
+  color: black;
+  white-space: nowrap;
+}
+#commonTable th.icon {
+  margin: 0em;
+  vertical-align: middle;
+  padding: 0.5em 1em 0.2em 0;
+  font-size: 0.7em;
+  background-color: #fff;
+  color: black;
 }
 #commonTable th.commonHeader {
   background-color: #666;
@@ -383,22 +402,6 @@ h4 {
   color: black;
   background-color: #eee;
   white-space: nowrap;
-}
-#commonTable th {
-  text-align: left;
-  vertical-align: top;
-  padding: 0.5em;
-  background-color: #ddd;
-  color: black;
-  white-space: nowrap;
-}
-#commonTable th.icon {
-  margin: 0em;
-  vertical-align: middle;
-  padding: 0.5em 1em 0.2em 0;
-  font-size: 0.7em;
-  background-color: #fff;
-  color: black;
 }
 #commonTable td.eventLinks {
   background-color: #ddd;
@@ -465,35 +468,6 @@ form#subscriptions {
   margin: 0;
   padding: 0;
 }
-#dayCalendarTable {
-  width: 100%;
-  font-size: 0.9em;
-  margin: 0px;
-  padding: 0px;
-  border-top: 1px solid #666;
-}
-#dayCalendarTable td {
-  padding: 0.4em;
-  margin: 0em;
-}
-#dayCalendarTable .dateRange {
-  text-align: left;
-  background-color: #f0eee5;
-  color: black;
-  white-space: nowrap;
-}
-#dayCalendarTable .description {
-  text-align: left;
-  background-color: #fff;
-  color: black;
-  width: 100%;
-}
-#dayCalendarTable .more {
-  text-align: center;
-  background-color: #eee;
-  color: black;
-  font-size: 0.8em;
-}
 #weekCalendarTable {
   width: 100%;
   font-size: 0.9em;
@@ -534,7 +508,7 @@ form#subscriptions {
   width: 14%;
   text-align: center;
   vertical-align: middle;
-  background-color: #663;
+  background-color: #2B4795;
   color: #eee;
   border: 1px solid black;
 }
@@ -570,7 +544,7 @@ form#subscriptions {
   display: block;
   padding: 0.1em 0.2em 0.1em 0.2em;
   text-decoration: none;
-  background-color: #d1cbb3;
+  background-color: #CCD7F5;
   color: black;
 }
 #monthCalendarTable a.eventLinkB:link,
@@ -579,7 +553,7 @@ form#subscriptions {
   display: block;
   padding: 0.1em 0.2em 0.1em 0.2em;
   text-decoration: none;
-  background-color: #f0eee5;
+  background-color: #EBF0FF;
   color: black;
 }
 #monthCalendarTable a.eventCancelled:link,
@@ -754,28 +728,28 @@ a.gridAdd {
 #listTable td.dateRangeEarlyMorning {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #cbd1de;
+  background-color: #D0D5E1;
   color: black;
   white-space: nowrap;
 }
 #listTable td.dateRangeMorning {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #f0eee5;
+  background-color: #DFE7FB;
   color: black;
   white-space: nowrap;
 }
 #listTable td.dateRangeAfternoon {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #e2decc;
+  background-color: #CCD7F5;
   color: black;
   white-space: nowrap;
 }
 #listTable td.dateRangeEvening {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #d1cbb3;
+  background-color: #B3C0E6;
   color: black;
   white-space: nowrap;
 }
@@ -811,7 +785,8 @@ a.gridAdd {
 }
 #listTable td.dateRow {
   text-align: left;
-  background-color: #888;
+  background-color: #444;
+  /*background-color: #2B4795;*/
   color: #eee;
   font-size: 0.8em;
   padding: 0.2em 0.5em 0.2em 0.5em;
@@ -876,6 +851,9 @@ a.gridAdd {
 }
 .calendarTree li.calendar {
   list-style-image: url(../../resources/calIcon-sm.gif);
+}
+.calendarTree li.trash {
+  list-style-image: url(../../resources/trashIcon.gif);
 }
 .calendarTree a:link,
 .calendarTree a:active,

@@ -325,6 +325,11 @@
             </xsl:otherwise>
           </xsl:choose>
         </td>
+        <td class="todayButton">
+          <a href="{$setViewPeriod}?viewType=todayView&amp;date={$curdate}">
+            <img src="{$resourcesRoot}/images/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
+          </a>
+        </td>
         <td align="right" class="gotoForm">
           <form name="calForm" method="get" action="{$setViewPeriod}">
              <table border="0" cellpadding="0" cellspacing="0">
@@ -383,11 +388,6 @@
               </tr>
             </table>
           </form>
-        </td>
-        <td class="todayButton">
-          <a href="{$setViewPeriod}?viewType=todayView&amp;date={$curdate}">
-            <img src="{$resourcesRoot}/images/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
-          </a>
         </td>
         <td class="rightCell">
         </td>

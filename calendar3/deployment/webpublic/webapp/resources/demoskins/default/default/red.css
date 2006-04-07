@@ -167,10 +167,10 @@ body {
   margin-bottom: 0em;
 }
 #navigationBarTable td.todayButton {
-  padding: 1em 1em 0em 1em;
+  padding: 1em 1em 0 1em;
 }
 #navigationBarTable td.gotoForm {
-  padding: 1em 0em 0em 1em;
+  padding: 1em 0.5em 0 0;
 }
 #navigationBarTable td.leftCell {
     text-align: left;

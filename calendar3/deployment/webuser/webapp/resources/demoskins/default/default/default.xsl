@@ -223,13 +223,13 @@
         </td>
       </tr>
     </table>
-    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <!--<table width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td width="50%"><img alt="" src="{$resourcesRoot}/resources/metacal-topBorder.gif" width="100%" height="23" border="0"/></td>
         <td><img src="{$resourcesRoot}/resources/metacal-topTitlePersonal.gif" width="221" height="23" border="0" alt="Bedework Personal Events Calendar"/></td>
         <td width="50%"><img alt="" src="{$resourcesRoot}/resources/metacal-topBorder.gif" width="100%" height="23" border="0"/></td>
       </tr>
-    </table>
+    </table>-->
     <table id="curDateRangeTable"  cellspacing="0">
       <td class="sideBarOpenCloseIcon">
         <xsl:choose>
@@ -399,6 +399,11 @@
             </xsl:otherwise>
           </xsl:choose>
         </td>
+        <td class="todayButton">
+          <a href="{$setViewPeriod}?viewType=todayView&amp;date={$curdate}">
+            <img src="{$resourcesRoot}/resources/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
+          </a>
+        </td>
         <td align="right" class="gotoForm">
           <form name="calForm" method="get" action="{$setViewPeriod}">
              <table border="0" cellpadding="0" cellspacing="0">
@@ -457,11 +462,6 @@
               </tr>
             </table>
           </form>
-        </td>
-        <td class="todayButton">
-          <a href="{$setViewPeriod}?viewType=todayView&amp;date={$curdate}">
-            <img src="{$resourcesRoot}/resources/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
-          </a>
         </td>
         <!--
         <td class="rightCell">
@@ -1092,7 +1092,11 @@
       <tr>
         <td class="fieldname">Description:</td>
         <td colspan="3" class="fieldval">
-          <xsl:value-of select="description"/>
+          <xsl:call-template name="replace">
+            <xsl:with-param name="string" select="description"/>
+            <xsl:with-param name="pattern" select="'&#xA;'"/>
+            <xsl:with-param name="replacement"><br/></xsl:with-param>
+          </xsl:call-template>
         </td>
       </tr>
        <xsl:if test="cost!=''">
@@ -1145,6 +1149,10 @@
           <td class="fieldval"><xsl:value-of select="calendar/name"/></td>
         </tr>
       </xsl:if>
+      <tr>
+        <td class="fieldname">&#160;</td>
+        <td class="fieldval">&#160;</td>
+      </tr>
     </table>
   </xsl:template>
 
@@ -1828,6 +1836,7 @@
       <xsl:variable name="id" select="id"/>
       <xsl:variable name="itemClass">
         <xsl:choose>
+          <xsl:when test="name='Trash'">trash</xsl:when>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
@@ -2319,6 +2328,30 @@
       Error: there is no page with that name.  Please select a navigational
       link to continue.
     </p>
+  </xsl:template>
+
+  <!--==== UTILITY TEMPLATES ====-->
+
+  <!-- search and replace template taken from
+       http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
+  <xsl:template name="replace">
+    <xsl:param name="string" select="''"/>
+    <xsl:param name="pattern" select="''"/>
+    <xsl:param name="replacement" select="''"/>
+    <xsl:choose>
+      <xsl:when test="$pattern != '' and $string != '' and contains($string, $pattern)">
+        <xsl:value-of select="substring-before($string, $pattern)"/>
+        <xsl:copy-of select="$replacement"/>
+        <xsl:call-template name="replace">
+          <xsl:with-param name="string" select="substring-after($string, $pattern)"/>
+          <xsl:with-param name="pattern" select="$pattern"/>
+          <xsl:with-param name="replacement" select="$replacement"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$string"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!--==== FOOTER ====-->
