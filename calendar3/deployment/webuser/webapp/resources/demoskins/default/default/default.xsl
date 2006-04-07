@@ -262,17 +262,24 @@
   </xsl:template>
 
   <xsl:template name="sideBar">
-    <h3>views</h3>
+    <h3>
+      <img alt="manage views" src="{$resourcesRoot}/resources/glassFill-button-menu.gif" width="12" height="11" border="0"/> views
+    </h3>
     <ul id="myViews">
       <li><a href="{$setSelection}">default view</a></li>
     </ul>
 
-    <h3>calendars</h3>
+    <h3><img alt="manage calendars" src="{$resourcesRoot}/resources/glassFill-button-menu.gif" width="12" height="11" border="0"/> calendars</h3>
     <ul class="calendarTree">
       <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="myCalendars"/>
     </ul>
 
-    <h3>subscriptions</h3>
+    <h3>
+      <a href="{$subscriptions-fetch}" title="manage subscriptions">
+        <img alt="manage subscriptions" src="{$resourcesRoot}/resources/glassFill-button-menu.gif" width="12" height="11" border="0"/>
+        subscriptions
+      </a>
+    </h3>
     <ul class="calendarTree">
       <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
       <xsl:choose>
@@ -287,10 +294,7 @@
 
     <h3>options</h3>
     <ul id="sideBarMenu">
-      <li><a href="{$initEvent}">Add Event</a></li>
-      <li><a href="{$initUpload}">Upload Events (iCal)</a></li>
       <li><a href="{$manageLocations}">Manage Locations</a></li>
-      <li><a href="{$subscriptions-fetch}">Manage Subscriptions</a></li>
       <li>Preferences</li>
     </ul>
   </xsl:template>
@@ -604,10 +608,13 @@
               <tr>
                 <td colspan="6" class="dateRow">
                    <xsl:variable name="date" select="date"/>
+                   <a href="{$initEvent}?date={$date}" class="listAdd">
+                     add event
+                   </a>
                    <a href="{$setViewPeriod}?viewType=dayView&amp;date={$date}">
                      <xsl:value-of select="name"/>, <xsl:value-of select="longdate"/>
                    </a>
-                </td>
+                 </td>
               </tr>
             </xsl:if>
             <xsl:for-each select="event">
@@ -780,7 +787,7 @@
             <td>
               <xsl:variable name="dayDate" select="date"/>
               <a href="{$initEvent}?date={$dayDate}" class="gridAdd">
-                <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event to this day"/>
+                <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event"/>
               </a>
               <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink">
                 <xsl:value-of select="value"/>
@@ -817,7 +824,7 @@
                 <td>
                   <xsl:variable name="dayDate" select="date"/>
                   <a href="{$initEvent}?date={$dayDate}" class="gridAdd">
-                    <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event to this day"/>
+                    <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event"/>
                   </a>
                   <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink">
                     <xsl:value-of select="value"/>

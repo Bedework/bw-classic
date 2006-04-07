@@ -176,6 +176,18 @@ h4 {
   margin: 0;
   padding: 2px 4px;
 }
+#bodyBlock td#sideBar h3 a:link,
+#bodyBlock td#sideBar h3 a:active,
+#bodyBlock td#sideBar h3 a:visited {
+  color: #eee;
+  background: inherit;
+  text-decoration: none;
+}
+#bodyBlock td#sideBar h3 a:hover {
+  color: #ff9;
+  background: inherit;
+  text-decoration: none;
+}
 #bodyBlock td#sideBarClosed {
   width: 1px;
   border-left: 2px solid #333;
@@ -636,8 +648,6 @@ form#subscriptions {
 a.gridAdd {
   display: block;
   float: right;
-  font-size: 0.8em;
-  text-decoration: none;
   margin: 0;
   padding: 0;
 }
@@ -795,19 +805,35 @@ a.gridAdd {
   /*background-color: #2B4795;*/
   color: #eee;
   font-size: 0.8em;
+  margin: 0;
   padding: 0.2em 0.5em 0.2em 0.5em;
-  margin: 0em;
 }
 #listTable td.dateRow a {
-  display: block;
   color: #fff;
   background-color: transparent;
   font-weight: bold;
   text-decoration : none;
 }
+#listTable td.dateRow a.listAdd {
+  float:right;
+  text-decoration : none;
+  font-size: 0.9em;
+  font-weight: normal;
+  padding-left: 1em;
+}
+#listTable td.dateRow a.listAdd:link,
+#listTable td.dateRow a.listAdd:active,
+#listTable td.dateRow a.listAdd:visited {
+  color: #eee;
+  background-color: transparent;
+}
+#listTable td.dateRow a.listAdd:hover {
+  color: #ffa;
+  background-color: transparent;
+}
 #listTable td.eventLinks {
   color: black;
-  background-color: #f0eee5;
+  background-color: #ddd;
   white-space : nowrap;
   font-size : 0.7em;
 }
@@ -821,7 +847,7 @@ a.gridAdd {
 }
 #listTable td.smallIcon {
   color: black;
-  background-color: #ddd;
+  background-color: #ccc;
 }
 .noEventsCell {
   padding: 1em;
