@@ -478,10 +478,10 @@
               <xsl:when test="/bedework/periodname='Year' or
                               (/bedework/periodname='Month' and
                               (/bedework/appvar[key='monthViewMode']/value='cal' or
-                               count(/bedework/appvar[key='monthViewMode'])=0)) or
+                               not(/bedework/appvar[key='monthViewMode']))) or
                               (/bedework/periodname='Week' and
                               (/bedework/appvar[key='weekViewMode']/value='cal' or
-                               count(/bedework/appvar[key='weekViewMode'])=0))">
+                               not(/bedework/appvar[key='weekViewMode'])))">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                     <img src="{$resourcesRoot}/images/std-button-summary-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
@@ -642,7 +642,7 @@
   <xsl:template name="listView">
     <table id="listTable" border="0" cellpadding="0" cellspacing="0">
       <xsl:choose>
-        <xsl:when test="count(/bedework/eventscalendar/year/month/week/day/event)=0">
+        <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event)">
           <tr>
             <td class="noEventsCell">
               There are no events posted
@@ -661,7 +661,7 @@
           </tr>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[count(event)!=0]">
+          <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[event]">
             <xsl:if test="/bedework/periodname='Week' or /bedework/periodname='Month' or /bedework/periodname=''">
               <tr>
                 <td colspan="5" class="dateRow">
