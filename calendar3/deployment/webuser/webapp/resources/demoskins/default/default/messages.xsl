@@ -45,6 +45,9 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.subscription.removed'">
+        <p>Subscription removed.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.deleted.events'">
         <xsl:choose>
           <xsl:when test="param='1'">
