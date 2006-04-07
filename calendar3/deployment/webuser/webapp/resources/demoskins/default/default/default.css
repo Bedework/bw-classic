@@ -31,6 +31,9 @@ h4 {
   padding: 1em 0.2em 0em 0.2em;
   font-size: 1em;
 }
+.center {
+  text-align: center;
+}
 /* Header IDs and classes */
 #logoTable {
   padding: 0em;
@@ -208,15 +211,17 @@ h4 {
   padding: 0.2em 0 0.2em 1em;
   white-space: nowrap;
 }
-#utilBarTable .leftCell .link {
-  font-size: 0.8em;
-  padding-left: 1em;
-  color: #999;
-  background-color: transparent;
-}
 #utilBarTable .leftCell a {
-  color: #999;
+  color: #666;
   background-color: transparent;
+  font-size: 0.75em;
+  text-decoration: none;
+  margin-right: 6px;
+}
+#utilBarTable .leftCell img {
+  display: inline;
+  margin-right: 2px;
+  vertical-align: middle;
 }
 #utilBarTable .rightCell {
   margin: 0;
@@ -584,7 +589,7 @@ form#subscriptions {
   padding: 0.1em 0.2em 0.1em 0.2em;
   text-decoration: none;
   color: black;
-  background-color: #ffe;
+  background-color: #ffa;
 }
 #monthCalendarTable a.dayLink {
   text-decoration: none;
@@ -612,7 +617,7 @@ form#subscriptions {
   width: 20em;
   top: 1em;
   left: 12em;
-  background-color: #ffe;
+  background-color: #ffa;
   color: black;
   padding: 4px;
   border: 1px solid #333;
@@ -623,7 +628,7 @@ form#subscriptions {
   width: 20em;
   top: 1em;
   left: -21em;
-  background-color: #ffe;
+  background-color: #ffa;
   color: black;
   padding: 4px;
   border: 1px solid #333;
@@ -633,7 +638,8 @@ a.gridAdd {
   float: right;
   font-size: 0.8em;
   text-decoration: none;
-  margin-right: 2px;
+  margin: 0;
+  padding: 0;
 }
 #yearCalendarTable {
   width: 100%;
@@ -926,11 +932,11 @@ p.note {
 }
 /*   LINKS    */
 a:link, a:active {
-  color: #552;
+  color: #00a;
   background-color: transparent;
 }
 a:visited {
-  color: #600;
+  color: #008;
   background-color: transparent;
 }
 a:hover {

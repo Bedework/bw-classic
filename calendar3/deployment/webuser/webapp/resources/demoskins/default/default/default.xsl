@@ -491,19 +491,15 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="utilBarTable">
        <tr>
          <td class="leftCell">
-           <!--<xsl:choose>
-             <xsl:when test="/bedework/title!=''">
-               Calendar: <xsl:value-of select="/bedework/title"/>
-               <span class="link">[<a href="{$setSelection}?calId=">clear</a>]</span>
-             </xsl:when>
-             <xsl:when test="/bedework/search!=''">
-               Current search: <xsl:value-of select="/bedework/search"/>
-               <span class="link">[<a href="{$setSelection}?calId=">clear</a>]</span>
-             </xsl:when>
-             <xsl:otherwise>
-               Current calendar: All
-             </xsl:otherwise>
-           </xsl:choose> -->
+           <xsl:variable name="date" select="/bedework/firstday/date"/>
+           <a href="{$initEvent}?date={$date}" title="add event">
+              <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
+              add event
+           </a>
+           <a href="{$initUpload}" title="upload event">
+              <img src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif" width="12" height="16" border="0" alt="upload event"/>
+              upload
+           </a>
          </td>
          <td class="rightCell">
            <xsl:choose>
@@ -783,7 +779,9 @@
           <xsl:if test="filler='false'">
             <td>
               <xsl:variable name="dayDate" select="date"/>
-              <a href="{$initEvent}?date={$dayDate}" class="gridAdd">[add]</a>
+              <a href="{$initEvent}?date={$dayDate}" class="gridAdd">
+                <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event to this day"/>
+              </a>
               <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink">
                 <xsl:value-of select="value"/>
               </a>
@@ -818,7 +816,9 @@
               <xsl:otherwise>
                 <td>
                   <xsl:variable name="dayDate" select="date"/>
-                  <a href="{$initEvent}?date={$dayDate}" class="gridAdd">[add]</a>
+                  <a href="{$initEvent}?date={$dayDate}" class="gridAdd">
+                    <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event to this day"/>
+                  </a>
                   <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink">
                     <xsl:value-of select="value"/>
                   </a>
