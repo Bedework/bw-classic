@@ -1181,15 +1181,14 @@
       <xsl:if test="calendar/name!=''">
         <tr>
           <td class="fieldname">Calendar:</td>
-          <td class="fieldval"><xsl:value-of select="calendar/name"/></td>
+          <td class="fieldval">
+            <xsl:variable name="calUrl" select="calendar/path"/>
+            <a href="{$setSelection}?calUrl={$calUrl}">
+              <xsl:value-of select="calendar/name"/>
+            </a>
+          </td>
         </tr>
       </xsl:if>
-      <tr>
-        <td class="fieldname">Calendar:</td>
-        <td colspan="2" class="fieldval">
-          <xsl:value-of select="calendar/name"/>
-        </td>
-      </tr>
       <tr>
         <td class="fieldname filler">&#160;</td>
         <td class="fieldval">&#160;</td>

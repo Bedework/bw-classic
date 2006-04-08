@@ -631,8 +631,11 @@
       </xsl:if>
       <tr>
         <td class="fieldname">Calendar:</td>
-        <td colspan="2" class="fieldval">
-          <xsl:value-of select="calendar/name"/>
+        <td class="fieldval">
+          <xsl:variable name="calUrl" select="calendar/path"/>
+          <a href="{$setSelection}?calUrl={$calUrl}">
+            <xsl:value-of select="calendar/name"/>
+          </a>
         </td>
       </tr>
     </table>
