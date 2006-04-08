@@ -32,6 +32,7 @@ body {
   font-size: 2em;
   color: #444;
   background-color: transparent;
+  border: none;
 }
 #logoTable #schoolLinksCell a:link,
 #logoTable #schoolLinksCell a:visited,

@@ -1185,6 +1185,12 @@
         </tr>
       </xsl:if>
       <tr>
+        <td class="fieldname">Calendar:</td>
+        <td colspan="2" class="fieldval">
+          <xsl:value-of select="calendar/name"/>
+        </td>
+      </tr>
+      <tr>
         <td class="fieldname filler">&#160;</td>
         <td class="fieldval">&#160;</td>
       </tr>
