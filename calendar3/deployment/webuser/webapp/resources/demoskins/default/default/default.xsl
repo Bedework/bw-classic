@@ -266,7 +266,10 @@
       <img alt="manage views" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> views
     </h3>
     <ul id="myViews">
-      <li><a href="{$setSelection}">default view</a></li>
+      <xsl:for-each select="/bedework/views/view">
+        <xsl:variable name="viewName" select="name"/> 
+        <li><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
+      </xsl:for-each>
     </ul>
 
     <h3><img alt="manage calendars" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> calendars</h3>
