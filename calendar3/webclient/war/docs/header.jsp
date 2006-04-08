@@ -220,13 +220,23 @@ try {
       Value: string - currently selected subscription ("calendar" too) --%>
     <filter></filter> <%-- unimplemented --%>
   </selectionState>
+  
+  <%-- List of views for menuing --%>
+  <views>
+    <logic:present name="calForm" property="views">
+      <logic:iterate id="view" name="calForm" property="views" >
+        <view>
+          <name><bean:write name="view" property="name"/></name>
+          <id><bean:write name="view" property="id"/></id>
+        </view>
+      </logic:iterate>
+    </logic:present>
+  </views>
 
 <%-- ****************************************************************
       the following code should not be produced in the public client
      **************************************************************** --%>
-    <myViews>
-    </myViews>
-
+  <logic:equal name="calForm" property="publicView" value="false">
     <myCalendars>
       <jsp:include page="/docs/calendar/emitCalendars.jsp"/>
     </myCalendars>
@@ -237,6 +247,7 @@ try {
 
     <myPreferences>
     </myPreferences>
+  </logic:equal>
 
 <%
 } catch (Throwable t) {

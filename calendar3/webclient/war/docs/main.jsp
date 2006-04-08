@@ -72,18 +72,6 @@
   </logic:iterate>
 </eventscalendar>
 
-<%-- List of views for menuing --%>
-<views>
-  <logic:present name="calForm" property="views">
-    <logic:iterate id="view" name="calForm" property="views" >
-      <view>
-        <name><bean:write name="view" property="name"/></name>
-        <id><bean:write name="view" property="id"/></id>
-      </view>
-    </logic:iterate>
-  </logic:present>
-</views>
-
 <%-- Produce date and time form elements for personal calendar to be used
      for creating the personal event entry form.  Uncomment this code to
      use an entry form on a page other than the formal "add event" page. --%>

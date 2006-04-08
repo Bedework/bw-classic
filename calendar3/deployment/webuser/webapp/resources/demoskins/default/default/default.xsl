@@ -263,20 +263,20 @@
 
   <xsl:template name="sideBar">
     <h3>
-      <img alt="manage views" src="{$resourcesRoot}/resources/glassFill-button-menu.gif" width="12" height="11" border="0"/> views
+      <img alt="manage views" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> views
     </h3>
     <ul id="myViews">
       <li><a href="{$setSelection}">default view</a></li>
     </ul>
 
-    <h3><img alt="manage calendars" src="{$resourcesRoot}/resources/glassFill-button-menu.gif" width="12" height="11" border="0"/> calendars</h3>
+    <h3><img alt="manage calendars" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> calendars</h3>
     <ul class="calendarTree">
       <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="myCalendars"/>
     </ul>
 
     <h3>
       <a href="{$subscriptions-fetch}" title="manage subscriptions">
-        <img alt="manage subscriptions" src="{$resourcesRoot}/resources/glassFill-button-menu.gif" width="12" height="11" border="0"/>
+        <img alt="manage subscriptions" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/>
         subscriptions
       </a>
     </h3>
@@ -786,10 +786,10 @@
           <xsl:if test="filler='false'">
             <td>
               <xsl:variable name="dayDate" select="date"/>
-              <a href="{$initEvent}?date={$dayDate}" class="gridAdd">
+              <a href="{$initEvent}?date={$dayDate}" class="gridAdd" title="add event">
                 <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event"/>
               </a>
-              <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink">
+              <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
                 <xsl:value-of select="value"/>
               </a>
               <ul>
@@ -823,10 +823,10 @@
               <xsl:otherwise>
                 <td>
                   <xsl:variable name="dayDate" select="date"/>
-                  <a href="{$initEvent}?date={$dayDate}" class="gridAdd">
+                  <a href="{$initEvent}?date={$dayDate}" class="gridAdd" title="add event">
                     <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event"/>
                   </a>
-                  <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink">
+                  <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
                     <xsl:value-of select="value"/>
                   </a>
                   <ul>
