@@ -199,6 +199,15 @@ h4 {
   color: black;
   background-color: #333;
 }
+#bodyBlock td#sideBar a:link,
+#bodyBlock td#sideBara:active,
+#bodyBlock td#sideBar a:visited {
+  text-decoration: none;
+}
+#bodyBlock td#sideBar a:hover {
+  color: black;
+  background-color: #ff3;
+}
 #sideBarOpenCloseIcon {
   float: left;
   margin: 3px 0;
@@ -212,6 +221,7 @@ h4 {
 }
 #myViews li.selected {
   list-style-image: url(../../resources/glassFill-icon-view.gif);
+  font-weight: bold;
 }
 #bodyBlock td#bodyContent {
   border-right: 2px solid #333;
@@ -888,7 +898,6 @@ a.gridAdd {
 }
 .calendarTree li {
   padding-top: 0.25em;
-  /*font-weight: bold;*/
 }
 .calendarTree li.folder {
   list-style-image: url(../../resources/catIcon.gif);
@@ -898,6 +907,10 @@ a.gridAdd {
 }
 .calendarTree li.trash {
   list-style-image: url(../../resources/trashIcon.gif);
+}
+.calendarTree li.selected {
+  list-style-image: url(../../resources/glassFill-icon-view.gif);
+  font-weight: bold;
 }
 .calendarTree a:link,
 .calendarTree a:active,

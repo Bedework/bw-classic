@@ -14,19 +14,15 @@
 	border: 2px solid #ddd;
 }
 .dynCalendar_header{
-  background-color: #00a;
+  background-color: #233979;
   color: white;
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: bold;
   height: 15px;
 }
 .dynCalendar_header a {
-  background-color: #00a;
-  color: white;  
-}
-.dynCalendar_header a {
-  background-color: #00a;
-  color: white;
+  background-color: inherit;
+  color: #eee;  
 }
 .dynCalendar_dayname {
 	background-color: #eee;

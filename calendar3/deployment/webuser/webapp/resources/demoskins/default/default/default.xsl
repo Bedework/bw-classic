@@ -266,17 +266,25 @@
       <img alt="manage views" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> views
     </h3>
     <ul id="myViews">
-      <xsl:for-each select="/bedework/views/view">
-        <xsl:variable name="viewName" select="name"/> 
-        <xsl:choose>
-          <xsl:when test="name=/bedework/selectionState/view/name">
-            <li class="selected"><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
-          </xsl:when>
-          <xsl:otherwise>
-            <li><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each>
+      <xsl:choose>
+        <xsl:when test="/bedework/views/view">
+          <xsl:for-each select="/bedework/views/view">
+            <xsl:variable name="viewName" select="name"/> 
+            <xsl:choose>
+              <xsl:when test="/bedework/selectionState/selectionType = 'view' 
+                              and name=/bedework/selectionState/view/name">
+                <li class="selected"><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
+              </xsl:when>
+              <xsl:otherwise>
+                <li><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:for-each>
+        </xsl:when>
+        <xsl:otherwise>
+          <li class="none">no subscriptions</li>
+        </xsl:otherwise>
+      </xsl:choose>
     </ul>
 
     <h3><img alt="manage calendars" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> calendars</h3>
@@ -505,11 +513,21 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="utilBarTable">
        <tr>
          <td class="leftCell">
-           <xsl:variable name="date" select="/bedework/firstday/date"/>
-           <a href="{$initEvent}?date={$date}" title="add event">
-              <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
-              add event
-           </a>
+           <xsl:choose>
+             <xsl:when test="/bedework/periodname = 'day'">
+               <xsl:variable name="date" select="/bedework/firstday/date"/>
+               <a href="{$initEvent}?date={$date}" title="add event">
+                  <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
+                  add event
+               </a>
+             </xsl:when>
+             <xsl:otherwise>
+               <a href="{$initEvent}" title="add event">
+                  <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
+                  add event
+               </a>
+             </xsl:otherwise>
+           </xsl:choose>
            <a href="{$initUpload}" title="upload event">
               <img src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif" width="12" height="16" border="0" alt="upload event"/>
               upload
@@ -1853,15 +1871,18 @@
       <xsl:variable name="id" select="id"/>
       <xsl:variable name="itemClass">
         <xsl:choose>
+          <xsl:when test="/bedework/selectionState/selectionType = 'calendar' 
+                          and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
           <xsl:when test="name='Trash'">trash</xsl:when>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
       <li class="{$itemClass}">
-        <!--<a href="{$subscriptions-initAdd}&amp;calId={$id}">-->
+        <xsl:variable name="url" select="path"/>
+        <a href="{$setSelection}?calUrl={$url}">
           <xsl:value-of select="name"/>
-        <!--</a>-->
+        </a>
         <xsl:if test="calendar">
           <ul>
             <xsl:apply-templates select="calendar" mode="myCalendars"/>
