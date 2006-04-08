@@ -10,7 +10,9 @@ h2 {
   margin: 0em;
   padding: 0.2em 0.2em 0.2em 0.5em;
   font-size: 1.3em;
-  background-color: #ccc;
+  border-bottom: 1px solid #ccc;
+  /*border-top: 1px solid #ccc;*/
+  background-color: #eee;
   color: black;
 }
 h2 a:link,
@@ -61,6 +63,7 @@ h4 {
   font-size: 2em;
   color: #444;
   background-color: transparent;
+  border: none;
 }
 #logoTable #schoolLinksCell a:link,
 #logoTable #schoolLinksCell a:visited,
@@ -205,6 +208,9 @@ h4 {
   padding-bottom: 0.5em;
 }
 #myViews li {
+  list-style: none;
+}
+#myViews li.selected {
   list-style-image: url(../../resources/glassFill-icon-view.gif);
 }
 #bodyBlock td#bodyContent {
@@ -408,6 +414,9 @@ messages.
   color: #ff9;
   padding: 0.2em;
   text-align: left;
+}
+#commonTable td.filler {
+  height: 200px;
 }
 #commonTable td.fieldval {
   margin: 0em;

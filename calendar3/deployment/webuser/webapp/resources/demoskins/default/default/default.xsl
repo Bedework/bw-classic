@@ -109,6 +109,7 @@
             </xsl:choose>
             <td id="bodyContent">
               <xsl:call-template name="tabs"/>
+              <xsl:call-template name="navigation"/>
               <xsl:choose>
                 <xsl:when test="/bedework/page='event'">
                   <!-- show an event -->
@@ -146,7 +147,6 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <!-- otherwise, show the eventsCalendar -->
-                  <xsl:call-template name="navigation"/>
                   <xsl:call-template name="utilBar"/>
                   <!-- main eventCalendar content -->
                   <xsl:choose>
@@ -268,7 +268,14 @@
     <ul id="myViews">
       <xsl:for-each select="/bedework/views/view">
         <xsl:variable name="viewName" select="name"/> 
-        <li><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
+        <xsl:choose>
+          <xsl:when test="name=/bedework/selectionState/view/name">
+            <li class="selected"><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
+          </xsl:when>
+          <xsl:otherwise>
+            <li><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:for-each>
     </ul>
 
@@ -392,17 +399,17 @@
           <a href="{$setViewPeriod}?date={$prevdate}"><img src="{$resourcesRoot}/resources/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
           <a href="{$setViewPeriod}?date={$nextdate}"><img src="{$resourcesRoot}/resources/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
           <xsl:choose>
-            <xsl:when test="/bedework/periodname='Day'">
-              <xsl:value-of select="substring(/bedework/eventscalendar/year/month/week/day/name,1,3)"/>, <xsl:value-of select="/bedework/eventscalendar/year/month/shortname"/>&#160;<xsl:value-of select="/bedework/eventscalendar/year/month/week/day/value"/>, <xsl:value-of select="/bedework/eventscalendar/year/value"/>
-            </xsl:when>
-            <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
-              Week of <xsl:value-of select="/bedework/eventscalendar/year/month/shortname"/>&#160;<xsl:value-of select="/bedework/eventscalendar/year/month/week/day/value"/>, <xsl:value-of select="/bedework/eventscalendar/year/value"/>
+            <xsl:when test="/bedework/periodname='Year'">
+              <xsl:value-of select="substring(/bedework/firstday/date,1,4)"/>
             </xsl:when>
             <xsl:when test="/bedework/periodname='Month'">
-              <xsl:value-of select="/bedework/eventscalendar/year/month/longname"/>, <xsl:value-of select="/bedework/eventscalendar/year/value"/>
+              <xsl:value-of select="/bedework/firstday/monthname"/>, <xsl:value-of select="substring(/bedework/firstday/date,1,4)"/>
+            </xsl:when>
+            <xsl:when test="/bedework/periodname='Week'">
+              Week of <xsl:value-of select="substring-after(/bedework/firstday/longdate,', ')"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="/bedework/eventscalendar/year/value"/>
+              <xsl:value-of select="/bedework/firstday/longdate"/>
             </xsl:otherwise>
           </xsl:choose>
         </td>
@@ -1160,7 +1167,7 @@
         </tr>
       </xsl:if>
       <tr>
-        <td class="fieldname">&#160;</td>
+        <td class="fieldname filler">&#160;</td>
         <td class="fieldval">&#160;</td>
       </tr>
     </table>
