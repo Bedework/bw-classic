@@ -66,7 +66,7 @@
                name="calForm"
                scope="session"
                validate="false">
-      <forward name="success" path="/docs/emitPublicCalendars.jsp" />
+      <forward name="success" path="/docs/calendar/emitPublicCalendars.jsp" />
     </action>
 
     <action    path="/showCals"
@@ -74,7 +74,7 @@
                name="calForm"
                scope="session"
                validate="false">
-      <forward name="success" path="/docs/emitCalendars.jsp" />
+      <forward name="success" path="/docs/calendar/emitCalendars.jsp" />
     </action>
 
     <action    path="/showEventMore"
