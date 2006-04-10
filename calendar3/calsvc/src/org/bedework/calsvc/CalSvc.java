@@ -2000,7 +2000,7 @@ public class CalSvc extends CalSvcI {
     while (it.hasNext()) {
       CoreEventInfo cei = (CoreEventInfo)it.next();
 
-      if (!deleted.contains(cei)) {
+      if (!isDeleted(deleted, cei)) {
         EventInfo ei = postProcess(cei, sub, null);
         al.add(ei);
       }
@@ -2048,41 +2048,16 @@ public class CalSvc extends CalSvcI {
     if ((deleted == null) || (deleted.size() == 0)) {
       return false;
     }
-    boolean try1 = false;
 
     Iterator it = deleted.iterator();
     while (it.hasNext()) {
       CoreEventInfo cei = (CoreEventInfo)it.next();
-      BwEventProxy pr = (BwEventProxy)cei.getEvent();
-      if (debug) {
-        trace("Deleted: " + pr.getTarget().getId());
-      }
-
       if (cei.equals(tryCei)) {
-        if (!debug) {
-          return true;
-        }
-
-        trace("Matched: " + tryCei.getEvent().getId());
-        try1 = true;
-        break;
+        return true;
       }
     }
 
-    // only here for debug mode
-    boolean try2 = deleted.contains(tryCei);
-    trace("  try2 for : " + tryCei.getEvent().getId() + " gives " + try2);
-
-    return try1 || try2;
-  }
-
-  private void traceDeleted(Collection c) {
-    Iterator it = c.iterator();
-    while (it.hasNext()) {
-      CoreEventInfo cei = (CoreEventInfo)it.next();
-      BwEventProxy pr = (BwEventProxy)cei.getEvent();
-      trace("Deleted: " + pr.getTarget().getId());
-    }
+    return false;
   }
 
   private BwPreferences getPreferences() throws CalFacadeException {
