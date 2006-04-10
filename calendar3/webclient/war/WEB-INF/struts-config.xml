@@ -101,14 +101,6 @@
       <forward name="success" path="/docs/event/editEvent.jsp" />
     </action>
 
-    <action    path="/showEditLocation"
-               type="org.bedework.webclient.BwRenderAction"
-               name="calForm"
-               scope="session"
-               validate="false">
-      <forward name="success" path="/docs/editLocation.jsp" />
-    </action>
-
     <action    path="/showExportData"
                type="org.bedework.webclient.BwRenderAction"
                name="calForm"
@@ -130,7 +122,15 @@
                name="calForm"
                scope="session"
                validate="false">
-      <forward name="success" path="/docs/manageLocations.jsp" />
+      <forward name="success" path="/docs/location/manageLocations.jsp" />
+    </action>
+
+    <action    path="/showEditLocation"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/location/editLocation.jsp" />
     </action>
 
     <action    path="/showEmailOptions"
