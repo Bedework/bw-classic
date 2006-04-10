@@ -86,24 +86,18 @@ public class BwDelEventAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    int id = form.getEventId();
-
-    if (id < 0) {
-      // Do nothing
-      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
-      return "doNothing";
-    }
-
     CalSvcI svci = form.fetchSvci();
 
-    EventInfo ei = svci.getEvent(id);
+    EventInfo ei = findEvent(request, form);
 
     if (ei == null) {
       // Do nothing
-      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
+      form.getErr().emit("org.bedework.client.error.nosuchevent");
       return "doNothing";
     }
 
+    // XXX temp - just mark as deleted
+    /*
     CalSvcI.DelEventResult delResult = form.fetchSvci().deleteEvent(ei.getEvent(), true);
 
     if (!delResult.eventDeleted) {
@@ -114,6 +108,8 @@ public class BwDelEventAction extends BwCalAbstractAction {
     if (delResult.locationDeleted) {
       form.getMsg().emit("org.bedework.client.message.deleted.locations", 1);
     }
+    */
+    svci.markDeleted(ei.getEvent());
 
     form.getMsg().emit("org.bedework.client.message.deleted.events", 1);
     form.refreshIsNeeded();

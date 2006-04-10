@@ -242,6 +242,27 @@ public class BwEventProxy extends BwEvent {
     return getTarget().getAccess();
   }
 
+  /** Set the event's calendar
+   *
+   * @param val    BwCalendar event's calendar
+   */
+  public void setCalendar(BwCalendar val) {
+    ref.setCalendar(val);
+  }
+
+  /** Get the event's calendar
+   *
+   * @return CalendarVO   the event's calendar
+   */
+  public BwCalendar getCalendar() {
+    BwCalendar val = ref.getCalendar();
+    if (val != null) {
+      return val;
+    }
+
+    return getTarget().getCalendar();
+  }
+
   /* (non-Javadoc)
    * @see org.bedework.calfacade.BwEvent#setName(java.lang.String)
    */
@@ -400,6 +421,25 @@ public class BwEventProxy extends BwEvent {
     return getTarget().getLink();
   }
 
+  /** Set the event deleted flag
+   *
+   *  @param val    boolean true if the event is deleted
+   */
+  public void setDeleted(boolean val) {
+    ref.setDeleted(val);
+  }
+
+  /** Get the event deleted flag
+   *
+   *  @return boolean    true if the event is deleted
+   */
+  public boolean getDeleted() {
+    if (getTarget().getDeleted()) {
+      return true;
+    }
+    return ref.getDeleted();
+  }
+
   /* (non-Javadoc)
    * @see org.bedework.calfacade.BwEvent#setStatus(char)
    */
@@ -468,27 +508,6 @@ public class BwEventProxy extends BwEvent {
    */
   public int getOrganizerId() {
     return getTarget().getOrganizerId();
-  }
-
-  /** Set the event's calendar
-   *
-   * @param val    CalendarVO event's calendar
-   */
-  public void setCalendar(BwCalendar val) {
-    ref.setCalendar(val);
-  }
-
-  /** Get the event's calendar
-   *
-   * @return CalendarVO   the event's calendar
-   */
-  public BwCalendar getCalendar() {
-    BwCalendar val = ref.getCalendar();
-    if (val != null) {
-      return val;
-    }
-
-    return getTarget().getCalendar();
   }
 
   public void setDtstamp(String val) {
@@ -788,6 +807,17 @@ public class BwEventProxy extends BwEvent {
   }
 
   /* (non-Javadoc)
+   * @see org.bedework.calfacade.ifs.AttendeesI#copyAttendees()
+   */
+  public Collection copyAttendees() {
+    if (ref.getAttendeesChanged()) {
+      return ref.copyAttendees();
+    }
+
+    return getTarget().copyAttendees();
+  }
+
+  /* (non-Javadoc)
    * @see org.bedework.calfacade.AttendeesI#cloneAttendees()
    */
   public Collection cloneAttendees() {
@@ -860,6 +890,7 @@ public class BwEventProxy extends BwEvent {
     override.setDuration(BwDateTime.makeDuration(start, end).toString());
     override.setEndType(ev.getEndType());
     override.setCreator(ev.getCreator());
+    override.setGuid(ev.getGuid());
 
     if (owner != null) {
       override.setOwner(owner);

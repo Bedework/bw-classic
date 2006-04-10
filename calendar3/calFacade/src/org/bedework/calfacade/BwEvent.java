@@ -1128,14 +1128,14 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
 
     /* If the guids are the same it's the same event for non recurring.
        For recurring events the recurrence id must also be equal.
-     */
+     * /
     int res = e1.getGuid().compareTo(e2.getGuid());
     if (res == 0) {
       if (!e1.getRecurring()) {
         return 0;
       }
 
-      /* Recurring - only the same if the recurrence id is equal */
+      /* Recurring - only the same if the recurrence id is equal * /
       return CalFacadeUtil.cmpObjval(e1.getRecurrence().getRecurrenceId(),
                                      e2.getRecurrence().getRecurrenceId());
     }
@@ -1150,7 +1150,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
       return res;
     }
 
-    /* Dates are the same - try summary. */
+    /* Dates are the same - try summary. * /
 
     res = e1.getSummary().compareTo(e2.getSummary());
     if (res != 0) {
@@ -1159,6 +1159,22 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
 
     // Just use guid
     return e1.getGuid().compareTo(e2.getGuid());
+    */
+    /* If the guids are the same it's the same event for non recurring.
+       For recurring events the recurrence id must also be equal.
+     */
+    int res = e1.getGuid().compareTo(e2.getGuid());
+    if ((res == 0) && (!e1.getRecurring())) {
+      return 0;
+    }
+
+    if (!e2.getRecurring()) {
+      return 1;
+    }
+
+    /* Both recurring - only the same if the recurrence id is equal */
+    return CalFacadeUtil.cmpObjval(e1.getRecurrence().getRecurrenceId(),
+                                   e2.getRecurrence().getRecurrenceId());
   }
 
   public int compareTo(Object o2) {

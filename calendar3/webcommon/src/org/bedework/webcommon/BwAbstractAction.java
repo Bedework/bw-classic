@@ -102,7 +102,7 @@ import org.apache.struts.util.MessageResources;
 public abstract class BwAbstractAction extends UtilAbstractAction {
   /** Name of the init parameter holding our name */
   private static final String appNameInitParameter = "rpiappname";
-  
+
   public String getId() {
     return getClass().getName();
   }
@@ -129,7 +129,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         adminUserId = form.getCurrentUser();
       }
     }
-    
+
     if (getPublicAdmin(form)) {
       /** We may want to masquerade as a different user
        */
@@ -169,6 +169,13 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     if (appBase != null) {
       // Embed in request for pages that cannot access the form (loggedOut)
       request.setAttribute("org.bedework.action.appbase", appBase);
+    }
+
+    if (!form.getNewSession()) {
+      // First time through here for this session
+
+      // Set to default view
+      setView(null, form);
     }
 
     /* Set up ready for the action */
@@ -292,20 +299,20 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return true;
   }
 
-  /** Method to retrieve an event. An event is identified by the calendar + 
+  /** Method to retrieve an event. An event is identified by the calendar +
    * guid + recurrence id. We also take the subscription id as a parameter so
    * we can pass it along in the result for display purposes.
-   * 
+   *
    * <p>We cannot just take the calendar from the subscription, because the
-   * calendar has to be the actual collection containing the event. A 
+   * calendar has to be the actual collection containing the event. A
    * subscription may be to higher up the tree (i.e. a folder).
-   * 
+   *
    * <p>We need to also allow the calendar path instead of the id. External
-   * calendars don't have an id. This means changing the api (again) and 
+   * calendars don't have an id. This means changing the api (again) and
    * changing the urls (again).
-   * 
+   *
    * <p>It may be more appropriate to simply encode a url to the event.
-   * 
+   *
    * <p>Request parameters<ul>
    *      <li>"subid"    subscription id for event. < 0 if there is none
    *                     e.g. displayed directly from calendar.</li>
@@ -336,7 +343,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         return null;
       }
     }
-    
+
     int calId = getIntReqPar(request, "calid", -1);
     BwCalendar cal = null;
 
@@ -344,9 +351,9 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       form.getErr().emit("org.bedework.client.error.missingcalendarid");
       return null;
     }
-    
+
     cal = svci.getCalendar(calId);
-    
+
     if (cal == null) {
       // Assume no access
       form.getErr().emit("org.bedework.client.error.noaccess");
@@ -599,18 +606,18 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
     HttpSession session = request.getSession();
     ServletContext sc = session.getServletContext();
-    
+
     String appName = sc.getInitParameter("bwappname");
-    
+
     if ((appName == null) || (appName.length() == 0)) {
       appName = "unknown-app-name";
     }
-    
+
     String envPrefix = "org.bedework.app." + appName + ".";
 
     env = new CalEnv(envPrefix, debug);
     frm.assignEnv(env);
-    
+
     return env;
   }
 
@@ -669,7 +676,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     BwSession s = BwWebUtil.getState(request);
     HttpSession sess = request.getSession(false);
     String appName = getAppName(sess);
-    
+
     if (s != null) {
       if (debug) {
         debugMsg("getState-- obtainedfrom session");
@@ -776,7 +783,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
     return s;
   }
-  
+
   private String getAppName(HttpSession sess) {
     ServletContext sc = sess.getServletContext();
 
@@ -784,7 +791,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     if (appname == null) {
       appname = "?";
     }
-    
+
     return appname;
   }
 
@@ -796,7 +803,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
                                   UtilActionForm form) {
     HttpSession hsess = request.getSession();
     BwCallback cb = (BwCallback)hsess.getAttribute(BwCallback.cbAttrName);
-    
+
     if (cb == null) {
       if (form.getDebug()) {
         debugMsg("No cb object for logout");
@@ -808,12 +815,12 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       try {
         cb.out();
       } catch (Throwable t) {}
-      
+
       try {
         cb.close();
       } catch (Throwable t) {}
     }
-    
+
     return true;
   }
 
@@ -875,7 +882,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         debugMsg("CalSvcI-- Obtained from session for user " +
                           svci.getUser());
       }
-      
+
       // XXX access - disable use of roles
       access = svci.getUserAuth().getUsertype();
     } else {
@@ -896,9 +903,9 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         if (publicAdmin || (user == null)) {
           runAsUser = form.getEnv().getAppProperty("run.as.user");
         }
-        
-        CalSvcIPars pars = new CalSvcIPars(user, //access, 
-                                           runAsUser, 
+
+        CalSvcIPars pars = new CalSvcIPars(user, //access,
+                                           runAsUser,
                                            form.getEnv().getAppPrefix(),
                                            publicAdmin,
                                            false,    // caldav
@@ -916,17 +923,17 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         UserAuthPar par = new UserAuthPar();
         par.svlt = servlet;
         par.req = request;
-        
+
         if (publicAdmin) {
           try {
             ua = svci.getUserAuth(user, par);
-            
+
             form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
             svci.setSuperUser((ua.getUsertype() & UserAuth.superUser) != 0);
-            
+
             // XXX access - disable use of roles
             access = ua.getUsertype();
-            
+
             if (debug) {
               debugMsg("UserAuth says that current user has the type: " +
                        ua.getUsertype());
@@ -943,7 +950,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         throw new CalFacadeException(t);
       }
     }
-    
+
     form.assignUserVO((BwUser)svci.getUser().clone());
 
     if (publicAdmin) {

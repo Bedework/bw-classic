@@ -97,6 +97,8 @@ import org.bedework.icalendar.TimeZoneRegistryImpl;
 import org.bedework.icalendar.URIgen;
 //import org.bedework.mail.MailerIntf;
 
+import edu.rpi.cct.uwcal.access.PrivilegeDefs;
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.uwcal.resources.Resources;
 
 import java.util.ArrayList;
@@ -126,7 +128,7 @@ public class CalSvc extends CalSvcI {
   private boolean debug;
 
   private boolean open;
-  
+
   private boolean superUser;
 
   //private BwFilter currentFilter;
@@ -309,7 +311,7 @@ public class CalSvc extends CalSvcI {
   public void setSuperUser(boolean val) {
     superUser = val;
   }
-  
+
   public boolean getSuperUser() {
     return superUser;
   }
@@ -333,21 +335,21 @@ public class CalSvc extends CalSvcI {
   public boolean getDbStatsEnabled() throws CalFacadeException {
     return getCal().getDbStatsEnabled();
   }
-  
+
   public void dumpDbStats() throws CalFacadeException {
     //if (!pars.getPublicAdmin()) {
     //  throw new CalFacadeAccessException();
     //}
-    
+
     trace(getStats().toString());
     getCal().dumpDbStats();
   }
-  
+
   public Collection getDbStats() throws CalFacadeException {
     //if (!pars.getPublicAdmin()) {
     //  throw new CalFacadeAccessException();
     //}
-    
+
     return getCal().getDbStats();
   }
 
@@ -567,7 +569,7 @@ public class CalSvc extends CalSvcI {
    *                   Access
    * ==================================================================== */
 
-  public void changeAccess(BwShareableDbentity ent, 
+  public void changeAccess(BwShareableDbentity ent,
                            Collection aces) throws CalFacadeException {
     getCal().changeAccess(ent, aces);
   }
@@ -582,7 +584,7 @@ public class CalSvc extends CalSvcI {
     if (isPublicAdmin() && !isSuper()) {
       throw new CalFacadeAccessException();
     }
-    
+
     timezones.saveTimeZone(tzid, vtz);
   }
 
@@ -603,7 +605,7 @@ public class CalSvc extends CalSvcI {
     if (isPublicAdmin() && !isSuper()) {
       throw new CalFacadeAccessException();
     }
-    
+
     timezones.clearPublicTimezones();
   }
 
@@ -697,7 +699,7 @@ public class CalSvc extends CalSvcI {
         getUserAuth().removeCalendar(null, val);
       }
     }
-    
+
     getCal().updateCalendar(val);
   }
 
@@ -1458,7 +1460,7 @@ public class CalSvc extends CalSvcI {
     return postProcess(getCal().getEvent(eventId), null, null);
   }
 
-  public Collection getEvent(BwSubscription sub, BwCalendar cal, 
+  public Collection getEvent(BwSubscription sub, BwCalendar cal,
                              String guid, String recurrenceId,
                              int recurRetrieval) throws CalFacadeException {
     return postProcess(getCal().getEvent(cal, guid, recurrenceId, recurRetrieval),
@@ -1523,19 +1525,19 @@ public class CalSvc extends CalSvcI {
                            sub);
       }
     }
-    
+
     /* Iterate over the subscriptions and merge the results.
-     * 
+     *
      * First we iterate over the subscriptions looking for internal calendars.
      * These we accumulate as children of a single calendar allowing a single
      * query for all calendars.
-     * 
+     *
      * We will then iterate again to handle external calendars. (Not implemented)
      */
     Iterator it = subs.iterator();
     BwCalendar internal = new BwCalendar();
     setupSharableEntity(internal);
-    
+
     // For locating subscriptions from calendar
     HashMap sublookup = new HashMap();
 
@@ -1543,77 +1545,27 @@ public class CalSvc extends CalSvcI {
       sub = (BwSubscription)it.next();
 
       BwCalendar calendar = getSubCalendar(sub);
-      
+
       if (calendar != null) {
         internal.addChild(calendar);
         putSublookup(sublookup, sub, calendar);
       }
     }
-    
+
     if (internal.getChildren().size() == 0) {
       if (debug) {
         trace("No children for internal calendar");
       }
-      
+
       return ts;
     }
-    
+
     ts.addAll(postProcess(getCal().getEvents(internal, filter,
                           startDate, endDate,
                           recurRetrieval),
               sublookup));
 
     return ts;
-  }
-  
-  private BwCalendar getSubCalendar(BwSubscription sub) throws CalFacadeException {
-    if (!sub.getInternalSubscription() || sub.getCalendarDeleted()) {
-      return null;
-    }
-    
-    BwCalendar calendar = sub.getCalendar();
-    
-    if (calendar != null) {
-      return calendar;
-    }
-    
-    String path;
-    String uri = sub.getUri();
-    
-    if (uri.startsWith(CalFacadeDefs.bwUriPrefix)) {
-      path = uri.substring(CalFacadeDefs.bwUriPrefix.length());
-    } else {
-      // Shouldn't happen?
-      path = uri;
-    }
-    
-    if (debug) {
-      trace("Search for calendar \"" + path + "\"");
-    }
-    
-    calendar = getCal().getCalendar(path);
-    if (calendar == null) {
-      // Assume deleted
-      sub.setCalendarDeleted(true);
-      updateSubscription(sub);
-    } else {
-      sub.setCalendar(calendar);
-    }
-    
-    return calendar;
-  }
-  
-  private void putSublookup(HashMap sublookup, BwSubscription sub, BwCalendar cal) {
-    if (cal.getCalendarCollection()) {
-      // Leaf node
-      sublookup.put(new Integer(cal.getId()), sub);
-      return;
-    }
-    
-    Iterator it = cal.iterateChildren();
-    while (it.hasNext()) {
-      putSublookup(sublookup, sub, (BwCalendar)it.next());
-    }
   }
 
   public DelEventResult deleteEvent(BwEvent event,
@@ -1685,7 +1637,7 @@ public class CalSvc extends CalSvcI {
     if (!cal.getCalendarCollection()) {
       throw new CalFacadeAccessException();
     }
-    
+
     event.setCalendar(cal);
 
     event.setDtstamp(new DtStamp(new DateTime(true)).getValue());
@@ -1717,14 +1669,36 @@ public class CalSvc extends CalSvcI {
     }
   }
 
-  public boolean deleteSubscribedEvent(BwEvent event) throws CalFacadeException {
-    /*
-    if (!getCal().fromSubscription(event)) {
-      throw new CalFacadeException(
-            "Attempt to hide a non-subscribed event: " + event);
+  /** For an event to which we have write access we simply mark it deleted.
+   *
+   * <p>Otherwise we add an annotation maarking the event as deleted.
+   *
+   * @param event
+   * @throws CalFacadeException
+   */
+  public void markDeleted(BwEvent event) throws CalFacadeException {
+    CurrentAccess ca = getCal().checkAccess(event, PrivilegeDefs.privWrite, true);
+
+    if (ca.accessAllowed) {
+      // Have write access - just set the flag and move it into the owners trash
+      event.setDeleted(true);
+      event.setCalendar(getCal().getTrashCalendar(event.getOwner()));
+      updateEvent(event);
+      return;
     }
-    */
-    throw new CalFacadeException("Unimplemented: ");
+
+    // Need to annotate it as deleted
+
+    BwEventProxy proxy = BwEventProxy.makeAnnotation(event, event.getOwner());
+
+    // Where does the ref go? Not in the same calendar - we have no access
+    // Put it in the trash - but don't delete on empty trash
+
+    BwCalendar cal = getCal().getTrashCalendar(getUser());
+    proxy.setOwner(getUser());
+    proxy.setDeleted(true);
+    proxy.setCalendar(cal);
+    addEvent(cal, proxy, null);
   }
 
   /* ====================================================================
@@ -1928,7 +1902,57 @@ public class CalSvc extends CalSvcI {
     return mailer;
   }*/
 
-  private EventInfo postProcess(CoreEventInfo cei, BwSubscription sub, 
+  private BwCalendar getSubCalendar(BwSubscription sub) throws CalFacadeException {
+    if (!sub.getInternalSubscription() || sub.getCalendarDeleted()) {
+      return null;
+    }
+
+    BwCalendar calendar = sub.getCalendar();
+
+    if (calendar != null) {
+      return calendar;
+    }
+
+    String path;
+    String uri = sub.getUri();
+
+    if (uri.startsWith(CalFacadeDefs.bwUriPrefix)) {
+      path = uri.substring(CalFacadeDefs.bwUriPrefix.length());
+    } else {
+      // Shouldn't happen?
+      path = uri;
+    }
+
+    if (debug) {
+      trace("Search for calendar \"" + path + "\"");
+    }
+
+    calendar = getCal().getCalendar(path);
+    if (calendar == null) {
+      // Assume deleted
+      sub.setCalendarDeleted(true);
+      updateSubscription(sub);
+    } else {
+      sub.setCalendar(calendar);
+    }
+
+    return calendar;
+  }
+
+  private void putSublookup(HashMap sublookup, BwSubscription sub, BwCalendar cal) {
+    if (cal.getCalendarCollection()) {
+      // Leaf node
+      sublookup.put(new Integer(cal.getId()), sub);
+      return;
+    }
+
+    Iterator it = cal.iterateChildren();
+    while (it.hasNext()) {
+      putSublookup(sublookup, sub, (BwCalendar)it.next());
+    }
+  }
+
+  private EventInfo postProcess(CoreEventInfo cei, BwSubscription sub,
                                 HashMap sublookup)
           throws CalFacadeException {
     if (cei == null) {
@@ -1941,13 +1965,13 @@ public class CalSvc extends CalSvcI {
      * proxy and return that object.
      */
     BwEvent ev = cei.getEvent();
-    
+
     if (ev instanceof BwEventAnnotation) {
       ev = new BwEventProxy((BwEventAnnotation)ev);
     }
 
     EventInfo ei = new EventInfo(ev);
-    
+
     if (sub != null) {
       ei.setSubscription(sub);
     } else if (sublookup != null) {
@@ -1964,11 +1988,22 @@ public class CalSvc extends CalSvcI {
           throws CalFacadeException {
     ArrayList al = new ArrayList();
 
+    /* XXX possibly not a great idea. We should probably retrieve the
+     * deleted events at the same time as we retrieve the desired set.
+     *
+     * This way we get too many.
+     */
+    Collection deleted = getCal().getDeletedProxies();
+
     Iterator it = ceis.iterator();
 
     while (it.hasNext()) {
-      EventInfo ei = postProcess((CoreEventInfo)it.next(), sub, null);
-      al.add(ei);
+      CoreEventInfo cei = (CoreEventInfo)it.next();
+
+      if (!deleted.contains(cei)) {
+        EventInfo ei = postProcess(cei, sub, null);
+        al.add(ei);
+      }
     }
 
     return al;
@@ -1978,14 +2013,76 @@ public class CalSvc extends CalSvcI {
           throws CalFacadeException {
     ArrayList al = new ArrayList();
 
+    /* XXX possibly not a great idea. We should probably retrieve the
+     * deleted events at the same time as we retrieve the desired set.
+     *
+     * This way we get too many.
+     */
+    Collection deleted = getCal().getDeletedProxies();
+
+    //traceDeleted(deleted);
+
     Iterator it = ceis.iterator();
 
     while (it.hasNext()) {
-      EventInfo ei = postProcess((CoreEventInfo)it.next(), null, sublookup);
-      al.add(ei);
+      CoreEventInfo cei = (CoreEventInfo)it.next();
+
+ //     if (!deleted.contains(cei)) {
+      if (!isDeleted(deleted, cei)) {
+        EventInfo ei = postProcess(cei, null, sublookup);
+        al.add(ei);
+      }
     }
 
     return al;
+  }
+
+  /* XXX This is here because contains doesn't appear to be working with
+   * CoreEventInfo objects (or their events)
+   *
+   * This is either the TreeSet impleemntation (unlikely) or something to
+   * do with comparisons but under debug the compare method doesn't even get
+   * called for some of he objects in deleted
+   */
+  private boolean isDeleted(Collection deleted, CoreEventInfo tryCei) {
+    if ((deleted == null) || (deleted.size() == 0)) {
+      return false;
+    }
+    boolean try1 = false;
+
+    Iterator it = deleted.iterator();
+    while (it.hasNext()) {
+      CoreEventInfo cei = (CoreEventInfo)it.next();
+      BwEventProxy pr = (BwEventProxy)cei.getEvent();
+      if (debug) {
+        trace("Deleted: " + pr.getTarget().getId());
+      }
+
+      if (cei.equals(tryCei)) {
+        if (!debug) {
+          return true;
+        }
+
+        trace("Matched: " + tryCei.getEvent().getId());
+        try1 = true;
+        break;
+      }
+    }
+
+    // only here for debug mode
+    boolean try2 = deleted.contains(tryCei);
+    trace("  try2 for : " + tryCei.getEvent().getId() + " gives " + try2);
+
+    return try1 || try2;
+  }
+
+  private void traceDeleted(Collection c) {
+    Iterator it = c.iterator();
+    while (it.hasNext()) {
+      CoreEventInfo cei = (CoreEventInfo)it.next();
+      BwEventProxy pr = (BwEventProxy)cei.getEvent();
+      trace("Deleted: " + pr.getTarget().getId());
+    }
   }
 
   private BwPreferences getPreferences() throws CalFacadeException {
@@ -2037,7 +2134,7 @@ public class CalSvc extends CalSvcI {
       dbi = new CalSvcDb(this, auth);
 
       if (userCreated) {
-      	initUser(auth, cali);
+        initUser(auth, cali);
       }
 
       if (debug) {
@@ -2061,7 +2158,7 @@ public class CalSvc extends CalSvcI {
       cali.close();
     }
   }
-  
+
   private void initUser(BwUser user, Calintf cali) throws CalFacadeException {
     // Add preferences
     BwPreferences prefs = new BwPreferences();
@@ -2193,7 +2290,7 @@ public class CalSvc extends CalSvcI {
 
     public Collection getEvent(BwCalendar cal, String guid, String rid,
                                int recurRetrieval) throws CalFacadeException {
-      return CalSvc.this.getEvent(BwSubscription.makeSubscription(cal), cal, guid, 
+      return CalSvc.this.getEvent(BwSubscription.makeSubscription(cal), cal, guid,
                                   rid, recurRetrieval);
     }
 

@@ -54,6 +54,7 @@
 package org.bedework.calcore.hibernate;
 
 import edu.rpi.cct.uwcal.access.PrivilegeDefs;
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
 import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwAlarm;
@@ -299,15 +300,15 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     calendars = new Calendars(this, access, currentMode, debug);
 
-    categories = new EventProperties(this, access, currentMode, 
+    categories = new EventProperties(this, access, currentMode,
                                      "word", BwCategory.class.getName(),
                                      "getCategoryRefs",
                                      -1, debug);
-    locations = new EventProperties(this, access, currentMode, 
+    locations = new EventProperties(this, access, currentMode,
                                     "address", BwLocation.class.getName(),
                                     "getLocationRefs",
                                      CalFacadeDefs.maxReservedLocationId, debug);
-    sponsors = new EventProperties(this, access, currentMode, 
+    sponsors = new EventProperties(this, access, currentMode,
                                    "name", BwSponsor.class.getName(),
                                    "getSponsorRefs",
                                    CalFacadeDefs.maxReservedSponsorId, debug);
@@ -324,7 +325,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   public void setSuperUser(boolean val) {
     access.setSuperUser(val);
   }
-  
+
   public boolean getSuperUser() {
     return access.getSuperUser();
   }
@@ -333,15 +334,15 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     if (stats == null) {
       return null;
     }
-    
+
     BwRWStats rwstats = (BwRWStats)stats;
-    
+
     if (timezones != null) {
       rwstats.setDateCacheHits(timezones.getDateCacheHits());
       rwstats.setDateCacheMisses(timezones.getDateCacheMisses());
       rwstats.setDatesCached(timezones.getDatesCached());
     }
-    
+
     return stats;
   }
 
@@ -349,11 +350,11 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     if (!enable && (dbStats == null)) {
       return;
     }
-    
+
     if (dbStats == null) {
       dbStats = sessFactory.getStatistics();
     }
-    
+
     dbStats.setStatisticsEnabled(enable);
   }
 
@@ -361,14 +362,14 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     if (dbStats == null) {
       return false;
     }
-    
+
     return dbStats.isStatisticsEnabled();
   }
-  
+
   public void dumpDbStats() throws CalFacadeException {
     DbStatistics.dumpStats(dbStats);
   }
-  
+
   public Collection getDbStats() throws CalFacadeException {
     return DbStatistics.getStats(dbStats);
   }
@@ -688,11 +689,16 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
    *                   Access
    * ==================================================================== */
 
-  public void changeAccess(BwShareableDbentity ent, 
+  public void changeAccess(BwShareableDbentity ent,
                            Collection aces) throws CalFacadeException {
     checkOpen();
     access.changeAccess(ent, aces);
     sess.saveOrUpdate(ent);
+  }
+
+  public CurrentAccess checkAccess(BwShareableDbentity ent, int desiredAccess,
+                                   boolean returnResult) throws CalFacadeException {
+    return access.checkAccess(ent, desiredAccess, returnResult);
   }
 
   /* ====================================================================
@@ -1096,6 +1102,10 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
           throws CalFacadeException {
     checkOpen();
     return events.getEventsByName(cal, val);
+  }
+
+  public Collection getDeletedProxies() throws CalFacadeException {
+    return events.getDeletedProxies(this.getTrashCalendar(user));
   }
 
   /* ====================================================================

@@ -413,7 +413,7 @@
       <forward name="success" path="/showMain.rdo" redirect="true" />
     </action>
 
-    <!-- ..................... subscriptionss .......................... -->
+    <!-- ..................... subscriptions .......................... -->
 
      <action    path="/subs/showSubs"
                type="org.bedework.webclient.BwRenderAction"

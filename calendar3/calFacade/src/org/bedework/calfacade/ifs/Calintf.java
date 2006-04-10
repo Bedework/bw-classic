@@ -68,6 +68,8 @@ import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.Groups;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+
 import java.util.Collection;
 
 import net.fortuna.ical4j.model.component.VTimeZone;
@@ -110,13 +112,13 @@ public interface Calintf extends CalendarsI, EventsI {
                       String synchId,
                       boolean debug) throws CalFacadeException;
 
-  /** Called after init to flag this user as a super user. 
+  /** Called after init to flag this user as a super user.
    *
    * @param val       true for a super user
    */
   public void setSuperUser(boolean val);
 
-  /** Called after init to flag this user as a super user. 
+  /** Called after init to flag this user as a super user.
    *
    * @return boolean true if super user
    */
@@ -129,27 +131,27 @@ public interface Calintf extends CalendarsI, EventsI {
    */
   public BwStats getStats() throws CalFacadeException;
 
-  /** Enable/disable db statistics 
+  /** Enable/disable db statistics
    *
    * @param enable       boolean true to turn on db statistics collection
    * @throws CalFacadeException if not admin
    */
   public void setDbStatsEnabled(boolean enable) throws CalFacadeException;
 
-  /**  
+  /**
    *
    * @return boolean true if statistics collection enabled
    * @throws CalFacadeException if not admin
    */
   public boolean getDbStatsEnabled() throws CalFacadeException;
 
-  /** Dump db statistics 
+  /** Dump db statistics
    *
    * @throws CalFacadeException if not admin
    */
   public void dumpDbStats() throws CalFacadeException;
 
-  /** Get db statistics 
+  /** Get db statistics
    *
    * @return Collection of BwStats.StatsEntry objects
    * @throws CalFacadeException if not admin
@@ -355,12 +357,25 @@ public interface Calintf extends CalendarsI, EventsI {
 
   /** Change the access to the given calendar entity.
    *
-   * @param ent      BwShareableDbentity 
+   * @param ent      BwShareableDbentity
    * @param aces     Collection of ace
    * @throws CalFacadeException
    */
-  public void changeAccess(BwShareableDbentity ent, 
+  public void changeAccess(BwShareableDbentity ent,
                            Collection aces) throws CalFacadeException;
+
+  /** Check the access for the given entity. Returns the current access
+   * or null or optionally throws a no access exception.
+   *
+   * @param ent
+   * @param desiredAccess
+   * @param returnResult
+   * @return CurrentAccess
+   * @throws CalFacadeAccessException if returnResult false and no access
+   * @throws CalFacadeException
+   */
+  public CurrentAccess checkAccess(BwShareableDbentity ent, int desiredAccess,
+                                   boolean returnResult) throws CalFacadeException;
 
   /* ====================================================================
    *                   Timezones

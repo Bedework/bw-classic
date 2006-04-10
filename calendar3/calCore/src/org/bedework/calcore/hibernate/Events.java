@@ -106,7 +106,7 @@ public class Events extends CalintfHelper implements EventsI {
    * @param user
    * @param debug
    */
-  public Events(Calintf cal, AccessUtil access, 
+  public Events(Calintf cal, AccessUtil access,
                 int currentMode, boolean debug) {
     super(cal, access, currentMode, debug);
   }
@@ -117,14 +117,14 @@ public class Events extends CalintfHelper implements EventsI {
     BwEvent master = null;
     TreeSet ts = new TreeSet();
     HibSession sess = getSess();
-    
+
     /* This (seems) to work as follows:
-     * 
+     *
      * First try to retrieve the event from the events table.
-     * 
+     *
      * If not there try the annotations table. If it's there, it's a reference
      * to an event owned by somebody else. Otherwise we drew a blank.
-     * 
+     *
      * If we want the recurrences and the event is recurring we go on to try to
      * retrieve the rest.
      */
@@ -137,6 +137,7 @@ public class Events extends CalintfHelper implements EventsI {
 
       cei = postGetEvent((BwEvent)sess.getUnique(), privRead, noAccessReturnsNull);
 
+      // XXX Don't want annotations in the trash
       if (cei == null) {
         /* Look for an annotation to that event by the current user.
          */
@@ -148,11 +149,11 @@ public class Events extends CalintfHelper implements EventsI {
           cei.setEvent(new BwEventProxy((BwEventAnnotation)cei.getEvent()));
         }
       }
-      
+
       if (cei == null) {
         return ts;
       }
-      
+
       master = cei.getEvent();
 
       ts.add(cei);
@@ -278,6 +279,42 @@ public class Events extends CalintfHelper implements EventsI {
     return ts;
   }
 
+  /** XXX temp I think
+   * Retrieve event proxies in the trash - they will be used to remove events
+   * from result sets.
+   *
+   * @return Collection of CoreEventInfo objects
+   */
+  public Collection getDeletedProxies() throws CalFacadeException {
+    // Calintf supplies the calendar
+    return null;
+  }
+
+  /** XXX temp I think
+   * Retrieve event proxies in the trash - they will be used to remove events
+   * from result sets.
+   *
+   * @param cal         Trash calendar object
+   * @return Collection of CoreEventInfo objects
+   */
+  public Collection getDeletedProxies(BwCalendar cal) throws CalFacadeException {
+    HibSession sess = getSess();
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("from ");
+    sb.append(BwEventAnnotation.class.getName());
+    sb.append(" ev");
+    sb.append(" where ev.calendar=:calendar");
+    sb.append(" and ev.deleted=true");
+
+    sess.createQuery(sb.toString());
+    sess.setEntity("calendar", cal);
+
+    Collection evs = sess.getList();
+
+    return postGetEvents(evs, privRead, noAccessReturnsNull);
+  }
+
   public CoreEventInfo getEvent(int id) throws CalFacadeException {
     HibSession sess = getSess();
     Criteria cr = sess.createCriteria(BwEventObj.class);
@@ -289,7 +326,7 @@ public class Events extends CalintfHelper implements EventsI {
     return postGetEvent(ev, privRead, noAccessReturnsNull);
   }
 
-  public void addEvent(BwEvent val, 
+  public void addEvent(BwEvent val,
                        Collection overrides) throws CalFacadeException {
     RecuridTable recurids = null;
     HibSession sess = getSess();
@@ -320,7 +357,7 @@ public class Events extends CalintfHelper implements EventsI {
     if (ct.intValue() > 0) {
       throw new CalFacadeException(CalFacadeException.duplicateGuid);
     }
-    
+
     if (val.getOrganizer() != null) {
       sess.saveOrUpdate(val.getOrganizer());
     }
@@ -568,6 +605,8 @@ public class Events extends CalintfHelper implements EventsI {
 
     Filters flt = new Filters(filter, sb, qevName, debug);
 
+    // XXX we should do the following for both events and annotations
+
     /* SEG:   from Events ev where */
     sb.append("from ");
     sb.append(BwEvent.class.getName());
@@ -807,7 +846,7 @@ public class Events extends CalintfHelper implements EventsI {
     }
   }
 
-  private void eventQuery(Class cl, BwCalendar calendar, String guid, String rid, 
+  private void eventQuery(Class cl, BwCalendar calendar, String guid, String rid,
                           boolean masterOnly) throws CalFacadeException {
     HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
@@ -1090,7 +1129,7 @@ public class Events extends CalintfHelper implements EventsI {
       if (checked != null) {
         checked.setChecked(mstr, ca);
       }
-      
+
       if (!ca.accessAllowed) {
         return null;
       }
@@ -1209,7 +1248,7 @@ public class Events extends CalintfHelper implements EventsI {
      * (DTSTART <= start AND DTSTART+DURATION > start) OR
      * (DTSTART >= start AND DTSTART < end) OR
      * (DTEND   > start AND DTEND <= end)
-     * 
+     *
      * XXX This is wrong??? Last should be
      * XXX (DTEND   > start AND DTEND < end)
      *
@@ -1281,9 +1320,9 @@ public class Events extends CalintfHelper implements EventsI {
     Iterator it = evs.iterator();
 
     while (it.hasNext()) {
-      CoreEventInfo cei = postGetEvent((BwEvent)it.next(), 
+      CoreEventInfo cei = postGetEvent((BwEvent)it.next(),
                                        desiredAccess, nullForNoAccess);
-      
+
       if (cei != null) {
         outevs.add(cei);
       }
@@ -1301,7 +1340,7 @@ public class Events extends CalintfHelper implements EventsI {
     }
 
     CurrentAccess ca = access.checkAccess(ev, desiredAccess, nullForNoAccess);
-    
+
     if (!ca.accessAllowed) {
       return null;
     }
@@ -1312,8 +1351,11 @@ public class Events extends CalintfHelper implements EventsI {
     }
     */
 
+    if (ev instanceof BwEventAnnotation) {
+      ev = new BwEventProxy((BwEventAnnotation)ev);
+    }
     CoreEventInfo cei = new CoreEventInfo(ev, ca);
-    
+
     return cei;
   }
 

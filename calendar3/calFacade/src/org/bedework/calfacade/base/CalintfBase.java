@@ -77,6 +77,8 @@ import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.calfacade.ifs.CalintfInfo;
 import org.bedework.calfacade.ifs.Groups;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.TreeSet;
@@ -152,7 +154,7 @@ public class CalintfBase implements Calintf {
 
   public void setSuperUser(boolean val) {
   }
-  
+
   public boolean getSuperUser() {
     return false;
   }
@@ -175,7 +177,7 @@ public class CalintfBase implements Calintf {
 
   public void dumpDbStats() throws CalFacadeException {
   }
-  
+
   public Collection getDbStats() throws CalFacadeException {
     return null;
   }
@@ -369,9 +371,14 @@ public class CalintfBase implements Calintf {
    *                   Access
    * ==================================================================== */
 
-  public void changeAccess(BwShareableDbentity ent, 
+  public void changeAccess(BwShareableDbentity ent,
                            Collection aces) throws CalFacadeException {
     checkOpen();
+    throw new CalFacadeUnimplementedException();
+  }
+
+  public CurrentAccess checkAccess(BwShareableDbentity ent, int desiredAccess,
+                                   boolean returnResult) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 
@@ -728,6 +735,10 @@ public class CalintfBase implements Calintf {
     }
 
     return user.equals(val.getCreator());
+  }
+
+  public Collection getDeletedProxies() throws CalFacadeException {
+    throw new CalFacadeUnimplementedException();
   }
 
   /* ====================================================================

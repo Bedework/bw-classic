@@ -21,7 +21,7 @@ public interface EventsI extends Serializable {
    *                   Events
    * ==================================================================== */
 
-  /** Return one or more events using the calendar, guid and optionally a 
+  /** Return one or more events using the calendar, guid and optionally a
    * recurrence-id as a key.
    *
    * <p>For non-recurring events, one and only one event should be returned
@@ -52,7 +52,7 @@ public interface EventsI extends Serializable {
    * @param   eventId       int id of the event
    * @return  CoreEventInfo object representing event.
    * @throws CalFacadeException
-   * 
+   *
    * @deprecated - other calendar systems won't support this. Doesn't make sense
    *               for recurring events.
    */
@@ -124,8 +124,8 @@ public interface EventsI extends Serializable {
    *
    * @param calendar     BwCalendar object restricting search or null.
    * @param filter       BwFilter object restricting search or null.
-   * @param startDate    DateTimeVO start - may be null
-   * @param endDate      DateTimeVO end - may be null.
+   * @param startDate    BwDateTime start - may be null
+   * @param endDate      BwDateTime end - may be null.
    * @param recurRetrieval Takes value defined in CalFacadeDefs
    * @return Collection  of CoreEventInfo objects
    * @throws CalFacadeException
@@ -134,6 +134,14 @@ public interface EventsI extends Serializable {
                               BwDateTime startDate, BwDateTime endDate,
                               int recurRetrieval)
           throws CalFacadeException;
+
+  /** XXX temp I think
+   * Retrieve event proxies in the trash - they will be used to remove events
+   * from result sets.
+   *
+   * @return Collection of CoreEventInfo objects
+   */
+  public Collection getDeletedProxies() throws CalFacadeException;
 
   /* * Return true if this event is editable by the current user
    *

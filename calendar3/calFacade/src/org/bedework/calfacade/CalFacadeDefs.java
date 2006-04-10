@@ -78,7 +78,8 @@ public interface CalFacadeDefs {
    */
   public static final int unsavedItemKey = -1;
 
-  /** Values which define how to retrieve recurring events. We have the
+  /** ENUM
+   * Values which define how to retrieve recurring events. We have the
    * following choices (derived from caldav)
    *
    * <p>expand - return as if all instances within the time range are

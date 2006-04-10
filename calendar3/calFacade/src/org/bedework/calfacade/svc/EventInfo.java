@@ -128,7 +128,7 @@ public class EventInfo implements Comparable, Comparator, Serializable {
   /** If non-null this event comes from a recurrence
    */
   private String recurrenceId;
-  
+
   /* This object contains information giving the current users access rights to
    * the entity.
    */
@@ -310,17 +310,17 @@ public class EventInfo implements Comparable, Comparator, Serializable {
   public String getRecurrenceId() {
     return recurrenceId;
   }
-  
+
   /* Set the current users access rights.
-   * 
+   *
    * @param val  CurrentAccess
    */
   public void setCurrentAccess(CurrentAccess val) {
     currentAccess = val;
   }
-  
+
   /* Get the current users access rights.
-   * 
+   *
    * @return  CurrentAccess
    */
   public CurrentAccess getCurrentAccess() {
@@ -340,7 +340,7 @@ public class EventInfo implements Comparable, Comparator, Serializable {
       return 1;
     }
 
-    if (01 == 02) {
+    if (o1 == o2) {
       return 0;
     }
 

@@ -107,13 +107,13 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract void init(CalSvcIPars pars) throws CalFacadeException;
 
-  /** Called after init to flag this user as a super user. 
+  /** Called after init to flag this user as a super user.
    *
    * @param val       true for a super user
    */
   public abstract void setSuperUser(boolean val);
 
-  /** Called after init to flag this user as a super user. 
+  /** Called after init to flag this user as a super user.
    *
    * @return boolean true if super user
    */
@@ -126,27 +126,27 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract BwStats getStats() throws CalFacadeException;
 
-  /** Enable/disable db statistics 
+  /** Enable/disable db statistics
    *
    * @param enable       boolean true to turn on db statistics collection
    * @throws CalFacadeException if not admin
    */
   public abstract void setDbStatsEnabled(boolean enable) throws CalFacadeException;
 
-  /**  
+  /**
    *
    * @return boolean true if statistics collection enabled
    * @throws CalFacadeException if not admin
    */
   public abstract boolean getDbStatsEnabled() throws CalFacadeException;
 
-  /** Dump db statistics 
+  /** Dump db statistics
    *
    * @throws CalFacadeException if not admin
    */
   public abstract void dumpDbStats() throws CalFacadeException;
 
-  /** Get db statistics 
+  /** Get db statistics
    *
    * @return Collection of BwStats.StatsEntry objects
    * @throws CalFacadeException if not admin
@@ -406,11 +406,11 @@ public abstract class CalSvcI implements Serializable {
 
   /** Change the access to the given calendar entity.
   *
-  * @param ent      BwShareableDbentity 
+  * @param ent      BwShareableDbentity
   * @param aces     Collection of ace
   * @throws CalFacadeException
   */
- public abstract void changeAccess(BwShareableDbentity ent, 
+ public abstract void changeAccess(BwShareableDbentity ent,
                                    Collection aces) throws CalFacadeException;
 
   /* ====================================================================
@@ -1082,7 +1082,7 @@ public abstract class CalSvcI implements Serializable {
    * @param   eventId   int id of the event
    * @return  EventInfo   value object representing event.
    * @throws CalFacadeException
-   * 
+   *
    * @deprecated - other calendar systems won't support this. Doesn't make sense
    *               for recurring events.
    */
@@ -1103,8 +1103,8 @@ public abstract class CalSvcI implements Serializable {
    * @return  Collection of EventInfo objects representing event(s).
    * @throws CalFacadeException
    */
-  public abstract Collection getEvent(BwSubscription sub, BwCalendar cal, 
-                                      String guid, 
+  public abstract Collection getEvent(BwSubscription sub, BwCalendar cal,
+                                      String guid,
                                       String recurrenceId,
                                       int recurRetrieval)
         throws CalFacadeException;
@@ -1230,18 +1230,14 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract void updateEvent(BwEvent event) throws CalFacadeException;
 
-  /** Delete a subscribed event for the current user.
+  /** For an event to which we have write access we simply mark it deleted.
    *
-   * <p>This is a partially implemented feature which currently only changes
-   * the synch state. What we need is in effect a reverse event ref - I guess
-   * a new purpose, which indicates the event is hidden for this user.
+   * <p>Otherwise we add an annotation maarking the event as deleted.
    *
-   * @param  event          BwEvent object
-   * @return  boolean       false for no such item.
+   * @param event
    * @throws CalFacadeException
    */
-  public abstract boolean deleteSubscribedEvent(BwEvent event)
-      throws CalFacadeException;
+  public abstract void markDeleted(BwEvent event) throws CalFacadeException;
 
   /* ====================================================================
    *                       Caldav support

@@ -56,6 +56,7 @@ package edu.rpi.cct.uwcal.synchml.common;
 
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwEventObj;
+import org.bedework.calfacade.BwRecurrence;
 import org.bedework.calfacade.BwSynchData;
 import org.bedework.calfacade.BwSynchInfo;
 import org.bedework.calfacade.BwSynchState;
@@ -121,7 +122,7 @@ public class Synchml {
     svci = new CalSvc();
     this.deviceId = deviceId;
     this.debug = debug;
-    CalSvcIPars pars = new CalSvcIPars(account, 
+    CalSvcIPars pars = new CalSvcIPars(account,
                                        account,
                                        null,     // XXX Requires an env prefix
                                        false,    // public
@@ -270,9 +271,9 @@ public class Synchml {
    */
   public boolean deleteEvent(VEvent val) throws CalFacadeException {
     // FIXME - We need a subscription to the calendar we are synching - second par
-    return deleteEvent(BwEventUtil.toEvent(svci.getIcalCallback(), 
-                                           null,  // BwCalendar 
-                                           null,  // overrides 
+    return deleteEvent(BwEventUtil.toEvent(svci.getIcalCallback(),
+                                           null,  // BwCalendar
+                                           null,  // overrides
                                            val, debug).getEvent());
   }
 
@@ -457,22 +458,36 @@ public class Synchml {
    * @throws CalFacadeException
    */
   public boolean deleteEvent(BwEvent val) throws CalFacadeException {
-    EventInfo ei = svci.getEvent(val.getId());
+    String recurId = null;
 
-    if (ei == null) {
+    BwRecurrence recur = val.getRecurrence();
+
+    if (recur != null) {
+      recurId = recur.getRecurrenceId();
+    }
+
+    int recurRetrieval = CalFacadeDefs.retrieveRecurMaster;
+    if (recurId != null) {
+      // Get the instance
+      recurRetrieval = CalFacadeDefs.retrieveRecurExpanded;
+    }
+    Collection evs = svci.getEvent(null, val.getCalendar(), val.getGuid(),
+                                   recurId, recurRetrieval);
+
+    if ((evs == null) || (evs.size() == 0)) {
       return false;
     }
 
-    if (ei.getKind() == EventInfo.kindEntry) {
-      CalSvcI.DelEventResult der = svci.deleteEvent(ei.getEvent(), true);
-      return der.eventDeleted;
+    /* We should have one only
+     */
+
+    if (evs.size() != 1) {
+      throw new CalFacadeException("org.dedwork.synchml.unexpected.result");
     }
 
-    if (ei.getKind() == EventInfo.kindAdded) {
-      svci.deleteEvent(ei.getEvent(), true);
-    } else if (ei.getKind() == EventInfo.kindUndeletable) {
-      svci.deleteSubscribedEvent(ei.getEvent());
-    }
+    EventInfo ei = (EventInfo)evs.iterator().next();
+
+    svci.markDeleted(ei.getEvent());
 
     return true;
   }
