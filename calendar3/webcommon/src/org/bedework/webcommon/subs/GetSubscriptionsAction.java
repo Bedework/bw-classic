@@ -68,6 +68,8 @@ import javax.servlet.http.HttpServletResponse;
  * </ul>
  *
  * @author Mike Douglass   douglm@rpi.edu
+ *
+ * @deprecated  Probably don't need this. Abstract action always sets the subscriptions.
  */
 public class GetSubscriptionsAction extends BwAbstractAction {
   /* (non-Javadoc)

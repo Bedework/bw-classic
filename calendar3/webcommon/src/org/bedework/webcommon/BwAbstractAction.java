@@ -250,6 +250,12 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       return "cancelled";
     }
 
+    /* Set up or refresh frequently used information,
+     */
+    CalSvcI svc = form.fetchSvci();
+
+    form.setSubscriptions(svc.getSubscriptions());
+
     try {
       forward = doAction(request, response, s, form);
 
