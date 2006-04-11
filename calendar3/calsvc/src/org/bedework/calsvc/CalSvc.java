@@ -1682,7 +1682,7 @@ public class CalSvc extends CalSvcI {
     if (ca.accessAllowed) {
       // Have write access - just set the flag and move it into the owners trash
       event.setDeleted(true);
-      event.setCalendar(getCal().getDeletedCalendar(event.getOwner()));
+      event.setCalendar(getCal().getTrashCalendar(event.getOwner()));
       updateEvent(event);
       return;
     }
