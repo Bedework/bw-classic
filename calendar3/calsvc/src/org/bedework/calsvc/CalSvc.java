@@ -1986,39 +1986,28 @@ public class CalSvc extends CalSvcI {
 
   private Collection postProcess(Collection ceis, BwSubscription sub)
           throws CalFacadeException {
-    ArrayList al = new ArrayList();
-
-    /* XXX possibly not a great idea. We should probably retrieve the
-     * deleted events at the same time as we retrieve the desired set.
-     *
-     * This way we get too many.
-     */
-    Collection deleted = getCal().getDeletedProxies();
-
-    Iterator it = ceis.iterator();
-
-    while (it.hasNext()) {
-      CoreEventInfo cei = (CoreEventInfo)it.next();
-
-      if (!isDeleted(deleted, cei)) {
-        EventInfo ei = postProcess(cei, sub, null);
-        al.add(ei);
-      }
-    }
-
-    return al;
+    return postProcess(ceis, sub, null);
   }
 
   private Collection postProcess(Collection ceis, HashMap sublookup)
           throws CalFacadeException {
+    return postProcess(ceis, null, sublookup);
+  }
+
+  private Collection postProcess(Collection ceis,
+                                 BwSubscription sub, HashMap sublookup)
+          throws CalFacadeException {
     ArrayList al = new ArrayList();
+    Collection deleted = null;
 
     /* XXX possibly not a great idea. We should probably retrieve the
      * deleted events at the same time as we retrieve the desired set.
      *
      * This way we get too many.
      */
-    Collection deleted = getCal().getDeletedProxies();
+    if (!isPublicAdmin()) {
+      deleted = getCal().getDeletedProxies();
+    }
 
     //traceDeleted(deleted);
 
@@ -2029,7 +2018,7 @@ public class CalSvc extends CalSvcI {
 
  //     if (!deleted.contains(cei)) {
       if (!isDeleted(deleted, cei)) {
-        EventInfo ei = postProcess(cei, null, sublookup);
+        EventInfo ei = postProcess(cei, sub, sublookup);
         al.add(ei);
       }
     }
