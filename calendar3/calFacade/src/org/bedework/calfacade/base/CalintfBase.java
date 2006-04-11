@@ -469,6 +469,10 @@ public class CalintfBase implements Calintf {
     throw new CalFacadeUnimplementedException();
   }
 
+  public BwCalendar getDeletedCalendar(BwUser user) throws CalFacadeException {
+    throw new CalFacadeUnimplementedException();
+  }
+
   public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {
     checkOpen();
 

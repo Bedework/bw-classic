@@ -294,7 +294,7 @@ public class Events extends CalintfHelper implements EventsI {
    * Retrieve event proxies in the trash - they will be used to remove events
    * from result sets.
    *
-   * @param cal         Trash calendar object
+   * @param cal         Deleted calendar object
    * @return Collection of CoreEventInfo objects
    */
   public Collection getDeletedProxies(BwCalendar cal) throws CalFacadeException {

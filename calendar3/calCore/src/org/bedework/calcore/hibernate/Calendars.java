@@ -81,7 +81,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
    * @param debug
    * @throws CalFacadeException
    */
-  public Calendars(Calintf cal, AccessUtil access, 
+  public Calendars(Calintf cal, AccessUtil access,
                    int currentMode, boolean debug)
                   throws CalFacadeException {
     super(cal, access, currentMode, debug);
@@ -173,6 +173,19 @@ class Calendars extends CalintfHelper implements CalendarsI {
     cal.setOwner(user);
     cal.setPublick(false);
     cal.setPath(path + "/" + getSyspars().getUserOutbox());
+    cal.setCalendar(usercal);
+    cal.setCalendarCollection(true);
+    usercal.addChild(cal);
+
+    /* Add the deleted calendar */
+    cal = new BwCalendar();
+    // XXX new syspar cal.setName(getSyspars().getUserOutbox());
+    cal.setName("Deleted");
+    cal.setCreator(user);
+    cal.setOwner(user);
+    cal.setPublick(false);
+    // XXX new syspar cal.setPath(path + "/" + getSyspars().getUserOutbox());
+    cal.setPath(path + "/" + "Deleted");
     cal.setCalendar(usercal);
     cal.setCalendarCollection(true);
     usercal.addChild(cal);
@@ -312,21 +325,53 @@ class Calendars extends CalintfHelper implements CalendarsI {
     return getCalendar(sb.toString());
   }
 
+  public BwCalendar getDeletedCalendar(BwUser user) throws CalFacadeException {
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("/");
+    sb.append(getSyspars().getUserCalendarRoot());
+    sb.append("/");
+    sb.append(user.getAccount());
+    sb.append("/");
+    sb.append("Deleted");
+    // XXX new syspar sb.append(getSyspars().getDefaultTrashCalendar());
+
+    return getCalendar(sb.toString());
+  }
+
+  public void createDeletedCalendar(BwUser user) throws CalFacadeException {
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("/");
+    sb.append(getSyspars().getUserCalendarRoot());
+    sb.append("/");
+    sb.append(user.getAccount());
+
+    String pathTo = sb.toString();
+
+    BwCalendar parent = getCalendar(pathTo);
+
+    if (parent == null) {
+      throw new CalFacadeException("org.bedework.calcore.calendars.unabletocreate");
+    }
+
+    BwCalendar cal = new BwCalendar();
+    cal.setName("Deleted");
+    cal.setOwner(user);
+    cal.setCreator(user);
+    cal.setPublick(parent.getPublick());
+    cal.setCalendarCollection(true);
+    addCalendar(cal, parent);
+  }
+
   public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {
     HibSession sess = getSess();
 
-    /* We need write access to the parent */
-    access.checkAccess(parent, privWrite, false);
+    /* We need write content access to the parent */
+    access.checkAccess(parent, privWriteContent, false);
 
     /** Is the parent a calendar collection?
      */
-/*    sess.namedQuery("countCalendarEventRefs");
-    sess.setEntity("cal", parent);
-
-    Integer res = (Integer)sess.getUnique();
-
-    if (res.intValue() > 0) {*/
-
     if (parent.getCalendarCollection()) {
       throw new CalFacadeException(CalFacadeException.illegalCalendarCreation);
     }
@@ -351,7 +396,9 @@ class Calendars extends CalintfHelper implements CalendarsI {
     }
 
     val.setPath(path);
-    val.setOwner(getUser());
+    if (val.getOwner() == null) {
+      val.setOwner(getUser());
+    }
     val.setCalendar(parent);
     parent.addChild(val);
 
@@ -426,7 +473,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
     while (it.hasNext()) {
       BwCalendar cal = (BwCalendar)it.next();
-      CurrentAccess ca = access.checkAccess(cal, desiredAccess, 
+      CurrentAccess ca = access.checkAccess(cal, desiredAccess,
                                             noAccessReturnsNull);
       if (ca != null) {
         //cal.setCurrentAccess(ca);
@@ -449,9 +496,9 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
   private BwCalendar cloneAndCheckOne(BwCalendar subroot, int desiredAccess,
                            boolean nullForNoAccess) throws CalFacadeException {
-    CurrentAccess ca = access.checkAccess(subroot, desiredAccess, 
+    CurrentAccess ca = access.checkAccess(subroot, desiredAccess,
                                           nullForNoAccess);
-    
+
     if (!ca.accessAllowed) {
       return null;
     }
@@ -459,7 +506,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     BwCalendar cal = (BwCalendar)subroot.shallowClone();
     // XXX Temp fix - add id to the clone
     cal.setId(subroot.getId());
-    
+
     cal.setCurrentAccess(ca);
 
     Iterator it = subroot.iterateChildren();

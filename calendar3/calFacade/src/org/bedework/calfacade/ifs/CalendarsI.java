@@ -105,10 +105,10 @@ public interface CalendarsI extends Serializable {
   public BwCalendar getCalendar(String path) throws CalFacadeException;
 
   /** Get the default calendar for the given user. This is determined by the
-   * name for the default calendar assigned to the system, not by any user 
+   * name for the default calendar assigned to the system, not by any user
    * preferences. This is normally used at initialisation of a new user.
    *
-   * @param  user     
+   * @param  user
    * @return BwCalendar null for unknown calendar
    * @throws CalFacadeException
    */
@@ -116,11 +116,20 @@ public interface CalendarsI extends Serializable {
 
   /** Get the trash calendar for the given user.
    *
-   * @param  user     
+   * @param  user
    * @return BwCalendar null for unknown calendar
    * @throws CalFacadeException
    */
   public BwCalendar getTrashCalendar(BwUser user) throws CalFacadeException;
+
+  /** Get the deleted calendar for the given user. This holds annotations
+   * marking other events as deleted
+   *
+   * @param  user
+   * @return BwCalendar null for unknown calendar
+   * @throws CalFacadeException
+   */
+  public BwCalendar getDeletedCalendar(BwUser user) throws CalFacadeException;
 
   /** Add a calendar object
    *

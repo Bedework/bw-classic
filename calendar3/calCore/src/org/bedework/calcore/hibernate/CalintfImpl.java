@@ -85,6 +85,7 @@ import org.bedework.calfacade.ifs.Groups;
 import org.bedework.icalendar.IcalTranslator;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
 
@@ -859,6 +860,10 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return calendars.getTrashCalendar(user);
   }
 
+  public BwCalendar getDeletedCalendar(BwUser user) throws CalFacadeException {
+    return calendars.getDeletedCalendar(user);
+  }
+
   public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {
     checkOpen();
 
@@ -1105,7 +1110,15 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   }
 
   public Collection getDeletedProxies() throws CalFacadeException {
-    return events.getDeletedProxies(this.getTrashCalendar(user));
+    BwCalendar cal = this.getDeletedCalendar(user);
+
+    if (cal == null) {
+      // Create the deleted calendar for another time
+      calendars.createDeletedCalendar(user);
+      return new ArrayList();
+    }
+
+    return events.getDeletedProxies(this.getDeletedCalendar(user));
   }
 
   /* ====================================================================
