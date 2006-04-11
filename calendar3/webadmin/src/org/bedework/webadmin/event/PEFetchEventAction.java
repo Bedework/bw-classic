@@ -55,12 +55,9 @@
 package org.bedework.webadmin.event;
 
 import org.bedework.calfacade.svc.EventInfo;
-import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
 import org.bedework.webcommon.BwSession;
-
-
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -81,7 +78,6 @@ public class PEFetchEventAction extends PEAbstractAction {
   public String doAction(HttpServletRequest request,
                          BwSession sess,
                          PEActionForm form) throws Throwable {
-    CalSvcI svci = form.fetchSvci();
     boolean alerts = form.getAlertEvent();
 
     /** Check access and set request parameters
@@ -101,23 +97,8 @@ public class PEFetchEventAction extends PEAbstractAction {
     /** User requested an event from the list. Retrieve it, embed it in
      * the form so we can display the page
      */
-    // XXX Needs to change to use guid?
-    int id = this.getIntReqPar(request, "eventId", -1);
 
-    if (id <= 0) {
-      return "notFound";
-    }
-
-    EventInfo einf = svci.getEvent(id);
-
-    if (debug) {
-      if (einf == null) {
-        log.debug("No event with id " + id);
-      } else {
-        log.debug("Retrieved event " + einf.getEvent().getId());
-        log.debug("          start=" + einf.getEvent().getDtstart());
-      }
-    }
+    EventInfo einf = findEvent(request, form);
 
     /** ************************************
         We should ensure the alert status is correct
@@ -127,7 +108,7 @@ public class PEFetchEventAction extends PEAbstractAction {
     resetEvent(form);
 
     if (einf == null) {
-      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
+      form.getErr().emit("org.bedework.client.error.nosuchevent");
       return "notFound";
     }
 

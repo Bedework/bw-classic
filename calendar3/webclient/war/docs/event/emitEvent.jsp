@@ -56,13 +56,13 @@
     <logic:present  name="event" property="calendar">
       <bean:define id="calendar" name="event" property="calendar"/>
       <calendar>
-        <name><bean:write name="calendar" property="name"/></name><%--
+        <bw:emitText name="calendar" property="name"/><%--
           Value: string - name of the calendar --%>
-        <path><bean:write name="calendar" property="path"/></path><%--
+        <bw:emitText name="calendar" property="path"/><%--
             Value: path to the calendar --%>
         <id><bean:write name="calendar" property="id"/></id><%--
           Value: integer - calendar id --%>
-        <owner><bean:write name="calendar" property="owner.account"/></owner><%--
+        <bw:emitText name="calendar" property="owner.account" tagName="owner" /><%--
           Value: string - calendar owner id --%>
       </calendar>
     </logic:present>

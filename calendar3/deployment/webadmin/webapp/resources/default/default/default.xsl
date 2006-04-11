@@ -441,6 +441,7 @@
         <th>Title</th>
         <th>Start Date</th>
         <th>End Date</th>
+        <th>Calendar</th>
         <th>Description</th>
       </tr>
 
@@ -454,6 +455,9 @@
           </td>
           <td class="date">
             <xsl:value-of select="end"/>
+          </td>
+          <td>
+            <xsl:value-of select="calendar/name"/>
           </td>
           <td>
             <xsl:value-of select="desc"/>
