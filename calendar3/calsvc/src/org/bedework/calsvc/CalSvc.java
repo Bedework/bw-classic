@@ -55,12 +55,14 @@
 package org.bedework.calsvc;
 
 import org.bedework.calenv.CalEnv;
+import org.bedework.calfacade.CalFacadeUtil.GetPeriodsPars;
 import org.bedework.calfacade.base.BwOwnedDbentity;
 import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.BwAlarm;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwDateTime;
+import org.bedework.calfacade.BwDuration;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwEventAlarm;
 import org.bedework.calfacade.BwEventAnnotation;
@@ -1011,7 +1013,8 @@ public class CalSvc extends CalSvcI {
    * ==================================================================== */
 
   public BwFreeBusy getFreeBusy(BwCalendar cal, BwPrincipal who,
-                                BwDateTime start, BwDateTime end)
+                                BwDateTime start, BwDateTime end,
+                                BwDuration granularity)
           throws CalFacadeException {
     if (!(who instanceof BwUser)) {
       throw new CalFacadeException("Unsupported: non user principal for free-busy");
@@ -1030,13 +1033,14 @@ public class CalSvc extends CalSvcI {
 
       subs = new ArrayList();
       subs.add(sub);
-    } else if (!currentUser().equals(who)) {
+    } else if (currentUser().equals(who)) {
       subs = getSubscriptions();
     } else {
       subs = dbi.fetchPreferences(u).getSubscriptions();
     }
 
     BwFreeBusy fb = new BwFreeBusy(who, start, end);
+    Collection events = new TreeSet();
 
     Iterator subit = subs.iterator();
     while (subit.hasNext()) {
@@ -1049,79 +1053,126 @@ public class CalSvc extends CalSvcI {
       Collection evs = getEvents(sub, null, start, end,
                                  CalFacadeDefs.retrieveRecurExpanded);
 
-      try {
-        /* For the moment just build a single FreeBusyComponentVO
+      // Filter out transparent events
+      Iterator it = evs.iterator();
+
+      while (it.hasNext()) {
+        EventInfo ei = (EventInfo)it.next();
+        BwEvent ev = ei.getEvent();
+
+        // XXX Need to add sub.ignoreTransparency
+        if (BwEvent.transparencyTransparent.equals(ev.getTransparency())) {
+          continue;
+        }
+
+        events.add(ei);
+      }
+    }
+
+    try {
+      if (granularity != null) {
+        // chunked.
+        GetPeriodsPars gpp = new GetPeriodsPars();
+
+        gpp.events = events;
+        gpp.startDt = start;
+        gpp.dur = granularity;
+        gpp.tzcache = getTimezones();
+
+        /* For the moment just build a single BwFreeBusyComponent
          */
         BwFreeBusyComponent fbc = new BwFreeBusyComponent();
 
-        Iterator it = evs.iterator();
-
-        TreeSet eventPeriods = new TreeSet();
-
-        while (it.hasNext()) {
-          EventInfo ei = (EventInfo)it.next();
-          BwEvent ev = ei.getEvent();
-
-          // XXX Need to add sub.ignoreTransparency
-          if (BwEvent.transparencyTransparent.equals(ev.getTransparency())) {
-            continue;
+        int limit = 10000; // XXX do this better
+        while (gpp.startDt.before(end)) {
+          if (debug) {
+            trace("gpp.startDt=" + gpp.startDt + " end=" + end);
           }
-
-          // Ignore if times were specified and this event is outside the times
-
-          BwDateTime estart = ev.getDtstart();
-          BwDateTime eend = ev.getDtend();
-
-          /* Don't report out of the requested period */
-
-          String dstart;
-          String dend;
-
-          if (estart.before(start)) {
-            dstart = start.getDtval();
-          } else {
-            dstart = estart.getDtval();
+          if (limit < 0) {
+            throw new CalFacadeException("org.bedework.svci.limit.exceeded");
           }
+          limit--;
 
-          if (eend.after(end)) {
-            dend = end.getDtval();
-          } else {
-            dend = eend.getDtval();
+          Collection periodEvents = CalFacadeUtil.getPeriodsEvents(gpp);
+
+          if (periodEvents.size() != 0) {
+            // Some events fall in the period. Add an entry.
+
+            fbc.addPeriod(new Period(new DateTime(gpp.startDt.getDtval()),
+                                     new DateTime(gpp.endDt.getDtval())));
           }
-
-          eventPeriods.add(new EventPeriod(new DateTime(dstart),
-              new DateTime(dend)));
         }
-
-        /* iterate through the sorted periods combining them where they are
-         adjacent or overlap */
-
-        Period p = null;
-
-        it = eventPeriods.iterator();
-        while (it.hasNext()) {
-          EventPeriod ep = (EventPeriod)it.next();
-
-          if (p == null) {
-            p = new Period(ep.start, ep.end);
-          } else if (ep.start.after(p.getEnd())) {
-            // Non adjacent periods
-            fbc.addPeriod(p);
-            p = new Period(ep.start, ep.end);
-          } else if (ep.end.after(p.getEnd())) {
-            // Extend the current period
-            p = new Period(p.getStart(), ep.end);
-          } // else it falls within the existing period
-        }
-
-        if (p != null) {
-          fbc.addPeriod(p);
-        }
-
         fb.addTime(fbc);
-      } catch (Throwable t) {
-        throw new CalFacadeException(t);
+
+        return fb;
       }
+
+      /* For the moment just build a single BwFreeBusyComponent
+       */
+      BwFreeBusyComponent fbc = new BwFreeBusyComponent();
+
+      Iterator it = events.iterator();
+
+      TreeSet eventPeriods = new TreeSet();
+
+      while (it.hasNext()) {
+        EventInfo ei = (EventInfo)it.next();
+        BwEvent ev = ei.getEvent();
+
+        // Ignore if times were specified and this event is outside the times
+
+        BwDateTime estart = ev.getDtstart();
+        BwDateTime eend = ev.getDtend();
+
+        /* Don't report out of the requested period */
+
+        String dstart;
+        String dend;
+
+        if (estart.before(start)) {
+          dstart = start.getDtval();
+        } else {
+          dstart = estart.getDtval();
+        }
+
+        if (eend.after(end)) {
+          dend = end.getDtval();
+        } else {
+          dend = eend.getDtval();
+        }
+
+        eventPeriods.add(new EventPeriod(new DateTime(dstart),
+                                         new DateTime(dend)));
+      }
+
+      /* iterate through the sorted periods combining them where they are
+       adjacent or overlap */
+
+      Period p = null;
+
+      it = eventPeriods.iterator();
+      while (it.hasNext()) {
+        EventPeriod ep = (EventPeriod)it.next();
+
+        if (p == null) {
+          p = new Period(ep.start, ep.end);
+        } else if (ep.start.after(p.getEnd())) {
+          // Non adjacent periods
+          fbc.addPeriod(p);
+          p = new Period(ep.start, ep.end);
+        } else if (ep.end.after(p.getEnd())) {
+          // Extend the current period
+          p = new Period(p.getStart(), ep.end);
+        } // else it falls within the existing period
+      }
+
+      if (p != null) {
+        fbc.addPeriod(p);
+      }
+
+      fb.addTime(fbc);
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
     }
 
     return fb;

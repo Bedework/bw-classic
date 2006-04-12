@@ -96,7 +96,7 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
   /** This is a UTC datetime value to make searching easier. There are a number of
    * complications to dates, the end date is specified as non-inclusive
    * but there are a number of boundary problems to watch out for.
-   * 
+   *
    * <p>For date only values this field has a zero time appended so that simple
    * string comparisons will work.
    */
@@ -203,6 +203,10 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
+  }
+
+  public BwDateTime copy(CalTimezones timezones) throws CalFacadeException {
+    return makeDateTime(makeDtEnd(), timezones);
   }
 
   /** Make a DtStart from this object

@@ -54,6 +54,7 @@
 package org.bedework.calfacade;
 
 import org.bedework.calfacade.ifs.CalTimezones;
+import org.bedework.calfacade.svc.EventInfo;
 
 import net.fortuna.ical4j.model.Parameter;
 import net.fortuna.ical4j.model.ParameterList;
@@ -605,6 +606,88 @@ public class CalFacadeUtil implements Serializable {
     }
 
     return tzid;
+  }
+
+  /** This class defines the events and the period of interest and can be passed
+   * repeatedly to getPeriodsEvents.
+   *
+   * <p>The end datetime will be updated ready for the next call. If endDt is
+   * non-null on entry it will be used to set the startDt.
+   */
+  public static class GetPeriodsPars {
+    /** Event Info objects to extract from */
+    public Collection events;
+    /* Start of period - updated at each call from endDt */
+    public BwDateTime startDt;
+    /** Duration of period */
+    public BwDuration dur;
+    /** */
+    public CalTimezones tzcache;
+
+    /** On return has the end date of the period. */
+    public BwDateTime endDt;
+  }
+
+  /** Select the events in the collection which fall within the period
+   * defined by the start and duration.
+   *
+   * @param   pars      GetPeriodsPars object
+   * @return  Collection of EventInfo being one days events or empty for no events.
+   * @throws Throwable
+   */
+  public static Collection getPeriodsEvents(GetPeriodsPars pars) throws CalFacadeException {
+    ArrayList al = new ArrayList();
+    //long millis = System.currentTimeMillis();
+
+    if (pars.endDt != null) {
+      pars.startDt = pars.endDt.copy(pars.tzcache);
+    }
+    pars.endDt = pars.startDt.addDuration(pars.dur, pars.tzcache);
+    String start = pars.startDt.getDate();
+    String end = pars.endDt.getDate();
+
+    //if (debug) {
+    //  debugMsg("Did UTC stuff in " + (System.currentTimeMillis() - millis));
+    //}
+
+    Iterator it = pars.events.iterator();
+    while (it.hasNext()) {
+      EventInfo ei = (EventInfo)it.next();
+      BwEvent ev = ei.getEvent();
+
+      String evStart = ev.getDtstart().getDate();
+      String evEnd = ev.getDtend().getDate();
+
+      /* Event is within range if:
+         1.   (((evStart <= :start) and (evEnd > :start)) or
+         2.    ((evStart >= :start) and (evStart < :end)) or
+         3.    ((evEnd > :start) and (evEnd <= :end)))
+
+         XXX followed caldav which might be wrong. Try
+         3.    ((evEnd > :start) and (evEnd < :end)))
+      */
+
+      int evstSt = evStart.compareTo(start);
+      int evendSt = evEnd.compareTo(start);
+
+      //debugMsg("                   event " + evStart + " to " + evEnd);
+
+      if (((evstSt <= 0) && (evendSt > 0)) ||
+          ((evstSt >= 0) && (evStart.compareTo(end) < 0)) ||
+          //((evendSt > 0) && (evEnd.compareTo(end) <= 0))) {
+          ((evendSt > 0) && (evEnd.compareTo(end) < 0))) {
+        // Passed the tests.
+        /*
+        if (debug) {
+          debugMsg("Event passed range " + start + "-" + end +
+                   " with dates " + evStart + "-" + evEnd +
+                   ": " + ev.getSummary());
+        }*/
+        al.add(ei);
+      }
+    }
+
+    return al;
   }
 }
 

@@ -54,9 +54,9 @@
 package org.bedework.calfacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 /** Class representing free busy time. Used in icalendar objects
  *
@@ -73,7 +73,7 @@ public class BwFreeBusy implements Serializable {
 
   /** Collection of FreeBusyComponentVO
    */
-  private Vector times;
+  private Collection times;
 
   /** Constructor
    *
@@ -138,11 +138,11 @@ public class BwFreeBusy implements Serializable {
 
   /** Get the free busy times
    *
-   * @return Collection    of FreeBusyComponentVO
+   * @return Collection    of BwFreeBusyComponent
    */
   public Collection getTimes() {
     if (times == null) {
-      times = new Vector();
+      times = new ArrayList();
     }
     return times;
   }

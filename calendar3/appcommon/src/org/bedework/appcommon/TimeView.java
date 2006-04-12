@@ -106,7 +106,7 @@ public class TimeView implements Serializable {
   /** set on the first call to getTimePeriodInfo
    */
   private TimeViewDailyInfo[] tvdis;
-  
+
   //private static final TimezoneCache tzcache = new TimezoneCache(false);
 
   /** Constructor:
@@ -161,7 +161,7 @@ public class TimeView implements Serializable {
   public CalTimezones getTimezones() throws CalFacadeException {
     return cal.getTimezones();
   }
-  
+
   /**
    * @return CalSvcI
    */
@@ -277,23 +277,7 @@ public class TimeView implements Serializable {
    * @throws Throwable
    */
   public Collection getDaysEvents(MyCalendarVO date) throws Throwable {
-    ArrayList al = new ArrayList();
     CalTimezones tzcache = cal.getTimezones();
-//    Dur oneDay = new Dur(1, 0, 0, 0);
-    long millis = System.currentTimeMillis();
-    
-    //tzcache.setSysTimezones(cal.getTimezones());
-    BwDateTime startDt = CalFacadeUtil.getDateTime(date.getDateDigits(),
-                                                   tzcache);
-
-    BwDateTime endDt = startDt.getNextDay(tzcache);
-    String start = startDt.getDate();
-    String end = endDt.getDate();
-    
-    if (debug) {
-      debugMsg("Did UTC stuff in " + (System.currentTimeMillis() - millis));
-    }
-
     //if (debug) {
     //  debugMsg("Get days events in range " + start + " to " + end);
     //}
@@ -304,6 +288,22 @@ public class TimeView implements Serializable {
                              CalFacadeUtil.getDateTime(lastDay.getTomorrow().getDateDigits(),
                                                        tzcache),
                              CalFacadeDefs.retrieveRecurExpanded);
+    }
+
+    ArrayList al = new ArrayList();
+//  Dur oneDay = new Dur(1, 0, 0, 0);
+    long millis = System.currentTimeMillis();
+
+    //tzcache.setSysTimezones(cal.getTimezones());
+    BwDateTime startDt = CalFacadeUtil.getDateTime(date.getDateDigits(),
+                                                   tzcache);
+
+    BwDateTime endDt = startDt.getNextDay(tzcache);
+    String start = startDt.getDate();
+    String end = endDt.getDate();
+
+    if (debug) {
+      debugMsg("Did UTC stuff in " + (System.currentTimeMillis() - millis));
     }
 
     Iterator it = events.iterator();
@@ -318,7 +318,7 @@ public class TimeView implements Serializable {
          1.   (((evStart <= :start) and (evEnd > :start)) or
          2.    ((evStart >= :start) and (evStart < :end)) or
          3.    ((evEnd > :start) and (evEnd <= :end)))
-         
+
          XXX followed caldav which might be wrong. Try
          3.    ((evEnd > :start) and (evEnd < :end)))
       */
@@ -439,18 +439,18 @@ public class TimeView implements Serializable {
       gtpi.last = getLastDay();
       gtpi.multi = !gtpi.last.isSameDate(gtpi.first);
       gtpi.currentDay = new MyCalendarVO(gtpi.first.getTime(),
-      		                               calInfo.getLocale());
+                                         calInfo.getLocale());
       gtpi.year = String.valueOf(gtpi.currentDay.getYear());
 
       Locale loc = Locale.getDefault(); // XXX Locale
       gtpi.todaysMonth = new MyCalendarVO(   // XXX Expensive??
-                                          new Date(System.currentTimeMillis()), 
+                                          new Date(System.currentTimeMillis()),
                                           loc).getTwoDigitMonth();
 
       if (debug) {
         debugMsg("getFirstDayOfWeek() = " + getFirstDayOfWeek());
         debugMsg("gtpi.first.getFirstDayOfWeek() = " +
-        		     calInfo.getFirstDayOfWeek());
+                 calInfo.getFirstDayOfWeek());
       }
 
       initGtpiForMonth(gtpi);

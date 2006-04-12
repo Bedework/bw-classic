@@ -58,6 +58,7 @@ import org.bedework.calfacade.BwAlarm;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwDateTime;
+import org.bedework.calfacade.BwDuration;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwEventAlarm;
 import org.bedework.calfacade.BwFreeBusy;
@@ -795,18 +796,25 @@ public abstract class CalSvcI implements Serializable {
    *                   Free busy
    * ==================================================================== */
 
-  /** Get the free busy for the given principal.
+  /** Get the free busy for the given principal. A granularity of null results
+   * in a list of busy periods. Otherwise the start to end time is divided up
+   * into granularity sized chunks which will only be reported if one or more
+   * events fall in the segment.
    *
    * @param cal    Calendar to provide free-busy for. Null for default
    *               collection (as specified by user).
    * @param who
    * @param start
    * @param end
+   * @param granularity BwDuration object defining how to divide free/busy
+   *                    null for one big glob. or set to e.g. 1 hour for
+   *                    hourly chunks.
    * @return BwFreeBusy
    * @throws CalFacadeException
    */
   public abstract BwFreeBusy getFreeBusy(BwCalendar cal, BwPrincipal who,
-                                         BwDateTime start, BwDateTime end)
+                                         BwDateTime start, BwDateTime end,
+                                         BwDuration granularity)
           throws CalFacadeException;
 
   /* ====================================================================

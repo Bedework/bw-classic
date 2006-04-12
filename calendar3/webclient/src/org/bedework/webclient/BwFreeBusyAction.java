@@ -56,18 +56,15 @@ package org.bedework.webclient;
 
 //import org.bedework.calfacade.BwDateTime;
 import org.bedework.appcommon.MyCalendarVO;
+import org.bedework.calfacade.BwDuration;
 import org.bedework.calfacade.BwFreeBusy;
-import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calsvci.CalSvcI;
 
-
-
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -127,58 +124,40 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
       return "error";
     }
 
-    int intunit = Calendar.HOUR;
     String intunitStr = getReqPar(request, "intunit");
+    BwDuration dur = new BwDuration();
 
     if (intunitStr != null) {
       if ("minutes".equals(intunitStr)) {
-        intunit = Calendar.MINUTE;
+        dur.setMinutes(interval);
       } else if ("hours".equals(intunitStr)) {
-        intunit = Calendar.HOUR;
+        dur.setHours(interval);
       } else if ("days".equals(intunitStr)) {
-        intunit = Calendar.DAY_OF_MONTH;
+        dur.setDays(interval);
       } else if ("weeks".equals(intunitStr)) {
-        intunit = Calendar.WEEK_OF_YEAR;
-      } else if ("months".equals(intunitStr)) {
-        intunit = Calendar.MONTH;
+        dur.setWeeks(interval);
       } else {
         form.getErr().emit("org.bedework.client.error.badintervalunit");
         return "error";
       }
+    } else {
+      dur.setHours(interval);
     }
 
     //int maxRequests = 1000;
     CalTimezones tzs = svci.getTimezones();
 
-    BwFreeBusy fb = null;
-    while (start.before(end)) {
-      Date sdt = start.getTime();
-      start.add(intunit, interval);
+    Date sdt = start.getTime();
+    Date edt = end.getTime();
 
-      if (debug) {
-        debugMsg("getFreeBusy for start =  " + sdt +
-                 " end = " + start.getTime());
-      }
-      BwFreeBusy fb1 = svci.getFreeBusy(null, user,
-                          CalFacadeUtil.getDateTime(sdt, false, true, tzs),
-                          CalFacadeUtil.getDateTime(start.getTime(), false, true,
-                                                    tzs));
-
-      if (fb == null) {
-        fb = fb1;
-      } else {
-        Iterator it = fb1.iterateTimes();
-        while (it.hasNext()) {
-          BwFreeBusyComponent fbc = (BwFreeBusyComponent)it.next();
-
-          if (!fbc.getEmpty()) {
-            fb.addTime(fbc);
-          }
-        }
-      }
+    if (debug) {
+      debugMsg("getFreeBusy for start =  " + sdt +
+               " end = " + edt);
     }
-
-    fb.setEnd(CalFacadeUtil.getDateTime(end.getTime(), false, false, tzs));
+    BwFreeBusy fb = svci.getFreeBusy(null, user,
+                                     CalFacadeUtil.getDateTime(sdt, false, false, tzs),
+                                     CalFacadeUtil.getDateTime(edt, false, false, tzs),
+                                     dur);
 
     form.assignFreeBusy(fb);
 
