@@ -57,8 +57,9 @@ package edu.rpi.cct.uwcal.caldav.filter;
 import edu.rpi.cct.uwcal.caldav.TimeRange;
 import edu.rpi.cct.webdav.servlet.common.WebdavUtils;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
@@ -74,9 +75,9 @@ public class CompFilter {
 
   private TimeRange timeRange;
 
-  private Vector compFilters;
+  private Collection compFilters;
 
-  private Vector propFilters;
+  private Collection propFilters;
 
   /** Constructor
    * @param name
@@ -130,9 +131,9 @@ public class CompFilter {
   /**
    * @return Vector of comp filters
    */
-  public Vector getCompFilters() {
+  public Collection getCompFilters() {
     if (compFilters == null) {
-      compFilters = new Vector();
+      compFilters = new ArrayList();
     }
 
     return compFilters;
@@ -155,9 +156,9 @@ public class CompFilter {
   /**
    * @return Vector of prop filter
    */
-  public Vector getPropFilters() {
+  public Collection getPropFilters() {
     if (propFilters == null) {
-      propFilters = new Vector();
+      propFilters = new ArrayList();
     }
 
     return propFilters;

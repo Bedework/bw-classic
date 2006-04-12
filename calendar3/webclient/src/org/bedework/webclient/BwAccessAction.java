@@ -136,7 +136,7 @@ public class BwAccessAction extends BwCalAbstractAction {
         return "doNothing";
       }
     } else {
-      EventInfo ei = svci.getEvent(id);
+      EventInfo ei = findEvent(request, form);
 
       if (ei == null) {
         // Do nothing

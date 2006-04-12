@@ -1046,7 +1046,8 @@ public class CalSvc extends CalSvcI {
         continue;
       }
 
-      Collection evs = getEvents(sub, null, start, end, CalFacadeDefs.retrieveRecurExpanded);
+      Collection evs = getEvents(sub, null, start, end,
+                                 CalFacadeDefs.retrieveRecurExpanded);
 
       try {
         /* For the moment just build a single FreeBusyComponentVO

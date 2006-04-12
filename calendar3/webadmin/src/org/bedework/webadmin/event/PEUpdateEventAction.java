@@ -122,7 +122,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
       /* Refetch the event and switch it for a cloned copy.
        * guid must be set to null to avoid dup guid.
        */
-      EventInfo ei = form.fetchSvci().getEvent(event.getId());
+      EventInfo ei = fetchEvent(event, form);
       BwEvent evcopy = new BwEventObj();
       ei.getEvent().shallowCopyTo(evcopy);
 

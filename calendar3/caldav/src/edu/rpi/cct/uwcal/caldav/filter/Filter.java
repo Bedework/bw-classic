@@ -69,9 +69,9 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 import edu.rpi.cct.webdav.servlet.common.WebdavUtils;
 import edu.rpi.sss.util.xml.XmlUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 import javax.servlet.http.HttpServletResponse;
 
 import net.fortuna.ical4j.model.Component;
@@ -235,7 +235,7 @@ public class Filter {
     // Currently only accept VCALENDAR for top level.
 
     if (!"VCALENDAR".equals(cfltr.getName())) {
-      return new Vector();
+      return new ArrayList();
     }
 
     /* Currently we only handle events */
@@ -261,7 +261,7 @@ public class Filter {
       calTimerange = cfltr.getTimeRange();
       if ((calTimerange != null) &&
           (calTimerange.getStart().after(calTimerange.getEnd()))) {
-        return new Vector();
+        return new ArrayList();
       }
 
       /* Now look at named sub components. Because we AND the components I
@@ -273,8 +273,8 @@ public class Filter {
         eventq = new EventQuery();
         eventq.trange = calTimerange;
       } else {
-        Vector subcfs = cfltr.getCompFilters();
-        CompFilter subcf = (CompFilter)subcfs.firstElement();
+        Collection subcfs = cfltr.getCompFilters();
+        CompFilter subcf = (CompFilter)subcfs.iterator().next();
 
         if ("VEVENT".equals(subcf.getName())) {
           eventq = buildEventQuery(subcfs, calTimerange);
@@ -286,25 +286,25 @@ public class Filter {
           if (subcf.hasPropFilters()) {
             postFilterNeeded = true;
             if (eventFilters == null) {
-              eventFilters = new Vector();
+              eventFilters = new ArrayList();
             }
             eventFilters.addAll(subcf.getPropFilters());
           }
 
           if (eventq == null) {
-            return new Vector();
+            return new ArrayList();
           }
         } else {
           /* Don't support anything else so just return an empty
              Collection
            */
-          return new Vector();
+          return new ArrayList();
         }
       }
     }
 
     if (eventq == null) {
-      return new Vector();
+      return new ArrayList();
     }
 
     if (debug) {
@@ -368,10 +368,10 @@ public class Filter {
 
     // Currently only handle VCALENDAR for top level.
     if (!"VCALENDAR".equals(cfltr.getName())) {
-      return new Vector();
+      return new ArrayList();
     }
 
-    Vector filtered = new Vector();
+    ArrayList filtered = new ArrayList();
     Iterator it = nodes.iterator();
     while (it.hasNext()) {
       Object node = it.next();
@@ -418,13 +418,13 @@ public class Filter {
   /** We are given a Vector of com-filters which should all name VEVENT
    * and provide conditions for the query.
    *
-   * @param cfs
+   * @param cfs    Collection
    * @param globaltr
    * @return EventQuery    defining query or null if nothing could be
    *                       returned.
    * @throws WebdavException
    */
-  private EventQuery buildEventQuery(Vector cfs,
+  private EventQuery buildEventQuery(Collection cfs,
                                      TimeRange globaltr) throws WebdavException {
     Iterator it = cfs.iterator();
     EventQuery eq = new EventQuery();
@@ -467,7 +467,7 @@ public class Filter {
         return null;
       }
 
-      Vector propFilters = cf.getPropFilters();
+      Collection propFilters = cf.getPropFilters();
 
       if (eq.propFilters == null) {
         eq.propFilters = propFilters;
@@ -483,7 +483,7 @@ public class Filter {
   private static class EventQuery {
     TimeRange trange;
 
-    Vector propFilters;
+    Collection propFilters;
 
     /* true if we have to postfilter the result obtained via a search
      */

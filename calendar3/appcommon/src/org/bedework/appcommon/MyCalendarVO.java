@@ -470,6 +470,10 @@ public class MyCalendarVO implements Serializable {
     Calendar firstDay = (Calendar)calendar.clone();
     firstDay.set(Calendar.DAY_OF_MONTH,
                  calendar.getMinimum(Calendar.DAY_OF_MONTH));
+    firstDay.set(Calendar.HOUR_OF_DAY, 0);
+    firstDay.set(Calendar.MINUTE, 0);
+    firstDay.set(Calendar.SECOND, 0);
+    firstDay.set(Calendar.MILLISECOND, 0);
     return new MyCalendarVO(firstDay, calInfo.getLocale());
   }
 
@@ -484,6 +488,10 @@ public class MyCalendarVO implements Serializable {
     c.set(Calendar.DAY_OF_MONTH, calendar.getMinimum(Calendar.DAY_OF_MONTH));
     c.add(Calendar.MONTH, 1);
     c.add(Calendar.DATE, -1);
+    c.set(Calendar.HOUR_OF_DAY, 0);
+    c.set(Calendar.MINUTE, 0);
+    c.set(Calendar.SECOND, 0);
+    c.set(Calendar.MILLISECOND, 0);
     return new MyCalendarVO(c, calInfo.getLocale());
   }
 
@@ -495,6 +503,10 @@ public class MyCalendarVO implements Serializable {
   public MyCalendarVO getFirstDayOfThisWeek() {
     Calendar firstDay = (Calendar)calendar.clone();
     firstDay.set(Calendar.DAY_OF_WEEK, calInfo.getFirstDayOfWeek());
+    firstDay.set(Calendar.HOUR_OF_DAY, 0);
+    firstDay.set(Calendar.MINUTE, 0);
+    firstDay.set(Calendar.SECOND, 0);
+    firstDay.set(Calendar.MILLISECOND, 0);
     return new MyCalendarVO(firstDay, calInfo.getLocale());
   }
 
@@ -508,6 +520,10 @@ public class MyCalendarVO implements Serializable {
     c.set(Calendar.DAY_OF_WEEK, calInfo.getFirstDayOfWeek());
     c.add(Calendar.WEEK_OF_YEAR, 1);
     c.add(Calendar.DATE, -1);
+    c.set(Calendar.HOUR_OF_DAY, 0);
+    c.set(Calendar.MINUTE, 0);
+    c.set(Calendar.SECOND, 0);
+    c.set(Calendar.MILLISECOND, 0);
     return new MyCalendarVO(c, calInfo.getLocale());
   }
 

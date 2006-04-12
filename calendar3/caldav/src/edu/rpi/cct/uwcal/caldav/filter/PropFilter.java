@@ -57,8 +57,9 @@ package edu.rpi.cct.uwcal.caldav.filter;
 import edu.rpi.cct.uwcal.caldav.TimeRange;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.Property;
@@ -80,7 +81,7 @@ public class PropFilter {
 
   private TextMatch match;
 
-  private Vector paramFilters;
+  private ArrayList paramFilters;
 
   /** Constructor
    *
@@ -177,11 +178,11 @@ public class PropFilter {
   }
 
   /**
-   * @return Vector
+   * @return Collection
    */
-  public Vector getParamFilters() {
+  public Collection getParamFilters() {
     if (paramFilters == null) {
-      paramFilters = new Vector();
+      paramFilters = new ArrayList();
     }
 
     return paramFilters;

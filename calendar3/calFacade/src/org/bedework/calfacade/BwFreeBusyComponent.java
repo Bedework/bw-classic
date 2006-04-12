@@ -54,9 +54,9 @@
 package org.bedework.calfacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import net.fortuna.ical4j.model.Period;
 
@@ -82,7 +82,7 @@ public class BwFreeBusyComponent implements Serializable {
 
   /** Collection of Period
    */
-  private Vector periods;
+  private ArrayList periods;
 
   /** Constructor
    *
@@ -110,7 +110,7 @@ public class BwFreeBusyComponent implements Serializable {
    */
   public Collection getPeriods() {
     if (periods == null) {
-      periods = new Vector();
+      periods = new ArrayList();
     }
     return periods;
   }

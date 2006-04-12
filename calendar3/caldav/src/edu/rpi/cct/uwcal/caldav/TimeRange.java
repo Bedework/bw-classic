@@ -56,6 +56,7 @@ package edu.rpi.cct.uwcal.caldav;
 
 import org.bedework.calfacade.BwDateTime;
 
+import net.fortuna.ical4j.model.property.DateProperty;
 import net.fortuna.ical4j.model.Property;
 
 import org.apache.log4j.Logger;
@@ -132,6 +133,10 @@ public class TimeRange {
    * @return boolean true if in range
    */
   public boolean matches(Property candidate) {
+    if (!(candidate instanceof DateProperty)) {
+      return false;
+    }
+
     // XXX later
     return true;
   }

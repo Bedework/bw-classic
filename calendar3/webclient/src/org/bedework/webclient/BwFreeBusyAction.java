@@ -55,10 +55,12 @@
 package org.bedework.webclient;
 
 //import org.bedework.calfacade.BwDateTime;
+import org.bedework.appcommon.MyCalendarVO;
 import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calsvci.CalSvcI;
 
 
@@ -72,13 +74,15 @@ import javax.servlet.http.HttpServletRequest;
  * Action to fetch free busy information
  * <p>Request parameters - all optional:<ul>
  *      <li>  userid:   whose free busy we want - default to current user</li>.
- *      <li>  calendar: name of the calendar - default to main calendar</li>.
+ *      <li>  calendar: name of the calendar - default to subscriptions
+ *                      specified by user</li>.
  *      <li>  start:    start of period - default to beginning of this week</li>.
  *      <li>  end:      end of period - default to end of this week</li>.
- *      <li>  interval: default entire period or a number</li>.
+ *      <li>  interval: default entire period or a multiplier</li>.
  *      <li>  intunit:  default to hours, "minutes", "hours, "days", "weeks"
  *                      "months"</li>.
  * </ul>
+ * <p>e.g interval=30 and intunit="minutes" means half hour intervals
  * <p>Forwards to:<ul>
  *      <li>"doNothing"    input error or we want to ignore the request.</li>
  *      <li>"notFound"     event not found.</li>
@@ -95,9 +99,9 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
    */
   public String doAction(HttpServletRequest request,
                          BwActionForm form) throws Throwable {
-    String userId = request.getParameter("userid");
     BwUser user;
     CalSvcI svci = form.fetchSvci();
+    String userId = getReqPar(request, "userid");
 
     if (userId != null) {
       user = svci.findUser(userId);
@@ -109,31 +113,22 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
       user = svci.getUser();
     }
 
-    Calendar start = Calendar.getInstance(request.getLocale());
+    MyCalendarVO today = form.getToday();
+    MyCalendarVO thisWeek = today.getFirstDayOfThisWeek();
+    Calendar start = thisWeek.getCalendar();
     //BwDateTime startDt = form.getEventStartDate().getDateTime();
 
-    Calendar end = Calendar.getInstance(request.getLocale());
+    Calendar end = thisWeek.getNextWeek().getCalendar();
     //BwDateTime endDt = form.getEventEndDate().getDateTime();
 
-    int interval = 1;
-    String intstr = request.getParameter("interval");
-
-    if (intstr != null) {
-      try {
-        interval = Integer.parseInt(intstr);
-      } catch (Throwable t) {
-        form.getErr().emit("org.bedework.client.error.badinterval");
-        return "error";
-      }
-    }
-
+    int interval = getIntReqPar(request, "interval", 1);
     if (interval <= 0) {
       form.getErr().emit("org.bedework.client.error.badinterval");
       return "error";
     }
 
     int intunit = Calendar.HOUR;
-    String intunitStr = request.getParameter("intunit");
+    String intunitStr = getReqPar(request, "intunit");
 
     if (intunitStr != null) {
       if ("minutes".equals(intunitStr)) {
@@ -153,6 +148,7 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
     }
 
     //int maxRequests = 1000;
+    CalTimezones tzs = svci.getTimezones();
 
     BwFreeBusy fb = null;
     while (start.before(end)) {
@@ -164,10 +160,9 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
                  " end = " + start.getTime());
       }
       BwFreeBusy fb1 = svci.getFreeBusy(null, user,
-                          CalFacadeUtil.getDateTime(sdt, false, true,
-                                                    svci.getTimezones()),
+                          CalFacadeUtil.getDateTime(sdt, false, true, tzs),
                           CalFacadeUtil.getDateTime(start.getTime(), false, true,
-                                                    svci.getTimezones()));
+                                                    tzs));
 
       if (fb == null) {
         fb = fb1;
@@ -183,7 +178,7 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
       }
     }
 
-    fb.setEnd(form.getEventEndDate().getDateTime());
+    fb.setEnd(CalFacadeUtil.getDateTime(end.getTime(), false, false, tzs));
 
     form.assignFreeBusy(fb);
 

@@ -60,6 +60,7 @@ import org.bedework.appcommon.UserAuthPar;
 import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
+import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwUser;
@@ -390,6 +391,60 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       return null;
     } else if (debug) {
       debugMsg("Get event by guid found " + ev.getEvent());
+    }
+
+    return ev;
+  }
+
+  /** Refetch an event givena copy of that event. Calnedar guid and possibly
+   * recurrecne id must be set.
+   *
+   * @param event   BwEvent to refetch
+   * @param form
+   * @return EventInfo or null if not found
+   * @throws Throwable
+   */
+  protected EventInfo fetchEvent(BwEvent event,
+                                 BwActionFormBase form) throws Throwable {
+    CalSvcI svci = form.fetchSvci();
+    EventInfo ev = null;
+    BwSubscription sub = null;
+
+    BwCalendar cal = event.getCalendar();
+
+    if (cal == null) {
+      // Assume no access
+      form.getErr().emit("org.bedework.client.error.noaccess");
+      return null;
+    }
+
+    String guid = event.getGuid();
+
+    if (guid == null) {
+      // Assume no access
+      form.getErr().emit("org.bedework.client.error.noaccess");
+      return null;
+    }
+
+    String rid = event.getRecurrence().getRecurrenceId();
+
+    // XXX is this right?
+    int retMethod = CalFacadeDefs.retrieveRecurMaster;
+    Collection evs = svci.getEvent(sub, cal, guid, rid, retMethod);
+    if (debug) {
+      debugMsg("Get event by guid found " + evs.size());
+    }
+    if (evs.size() == 1) {
+      ev = (EventInfo)evs.iterator().next();
+    } else {
+      // XXX this needs dealing with
+    }
+
+    if (ev == null) {
+      form.getErr().emit("org.bedework.client.error.nosuchevent", /*eid*/guid);
+      return null;
+    } else if (debug) {
+      debugMsg("Fetch event found " + ev.getEvent());
     }
 
     return ev;
