@@ -168,7 +168,7 @@ h4 {
   color: black;
   background: white url(../../resources/sideBarGrayGrad.gif) repeat-y right;
   border-left: 2px solid #333;
-  /*border-right: 1px solid #333;*/
+  border-right: 1px solid #333;
   border-bottom: 2px solid #aaa;
   border-top: 24px solid #333;
   vertical-align: top;
