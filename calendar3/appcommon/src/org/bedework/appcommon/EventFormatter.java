@@ -80,8 +80,8 @@ public class EventFormatter implements Serializable {
   private CalendarInfo calInfo;
 
   private CalTimezones ctz;
-  
-  private CalSvcI svci;
+
+  //private CalSvcI svci;
 
   /** The view currently in place.
    */
@@ -97,7 +97,7 @@ public class EventFormatter implements Serializable {
   private DateTimeFormatter end;
 
   private String xmlAccess;
-  
+
   /** Constructor
    *
    * @param eventInfo
@@ -110,7 +110,7 @@ public class EventFormatter implements Serializable {
     this.eventInfo = eventInfo;
     this.calInfo = calInfo;
     this.ctz= ctz;
-    this.svci = svci;
+    //this.svci = svci;
   }
 
   /** =====================================================================
@@ -205,7 +205,7 @@ public class EventFormatter implements Serializable {
 
     return end;
   }
-  
+
   public String getXmlAccess() {
     try {
       if (xmlAccess == null) {

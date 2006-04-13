@@ -99,7 +99,7 @@ public class TimeView implements Serializable {
   protected String nextDate;
   protected boolean showData;
 
-  /* Fetched at initialisation
+  /* Fetched when required
    */
   protected Collection events;
 
@@ -147,11 +147,6 @@ public class TimeView implements Serializable {
     this.nextDate = nextDate;
     this.showData = showData;
     this.debug = debug;
-
-    /*
-    events = cal.getEvents(null, null, CalFacadeUtil.getDateTime(firstDay.getDateDigits()),
-                      CalFacadeUtil.getDateTime(lastDay.getDateDigits()));
-                      */
   }
 
   /**

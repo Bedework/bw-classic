@@ -87,23 +87,23 @@ public class BwPreferences extends BwOwnedDbentity {
    *  are internal values only - not meant for display.
    */
   private String preferredEndType;
-  
+
   /** Value identifying an extra simple user mode - we just do stuff without
    * asking
    */
   public static final int extraSimpleMode = 0;
-  
+
   /** Value identifying a simple user mode - we hide some stuff but make
    * fewer assumptions
    */
   public static final int simpleMode = 1;
-  
+
   /** Value identifying an advanced user mode - reveal it in all its glory
    */
   public static final int advancedMode = 2;
 
   private int userMode;
-  
+
   /** Constructor
    *
    */
@@ -342,6 +342,45 @@ public class BwPreferences extends BwOwnedDbentity {
   public Iterator iterateViews() {
     return getViews().iterator();
   }
+
+  /** Turn a String time value e.g. 1030 into a numeric minutes value and set
+   * the numeric value in the prefeences.
+   *
+   * <p>Ignores anything after the first four characters which must all be digits.
+   *
+   * @param val  String time value
+   */
+  public void setWorkdayStart(String val) throws CalFacadeException{
+    boolean badval = false;
+    int minutes = 0;
+
+    try {
+      int hours = Integer.parseInt(val.substring(0, 2));
+      minutes = Integer.parseInt(val.substring(2, 4));
+      if ((hours < 0) || (hours > 24)) {
+        badval = true;
+      } else if ((minutes < 0) || (minutes > 59)) {
+        badval = true;
+      } else {
+        minutes *= (hours * 60);
+      }
+    } catch (Throwable t) {
+      badval = true;
+    }
+
+    if (badval) {
+      throw new CalFacadeException("org.bedework.prefs.badvalue", val);
+    }
+
+    setWorkdayStart(minutes);
+  }
+
+  /**
+   * @return int work day start
+   * /
+  public int getWorkdayStart() {
+    return workdayStart;
+  }*/
 
   /* ====================================================================
    *                   Object methods

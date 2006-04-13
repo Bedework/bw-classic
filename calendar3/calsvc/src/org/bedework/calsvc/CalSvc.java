@@ -2072,7 +2072,7 @@ public class CalSvc extends CalSvcI {
      *
      * This way we get too many.
      */
-    if (!isPublicAdmin()) {
+    if (!isGuest() && !isPublicAdmin()) {
       deleted = getCal().getDeletedProxies();
     }
 
