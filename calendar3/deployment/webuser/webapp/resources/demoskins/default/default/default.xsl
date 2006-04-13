@@ -1098,8 +1098,8 @@
           <xsl:if test="end/time != ''"><span class="time"><xsl:value-of select="end/time"/></span></xsl:if>
         </td>
         <th class="icon" rowspan="2">
-          <xsl:variable name="icalName" select="concat($guid,'.ics')"/>
-          <a href="{$eventView}?subid={$subscriptionId}&amp;&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$icalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+          <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
+          <a href="{$export}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
             <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
           </a><!-- <br />
           [<a href="">help</a>] -->
