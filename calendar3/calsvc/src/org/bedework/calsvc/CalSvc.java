@@ -99,6 +99,7 @@ import org.bedework.icalendar.TimeZoneRegistryImpl;
 import org.bedework.icalendar.URIgen;
 //import org.bedework.mail.MailerIntf;
 
+import edu.rpi.cct.misc.indexing.Index;
 import edu.rpi.cct.uwcal.access.PrivilegeDefs;
 import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.uwcal.resources.Resources;
@@ -126,6 +127,8 @@ import org.apache.log4j.Logger;
  */
 public class CalSvc extends CalSvcI {
   private CalSvcIPars pars;
+
+  private Index indexer;
 
   private boolean debug;
 
@@ -1014,21 +1017,19 @@ public class CalSvc extends CalSvcI {
 
   public BwFreeBusy getFreeBusy(BwCalendar cal, BwPrincipal who,
                                 BwDateTime start, BwDateTime end,
-                                BwDuration granularity)
+                                BwDuration granularity,
+                                boolean returnAll)
           throws CalFacadeException {
     if (!(who instanceof BwUser)) {
       throw new CalFacadeException("Unsupported: non user principal for free-busy");
-    }
-
-    if (isGuest() || (!currentUser().equals(who))) {
-      // No access for the moment
-      throw new CalFacadeAccessException();
     }
 
     BwUser u = (BwUser)who;
     Collection subs;
 
     if (cal != null) {
+      getCal().checkAccess(cal, PrivilegeDefs.privReadFreeBusy, false);
+
       BwSubscription sub = BwSubscription.makeSubscription(cal);
 
       subs = new ArrayList();
@@ -1036,6 +1037,9 @@ public class CalSvc extends CalSvcI {
     } else if (currentUser().equals(who)) {
       subs = getSubscriptions();
     } else {
+      getCal().checkAccess(getCal().getCalendars(u),
+                           PrivilegeDefs.privReadFreeBusy, false);
+
       subs = dbi.fetchPreferences(u).getSubscriptions();
     }
 
@@ -1079,15 +1083,19 @@ public class CalSvc extends CalSvcI {
         gpp.dur = granularity;
         gpp.tzcache = getTimezones();
 
-        /* For the moment just build a single BwFreeBusyComponent
-         */
-        BwFreeBusyComponent fbc = new BwFreeBusyComponent();
+        BwFreeBusyComponent fbc = null;
+
+        if (!returnAll) {
+          // One component
+          fbc = new BwFreeBusyComponent();
+          fb.addTime(fbc);
+        }
 
         int limit = 10000; // XXX do this better
         while (gpp.startDt.before(end)) {
-          if (debug) {
-            trace("gpp.startDt=" + gpp.startDt + " end=" + end);
-          }
+          //if (debug) {
+          //  trace("gpp.startDt=" + gpp.startDt + " end=" + end);
+          //}
           if (limit < 0) {
             throw new CalFacadeException("org.bedework.svci.limit.exceeded");
           }
@@ -1095,14 +1103,21 @@ public class CalSvc extends CalSvcI {
 
           Collection periodEvents = CalFacadeUtil.getPeriodsEvents(gpp);
 
-          if (periodEvents.size() != 0) {
+          if (returnAll) {
+            fbc = new BwFreeBusyComponent();
+            fb.addTime(fbc);
+            fbc.addPeriod(new Period(new DateTime(gpp.startDt.getDtval()),
+                                     new DateTime(gpp.endDt.getDtval())));
+            if (periodEvents.size() == 0) {
+              fbc.setType(BwFreeBusyComponent.typeFree);
+            }
+          } else if (periodEvents.size() != 0) {
             // Some events fall in the period. Add an entry.
 
             fbc.addPeriod(new Period(new DateTime(gpp.startDt.getDtval()),
                                      new DateTime(gpp.endDt.getDtval())));
           }
         }
-        fb.addTime(fbc);
 
         return fb;
       }
@@ -2370,6 +2385,70 @@ public class CalSvc extends CalSvcI {
       }
 
       entity.setOwner(owner);
+    }
+  }
+
+  /* ====================================================================
+   *                   Private indexing methods
+   * ==================================================================== */
+
+  private Index getIndexer() throws CalFacadeException {
+    try {
+      if (indexer == null) {
+        indexer = new BwIndexLuceneImpl(this,
+                                        // XXX Schema change - in syspars
+                                        "/temp/bedeworkindex",
+                                        isPublicAdmin(),
+                                        debug);
+      }
+
+      return indexer;
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
+  /* Call to (re)index an event
+   */
+  private void indexEvent(BwEvent ev) throws CalFacadeException {
+    try {
+      getIndexer().indexRec(ev);
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
+  private void unindexEvent(BwEvent ev) throws CalFacadeException {
+    try {
+      getIndexer().unindexRec(ev);
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
+  /* Call to (re)index a calendar
+   */
+  private void indexCalendar(BwCalendar cal) throws CalFacadeException {
+    try {
+      getIndexer().indexRec(cal);
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
+  private void unindexCalendar(BwCalendar cal) throws CalFacadeException {
+    try {
+      getIndexer().unindexRec(cal);
+
+      // And all the children
+      Iterator it = cal.iterateChildren();
+      while (it.hasNext()) {
+        BwCalendar ch = (BwCalendar)it.next();
+
+        unindexCalendar(ch);
+      }
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
     }
   }
 

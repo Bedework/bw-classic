@@ -51,143 +51,102 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.calfacade;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+package org.bedework.calsvc;
 
-/** Class representing free busy time. Used in icalendar objects
+/** Haven't yet figured out how we'll internationalize queries. I think internal
+ * lucene field names will have to be fixed and defined below and front end
+ * implementors will need to provide a mapping.
  *
- * @author Mike Douglass   douglm@rpi.edu
- *  @version 1.0
+ * <p>We can possibly provide a subsclass of the parser to take a mapping table
+ * of allowable external names to internal names.
+ *
+ * <p>In any case, this class defines the names of all the fields we index.
+ *
+ * @author Mike Douglass douglm @ rpi.edu
+ *
  */
-public class BwFreeBusy implements Serializable {
-  /** Who's free busy? Normally a user - could be a room.
-   */
-  private BwPrincipal who;
-
-  private BwDateTime start;
-  private BwDateTime end;
-
-  /** Collection of BwFreeBusyComponent
-   */
-  private Collection times;
-
-  /** Constructor
-   *
-   */
-  public BwFreeBusy() {
+public class BwIndexLuceneDefs {
+  private BwIndexLuceneDefs() {
+    // There'll be no instantiation here
   }
 
-  /** Constructor
-   *
-   * @param who
-   * @param start
-   * @param end
-   */
-  public BwFreeBusy(BwPrincipal who, BwDateTime start, BwDateTime end) {
-    this.who = who;
-    this.start = start;
-    this.end = end;
-  }
+  /* ---------------------------- Calendar fields ------------------------- */
 
-  /** who owns or asked for
-   *
-   * @param val BwPrincipal
+  /** */
+  public static final String calendarDescription = "calendarDescription";
+
+  /** Key field for a calendar */
+  public static final String calendarPath = "calendarPath";
+
+  /** */
+  public static final String calendarSummary = "calendarSummary";
+
+  /* ---------------------------- Event fields ------------------------- */
+
+  /** */
+  public static final String eventCategory = "eventCategory";
+
+  /** */
+  public static final String eventDescription = "eventDescription";
+
+  /** */
+  public static final String eventEnd = "eventEnd";
+
+  /** */
+  public static final String eventLocation = "eventLocation";
+
+  /** */
+  public static final String eventStart = "eventStart";
+
+  /** */
+  public static final String eventSummary = "eventSummary";
+
+  /** */
+  public static final String defaultFieldName = "default";
+
+  /* Field names for fields which contain item type and key information.
    */
-  public void setWho(BwPrincipal val) {
-    who = val;
-  }
+
+  /** Field name defining type of item */
+  public static final String itemTypeName = "itemType";
+
+  /** */
+  public static final String[] termNames = {
+    itemTypeName,
+
+    // ----------------- Calendar
+    calendarDescription,
+    calendarSummary,
+
+    // ----------------- Event
+    eventCategory,
+    eventDescription,
+    eventLocation,
+    eventSummary,
+  };
 
   /**
-   * @return BwPrincipal
+   * @return String[]
    */
-  public BwPrincipal getWho() {
-    return who;
+  public static String[] getTermNames() {
+    return termNames;
   }
 
-  /**
-   * @param val
+  /* Item types. We index various item types and these strings define each
+   * type.
    */
-  public void setStart(BwDateTime val) {
-    start = val;
-  }
 
-  /**
-   * @return BwDateTime start
-   */
-  public BwDateTime getStart() {
-    return start;
-  }
+  /** */
+  public static final String itemTypeCalendar = "calendar";
 
-  /**
-   * @param val
-   */
-  public void setEnd(BwDateTime val) {
-    end = val;
-  }
+  /** */
+  public static final String itemTypeEvent = "event";
 
-  /**
-   * @return BwDateTime end
-   */
-  public BwDateTime getEnd() {
-    return end;
-  }
+  /** Key field for calendar */
+  public static final String keyCalendar = "calendarPath";
 
-  /** Get the free busy times
-   *
-   * @return Collection    of BwFreeBusyComponent
-   */
-  public Collection getTimes() {
-    if (times == null) {
-      times = new ArrayList();
-    }
-    return times;
-  }
+  /** Key for an event */
+  public static final String keyEvent = "eventKey";
 
-  /** Add a free/busy component
-   *
-   * @param val
-   */
-  public void addTime(BwFreeBusyComponent val) {
-    getTimes().add(val);
-  }
-
-  /** Iterate over free/busy components
-   *
-   * @return Iterator
-   */
-  public Iterator iterateTimes() {
-    return getTimes().iterator();
-  }
-
-  /* ====================================================================
-   *                        Object methods
-   * ==================================================================== */
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer();
-
-    sb.append("FreeBusyVO{who=");
-    sb.append(who);
-    boolean first = true;
-
-    Iterator it = iterateTimes();
-    while (it.hasNext()) {
-      BwFreeBusyComponent fbc = (BwFreeBusyComponent)it.next();
-
-      if (!first) {
-        sb.append(", ");
-      } else {
-        first = false;
-      }
-      sb.append(fbc.toString());
-    }
-    sb.append("}");
-
-    return sb.toString();
-  }
 }
-

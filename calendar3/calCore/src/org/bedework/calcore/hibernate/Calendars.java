@@ -221,10 +221,14 @@ class Calendars extends CalintfHelper implements CalendarsI {
   }
 
   public BwCalendar getCalendars() throws CalFacadeException {
+    return getCalendars(getUser());
+  }
+
+  public BwCalendar getCalendars(BwUser user) throws CalFacadeException {
     HibSession sess = getSess();
 
     sess.namedQuery("getCalendarByPath");
-    sess.setString("path", userCalendarRootPath + "/" + getUser().getAccount());
+    sess.setString("path", userCalendarRootPath + "/" + user.getAccount());
     sess.cacheableQuery();
 
     BwCalendar cal = (BwCalendar)sess.getUnique();

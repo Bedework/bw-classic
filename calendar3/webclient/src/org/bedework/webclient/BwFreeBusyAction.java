@@ -157,7 +157,7 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
     BwFreeBusy fb = svci.getFreeBusy(null, user,
                                      CalFacadeUtil.getDateTime(sdt, false, false, tzs),
                                      CalFacadeUtil.getDateTime(edt, false, false, tzs),
-                                     dur);
+                                     dur, true);
 
     form.assignFreeBusy(fb);
 

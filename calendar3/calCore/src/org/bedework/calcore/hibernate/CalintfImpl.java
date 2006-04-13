@@ -816,6 +816,12 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return calendars.getCalendars();
   }
 
+  public BwCalendar getCalendars(BwUser user) throws CalFacadeException {
+    checkOpen();
+
+    return calendars.getCalendars(user);
+  }
+
   public Collection getCalendarCollections() throws CalFacadeException {
     checkOpen();
 

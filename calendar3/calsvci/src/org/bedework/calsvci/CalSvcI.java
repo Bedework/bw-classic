@@ -809,12 +809,15 @@ public abstract class CalSvcI implements Serializable {
    * @param granularity BwDuration object defining how to divide free/busy
    *                    null for one big glob. or set to e.g. 1 hour for
    *                    hourly chunks.
+   * @param returnAll   if true return entries for free time otherwise just for busy
+   *                    (only for granularity not null)
    * @return BwFreeBusy
    * @throws CalFacadeException
    */
   public abstract BwFreeBusy getFreeBusy(BwCalendar cal, BwPrincipal who,
                                          BwDateTime start, BwDateTime end,
-                                         BwDuration granularity)
+                                         BwDuration granularity,
+                                         boolean returnAll)
           throws CalFacadeException;
 
   /* ====================================================================

@@ -16,13 +16,11 @@
     <!-- ==================== Sources and classes ====================== -->
 
     <fileset id="base.java.sources" dir="${source.home}" >
-     <include name="edu/rpi/sss/util/**/*.java"/>
-      <include name="edu/rpi/cct/uwcal/**/*.java"/>
+     <include name="edu/rpi/**/*.java"/>
     </fileset>
 
     <patternset id="base.class.patternset">
-      <include name="edu/rpi/sss/util/**/*.class"/>
-      <include name="edu/rpi/cct/uwcal/**/*.class"/>
+      <include name="edu/rpi/**/*.class"/>
     </patternset>
 
     <!-- ==================== Compilation Classpath ==================== -->
@@ -33,7 +31,8 @@
       <pathelement location="${fop.jar}"/>
       <pathelement location="${avalon.jar}"/>
       <pathelement location="${log4j.jar}"/>
-      <pathelement location="${logkit.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+      <pathelement location="${lucene.jar}"/>
       <pathelement location="${jtidy.jar}"/>
     </path>
 

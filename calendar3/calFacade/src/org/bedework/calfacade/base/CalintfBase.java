@@ -425,6 +425,10 @@ public class CalintfBase implements Calintf {
     throw new CalFacadeUnimplementedException();
   }
 
+  public BwCalendar getCalendars(BwUser user) throws CalFacadeException {
+    throw new CalFacadeUnimplementedException();
+  }
+
   public Collection getCalendarCollections() throws CalFacadeException {
     checkOpen();
 

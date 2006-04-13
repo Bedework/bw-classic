@@ -1,6 +1,7 @@
 <%@ taglib uri='struts-bean' prefix='bean' %>
 <%@ taglib uri='struts-logic' prefix='logic' %>
 <%@ taglib uri='struts-genurl' prefix='genurl' %>
+<%@ taglib uri='bedework' prefix='bw' %>
 
 <%@ include file="/docs/header.jsp" %>
 
@@ -16,9 +17,9 @@ try {
              toScope="request"/>
 
 <freebusy>
-  <who><bean:write name="freeBusyObj" property="who.account" /></who>
-  <start><bean:write name="freeBusyObj" property="start" /></start>
-  <end><bean:write name="freeBusyObj" property="end" /></end>
+  <bw:emitText name="freeBusyObj" property="who.account" tagName="who" />
+  <bw:emitText name="freeBusyObj" property="start.dtval" tagName="start" />
+  <bw:emitText name="freeBusyObj" property="end.dtval" tagName="end" />
   <logic:iterate id="freeBusyComponent"  name="freeBusyObj" property="times" >
     <freeBusyComponent>
       <fbtype><bean:write name="freeBusyComponent" property="type" /></fbtype>

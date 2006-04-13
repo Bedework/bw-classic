@@ -146,7 +146,8 @@ public class FreeBusyQuery {
 
       try {
         BwFreeBusy fb = svci.getFreeBusy(null, new BwUser(user),
-                                         tr.getStart(), tr.getEnd(), null);
+                                         tr.getStart(), tr.getEnd(), null,
+                                         false);
 
         if (debug) {
           trace("Got " + fb);
