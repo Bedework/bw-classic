@@ -2132,11 +2132,18 @@
   </xsl:template>
 
   <xsl:template match="subscription" mode="mySubscriptions">
-    <li class="calendar">
-      <!--<xsl:variable name="subname" select="name"/>
-      <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}">-->
+    <xsl:variable name="itemClass">
+      <xsl:choose>
+        <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
+                        and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
+        <xsl:otherwise>calendar</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <li class="{$itemClass}">
+      <xsl:variable name="subUri" select="uri"/>
+      <a href="{$setSelection}?calUrl={$subUri}">
         <xsl:value-of select="name"/>
-      <!--</a>-->
+      </a>
     </li>
   </xsl:template>
 
