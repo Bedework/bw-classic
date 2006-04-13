@@ -509,6 +509,21 @@ form#subscriptions {
   margin: 0;
   padding: 0;
 }
+table#attendees th {
+  padding: 0 0 0.1em 1em;
+  background: white;
+  color: black;
+  border-bottom: 1px dotted #333;
+  font-size: 0.9em;
+}
+table#attendees td {
+  padding: 0 1em 0.1em 1em;
+}
+table#attendees td.role,
+table#attendees td.status {
+  font-size: 0.7em;
+  text-transform: lowercase;
+}
 #weekCalendarTable {
   width: 100%;
   font-size: 0.9em;
@@ -988,14 +1003,17 @@ p.note {
 a:link, a:active {
   color: #00a;
   background-color: transparent;
+  text-decoration: none;
 }
 a:visited {
   color: #008;
   background-color: transparent;
+  text-decoration: none;
 }
 a:hover {
   color: red;
   background-color: transparent;
+  text-decoration: underline;
 }
 span.time {
   text-transform : lowercase;

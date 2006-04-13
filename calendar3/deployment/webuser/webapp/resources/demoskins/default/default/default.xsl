@@ -235,12 +235,12 @@
         <xsl:choose>
           <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
             <a href="?setappvar=sidebar(opened)">
-              <img alt="open sidebar" src="{$resourcesRoot}/resources/std-sidebaropen-icon.gif" width="13" height="13" border="0" align="left"/>
+              <img alt="open sidebar" src="{$resourcesRoot}/resources/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
             </a>
           </xsl:when>
           <xsl:otherwise>
             <a href="?setappvar=sidebar(closed)">
-              <img alt="close sidebar" src="{$resourcesRoot}/resources/std-sidebarclose-icon.gif" width="13" height="13" border="0" align="left"/>
+              <img alt="close sidebar" src="{$resourcesRoot}/resources/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
             </a>
           </xsl:otherwise>
         </xsl:choose>
@@ -269,9 +269,9 @@
       <xsl:choose>
         <xsl:when test="/bedework/views/view">
           <xsl:for-each select="/bedework/views/view">
-            <xsl:variable name="viewName" select="name"/> 
+            <xsl:variable name="viewName" select="name"/>
             <xsl:choose>
-              <xsl:when test="/bedework/selectionState/selectionType = 'view' 
+              <xsl:when test="/bedework/selectionState/selectionType = 'view'
                               and name=/bedework/selectionState/view/name">
                 <li class="selected"><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
               </xsl:when>
@@ -1134,7 +1134,49 @@
           </xsl:call-template>
         </td>
       </tr>
-       <xsl:if test="cost!=''">
+      <xsl:if test="organizer">
+        <tr>
+          <td class="fieldname">Organizer:</td>
+          <xsl:variable name="organizerUri" select="organizer/organizerUri"/>
+          <td colspan="2" class="fieldval">
+            <strong>
+              <a href="{$organizerUri}">
+                <xsl:value-of select="organizer/cn"/>
+              </a>
+            </strong>
+          </td>
+        </tr>
+      </xsl:if>
+      <xsl:if test="attendee">
+        <tr>
+          <td class="fieldname">Attendees:</td>
+          <td colspan="3" class="fieldval">
+            <table id="attendees" cellspacing="0">
+              <tr>
+                <th>role</th>
+                <th>status</th>
+                <th>attendee</th>
+              </tr>
+              <xsl:for-each select="attendee">
+                <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
+                <tr>
+                  <td class="role">
+                    <xsl:value-of select="role"/>
+                  </td>
+                  <td class="status">
+                    <xsl:value-of select="partstat"/>
+                  </td>
+                  <td>
+                    <xsl:variable name="attendeeUri" select="attendeeUri"/>
+                    <a href="{$attendeeUri}"><xsl:value-of select="cn"/></a>
+                  </td>
+                </tr>
+              </xsl:for-each>
+            </table>
+          </td>
+        </tr>
+      </xsl:if>
+      <xsl:if test="cost!=''">
         <tr>
           <td class="fieldname">Cost:</td>
           <td colspan="2" class="fieldval"><xsl:value-of select="cost"/></td>
@@ -1876,7 +1918,7 @@
       <xsl:variable name="id" select="id"/>
       <xsl:variable name="itemClass">
         <xsl:choose>
-          <xsl:when test="/bedework/selectionState/selectionType = 'calendar' 
+          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
                           and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
           <xsl:when test="name='Trash'">trash</xsl:when>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
