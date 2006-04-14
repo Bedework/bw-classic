@@ -11,26 +11,21 @@ try {
 
 <page>freeBusy</page>
 
-<bean:define id="freeBusyObj"
-             name="calForm"
-             property="freeBusy"
-             toScope="request"/>
-
 <freebusy>
-  <bw:emitText name="freeBusyObj" property="who.account" tagName="who" />
-  <bw:emitText name="freeBusyObj" property="start.dtval" tagName="start" />
-  <bw:emitText name="freeBusyObj" property="end.dtval" tagName="end" />
-  <logic:iterate id="freeBusyComponent"  name="freeBusyObj" property="times" >
-    <freeBusyComponent>
-      <fbtype><bean:write name="freeBusyComponent" property="type" /></fbtype>
-      <logic:iterate id="period"  name="freeBusyComponent" property="periods" >
-        <period>
-          <start><bean:write name="period" property="start" /></start>
-          <end><bean:write name="period" property="end" /></end>
-        </period>
-      </logic:iterate>
-    </freeBusyComponent>
-  </logic:iterate>
+<logic:iterate id="freeBusyObj" name="calForm" property="freeBusy" >
+  <day>
+    <bw:emitText name="freeBusyObj" property="who.account" tagName="who" />
+    <bw:emitText name="freeBusyObj" property="start.dtval" tagName="start" />
+    <bw:emitText name="freeBusyObj" property="end.dtval" tagName="end" />
+    <logic:iterate id="fbperiod"  name="freeBusyObj" property="times" >
+    <period>
+      <fbtype><bean:write name="fbperiod" property="type" /></fbtype>
+      <start><bean:write name="fbperiod" property="startTime" /></start>
+      <length><bean:write name="fbperiod" property="minutesLength" /></length>
+    </period>
+    </logic:iterate>
+  </day>
+</logic:iterate>
 </freebusy>
 
 <%

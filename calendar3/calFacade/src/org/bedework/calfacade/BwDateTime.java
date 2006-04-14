@@ -369,6 +369,25 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
          timezones);
   }
 
+  /**
+   * @param val
+   * @param timezones
+   * @throws CalFacadeException
+   */
+  public void initFromDateTime(Date val, CalTimezones timezones) throws CalFacadeException {
+    boolean dateOnly = true;
+    String tzid = null;
+
+    if (val instanceof DateTime) {
+      DateTime dt = (DateTime)val;
+
+      dateOnly = false;
+      tzid = dt.getTimeZone().getID();
+    }
+
+    init(dateOnly, val.toString(), tzid, timezones);
+  }
+
   /** Set utc time
    *
    * @param dateType

@@ -51,10 +51,10 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
 package org.bedework.webclient;
 
 //import org.bedework.calfacade.BwDateTime;
+import org.bedework.appcommon.FormattedFreeBusy;
 import org.bedework.appcommon.MyCalendarVO;
 import org.bedework.calfacade.BwDuration;
 import org.bedework.calfacade.BwFreeBusy;
@@ -63,7 +63,9 @@ import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calsvci.CalSvcI;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
@@ -89,6 +91,8 @@ import javax.servlet.http.HttpServletRequest;
  *
  * <p>If no period is given return this week. If no interval and intunit is
  * supplied default to 1 hour intervals during the workday.
+ *
+ * @author Mike Douglass douglm @ rpi.edu
  */
 public class BwFreeBusyAction extends BwCalAbstractAction {
   /* (non-Javadoc)
@@ -117,6 +121,8 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
 
     Calendar end = thisWeek.getNextWeek().getCalendar();
     //BwDateTime endDt = form.getEventEndDate().getDateTime();
+
+    Calendar endDay = thisWeek.getTomorrow().getCalendar();
 
     int interval = getIntReqPar(request, "interval", 1);
     if (interval <= 0) {
@@ -147,19 +153,30 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
     //int maxRequests = 1000;
     CalTimezones tzs = svci.getTimezones();
 
-    Date sdt = start.getTime();
-    Date edt = end.getTime();
+    Collection freeBusy = new ArrayList();
+    /* Get the free busy in daily chunks and process for display
+     */
+    while (start.before(end)) {
+      Date sdt = start.getTime();
+      Date edt = endDay.getTime();
 
-    if (debug) {
-      debugMsg("getFreeBusy for start =  " + sdt +
-               " end = " + edt);
+      if (debug) {
+        debugMsg("getFreeBusy for start =  " + sdt +
+                 " end = " + edt);
+      }
+      BwFreeBusy fb = svci.getFreeBusy(null, user,
+                                       CalFacadeUtil.getDateTime(sdt, false, false, tzs),
+                                       CalFacadeUtil.getDateTime(edt, false, false, tzs),
+                                       dur, true);
+
+      FormattedFreeBusy ffb = new FormattedFreeBusy(fb);
+      freeBusy.add(ffb);
+
+      start.add(Calendar.DAY_OF_MONTH, 1);
+      endDay.add(Calendar.DAY_OF_MONTH, 1);
     }
-    BwFreeBusy fb = svci.getFreeBusy(null, user,
-                                     CalFacadeUtil.getDateTime(sdt, false, false, tzs),
-                                     CalFacadeUtil.getDateTime(edt, false, false, tzs),
-                                     dur, true);
 
-    form.assignFreeBusy(fb);
+    form.assignFreeBusy(freeBusy);
 
     return "success";
   }

@@ -1106,16 +1106,25 @@ public class CalSvc extends CalSvcI {
           if (returnAll) {
             fbc = new BwFreeBusyComponent();
             fb.addTime(fbc);
-            fbc.addPeriod(new Period(new DateTime(gpp.startDt.getDtval()),
-                                     new DateTime(gpp.endDt.getDtval())));
+
+            DateTime psdt = new DateTime(gpp.startDt.getDtval());
+            DateTime pedt = new DateTime(gpp.endDt.getDtval());
+
+            psdt.setUtc(true);
+            pedt.setUtc(true);
+            fbc.addPeriod(new Period(psdt, pedt));
             if (periodEvents.size() == 0) {
               fbc.setType(BwFreeBusyComponent.typeFree);
             }
           } else if (periodEvents.size() != 0) {
             // Some events fall in the period. Add an entry.
 
-            fbc.addPeriod(new Period(new DateTime(gpp.startDt.getDtval()),
-                                     new DateTime(gpp.endDt.getDtval())));
+            DateTime psdt = new DateTime(gpp.startDt.getDtval());
+            DateTime pedt = new DateTime(gpp.endDt.getDtval());
+
+            psdt.setUtc(true);
+            pedt.setUtc(true);
+            fbc.addPeriod(new Period(psdt, pedt));
           }
         }
 

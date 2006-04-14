@@ -54,6 +54,8 @@
 
 package org.bedework.webclient;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
@@ -61,7 +63,6 @@ import org.bedework.appcommon.CheckData;
 import org.bedework.appcommon.EventFormatter;
 import org.bedework.appcommon.MyCalendarVO;
 import org.bedework.calfacade.BwCalendar;
-import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.webcommon.DurationBean;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.TimeDateComponents;
@@ -129,7 +130,7 @@ public class BwActionForm extends BwActionFormBase {
 
   private boolean alarmTriggerByDate;
 
-  private BwFreeBusy freeBusy;
+  private Collection freeBusy;
 
   /* ====================================================================
    *                   Methods
@@ -307,14 +308,17 @@ public class BwActionForm extends BwActionFormBase {
   /**
    * @param val
    */
-  public void assignFreeBusy(BwFreeBusy val) {
+  public void assignFreeBusy(Collection val) {
     freeBusy = val;
   }
 
   /**
-   * @return free/busy
+   * @return Collection of formatted free/busy
    */
-  public BwFreeBusy getFreeBusy() {
+  public Collection getFreeBusy() {
+    if (freeBusy == null) {
+      freeBusy = new ArrayList();
+    }
     return freeBusy;
   }
 

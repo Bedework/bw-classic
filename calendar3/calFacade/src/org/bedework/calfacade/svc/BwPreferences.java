@@ -31,6 +31,7 @@ package org.bedework.calfacade.svc;
 import org.bedework.calfacade.base.BwOwnedDbentity;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.CalFacadeUtil;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -343,44 +344,37 @@ public class BwPreferences extends BwOwnedDbentity {
     return getViews().iterator();
   }
 
-  /** Turn a String time value e.g. 1030 into a numeric minutes value and set
-   * the numeric value in the prefeences.
-   *
-   * <p>Ignores anything after the first four characters which must all be digits.
+  /** Set the workday start minutes from a String time value
    *
    * @param val  String time value
    */
   public void setWorkdayStart(String val) throws CalFacadeException{
-    boolean badval = false;
-    int minutes = 0;
-
-    try {
-      int hours = Integer.parseInt(val.substring(0, 2));
-      minutes = Integer.parseInt(val.substring(2, 4));
-      if ((hours < 0) || (hours > 24)) {
-        badval = true;
-      } else if ((minutes < 0) || (minutes > 59)) {
-        badval = true;
-      } else {
-        minutes *= (hours * 60);
-      }
-    } catch (Throwable t) {
-      badval = true;
-    }
-
-    if (badval) {
-      throw new CalFacadeException("org.bedework.prefs.badvalue", val);
-    }
-
-    setWorkdayStart(minutes);
+    setWorkdayStart(makeMinutesFromTime(val));
   }
 
-  /**
-   * @return int work day start
-   * /
-  public int getWorkdayStart() {
-    return workdayStart;
-  }*/
+  /** Get the workday start as a 4 digit String hours and minutes value
+   *
+   * @return String work day start time
+   */
+  public String getWorkdayStartTime() {
+    return CalFacadeUtil.getTimeFromMinutes(getWorkdayStart());
+  }
+
+  /** Set the workday end minutes from a String time value
+   *
+   * @param val  String time value
+   */
+  public void setWorkdayEnd(String val) throws CalFacadeException{
+    setWorkdayEnd(makeMinutesFromTime(val));
+  }
+
+  /** Get the workday end as a 4 digit String hours and minutes value
+   *
+   * @return String work day end time
+   */
+  public String getWorkdayEndTime() {
+    return CalFacadeUtil.getTimeFromMinutes(getWorkdayEnd());
+  }
 
   /* ====================================================================
    *                   Object methods
@@ -446,5 +440,41 @@ public class BwPreferences extends BwOwnedDbentity {
     sb.append(")");
 
     return sb.toString();
+  }
+
+  /* ====================================================================
+   *                   private methods
+   * ==================================================================== */
+
+  /** Turn a String time value e.g. 1030 into a numeric minutes value and set
+   * the numeric value in the prefeences.
+   *
+   * <p>Ignores anything after the first four characters which must all be digits.
+   *
+   * @param val  String time value
+   */
+  private int makeMinutesFromTime(String val) throws CalFacadeException{
+    boolean badval = false;
+    int minutes = 0;
+
+    try {
+      int hours = Integer.parseInt(val.substring(0, 2));
+      minutes = Integer.parseInt(val.substring(2, 4));
+      if ((hours < 0) || (hours > 24)) {
+        badval = true;
+      } else if ((minutes < 0) || (minutes > 59)) {
+        badval = true;
+      } else {
+        minutes *= (hours * 60);
+      }
+    } catch (Throwable t) {
+      badval = true;
+    }
+
+    if (badval) {
+      throw new CalFacadeException("org.bedework.prefs.badvalue", val);
+    }
+
+    return minutes;
   }
 }

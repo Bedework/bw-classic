@@ -689,5 +689,26 @@ public class CalFacadeUtil implements Serializable {
 
     return al;
   }
+
+  /**Turn the int minutes into a 4 digit String hours and minutes value
+   *
+   * @param  int minutes
+   * @return String time
+   */
+  public static String getTimeFromMinutes(int minutes) {
+    return pad2(minutes / 60) + pad2(minutes % 60);
+  }
+
+  /** Return String value of par padded to 2 digits.
+   * @param val
+   * @return
+   */
+  public static String pad2(int val) {
+    if (val > 9) {
+      return String.valueOf(val);
+    }
+
+    return "0" + String.valueOf(val);
+  }
 }
 
