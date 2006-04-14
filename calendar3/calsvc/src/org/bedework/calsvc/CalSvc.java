@@ -2235,6 +2235,7 @@ public class CalSvc extends CalSvcI {
     view.setOwner(user);
 
     prefs.addView(view);
+    prefs.setPreferredView(view.getName());
 
     dbi.updatePreferences(prefs);
   }
