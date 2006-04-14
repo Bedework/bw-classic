@@ -353,13 +353,13 @@ public class Ace implements Serializable, Comparable {
   public static Ace find(Acl acl,
                          String name, int whoType) throws AccessException {
     Iterator it = acl.getAces().iterator();
-    
+
     while (it.hasNext()) {
       Ace ace = (Ace)it.next();
 
       if ((whoType == ace.getWhoType()) &&
           ((whoType == whoTypeUnauthenticated) ||
-           (whoType == whoTypeOwner) || 
+           (whoType == whoTypeOwner) ||
             ace.whoMatch(name))) {
         return ace;
       }
@@ -367,7 +367,7 @@ public class Ace implements Serializable, Comparable {
 
     return null;
   }
-  
+
   /* ====================================================================
    *                 Decoding methods
    * ==================================================================== */
@@ -463,6 +463,10 @@ public class Ace implements Serializable, Comparable {
     while (it.hasNext()) {
       Privilege p = (Privilege)it.next();
       p.encode(acl);
+    }
+
+    if (inherited) {
+      acl.addChar(PrivilegeDefs.inheritedFlag);
     }
 
     acl.addChar(' ');  // terminate privs.
@@ -691,6 +695,15 @@ public class Ace implements Serializable, Comparable {
     if (getPrivileges) {
       acl.setPos(pos);
       setPrivs(Privileges.getPrivs(acl));
+    }
+
+    // See if we got an inherited flag
+    acl.back();
+    if (acl.getChar() == PrivilegeDefs.inheritedFlag) {
+      inherited = true;
+      if (acl.getChar() != ' ') {
+        throw new AccessException("malformedAcl");
+      }
     }
   }
 }

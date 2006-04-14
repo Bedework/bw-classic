@@ -312,7 +312,7 @@
     </action>
 
     <action    path="/setAccess"
-               type="org.bedework.webclient.BwAccessAction"
+               type="org.bedework.webcommon.access.AccessAction"
                name="calForm"
                scope="session"
                validate="false">

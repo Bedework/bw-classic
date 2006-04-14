@@ -51,14 +51,16 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
-package org.bedework.webclient;
+package org.bedework.webcommon.access;
 
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
+import org.bedework.webcommon.BwAbstractAction;
+import org.bedework.webcommon.BwActionFormBase;
+import org.bedework.webcommon.BwSession;
 
 import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.PrivilegeDefs;
@@ -66,6 +68,7 @@ import edu.rpi.cct.uwcal.access.Privileges;
 
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Action to update access rights to an entity. Note this will change as we
@@ -74,11 +77,12 @@ import javax.servlet.http.HttpServletRequest;
  * Currently this provides a basic level of access control modification.
  *
  * <p>Request parameters:<ul>
- *      <li>  cal:      id of calendar or...</li>.
- *      <li>  event:    id of event</li>.
- *      <li>  how:      r for read, w for write, f for free/busy, d for default</li>.
- *      <li>  whoType:  user (default), group</li>.
- *      <li>  who:      name of principal - default to owner</li>.
+ *      <li>  calId alone:           id of calendar or...</li>.
+ *      <li>  calId+guid+recurid:    event</li>.
+ *      <li>  how:                   r for read, w for write,
+ *                                   f for free/busy, d for default</li>.
+ *      <li>  whoType:               user (default), group</li>.
+ *      <li>  who:                   name of principal - default to owner</li>.
  * </ul>
  * <p>Forwards to:<ul>
  *      <li>"doNothing"    input error or we want to ignore the request.</li>
@@ -92,65 +96,53 @@ import javax.servlet.http.HttpServletRequest;
  *
  *  @author Mike Douglass   douglm@rpi.edu
  */
-public class BwAccessAction extends BwCalAbstractAction {
+public class AccessAction extends BwAbstractAction {
   /* (non-Javadoc)
    * @see org.bedework.webclient.BwCalAbstractAction#doAction(javax.servlet.http.HttpServletRequest, org.bedework.webclient.BwActionForm)
    */
   public String doAction(HttpServletRequest request,
-                         BwActionForm form) throws Throwable {
+                         HttpServletResponse response,
+                         BwSession sess,
+                         BwActionFormBase form) throws Throwable {
     if (form.getGuest()) {
-      return "doNothing";
-    }
-
-    String idstr = getReqPar(request, "cal");
-    boolean calid = idstr != null;
-
-    if (!calid) {
-      idstr = getReqPar(request, "event");
-    }
-
-    if (idstr == null) {
-      form.getErr().emit("org.bedework.client.error.noentityid");
-      return "error";
-    }
-
-    int id;
-
-    try {
-      id = Integer.parseInt(idstr);
-    } catch (Throwable t) {
-      form.getErr().emit("org.bedework.client.error.badentityid");
-      return "error";
+      return "notFound";
     }
 
     CalSvcI svci = form.fetchSvci();
     BwCalendar cal = null;
+    EventInfo ei = null;
     BwEvent ev = null;
 
-    if (calid) {
-      cal = svci.getCalendar(id);
+    String rpar = getReqPar(request, "guid");
+    if (rpar != null) {
+      // Assume event
+      ei = findEvent(request, form);
+      if (ei == null) {
+        // Do nothing
+        form.getErr().emit("org.bedework.client.error.nosuchevent");
+        return "doNothing";
+      }
+      ev = ei.getEvent();
+    } else {
+      int id = getIntReqPar(request, "calId", -1);
 
+      if (id < 0) {
+        // bogus request
+        return "notFound";
+      }
+
+      cal = svci.getCalendar(id);
       if (cal == null) {
         // Do nothing
         form.getErr().emit("org.bedework.client.error.nosuchcalendar", id);
-        return "doNothing";
+        return "notFound";
       }
-    } else {
-      EventInfo ei = findEvent(request, form);
-
-      if (ei == null) {
-        // Do nothing
-        form.getErr().emit("org.bedework.client.error.nosuchevent", id);
-        return "doNothing";
-      }
-
-      ev = ei.getEvent();
     }
 
-    String how = request.getParameter("how");
+    String how = getReqPar(request, "how");
 
     if (how == null) {
-      form.getErr().emit("org.bedework.client.error.noentityid");
+      form.getErr().emit("org.bedework.client.error.nohowaccess");
       return "error";
     }
 
@@ -207,13 +199,14 @@ public class BwAccessAction extends BwCalAbstractAction {
     ArrayList aces = new ArrayList();
     aces.add(new Ace(who, false, whoType, Privileges.makePriv(desiredAccess)));
 
-    if (calid) {
-      svci.changeAccess(cal, aces);
-      svci.updateCalendar(cal);
-    } else {
+    if (ev != null) {
       svci.changeAccess(ev, aces);
       svci.updateEvent(ev);
+    } else {
+      svci.changeAccess(cal, aces);
+      svci.updateCalendar(cal);
     }
+
     return "success";
   }
 }

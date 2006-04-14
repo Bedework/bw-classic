@@ -120,11 +120,11 @@ class AccessUtil implements PrivilegeDefs {
   void setSuperUser(boolean val) {
     superUser = val;
   }
-  
+
   boolean getSuperUser() {
     return superUser;
   }
-  
+
   void setAuthUser(BwUser val) {
     authUser = val;
   }
@@ -163,11 +163,11 @@ class AccessUtil implements PrivilegeDefs {
 
   /** Change the access to the given calendar entity using the supplied aces.
    *
-   * @param ent      BwShareableDbentity 
+   * @param ent      BwShareableDbentity
    * @param aces     Collection of ace objects
    * @throws CalFacadeException
    */
-  public void changeAccess(BwShareableDbentity ent, 
+  public void changeAccess(BwShareableDbentity ent,
                            Collection aces) throws CalFacadeException {
     try {
       Acl acl = checkAccess(ent, privWriteAcl, false).acl;
@@ -181,6 +181,10 @@ class AccessUtil implements PrivilegeDefs {
       }
 
       ent.setAccess(new String(acl.encode()));
+
+      if (ent instanceof BwCalendar) {
+        updatePathInfo((BwCalendar)ent, acl);
+      }
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -229,7 +233,7 @@ class AccessUtil implements PrivilegeDefs {
     try {
       CurrentAccess ca;
       String account = ent.getOwner().getAccount();
-      
+
       char[] aclChars = getAclChars(ent);
 
       if (desiredAccess == privRead) {
@@ -242,9 +246,9 @@ class AccessUtil implements PrivilegeDefs {
 
       if ((authUser != null) && superUser) {
         // Nobody can stop us - BWAAA HAA HAA
-        ca.accessAllowed = true; 
+        ca.accessAllowed = true;
       }
-      
+
       if (!ca.accessAllowed && !returnResult) {
         throw new CalFacadeAccessException();
       }
@@ -358,7 +362,6 @@ class AccessUtil implements PrivilegeDefs {
   /* Create a merged Acl for the given calendar.
    */
   private PathInfo getPathInfo(BwCalendar cal) throws CalFacadeException {
-    boolean isPublic = cal.getPublick();
     Acl acl = null;
     PathInfo pi = new PathInfo();
 
@@ -376,12 +379,7 @@ class AccessUtil implements PrivilegeDefs {
          */
         if ((aclString == null) && (cal.getCalendar() == null)) {
           // At root
-          if (isPublic) {
-            throw new CalFacadeException("Public calendars must have access set at root");
-          }
-
-          // XXX temp - set this in /user
-          aclString = access.getDefaultPersonalAccess();
+          throw new CalFacadeException("Calendars must have default access set at root");
         }
 
         if (acl == null) {
@@ -397,9 +395,33 @@ class AccessUtil implements PrivilegeDefs {
       }
 
       pi.pathAcl = acl;
-      pi.encoded = acl.getEncoded();
+      pi.encoded = acl.encodeAll();
 
       return pi;
+    } catch (CalFacadeException cfe) {
+      throw cfe;
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
+  /* Update the merged Acl for the given calendar.
+   */
+  private void updatePathInfo(BwCalendar cal, Acl acl) throws CalFacadeException {
+    try {
+      String path = cal.getPath();
+      PathInfo pi = (PathInfo)pathInfoTable.get(path);
+
+      if (pi == null) {
+        pi = new PathInfo();
+
+        pi.path = cal.getPath();
+      }
+
+      pi.pathAcl = acl;
+      pi.encoded = acl.encodeAll();
+
+      pathInfoTable.put(path, pi);
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }

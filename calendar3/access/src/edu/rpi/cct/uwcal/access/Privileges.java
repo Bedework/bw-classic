@@ -101,57 +101,57 @@ public class Privileges implements PrivilegeDefs {
    */
 
   private final static Privilege[] privs = new Privilege[privMaxType + 1];
-  
+
   static {
     privs[privAll] = new Privilege("all", "All privileges", privAll);
 
     privs[privRead] = new Privilege("read", "Read any calendar object", privRead);
-    
-    privs[privReadAcl] = new Privilege("read-acl", "Read calendar accls", 
+
+    privs[privReadAcl] = new Privilege("read-acl", "Read calendar accls",
                                        privReadAcl);
-    
+
     privs[privReadCurrentUserPrivilegeSet] =
       new Privilege("read-current-user-privilege-set",
-                    "Read current user privilege set property", 
+                    "Read current user privilege set property",
                     privReadCurrentUserPrivilegeSet);
-    
-    privs[privReadFreeBusy] = new Privilege("view-free-busy", 
-                                            "View a users free busy information", 
+
+    privs[privReadFreeBusy] = new Privilege("view-free-busy",
+                                            "View a users free busy information",
                                             privReadFreeBusy);
-    
-    privs[privWrite] = new Privilege("write", "Write any calendar object", 
+
+    privs[privWrite] = new Privilege("write", "Write any calendar object",
                                      privWrite);
-    
+
     privs[privWriteAcl] = new Privilege("write-acl", "Write ACL", privWriteAcl);
-    
-    privs[privWriteProperties] = new Privilege("write-properties", 
-                                               "Write calendar properties", 
+
+    privs[privWriteProperties] = new Privilege("write-properties",
+                                               "Write calendar properties",
                                                privWriteProperties);
-    
-    privs[privWriteContent] = new Privilege("write-content", 
-                                            "Write calendar content", 
+
+    privs[privWriteContent] = new Privilege("write-content",
+                                            "Write calendar content",
                                             privWriteContent);
-    
-    privs[privBind] = new Privilege("create", "Create a calendar object", 
+
+    privs[privBind] = new Privilege("create", "Create a calendar object",
                                     privBind);
-    
-    privs[privUnbind] = new Privilege("delete", "Delete a calendar object", 
+
+    privs[privUnbind] = new Privilege("delete", "Delete a calendar object",
                                       privUnbind);
-    
-    privs[privUnlock] = new Privilege("unlock", "Remove a lock", 
+
+    privs[privUnlock] = new Privilege("unlock", "Remove a lock",
                                       privUnlock);
-    
+
     privs[privNone] = (Privilege)privs[privAll].clone();
     privs[privNone].setDenial(true);
-    
+
     privs[privAll].addContainedPrivilege(privs[privRead]);
     privs[privAll].addContainedPrivilege(privs[privWrite]);
     privs[privAll].addContainedPrivilege(privs[privUnlock]);
-    
+
     privs[privRead].addContainedPrivilege(privs[privReadAcl]);
     privs[privRead].addContainedPrivilege(privs[privReadCurrentUserPrivilegeSet]);
     privs[privRead].addContainedPrivilege(privs[privReadFreeBusy]);
-    
+
     privs[privWrite].addContainedPrivilege(privs[privWriteAcl]);
     privs[privWrite].addContainedPrivilege(privs[privWriteProperties]);
     privs[privWrite].addContainedPrivilege(privs[privWriteContent]);
@@ -214,7 +214,7 @@ public class Privileges implements PrivilegeDefs {
 
     while (acl.hasMore()) {
       char c = acl.getChar();
-      if (c == ' ') {
+      if ((c == ' ') || (c == inheritedFlag)) {
         break;
       }
       acl.back();
@@ -238,7 +238,8 @@ public class Privileges implements PrivilegeDefs {
    */
   public static void skip(EncodedAcl acl) throws AccessException {
     while (acl.hasMore()) {
-      if (acl.getChar() == ' ') {
+      char c = acl.getChar();
+      if ((c == ' ') || (c == inheritedFlag)) {
         break;
       }
     }
@@ -256,7 +257,7 @@ public class Privileges implements PrivilegeDefs {
 
     while (acl.hasMore()) {
       char c = acl.getChar();
-      if (c == ' ') {
+      if ((c == ' ') || (c == inheritedFlag)) {
         break;
       }
       acl.back();
