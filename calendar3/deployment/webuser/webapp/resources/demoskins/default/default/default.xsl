@@ -38,7 +38,6 @@
        urls; allows the application to be used without cookies or within a portal. -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/setSelection"/>
-  <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/setViewPeriod"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/eventView"/>
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/initEvent"/>
@@ -58,7 +57,16 @@
   <xsl:variable name="setAlarm" select="/bedework/urlPrefixes/setAlarm"/>
   <xsl:variable name="initUpload" select="/bedework/urlPrefixes/initUpload"/>
   <xsl:variable name="upload" select="/bedework/urlPrefixes/upload"/>
-
+  <!-- calendars -->
+  <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
+  <xsl:variable name="calendar-fetch" select="/bedework/urlPrefixes/calendar/fetch/a/@href"/><!-- used -->
+  <xsl:variable name="calendar-fetchDescriptions" select="/bedework/urlPrefixes/calendar/fetchDescriptions/a/@href"/><!-- used -->
+  <xsl:variable name="calendar-initAdd" select="/bedework/urlPrefixes/calendar/initAdd/a/@href"/><!-- used -->
+  <xsl:variable name="calendar-delete" select="/bedework/urlPrefixes/calendar/delete/a/@href"/>
+  <xsl:variable name="calendar-fetchForDisplay" select="/bedework/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
+  <xsl:variable name="calendar-fetchForUpdate" select="/bedework/urlPrefixes/calendar/fetchForUpdate/a/@href"/><!-- used -->
+  <xsl:variable name="calendar-update" select="/bedework/urlPrefixes/calendar/update/a/@href"/><!-- used -->
+  <!-- subscriptions -->
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
   <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd/a/@href"/>
@@ -138,9 +146,17 @@
                 <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
                   <xsl:apply-templates select="/bedework/subscriptions"/>
                 </xsl:when>
-                <xsl:when test="/bedework/page='calendars'">
+                <xsl:when test="/bedework/page='calendarList' or
+                                /bedework/page='calendarDescriptions' or
+                                /bedework/page='displayCalendar' or
+                                /bedework/page='modCalendar' or
+                                /bedework/page='deleteCalendarConfirm' or
+                                /bedework/page='calendarReferenced'">
                   <xsl:apply-templates select="/bedework/calendars"/>
                 </xsl:when>
+                <!--deprecated: <xsl:when test="/bedework/page='calendars'">
+                  <xsl:apply-templates select="/bedework/calendars"/>
+                </xsl:when>-->
                 <xsl:when test="/bedework/page='other'">
                   <!-- show an arbitrary page -->
                   <xsl:call-template name="selectPage"/>
@@ -287,7 +303,11 @@
       </xsl:choose>
     </ul>
 
-    <h3><img alt="manage calendars" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> calendars</h3>
+    <h3>
+      <a href="{$calendar-fetch}">
+        <img alt="manage calendars" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> calendars
+      </a>
+    </h3>
     <ul class="calendarTree">
       <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="myCalendars"/>
     </ul>
@@ -1861,6 +1881,396 @@
         </tr>
       </table>
     </form>
+  </xsl:template>
+
+  <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
+  <xsl:template match="calendars">
+    <table id="calendarTable">
+      <tr>
+        <td class="cals">
+          <h3>Public calendars</h3>
+          <ul id="calendarTree">
+            <xsl:choose>
+              <xsl:when test="/bedework/page='calendarDescriptions' or
+                              /bedework/page='displayCalendar'">
+                <xsl:apply-templates select="calendar" mode="listForDisplay"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:apply-templates select="calendar" mode="listForUpdate"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </ul>
+        </td>
+        <td class="calendarContent">
+          <xsl:choose>
+            <xsl:when test="/bedework/page='calendarList' or
+                            /bedework/page='calendarReferenced'">
+              <xsl:call-template name="calendarList"/>
+            </xsl:when>
+            <xsl:when test="/bedework/page='calendarDescriptions'">
+              <xsl:call-template name="calendarDescriptions"/>
+            </xsl:when>
+            <xsl:when test="/bedework/page='displayCalendar'">
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="displayCalendar"/>
+            </xsl:when>
+            <xsl:when test="/bedework/page='deleteCalendarConfirm'">
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="deleteCalendarConfirm"/>
+            </xsl:when>
+            <xsl:when test="/bedework/creating='true'">
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="addCalendar"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="modCalendar"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </td>
+      </tr>
+    </table>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="listForUpdate">
+    <xsl:variable name="id" select="id"/>
+    <xsl:variable name="itemClass">
+      <xsl:choose>
+        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:otherwise>calendar</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <li class="{$itemClass}">
+      <a href="{$calendar-fetchForUpdate}&amp;calId={$id}" title="update">
+        <xsl:value-of select="name"/>
+      </a>
+      <xsl:if test="calendarCollection='false'">
+        <xsl:text> </xsl:text>
+        <a href="{$calendar-initAdd}&amp;calId={$id}" title="add a calendar or folder">
+          <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
+        </a>
+      </xsl:if>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="listForUpdate">
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
+          </xsl:apply-templates>
+        </ul>
+      </xsl:if>
+    </li>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="listForDisplay">
+    <xsl:variable name="id" select="id"/>
+    <xsl:variable name="itemClass">
+      <xsl:choose>
+        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:otherwise>calendar</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <li class="{$itemClass}">
+      <a href="{$calendar-fetchForDisplay}&amp;calId={$id}" title="display">
+        <xsl:value-of select="name"/>
+      </a>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="listForDisplay">
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
+          </xsl:apply-templates>
+        </ul>
+      </xsl:if>
+    </li>
+  </xsl:template>
+
+  <xsl:template match="currentCalendar" mode="addCalendar">
+    <h3>Add Calendar / Folder</h3>
+    <form name="addCalForm" action="{$calendar-update}">
+      <table class="eventFormTable">
+        <tr>
+          <th>Name:</th>
+          <td>
+            <xsl:variable name="curCalName" select="name"/>
+            <input name="calendar.name" value="{$curCalName}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Summary:</th>
+          <td>
+            <xsl:variable name="curCalSummary" select="summary"/>
+            <input type="text" name="calendar.summary" value="{$curCalSummary}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Description:</th>
+          <td>
+            <textarea name="calendar.description" cols="40" rows="4">
+              <xsl:value-of select="desc"/>
+            </textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>Calendar/Folder:</th>
+          <td>
+            <xsl:choose>
+              <xsl:when test="calendarCollection='true'">
+                <input type="radio" value="true" name="calendarCollection" checked="checked"/> Calendar
+                <input type="radio" value="false" name="calendarCollection"/> Folder
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" value="true" name="calendarCollection"/> Calendar
+                <input type="radio" value="false" name="calendarCollection" checked="checked"/> Folder
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+      </table>
+
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="addCalendar" value="Add Calendar/Folder"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Clear"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </xsl:template>
+
+  <xsl:template match="currentCalendar" mode="modCalendar">
+    <xsl:choose>
+      <xsl:when test="calendarCollection='true'">
+        <h3>Modify Calendar</h3>
+      </xsl:when>
+      <xsl:otherwise>
+        <h3>Modify Folder</h3>
+      </xsl:otherwise>
+    </xsl:choose>
+    <form name="modCalForm" action="{$calendar-update}">
+      <table class="eventFormTable">
+        <tr>
+          <th>Path:</th>
+          <td>
+            <xsl:value-of select="path"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Name:</th>
+          <td>
+            <xsl:value-of select="name"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Mailing List ID:</th>
+          <td>
+            <xsl:value-of select="mailListId"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Summary:</th>
+          <td>
+            <xsl:variable name="curCalSummary" select="summary"/>
+            <input type="text" name="calendar.summary" value="{$curCalSummary}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Description:</th>
+          <td>
+            <textarea name="calendar.description" cols="40" rows="4">
+              <xsl:value-of select="desc"/>
+            </textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>Calendar/Folder:</th>
+          <td>
+            <xsl:choose>
+              <xsl:when test="calendarCollection='true'">
+                <input type="radio" value="true" name="calendarCollection" checked="checked"/> Calendar
+                <input type="radio" value="false" name="calendarCollection"/> Folder
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" value="true" name="calendarCollection"/> Calendar
+                <input type="radio" value="false" name="calendarCollection" checked="checked"/> Folder
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+      </table>
+
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <xsl:choose>
+              <xsl:when test="calendarCollection='true'">
+                <input type="submit" name="updateCalendar" value="Update Calendar"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="updateCalendar" value="Update Folder"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Reset"/>
+          </td>
+          <td align="right">
+            <xsl:choose>
+              <xsl:when test="calendarCollection='true'">
+                <input type="submit" name="delete" value="Delete Calendar"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="delete" value="Delete Folder"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </xsl:template>
+
+  <xsl:template name="calendarList">
+    <h3>Manage Calendars</h3>
+    <ul>
+      <li>Select an item from the calendar list on the left to modify
+      a calendar or folder.</li>
+      <li>Select the
+      <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
+      icon to add a new calendar or folder to the tree.
+        <ul>
+          <li>Folders may only contain calendars and subfolders.</li>
+          <li>Calendars may only contain events (and other calendar items).</li>
+          <li>
+            If a calendar is empty, it may be converted to a folder and vice
+            versa.  If a calendar or folder are not empty, it may not be
+            converted.
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </xsl:template>
+
+  <xsl:template name="calendarDescriptions">
+    <h2>Calendar Information</h2>
+    <ul>
+      <li>Select an item from the calendar tree on the left to view all information
+      about that calendar or folder.  The tree on the left represents the calendar
+      heirarchy.</li>
+    </ul>
+
+    <p><strong>All Calendar Descriptions:</strong></p>
+    <table id="flatCalendarDescriptions" cellspacing="0">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+      <xsl:for-each select="//calendar">
+        <xsl:variable name="descClass">
+          <xsl:choose>
+            <xsl:when test="position() mod 2 = 0">even</xsl:when>
+            <xsl:otherwise>odd</xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <tr class="{$descClass}">
+          <td>
+            <xsl:value-of select="name"/>
+          </td>
+          <td>
+            <xsl:value-of select="desc"/>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+
+  <xsl:template match="currentCalendar" mode="displayCalendar">
+    <h2>Calendar Information</h2>
+    <table class="eventFormTable">
+      <tr>
+        <th>Name:</th>
+        <td>
+          <xsl:value-of select="name"/>
+        </td>
+      </tr>
+      <tr>
+        <th>Path:</th>
+        <td>
+          <xsl:value-of select="path"/>
+        </td>
+      </tr>
+      <tr>
+        <th>Summary:</th>
+        <td>
+          <xsl:value-of select="summary"/>
+        </td>
+      </tr>
+      <tr>
+        <th>Description:</th>
+        <td>
+          <xsl:value-of select="desc"/>
+        </td>
+      </tr>
+    </table>
+  </xsl:template>
+
+  <xsl:template match="currentCalendar" mode="deleteCalendarConfirm">
+    <xsl:choose>
+      <xsl:when test="calendarCollection='true'">
+        <h3>Delete Calendar</h3>
+        <p>
+          The following calendar will be deleted.  Continue?
+        </p>
+      </xsl:when>
+      <xsl:otherwise>
+        <h3>Delete Folder</h3>
+        <p>
+          The following folder <em>and all its contents</em> will be deleted.
+          Continue?
+        </p>
+      </xsl:otherwise>
+    </xsl:choose>
+
+    <form name="delCalForm" action="{$calendar-delete}">
+      <table class="eventFormTable">
+        <tr>
+          <th>Path:</th>
+          <td>
+            <xsl:value-of select="path"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Name:</th>
+          <td>
+            <xsl:value-of select="name"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Summary:</th>
+          <td>
+            <xsl:value-of select="summary"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Description:</th>
+          <td>
+            <xsl:value-of select="desc"/>
+          </td>
+        </tr>
+      </table>
+
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="cancelled" value="Cancel"/>
+          </td>
+          <td align="right">
+            <xsl:choose>
+              <xsl:when test="calendarCollection='true'">
+                <input type="submit" name="delete" value="Yes: Delete Calendar!"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="delete" value="Yes: Delete Folder!"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+      </table>
+    </form>
+
   </xsl:template>
 
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->

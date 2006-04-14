@@ -187,22 +187,6 @@
       <forward name="loggedOut" path="/docs/login/logout.html" />
     </action>
 
-    <action    path="/fetchPublicCalendars"
-               type="org.bedework.webclient.BwAction"
-               name="calForm"
-               scope="session"
-               validate="false">
-      <forward name="success" path="/showPublicCals.rdo" redirect="true" />
-    </action>
-
-    <action    path="/fetchCalendars"
-               type="org.bedework.webclient.BwAction"
-               name="calForm"
-               scope="session"
-               validate="false">
-      <forward name="success" path="/showCals.rdo" redirect="true" />
-    </action>
-
     <action    path="/setSelection"
                type="org.bedework.webcommon.misc.SetSelectionAction"
                name="calForm"
@@ -352,6 +336,128 @@
       <forward name="success" path="/showManageLocations.rdo" redirect="true" />
     </action>
 
+    <!-- ===============================================================
+                         Calendar Actions
+         =============================================================== -->
+
+    <!-- ........... public and personal for viewing and selecting ...... -->
+
+    <action    path="/fetchPublicCalendars"
+               type="org.bedework.webclient.BwAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showPublicCals.rdo" redirect="true" />
+    </action>
+
+    <action    path="/fetchCalendars"
+               type="org.bedework.webclient.BwAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/showCals.rdo" redirect="true" />
+    </action>
+
+    <!-- ........... personal only for modifying calendars .............. -->
+
+    <action    path="/calendar/showCalendar"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calendar/displayCalendar.jsp"/>
+    </action>
+
+
+    <action    path="/calendar/showReferenced"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calendar/referenced.jsp"/>
+    </action>
+
+    <action    path="/calendar/showModForm"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calendar/modCalendar.jsp"/>
+    </action>
+
+    <action    path="/calendar/showDescriptionList"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calendar/calendarDescriptions.jsp"/>
+    </action>
+
+    <action    path="/calendar/showUpdateList"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calendar/calendarList.jsp"/>
+    </action>
+
+    <action    path="/calendar/showDeleteConfirm"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="cancelled" path="/calendar/showUpdateList.rdo" redirect="true" />
+      <forward name="success" path="/docs/calendar/deleteConfirm.jsp" />
+    </action>
+
+    <action    path="/calendar/initAdd"
+               type="org.bedework.webcommon.calendars.InitAddCalendarAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="continue" path="/calendar/showModForm.rdo" redirect="true" />
+    </action>
+
+    <action    path="/calendar/delete"
+               type="org.bedework.webcommon.calendars.DeleteCalendarAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="inUse" path="/calendar/showReferenced.rdo" redirect="true" />
+      <forward name="notFound" path="/calendar/showUpdateList.rdo" redirect="true" />
+      <forward name="cancelled" path="/calendar/showUpdateList.rdo" redirect="true" />
+      <forward name="continue" path="/calendar/showUpdateList.rdo" redirect="true" />
+    </action>
+
+    <action    path="/calendar/fetchForDisplay"
+               type="org.bedework.webcommon.calendars.FetchCalendarAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="notFound" path="/admin/showMain.rdo" redirect="true" />
+      <forward name="continue" path="/calendar/showCalendar.rdo" redirect="true" />
+    </action>
+
+    <action    path="/calendar/fetchForUpdate"
+               type="org.bedework.webcommon.calendars.FetchCalendarAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="notFound" path="/admin/showUpdateList.rdo" redirect="true" />
+      <forward name="continue" path="/calendar/showModForm.rdo" redirect="true" />
+    </action>
+
+    <action    path="/calendar/update"
+               type="org.bedework.webcommon.calendars.UpdateCalendarAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="continue" path="/calendar/showUpdateList.rdo" redirect="true" />
+      <forward name="cancelled" path="/calendar/showUpdateList.rdo" redirect="true" />
+      <forward name="retry" path="/calendar/showModForm.rdo" redirect="true" />
+      <forward name="delete" path="/calendar/showDeleteConfirm.rdo" redirect="true" />
+    </action>
+
     <!-- ....................... system stats .......................... -->
 
     <action    path="/showStats"
@@ -453,6 +559,7 @@
                name="calForm"
                scope="session"
                validate="false">
+      <forward name="noAccess" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="cancelled" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="success" path="/subs/showModForm.rdo" redirect="true" />
     </action>

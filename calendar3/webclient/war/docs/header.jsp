@@ -122,31 +122,49 @@ try {
     <setViewPeriod><genurl:rewrite action="setViewPeriod.do"/></setViewPeriod>
     <eventView><genurl:rewrite action="eventView.do"/></eventView>
     <initEvent><genurl:rewrite action="initEvent.do"/></initEvent>
-    <fetchPublicCalendars><genurl:rewrite action="fetchPublicCalendars"/></fetchPublicCalendars>
-    <fetchCalendars><genurl:rewrite action="fetchCalendars"/></fetchCalendars>
     <addEvent><genurl:rewrite action="addEvent.do"/></addEvent>
     <addEventUsingPage><genurl:rewrite action="addEventUsingPage.do"/></addEventUsingPage>
-    <editEvent><genurl:rewrite action="editEvent.do"/></editEvent>
-    <delEvent><genurl:rewrite action="delEvent.do"/></delEvent>
     <mailEvent><genurl:rewrite action="mailEvent.do"/></mailEvent>
     <showPage><genurl:rewrite action="showPage.do"/></showPage>
-    <manageLocations><genurl:rewrite action="manageLocations.do"/></manageLocations>
-    <addLocation><genurl:rewrite action="addLocation.do"/></addLocation>
-    <editLocation><genurl:rewrite action="editLoc.do"/></editLocation>
-    <delLocation><genurl:rewrite action="delLocation.do"/></delLocation>
-    <subscriptions> <!-- only those listed are used here (no need to clean up) -->
-      <fetch><genurl:link page="/subs/fetch.do?b=de"/></fetch>
-      <fetchForUpdate><genurl:link page="/subs/fetchForUpdate.do?b=de"/></fetchForUpdate>
-      <initAdd><genurl:link page="/subs/initAdd.do?b=de"/></initAdd>
-      <subscribe><genurl:link page="/subs/subscribe.do?b=de"/></subscribe>
-    </subscriptions>
-    <export><genurl:rewrite action="export.do"/></export>
 
-    <initEventAlarm><genurl:rewrite action="initEventAlarm.do"/></initEventAlarm>
-    <setAlarm><genurl:rewrite action="setAlarm.do"/></setAlarm>
-    <addEventRef><genurl:rewrite action="addEventRef.do"/></addEventRef>
-    <upload><genurl:rewrite action="upload.do"/></upload>
+    <export><genurl:rewrite action="export.do"/></export>
     <stats><genurl:rewrite action="stats.do?be=d"/></stats>
+
+    <fetchPublicCalendars><genurl:rewrite action="fetchPublicCalendars"/></fetchPublicCalendars>
+    <fetchCalendars><genurl:rewrite action="fetchCalendars"/></fetchCalendars>
+
+    <!-- The following URLs are used only in the personal client -->
+    <logic:equal name="calForm" property="guest" value="false">
+      <editEvent><genurl:rewrite action="editEvent.do"/></editEvent>
+      <delEvent><genurl:rewrite action="delEvent.do"/></delEvent>
+
+      <calendar>
+        <fetch><genurl:link page="/calendar/showUpdateList.rdo?b=de"/></fetch><!-- keep -->
+        <fetchDescriptions><genurl:link page="/calendar/showDescriptionList.rdo?b=de"/></fetchDescriptions><!-- keep -->
+        <initAdd><genurl:link page="/calendar/initAdd.do?b=de"/></initAdd><!-- keep -->
+        <delete><genurl:link page="/calendar/delete.do?b=de"/></delete>
+        <fetchForDisplay><genurl:link page="/calendar/fetchForDisplay.do?b=de"/></fetchForDisplay>
+        <fetchForUpdate><genurl:link page="/calendar/fetchForUpdate.do?b=de"/></fetchForUpdate><!-- keep -->
+        <update><genurl:link page="/calendar/update.do?b=de"/></update><!-- keep -->
+      </calendar>
+
+      <subscriptions> <!-- only those listed are used here (no need to clean up) -->
+        <fetch><genurl:link page="/subs/fetch.do?b=de"/></fetch>
+        <fetchForUpdate><genurl:link page="/subs/fetchForUpdate.do?b=de"/></fetchForUpdate>
+        <initAdd><genurl:link page="/subs/initAdd.do?b=de"/></initAdd>
+        <subscribe><genurl:link page="/subs/subscribe.do?b=de"/></subscribe>
+      </subscriptions>
+
+      <manageLocations><genurl:rewrite action="manageLocations.do"/></manageLocations>
+      <addLocation><genurl:rewrite action="addLocation.do"/></addLocation>
+      <editLocation><genurl:rewrite action="editLoc.do"/></editLocation>
+      <delLocation><genurl:rewrite action="delLocation.do"/></delLocation>
+
+      <initEventAlarm><genurl:rewrite action="initEventAlarm.do"/></initEventAlarm>
+      <setAlarm><genurl:rewrite action="setAlarm.do"/></setAlarm>
+      <addEventRef><genurl:rewrite action="addEventRef.do"/></addEventRef>
+      <upload><genurl:rewrite action="upload.do"/></upload>
+    </logic:equal>
   </urlPrefixes><%--
         actionUrlPrefixes are used to generate appropriately encoded urls for
         calls into the application; these are required for use within portals --%>
@@ -220,7 +238,7 @@ try {
       Value: string - currently selected subscription ("calendar" too) --%>
     <filter></filter> <%-- unimplemented --%>
   </selectionState>
-  
+
   <%-- List of views for menuing --%>
   <views>
     <logic:present name="calForm" property="views">
@@ -236,7 +254,7 @@ try {
 <%-- ****************************************************************
       the following code should not be produced in the public client
      **************************************************************** --%>
-  <logic:equal name="calForm" property="publicView" value="false">
+  <logic:equal name="calForm" property="guest" value="false">
     <myCalendars>
       <jsp:include page="/docs/calendar/emitCalendars.jsp"/>
     </myCalendars>
