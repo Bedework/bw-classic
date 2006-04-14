@@ -120,7 +120,7 @@
                 </xsl:when>
                 <xsl:when test="/bedework/page='editEvent'">
                   <!-- edit an event -->
-                  <xsl:apply-templates select="/bedework/formElements"/>
+                  <xsl:apply-templates select="/bedework/formElements" mode="editEvent"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='alarmOptions'">
                   <xsl:call-template name="alarmOptions" />
@@ -133,7 +133,7 @@
                 </xsl:when>
                 <xsl:when test="/bedework/page='editLocation'">
                   <!-- edit an event -->
-                  <xsl:apply-templates select="/bedework/locationform"/>
+                  <xsl:apply-templates select="/bedework/formElements" mode="editLocation"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
                   <xsl:apply-templates select="/bedework/subscriptions"/>
@@ -745,7 +745,8 @@
                     </xsl:when>
                     <xsl:otherwise>
                       <a href="{$eventView}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        <xsl:value-of select="summary"/>, <xsl:value-of select="location/address"/>
+                        <xsl:value-of select="summary"/>
+                        <xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
                       </a>
                     </xsl:otherwise>
                   </xsl:choose>
@@ -1250,7 +1251,7 @@
             Title:
           </td>
           <td class="fieldval">
-            <xsl:variable name="title" select="/bedework/eventform/form/title/input/@value"/>
+            <xsl:variable name="title" select="/bedework/formElements/form/title/input/@value"/>
             <input type="text" name="newEvent.summary" size="80" value="{$title}"/>
           </td>
         </tr>
@@ -1479,10 +1480,13 @@
           <td class="fieldval" align="left">
             <span class="std-text">choose: </span>
             <span id="eventFormLocationList">
-              <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/*"/>
+              <select name="locationId">
+                <option value="-1">select...</option>
+                <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/select/*"/>
+              </select>
             </span>
             <span class="std-text"> or add new: </span>
-            <xsl:copy-of select="/bedework/formElements/form/location/locationtext/*"/>
+            <input type="text" name="newLocation.address" value="" />
           </td>
         </tr>
         <tr>
@@ -1574,7 +1578,7 @@
   </xsl:template>
 
   <!--==== EDIT EVENT ====-->
-  <xsl:template match="formElements">
+  <xsl:template match="formElements" mode="editEvent">
     <form name="eventForm" method="post" action="{$editEvent}" id="standardForm">
       <input type="hidden" name="updateEvent" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
@@ -1832,10 +1836,13 @@
           <td class="fieldval" align="left">
             <span class="std-text">choose: </span>
             <span id="eventFormLocationList">
-              <xsl:copy-of select="form/location/locationmenu/*"/>
+              <select name="locationId">
+                <option value="-1">select...</option>
+                <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/select/*"/>
+              </select>
             </span>
             <span class="std-text"> or add new: </span>
-            <xsl:copy-of select="form/location/locationtext/*"/>
+            <input type="text" name="laddress" value="" />
           </td>
         </tr>
         <tr>
@@ -1963,8 +1970,8 @@
         <tr>
           <td class="fieldname">Display:</td>
           <td>
-            <input type="radio" value="true" name="subscription.display"/> yes
-            <input type="radio" value="false" name="subscription.display" checked="checked"/> no
+            <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
+            <input type="radio" value="false" name="subscription.display"/> no
           </td>
         </tr>
         <tr>
@@ -2326,7 +2333,7 @@
         </tr>
         <td colspan="2" class="plain">
           <ul>
-            <xsl:for-each select="/bedework/eventform/form/location/locationmenu/select/option[@value>'3']">
+            <xsl:for-each select="/bedework/formElements/form/location/locationmenu/select/option[@value>'3']">
               <xsl:sort select="."/>
               <li>
                 <xsl:variable name="locationId" select="@value"/>
@@ -2340,7 +2347,7 @@
   </xsl:template>
 
   <!--==== EDIT LOCATION ====-->
-  <xsl:template match="locationform">
+  <xsl:template match="formElements" mode="editLocation">
     <form name="editLocationForm" method="post" action="{$editLocation}" id="standardForm">
       <input type="hidden" name="updateLocation" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
@@ -2348,7 +2355,7 @@
       <table id="commonTable" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">
-            <xsl:variable name="locId" select="/bedework/locationform/form/id"/>
+            <xsl:variable name="locId" select="form/id"/>
             <div id="eventActions">
               <a href="{$delLocation}?locationId={$locId}">Delete Location</a>
             </div>
@@ -2360,7 +2367,7 @@
             Address:
           </td>
           <td align="left">
-            <xsl:copy-of select="/bedework/locationform/form/address/*"/>
+            <xsl:copy-of select="form/address/*"/>
           </td>
         </tr>
         <tr>
@@ -2368,7 +2375,7 @@
             Subaddress:
           </td>
           <td align="left">
-            <xsl:copy-of select="/bedework/locationform/form/subaddress/*"/>
+            <xsl:copy-of select="form/subaddress/*"/>
           </td>
         </tr>
         <tr>
@@ -2376,7 +2383,7 @@
             Location's URL:
           </td>
           <td>
-            <xsl:copy-of select="/bedework/locationform/form/link/*"/>
+            <xsl:copy-of select="form/link/*"/>
           </td>
         </tr>
         <tr>

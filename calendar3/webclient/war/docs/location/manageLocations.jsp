@@ -11,7 +11,7 @@ try {
 %>
 
 <page>manageLocations</page>
-<eventform>
+<formElements>
   <genurl:form action="addLocation">
     <location>
       <locationmenu>
@@ -23,7 +23,7 @@ try {
       </locationmenu>
     </location>
   </genurl:form>
-</eventform>
+</formElements>
 
 <%
 } catch (Throwable t) {
