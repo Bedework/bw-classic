@@ -35,6 +35,15 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.calendar.added'">
+        <p>Calendar added.</p>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.calendar.updated'">
+        <p>Calendar updated.</p>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.calendar.deleted'">
+        <p>Calendar deleted.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.added.subscriptions'">
         <xsl:choose>
           <xsl:when test="param='1'">

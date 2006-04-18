@@ -4,7 +4,7 @@
 <%@include file="/docs/header.jsp"%>
 
 <page>modCalendar</page>
-<%--<creating><bean:write name="calForm" property="addingCalendar"/></creating>--%>
+<creating><bean:write name="calForm" property="addingCalendar"/></creating>
 
 <%@include file="/docs/calendar/displayCalendarCommon.jsp"%>
 
