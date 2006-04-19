@@ -121,9 +121,6 @@ try {
     <setSelection><genurl:rewrite action="setSelection.do"/></setSelection>
     <setViewPeriod><genurl:rewrite action="setViewPeriod.do"/></setViewPeriod>
     <eventView><genurl:rewrite action="eventView.do"/></eventView>
-    <initEvent><genurl:rewrite action="initEvent.do"/></initEvent>
-    <addEvent><genurl:rewrite action="addEvent.do"/></addEvent>
-    <addEventUsingPage><genurl:rewrite action="addEventUsingPage.do"/></addEventUsingPage>
     <mailEvent><genurl:rewrite action="mailEvent.do"/></mailEvent>
     <showPage><genurl:rewrite action="showPage.do"/></showPage>
 
@@ -135,8 +132,14 @@ try {
 
     <!-- The following URLs are used only in the personal client -->
     <logic:equal name="calForm" property="guest" value="false">
+      <initEvent><genurl:rewrite action="initEvent.do"/></initEvent>
+      <addEvent><genurl:rewrite action="addEvent.do"/></addEvent>
+      <addEventUsingPage><genurl:rewrite action="addEventUsingPage.do"/></addEventUsingPage>
       <editEvent><genurl:rewrite action="editEvent.do"/></editEvent>
       <delEvent><genurl:rewrite action="delEvent.do"/></delEvent>
+      <event>
+        <setAccess><genurl:link page="/event/setAccess.do?b=de"/></setAccess>
+      </event>
 
       <getFreeBusy><genurl:link page="/getFreeBusy.do?b=de"/></getFreeBusy>
 

@@ -43,6 +43,7 @@
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/initEvent"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/addEvent"/>
   <xsl:variable name="addEventUsingPage" select="/bedework/urlPrefixes/addEventUsingPage"/>
+  <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/editEvent"/>
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/delEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
@@ -1263,7 +1264,7 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <select name="calendarId">
+            <select name="calId">
               <option value="-1">
                 Select:
               </option>
@@ -1610,6 +1611,10 @@
 
   <!--==== EDIT EVENT ====-->
   <xsl:template match="formElements" mode="editEvent">
+    <xsl:variable name="subscriptionId" select="subscriptionId"/>
+    <xsl:variable name="calendarId" select="calendarId"/>
+    <xsl:variable name="guid" select="guid"/>
+    <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <form name="eventForm" method="post" action="{$editEvent}" id="standardForm">
       <input type="hidden" name="updateEvent" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
@@ -1619,10 +1624,6 @@
         <tr>
           <th colspan="2" class="commonHeader">
             <div id="eventActions">
-              <xsl:variable name="subscriptionId" select="subscriptionId"/>
-              <xsl:variable name="calendarId" select="calendarId"/>
-              <xsl:variable name="guid" select="guid"/>
-              <xsl:variable name="recurrenceId" select="recurrenceId"/>
               <a href="{$eventView}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
                 View Event
               </a> |
@@ -1647,7 +1648,7 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <select name="calendarId">
+            <select name="calId">
               <option value="-1">
                 Select:
               </option>
@@ -1920,6 +1921,54 @@
         </tr>
       </table>
     </form>
+
+    <div id="sharingBox">
+      <h3>Sharing</h3>
+      <table class="common">
+        <tr>
+          <th class="commonHeader" colspan="2">Current access:</th>
+        </tr>
+        <tr>
+          <th>Owner:</th>
+          <!-- NOTE: we are currently getting the acl information from the
+               calendar listing NOT from the current calendar (which does not
+               have the means of producing it out of the action form just now.
+               We'll fix this soon. -->
+          <td class="fieldval">
+            <xsl:value-of select="name(acl/ace[principal/property/owner]/grant/*)"/>
+          </td>
+        </tr>
+        <xsl:if test="acl/ace/principal/href">
+          <tr>
+            <th>Users:</th>
+            <td>
+              <xsl:for-each select="acl/ace[principal/href]">
+                <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
+              </xsl:for-each>
+            </td>
+          </tr>
+        </xsl:if>
+      </table>
+      <form name="eventShareForm" action="{$event-setAccess}" id="shareForm">
+        <input type="hidden" name="calId" value="{$calendarId}"/>
+        <input type="hidden" name="guid" value="{$guid}"/>
+        <input type="hidden" name="recurid" value="{$recurrenceId}"/>
+        <p>
+          Share this event with:<br/>
+          <input type="text" name="who" size="20"/>
+          <input type="radio" value="user" name="whoType" checked="checked"/> user
+          <input type="radio" value="group" name="whoType"/> group
+        </p>
+        <p>
+          Access rights:<br/>
+          <input type="radio" value="r" name="how" checked="checked"/> read<br/>
+          <input type="radio" value="w" name="how"/> write<br/>
+          <input type="radio" value="f" name="how"/> free/busy only<br/>
+          <input type="radio" value="d" name="how"/> default (reset access)
+        </p>
+        <input type="submit" name="submit" value="Submit"/>
+      </form>
+    </div>
   </xsl:template>
 
   <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->

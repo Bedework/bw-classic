@@ -63,6 +63,8 @@ import javax.servlet.http.HttpServletRequest;
  * <p>Parameters are:<ul>
  *      <li>"startdate"              Optional start date for the event
                                      as yymmdd or yymmddTHHmmss</li>
+        <li>"enddate"                Optional end date for the event
+                                     as yymmdd or yymmddTHHmmss</li>
  * </ul>
  *
  */
