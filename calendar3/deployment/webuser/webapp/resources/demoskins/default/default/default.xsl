@@ -58,7 +58,6 @@
   <xsl:variable name="initUpload" select="/bedework/urlPrefixes/initUpload"/>
   <xsl:variable name="upload" select="/bedework/urlPrefixes/upload"/>
   <xsl:variable name="getFreeBusy" select="/bedework/urlPrefixes/getFreeBusy/a/@href"/>
-  <xsl:variable name="setAccess" select="/bedework/urlPrefixes/setAccess/a/@href"/>
   <!-- calendars -->
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
   <xsl:variable name="calendar-fetch" select="/bedework/urlPrefixes/calendar/fetch/a/@href"/><!-- used -->
@@ -68,6 +67,7 @@
   <xsl:variable name="calendar-fetchForDisplay" select="/bedework/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
   <xsl:variable name="calendar-fetchForUpdate" select="/bedework/urlPrefixes/calendar/fetchForUpdate/a/@href"/><!-- used -->
   <xsl:variable name="calendar-update" select="/bedework/urlPrefixes/calendar/update/a/@href"/><!-- used -->
+  <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess/a/@href"/>
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
@@ -1947,15 +1947,16 @@
           </th>
           <xsl:for-each select="period">
             <xsl:variable name="startTime"><xsl:apply-templates  select="start" mode="timeDisplay"/></xsl:variable>
+            <xsl:variable name="startDate" select="start"/>
             <xsl:choose>
               <xsl:when test="fbtype = '0'">
                 <td class="busy">
-                  <a href="" title="{$startTime}">*</a>
+                  <a href="{$initEvent}?date={$startDate}" title="{$startTime}">*</a>
                 </td>
               </xsl:when>
               <xsl:otherwise>
                 <td class="free">
-                  <a href="" title="{$startTime}">*</a>
+                  <a href="{$initEvent}?date={$startDate}" title="{$startTime}">*</a>
                 </td>
               </xsl:otherwise>
             </xsl:choose>
@@ -2285,7 +2286,7 @@
           </tr>
         </xsl:if>
       </table>
-      <form name="calendarShareForm" action="{$setAccess}" id="shareForm">
+      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm">
         <input type="hidden" name="calId" value="{$id}"/>
         <p>
           Share this calendar with:<br/>

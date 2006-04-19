@@ -295,13 +295,6 @@
       <forward name="success" path="/showFreeBusy.rdo" redirect="true" />
     </action>
 
-    <action    path="/setAccess"
-               type="org.bedework.webcommon.access.AccessAction"
-               name="calForm"
-               scope="session"
-               validate="false">
-    </action>
-
     <action    path="/manageLocations"
                type="org.bedework.webclient.BwAction"
                name="calForm"
@@ -367,7 +360,6 @@
                validate="false">
       <forward name="success" path="/docs/calendar/displayCalendar.jsp"/>
     </action>
-
 
     <action    path="/calendar/showReferenced"
                type="org.bedework.webclient.BwRenderAction"
@@ -458,6 +450,16 @@
       <forward name="delete" path="/calendar/showDeleteConfirm.rdo" redirect="true" />
     </action>
 
+    <action    path="/calendar/setAccess"
+               type="org.bedework.webcommon.access.AccessAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/calendar/showModForm.rdo" redirect="true" />
+      <forward name="error" path="/calendar/showModForm.rdo" redirect="true" />
+      <forward name="notFound" path="/calendar/showModForm.rdo" redirect="true" />
+      <forward name="doNothing" path="/calendar/showModForm.rdo" redirect="true" />
+    </action>
     <!-- ....................... system stats .......................... -->
 
     <action    path="/showStats"

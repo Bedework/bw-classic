@@ -139,7 +139,6 @@ try {
       <delEvent><genurl:rewrite action="delEvent.do"/></delEvent>
 
       <getFreeBusy><genurl:link page="/getFreeBusy.do?b=de"/></getFreeBusy>
-      <setAccess><genurl:link page="/setAccess.do?b=de"/></setAccess>
 
       <calendar>
         <fetch><genurl:link page="/calendar/showUpdateList.rdo?b=de"/></fetch><!-- keep -->
@@ -149,6 +148,7 @@ try {
         <fetchForDisplay><genurl:link page="/calendar/fetchForDisplay.do?b=de"/></fetchForDisplay>
         <fetchForUpdate><genurl:link page="/calendar/fetchForUpdate.do?b=de"/></fetchForUpdate><!-- keep -->
         <update><genurl:link page="/calendar/update.do?b=de"/></update><!-- keep -->
+        <setAccess><genurl:link page="/calendar/setAccess.do?b=de"/></setAccess>
       </calendar>
 
       <subscriptions> <!-- only those listed are used here (no need to clean up) -->
