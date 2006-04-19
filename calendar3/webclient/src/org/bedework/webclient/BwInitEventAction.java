@@ -63,7 +63,8 @@ import javax.servlet.http.HttpServletRequest;
 /** Set up for addition of new event.
  *
  * <p>Parameters are:<ul>
- *      <li>"date"              Optional date for the event</li>
+ *      <li>"startdate"              Optional start date for the event
+                                     as yymmdd or yymmddTHHmmss</li>
  * </ul>
  *
  */
@@ -75,14 +76,18 @@ public class BwInitEventAction extends BwCalAbstractAction {
                          BwActionForm form) throws Throwable {
     form.refreshIsNeeded();
 
-    String date = getReqPar(request, "date");
-    
+    String date = getReqPar(request, "startdate");
+
     if (date != null) {
-      Date jdt = CalFacadeUtil.fromISODate(date);
-      
-      form.assignEventDates(jdt);
+      if (CalFacadeUtil.isISODate(date)) {
+        Date jdt = CalFacadeUtil.fromISODate(date);
+        form.assignEventDates(jdt);
+      } else if (CalFacadeUtil.isISODateTime(date)) {
+        Date jdt = CalFacadeUtil.fromISODateTime(date);
+        form.assignEventDates(jdt);
+      }
     }
-    
+
     return "success";
   }
 }

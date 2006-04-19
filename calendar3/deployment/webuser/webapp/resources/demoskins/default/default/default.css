@@ -158,10 +158,6 @@ h4 {
   margin: 0;
   padding: 0;
 }
-#bodyBlock td {
-  margin: 0;
-  padding: 0;
-}
 #bodyBlock td#sideBar {
   width: 200px;
   font-size: 0.8em;
@@ -172,6 +168,7 @@ h4 {
   border-bottom: 2px solid #aaa;
   border-top: 24px solid #333;
   vertical-align: top;
+  margin: 0;
   padding: 0;
 }
 #bodyBlock td#sideBar h3 {
@@ -230,6 +227,7 @@ h4 {
   border-bottom: 2px solid #aaa;
   vertical-align: top;
   padding: 0;
+  margin: 0;
 }
 #utilBarTable {
   margin: 0;

@@ -519,7 +519,7 @@
            <xsl:choose>
              <xsl:when test="/bedework/periodname = 'day'">
                <xsl:variable name="date" select="/bedework/firstday/date"/>
-               <a href="{$initEvent}?date={$date}" title="add event">
+               <a href="{$initEvent}?startdate={$date}" title="add event">
                   <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
                   add event
                </a>
@@ -639,7 +639,7 @@
               <tr>
                 <td colspan="6" class="dateRow">
                    <xsl:variable name="date" select="date"/>
-                   <a href="{$initEvent}?date={$date}" class="listAdd">
+                   <a href="{$initEvent}?startdate={$date}" class="listAdd">
                      add event
                    </a>
                    <a href="{$setViewPeriod}?viewType=dayView&amp;date={$date}">
@@ -818,7 +818,7 @@
           <xsl:if test="filler='false'">
             <td>
               <xsl:variable name="dayDate" select="date"/>
-              <a href="{$initEvent}?date={$dayDate}" class="gridAdd" title="add event">
+              <a href="{$initEvent}?startdate={$dayDate}" class="gridAdd" title="add event">
                 <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event"/>
               </a>
               <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
@@ -855,7 +855,7 @@
               <xsl:otherwise>
                 <td>
                   <xsl:variable name="dayDate" select="date"/>
-                  <a href="{$initEvent}?date={$dayDate}" class="gridAdd" title="add event">
+                  <a href="{$initEvent}?startdate={$dayDate}" class="gridAdd" title="add event">
                     <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event"/>
                   </a>
                   <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
@@ -1267,8 +1267,9 @@
               <option value="-1">
                 Select:
               </option>
-              <xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>
-              <!--
+              <!--<xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>-->
+              <!-- the following calendar select box is temporary.  Should be
+                   replaced with the xml from the line above. -->
               <xsl:for-each select="/bedework/myCalendars/calendars//calendar[calendarCollection='true']">
                 <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
                   <xsl:variable name="calid" select="id"/>
@@ -1281,7 +1282,7 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </xsl:if>
-              </xsl:for-each>-->
+              </xsl:for-each>
             </select>
           </td>
         </tr>
@@ -1650,8 +1651,9 @@
               <option value="-1">
                 Select:
               </option>
-              <xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>
-              <!--
+              <!--<xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>-->
+              <!-- the following calendar select box is temporary.  Should be
+                   replaced with the xml from the line above. -->
               <xsl:for-each select="/bedework/myCalendars/calendars//calendar[calendarCollection='true']">
                 <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
                   <xsl:variable name="calid" select="id"/>
@@ -1665,7 +1667,6 @@
                   </xsl:choose>
                 </xsl:if>
               </xsl:for-each>
-              -->
             </select>
           </td>
         </tr>
@@ -1947,16 +1948,17 @@
           </th>
           <xsl:for-each select="period">
             <xsl:variable name="startTime"><xsl:apply-templates  select="start" mode="timeDisplay"/></xsl:variable>
-            <xsl:variable name="startDate" select="start"/>
+            <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
+            <xsl:variable name="startDate"><xsl:value-of select="substring(../start,1,8)"/>T<xsl:value-of select="start"/>00</xsl:variable>
             <xsl:choose>
               <xsl:when test="fbtype = '0'">
                 <td class="busy">
-                  <a href="{$initEvent}?date={$startDate}" title="{$startTime}">*</a>
+                  <a href="{$initEvent}?startdate={$startDate}" title="{$startTime}">*</a>
                 </td>
               </xsl:when>
               <xsl:otherwise>
                 <td class="free">
-                  <a href="{$initEvent}?date={$startDate}" title="{$startTime}">*</a>
+                  <a href="{$initEvent}?startdate={$startDate}" title="{$startTime}">*</a>
                 </td>
               </xsl:otherwise>
             </xsl:choose>
