@@ -56,8 +56,6 @@ package org.bedework.webclient;
 
 import org.bedework.calfacade.CalFacadeUtil;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 /** Set up for addition of new event.
