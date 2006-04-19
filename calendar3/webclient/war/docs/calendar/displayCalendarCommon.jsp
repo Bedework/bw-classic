@@ -4,12 +4,12 @@
 
 <bean:define id="curcal" name="calForm" property="calendar"/>
 <currentCalendar>
-  <id><bean:write name="calendar" property="id" /></id>
-  <bw:emitText name="calendar" property="name" />
-  <bw:emitText name="calendar" property="path" />
-  <bw:emitText name="calendar" property="description" tagName="desc" />
-  <calendarCollection><bean:write name="calendar" property="calendarCollection" /></calendarCollection>
-  <bw:emitText name="calendar" property="mailListId" />
-  <bw:emitCurrentPrivs name="calendar" property="currentAccess" />
-  <bw:emitAcl name="calendar" property="currentAccess" />
+  <id><bean:write name="curcal" property="id" /></id>
+  <bw:emitText name="curcal" property="name" />
+  <bw:emitText name="curcal" property="path" />
+  <bw:emitText name="curcal" property="description" tagName="desc" />
+  <calendarCollection><bean:write name="curcal" property="calendarCollection" /></calendarCollection>
+  <bw:emitText name="curcal" property="mailListId" />
+  <bw:emitCurrentPrivs name="curcal" property="currentAccess" />
+  <bw:emitAcl name="curcal" property="currentAccess" />
 </currentCalendar>
