@@ -2176,10 +2176,14 @@
         <h3>Modify Folder</h3>
       </xsl:otherwise>
     </xsl:choose>
+    <xsl:variable name="id" select="id"/>
     <form name="modCalForm" action="{$calendar-update}">
       <table class="common">
         <tr>
           <th class="commonHeader" colspan="2">
+            <div id="eventActions">
+              key: <xsl:value-of select="id"/>
+            </div>
             <xsl:value-of select="path"/>
           </th>
         </tr>
@@ -2261,14 +2265,20 @@
           <th class="commonHeader" colspan="2">Current access:</th>
         </tr>
         <tr>
-          <td class="fieldName">Owner:</td>
-          <td><xsl:value-of select="name(acl/ace[principal/property/owner]/grant/*)"/></td>
+          <th>Owner:</th>
+          <!-- NOTE: we are currently getting the acl information from the
+               calendar listing NOT from the current calendar (which does not
+               have the means of producing it out of the action form just now.
+               We'll fix this soon. -->
+          <td>
+            <xsl:value-of select="name(/bedework/calendars//calendar[id=$id]/acl/ace[principal/property/owner]/grant/*)"/>
+          </td>
         </tr>
-        <xsl:if test="acl/ace/principal/href">
+        <xsl:if test="/bedework/calendars//calendar[id=$id]/acl/ace/principal/href">
           <tr>
-            <td class="fieldName">Users:</td>
+            <th>Users:</th>
             <td>
-              <xsl:for-each select="acl/ace[principal/href]">
+              <xsl:for-each select="/bedework/calendars//calendar[id=$id]/acl/ace[principal/href]">
                 <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
               </xsl:for-each>
             </td>
@@ -2276,7 +2286,6 @@
         </xsl:if>
       </table>
       <form name="calendarShareForm" action="{$setAccess}" id="shareForm">
-        <xsl:variable name="id" select="id"/>
         <input type="hidden" name="calId" value="{$id}"/>
         <p>
           Share this calendar with:<br/>
