@@ -138,6 +138,8 @@ try {
       <editEvent><genurl:rewrite action="editEvent.do"/></editEvent>
       <delEvent><genurl:rewrite action="delEvent.do"/></delEvent>
 
+      <getFreeBusy><genurl:link page="/getFreeBusy.do?b=de"/></getFreeBusy>
+
       <calendar>
         <fetch><genurl:link page="/calendar/showUpdateList.rdo?b=de"/></fetch><!-- keep -->
         <fetchDescriptions><genurl:link page="/calendar/showDescriptionList.rdo?b=de"/></fetchDescriptions><!-- keep -->

@@ -21,6 +21,13 @@ try {
     <title>
       <html:text property="editEvent.summary"/>
     </title>
+    <calendar>
+      <%-- <html:select property="calId">
+        <html:optionsCollection property="addContentCalendarCollections"
+                                    label="name"
+                                    value="id"/>
+      </html:select> --%>
+    </calendar>
     <allDay><html:checkbox property="eventStartDate.dateOnly"/></allDay>
     <start>
       <month>

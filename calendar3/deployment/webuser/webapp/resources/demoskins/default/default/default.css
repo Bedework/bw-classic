@@ -949,6 +949,55 @@ p.note {
   font-size: 0.8em;
   font-style: italic;
 }
+#freeBusy {
+  margin: 1em;
+}
+#freeBusy td {
+  vertical-align: center;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+#freeBusy th {
+  vertical-align: center;
+  text-align: center;
+  font-size: 0.8em;
+  font-weight: normal;
+  padding: 4px;
+  margin: 0;
+}
+#freeBusy th.date,
+#freeBusy th.time {
+  font-weight: bold;
+}
+#freeBusy td.free {
+  color: #A3BAEA;
+  background-color: #A3BAEA;
+}
+#freeBusy td.busy {
+  color: #eee;
+  background-color: #eee;
+}
+#freeBusy td.free a {
+  color: #A3BAEA;
+  background-color: transparent;
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+}
+#freeBusy td.busy a {
+  color: #eee;
+  background-color: transparent;
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+}
+#freeBusy td.busy a:hover,
+#freeBusy td.free a:hover {
+  color: black;
+  background-color: yellow;
+  text-decoration: none;
+}
 /* Footer */
 #footer {
   font-size: 0.7em;

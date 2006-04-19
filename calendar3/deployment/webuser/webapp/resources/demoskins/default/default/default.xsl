@@ -57,6 +57,7 @@
   <xsl:variable name="setAlarm" select="/bedework/urlPrefixes/setAlarm"/>
   <xsl:variable name="initUpload" select="/bedework/urlPrefixes/initUpload"/>
   <xsl:variable name="upload" select="/bedework/urlPrefixes/upload"/>
+  <xsl:variable name="getFreeBusy" select="/bedework/urlPrefixes/getFreeBusy/a/@href"/>
   <!-- calendars -->
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
   <xsl:variable name="calendar-fetch" select="/bedework/urlPrefixes/calendar/fetch/a/@href"/><!-- used -->
@@ -154,9 +155,9 @@
                                 /bedework/page='calendarReferenced'">
                   <xsl:apply-templates select="/bedework/calendars"/>
                 </xsl:when>
-                <!--deprecated: <xsl:when test="/bedework/page='calendars'">
-                  <xsl:apply-templates select="/bedework/calendars"/>
-                </xsl:when>-->
+                <xsl:when test="/bedework/page='freeBusy'">
+                  <xsl:apply-templates select="/bedework/freebusy"/>
+                </xsl:when>
                 <xsl:when test="/bedework/page='other'">
                   <!-- show an arbitrary page -->
                   <xsl:call-template name="selectPage"/>
@@ -332,6 +333,7 @@
 
     <h3>options</h3>
     <ul id="sideBarMenu">
+      <li><a href="{$getFreeBusy}">Show Free/Busy</a></li>
       <li><a href="{$manageLocations}">Manage Locations</a></li>
       <li>Preferences</li>
     </ul>
@@ -1257,6 +1259,33 @@
         </tr>
         <tr>
           <td class="fieldname">
+            Calendar:
+          </td>
+          <td class="fieldval">
+            <select name="calendarId">
+              <option value="-1">
+                Select:
+              </option>
+              <xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>
+              <!--
+              <xsl:for-each select="/bedework/myCalendars/calendars//calendar[calendarCollection='true']">
+                <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
+                  <xsl:variable name="calid" select="id"/>
+                  <xsl:choose>
+                    <xsl:when test="id = /bedework/formElements/calendarId">
+                      <option value="{$calid}" selected="selected"><xsl:value-of select="name"/></option>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <option value="{$calid}"><xsl:value-of select="name"/></option>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:if>
+              </xsl:for-each>-->
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
             Date &amp; Time:
           </td>
           <td class="fieldval">
@@ -1613,6 +1642,34 @@
         </tr>
         <tr>
           <td class="fieldname">
+            Calendar:
+          </td>
+          <td class="fieldval">
+            <select name="calendarId">
+              <option value="-1">
+                Select:
+              </option>
+              <xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>
+              <!--
+              <xsl:for-each select="/bedework/myCalendars/calendars//calendar[calendarCollection='true']">
+                <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
+                  <xsl:variable name="calid" select="id"/>
+                  <xsl:choose>
+                    <xsl:when test="id = /bedework/formElements/calendarId">
+                      <option value="{$calid}" selected="selected"><xsl:value-of select="name"/></option>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <option value="{$calid}"><xsl:value-of select="name"/></option>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:if>
+              </xsl:for-each>
+              -->
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
             Date &amp; Time:
           </td>
           <td class="fieldval">
@@ -1861,6 +1918,81 @@
         </tr>
       </table>
     </form>
+  </xsl:template>
+
+  <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->
+  <xsl:template match="freebusy">
+    <h2>Free / Busy</h2>
+    <table id="freeBusy">
+      <tr>
+        <td>&#160;</td>
+        <xsl:for-each select="day[position()=1]/period">
+          <th>
+            <xsl:choose>
+              <xsl:when test="number(start) mod 200 = 0">
+                <xsl:apply-templates select="start" mode="timeDisplay"/>
+              </xsl:when>
+              <xsl:otherwise>
+                &#160;
+              </xsl:otherwise>
+            </xsl:choose>
+          </th>
+        </xsl:for-each>
+      </tr>
+      <xsl:for-each select="day">
+        <tr>
+          <th>
+            <xsl:value-of select="substring(start,1,4)"/>-<xsl:value-of select="substring(start,5,2)"/>-<xsl:value-of select="substring(start,7,2)"/>
+          </th>
+          <xsl:for-each select="period">
+            <xsl:variable name="startTime"><xsl:apply-templates  select="start" mode="timeDisplay"/></xsl:variable>
+            <xsl:choose>
+              <xsl:when test="fbtype = '0'">
+                <td class="busy">
+                  <a href="" title="{$startTime}">*</a>
+                </td>
+              </xsl:when>
+              <xsl:otherwise>
+                <td class="free">
+                  <a href="" title="{$startTime}">*</a>
+                </td>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:for-each>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+
+  <xsl:template match="start" mode="timeDisplay">
+    <xsl:choose>
+      <xsl:when test="node()=0000">12am</xsl:when>
+      <xsl:when test="node()=0100">1am</xsl:when>
+      <xsl:when test="node()=0200">2am</xsl:when>
+      <xsl:when test="node()=0300">3am</xsl:when>
+      <xsl:when test="node()=0400">4am</xsl:when>
+      <xsl:when test="node()=0500">5am</xsl:when>
+      <xsl:when test="node()=0600">6am</xsl:when>
+      <xsl:when test="node()=0700">7am</xsl:when>
+      <xsl:when test="node()=0800">8am</xsl:when>
+      <xsl:when test="node()=0900">9am</xsl:when>
+      <xsl:when test="node()=1000">10am</xsl:when>
+      <xsl:when test="node()=1100">11am</xsl:when>
+      <xsl:when test="node()=1200">NOON</xsl:when>
+      <xsl:when test="node()=1300">1pm</xsl:when>
+      <xsl:when test="node()=1400">2pm</xsl:when>
+      <xsl:when test="node()=1500">3pm</xsl:when>
+      <xsl:when test="node()=1600">4pm</xsl:when>
+      <xsl:when test="node()=1700">5pm</xsl:when>
+      <xsl:when test="node()=1800">6pm</xsl:when>
+      <xsl:when test="node()=1900">7pm</xsl:when>
+      <xsl:when test="node()=2000">8pm</xsl:when>
+      <xsl:when test="node()=2100">9pm</xsl:when>
+      <xsl:when test="node()=2200">10pm</xsl:when>
+      <xsl:when test="node()=2300">11pm</xsl:when>
+      <xsl:when test="node()=2400">12am</xsl:when>
+      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
