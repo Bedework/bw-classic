@@ -79,12 +79,13 @@ public class BwInitEventAction extends BwCalAbstractAction {
     String date = getReqPar(request, "startdate");
 
     if (date != null) {
-      if (CalFacadeUtil.isISODate(date)) {
-        Date jdt = CalFacadeUtil.fromISODate(date);
-        form.assignEventDates(jdt);
-      } else if (CalFacadeUtil.isISODateTime(date)) {
-        Date jdt = CalFacadeUtil.fromISODateTime(date);
-        form.assignEventDates(jdt);
+      if (CalFacadeUtil.isISODateTime(date)) {
+        form.assignEventDates(CalFacadeUtil.fromISODateTime(date));
+      } else if (CalFacadeUtil.isISODate(date)) {
+        form.assignEventDates(CalFacadeUtil.fromISODate(date));
+      } else {
+        form.getErr().emit("org.bedework.client.error.baddate", date);
+        return "badDate";
       }
     }
 
