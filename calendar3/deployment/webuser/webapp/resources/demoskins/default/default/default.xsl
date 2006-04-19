@@ -1962,6 +1962,16 @@
         </tr>
       </xsl:for-each>
     </table>
+
+    <table id="freeBusyKey">
+      <tr>
+        <td class="free">*</td>
+        <td>free</td>
+        <td>&#160;</td>
+        <td class="busy">*</td>
+        <td>busy</td>
+      </tr>
+    </table>
   </xsl:template>
 
   <xsl:template match="start" mode="timeDisplay">

@@ -970,13 +970,21 @@ p.note {
 #freeBusy th.time {
   font-weight: bold;
 }
-#freeBusy td.free {
+#freeBusy td.free,
+#freeBusyKey td.free {
   color: #A3BAEA;
   background-color: #A3BAEA;
 }
-#freeBusy td.busy {
-  color: #eee;
-  background-color: #eee;
+#freeBusy td.busy,
+#freeBusyKey td.busy {
+  color: #ddd;
+  background-color: #ddd;
+}
+#freeBusyKey {
+  margin: 0.5em auto 1em auto;
+}
+#freeBusyKey td {
+  padding: 5px;
 }
 #freeBusy td.free a {
   color: #A3BAEA;
@@ -986,7 +994,7 @@ p.note {
   text-decoration: none;
 }
 #freeBusy td.busy a {
-  color: #eee;
+  color: #ddd;
   background-color: transparent;
   display: block;
   padding: 10px;
