@@ -384,13 +384,13 @@ messages.
 }
 
 /* table below is used for almost all forms  */
-#commonTable {
+table.common {
   width: 100%;
   font-size: 0.9em;
   margin: 0px;
   padding: 0px;
 }
-#commonTable th {
+table.common th {
   text-align: left;
   vertical-align: top;
   padding: 0.5em;
@@ -398,7 +398,7 @@ messages.
   color: black;
   white-space: nowrap;
 }
-#commonTable th.icon {
+table.common th.icon {
   margin: 0em;
   vertical-align: middle;
   padding: 0.5em 1em 0.2em 0;
@@ -406,36 +406,36 @@ messages.
   background-color: #fff;
   color: black;
 }
-#commonTable th.commonHeader {
+table.common th.commonHeader {
   background-color: #666;
   color: #eee;
   padding: 0.2em 0.5em;
   text-align: left;
   font-weight: normal;
 }
-#commonTable th.commonHeader a:link,
-#commonTable th.commonHeader a:active,
-#commonTable th.commonHeader a:visited {
+table.common th.commonHeader a:link,
+table.common th.commonHeader a:active,
+table.common th.commonHeader a:visited {
   background-color: inherit;
   color: #eee;
   padding: 0.2em;
   text-align: left;
 }
-#commonTable th.commonHeader a:hover {
+table.common th.commonHeader a:hover {
   background-color: inherit;
   color: #ff9;
   padding: 0.2em;
   text-align: left;
 }
-#commonTable td.filler {
+table.common td.filler {
   height: 200px;
 }
-#commonTable td.fieldval {
+table.common td.fieldval {
   margin: 0em;
   vertical-align: top;
   padding: 0.5em 0.5em 0.2em 1em;
 }
-#commonTable td.fieldname {
+table.common td.fieldname {
   width: 80px;
   margin: 0em;
   vertical-align: top;
@@ -444,17 +444,17 @@ messages.
   background-color: #eee;
   white-space: nowrap;
 }
-#commonTable td.eventLinks {
+table.common td.eventLinks {
   background-color: #ddd;
   color: #eee;
   padding: 6px 0;
   text-align: center;
 }
-#commonTable #eventActions {
+table.common #eventActions {
   float: right;
   clear: none;
 }
-#commonTable td.allField {
+table.common td.allField {
   white-space: nowrap;
   text-align: right;
   font-style: italic;
@@ -462,31 +462,31 @@ messages.
   color: black;
   padding: 0.2em;
 }
-#commonTable .dateFields {
+table.common .dateFields {
   display: inline;
 }
-#commonTable .timeFields {
+table.common .timeFields {
   display: inline;
   margin-left: 1em;
 }
-#commonTable .dateStartEndBox {
+table.common .dateStartEndBox {
   border: 1px solid #ccb;
   margin: 4px;
   padding: 4px;
 }
-#commonTable .dateStartEndBox strong {
+table.common .dateStartEndBox strong {
   display: block;
 }
-#commonTable .startDateLabel {
+table.common .startDateLabel {
   margin-left: 26px;
 }
-#commonTable div.durationBox {
+table.common div.durationBox {
   border: 1px solid #ccb;
   display: inline;
   margin: 4px;
   padding: 4px;
 }
-#commonTable .durationSpacerText {
+table.common .durationSpacerText {
   font-weight: bold;
   margin: 0 1em;
 }
@@ -1005,6 +1005,25 @@ p.note {
   color: black;
   background-color: yellow;
   text-decoration: none;
+}
+#sharingBox {
+  margin: 2em 0;
+  border-top: 1px solid #333;
+}
+#sharingBox h3 {
+  padding: 1em 0 0.5em 0;
+}
+#sharingBox h5 {
+  padding: 1em 0 0.5em 0;
+}
+#sharingBox ul {
+  font-size: 0.8em;
+  margin: 0 1em;
+}
+#shareForm {
+  margin: 1em 0;
+  padding: 0.5em;
+  border-top: 1px dotted #666;
 }
 /* Footer */
 #footer {

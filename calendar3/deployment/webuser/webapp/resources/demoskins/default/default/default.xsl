@@ -58,6 +58,7 @@
   <xsl:variable name="initUpload" select="/bedework/urlPrefixes/initUpload"/>
   <xsl:variable name="upload" select="/bedework/urlPrefixes/upload"/>
   <xsl:variable name="getFreeBusy" select="/bedework/urlPrefixes/getFreeBusy/a/@href"/>
+  <xsl:variable name="setAccess" select="/bedework/urlPrefixes/setAccess/a/@href"/>
   <!-- calendars -->
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
   <xsl:variable name="calendar-fetch" select="/bedework/urlPrefixes/calendar/fetch/a/@href"/><!-- used -->
@@ -1016,7 +1017,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </h2>
-    <table id="commonTable" cellspacing="0">
+    <table class="common" cellspacing="0">
       <tr>
         <th colspan="3" class="commonHeader">
           <div id="eventActions">
@@ -1247,7 +1248,7 @@
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
       <h2>Add Event</h2>
-      <table id="commonTable" cellspacing="0">
+      <table class="common" cellspacing="0">
         <tr>
           <td class="fieldname">
             Title:
@@ -1613,7 +1614,7 @@
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
       <h2>Edit Event</h2>
-      <table id="commonTable" cellspacing="0">
+      <table class="common" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">
             <div id="eventActions">
@@ -2108,7 +2109,7 @@
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3>Add Calendar / Folder</h3>
     <form name="addCalForm" action="{$calendar-update}">
-      <table id="commonTable">
+      <table class="common">
         <tr>
           <th>Name:</th>
           <td>
@@ -2158,6 +2159,12 @@
         </tr>
       </table>
     </form>
+
+    <div id="sharingBox">
+      <h3>Sharing</h3>
+      Sharing may be added to a calendar once created.
+    </div>
+
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="modCalendar">
@@ -2170,12 +2177,11 @@
       </xsl:otherwise>
     </xsl:choose>
     <form name="modCalForm" action="{$calendar-update}">
-      <table id="commonTable">
+      <table class="common">
         <tr>
-          <th>Path:</th>
-          <td>
+          <th class="commonHeader" colspan="2">
             <xsl:value-of select="path"/>
-          </td>
+          </th>
         </tr>
         <tr>
           <th>Name:</th>
@@ -2248,6 +2254,46 @@
         </tr>
       </table>
     </form>
+    <div id="sharingBox">
+      <h3>Sharing</h3>
+      <table class="common">
+        <tr>
+          <th class="commonHeader" colspan="2">Current access:</th>
+        </tr>
+        <tr>
+          <td class="fieldName">Owner:</td>
+          <td><xsl:value-of select="name(acl/ace[principal/property/owner]/grant/*)"/></td>
+        </tr>
+        <xsl:if test="acl/ace/principal/href">
+          <tr>
+            <td class="fieldName">Users:</td>
+            <td>
+              <xsl:for-each select="acl/ace[principal/href]">
+                <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
+              </xsl:for-each>
+            </td>
+          </tr>
+        </xsl:if>
+      </table>
+      <form name="calendarShareForm" action="{$setAccess}" id="shareForm">
+        <xsl:variable name="id" select="id"/>
+        <input type="hidden" name="calId" value="{$id}"/>
+        <p>
+          Share this calendar with:<br/>
+          <input type="text" name="who" size="20"/>
+          <input type="radio" value="user" name="whoType" checked="checked"/> user
+          <input type="radio" value="group" name="whoType"/> group
+        </p>
+        <p>
+          Access rights:<br/>
+          <input type="radio" value="r" name="how" checked="checked"/> read<br/>
+          <input type="radio" value="w" name="how"/> write<br/>
+          <input type="radio" value="f" name="how"/> free/busy only<br/>
+          <input type="radio" value="d" name="how"/> default (reset access)
+        </p>
+        <input type="submit" name="submit" value="Submit"/>
+      </form>
+    </div>
   </xsl:template>
 
   <xsl:template name="calendarList">
@@ -2308,7 +2354,7 @@
 
   <xsl:template match="currentCalendar" mode="displayCalendar">
     <h2>Calendar Information</h2>
-    <table id="commonTable">
+    <table class="common">
       <tr>
         <th>Name:</th>
         <td>
@@ -2354,7 +2400,7 @@
     </xsl:choose>
 
     <form name="delCalForm" action="{$calendar-delete}">
-      <table id="commonTable">
+      <table class="common">
         <tr>
           <th>Path:</th>
           <td>
@@ -2489,7 +2535,7 @@
     <h3>Add New Subscription</h3>
     <p class="note">*the subsciption name must be unique</p>
     <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
-      <table id="commonTable" cellspacing="0">
+      <table class="common" cellspacing="0">
         <tr>
           <td class="fieldname">Name:</td>
           <td>
@@ -2543,7 +2589,7 @@
   <xsl:template match="subscription" mode="modSubscription">
     <h3>Modify Subscription</h3>
     <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
-      <table id="commonTable" cellspacing="0">
+      <table class="common" cellspacing="0">
         <tr>
           <td class="fieldname">Name:</td>
           <td>
@@ -2626,7 +2672,7 @@
 
   <xsl:template name="subscriptionList">
     <h3>Current subscriptions</h3>
-    <table id="commonTable" cellspacing="0">
+    <table class="common" cellspacing="0">
       <tr>
         <th>Name</th>
         <th>URI</th>
@@ -2697,7 +2743,7 @@
   <xsl:template name="alarmOptions">
     <form method="get" action="{$setAlarm}" id="standardForm">
       <input type="hidden" name="updateAlarmOptions" value="true"/>
-      <table id="commonTable" cellspacing="0">
+      <table class="common" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">Alarm options</th>
         </tr>
@@ -2771,7 +2817,7 @@
   <xsl:template name="upload">
     <form method="post" action="{$upload}" id="standardForm"  enctype="multipart/form-data">
       <h2>Upload iCAL File</h2>
-      <table id="commonTable" cellspacing="0">
+      <table class="common" cellspacing="0">
         <tr>
           <td class="fieldname">
             Filename:
@@ -2795,7 +2841,7 @@
   <xsl:template name="emailOptions">
     <form method="get" action="{$mailEvent}" id="standardForm">
       <input type="hidden" name="updateEmailOptions" value="true"/>
-      <table id="commonTable" cellspacing="0">
+      <table class="common" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">Update email options</th>
         </tr>
@@ -2832,7 +2878,7 @@
     <form name="addLocationForm" method="post" action="{$addLocation}" id="standardForm">
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <h2>Manage Locations</h2>
-      <table id="commonTable" cellspacing="0">
+      <table class="common" cellspacing="0">
         <tr>
           <th class="commonHeader" colspan="2">Add Location</th>
         </tr>
@@ -2891,7 +2937,7 @@
       <input type="hidden" name="updateLocation" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <h2>Manage Locations</h2>
-      <table id="commonTable" cellspacing="0">
+      <table class="common" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">
             <xsl:variable name="locId" select="form/id"/>

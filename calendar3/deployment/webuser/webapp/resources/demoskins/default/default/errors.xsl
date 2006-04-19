@@ -26,6 +26,9 @@
       <xsl:when test="id='org.bedework.client.error.missingcalendarid'">
           <p>Missing event's calendar id (required).</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknowncalendar'">
+          <p>Unknown calendar.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.location.referenced'">
           <p>Location is in use.  It cannot be deleted while referenced by an event.</p>
       </xsl:when>
@@ -43,6 +46,9 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nodefaultview'">
           <p>No default view defined</p>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unimplemented'">
+          <p>The feature you requested is currently unimplemented.</p>
       </xsl:when>
       <xsl:otherwise>
         <p><xsl:value-of select="id"/> = <xsl:value-of select="param"/></p>

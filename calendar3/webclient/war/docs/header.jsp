@@ -139,6 +139,7 @@ try {
       <delEvent><genurl:rewrite action="delEvent.do"/></delEvent>
 
       <getFreeBusy><genurl:link page="/getFreeBusy.do?b=de"/></getFreeBusy>
+      <setAccess><genurl:link page="/setAccess.do?b=de"/></setAccess>
 
       <calendar>
         <fetch><genurl:link page="/calendar/showUpdateList.rdo?b=de"/></fetch><!-- keep -->
