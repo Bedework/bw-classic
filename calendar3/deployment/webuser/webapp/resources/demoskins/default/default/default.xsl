@@ -916,7 +916,16 @@
           <xsl:if test="location/address">
             Location: <xsl:value-of select="location/address"/><br/>
           </xsl:if>
-          Calendar: <xsl:value-of select="calendar/name"/>
+          Calendar:
+            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+            <xsl:choose>
+              <xsl:when test="contains(calendar/path,$userPath)">
+                <xsl:value-of select="substring-after(calendar/path,$userPath)"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="calendar/path"/>
+              </xsl:otherwise>
+            </xsl:choose><br/>
           Type:
           <xsl:choose>
             <xsl:when test="isAnnotation">
@@ -1225,13 +1234,21 @@
           </td>
         </tr>
       </xsl:if>
-      <xsl:if test="calendar/name!=''">
+      <xsl:if test="calendar/path!=''">
         <tr>
           <td class="fieldname">Calendar:</td>
           <td class="fieldval">
             <xsl:variable name="calUrl" select="calendar/path"/>
+            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
             <a href="{$setSelection}?calUrl={$calUrl}">
-              <xsl:value-of select="calendar/name"/>
+              <xsl:choose>
+                <xsl:when test="contains(calendar/path,$userPath)">
+                  <xsl:value-of select="substring-after(calendar/path,$userPath)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="calendar/path"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </a>
           </td>
         </tr>
