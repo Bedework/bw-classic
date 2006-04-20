@@ -56,6 +56,7 @@ package org.bedework.webclient;
 //import org.bedework.calfacade.BwDateTime;
 import org.bedework.appcommon.FormattedFreeBusy;
 import org.bedework.appcommon.MyCalendarVO;
+import org.bedework.appcommon.TimeView;
 import org.bedework.calfacade.BwDuration;
 import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwUser;
@@ -68,6 +69,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -116,15 +119,34 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
       user = svci.getUser();
     }
 
-    MyCalendarVO today = form.getToday();
-    MyCalendarVO thisWeek = today.getFirstDayOfThisWeek();
-    Calendar start = thisWeek.getCalendar();
-    //BwDateTime startDt = form.getEventStartDate().getDateTime();
+    MyCalendarVO scal;
+    Calendar start;
+    Calendar end;
+    Calendar endDay;
 
-    Calendar end = thisWeek.getNextWeek().getCalendar();
-    //BwDateTime endDt = form.getEventEndDate().getDateTime();
+    String st = getReqPar(request, "start");
 
-    Calendar endDay = thisWeek.getTomorrow().getCalendar();
+    if (st == null) {
+      /* Set period and start from the current timeview */
+      TimeView tv = form.getCurTimeView();
+
+      scal = tv.getFirstDay();
+      start = scal.getCalendar();
+      end = tv.getLastDay().getTomorrow().getCalendar();
+    } else {
+      Locale loc = Locale.getDefault();  // XXX Locale
+
+      Date jdt = CalFacadeUtil.fromISODate(st);
+      scal = new MyCalendarVO(jdt, loc);
+
+      scal = scal.getFirstDayOfThisWeek();
+      start = scal.getCalendar();
+      //BwDateTime startDt = form.getEventStartDate().getDateTime();
+
+      end = scal.getNextWeek().getCalendar();
+    }
+
+    endDay = scal.getTomorrow().getCalendar();
 
     int interval = getIntReqPar(request, "interval", 1);
     if (interval <= 0) {
