@@ -59,6 +59,7 @@ import org.bedework.appcommon.MyCalendarVO;
 import org.bedework.calfacade.BwDuration;
 import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calsvci.CalSvcI;
@@ -84,6 +85,7 @@ import javax.servlet.http.HttpServletRequest;
  * <p>e.g interval=30 and intunit="minutes" means half hour intervals
  * <p>Forwards to:<ul>
  *      <li>"doNothing"    input error or we want to ignore the request.</li>
+ *      <li>"noAccess"     No acccess to free busy</li>
  *      <li>"notFound"     event not found.</li>
  *      <li>"error"        input error - correct and retry.</li>
  *      <li>"success"      fetched OK.</li>
@@ -164,16 +166,21 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
         debugMsg("getFreeBusy for start =  " + sdt +
                  " end = " + edt);
       }
-      BwFreeBusy fb = svci.getFreeBusy(null, user,
-                                       CalFacadeUtil.getDateTime(sdt, false, false, tzs),
-                                       CalFacadeUtil.getDateTime(edt, false, false, tzs),
-                                       dur, true);
 
-      FormattedFreeBusy ffb = new FormattedFreeBusy(fb);
-      freeBusy.add(ffb);
+      try {
+        BwFreeBusy fb = svci.getFreeBusy(null, user,
+                                         CalFacadeUtil.getDateTime(sdt, false, false, tzs),
+                                         CalFacadeUtil.getDateTime(edt, false, false, tzs),
+                                         dur, true);
 
-      start.add(Calendar.DAY_OF_MONTH, 1);
-      endDay.add(Calendar.DAY_OF_MONTH, 1);
+        FormattedFreeBusy ffb = new FormattedFreeBusy(fb);
+        freeBusy.add(ffb);
+
+        start.add(Calendar.DAY_OF_MONTH, 1);
+        endDay.add(Calendar.DAY_OF_MONTH, 1);
+      } catch (CalFacadeAccessException cfae) {
+        return "noAccess";
+      }
     }
 
     form.assignFreeBusy(freeBusy);
