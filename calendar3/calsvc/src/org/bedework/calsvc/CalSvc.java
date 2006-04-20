@@ -1134,7 +1134,11 @@ public class CalSvc extends CalSvcI {
         }
 
         int limit = 10000; // XXX do this better
-        while (gpp.startDt.before(end)) {
+
+        /* endDt is null first time through, then represents end of last
+         * segment.
+         */
+        while ((gpp.endDt == null) || (gpp.endDt.before(end))) {
           //if (debug) {
           //  trace("gpp.startDt=" + gpp.startDt + " end=" + end);
           //}
