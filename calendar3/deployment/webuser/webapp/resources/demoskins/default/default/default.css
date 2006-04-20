@@ -947,6 +947,13 @@ p.note {
   font-size: 0.8em;
   font-style: italic;
 }
+#freeBusyWho {
+  background-color: #666;
+  color: #eee;
+  padding: 0.2em 0.5em;
+  text-align: left;
+  font-weight: normal;
+}
 #freeBusy {
   margin: 1em;
 }

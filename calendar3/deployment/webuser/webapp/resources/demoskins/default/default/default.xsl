@@ -58,7 +58,8 @@
   <xsl:variable name="setAlarm" select="/bedework/urlPrefixes/setAlarm"/>
   <xsl:variable name="initUpload" select="/bedework/urlPrefixes/initUpload"/>
   <xsl:variable name="upload" select="/bedework/urlPrefixes/upload"/>
-  <xsl:variable name="getFreeBusy" select="/bedework/urlPrefixes/getFreeBusy/a/@href"/>
+  <xsl:variable name="freeBusy-fetch" select="/bedework/urlPrefixes/freeBusy/fetch/a/@href"/>
+  <xsl:variable name="freeBusy-setAccess" select="/bedework/urlPrefixes/freeBusy/setAccess/a/@href"/>
   <!-- calendars -->
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
   <xsl:variable name="calendar-fetch" select="/bedework/urlPrefixes/calendar/fetch/a/@href"/><!-- used -->
@@ -335,7 +336,7 @@
 
     <h3>options</h3>
     <ul id="sideBarMenu">
-      <li><a href="{$getFreeBusy}">Show Free/Busy</a></li>
+      <li><a href="{$freeBusy-fetch}">Show Free/Busy</a></li>
       <li><a href="{$manageLocations}">Manage Locations</a></li>
       <li>Preferences</li>
     </ul>
@@ -1973,6 +1974,7 @@
   <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->
   <xsl:template match="freebusy">
     <h2>Free / Busy</h2>
+    <div id="freeBusyWho">for <xsl:value-of select="day/who"/></div>
     <table id="freeBusy">
       <tr>
         <td>&#160;</td>
@@ -2022,8 +2024,56 @@
         <td>&#160;</td>
         <td class="busy">*</td>
         <td>busy</td>
+        <td>&#160;</td>
+        <td>
+          <form name="calendarShareForm" action="{$freeBusy-fetch}">
+            View user's free/busy:<br/>
+            <input type="text" name="userid" size="20"/>
+            <input type="submit" name="submit" value="Submit"/>
+          </form>
+        </td>
       </tr>
     </table>
+
+    <div id="sharingBox">
+      <h3>Sharing</h3>
+      <table class="common">
+        <tr>
+          <th class="commonHeader" colspan="2">Current access:</th>
+        </tr>
+        <tr>
+          <th>Users:</th>
+          <td>
+            <xsl:choose>
+              <xsl:when test="/bedework/myCalendars/calendars/calendar/acl/ace/principal/href">
+                <xsl:for-each select="/bedework/myCalendars/calendars/calendar/acl/ace[principal/href]">
+                  <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
+                </xsl:for-each>
+              </xsl:when>
+              <xsl:otherwise>
+                free/busy not shared
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+      </table>
+      <form name="calendarShareForm" action="{$freeBusy-setAccess}" id="shareForm">
+        <xsl:variable name="calId" select="/bedework/myCalendars/calendars/calendar/id"/>
+        <input type="hidden" name="calId" value="{$calId}"/>
+        <p>
+          Share my free/busy with:<br/>
+          <input type="text" name="who" size="20"/>
+          <input type="radio" value="user" name="whoType" checked="checked"/> user
+          <input type="radio" value="group" name="whoType"/> group
+        </p>
+        <p>
+          Access rights:<br/>
+          <input type="radio" value="f" name="how" checked="checked"/> view my free/busy<br/>
+          <input type="radio" value="d" name="how"/> default (reset access)
+        </p>
+        <input type="submit" name="submit" value="Submit"/>
+      </form>
+    </div>
   </xsl:template>
 
   <xsl:template match="start" mode="timeDisplay">

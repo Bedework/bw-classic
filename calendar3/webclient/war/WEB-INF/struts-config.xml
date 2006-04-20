@@ -109,14 +109,6 @@
       <forward name="success" path="/docs/exportData.jsp" />
     </action>
 
-    <action    path="/showFreeBusy"
-               type="org.bedework.webclient.BwRenderAction"
-               name="calForm"
-               scope="session"
-               validate="false">
-      <forward name="success" path="/docs/freeBusy.jsp" />
-    </action>
-
     <action    path="/showManageLocations"
                type="org.bedework.webclient.BwRenderAction"
                name="calForm"
@@ -298,14 +290,6 @@
       <forward name="success" path="/docs/showPage.jsp" />
     </action>
 
-    <action    path="/getFreeBusy"
-               type="org.bedework.webclient.BwFreeBusyAction"
-               name="calForm"
-               scope="session"
-               validate="false">
-      <forward name="success" path="/showFreeBusy.rdo" redirect="true" />
-    </action>
-
     <action    path="/manageLocations"
                type="org.bedework.webclient.BwAction"
                name="calForm"
@@ -338,6 +322,39 @@
                validate="false">
       <forward name="referenced" path="/showManageLocations.rdo" redirect="true" />
       <forward name="success" path="/showManageLocations.rdo" redirect="true" />
+    </action>
+
+   <!-- ===============================================================
+                         Free / Busy
+         =============================================================== -->
+
+    <action    path="/freeBusy/showFreeBusy"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/freeBusy.jsp" />
+    </action>
+
+    <action    path="/freeBusy/getFreeBusy"
+               type="org.bedework.webclient.BwFreeBusyAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/freeBusy/showFreeBusy.rdo" redirect="true" />
+      <forward name="noAccess" path="/freeBusy/showFreeBusy.rdo" redirect="true" />
+      <forward name="notFound" path="/freeBusy/showFreeBusy.rdo" redirect="true" />
+    </action>
+
+    <action    path="/freeBusy/setAccess"
+               type="org.bedework.webcommon.access.AccessAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/freeBusy/showFreeBusy.rdo" redirect="true" />
+      <forward name="error" path="/freeBusy/showFreeBusy.rdo" redirect="true" />
+      <forward name="notFound" path="/freeBusy/showFreeBusy.rdo" redirect="true" />
+      <forward name="doNothing" path="/freeBusy/showFreeBusy.rdo" redirect="true" />
     </action>
 
     <!-- ===============================================================

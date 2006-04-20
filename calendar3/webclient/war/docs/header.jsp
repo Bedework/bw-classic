@@ -141,7 +141,10 @@ try {
         <setAccess><genurl:link page="/event/setAccess.do?b=de"/></setAccess>
       </event>
 
-      <getFreeBusy><genurl:link page="/getFreeBusy.do?b=de"/></getFreeBusy>
+      <freeBusy>
+        <fetch><genurl:link page="/freeBusy/getFreeBusy.do?b=de"/></fetch>
+        <setAccess><genurl:link page="/freeBusy/setAccess.do?b=de"/></setAccess>
+      </freeBusy>
 
       <calendar>
         <fetch><genurl:link page="/calendar/showUpdateList.rdo?b=de"/></fetch><!-- keep -->
