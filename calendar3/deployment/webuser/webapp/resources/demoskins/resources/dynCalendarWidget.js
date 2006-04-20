@@ -23,25 +23,34 @@
 *
 * @access public
 * @param string objName      Name of the object that you create
+* @param int    yr           Year value (e.g. 2006)
+* @param int    mth          Month value (0-11)
+* @param int    dy           Day (date) value (1-31)
 * @param string callbackFunc Name of the callback function
 * @param string OPTIONAL     Optional layer name
 * @param string OPTIONAL     Optional images path
 */
-	function dynCalendar(objName, callbackFunc)
+	function dynCalendar(objName, yr, mth, dy, callbackFunc)
 	{
-		/**
-        * Properties
-        */
+    /**
+      * Properties
+      */
 		// Todays date
-		this.today          = new Date();
-		this.date           = this.today.getDate();
-		this.month          = this.today.getMonth();
-		this.year           = this.today.getFullYear();
+		// this.today          = new Date();
+    // this.date           = this.today.getDate();
+		// this.month          = this.today.getMonth();
+		// this.year           = this.today.getFullYear();
+    
+    // In Bedework we will always pass the start date explicitly to the 
+    // calendar widget.
+		this.year           = yr; //this.today.getFullYear();
+		this.month          = mth; //this.today.getMonth();
+		this.date           = dy; //this.today.getDate();
 
 		this.objName        = objName;
 		this.callbackFunc   = callbackFunc;
-		this.imagesPath     = arguments[2] ? arguments[2] : '/caladminrsrc/resources/';
-		this.layerID        = arguments[3] ? arguments[3] : 'dynCalendar_layer_' + dynCalendar_layers.length;
+		this.imagesPath     = arguments[5] ? arguments[5] : '/caladminrsrc/resources/';
+		this.layerID        = arguments[6] ? arguments[6] : 'dynCalendar_layer_' + dynCalendar_layers.length;
 
 		this.offsetX        = 5;
 		this.offsetY        = 5;
