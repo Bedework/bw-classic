@@ -29,6 +29,7 @@
 
     <path id="compile.classpath">
       <pathelement location="${log4j.jar}"/>
+      <pathelement location="${org.bedework.common.jar}"/>
     </path>
 
     <!-- ==================== Build Target ============================= -->

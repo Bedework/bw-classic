@@ -59,7 +59,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
@@ -692,11 +692,11 @@ public final class XmlUtil implements Serializable {
   /** All the children must be elements or white space text nodes.
    *
    * @param nd
-   * @return Vector   element nodes. Always non-null
+   * @return ArrayList   element nodes. Always non-null
    * @throws SAXException
    */
-  public static Vector getElements(Node nd) throws SAXException {
-    Vector v = new Vector();
+  public static ArrayList getElements(Node nd) throws SAXException {
+    ArrayList al = new ArrayList();
 
     NodeList children = nd.getChildNodes();
 
@@ -717,14 +717,14 @@ public final class XmlUtil implements Serializable {
       } else if (curnode.getNodeType() == Node.COMMENT_NODE) {
         // Ignore
       } else if (curnode.getNodeType() == Node.ELEMENT_NODE) {
-        v.add(curnode);
+        al.add(curnode);
       } else {
         throw new SAXException("Unexpected child node " + curnode.getLocalName() +
                                " for " + nd.getLocalName());
       }
     }
 
-    return v;
+    return al;
   }
 
   /** Return the content for the current element. All leading and trailing
@@ -759,15 +759,38 @@ public final class XmlUtil implements Serializable {
     return sb.toString().trim();
   }
 
+  /** See if this node has any children
+   *
+   * @param el
+   * @return boolean   true for any child elements
+   * @throws SAXException
+   */
+  public static boolean hasChildren(Element el) throws SAXException {
+    NodeList children = el.getChildNodes();
+
+    for (int i = 0; i < children.getLength(); i++) {
+      Node curnode = children.item(i);
+
+      short ntype =  curnode.getNodeType();
+      if ((ntype != Node.TEXT_NODE) &&
+          (ntype != Node.CDATA_SECTION_NODE) &&
+          (ntype != Node.COMMENT_NODE)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   /**
    * @param nd
    * @return element array from node
    * @throws SAXException
    */
   public static Element[] getElementsArray(Node nd) throws SAXException {
-    Vector v = getElements(nd);
+    ArrayList al = getElements(nd);
 
-    return (Element[])v.toArray(new Element[v.size()]);
+    return (Element[])al.toArray(new Element[al.size()]);
   }
 
   /**
@@ -776,14 +799,14 @@ public final class XmlUtil implements Serializable {
    * @throws SAXException  if not exactly one child elemnt
    */
   public static Element getOnlyElement(Node nd) throws SAXException {
-    Vector v = getElements(nd);
+    Element[] els = getElementsArray(nd);
 
-    if (v.size() != 1) {
+    if (els.length != 1) {
       throw new SAXException("Expected exactly one child node for " +
                               nd.getLocalName());
     }
 
-    return (Element)v.elementAt(0);
+    return els[0];
   }
 
   private static boolean absent(String val) {

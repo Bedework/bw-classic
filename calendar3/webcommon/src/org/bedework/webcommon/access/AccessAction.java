@@ -168,6 +168,8 @@ public class AccessAction extends BwAbstractAction {
     int whoType = -1;
 
     if (whoTypeStr == null) {
+      whoType = Ace.whoTypeUser;
+    } else if (whoTypeStr.equals("owner")) {
       whoType = Ace.whoTypeOwner;
     } else if (whoTypeStr.equals("user")) {
       whoType = Ace.whoTypeUser;

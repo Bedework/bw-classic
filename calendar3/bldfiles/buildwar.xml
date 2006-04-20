@@ -182,6 +182,9 @@
     <copy tofile="${app.dest.properties}/env.properties"
           file="${org.bedework.config.properties}" />
 
+    <copy tofile="${app.dest.properties}/options.xml"
+          file="${org.bedework.config.options}" />
+
     <!-- Make a modified copy of the web.xml file -->
     <copy tofile="${app.dest.web.xml}"
           file="${app.web.xml}"

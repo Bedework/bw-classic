@@ -63,6 +63,8 @@
     <property name="org.bedework.clone.name" value="${org.bedework.clone.default}" />
     <property name="org.bedework.config.properties"
               location="${org.bedework.config.base}/configs/${org.bedework.clone.name}.properties" />
+    <property name="org.bedework.config.options"
+              location="${org.bedework.config.base}/configs/${org.bedework.clone.name}.options.xml" />
 
     <echo message="==========================================================" />
     <echo message="Use config properties ${org.bedework.config.properties}" />

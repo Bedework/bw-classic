@@ -2003,7 +2003,12 @@ public class CalSvc extends CalSvcI {
       trace("Search for calendar \"" + path + "\"");
     }
 
-    calendar = getCal().getCalendar(path);
+    try {
+      calendar = getCal().getCalendar(path);
+    } catch (CalFacadeAccessException cfae) {
+      calendar = null;
+    }
+
     if (calendar == null) {
       // Assume deleted
       sub.setCalendarDeleted(true);

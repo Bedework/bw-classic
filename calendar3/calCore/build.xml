@@ -30,12 +30,12 @@
 
     <fileset id="base.java.sources" dir="${source.home}" >
 <!--      <include name="edu/washington/cac/calfacade/impl/*.java"/>-->
-      <include name="org/bedework/calcore/hibernate/*.java"/>
+      <include name="org/bedework/calcore/**/*.java"/>
     </fileset>
 
     <patternset id="base.class.patternset">
 <!--      <include name="edu/washington/cac/calfacade/impl/*.class"/>-->
-      <include name="org/bedework/calcore/hibernate/*.class"/>
+      <include name="org/bedework/calcore/**/*.class"/>
     </patternset>
 
     <!-- ==================== Compilation Classpath ==================== -->

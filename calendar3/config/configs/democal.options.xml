@@ -1,0 +1,22 @@
+<bedework-options>
+  <org>
+    <bedework>
+      <global>
+        <module>
+          <user-ldap-group classname="org.bedework.calcore.ldap.LdapConfigProperties">
+            <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
+            <providerUrl>ldap://localhost/</providerUrl>
+            <groupContextDn>ou=groups, dc=bedework, dc=org</groupContextDn>
+            <groupMemberAttr>uniqueMember</groupMemberAttr>
+            <userDnPrefix>uid=</userDnPrefix>
+            <userDnSuffix>,ou=accounts, dc=bedework, dc=org</userDnSuffix>
+            <groupDnPrefix>cn=</groupDnPrefix>
+            <groupDnSuffix>,ou=groups, dc=bedework, dc=org</groupDnSuffix>
+            <debug>true</debug>
+          </user-ldap-group>
+        </module>
+      </global>
+    </bedework>
+  </org>
+</bedework-options>
+
