@@ -380,6 +380,42 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return true;
   }
 
+  protected String setEventCalendar(HttpServletRequest request,
+                                    BwActionFormBase form,
+                                    BwEvent ev) throws Throwable {
+    CalSvcI svci = form.fetchSvci();
+    BwSubscription sub = null;
+
+    if (!findSubscribedCalendar(request, form, false)) {
+      // No subscription specified. Was a calendar specified
+      int id = getIntReqPar(request, "calId", -1);
+
+      if (id < 0) {
+        ev.setCalendar(svci.getPreferredCalendar());
+      } else {
+        BwCalendar calendar = svci.getCalendar(id);
+
+        if (calendar == null) {
+          form.getErr().emit("org.bedework.client.error.nosuchcalendar", id);
+          return "notFound";
+        }
+
+        ev.setCalendar(calendar);
+      }
+    } else {
+      sub = form.getSubscription();
+      if ((sub != null) && (!sub.getInternalSubscription())) {
+        // XXX more work for external subscriptions here
+        return "doNothing";
+      } else {
+        // XXX disallow use of subscription.
+        return "doNothing";
+      }
+    }
+
+    return null;  // OK return
+  }
+
   /** Method to retrieve an event. An event is identified by the calendar +
    * guid + recurrence id. We also take the subscription id as a parameter so
    * we can pass it along in the result for display purposes.

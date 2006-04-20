@@ -155,6 +155,11 @@ public class BwEditEventAction extends BwCalAbstractAction {
     CalSvcI svci = form.fetchSvci();
     BwEvent ev = form.getEditEvent();
 
+    String fwd = setEventCalendar(request, form, ev);
+    if (fwd != null) {
+      return fwd;
+    }
+
     if (!form.getEventDates().updateEvent(ev, svci.getTimezones()) ||
         !BwWebUtil.validateEvent(svci, ev, false, //  descriptionRequired
                                  form.getErr())) {

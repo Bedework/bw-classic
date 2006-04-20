@@ -51,14 +51,11 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
 package org.bedework.webclient;
 
-import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.CalFacadeDefs;
-import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwWebUtil;
 
@@ -96,33 +93,10 @@ public class BwAddEventAction extends BwCalAbstractAction {
     }
 
     CalSvcI svci = form.fetchSvci();
-    BwSubscription sub = null;
 
-    if (!findSubscribedCalendar(request, form, false)) {
-      // No subscription specified. Was a calendar specified
-      int id = getIntReqPar(request, "calId", -1);
-
-      if (id < 0) {
-        ev.setCalendar(svci.getPreferredCalendar());
-      } else {
-        BwCalendar calendar = svci.getCalendar(id);
-
-        if (calendar == null) {
-          form.getErr().emit("org.bedework.client.error.nosuchcalendar", id);
-          return "notFound";
-        }
-
-        ev.setCalendar(calendar);
-      }
-    } else {
-      sub = form.getSubscription();
-      if ((sub != null) && (!sub.getInternalSubscription())) {
-        // XXX more work for external subscriptions here
-        return "doNothing";
-      } else {
-        // XXX disallow use of subscription.
-        return "doNothing";
-      }
+    String fwd = setEventCalendar(request, form, ev);
+    if (fwd != null) {
+      return fwd;
     }
 
     if (!form.getEventDates().updateEvent(ev, svci.getTimezones()) ||
