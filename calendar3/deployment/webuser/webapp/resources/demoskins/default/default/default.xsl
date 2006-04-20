@@ -301,7 +301,7 @@
           </xsl:for-each>
         </xsl:when>
         <xsl:otherwise>
-          <li class="none">no subscriptions</li>
+          <li class="none">no views</li>
         </xsl:otherwise>
       </xsl:choose>
     </ul>
@@ -1269,20 +1269,11 @@
                 Select:
               </option>
               <!--<xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>-->
-              <!-- the following calendar select box is temporary.  Should be
+              <!-- Based on subscription names, actually.  the following calendar select box is temporary.  Should be
                    replaced with the xml from the line above. -->
-              <xsl:for-each select="/bedework/myCalendars/calendars//calendar[calendarCollection='true']">
-                <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
-                  <xsl:variable name="calid" select="id"/>
-                  <xsl:choose>
-                    <xsl:when test="id = /bedework/formElements/calendarId">
-                      <option value="{$calid}" selected="selected"><xsl:value-of select="name"/></option>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <option value="{$calid}"><xsl:value-of select="name"/></option>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:if>
+              <xsl:for-each select="/bedework/mySubscriptions/subscription">
+                <xsl:variable name="subname" select="name"/>
+                <option value="{$subname}"><xsl:value-of select="name"/></option>
               </xsl:for-each>
             </select>
           </td>
@@ -1648,25 +1639,16 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <select name="calId">
+            <select name="subname">
               <option value="-1">
                 Select:
               </option>
               <!--<xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>-->
-              <!-- the following calendar select box is temporary.  Should be
+              <!-- Based on subscription names, actually.  the following calendar select box is temporary.  Should be
                    replaced with the xml from the line above. -->
-              <xsl:for-each select="/bedework/myCalendars/calendars//calendar[calendarCollection='true']">
-                <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
-                  <xsl:variable name="calid" select="id"/>
-                  <xsl:choose>
-                    <xsl:when test="id = /bedework/formElements/calendarId">
-                      <option value="{$calid}" selected="selected"><xsl:value-of select="name"/></option>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <option value="{$calid}"><xsl:value-of select="name"/></option>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:if>
+              <xsl:for-each select="/bedework/mySubscriptions/subscription">
+                <xsl:variable name="subname" select="name"/>
+                <option value="{$subname}"><xsl:value-of select="name"/></option>
               </xsl:for-each>
             </select>
           </td>
@@ -2515,13 +2497,17 @@
     <table id="subsTable">
       <tr>
         <td class="cals">
-          <h3>Public calendars</h3>
           <p class="smaller">
             Select a calendar below to add a <em><strong>new</strong></em>
             internal subscription. <!-- or
             <a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">
             subscribe to an external calendar</a>.-->
           </p>
+          <h3>My calendars</h3>
+          <ul class="calendarTree">
+            <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="subscribe"/>
+          </ul>
+          <h3>Public calendars</h3>
           <ul class="calendarTree">
             <xsl:apply-templates select="/bedework/subscriptions/subscribe/calendars/calendar" mode="subscribe"/>
           </ul>
