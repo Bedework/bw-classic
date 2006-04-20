@@ -2000,15 +2000,16 @@
             <xsl:variable name="startTime"><xsl:apply-templates  select="start" mode="timeDisplay"/></xsl:variable>
             <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
             <xsl:variable name="startDate"><xsl:value-of select="substring(../start,1,8)"/>T<xsl:value-of select="start"/>00</xsl:variable>
+            <xsl:variable name="minutes" select="length"/>
             <xsl:choose>
               <xsl:when test="fbtype = '0'">
                 <td class="busy">
-                  <a href="{$initEvent}?startdate={$startDate}" title="{$startTime}">*</a>
+                  <a href="{$initEvent}?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
                 </td>
               </xsl:when>
               <xsl:otherwise>
                 <td class="free">
-                  <a href="{$initEvent}?startdate={$startDate}" title="{$startTime}">*</a>
+                  <a href="{$initEvent}?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
                 </td>
               </xsl:otherwise>
             </xsl:choose>
