@@ -54,6 +54,7 @@
 
 package org.bedework.webclient;
 
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.CalFacadeDefs;
@@ -65,8 +66,13 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Action to add an Event.
- * <p>No specific request parameters. Form should contain an initialised
- * BwEvent object.
+ * <p>Form should contain an initialised BwEvent object.
+ *
+ * <p>Request parameters - all optional:<ul>
+ *      <li>  subname:   Name of a subscription to an external calendar</li>.
+ *      <li>  calId:     Id of a (writeable) calendar collection</li>.
+ * </ul>
+ *
  * <p>Forwards to:<ul>
  *      <li>"doNothing"    input error or we want to ignore the request.</li>
  *      <li>"success"      added ok.</li>
@@ -93,16 +99,30 @@ public class BwAddEventAction extends BwCalAbstractAction {
     BwSubscription sub = null;
 
     if (!findSubscribedCalendar(request, form, false)) {
-      // No subscription specified, set the default calendar
-      ev.setCalendar(svci.getPreferredCalendar());
+      // No subscription specified. Was a calendar specified
+      int id = getIntReqPar(request, "calId", -1);
+
+      if (id < 0) {
+        ev.setCalendar(svci.getPreferredCalendar());
+      } else {
+        BwCalendar calendar = svci.getCalendar(id);
+
+        if (calendar == null) {
+          form.getErr().emit("org.bedework.client.error.nosuchcalendar", id);
+          return "notFound";
+        }
+
+        ev.setCalendar(calendar);
+      }
     } else {
       sub = form.getSubscription();
-      if ((sub == null) || (sub.getCalendar() == null)) {
+      if ((sub != null) && (!sub.getInternalSubscription())) {
         // XXX more work for external subscriptions here
         return "doNothing";
+      } else {
+        // XXX disallow use of subscription.
+        return "doNothing";
       }
-
-      ev.setCalendar(sub.getCalendar());
     }
 
     if (!form.getEventDates().updateEvent(ev, svci.getTimezones()) ||
