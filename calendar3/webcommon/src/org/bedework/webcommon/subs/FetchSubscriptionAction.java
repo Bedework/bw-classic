@@ -53,19 +53,21 @@
 */
 package org.bedework.webcommon.subs;
 
-import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;
-import org.bedework.calfacade.svc.BwSubscription;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Implant the subscriptions in the form.
+ * <p>Parameters are:<ul>
+ *      <li>"subname"            Name of subscription</li>
+ * </ul>
  *
  * <p>Forwards to:<ul>
- *      <li>"success"      subscribed ok.</li>
+ *      <li>"notFound"      Not found or subname parameter not supplied.</li>
+ *      <li>"continue"      subscription fetched.</li>
  * </ul>
  *
  * @author Mike Douglass   douglm@rpi.edu
@@ -78,35 +80,17 @@ public class FetchSubscriptionAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    CalSvcI svc = form.fetchSvci();
-
     /** User requested a subscription. Retrieve it, embed it in
      * the form so we can display the page
      */
-    String name = request.getParameter("subname");
-    if (name == null) {
-      form.getErr().emit("org.bedework.client.error.missingfield", "name");
-      return "error";
-    }
-
-    BwSubscription sub = svc.findSubscription(name);
-
-    if (debug) {
-      if (sub == null) {
-        logIt("No subscription with name " + name);
-      } else {
-        logIt("Retrieved subscription " + sub.getId());
-      }
-    }
-
-    form.assignAddingSubscription(false);
-    if (sub == null) {
-      form.setSubscription(null);
-      form.getErr().emit("org.bedework.client.error.nosuchsubscription", name);
+    if (!findSubscription(request, form, true, true)) {
       return "notFound";
     }
 
-    form.setSubscription((BwSubscription)sub.clone());
+    form.assignAddingSubscription(false);
+    if (form.getSubscription() == null) {
+      return "notFound";
+    }
 
     return "continue";
   }

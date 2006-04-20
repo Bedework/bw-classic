@@ -792,6 +792,22 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract BwSubscription getSubscription(int id) throws CalFacadeException;
 
+  /** Ensure the subscription has a calendar object attached.
+   *
+   *  <p>No change will take place for a subscription witht the calendar marked
+   *  as deleted or for an external subscription.
+   *
+   *  <p>If a calendar is already attached just returns with that.
+   *
+   *  <p>Otherwise attempts to fetch the calendar. On failure marks it as deleted
+   *  and returns null, else embeds the object and returns with it.
+   *
+   * @param val      BwSubscription object
+   * @return BwCalendar   or null
+   * @throws CalFacadeException
+   */
+  public abstract BwCalendar getSubCalendar(BwSubscription val) throws CalFacadeException;
+
   /* ====================================================================
    *                   Free busy
    * ==================================================================== */

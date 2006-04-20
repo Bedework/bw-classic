@@ -306,6 +306,80 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return true;
   }
 
+  /** Method to find a subscription given its name. Expects a request parameter
+   * "subname". Returns with the subscription or null set in the form.
+   *
+   * @param request     HttpServletRequest for parameters
+   * @param form
+   * @param emitError   Emit error messages for missing request par.
+   * @return boolean    true there was a subname parameter
+   * @throws Throwable
+   */
+  protected boolean findSubscription(HttpServletRequest request,
+                                     BwActionFormBase form,
+                                     boolean emitError,
+                                     boolean cloneIt) throws Throwable {
+    CalSvcI svci = form.fetchSvci();
+
+    String name = getReqPar(request, "subname");
+    if (name == null) {
+      if (emitError) {
+        form.getErr().emit("org.bedework.client.error.missingfield", "subname");
+      }
+      return false;
+    }
+
+    BwSubscription sub = svci.findSubscription(name);
+
+    if (debug) {
+      if (sub == null) {
+        logIt("No subscription with name " + name);
+      } else {
+        logIt("Retrieved subscription " + sub.getId());
+      }
+    }
+
+    if (sub == null) {
+      form.setSubscription(null);
+      form.getErr().emit("org.bedework.client.error.nosuchsubscription", name);
+    }
+
+    if (cloneIt) {
+      sub = (BwSubscription)sub.clone();
+    }
+    form.setSubscription(sub);
+    return true;
+  }
+
+  /** Method to find a calendar given the subscription name. Expects a request
+   * parameter "subname". Returns with the subscription or null set in the form
+   * and the associated calendar embedded in the subscription object.
+   *
+   * @param request     HttpServletRequest for parameters
+   * @param form
+   * @param emitError   Emit error messages for missing request par.
+   * @return boolean    true there was a subname parameter
+   * @throws Throwable
+   */
+  protected boolean findSubscribedCalendar(HttpServletRequest request,
+                                           BwActionFormBase form,
+                                           boolean emitError) throws Throwable {
+    CalSvcI svci = form.fetchSvci();
+
+    if (!findSubscription(request, form, emitError, false)) {
+      return false;
+    }
+
+    BwSubscription sub = form.getSubscription();
+    if (sub == null) {
+      return true;
+    }
+
+    svci.getSubCalendar(sub);
+
+    return true;
+  }
+
   /** Method to retrieve an event. An event is identified by the calendar +
    * guid + recurrence id. We also take the subscription id as a parameter so
    * we can pass it along in the result for display purposes.
@@ -396,7 +470,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return ev;
   }
 
-  /** Refetch an event givena copy of that event. Calnedar guid and possibly
+  /** Refetch an event given a copy of that event. Calnedar guid and possibly
    * recurrecne id must be set.
    *
    * @param event   BwEvent to refetch

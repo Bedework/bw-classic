@@ -57,6 +57,7 @@ package org.bedework.webclient;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.CalFacadeDefs;
+import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwWebUtil;
 
@@ -89,10 +90,19 @@ public class BwAddEventAction extends BwCalAbstractAction {
     }
 
     CalSvcI svci = form.fetchSvci();
+    BwSubscription sub = null;
 
-    if (ev.getCalendar() == null) {
-      // Set the default calendar
+    if (!findSubscribedCalendar(request, form, false)) {
+      // No subscription specified, set the default calendar
       ev.setCalendar(svci.getPreferredCalendar());
+    } else {
+      sub = form.getSubscription();
+      if ((sub == null) || (sub.getCalendar() == null)) {
+        // XXX more work for external subscriptions here
+        return "doNothing";
+      }
+
+      ev.setCalendar(sub.getCalendar());
     }
 
     if (!form.getEventDates().updateEvent(ev, svci.getTimezones()) ||

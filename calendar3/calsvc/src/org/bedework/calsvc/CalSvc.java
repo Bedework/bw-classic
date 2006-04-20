@@ -1011,6 +1011,48 @@ public class CalSvc extends CalSvcI {
     return dbi.getSubscription(id);
   }
 
+  public BwCalendar getSubCalendar(BwSubscription val) throws CalFacadeException {
+    if (!val.getInternalSubscription() || val.getCalendarDeleted()) {
+      return null;
+    }
+
+    BwCalendar calendar = val.getCalendar();
+
+    if (calendar != null) {
+      return calendar;
+    }
+
+    String path;
+    String uri = val.getUri();
+
+    if (uri.startsWith(CalFacadeDefs.bwUriPrefix)) {
+      path = uri.substring(CalFacadeDefs.bwUriPrefix.length());
+    } else {
+      // Shouldn't happen?
+      path = uri;
+    }
+
+    if (debug) {
+      trace("Search for calendar \"" + path + "\"");
+    }
+
+    try {
+      calendar = getCal().getCalendar(path);
+    } catch (CalFacadeAccessException cfae) {
+      calendar = null;
+    }
+
+    if (calendar == null) {
+      // Assume deleted
+      val.setCalendarDeleted(true);
+      updateSubscription(val);
+    } else {
+      val.setCalendar(calendar);
+    }
+
+    return calendar;
+  }
+
   /* ====================================================================
    *                   Free busy
    * ==================================================================== */
@@ -1977,48 +2019,6 @@ public class CalSvc extends CalSvcI {
 
     return mailer;
   }*/
-
-  private BwCalendar getSubCalendar(BwSubscription sub) throws CalFacadeException {
-    if (!sub.getInternalSubscription() || sub.getCalendarDeleted()) {
-      return null;
-    }
-
-    BwCalendar calendar = sub.getCalendar();
-
-    if (calendar != null) {
-      return calendar;
-    }
-
-    String path;
-    String uri = sub.getUri();
-
-    if (uri.startsWith(CalFacadeDefs.bwUriPrefix)) {
-      path = uri.substring(CalFacadeDefs.bwUriPrefix.length());
-    } else {
-      // Shouldn't happen?
-      path = uri;
-    }
-
-    if (debug) {
-      trace("Search for calendar \"" + path + "\"");
-    }
-
-    try {
-      calendar = getCal().getCalendar(path);
-    } catch (CalFacadeAccessException cfae) {
-      calendar = null;
-    }
-
-    if (calendar == null) {
-      // Assume deleted
-      sub.setCalendarDeleted(true);
-      updateSubscription(sub);
-    } else {
-      sub.setCalendar(calendar);
-    }
-
-    return calendar;
-  }
 
   private void putSublookup(HashMap sublookup, BwSubscription sub, BwCalendar cal) {
     if (cal.getCalendarCollection()) {
