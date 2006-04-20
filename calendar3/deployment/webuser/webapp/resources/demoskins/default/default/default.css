@@ -735,7 +735,7 @@ a.gridAdd {
 #yearCalendarTable  table.yearViewMonthTable td  a  {
   text-decoration: none;
   background-color: inherit;
-  border: 1px solid #dlcbb3;
+  border: 1px solid #d1cbb3;
   color: black;
 }
 #yearCalendarTable  table.yearViewMonthTable td.weekCell a  {
@@ -951,13 +951,13 @@ p.note {
   margin: 1em;
 }
 #freeBusy td {
-  vertical-align: center;
+  vertical-align: middle;
   text-align: center;
   padding: 0;
   margin: 0;
 }
 #freeBusy th {
-  vertical-align: center;
+  vertical-align: middle;
   text-align: center;
   font-size: 0.8em;
   font-weight: normal;
