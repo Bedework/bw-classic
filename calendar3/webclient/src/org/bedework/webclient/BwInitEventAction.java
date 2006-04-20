@@ -51,10 +51,12 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
 package org.bedework.webclient;
 
+import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.webcommon.DurationBean;
+import org.bedework.webcommon.EventDates;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,6 +67,7 @@ import javax.servlet.http.HttpServletRequest;
                                      as yymmdd or yymmddTHHmmss</li>
         <li>"enddate"                Optional end date for the event
                                      as yymmdd or yymmddTHHmmss</li>
+        <li>"minutes"                Optional duration in minutes</li>
  * </ul>
  *
  */
@@ -78,11 +81,13 @@ public class BwInitEventAction extends BwCalAbstractAction {
 
     String date = getReqPar(request, "startdate");
 
+    EventDates evdates = form.getEventDates();
+
     if (date != null) {
       if (CalFacadeUtil.isISODateTime(date)) {
-        form.assignEventDates(CalFacadeUtil.fromISODateTime(date));
+        evdates.setFromDate(CalFacadeUtil.fromISODateTime(date));
       } else if (CalFacadeUtil.isISODate(date)) {
-        form.assignEventDates(CalFacadeUtil.fromISODate(date));
+        evdates.setFromDate(CalFacadeUtil.fromISODate(date));
       } else {
         form.getErr().emit("org.bedework.client.error.baddate", date);
         return "badDate";
@@ -93,16 +98,26 @@ public class BwInitEventAction extends BwCalAbstractAction {
 
     if (date != null) {
       if (CalFacadeUtil.isISODateTime(date)) {
-        form.getEventDates().getEndDate().setDateTime(CalFacadeUtil.fromISODateTime(date));
+        evdates.getEndDate().setDateTime(CalFacadeUtil.fromISODateTime(date));
       } else if (CalFacadeUtil.isISODate(date)) {
-        form.getEventDates().getEndDate().setDateTime(CalFacadeUtil.fromISODate(date));
+        evdates.getEndDate().setDateTime(CalFacadeUtil.fromISODate(date));
       } else {
         form.getErr().emit("org.bedework.client.error.baddate", date);
         return "badDate";
       }
     }
 
+    int minutes = getIntReqPar(request, "minutes", -1);
+
+    if (minutes > 0) {
+      // Set the duration
+      evdates.setEndType(String.valueOf(BwEvent.endTypeDuration));
+      DurationBean dur = evdates.getDuration();
+
+      dur.setType(DurationBean.dayTimeDuration);
+      dur.setMinutes(minutes);
+    }
+
     return "success";
   }
 }
-
