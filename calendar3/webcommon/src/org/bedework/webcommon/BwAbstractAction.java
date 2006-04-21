@@ -351,6 +351,32 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return true;
   }
 
+  /** Find a user object given a "user" request parameter.
+   *
+   * @param request     HttpServletRequest for parameters
+   * @param form
+   * @return BwUser     null if not found. Messages emitted
+   * @throws Throwable
+   */
+  protected BwUser findUser(HttpServletRequest request,
+                             BwActionFormBase form) throws Throwable {
+    CalSvcI svci = form.fetchSvci();
+
+    String str = getReqPar(request, "user");
+    if (str == null) {
+      form.getErr().emit("org.bedework.client.error.usernotfound");
+      return null;
+    }
+
+    BwUser user = svci.findUser(str);
+    if (user == null) {
+      form.getErr().emit("org.bedework.client.error.usernotfound", str);
+      return null;
+    }
+
+    return user;
+  }
+
   /** Method to find a calendar given the subscription name. Expects a request
    * parameter "subname". Returns with the subscription or null set in the form
    * and the associated calendar embedded in the subscription object.

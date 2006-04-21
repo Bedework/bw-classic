@@ -51,7 +51,6 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
 package org.bedework.webcommon.pref;
 
 import org.bedework.calfacade.BwUser;
@@ -86,24 +85,26 @@ public class FetchPrefsAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    if (!form.getUserAuth().isSuperUser()) {
-      return "noAccess"; // First line of defence
-    }
-
     CalSvcI svc = form.fetchSvci();
 
-    String str = getReqPar(request, "user");
-    if (str == null) {
-      return "notFound";
+    if (getPublicAdmin(form)) {
+      /* Fetch a given users preferences */
+      if (!form.getUserAuth().isSuperUser()) {
+        return "noAccess"; // First line of defence
+      }
+
+      BwUser user = findUser(request, form);
+      if (user == null) {
+        return "notFound";
+      }
+
+      form.setUserPreferences(svc.getUserPrefs(user));
+
+      return "success";
     }
 
-    BwUser user = svc.findUser(str);
-    if (user == null) {
-      form.getErr().emit("org.bedework.client.error.nosuchuserid", str);
-      return "notFound";
-    }
-
-    form.setUserPreferences(svc.getUserPrefs(user));
+    /* Just set this users prefs */
+    form.setUserPreferences(svc.getUserPrefs());
 
     return "success";
   }

@@ -92,27 +92,27 @@ public class UpdatePrefsAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    if (!form.getUserAuth().isSuperUser()) {
-      return "noAccess"; // First line of defence
-    }
-
     CalSvcI svc = form.fetchSvci();
+    BwPreferences prefs;
 
-    String str = getReqPar(request, "user");
-    if (str == null) {
-      form.getErr().emit("org.bedework.client.error.usernotfound", str);
-      return "notFound";
+    /* Refetch the prefs */
+    if (getPublicAdmin(form)) {
+      /* Fetch a given users preferences */
+      if (!form.getUserAuth().isSuperUser()) {
+        return "noAccess"; // First line of defence
+      }
+
+      BwUser user = findUser(request, form);
+      if (user == null) {
+        return "notFound";
+      }
+
+      prefs = svc.getUserPrefs(user);
+    } else {
+      prefs = svc.getUserPrefs();
     }
 
-    BwUser user = svc.findUser(str);
-    if (user == null) {
-      form.getErr().emit("org.bedework.client.error.usernotfound", str);
-      return "notFound";
-    }
-
-    BwPreferences prefs = svc.getUserPrefs(user);
-
-    str = getReqPar(request, "preferredView");
+    String str = getReqPar(request, "preferredView");
     if (str != null) {
       if (svc.findView(str) == null) {
         form.getErr().emit("org.bedework.client.error.viewnotfound", str);
@@ -142,4 +142,3 @@ public class UpdatePrefsAction extends BwAbstractAction {
     return "success";
   }
 }
-
