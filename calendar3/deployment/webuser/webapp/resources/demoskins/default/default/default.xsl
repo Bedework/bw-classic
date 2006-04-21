@@ -1320,12 +1320,16 @@
           <td class="fieldval">
             <select name="calId">
               <option value="-1">
-                Select:
+                Default (or Select):
               </option>
               <!--<xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>-->
               <!-- The following calendar select box is temporary.  Should be
                    replaced with the xml from the line above. -->
-              <xsl:for-each select="/bedework/myCalendars//calendar[calendarCollection='true']">
+              <xsl:for-each select="/bedework/myCalendars//calendar[(calendarCollection='true') and
+                                             (name != 'Inbox') and
+                                             (name != 'Outbox') and
+                                             (name != 'Deleted') and
+                                             (name != 'Trash')]">
                 <xsl:variable name="id" select="id"/>
                 <option value="{$id}"><xsl:value-of select="name"/></option>
               </xsl:for-each>
@@ -1700,7 +1704,11 @@
               <!--<xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>-->
               <!-- The following calendar select box is temporary.  Should be
                    replaced with the xml from the line above. -->
-              <xsl:for-each select="/bedework/myCalendars//calendar[calendarCollection='true']">
+              <xsl:for-each select="/bedework/myCalendars//calendar[(calendarCollection='true') and
+                                             (name != 'Inbox') and
+                                             (name != 'Outbox') and
+                                             (name != 'Deleted') and
+                                             (name != 'Trash')]">
                 <xsl:variable name="id" select="id"/>
                 <xsl:choose>
                   <xsl:when test="id = /bedework/formElements/calendarId">
