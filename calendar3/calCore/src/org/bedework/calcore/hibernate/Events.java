@@ -135,7 +135,8 @@ public class Events extends CalintfHelper implements EventsI {
 
       /* There should be one only */
 
-      cei = postGetEvent((BwEvent)sess.getUnique(), privRead, noAccessReturnsNull);
+      cei = postGetEvent((BwEvent)sess.getUnique(), privRead,
+                         noAccessReturnsNull, false);
 
       // XXX Don't want annotations in the trash
       if (cei == null) {
@@ -143,7 +144,7 @@ public class Events extends CalintfHelper implements EventsI {
          */
         eventQuery(BwEventAnnotation.class, calendar, guid, rid, true);
         cei = postGetEvent((BwEvent)sess.getUnique(),
-                           privRead, noAccessReturnsNull);
+                           privRead, noAccessReturnsNull, false);
 
         if (cei != null) {
           cei.setEvent(new BwEventProxy((BwEventAnnotation)cei.getEvent()));
@@ -204,7 +205,7 @@ public class Events extends CalintfHelper implements EventsI {
         while (it.hasNext()) {
           BwEventAnnotation override = (BwEventAnnotation)it.next();
           cei = makeProxy(null, override, null,
-                          CalFacadeDefs.retrieveRecurExpanded);
+                          CalFacadeDefs.retrieveRecurExpanded, false);
           if (cei != null) {
             overrides.add(cei);
           }
@@ -234,7 +235,7 @@ public class Events extends CalintfHelper implements EventsI {
       while (it.hasNext()) {
         BwRecurrenceInstance instance = (BwRecurrenceInstance)it.next();
         ts.add(makeProxy(instance, null, null,
-                         CalFacadeDefs.retrieveRecurExpanded));
+                         CalFacadeDefs.retrieveRecurExpanded, false));
       }
 
       return ts;
@@ -246,7 +247,8 @@ public class Events extends CalintfHelper implements EventsI {
     BwEventAnnotation override = (BwEventAnnotation)sess.getUnique();
 
     if (override != null) {
-      cei = makeProxy(null, override, null, CalFacadeDefs.retrieveRecurExpanded);
+      cei = makeProxy(null, override, null, CalFacadeDefs.retrieveRecurExpanded,
+                      false);
     } else {
       // Look in the recurrences table
       StringBuffer sb = new StringBuffer();
@@ -269,7 +271,8 @@ public class Events extends CalintfHelper implements EventsI {
         return ts;
       }
 
-      cei = makeProxy(inst, null, null, CalFacadeDefs.retrieveRecurExpanded);
+      cei = makeProxy(inst, null, null, CalFacadeDefs.retrieveRecurExpanded,
+                      false);
     }
 
     if (cei != null) {
@@ -312,7 +315,7 @@ public class Events extends CalintfHelper implements EventsI {
 
     Collection evs = sess.getList();
 
-    return postGetEvents(evs, privRead, noAccessReturnsNull);
+    return postGetEvents(evs, privRead, noAccessReturnsNull, false);
   }
 
   public CoreEventInfo getEvent(int id) throws CalFacadeException {
@@ -323,7 +326,7 @@ public class Events extends CalintfHelper implements EventsI {
 
     BwEvent ev = (BwEvent)sess.getUnique();
 
-    return postGetEvent(ev, privRead, noAccessReturnsNull);
+    return postGetEvent(ev, privRead, noAccessReturnsNull, false);
   }
 
   public void addEvent(BwEvent val,
@@ -591,8 +594,8 @@ public class Events extends CalintfHelper implements EventsI {
 
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
                               BwDateTime startDate, BwDateTime endDate,
-                              int recurRetrieval)
-          throws CalFacadeException {
+                              int recurRetrieval,
+                              boolean freeBusy) throws CalFacadeException {
     HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
 
@@ -627,6 +630,11 @@ public class Events extends CalintfHelper implements EventsI {
     sb.append(qevName);
     sb.append(".recurring = false and ");
 
+    /*if (freeBusy) {
+      sb.append(qevName);
+      sb.append(".transparency != :transparency and ");
+    }*/
+
     /* SEG   (    */
     sb.append(" (");
 
@@ -660,6 +668,10 @@ public class Events extends CalintfHelper implements EventsI {
       sess.setString("toDate", endDate.getDate());
     }
 
+    //if (freeBusy) {
+    //  sess.setString("transparency", "TRANSPARENT");
+    //}
+
     doCalendarEntities(setUser, calendar);
 
     flt.parPass(sess);
@@ -674,7 +686,12 @@ public class Events extends CalintfHelper implements EventsI {
       trace("Found " + ceis.size() + " events");
     }
 
-    ceis = postGetEvents(ceis, privRead, noAccessReturnsNull);
+    int desiredAccess = privRead;
+    if (freeBusy) {
+      desiredAccess = privReadFreeBusy;
+    }
+    ceis = postGetEvents(ceis, desiredAccess, noAccessReturnsNull,
+                         freeBusy);
 
     /** Run the events we got through the filters
      */
@@ -682,7 +699,7 @@ public class Events extends CalintfHelper implements EventsI {
 
     Collection rceis = getLimitedRecurrences(calendar, filter, startDate, endDate,
                                              currentMode, cal.getSuperUser(),
-                                             recurRetrieval);
+                                             recurRetrieval, freeBusy);
     if (rceis != null) {
       ceis.addAll(rceis);
     }
@@ -711,7 +728,7 @@ public class Events extends CalintfHelper implements EventsI {
 
     Collection evs = sess.getList();
 
-    return postGetEvents(evs, privRead, noAccessReturnsNull);
+    return postGetEvents(evs, privRead, noAccessReturnsNull, false);
   }
 
   /* ====================================================================
@@ -897,7 +914,8 @@ public class Events extends CalintfHelper implements EventsI {
   private Collection getLimitedRecurrences(BwCalendar calendar, BwFilter filter,
                                            BwDateTime startDate, BwDateTime endDate,
                                            int currentMode, boolean ignoreCreator,
-                                           int recurRetrieval)
+                                           int recurRetrieval,
+                                           boolean freeBusy)
           throws CalFacadeException {
     HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
@@ -980,7 +998,8 @@ public class Events extends CalintfHelper implements EventsI {
 
       /* XXX should have a list of overrides that cover
        */
-      CoreEventInfo cei = makeProxy(inst, null, checked, recurRetrieval);
+      CoreEventInfo cei = makeProxy(inst, null, checked, recurRetrieval,
+                                    freeBusy);
       if (cei != null) {
         //if (debug) {
         //  debugMsg("Ev: " + proxy);
@@ -1087,7 +1106,7 @@ public class Events extends CalintfHelper implements EventsI {
   /** Check the master for access and if ok build and return an event
    * proxy.
    *
-   * <p>If checked is non-null willuse and update the checked map.
+   * <p>If checked is non-null will use and update the checked map.
    *
    * @param inst        May be null if we retrieved the override
    * @param override    May be null if we retrieved the instance
@@ -1098,7 +1117,8 @@ public class Events extends CalintfHelper implements EventsI {
   private CoreEventInfo makeProxy(BwRecurrenceInstance inst,
                                   BwEventAnnotation override,
                                   CheckMap checked,
-                                  int recurRetrieval) throws CalFacadeException {
+                                  int recurRetrieval,
+                                  boolean freeBusy) throws CalFacadeException {
     BwEvent mstr;
     if (inst != null) {
       mstr = inst.getMaster();
@@ -1125,7 +1145,11 @@ public class Events extends CalintfHelper implements EventsI {
 
     if ((checked == null) || (ca == null)) {
       // untested
-      ca = access.checkAccess(mstr, privRead, noAccessReturnsNull);
+      int desiredAccess = privRead;
+      if (freeBusy) {
+        desiredAccess = privReadFreeBusy;
+      }
+      ca = access.checkAccess(mstr, desiredAccess, noAccessReturnsNull);
       if (checked != null) {
         checked.setChecked(mstr, ca);
       }
@@ -1137,6 +1161,7 @@ public class Events extends CalintfHelper implements EventsI {
 
     if (recurRetrieval == CalFacadeDefs.retrieveRecurMaster) {
       // Master only and we've just seen it for the first time
+      // Note we will not do this for freebusy. We need all recurrences.
 
       /* XXX I think this was wrong. Why make an override?
        */
@@ -1206,7 +1231,25 @@ public class Events extends CalintfHelper implements EventsI {
       }
     }
 
-    return new CoreEventInfo(new BwEventProxy(override), ca);
+    /* At this point we have an event with possible overrides. If this is free
+     * busy we need to replace it all with a skeleton event holding only date/time
+     * information.
+     *
+     * We can't do this before I think because we need to allow the user to
+     * override the transparency on a particular instance,
+     */
+
+    BwEvent proxy = new BwEventProxy(override);
+
+    if (freeBusy) {
+      if (BwEvent.transparencyTransparent.equals(proxy.getTransparency())) {
+        return null;
+      }
+
+      proxy = proxy.makeFreeBusyEvent();
+    }
+
+    return new CoreEventInfo(proxy, ca);
   }
 
   private static class CheckMap extends HashMap {
@@ -1313,7 +1356,8 @@ public class Events extends CalintfHelper implements EventsI {
   }
 
   private Collection postGetEvents(Collection evs, int desiredAccess,
-                                   boolean nullForNoAccess)
+                                   boolean nullForNoAccess,
+                                   boolean freeBusy)
           throws CalFacadeException {
     TreeSet outevs = new TreeSet();
 
@@ -1321,7 +1365,8 @@ public class Events extends CalintfHelper implements EventsI {
 
     while (it.hasNext()) {
       CoreEventInfo cei = postGetEvent((BwEvent)it.next(),
-                                       desiredAccess, nullForNoAccess);
+                                       desiredAccess, nullForNoAccess,
+                                       freeBusy);
 
       if (cei != null) {
         outevs.add(cei);
@@ -1334,7 +1379,8 @@ public class Events extends CalintfHelper implements EventsI {
   /* Post processing of event. Return null or throw exception for no access
    */
   private CoreEventInfo postGetEvent(BwEvent ev, int desiredAccess,
-                                     boolean nullForNoAccess) throws CalFacadeException {
+                                     boolean nullForNoAccess,
+                                     boolean freeBusy) throws CalFacadeException {
     if (ev == null) {
       return null;
     }
@@ -1354,6 +1400,15 @@ public class Events extends CalintfHelper implements EventsI {
     if (ev instanceof BwEventAnnotation) {
       ev = new BwEventProxy((BwEventAnnotation)ev);
     }
+
+    if (freeBusy) {
+      if (BwEvent.transparencyTransparent.equals(ev.getTransparency())) {
+        return null;
+      }
+
+      ev = ev.makeFreeBusyEvent();
+    }
+
     CoreEventInfo cei = new CoreEventInfo(ev, ca);
 
     return cei;

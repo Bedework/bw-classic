@@ -816,10 +816,11 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return calendars.getCalendars();
   }
 
-  public BwCalendar getCalendars(BwUser user) throws CalFacadeException {
+  public BwCalendar getCalendars(BwUser user,
+                                 int desiredAccess) throws CalFacadeException {
     checkOpen();
 
-    return calendars.getCalendars(user);
+    return calendars.getCalendars(user, desiredAccess);
   }
 
   public Collection getCalendarCollections() throws CalFacadeException {
@@ -852,10 +853,11 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return calendars.getCalendar(val);
   }
 
-  public BwCalendar getCalendar(String path) throws CalFacadeException{
+  public BwCalendar getCalendar(String path,
+                                int desiredAccess) throws CalFacadeException{
     checkOpen();
 
-    return calendars.getCalendar(path);
+    return calendars.getCalendar(path, desiredAccess);
   }
 
   public BwCalendar getDefaultCalendar(BwUser user) throws CalFacadeException {
@@ -1070,10 +1072,11 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
                               BwDateTime startDate, BwDateTime endDate,
-                              int recurRetrieval)
-          throws CalFacadeException {
+                              int recurRetrieval,
+                              boolean freeBusy) throws CalFacadeException {
     return events.getEvents(calendar, filter,
-                            startDate, endDate, recurRetrieval);
+                            startDate, endDate, recurRetrieval,
+                            freeBusy);
   }
 
   public CoreEventInfo getEvent(int id) throws CalFacadeException {

@@ -201,6 +201,7 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
         start.add(Calendar.DAY_OF_MONTH, 1);
         endDay.add(Calendar.DAY_OF_MONTH, 1);
       } catch (CalFacadeAccessException cfae) {
+        form.getErr().emit("org.bedework.client.error.noaccess");
         return "noAccess";
       }
     }

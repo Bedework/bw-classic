@@ -51,7 +51,6 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
 package org.bedework.calsvc;
 
 import org.bedework.calenv.CalEnv;
@@ -669,10 +668,11 @@ public class CalSvc extends CalSvcI {
     }
 
     if ((path.length() > 1) && path.endsWith("/")) {
-      return getCal().getCalendar(path.substring(0, path.length() - 1));
+      return getCal().getCalendar(path.substring(0, path.length() - 1),
+                                  PrivilegeDefs.privRead);
     }
 
-    return getCal().getCalendar(path);
+    return getCal().getCalendar(path, PrivilegeDefs.privRead);
   }
 
   /** set the default calendar for the current user.
@@ -1012,6 +1012,16 @@ public class CalSvc extends CalSvcI {
   }
 
   public BwCalendar getSubCalendar(BwSubscription val) throws CalFacadeException {
+    return getSubCalendar(val, false);
+  }
+
+  public BwCalendar getSubCalendar(BwSubscription val,
+                                   boolean freeBusy) throws CalFacadeException {
+    int desiredAccess = PrivilegeDefs.privRead;
+    if (freeBusy) {
+      desiredAccess = PrivilegeDefs.privReadFreeBusy;
+    }
+
     if (!val.getInternalSubscription() || val.getCalendarDeleted()) {
       return null;
     }
@@ -1019,6 +1029,11 @@ public class CalSvc extends CalSvcI {
     BwCalendar calendar = val.getCalendar();
 
     if (calendar != null) {
+      // recheck access
+      if (getCal().checkAccess(calendar, desiredAccess, true) == null) {
+        val.setCalendar(null);
+        return null;
+      }
       return calendar;
     }
 
@@ -1037,7 +1052,7 @@ public class CalSvc extends CalSvcI {
     }
 
     try {
-      calendar = getCal().getCalendar(path);
+      calendar = getCal().getCalendar(path, desiredAccess);
     } catch (CalFacadeAccessException cfae) {
       calendar = null;
     }
@@ -1079,8 +1094,12 @@ public class CalSvc extends CalSvcI {
     } else if (currentUser().equals(who)) {
       subs = getSubscriptions();
     } else {
-      getCal().checkAccess(getCal().getCalendars(u),
-                           PrivilegeDefs.privReadFreeBusy, false);
+      cal = getCal().getCalendars(u, PrivilegeDefs.privReadFreeBusy);
+      if (cal == null) {
+        throw new CalFacadeAccessException();
+      }
+
+      getCal().checkAccess(cal, PrivilegeDefs.privReadFreeBusy, false);
 
       subs = dbi.fetchPreferences(u).getSubscriptions();
     }
@@ -1096,8 +1115,11 @@ public class CalSvc extends CalSvcI {
         continue;
       }
 
+      // XXX If it's an external subscription we probably just get free busy and
+      // merge it in.
+
       Collection evs = getEvents(sub, null, start, end,
-                                 CalFacadeDefs.retrieveRecurExpanded);
+                                 CalFacadeDefs.retrieveRecurExpanded, true);
 
       // Filter out transparent events
       Iterator it = evs.iterator();
@@ -1598,6 +1620,13 @@ public class CalSvc extends CalSvcI {
                               BwDateTime startDate, BwDateTime endDate,
                               int recurRetrieval)
           throws CalFacadeException {
+    return getEvents(sub, filter, startDate, endDate, recurRetrieval, false);
+  }
+
+  public Collection getEvents(BwSubscription sub, BwFilter filter,
+                              BwDateTime startDate, BwDateTime endDate,
+                              int recurRetrieval,
+                              boolean freeBusy) throws CalFacadeException {
     TreeSet ts = new TreeSet();
 
 //    if (pars.getPublicAdmin() || (sub != null)) {
@@ -1607,7 +1636,8 @@ public class CalSvc extends CalSvcI {
         cal = sub.getCalendar();
       }
       return postProcess(getCal().getEvents(cal, filter, startDate,
-                                            endDate, recurRetrieval),
+                                            endDate, recurRetrieval,
+                                            freeBusy),
                          sub);
     }
 
@@ -1643,7 +1673,8 @@ public class CalSvc extends CalSvcI {
         sub.setInternalSubscription(true);
 
         return postProcess(getCal().getEvents(null, filter, startDate,
-                                              endDate, recurRetrieval),
+                                              endDate, recurRetrieval,
+                                              freeBusy),
                            sub);
       }
     }
@@ -1666,7 +1697,7 @@ public class CalSvc extends CalSvcI {
     while (it.hasNext()) {
       sub = (BwSubscription)it.next();
 
-      BwCalendar calendar = getSubCalendar(sub);
+      BwCalendar calendar = getSubCalendar(sub, freeBusy);
 
       if (calendar != null) {
         internal.addChild(calendar);
@@ -1684,7 +1715,7 @@ public class CalSvc extends CalSvcI {
 
     ts.addAll(postProcess(getCal().getEvents(internal, filter,
                           startDate, endDate,
-                          recurRetrieval),
+                          recurRetrieval, freeBusy),
               sublookup));
 
     return ts;

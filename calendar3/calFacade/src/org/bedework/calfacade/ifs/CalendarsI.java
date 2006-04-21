@@ -108,10 +108,13 @@ public interface CalendarsI extends Serializable {
    * entry in the /user calendar tree, e.g. for user smithj it would return
    * an entry smithj
    *
+   * @param  user         BwUser entry
+   * @param  desiredAccess access we need
    * @return BwCalendar   root with all children attached
    * @throws CalFacadeException
    */
-  public BwCalendar getCalendars(BwUser user) throws CalFacadeException;
+  public BwCalendar getCalendars(BwUser user,
+                                 int desiredAccess) throws CalFacadeException;
 
   /** Return a list of user calendars in which calendar objects can be
    * placed by the current user.
@@ -160,10 +163,12 @@ public interface CalendarsI extends Serializable {
   /** Get a calendar given the path
    *
    * @param  path     String path of calendar
+   * @param  desiredAccess int access we need
    * @return BwCalendar null for unknown calendar
    * @throws CalFacadeException
    */
-  public BwCalendar getCalendar(String path) throws CalFacadeException;
+  public BwCalendar getCalendar(String path,
+                                int desiredAccess) throws CalFacadeException;
 
   /** Get the default calendar for the given user. This is determined by the
    * name for the default calendar assigned to the system, not by any user

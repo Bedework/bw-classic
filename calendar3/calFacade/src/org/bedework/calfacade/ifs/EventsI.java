@@ -127,13 +127,15 @@ public interface EventsI extends Serializable {
    * @param startDate    BwDateTime start - may be null
    * @param endDate      BwDateTime end - may be null.
    * @param recurRetrieval Takes value defined in CalFacadeDefs
+   * @param freeBusy     Return skeleton events with date/times and skip
+   *                     transparent events.
    * @return Collection  of CoreEventInfo objects
    * @throws CalFacadeException
    */
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
                               BwDateTime startDate, BwDateTime endDate,
-                              int recurRetrieval)
-          throws CalFacadeException;
+                              int recurRetrieval,
+                              boolean freeBusy) throws CalFacadeException;
 
   /** XXX temp I think
    * Retrieve event proxies in the trash - they will be used to remove events

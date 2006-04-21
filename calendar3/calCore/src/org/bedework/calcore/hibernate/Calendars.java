@@ -221,10 +221,11 @@ class Calendars extends CalintfHelper implements CalendarsI {
   }
 
   public BwCalendar getCalendars() throws CalFacadeException {
-    return getCalendars(getUser());
+    return getCalendars(getUser(), privRead);
   }
 
-  public BwCalendar getCalendars(BwUser user) throws CalFacadeException {
+  public BwCalendar getCalendars(BwUser user,
+                                 int desiredAccess) throws CalFacadeException {
     HibSession sess = getSess();
 
     sess.namedQuery("getCalendarByPath");
@@ -233,7 +234,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
     BwCalendar cal = (BwCalendar)sess.getUnique();
 
-    return cloneAndCheckAccess(cal, privRead, noAccessReturnsNull);
+    return cloneAndCheckAccess(cal, desiredAccess, noAccessReturnsNull);
   }
 
   public Collection getCalendarCollections() throws CalFacadeException {
@@ -285,7 +286,8 @@ class Calendars extends CalintfHelper implements CalendarsI {
     return cal;
   }
 
-  public BwCalendar getCalendar(String path) throws CalFacadeException {
+  public BwCalendar getCalendar(String path,
+                                int desiredAccess) throws CalFacadeException {
     HibSession sess = getSess();
 
     sess.namedQuery("getCalendarByPath");
@@ -297,7 +299,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     if (cal != null) {
       // Need to clone for this
       //cal.setCurrentAccess(access.checkAccess(cal, privRead, false));
-      access.checkAccess(cal, privRead, false);
+      access.checkAccess(cal, desiredAccess, false);
     }
 
     return cal;
@@ -313,7 +315,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     sb.append("/");
     sb.append(getSyspars().getUserDefaultCalendar());
 
-    return getCalendar(sb.toString());
+    return getCalendar(sb.toString(), privRead);
   }
 
   public BwCalendar getTrashCalendar(BwUser user) throws CalFacadeException {
@@ -326,7 +328,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     sb.append("/");
     sb.append(getSyspars().getDefaultTrashCalendar());
 
-    return getCalendar(sb.toString());
+    return getCalendar(sb.toString(), privRead);
   }
 
   public BwCalendar getDeletedCalendar(BwUser user) throws CalFacadeException {
@@ -340,7 +342,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     sb.append("Deleted");
     // XXX new syspar sb.append(getSyspars().getDefaultTrashCalendar());
 
-    return getCalendar(sb.toString());
+    return getCalendar(sb.toString(), privRead);
   }
 
   public void createDeletedCalendar(BwUser user) throws CalFacadeException {
@@ -353,7 +355,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
     String pathTo = sb.toString();
 
-    BwCalendar parent = getCalendar(pathTo);
+    BwCalendar parent = getCalendar(pathTo, privRead);
 
     if (parent == null) {
       throw new CalFacadeException("org.bedework.calcore.calendars.unabletocreate");
@@ -423,12 +425,12 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
     /* Objects are probably clones - fetch the real ones.
      */
-    parent = getCalendar(parent.getPath());
+    parent = getCalendar(parent.getPath(), privRead);
     if (parent == null) {
       throw new CalFacadeException(CalFacadeException.cannotDeleteCalendarRoot);
     }
 
-    val = getCalendar(val.getPath());
+    val = getCalendar(val.getPath(), privUnbind);
     if (val == null) {
       throw new CalFacadeException(CalFacadeException.calendarNotFound);
     }

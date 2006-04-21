@@ -425,7 +425,8 @@ public class CalintfBase implements Calintf {
     throw new CalFacadeUnimplementedException();
   }
 
-  public BwCalendar getCalendars(BwUser user) throws CalFacadeException {
+  public BwCalendar getCalendars(BwUser user,
+                                 int desiredAccess) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 
@@ -459,7 +460,8 @@ public class CalintfBase implements Calintf {
     throw new CalFacadeUnimplementedException();
   }
 
-  public BwCalendar getCalendar(String path) throws CalFacadeException{
+  public BwCalendar getCalendar(String path,
+                                int desiredAccess) throws CalFacadeException{
     checkOpen();
 
     throw new CalFacadeUnimplementedException();
@@ -710,8 +712,8 @@ public class CalintfBase implements Calintf {
 
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
                               BwDateTime startDate, BwDateTime endDate,
-                              int recurRetrieval)
-          throws CalFacadeException {
+                              int recurRetrieval,
+                              boolean freeBusy) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 

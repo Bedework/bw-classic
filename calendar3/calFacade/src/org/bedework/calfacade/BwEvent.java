@@ -942,6 +942,23 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
    *                   Conveniece methods
    * ==================================================================== */
 
+  /** Return an object holding just enough for free busy calculation
+   *
+   * @return BwEvent object.
+   */
+  public BwEvent makeFreeBusyEvent() {
+    BwEvent res = new BwEvent();
+
+    res.setDtend(getDtend());
+    res.setDtstart(getDtstart());
+    res.setDuration(getDuration());
+    res.setEndType(getEndType());
+    res.setGuid(getGuid());
+    res.setTransparency(getTransparency());
+
+    return res;
+  }
+
   /** Return a BwDuration populated from the String duration.
    *
    * @return BwDuration
