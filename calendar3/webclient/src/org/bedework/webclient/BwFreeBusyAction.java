@@ -107,6 +107,12 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
                          BwActionForm form) throws Throwable {
     BwUser user;
     CalSvcI svci = form.fetchSvci();
+
+    gotoDateView(this, form,
+                 form.getDate(),
+                 form.getViewTypeI(),
+                 debug);
+
     String userId = getReqPar(request, "userid");
 
     if (userId != null) {
