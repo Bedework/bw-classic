@@ -235,6 +235,7 @@ h4 {
   background-color : #eee;
   color: black;
   font-size: 0.9em;
+  border-bottom: 1px solid #999;
 }
 #utilBarTable .leftCell {
   margin: 0;
@@ -695,6 +696,9 @@ a.gridAdd {
   margin: 0px;
   padding: 0em;
   border-top: 1px solid #666;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
 }
 #yearCalendarTable td {
   padding: 1em 0em 0em 0em;
@@ -705,7 +709,7 @@ a.gridAdd {
 }
 #yearCalendarTable table.yearViewMonthTable {
   margin: 0em  1em 0.5em 1em;
-  border: 1px solid #666;
+  border: 1px solid #ddd;
 }
 #yearCalendarTable table.yearViewMonthTable td {
   text-align: center;
@@ -714,14 +718,14 @@ a.gridAdd {
 }
 #yearCalendarTable table.yearViewMonthTable th {
   font-weight: bold;
-  background-color: #f5f5f5;
+  background-color: #eee;
   color: black;
   padding: 0.2em;
 }
 #yearCalendarTable table.yearViewMonthTable td.monthName {
   font-weight: bold;
   text-align: center;
-  background-color: #d1cbb3;
+  background-color: #2B4795;
   color: #eee;
   white-space: nowrap;
   border-bottom: 1px solid #999;
@@ -729,31 +733,33 @@ a.gridAdd {
 #yearCalendarTable table.yearViewMonthTable td.weekCell {
   font-weight: bold;
   font-size: 0.8em;
-  background-color: #f5f5f5;
+  background-color: #eee;
   color: black;
 }
 #yearCalendarTable  table.yearViewMonthTable td  a  {
   text-decoration: none;
   background-color: inherit;
-  border: 1px solid #d1cbb3;
+  padding: 1px;
   color: black;
 }
 #yearCalendarTable  table.yearViewMonthTable td.weekCell a  {
   text-decoration: none;
   background-color: inherit;
-  border: 1px solid #f5f5f5;
+  padding: 1px;
   color: black;
 }
 #yearCalendarTable  table.yearViewMonthTable td.monthName a  {
   text-decoration: none;
   background-color: inherit;
-  color: black;
+  padding: 1px;
+  color: #eee;
 }
 #yearCalendarTable  table.yearViewMonthTable td a:hover  {
   text-decoration: none;
   background-color: #FFC;
   color: black;
   border: 1px solid black;
+  padding: 0;
 }
 #listTable {
   width: 100%;
@@ -995,14 +1001,14 @@ p.note {
   color: #A3BAEA;
   background-color: transparent;
   display: block;
-  padding: 10px;
+  padding: 6px 10px;
   text-decoration: none;
 }
 #freeBusy td.busy a {
   color: #ddd;
   background-color: transparent;
   display: block;
-  padding: 10px;
+  padding: 6px 10px;
   text-decoration: none;
 }
 #freeBusy td.busy a:hover,
