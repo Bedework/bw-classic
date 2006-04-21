@@ -112,7 +112,7 @@
             <!-- show system stats -->
             <xsl:call-template name="stats"/>
           </xsl:when>
-          <xsl:when test="/bedework/page='calendars'">
+          <xsl:when test="/bedework/page='calendarList'">
             <!-- show a list of all calendars -->
             <xsl:apply-templates select="/bedework/calendars"/>
           </xsl:when>
@@ -1015,7 +1015,7 @@
         <xsl:otherwise>calendar</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="url" select="url"/>
+    <xsl:variable name="url" select="path"/>
     <li class="{$itemClass}">
       <a href="{$setSelection}?calUrl={$url}"><xsl:value-of select="name"/></a>
       <xsl:if test="calendar">
