@@ -1693,7 +1693,7 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <select name="subname">
+            <select name="calId">
               <option value="-1">
                 Select:
               </option>
@@ -1702,7 +1702,14 @@
                    replaced with the xml from the line above. -->
               <xsl:for-each select="/bedework/myCalendars//calendar[calendarCollection='true']">
                 <xsl:variable name="id" select="id"/>
-                <option value="{$id}"><xsl:value-of select="name"/></option>
+                <xsl:choose>
+                  <xsl:when test="id = /bedework/formElements/calendarId">
+                    <option value="{$id}" selected="selected"><xsl:value-of select="name"/></option>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <option value="{$id}"><xsl:value-of select="name"/></option>
+                  </xsl:otherwise>
+                </xsl:choose>
               </xsl:for-each>
             </select>
           </td>
@@ -2190,8 +2197,35 @@
     </table>
   </xsl:template>
 
+  <xsl:template match="calendar" mode="myCalendars">
+    <!-- supress Inbox and Outbox for the moment -->
+    <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
+      <xsl:variable name="id" select="id"/>
+      <xsl:variable name="itemClass">
+        <xsl:choose>
+          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
+                          and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
+          <xsl:when test="name='Trash'">trash</xsl:when>
+          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <li class="{$itemClass}">
+        <xsl:variable name="url" select="path"/>
+        <a href="{$setSelection}?calUrl={$url}">
+          <xsl:value-of select="name"/>
+        </a>
+        <xsl:if test="calendar">
+          <ul>
+            <xsl:apply-templates select="calendar" mode="myCalendars"/>
+          </ul>
+        </xsl:if>
+      </li>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template match="calendar" mode="listForUpdate">
-    <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
+    <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
       <xsl:variable name="id" select="id"/>
       <xsl:variable name="itemClass">
         <xsl:choose>
@@ -2221,7 +2255,7 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="listForDisplay">
-    <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
+    <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
       <xsl:variable name="id" select="id"/>
       <xsl:variable name="itemClass">
         <xsl:choose>
@@ -2479,7 +2513,7 @@
         <th>Description</th>
       </tr>
       <xsl:for-each select="//calendar">
-        <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
+        <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
           <xsl:variable name="descClass">
             <xsl:choose>
               <xsl:when test="position() mod 2 = 0">even</xsl:when>
@@ -2634,48 +2668,23 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="subscribe">
-    <xsl:variable name="id" select="id"/>
-    <xsl:variable name="itemClass">
-      <xsl:choose>
-        <xsl:when test="calendarCollection='false'">folder</xsl:when>
-        <xsl:otherwise>calendar</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <li class="{$itemClass}">
-      <a href="{$subscriptions-initAdd}&amp;calId={$id}">
-        <xsl:value-of select="name"/>
-      </a>
-      <xsl:if test="calendar">
-        <ul>
-          <xsl:apply-templates select="calendar" mode="subscribe">
-            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
-          </xsl:apply-templates>
-        </ul>
-      </xsl:if>
-    </li>
-  </xsl:template>
-
-  <xsl:template match="calendar" mode="myCalendars">
-    <!-- supress Inbox and Outbox for the moment -->
-    <xsl:if test="(name != 'Inbox') and (name != 'Outbox')">
+    <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
       <xsl:variable name="id" select="id"/>
       <xsl:variable name="itemClass">
         <xsl:choose>
-          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
-                          and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
-          <xsl:when test="name='Trash'">trash</xsl:when>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
       <li class="{$itemClass}">
-        <xsl:variable name="url" select="path"/>
-        <a href="{$setSelection}?calUrl={$url}">
+        <a href="{$subscriptions-initAdd}&amp;calId={$id}">
           <xsl:value-of select="name"/>
         </a>
         <xsl:if test="calendar">
           <ul>
-            <xsl:apply-templates select="calendar" mode="myCalendars"/>
+            <xsl:apply-templates select="calendar" mode="subscribe">
+              <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
+            </xsl:apply-templates>
           </ul>
         </xsl:if>
       </li>
@@ -2708,6 +2717,13 @@
           <td>
             <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
             <input type="radio" value="false" name="subscription.display"/> no
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">Affects Free/Busy:</td>
+          <td>
+            <input type="radio" value="true" name="subscription.affectsFreeBusy" checked="checked"/> yes
+            <input type="radio" value="false" name="subscription.affectsFreeBusy"/> no
           </td>
         </tr>
         <tr>
@@ -2784,6 +2800,21 @@
           </td>
         </tr>
         <tr>
+          <td class="fieldname">Affects Free/Busy:</td>
+          <td>
+            <xsl:choose>
+              <xsl:when test="affectsFreeBusy='true'">
+                <input type="radio" value="true" name="subscription.affectsFreeBusy" checked="checked"/> yes
+                <input type="radio" value="false" name="subscription.affectsFreeBusy"/> no
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" value="true" name="subscription.affectsFreeBusy"/> yes
+                <input type="radio" value="false" name="subscription.affectsFreeBusy" checked="checked"/> no
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+        <tr>
           <td class="fieldname">Style:</td>
           <td>
             <xsl:variable name="subStyle" select="style"/>
@@ -2829,6 +2860,7 @@
         <th>URI</th>
         <th>Style</th>
         <th>Display</th>
+        <th>Free/Busy</th>
         <!--<th>Unremovable</th>
         <th>External</th>
         <th>Deleted?</th>-->
@@ -2850,6 +2882,11 @@
           </td>
           <td class="center">
             <xsl:if test="display='true'">
+              <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
+            </xsl:if>
+          </td>
+          <td class="center">
+            <xsl:if test="affectsFreeBusy='true'">
               <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
             </xsl:if>
           </td>
