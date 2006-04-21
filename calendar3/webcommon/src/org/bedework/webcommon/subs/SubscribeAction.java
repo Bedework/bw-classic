@@ -101,9 +101,9 @@ public class SubscribeAction extends BwAbstractAction {
     if (form.getGuest()) {
       return "noAccess"; // First line of defence
     }
-    
+
     if (getReqPar(request, "delete") != null) {
-    	return unsubscribe(request, form);
+      return unsubscribe(request, form);
     }
 
     BwSubscription sub = form.getSubscription();
@@ -182,7 +182,7 @@ public class SubscribeAction extends BwAbstractAction {
 
     return true;
   }
-  
+
   private String unsubscribe(HttpServletRequest request,
                              BwActionFormBase form) throws Throwable {
     CalSvcI svc = form.fetchSvci();
@@ -201,44 +201,44 @@ public class SubscribeAction extends BwAbstractAction {
       form.getErr().emit("org.bedework.client.error.nosuchsubscription", name);
       return "notFound";
     }
-    
+
     if (sub.getUnremoveable() && !form.getUserAuth().isSuperUser()) {
       return "noAccess"; // Only super user can remove the unremovable
     }
-    
+
     /* Check for references in views. For user extra simple mode only we will
      * automatically remove the subscription. For others we list the references
      */
-    
+
     Iterator it = svc.getViews().iterator();
     boolean reffed = false;
     boolean autoRemove = !getPublicAdmin(form) &&
-      (svc.getUserPrefs().getUserMode() == BwPreferences.extraSimpleMode);
-    
+      (svc.getUserPrefs().getUserMode() == BwPreferences.basicMode);
+
     while (it.hasNext()) {
       BwView v = (BwView)it.next();
       if (v.getSubscriptions().contains(sub)) {
         if (autoRemove) {
           if (!svc.removeViewSubscription(v.getName(), sub)) {
-            form.getErr().emit("org.bedework.client.error.viewnotfound", 
+            form.getErr().emit("org.bedework.client.error.viewnotfound",
                                v.getName());
             return "error";
           }
         } else {
-          form.getErr().emit("org.bedework.client.error.subscription.reffed", 
+          form.getErr().emit("org.bedework.client.error.subscription.reffed",
                              v.getName());
           reffed = true;
         }
       }
     }
-    
+
     if (reffed) {
       return "reffed";
     }
 
     svc.removeSubscription(sub);
     form.getMsg().emit("org.bedework.client.message.subscription.removed");
-    
+
     /* Refetch to tidy up */
     form.setSubscriptions(svc.getSubscriptions());
 

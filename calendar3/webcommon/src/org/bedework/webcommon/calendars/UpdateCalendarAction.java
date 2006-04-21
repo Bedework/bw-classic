@@ -55,6 +55,9 @@
 package org.bedework.webcommon.calendars;
 
 import org.bedework.calfacade.BwCalendar;
+import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.svc.BwPreferences;
+import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
@@ -123,8 +126,30 @@ public class UpdateCalendarAction extends BwAbstractAction {
       svci.updateCalendar(cal);
     }
 
-    if (cal.getCalendarCollection()) {
-      updateAuthPrefs(form, null, null, null, cal);
+    if (getPublicAdmin(form)) {
+      if (cal.getCalendarCollection()) {
+        updateAuthPrefs(form, null, null, null, cal);
+      }
+    } else if (svci.getUserPrefs().getUserMode() == BwPreferences.basicMode) {
+      // Auto subscribe.
+      // XXX name should be derived from path.
+      BwSubscription sub = BwSubscription.makeSubscription(cal, cal.getName(),
+                                                           true, true, false);
+      try {
+        svci.addSubscription(sub);
+      } catch (CalFacadeException cfe) {
+        if (CalFacadeException.duplicateSubscription.equals(cfe.getMessage())) {
+          form.getErr().emit(cfe.getMessage());
+          return "success"; // User will see message and we'll stay on page
+        }
+
+        throw cfe;
+      }
+
+      // Add it to the default view
+      svci.addViewSubscription(null, sub);
+
+      form.setSubscriptions(svci.getSubscriptions());
     }
 
     if (add) {
@@ -167,7 +192,7 @@ public class UpdateCalendarAction extends BwAbstractAction {
             return false;
           }
         }
-        
+
         cal.setCalendarCollection(newCC);
       }
     }

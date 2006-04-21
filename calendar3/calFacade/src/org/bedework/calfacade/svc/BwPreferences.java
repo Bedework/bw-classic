@@ -92,7 +92,7 @@ public class BwPreferences extends BwOwnedDbentity {
   /** Value identifying an extra simple user mode - we just do stuff without
    * asking
    */
-  public static final int extraSimpleMode = 0;
+  public static final int basicMode = 0;
 
   /** Value identifying a simple user mode - we hide some stuff but make
    * fewer assumptions
