@@ -137,7 +137,7 @@ public class DbPollerTimerService {
 
   private void init() throws Throwable {
     svci = new CalSvc();
-    CalSvcIPars pars = new CalSvcIPars(account, 
+    CalSvcIPars pars = new CalSvcIPars(account,
                                        account,
                                        null,   // XXX needs envPrefix
                                        true,    // public
@@ -165,7 +165,7 @@ public class DbPollerTimerService {
     }
   }
 
-  /** Get a logger for messages
+  /* Get a logger for messages
    */
   private Logger getLogger() {
     if (log == null) {

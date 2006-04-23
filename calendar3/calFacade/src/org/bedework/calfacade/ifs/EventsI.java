@@ -138,12 +138,14 @@ public interface EventsI extends Serializable {
                               boolean freeBusy) throws CalFacadeException;
 
   /** XXX temp I think
-   * Retrieve event proxies in the trash - they will be used to remove events
+   * Retrieve event proxies in the given calendar - they will be used to remove events
    * from result sets.
    *
+   * @param cal     BwCalendar object restricting search or null.
    * @return Collection of CoreEventInfo objects
+   * @throws CalFacadeException
    */
-  public Collection getDeletedProxies() throws CalFacadeException;
+  public Collection getDeletedProxies(BwCalendar cal) throws CalFacadeException;
 
   /* * Return true if this event is editable by the current user
    *

@@ -307,6 +307,9 @@ public class ConfiguredXSLTFilter extends XSLTFilter {
 
   /** Obtain the presentation state from the session. Override if you want
    * different behaviour.
+   *
+   * @param request
+   * @return PresentationState
    */
   protected PresentationState getPresentationState(HttpServletRequest request) {
     String attrName = getPresentationAttrName();

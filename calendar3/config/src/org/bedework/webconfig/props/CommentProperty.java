@@ -63,9 +63,9 @@ package org.bedework.webconfig.props;
  * the collection of webadmin properties would be "org.bedework.webadmin"
  * giving a property name of "org.bedework.webadmin.app.root"
  *
- * <p>A comment propert is just that - text to be inserted as a comment in the 
+ * <p>A comment propert is just that - text to be inserted as a comment in the
  * resulting properties file.
- * 
+ *
  * @author Mike Douglass
  */
 public class CommentProperty extends ConfigProperty {
@@ -73,7 +73,7 @@ public class CommentProperty extends ConfigProperty {
 
   /** Constructor
    *
-   * @param value    String
+   * @param val    String
    */
   public CommentProperty(String val) {
     super("comment", "comment", true, false);

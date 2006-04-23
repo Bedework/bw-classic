@@ -76,6 +76,7 @@ import java.util.Iterator;
  *  @author Mike Douglass   douglm @ rpi.edu
  */
 public class AccessAppUtil implements Serializable {
+  /** xml rpivilege tags */
   public static final QName[] privTags = {
     WebdavTags.all,              // privAll = 0;
     WebdavTags.read,             // privRead = 1;
@@ -94,25 +95,31 @@ public class AccessAppUtil implements Serializable {
 
   private XmlEmit xml;
 
-  /** Acls use tags in the webdav and caldav namespace. 
+  /** Acls use tags in the webdav and caldav namespace.
    *
    * @param xml
    */
   public AccessAppUtil(XmlEmit xml) {
     this.xml = xml;
   }
-  
+
+  /** Represent the acl as an xml string
+   *
+   * @param acl
+   * @return String xml representation
+   * @throws CalFacadeException
+   */
   public static String getXmlAclString(Acl acl) throws CalFacadeException {
     try {
       XmlEmit xml = new XmlEmit(true);  // no headers
       StringWriter su = new StringWriter();
       xml.startEmit(su);
       AccessAppUtil au = new AccessAppUtil(xml);
-      
+
       au.emitAcl(acl);
-      
+
       su.close();
-      
+
       return su.toString();
     } catch (CalFacadeException cfe) {
       throw cfe;
@@ -147,6 +154,11 @@ public class AccessAppUtil implements Serializable {
     return who;
   }
 
+  /** Emit an acl as an xml string the current xml writer
+   *
+   * @param acl
+   * @throws CalFacadeException
+   */
   public void emitAcl(Acl acl) throws CalFacadeException {
     try {
       Collection aces = acl.getAces();
@@ -158,6 +170,11 @@ public class AccessAppUtil implements Serializable {
     }
   }
 
+  /** Emit the Collection of aces as an xml sing the current xml writer
+   *
+   * @param aces
+   * @throws CalFacadeException
+   */
   public void emitAces(Collection aces) throws CalFacadeException {
     try {
       xml.openTag(WebdavTags.acl);
@@ -187,70 +204,70 @@ public class AccessAppUtil implements Serializable {
   }
 
   /** Produce an xml representation of supported privileges. This is the same
-   * at all points in the system and is identical to the webdav/caldav 
+   * at all points in the system and is identical to the webdav/caldav
    * requirements.
-   * 
+   *
    * @throws CalFacadeException
    */
   public void emitSupportedPrivSet() throws CalFacadeException {
     try {
       xml.openTag(WebdavTags.supportedPrivilegeSet);
-      
+
       emitSupportedPriv(Privileges.getPrivAll());
-      
+
       xml.closeTag(WebdavTags.supportedPrivilegeSet);
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
   }
-  
+
   /** Produce an xml representation of current user privileges from an array
    * of allowed/disallowed/unspecified flags indexed by a privilege index.
-   * 
-   * @param privs    char[] of allowed/disallowed
+   *
+   * @param privileges    char[] of allowed/disallowed
    * @throws CalFacadeException
    */
   public void emitCurrentPrivSet(char[] privileges) throws CalFacadeException {
     try {
       xml.openTag(WebdavTags.currentUserPrivilegeSet);
-      
+
       for (int pi = 0; pi < privileges.length; pi++) {
         if (privileges[pi] == PrivilegeDefs.allowed) {
           // XXX further work - don't emit abstract privs or contained privs.
           QName pr = privTags[pi];
-          
+
           if (pr != null) {
             xml.propertyTagVal(WebdavTags.privilege, pr);
           }
         }
       }
-      
+
       xml.closeTag(WebdavTags.currentUserPrivilegeSet);
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
   }
-  
+
   /** Produce an xml representation of current user privileges from an array
    * of allowed/disallowed/unspecified flags indexed by a privilege index,
    * returning the representation a a String
-   * 
-   * @param privs    char[] of allowed/disallowed
-   * @return String xml 
+   *
+   * @param privileges    char[] of allowed/disallowed
+   * @return String xml
    * @throws CalFacadeException
    */
-  public static String getCurrentPrivSetString(char[] privileges) 
+  public static String getCurrentPrivSetString(char[] privileges)
           throws CalFacadeException {
     try {
       XmlEmit xml = new XmlEmit(true);  // no headers
       StringWriter su = new StringWriter();
       xml.startEmit(su);
       AccessAppUtil au = new AccessAppUtil(xml);
-      
+
       au.emitCurrentPrivSet(privileges);
-      
+
       su.close();
-      
+
       return su.toString();
     } catch (CalFacadeException cfe) {
       throw cfe;
@@ -265,25 +282,25 @@ public class AccessAppUtil implements Serializable {
 
   private void emitSupportedPriv(Privilege priv) throws Throwable {
     xml.openTag(WebdavTags.supportedPrivilege);
-    
+
     xml.openTagNoNewline(WebdavTags.privilege);
     xml.emptyTagSameLine(privTags[priv.getIndex()]);
     xml.closeTagNoblanks(WebdavTags.privilege);
-    
+
     if (priv.getAbstractPriv()) {
       xml.emptyTag(WebdavTags._abstract);
     }
-    
+
     xml.property(WebdavTags.description, priv.getDescription());
 
     Iterator it = priv.iterateContainedPrivileges();
     while (it.hasNext()) {
       emitSupportedPriv((Privilege)it.next());
     }
-    
+
     xml.closeTag(WebdavTags.supportedPrivilege);
   }
-  
+
   private boolean emitAce(Ace ace, boolean denials, boolean aceOpen) throws Throwable {
     Collection privs = ace.getPrivs();
     boolean tagOpen = false;
@@ -314,11 +331,11 @@ public class AccessAppUtil implements Serializable {
         xml.emptyTag(privTags[p.getIndex()]);
       }
     }
-    
+
     if (tagOpen) {
       xml.closeTag(tag);
     }
-    
+
     return aceOpen;
   }
 

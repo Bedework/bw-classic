@@ -634,6 +634,7 @@ public abstract class UtilAbstractAction extends Action
 
   /** Get the session id for the loggers.
    *
+   * @param request
    * @return  String    session id
    */
   private String getSessionId(HttpServletRequest request) {
@@ -658,6 +659,7 @@ public abstract class UtilAbstractAction extends Action
   /** Clean up - we're about to logout
    *
    * @param request    HttpServletRequest
+   * @param form
    * @return boolean true for OK to log out. False - not allowed - ignore it.
    */
   protected boolean logOutCleanup(HttpServletRequest request,
@@ -668,7 +670,9 @@ public abstract class UtilAbstractAction extends Action
   /** Check for logout request.
    *
    * @param request    HttpServletRequest
+   * @param form
    * @return null for continue, forwardLoggedOut to end session.
+   * @throws Throwable
    */
   protected String checkLogOut(HttpServletRequest request,
                                UtilActionForm form)
@@ -690,7 +694,7 @@ public abstract class UtilAbstractAction extends Action
    *               Check nocache
    * ==================================================================== */
 
-  /** We handle our own nocache headers instead of letting struts do it.
+  /* We handle our own nocache headers instead of letting struts do it.
    * Struts does it on every response but, if we are running with nocache,
    * we need to be able to disable it for the occassional response.
    *
@@ -737,7 +741,7 @@ public abstract class UtilAbstractAction extends Action
    *               Check serialization
    * ==================================================================== */
 
-  /** Debugging routine to see if we can serialize the session.
+  /* Debugging routine to see if we can serialize the session.
    * We see session serialization errors in the web container if an
    * unserializable object class gets embedded in the session somewhere
    */
@@ -842,6 +846,7 @@ public abstract class UtilAbstractAction extends Action
    * @param request  Needed to locate session
    * @param form     Action form
    * @return String  forward to here. null if no error found.
+   * @throws Throwable
    */
   private String checkVarReq(HttpServletRequest request,
                              UtilActionForm form) throws Throwable {
@@ -916,6 +921,7 @@ public abstract class UtilAbstractAction extends Action
    *
    * @param request  Needed to locate session
    * @return String  forward to here. null if no forward found.
+   * @throws Throwable
    */
   private String checkForwardto(HttpServletRequest request) throws Throwable {
     String reqpar = request.getParameter("forwardto");
@@ -935,7 +941,9 @@ public abstract class UtilAbstractAction extends Action
    * confirmationid=id<p>.
    *
    * @param request  Needed to locate session
+   * @param form
    * @return String  forward to here on error. null for OK.
+   * @throws Throwable
    */
   protected String checkConfirmationId(HttpServletRequest request,
                                        UtilActionForm form)
@@ -962,7 +970,9 @@ public abstract class UtilAbstractAction extends Action
    * confirmationid=id<p>.
    *
    * @param request  Needed to locate session
+   * @param form
    * @return String  forward to here on error. null for OK.
+   * @throws Throwable
    */
   protected String requireConfirmationId(HttpServletRequest request,
                                          UtilActionForm form)
@@ -1117,6 +1127,7 @@ public abstract class UtilAbstractAction extends Action
    * @param req
    * @param name    name of parameter
    * @return  String   value
+   * @throws Throwable
    */
   protected String getReqPar(HttpServletRequest req, String name) throws Throwable {
     return Util.checkNull(req.getParameter(name));
@@ -1126,7 +1137,9 @@ public abstract class UtilAbstractAction extends Action
    *
    * @param req
    * @param name    name of parameter
+   * @param defaultVal
    * @return  int   value
+   * @throws Throwable
    */
   protected int getIntReqPar(HttpServletRequest req, String name,
                              int defaultVal) throws Throwable {
@@ -1147,7 +1160,9 @@ public abstract class UtilAbstractAction extends Action
    *
    * @param req
    * @param name    name of parameter
+   * @param defaultVal
    * @return  long  value
+   * @throws Throwable
    */
   protected long getLongReqPar(HttpServletRequest req, String name,
                              long defaultVal) throws Throwable {
@@ -1169,6 +1184,7 @@ public abstract class UtilAbstractAction extends Action
    * @param req
    * @param name    name of parameter
    * @return  boolean   value
+   * @throws Throwable
    */
   protected Boolean getBooleanReqPar(HttpServletRequest req, String name)
                throws Throwable {
@@ -1195,6 +1211,7 @@ public abstract class UtilAbstractAction extends Action
    *
    * @param request  Needed to locate session
    * @param messages Resources
+   * @return ErrorEmitSvlt
    */
   private ErrorEmitSvlt getErrorObj(HttpServletRequest request,
                                     MessageResources messages) {
@@ -1213,6 +1230,7 @@ public abstract class UtilAbstractAction extends Action
    *
    * @param request  Needed to locate session
    * @param messages Resources
+   * @return MessageEmitSvlt
    */
   private MessageEmitSvlt getMessageObj(HttpServletRequest request,
                                         MessageResources messages) {

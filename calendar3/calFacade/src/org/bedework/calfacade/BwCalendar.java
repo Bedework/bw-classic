@@ -101,8 +101,8 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
 
   /** The children of this calendar */
   private Collection children;
-  
-  /* This field must only be used for cloned copies of an entity as it is 
+
+  /* This field must only be used for cloned copies of an entity as it is
    * specific to a current thread.
    */
   private CurrentAccess currentAccess;
@@ -273,10 +273,17 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
    *                   Transient object methods
    * ==================================================================== */
 
+  /** Only call fro cloned object
+   *
+   * @param val CurrentAccess
+   */
   public void setCurrentAccess(CurrentAccess val) {
     currentAccess = val;
   }
 
+  /**
+   * @return CurrentAccess
+   */
   public CurrentAccess getCurrentAccess() {
     return currentAccess;
   }
@@ -401,9 +408,9 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
   }
 
   public int hashCode() {
-  	if (getPath() == null) {
-  		return 1;
-  	}
+    if (getPath() == null) {
+      return 1;
+    }
     return getPath().hashCode();
   }
 
@@ -427,20 +434,20 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
     sb.append(", children(");
     Iterator it = iterateChildren();
     boolean donech = false;
-    
+
     while (it.hasNext()) {
       BwCalendar ch = (BwCalendar)it.next();
-      
+
       if (!donech) {
         donech = true;
       } else {
         sb.append(", ");
       }
-      
+
       sb.append(ch.getPath());
     }
     sb.append(")");
-    
+
     if (getCurrentAccess() != null) {
       sb.append(", currentAccess=");
       sb.append(getCurrentAccess());

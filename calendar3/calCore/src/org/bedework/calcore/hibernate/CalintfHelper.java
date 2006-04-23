@@ -84,11 +84,11 @@ class CalintfHelper implements CalintfDefs, PrivilegeDefs, Serializable {
    *
    * @param cal
    * @param access
-   * @param user
+   * @param currentMode
    * @param debug
    */
   public CalintfHelper(Calintf cal, AccessUtil access,
-                       int currentMode,  
+                       int currentMode,
                        boolean debug) {
     this.cal = cal;
     this.access = access;
@@ -103,12 +103,14 @@ class CalintfHelper implements CalintfDefs, PrivilegeDefs, Serializable {
   protected BwSystem getSyspars() throws CalFacadeException {
     return cal.getSyspars();
   }
-  
+
   protected BwUser getUser() throws CalFacadeException {
     return cal.getUser();
   }
 
   /** Get a logger for messages
+   *
+   * @return Logger
    */
   protected Logger getLogger() {
     if (log == null) {

@@ -318,8 +318,8 @@ public abstract class CalSvcI implements Serializable {
    *
    * <p>Note that the returned object may require a one time initialisation
    * call to set it up correctly.
-   * @see org.bedework.calfacade.svc.UserAuth#initialise(String, UserAuth.CallBack, int)
-   * @see org.bedework.calfacade.svc.UserAuth#initialise(String, UserAuth.CallBack, Object)
+   * @see org.bedework.calfacade.svc.UserAuth#initialise(String, UserAuth.CallBack, int, boolean)
+   * @see org.bedework.calfacade.svc.UserAuth#initialise(String, UserAuth.CallBack, Object, boolean)
    *
    * @param user         String account name
    * @param par          parameter object

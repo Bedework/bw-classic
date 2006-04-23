@@ -225,6 +225,10 @@ public abstract class Dumpling implements Defs {
   }
 
   /** Anything for which toString() works OK
+   *
+   * @param name
+   * @param val
+   * @throws Throwable
    */
   protected void taggedVal(String name, Object val) throws Throwable {
     if (val == null) {

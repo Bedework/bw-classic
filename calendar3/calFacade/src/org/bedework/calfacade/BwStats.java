@@ -55,9 +55,9 @@
 package org.bedework.calfacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 /** Some statistics for the Bedework calendar. These are not necessarily
  * absolutely correct. We don't lock, just increment and decrement but
@@ -70,21 +70,34 @@ public class BwStats implements Serializable {
    * We use Strings for values as these are going to be dumped as xml.
    */
   public static class StatsEntry {
+    // ENUM
+    /** */
     public final static int statKindHeader = 0;
+    /** */
     public final static int statKindStat = 1;
 
     private int statKind;
 
     private String statLabel;
 
+    // ENUM
+    /** */
     public final static int statTypeString = 0;
+    /** */
     public final static int statTypeInt = 1;
+    /** */
     public final static int statTypeLong = 2;
+    /** */
     public final static int statTypeDouble = 3;
     private int statType;
 
     private String statVal;
 
+    /** Constructor for an int val
+     *
+     * @param label
+     * @param val
+     */
     public StatsEntry(String label, int val) {
       statKind = statKindStat;
       statLabel = label;
@@ -92,6 +105,11 @@ public class BwStats implements Serializable {
       statVal = String.valueOf(val);
     }
 
+    /** Constructor for a long val
+     *
+     * @param label
+     * @param val
+     */
     public StatsEntry(String label, long val) {
       statKind = statKindStat;
       statLabel = label;
@@ -99,6 +117,11 @@ public class BwStats implements Serializable {
       statVal = String.valueOf(val);
     }
 
+    /** Constructor for a double val
+     *
+     * @param label
+     * @param val
+     */
     public StatsEntry(String label, double val) {
       statKind = statKindStat;
       statLabel = label;
@@ -106,6 +129,11 @@ public class BwStats implements Serializable {
       statVal = String.valueOf(val);
     }
 
+    /** Constructor for a String val
+     *
+     * @param label
+     * @param val
+     */
     public StatsEntry(String label, String val) {
       statKind = statKindStat;
       statLabel = label;
@@ -113,23 +141,39 @@ public class BwStats implements Serializable {
       statVal = val;
     }
 
+    /** Constructor for a header
+     *
+     * @param header
+     */
     public StatsEntry(String header) {
       statKind = statKindHeader;
       statLabel = header;
     }
 
+    /**
+     * @return int kind of stat
+     */
     public int getStatKind() {
       return statKind;
     }
 
+    /**
+     * @return String label
+     */
     public String getStatLabel() {
       return statLabel;
     }
 
+    /**
+     * @return int type
+     */
     public int getStatType() {
       return statType;
     }
 
+    /**
+     * @return String value
+     */
     public String getStatVal() {
       return statVal;
     }
@@ -206,25 +250,31 @@ public class BwStats implements Serializable {
     return dateCacheMisses;
   }
 
+  /**
+   * @return Collection of StatsEntry
+   */
   public Collection getStats() {
-    Vector v = new Vector();
+    ArrayList al = new ArrayList();
 
-    v.add(new StatsEntry("Bedework statistics."));
-    v.add(new StatsEntry("tzFetches", getTzFetches()));
-    v.add(new StatsEntry("systemTzFetches", getSystemTzFetches()));
-    v.add(new StatsEntry("tzStores", getTzStores()));
+    al.add(new StatsEntry("Bedework statistics."));
+    al.add(new StatsEntry("tzFetches", getTzFetches()));
+    al.add(new StatsEntry("systemTzFetches", getSystemTzFetches()));
+    al.add(new StatsEntry("tzStores", getTzStores()));
 
-    v.add(new StatsEntry("event fetch time", getEventFetchTime()));
-    v.add(new StatsEntry("event fetches", getEventFetches()));
+    al.add(new StatsEntry("event fetch time", getEventFetchTime()));
+    al.add(new StatsEntry("event fetches", getEventFetches()));
 
-    v.add(new StatsEntry("UTC dates cached", getDatesCached()));
-    v.add(new StatsEntry("UTC date cache hits", getDateCacheHits()));
-    v.add(new StatsEntry("UTC date cache misses", getDateCacheMisses()));
+    al.add(new StatsEntry("UTC dates cached", getDatesCached()));
+    al.add(new StatsEntry("UTC date cache hits", getDateCacheHits()));
+    al.add(new StatsEntry("UTC date cache misses", getDateCacheMisses()));
 
-    return v;
+    return al;
   }
 
   /** Turn the Collection of StatsEntry into a String for dumps.
+   *
+   * @param c  Collection of StatsEntry
+   * @return String formatted result.
    */
   public static String toString(Collection c) {
     StringBuffer sb = new StringBuffer();

@@ -1015,59 +1015,6 @@ public class CalSvc extends CalSvcI {
     return getSubCalendar(val, false);
   }
 
-  public BwCalendar getSubCalendar(BwSubscription val,
-                                   boolean freeBusy) throws CalFacadeException {
-    int desiredAccess = PrivilegeDefs.privRead;
-    if (freeBusy) {
-      desiredAccess = PrivilegeDefs.privReadFreeBusy;
-    }
-
-    if (!val.getInternalSubscription() || val.getCalendarDeleted()) {
-      return null;
-    }
-
-    BwCalendar calendar = val.getCalendar();
-
-    if (calendar != null) {
-      // recheck access
-      if (getCal().checkAccess(calendar, desiredAccess, true) == null) {
-        val.setCalendar(null);
-        return null;
-      }
-      return calendar;
-    }
-
-    String path;
-    String uri = val.getUri();
-
-    if (uri.startsWith(CalFacadeDefs.bwUriPrefix)) {
-      path = uri.substring(CalFacadeDefs.bwUriPrefix.length());
-    } else {
-      // Shouldn't happen?
-      path = uri;
-    }
-
-    if (debug) {
-      trace("Search for calendar \"" + path + "\"");
-    }
-
-    try {
-      calendar = getCal().getCalendar(path, desiredAccess);
-    } catch (CalFacadeAccessException cfae) {
-      calendar = null;
-    }
-
-    if (calendar == null) {
-      // Assume deleted
-      val.setCalendarDeleted(true);
-      updateSubscription(val);
-    } else {
-      val.setCalendar(calendar);
-    }
-
-    return calendar;
-  }
-
   /* ====================================================================
    *                   Free busy
    * ==================================================================== */
@@ -1623,104 +1570,6 @@ public class CalSvc extends CalSvcI {
     return getEvents(sub, filter, startDate, endDate, recurRetrieval, false);
   }
 
-  public Collection getEvents(BwSubscription sub, BwFilter filter,
-                              BwDateTime startDate, BwDateTime endDate,
-                              int recurRetrieval,
-                              boolean freeBusy) throws CalFacadeException {
-    TreeSet ts = new TreeSet();
-
-//    if (pars.getPublicAdmin() || (sub != null)) {
-    if (sub != null) {
-      BwCalendar cal = null;
-      if (sub != null) {
-        cal = sub.getCalendar();
-      }
-      return postProcess(getCal().getEvents(cal, filter, startDate,
-                                            endDate, recurRetrieval,
-                                            freeBusy),
-                         sub);
-    }
-
-    Collection subs = null;
-
-    if (currentView != null) {
-      if (debug) {
-        trace("Use current view \"" + currentView.getName() + "\"");
-      }
-
-      subs = currentView.getSubscriptions();
-    } else {
-      subs = getCurrentSubscriptions();
-      if (subs == null) {
-        // Try set of users subscriptions.
-        if (debug) {
-          trace("Use user subscriptions");
-        }
-
-        subs = getSubscriptions();
-      } else if (debug) {
-        trace("Use current subscriptions");
-      }
-
-      if (subs == null) {
-        if (debug) {
-          trace("Make up ALL events");
-        }
-
-        sub = new BwSubscription();
-        sub.setName("All events"); // XXX property?
-        sub.setDisplay(true);
-        sub.setInternalSubscription(true);
-
-        return postProcess(getCal().getEvents(null, filter, startDate,
-                                              endDate, recurRetrieval,
-                                              freeBusy),
-                           sub);
-      }
-    }
-
-    /* Iterate over the subscriptions and merge the results.
-     *
-     * First we iterate over the subscriptions looking for internal calendars.
-     * These we accumulate as children of a single calendar allowing a single
-     * query for all calendars.
-     *
-     * We will then iterate again to handle external calendars. (Not implemented)
-     */
-    Iterator it = subs.iterator();
-    BwCalendar internal = new BwCalendar();
-    setupSharableEntity(internal);
-
-    // For locating subscriptions from calendar
-    HashMap sublookup = new HashMap();
-
-    while (it.hasNext()) {
-      sub = (BwSubscription)it.next();
-
-      BwCalendar calendar = getSubCalendar(sub, freeBusy);
-
-      if (calendar != null) {
-        internal.addChild(calendar);
-        putSublookup(sublookup, sub, calendar);
-      }
-    }
-
-    if (internal.getChildren().size() == 0) {
-      if (debug) {
-        trace("No children for internal calendar");
-      }
-
-      return ts;
-    }
-
-    ts.addAll(postProcess(getCal().getEvents(internal, filter,
-                          startDate, endDate,
-                          recurRetrieval, freeBusy),
-              sublookup));
-
-    return ts;
-  }
-
   public DelEventResult deleteEvent(BwEvent event,
                                     boolean delUnreffedLoc) throws CalFacadeException {
     DelEventResult der = new DelEventResult(false, false, 0);
@@ -2021,6 +1870,7 @@ public class CalSvc extends CalSvcI {
   /** Get the current db session
    *
    * @return Object
+   * @throws CalFacadeException
    */
   Object getDbSession() throws CalFacadeException {
     return getCal().getDbSession();
@@ -2029,6 +1879,157 @@ public class CalSvc extends CalSvcI {
   /* ====================================================================
    *                   Private methods
    * ==================================================================== */
+
+  private Collection getEvents(BwSubscription sub, BwFilter filter,
+                               BwDateTime startDate, BwDateTime endDate,
+                               int recurRetrieval,
+                               boolean freeBusy) throws CalFacadeException {
+    TreeSet ts = new TreeSet();
+
+//    if (pars.getPublicAdmin() || (sub != null)) {
+    if (sub != null) {
+      BwCalendar cal = null;
+      if (sub != null) {
+        cal = sub.getCalendar();
+      }
+      return postProcess(getCal().getEvents(cal, filter, startDate,
+                                            endDate, recurRetrieval,
+                                            freeBusy),
+                         sub);
+    }
+
+    Collection subs = null;
+
+    if (currentView != null) {
+      if (debug) {
+        trace("Use current view \"" + currentView.getName() + "\"");
+      }
+
+      subs = currentView.getSubscriptions();
+    } else {
+      subs = getCurrentSubscriptions();
+      if (subs == null) {
+        // Try set of users subscriptions.
+        if (debug) {
+          trace("Use user subscriptions");
+        }
+
+        subs = getSubscriptions();
+      } else if (debug) {
+        trace("Use current subscriptions");
+      }
+
+      if (subs == null) {
+        if (debug) {
+          trace("Make up ALL events");
+        }
+
+        sub = new BwSubscription();
+        sub.setName("All events"); // XXX property?
+        sub.setDisplay(true);
+        sub.setInternalSubscription(true);
+
+        return postProcess(getCal().getEvents(null, filter, startDate,
+                                              endDate, recurRetrieval,
+                                              freeBusy),
+                           sub);
+      }
+    }
+
+    /* Iterate over the subscriptions and merge the results.
+     *
+     * First we iterate over the subscriptions looking for internal calendars.
+     * These we accumulate as children of a single calendar allowing a single
+     * query for all calendars.
+     *
+     * We will then iterate again to handle external calendars. (Not implemented)
+     */
+    Iterator it = subs.iterator();
+    BwCalendar internal = new BwCalendar();
+    setupSharableEntity(internal);
+
+    // For locating subscriptions from calendar
+    HashMap sublookup = new HashMap();
+
+    while (it.hasNext()) {
+      sub = (BwSubscription)it.next();
+
+      BwCalendar calendar = getSubCalendar(sub, freeBusy);
+
+      if (calendar != null) {
+        internal.addChild(calendar);
+        putSublookup(sublookup, sub, calendar);
+      }
+    }
+
+    if (internal.getChildren().size() == 0) {
+      if (debug) {
+        trace("No children for internal calendar");
+      }
+
+      return ts;
+    }
+
+    ts.addAll(postProcess(getCal().getEvents(internal, filter,
+                          startDate, endDate,
+                          recurRetrieval, freeBusy),
+              sublookup));
+
+    return ts;
+  }
+
+  private BwCalendar getSubCalendar(BwSubscription val,
+                                    boolean freeBusy) throws CalFacadeException {
+    int desiredAccess = PrivilegeDefs.privRead;
+    if (freeBusy) {
+      desiredAccess = PrivilegeDefs.privReadFreeBusy;
+    }
+
+    if (!val.getInternalSubscription() || val.getCalendarDeleted()) {
+      return null;
+    }
+
+    BwCalendar calendar = val.getCalendar();
+
+    if (calendar != null) {
+      // recheck access
+      if (getCal().checkAccess(calendar, desiredAccess, true) == null) {
+        val.setCalendar(null);
+        return null;
+      }
+      return calendar;
+    }
+
+    String path;
+    String uri = val.getUri();
+
+    if (uri.startsWith(CalFacadeDefs.bwUriPrefix)) {
+      path = uri.substring(CalFacadeDefs.bwUriPrefix.length());
+    } else {
+      // Shouldn't happen?
+      path = uri;
+    }
+
+    if (debug) {
+      trace("Search for calendar \"" + path + "\"");
+    }
+
+    try {
+      calendar = getCal().getCalendar(path, desiredAccess);
+    } catch (CalFacadeAccessException cfae) {
+      calendar = null;
+    }
+
+    if (calendar == null) {
+      // Assume deleted
+      val.setCalendarDeleted(true);
+      updateSubscription(val);
+    } else {
+      val.setCalendar(calendar);
+    }
+
+    return calendar;
+  }
 
   private void deleteOK(Object o) throws CalFacadeException {
     updateOK(o);

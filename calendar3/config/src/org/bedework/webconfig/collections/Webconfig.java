@@ -61,6 +61,7 @@ package org.bedework.webconfig.collections;
 public class Webconfig extends ConfigCollection {
   /** Constructor
    *
+   * @param name   String name of application
    * @throws Throwable
    */
   public Webconfig(String name) throws Throwable {

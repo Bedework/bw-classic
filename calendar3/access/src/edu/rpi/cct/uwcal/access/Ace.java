@@ -398,7 +398,7 @@ public class Ace implements Serializable, Comparable {
    * manipulation rather than evaluation.
    *
    * @param acl
-   * @param privs
+   * @param getPrivileges
    * @param name
    * @param whoType
    * @return boolean true if we find a match

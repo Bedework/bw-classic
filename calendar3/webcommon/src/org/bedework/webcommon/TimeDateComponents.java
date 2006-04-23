@@ -277,7 +277,7 @@ public class TimeDateComponents implements Serializable {
     return dateOnly;
   }
 
-  /** Sets this object's current date to now. 
+  /** Sets this object's current date to now.
    */
   public void setNow() {
     setDateTime(new Date(System.currentTimeMillis()));
@@ -583,7 +583,7 @@ public class TimeDateComponents implements Serializable {
     }
   }
 
-  /** Get a logger for messages
+  /* Get a logger for messages
    */
   private Logger getLogger() {
     if (log == null) {

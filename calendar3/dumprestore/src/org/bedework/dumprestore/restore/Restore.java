@@ -115,6 +115,9 @@ public class Restore implements Defs {
    *                       Restore methods
    *  =================================================================== */
 
+  /**
+   * @throws Throwable
+   */
   void open() throws Throwable {
     if (globals.rintf == null) {
 //      globals.rintf = new JdbcRestore();
@@ -167,6 +170,8 @@ public class Restore implements Defs {
    *  =================================================================== */
 
   /** Called to finish off by writing out prefs.
+   *
+   * @throws Throwable
    */
   private void makePrefs() throws Throwable {
     Iterator it = globals.usersTbl.values().iterator();
@@ -246,6 +251,8 @@ public class Restore implements Defs {
    * @param view
    * @param user     BwUser object
    * @param cal      BwCalendar object
+   * @param display
+   * @param freeBusy
    * @param publicCalendar
    * @throws Throwable
    */

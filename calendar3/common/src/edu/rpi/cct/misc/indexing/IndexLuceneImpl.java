@@ -56,6 +56,7 @@ public abstract class IndexLuceneImpl implements Index {
    * @param defaultFieldName  default name for searches
    * @param writeable   true if the caller can update the index
    * @param debug       true if we want to see what's going on
+   * @throws IndexException
    */
   public IndexLuceneImpl(String basePath,
                          String defaultFieldName,
@@ -71,6 +72,7 @@ public abstract class IndexLuceneImpl implements Index {
    * @param writeable   true if the caller can update the index
    * @param stopWords   set of stop words, null for default.
    * @param debug       true if we want to see what's going on
+   * @throws IndexException
    */
   public IndexLuceneImpl(String basePath,
                          String defaultFieldName,
@@ -84,6 +86,9 @@ public abstract class IndexLuceneImpl implements Index {
     this.stopWords = stopWords;
   }
 
+  /**
+   * @return boolean debugging flag
+   */
   public boolean getDebug() {
     return debug;
   }
@@ -94,6 +99,7 @@ public abstract class IndexLuceneImpl implements Index {
    * @param doc   The retrieved Document
    * @param score The rating for this entry
    * @return Index.Key  new or reused object
+   * @throws IndexException
    */
   public abstract Index.Key makeKey(Index.Key key,
                                     Document doc,
@@ -103,6 +109,7 @@ public abstract class IndexLuceneImpl implements Index {
    *
    * @param   rec      The record
    * @return  Term     Lucene term which uniquely identifies the record
+   * @throws IndexException
    */
   public abstract Term makeKeyTerm(Object rec) throws IndexException;
 
@@ -110,6 +117,7 @@ public abstract class IndexLuceneImpl implements Index {
    *
    * @param   rec      The record
    * @return  String   Name for the field/term
+   * @throws IndexException
    */
   public abstract String makeKeyName(Object rec) throws IndexException;
 
@@ -117,6 +125,7 @@ public abstract class IndexLuceneImpl implements Index {
    *
    * @param doc   The =Document
    * @param rec   The record
+   * @throws IndexException
    */
   public abstract void addFields(Document doc,
                                  Object rec) throws IndexException;
@@ -401,6 +410,8 @@ public abstract class IndexLuceneImpl implements Index {
   }
 
   /** Called if we need to close the writer
+   *
+   * @throws IndexException
    */
   public synchronized void closeWtr() throws IndexException {
     try {
@@ -420,6 +431,8 @@ public abstract class IndexLuceneImpl implements Index {
   }
 
   /** Called if we need to close the reader
+   *
+   * @throws IndexException
    */
   public synchronized void closeRdr() throws IndexException {
     try {
@@ -456,6 +469,8 @@ public abstract class IndexLuceneImpl implements Index {
       =================================================================== */
 
   /** Ensure we're open
+   *
+   * @throws IndexException
    */
   private void checkOpen() throws IndexException {
     if (isOpen) {
@@ -465,7 +480,7 @@ public abstract class IndexLuceneImpl implements Index {
     open();
   }
 
-  /** Called to obtain the current or a new writer.
+  /* Called to obtain the current or a new writer.
    *
    * @return IndexWriter  writer to our index
    */
@@ -487,7 +502,7 @@ public abstract class IndexLuceneImpl implements Index {
     }
   }
 
-  /** Called to obtain the current or a new reader.
+  /* Called to obtain the current or a new reader.
    *
    * @return IndexReader  reader of our index
    */
@@ -510,7 +525,7 @@ public abstract class IndexLuceneImpl implements Index {
   }
 
 
-  /** Called to unindex a record. The reader will be left
+  /* Called to unindex a record. The reader will be left
    * open. The writer must be closed and will stay closed.
    *
    * @param   rec      The record to unindex
@@ -537,7 +552,7 @@ public abstract class IndexLuceneImpl implements Index {
     }
   }
 
-  /** Called to index a record. The writer will be left open and the reader
+  /* Called to index a record. The writer will be left open and the reader
    * must be closed on entry and will stay closed.
    *
    * @param   rec      The record to index
@@ -568,6 +583,7 @@ public abstract class IndexLuceneImpl implements Index {
    * @param   doc      Document object
    * @param   name     String field name
    * @param   ss       String array of keywords
+   * @throws IndexException
    */
   protected void addKeyArray(Document doc, String name, String[] ss)
       throws IndexException {
@@ -587,6 +603,7 @@ public abstract class IndexLuceneImpl implements Index {
    * @param   doc      The document
    * @param   name     Field name
    * @param   dt       The timestamp
+   * @throws IndexException
    */
   protected void addTimestamp(Document doc, String name, Timestamp dt)
       throws IndexException {
@@ -602,6 +619,7 @@ public abstract class IndexLuceneImpl implements Index {
    * @param   doc      The document
    * @param   name     Field name
    * @param   val      The value
+   * @throws IndexException
    */
   protected void addString(Document doc, String name, String val)
       throws IndexException {
@@ -617,6 +635,7 @@ public abstract class IndexLuceneImpl implements Index {
    * @param   doc      The document
    * @param   name     Field name
    * @param   cost     The cost in cents
+   * @throws IndexException
    */
   protected void addCost(Document doc, String name, Long cost)
       throws IndexException {
@@ -653,6 +672,7 @@ public abstract class IndexLuceneImpl implements Index {
    * @param   doc      The document
    * @param   name     Field name
    * @param   val      The value
+   * @throws IndexException
    */
   protected void addKey(Document doc, String name, String val)
       throws IndexException {
@@ -668,6 +688,7 @@ public abstract class IndexLuceneImpl implements Index {
    * @param   doc      The document
    * @param   name     Field name
    * @param   val      The value
+   * @throws IndexException
    */
   protected void addLongStoredString(Document doc, String name, String val)
       throws IndexException {
@@ -683,6 +704,7 @@ public abstract class IndexLuceneImpl implements Index {
    * @param   doc      The document
    * @param   name     Field name
    * @param   val      The value
+   * @throws IndexException
    */
   protected void addLongString(Document doc, String name, String val)
       throws IndexException {

@@ -77,6 +77,10 @@ import org.hibernate.stat.Statistics;
  * @author Mike Douglass   douglm@rpi.edu
  */
 public class DbStatistics {
+  /** Dump the statistics to the log
+   *
+   * @param dbStats
+   */
   public static void dumpStats(Statistics dbStats) {
     if (dbStats == null) {
       return;
@@ -87,6 +91,11 @@ public class DbStatistics {
     log.debug(BwStats.toString(getStats(dbStats)));
   }
 
+  /** Get the current statistics
+   *
+   * @param dbStats
+   * @return Collection
+   */
   public static Collection getStats(Statistics dbStats) {
     /* XXX this ought to be property driven to some extent. The cache stats in
      * particular.

@@ -88,12 +88,16 @@ public class ApplicationXmlTask extends MatchingTask {
   private List jars = new LinkedList();
 
   private File warDir;
-  
+
   private String displayName;
 
   private File outFile;
   private Writer wtr;
 
+  /** Add a fileset
+   *
+   * @param set
+   */
   public void addFileset(FileSet set) {
     filesets.add(set);
   }
@@ -127,9 +131,9 @@ public class ApplicationXmlTask extends MatchingTask {
   public void execute() throws BuildException {
     try {
       getModules();
-      
+
       FileUtils.newFileUtils().createNewFile(outFile, true);
-      
+
       wtr = new FileWriter(outFile);
 
       writeLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -172,7 +176,7 @@ public class ApplicationXmlTask extends MatchingTask {
     } catch (Throwable t) {
       throw new BuildException(t);
     }
-  } 
+  }
 
   /* Scan the filesets and extract files that end with ".jar" and directories
    * or files that end with ".war"
@@ -188,12 +192,12 @@ public class ApplicationXmlTask extends MatchingTask {
     if (warDir == null) {
       throw new BuildException("No wardir supplied");
     }
-    
+
     String[] warnames = warDir.list(fltr);
     for (int wi = 0; wi < warnames.length; wi++) {
       wars.add(warnames[wi]);
     }
-    
+
     Iterator it = filesets.iterator();
 
     while (it.hasNext()) {

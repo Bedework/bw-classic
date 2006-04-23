@@ -205,6 +205,12 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
     }
   }
 
+  /** Create a copy of this object
+   *
+   * @param timezones
+   * @return BwDateTime
+   * @throws CalFacadeException
+   */
   public BwDateTime copy(CalTimezones timezones) throws CalFacadeException {
     return makeDateTime(makeDtEnd(), timezones);
   }

@@ -54,7 +54,7 @@
 package org.bedework.webcommon.taglib;
 
 /** Tag with a name attribute
- * 
+ *
  * @author Mike Douglass
  *
  */
@@ -62,10 +62,16 @@ public class NameTag extends BaseTag {
   /** name attribute */
   String name;
 
+  /**
+   * @param val
+   */
   public void setName(String val) {
     name = val;
   }
 
+  /**
+   * @return String name
+   */
   public String getName() {
     return name;
   }

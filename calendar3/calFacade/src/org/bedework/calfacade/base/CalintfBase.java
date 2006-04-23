@@ -733,21 +733,11 @@ public class CalintfBase implements Calintf {
     throw new CalFacadeUnimplementedException();
   }
 
-  public boolean editable(BwEvent val) throws CalFacadeException {
-    checkOpen();
-
-    if (currentMode == CalintfDefs.guestMode) {
-      return false;
-    }
-
-    if (val.getPublick() != (currentMode == CalintfDefs.publicAdminMode)) {
-      return false;
-    }
-
-    return user.equals(val.getCreator());
+  public Collection getDeletedProxies() throws CalFacadeException {
+    throw new CalFacadeUnimplementedException();
   }
 
-  public Collection getDeletedProxies() throws CalFacadeException {
+  public Collection getDeletedProxies(BwCalendar cal) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 

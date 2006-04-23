@@ -186,6 +186,8 @@ public abstract class AbstractOptionsPanel extends JPanel {
   }
 
   /** Add some help text and increment the row.
+   *
+   * @param resourceName
    */
   protected void showHelpText(String resourceName) {
     JLabel lbl = new JLabel(globals.rsrc.getHelpString(resourceName));
@@ -207,6 +209,8 @@ public abstract class AbstractOptionsPanel extends JPanel {
   }
 
   /** Add some text and increment the row.
+   *
+   * @param resourceName
    */
   protected void showTitleText(String resourceName) {
     JLabel lbl = new JLabel(globals.rsrc.getTitleString(resourceName));
@@ -228,6 +232,8 @@ public abstract class AbstractOptionsPanel extends JPanel {
   }
 
   /** Add a label and separator and increment the row.
+   *
+   * @param titleName
    */
   protected void addSeparator(String titleName) {
     Insets saveInsets = constraints.insets;
@@ -272,6 +278,10 @@ public abstract class AbstractOptionsPanel extends JPanel {
    * create and display a label and checkbox.
    *
    * <p>Otherwise we just create a checkbox to hold the property value.
+   *
+   * @param resourceName
+   * @param advancedField
+   * @return OptionsCheckBox
    */
   protected OptionsCheckBox checkBox(String resourceName, boolean advancedField) {
     boolean display = !advancedField || globals.advanced.getValue();
@@ -322,6 +332,10 @@ public abstract class AbstractOptionsPanel extends JPanel {
    * create and display a label and textfield.
    *
    * <p>Otherwise we just create a checkbox to hold the property value.
+   *
+   * @param resourceName
+   * @param advancedField
+   * @return OptionsTextField
    */
   protected OptionsTextField textField(String resourceName, boolean advancedField) {
     boolean display = !advancedField || globals.advanced.getValue();

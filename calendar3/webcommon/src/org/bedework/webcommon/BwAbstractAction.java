@@ -51,7 +51,6 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
 package org.bedework.webcommon;
 
 // I only need this because request.getInitParameterNames doesn't work
@@ -313,6 +312,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @param form
    * @param emitError   Emit error messages for missing request par.
    * @return boolean    true there was a subname parameter
+   * @param cloneIt     true if we should clone the result
    * @throws Throwable
    */
   protected boolean findSubscription(HttpServletRequest request,
@@ -604,6 +604,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @param initCheck true if this is a check to see if we're initialised,
    *                  otherwise this is an explicit request to change group.
    * @return String   forward name
+   * @throws Throwable
    */
   protected String checkGroup(HttpServletRequest request,
                               BwActionFormBase form,
@@ -1256,7 +1257,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @param sp       SponsorVO object
    * @param loc      LocationVO object
    * @param cal
-   * @throws CalFacadeException
+   * @throws Throwable
    */
   protected void updateAuthPrefs(BwActionFormBase form,
                                  Collection categories, BwSponsor sp, BwLocation loc,

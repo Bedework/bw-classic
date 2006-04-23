@@ -100,6 +100,7 @@ public class EventFormatter implements Serializable {
 
   /** Constructor
    *
+   * @param svci
    * @param eventInfo
    * @param calInfo
    * @param view
@@ -206,6 +207,10 @@ public class EventFormatter implements Serializable {
     return end;
   }
 
+  /** Emit current event access as an xml String
+   *
+   * @return String
+   */
   public String getXmlAccess() {
     try {
       if (xmlAccess == null) {

@@ -142,7 +142,9 @@ public class CalSvcTest extends TestCase {
   /** Add a bunch of locations for later use
    *
    * @param n     int number of locations
+   * @param user
    * @return int  key of first added (remainder should follow)
+   * @throws Throwable
    */
   private int addLocations(int n,
                            String user) throws Throwable {
@@ -174,7 +176,9 @@ public class CalSvcTest extends TestCase {
   /** Add a bunch of sponsors for later use
    *
    * @param n     int number of sponsors
+   * @param user
    * @return int  key of first added (remainder should follow)
+   * @throws Throwable
    */
   private int addSponsors(int n,
                           String user) throws Throwable {
@@ -239,8 +243,10 @@ public class CalSvcTest extends TestCase {
    * @param n         int number of events
    * @param locn      int first location id
    * @param spn       int first sponsor id
+   * @param user
    * @param desc      some identifying text
    * @return int      key of first added (remainder should follow)
+   * @throws Throwable
    */
   private int addEvents(int n, int locn, int spn,
                         String user,

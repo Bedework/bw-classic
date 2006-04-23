@@ -74,18 +74,18 @@ public class EmitTextTag extends NameScopePropertyTag {
   /** Optional attribute: name of outer tag */
   private String tagName;
 
-  /** Optional attribute: for those who like tidy xml 
+  /** Optional attribute: for those who like tidy xml
    * If specified we add teh value after a new line. */
   private String indent = null;
 
   private boolean filter = true;
-  
+
   /**
    * Constructor
    */
   public EmitTextTag() {
   }
-  
+
   /** Called at end of Tag
    *
    * @return int      either EVAL_PAGE or SKIP_PAGE
@@ -100,11 +100,11 @@ public class EmitTextTag extends NameScopePropertyTag {
       if (tagName == null) {
         tagName = property;
       }
-      
+
       // Assume we're indented for the first tag
       out.print('<');
       out.print(tagName);
-      
+
       if (indent != null) {
         out.println('>');
         if (val != null) {
@@ -134,35 +134,55 @@ public class EmitTextTag extends NameScopePropertyTag {
     return EVAL_PAGE;
   }
 
+  /**
+   * @param val String name
+   */
   public void setTagName(String val) {
     tagName = val;
   }
 
+  /**
+   * @return String name
+   */
   public String getTagName() {
     return tagName;
   }
 
+  /**
+   * @param val String indent
+   */
   public void setIndent(String val) {
     indent = val;
   }
 
+  /**
+   * @return  String indent
+   */
   public String getIndent() {
     return indent;
   }
-  
+
+  /** Should we filter output for html?
+   *
+   * @param val boolean
+   */
   public void setFilter(boolean val) {
     filter = val;
   }
-  
+
+  /** Should we filter output for html?
+   *
+   * @return boolean
+   */
   public boolean getFilter() {
     return filter;
   }
-  
+
   private String formatted(String val) {
     if (filter) {
       return TagUtils.getInstance().filter(val);
     }
-    
+
     return val;
   }
 }

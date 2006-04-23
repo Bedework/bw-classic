@@ -98,18 +98,30 @@ public class LdapConfigProperties {
 
   private boolean debug;
 
+  /**
+   * @param val
+   */
   public void setInitialContextFactory(String val)  {
     initialContextFactory  = val;
   }
 
+  /**
+   * @return String
+   */
   public String getInitialContextFactory()  {
     return initialContextFactory;
   }
 
+  /**
+   * @param val
+   */
   public void setSecurityAuthentication(String val)  {
     securityAuthentication  = val;
   }
 
+  /**
+   * @return String
+   */
   public String getSecurityAuthentication()  {
     return securityAuthentication;
   }

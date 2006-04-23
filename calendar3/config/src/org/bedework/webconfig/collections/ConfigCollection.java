@@ -164,7 +164,7 @@ public class ConfigCollection implements Defs, Serializable {
     }
     return properties;
   }
-  
+
   /** Add a required boolean property to the collection
    *
    * @param name
@@ -175,10 +175,10 @@ public class ConfigCollection implements Defs, Serializable {
   public BooleanProperty requiredBoolean(String name, String suffix) throws Throwable {
     BooleanProperty prop = new BooleanProperty(name, suffix, true);
     addProperty(prop);
-    
+
     return prop;
   }
-  
+
   /** Add a hidden boolean property to the collection
    *
    * @param name
@@ -190,10 +190,10 @@ public class ConfigCollection implements Defs, Serializable {
     BooleanProperty prop = new BooleanProperty(name, suffix, true);
     prop.setHidden(true);
     addProperty(prop);
-    
+
     return prop;
   }
-  
+
   /** Add an optional boolean property to the collection
    *
    * @param name
@@ -204,10 +204,10 @@ public class ConfigCollection implements Defs, Serializable {
   public BooleanProperty optBoolean(String name, String suffix) throws Throwable {
     BooleanProperty prop = new BooleanProperty(name, suffix, false);
     addProperty(prop);
-    
+
     return prop;
   }
-  
+
   /** Add a required int property to the collection
    *
    * @param name
@@ -218,10 +218,10 @@ public class ConfigCollection implements Defs, Serializable {
   public IntProperty requiredInt(String name, String suffix) throws Throwable {
     IntProperty prop = new IntProperty(name, suffix, true);
     addProperty(prop);
-    
+
     return prop;
   }
-  
+
   /** Add a required text property to the collection
    *
    * @param name
@@ -232,10 +232,10 @@ public class ConfigCollection implements Defs, Serializable {
   public ConfigProperty requiredText(String name, String suffix) throws Throwable {
     ConfigProperty prop = new ConfigProperty(name, suffix, true);
     addProperty(prop);
-    
+
     return prop;
   }
-  
+
   /** Add a hidden text property to the collection
    *
    * @param name
@@ -247,10 +247,10 @@ public class ConfigCollection implements Defs, Serializable {
     ConfigProperty prop = new ConfigProperty(name, suffix, true);
     prop.setHidden(true);
     addProperty(prop);
-    
+
     return prop;
   }
-  
+
   /** Add a required text property to the collection
    *
    * @param name
@@ -263,44 +263,44 @@ public class ConfigCollection implements Defs, Serializable {
                                      BooleanProperty onlyIf) throws Throwable {
     ConfigProperty prop = new ConfigProperty(name, suffix, true, onlyIf);
     addProperty(prop);
-    
+
     return prop;
   }
-  
+
   /** Add a required ordered list property to the collection
    *
    * @param name
    * @param suffix
-   * @return
+   * @return OrderedListProperty
    * @throws Throwable
    */
-  public OrderedListProperty requiredOrderedList(String name, 
+  public OrderedListProperty requiredOrderedList(String name,
                                                  String suffix) throws Throwable {
     OrderedListProperty prop = new OrderedListProperty(name, suffix, true);
     addProperty(prop);
-    
+
     return prop;
   }
-  
+
   /** Add a required ordered multi list property to the collection
    *
    * @param name
    * @param suffix
    * @param possibleValues String[] array of allowable values
-   * @return
+   * @return OrderedMultiListProperty
    * @throws Throwable
    */
-  public OrderedMultiListProperty requiredOrderedMultiList(String name, 
+  public OrderedMultiListProperty requiredOrderedMultiList(String name,
                                                            String suffix,
-                                                           String[] possibleValues) 
+                                                           String[] possibleValues)
                throws Throwable {
-    OrderedMultiListProperty prop = new OrderedMultiListProperty(name, suffix, true, 
+    OrderedMultiListProperty prop = new OrderedMultiListProperty(name, suffix, true,
                                                                  possibleValues);
     addProperty(prop);
-    
+
     return prop;
   }
- 
+
   /** Add a comment to the collection
    *
    * @param val
@@ -441,6 +441,10 @@ public class ConfigCollection implements Defs, Serializable {
    *                   Object methods
    * ==================================================================== */
 
+  /**
+   * @param o
+   * @return int
+   */
   public int compareTo(Object o) {
     if (!(o instanceof ConfigCollection)) {
       return -1;

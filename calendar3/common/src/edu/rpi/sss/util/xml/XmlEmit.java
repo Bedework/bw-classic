@@ -68,7 +68,7 @@ import javax.servlet.http.HttpServletResponse;
 public class XmlEmit {
   private Writer wtr;
   private boolean mustEmitNS;
-  
+
   private boolean noHeaders = false;
 
   /** We need to map the namespaces onto a set of reasonable abbreviations
@@ -94,7 +94,7 @@ public class XmlEmit {
 
   /** construct an object which will be used to collect namespace names
    * during the first phase and emit xml afetr startEmit is called.
-   * 
+   *
    * @param noHeaders    boolean true to suppress headers
    */
   public XmlEmit(boolean noHeaders) {
@@ -119,10 +119,10 @@ public class XmlEmit {
    */
   public void startEmit(Writer wtr) throws IOException {
     this.wtr = wtr;
-    
+
     if (!noHeaders) {
       mustEmitNS = true;
-      
+
       writeHeader();
     }
     newline();
@@ -292,6 +292,10 @@ public class XmlEmit {
     return (String)nsMap.get(ns);
   }
 
+  /** Write a new line
+   *
+   * @throws IOException
+   */
   public void newline() throws IOException {
     wtr.write("\n");
   }

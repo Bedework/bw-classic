@@ -776,6 +776,9 @@ public class CalOptions implements Serializable {
     /** */
     public ArrayList children;
 
+    /**
+     * @return Collection
+     */
     public Collection getChildren() {
       if (children == null) {
         children = new ArrayList();
@@ -783,6 +786,10 @@ public class CalOptions implements Serializable {
       return children;
     }
 
+    /** Add a child
+     *
+     * @param val OptionElement
+     */
     public void addChild(OptionElement val) {
       getChildren().add(val);
     }

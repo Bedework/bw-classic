@@ -73,12 +73,15 @@ import org.bedework.calfacade.CalFacadeUnimplementedException;
 //import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CalintfDefs;
+import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.base.CalintfBase;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.CalintfInfo;
 import org.bedework.calfacade.ifs.Groups;
 import org.bedework.http.client.HttpManager;
+
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
 import java.util.Collection;
 import java.util.TreeSet;
@@ -289,12 +292,14 @@ public class CalintfCaldavImpl extends CalintfBase {
    *                   Access
    * ==================================================================== */
 
-  public void changeAccess(Object o, Collection aces) throws CalFacadeException {
+  public void changeAccess(BwShareableDbentity ent,
+                           Collection aces) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
 
-  public Collection getAces(Object o) throws CalFacadeException {
+  public CurrentAccess checkAccess(BwShareableDbentity ent, int desiredAccess,
+                                   boolean returnResult) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
@@ -372,17 +377,18 @@ public class CalintfCaldavImpl extends CalintfBase {
     throw new CalFacadeUnimplementedException();
   }
 
-  public BwCalendar getCalendar(String path) throws CalFacadeException{
+  public BwCalendar getCalendar(String path,
+                                int desiredAccess) throws CalFacadeException{
     checkOpen();
 
     throw new CalFacadeUnimplementedException();
   }
 
-  public BwCalendar getDefaultCalendar() throws CalFacadeException {
+  public BwCalendar getDefaultCalendar(BwUser user) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 
-  public BwCalendar getTrashCalendar() throws CalFacadeException {
+  public BwCalendar getTrashCalendar(BwUser user) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 
@@ -582,8 +588,7 @@ public class CalintfCaldavImpl extends CalintfBase {
     throw new CalFacadeUnimplementedException();
   }
 
-  public Collection getEvent(String guid, String rid,
-                             Integer seqnum,
+  public Collection getEvent(BwCalendar calendar, String guid, String rid,
                              int recurRetrieval) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
@@ -591,8 +596,8 @@ public class CalintfCaldavImpl extends CalintfBase {
 
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
                               BwDateTime startDate, BwDateTime endDate,
-                              int recurRetrieval)
-          throws CalFacadeException {
+                              int recurRetrieval,
+                              boolean freeBusy) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 
@@ -610,20 +615,6 @@ public class CalintfCaldavImpl extends CalintfBase {
   public DelEventResult deleteEvent(BwEvent val) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
-  }
-
-  public boolean editable(BwEvent val) throws CalFacadeException {
-    checkOpen();
-
-    if (currentMode == CalintfDefs.guestMode) {
-      return false;
-    }
-
-    if (val.getPublick() != (currentMode == CalintfDefs.publicAdminMode)) {
-      return false;
-    }
-
-    return user.equals(val.getCreator());
   }
 
   /* ====================================================================

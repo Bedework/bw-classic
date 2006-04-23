@@ -161,7 +161,7 @@ public class UpdateCalendarAction extends BwAbstractAction {
     return "continue";
   }
 
-  /** Validate a calendar - we do not create these as a side effect.
+  /* Validate a calendar - we do not create these as a side effect.
    *
    * @return boolean  false means something wrong, message emitted
    */

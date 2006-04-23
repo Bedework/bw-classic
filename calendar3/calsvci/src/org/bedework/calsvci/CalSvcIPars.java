@@ -68,7 +68,7 @@ public class CalSvcIPars implements Serializable {
   /** The current user - null for guest
    */
   private String user;
-  
+
   /** Environment properties prefix - e.g. "org.bedework.webpersonal."
    */
   private String envPrefix;
@@ -93,7 +93,7 @@ public class CalSvcIPars implements Serializable {
    *
    * @param authUser    String authenticated user of the application
    * @param user        String user to act as
-   * @param enzPrefix   String Environment properties prefix
+   * @param envPrefix   String Environment properties prefix
    * @param publicAdmin true for admin
    * @param caldav      true if via caldav
    * @param synchId     non-null if this is for synchronization. Identifies the

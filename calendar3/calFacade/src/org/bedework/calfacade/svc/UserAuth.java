@@ -144,6 +144,7 @@ public interface UserAuth extends Serializable {
    * @param  userid    user whose access we are setting
    * @param  cb        CallBack object
    * @param  val        Object
+   * @param debug
    * @exception CalFacadeException If there's a problem
    */
   public void initialise(String userid, CallBack cb,
@@ -169,6 +170,7 @@ public interface UserAuth extends Serializable {
    * @param  userid    user whose access we are setting
    * @param  cb        CallBack object
    * @param  val       int sum  of allowable access.
+   * @param debug
    * @exception CalFacadeException If there's a problem
    */
   public void initialise(String userid, CallBack cb,

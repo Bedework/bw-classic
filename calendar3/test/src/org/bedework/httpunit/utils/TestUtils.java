@@ -346,7 +346,7 @@ public class TestUtils {
     getLogger().error("Failed with exception", t);
   }
 
-  /** Get a logger for messages
+  /* Get a logger for messages
    */
   private Logger getLogger() {
     if (log == null) {

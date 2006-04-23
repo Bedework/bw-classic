@@ -367,7 +367,7 @@ public class CalendarInfo implements Serializable {
    *                Private methods
    * ==================================================================== */
 
-  /** Get a String representation of a particular time field of the object.
+  /* Get a String representation of a particular time field of the object.
    *
    * @param field The field to be returned,
    *        <i>e.g.</i>, <code>MONTH_FIELD</code>.  For possible values, see
@@ -387,7 +387,7 @@ public class CalendarInfo implements Serializable {
     return s.substring(f.getBeginIndex(), f.getEndIndex());
   }
 
-  /** Return the size of the range for a given unit of time
+  /* Return the size of the range for a given unit of time
    *
    * @param unit      value defined in java.util.Calendar
    * @return int      size of range

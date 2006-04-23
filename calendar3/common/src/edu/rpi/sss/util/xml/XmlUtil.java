@@ -299,7 +299,10 @@ public final class XmlUtil implements Serializable {
     return;
   }
 
-  /** Strip out the characters causing comparison problems.
+  /* Strip out the characters causing comparison problems.
+   *
+   * @param strVal
+   * @return
    */
   private static String strip(String strVal) {
     StringBuffer val = new StringBuffer(strVal);

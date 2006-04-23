@@ -32,23 +32,38 @@ public class IndexException extends Exception {
 
   private String reason1;
 
+  /**
+   */
   public IndexException() {
     super();
   }
 
+  /**
+   * @param cause
+   */
   public IndexException(Throwable cause) {
     super(cause);
   }
 
+  /**
+   * @param pr
+   */
   public IndexException(String pr) {
     super(pr);
   }
 
+  /**
+   * @param pr
+   * @param reason1
+   */
   public IndexException(String pr, String reason1) {
     super(pr);
     this.reason1 = reason1;
   }
 
+  /**
+   * @return  String rason1
+   */
   public String getReason1() {
     return reason1;
   }

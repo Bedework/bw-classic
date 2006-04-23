@@ -105,8 +105,9 @@ public class RestoreGlobals {
   /** */
   public boolean debug;
 
+  /** Map user with id of zero on to this id - fixes oversight */
   public static int mapUser0 = 1;
-  
+
   /** */
   public boolean debugEntity;
 
@@ -239,14 +240,14 @@ public class RestoreGlobals {
   /** counter */
   public int alarms;
 
-  /** If true we should discard all but users in onlyUsers 
+  /** If true we should discard all but users in onlyUsers
    * This helps when building demo data
    */
   public boolean onlyUsers;
 
   /** Users we preserve */
   public HashMap onlyUsersMap = new HashMap();
-  
+
   /** counter */
   public static class SubscriptionsMap extends HashMap {
     /** For 2.3.2 conversion
@@ -400,7 +401,7 @@ public class RestoreGlobals {
         id = mapUser0;
         val.setId(id);
       }
-      
+
       Integer keyid = new Integer(id);
       if (get(keyid) != null) {
         throw new RuntimeException("User already in table with id " + id);

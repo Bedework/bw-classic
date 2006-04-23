@@ -61,14 +61,21 @@ package org.bedework.webconfig;
 public interface Defs {
   /** This prefix never changes */
   public static final String envPrefix = "org.bedework.app.bwconfig.";
-  
+
+  /* Types of application */
+  /** */
   public static final String webconfigType = "webconfig";
+  /** */
   public static final String webadminType = "webadmin";
+  /** */
   public static final String webpublicType = "webpublic";
+  /** */
   public static final String webuserType = "webuser";
+  /** */
   public static final String publiccaldavType = "publiccaldav";
+  /** */
   public static final String usercaldavType = "usercaldav";
-  
+
   /** Valid types of application */
   public static final String[] appTypes = {
     webconfigType,
@@ -78,30 +85,30 @@ public interface Defs {
     publiccaldavType,
     usercaldavType
   };
-  
+
   /** */
   public static final String modulesCollectionName = "modules";
-  
+
   /** Default properties file (built in to application) */
-  //public final static String defaultProperties = "/properties/calendar/default-bedework.properties"; 
-  
+  //public final static String defaultProperties = "/properties/calendar/default-bedework.properties";
+
   /* Types for properties */
-    
+
   /** String property */
   public final static int typeString = 0;
-  
+
   /** Int property */
   public final static int typeInt = 1;
-  
+
   /** boolean property */
   public final static int typeBoolean = 2;
-  
+
   /** Choice property, i.e. One of n  (radio) */
-  public final static int typeChoice = 3;  
-  
+  public final static int typeChoice = 3;
+
   /** Multi-value property - radio or select */
-  public final static int typeMultiple = 4; 
-  
+  public final static int typeMultiple = 4;
+
   /** Comment */
-  public final static int typeComment = 5; 
+  public final static int typeComment = 5;
 }

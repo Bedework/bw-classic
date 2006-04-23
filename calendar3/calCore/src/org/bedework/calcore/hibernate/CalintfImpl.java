@@ -81,6 +81,7 @@ import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.calfacade.ifs.CalintfInfo;
+import org.bedework.calfacade.ifs.EventsI;
 import org.bedework.calfacade.ifs.Groups;
 import org.bedework.icalendar.IcalTranslator;
 
@@ -163,7 +164,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
    */
   private BwUser user;
 
-  private Events events;
+  private EventsI events;
 
   private Calendars calendars;
 
@@ -1130,6 +1131,10 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return events.getDeletedProxies(this.getDeletedCalendar(user));
   }
 
+  public Collection getDeletedProxies(BwCalendar cal) throws CalFacadeException {
+    return events.getDeletedProxies(cal);
+  }
+
   /* ====================================================================
    *                   Synchronization
    * ==================================================================== */
@@ -1329,7 +1334,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     }
   }
 
-  /** Get a logger for messages
+  /* Get a logger for messages
    */
   private Logger getLogger() {
     if (log == null) {

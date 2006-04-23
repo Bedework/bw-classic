@@ -311,7 +311,7 @@ public class EventInfo implements Comparable, Comparator, Serializable {
     return recurrenceId;
   }
 
-  /* Set the current users access rights.
+  /** Set the current users access rights.
    *
    * @param val  CurrentAccess
    */
@@ -319,7 +319,7 @@ public class EventInfo implements Comparable, Comparator, Serializable {
     currentAccess = val;
   }
 
-  /* Get the current users access rights.
+  /** Get the current users access rights.
    *
    * @return  CurrentAccess
    */

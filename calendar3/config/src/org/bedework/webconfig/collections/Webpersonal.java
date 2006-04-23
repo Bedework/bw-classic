@@ -61,7 +61,7 @@ package org.bedework.webconfig.collections;
 public class Webpersonal extends ConfigCollection {
   /** Constructor
    *
-   * @param onlyIf   BooleanProperty - display collection only if true
+   * @param name   String name of application
    * @throws Throwable
    */
   public Webpersonal(String name) throws Throwable {

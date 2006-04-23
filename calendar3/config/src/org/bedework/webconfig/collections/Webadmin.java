@@ -61,7 +61,7 @@ package org.bedework.webconfig.collections;
 public class Webadmin extends ConfigCollection {
   /** Constructor
    *
-   * @param onlyIf   BooleanProperty - display collection only if true
+   * @param name   String name of application
    * @throws Throwable
    */
   public Webadmin(String name) throws Throwable {

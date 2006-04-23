@@ -166,6 +166,8 @@ public class WrappedResponse extends HttpServletResponseWrapper {
   }
 
   /** Get a logger for messages
+   *
+   * @return Logger
    */
   protected Logger getLogger() {
     if (log == null) {

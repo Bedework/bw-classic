@@ -123,6 +123,8 @@ public class BwMailEventAction extends BwCalAbstractAction {
    * @param att      String val to attach - e.g event, todo
    * @param name     name for attachment
    * @param type     mimetype for attachment
+   * @param form
+   * @throws Throwable
    */
   private void mailMessage(Message val,
                            String att,

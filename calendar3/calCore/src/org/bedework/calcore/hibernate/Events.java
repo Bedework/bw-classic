@@ -103,7 +103,7 @@ public class Events extends CalintfHelper implements EventsI {
    *
    * @param cal
    * @param access
-   * @param user
+   * @param currentMode
    * @param debug
    */
   public Events(Calintf cal, AccessUtil access,
@@ -282,24 +282,6 @@ public class Events extends CalintfHelper implements EventsI {
     return ts;
   }
 
-  /** XXX temp I think
-   * Retrieve event proxies in the trash - they will be used to remove events
-   * from result sets.
-   *
-   * @return Collection of CoreEventInfo objects
-   */
-  public Collection getDeletedProxies() throws CalFacadeException {
-    // Calintf supplies the calendar
-    return null;
-  }
-
-  /** XXX temp I think
-   * Retrieve event proxies in the trash - they will be used to remove events
-   * from result sets.
-   *
-   * @param cal         Deleted calendar object
-   * @return Collection of CoreEventInfo objects
-   */
   public Collection getDeletedProxies(BwCalendar cal) throws CalFacadeException {
     HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
@@ -707,18 +689,6 @@ public class Events extends CalintfHelper implements EventsI {
     return ceis;
   }
 
-  public boolean editable(BwEvent val) throws CalFacadeException {
-    if (currentMode == CalintfUtil.guestMode) {
-      return false;
-    }
-
-    if (val.getPublick() != (currentMode == CalintfUtil.publicAdminMode)) {
-      return false;
-    }
-
-    return getUser().equals(val.getCreator());
-  }
-
   public Collection getEventsByName(BwCalendar cal, String val)
           throws CalFacadeException {
     HibSession sess = getSess();
@@ -1111,6 +1081,8 @@ public class Events extends CalintfHelper implements EventsI {
    * @param inst        May be null if we retrieved the override
    * @param override    May be null if we retrieved the instance
    * @param checked
+   * @param recurRetrieval
+   * @param freeBusy
    * @return CoreEventInfo
    * @throws CalFacadeException
    */

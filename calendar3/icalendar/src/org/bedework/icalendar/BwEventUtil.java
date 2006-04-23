@@ -141,7 +141,7 @@ public class BwEventUtil extends IcalUtil {
    * @throws CalFacadeException
    */
   public static EventInfo toEvent(IcalCallback cb,
-                                  BwCalendar cal, 
+                                  BwCalendar cal,
                                   Collection evs,
                                   VEvent val,
                                   boolean debug) throws CalFacadeException {
@@ -235,7 +235,7 @@ public class BwEventUtil extends IcalUtil {
         /* FIXME I think this is wrong. We probably want to provide
          * expansions etc.
          */
-        Collection eis = cb.getEvent(cal, guid, rid, 
+        Collection eis = cb.getEvent(cal, guid, rid,
                                      CalFacadeDefs.retrieveRecurMaster);
         if ((eis == null) || (eis.size() == 0)) {
           // do nothing
@@ -794,7 +794,7 @@ public class BwEventUtil extends IcalUtil {
     return sb.toString();
   }*/
 
-  /** Try to build a location from the supplied string. This only works if
+  /* Try to build a location from the supplied string. This only works if
    * the delimiters and keywords remain intact.
    *
    * <p>We retrieve the closest matching location or create a new one.
@@ -807,7 +807,7 @@ public class BwEventUtil extends IcalUtil {
     return cb.ensureLocationExists(val);
   }
 
-  /** Try to build a contact from the supplied string. This only works if
+  /* Try to build a contact from the supplied string. This only works if
    * the delimiters and keywords remain intact.
    */
   private static BwSponsor makeContact(String val) {

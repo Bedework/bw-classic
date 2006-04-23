@@ -243,13 +243,17 @@ public class BwDuration implements Serializable {
 
     return new Duration(d);
   }
-  
+
+  /** Return true if this represents a zero duration
+   *
+   * @return boolean
+   */
   public boolean isZero() {
     if (getWeeks() != 0) {
       return false;
     }
-    
-    return ((getDays() == 0) && 
+
+    return ((getDays() == 0) &&
             (getHours() == 0) &&
             (getMinutes() == 0) &&
             (getSeconds() == 0));

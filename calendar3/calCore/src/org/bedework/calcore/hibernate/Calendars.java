@@ -77,7 +77,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
    *
    * @param cal
    * @param access
-   * @param user
+   * @param currentMode
    * @param debug
    * @throws CalFacadeException
    */
@@ -345,6 +345,12 @@ class Calendars extends CalintfHelper implements CalendarsI {
     return getCalendar(sb.toString(), privRead);
   }
 
+  /** Create the special deleted calendar which holds deletion annotations to
+   * entities for which the user has no write access.
+   *
+   * @param user
+   * @throws CalFacadeException
+   */
   public void createDeletedCalendar(BwUser user) throws CalFacadeException {
     StringBuffer sb = new StringBuffer();
 

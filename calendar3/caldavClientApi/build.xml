@@ -44,6 +44,7 @@
       <pathelement location="${log4j.jar}"/>
 
       <!-- Include the location of the compiled calendar classes -->
+      <pathelement location="${org.bedework.access.jar}"/>
       <pathelement location="${org.bedework.http.jar}"/>
       <pathelement location="${org.bedework.ical.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>

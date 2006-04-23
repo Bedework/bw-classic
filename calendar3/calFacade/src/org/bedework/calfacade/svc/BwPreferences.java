@@ -347,6 +347,7 @@ public class BwPreferences extends BwOwnedDbentity {
   /** Set the workday start minutes from a String time value
    *
    * @param val  String time value
+   * @throws CalFacadeException
    */
   public void setWorkdayStart(String val) throws CalFacadeException{
     setWorkdayStart(makeMinutesFromTime(val));
@@ -363,6 +364,7 @@ public class BwPreferences extends BwOwnedDbentity {
   /** Set the workday end minutes from a String time value
    *
    * @param val  String time value
+   * @throws CalFacadeException
    */
   public void setWorkdayEnd(String val) throws CalFacadeException{
     setWorkdayEnd(makeMinutesFromTime(val));
@@ -452,6 +454,8 @@ public class BwPreferences extends BwOwnedDbentity {
    * <p>Ignores anything after the first four characters which must all be digits.
    *
    * @param val  String time value
+   * @return int minutes
+   * @throws CalFacadeException
    */
   private int makeMinutesFromTime(String val) throws CalFacadeException{
     boolean badval = false;

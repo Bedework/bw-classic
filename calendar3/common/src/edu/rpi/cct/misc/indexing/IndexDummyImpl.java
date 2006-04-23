@@ -5,6 +5,9 @@ package edu.rpi.cct.misc.indexing;
 public class IndexDummyImpl implements Index {
   private boolean isOpen;
 
+  /**
+   * @throws IndexException
+   */
   public IndexDummyImpl() throws IndexException {
   }
 

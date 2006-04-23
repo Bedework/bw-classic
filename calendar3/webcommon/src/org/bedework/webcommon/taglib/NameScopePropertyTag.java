@@ -65,10 +65,16 @@ public class NameScopePropertyTag extends NameScopeTag {
   /** property attribute */
   String property;
 
+  /**
+   * @param val
+   */
   public void setProperty(String val) {
     property = val;
   }
 
+  /**
+   * @return String
+   */
   public String getProperty() {
     return property;
   }
@@ -78,6 +84,7 @@ public class NameScopePropertyTag extends NameScopeTag {
    * @param required  boolean true if we should throw an exception if not
    *                  found.
    * @return Object   null if none found.
+   * @throws JspTagException
    */
   protected Object getObject(boolean required) throws JspTagException {
     return getObject(name, scope, property, required);
@@ -88,6 +95,7 @@ public class NameScopePropertyTag extends NameScopeTag {
    * @param required  boolean true if we should throw an exception if not
    *                  found.
    * @return String   null if none found.
+   * @throws JspTagException
    */
   protected String getString(boolean required) throws JspTagException {
     return (String)getObject(name, scope, property, required);

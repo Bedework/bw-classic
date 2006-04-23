@@ -62,17 +62,16 @@ import edu.rpi.sss.util.xml.XmlEmit;
  */
 public class EmitAccess extends AccessAppUtil {
   private String namespacePrefix;
-  
+
   /** Acls use tags in the webdav and caldav namespace. For use over caldav
    * we shoud supply the uris. Otherwise a null namespace will be used.
    *
-   * @param wdNamespace
-   * @param cdNamespace
-   * @param xml
+   * @param namespacePrefix String prefix
+   * @param xml   XmlEmit
    */
   public EmitAccess(String namespacePrefix, XmlEmit xml) {
     super(xml);
-    
+
     this.namespacePrefix = namespacePrefix;
   }
 

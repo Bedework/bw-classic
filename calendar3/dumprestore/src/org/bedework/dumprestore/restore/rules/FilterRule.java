@@ -187,7 +187,7 @@ public class FilterRule extends EntityRule {
     }
   }
 
-  /** There are restrictions on what is valid in calendar names.
+  /* There are restrictions on what is valid in calendar names.
    */
   private String fixName(String val) {
     boolean changed = false;

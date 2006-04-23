@@ -89,11 +89,21 @@ public class FormattedFreeBusy {
    */
   private Collection times;
 
+  /** Class to represent a free busy period
+   *
+   * @author Mike Douglass
+   */
   public static class FbPeriod {
     int minutesStart;
     int minutesLength;
     int type; // From BwFreeBusyComponent
 
+    /** Constructor
+     *
+     * @param minutesStart
+     * @param minutesLength
+     * @param type
+     */
     public FbPeriod(int minutesStart, int minutesLength, int type) {
       this.minutesStart = minutesStart;
       this.minutesLength = minutesLength;
@@ -133,6 +143,12 @@ public class FormattedFreeBusy {
     }
   }
 
+  /** Constructor
+   *
+   * <p>Generates a formatted free busy object suitable for gui interfaces.
+   * @param fb
+   * @throws CalFacadeException
+   */
   public FormattedFreeBusy(BwFreeBusy fb) throws CalFacadeException {
     setWho(fb.getWho());
     setStart(fb.getStart());

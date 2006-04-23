@@ -75,6 +75,7 @@ public class FormattedEvents extends AbstractCollection {
 
   /** Constructor
    *
+   * @param svci
    * @param events
    * @param calInfo
    * @param ctz

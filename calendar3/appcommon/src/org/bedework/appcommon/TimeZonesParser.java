@@ -290,6 +290,8 @@ public class TimeZonesParser implements Serializable {
   }
 
   /** Get a logger for messages
+   *
+   * @return Logger
    */
   protected Logger getLogger() {
     if (log == null) {

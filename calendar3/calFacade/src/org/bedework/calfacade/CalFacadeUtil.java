@@ -617,7 +617,7 @@ public class CalFacadeUtil implements Serializable {
   public static class GetPeriodsPars {
     /** Event Info objects to extract from */
     public Collection events;
-    /* Start of period - updated at each call from endDt */
+    /** Start of period - updated at each call from endDt */
     public BwDateTime startDt;
     /** Duration of period */
     public BwDuration dur;
@@ -633,7 +633,7 @@ public class CalFacadeUtil implements Serializable {
    *
    * @param   pars      GetPeriodsPars object
    * @return  Collection of EventInfo being one days events or empty for no events.
-   * @throws Throwable
+   * @throws CalFacadeException
    */
   public static Collection getPeriodsEvents(GetPeriodsPars pars) throws CalFacadeException {
     ArrayList al = new ArrayList();
@@ -690,10 +690,10 @@ public class CalFacadeUtil implements Serializable {
     return al;
   }
 
-  /**Turn the int minutes into a 4 digit String hours and minutes value
+  /** Turn the int minutes into a 4 digit String hours and minutes value
    *
-   * @param  int minutes
-   * @return String time
+   * @param minutes  int
+   * @return String 4 digit hours + minutes
    */
   public static String getTimeFromMinutes(int minutes) {
     return pad2(minutes / 60) + pad2(minutes % 60);
@@ -701,7 +701,7 @@ public class CalFacadeUtil implements Serializable {
 
   /** Return String value of par padded to 2 digits.
    * @param val
-   * @return
+   * @return String
    */
   public static String pad2(int val) {
     if (val > 9) {

@@ -81,6 +81,8 @@ public class CoreEventInfo implements Comparable, Comparator, Serializable {
 
   /** Constructor
    *
+   * @param event
+   * @param currentAccess
    */
   public CoreEventInfo(BwEvent event, CurrentAccess currentAccess) {
     this.event = event;
@@ -101,7 +103,7 @@ public class CoreEventInfo implements Comparable, Comparator, Serializable {
     return event;
   }
 
-  /* Set the current users access rights.
+  /** Set the current users access rights.
    *
    * @param val  CurrentAccess
    */
@@ -109,7 +111,7 @@ public class CoreEventInfo implements Comparable, Comparator, Serializable {
     currentAccess = val;
   }
 
-  /* Get the current users access rights.
+  /** Get the current users access rights.
    *
    * @return  CurrentAccess
    */

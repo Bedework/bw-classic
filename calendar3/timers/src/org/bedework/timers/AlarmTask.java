@@ -229,7 +229,7 @@ class AlarmTask extends TimerTask {
     }
   }
 
-  /** Get a logger for messages
+  /* Get a logger for messages
    */
   private Logger getLogger() {
     if (log == null) {

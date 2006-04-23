@@ -232,7 +232,7 @@ public class Timers {
     }
   }
 
-  /** Get a logger for messages
+  /* Get a logger for messages
    */
   private Logger getLogger() {
     if (log == null) {

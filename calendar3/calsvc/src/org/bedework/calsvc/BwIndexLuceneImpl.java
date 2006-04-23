@@ -76,6 +76,14 @@ public class BwIndexLuceneImpl extends IndexLuceneImpl {
   private CalSvcI svci;
   private BwIndexKey keyConverter = new BwIndexKey();
 
+  /** Constructor
+   *
+   * @param svci
+   * @param sysfilePath
+   * @param admin
+   * @param debug
+   * @throws IndexException
+   */
   public BwIndexLuceneImpl(CalSvcI svci,
                            String sysfilePath,
                            boolean admin,
@@ -139,6 +147,7 @@ public class BwIndexLuceneImpl extends IndexLuceneImpl {
    *
    * @param   rec      The record
    * @return  String   String which uniquely identifies the record
+   * @throws IndexException
    */
   public String makeKeyVal(Object rec) throws IndexException {
     if (rec instanceof BwCalendar) {
@@ -166,6 +175,7 @@ public class BwIndexLuceneImpl extends IndexLuceneImpl {
    *
    * @param   rec      The record
    * @return  String   Name for the field/term
+   * @throws IndexException
    */
   public String makeKeyName(Object rec) throws IndexException {
     if (rec instanceof BwCalendar) {

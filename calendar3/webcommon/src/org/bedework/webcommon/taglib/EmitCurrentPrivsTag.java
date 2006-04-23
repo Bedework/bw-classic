@@ -75,13 +75,13 @@ import javax.servlet.jsp.JspTagException;
 public class EmitCurrentPrivsTag extends NameScopePropertyTag {
   /** Optional attribute: name of outer tag */
   private String tagName;
-  
+
   /**
    * Constructor
    */
   public EmitCurrentPrivsTag() {
   }
-  
+
   /** Called at end of Tag
    *
    * @return int      either EVAL_PAGE or SKIP_PAGE
@@ -96,7 +96,7 @@ public class EmitCurrentPrivsTag extends NameScopePropertyTag {
       if (tagName == null) {
         tagName = property;
       }
-      
+
       // Assume we're indented for the first tag
       out.print('<');
       out.print(tagName);
@@ -115,19 +115,25 @@ public class EmitCurrentPrivsTag extends NameScopePropertyTag {
 
     return EVAL_PAGE;
   }
-  
+
   private String getXmlAccess(CurrentAccess ca) throws Throwable {
     if (ca == null) {
       return null;
     }
-    
+
     return AccessAppUtil.getCurrentPrivSetString(ca.privileges);
   }
 
+  /**
+   * @param val String name
+   */
   public void setTagName(String val) {
     tagName = val;
   }
 
+  /**
+   * @return String name
+   */
   public String getTagName() {
     return tagName;
   }

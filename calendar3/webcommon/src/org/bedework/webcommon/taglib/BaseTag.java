@@ -73,6 +73,7 @@ public class BaseTag extends TagSupport {
    * @param required  boolean true if we should throw an exception if not
    *                  found.
    * @return Object   null if none found.
+   * @throws JspTagException
    */
   protected Object getObject(String name, String scope,
                              String property, boolean required)
@@ -106,6 +107,7 @@ public class BaseTag extends TagSupport {
    * @param required  boolean true if we should throw an exception if not
    *                  found.
    * @return int      0 if none found.
+   * @throws JspTagException
    */
   protected int getInt(String name, String scope,
                        String property, boolean required)
@@ -126,6 +128,7 @@ public class BaseTag extends TagSupport {
    *
    * @param scopeName   String - same as struts values
    * @return int        value defined in PageContext
+   * @throws JspTagException
    */
   protected int getScope(String scopeName) throws JspTagException {
     if (scopeName == null) {

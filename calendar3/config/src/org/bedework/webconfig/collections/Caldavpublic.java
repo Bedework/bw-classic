@@ -61,7 +61,7 @@ package org.bedework.webconfig.collections;
 public class Caldavpublic extends ConfigCollection {
   /** Constructor
    *
-   * @param onlyIf   BooleanProperty - display collection only if true
+   * @param name   String name of application
    * @throws Throwable
    */
   public Caldavpublic(String name) throws Throwable {

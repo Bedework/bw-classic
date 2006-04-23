@@ -83,30 +83,59 @@ public class BwIndexKey extends Index.Key {
 
   private String itemType;
 
+  /** Constructor
+   *
+   */
   public BwIndexKey() {
   }
 
+  /** Constructor
+   *
+   * @param svci
+   */
   public BwIndexKey(CalSvcI svci) {
     this.svci = svci;
   }
 
+  /** Constructor
+   *
+   * @param svci
+   * @param score
+   */
   public BwIndexKey(CalSvcI svci, float score) {
     this.score = score;
     this.svci = svci;
   }
 
+  /** Set the item type with a value defined in BwIndexLuceneDefs
+   *
+   * @param val
+   */
   public void setItemType(String val) {
     itemType = val;
   }
 
+  /** Set the score
+   *
+   * @param val
+   */
   public void setScore(float val) {
     score = val;
   }
 
+  /** Set the key for a calendar (the path)
+   *
+   * @param key1
+   */
   public void setCalendarKey(String key1) {
     this.key1 = key1;
   }
 
+  /** Set the key for an event (encode ca+guid+recurid)
+   *
+   * @param key
+   * @throws IndexException
+   */
   public void setEventKey(String key) throws IndexException {
     encoded = key.toCharArray();
     pos = 0;
@@ -116,6 +145,14 @@ public class BwIndexKey extends Index.Key {
     this.key3 = getKeyString();
   }
 
+  /** Encode an event key
+   *
+   * @param key1
+   * @param key2
+   * @param key3
+   * @return Strign encoded key
+   * @throws IndexException
+   */
   public String makeEventKey(String key1, String key2,
                              String key3) throws IndexException {
     startEncoding();
@@ -126,6 +163,9 @@ public class BwIndexKey extends Index.Key {
     return getEncodedKey();
   }
 
+  /* (non-Javadoc)
+   * @see edu.rpi.cct.misc.indexing.Index.Key#getRecord()
+   */
   public Object getRecord() throws IndexException {
     try {
       if (itemType == null) {
@@ -163,10 +203,10 @@ public class BwIndexKey extends Index.Key {
    *                 Key decoding methods
    * ==================================================================== */
 
-  /** Current position in the key */
+  /* Current position in the key */
   private int pos;
 
-  /** When encoding a key we build it here.
+  /* When encoding a key we build it here.
    */
   private CharArrayWriter caw;
 
@@ -187,7 +227,7 @@ public class BwIndexKey extends Index.Key {
 
   /** Back off one char
    *
-   * @throws AccessException
+   * @throws IndexException
    */
   public void back() throws IndexException {
     back(1);
@@ -196,7 +236,7 @@ public class BwIndexKey extends Index.Key {
   /** Back off n chars
    *
    * @param n   int number of chars
-   * @throws AccessException
+   * @throws IndexException
    */
   public void back(int n) throws IndexException {
     if (pos - n < 0) {
@@ -259,7 +299,7 @@ public class BwIndexKey extends Index.Key {
    * has been incremented.
    *
    * @return int length
-   * @throws AccessException
+   * @throws IndexException
    */
   public int getLength() throws IndexException {
     int res = 0;
@@ -287,7 +327,7 @@ public class BwIndexKey extends Index.Key {
   /** Get a String from the encoded acl at the current position.
    *
    * @return String decoded String value
-   * @throws AccessException
+   * @throws IndexException
    */
   public String getKeyString() throws IndexException {
     if (getChar() == 'N') {
@@ -308,7 +348,7 @@ public class BwIndexKey extends Index.Key {
 
   /** Skip a String from the encoded acl at the current position.
    *
-   * @throws AccessException
+   * @throws IndexException
    */
   public void skipString() throws IndexException {
     if (getChar() == 'N') {
@@ -334,7 +374,7 @@ public class BwIndexKey extends Index.Key {
   /** Encode a blank terminated 0 prefixed length.
    *
    * @param len
-   * @throws AccessException
+   * @throws IndexException
    */
   public void encodeLength(int len) throws IndexException {
     try {
@@ -354,7 +394,7 @@ public class BwIndexKey extends Index.Key {
    * </ul>
    *
    * @param val
-   * @throws AccessException
+   * @throws IndexException
    */
   public void encodeString(String val) throws IndexException {
     try {
@@ -374,7 +414,7 @@ public class BwIndexKey extends Index.Key {
   /** Add a character
    *
    * @param c char
-   * @throws AccessException
+   * @throws IndexException
    */
   public void addChar(char c) throws IndexException {
     try {

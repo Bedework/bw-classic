@@ -455,7 +455,7 @@ public class VEventUtil extends IcalUtil {
     }
   }
 
-  /** Return the highest possible start date from this recurrence or null
+  /* Return the highest possible start date from this recurrence or null
    * if no count or until date specified
    */
   private static Date getLastDate(Recur r, Date start) {

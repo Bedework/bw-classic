@@ -371,8 +371,7 @@ public interface Calintf extends CalendarsI, EventsI {
    * @param desiredAccess
    * @param returnResult
    * @return CurrentAccess
-   * @throws CalFacadeAccessException if returnResult false and no access
-   * @throws CalFacadeException
+   * @throws CalFacadeException if returnResult false and no access
    */
   public CurrentAccess checkAccess(BwShareableDbentity ent, int desiredAccess,
                                    boolean returnResult) throws CalFacadeException;
@@ -692,6 +691,19 @@ public interface Calintf extends CalendarsI, EventsI {
    * @throws CalFacadeException
    */
   public Collection getSponsorRefs(BwSponsor val) throws CalFacadeException;
+
+  /* ====================================================================
+   *                   Synchronization
+   * ==================================================================== */
+
+  /** XXX temp I think
+   * Retrieve event proxies in the given calendar - they will be used to remove events
+   * from result sets.
+   *
+   * @return Collection of CoreEventInfo objects
+   * @throws CalFacadeException
+   */
+  public Collection getDeletedProxies() throws CalFacadeException;
 
   /* ====================================================================
    *                   Synchronization

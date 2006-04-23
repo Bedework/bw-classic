@@ -218,7 +218,12 @@ public class PEUpdateEventAction extends PEAbstractAction {
   /** Validate the calendar provided for an event and embed it in the event and
    * the form.
    *
+   * @param form
+   * @param svci
+   * @param event
+   * @param err
    * @return boolean  true OK, false not OK and message(s) emitted.
+   * @throws Throwable
    */
   private boolean validateEventCalendar(PEActionForm form, CalSvcI svci,
                                         BwEvent event, MessageEmit err)
@@ -257,6 +262,10 @@ public class PEUpdateEventAction extends PEAbstractAction {
 
   /**
    *
+   * @param form
+   * @param svci
+   * @param event
+   * @param err
    * @return boolean  false means something wrong, message emitted
    * @throws Throwable
    */
@@ -306,6 +315,10 @@ public class PEUpdateEventAction extends PEAbstractAction {
   /** Validate the sponsor provided for an event and embed it in the event and
    * the form.
    *
+   * @param form
+   * @param svci
+   * @param event
+   * @param err
    * @return boolean  true OK, false not OK and message(s) emitted.
    * @throws Throwable
    */
@@ -358,6 +371,10 @@ public class PEUpdateEventAction extends PEAbstractAction {
   /** Validate the location provided for an event and embed it in the event and
    * the form.
    *
+   * @param form
+   * @param svci
+   * @param event
+   * @param err
    * @return boolean  true OK, false not OK and message(s) emitted.
    * @throws Throwable
    */

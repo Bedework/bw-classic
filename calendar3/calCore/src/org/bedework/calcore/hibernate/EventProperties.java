@@ -87,19 +87,19 @@ public class EventProperties extends CalintfHelper {
    *
    * @param cal           Calintf object
    * @param access
-   * @param user
+   * @param currentMode
    * @param keyFieldName  Name of entity keyfield
    * @param className     Class of entity
    * @param refQuery      Name of query which returns referring event ids
    * @param minId         if >= 0 we limit retrievals to ids gretaer than this
    * @param debug
    */
-  public EventProperties(Calintf cal, AccessUtil access, 
-                         int currentMode, 
+  public EventProperties(Calintf cal, AccessUtil access,
+                         int currentMode,
                          String keyFieldName,
                          String className,
                          String refQuery,
-                         int minId, 
+                         int minId,
                          boolean debug) {
     super(cal, access, currentMode, debug);
 

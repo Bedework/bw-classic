@@ -249,24 +249,28 @@ public abstract class EntityFieldRule extends RestoreRule {
   public void end(String ns, String name) throws Exception {
     field(name);
   }
-  
+
   protected String fixedDateTimeFld() throws Exception {
     String dtVal = stringFld();
-    if ((dtVal.length() == 8) || 
+    if ((dtVal.length() == 8) ||
           ((dtVal.charAt(13) == '0') && (dtVal.charAt(14) == '0'))) {
       return dtVal;
     }
-    
+
     String prefix = dtVal.substring(0, 13);
-    
-    if (dtVal.length() == 16) { 
-       return prefix + "00Z"; 
+
+    if (dtVal.length() == 16) {
+       return prefix + "00Z";
      }
-    
-    return prefix + "00"; 
+
+    return prefix + "00";
   }
 
-  /** prehib to hib */
+  /** prehib to hib
+   *
+   * @return BwDateTime
+   * @throws Exception
+   */
   protected BwDateTime dateFld() throws Exception {
     if (fldval == null) {
       throw new Exception("No value for " + tagName);
@@ -294,7 +298,11 @@ public abstract class EntityFieldRule extends RestoreRule {
     }
   }
 
-  /** prehib to hib */
+  /** prehib to hib
+   *
+   * @param val
+   * @throws Exception
+   */
   protected void makeDateTimeFld(BwDateTime val) throws Exception {
     if (fldval == null) {
       throw new Exception("No value for " + tagName);
@@ -326,7 +334,11 @@ public abstract class EntityFieldRule extends RestoreRule {
     }
   }
 
-  /** Make an iso date time -- prehib to hib */
+  /** Make an iso date time -- prehib to hib
+   *
+   * @return String
+   * @throws Exception
+   */
   protected String isoDateTimeFld() throws Exception {
     if (fldval == null) {
       throw new Exception("No value for " + tagName);
