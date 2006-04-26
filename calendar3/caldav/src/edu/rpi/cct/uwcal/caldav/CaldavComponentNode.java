@@ -204,7 +204,7 @@ public class CaldavComponentNode extends CaldavBwNode {
 
       if (eventInfo != null) {
         BwEvent event = eventInfo.getEvent();
-        
+
         creDate = event.getCreated();
         lastmodDate = event.getLastmod();
       }
@@ -336,9 +336,9 @@ public class CaldavComponentNode extends CaldavBwNode {
    *                   Private methods
    * ==================================================================== */
 
-  private void addProp(Vector v, QName tag, Object val) {
+  private void addProp(Collection c, QName tag, Object val) {
     if (val != null) {
-      v.addElement(new WebdavProperty(tag, String.valueOf(val)));
+      c.add(new WebdavProperty(tag, String.valueOf(val)));
     }
   }
 }

@@ -165,6 +165,7 @@ public class CalendarInfo implements Serializable {
     monthLabels = new String[getRangeSize(c, Calendar.MONTH)];
     monthVals = new String[getRangeSize(c, Calendar.MONTH)];
 
+    c.set(Calendar.DAY_OF_MONTH, 1);
     c.set(Calendar.MONTH, c.getMinimum(Calendar.MONTH));
     c.getTime(); // force recompute
 

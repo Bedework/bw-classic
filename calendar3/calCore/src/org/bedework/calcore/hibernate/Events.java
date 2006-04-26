@@ -146,9 +146,9 @@ public class Events extends CalintfHelper implements EventsI {
         cei = postGetEvent((BwEvent)sess.getUnique(),
                            privRead, noAccessReturnsNull, false);
 
-        if (cei != null) {
-          cei.setEvent(new BwEventProxy((BwEventAnnotation)cei.getEvent()));
-        }
+        //if (cei != null) {
+        //  cei.setEvent(new BwEventProxy((BwEventAnnotation)cei.getEvent()));
+        //}
       }
 
       if (cei == null) {

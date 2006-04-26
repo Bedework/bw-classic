@@ -78,6 +78,10 @@ public class CaldavTags implements CaldavDefs {
                                                      "calendar-data");
 
   /**   */
+  public static final QName calendarDescription = new QName(caldavNamespace,
+                                                            "calendar-description");
+
+  /**   */
   public static final QName calendarMultiget = new QName(caldavNamespace,
                                                          "calendar-multiget");
 
@@ -95,7 +99,7 @@ public class CaldavTags implements CaldavDefs {
 
   /** >= draft 9   */
   public static final QName expand = new QName(caldavNamespace,
-                                                            "expand");
+                                               "expand");
 
   /** < draft 9   */
   public static final QName expandRecurrenceSet = new QName(caldavNamespace,
