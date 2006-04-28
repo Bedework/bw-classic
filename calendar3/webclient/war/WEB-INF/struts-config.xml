@@ -101,6 +101,14 @@
       <forward name="success" path="/docs/event/editEvent.jsp" />
     </action>
 
+    <action    path="/event/showCalsForEvent"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/event/selectCalForEvent.jsp"/>
+    </action>
+
     <action    path="/showExportData"
                type="org.bedework.webclient.BwRenderAction"
                name="calForm"
@@ -253,6 +261,14 @@
                name="calForm"
                scope="session"
                validate="false">
+    </action>
+
+    <action    path="/event/selectCalForEvent"
+               type="org.bedework.webclient.BwAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/event/showCalsForEvent.rdo" redirect="true" />
     </action>
 
     <action    path="/event/setAccess"

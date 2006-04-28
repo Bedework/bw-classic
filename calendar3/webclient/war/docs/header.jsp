@@ -1,7 +1,3 @@
-<!DOCTYPE ucalendar
-[
-  <!ENTITY nbsp "&#160;">
-]>
 <%@ page contentType="text/xml;charset=UTF-8" language="java" %>
 <%@ taglib uri='struts-bean' prefix='bean' %>
 <%@ taglib uri='struts-logic' prefix='logic' %>
@@ -111,6 +107,10 @@ try {
   <adminuri><bean:message key="org.bedework.public.admin.uri"/></adminuri>
   <bean:define id="personalUri"><bean:message key="org.bedework.personal.calendar.uri"/></bean:define>
   <urlPrefixes>
+    <%--urlPrefixes are used to generate appropriately encoded urls for
+        calls into the application; these are required for use within portals
+        and are generated in header.jsp. --%>
+
     <%-- render urls --%>
     <initialise><genurl:rewrite forward="initialise"/></initialise>
     <eventMore><genurl:rewrite forward="eventMore"/></eventMore>
@@ -139,6 +139,7 @@ try {
       <delEvent><genurl:rewrite action="delEvent.do"/></delEvent>
       <event>
         <setAccess><genurl:link page="/event/setAccess.do?b=de"/></setAccess>
+        <selectCalForEvent><genurl:link page="/event/selectCalForEvent.do?b=de"/></selectCalForEvent>
       </event>
 
       <freeBusy>
@@ -174,9 +175,7 @@ try {
       <addEventRef><genurl:rewrite action="addEventRef.do"/></addEventRef>
       <upload><genurl:rewrite action="upload.do"/></upload>
     </logic:equal>
-  </urlPrefixes><%--
-        actionUrlPrefixes are used to generate appropriately encoded urls for
-        calls into the application; these are required for use within portals --%>
+  </urlPrefixes>
   <confirmationid><bean:write name="calForm" property="confirmationId"/></confirmationid><%--
         Value: String - a 16 character random string used to allow users to confirm
         additions to thier private calendar --%>

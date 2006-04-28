@@ -13,11 +13,8 @@ try {
       <html:text property="newEvent.summary"/>
     </title>
     <calendar>
-      <%-- <html:select property="calId">
-        <html:optionsCollection property="addContentCalendarCollections"
-                                    label="name"
-                                    value="id"/>
-      </html:select> --%>
+      <name><bean:write name="calForm" property="newEvent.calendar.name"/></name>
+      <path><bean:write name="calForm" property="newEvent.calendar.path"/></path>
     </calendar>
     <allDay><html:checkbox property="eventStartDate.dateOnly"/></allDay>
     <start>

@@ -44,6 +44,7 @@
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/addEvent"/>
   <xsl:variable name="addEventUsingPage" select="/bedework/urlPrefixes/addEventUsingPage"/>
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
+  <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/editEvent"/>
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/delEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
@@ -94,117 +95,124 @@
         <xsl:call-template name="headSection"/>
       </head>
       <body>
-        <xsl:call-template name="headBar"/>
-        <xsl:if test="/bedework/message">
-          <div id="messages">
-            <xsl:apply-templates select="/bedework/message"/>
-          </div>
-        </xsl:if>
-        <xsl:if test="/bedework/error">
-          <div id="errors">
-            <xsl:apply-templates select="/bedework/error"/>
-          </div>
-        </xsl:if>
-        <table id="bodyBlock" cellspacing="0">
-          <tr>
-            <xsl:choose>
-              <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
-                <td id="sideBarClosed">
-                  <img src="{$resourcesRoot}/resources/spacer.gif" width="1" height="1" border="0" alt="*"/>
-                </td>
-              </xsl:when>
-              <xsl:otherwise>
-                <td id="sideBar">
-                  <xsl:call-template name="sideBar"/>
-                </td>
-              </xsl:otherwise>
-            </xsl:choose>
-            <td id="bodyContent">
-              <xsl:call-template name="tabs"/>
-              <xsl:call-template name="navigation"/>
-              <xsl:choose>
-                <xsl:when test="/bedework/page='event'">
-                  <!-- show an event -->
-                  <xsl:apply-templates select="/bedework/event"/>
-                </xsl:when>
-                <xsl:when test="/bedework/page='addEvent'">
-                  <xsl:call-template name="addEvent"/>
-                </xsl:when>
-                <xsl:when test="/bedework/page='editEvent'">
-                  <!-- edit an event -->
-                  <xsl:apply-templates select="/bedework/formElements" mode="editEvent"/>
-                </xsl:when>
-                <xsl:when test="/bedework/page='alarmOptions'">
-                  <xsl:call-template name="alarmOptions" />
-                </xsl:when>
-                <xsl:when test="/bedework/page='upload'">
-                  <xsl:call-template name="upload" />
-                </xsl:when>
-                <xsl:when test="/bedework/page='manageLocations'">
-                  <xsl:call-template name="manageLocations" />
-                </xsl:when>
-                <xsl:when test="/bedework/page='editLocation'">
-                  <!-- edit an event -->
-                  <xsl:apply-templates select="/bedework/formElements" mode="editLocation"/>
-                </xsl:when>
-                <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
-                  <xsl:apply-templates select="/bedework/subscriptions"/>
-                </xsl:when>
-                <xsl:when test="/bedework/page='calendarList' or
-                                /bedework/page='calendarDescriptions' or
-                                /bedework/page='displayCalendar' or
-                                /bedework/page='modCalendar' or
-                                /bedework/page='deleteCalendarConfirm' or
-                                /bedework/page='calendarReferenced'">
-                  <xsl:apply-templates select="/bedework/calendars"/>
-                </xsl:when>
-                <xsl:when test="/bedework/page='freeBusy'">
-                  <xsl:call-template name="utilBar"/>
-                  <xsl:apply-templates select="/bedework/freebusy"/>
-                </xsl:when>
-                <xsl:when test="/bedework/page='other'">
-                  <!-- show an arbitrary page -->
-                  <xsl:call-template name="selectPage"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <!-- otherwise, show the eventsCalendar -->
-                  <xsl:call-template name="utilBar"/>
-                  <!-- main eventCalendar content -->
+      <xsl:choose>
+        <xsl:when test="/bedework/page='selectCalForEvent'">
+          <xsl:call-template name="selectCalForEvent"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:call-template name="headBar"/>
+            <xsl:if test="/bedework/message">
+              <div id="messages">
+                <xsl:apply-templates select="/bedework/message"/>
+              </div>
+            </xsl:if>
+            <xsl:if test="/bedework/error">
+              <div id="errors">
+                <xsl:apply-templates select="/bedework/error"/>
+              </div>
+            </xsl:if>
+            <table id="bodyBlock" cellspacing="0">
+              <tr>
+                <xsl:choose>
+                  <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
+                    <td id="sideBarClosed">
+                      <img src="{$resourcesRoot}/resources/spacer.gif" width="1" height="1" border="0" alt="*"/>
+                    </td>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <td id="sideBar">
+                      <xsl:call-template name="sideBar"/>
+                    </td>
+                  </xsl:otherwise>
+                </xsl:choose>
+                <td id="bodyContent">
+                  <xsl:call-template name="tabs"/>
+                  <xsl:call-template name="navigation"/>
                   <xsl:choose>
-                    <xsl:when test="/bedework/periodname='Day'">
-                      <xsl:call-template name="listView"/>
+                    <xsl:when test="/bedework/page='event'">
+                      <!-- show an event -->
+                      <xsl:apply-templates select="/bedework/event"/>
                     </xsl:when>
-                    <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
-                      <xsl:choose>
-                        <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                          <xsl:call-template name="listView"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:call-template name="weekView"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
+                    <xsl:when test="/bedework/page='addEvent'">
+                      <xsl:call-template name="addEvent"/>
                     </xsl:when>
-                    <xsl:when test="/bedework/periodname='Month'">
-                      <xsl:choose>
-                        <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-                          <xsl:call-template name="listView"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:call-template name="monthView"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
+                    <xsl:when test="/bedework/page='editEvent'">
+                      <!-- edit an event -->
+                      <xsl:apply-templates select="/bedework/formElements" mode="editEvent"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='alarmOptions'">
+                      <xsl:call-template name="alarmOptions" />
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='upload'">
+                      <xsl:call-template name="upload" />
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='manageLocations'">
+                      <xsl:call-template name="manageLocations" />
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='editLocation'">
+                      <!-- edit an event -->
+                      <xsl:apply-templates select="/bedework/formElements" mode="editLocation"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
+                      <xsl:apply-templates select="/bedework/subscriptions"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='calendarList' or
+                                    /bedework/page='calendarDescriptions' or
+                                    /bedework/page='displayCalendar' or
+                                    /bedework/page='modCalendar' or
+                                    /bedework/page='deleteCalendarConfirm' or
+                                    /bedework/page='calendarReferenced'">
+                      <xsl:apply-templates select="/bedework/calendars"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='freeBusy'">
+                      <xsl:call-template name="utilBar"/>
+                      <xsl:apply-templates select="/bedework/freebusy"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='other'">
+                      <!-- show an arbitrary page -->
+                      <xsl:call-template name="selectPage"/>
                     </xsl:when>
                     <xsl:otherwise>
-                      <xsl:call-template name="yearView"/>
+                      <!-- otherwise, show the eventsCalendar -->
+                      <xsl:call-template name="utilBar"/>
+                      <!-- main eventCalendar content -->
+                      <xsl:choose>
+                        <xsl:when test="/bedework/periodname='Day'">
+                          <xsl:call-template name="listView"/>
+                        </xsl:when>
+                        <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
+                          <xsl:choose>
+                            <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
+                              <xsl:call-template name="listView"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <xsl:call-template name="weekView"/>
+                            </xsl:otherwise>
+                          </xsl:choose>
+                        </xsl:when>
+                        <xsl:when test="/bedework/periodname='Month'">
+                          <xsl:choose>
+                            <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
+                              <xsl:call-template name="listView"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <xsl:call-template name="monthView"/>
+                            </xsl:otherwise>
+                          </xsl:choose>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:call-template name="yearView"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
                     </xsl:otherwise>
                   </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-          </tr>
-        </table>
-        <!-- footer -->
-        <xsl:call-template name="footer"/>
+                </td>
+              </tr>
+            </table>
+            <!-- footer -->
+            <xsl:call-template name="footer"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </body>
     </html>
   </xsl:template>
@@ -217,7 +225,7 @@
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
     <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
     <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
-    <xsl:if test="/bedework/page='addEvent' or /bedework/page='editEvent'">
+    <xsl:if test="/bedework/page='addEvent' or /bedework/page='editEvent' or /bedework/page='selectCalForEvent'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
       <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
@@ -1068,6 +1076,10 @@
       <tr>
         <th colspan="3" class="commonHeader">
           <div id="eventActions">
+            <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
+            <a href="{$export}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+              Download
+            </a> |
             <xsl:choose>
               <xsl:when test="isAnnotation">
                 <xsl:choose>
@@ -1085,7 +1097,7 @@
               </xsl:when>
               <xsl:when test="calendar/owner = /bedework/userid">
                 <a href="{$editEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
-                  Edit Event
+                  Edit
                 </a> |
                 <xsl:choose>
                   <xsl:when test="recurring=true">
@@ -1095,7 +1107,7 @@
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$delEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
-                      Delete Event
+                      Delete
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -1299,6 +1311,8 @@
 
  <!--==== ADD EVENT ====-->
   <xsl:template name="addEvent">
+  <!-- The name "eventForm" is referenced by several javascript functions. Do not
+    change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$addEventUsingPage}" id="standardForm">
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
@@ -1318,22 +1332,20 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <select name="calId">
-              <option value="-1">
-                Default (or Select):
-              </option>
-              <!--<xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>-->
-              <!-- The following calendar select box is temporary.  Should be
-                   replaced with the xml from the line above. -->
-              <xsl:for-each select="/bedework/myCalendars//calendar[(calendarCollection='true') and
-                                             (name != 'Inbox') and
-                                             (name != 'Outbox') and
-                                             (name != 'Deleted') and
-                                             (name != 'Trash')]">
-                <xsl:variable name="id" select="id"/>
-                <option value="{$id}"><xsl:value-of select="name"/></option>
-              </xsl:for-each>
-            </select>
+            <xsl:variable name="calPath" select="/bedework/formElements/form/calendar/path"/>
+            <input type="hidden" name="calPath" value="{$calPath}"/>
+            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+            <span id="bwEventCalDisplay">
+              <xsl:choose>
+                <xsl:when test="contains(/bedework/formElements/form/calendar/path,$userPath)">
+                  <xsl:value-of select="substring-after(/bedework/formElements/form/calendar/path,$userPath)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="/bedework/formElements/form/calendar/path"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+            <a href="javascript:launchSimpleWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
           </td>
         </tr>
         <tr>
@@ -1664,6 +1676,8 @@
     <xsl:variable name="calendarId" select="calendarId"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
+    <!-- The name "eventForm" is referenced by several javascript functions. Do not
+    change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$editEvent}" id="standardForm">
       <input type="hidden" name="updateEvent" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
@@ -1674,10 +1688,10 @@
           <th colspan="2" class="commonHeader">
             <div id="eventActions">
               <a href="{$eventView}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
-                View Event
+                View
               </a> |
               <a href="{$delEvent}?subid={$subscriptionId}&amp;calid={$calendarId}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
-                Delete Event
+                Delete
               </a>
             </div>
             Personal Event
@@ -1697,29 +1711,20 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <select name="calId">
-              <option value="-1">
-                Select:
-              </option>
-              <!--<xsl:copy-of select="/bedework/formElements/form/calendar/select/*"/>-->
-              <!-- The following calendar select box is temporary.  Should be
-                   replaced with the xml from the line above. -->
-              <xsl:for-each select="/bedework/myCalendars//calendar[(calendarCollection='true') and
-                                             (name != 'Inbox') and
-                                             (name != 'Outbox') and
-                                             (name != 'Deleted') and
-                                             (name != 'Trash')]">
-                <xsl:variable name="id" select="id"/>
-                <xsl:choose>
-                  <xsl:when test="id = /bedework/formElements/calendarId">
-                    <option value="{$id}" selected="selected"><xsl:value-of select="name"/></option>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <option value="{$id}"><xsl:value-of select="name"/></option>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:for-each>
-            </select>
+            <xsl:variable name="calPath" select="/bedework/formElements/form/calendar/path"/>
+            <input type="hidden" name="calPath" value="{$calPath}"/>
+            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+            <span id="bwEventCalDisplay">
+              <xsl:choose>
+                <xsl:when test="contains(/bedework/formElements/form/calendar/path,$userPath)">
+                  <xsl:value-of select="substring-after(/bedework/formElements/form/calendar/path,$userPath)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="/bedework/formElements/form/calendar/path"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+            <a href="javascript:launchSimpleWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
           </td>
         </tr>
         <tr>
@@ -2219,14 +2224,22 @@
         </xsl:choose>
       </xsl:variable>
       <li class="{$itemClass}">
-        <xsl:variable name="url" select="path"/>
-        <a href="{$setSelection}?calUrl={$url}">
+        <xsl:variable name="calPath" select="path"/>
+        <a href="{$setSelection}?calUrl={$calPath}">
           <xsl:value-of select="name"/>
         </a>
         <xsl:if test="calendar">
           <ul>
             <xsl:apply-templates select="calendar" mode="myCalendars"/>
           </ul>
+        </xsl:if>
+        <xsl:if test="calendarCollection='true'">
+          <!-- set the start date for adding an event to the first day of the
+               given period, the hour of "now", and give a duration of 60 minutes -->
+          <xsl:variable name="startDate"><xsl:value-of select="/bedework/firstday/date"/>T<xsl:value-of select="substring(/bedework/now/time,1,2)"/>0000</xsl:variable>
+          <a href="{$initEvent}?startdate={$startDate}&amp;calPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event">
+            <img src="{$resourcesRoot}/resources/addEvent-forCals-icon.gif" width="9" height="12" border="0" alt="add event"/>
+          </a>
         </xsl:if>
       </li>
     </xsl:if>
@@ -2280,6 +2293,58 @@
             <xsl:apply-templates select="calendar" mode="listForDisplay">
               <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
             </xsl:apply-templates>
+          </ul>
+        </xsl:if>
+      </li>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- the selectCalForEvent listing creates a calendar tree in a pop-up window
+       from myCalendars and mySubscriptions -->
+  <xsl:template name="selectCalForEvent">
+    <h2>Select a calendar</h2>
+    <h4>My Calendars</h4>
+    <ul class="calendarTree">
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="selectCalForEventCalTree"/>
+    </ul>
+    <h4>Subscribed Calendars</h4>
+    <ul class="calendarTree">
+      <xsl:apply-templates select="/bedework/mySubscriptions/subscriptions/subscription/calendars/calendar" mode="selectCalForEventCalTree"/>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="selectCalForEventCalTree">
+  <!-- supress Inbox and Outbox for the moment -->
+    <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
+      <xsl:variable name="id" select="id"/>
+      <xsl:variable name="itemClass">
+        <xsl:choose>
+          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
+                          and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
+          <xsl:when test="name='Trash'">trash</xsl:when>
+          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <li class="{$itemClass}">
+        <xsl:variable name="calPath" select="path"/>
+        <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+        <xsl:variable name="calDisplay">
+          <xsl:choose>
+            <xsl:when test="contains(path,$userPath)">
+              <xsl:value-of select="substring-after(path,$userPath)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="path"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
+          <xsl:value-of select="name"/>
+        </a>
+        <xsl:if test="calendar">
+          <ul>
+            <xsl:apply-templates select="calendar" mode="selectCalForEventCalTree"/>
           </ul>
         </xsl:if>
       </li>
@@ -3011,7 +3076,7 @@
 
   <!--==== UPLOAD ====-->
   <xsl:template name="upload">
-    <form method="post" action="{$upload}" id="standardForm"  enctype="multipart/form-data">
+    <form name="eventForm" method="post" action="{$upload}" id="standardForm"  enctype="multipart/form-data">
       <h2>Upload iCAL File</h2>
       <table class="common" cellspacing="0">
         <tr>

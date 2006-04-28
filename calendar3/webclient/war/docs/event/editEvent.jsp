@@ -22,11 +22,8 @@ try {
       <html:text property="editEvent.summary"/>
     </title>
     <calendar>
-      <%-- <html:select property="calId">
-        <html:optionsCollection property="addContentCalendarCollections"
-                                    label="name"
-                                    value="id"/>
-      </html:select> --%>
+      <name><bean:write name="calForm" property="editEvent.calendar.name"/></name>
+      <path><bean:write name="calForm" property="editEvent.calendar.path"/></path>
     </calendar>
     <allDay><html:checkbox property="eventStartDate.dateOnly"/></allDay>
     <start>

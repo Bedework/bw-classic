@@ -36,6 +36,9 @@ h4 {
 .center {
   text-align: center;
 }
+.small {
+  font-size: 0.8em;
+}
 /* Header IDs and classes */
 #logoTable {
   padding: 0em;
@@ -489,6 +492,10 @@ table.common .durationSpacerText {
   font-weight: bold;
   margin: 0 1em;
 }
+#bwEventCalDisplay {
+  font-weight: bold;
+  margin-right: 1em;
+}
 #clock {
   position: relative;
 }
@@ -688,6 +695,10 @@ a.gridAdd {
   display: block;
   float: right;
   margin: 0;
+  padding: 0;
+}
+a.calendarAdd img {
+  margin: 0 0 0 0.5em;
   padding: 0;
 }
 #yearCalendarTable {

@@ -13,5 +13,13 @@
     <emailNotifications><bean:write name="subscription" property="emailNotifications" /></emailNotifications>
     <calendarDeleted><bean:write name="subscription" property="calendarDeleted" /></calendarDeleted>
     <unremoveable><bean:write name="subscription" property="unremoveable" /></unremoveable>
+
+    <calendars>
+      <logic:present name="subscription" property="calendar">
+        <bean:define id="calendar" name="subscription" property="calendar"
+             toScope="session" />
+        <jsp:include page="/docs/calendar/emitCalendar.jsp"/>
+      </logic:present>
+    </calendars>
   </subscription>
 </logic:iterate>

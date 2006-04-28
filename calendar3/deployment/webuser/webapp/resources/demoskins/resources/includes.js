@@ -72,8 +72,29 @@ function endDateCalWidgetCallback(date, month, year) {
   if (String(date).length == 1) {
       date = '0' + date;
   }
-  
+
   document.eventForm['eventEndDate.month'].value = month;
   document.eventForm['eventEndDate.day'].value = date;
   document.eventForm['eventEndDate.year'].value = year;
+}
+
+
+// launch the calSelect pop-up window for selecting a calendar when creating,
+// editing, and importing events
+function launchCalSelectWindow(URL) {
+  calSelect = window.open(URL, "calSelect", "width=500,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
+  window.calSelect.focus();
+}
+// used to update the calendar in an add or edit event form from
+// the calSelect pop-up window.  We must do two things: update the hidden calendar
+// input field and update the displayed text.
+function updateEventFormCalendar(calPath,calDisplay) {
+  if (window.opener.document.eventForm) {
+    window.opener.document.eventForm.calPath.value = calPath;
+    bwCalDisplay = window.opener.document.getElementById("bwEventCalDisplay");
+    bwCalDisplay.innerHTML = calDisplay;
+  } else {
+    alert("The event form is no longer available.");
+  }
+  window.close();
 }
