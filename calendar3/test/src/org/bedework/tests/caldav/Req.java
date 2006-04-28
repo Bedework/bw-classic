@@ -54,12 +54,17 @@
 
 package org.bedework.tests.caldav;
 
+import org.bedework.calfacade.CalFacadeUtil;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.LineNumberReader;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 
 import org.apache.commons.httpclient.Header;
 
@@ -101,8 +106,8 @@ class Req {
       frdr = new FileReader(testFile);
       LineNumberReader lnr = new LineNumberReader(frdr);
 
-      Vector headers = null;
-      Vector cont = null;
+      Collection headers = null;
+      Collection cont = null;
 
       do {
         String ln = lnr.readLine();
@@ -150,7 +155,7 @@ class Req {
                 HEADER
            */
           if (headers == null) {
-            headers = new Vector();
+            headers = new ArrayList();
           }
 
           String hdr = ln.substring(hdrHdr.length());
@@ -184,7 +189,7 @@ class Req {
                 CONTENT
            */
           if (cont == null) {
-            cont = new Vector();
+            cont = new ArrayList();
           }
         } else {
           throw new Exception("Bad test data file " + testFileName);
@@ -310,7 +315,8 @@ class Req {
       sb.append(content[i]);
       sb.append("\n");
     }
-    contentBytes = sb.toString().getBytes();
+    contentBytes = detokenizeContent(sb);
+
     return contentBytes;
   }
 
@@ -331,9 +337,61 @@ class Req {
       baos.write(x);
     } while (true);
 
-    contentBytes = baos.toByteArray();
+    contentBytes = detokenizeContent(new StringBuffer(baos.toString()));
 
     return contentBytes;
+  }
+
+  /* Replace any of our tokens with values. Pretty primitive at the moment.
+   *
+   */
+  private byte[] detokenizeContent(StringBuffer val) {
+    replaceToken(val, "@NOW@");
+
+    replaceToken(val, "@TOMORROW@");
+
+    replaceToken(val, "@NEXTWEEK@");
+
+    return val.toString().getBytes();
+  }
+
+  private void replaceToken(StringBuffer sb, String token) {
+    int len = token.length();
+    int pos = 0;
+    String val = null;
+
+    while (true) {
+      pos = sb.indexOf(token, pos);
+      if (pos < 0) {
+        return;
+      }
+
+      if (val == null) {
+        val = getTokenValue(token);
+      }
+
+      sb.replace(pos, pos + len, val);
+    }
+  }
+
+  private String getTokenValue(String token) {
+    if (token.equals("@NOW@")) {
+      return CalFacadeUtil.isoDateTimeUTC(new Date());
+    }
+
+    if (token.equals("@TOMORROW@")) {
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.DATE, 1);
+      return CalFacadeUtil.isoDateTimeUTC(cal.getTime());
+    }
+
+    if (token.equals("@NEXTWEEK@")) {
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.WEEK_OF_YEAR, 1);
+      return CalFacadeUtil.isoDateTimeUTC(cal.getTime());
+    }
+
+    return null;
   }
 }
 

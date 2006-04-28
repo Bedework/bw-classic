@@ -1146,10 +1146,6 @@ public class CalSvc extends CalSvcI {
         return fb;
       }
 
-      /* For the moment just build a single BwFreeBusyComponent
-       */
-      BwFreeBusyComponent fbc = new BwFreeBusyComponent();
-
       Iterator it = events.iterator();
 
       TreeSet eventPeriods = new TreeSet();
@@ -1180,14 +1176,23 @@ public class CalSvc extends CalSvcI {
           dend = eend.getDtval();
         }
 
-        eventPeriods.add(new EventPeriod(new DateTime(dstart),
-                                         new DateTime(dend)));
+        DateTime psdt = new DateTime(dstart);
+        DateTime pedt = new DateTime(dend);
+
+        psdt.setUtc(true);
+        pedt.setUtc(true);
+
+        eventPeriods.add(new EventPeriod(psdt, pedt));
       }
 
       /* iterate through the sorted periods combining them where they are
        adjacent or overlap */
 
       Period p = null;
+
+      /* For the moment just build a single BwFreeBusyComponent
+       */
+      BwFreeBusyComponent fbc = null;
 
       it = eventPeriods.iterator();
       while (it.hasNext()) {
@@ -1197,6 +1202,9 @@ public class CalSvc extends CalSvcI {
           p = new Period(ep.start, ep.end);
         } else if (ep.start.after(p.getEnd())) {
           // Non adjacent periods
+          if (fbc == null) {
+            fbc = new BwFreeBusyComponent();
+          }
           fbc.addPeriod(p);
           p = new Period(ep.start, ep.end);
         } else if (ep.end.after(p.getEnd())) {
@@ -1206,10 +1214,15 @@ public class CalSvc extends CalSvcI {
       }
 
       if (p != null) {
+        if (fbc == null) {
+          fbc = new BwFreeBusyComponent();
+        }
         fbc.addPeriod(p);
       }
 
-      fb.addTime(fbc);
+      if (fbc != null) {
+        fb.addTime(fbc);
+      }
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }

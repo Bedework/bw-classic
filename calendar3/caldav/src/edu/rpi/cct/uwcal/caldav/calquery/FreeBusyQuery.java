@@ -59,7 +59,6 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.davdefs.CaldavTags;
 
-
 import edu.rpi.cct.uwcal.caldav.CalDavParseUtil;
 import edu.rpi.cct.uwcal.caldav.CaldavBWIntf;
 import edu.rpi.cct.uwcal.caldav.TimeRange;
@@ -68,10 +67,9 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -109,7 +107,7 @@ public class FreeBusyQuery {
   public int parse(Node nd) throws WebdavException {
     try {
       if (timeRanges == null) {
-        timeRanges = new Vector();
+        timeRanges = new ArrayList();
       }
 
       if (!MethodBase.nodeMatches(nd, CaldavTags.timeRange)) {
@@ -139,7 +137,7 @@ public class FreeBusyQuery {
    */
   public Collection getFreeBusy(CalSvcI svci, String user) throws WebdavException {
     Iterator it = timeRanges.iterator();
-    Collection fbs = new Vector();
+    Collection fbs = new ArrayList();
 
     while (it.hasNext()) {
       TimeRange tr = (TimeRange)it.next();
