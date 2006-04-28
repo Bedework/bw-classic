@@ -114,13 +114,12 @@ public class BwEditEventAction extends BwCalAbstractAction {
 
     BwEvent ev = ei.getEvent();
 
-    /* XXX Remove when we're happy with access control */
-    if (ev.getPublick()) {
-      form.getErr().emit("org.bedework.client.error.noaccess", "for that action");
-      return "doNothing";
-    }
-
     form.setEditEvent(ev);
+
+    String fwd = setEventCalendar(request, form, ev);
+    if (fwd != null) {
+      return fwd;
+    }
 
     BwLocation loc = ev.getLocation();
 
