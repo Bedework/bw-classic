@@ -454,10 +454,15 @@ public class ReportMethod extends MethodBase {
     }
 
     if (status != HttpServletResponse.SC_OK) {
-      pm.doNodeProperties(node, null, status);
+      openTag(WebdavTags.propstat);
+
+      property(WebdavTags.status, "HTTP/1.1 " + status + " " +
+                     WebdavStatusCode.getMessage(status));
+
+      closeTag(WebdavTags.propstat);
     } else if (reportType == reportTypeExpandProperty) {
     } else {
-      pm.doNodeProperties(node, preq, status);
+      pm.doNodeProperties(node, preq);
 
       /* Output the (transformed) node.
        */

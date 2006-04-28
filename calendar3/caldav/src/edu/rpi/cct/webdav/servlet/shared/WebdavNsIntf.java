@@ -56,6 +56,7 @@ package edu.rpi.cct.webdav.servlet.shared;
 
 import org.bedework.davdefs.WebdavTags;
 
+import edu.rpi.sss.util.xml.QName;
 import edu.rpi.sss.util.xml.XmlEmit;
 import edu.rpi.sss.util.xml.XmlUtil;
 import edu.rpi.cct.webdav.servlet.common.MethodBase;
@@ -69,6 +70,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
@@ -548,6 +550,151 @@ public abstract class WebdavNsIntf implements Serializable {
    *                Property value methods
    * ==================================================================== */
 
+  /** Open a propstat response.
+   *
+   * @throws WebdavIntfException
+   */
+  public void openPropstat() throws WebdavIntfException {
+    try {
+      xml.openTag(WebdavTags.propstat);
+      xml.openTag(WebdavTags.prop);
+    } catch (Throwable t) {
+      throw new WebdavIntfException(t);
+    }
+  }
+
+  /** Close a propstat response with given result.
+   *
+   * @param status
+   * @throws WebdavIntfException
+   */
+  public void closePropstat(int status) throws WebdavIntfException {
+    try {
+      xml.closeTag(WebdavTags.prop);
+
+      if ((status != HttpServletResponse.SC_OK) ||
+          getReturnMultistatusOk()) {
+        xml.property(WebdavTags.status, "HTTP/1.1 " + status + " " +
+                     WebdavStatusCode.getMessage(status));
+      }
+
+      xml.closeTag(WebdavTags.propstat);
+    } catch (Throwable t) {
+      throw new WebdavIntfException(t);
+    }
+  }
+
+  /** Close a propstat response with an ok result.
+   *
+   * @throws WebdavIntfException
+   */
+  public void closePropstat() throws WebdavIntfException {
+    closePropstat(HttpServletResponse.SC_OK);
+  }
+
+  /** Generate a response for a single webdav property. This should be overrriden
+   * to handle other namespaces.
+   *
+   * @param node
+   * @param pr
+   * @throws WebdavIntfException
+   */
+  public void generatePropValue(WebdavNsNode node,
+                                WebdavProperty pr) throws WebdavIntfException {
+    QName tag = pr.getTag();
+    String ns = tag.getNamespaceURI();
+
+    try {
+      /* Deal with webdav properties */
+      if (!ns.equals(WebdavTags.namespace)) {
+        // Not ours
+        openPropstat();
+        xml.emptyTag(tag);
+        closePropstat(HttpServletResponse.SC_NOT_FOUND);
+      }
+
+      if (tag.equals(WebdavTags.creationdate)) {
+        // dav 13.1
+        if (node.getCreDate() != null) {
+          openPropstat();
+          xml.property(tag, node.getCreDate());
+          closePropstat();
+        }
+      } else if (tag.equals(WebdavTags.displayname)) {
+        // dav 13.2
+        openPropstat();
+        xml.property(tag, node.getName());
+        closePropstat();
+      } else if (tag.equals(WebdavTags.getcontentlanguage)) {
+        // dav 13.3
+      } else if (tag.equals(WebdavTags.getcontentlength)) {
+        // dav 13.4
+      } else if (tag.equals(WebdavTags.getcontenttype)) {
+        // dav 13.5
+        openPropstat();
+        generatePropContenttype(node);
+        closePropstat();
+      } else if (tag.equals(WebdavTags.getetag)) {
+        // dav 13.6
+        openPropstat();
+        xml.property(tag, getEntityTag(node, true));
+        closePropstat();
+      } else if (tag.equals(WebdavTags.getlastmodified)) {
+        // dav 13.7
+        if (node.getLastmodDate() != null) {
+          openPropstat();
+          xml.property(tag, node.getLastmodDate());
+          closePropstat();
+        }
+      } else if (tag.equals(WebdavTags.lockdiscovery)) {
+        // dav 13.8
+      } else if (tag.equals(WebdavTags.resourcetype)) {
+        // dav 13.9
+        openPropstat();
+        generatePropResourcetype(node);
+        closePropstat();
+      } else if (tag.equals(WebdavTags.source)) {
+        // dav 13.10
+      } else if (tag.equals(WebdavTags.supportedlock)) {
+        // dav 13.11
+      } else if (tag.equals(WebdavTags.owner)) {
+        // access 5.1
+        openPropstat();
+        xml.openTag(tag);
+        xml.property(WebdavTags.href, makeUserHref(node.getOwner()));
+        xml.closeTag(tag);
+        closePropstat();
+      } else if (tag.equals(WebdavTags.supportedPrivilegeSet)) {
+        // access 5.2
+        openPropstat();
+        emitSupportedPrivSet(node);
+        closePropstat();
+      } else if (tag.equals(WebdavTags.currentUserPrivilegeSet)) {
+        // access 5.3
+      } else if (tag.equals(WebdavTags.acl)) {
+        // access 5.4
+        openPropstat();
+        emitAcl(node);
+        closePropstat();
+      } else if (tag.equals(WebdavTags.aclRestrictions)) {
+        // access 5.5
+      } else if (tag.equals(WebdavTags.inheritedAclSet)) {
+        // access 5.6
+      } else if (tag.equals(WebdavTags.principalCollectionSet)) {
+        // access 5.7
+      } else {
+        // Not known
+        openPropstat();
+        xml.emptyTag(tag);
+        closePropstat(HttpServletResponse.SC_NOT_FOUND);
+      }
+    } catch (WebdavIntfException wie) {
+      throw wie;
+    } catch (Throwable t) {
+      throw new WebdavIntfException(t);
+    }
+  }
+
   /** Generate content type.
    *
    * @param node      for which we are generating resource type
@@ -580,6 +727,26 @@ public abstract class WebdavNsIntf implements Serializable {
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
+  }
+
+  /** Entity tags are defined in RFC2068 - they are supposed to provide some
+   * sort of indication the data has changed - e.g. a checksum.
+   * <p>There are weak and strong tags
+   *
+   * @param node
+   * @param strong
+   * @return String tag
+   * @throws WebdavException
+   */
+  public String getEntityTag(WebdavNsNode node, boolean strong)
+      throws WebdavException {
+    String val = getEtagValue(node, strong);
+
+    if (strong) {
+      return "\"" + val + "\"";
+    }
+
+    return "W/\"" + val + "\"";
   }
 
   /* ====================================================================

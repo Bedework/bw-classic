@@ -207,6 +207,38 @@ public class XmlEmit {
     newline();
   }
 
+  /** Start tag ready for attributes
+   *
+   * @param tag
+   * @throws IOException
+   */
+  public void startTag(QName tag) throws IOException {
+    blanks();
+    startTagSameLine(tag);
+  }
+
+  /** Add an attribute
+   *
+   * @param attrName
+   * @param attrVal
+   * @throws IOException
+   */
+  public void atribute(String attrName, String attrVal) throws IOException {
+    wtr.write(" ");
+    wtr.write(attrName);
+    wtr.write("=");
+    quote(attrVal);
+  }
+
+  /** End an empty tag
+   *
+   * @throws IOException
+   */
+  public void endEmptyTag() throws IOException {
+    wtr.write(" /");
+    rb();
+  }
+
   /**
    * @param tag
    * @throws IOException
@@ -216,6 +248,27 @@ public class XmlEmit {
     tagname(tag);
     wtr.write("/");
     rb();
+  }
+
+  /**
+   * @param tag
+   * @throws IOException
+   */
+  public void startTagSameLine(QName tag) throws IOException {
+    lb();
+    tagname(tag);
+  }
+
+  private void quote(String val) throws IOException {
+    if (val.indexOf("\"") < 0) {
+      wtr.write("\"");
+      wtr.write(val);
+      wtr.write("\"");
+    } else {
+      wtr.write("'");
+      wtr.write(val);
+      wtr.write("'");
+    }
   }
 
   /** Create the sequence<br>

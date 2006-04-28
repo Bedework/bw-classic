@@ -60,7 +60,7 @@ import java.util.Comparator;
 
 /** System settings for an instance of bedework as represented by a single
  * database. These settings may be changed by the super user but most should
- * not be changed after system initialisation..
+ * not be changed after system initialisation.
  *
  * @author Mike Douglass       douglm@rpi.edu
  */
@@ -94,6 +94,8 @@ public class BwSystem extends BwDbentity implements Comparator {
   private int maxUserDescriptionLength = 1000;
   private int maxUserEntitySize = 100000;
   private long defaultUserQuota = 1000000 * 10; // 10 Meg OK?
+
+  private int maxInstances;
 
   private String userauthClass;
   private String mailerClass;
@@ -386,6 +388,22 @@ public class BwSystem extends BwDbentity implements Comparator {
    */
   public long getDefaultUserQuota() {
     return defaultUserQuota;
+  }
+
+  /** Set the max instances per recurring event.
+   *
+   * @param val    int max
+   */
+  public void setMaxInstances(int val) {
+    maxInstances = val;
+  }
+
+  /**
+   *
+   * @return int
+   */
+  public int getMaxInstances() {
+    return maxInstances;
   }
 
   /** Set the userauth class

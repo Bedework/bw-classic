@@ -298,8 +298,8 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
     if (cal != null) {
       // Need to clone for this
-      //cal.setCurrentAccess(access.checkAccess(cal, privRead, false));
-      access.checkAccess(cal, desiredAccess, false);
+      //access.checkAccess(cal, desiredAccess, false);
+      cal = cloneAndCheckOne(cal, desiredAccess, false);
     }
 
     return cal;

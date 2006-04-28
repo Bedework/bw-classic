@@ -153,7 +153,7 @@ public class IcalTranslator implements Serializable {
    * @return Calendar
    * @throws CalFacadeException
    */
-  public Calendar newIcal() throws CalFacadeException {
+  public static Calendar newIcal() throws CalFacadeException {
     Calendar cal = new Calendar();
 
     cal.getProperties().add(new ProdId(prodId));
@@ -172,7 +172,7 @@ public class IcalTranslator implements Serializable {
     if (val == null) {
       return null;
     }
-    
+
     HashMap added = new HashMap();
 
     try {
@@ -202,7 +202,7 @@ public class IcalTranslator implements Serializable {
     if ((vals == null) || (vals.size() == 0)) {
       return null;
     }
-    
+
     HashMap added = new HashMap();
 
     try {
@@ -227,7 +227,7 @@ public class IcalTranslator implements Serializable {
     }
   }
 
-  /** Make a VEvent object from an EventVO.
+  /** Make a VEvent object from a BwEvent.
    *
    * @param val
    * @return VEvent
@@ -237,7 +237,7 @@ public class IcalTranslator implements Serializable {
     return VEventUtil.toIcalEvent(val, cb.getURIgen());
   }
 
-  /** Convert the EventVO object to a String representation
+  /** Convert the BwEvent object to a String representation
    *
    * @param val
    * @return String
@@ -276,7 +276,7 @@ public class IcalTranslator implements Serializable {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
       UnfoldingReader ufrdr = new UnfoldingReader(new StringReader(val), true);
-      
+
       //return fromIcal(cal, bldr.build(new UnfoldingReader(new StringReader(val))));
       return fromIcal(cal, bldr.build(ufrdr));
     } catch (ParserException pe) {
@@ -365,10 +365,53 @@ public class IcalTranslator implements Serializable {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
       UnfoldingReader ufrdr = new UnfoldingReader(new StringReader(val), true);
-      
+
       return bldr.build(ufrdr);
     } catch (CalFacadeException cfe) {
       throw cfe;
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
+  /** Create a Calendar object from the named timezone
+   *
+   * @param tzid       String timezone id
+   * @return Calendar
+   * @throws CalFacadeException
+   */
+  public Calendar getTzCalendar(String tzid) throws CalFacadeException {
+    try {
+      Calendar cal = newIcal();
+
+      addIcalTimezone(cal, tzid, null, null);
+
+      return cal;
+    } catch (CalFacadeException cfe) {
+      throw cfe;
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
+  /** Create a Calendar object from the named timezone and convert to
+   * a String representation
+   *
+   * @param tzid       String timezone id
+   * @return String
+   * @throws CalFacadeException
+   */
+  public String toStringTzCalendar(String tzid) throws CalFacadeException {
+    Calendar ical = getTzCalendar(tzid);
+
+    CalendarOutputter calOut = new CalendarOutputter(true);
+
+    StringWriter sw = new StringWriter();
+
+    try {
+      calOut.output(ical, sw);
+
+      return sw.toString();
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -390,7 +433,7 @@ public class IcalTranslator implements Serializable {
       CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
 
       UnfoldingReader ufrdr = new UnfoldingReader(new StringReader(val), true);
-      
+
       Calendar cal = bldr.build(ufrdr);
       Vector evs = new Vector();
 
@@ -509,7 +552,7 @@ public class IcalTranslator implements Serializable {
   /* If the start or end date references a timezone, we retrieve the timezone definition
    * and add it to the calendar.
    */
-  private void addIcalTimezones(Calendar cal, BwEvent ev, 
+  private void addIcalTimezones(Calendar cal, BwEvent ev,
                                 HashMap added) throws CalFacadeException {
     BwUser owner = ev.getOwner();
 
@@ -519,20 +562,21 @@ public class IcalTranslator implements Serializable {
       addIcalTimezone(cal, ev.getDtend().getTzid(), owner, added);
     }
   }
-  
-  private void addIcalTimezone(Calendar cal, String tzid, 
-                               BwUser owner, 
+
+  private void addIcalTimezone(Calendar cal, String tzid,
+                               BwUser owner,
                                HashMap added) throws CalFacadeException {
     VTimeZone vtz;
-    
-    if ((tzid == null) || added.containsKey(tzid)) {
+
+    if ((tzid == null) ||
+        ((added != null) && added.containsKey(tzid))) {
       return;
     }
 
     if (debug) {
       debugMsg("Look for timezone with id " + tzid);
     }
-    
+
     vtz = cb.findTimeZone(tzid, owner);
     if (vtz != null) {
       if (debug) {
@@ -542,10 +586,12 @@ public class IcalTranslator implements Serializable {
     } else if (debug) {
       debugMsg("Didn't find timezone with id " + tzid);
     }
-    
-    added.put(tzid, null);
+
+    if (added != null) {
+      added.put(tzid, null);
+    }
   }
-  
+
   private static void setSystemProperties() throws CalFacadeException {
     try {
       System.setProperty("ical4j.unfolding.relaxed", "true");

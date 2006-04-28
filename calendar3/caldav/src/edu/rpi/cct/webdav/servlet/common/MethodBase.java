@@ -109,7 +109,7 @@ public abstract class MethodBase {
    */
   public abstract void init();
 
-  private SimpleDateFormat httpDateFormatter = 
+  private SimpleDateFormat httpDateFormatter =
       new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss ");
 
   /**
@@ -481,13 +481,7 @@ public abstract class MethodBase {
    */
   protected String getEntityTag(WebdavNsNode node, boolean strong)
       throws WebdavException {
-    String val = getNsIntf().getEtagValue(node, strong);
-
-    if (strong) {
-      return "\"" + val + "\"";
-    }
-
-    return "W/\"" + val + "\"";
+    return getNsIntf().getEntityTag(node, strong);
   }
 
   /* ====================================================================

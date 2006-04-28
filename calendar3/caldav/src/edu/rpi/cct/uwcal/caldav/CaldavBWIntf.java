@@ -84,6 +84,9 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
+import edu.rpi.sss.util.xml.QName;
+
+import net.fortuna.ical4j.model.TimeZone;
 
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -99,6 +102,7 @@ import java.util.Properties;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.w3c.dom.Element;
@@ -123,7 +127,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
   /** Namespace prefix based on the request url.
    */
   private String namespacePrefix;
-  
+
   private EmitAccess emitAccess;
 
   /* Prefix for out properties */
@@ -171,25 +175,25 @@ public class CaldavBWIntf extends WebdavNsIntf {
                    Properties props,
                    boolean debug) throws WebdavIntfException {
     super.init(servlet, req, props, debug);
-    
+
     try {
       HttpSession session = req.getSession();
       ServletContext sc = session.getServletContext();
-      
+
       String appName = sc.getInitParameter("bwappname");
-      
+
       if ((appName == null) || (appName.length() == 0)) {
         appName = "unknown-app-name";
       }
-      
+
       envPrefix = "org.bedework.app." + appName + ".";
-      
+
       namespacePrefix = WebdavUtils.getUrlPrefix(req);
       namespace = namespacePrefix + "/schema";
 
       publicCalendarRoot = getSvci().getSyspars().getPublicCalendarRoot();
       userCalendarRoot = getSvci().getSyspars().getUserCalendarRoot();
-      
+
       emitAccess = new EmitAccess(namespacePrefix, xml);
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
@@ -789,7 +793,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
       throw WebdavIntfException.badRequest();
     }
 
-    info.aces.add(new Ace(info.who, info.notWho, info.whoType, 
+    info.aces.add(new Ace(info.who, info.notWho, info.whoType,
                           Privileges.makePriv(priv)));
   }
 
@@ -836,7 +840,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
       throw new WebdavIntfException(t);
     }
   }
-  
+
   public void emitSupportedPrivSet(WebdavNsNode node) throws WebdavIntfException {
     try {
       emitAccess.emitSupportedPrivSet();
@@ -1010,6 +1014,99 @@ public class CaldavBWIntf extends WebdavNsIntf {
   /* ====================================================================
    *                Property value methods
    * ==================================================================== */
+
+  /** Generate a response for a single webdav property. This should be overrriden
+   * to handle other namespaces.
+   *
+   * @param node
+   * @param pr
+   * @throws WebdavIntfException
+   */
+  public void generatePropValue(WebdavNsNode node,
+                                WebdavProperty pr) throws WebdavIntfException {
+    QName tag = pr.getTag();
+    String ns = tag.getNamespaceURI();
+    boolean isCalendar = node instanceof CaldavCalNode;
+    CaldavCalNode calNode = null;
+    BwCalendar cal = null;
+
+    if (isCalendar) {
+      calNode = (CaldavCalNode)node;
+      cal = calNode.getCDURI().getCal();
+    }
+
+    try {
+      /* Deal with webdav properties */
+      if (!ns.equals(CaldavDefs.caldavNamespace)) {
+        // Not ours
+        super.generatePropValue(node, pr);
+        return;
+      }
+
+      if (tag.equals(CaldavTags.calendarDescription)) {
+        if ((cal != null) && (cal.getDescription() != null)) {
+          // XXX lang
+          openPropstat();
+          xml.property(tag, cal.getDescription());
+          closePropstat();
+        }
+      } else if (tag.equals(CaldavTags.calendarTimezone)) {
+        TimeZone tz = getSvci().getTimezones().getDefaultTimeZone();
+        openPropstat();
+        xml.property(tag, trans.toStringTzCalendar(tz.getID()));
+        closePropstat();
+      } else if (tag.equals(CaldavTags.supportedCalendarComponentSet)) {
+        /* e.g.
+         *          <C:supported-calendar-component-set
+         *                 xmlns:C="urn:ietf:params:xml:ns:caldav">
+         *            <C:comp name="VEVENT"/>
+         *            <C:comp name="VTODO"/>
+         *         </C:supported-calendar-component-set>
+         */
+        openPropstat();
+        xml.openTag(tag);
+        xml.startTag(CaldavTags.comp);
+        xml.atribute("name", "VEVENT");
+        xml.closeTag(tag);
+        closePropstat();
+      } else if (tag.equals(CaldavTags.supportedCalendarData)) {
+        /* e.g.
+         * <C:supported-calendar-data
+         *              xmlns:C="urn:ietf:params:xml:ns:caldav">
+         *   <C:calendar-data content-type="text/calendar" version="2.0"/>
+         * </C:supported-calendar-data>
+         */
+        openPropstat();
+        xml.openTag(tag);
+        xml.startTag(CaldavTags.calendarData);
+        xml.atribute("content-type", "text/calendar");
+        xml.atribute("version", "2.0");
+        xml.closeTag(tag);
+        closePropstat();
+      } else if (tag.equals(CaldavTags.maxAttendeesPerInstance)) {
+      } else if (tag.equals(CaldavTags.maxDateTime)) {
+      } else if (tag.equals(CaldavTags.maxInstances)) {
+      } else if (tag.equals(CaldavTags.maxResourceSize)) {
+        /* e.g.
+         * <C:max-resource-size
+         *    xmlns:C="urn:ietf:params:xml:ns:caldav">102400</C:max-resource-size>
+         */
+        openPropstat();
+        xml.property(tag, String.valueOf(getSvci().getSyspars().getMaxUserEntitySize()));
+        closePropstat();
+      } else if (tag.equals(CaldavTags.minDateTime)) {
+      } else {
+        // Not known
+        openPropstat();
+        xml.emptyTag(tag);
+        closePropstat(HttpServletResponse.SC_NOT_FOUND);
+      }
+    } catch (WebdavIntfException wie) {
+      throw wie;
+    } catch (Throwable t) {
+      throw new WebdavIntfException(t);
+    }
+  }
 
   public void generatePropResourcetype(WebdavNsNode node)
           throws WebdavIntfException {
@@ -1191,7 +1288,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
       /* account is what we authenticated with.
        * user, if non-null, is the user calendar we want to access.
        */
-      CalSvcIPars pars = new CalSvcIPars(account, 
+      CalSvcIPars pars = new CalSvcIPars(account,
                                          account,
                                          envPrefix,
                                          publicMode,

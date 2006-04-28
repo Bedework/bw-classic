@@ -82,6 +82,10 @@ public class CaldavTags implements CaldavDefs {
                                                             "calendar-description");
 
   /**   */
+  public static final QName calendarTimezone = new QName(caldavNamespace,
+                                                         "calendar-timezone");
+
+  /**   */
   public static final QName calendarMultiget = new QName(caldavNamespace,
                                                          "calendar-multiget");
 
@@ -126,6 +130,26 @@ public class CaldavTags implements CaldavDefs {
                                                    "mkcalendar");
 
   /**   */
+  public static final QName maxAttendeesPerInstance = new QName(caldavNamespace,
+                                                    "max-attendees-per-instance");
+
+  /**   */
+  public static final QName maxDateTime = new QName(caldavNamespace,
+                                                    "max-date-time");
+
+  /**   */
+  public static final QName maxInstances = new QName(caldavNamespace,
+                                                     "max-instances");
+
+  /**   */
+  public static final QName maxResourceSize = new QName(caldavNamespace,
+                                                        "max-resource-size");
+
+  /**   */
+  public static final QName minDateTime = new QName(caldavNamespace,
+                                                    "min-date-time");
+
+  /**   */
   public static final QName paramFilter = new QName(caldavNamespace,
                                                     "param-filter");
 
@@ -144,6 +168,14 @@ public class CaldavTags implements CaldavDefs {
   /**   */
   public static final QName returnContentType = new QName(caldavNamespace,
                                                           "return-content-type");
+
+  /**   */
+  public static final QName supportedCalendarComponentSet = new QName(caldavNamespace,
+                                            "supported-calendar-component-set");
+
+  /**   */
+  public static final QName supportedCalendarData = new QName(caldavNamespace,
+                                                      "supported-calendar-data");
 
   /**   */
   public static final QName textMatch = new QName(caldavNamespace,

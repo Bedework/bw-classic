@@ -10,13 +10,5 @@ HEADER: Depth: 0
 
 CONTENTTYPE: text/xml
 
-CONTENT:
-<?xml version="1.0" encoding="utf-8" ?>
-<D:propfind xmlns:D="DAV:">
-  <D:prop>
-    <D:getetag/>
-    <D:owner/>
-    <D:acl/>
-  </D:prop>
-</D:propfind>
+CONTENTFILE: content/eg15.xml
 

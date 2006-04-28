@@ -57,6 +57,7 @@ package edu.rpi.cct.webdav.servlet.common;
 import org.bedework.davdefs.WebdavTags;
 
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
+import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
 import edu.rpi.cct.webdav.servlet.shared.WebdavStatusCode;
@@ -67,9 +68,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -94,7 +96,7 @@ public class PropFindMethod extends MethodBase {
 
     /** For the prop element we build a Collection of WebdavProperty
      */
-    Vector props;
+    Collection props;
   }
 
   private PropRequest parsedReq;
@@ -204,7 +206,7 @@ public class PropFindMethod extends MethodBase {
    */
   public PropRequest parseProps(Node nd) throws WebdavException {
     PropRequest pr = new PropRequest(PropRequest.reqProp);
-    pr.props = new Vector();
+    pr.props = new ArrayList();
 
     Element[] children = getChildren(nd);
 
@@ -221,7 +223,7 @@ public class PropFindMethod extends MethodBase {
       }
       addNs(prop.getTag().getNamespaceURI());
 
-      pr.props.addElement(prop);
+      pr.props.add(prop);
     }
 
     return pr;
@@ -257,46 +259,25 @@ public class PropFindMethod extends MethodBase {
     flush();
   }
 
-  /**
+  /** Generate response for a PROPFIND for the current node, then for the children.
+   *
    * @param node
    * @param pr
-   * @param status
    * @throws WebdavException
    */
   public void doNodeProperties(WebdavNsNode node,
-                                PropRequest pr,
-                                int status) throws WebdavException {
+                                PropRequest pr) throws WebdavException {
     addHref(node);
 
-    openTag(WebdavTags.propstat);
-
-    if (pr != null) {
-      openTag(WebdavTags.prop);
-
-      if (status == HttpServletResponse.SC_OK) {
-        if (node.getExists()) {
-          if (pr.reqType == PropRequest.reqProp) {
-            status = doPropFind(node, pr);
-          } else if (pr.reqType == PropRequest.reqPropName) {
-            status = doPropNames(node);
-          } else if (pr.reqType == PropRequest.reqPropAll) {
-            status = doPropAll(node);
-          }
-        } else {
-          status = HttpServletResponse.SC_NOT_FOUND;
-        }
+    if ((pr != null) && (node.getExists())) {
+      if (pr.reqType == PropRequest.reqProp) {
+        doPropFind(node, pr);
+      } else if (pr.reqType == PropRequest.reqPropName) {
+        doPropNames(node);
+      } else if (pr.reqType == PropRequest.reqPropAll) {
+        doPropAll(node);
       }
-
-      closeTag(WebdavTags.prop);
     }
-
-    if ((status != HttpServletResponse.SC_OK) ||
-        getNsIntf().getReturnMultistatusOk()) {
-      property(WebdavTags.status, "HTTP/1.1 " + status + " " +
-                   WebdavStatusCode.getMessage(status));
-    }
-
-    closeTag(WebdavTags.propstat);
   }
 
   private void doNodeAndChildren(WebdavNsNode node,
@@ -304,7 +285,7 @@ public class PropFindMethod extends MethodBase {
                                  int maxDepth) throws WebdavException {
     openTag(WebdavTags.response);
 
-    doNodeProperties(node, parsedReq, HttpServletResponse.SC_OK);
+    doNodeProperties(node, parsedReq);
 
     closeTag(WebdavTags.response);
 
@@ -327,73 +308,19 @@ public class PropFindMethod extends MethodBase {
 
   /* Build the response for a single node for a propfind request
    */
-  private int doPropFind(WebdavNsNode node, PropRequest preq) throws WebdavException {
-    Enumeration en = preq.props.elements();
+  /**
+   * @param node
+   * @param preq
+   * @throws WebdavException
+   */
+  private void doPropFind(WebdavNsNode node, PropRequest preq) throws WebdavException {
+    Iterator it = preq.props.iterator();
+    WebdavNsIntf intf = getNsIntf();
 
-    while (en.hasMoreElements()) {
-      WebdavProperty pr = (WebdavProperty)en.nextElement();
-      QName tag = pr.getTag();
-      String ns = tag.getNamespaceURI();
-
-      /* Deal with webdav properties */
-      if (ns.equals(WebdavTags.namespace)) {
-        if (tag.equals(WebdavTags.creationdate)) {
-          // dav 13.1
-          if (node.getCreDate() != null) {
-            property(WebdavTags.creationdate, node.getCreDate());
-          }
-        } else if (tag.equals(WebdavTags.displayname)) {
-          // dav 13.2
-          property(WebdavTags.displayname, node.getName());
-        } else if (tag.equals(WebdavTags.getcontentlanguage)) {
-          // dav 13.3
-        } else if (tag.equals(WebdavTags.getcontentlength)) {
-          // dav 13.4
-        } else if (tag.equals(WebdavTags.getcontenttype)) {
-          // dav 13.5
-          getNsIntf().generatePropContenttype(node);
-        } else if (tag.equals(WebdavTags.getetag)) {
-          // dav 13.6
-          property(WebdavTags.getetag, getEntityTag(node, true));
-        } else if (tag.equals(WebdavTags.getlastmodified)) {
-          // dav 13.7
-          if (node.getLastmodDate() != null) {
-            property(WebdavTags.getlastmodified, node.getLastmodDate());
-          }
-        } else if (tag.equals(WebdavTags.lockdiscovery)) {
-          // dav 13.8
-        } else if (tag.equals(WebdavTags.resourcetype)) {
-          // dav 13.9
-          getNsIntf().generatePropResourcetype(node);
-        } else if (tag.equals(WebdavTags.source)) {
-          // dav 13.10
-        } else if (tag.equals(WebdavTags.supportedlock)) {
-          // dav 13.11
-        } else if (tag.equals(WebdavTags.owner)) {
-          // access 5.1
-          openTag(WebdavTags.owner);
-          property(WebdavTags.href, getNsIntf().makeUserHref(node.getOwner()));
-          closeTag(WebdavTags.owner);
-        } else if (tag.equals(WebdavTags.supportedPrivilegeSet)) {
-          // access 5.2
-          getNsIntf().emitSupportedPrivSet(node);
-        } else if (tag.equals(WebdavTags.currentUserPrivilegeSet)) {
-          // access 5.3
-        } else if (tag.equals(WebdavTags.acl)) {
-          // access 5.4
-          getNsIntf().emitAcl(node);
-        } else if (tag.equals(WebdavTags.aclRestrictions)) {
-          // access 5.5
-        } else if (tag.equals(WebdavTags.inheritedAclSet)) {
-          // access 5.6
-        } else if (tag.equals(WebdavTags.principalCollectionSet)) {
-          // access 5.7
-        }
-      } else {
-      }
+    while (it.hasNext()) {
+      WebdavProperty pr = (WebdavProperty)it.next();
+      intf.generatePropValue(node, pr);
     }
-
-    return HttpServletResponse.SC_OK;
   }
 
   /* Build the response for a single node for a propnames request
@@ -441,11 +368,12 @@ public class PropFindMethod extends MethodBase {
    */
   private void doNodeNsProperties(WebdavNsNode node) throws WebdavException {
     Enumeration en = getNsIntf().getProperties(node);
+    WebdavNsIntf intf = getNsIntf();
 
     while (en.hasMoreElements()) {
       WebdavProperty prop = (WebdavProperty)en.nextElement();
 
-      property(prop.getTag(), prop.getPval());
+      intf.generatePropValue(node, prop);
     }
   }
 

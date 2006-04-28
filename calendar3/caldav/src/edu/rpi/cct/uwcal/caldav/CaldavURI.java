@@ -76,10 +76,6 @@ public class CaldavURI {
 
   String entityName;
 
-  CaldavURI(boolean ispublic, BwCalendar cal) {
-    init(ispublic, cal, null);
-  }
-
   CaldavURI(boolean ispublic, BwCalendar cal, String entityName) {
     init(ispublic, cal, entityName);
   }

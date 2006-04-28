@@ -79,6 +79,7 @@ import java.io.LineNumberReader;
 //import java.io.Reader;
 //import java.net.Authenticator;
 //import java.net.PasswordAuthentication;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -161,7 +162,7 @@ public class TestCalDav {
     }
   }
 
-  private static Vector results = new Vector();
+  private static ArrayList results = new ArrayList();
 
   /** Main method
    *
@@ -186,7 +187,7 @@ public class TestCalDav {
       if (fileName == null) {
         // Either use the test list or the sorted directory contents.
 
-        Vector tests = new Vector();
+        ArrayList tests = new ArrayList();
 
         if (testListName != null) {
           File testList = new File(dirName + "/" + testListName);
