@@ -64,10 +64,12 @@ import javax.servlet.http.HttpServletRequest;
  *
  * <p>Parameters are:<ul>
  *      <li>"startdate"              Optional start date for the event
-                                     as yymmdd or yymmddTHHmmss</li>
-        <li>"enddate"                Optional end date for the event
-                                     as yymmdd or yymmddTHHmmss</li>
-        <li>"minutes"                Optional duration in minutes</li>
+ *                                   as yymmdd or yymmddTHHmmss</li>
+ *      <li>"enddate"                Optional end date for the event
+ *                                   as yymmdd or yymmddTHHmmss</li>
+ *      <li>"minutes"                Optional duration in minutes</li>
+ *      <li>  subname:   Name of a subscription to an external calendar</li>.
+ *      <li>  calPath:   Path to a (writeable) calendar collection</li>.
  * </ul>
  *
  */
@@ -116,6 +118,17 @@ public class BwInitEventAction extends BwCalAbstractAction {
 
       dur.setType(DurationBean.dayTimeDuration);
       dur.setMinutes(minutes);
+    }
+
+    BwEvent ev = form.getNewEvent();
+
+    if (ev == null) {
+      return "doNothing";
+    }
+
+    String fwd = setEventCalendar(request, form, ev);
+    if (fwd != null) {
+      return fwd;
     }
 
     return "success";

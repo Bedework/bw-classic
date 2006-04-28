@@ -67,7 +67,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * <p>Request parameters - all optional:<ul>
  *      <li>  subname:   Name of a subscription to an external calendar</li>.
- *      <li>  calId:     Id of a (writeable) calendar collection</li>.
+ *      <li>  calPath:   Path to a (writeable) calendar collection</li>.
  * </ul>
  *
  * <p>Forwards to:<ul>

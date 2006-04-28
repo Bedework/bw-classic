@@ -406,37 +406,52 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return true;
   }
 
+  /** Set the event calendar based on request parameters. If calPath is specified
+   * we use the named calendar as the event calendar.
+   *
+   * <p>If calPath is not speciifed and subname is specified it should refer to
+   * an external calendar. We will use teh dummy calendar object for the event.
+   *
+   * <p>If neither calPath or subname is specified we use the default.
+   *
+   * <p>If a calendar was already set in the event, this action will only
+   * change that calendar if subname or calPath are specified. It will not
+   * reset the calendar to the default.
+   *
+   * @param request
+   * @param form
+   * @param ev
+   * @return String error forward or null for OK
+   * @throws Throwable
+   */
   protected String setEventCalendar(HttpServletRequest request,
                                     BwActionFormBase form,
                                     BwEvent ev) throws Throwable {
     CalSvcI svci = form.fetchSvci();
     BwSubscription sub = null;
+    BwCalendar cal = null;
 
-    if (!findSubscribedCalendar(request, form, false)) {
-      // No subscription specified. Was a calendar specified
-      int id = getIntReqPar(request, "calId", -1);
+    String calPath = request.getParameter("calPath");
 
-      if (id < 0) {
-        ev.setCalendar(svci.getPreferredCalendar());
-      } else {
-        BwCalendar calendar = svci.getCalendar(id);
-
-        if (calendar == null) {
-          form.getErr().emit("org.bedework.client.error.nosuchcalendar", id);
-          return "notFound";
-        }
-
-        ev.setCalendar(calendar);
+    if (calPath != null) {
+      cal = svci.getCalendar(calPath);
+      if (cal == null) {
+        form.getErr().emit("org.bedework.client.error.nosuchcalendar", calPath);
+        return "notFound";
       }
-    } else {
+    } else if (findSubscribedCalendar(request, form, false)) {
       sub = form.getSubscription();
-      if ((sub != null) && (!sub.getInternalSubscription())) {
-        // XXX more work for external subscriptions here
-        return "doNothing";
-      } else {
-        // XXX disallow use of subscription.
-        return "doNothing";
-      }
+      cal = sub.getCalendar();
+    } else if (ev.getCalendar() == null) {
+      // Use the default.
+      cal = svci.getPreferredCalendar();
+    }
+
+    if (cal != null) {
+      ev.setCalendar(cal);
+    } else if (ev.getCalendar() == null) {
+      // Just a validity check
+      return "error";
     }
 
     return null;  // OK return
