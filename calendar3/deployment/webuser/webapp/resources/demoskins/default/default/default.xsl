@@ -428,7 +428,7 @@
               <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
             </td>
             <td class="rightCell">
-              welcome
+              logged in as
               <xsl:text> </xsl:text>
               <strong><xsl:value-of select="/bedework/userid"/></strong>
               <xsl:text> </xsl:text>
@@ -2303,13 +2303,44 @@
        from myCalendars and mySubscriptions -->
   <xsl:template name="selectCalForEvent">
     <h2>Select a calendar</h2>
+    <form name="toggleCals" action="{$event-selectCalForEvent}">
+      <xsl:choose>
+        <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
+          <input type="radio" name="setappvar" value="showAllCalsForEvent(false)" onchange="submit()"/>
+          show only writable calendars
+          <input type="radio" name="setappvar" value="showAllCalsForEvent(true)" checked="checked" onchange="submit()"/>
+          show all calendars
+        </xsl:when>
+        <xsl:otherwise>
+          <input type="radio" name="setappvar" value="showAllCalsForEvent(false)" checked="checked" onchange="submit()"/>
+          show only writable calendars
+          <input type="radio" name="setappvar" value="showAllCalsForEvent(true)" onchange="submit()"/>
+          show all calendars
+        </xsl:otherwise>
+      </xsl:choose>
+    </form>
     <h4>My Calendars</h4>
     <ul class="calendarTree">
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="selectCalForEventCalTree"/>
+      <xsl:choose>
+        <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
+          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="selectCalForEventCalTree"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </ul>
     <h4>Subscribed Calendars</h4>
     <ul class="calendarTree">
-      <xsl:apply-templates select="/bedework/mySubscriptions/subscriptions/subscription/calendars/calendar" mode="selectCalForEventCalTree"/>
+      <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
+      <xsl:choose>
+        <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
+          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar" mode="selectCalForEventCalTree"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </ul>
   </xsl:template>
 
@@ -2339,9 +2370,16 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
-        <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
-          <xsl:value-of select="name"/>
-        </a>
+        <xsl:choose>
+          <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calendarCollection = 'true')">
+            <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
+              <strong><xsl:value-of select="name"/></strong>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="name"/>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:if test="calendar">
           <ul>
             <xsl:apply-templates select="calendar" mode="selectCalForEventCalTree"/>
@@ -2981,7 +3019,7 @@
         </tr>
       </xsl:for-each>
     </table>
-    <!--<h4><a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">Subscribe to a remote calendar</a> (by URI)</h4>-->
+    <h4><a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">Subscribe to a calendar</a> (by URI)</h4>
   </xsl:template>
 
   <xsl:template match="subscription" mode="mySubscriptions">
