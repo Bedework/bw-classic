@@ -103,7 +103,7 @@ public class FetchViewAction extends BwAbstractAction {
     }
 
     form.setView(view);
-    form.setSubscriptions(svc.getSubscriptions());
+    //form.setSubscriptions(svc.getSubscriptions());
 
     String reqpar = getReqPar(request, "delete");
 

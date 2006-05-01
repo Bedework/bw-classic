@@ -75,9 +75,9 @@ import edu.rpi.sss.util.xml.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -98,7 +98,7 @@ public class ReportMethod extends MethodBase {
   private PropFindMethod.PropRequest preq;
   private CalendarData caldata;
   private Filter filter;
-  private Vector hrefs;
+  private ArrayList hrefs;
 
   private final static int reportTypeQuery = 0;
   private final static int reportTypeMultiGet = 1;
@@ -255,7 +255,7 @@ public class ReportMethod extends MethodBase {
             }
 
             if (hrefs == null) {
-              hrefs = new Vector();
+              hrefs = new ArrayList();
             }
 
             hrefs.add(href);
@@ -371,7 +371,7 @@ public class ReportMethod extends MethodBase {
         status = wde.getStatusCode();
       }
     } else if (reportType == reportTypeMultiGet) {
-      nodes = new Vector();
+      nodes = new ArrayList();
 
       if (hrefs != null) {
         Iterator it = hrefs.iterator();

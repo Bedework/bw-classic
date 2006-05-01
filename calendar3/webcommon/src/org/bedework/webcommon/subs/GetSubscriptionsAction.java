@@ -79,9 +79,9 @@ public class GetSubscriptionsAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    CalSvcI svc = form.fetchSvci();
+    //CalSvcI svc = form.fetchSvci();
 
-    form.setSubscriptions(svc.getSubscriptions());
+    //form.setSubscriptions(svc.getSubscriptions());
 
     return "success";
   }

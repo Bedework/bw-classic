@@ -51,71 +51,46 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.webcommon.views;
 
-import org.bedework.calfacade.svc.BwView;
-import org.bedework.calsvci.CalSvcI;
-import org.bedework.webcommon.BwAbstractAction;
-import org.bedework.webcommon.BwActionFormBase;
-import org.bedework.webcommon.BwSession;
+package edu.rpi.cct.uwcal.caldav.calquery;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.bedework.calfacade.BwDateTime;
 
-/** Add a new view for a user.
- *
- * <p>Parameters are:<ul>
- *      <li>"name"             Name of view</li>
- *      <li>"makedefaultview" Optional y/n to add make this the default view.</li>
- * </ul>
- *
- * <p>Forwards to:<ul>
- *      <li>"error"        some form of fatal error.</li>
- *      <li>"noAccess"     user not authorised.</li>
- *      <li>"notAdded"     duplicate or bad name.</li>
- *      <li>"success"      subscribed ok.</li>
- * </ul>
- *
- * @author Mike Douglass   douglm@rpi.edu
+import edu.rpi.cct.uwcal.caldav.TimeRange;
+
+import org.apache.log4j.Logger;
+
+/**
+ * @author Mike Douglass douglm @ rpi.edu
  */
-public class AddViewAction extends BwAbstractAction {
-  /* (non-Javadoc)
-   * @see org.bedework.webcommon.BwAbstractAction#doAction(javax.servlet.http.HttpServletRequest, org.bedework.webcommon.BwSession, org.bedework.webcommon.BwActionFormBase)
+public class LimitFreebusySet extends TimeRange {
+  /** Constructor
    */
-  public String doAction(HttpServletRequest request,
-                         HttpServletResponse response,
-                         BwSession sess,
-                         BwActionFormBase form) throws Throwable {
-    if (form.getGuest()) {
-      return "noAccess"; // First line of defence
-    }
+  public LimitFreebusySet() {
+  }
 
-    CalSvcI svc = form.fetchSvci();
-    String name = getReqPar(request, "name");
+  /** Constructor
+   *
+   * @param start
+   * @param end
+   */
+  public LimitFreebusySet(BwDateTime start, BwDateTime end) {
+    super(start, end);
+  }
 
-    if (name == null) {
-      form.getErr().emit("org.bedework.client.error.missingfield", "name");
-      return "notAdded";
-    }
+  /**
+   * @param log
+   * @param indent
+   */
+  public void dump(Logger log, String indent) {
+    StringBuffer sb = new StringBuffer(indent);
 
-    boolean makeDefaultView = false;
+    sb.append("<limit-freebusy-set ");
+    super.toStringSegment(sb);
+    sb.append("/>");
 
-    String str = getReqPar(request, "makedefaultview");
-    if (str != null) {
-      makeDefaultView = str.equals("y");
-    }
-
-    BwView view = new BwView();
-    view.setName(name);
-
-    if (!svc.addView(view, makeDefaultView)) {
-      form.getErr().emit("org.bedework.client.error.viewnotadded");
-      return "notAdded";
-    }
-
-    form.setView(view);
-    //form.setSubscriptions(svc.getSubscriptions());
-
-    return "success";
+    log.debug(sb.toString());
   }
 }
+
+

@@ -491,7 +491,7 @@ public class Filter {
   }
 
   /** The given node must be a comp-filter element
-   *    <!ELEMENT comp-filter (is-defined | time-range)?
+   *    <!ELEMENT comp-filter (is-not-defined | time-range)?
    *                          comp-filter* prop-filter*>
    *
    *    <!ATTLIST comp-filter name CDATA #REQUIRED>
@@ -520,14 +520,14 @@ public class Filter {
               curnode.getLocalName());
         }
 
-        if (MethodBase.nodeMatches(curnode, CaldavTags.isDefined)) {
+        if (MethodBase.nodeMatches(curnode, CaldavTags.isNotDefined)) {
           if (cf.getTimeRange() != null) {
             throw new WebdavBadRequest();
           }
 
-          cf.setIsDefined(true);
+          cf.setIsNotDefined(true);
         } else if (MethodBase.nodeMatches(curnode, CaldavTags.timeRange)) {
-          if (cf.getIsDefined()) {
+          if (cf.getIsNotDefined()) {
             throw new WebdavBadRequest();
           }
 
@@ -567,7 +567,7 @@ public class Filter {
   }
 
   /* The given node must be a prop-filter element
-   *    <!ELEMENT prop-filter (is-defined | time-range | text-match)?
+   *    <!ELEMENT prop-filter (is-not-defined | time-range | text-match)?
    *                            param-filter*>
    *
    *    <!ATTLIST prop-filter name CDATA #REQUIRED>
@@ -612,8 +612,8 @@ public class Filter {
           idTrTm = true;
 
           // one of is-defined | time-range | text-match
-          if (MethodBase.nodeMatches(curnode, CaldavTags.isDefined)) {
-            pf.setIsDefined(true);
+          if (MethodBase.nodeMatches(curnode, CaldavTags.isNotDefined)) {
+            pf.setIsNotDefined(true);
           } else if (MethodBase.nodeMatches(curnode, CaldavTags.timeRange)) {
             pf.setTimeRange(CalDavParseUtil.parseTimeRange(curnode,
                 intf.getSvci().getTimezones()));
@@ -624,10 +624,6 @@ public class Filter {
               return null;
             }
           } else {
-            // Effectively is-defined
-            pf.setIsDefined(true);
-//          status = HttpServletResponse.SC_BAD_REQUEST;
-//          return null;
           }
         }
       }
@@ -641,7 +637,7 @@ public class Filter {
   }
 
   /* The given node must be a param-filter element
-   *    <!ELEMENT param-filter (is-defined | text-match) >
+   *    <!ELEMENT param-filter (is-not-defined | text-match) >
    *
    *    <!ATTLIST param-filter name CDATA #REQUIRED>
    */
@@ -661,7 +657,7 @@ public class Filter {
             child.getLocalName());
     }
 
-    if (MethodBase.nodeMatches(child, CaldavTags.isDefined)) {
+    if (MethodBase.nodeMatches(child, CaldavTags.isNotDefined)) {
       return new ParamFilter(name, true);
     }
 

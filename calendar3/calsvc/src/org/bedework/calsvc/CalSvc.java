@@ -1004,7 +1004,16 @@ public class CalSvc extends CalSvcI {
   }
 
   public Collection getSubscriptions() throws CalFacadeException {
-    return getPreferences().getSubscriptions();
+    Collection c = getPreferences().getSubscriptions();
+
+    Iterator it = c.iterator();
+    while (it.hasNext()) {
+      BwSubscription sub = (BwSubscription)it.next();
+
+      getSubCalendar(sub);
+    }
+
+    return c;
   }
 
   public BwSubscription getSubscription(int id) throws CalFacadeException {

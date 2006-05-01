@@ -1,0 +1,12 @@
+DESCRIPTION: report free/busy
+
+METHOD: REPORT
+
+AUTH: true
+
+HEADER: Depth: 0
+
+CONTENTTYPE: text/xml
+
+CONTENTFILE: content/eg20.xml
+

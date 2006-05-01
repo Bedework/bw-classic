@@ -75,7 +75,7 @@ public class PropFilter {
   /* Name of property */
   private String name;
 
-  private boolean isDefined;
+  private boolean isNotDefined;
 
   private TimeRange timeRange;
 
@@ -94,11 +94,11 @@ public class PropFilter {
   /** Constructor
    *
    * @param name
-   * @param isDefined
+   * @param isNotDefined
    */
-  public PropFilter(String name, boolean isDefined) {
+  public PropFilter(String name, boolean isNotDefined) {
     this.name = name;
-    this.isDefined = isDefined;
+    this.isNotDefined = isNotDefined;
   }
 
   /** Constructor
@@ -138,15 +138,15 @@ public class PropFilter {
   /**
    * @param val
    */
-  public void setIsDefined(boolean val) {
-    isDefined = val;
+  public void setIsNotDefined(boolean val) {
+    isNotDefined = val;
   }
 
   /**
    * @return boolean
    */
-  public boolean getIsDefined() {
-    return isDefined;
+  public boolean getIsNotDefined() {
+    return isNotDefined;
   }
 
   /**
@@ -215,11 +215,7 @@ public class PropFilter {
       Property prop = pl.getProperty(getName());
 
       if (prop == null) {
-        return false;
-      }
-
-      if (getIsDefined()) {
-        return true;
+        return getIsNotDefined();
       }
 
       TextMatch match = getMatch();
@@ -252,8 +248,8 @@ public class PropFilter {
     sb.append("\">\n");
     log.debug(sb.toString());
 
-    if (isDefined) {
-      log.debug(indent + "  " + "<is-defined/>\n");
+    if (isNotDefined) {
+      log.debug(indent + "  " + "<is-not-defined/>\n");
     } else if (timeRange != null) {
       timeRange.dump(log, indent + "  ");
     } else {

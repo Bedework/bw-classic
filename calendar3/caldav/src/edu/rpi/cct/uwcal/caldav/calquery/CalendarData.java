@@ -89,8 +89,9 @@ import org.w3c.dom.Node;
  */
 public class CalendarData {
   /*
-      <!ELEMENT calendar-data ((comp?, (expand-recurrence-set |
-                                       limit-recurrence-set)?) |
+      <!ELEMENT calendar-data ((comp?, (expand |
+                                           limit-recurrence-set)?,
+                                           limit-freebusy-set?) |
                           #PCDATA)?>
 
          pcdata is for response
@@ -126,6 +127,7 @@ public class CalendarData {
   private Comp comp;
   private ExpandRecurrenceSet ers;
   private LimitRecurrenceSet lrs;
+  private LimitFreebusySet lfs;
 
   /** Constructor
    *
@@ -161,6 +163,13 @@ public class CalendarData {
    */
   public LimitRecurrenceSet getLrs() {
     return lrs;
+  }
+
+  /**
+   * @return LimitFreebusySet
+   */
+  public LimitFreebusySet getLfs() {
+    return lfs;
   }
 
   /** The given node must be the Filter element
@@ -209,8 +218,7 @@ public class CalendarData {
           }
 
           comp = parseComp(curnode);
-        } else if (MethodBase.nodeMatches(curnode, CaldavTags.expandRecurrenceSet) ||
-                   MethodBase.nodeMatches(curnode, CaldavTags.expand)) {
+        } else if (MethodBase.nodeMatches(curnode, CaldavTags.expand)) {
           if (ers != null) {
             throw new WebdavBadRequest();
           }
@@ -224,6 +232,13 @@ public class CalendarData {
 
           lrs = new LimitRecurrenceSet();
            parseTimeRange(curnode, lrs);
+        } else if (MethodBase.nodeMatches(curnode, CaldavTags.limitFreebusySet)) {
+          if (lfs != null) {
+            throw new WebdavBadRequest();
+          }
+
+          lfs = new LimitFreebusySet();
+           parseTimeRange(curnode, lfs);
         } else {
           throw new WebdavBadRequest();
         }

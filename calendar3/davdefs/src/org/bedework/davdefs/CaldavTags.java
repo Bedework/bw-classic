@@ -101,13 +101,9 @@ public class CaldavTags implements CaldavDefs {
   public static final QName compFilter = new QName(caldavNamespace,
                                                    "comp-filter");
 
-  /** >= draft 9   */
+  /**   */
   public static final QName expand = new QName(caldavNamespace,
                                                "expand");
-
-  /** < draft 9   */
-  public static final QName expandRecurrenceSet = new QName(caldavNamespace,
-                                                            "expand-recurrence-set");
 
   /**   */
   public static final QName filter = new QName(caldavNamespace,
@@ -118,12 +114,16 @@ public class CaldavTags implements CaldavDefs {
                                                       "free-busy-query");
 
   /**   */
-  public static final QName isDefined = new QName(caldavNamespace,
-                                                  "is-defined");
+  public static final QName isNotDefined = new QName(caldavNamespace,
+                                                     "is-not-defined");
+
+  /**   */
+  public static final QName limitFreebusySet = new QName(caldavNamespace,
+                                                         "limit-freebusy-set");
 
   /**   */
   public static final QName limitRecurrenceSet = new QName(caldavNamespace,
-                                                            "limit-recurrence-set");
+                                                           "limit-recurrence-set");
 
   /**   */
   public static final QName mkcalendar = new QName(caldavNamespace,

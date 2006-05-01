@@ -71,7 +71,7 @@ public class CompFilter {
   /* Name of component VEVENT etc */
   private String name;
 
-  private boolean isDefined;
+  private boolean isNotDefined;
 
   private TimeRange timeRange;
 
@@ -103,15 +103,15 @@ public class CompFilter {
   /**
    * @param val
    */
-  public void setIsDefined(boolean val) {
-    isDefined = val;
+  public void setIsNotDefined(boolean val) {
+    isNotDefined = val;
   }
 
   /**
-   * @return boolean isdefined value
+   * @return boolean isNotDefined value
    */
-  public boolean getIsDefined() {
-    return isDefined;
+  public boolean getIsNotDefined() {
+    return isNotDefined;
   }
 
   /**
@@ -202,8 +202,8 @@ public class CompFilter {
     sb.append("\">");
     log.debug(sb.toString());
 
-    if (isDefined) {
-      log.debug(indent + "  " + "<is-defined/>");
+    if (isNotDefined) {
+      log.debug(indent + "  " + "<is-not-defined/>");
     } else if (timeRange != null) {
       timeRange.dump(log, indent + "  ");
     }

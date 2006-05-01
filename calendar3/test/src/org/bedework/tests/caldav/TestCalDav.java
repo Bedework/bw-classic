@@ -82,7 +82,6 @@ import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
-import java.util.Vector;
 
 /** Try to fire requests at this thing.
  *
