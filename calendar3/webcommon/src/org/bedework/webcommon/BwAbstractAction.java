@@ -506,11 +506,19 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     BwCalendar cal = null;
 
     if (calId < 0) {
-      form.getErr().emit("org.bedework.client.error.missingcalendarid");
-      return null;
-    }
+      // Try path
+      String calPath = request.getParameter("calPath");
 
-    cal = svci.getCalendar(calId);
+      if (calPath == null) {
+        // bogus request
+        form.getErr().emit("org.bedework.client.error.missingcalendarpath");
+        return null;
+      }
+
+      cal = svci.getCalendar(calPath);
+    } else {
+      cal = svci.getCalendar(calId);
+    }
 
     if (cal == null) {
       // Assume no access

@@ -77,10 +77,10 @@ import javax.servlet.http.HttpServletResponse;
  * Currently this provides a basic level of access control modification.
  *
  * <p>Request parameters:<ul>
- *      <li>  calId alone:           id of calendar or...</li>.
- *      <li>  calId+guid+recurid:    event</li>.
- *      <li>  how:                   r for read, w for write,
- *                                   f for free/busy, d for default</li>.
+ *      <li>  calPath alone:         path (or url) of calendar or...</li>.
+ *      <li>  calId+guid+recurid:  event</li>.
+ *      <li>  how:                   concateated String of desired access rights
+ *                               @see edu.rpi.cct.uwcal.access.PrivilegeDefs </li>.
  *      <li>  whoType:               user (default), group</li>.
  *      <li>  who:                   name of principal - default to owner</li>.
  * </ul>
@@ -124,44 +124,18 @@ public class AccessAction extends BwAbstractAction {
       }
       ev = ei.getEvent();
     } else {
-      int id = getIntReqPar(request, "calId", -1);
+      String calPath = request.getParameter("calPath");
 
-      if (id < 0) {
+      if (calPath == null) {
         // bogus request
         return "notFound";
       }
 
-      cal = svci.getCalendar(id);
+      cal = svci.getCalendar(calPath);
       if (cal == null) {
-        // Do nothing
-        form.getErr().emit("org.bedework.client.error.nosuchcalendar", id);
+        form.getErr().emit("org.bedework.client.error.nosuchcalendar", calPath);
         return "notFound";
       }
-    }
-
-    String how = getReqPar(request, "how");
-
-    if (how == null) {
-      form.getErr().emit("org.bedework.client.error.nohowaccess");
-      return "error";
-    }
-
-    int desiredAccess = -1;
-    //boolean defaultAccess = false;
-
-    if (how.equals("r")) {
-      desiredAccess = PrivilegeDefs.privRead;
-    } else if (how.equals("w")) {
-      desiredAccess = PrivilegeDefs.privWrite;
-    } else if (how.equals("f")) {
-      desiredAccess = PrivilegeDefs.privReadFreeBusy;
-    } else if (how.equals("d")) {
-      //defaultAccess = true;
-      form.getErr().emit("org.bedework.client.error.unimplemented");
-      return "error";
-    } else {
-      form.getErr().emit("org.bedework.client.error.badhow");
-      return "error";
     }
 
     String whoTypeStr = request.getParameter("whoType");
@@ -199,7 +173,35 @@ public class AccessAction extends BwAbstractAction {
     }
 
     ArrayList aces = new ArrayList();
-    aces.add(new Ace(who, false, whoType, Privileges.makePriv(desiredAccess)));
+
+    String how = getReqPar(request, "how");
+
+    if (how == null) {
+      form.getErr().emit("org.bedework.client.error.nohowaccess");
+      return "error";
+    }
+
+    char[] howchs = how.toCharArray();
+
+    for (int hi = 0; hi <= howchs.length; hi++) {
+      char howch = howchs[hi];
+      boolean found = false;
+
+      for (int pi = 0; pi <= PrivilegeDefs.privMaxType; pi++) {
+        if (howch == PrivilegeDefs.privEncoding[pi]) {
+          aces.add(new Ace(who, false, whoType,
+                           Privileges.makePriv(pi)));
+          found = true;
+          break;
+        }
+
+        if (!found) {
+          form.getErr().emit("org.bedework.client.error.badhow");
+          return "error";
+        }
+      }
+    }
+
 
     if (ev != null) {
       svci.changeAccess(ev, aces);
