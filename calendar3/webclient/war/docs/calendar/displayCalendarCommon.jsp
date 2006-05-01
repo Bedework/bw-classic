@@ -7,6 +7,7 @@
   <id><bean:write name="curcal" property="id" /></id>
   <bw:emitText name="curcal" property="name" />
   <bw:emitText name="curcal" property="path" />
+  <bw:emitText name="curcal" property="encodedPath" />
   <bw:emitText name="curcal" property="description" tagName="desc" />
   <calendarCollection><bean:write name="curcal" property="calendarCollection" /></calendarCollection>
   <bw:emitText name="curcal" property="mailListId" />

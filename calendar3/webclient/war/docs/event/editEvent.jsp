@@ -24,6 +24,7 @@ try {
     <calendar>
       <name><bean:write name="calForm" property="editEvent.calendar.name"/></name>
       <path><bean:write name="calForm" property="editEvent.calendar.path"/></path>
+      <encodedPath><bean:write name="calForm" property="editEvent.calendar.encodedPath" /></encodedPath>
     </calendar>
     <allDay><html:checkbox property="eventStartDate.dateOnly"/></allDay>
     <start>

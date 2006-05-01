@@ -171,6 +171,7 @@ h4 {
   border-bottom: 2px solid #aaa;
   border-top: 24px solid #333;
   vertical-align: top;
+  white-space: nowrap;
   margin: 0;
   padding: 0;
 }
