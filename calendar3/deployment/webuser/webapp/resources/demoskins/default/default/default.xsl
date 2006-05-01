@@ -288,7 +288,7 @@
         <a href="javascript:window.print()" title="print this view">
           <img alt="print this view" src="{$resourcesRoot}/resources/std-print-icon.gif" width="20" height="14" border="0"/> print
         </a>
-        <a class="rss" href="{$setSelection}?calId=&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
+        <a class="rss" href="{$setSelection}?setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
       </td>
     </table>
   </xsl:template>
@@ -2118,8 +2118,8 @@
         </tr>
       </table>
       <form name="calendarShareForm" action="{$freeBusy-setAccess}" id="shareForm">
-        <xsl:variable name="calId" select="/bedework/myCalendars/calendars/calendar/id"/>
-        <input type="hidden" name="calId" value="{$calId}"/>
+        <xsl:variable name="calPath" select="/bedework/myCalendars/calendars/calendar/encodedPath"/>
+        <input type="hidden" name="calPath" value="{$calPath}"/>
         <p>
           Share my free/busy with:<br/>
           <input type="text" name="who" size="20"/>
@@ -2250,7 +2250,7 @@
 
   <xsl:template match="calendar" mode="listForUpdate">
     <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
-      <xsl:variable name="id" select="id"/>
+      <xsl:variable name="calPath" select="encodedPath"/>
       <xsl:variable name="itemClass">
         <xsl:choose>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
@@ -2258,12 +2258,12 @@
         </xsl:choose>
       </xsl:variable>
       <li class="{$itemClass}">
-        <a href="{$calendar-fetchForUpdate}&amp;calId={$id}" title="update">
+        <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="update">
           <xsl:value-of select="name"/>
         </a>
         <xsl:if test="calendarCollection='false'">
           <xsl:text> </xsl:text>
-          <a href="{$calendar-initAdd}&amp;calId={$id}" title="add a calendar or folder">
+          <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="add a calendar or folder">
             <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
           </a>
         </xsl:if>
@@ -2280,7 +2280,7 @@
 
   <xsl:template match="calendar" mode="listForDisplay">
     <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
-      <xsl:variable name="id" select="id"/>
+      <xsl:variable name="calPath" select="encodedPath"/>
       <xsl:variable name="itemClass">
         <xsl:choose>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
@@ -2288,7 +2288,7 @@
         </xsl:choose>
       </xsl:variable>
       <li class="{$itemClass}">
-        <a href="{$calendar-fetchForDisplay}&amp;calId={$id}" title="display">
+        <a href="{$calendar-fetchForDisplay}&amp;calPath={$calPath}" title="display">
           <xsl:value-of select="name"/>
         </a>
         <xsl:if test="calendar">
@@ -2462,14 +2462,11 @@
         <h3>Modify Folder</h3>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:variable name="id" select="id"/>
+    <xsl:variable name="calPath" select="encodedPath"/>
     <form name="modCalForm" action="{$calendar-update}">
       <table class="common">
         <tr>
           <th class="commonHeader" colspan="2">
-            <div id="eventActions">
-              key: <xsl:value-of select="id"/>
-            </div>
             <xsl:value-of select="path"/>
           </th>
         </tr>
@@ -2572,7 +2569,7 @@
         </xsl:if>
       </table>
       <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm">
-        <input type="hidden" name="calId" value="{$id}"/>
+        <input type="hidden" name="calPath" value="{$calPath}"/>
         <p>
           Share this calendar with:<br/>
           <input type="text" name="who" size="20"/>
@@ -2783,7 +2780,7 @@
 
   <xsl:template match="calendar" mode="subscribe">
     <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
-      <xsl:variable name="id" select="id"/>
+      <xsl:variable name="calPath" select="encodedPath"/>
       <xsl:variable name="itemClass">
         <xsl:choose>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
@@ -2791,7 +2788,7 @@
         </xsl:choose>
       </xsl:variable>
       <li class="{$itemClass}">
-        <a href="{$subscriptions-initAdd}&amp;calId={$id}">
+        <a href="{$subscriptions-initAdd}&amp;calPath={$calPath}">
           <xsl:value-of select="name"/>
         </a>
         <xsl:if test="calendar">
@@ -3307,9 +3304,9 @@
 
   <!--==== SIDE CALENDAR MENU ====-->
   <xsl:template match="calendar" mode="sideList">
-    <xsl:variable name="id" select="id"/>
+    <xsl:variable name="calPath" select="encodedPath"/>
     <div class="std-text">
-      <a href="{$setSelection}?calId={$id}"><xsl:value-of select="title"/></a>
+      <a href="{$setSelection}?calPath={$calPath}"><xsl:value-of select="title"/></a>
     </div>
   </xsl:template>
 

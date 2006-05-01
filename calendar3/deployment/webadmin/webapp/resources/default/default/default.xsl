@@ -1521,7 +1521,7 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="listForUpdate">
-    <xsl:variable name="id" select="id"/>
+    <xsl:variable name="calPath" select="encodedPath"/>
     <xsl:variable name="itemClass">
       <xsl:choose>
         <xsl:when test="calendarCollection='false'">folder</xsl:when>
@@ -1529,12 +1529,12 @@
       </xsl:choose>
     </xsl:variable>
     <li class="{$itemClass}">
-      <a href="{$calendar-fetchForUpdate}&amp;calId={$id}" title="update">
+      <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="update">
         <xsl:value-of select="name"/>
       </a>
       <xsl:if test="calendarCollection='false'">
         <xsl:text> </xsl:text>
-        <a href="{$calendar-initAdd}&amp;calId={$id}" title="add a calendar or folder">
+        <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="add a calendar or folder">
           <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
         </a>
       </xsl:if>
@@ -1549,7 +1549,7 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="listForDisplay">
-    <xsl:variable name="id" select="id"/>
+    <xsl:variable name="calPath" select="calPath"/>
     <xsl:variable name="itemClass">
       <xsl:choose>
         <xsl:when test="calendarCollection='false'">folder</xsl:when>
@@ -1557,7 +1557,7 @@
       </xsl:choose>
     </xsl:variable>
     <li class="{$itemClass}">
-      <a href="{$calendar-fetchForDisplay}&amp;calId={$id}" title="display">
+      <a href="{$calendar-fetchForDisplay}&amp;calPath={$calPath}" title="display">
         <xsl:value-of select="name"/>
       </a>
       <xsl:if test="calendar">
@@ -1899,7 +1899,7 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="subscribe">
-    <xsl:variable name="id" select="id"/>
+    <xsl:variable name="calPath" select="encodedPath"/>
     <xsl:variable name="itemClass">
       <xsl:choose>
         <xsl:when test="calendarCollection='false'">folder</xsl:when>
@@ -1907,7 +1907,7 @@
       </xsl:choose>
     </xsl:variable>
     <li class="{$itemClass}">
-      <a href="{$subscriptions-initAdd}&amp;calId={$id}">
+      <a href="{$subscriptions-initAdd}&amp;calPath={$calPath}">
         <xsl:value-of select="name"/>
       </a>
       <xsl:if test="calendar">

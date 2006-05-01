@@ -32,6 +32,8 @@
         Value: string - name of the calendar --%>
       <bw:emitText name="calendar" property="path"/><%--
           Value: path to the calendar --%>
+      <bw:emitText name="calendar" property="encodedPath"/><%--
+          Value: encoded path to the calendar --%>
       <id><bean:write name="calendar" property="id"/></id><%--
         Value: integer - calendar id --%>
       <bw:emitText name="calendar" property="owner.account" tagName="owner" /><%--
@@ -42,6 +44,7 @@
     <calendar>
       <name></name>
       <path></path>
+      <encodedPath></encodedPath>
       <id></id><%--
         Value: integer - calendar id --%>
       <owner></owner><%--

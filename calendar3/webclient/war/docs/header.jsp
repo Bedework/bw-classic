@@ -235,6 +235,8 @@ try {
           <logic:present name="sub" property="calendar" >
             <calendar>
               <name><bean:write name="sub" property="calendar.name" /></name>
+              <path><bean:write name="sub" property="calendar.path" /></path>
+              <encodedPath><bean:write name="sub" property="calendar.encodedPath" /></encodedPath>
             </calendar>
           </logic:present>
           <logic:notPresent name="sub" property="calendar" >
