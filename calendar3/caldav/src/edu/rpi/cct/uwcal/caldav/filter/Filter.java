@@ -98,14 +98,17 @@ import org.w3c.dom.Node;
  *        When this element is present, the server should only return a component
  *        if it matches the filter, which is to say:
  *
- *    ("no is-defined element" OR "is-defined matches") AND
- *    ("no time-range element" OR "time-range matches") AND
- *    ("no sub-component filter" OR "all sub-component filters match") AND
- *    ("no property filter elements" OR "all property filters match")
+ *       A component of the type specified by the "name" attribute
+ *       exists, and the CALDAV:comp-filter is empty, OR
+ *
+ *       it contains at least one recurrence instance scheduled to overlap a
+ *       given time range if a CALDAV:time-range XML element is specified, and
+ *       that any CALDAV:prop-filter and CALDAV:comp-filter child elements
+ *       also match.
  *
  *
- *    <!ELEMENT comp-filter (is-defined | time-range)?
- *                          comp-filter* prop-filter*>
+ *    <!ELEMENT comp-filter (is-not-defined | (time-range?,
+ *                              prop-filter*, comp-filter*))>
  *
  *    <!ATTLIST comp-filter name CDATA #REQUIRED>
  *
@@ -118,15 +121,23 @@ import org.w3c.dom.Node;
  *    Purpose:
  *        Limits the search to specific properties.
  *    Description:
- *        The "name" attribute MUST contain an iCalendar property name (e.g., "ATTENDEE"). When the 'prop-filter' executes, a property matches if:
+ *        The "name" attribute MUST contain an iCalendar property name
+ *        (e.g., "ATTENDEE"). When the 'prop-filter' executes, a property matches if:
  *
- *    ("no is-defined element" OR "is-defined matches") AND
- *    ("no time-range element" OR "time-range matches") AND
- *    ("no text match element" OR "text-match matches") AND
- *    ("no parameter filter elements" OR "all parameter filters match")
+ *       A property of the type specified by the "name" attribute
+ *       exists, and the CALDAV:prop-filter is empty, OR it matches the
+ *       CALDAV:time-range XML element or CALDAV:text-match conditions
+ *       if specified, and that any CALDAV:param-filter child elements
+ *       also match.
  *
- *    <!ELEMENT prop-filter (is-defined | time-range | text-match)?
- *                            param-filter*>
+ *    or:
+ *
+ *       A property of the type specified by the "name" attribute does
+ *       not exist, and the CALDAV:is-not-defined element is specified.
+ *
+ *    <!ELEMENT prop-filter ((is-not-defined |
+ *                              ((time-range | text-match)?,
+ *                               param-filter*))>
  *
  *    <!ATTLIST prop-filter name CDATA #REQUIRED>
  *
@@ -491,8 +502,8 @@ public class Filter {
   }
 
   /** The given node must be a comp-filter element
-   *    <!ELEMENT comp-filter (is-not-defined | time-range)?
-   *                          comp-filter* prop-filter*>
+   *    <!ELEMENT comp-filter (is-not-defined | (time-range?,
+   *                            prop-filter*, comp-filter*))>
    *
    *    <!ATTLIST comp-filter name CDATA #REQUIRED>
    *
@@ -510,6 +521,19 @@ public class Filter {
 
     Element[] children = getChildren(nd);
 
+    if (children.length == 0) {
+      // Empty
+      return cf;
+    }
+
+    if ((children.length == 1) &&
+        MethodBase.nodeMatches(children[0], CaldavTags.isNotDefined)) {
+      cf.setIsNotDefined(true);
+      return cf;
+    }
+
+    /* (time-range?, prop-filter*, comp-filter*) */
+
     try {
       for (int i = 0; i < children.length; i++) {
         Node curnode = children[i];
@@ -520,17 +544,7 @@ public class Filter {
               curnode.getLocalName());
         }
 
-        if (MethodBase.nodeMatches(curnode, CaldavTags.isNotDefined)) {
-          if (cf.getTimeRange() != null) {
-            throw new WebdavBadRequest();
-          }
-
-          cf.setIsNotDefined(true);
-        } else if (MethodBase.nodeMatches(curnode, CaldavTags.timeRange)) {
-          if (cf.getIsNotDefined()) {
-            throw new WebdavBadRequest();
-          }
-
+        if (MethodBase.nodeMatches(curnode, CaldavTags.timeRange)) {
           cf.setTimeRange(CalDavParseUtil.parseTimeRange(curnode,
               intf.getSvci().getTimezones()));
 

@@ -66,14 +66,13 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
 import edu.rpi.sss.util.xml.QName;
 
-
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.component.VEvent;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 /** Class to represent an entity such as events in caldav.
  *
@@ -222,9 +221,13 @@ public class CaldavComponentNode extends CaldavBwNode {
    */
   public void addEvent(BwEvent val) {
     if (events == null) {
-      events = new Vector();
+      events = new ArrayList();
     }
-    events.add(val);
+
+    EventInfo ei = new EventInfo(val);
+
+    ei.setRecurrenceId(val.getRecurrence().getRecurrenceId());
+    events.add(ei);
   }
 
   /** Returns the only event or the master event for a recurrence
@@ -267,34 +270,34 @@ public class CaldavComponentNode extends CaldavBwNode {
 
   public Collection getProperties(String ns) throws WebdavIntfException {
     init(true);
-    Vector v = new Vector();
+    ArrayList al = new ArrayList();
 
     getVevent(); // init comp
     if (comp == null) {
       throw new WebdavIntfException("getProperties, comp == null");
     }
 
-    addProp(v, ICalTags.summary, name);
-    addProp(v, ICalTags.dtstart, comp.getDtstart());
-    addProp(v, ICalTags.dtend, comp.getDtend());
-    addProp(v, ICalTags.duration, comp.getDuration());
-    addProp(v, ICalTags.transp, comp.getTransp());
-    addProp(v, ICalTags.due, comp.getDue());
+    addProp(al, ICalTags.summary, name);
+    addProp(al, ICalTags.dtstart, comp.getDtstart());
+    addProp(al, ICalTags.dtend, comp.getDtend());
+    addProp(al, ICalTags.duration, comp.getDuration());
+    addProp(al, ICalTags.transp, comp.getTransp());
+    addProp(al, ICalTags.due, comp.getDue());
 //    addProp(v, ICalTags.completed,        | date-time from RFC2518
-    addProp(v, ICalTags.status, comp.getStatus());
+    addProp(al, ICalTags.status, comp.getStatus());
 //    addProp(v, ICalTags.priority,         | integer
 //    addProp(v, ICalTags.percentComplete, | integer
-    addProp(v, ICalTags.uid, comp.getUid());
-    addProp(v, ICalTags.sequence, comp.getSequence());
+    addProp(al, ICalTags.uid, comp.getUid());
+    addProp(al, ICalTags.sequence, comp.getSequence());
 //    addProp(v, ICalTags.recurrenceId,    | date-time from RFC2518
 //    addProp(v, ICalTags.trigger,          | see below TODO
 
 // FIXME FIX FIX
-    addProp(v, ICalTags.hasRecurrence, "0");
-    addProp(v, ICalTags.hasAlarm, "0");
-    addProp(v, ICalTags.hasAttachment, "0");
+    addProp(al, ICalTags.hasRecurrence, "0");
+    addProp(al, ICalTags.hasAlarm, "0");
+    addProp(al, ICalTags.hasAttachment, "0");
 
-    return v;
+    return al;
   }
 
   public String getContentString() throws WebdavIntfException {

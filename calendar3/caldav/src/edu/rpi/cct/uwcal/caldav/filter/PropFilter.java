@@ -252,7 +252,7 @@ public class PropFilter {
       log.debug(indent + "  " + "<is-not-defined/>\n");
     } else if (timeRange != null) {
       timeRange.dump(log, indent + "  ");
-    } else {
+    } else if (match != null) {
       match.dump(log, indent + "  ");
     }
 
