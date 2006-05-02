@@ -667,18 +667,7 @@
         <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event)">
           <tr>
             <td class="noEventsCell">
-              There are no events posted
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Day'">
-                  today<xsl:if test="/bedework/title!=''"> for <strong><xsl:value-of select="/bedework/title"/></strong></xsl:if><xsl:if test="/bedework/search!=''"> for search term <strong>"<xsl:value-of select="/bedework/search"/>"</strong></xsl:if>.
-                </xsl:when>
-                <xsl:when test="/bedework/periodname='Month'">
-                  this month<xsl:if test="/bedework/title!=''"> for <strong><xsl:value-of select="/bedework/title"/></strong></xsl:if><xsl:if test="/bedework/search!=''"> for search term <strong>"<xsl:value-of select="/bedework/search"/>"</strong></xsl:if>.
-                </xsl:when>
-                <xsl:otherwise>
-                  this week<xsl:if test="/bedework/title!=''"> for <strong><xsl:value-of select="/bedework/title"/></strong></xsl:if><xsl:if test="/bedework/search!=''"> for search term <strong>"<xsl:value-of select="/bedework/search"/>"</strong></xsl:if>.
-                </xsl:otherwise>
-              </xsl:choose>
+              No events to display.
             </td>
           </tr>
         </xsl:when>
@@ -1077,10 +1066,11 @@
     </h2>
     <table class="common" cellspacing="0">
       <tr>
-        <th colspan="3" class="commonHeader">
+        <th colspan="2" class="commonHeader">
           <div id="eventActions">
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
             <a href="{$export}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+              <img src="{$resourcesRoot}/resources/std-ical_iconDkGray.gif" width="12" height="13" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
               Download
             </a> |
             <xsl:choose>
@@ -1088,11 +1078,13 @@
                 <xsl:choose>
                   <xsl:when test="recurring=true">
                     <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       Remove All (recurring)
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       Remove
                     </a>
                   </xsl:otherwise>
@@ -1100,16 +1092,19 @@
               </xsl:when>
               <xsl:when test="calendar/owner = /bedework/userid">
                 <a href="{$editEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="13" border="0" alt="edit"/>
                   Edit
                 </a> |
                 <xsl:choose>
                   <xsl:when test="recurring=true">
                     <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       Delete All (recurring)
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       Delete
                     </a>
                   </xsl:otherwise>
@@ -1117,6 +1112,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <a href="{$subscriptions-fetch}">
+                  <img src="{$resourcesRoot}/resources/std-ical_iconSubsDkGray.gif" width="12" height="13" border="0" alt="edit"/>
                   Manage Subscriptions
                 </a>
               </xsl:otherwise>
@@ -1135,24 +1131,6 @@
           </xsl:choose>
         </th>
       </tr>
-      <!--<tr>
-        <td class="fieldname">Title:</td>
-        <td class="fieldval">
-          <strong>
-            <xsl:choose>
-              <xsl:when test="link != ''">
-                <xsl:variable name="link" select="link"/>
-                <a href="{$link}">
-                  <xsl:value-of select="summary"/>
-                </a>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="summary"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </strong>
-        </td>
-      </tr>-->
       <tr>
         <td class="fieldname">When:</td>
         <td class="fieldval">
@@ -1163,17 +1141,16 @@
           <xsl:if test="end/longdate != start/longdate"><xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text></xsl:if>
           <xsl:if test="end/time != ''"><span class="time"><xsl:value-of select="end/time"/></span></xsl:if>
         </td>
-        <th class="icon" rowspan="2">
+        <!--<th class="icon" rowspan="2">
           <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
           <a href="{$export}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
             <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
-          </a><!-- <br />
-          [<a href="">help</a>] -->
-        </th>
+          </a>
+        </th>-->
       </tr>
       <tr>
         <td class="fieldname">Where:</td>
-        <td colspan="3" class="fieldval">
+        <td class="fieldval">
           <xsl:choose>
             <xsl:when test="location/link=''">
               <xsl:value-of select="location/address"/>
@@ -1192,7 +1169,7 @@
       </tr>
       <tr>
         <td class="fieldname">Description:</td>
-        <td colspan="3" class="fieldval">
+        <td class="fieldval">
           <xsl:call-template name="replace">
             <xsl:with-param name="string" select="description"/>
             <xsl:with-param name="pattern" select="'&#xA;'"/>
@@ -1204,7 +1181,7 @@
         <tr>
           <td class="fieldname">Organizer:</td>
           <xsl:variable name="organizerUri" select="organizer/organizerUri"/>
-          <td colspan="2" class="fieldval">
+          <td class="fieldval">
             <strong>
               <a href="{$organizerUri}">
                 <xsl:value-of select="organizer/cn"/>
@@ -1216,7 +1193,7 @@
       <xsl:if test="attendee">
         <tr>
           <td class="fieldname">Attendees:</td>
-          <td colspan="3" class="fieldval">
+          <td class="fieldval">
             <table id="attendees" cellspacing="0">
               <tr>
                 <th>role</th>
@@ -1245,13 +1222,13 @@
       <xsl:if test="cost!=''">
         <tr>
           <td class="fieldname">Cost:</td>
-          <td colspan="2" class="fieldval"><xsl:value-of select="cost"/></td>
+          <td class="fieldval"><xsl:value-of select="cost"/></td>
         </tr>
       </xsl:if>
       <xsl:if test="link != ''">
         <tr>
           <td class="fieldname">See:</td>
-          <td colspan="3" class="fieldval">
+          <td class="fieldval">
             <xsl:variable name="link" select="link"/>
             <a href="{$link}"><xsl:value-of select="link"/></a>
           </td>
@@ -1260,7 +1237,7 @@
       <xsl:if test="sponsor/name!='none'">
         <tr>
           <td class="fieldname">Contact:</td>
-          <td colspan="3" class="fieldval">
+          <td class="fieldval">
             <xsl:choose>
               <xsl:when test="sponsor/link=''">
                 <xsl:value-of select="sponsor/name"/>
@@ -3146,10 +3123,11 @@
             <input type="radio" value="false" name="affectsFreeBusy" checked="checked"/> no
           </td>
         </tr>
+      </table>
+      <table border="0" id="submitTable">
         <tr>
-          <td>&#160;</td>
           <td>
-            <input name="submit" type="submit" value="Continue"/>&#160;
+            <input name="submit" type="submit" value="Continue"/>
             <input name="cancelled" type="submit" value="Cancel"/>
           </td>
         </tr>
@@ -3260,10 +3238,10 @@
       <table class="common" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">
-            <xsl:variable name="locId" select="form/id"/>
+            <!--<xsl:variable name="locId" select="form/id"/>
             <div id="eventActions">
               <a href="{$delLocation}?locationId={$locId}">Delete Location</a>
-            </div>
+            </div>-->
             Edit Location
           </th>
         </tr>
@@ -3291,11 +3269,19 @@
             <xsl:copy-of select="form/link/*"/>
           </td>
         </tr>
+      </table>
+      <table border="0" id="submitTable">
         <tr>
-          <td>&#160;</td>
-          <td class="padMe">
-            <input name="submit" type="submit" value="Submit Location"/>&#160;
+          <td>
+            <input name="submit" type="submit" value="Submit Location"/>
             <input name="cancelled" type="submit" value="Cancel"/>
+            <input type="reset" value="Reset"/>
+          </td>
+          <td align="right">
+            <xsl:variable name="locId" select="form/id"/>
+            <a href="{$delLocation}?locationId={$locId}">
+              <input type="button" name="delete" value="Delete Location"/>
+            </a>
           </td>
         </tr>
       </table>

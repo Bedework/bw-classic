@@ -410,6 +410,7 @@ table.common th.icon {
   color: black;
 }
 table.common th.commonHeader {
+  vertical-align: middle;
   background-color: #666;
   color: #eee;
   padding: 0.2em 0.5em;
