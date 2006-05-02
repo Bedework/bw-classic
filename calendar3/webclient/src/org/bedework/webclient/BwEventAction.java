@@ -63,6 +63,7 @@ import javax.servlet.http.HttpServletRequest;
  * Action to set up an event for display.
  * <p>Request parameters<ul>
  *      <li>"subid"    subscription id for event.</li>
+ *      <li>"calPath"  calendar for event.</li>
  *      <li>"guid"     guid of event.</li>
  *      <li>"recurrenceId"   recurrence-id of event instance - possibly null.</li>
  * </ul>

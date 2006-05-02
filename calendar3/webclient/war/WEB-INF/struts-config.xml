@@ -265,7 +265,7 @@
     </action>
 
     <action    path="/addEventRef"
-               type="org.bedework.webclient.BwInitEventAction"
+               type="org.bedework.webclient.BwEventAction"
                name="calForm"
                scope="session"
                validate="false">
@@ -277,6 +277,7 @@
                name="calForm"
                scope="session"
                validate="false">
+      <forward name="duplicate" path="/showMain.rdo" redirect="true" />
     </action>
 
     <action    path="/event/selectCalForEvent"

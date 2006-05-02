@@ -219,5 +219,9 @@
       where ev.name = :name and ev.calendar = :cal
   ]]></query>
   -->
+  <query name="getGuidCountCalendarAnnotation"><![CDATA[
+    select count(*) from org.bedework.calfacade.BwEventAnnotation as ev
+      where ev.calendar=:cal and ev.guid = :guid
+  ]]></query>
 </hibernate-mapping>
 

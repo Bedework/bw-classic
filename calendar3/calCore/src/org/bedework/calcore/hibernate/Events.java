@@ -332,14 +332,8 @@ public class Events extends CalintfHelper implements EventsI {
      *
      * It also ensures our guid allocation is working OK
      */
-    sess.namedQuery("getGuidCountCalendar");
-    sess.setEntity("cal", val.getCalendar());
-    sess.setString("guid", val.getGuid());
-
-    Collection refs = sess.getList();
-
-    Integer ct = (Integer)refs.iterator().next();
-    if (ct.intValue() > 0) {
+    if ((countCalendarGuids("getGuidCountCalendar", val) > 0) ||
+        (countCalendarGuids("getGuidCountCalendarAnnotation", val) > 0)) {
       throw new CalFacadeException(CalFacadeException.duplicateGuid);
     }
 
@@ -435,6 +429,19 @@ public class Events extends CalintfHelper implements EventsI {
 
     val.getRecurrence().setExpanded(true);
     sess.saveOrUpdate(val);
+  }
+
+  private int countCalendarGuids(String queryName, BwEvent val) throws CalFacadeException {
+    HibSession sess = getSess();
+
+    sess.namedQuery(queryName);
+    sess.setEntity("cal", val.getCalendar());
+    sess.setString("guid", val.getGuid());
+
+    Collection refs = sess.getList();
+
+    Integer ct = (Integer)refs.iterator().next();
+    return ct.intValue();
   }
 
   public void updateEvent(BwEvent val) throws CalFacadeException {

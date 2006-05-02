@@ -57,6 +57,7 @@ package org.bedework.webclient;
 import org.bedework.appcommon.BedeworkDefs;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEventProxy;
+import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
 
@@ -69,6 +70,7 @@ import javax.servlet.http.HttpServletRequest;
  * <p>Forwards to:<ul>
  *      <li>"doNothing"    when request seems wrong.</li>
  *      <li>"notPersonal"  when this is not a personal calendar.</li>
+ *      <li>"duplicate"    duplicate guid.</li>
  *      <li>"success"      added ok.</li>
  * </ul>
  */
@@ -99,17 +101,26 @@ public class BwAddEventRefAction extends BwCalAbstractAction {
 
     BwCalendar cal = svci.getPreferredCalendar();
     proxy.setOwner(svci.getUser());
-    svci.addEvent(cal, proxy, null);
 
-    form.getMsg().emit("org.bedework.client.message.added.eventrefs", 1);
+    try {
+      svci.addEvent(cal, proxy, null);
+      form.getMsg().emit("org.bedework.client.message.added.eventrefs", 1);
 
-    BwGoToAction.gotoDateView(this, form,
-                  proxy.getDtstart().getDate().substring(0, 8),
-                  BedeworkDefs.dayView,
-                  debug);
+      BwGoToAction.gotoDateView(this, form,
+                                proxy.getDtstart().getDate().substring(0, 8),
+                                BedeworkDefs.dayView,
+                                debug);
 
-    form.refreshIsNeeded();
+      form.refreshIsNeeded();
 
-    return "success";
+      return "success";
+    } catch (CalFacadeException cfe) {
+      if (CalFacadeException.duplicateGuid.equals(cfe.getMessage())) {
+        form.getErr().emit("org.bedework.client.error.duplicate.guid");
+        return "duplicate";
+      }
+
+      throw cfe;
+    }
   }
 }
