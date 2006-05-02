@@ -807,7 +807,7 @@
                   <xsl:call-template name="eventLinks"/>
                 </td>
                 <td class="smallIcon">
-                  <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
+                  <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
                   <a href="{$export}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
                     <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
                   </a>
@@ -2554,14 +2554,14 @@
                have the means of producing it out of the action form just now.
                We'll fix this soon. -->
           <td>
-            <xsl:value-of select="name(/bedework/calendars//calendar[id=$id]/acl/ace[principal/property/owner]/grant/*)"/>
+            <xsl:value-of select="name(/bedework/calendars//calendar[path=$calPath]/acl/ace[principal/property/owner]/grant/*)"/>
           </td>
         </tr>
-        <xsl:if test="/bedework/calendars//calendar[id=$id]/acl/ace/principal/href">
+        <xsl:if test="/bedework/calendars//calendar[path=$calPath]/acl/ace/principal/href">
           <tr>
             <th>Users:</th>
             <td>
-              <xsl:for-each select="/bedework/calendars//calendar[id=$id]/acl/ace[principal/href]">
+              <xsl:for-each select="/bedework/calendars//calendar[path=$calPath]/acl/ace[principal/href]">
                 <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
               </xsl:for-each>
             </td>
