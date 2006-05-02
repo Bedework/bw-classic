@@ -138,7 +138,7 @@
                       <xsl:call-template name="addEvent"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='addEventRef'">
-                      <xsl:call-template name="addEventRef"/>
+                      <xsl:apply-templates select="/bedework/event" mode="addEventRef"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='editEvent'">
                       <!-- edit an event -->
@@ -2035,16 +2035,32 @@
     </div>
   </xsl:template>
 
-  <xsl:template name="addEventRef">
+  <xsl:template match="event" mode="addEventRef">
     <form name="eventForm" method="post" action="{$event-addEventRefComplete}" id="standardForm"  enctype="multipart/form-data">
+      <xsl:variable name="subscriptionId" select="subscription/id"/>
+      <xsl:variable name="calPath" select="calendar/path"/>
+      <xsl:variable name="guid" select="guid"/>
+      <xsl:variable name="recurrenceId" select="recurrenceId"/>
+      <input type="hidden" name="subid" value="{$subscriptionId}"/>
+      <input type="hidden" name="calPath" value="{$calPath}"/>
+      <input type="hidden" name="guid" value="{$guid}"/>
+      <input type="hidden" name="recurrenceId" value="{$recurrenceId}"/>
+
       <h2>Add Event Reference</h2>
       <table class="common" cellspacing="0">
+        <tr>
+          <td class="fieldname">
+            Event:
+          </td>
+          <td>
+            <xsl:value-of select="summary"/>
+          </td>
+        </tr>
         <tr>
           <td class="fieldname">
             Into calendar:
           </td>
           <td align="left">
-            <input type="hidden" name="calPath" value=""/>
             <span id="bwEventCalDisplay">
               <em>default calendar</em>
             </span>
@@ -2056,8 +2072,8 @@
             Affects Free/busy:
           </td>
           <td align="left">
-            <input type="radio" value="true" name="affectsFreeBusy"/> yes
-            <input type="radio" value="false" name="affectsFreeBusy" checked="checked"/> no
+            <input type="radio" value="true" name="transparency"/> yes
+            <input type="radio" value="false" name="transparency" checked="checked"/> no
           </td>
         </tr>
       </table>
