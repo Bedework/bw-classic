@@ -474,7 +474,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * <p>Request parameters<ul>
    *      <li>"subid"    subscription id for event. < 0 if there is none
    *                     e.g. displayed directly from calendar.</li>
-   *      <li>"calid"    id of calendar to search.</li>
+   *      <li>"calPath"  Path of calendar to search.</li>
    *      <li>"guid"     guid of event.</li>
    *      <li>"recurrenceId"   recurrence-id of event instance - possibly null.</li>
    * </ul>
@@ -502,23 +502,17 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       }
     }
 
-    int calId = getIntReqPar(request, "calid", -1);
     BwCalendar cal = null;
 
-    if (calId < 0) {
-      // Try path
-      String calPath = request.getParameter("calPath");
+    String calPath = getReqPar(request, "calPath");
 
-      if (calPath == null) {
-        // bogus request
-        form.getErr().emit("org.bedework.client.error.missingcalendarpath");
-        return null;
-      }
-
-      cal = svci.getCalendar(calPath);
-    } else {
-      cal = svci.getCalendar(calId);
+    if (calPath == null) {
+      // bogus request
+      form.getErr().emit("org.bedework.client.error.missingcalendarpath");
+      return null;
     }
+
+    cal = svci.getCalendar(calPath);
 
     if (cal == null) {
       // Assume no access

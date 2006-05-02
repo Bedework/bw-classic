@@ -688,12 +688,12 @@ public class CalSvc extends CalSvcI {
     return getPreferences().getDefaultCalendar();
   }
 
-  public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {
+  public void addCalendar(BwCalendar val, String parentPath) throws CalFacadeException {
     updateOK(val);
 
     setupSharableEntity(val);
 
-    getCal().addCalendar(val, parent);
+    getCal().addCalendar(val, parentPath);
   }
 
   public void updateCalendar(BwCalendar val) throws CalFacadeException {

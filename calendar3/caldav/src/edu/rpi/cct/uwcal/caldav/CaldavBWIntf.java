@@ -675,7 +675,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
       newcal.setName(name);
       newcal.setCalendarCollection("MKCALENDAR".equalsIgnoreCase(req.getMethod()));
 
-      getSvci().addCalendar(newcal, parent);
+      getSvci().addCalendar(newcal, parent.getPath());
     } catch (CalFacadeAccessException cfae) {
       throw WebdavIntfException.forbidden();
     } catch (WebdavIntfException we) {

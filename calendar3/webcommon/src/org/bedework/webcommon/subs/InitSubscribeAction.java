@@ -66,7 +66,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Subscribe a user to a calendar.
  *
  * <p>Parameters are:<ul>
- *      <li>"calId"            Id of calendar</li>
+ *      <li>"calPath"           Path to local calendar</li>
  *      <li>"calUri"            URI of remote calendar</li>
  * </ul>
  *
@@ -91,7 +91,7 @@ public class InitSubscribeAction extends BwAbstractAction {
       return "noAccess"; // First line of defence
     }
 
-    int calId = getIntReqPar(request, "calId", -1);
+    String calPath = getReqPar(request, "calPath");
     String calUri = null;
     BwCalendar cal = null;
 
@@ -99,7 +99,8 @@ public class InitSubscribeAction extends BwAbstractAction {
 
     BwSubscription sub;
 
-    if (calId < 0) {
+    // XXX Bogus??? Just use path for both.
+    if (calPath == null) {
       calUri = request.getParameter("calUri");
       if (calUri == null) {
         return "error";
@@ -107,7 +108,7 @@ public class InitSubscribeAction extends BwAbstractAction {
 
       sub = BwSubscription.makeSubscription(calUri, null, false, false, false);
     } else {
-      cal = svc.getCalendar(calId);
+      cal = svc.getCalendar(calPath);
 
       if (cal == null) {
         // Assume no access

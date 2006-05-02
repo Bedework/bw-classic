@@ -873,10 +873,10 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return calendars.getDeletedCalendar(user);
   }
 
-  public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {
+  public void addCalendar(BwCalendar val, String parentPath) throws CalFacadeException {
     checkOpen();
 
-    calendars.addCalendar(val, parent);
+    calendars.addCalendar(val, parentPath);
   }
 
   public void updateCalendar(BwCalendar val) throws CalFacadeException {

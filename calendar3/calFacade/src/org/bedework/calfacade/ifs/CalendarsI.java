@@ -210,11 +210,11 @@ public interface CalendarsI extends Serializable {
    *
    * <p>Name must be unique at this level, i.e. all paths must be unique
    *
-   * @param  val     CalendarVO new object
-   * @param  parent  CalendarVO object or null for root level
+   * @param  val     BwCalendar new object
+   * @param  parentPath  String path to parent.
    * @throws CalFacadeException
    */
-  public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException;
+  public void addCalendar(BwCalendar val, String parentPath) throws CalFacadeException;
 
   /** Update a calendar object
    *

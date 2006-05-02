@@ -82,7 +82,7 @@ import javax.servlet.http.HttpServletResponse;
  * <p>Request parameters<ul>
  *      <li>"guid"           guid of event.</li>
  *      <li>"recurrenceId"   recurrence id of event (optional)... or</li>
- *      <li>"calid"          Id of calendar to export.</li>
+ *      <li>"calPath"        Path of calendar to export.</li>
  *      <li>"sresult"        Any value - export last search result.</li>
  *      <li>"expand"         true/false - default is to not expand recurrences.</li>
  * </ul>
@@ -97,7 +97,7 @@ public class ExportAction extends BwAbstractAction {
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
     String guid = Util.checkNull(request.getParameter("guid"));
-    int calid = getIntReqPar(request, "calid", -1);
+    String calPath = getReqPar(request, "calPath");
     int subid = getIntReqPar(request, "subid", -1);
     CalSvcI svci = form.fetchSvci();
 
@@ -119,8 +119,8 @@ public class ExportAction extends BwAbstractAction {
       }
     } else {
       BwSubscription sub = null;
-      if (calid >= 0) {
-        BwCalendar cal = svci.getCalendar(calid);
+      if (calPath != null) {
+        BwCalendar cal = svci.getCalendar(calPath);
         if (cal == null) {
           return "notFound";
         }
@@ -161,7 +161,7 @@ public class ExportAction extends BwAbstractAction {
       evs.addAll(ev.getOverrides());
     }
 
-    IcalTranslator ical = new IcalTranslator(svci.getIcalCallback(), 
+    IcalTranslator ical = new IcalTranslator(svci.getIcalCallback(),
                                              form.getDebug());
 
     Calendar vcal = ical.toIcal(evs);

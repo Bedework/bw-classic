@@ -54,7 +54,6 @@
 
 package org.bedework.webcommon.calendars;
 
-import org.bedework.calfacade.BwCalendar;
 import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;
@@ -65,7 +64,7 @@ import javax.servlet.http.HttpServletResponse;
 /** This action sets the state ready for adding a calendar.
  *
  * <p>Parameters are:<ul>
- *      <li>"calId"            Id of the parent to be</li>
+ *      <li>"calPath"       Path of the parent to be</li>
  * </ul>
  *
  * <p>Forwards to:<ul>
@@ -88,15 +87,15 @@ public class InitAddCalendarAction extends BwAbstractAction {
       return "noAccess"; // First line of defence
     }
 
-    int id = getIntReqPar(request, "calId", -1);
+    String calPath = getReqPar(request, "calPath");
 
-    BwCalendar calendar = form.fetchSvci().getCalendar(id);
-
-    if ((calendar == null) || calendar.getCalendarCollection()) {
+    if (calPath == null) {
+      // bogus request
+      form.getErr().emit("org.bedework.client.error.missingcalendarpath");
       return "notAllowed";
     }
 
-    form.setParentCalendarId(id);
+    form.setParentCalendarPath(calPath);
 
     /** Set the objects to null so we get new ones.
      */

@@ -111,12 +111,12 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
 
   // XXX locale - needs to be changed when locale changes
   private transient Collator listCollator;
-  
+
   /* This should be a cloned copy only */
   private BwSystem syspars;
 
   private Collection sysStats;
-  
+
   private transient MailerIntf mailer;
 
   /** True if we should auto-create sponsors. Some sites may wish to control
@@ -232,8 +232,6 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   /* ....................................................................
    *           Ids for fetching objects
    * .................................................................... */
-
-  private int calId;
 
   private int categoryId;
 
@@ -366,7 +364,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
 
   private BwCalendar calendar;
 
-  private int parentCalendarId;
+  private String parentCalendarPath;
 
   /** True if we are adding a new calendar
    */
@@ -404,8 +402,8 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   public BwSystem getSyspars() {
     return syspars;
   }
-  
-  /** Set system statistics 
+
+  /** Set system statistics
   *
   * @param val      Collection of BwStats.StatsEntry objects
   */
@@ -413,7 +411,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     sysStats = val;
   }
 
-  /** Get system statistics 
+  /** Get system statistics
   *
   * @return Collection of BwStats.StatsEntry objects
   */
@@ -421,11 +419,11 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     if (sysStats == null) {
       sysStats = new ArrayList();
     }
-    
+
     return sysStats;
   }
 
-  /** Get system statistics enabled state 
+  /** Get system statistics enabled state
   *
    * @return boolean true if statistics collection enabled
   */
@@ -436,7 +434,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
       return false;
     }
   }
-  
+
   /** This will default to the current user. Superusers will be able to
    * specify a creator.
    *
@@ -1354,20 +1352,6 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    *                   Calendars
    * ==================================================================== */
 
-  /**
-   * @param val id
-   */
-  public void setCalId(int val) {
-    calId = val;
-  }
-
-  /**
-   * @return cal id
-   */
-  public int getCalId() {
-    return calId;
-  }
-
   /** Return the public calendars
    *
    * @return BwCalendar   root calendar
@@ -1440,9 +1424,9 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   public Collection getAddContentCalendarCollections() {
     try {
       TreeMap tm = new TreeMap(getListCollator());
-      
+
       Iterator it = fetchSvci().getAddContentCalendarCollections().iterator();
-      
+
       while (it.hasNext()) {
         BwCalendar cal = (BwCalendar)it.next();
         tm.put(cal.getName(), cal);
@@ -1456,20 +1440,19 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     }
   }
 
-  /** Save the id of the soon-to-be parent
-   */
-  /**
+  /** Save the Path of the soon-to-be parent
+   *
    * @param val
    */
-  public void setParentCalendarId(int val) {
-    parentCalendarId = val;
+  public void setParentCalendarPath(String val) {
+    parentCalendarPath = val;
   }
 
   /**
-   * @return cal id
+   * @return cal Path
    */
-  public int getParentCalendarId() {
-    return parentCalendarId;
+  public String getParentCalendarPath() {
+    return parentCalendarPath;
   }
 
   /** Not set - invisible to jsp
@@ -2147,13 +2130,13 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
       return new ArrayList();
     }
   }
-  
+
   // XXX locale - needs to be changed when locale changes
   private Collator getListCollator() {
     if (listCollator == null) {
       listCollator = Collator.getInstance();
     }
-    
+
     return listCollator;
   }
 }

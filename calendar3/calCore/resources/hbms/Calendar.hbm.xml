@@ -67,9 +67,6 @@
        calendar queries
        ================================================================= -->
 
-  <!-- Calendars will be rooted in an entry with special names.
-       Public calendars are rooted on "*PUBLIC*" and private calendars on
-       ":USER:account,  e.g. :USER:douglm -->
   <query name="getNamedCalendars"><![CDATA[
     from org.bedework.calfacade.BwCalendar as cal
       where cal.name=:name

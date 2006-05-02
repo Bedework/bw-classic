@@ -70,16 +70,12 @@ import javax.servlet.http.HttpServletResponse;
  * directory.
  *
  * <p>Request parameters<ul>
- *      <li>"guid"           guid of event.</li>
- *      <li>"recurrenceId"   recurrence id of event (optional)... or</li>
- *      <li>"calid"          Id of calendar to export.</li>
- *      <li>"sresult"        Any value - export last search result.</li>
- *      <li>"expand"         true/false - default is to not expand recurrences.</li>
  * </ul>
+ *
  * <p>Forwards to:<ul>
  *      <li>"noAccess"     user not authorised.</li>
- *      <li>"notFound"     no event was found.</li>
- *      <li>"success"      exported ok.</li>
+ *      <li>"retry"        validation error.</li>
+ *      <li>"continue"     ok.</li>
  * </ul>
  */
 public class UpdateUserInfoAction extends BwAbstractAction {

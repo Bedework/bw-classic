@@ -288,6 +288,12 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
   public BwCalendar getCalendar(String path,
                                 int desiredAccess) throws CalFacadeException {
+    return getCalendar(path, desiredAccess, true);
+  }
+
+  private BwCalendar getCalendar(String path,
+                                 int desiredAccess,
+                                 boolean cloneIt) throws CalFacadeException {
     HibSession sess = getSess();
 
     sess.namedQuery("getCalendarByPath");
@@ -298,8 +304,11 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
     if (cal != null) {
       // Need to clone for this
-      //access.checkAccess(cal, desiredAccess, false);
-      cal = cloneAndCheckOne(cal, desiredAccess, false);
+      if (!cloneIt) {
+        access.checkAccess(cal, desiredAccess, false);
+      } else {
+        cal = cloneAndCheckOne(cal, desiredAccess, false);
+      }
     }
 
     return cal;
@@ -361,26 +370,27 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
     String pathTo = sb.toString();
 
+    /*
     BwCalendar parent = getCalendar(pathTo, privRead);
 
     if (parent == null) {
       throw new CalFacadeException("org.bedework.calcore.calendars.unabletocreate");
     }
+    */
 
     BwCalendar cal = new BwCalendar();
     cal.setName("Deleted");
     cal.setOwner(user);
     cal.setCreator(user);
-    cal.setPublick(parent.getPublick());
     cal.setCalendarCollection(true);
-    addCalendar(cal, parent);
+    addCalendar(cal, pathTo);
   }
 
-  public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {
+  public void addCalendar(BwCalendar val, String parentPath) throws CalFacadeException {
     HibSession sess = getSess();
 
     /* We need write content access to the parent */
-    access.checkAccess(parent, privWriteContent, false);
+    BwCalendar parent = getCalendar(parentPath, privWriteContent, false);
 
     /** Is the parent a calendar collection?
      */
@@ -412,9 +422,10 @@ class Calendars extends CalintfHelper implements CalendarsI {
       val.setOwner(getUser());
     }
     val.setCalendar(parent);
+    val.setPublick(parent.getPublick());
     parent.addChild(val);
 
-    sess.save(parent);
+    sess.update(parent);
   }
 
   public void updateCalendar(BwCalendar val) throws CalFacadeException {

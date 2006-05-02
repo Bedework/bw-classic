@@ -65,7 +65,7 @@ import javax.servlet.http.HttpServletResponse;
 /** This action fetches a calendar.
  *
  * <p>Parameters are:<ul>
- *      <li>"calId"            Id of calendar</li>
+ *      <li>"calPath"            Path of calendar</li>
  * </ul>
  *
  * <p>Forwards to:<ul>
@@ -87,18 +87,20 @@ public class FetchCalendarAction extends BwAbstractAction {
     /** User requested a calendar from the list. Retrieve it, embed it in
      * the form so we can display the page
      */
-    int id = getIntReqPar(request, "calId", -1);
 
-    if (id < 0) {
+    String calPath = getReqPar(request, "calPath");
+
+    if (calPath == null) {
       // bogus request
+      form.getErr().emit("org.bedework.client.error.missingcalendarpath");
       return "notFound";
     }
 
-    BwCalendar calendar = form.fetchSvci().getCalendar(id);
+    BwCalendar calendar = form.fetchSvci().getCalendar(calPath);
 
     if (debug) {
       if (calendar == null) {
-        logIt("No calendar with id " + id);
+        logIt("No calendar with path " + calPath);
       } else {
         logIt("Retrieved calendar " + calendar.getId());
       }
@@ -107,7 +109,7 @@ public class FetchCalendarAction extends BwAbstractAction {
     form.assignAddingCalendar(false);
     form.setCalendar(calendar);
     if (calendar == null) {
-      form.getErr().emit("org.bedework.client.error.nosuchcalendar", id);
+      form.getErr().emit("org.bedework.client.error.nosuchcalendar", calPath);
       return "notFound";
     }
 

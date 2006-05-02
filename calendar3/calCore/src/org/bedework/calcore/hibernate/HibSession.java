@@ -90,7 +90,7 @@ public class HibSession implements Serializable {
 
   /** Exception from this session. */
   Throwable exc;
-  
+
   private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
   /** Set up for a hibernate interaction. Throw the object away on exception.
@@ -249,13 +249,13 @@ public class HibSession implements Serializable {
   }
 
   /** Return true if we have a transaction started
-   * 
+   *
    * @return boolean
    */
   public boolean transactionStarted() {
     return tx != null;
   }
-  
+
   /** Commit a transaction
    *
    * @throws CalFacadeException
@@ -662,7 +662,6 @@ public class HibSession implements Serializable {
     }
   }
 
-
   /** Update an object which may have been loaded in a previous hibernate
    * session
    *
@@ -677,6 +676,25 @@ public class HibSession implements Serializable {
 
     try {
       sess.update(obj);
+    } catch (Throwable t) {
+      handleException(t);
+    }
+  }
+
+  /** Merge and update an object which may have been loaded in a previous hibernate
+   * session
+   *
+   * @param obj
+   * @throws CalFacadeException
+   */
+  public void merge(Object obj) throws CalFacadeException {
+    if (exc != null) {
+      // Didn't hear me last time?
+      throw new CalFacadeException(exc);
+    }
+
+    try {
+      sess.merge(obj);
     } catch (Throwable t) {
       handleException(t);
     }

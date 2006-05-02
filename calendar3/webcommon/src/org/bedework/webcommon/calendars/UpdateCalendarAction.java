@@ -116,15 +116,17 @@ public class UpdateCalendarAction extends BwAbstractAction {
     BwCalendar cal = form.getCalendar();
 
     if (add) {
-      BwCalendar parent = svci.getCalendar(form.getParentCalendarId());
+      String parentPath = form.getParentCalendarPath();
 
-      if (parent == null) {
+      if (parentPath == null) {
         return "error";
       }
-      svci.addCalendar(cal, parent);
+      svci.addCalendar(cal, parentPath);
     } else {
       svci.updateCalendar(cal);
     }
+
+    form.setParentCalendarPath(null);
 
     if (getPublicAdmin(form)) {
       if (cal.getCalendarCollection()) {

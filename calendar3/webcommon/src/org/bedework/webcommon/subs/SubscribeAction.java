@@ -72,7 +72,6 @@ import javax.servlet.http.HttpServletResponse;
 /** Subscribe a user to a calendar.
  *
  * <p>Parameters are:<ul>
- *      <li>"calid"            Id of calendar</li>
  *      <li>"name"             Name of subscription</li>
  *      <li>"email"            y/n for email .</li>
  *      <li>"freebusy"         y/n for affects free busy.</li>

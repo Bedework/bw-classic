@@ -392,7 +392,7 @@ public class CalintfCaldavImpl extends CalintfBase {
     throw new CalFacadeUnimplementedException();
   }
 
-  public void addCalendar(BwCalendar val, BwCalendar parent) throws CalFacadeException {
+  public void addCalendar(BwCalendar val, String parentPath) throws CalFacadeException {
     checkOpen();
 
     throw new CalFacadeUnimplementedException();

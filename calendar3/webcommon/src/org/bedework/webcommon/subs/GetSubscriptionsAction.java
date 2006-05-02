@@ -53,7 +53,6 @@
 */
 package org.bedework.webcommon.subs;
 
-import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;

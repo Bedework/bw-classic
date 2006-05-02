@@ -120,7 +120,7 @@ public class CalSvcTestWrapper extends CalSvc {
     isPublic = publicEvents;
     this.user = user;
     String envPrefix;
-    
+
     if (publicEvents) {
       envPrefix = webAdminAppPrefix;
     } else if (user == null) {
@@ -129,7 +129,7 @@ public class CalSvcTestWrapper extends CalSvc {
       envPrefix = webPersonalAppPrefix;
     }
 
-    CalSvcIPars pars = new CalSvcIPars(user, user, 
+    CalSvcIPars pars = new CalSvcIPars(user, user,
                                        envPrefix,
                                        publicEvents,
                                        false,    // caldav
@@ -310,7 +310,7 @@ public class CalSvcTestWrapper extends CalSvc {
     publicCal.setPublick(true);
     publicCal.setCalendarCollection(true);
 
-    addCalendar(publicCal, root);
+    addCalendar(publicCal, root.getPath());
 
     return publicCal;
   }

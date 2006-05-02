@@ -78,8 +78,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * <p>Request parameters:<ul>
  *      <li>  calPath alone:         path (or url) of calendar or...</li>.
- *      <li>  calId+guid+recurid:  event</li>.
- *      <li>  how:                   concateated String of desired access rights
+ *      <li>  calPath+guid+recurid:  event</li>.
+ *      <li>  how:                   concatenated String of desired access rights
  *                               @see edu.rpi.cct.uwcal.access.PrivilegeDefs </li>.
  *      <li>  whoType:               user (default), group</li>.
  *      <li>  who:                   name of principal - default to owner</li>.

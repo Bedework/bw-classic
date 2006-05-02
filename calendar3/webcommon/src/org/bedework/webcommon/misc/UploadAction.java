@@ -74,8 +74,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.upload.FormFile;
 
 /**
- * Action to upload an icalendar file..
- * <p>No request parameters (other than updates to email and subject)
+ * Action to upload an icalendar file.
+ * <p>Parameters are:<ul>
+ *      <li>"calPath"            Path of calendar</li>
+ * </ul>
+ *
  * <p>Forwards to:<ul>
  *      <li>"retry"        email options still not valid.</li>
  *      <li>"noEvent"      no event was selected.</li>
@@ -94,9 +97,10 @@ public class UploadAction extends BwAbstractAction {
     CalSvcI svci = form.fetchSvci();
     BwCalendar cal = null;
 
-    int calId = getIntReqPar(request, "calId", -1);
-    if (calId >= 0) {
-      cal = svci.getCalendar(calId);
+    String calPath = getReqPar(request, "calPath");
+
+    if (calPath != null) {
+      cal = svci.getCalendar(calPath);
     }
 
     if (cal == null) {
