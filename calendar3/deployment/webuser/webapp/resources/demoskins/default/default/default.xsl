@@ -43,6 +43,7 @@
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/initEvent"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/addEvent"/>
   <xsl:variable name="addEventUsingPage" select="/bedework/urlPrefixes/addEventUsingPage"/>
+  <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete/a/@href"/>
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/editEvent"/>
@@ -136,6 +137,9 @@
                     <xsl:when test="/bedework/page='addEvent'">
                       <xsl:call-template name="addEvent"/>
                     </xsl:when>
+                    <xsl:when test="/bedework/page='addEventRef'">
+                      <xsl:call-template name="addEventRef"/>
+                    </xsl:when>
                     <xsl:when test="/bedework/page='editEvent'">
                       <!-- edit an event -->
                       <xsl:apply-templates select="/bedework/formElements" mode="editEvent"/>
@@ -226,10 +230,14 @@
     <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
     <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
     <xsl:if test="/bedework/page='addEvent' or
+                  /bedework/page='addEventRef' or
                   /bedework/page='editEvent' or
                   /bedework/page='selectCalForEvent' or
                   /bedework/page='upload'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
+    </xsl:if>
+    <xsl:if test="/bedework/page='addEvent' or
+                  /bedework/page='editEvent'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
       <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
       <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
@@ -255,13 +263,6 @@
         </td>
       </tr>
     </table>
-    <!--<table width="100%" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td width="50%"><img alt="" src="{$resourcesRoot}/resources/metacal-topBorder.gif" width="100%" height="23" border="0"/></td>
-        <td><img src="{$resourcesRoot}/resources/metacal-topTitlePersonal.gif" width="221" height="23" border="0" alt="Bedework Personal Events Calendar"/></td>
-        <td width="50%"><img alt="" src="{$resourcesRoot}/resources/metacal-topBorder.gif" width="100%" height="23" border="0"/></td>
-      </tr>
-    </table>-->
     <table id="curDateRangeTable"  cellspacing="0">
       <td class="sideBarOpenCloseIcon">
         <xsl:choose>
@@ -1540,6 +1541,16 @@
             </xsl:choose>
           </td>
         </tr>
+        <!--  Transparency  -->
+        <tr>
+          <td class="fieldname">
+            Effects free/busy:
+          </td>
+          <td class="fieldval">
+            <input type="radio" name="editEvent.transparency" value="OPAQUE" checked="checked"/>yes <input type="radio" name="editEvent.transparency" value="TRANSPARENT"/>no
+          </td>
+        </tr>
+        <!--  Description  -->
         <tr>
           <td class="fieldname">Description:</td>
           <td class="fieldval">
@@ -1919,6 +1930,23 @@
             </xsl:choose>
           </td>
         </tr>
+        <!--  Transparency  -->
+        <tr>
+          <td class="fieldname">
+            Effects free/busy:
+          </td>
+          <td class="fieldval">
+            <xsl:choose>
+              <xsl:when test="form/transparency = 'TRANSPARENT'">
+                <input type="radio" name="editEvent.transparency" value="OPAQUE"/>yes <input type="radio" name="editEvent.transparency" value="TRANSPARENT" checked="checked"/>no
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="radio" name="editEvent.transparency" value="OPAQUE" checked="checked"/>yes <input type="radio" name="editEvent.transparency" value="TRANSPARENT"/>no
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+        <!--  Description  -->
         <tr>
           <td class="fieldname">Description:</td>
           <td class="fieldval">
@@ -2005,6 +2033,43 @@
         <input type="submit" name="submit" value="Submit"/>
       </form>
     </div>
+  </xsl:template>
+
+  <xsl:template name="addEventRef">
+    <form name="eventForm" method="post" action="{$event-addEventRefComplete}" id="standardForm"  enctype="multipart/form-data">
+      <h2>Add Event Reference</h2>
+      <table class="common" cellspacing="0">
+        <tr>
+          <td class="fieldname">
+            Into calendar:
+          </td>
+          <td align="left">
+            <input type="hidden" name="calPath" value=""/>
+            <span id="bwEventCalDisplay">
+              <em>default calendar</em>
+            </span>
+            <a href="javascript:launchSimpleWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Affects Free/busy:
+          </td>
+          <td align="left">
+            <input type="radio" value="true" name="affectsFreeBusy"/> yes
+            <input type="radio" value="false" name="affectsFreeBusy" checked="checked"/> no
+          </td>
+        </tr>
+      </table>
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <input name="submit" type="submit" value="Continue"/>
+            <input name="cancelled" type="submit" value="Cancel"/>
+          </td>
+        </tr>
+      </table>
+    </form>
   </xsl:template>
 
   <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->

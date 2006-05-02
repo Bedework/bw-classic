@@ -110,8 +110,9 @@ try {
       </duration>
     </end>
     <desc><html:textarea property="newEvent.description"></html:textarea></desc>
-    <%-- no status: set a default for a new event in the stylesheet --%>
-    <%-- <status><bean:write name="calForm" property="event.status"/></status> --%>
+    <%-- no status or transparency: set a default for a new event in the stylesheet --%>
+    <%-- <status><bean:write name="calForm" property="newEvent.status"/></status> --%>
+    <%-- <transparency><bean:write name="calForm" property="newEvent.transparency"/></transparency> --%>
     <link><html:text property="newEvent.link"/></link>
     <location>
       <locationmenu>

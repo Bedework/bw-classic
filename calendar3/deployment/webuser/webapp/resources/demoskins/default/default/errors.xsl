@@ -29,6 +29,9 @@
       <xsl:when test="id='org.bedework.client.error.missingcalendarid'">
           <p>Missing event's calendar id (required).</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.missingcalendarpath'">
+          <p>Missing calendar path (required).</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unknowncalendar'">
           <p>Unknown calendar.</p>
       </xsl:when>

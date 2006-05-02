@@ -179,44 +179,49 @@
         </td>
       </tr>
     </table>
-    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="dateBarTable">
-      <tr>
-        <td width="50" class="imgCell"><img alt="*" src="{$resourcesRoot}/images/spacer.gif" width="50" height="14" border="0"/></td>
-        <td align="center" width="100%">
-          <xsl:choose>
-            <xsl:when test="/bedework/page='event'">
-              Event Information
-            </xsl:when>
-            <xsl:when test="/bedework/page='showSysStats' or
-                            /bedework/page='calendars'">
-              &#160;
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="/bedework/firstday/longdate"/>
-              <xsl:if test="/bedework/periodname!='Day'">
-                -
-                <xsl:value-of select="/bedework/lastday/longdate"/>
-              </xsl:if>
-            </xsl:otherwise>
-          </xsl:choose>
-        </td>
-        <td width="50" class="imgCell">
-          <a href="javascript:window.print()" title="print this view">
-            <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/>
-          </a>
-          <a class="rss" href="{$setSelection}?setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
-          <xsl:variable name="calcategory">
-            <xsl:choose>
-              <xsl:when test="/bedework/title=''">all</xsl:when>
-              <xsl:otherwise><xsl:value-of select="translate(/bedework/title,' ','')"/></xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-          <!--<xsl:variable name="icalName"
-                        select="concat('ucal',$curdate,/bedework/periodname,$calcategory,'.ics')"/>
-          <a class="rss" href="{$export}?nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$icalName}" title="Download all events currently displayed as iCal - for multiple events, save to disk and import">iCal</a>
-          -->
-        </td>
-      </tr>
+    <table id="curDateRangeTable"  cellspacing="0">
+      <td class="sideBarOpenCloseIcon">
+        &#160;
+        <!--
+        we may choose to implement calendar selection in the public calendar
+        using a sidebar; leave this comment here for now.
+        <xsl:choose>
+          <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
+            <a href="?setappvar=sidebar(opened)">
+              <img alt="open sidebar" src="{$resourcesRoot}/resources/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="?setappvar=sidebar(closed)">
+              <img alt="close sidebar" src="{$resourcesRoot}/resources/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>-->
+      </td>
+      <td class="date">
+        <xsl:choose>
+          <xsl:when test="/bedework/page='event'">
+            Event Information
+          </xsl:when>
+          <xsl:when test="/bedework/page='showSysStats' or
+                          /bedework/page='calendars'">
+            &#160;
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="/bedework/firstday/longdate"/>
+            <xsl:if test="/bedework/periodname!='Day'">
+              -
+              <xsl:value-of select="/bedework/lastday/longdate"/>
+            </xsl:if>
+          </xsl:otherwise>
+        </xsl:choose>
+      </td>
+      <td class="rssPrint">
+        <a href="javascript:window.print()" title="print this view">
+          <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
+        </a>
+        <a class="rss" href="{$setSelection}?setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
+      </td>
     </table>
   </xsl:template>
 

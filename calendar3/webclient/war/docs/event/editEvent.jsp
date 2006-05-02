@@ -120,6 +120,7 @@ try {
     </end>
     <desc><html:textarea property="editEvent.description"></html:textarea></desc>
     <status><bean:write name="calForm" property="editEvent.status"/></status>
+    <transparency><bean:write name="calForm" property="editEvent.transparency"/></transparency>
     <link><html:text property="editEvent.link"/></link>
     <location>
       <locationmenu>

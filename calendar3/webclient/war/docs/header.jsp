@@ -139,6 +139,7 @@ try {
       <delEvent><genurl:rewrite action="delEvent.do"/></delEvent>
       <event>
         <setAccess><genurl:link page="/event/setAccess.do?b=de"/></setAccess>
+        <addEventRefComplete><genurl:link page="/event/addEventRefComplete.do?b=de"/></addEventRefComplete>
         <selectCalForEvent><genurl:link page="/event/selectCalForEvent.do?b=de"/></selectCalForEvent>
       </event>
 

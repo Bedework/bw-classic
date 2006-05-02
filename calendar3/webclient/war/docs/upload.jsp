@@ -12,13 +12,6 @@ try {
 
 <page>upload</page>
 
-<uploadform>
-  <genurl:form action="upload">
-    <filename>
-    </filename>
-  </genurl:form>
-</uploadform>
-
 <%
 } catch (Throwable t) {
   t.printStackTrace();
