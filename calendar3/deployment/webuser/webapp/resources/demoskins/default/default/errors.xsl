@@ -20,6 +20,9 @@
       <xsl:when test="id='org.bedework.client.error.noaccess'">
           <p>You have insufficient access <xsl:value-of select="param"/>.</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.badhow'">
+          <p>Incorrect access controls.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.notitle'">
           <p>Please supply a title for your event (required).</p>
       </xsl:when>

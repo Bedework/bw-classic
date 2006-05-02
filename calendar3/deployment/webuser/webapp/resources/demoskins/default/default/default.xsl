@@ -1312,7 +1312,7 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <xsl:variable name="calPath" select="/bedework/formElements/form/calendar/encodedPath"/>
+            <xsl:variable name="calPath" select="/bedework/formElements/form/calendar/path"/>
             <input type="hidden" name="calPath" value="{$calPath}"/>
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
             <span id="bwEventCalDisplay">
@@ -1691,7 +1691,7 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <xsl:variable name="calPath" select="/bedework/formElements/form/calendar/encodedPath"/>
+            <xsl:variable name="calPath" select="/bedework/formElements/form/calendar/path"/>
             <input type="hidden" name="calPath" value="{$calPath}"/>
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
             <span id="bwEventCalDisplay">
@@ -1997,9 +1997,9 @@
         </p>
         <p>
           Access rights:<br/>
-          <input type="radio" value="r" name="how" checked="checked"/> read<br/>
-          <input type="radio" value="Rc" name="how"/> write<br/>
-          <input type="radio" value="f" name="how"/> free/busy only<br/>
+          <input type="radio" value="R" name="how" checked="checked"/> read<br/>
+          <input type="radio" value="Rc" name="how"/> read/write<br/>
+          <input type="radio" value="f" name="how"/> read free/busy only<br/>
           <input type="radio" value="d" name="how"/> default (reset access)
         </p>
         <input type="submit" name="submit" value="Submit"/>
@@ -2095,7 +2095,7 @@
         </tr>
       </table>
       <form name="calendarShareForm" action="{$freeBusy-setAccess}" id="shareForm">
-        <xsl:variable name="calPath" select="/bedework/myCalendars/calendars/calendar/encodedPath"/>
+        <xsl:variable name="calPath" select="/bedework/myCalendars/calendars/calendar/path"/>
         <input type="hidden" name="calPath" value="{$calPath}"/>
         <p>
           Share my free/busy with:<br/>
@@ -2439,7 +2439,7 @@
         <h3>Modify Folder</h3>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:variable name="calPath" select="encodedPath"/>
+    <xsl:variable name="calPath" select="path"/>
     <form name="modCalForm" action="{$calendar-update}">
       <table class="common">
         <tr>
@@ -2555,9 +2555,9 @@
         </p>
         <p>
           Access rights:<br/>
-          <input type="radio" value="r" name="how" checked="checked"/> read<br/>
-          <input type="radio" value="Rc" name="how"/> write<br/>
-          <input type="radio" value="f" name="how"/> free/busy only<br/>
+          <input type="radio" value="R" name="how" checked="checked"/> read<br/>
+          <input type="radio" value="Rc" name="how"/> read/write<br/>
+          <input type="radio" value="f" name="how"/> read free/busy only<br/>
           <input type="radio" value="d" name="how"/> default (reset access)
         </p>
         <input type="submit" name="submit" value="Submit"/>
