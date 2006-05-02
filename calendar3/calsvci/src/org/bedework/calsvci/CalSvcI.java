@@ -544,6 +544,7 @@ public abstract class CalSvcI implements Serializable {
   /** Get a calendar we are interested in. This is represented by the id
    * of a calendar.
    *
+   * @deprecated
    * @param  val     int id of calendar
    * @return CalendarVO null for unknown calendar
    * @throws CalFacadeException
@@ -768,14 +769,6 @@ public abstract class CalSvcI implements Serializable {
    * @throws CalFacadeException
    */
   public abstract void updateSubscription(BwSubscription val) throws CalFacadeException;
-
-  /** Return true if the user is subscribed to the given calendar
-   *
-   * @param val        BwCalendar object
-   * @return boolean   true is user is subscribed to indicated calendar
-   * @throws CalFacadeException
-   */
-  public abstract boolean getSubscribed(BwCalendar val) throws CalFacadeException;
 
   /** Get this users subscription.
    *

@@ -996,13 +996,6 @@ public class CalSvc extends CalSvcI {
     dbi.updatePreferences(prefs);
   }
 
-  public boolean getSubscribed(BwCalendar val) throws CalFacadeException {
-    BwSubscription sub = BwSubscription.makeSubscription(val, null, false, false, false);
-    setupOwnedEntity(sub);
-
-    return getPreferences().getSubscriptions().contains(sub);
-  }
-
   public Collection getSubscriptions() throws CalFacadeException {
     Collection c = getPreferences().getSubscriptions();
 

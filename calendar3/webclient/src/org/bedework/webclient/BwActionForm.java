@@ -62,7 +62,6 @@ import java.util.Locale;
 import org.bedework.appcommon.CheckData;
 import org.bedework.appcommon.EventFormatter;
 import org.bedework.appcommon.MyCalendarVO;
-import org.bedework.calfacade.BwCalendar;
 import org.bedework.webcommon.DurationBean;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.TimeDateComponents;
@@ -182,29 +181,6 @@ public class BwActionForm extends BwActionFormBase {
     } catch (Throwable t) {
       err.emit(t);
       return null;
-    }
-  }
-
-  /* ====================================================================
-   *                   Subscriptions
-   * ==================================================================== */
-
-  /** Allows us to generate checkboxes showing subscribed status
-   *
-   * @param  i         int key of calendar
-   * @return boolean   true is user is subscribed to indicated calendar
-   */
-  public boolean getSubscribed(int i) {
-    try {
-      BwCalendar cal = fetchSvci().getCalendar(i);
-
-      if (cal == null) {
-        return false;
-      }
-      return fetchSvci().getSubscribed(cal);
-    } catch (Throwable t) {
-      err.emit(t);
-      return false;
     }
   }
 
