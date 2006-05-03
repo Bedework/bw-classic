@@ -79,6 +79,8 @@
     <html lang="en">
       <head>
         <title>Bedework Events Calendar</title>
+        <link rel="stylesheet" type="text/css" href="{$resourcesRoot}/default/default/common.css" />
+        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <xsl:choose>
           <xsl:when test="/bedework/appvar[key='style']/value='red'">
             <link rel="stylesheet" href="{$resourcesRoot}/default/default/red.css"/>
@@ -90,8 +92,6 @@
             <link rel="stylesheet" href="{$resourcesRoot}/default/default/blue.css"/>
           </xsl:otherwise>
         </xsl:choose>
-        <link rel="stylesheet" type="text/css" href="{$resourcesRoot}/default/default/common.css" />
-        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
       </head>
       <body>

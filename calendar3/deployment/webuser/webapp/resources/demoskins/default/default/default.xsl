@@ -2045,6 +2045,9 @@
       <input type="hidden" name="calPath" value="{$calPath}"/>
       <input type="hidden" name="guid" value="{$guid}"/>
       <input type="hidden" name="recurrenceId" value="{$recurrenceId}"/>
+      <!-- newCalPath is the path to the calendar in which the reference
+           should be placed.  If no value, then default calendar. -->
+      <input type="hidden" name="newCalPath" value=""/>
 
       <h2>Add Event Reference</h2>
       <table class="common" cellspacing="0">
@@ -2064,7 +2067,7 @@
             <span id="bwEventCalDisplay">
               <em>default calendar</em>
             </span>
-            <a href="javascript:launchSimpleWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
+            <a href="javascript:launchSimpleWindow('{$event-selectCalForEvent}')" class="small">[change]</a> (does not yet work)
           </td>
         </tr>
         <tr>
