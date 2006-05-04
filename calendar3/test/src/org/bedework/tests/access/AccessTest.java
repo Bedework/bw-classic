@@ -154,7 +154,8 @@ public class AccessTest extends TestCase {
   private void tryEvaluateAccess(BwPrincipal who, BwPrincipal owner,
                                  Privilege[] how,char[] encoded,
                                  boolean expected, String title) throws Throwable {
-    CurrentAccess ca = new Acl().evaluateAccess(who, owner.getAccount(), how, encoded);
+    CurrentAccess ca = new Acl().evaluateAccess(who, owner.getAccount(), how,
+                                                encoded, null);
 
     if (debug) {
       log(title + " got " + ca.accessAllowed + " and expected " + expected);

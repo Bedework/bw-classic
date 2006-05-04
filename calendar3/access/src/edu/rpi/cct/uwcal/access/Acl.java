@@ -129,7 +129,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
     /**  Allowed access for each privilege type
      * @see PrivilegeDefs
      */
-    public char[] privileges = null;
+    public PrivilegeSet privileges = null;
 
     /** Privileges desired */
     public Privilege[] desiredAccess;
@@ -182,11 +182,13 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
    * @param owner
    * @param how
    * @param acl
+   * @param filter    if not null specifies maximum access
    * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
   public CurrentAccess evaluateAccess(AccessPrincipal who, String owner,
-                                      Privilege[] how, char[] acl)
+                                      Privilege[] how, char[] acl,
+                                      PrivilegeSet filter)
           throws AccessException {
     boolean authenticated = !who.getUnauthenticated();
     boolean isOwner = false;
@@ -221,7 +223,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       if (isOwner) {
         ca.privileges = Ace.findMergedPrivilege(this, null, Ace.whoTypeOwner);
         if (ca.privileges == null) {
-          ca.privileges = defaultOwnerPrivileges;
+          ca.privileges = PrivilegeSet.makeDefaultOwnerPrivileges();
         }
 
         break getPrivileges;
@@ -231,7 +233,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       ca.privileges = Ace.findMergedPrivilege(this, who.getAccount(), Ace.whoTypeUser);
       if (ca.privileges != null) {
         if (debug) {
-          debugsb.append("... For user got: " + new String(ca.privileges));
+          debugsb.append("... For user got: " + ca.privileges);
         }
 
         break getPrivileges;
@@ -247,16 +249,16 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
           if (debug) {
             debugsb.append("...Try access for group " + group);
           }
-          char[] privs = Ace.findMergedPrivilege(this, group, Ace.whoTypeGroup);
+          PrivilegeSet privs = Ace.findMergedPrivilege(this, group, Ace.whoTypeGroup);
           if (privs != null) {
-            ca.privileges = Ace.mergePrivileges(ca.privileges, privs, false);
+            ca.privileges = PrivilegeSet.mergePrivileges(ca.privileges, privs, false);
           }
         }
       }
 
       if (ca.privileges != null) {
         if (debug) {
-          debugsb.append("...For groups got: " + new String(ca.privileges));
+          debugsb.append("...For groups got: " + ca.privileges);
         }
 
         break getPrivileges;
@@ -266,7 +268,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       ca.privileges = Ace.findMergedPrivilege(this, null, Ace.whoTypeOther);
       if (ca.privileges != null) {
         if (debug) {
-          debugsb.append("...For other got: " + new String(ca.privileges));
+          debugsb.append("...For other got: " + ca.privileges);
         }
 
         break getPrivileges;
@@ -280,19 +282,14 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       return ca;
     }
 
-    ca.privileges = (char[])ca.privileges.clone();
-    for (int pi = 0; pi < ca.privileges.length; pi++) {
-      if (ca.privileges[pi] == unspecified) {
-        if (isOwner) {
-          ca.privileges[pi] = allowed;
-        } else {
-          ca.privileges[pi] = denied;
-        }
-      }
+    ca.privileges.setUnspecified(isOwner);
+
+    if (filter != null) {
+      ca.privileges.filterPrivileges(filter);
     }
 
     for (int i = 0; i < how.length; i++) {
-      char priv = ca.privileges[how[i].getIndex()];
+      char priv = ca.privileges.getPrivilege(how[i].getIndex());
 
       if ((priv != allowed) && (priv != allowedInherited)) {
         if (debug) {
@@ -376,7 +373,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       return false;
     }
 
-    return aces.remove(new Ace(who, notWho, whoType, (char[])null));
+    return aces.remove(new Ace(who, notWho, whoType, (PrivilegeSet)null));
   }
 
   /** Remove access for a given 'who' entry

@@ -183,7 +183,7 @@ public interface PrivilegeDefs extends Serializable {
   };
 
   /** Default privs for an owner
-   */
+   * /
   public char[] defaultOwnerPrivileges = {
     allowed,   // privAll
     allowed,   // privRead
@@ -200,8 +200,28 @@ public interface PrivilegeDefs extends Serializable {
     allowed,   // privNone
   };
 
+  /** User home max privileges for non-super user
+   * This allows us to turn off privileges which would allow delete or rename
+   * for example.
+   * /
+  public char[] userHomeMaxPrivileges = {
+     denied,   // privAll
+    allowed,   // privRead
+    allowed,   // privReadAcl
+    allowed,   // privReadCurrentUserPrivilegeSet
+    allowed,   // privReadFreeBusy
+     denied,   // privWrite
+    allowed,   // privWriteAcl
+    allowed,   // privWriteProperties
+    allowed,   // privWriteContent
+     denied,   // privBind
+     denied,   // privUnbind
+    allowed,   // privUnlock
+    allowed,   // privNone
+  };
+
   /** Default privs for a non owner
-   */
+   * /
   public char[] defaultNonOwnerPrivileges = {
     denied,   // privAll
     denied,   // privRead
@@ -216,7 +236,7 @@ public interface PrivilegeDefs extends Serializable {
     denied,   // privUnbind
     denied,   // privUnlock
     denied,   // privNone
-  };
+  };*/
 
 }
 

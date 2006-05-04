@@ -297,6 +297,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     authUser.setGroups(groups.getAllGroups(authUser));
     access.setAuthUser(authUser);
+    access.setSyspars((BwSystem)getSyspars().clone());
 
     events = new Events(this, access, currentMode, debug);
 
@@ -321,6 +322,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     if (userCreated) {
       calendars.addNewCalendars(authUser);
     }
+
     return userCreated;
   }
 
@@ -406,6 +408,8 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   public void updateSyspars(BwSystem val) throws CalFacadeException {
     checkOpen();
     sess.update(val);
+    syspars = null; // Force refresh
+    access.setSyspars((BwSystem)getSyspars().clone());
   }
 
   public CalTimezones getTimezones() throws CalFacadeException {

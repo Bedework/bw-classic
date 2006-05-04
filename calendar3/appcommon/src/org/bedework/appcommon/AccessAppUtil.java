@@ -61,6 +61,7 @@ import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.access.Privilege;
 import edu.rpi.cct.uwcal.access.PrivilegeDefs;
+import edu.rpi.cct.uwcal.access.PrivilegeSet;
 import edu.rpi.cct.uwcal.access.Privileges;
 import edu.rpi.sss.util.xml.QName;
 import edu.rpi.sss.util.xml.XmlEmit;
@@ -253,13 +254,15 @@ public class AccessAppUtil implements Serializable {
    * of allowed/disallowed/unspecified flags indexed by a privilege index,
    * returning the representation a a String
    *
-   * @param privileges    char[] of allowed/disallowed
+   * @param ps    PrivilegeSet allowed/disallowed
    * @return String xml
    * @throws CalFacadeException
    */
-  public static String getCurrentPrivSetString(char[] privileges)
+  public static String getCurrentPrivSetString(PrivilegeSet ps)
           throws CalFacadeException {
     try {
+      char[] privileges = ps.getPrivileges();
+
       XmlEmit xml = new XmlEmit(true);  // no headers
       StringWriter su = new StringWriter();
       xml.startEmit(su);

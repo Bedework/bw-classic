@@ -57,6 +57,7 @@ import edu.rpi.cct.uwcal.access.Access;
 import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.access.PrivilegeDefs;
+import edu.rpi.cct.uwcal.access.PrivilegeSet;
 import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
 import org.bedework.calfacade.base.BwShareableContainedDbentity;
@@ -65,6 +66,7 @@ import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeException;
@@ -91,6 +93,12 @@ class AccessUtil implements PrivilegeDefs {
   private boolean superUser;
 
   private BwUser authUser;
+
+  private BwSystem syspars;
+
+  private String userRootPath;
+
+  private String userHomePathPrefix;
 
   private transient Logger log;
 
@@ -139,6 +147,16 @@ class AccessUtil implements PrivilegeDefs {
    *
    */
   public void close() {
+  }
+
+  /** Set the system parameters object.
+   * @param val
+   */
+  public void setSyspars(BwSystem val) {
+    syspars = val;
+
+    userRootPath = "/" + syspars.getUserCalendarRoot();
+    userHomePathPrefix = userRootPath + "/";
   }
 
   /* ====================================================================
@@ -248,17 +266,50 @@ class AccessUtil implements PrivilegeDefs {
      */
 
     try {
-      CurrentAccess ca;
+      CurrentAccess ca = null;
+
       String account = ent.getOwner().getAccount();
+      PrivilegeSet maxPrivs = null;
 
-      char[] aclChars = getAclChars(ent);
+      char[] aclChars = null;
 
-      if (desiredAccess == privRead) {
-        ca = access.checkRead(authUser, account, aclChars);
-      } else if (desiredAccess == privWrite) {
-        ca = access.checkReadWrite(authUser, account, aclChars);
-      } else {
-        ca = access.evaluateAccess(authUser, account, desiredAccess, aclChars);
+      if (ent instanceof BwCalendar) {
+        BwCalendar cal = (BwCalendar)ent;
+        String path = cal.getPath();
+
+        if (userRootPath.equals(path)) {
+          ca = new CurrentAccess();
+
+          if (getSuperUser()) {
+            ca.privileges = PrivilegeSet.makeDefaultOwnerPrivileges();
+          } else {
+            ca.privileges = PrivilegeSet.makeDefaultNonOwnerPrivileges();
+          }
+        } else if (path.equals(userHomePathPrefix + account)){
+          // Accessing user home directory
+          if (getSuperUser()) {
+            ca = new CurrentAccess();
+
+            ca.privileges = PrivilegeSet.makeDefaultOwnerPrivileges();
+          } else {
+            // Set the maximumn access
+            maxPrivs = PrivilegeSet.userHomeMaxPrivileges;
+          }
+        }
+      }
+
+      if (ca == null) {
+        // Not special
+        aclChars = getAclChars(ent);
+
+        if (desiredAccess == privRead) {
+          ca = access.checkRead(authUser, account, aclChars, maxPrivs);
+        } else if (desiredAccess == privWrite) {
+          ca = access.checkReadWrite(authUser, account, aclChars, maxPrivs);
+        } else {
+          ca = access.evaluateAccess(authUser, account, desiredAccess, aclChars,
+                                     maxPrivs);
+        }
       }
 
       if ((authUser != null) && superUser) {

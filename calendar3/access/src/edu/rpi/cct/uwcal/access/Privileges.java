@@ -195,7 +195,7 @@ public class Privileges implements PrivilegeDefs {
    * @return char[] access flags
    * @throws AccessException
    */
-  public static char[] fromEncoding(EncodedAcl acl) throws AccessException {
+  public static PrivilegeSet fromEncoding(EncodedAcl acl) throws AccessException {
     char[] privStates = {
       unspecified,   // privAll
       unspecified,   // privRead
@@ -228,7 +228,7 @@ public class Privileges implements PrivilegeDefs {
       setState(privStates, p, p.getDenial());
     }
 
-    return privStates;
+    return new PrivilegeSet(privStates);
   }
 
   /** Skip all the privileges info.

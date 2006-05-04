@@ -57,7 +57,7 @@ import java.io.Serializable;
 
 import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
-/** Class to handle access control. Because we may be evaluating access 
+/** Class to handle access control. Because we may be evaluating access
  * frequently we try do so without creating (many) objects.
  *
  * <p>This class is created for a session or perhaps a thread and reused to
@@ -109,7 +109,7 @@ public class Access implements Serializable {
       acl.addAce(new Ace(null, false, Ace.whoTypeOther, read));
       acl.addAce(new Ace(null, false, Ace.whoTypeUnauthenticated, read));
       defaultPublicAccess = new String(acl.encode());
-      
+
       acl.clear();
       acl.addAce(new Ace(null, false, Ace.whoTypeOwner, all));
       acl.addAce(new Ace(null, false, Ace.whoTypeOther, none));
@@ -118,7 +118,7 @@ public class Access implements Serializable {
       throw new RuntimeException(t);
     }
   }
-  
+
   /** Constructor
    *
    * @param debug    boolean true fro debug on
@@ -185,13 +185,17 @@ public class Access implements Serializable {
    * @param owner    String owner of object
    * @param how      Privilege set definign desired access
    * @param aclString String defining current acls for object
+   * @param filter    if not null specifies maximum access
    * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
   public CurrentAccess evaluateAccess(AccessPrincipal who, String owner,
-                                      Privilege[] how, String aclString)
+                                      Privilege[] how, String aclString,
+                                      PrivilegeSet filter)
           throws AccessException {
-    return new Acl(debug).evaluateAccess(who, owner, how, aclString.toCharArray());
+    return new Acl(debug).evaluateAccess(who, owner, how,
+                                         aclString.toCharArray(),
+                                         filter);
   }
 
   /** convenience method
@@ -200,13 +204,16 @@ public class Access implements Serializable {
    * @param owner    String owner of object
    * @param how      Privilege set defining desired access
    * @param aclChars char[] defining current acls for object
+   * @param filter    if not null specifies maximum access
    * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
   public CurrentAccess evaluateAccess(AccessPrincipal who, String owner,
-                                      Privilege[] how, char[] aclChars)
+                                      Privilege[] how, char[] aclChars,
+                                      PrivilegeSet filter)
           throws AccessException {
-    return new Acl(debug).evaluateAccess(who, owner, how, aclChars);
+    return new Acl(debug).evaluateAccess(who, owner, how, aclChars,
+                                         filter);
   }
 
   /** convenience method - check for read access
@@ -214,13 +221,16 @@ public class Access implements Serializable {
    * @param who      Acl.Principal defining who is trying to get access
    * @param owner    String owner of object
    * @param aclChars char[] defining current acls for object
+   * @param filter    if not null specifies maximum access
    * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
   public CurrentAccess checkRead(AccessPrincipal who, String owner,
-                                 char[] aclChars)
+                                 char[] aclChars,
+                                 PrivilegeSet filter)
           throws AccessException {
-    return new Acl(debug).evaluateAccess(who, owner, privSetRead, aclChars);
+    return new Acl(debug).evaluateAccess(who, owner, privSetRead, aclChars,
+                                         filter);
   }
 
   /** convenience method - check for read write access
@@ -228,13 +238,16 @@ public class Access implements Serializable {
    * @param who      Acl.Principal defining who is trying to get access
    * @param owner    String owner of object
    * @param aclChars char[] defining current acls for object
+   * @param filter    if not null specifies maximum access
    * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
   public CurrentAccess checkReadWrite(AccessPrincipal who, String owner,
-                                      char[] aclChars)
+                                      char[] aclChars,
+                                      PrivilegeSet filter)
           throws AccessException {
-    return new Acl(debug).evaluateAccess(who, owner, privSetReadWrite, aclChars);
+    return new Acl(debug).evaluateAccess(who, owner, privSetReadWrite, aclChars,
+                                         filter);
   }
 
   /** convenience method - check for given access
@@ -243,15 +256,17 @@ public class Access implements Serializable {
    * @param owner    String owner of object
    * @param priv     int desired access as defined above
    * @param aclChars char[] defining current acls for object
+   * @param filter    if not null specifies maximum access
    * @return CurrentAccess   access + allowed/disallowed
    * @throws AccessException
    */
   public CurrentAccess evaluateAccess(AccessPrincipal who, String owner,
-                                      int priv, char[] aclChars)
+                                      int priv, char[] aclChars,
+                                      PrivilegeSet filter)
           throws AccessException {
     return new Acl(debug).evaluateAccess(who, owner,
                                          new Privilege[]{Privileges.makePriv(priv)},
-                                         aclChars);
+                                         aclChars, filter);
   }
 }
 

@@ -165,9 +165,9 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
 
   private boolean notWho;
 
-  /** array of allowed/denied/undefined indexed by Privilege index
+  /** allowed/denied/undefined indexed by Privilege index
    */
-  private char[] how;
+  private PrivilegeSet how;
 
   /** Privilege objects defining the access. Used when manipulating acls
    */
@@ -199,7 +199,7 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
   public Ace(String who,
              boolean notWho,
              int whoType,
-             char[] how) {
+             PrivilegeSet how) {
     this.who = who;
     this.notWho = notWho;
     this.whoType = whoType;
@@ -286,17 +286,17 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
   }
 
   /**
-   * @param val char[] array of allowed/denied/undefined indexed by Privilege index
+   * @param val PrivilegeSet of allowed/denied/undefined indexed by Privilege index
    */
-  public void setHow(char[] val) {
+  public void setHow(PrivilegeSet val) {
     how = val;
   }
 
   /**
    *
-   * @return char[] array of allowed/denied/undefined indexed by Privilege index
+   * @return PrivilegeSet array of allowed/denied/undefined indexed by Privilege index
    */
-  public char[] getHow() {
+  public PrivilegeSet getHow() {
     return how;
   }
 
@@ -347,12 +347,12 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
    * @param acl
    * @param name
    * @param whoType
-   * @return char[]    merged privileges if we find a match else null
+   * @return PrivilegeSet    merged privileges if we find a match else null
    * @throws AccessException
    */
-  public static char[] findMergedPrivilege(Acl acl,
+  public static PrivilegeSet findMergedPrivilege(Acl acl,
                                            String name, int whoType) throws AccessException {
-    char[] privileges = null;
+    PrivilegeSet privileges = null;
     Iterator it = acl.getAces().iterator();
 
     while (it.hasNext()) {
@@ -362,55 +362,12 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
           ((whoType == whoTypeUnauthenticated) ||
            (whoType == whoTypeOwner) ||
             ace.whoMatch(name))) {
-        privileges = mergePrivileges(privileges, ace.getHow(),
-                                     ace.getInherited());
+        privileges = PrivilegeSet.mergePrivileges(privileges, ace.getHow(),
+                                                  ace.getInherited());
       }
     }
 
     return privileges;
-  }
-
-  /** If current is null it is set to a cloned copy of morePriv otherwise the
-   * privilege(s) in morePriv are merged into current.
-   *
-   * <p>Specified access overrides inherited access,<br/>
-   * allowed overrides denied overrides unspecified so the order is, from
-   * highest to lowest:<br/>
-   *
-   * allowed, denied, allowedInherited, deniedInherited, unspecified.
-   *
-   * <p>Only allowed and denied appear in encoded aces.
-   *
-   * @param current
-   * @param morePriv
-   * @param inherited   true if the ace was an inherited ace
-   * @return char[]  mergedPrivileges
-   */
-  public static char[] mergePrivileges(char[] current, char[] morePriv,
-                                       boolean inherited) {
-    char[] mp = (char[])morePriv.clone();
-
-    if (inherited) {
-      for (int i = 0; i <= privMaxType; i++) {
-        char p = mp[i];
-        if (p == allowed) {
-          mp[i] = allowedInherited;
-        } else if (p == denied) {
-          mp[i] = deniedInherited;
-        }
-      }
-    }
-    if (current == null) {
-      return mp;
-    }
-
-    for (int i = 0; i <= privMaxType; i++) {
-      if (current[i] < mp[i]) {
-        current[i] = mp[i];
-      }
-    }
-
-    return current;
   }
 
   /* ====================================================================

@@ -65,6 +65,9 @@ import javax.servlet.http.HttpServletRequest;
 /** This action updates the system parameters
  *
  * <p>Parameters are:<ul>
+ *      <li>updateCancelled</li>
+ *      <li>admingroupsClass</li>
+ *      <li>usergroupsClass</li>
  *      <li>defaultUserViewName</li>
  *      <li>directoryBrowsingDisallowed</li>
  *      <li>httpConnectionsPerUser</li>
