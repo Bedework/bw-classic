@@ -171,6 +171,11 @@ try {
       <editLocation><genurl:rewrite action="editLoc.do"/></editLocation>
       <delLocation><genurl:rewrite action="delLocation.do"/></delLocation>
 
+      <prefs>
+        <fetchForUpdate><genurl:link page="/prefs/fetchForUpdate.do?b=de"/></fetchForUpdate>
+        <update><genurl:link page="/prefs/update.do?b=de"/></update>
+      </prefs>
+
       <initEventAlarm><genurl:rewrite action="initEventAlarm.do"/></initEventAlarm>
       <setAlarm><genurl:rewrite action="setAlarm.do"/></setAlarm>
       <addEventRef><genurl:rewrite action="addEventRef.do"/></addEventRef>

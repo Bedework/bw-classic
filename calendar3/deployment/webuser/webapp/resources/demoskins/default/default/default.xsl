@@ -77,6 +77,9 @@
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
   <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd/a/@href"/>
   <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/subscriptions/subscribe/a/@href"/>
+  <!-- preferences -->
+  <xsl:variable name="prefs-fetchForUpdate" select="/bedework/urlPrefixes/prefs/fetchForUpdate/a/@href"/>
+  <xsl:variable name="prefs-update" select="/bedework/urlPrefixes/prefs/update/a/@href"/>
 
   <!-- URL of the web application - includes web context
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/> -->
@@ -171,6 +174,10 @@
                     <xsl:when test="/bedework/page='freeBusy'">
                       <xsl:call-template name="utilBar"/>
                       <xsl:apply-templates select="/bedework/freebusy"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='modPrefs'">
+                      <!-- show an arbitrary page -->
+                      <xsl:apply-templates select="/bedework/prefs"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='other'">
                       <!-- show an arbitrary page -->
@@ -350,7 +357,7 @@
     <h3>options</h3>
     <ul id="sideBarMenu">
       <li><a href="{$manageLocations}">Manage Locations</a></li>
-      <li>Preferences</li>
+      <li><a href="{$prefs-fetchForUpdate}">Preferences</a></li>
     </ul>
   </xsl:template>
 
@@ -3371,6 +3378,119 @@
       </table>
     </form>
   </xsl:template>
+
+  <!--==== PREFERENCES ====-->
+  <xsl:template match="prefs">
+    <h2>Manage Preferences</h2>
+    <form name="userPrefsForm" method="post" action="{$prefs-update}">
+      <table class="common">
+        <tr>
+          <td class="fieldname">
+            User:
+          </td>
+          <td>
+            <xsl:value-of select="/bedework/prefs/user"/>
+            <xsl:variable name="user" select="/bedework/prefs/user"/>
+            <input type="hidden" name="user" value="{$user}"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Email:
+          </td>
+          <td>
+            <xsl:variable name="email" select="/bedework/prefs/email"/>
+            <input type="text" name="email" value="{$email}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Preferred view:
+          </td>
+          <td>
+            <xsl:variable name="preferredView" select="/bedework/prefs/preferredView"/>
+            <input type="text" name="preferredView" value="{$preferredView}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Preferred view period:
+          </td>
+          <td>
+            <xsl:variable name="preferredViewPeriod" select="/bedework/prefs/preferredViewPeriod"/>
+            <select name="viewPeriod">
+              <!-- picking the selected item could be done with javascript. for
+                   now, this will do.  -->
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'dayView'">
+                  <option value="dayView" selected="selected">day</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="dayView">day</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'todayView'">
+                  <option value="todayView" selected="selected">today</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="todayView">today</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'weekView'">
+                  <option value="weekView" selected="selected">week</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="weekView">week</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'monthView'">
+                  <option value="monthView" selected="selected">month</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="monthView">month</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'yearView'">
+                  <option value="yearView" selected="selected">year</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="yearView">year</option>
+                </xsl:otherwise>
+              </xsl:choose>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Skin name:
+          </td>
+          <td>
+            <xsl:variable name="skinName" select="/bedework/prefs/skinName"/>
+            <input type="text" name="skin" value="{$skinName}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Skin style:
+          </td>
+          <td>
+            <xsl:variable name="skinStyle" select="/bedework/prefs/skinStyle"/>
+            <input type="text" name="skinStyle" value="{$skinStyle}" size="40"/>
+          </td>
+        </tr>
+      </table>
+      <br />
+
+      <input type="submit" name="modPrefs" value="Update"/>
+      <input type="reset" value="Reset"/>
+      <input type="submit" name="cancelled" value="Cancel"/>
+    </form>
+  </xsl:template>
+
 
   <!--==== SIDE CALENDAR MENU ====-->
   <xsl:template match="calendar" mode="sideList">
