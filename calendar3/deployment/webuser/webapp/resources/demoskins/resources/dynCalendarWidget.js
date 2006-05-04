@@ -6,8 +6,8 @@
 * Copyright......: 2001, 2002 Richard Heyes
 *
 *
-* Modifications for inclusion in Bedework calendar system 
-* by Arlen Johnson 2006 
+* Modifications for inclusion in Bedework calendar system
+* by Arlen Johnson 2006
 */
 
 /**
@@ -40,8 +40,8 @@
     // this.date           = this.today.getDate();
 		// this.month          = this.today.getMonth();
 		// this.year           = this.today.getFullYear();
-    
-    // In Bedework we will always pass the start date explicitly to the 
+
+    // In Bedework we will always pass the start date explicitly to the
     // calendar widget.
 		this.year           = yr; //this.today.getFullYear();
 		this.month          = mth; //this.today.getMonth();
@@ -115,7 +115,7 @@
 		var ret, row, i, cssClass, linkHTML, previousMonth, previousYear;
 		var nextMonth, nextYear, prevImgHTML, prevLinkHTML, nextImgHTML, nextLinkHTML;
 		var monthComboOptions, monthCombo, yearComboOptions, yearCombo, html;
-		
+
 		this.currentMonth = month = arguments[0] != null ? arguments[0] : this.currentMonth;
 		this.currentYear  = year  = arguments[1] != null ? arguments[1] : this.currentYear;
 
@@ -158,7 +158,7 @@
 			previousMonth = 11;
 			previousYear--;
 		}
-		
+
 		nextYear  = thisMonth.getFullYear();
 		nextMonth = thisMonth.getMonth() + 1;
 		if(nextMonth > 11){
@@ -186,7 +186,7 @@
 		} else {
 			monthCombo = monthnames[thisMonth.getMonth()];
 		}
-		
+
 		/**
         * Build year combo
         */
@@ -275,7 +275,7 @@
 	{
 		this.offsetY = Yoffset;
 	}
-	
+
 /**
 * Sets the images path
 *
@@ -369,7 +369,7 @@
 	function dynCalendar_hideLayer()
 	{
 		this._getLayer().style.visibility = 'hidden';
-    
+
     // for Bedework event editing; reveal time fields when cal widget is hidden
     changeClass('calWidgetStartTimeHider','shown');
     changeClass('calWidgetEndTimeHider','shown');
@@ -383,7 +383,7 @@
 	function dynCalendar_showLayer()
 	{
 		this._getLayer().style.visibility = 'visible';
-    
+
     // for Bedework event editing; hide time fields when cal widget is visible
     // to avoid IE rendering oddities (IE always displays the "windowed" layer
     // above everything else -- that includes select boxes.
@@ -458,7 +458,7 @@
 				dynCalendar_mouseY = event.clientY + document.body.scrollTop;
 				arguments[0] = null;
 			}
-	
+
 			dynCalendar_oldOnmousemove();
 		}
 	}
@@ -476,7 +476,7 @@
 					dynCalendar_layers[i]._hideLayer();
 				}
 			}
-	
+
 			dynCalendar_oldOnclick(arguments[0] ? arguments[0] : null);
 		}
 	}

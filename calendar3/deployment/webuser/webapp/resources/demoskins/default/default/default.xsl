@@ -240,12 +240,12 @@
                   /bedework/page='addEventRef' or
                   /bedework/page='editEvent' or
                   /bedework/page='selectCalForEvent' or
-                  /bedework/page='upload'">
+                  /bedework/page='upload' or
+                  /bedework/page='modPrefs'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
     </xsl:if>
     <xsl:if test="/bedework/page='addEvent' or
-                  /bedework/page='editEvent' or
-                  /bedework/page='modPrefs'">
+                  /bedework/page='editEvent'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
       <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
       <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
@@ -1334,7 +1334,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </span>
-            <a href="javascript:launchSimpleWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
+            <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
           </td>
         </tr>
         <tr>
@@ -1723,7 +1723,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </span>
-            <a href="javascript:launchSimpleWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
+            <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
           </td>
         </tr>
         <tr>
@@ -2044,6 +2044,8 @@
   </xsl:template>
 
   <xsl:template match="event" mode="addEventRef">
+  <!-- The name "eventForm" is referenced by several javascript functions. Do not
+    change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$event-addEventRefComplete}" id="standardForm"  enctype="multipart/form-data">
       <xsl:variable name="subscriptionId" select="subscription/id"/>
       <xsl:variable name="calPath" select="calendar/path"/>
@@ -2075,7 +2077,7 @@
             <span id="bwEventCalDisplay">
               <em>default calendar</em>
             </span>
-            <a href="javascript:launchSimpleWindow('{$event-selectCalForEvent}')" class="small">[change]</a> (does not yet work)
+            <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">[change]</a> (does not yet work)
           </td>
         </tr>
         <tr>
@@ -3183,6 +3185,8 @@
 
   <!--==== UPLOAD ====-->
   <xsl:template name="upload">
+  <!-- The name "eventForm" is referenced by several javascript functions. Do not
+    change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$upload}" id="standardForm"  enctype="multipart/form-data">
       <h2>Upload iCAL File</h2>
       <table class="common" cellspacing="0">
@@ -3203,7 +3207,7 @@
             <span id="bwEventCalDisplay">
               <em>default calendar</em>
             </span>
-            <a href="javascript:launchSimpleWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
+            <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
           </td>
         </tr>
         <tr>
@@ -3383,7 +3387,9 @@
   <!--==== PREFERENCES ====-->
   <xsl:template match="prefs">
     <h2>Manage Preferences</h2>
-    <form name="userPrefsForm" method="post" action="{$prefs-update}">
+    <!-- The name "eventForm" is referenced by several javascript functions. Do not
+    change it without modifying includes.js -->
+    <form name="eventForm" method="post" action="{$prefs-update}">
       <table class="common">
         <tr><td colspan="2" class="fill">User settings:</td></tr>
         <tr>
@@ -3412,20 +3418,20 @@
             Default calendar:
           </td>
           <td>
-            <xsl:variable name="defaultCalendar" select="defaultCalendar"/>
-            <select name="defaultCalendar">
-              <xsl:for-each select="/bedework/myCalendars/calendars//calendar[currentAccess/current-user-privilege-set/privilege/write-content and calendarCollection = 'true']">
-                <xsl:variable name="calPath" select="path"/>
-                <xsl:choose>
-                  <xsl:when test="path = $defaultCalendar">
-                    <option value="{$calPath}" selected="selected"><xsl:value-of select="path"/></option>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <option value="{$calPath}"><xsl:value-of select="path"/></option>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:for-each>
-            </select>
+            <xsl:variable name="calPath" select="defaultCalendar"/>
+            <input type="hidden" name="calPath" value="{$calPath}"/>
+            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+            <span id="bwEventCalDisplay">
+              <xsl:choose>
+                <xsl:when test="contains(defaultCalendar,$userPath)">
+                  <xsl:value-of select="substring-after(defaultCalendar,$userPath)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="defaultCalendar"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+            <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
           </td>
         </tr>
         <tr>

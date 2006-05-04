@@ -12,7 +12,10 @@
   <user><bean:write name="userPrefs" property="owner.account"/></user>
   <email><bean:write name="userPrefs" property="email"/></email>
   <!-- default calendar into which events will be placed -->
-  <defaultCalendar><bean:write name="userPrefs" property="defaultCalendar"/></defaultCalendar>
+  <defaultCalendar>
+    <path><bean:write name="userPrefs" property="defaultCalendar.path"/></path>
+    <subName></subName>
+  </defaultCalendar>
   <!-- name of default view (collection of subscriptions) that will appear upon login -->
   <preferredView><bean:write name="userPrefs" property="preferredView"/></preferredView>
   <!-- default period that will appear upon login (day, week, month, year, today) -->
