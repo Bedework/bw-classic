@@ -292,18 +292,7 @@ public class BwSubscription extends BwOwnedDbentity {
    * @return BwSubscription a new subscription object
    */
   public static BwSubscription makeSubscription(BwCalendar val) {
-    BwSubscription sub = new BwSubscription();
-
-    sub.setName(val.getName());
-    sub.setUri(CalFacadeDefs.bwUriPrefix + val.getPath());
-    sub.setDisplay(true);
-    sub.setAffectsFreeBusy(true);
-    sub.setInternalSubscription(true);
-    sub.setCalendar(val);
-    sub.setInternalSubscription(true);
-    sub.setEmailNotifications(false);
-
-    return sub;
+    return makeSubscription(val, val.getPath(), true, true, false);
   }
 
   /** Make a subscription to the calendar object
@@ -352,7 +341,7 @@ public class BwSubscription extends BwOwnedDbentity {
 
     sub.setName(name);
     sub.setUri(url);
-    sub.setInternalSubscription(false);
+    sub.setInternalSubscription(url.startsWith(CalFacadeDefs.bwUriPrefix));
     sub.setDisplay(display);
     sub.setAffectsFreeBusy(affectsFreeBusy);
     sub.setEmailNotifications(emailNotification);

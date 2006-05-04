@@ -107,6 +107,13 @@ public class InitSubscribeAction extends BwAbstractAction {
       }
 
       sub = BwSubscription.makeSubscription(calUri, null, false, false, false);
+
+      /* Try to access the calendar */
+      if (svc.getSubCalendar(sub) == null) {
+        // Assume no access
+        form.getErr().emit("org.bedework.client.error.noaccess");
+        return "noAccess";
+      }
     } else {
       cal = svc.getCalendar(calPath);
 

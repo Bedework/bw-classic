@@ -98,7 +98,26 @@ public class UpdateSysparsAction extends PEAbstractAction {
     BwSystem syspars = svci.getSyspars();
     boolean changed = false;
 
-    String str = getReqPar(request, "defaultUserViewName");
+    String str = getReqPar(request, "updateCancelled");
+    if (str != null) {
+      // refetch
+      form.setSyspars(svci.getSyspars());
+      return "cancelled";
+    }
+
+    str = getReqPar(request, "admingroupsClass");
+    if (str != null) {
+      syspars.setAdmingroupsClass(str);
+      changed = true;
+    }
+
+    str = getReqPar(request, "usergroupsClass");
+    if (str != null) {
+      syspars.setUsergroupsClass(str);
+      changed = true;
+    }
+
+    str = getReqPar(request, "defaultUserViewName");
     if (str != null) {
       syspars.setDefaultUserViewName(str);
       changed = true;
@@ -126,13 +145,6 @@ public class UpdateSysparsAction extends PEAbstractAction {
     if (longVal >= 0) {
       syspars.setDefaultUserQuota(longVal);
       changed = true;
-    }
-
-    str = getReqPar(request, "updateCancelled");
-    if (str != null) {
-      // refetch
-      form.setSyspars(svci.getSyspars());
-      return "cancelled";
     }
 
     if (!changed) {
