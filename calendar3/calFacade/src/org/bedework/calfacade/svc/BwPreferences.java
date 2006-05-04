@@ -69,7 +69,7 @@ public class BwPreferences extends BwOwnedDbentity {
    */
   private String preferredViewPeriod;
 
-  /** Flag days as workdays. Space for not "W" for a workday.
+  /** Flag days as workdays. Space for not, "W" for a workday.
    * 7 characters with Sunday the first. Localization code should handle
    * first day of week.
    */

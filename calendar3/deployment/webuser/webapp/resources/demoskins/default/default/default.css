@@ -434,6 +434,12 @@ table.common th.commonHeader a:hover {
 table.common td.filler {
   height: 200px;
 }
+table.common td.fill {
+  background-color: #ddd;
+  color: black;
+  font-weight: bold;
+  padding: 0.2em 0.5em 0.2em 0.5em;
+}
 table.common td.fieldval {
   margin: 0em;
   vertical-align: top;
@@ -960,7 +966,7 @@ a.calendarAdd img {
   width: 98%; /* less than 100% helps avoid IE weirdness */
   margin-top: 1em;
 }
-p.note {
+.note {
   margin: 0;
   padding: 0 0 1em 0;
   font-size: 0.8em;

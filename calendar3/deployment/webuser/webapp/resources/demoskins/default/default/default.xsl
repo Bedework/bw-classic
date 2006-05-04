@@ -244,7 +244,8 @@
       <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
     </xsl:if>
     <xsl:if test="/bedework/page='addEvent' or
-                  /bedework/page='editEvent'">
+                  /bedework/page='editEvent' or
+                  /bedework/page='modPrefs'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
       <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
       <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
@@ -3384,32 +3385,229 @@
     <h2>Manage Preferences</h2>
     <form name="userPrefsForm" method="post" action="{$prefs-update}">
       <table class="common">
+        <tr><td colspan="2" class="fill">User settings:</td></tr>
         <tr>
           <td class="fieldname">
             User:
           </td>
           <td>
-            <xsl:value-of select="/bedework/prefs/user"/>
-            <xsl:variable name="user" select="/bedework/prefs/user"/>
+            <xsl:value-of select="user"/>
+            <xsl:variable name="user" select="user"/>
             <input type="hidden" name="user" value="{$user}"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Email:
+            Email address:
           </td>
           <td>
-            <xsl:variable name="email" select="/bedework/prefs/email"/>
+            <xsl:variable name="email" select="email"/>
             <input type="text" name="email" value="{$email}" size="40"/>
           </td>
         </tr>
+        <tr><td colspan="2">&#160;</td></tr>
+        <tr><td colspan="2" class="fill">Adding events:</td></tr>
+        <tr>
+          <td class="fieldname">
+            Default calendar:
+          </td>
+          <td>
+            <xsl:variable name="defaultCalendar" select="defaultCalendar"/>
+            <select name="defaultCalendar">
+              <xsl:for-each select="/bedework/myCalendars/calendars//calendar[currentAccess/current-user-privilege-set/privilege/write-content and calendarCollection = 'true']">
+                <xsl:variable name="calPath" select="path"/>
+                <xsl:choose>
+                  <xsl:when test="path = $defaultCalendar">
+                    <option value="{$calPath}" selected="selected"><xsl:value-of select="path"/></option>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <option value="{$calPath}"><xsl:value-of select="path"/></option>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:for-each>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Preferred end date/time type:
+          </td>
+          <td>
+            <select name="preferredEndType">
+              <xsl:choose>
+                <xsl:when test="preferredEndType = 'duration'">
+                  <option value="duration" selected="selected">duration</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="duration">duration</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="preferredEndType = 'date'">
+                  <option value="date" selected="selected">date/time</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="date">date/time</option>
+                </xsl:otherwise>
+              </xsl:choose>
+            </select>
+          </td>
+        </tr>
+        <tr><td colspan="2">&#160;</td></tr>
+        <tr><td colspan="2" class="fill">Workday settings:</td></tr>
+        <tr>
+          <td class="fieldname">
+            Workdays:
+          </td>
+          <td>
+            <xsl:variable name="workDays" select="workDays"/>
+            <input type="hidden" name="workDays" value="{$workDays}"/>
+            <input type="checkbox" name="workDayIndex" value="0"/>Sun
+            <input type="checkbox" name="workDayIndex" value="1"/>Mon
+            <input type="checkbox" name="workDayIndex" value="2"/>Tue
+            <input type="checkbox" name="workDayIndex" value="3"/>Wed
+            <input type="checkbox" name="workDayIndex" value="4"/>Thu
+            <input type="checkbox" name="workDayIndex" value="5"/>Fri
+            <input type="checkbox" name="workDayIndex" value="6"/>Sat
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Workday start:
+          </td>
+          <td>
+            <xsl:variable name="workDayStart" select="workDayStart"/>
+            <select name="workDayStart">
+              <option value="0">00:00</option>
+              <option value="30">00:30</option>
+              <option value="60">01:00</option>
+              <option value="90">01:30</option>
+              <option value="120">02:00</option>
+              <option value="150">02:30</option>
+              <option value="180">03:00</option>
+              <option value="210">03:30</option>
+              <option value="240">04:00</option>
+              <option value="270">04:30</option>
+              <option value="300">05:00</option>
+              <option value="330">05:30</option>
+              <option value="360">06:00</option>
+              <option value="390">06:30</option>
+              <option value="420">07:00</option>
+              <option value="450">07:30</option>
+              <option value="480">08:00</option>
+              <option value="510">08:30</option>
+              <option value="540">09:00</option>
+              <option value="570">09:30</option>
+              <option value="600">10:00</option>
+              <option value="630">10:30</option>
+              <option value="660">11:00</option>
+              <option value="690">11:30</option>
+              <option value="720">12:00</option>
+              <option value="750">12:30</option>
+              <option value="780">13:00</option>
+              <option value="810">13:30</option>
+              <option value="840">14:00</option>
+              <option value="870">14:30</option>
+              <option value="900">15:00</option>
+              <option value="930">15:30</option>
+              <option value="960">16:00</option>
+              <option value="990">16:30</option>
+              <option value="1020">17:00</option>
+              <option value="1050">17:30</option>
+              <option value="1080">18:00</option>
+              <option value="1110">18:30</option>
+              <option value="1140">19:00</option>
+              <option value="1170">19:30</option>
+              <option value="1200">20:00</option>
+              <option value="1230">20:30</option>
+              <option value="1260">21:00</option>
+              <option value="1290">21:30</option>
+              <option value="1320">22:00</option>
+              <option value="1350">22:30</option>
+              <option value="1380">23:00</option>
+              <option value="1410">23:30</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Workday end:
+          </td>
+          <td>
+            <xsl:variable name="workDayEnd" select="workDayEnd"/>
+            <select name="workDayEnd">
+              <option value="0">00:00</option>
+              <option value="30">00:30</option>
+              <option value="60">01:00</option>
+              <option value="90">01:30</option>
+              <option value="120">02:00</option>
+              <option value="150">02:30</option>
+              <option value="180">03:00</option>
+              <option value="210">03:30</option>
+              <option value="240">04:00</option>
+              <option value="270">04:30</option>
+              <option value="300">05:00</option>
+              <option value="330">05:30</option>
+              <option value="360">06:00</option>
+              <option value="390">06:30</option>
+              <option value="420">07:00</option>
+              <option value="450">07:30</option>
+              <option value="480">08:00</option>
+              <option value="510">08:30</option>
+              <option value="540">09:00</option>
+              <option value="570">09:30</option>
+              <option value="600">10:00</option>
+              <option value="630">10:30</option>
+              <option value="660">11:00</option>
+              <option value="690">11:30</option>
+              <option value="720">12:00</option>
+              <option value="750">12:30</option>
+              <option value="780">13:00</option>
+              <option value="810">13:30</option>
+              <option value="840">14:00</option>
+              <option value="870">14:30</option>
+              <option value="900">15:00</option>
+              <option value="930">15:30</option>
+              <option value="960">16:00</option>
+              <option value="990">16:30</option>
+              <option value="1020">17:00</option>
+              <option value="1050">17:30</option>
+              <option value="1080">18:00</option>
+              <option value="1110">18:30</option>
+              <option value="1140">19:00</option>
+              <option value="1170">19:30</option>
+              <option value="1200">20:00</option>
+              <option value="1230">20:30</option>
+              <option value="1260">21:00</option>
+              <option value="1290">21:30</option>
+              <option value="1320">22:00</option>
+              <option value="1350">22:30</option>
+              <option value="1380">23:00</option>
+              <option value="1410">23:30</option>
+            </select>
+          </td>
+        </tr>
+        <tr><td colspan="2">&#160;</td></tr>
+        <tr><td colspan="2" class="fill">Display options:</td></tr>
         <tr>
           <td class="fieldname">
             Preferred view:
           </td>
           <td>
-            <xsl:variable name="preferredView" select="/bedework/prefs/preferredView"/>
-            <input type="text" name="preferredView" value="{$preferredView}" size="40"/>
+            <xsl:variable name="preferredView" select="preferredView"/>
+            <select name="preferredView">
+              <xsl:for-each select="/bedework/views/view">
+                <xsl:variable name="viewName" select="name"/>
+                <xsl:choose>
+                  <xsl:when test="viewName = $preferredView">
+                    <option value="{$viewName}" selected="selected"><xsl:value-of select="name"/></option>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <option value="{$viewName}"><xsl:value-of select="name"/></option>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:for-each>
+            </select>
           </td>
         </tr>
         <tr>
@@ -3417,12 +3615,11 @@
             Preferred view period:
           </td>
           <td>
-            <xsl:variable name="preferredViewPeriod" select="/bedework/prefs/preferredViewPeriod"/>
             <select name="viewPeriod">
               <!-- picking the selected item could be done with javascript. for
                    now, this will do.  -->
               <xsl:choose>
-                <xsl:when test="$preferredViewPeriod = 'dayView'">
+                <xsl:when test="preferredViewPeriod = 'dayView'">
                   <option value="dayView" selected="selected">day</option>
                 </xsl:when>
                 <xsl:otherwise>
@@ -3430,7 +3627,7 @@
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:choose>
-                <xsl:when test="$preferredViewPeriod = 'todayView'">
+                <xsl:when test="preferredViewPeriod = 'todayView'">
                   <option value="todayView" selected="selected">today</option>
                 </xsl:when>
                 <xsl:otherwise>
@@ -3438,7 +3635,7 @@
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:choose>
-                <xsl:when test="$preferredViewPeriod = 'weekView'">
+                <xsl:when test="preferredViewPeriod = 'weekView'">
                   <option value="weekView" selected="selected">week</option>
                 </xsl:when>
                 <xsl:otherwise>
@@ -3446,7 +3643,7 @@
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:choose>
-                <xsl:when test="$preferredViewPeriod = 'monthView'">
+                <xsl:when test="preferredViewPeriod = 'monthView'">
                   <option value="monthView" selected="selected">month</option>
                 </xsl:when>
                 <xsl:otherwise>
@@ -3454,7 +3651,7 @@
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:choose>
-                <xsl:when test="$preferredViewPeriod = 'yearView'">
+                <xsl:when test="preferredViewPeriod = 'yearView'">
                   <option value="yearView" selected="selected">year</option>
                 </xsl:when>
                 <xsl:otherwise>
@@ -3469,8 +3666,12 @@
             Skin name:
           </td>
           <td>
-            <xsl:variable name="skinName" select="/bedework/prefs/skinName"/>
-            <input type="text" name="skin" value="{$skinName}" size="40"/>
+            <!-- as you add skins, update this list and set the selected flag
+                 as required (use an xsl:choose) -->
+            <xsl:variable name="skinName" select="skinName"/>
+            <select name="skin">
+              <option value="default">default</option>
+            </select>
           </td>
         </tr>
         <tr>
@@ -3478,8 +3679,46 @@
             Skin style:
           </td>
           <td>
-            <xsl:variable name="skinStyle" select="/bedework/prefs/skinStyle"/>
-            <input type="text" name="skinStyle" value="{$skinStyle}" size="40"/>
+            <!-- if you have skin styles, update this list and set the selected flag
+                 as required (use an xsl:choose) -->
+            <xsl:variable name="skinStyle" select="skinStyle"/>
+            <select name="skinStyle">
+              <option value="default">default</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Interface mode:
+          </td>
+          <td>
+            <xsl:variable name="userMode" select="userMode"/>
+            <select name="userMode">
+              <xsl:choose>
+                <xsl:when test="userMode = 0">
+                  <option value="0" selected="selected">basic</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="0">basic</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="userMode = 1">
+                  <option value="1" selected="selected">simple</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="1">simple</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="userMode = 3">
+                  <option value="3" selected="selected">advanced</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="3">advanced</option>
+                </xsl:otherwise>
+              </xsl:choose>
+            </select>
           </td>
         </tr>
       </table>

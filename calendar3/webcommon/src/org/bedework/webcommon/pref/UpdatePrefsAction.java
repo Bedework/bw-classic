@@ -67,11 +67,20 @@ import javax.servlet.http.HttpServletResponse;
 /** This action updates a calendar.
  *
  * <p>Parameters are:<ul>
- *      <li>"user"            User whos prefs we're changing - superuser only</li>
- *      <li>"view"            Name of preferred view</li>
- *      <li>"viewPeriod"      day/week/month/year</li>
- *      <li>"skin"            Name of default skin</li>
- *      <li>"skinStyle"       Name of default skin style</li>
+ *      <li>"user"             User whos prefs we're changing - superuser only</li>
+ *      <li>"view"             Name of preferred view</li>
+ *      <li>"viewPeriod"       day/week/month/year</li>
+ *      <li>"skin"             Name of default skin</li>
+ *      <li>"skinStyle"        Name of default skin style</li>
+
+ *      <li>"email"            Email address of user</li>
+ *      <li>"calPath"          Path to default calendar</li>
+ *      <li>"userMode"         User interface mode</li>
+ *      <li>"workDays"         7-character string representing workdays, "W" representing each workday, space otherwise; e.g. " WWWWW " is a typical Mon-Fri workweek</li>
+ *      <li>"workDayStart"     In minutes, e.g. e.g. 14:30 is 870 and 17:30 is 1050</li>
+ *      <li>"workDayEnd"       In minutes</li>
+ *      <li>"preferredEndType" For adding events: "duration" or "date"
+
  * </ul>
  *
  * <p>Forwards to:<ul>
