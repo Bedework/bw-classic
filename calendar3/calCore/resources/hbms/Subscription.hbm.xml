@@ -17,7 +17,7 @@
 
     <version name="seq" column="seq" type="integer" />
 
-    <property name="name" column="name" type="text" not-null="true"/>
+    <property name="name" column="subscrname" type="text" not-null="true"/>
 
     <many-to-one name="owner"
                 class="org.bedework.calfacade.BwUser"
@@ -28,6 +28,9 @@
 
     <property name="affectsFreeBusy" type="true_false"
               column="affects_free_busy" not-null="true" />
+
+    <property name="ignoreTransparency" type="true_false"
+              column="ignore_transparency" not-null="true" />
 
     <property name="display" type="true_false"
               column="display" not-null="true" />

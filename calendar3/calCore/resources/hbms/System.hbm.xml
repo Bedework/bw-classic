@@ -17,7 +17,7 @@
 
     <version name="seq" column="seq" type="integer" />
 
-    <property name="name" column="name" type="text" />
+    <property name="name" column="bwname" type="text" />
     <property name="tzid" column="tzid" type="text" />
     <property name="systemid" column="systemid" type="text" />
     <property name="publicCalendarRoot" column="publicCalendarRoot" type="text" />
@@ -26,6 +26,8 @@
     <property name="defaultTrashCalendar" column="defaultTrashCalendar" type="text" />
     <property name="userInbox" column="userInbox" type="text" />
     <property name="userOutbox" column="userOutbox" type="text" />
+    <property name="deletedCalendar" column="deletedCalendar" type="text" />
+    <property name="busyCalendar" column="busyCalendar" type="text" />
     <property name="defaultUserViewName" column="defaultUserViewName" type="text" />
 
     <property name="publicUser" column="public_user" type="text" />

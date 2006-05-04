@@ -31,18 +31,18 @@
               index="idx_sp_owner" unique-key="sponsor_key" />
     </many-to-one>
 
-    <property name="access" column="access" type="text" />
+    <property name="access" column="bwaccess" type="text" />
 
     <property name="publick" type="true_false" >
       <column name="publick" not-null="true" />
     </property>
 
     <property name="name" type="string" >
-      <column name="name" not-null="true" unique-key="sponsor_key" />
+      <column name="sponsorname" not-null="true" unique-key="sponsor_key" />
     </property>
     <property name="phone" column="phone" type="string"/>
     <property name="email" column="email" type="string"/>
-    <property name="link" column="link" type="string"/>
+    <property name="link" column="bwlink" type="string"/>
   </class>
 
   <!-- =================================================================

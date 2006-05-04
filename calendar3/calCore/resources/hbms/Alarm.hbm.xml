@@ -57,7 +57,7 @@
         </formula>
     </discriminator>
 
-    <version name="seq" column="sequence" type="integer" />
+    <version name="seq" column="bwsequence" type="integer" />
 
     <property name="alarmType" column="alarm_type" type="integer" />
 

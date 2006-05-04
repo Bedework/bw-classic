@@ -60,22 +60,43 @@ import java.io.Serializable;
  *  @author Mike Douglass   douglm@rpi.edu
  */
 public interface PrivilegeDefs extends Serializable {
-  /** A denied privilege is a privilege, e.g. read which is denied to the
-     associated 'who'. The following must have the order:<br/>
-       unspecified - denied - allowed<br/>
-     from least to most.
+  /* old allowed and old denied allow us to respecify the flags allowing for
+   * inherited access
    */
-  public static final char allowed = '3';
+  /** Old allowed flag - appears in old acls being converted to new form
+   */
+  public static final char oldAllowed = '3';
 
-  /** Denied access
+  /** Old denied privilege.
    */
-  public static final char denied = '2';
+  public static final char oldDenied = '2';
+
+  /* The following flags must sort with values in the order:
+   * allowed, denied, allowedInherited, deniedInherited, unspecified.
+   */
+
+  /** Allowed flag - appears in acls
+   */
+  public static final char allowed = 'y';
+
+  /** A denied privilege is a privilege, e.g. read which is denied to the
+     associated 'who' - appears in ace.
+   */
+  public static final char denied = 'n';
 
   /** This only appears in the final result from Privileges.fromEncoding
    */
-  public static final char unspecified = '1';
+  public static final char allowedInherited = 'Y';
 
-  /** Shows an ace was inherited
+  /** This only appears in the final result from Privileges.fromEncoding
+   */
+  public static final char deniedInherited = 'N';
+
+  /** This only appears in the final result from Privileges.fromEncoding
+   */
+  public static final char unspecified = '?';
+
+  /** Shows an ace was inherited - appears in ace
    */
   public static final char inheritedFlag = 'I';
 

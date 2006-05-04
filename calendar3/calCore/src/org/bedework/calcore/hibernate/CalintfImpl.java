@@ -1074,10 +1074,11 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
                               BwDateTime startDate, BwDateTime endDate,
                               int recurRetrieval,
-                              boolean freeBusy) throws CalFacadeException {
+                              boolean freeBusy,
+                              boolean allCalendars) throws CalFacadeException {
     return events.getEvents(calendar, filter,
                             startDate, endDate, recurRetrieval,
-                            freeBusy);
+                            freeBusy, allCalendars);
   }
 
   public CoreEventInfo getEvent(int id) throws CalFacadeException {

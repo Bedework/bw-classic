@@ -57,6 +57,10 @@ public class BwSubscription extends BwOwnedDbentity {
    */
   private boolean affectsFreeBusy;
 
+  /** Ignore the transparency setting?
+   */
+  private boolean ignoreTransparency;
+
   /** Should this subscription be displayed by default?
    */
   private boolean display;
@@ -144,6 +148,22 @@ public class BwSubscription extends BwOwnedDbentity {
    */
   public boolean getAffectsFreeBusy() {
     return affectsFreeBusy;
+  }
+
+  /** Set the ignoreTransparency flag
+   *
+   *  @param val    true if the subscription takes part in free/busy calculations
+   */
+  public void setIgnoreTransparency(boolean val) {
+    ignoreTransparency = val;
+  }
+
+  /** Do we ignore transparency?
+   *
+   *  @return boolean    true for ignoreTransparency
+   */
+  public boolean getIgnoreTransparency() {
+    return ignoreTransparency;
   }
 
   /** Should the subscription be displayed?

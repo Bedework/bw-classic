@@ -31,7 +31,7 @@
               index="location_owner" unique-key="location_key" />
     </many-to-one>
 
-    <property name="access" column="access" type="text" />
+    <property name="access" column="bwaccess" type="text" />
 
     <property name="publick" type="true_false" >
       <column name="publick" not-null="true" />
@@ -41,7 +41,7 @@
       <column name="address" not-null="true" unique-key="location_key" />
     </property>
     <property name="subaddress" column="subaddress" type="string"/>
-    <property name="link" column="link" type="string"/>
+    <property name="link" column="bwlink" type="string"/>
   </class>
 
   <!-- =================================================================

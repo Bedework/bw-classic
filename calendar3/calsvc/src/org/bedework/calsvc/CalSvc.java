@@ -1077,8 +1077,9 @@ public class CalSvc extends CalSvcI {
         EventInfo ei = (EventInfo)it.next();
         BwEvent ev = ei.getEvent();
 
-        // XXX Need to add sub.ignoreTransparency
-        if (BwEvent.transparencyTransparent.equals(ev.getTransparency())) {
+        if (!sub.getIgnoreTransparency() &&
+            BwEvent.transparencyTransparent.equals(ev.getTransparency())) {
+          // Ignore this one.
           continue;
         }
 
@@ -1901,19 +1902,20 @@ public class CalSvc extends CalSvcI {
                                boolean freeBusy) throws CalFacadeException {
     TreeSet ts = new TreeSet();
 
-//    if (pars.getPublicAdmin() || (sub != null)) {
     if (sub != null) {
-      BwCalendar cal = null;
-      if (sub != null) {
-        cal = sub.getCalendar();
-      }
-      return postProcess(getCal().getEvents(cal, filter, startDate,
+      // Explicitly selected calendar - via a subscription.
+
+      return postProcess(getCal().getEvents(sub.getCalendar(), filter, startDate,
                                             endDate, recurRetrieval,
-                                            freeBusy),
+                                            freeBusy, true),
                          sub);
     }
 
     Collection subs = null;
+
+    /* Through a view or the complete set of subscriptions. Do not include
+     * 'special' calendars.
+     */
 
     if (currentView != null) {
       if (debug) {
@@ -1946,7 +1948,7 @@ public class CalSvc extends CalSvcI {
 
         return postProcess(getCal().getEvents(null, filter, startDate,
                                               endDate, recurRetrieval,
-                                              freeBusy),
+                                              freeBusy, false),
                            sub);
       }
     }
@@ -1987,7 +1989,7 @@ public class CalSvc extends CalSvcI {
 
     ts.addAll(postProcess(getCal().getEvents(internal, filter,
                           startDate, endDate,
-                          recurRetrieval, freeBusy),
+                          recurRetrieval, freeBusy, false),
               sublookup));
 
     return ts;
@@ -2264,23 +2266,16 @@ public class CalSvc extends CalSvcI {
     prefs.setOwner(user);
     prefs.setDefaultCalendar(cal);
 
-    // Add default subscription for default calendar.
-    BwSubscription defSub = BwSubscription.makeSubscription(cal,
-                                          cal.getName(), true, true, false);
+    BwCalendar userrootCal = cal.getCalendar();
+
+    // Add default subscription to the user root.
+    BwSubscription defSub = BwSubscription.makeSubscription(userrootCal,
+                                                            userrootCal.getName(),
+                                                            true, true, false);
     defSub.setOwner(user);
     setupOwnedEntity(defSub);
 
     prefs.addSubscription(defSub);
-
-    // Add default subscription for trash calendar.
-
-    cal = cali.getTrashCalendar(user);
-    BwSubscription sub = BwSubscription.makeSubscription(cal, cal.getName(),
-                                                         false, false, false);
-    sub.setOwner(user);
-    setupOwnedEntity(sub);
-
-    prefs.addSubscription(sub);
 
     // Add a default view for the default calendar subscription
 

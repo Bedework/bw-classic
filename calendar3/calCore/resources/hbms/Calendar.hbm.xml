@@ -30,13 +30,13 @@
               index="cal_owner" />
     </many-to-one>
 
-    <property name="access" column="access" type="text" />
+    <property name="access" column="bwaccess" type="text" />
 
     <property name="publick" type="true_false" >
       <column name="publick" not-null="true" />
     </property>
 
-    <property name="name" column="name" type="text" not-null="true"/>
+    <property name="name" column="calname" type="text" not-null="true"/>
 
     <!-- I wanted to specify unique="true" on this but mysql complains.
       -->
@@ -56,11 +56,13 @@
     </many-to-one>
 
     <set name="children" inverse="true" cascade="all-delete-orphan"
-         order-by="name" >
+         order-by="calname" >
       <cache usage="read-write"/>
       <key column="parent" />
       <one-to-many class="org.bedework.calfacade.BwCalendar" />
     </set>
+
+    <property name="calType" column="caltype" type="integer" not-null="true"/>
   </class>
 
   <!-- =================================================================

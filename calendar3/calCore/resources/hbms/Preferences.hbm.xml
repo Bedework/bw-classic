@@ -54,6 +54,8 @@
     <property name="workdayStart" column="workday_start" type="integer" />
     <property name="workdayEnd" column="workday_end" type="integer" />
     <property name="preferredEndType" column="preferred_endtype" type="string" />
+
+    <property name="userMode" column="bwuser_mode" type="integer" />
   </class>
 
   <!-- =================================================================

@@ -221,10 +221,11 @@ public class Privilege implements PrivilegeDefs {
     char c = acl.getChar();
 
     /* Expect the privilege allowed/denied flag
+     * (or the oldDenied or oldAllowed flag)
      */
-    if (c == denied) {
+    if ((c == denied) || (c == oldDenied)) {
       denial = true;
-    } else if (c == allowed) {
+    } else if ((c == allowed) || (c == oldAllowed)) {
       denial = false;
     } else {
       throw AccessException.badACE("privilege flag=" + c +

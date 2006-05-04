@@ -53,9 +53,9 @@
 */
 package edu.rpi.cct.uwcal.access;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 /** Define the privileges we recognize for the calendar.
  *
@@ -253,7 +253,7 @@ public class Privileges implements PrivilegeDefs {
    * @throws AccessException
    */
   public static Collection getPrivs(EncodedAcl acl) throws AccessException {
-    Vector v = new Vector();
+    ArrayList al = new ArrayList();
 
     while (acl.hasMore()) {
       char c = acl.getChar();
@@ -267,10 +267,10 @@ public class Privileges implements PrivilegeDefs {
         throw AccessException.badACL("unknown priv");
       }
 
-      v.add(p);
+      al.add(p);
     }
 
-    return v;
+    return al;
   }
 
   private static void setState(char[] states, Privilege p, boolean denial) {

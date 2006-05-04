@@ -129,13 +129,15 @@ public interface EventsI extends Serializable {
    * @param recurRetrieval Takes value defined in CalFacadeDefs
    * @param freeBusy     Return skeleton events with date/times and skip
    *                     transparent events.
+   * @param allCalendars False - ignore any 'special' calendars.
    * @return Collection  of CoreEventInfo objects
    * @throws CalFacadeException
    */
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
                               BwDateTime startDate, BwDateTime endDate,
                               int recurRetrieval,
-                              boolean freeBusy) throws CalFacadeException;
+                              boolean freeBusy,
+                              boolean allCalendars) throws CalFacadeException;
 
   /** XXX temp I think
    * Retrieve event proxies in the given calendar - they will be used to remove events

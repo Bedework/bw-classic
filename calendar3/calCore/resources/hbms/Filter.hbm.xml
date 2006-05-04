@@ -35,7 +35,7 @@
     <discriminator column="type" type="char" />
 
     <property name="name" type="string" >
-      <column name="name" length="200" />
+      <column name="filtername" length="200" />
     </property>
 
     <property name="description" type="string" >
@@ -109,7 +109,7 @@
         name="org.bedework.calfacade.filter.BwAndFilter"
         discriminator-value="A" >
       <set name="children" inverse="true" cascade="all-delete-orphan"
-           order-by="name"  >
+           order-by="filtername"  >
         <key column="parent" />
         <one-to-many class="org.bedework.calfacade.filter.BwFilter" />
       </set>
@@ -118,7 +118,7 @@
         name="org.bedework.calfacade.filter.BwOrFilter"
         discriminator-value="O" >
       <set name="children" inverse="true" cascade="all-delete-orphan"
-           order-by="name" >
+           order-by="filtername" >
         <key column="parent" />
         <one-to-many class="org.bedework.calfacade.filter.BwFilter" />
       </set>
@@ -191,7 +191,7 @@
         name="org.bedework.calfacade.filter.BwAndFilter"
         discriminator-value="A" >
       <set name="children" inverse="true" cascade="all-delete-orphan"
-           order-by="name"  >
+           order-by="filtername"  >
         <key column="parent" />
         <one-to-many class="org.bedework.calfacade.filter.BwFilter" />
       </set>
@@ -200,7 +200,7 @@
         name="org.bedework.calfacade.filter.BwOrFilter"
         discriminator-value="O" >
       <set name="children" inverse="true" cascade="all-delete-orphan"
-           order-by="name" >
+           order-by="filtername" >
         <key column="parent" />
         <one-to-many class="org.bedework.calfacade.filter.BwFilter" />
       </set>

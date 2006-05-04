@@ -16,7 +16,7 @@
 
     <version name="seq" column="seq" type="integer" />
 
-    <property name="account" column="name" type="text"/>
+    <property name="account" column="account" type="text"/>
 
     <!--
     <set name="groupMembers" table="adminGroupMembers"

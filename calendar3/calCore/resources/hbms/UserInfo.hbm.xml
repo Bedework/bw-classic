@@ -31,10 +31,11 @@
     <property name="email" column="email" type="string"/>
     <property name="dept" column="department" type="string"/>
 
-    <set name="properties" order-by="name asc">
+    <set name="properties"
+         table="bwuser_properties" order-by="name asc">
       <key column="user_info" />
       <composite-element class="org.bedework.calfacade.BwUserInfo$UserProperty">
-        <property name="name" column="name" not-null="true"/>
+        <property name="name" column="propname" not-null="true"/>
         <property name="val" column="val" />
       </composite-element>
     </set>

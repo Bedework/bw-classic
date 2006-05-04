@@ -232,7 +232,8 @@ public class AccessAppUtil implements Serializable {
       xml.openTag(WebdavTags.currentUserPrivilegeSet);
 
       for (int pi = 0; pi < privileges.length; pi++) {
-        if (privileges[pi] == PrivilegeDefs.allowed) {
+        if ((privileges[pi] == PrivilegeDefs.allowed) ||
+            (privileges[pi] == PrivilegeDefs.allowedInherited)) {
           // XXX further work - don't emit abstract privs or contained privs.
           QName pr = privTags[pi];
 

@@ -31,7 +31,7 @@
               index="idx_cat_owner" unique-key="category_key" />
     </many-to-one>
 
-    <property name="access" column="access" type="text" />
+    <property name="access" column="bwaccess" type="text" />
 
     <property name="publick" type="true_false" >
       <column name="publick" not-null="true" />

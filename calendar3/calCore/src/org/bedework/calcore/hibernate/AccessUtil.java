@@ -230,6 +230,23 @@ class AccessUtil implements PrivilegeDefs {
                      " with id " + ent.getId());
     }
 
+    // XXX
+    // XXX
+    // XXX
+    // XXX
+    /* We need to special case the access to the user root e.g /user and
+     * the 'home' directory, e.g. /user/douglm
+     *
+     * We deny access to /user to anybody without superuser access. This
+     * prevents user browsing.
+     *
+     * Default access to the home directory is read, write-content to the owner
+     * only and unlimited to superuser.
+     *
+     * Specific access should be no more than read, write-content to the home
+     * directory.
+     */
+
     try {
       CurrentAccess ca;
       String account = ent.getOwner().getAccount();

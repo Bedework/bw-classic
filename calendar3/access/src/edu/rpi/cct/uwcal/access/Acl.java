@@ -87,7 +87,6 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
   private transient Logger log;
 
   /** Used while evaluating access */
-//  private Ace ace = new Ace();
 
   /** Constructor
    *
@@ -118,16 +117,16 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
   public void clear() {
     aces = null;
   }
-  
+
   /** Result of evaluating access to an object for a principal
    */
   public static class CurrentAccess {
-    /** The Acl used to evaluate the access. We should not necessarily 
+    /** The Acl used to evaluate the access. We should not necessarily
      * make this available to the client.
      */
     public Acl acl;
-    
-    /**  Allowed access for each privilege type 
+
+    /**  Allowed access for each privilege type
      * @see PrivilegeDefs
      */
     public char[] privileges = null;
@@ -137,12 +136,12 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
     /** Was it succesful */
     public boolean accessAllowed;
-    
+
     public String toString() {
       StringBuffer sb = new StringBuffer("CurrentAccess{");
       sb.append("acl=");
       sb.append(acl);
-      
+
       sb.append("accessAllowed=");
       sb.append(accessAllowed);
       sb.append("}");
@@ -165,7 +164,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
    * <ol>
    * <li>If the principal is the owner then use the given access or the default.</li>
    *
-   * <li>If there is a specific ACE for the user use that. </li>
+   * <li>If there are specific ACEs for the user use the merged access. </li>
    *
    * <li>Find all group entries for the given user's groups. If there is more than
    * one combine them with the more permissive taking precedence, e.g
@@ -195,89 +194,6 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
     ca.desiredAccess = how;
     ca.acl = this;
 
-    /*
-    setEncoded(acl);
-
-    if (authenticated) {
-      isOwner = who.getAccount().equals(owner);
-    }
-
-    StringBuffer debugsb = null;
-
-    if (debug) {
-      debugsb = new StringBuffer("Check access for '");
-      debugsb.append(new String(acl));
-      debugsb.append("' with authenticated = ");
-      debugsb.append(authenticated);
-      debugsb.append(" isOwner = ");
-      debugsb.append(isOwner);
-    }
-
-    getPrivileges: {
-      if (!authenticated) {
-        if (ace.decode(this, false, null, Ace.whoTypeUnauthenticated)) {
-          ca.privileges = ace.getHow();
-        }
-
-        break getPrivileges;
-      }
-
-      if (isOwner) {
-        if (ace.decode(this, false, null, Ace.whoTypeOwner)) {
-          ca.privileges = ace.getHow();
-        } else {
-          ca.privileges = defaultOwnerPrivileges;
-        }
-
-        break getPrivileges;
-      }
-
-      // Not owner - look for user
-      if (ace.decode(this, false, who.getAccount(), Ace.whoTypeUser)) {
-        ca.privileges = ace.getHow();
-        if (debug) {
-          debugsb.append("... For user got: " + new String(ca.privileges));
-        }
-
-        break getPrivileges;
-      }
-
-      // No specific user access - look for group access
-
-      if (who.getGroupNames() != null) {
-        Iterator it = who.getGroupNames().iterator();
-
-        while (it.hasNext()) {
-          String group = (String)it.next();
-          if (debug) {
-            debugsb.append("...Try access for group " + group);
-          }
-          if (ace.decode(this, false, group, Ace.whoTypeGroup)) {
-            ca.privileges = mergePrivileges(ca.privileges, ace.getHow());
-          }
-        }
-      }
-
-      if (ca.privileges != null) {
-        if (debug) {
-          debugsb.append("...For groups got: " + new String(ca.privileges));
-        }
-
-        break getPrivileges;
-      }
-
-      // "other" access set?
-      if (ace.decode(this, false, null, Ace.whoTypeOther)) {
-        ca.privileges = ace.getHow();
-
-        if (debug) {
-          debugsb.append("...For other got: " + new String(ca.privileges));
-        }
-
-        break getPrivileges;
-      }
-    } // getPrivileges
-    */
     decode(acl);
 
     if (authenticated) {
@@ -295,23 +211,16 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       debugsb.append(isOwner);
     }
 
-    Ace ace;
-    
     getPrivileges: {
       if (!authenticated) {
-        ace = Ace.find(this, null, Ace.whoTypeUnauthenticated);
-        if (ace != null) {
-          ca.privileges = ace.getHow();
-        }
+        ca.privileges = Ace.findMergedPrivilege(this, null, Ace.whoTypeUnauthenticated);
 
         break getPrivileges;
       }
 
       if (isOwner) {
-        ace = Ace.find(this, null, Ace.whoTypeOwner);
-        if (ace != null) {
-          ca.privileges = ace.getHow();
-        } else {
+        ca.privileges = Ace.findMergedPrivilege(this, null, Ace.whoTypeOwner);
+        if (ca.privileges == null) {
           ca.privileges = defaultOwnerPrivileges;
         }
 
@@ -319,9 +228,8 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       }
 
       // Not owner - look for user
-      ace = Ace.find(this, who.getAccount(), Ace.whoTypeUser);
-      if (ace != null) {
-        ca.privileges = ace.getHow();
+      ca.privileges = Ace.findMergedPrivilege(this, who.getAccount(), Ace.whoTypeUser);
+      if (ca.privileges != null) {
         if (debug) {
           debugsb.append("... For user got: " + new String(ca.privileges));
         }
@@ -339,9 +247,9 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
           if (debug) {
             debugsb.append("...Try access for group " + group);
           }
-          ace = Ace.find(this, group, Ace.whoTypeGroup);
-          if (ace != null) {
-            ca.privileges = mergePrivileges(ca.privileges, ace.getHow());
+          char[] privs = Ace.findMergedPrivilege(this, group, Ace.whoTypeGroup);
+          if (privs != null) {
+            ca.privileges = Ace.mergePrivileges(ca.privileges, privs, false);
           }
         }
       }
@@ -355,10 +263,8 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       }
 
       // "other" access set?
-      ace = Ace.find(this, null, Ace.whoTypeOther);
-      if (ace != null) {
-        ca.privileges = ace.getHow();
-
+      ca.privileges = Ace.findMergedPrivilege(this, null, Ace.whoTypeOther);
+      if (ca.privileges != null) {
         if (debug) {
           debugsb.append("...For other got: " + new String(ca.privileges));
         }
@@ -384,11 +290,11 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
         }
       }
     }
-    
+
     for (int i = 0; i < how.length; i++) {
       char priv = ca.privileges[how[i].getIndex()];
 
-      if (priv != allowed) {
+      if ((priv != allowed) && (priv != allowedInherited)) {
         if (debug) {
           debugMsg(debugsb.toString() + "...Check access denied (!allowed)");
         }
@@ -402,20 +308,6 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
     ca.accessAllowed = true;
     return ca;
-  }
-
-  private char[] mergePrivileges(char[] current, char[] morePriv) {
-    if (current == null) {
-      return morePriv;
-    }
-
-    for (int i = 0; i <= privMaxType; i++) {
-      if (current[i] < morePriv[i]) {
-        current[i] = morePriv[i];
-      }
-    }
-
-    return current;
   }
 
   /**

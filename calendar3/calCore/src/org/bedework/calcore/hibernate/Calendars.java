@@ -142,6 +142,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     cal.setPath(path + "/" + getSyspars().getUserDefaultCalendar());
     cal.setCalendar(usercal);
     cal.setCalendarCollection(true);
+    cal.setCalType(BwCalendar.calTypeCollection);
     usercal.addChild(cal);
 
     /* Add the trash calendar */
@@ -153,6 +154,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     cal.setPath(path + "/" + getSyspars().getDefaultTrashCalendar());
     cal.setCalendar(usercal);
     cal.setCalendarCollection(true);
+    cal.setCalType(BwCalendar.calTypeTrash);
     usercal.addChild(cal);
 
     /* Add the inbox */
@@ -164,6 +166,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
     cal.setPath(path + "/" + getSyspars().getUserInbox());
     cal.setCalendar(usercal);
     cal.setCalendarCollection(true);
+    cal.setCalType(BwCalendar.calTypeInbox);
     usercal.addChild(cal);
 
     /* Add the outbox */
@@ -175,19 +178,31 @@ class Calendars extends CalintfHelper implements CalendarsI {
     cal.setPath(path + "/" + getSyspars().getUserOutbox());
     cal.setCalendar(usercal);
     cal.setCalendarCollection(true);
+    cal.setCalType(BwCalendar.calTypeOutbox);
     usercal.addChild(cal);
 
     /* Add the deleted calendar */
     cal = new BwCalendar();
-    // XXX new syspar cal.setName(getSyspars().getUserOutbox());
-    cal.setName("Deleted");
+    cal.setName(getSyspars().getDeletedCalendar());
     cal.setCreator(user);
     cal.setOwner(user);
     cal.setPublick(false);
-    // XXX new syspar cal.setPath(path + "/" + getSyspars().getUserOutbox());
-    cal.setPath(path + "/" + "Deleted");
+    cal.setPath(path + "/" + getSyspars().getDeletedCalendar());
     cal.setCalendar(usercal);
     cal.setCalendarCollection(true);
+    cal.setCalType(BwCalendar.calTypeDeleted);
+    usercal.addChild(cal);
+
+    /* Add the busy calendar */
+    cal = new BwCalendar();
+    cal.setName(getSyspars().getBusyCalendar());
+    cal.setCreator(user);
+    cal.setOwner(user);
+    cal.setPublick(false);
+    cal.setPath(path + "/" + getSyspars().getBusyCalendar());
+    cal.setCalendar(usercal);
+    cal.setCalendarCollection(true);
+    cal.setCalType(BwCalendar.calTypeBusy);
     usercal.addChild(cal);
 
     sess.save(usercal);
@@ -379,10 +394,11 @@ class Calendars extends CalintfHelper implements CalendarsI {
     */
 
     BwCalendar cal = new BwCalendar();
-    cal.setName("Deleted");
+    cal.setName(getSyspars().getDeletedCalendar());
     cal.setOwner(user);
     cal.setCreator(user);
     cal.setCalendarCollection(true);
+    cal.setCalType(BwCalendar.calTypeDeleted);
     addCalendar(cal, pathTo);
   }
 
@@ -423,6 +439,11 @@ class Calendars extends CalintfHelper implements CalendarsI {
     }
     val.setCalendar(parent);
     val.setPublick(parent.getPublick());
+    if (val.getCalendarCollection()) {
+      val.setCalType(BwCalendar.calTypeCollection);
+    } else {
+      val.setCalType(BwCalendar.calTypeFolder);
+    }
     parent.addChild(val);
 
     sess.update(parent);
@@ -442,12 +463,12 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
     /* Objects are probably clones - fetch the real ones.
      */
-    parent = getCalendar(parent.getPath(), privRead);
+    parent = getCalendar(parent.getPath(), privRead, false);
     if (parent == null) {
       throw new CalFacadeException(CalFacadeException.cannotDeleteCalendarRoot);
     }
 
-    val = getCalendar(val.getPath(), privUnbind);
+    val = getCalendar(val.getPath(), privUnbind, false);
     if (val == null) {
       throw new CalFacadeException(CalFacadeException.calendarNotFound);
     }

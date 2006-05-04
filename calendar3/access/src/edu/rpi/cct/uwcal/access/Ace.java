@@ -54,9 +54,9 @@
 package edu.rpi.cct.uwcal.access;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 /** Oject to represent an ace for a calendar entity or service.
  *
@@ -88,7 +88,7 @@ import java.util.Vector;
  *
  *  @author Mike Douglass   douglm@rpi.edu
  */
-public class Ace implements Serializable, Comparable {
+public class Ace implements PrivilegeDefs, Serializable, Comparable {
   boolean debug;
 
   /* Who defines a principal, NotWho means the principal must not be
@@ -314,7 +314,7 @@ public class Ace implements Serializable, Comparable {
    */
   public Collection getPrivs() {
     if (privs == null) {
-      privs = new Vector();
+      privs = new ArrayList();
     }
     return privs;
   }
@@ -342,16 +342,17 @@ public class Ace implements Serializable, Comparable {
     return inherited;
   }
 
-  /** Return an ace which matches the name and whoType.
+  /** Return the merged privileges for all aces which match the name and whoType.
    *
    * @param acl
    * @param name
    * @param whoType
-   * @return Ace   if we find a match else null
+   * @return char[]    merged privileges if we find a match else null
    * @throws AccessException
    */
-  public static Ace find(Acl acl,
-                         String name, int whoType) throws AccessException {
+  public static char[] findMergedPrivilege(Acl acl,
+                                           String name, int whoType) throws AccessException {
+    char[] privileges = null;
     Iterator it = acl.getAces().iterator();
 
     while (it.hasNext()) {
@@ -361,11 +362,55 @@ public class Ace implements Serializable, Comparable {
           ((whoType == whoTypeUnauthenticated) ||
            (whoType == whoTypeOwner) ||
             ace.whoMatch(name))) {
-        return ace;
+        privileges = mergePrivileges(privileges, ace.getHow(),
+                                     ace.getInherited());
       }
     }
 
-    return null;
+    return privileges;
+  }
+
+  /** If current is null it is set to a cloned copy of morePriv otherwise the
+   * privilege(s) in morePriv are merged into current.
+   *
+   * <p>Specified access overrides inherited access,<br/>
+   * allowed overrides denied overrides unspecified so the order is, from
+   * highest to lowest:<br/>
+   *
+   * allowed, denied, allowedInherited, deniedInherited, unspecified.
+   *
+   * <p>Only allowed and denied appear in encoded aces.
+   *
+   * @param current
+   * @param morePriv
+   * @param inherited   true if the ace was an inherited ace
+   * @return char[]  mergedPrivileges
+   */
+  public static char[] mergePrivileges(char[] current, char[] morePriv,
+                                       boolean inherited) {
+    char[] mp = (char[])morePriv.clone();
+
+    if (inherited) {
+      for (int i = 0; i <= privMaxType; i++) {
+        char p = mp[i];
+        if (p == allowed) {
+          mp[i] = allowedInherited;
+        } else if (p == denied) {
+          mp[i] = deniedInherited;
+        }
+      }
+    }
+    if (current == null) {
+      return mp;
+    }
+
+    for (int i = 0; i <= privMaxType; i++) {
+      if (current[i] < mp[i]) {
+        current[i] = mp[i];
+      }
+    }
+
+    return current;
   }
 
   /* ====================================================================
@@ -661,23 +706,7 @@ public class Ace implements Serializable, Comparable {
           break getWhoType;
         }
       }
-      /*
-    if (c == whoFlagOwner) {
-      whoType = whoTypeOwner;
-    } else if (c == whoFlagUser) {
-      whoType = whoTypeUser;
-    } else if (c == whoFlagGroup) {
-      whoType = whoTypeGroup;
-    } else if (c == whoFlagHost) {
-      whoType = whoTypeHost;
-    } else if (c == whoFlagOther) {
-      whoType = whoTypeOther;
-    } else if (c == whoFlagUnauthenticated) {
-      whoType = whoTypeUnauthenticated;
-    } else if (c == whoFlagUnauthenticated) {
-      whoType = whoTypeUnauthenticated;
-    } else {
-      */
+
       throw AccessException.badACE("who type");
     }
 

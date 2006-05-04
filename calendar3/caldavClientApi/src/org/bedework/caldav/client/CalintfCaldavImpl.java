@@ -597,7 +597,8 @@ public class CalintfCaldavImpl extends CalintfBase {
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
                               BwDateTime startDate, BwDateTime endDate,
                               int recurRetrieval,
-                              boolean freeBusy) throws CalFacadeException {
+                              boolean freeBusy,
+                              boolean allCalendars) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 

@@ -81,6 +81,8 @@ public class BwSystem extends BwDbentity implements Comparator {
   private String defaultTrashCalendar;
   private String userInbox;
   private String userOutbox;
+  private String deletedCalendar;
+  private String busyCalendar;
   private String defaultUserViewName;
 
   private String publicUser;
@@ -214,7 +216,7 @@ public class BwSystem extends BwDbentity implements Comparator {
     return defaultTrashCalendar;
   }
 
-  /** Set the user inbox
+  /** Set the user inbox name
    *
    * @param val    String
    */
@@ -222,7 +224,7 @@ public class BwSystem extends BwDbentity implements Comparator {
     userInbox = val;
   }
 
-  /** Get the userCalendar
+  /** Get the user inbox name
    *
    * @return String   user inbox
    */
@@ -244,6 +246,38 @@ public class BwSystem extends BwDbentity implements Comparator {
    */
   public String getUserOutbox() {
     return userOutbox;
+  }
+
+  /** Set the user deleted calendar name
+   *
+   * @param val    String
+   */
+  public void setDeletedCalendar(String val) {
+    deletedCalendar = val;
+  }
+
+  /** Get the user deleted calendar name
+   *
+   * @return String   user deleted calendar name
+   */
+  public String getDeletedCalendar() {
+    return deletedCalendar;
+  }
+
+  /** Set the user busy calendar name
+   *
+   * @param val    String
+   */
+  public void setBusyCalendar(String val) {
+    busyCalendar = val;
+  }
+
+  /** Get the user busy calendar name
+   *
+   * @return String   user busy calendar name
+   */
+  public String getBusyCalendar() {
+    return busyCalendar;
   }
 
   /** Set the user default view name

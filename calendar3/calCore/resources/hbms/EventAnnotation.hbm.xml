@@ -34,7 +34,7 @@
               index="sidx_eventann_owner" />
     </many-to-one>
 
-    <property name="access" column="access" type="text" />
+    <property name="access" column="bwaccess" type="text" />
 
     <property name="publick" type="true_false" >
       <column name="publick" />
@@ -77,7 +77,7 @@
     </property>
     <property name="description" column="description" type="text"/>
 
-    <property name="link" column="link" type="string" />
+    <property name="link" column="bwlink" type="string" />
 
     <property name="status" type="string" />
 
@@ -122,7 +122,7 @@
     <!-- calendar + guid + recurrence-id is a unique key. -->
     <property name="guid" type="string" length="500" unique-key="eventann-key" />
 
-    <property name="sequence" type="integer" />
+    <property name="sequence"  column="rfcsequence" type="integer" />
 
     <property name="transparency" column="transparency" type="text"/>
 

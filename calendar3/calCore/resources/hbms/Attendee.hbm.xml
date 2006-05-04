@@ -14,7 +14,7 @@
       <generator class="native"/>
     </id>
 
-    <version name="seq" column="sequence" type="integer" />
+    <version name="seq" column="bwsequence" type="integer" />
 
     <property name="cn" type="text"/>
     <property name="cuType" column="cutype" type="text"/>

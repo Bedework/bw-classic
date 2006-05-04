@@ -102,6 +102,31 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
   /** The children of this calendar */
   private Collection children;
 
+  /* The type of calendar */
+  // ENUM
+  private int calType;
+
+  /** Normal folder */
+  public final static int calTypeFolder = 0;
+
+  /** Normal calendar collection */
+  public final static int calTypeCollection = 1;
+
+  /** Trash  */
+  public final static int calTypeTrash = 2;
+
+  /** Deleted  */
+  public final static int calTypeDeleted = 3;
+
+  /** Busy */
+  public final static int calTypeBusy = 4;
+
+  /** Inbox  */
+  public final static int calTypeInbox = 5;
+
+  /** Outbox  */
+  public final static int calTypeOutbox = 6;
+
   /* This field must only be used for cloned copies of an entity as it is
    * specific to a current thread.
    */
@@ -127,6 +152,7 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
    * @param calendarCollection
    * @param parent
    * @param children
+   * @param calType
    */
   public BwCalendar(BwUser owner,
                     boolean publick,
@@ -139,7 +165,8 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
                     String mailListId,
                     boolean calendarCollection,
                     BwCalendar parent,
-                    Collection children) {
+                    Collection children,
+                    int calType) {
     super(owner, publick, creator, access);
     this.name = name;
     this.path = path;
@@ -149,6 +176,7 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
     this.calendarCollection = calendarCollection;
     setCalendar(parent);
     this.children = children;
+    this.calType = calType;
   }
 
   /** Set the name
@@ -269,6 +297,22 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
     return children;
   }
 
+  /** Set the type
+   *
+   * @param val    type
+   */
+  public void setCalType(int val) {
+    calType = val;
+  }
+
+  /** Get the description
+   *
+   *  @return String   description
+   */
+  public int getCalType() {
+    return calType;
+  }
+
   /* ====================================================================
    *                   Transient object methods
    * ==================================================================== */
@@ -381,7 +425,8 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
                           getMailListId(),
                           getCalendarCollection(),
                           getCalendar(),
-                          null);
+                          null,
+                          getCalType());
   }
 
   /* ====================================================================
@@ -469,6 +514,7 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
                           getMailListId(),
                           getCalendarCollection(),
                           getCalendar(),
-                          getChildren());
+                          getChildren(),
+                          getCalType());
   }
 }

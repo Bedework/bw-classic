@@ -584,7 +584,8 @@ public class Events extends CalintfHelper implements EventsI {
   public Collection getEvents(BwCalendar calendar, BwFilter filter,
                               BwDateTime startDate, BwDateTime endDate,
                               int recurRetrieval,
-                              boolean freeBusy) throws CalFacadeException {
+                              boolean freeBusy,
+                              boolean allCalendars) throws CalFacadeException {
     HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
 
@@ -628,7 +629,8 @@ public class Events extends CalintfHelper implements EventsI {
     sb.append(" (");
 
     boolean setUser = doCalendarClause(sb, qevName, calendar,
-                                       currentMode, cal.getSuperUser());
+                                       currentMode, cal.getSuperUser(),
+                                       allCalendars);
 
     sb.append(") ");
 
@@ -661,7 +663,7 @@ public class Events extends CalintfHelper implements EventsI {
     //  sess.setString("transparency", "TRANSPARENT");
     //}
 
-    doCalendarEntities(setUser, calendar);
+    doCalendarEntities(setUser, calendar, allCalendars);
 
     flt.parPass(sess);
 
@@ -688,7 +690,8 @@ public class Events extends CalintfHelper implements EventsI {
 
     Collection rceis = getLimitedRecurrences(calendar, filter, startDate, endDate,
                                              currentMode, cal.getSuperUser(),
-                                             recurRetrieval, freeBusy);
+                                             recurRetrieval, freeBusy,
+                                             allCalendars);
     if (rceis != null) {
       ceis.addAll(rceis);
     }
@@ -892,7 +895,8 @@ public class Events extends CalintfHelper implements EventsI {
                                            BwDateTime startDate, BwDateTime endDate,
                                            int currentMode, boolean ignoreCreator,
                                            int recurRetrieval,
-                                           boolean freeBusy)
+                                           boolean freeBusy,
+                                           boolean allCalendars)
           throws CalFacadeException {
     HibSession sess = getSess();
     StringBuffer sb = new StringBuffer();
@@ -924,7 +928,8 @@ public class Events extends CalintfHelper implements EventsI {
     sb.append(" (");
 
     boolean setUser = doCalendarClause(sb, qevName + ".master", calendar,
-                                       currentMode, ignoreCreator);
+                                       currentMode, ignoreCreator,
+                                       allCalendars);
 
     sb.append(") ");
 
@@ -948,7 +953,7 @@ public class Events extends CalintfHelper implements EventsI {
       sess.setString("toDate", endDate.getDate());
     }
 
-    doCalendarEntities(setUser, calendar);
+    doCalendarEntities(setUser, calendar, allCalendars);
 
     flt.parPass(sess);
 
@@ -1001,7 +1006,8 @@ public class Events extends CalintfHelper implements EventsI {
   /* Append the calendar clauses. Return true if we have to set the user entity
    */
   private boolean doCalendarClause(StringBuffer sb, String qevName, BwCalendar calendar,
-                                   int currentMode, boolean ignoreCreator) throws CalFacadeException {
+                                   int currentMode, boolean ignoreCreator,
+                                   boolean allCalendars) throws CalFacadeException {
     /* if no calendar set
           if public
             SEG: publicf=true
@@ -1014,7 +1020,7 @@ public class Events extends CalintfHelper implements EventsI {
     }
 
     if (calendar.getCalendarCollection()) {
-      // Single leaf calendar
+      // Single leaf calendar - always include
       sb.append("(");
       sb.append(qevName);
       sb.append(".calendar=:calendar");
@@ -1024,31 +1030,36 @@ public class Events extends CalintfHelper implements EventsI {
 
     // Non leaf - build a query
     sb.append("(");
-    appendCalendarClause(sb, qevName, calendar, new CalTerm());
+    appendCalendarClause(sb, qevName, calendar, new CalTerm(), allCalendars);
     sb.append(") ");
 
     return false;
   }
 
   private void appendCalendarClause(StringBuffer sb, String qevName, BwCalendar calendar,
-                                    CalTerm calTerm) throws CalFacadeException {
+                                    CalTerm calTerm,
+                                    boolean allCalendars) throws CalFacadeException {
     if (calendar.getCalendarCollection()) {
-      // leaf calendar
-      if (calTerm.i > 1) {
-        sb.append(" or ");
+      if (allCalendars || (calendar.getCalType() == BwCalendar.calTypeCollection)) {
+        // leaf calendar
+        if (calTerm.i > 1) {
+          sb.append(" or ");
+        }
+        sb.append(qevName);
+        sb.append(".calendar=:calendar" + calTerm.i);
+        calTerm.i++;
       }
-      sb.append(qevName);
-      sb.append(".calendar=:calendar" + calTerm.i);
-      calTerm.i++;
     } else {
       Iterator it = calendar.getChildren().iterator();
       while (it.hasNext()) {
-        appendCalendarClause(sb, qevName, (BwCalendar)it.next(), calTerm);
+        appendCalendarClause(sb, qevName, (BwCalendar)it.next(), calTerm,
+                             allCalendars);
       }
     }
   }
 
-  private void doCalendarEntities(boolean setUser, BwCalendar calendar)
+  private void doCalendarEntities(boolean setUser, BwCalendar calendar,
+                                  boolean allCalendars)
           throws CalFacadeException {
     HibSession sess = getSess();
     if (setUser) {
@@ -1057,25 +1068,28 @@ public class Events extends CalintfHelper implements EventsI {
 
     if (calendar != null) {
       if (calendar.getCalendarCollection()) {
-        // Single leaf calendar
+        // Single leaf calendar - always include
         sess.setEntity("calendar", calendar);
       } else {
         // Non leaf - add entities
-        setCalendarEntities(calendar, new CalTerm());
+        setCalendarEntities(calendar, new CalTerm(), allCalendars);
       }
     }
   }
 
-  private void setCalendarEntities(BwCalendar calendar, CalTerm calTerm)
+  private void setCalendarEntities(BwCalendar calendar, CalTerm calTerm,
+                                   boolean allCalendars)
           throws CalFacadeException {
     if (calendar.getCalendarCollection()) {
-      // leaf calendar
-      getSess().setEntity("calendar" + calTerm.i, calendar);
-      calTerm.i++;
+      if (allCalendars || (calendar.getCalType() == BwCalendar.calTypeCollection)) {
+        // leaf calendar
+        getSess().setEntity("calendar" + calTerm.i, calendar);
+        calTerm.i++;
+      }
     } else {
       Iterator it = calendar.getChildren().iterator();
       while (it.hasNext()) {
-        setCalendarEntities((BwCalendar)it.next(), calTerm);
+        setCalendarEntities((BwCalendar)it.next(), calTerm, allCalendars);
       }
     }
   }
