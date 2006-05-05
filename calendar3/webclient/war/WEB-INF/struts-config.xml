@@ -689,7 +689,7 @@
 
     <action    path="/prefs/update"
                type="org.bedework.webcommon.pref.UpdatePrefsAction"
-               name="peForm"
+               name="calForm"
                scope="session"
                validate="false">
       <forward name="cancelled" path="/admin/showMain.rdo" redirect="true" />
