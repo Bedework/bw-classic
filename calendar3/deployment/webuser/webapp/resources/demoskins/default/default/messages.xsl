@@ -38,11 +38,17 @@
       <xsl:when test="id='org.bedework.client.message.calendar.added'">
         <p>Calendar added.</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.folder.added'">
+        <p>Folder added.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.calendar.updated'">
         <p>Calendar updated.</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.folder.updated'">
+        <p>Folder updated.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.calendar.deleted'">
-        <p>Calendar deleted.</p>
+        <p>Calendar/folder deleted.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.added.subscriptions'">
         <xsl:choose>
@@ -96,6 +102,9 @@
             <p><xsl:value-of select="param"/> subscriptions removed.</p>
           </xsl:otherwise>
         </xsl:choose>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.prefs.updated'">
+        <p>Preferences updated.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.nosuchevent'">
           <p>Event <em><xsl:value-of select="param"/></em> does not exist.</p>

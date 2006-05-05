@@ -88,9 +88,9 @@ function launchCalSelectWindow(URL) {
 // used to update the calendar in an add or edit event form from
 // the calSelect pop-up window.  We must do two things: update the hidden calendar
 // input field and update the displayed text.
-function updateEventFormCalendar(calPath,calDisplay) {
+function updateEventFormCalendar(newCalPath,calDisplay) {
   if (window.opener.document.eventForm) {
-    window.opener.document.eventForm.calPath.value = calPath;
+    window.opener.document.eventForm.newCalPath.value = newCalPath;
     bwCalDisplay = window.opener.document.getElementById("bwEventCalDisplay");
     bwCalDisplay.innerHTML = calDisplay;
   } else {

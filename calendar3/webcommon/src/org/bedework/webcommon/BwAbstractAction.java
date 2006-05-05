@@ -407,16 +407,16 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return true;
   }
 
-  /** Set the event calendar based on request parameters. If calPath is specified
-   * we use the named calendar as the event calendar.
+  /** Set the event calendar based on request parameters. If newCalPath
+   * is specified we use the named calendar as the event calendar.
    *
-   * <p>If calPath is not speciifed and subname is specified it should refer to
+   * <p>If newCalPath is not speciifed and subname is specified it should refer to
    * an external calendar. We will use teh dummy calendar object for the event.
    *
-   * <p>If neither calPath or subname is specified we use the default.
+   * <p>If neither newCalPath or subname is specified we use the default.
    *
    * <p>If a calendar was already set in the event, this action will only
-   * change that calendar if subname or calPath are specified. It will not
+   * change that calendar if subname or newCalPath are specified. It will not
    * reset the calendar to the default.
    *
    * @param request
@@ -432,12 +432,12 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     BwSubscription sub = null;
     BwCalendar cal = null;
 
-    String calPath = request.getParameter("calPath");
+    String newCalPath = request.getParameter("newCalPath");
 
-    if (calPath != null) {
-      cal = svci.getCalendar(calPath);
+    if (newCalPath != null) {
+      cal = svci.getCalendar(newCalPath);
       if (cal == null) {
-        form.getErr().emit("org.bedework.client.error.nosuchcalendar", calPath);
+        form.getErr().emit("org.bedework.client.error.nosuchcalendar", newCalPath);
         return "notFound";
       }
     } else if (findSubscribedCalendar(request, form, false)) {

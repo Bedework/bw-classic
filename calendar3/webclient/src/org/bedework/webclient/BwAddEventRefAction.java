@@ -60,7 +60,10 @@ import javax.servlet.http.HttpServletRequest;
 
 /** Action to add an event alias to a personal calendar.
  * <p>Request parameters<ul>
- *      <li>"eventId" id of event.</li>
+ *      <li>"subid"    subscription id for event.</li>
+ *      <li>"calPath"  calendar for event.</li>
+ *      <li>"guid"     guid of event.</li>
+ *      <li>"recurrenceId"   recurrence-id of event instance - possibly null.</li>
  * </ul>
  * <p>Forwards to:<ul>
  *      <li>"doNothing"    when request seems wrong.</li>

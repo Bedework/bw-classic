@@ -76,7 +76,7 @@ import org.apache.struts.upload.FormFile;
 /**
  * Action to upload an icalendar file.
  * <p>Parameters are:<ul>
- *      <li>"calPath"            Path of calendar</li>
+ *      <li>"newCalPath"            Path of calendar</li>
  * </ul>
  *
  * <p>Forwards to:<ul>
@@ -97,10 +97,10 @@ public class UploadAction extends BwAbstractAction {
     CalSvcI svci = form.fetchSvci();
     BwCalendar cal = null;
 
-    String calPath = getReqPar(request, "calPath");
+    String newCalPath = getReqPar(request, "newCalPath");
 
-    if (calPath != null) {
-      cal = svci.getCalendar(calPath);
+    if (newCalPath != null) {
+      cal = svci.getCalendar(newCalPath);
     }
 
     if (cal == null) {

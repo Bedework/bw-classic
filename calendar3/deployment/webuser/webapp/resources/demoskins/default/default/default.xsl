@@ -1321,8 +1321,8 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <xsl:variable name="calPath" select="/bedework/formElements/form/calendar/path"/>
-            <input type="hidden" name="calPath" value="{$calPath}"/>
+            <xsl:variable name="newCalPath" select="/bedework/formElements/form/calendar/path"/>
+            <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
             <span id="bwEventCalDisplay">
               <xsl:choose>
@@ -1710,8 +1710,8 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <xsl:variable name="calPath" select="/bedework/formElements/form/calendar/path"/>
-            <input type="hidden" name="calPath" value="{$calPath}"/>
+            <xsl:variable name="newCalPath" select="/bedework/formElements/form/calendar/path"/>
+            <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
             <span id="bwEventCalDisplay">
               <xsl:choose>
@@ -2077,7 +2077,7 @@
             <span id="bwEventCalDisplay">
               <em>default calendar</em>
             </span>
-            <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">[change]</a> (does not yet work)
+            <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
           </td>
         </tr>
         <tr>
@@ -3203,7 +3203,7 @@
             Into calendar:
           </td>
           <td align="left">
-            <input type="hidden" name="calPath" value=""/>
+            <input type="hidden" name="newCalPath" value=""/>
             <span id="bwEventCalDisplay">
               <em>default calendar</em>
             </span>
@@ -3418,8 +3418,8 @@
             Default calendar:
           </td>
           <td>
-            <xsl:variable name="calPath" select="defaultCalendar"/>
-            <input type="hidden" name="calPath" value="{$calPath}"/>
+            <xsl:variable name="newCalPath" select="defaultCalendar"/>
+            <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
             <span id="bwEventCalDisplay">
               <xsl:choose>
