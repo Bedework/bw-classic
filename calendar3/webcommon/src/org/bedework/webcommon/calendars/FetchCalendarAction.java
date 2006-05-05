@@ -69,9 +69,9 @@ import javax.servlet.http.HttpServletResponse;
  * </ul>
  *
  * <p>Forwards to:<ul>
- *      <li>"noAccess"     user not authorised.</li>
- *      <li>"notFound"     no such event.</li>
- *      <li>"continue"     continue on to update page.</li>
+ *      <li>"noAccess"       user not authorised.</li>
+ *      <li>"notFound"       no such calendar.</li>
+ *      <li>"continue"       continue on to update page.</li>
  * </ul>
  *
  * @author Mike Douglass   douglm@rpi.edu

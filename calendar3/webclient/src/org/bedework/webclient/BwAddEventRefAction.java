@@ -55,11 +55,6 @@
 package org.bedework.webclient;
 
 import org.bedework.appcommon.BedeworkDefs;
-import org.bedework.calfacade.BwCalendar;
-import org.bedework.calfacade.BwEventProxy;
-import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.svc.EventInfo;
-import org.bedework.calsvci.CalSvcI;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -69,7 +64,8 @@ import javax.servlet.http.HttpServletRequest;
  * </ul>
  * <p>Forwards to:<ul>
  *      <li>"doNothing"    when request seems wrong.</li>
- *      <li>"notPersonal"  when this is not a personal calendar.</li>
+ *      <li>"eventNotFound"  no such event.</li>
+ *      <li>"calendarNotFound"  no such target calendar.</li>
  *      <li>"duplicate"    duplicate guid.</li>
  *      <li>"success"      added ok.</li>
  * </ul>
@@ -80,47 +76,17 @@ public class BwAddEventRefAction extends BwCalAbstractAction {
    */
   public String doAction(HttpServletRequest request,
                          BwActionForm form) throws Throwable {
-    if (form.getGuest()) {
-      return "doNothing";
+    String fwd = addEventRef(request, form);
+    if (fwd != null) {
+      return fwd;
     }
 
-    CalSvcI svci = form.fetchSvci();
+    String start = form.getEditEvent().getDtstart().getDate().substring(0, 8);
+    BwGoToAction.gotoDateView(this, form, start,
+                              BedeworkDefs.dayView, debug);
 
-    EventInfo ei = findEvent(request, form);
+    form.refreshIsNeeded();
 
-    if (ei == null) {
-      // Do nothing
-      return "doNothing";
-    }
-
-    /* Create an event to act as a reference to the targeted event and copy
-     * the appropriate fields from the target
-     */
-    BwEventProxy proxy = BwEventProxy.makeAnnotation(ei.getEvent(),
-                                                ei.getEvent().getOwner());
-
-    BwCalendar cal = svci.getPreferredCalendar();
-    proxy.setOwner(svci.getUser());
-
-    try {
-      svci.addEvent(cal, proxy, null);
-      form.getMsg().emit("org.bedework.client.message.added.eventrefs", 1);
-
-      BwGoToAction.gotoDateView(this, form,
-                                proxy.getDtstart().getDate().substring(0, 8),
-                                BedeworkDefs.dayView,
-                                debug);
-
-      form.refreshIsNeeded();
-
-      return "success";
-    } catch (CalFacadeException cfe) {
-      if (CalFacadeException.duplicateGuid.equals(cfe.getMessage())) {
-        form.getErr().emit("org.bedework.client.error.duplicate.guid");
-        return "duplicate";
-      }
-
-      throw cfe;
-    }
+    return "success";
   }
 }

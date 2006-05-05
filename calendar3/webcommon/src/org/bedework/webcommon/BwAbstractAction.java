@@ -60,6 +60,7 @@ import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.BwEventProxy;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwUser;
@@ -550,7 +551,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
   }
 
   /** Refetch an event given a copy of that event. Calnedar guid and possibly
-   * recurrecne id must be set.
+   * recurrence id must be set.
    *
    * @param event   BwEvent to refetch
    * @param form
@@ -601,6 +602,65 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     }
 
     return ev;
+  }
+
+  /** Add an event ref. The calendar to add it to is defined by the request
+   * parameter newCalPath.
+   *
+   * @param request
+   * @param form
+   * @return String forward for an errot or null for OK.
+   * @throws Throwable
+   */
+  protected String addEventRef(HttpServletRequest request,
+                               BwActionFormBase form) throws Throwable {
+    if (form.getGuest()) {
+      return "doNothing";
+    }
+
+    CalSvcI svci = form.fetchSvci();
+
+    EventInfo ei = findEvent(request, form);
+
+    if (ei == null) {
+      // Do nothing
+      return "eventNotFound";
+    }
+
+    /* Create an event to act as a reference to the targeted event and copy
+     * the appropriate fields from the target
+     */
+    BwEventProxy proxy = BwEventProxy.makeAnnotation(ei.getEvent(),
+                                                     ei.getEvent().getOwner());
+    form.setEditEvent(proxy); // Make it available
+
+    String path = getReqPar(request, "newCalPath");
+    BwCalendar cal;
+
+    if (path == null) {
+      cal = svci.getPreferredCalendar();
+    } else {
+      cal = svci.getCalendar(path);
+      if (cal == null) {
+        form.getErr().emit("org.bedework.client.error.nosuchcalendar", path);
+        return "calendarNotFound";
+      }
+    }
+    proxy.setOwner(svci.getUser());
+
+    try {
+      svci.addEvent(cal, proxy, null);
+      form.getMsg().emit("org.bedework.client.message.added.eventrefs", 1);
+    } catch (CalFacadeException cfe) {
+      if (CalFacadeException.duplicateGuid.equals(cfe.getMessage())) {
+        form.getErr().emit("org.bedework.client.error.duplicate.guid");
+        return "duplicate";
+      }
+
+      throw cfe;
+    }
+
+    return null;
   }
 
   protected BwCalendar findCalendar(String url,
