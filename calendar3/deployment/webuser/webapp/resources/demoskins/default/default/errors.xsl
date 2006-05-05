@@ -59,6 +59,9 @@
       <xsl:when test="id='org.bedework.client.error.nodefaultview'">
           <p>No default view defined</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.badPref'">
+          <p>Bad setting for preference: "<em><xsl:value-of select="param"/></em>"</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unimplemented'">
           <p>The feature you requested is currently unimplemented.</p>
       </xsl:when>
