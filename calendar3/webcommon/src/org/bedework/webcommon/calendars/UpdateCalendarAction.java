@@ -131,10 +131,18 @@ public class UpdateCalendarAction extends BwAbstractAction {
       }
     }
 
-    if (add) {
-      form.getMsg().emit("org.bedework.client.message.calendar.added");
+    if (cal.getCalendarCollection()) {
+      if (add) {
+        form.getMsg().emit("org.bedework.client.message.calendar.added");
+      } else {
+        form.getMsg().emit("org.bedework.client.message.calendar.updated");
+      }
     } else {
-      form.getMsg().emit("org.bedework.client.message.calendar.updated");
+      if (add) {
+        form.getMsg().emit("org.bedework.client.message.folder.added");
+      } else {
+        form.getMsg().emit("org.bedework.client.message.folder.updated");
+      }
     }
 
     return "continue";

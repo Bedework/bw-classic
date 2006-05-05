@@ -402,6 +402,9 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
    * @throws CalFacadeException
    */
   public String getEncodedPath() throws CalFacadeException {
+    if (getPath() == null) {
+      return null;
+    }
     try {
       return URLEncoder.encode(getPath(), "UTF-8");
     } catch (Throwable t) {
