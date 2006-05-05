@@ -693,9 +693,9 @@
                scope="session"
                validate="false">
       <forward name="cancelled" path="/showMain.rdo" redirect="true" />
-      <forward name="retry" path="/prefs/showModForm.rdo" />
-      <forward name="notFound" path="/prefs/showModForm.rdo" />
-      <forward name="success" path="/showMain.rdo" redirect="true" />
+      <forward name="retry" path="/prefs/showModForm.rdo"  redirect="true"/>
+      <forward name="notFound" path="/prefs/showModForm.rdo"  redirect="true"/>
+      <forward name="success" path="/prefs/showModForm.rdo" redirect="true" />
     </action>
 
     <!-- ===============================================================

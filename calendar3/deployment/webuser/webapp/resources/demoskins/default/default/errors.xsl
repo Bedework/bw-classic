@@ -32,6 +32,9 @@
       <xsl:when test="id='org.bedework.client.error.missingcalendarpath'">
           <p>Missing calendar path (required).</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.nosuchcalendar'">
+          <p>No such calendar.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.duplicate.guid'">
           <p>Duplicate guid: this event already exists in your calendar.</p>
       </xsl:when>

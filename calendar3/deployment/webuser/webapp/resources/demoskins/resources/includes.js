@@ -94,7 +94,23 @@ function updateEventFormCalendar(newCalPath,calDisplay) {
     bwCalDisplay = window.opener.document.getElementById("bwEventCalDisplay");
     bwCalDisplay.innerHTML = calDisplay;
   } else {
-    alert("The event form is no longer available.");
+    alert("The event form is not available.");
   }
   window.close();
+}
+
+function setWorkDays(formObj) {
+  if (formObj) {
+    var workDays = "";
+    for (i=0; i<7; i++) {
+      if (formObj.workDayIndex[i].checked) {
+        workDays += "W";
+      } else {
+        workDays += " ";
+      }
+    }
+    formObj.workDays.value = workDays;
+  } else {
+    alert("The preferences form is not available.");
+  }
 }

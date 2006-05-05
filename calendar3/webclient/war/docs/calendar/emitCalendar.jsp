@@ -7,6 +7,7 @@
   <bw:emitText name="calendar" property="name" />
   <bw:emitText name="calendar" property="path" />
   <bw:emitText name="calendar" property="encodedPath" />
+  <calType><bean:write name="calendar" property="calType" /></calType>
   <bw:emitText name="calendar" property="description" tagName="desc" />
   <calendarCollection><bean:write name="calendar" property="calendarCollection" /></calendarCollection>
   <bw:emitText name="calendar" property="mailListId" />

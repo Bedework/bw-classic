@@ -154,8 +154,7 @@ public class UpdatePrefsAction extends BwAbstractAction {
       prefs.setEmail(str);
     }
 
-    /*
-    str = getReqPar(request, "calPath");
+    str = getReqPar(request, "newCalPath");
     if (str != null) {
       BwCalendar cal = svc.getCalendar(str);
       if (cal == null) {
@@ -164,9 +163,6 @@ public class UpdatePrefsAction extends BwAbstractAction {
       }
       prefs.setDefaultCalendar(cal);
     }
-    */
-
-    /* user mode */
 
     int mode = getIntReqPar(request, "userMode", -1);
 
@@ -179,7 +175,11 @@ public class UpdatePrefsAction extends BwAbstractAction {
       prefs.setUserMode(mode);
     }
 
-    /* workdays */
+    str = getReqPar(request, "workDays");
+    if (str != null) {
+      // XXX validate
+      prefs.setWorkDays(str);
+    }
 
     int minutes = getIntReqPar(request, "workDayStart", -1);
 

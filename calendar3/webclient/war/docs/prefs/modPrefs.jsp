@@ -26,8 +26,8 @@
   <!-- string of chars representing the days -->
   <workDays><bean:write name="userPrefs" property="workDays"/></workDays>
   <!-- start and end in minutes: e.g. 14:30 is 870 and 17:30 is 1050 -->
-  <workdayStart><bean:write name="userPrefs" property="workdayStart"/></workdayStart>
-  <workdayEnd><bean:write name="userPrefs" property="workdayEnd"/></workdayEnd>
+  <workDayStart><bean:write name="userPrefs" property="workdayStart"/></workDayStart>
+  <workDayEnd><bean:write name="userPrefs" property="workdayEnd"/></workDayEnd>
   <!-- pref end type = date or duration -->
   <preferredEndType><bean:write name="userPrefs" property="preferredEndType"/></preferredEndType>
   <!-- user mode: 0 = basicMode, 1 = simpleMode, 2 = advancedMode -->
