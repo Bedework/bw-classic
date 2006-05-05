@@ -683,7 +683,7 @@
                name="calForm"
                scope="session"
                validate="false">
-      <forward name="notFound" path="/admin/showMain.rdo" redirect="true" />
+      <forward name="notFound" path="/showMain.rdo" redirect="true" />
       <forward name="success" path="/prefs/showModForm.rdo" redirect="true" />
     </action>
 
@@ -692,9 +692,10 @@
                name="calForm"
                scope="session"
                validate="false">
-      <forward name="cancelled" path="/admin/showMain.rdo" redirect="true" />
+      <forward name="cancelled" path="/showMain.rdo" redirect="true" />
       <forward name="retry" path="/prefs/showModForm.rdo" />
-      <forward name="success" path="/admin/showMain.rdo" redirect="true" />
+      <forward name="notFound" path="/prefs/showModForm.rdo" />
+      <forward name="success" path="/showMain.rdo" redirect="true" />
     </action>
 
     <!-- ===============================================================

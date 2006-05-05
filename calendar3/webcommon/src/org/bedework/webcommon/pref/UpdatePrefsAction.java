@@ -54,6 +54,7 @@
 
 package org.bedework.webcommon.pref;
 
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calsvci.CalSvcI;
@@ -68,7 +69,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * <p>Parameters are:<ul>
  *      <li>"user"             User whos prefs we're changing - superuser only</li>
- *      <li>"view"             Name of preferred view</li>
+ *      <li>"preferredView"    Name of preferred view</li>
  *      <li>"viewPeriod"       day/week/month/year</li>
  *      <li>"skin"             Name of default skin</li>
  *      <li>"skinStyle"        Name of default skin style</li>
@@ -76,7 +77,9 @@ import javax.servlet.http.HttpServletResponse;
  *      <li>"email"            Email address of user</li>
  *      <li>"calPath"          Path to default calendar</li>
  *      <li>"userMode"         User interface mode</li>
- *      <li>"workDays"         7-character string representing workdays, "W" representing each workday, space otherwise; e.g. " WWWWW " is a typical Mon-Fri workweek</li>
+ *      <li>"workDays"         7-character string representing workdays,
+ *                             "W" representing each workday, space otherwise;
+ *                             e.g. " WWWWW " is a typical Mon-Fri workweek</li>
  *      <li>"workDayStart"     In minutes, e.g. e.g. 14:30 is 870 and 17:30 is 1050</li>
  *      <li>"workDayEnd"       In minutes</li>
  *      <li>"preferredEndType" For adding events: "duration" or "date"
@@ -145,6 +148,23 @@ public class UpdatePrefsAction extends BwAbstractAction {
     if (str != null) {
       prefs.setSkinStyle(str);
     }
+
+    str = getReqPar(request, "email");
+    if (str != null) {
+      prefs.setEmail(str);
+    }
+
+    /*
+    str = getReqPar(request, "calPath");
+    if (str != null) {
+      BwCalendar cal = svc.getCalendar(str);
+      if (cal == null) {
+        form.getErr().emit("org.bedework.client.error.nosuchcalendar", str);
+        return "notFound";
+      }
+      prefs.setDefaultCalendar(cal);
+    }
+    */
 
     svc.updateUserPrefs(prefs);
     form.getMsg().emit("org.bedework.client.message.prefs.updated");
