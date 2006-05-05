@@ -628,9 +628,15 @@ public class Events extends CalintfHelper implements EventsI {
     /* SEG   (    */
     sb.append(" (");
 
+    CalTerm calTerm = new CalTerm();
+
     boolean setUser = doCalendarClause(sb, qevName, calendar,
                                        currentMode, cal.getSuperUser(),
-                                       allCalendars);
+                                       calTerm, allCalendars);
+    if (calTerm.empty) {
+      // No valid calendars to search.
+      return new TreeSet();
+    }
 
     sb.append(") ");
 
@@ -927,9 +933,16 @@ public class Events extends CalintfHelper implements EventsI {
     /* SEG   (    */
     sb.append(" (");
 
+    CalTerm calTerm = new CalTerm();
+
     boolean setUser = doCalendarClause(sb, qevName + ".master", calendar,
                                        currentMode, ignoreCreator,
-                                       allCalendars);
+                                       calTerm, allCalendars);
+
+    if (calTerm.empty) {
+      // This shouldn't happen - we checked previously
+      throw new CalFacadeException("No valid calendars.");
+    }
 
     sb.append(") ");
 
@@ -999,7 +1012,10 @@ public class Events extends CalintfHelper implements EventsI {
     return flt.postExec(ceis);
   }
 
+  /* Used when building calendar clauses.
+   */
   private class CalTerm {
+    boolean empty = true;
     int i = 1;
   }
 
@@ -1007,6 +1023,7 @@ public class Events extends CalintfHelper implements EventsI {
    */
   private boolean doCalendarClause(StringBuffer sb, String qevName, BwCalendar calendar,
                                    int currentMode, boolean ignoreCreator,
+                                   CalTerm calTerm,
                                    boolean allCalendars) throws CalFacadeException {
     /* if no calendar set
           if public
@@ -1015,6 +1032,8 @@ public class Events extends CalintfHelper implements EventsI {
             SEG: user=?
      */
     if (calendar == null) {
+      // Doesn't count as empty
+      calTerm.empty = false;
       return CalintfUtil.appendPublicOrCreatorTerm(sb, qevName,
                           currentMode, ignoreCreator);
     }
@@ -1025,12 +1044,13 @@ public class Events extends CalintfHelper implements EventsI {
       sb.append(qevName);
       sb.append(".calendar=:calendar");
       sb.append(") ");
+      calTerm.empty = false;
       return false;
     }
 
     // Non leaf - build a query
     sb.append("(");
-    appendCalendarClause(sb, qevName, calendar, new CalTerm(), allCalendars);
+    appendCalendarClause(sb, qevName, calendar, calTerm, allCalendars);
     sb.append(") ");
 
     return false;
@@ -1048,6 +1068,7 @@ public class Events extends CalintfHelper implements EventsI {
         sb.append(qevName);
         sb.append(".calendar=:calendar" + calTerm.i);
         calTerm.i++;
+        calTerm.empty = false;
       }
     } else {
       Iterator it = calendar.getChildren().iterator();
