@@ -103,6 +103,10 @@ public class BwPreferences extends BwOwnedDbentity {
    */
   public static final int advancedMode = 2;
 
+  /** Max mode value
+   */
+  public static final int maxMode = 2;
+
   private int userMode;
 
   /** Constructor

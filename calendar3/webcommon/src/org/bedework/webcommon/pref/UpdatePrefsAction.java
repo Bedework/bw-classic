@@ -166,6 +166,61 @@ public class UpdatePrefsAction extends BwAbstractAction {
     }
     */
 
+    /* user mode */
+
+    int mode = getIntReqPar(request, "userMode", -1);
+
+    if (mode != -1) {
+      if ((mode < 0) || (mode > BwPreferences.maxMode)) {
+        form.getErr().emit("org.bedework.client.error.badPref", "userMode");
+        return "badPref";
+      }
+
+      prefs.setUserMode(mode);
+    }
+
+    /* workdays */
+
+    int minutes = getIntReqPar(request, "workDayStart", -1);
+
+    if (minutes != -1) {
+      if ((minutes < 0) || (minutes > 24 * 60 - 1)) {
+        form.getErr().emit("org.bedework.client.error.badPref", "workDayStart");
+        return "badPref";
+      }
+
+      prefs.setWorkdayStart(minutes);
+    }
+
+    minutes = getIntReqPar(request, "workDayEnd", -1);
+
+    if (minutes != -1) {
+      if ((minutes < 0) || (minutes > 24 * 60 - 1)) {
+        form.getErr().emit("org.bedework.client.error.badPref", "workDayEnd");
+        return "badPref";
+      }
+
+      prefs.setWorkdayEnd(minutes);
+    }
+
+    if (prefs.getWorkdayStart() > prefs.getWorkdayEnd()) {
+      form.getErr().emit("org.bedework.client.error.badPref",
+                         "workDayStart > workDayEnd");
+      return "badPref";
+    }
+
+    /*     <li>"preferredEndType" For adding events:
+    */
+    str = getReqPar(request, "preferredEndType");
+    if (str != null) {
+      if ("duration".equals(str) || "date".equals(str)) {
+        prefs.setPreferredEndType(str);
+      } else {
+        form.getErr().emit("org.bedework.client.error.badPref", "preferredEndType");
+        return "badPref";
+      }
+    }
+
     svc.updateUserPrefs(prefs);
     form.getMsg().emit("org.bedework.client.message.prefs.updated");
     return "success";
