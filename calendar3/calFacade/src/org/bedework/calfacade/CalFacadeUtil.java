@@ -89,6 +89,26 @@ public class CalFacadeUtil implements Serializable {
   private CalFacadeUtil() {
   }
 
+  /** Check for a valid transparency - null is invalid
+   *
+   * @param val
+   * @return boolean true = it's OK
+   */
+  public static boolean validTransparency(String val) {
+    if (val == null) {
+      /* We could argue that's valid as the default but I think that leads to
+       * problems.
+       */
+      return false;
+    }
+
+    if (BwEvent.transparencyOpaque.equals(val)) {
+      return true;
+    }
+
+    return BwEvent.transparencyTransparent.equals(val);
+  }
+
   /** Update the to Collection with from elements. This is used to
    * add or remove members from a Collection managed by hibernate for example
    * where a replacement of the Collection is not allowed.

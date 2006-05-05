@@ -209,8 +209,6 @@ public class UpdatePrefsAction extends BwAbstractAction {
       return "badPref";
     }
 
-    /*     <li>"preferredEndType" For adding events:
-    */
     str = getReqPar(request, "preferredEndType");
     if (str != null) {
       if ("duration".equals(str) || "date".equals(str)) {

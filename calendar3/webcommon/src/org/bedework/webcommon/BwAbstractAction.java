@@ -67,6 +67,7 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.ifs.Groups;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUser;
@@ -647,6 +648,17 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       }
     }
     proxy.setOwner(svci.getUser());
+
+    String transparency = getReqPar(request, "transparency");
+    if (transparency != null) {
+      if (!CalFacadeUtil.validTransparency(transparency)) {
+        form.getErr().emit("org.bedework.client.error.badvalue",
+                           "transparency");
+        return "badValue";
+      }
+
+      proxy.setTransparency(transparency);
+    }
 
     try {
       svci.addEvent(cal, proxy, null);
