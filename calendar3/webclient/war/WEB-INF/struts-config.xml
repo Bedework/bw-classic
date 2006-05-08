@@ -321,7 +321,8 @@
                name="calForm"
                scope="session"
                validate="false">
-    <forward name="baddata" path="/showMain.rdo" redirect="true" />
+      <forward name="baddata" path="/showMain.rdo" redirect="true" />
+      <forward name="success" path="/setup.do" redirect="true"/>
     </action>
 
   <!-- ===============================================================
