@@ -2,7 +2,7 @@
 
 <!-- ===================================================================
      This file builds a runnable application wrapped up as a zip file.
-     Unpacking the zip shoudl result in a directory containing a shell
+     Unpacking the zip should result in a directory containing a shell
      script, a set of jars and any other resources needed.
 
      Properties we need:
@@ -27,6 +27,8 @@
               location="${app.dest.classes}/properties/calendar" />
     <property name="app.dest.resources"
               location="${app.dest.home}/resources" />
+    <property name="app.dest.data"
+              location="${app.dest.home}/data" />
 
     <property name="app.zip.file"
               location="${dist.home}/${propval.app.zip.name}.zip" />
@@ -38,6 +40,9 @@
 
   <target name="build" depends="init">
     <filterset id="property.filters" >
+      <filter token="BW-APP-NAME"
+              value="${org.bedework.deploy.name}"/>
+
       <filter token="HIBERNATE-DIALECT"
               value="${org.bedework.global.hibernate.dialect}" />
 
@@ -48,9 +53,9 @@
               value="${propval.app.description}" />
 
       <filter token="DUMP-CLASS"
-              value="org.bedework.tools.dumprestore.dump.Dump"/>
+              value="org.bedework.dumprestore.dump.Dump"/>
       <filter token="RESTORE-CLASS"
-              value="org.bedework.tools.dumprestore.restore.Restore"/>
+              value="org.bedework.dumprestore.restore.Restore"/>
 
       <filter token="APP-NAME"
               value="${propval.app.name}"/>
@@ -87,13 +92,30 @@
     <!-- Extra libraries specified in calling build file -->
     <copy todir="${app.dest.lib}" flatten="yes" >
       <fileset refid="org.bedework.run.jars" />
-    </copy>
-    <copy todir="${app.dest.lib}" flatten="yes" >
       <fileset refid="org.bedework.run.lib.jars" />
+
+      <!-- local jdbc drivers -->
+      <fileset dir="${org.bedework.jdbc.lib}">
+        <include name="*.jar"/>
+      </fileset>
     </copy>
 
-    <copy todir="${app.dest.classes}"  >
+    <!-- Include the quickstart jdbc driver -->
+    <copy todir="${app.dest.lib}" file="${hsqldb.jdbcdriver.jar}"/>
+
+    <copy todir="${app.dest.classes}">
+      <fileset dir="${org.bedework.core.base}/resources/properties" />
+      <filterset refid="property.filters" />
+    </copy>
+
+    <copy todir="${app.dest.classes}">
+      <fileset dir="${org.bedework.core.base}/resources/hbms" />
+      <filterset refid="property.filters" />
+    </copy>
+
+    <copy todir="${app.dest.classes}" overwrite="yes" >
       <fileset refid="org.bedework.extra.resources" />
+      <filterset refid="property.filters" />
     </copy>
 
     <!-- add the jdbcdriver if defined -->
@@ -117,6 +139,17 @@
           failonerror="false" />
 
     <!-- ===============================================================
+                       Add any data files
+         =============================================================== -->
+
+    <mkdir dir="${app.dest.data}" />
+
+    <copy todir="${app.dest.data}" overwrite="yes" >
+      <fileset refid="org.bedework.shellscr.data" />
+      <filterset refid="property.filters" />
+    </copy>
+
+    <!-- ===============================================================
                        Build the classpath
          =============================================================== -->
 
@@ -136,7 +169,7 @@
                        Copy and modify the shell script
          =============================================================== -->
 
-    <copy toDir="${app.dest.home}"
+    <copy tofile="${app.dest.home}/${propval.app.shellscr.name}"
           file="${app.run.shellscr}" >
       <filterset>
         <filter token="CP"

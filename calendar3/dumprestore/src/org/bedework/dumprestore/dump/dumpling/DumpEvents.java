@@ -44,7 +44,7 @@ import java.util.Iterator;
  */
 public class DumpEvents extends Dumpling {
   protected boolean annotations;
-  
+
   /** Constructor
    *
    * @param globals
@@ -77,12 +77,6 @@ public class DumpEvents extends Dumpling {
   private void dumpEvent(BwEvent e) throws Throwable {
     BwEventAnnotation ann = null;
 
-    if (e instanceof BwEventAnnotation) {
-      ann = (BwEventAnnotation)e;
-      taggedVal("target", ann.getTarget().getId());
-      taggedVal("master", ann.getMaster().getId());
-    }
-    
     if (ann == null) {
       tagStart(objectEvent);
     } else {
@@ -92,19 +86,20 @@ public class DumpEvents extends Dumpling {
     shareableContainedEntityTags(e);
 
     taggedVal("name", e.getName());
-    taggedVal("guid", e.getGuid());
     taggedVal("summary", e.getSummary());
     taggedVal("description", e.getDescription());
 
     taggedDateTime("start", e.getDtstart());
     taggedDateTime("end", e.getDtend());
-    taggedVal("duration", e.getDuration());
     taggedVal("end-type", e.getEndType());
+    taggedVal("duration", e.getDuration());
 
     taggedVal("link", e.getLink());
+    taggedVal("deleted", e.getDeleted());
     taggedVal("status", e.getStatus());
     taggedVal("cost", e.getCost());
-    taggedVal("deleted", e.getDeleted());
+
+    taggedEntityId("organizer", e.getOrganizer());
 
     taggedVal("dtstamp", e.getDtstamp());
     taggedVal("last-mod", e.getLastmod());
@@ -112,6 +107,12 @@ public class DumpEvents extends Dumpling {
 
     taggedVal("priority", e.getPriority());
     taggedVal("sequence", e.getSequence());
+
+    taggedEntityId("sponsor", e.getSponsor());
+    taggedEntityId("location", e.getLocation());
+
+    taggedVal("guid", e.getGuid());
+    taggedVal("transparency", e.getTransparency());
 
     tagStart("eventCategories");
 
@@ -124,12 +125,6 @@ public class DumpEvents extends Dumpling {
     }
 
     tagEnd("eventCategories");
-
-    taggedEntityId("sponsor", e.getSponsor());
-    taggedEntityId("location", e.getLocation());
-    taggedEntityId("organizer", e.getOrganizer());
-
-    taggedVal("transparency", e.getTransparency());
 
     tagStart("eventAttendees");
 
@@ -180,13 +175,13 @@ public class DumpEvents extends Dumpling {
 
     if (ann == null) {
       tagEnd(objectEvent);
-      
+
       globals.events++;
     } else {
-      taggedVal("target", ann.getTarget().getId());
-      taggedVal("master", ann.getMaster().getId());
+      taggedEventKey("target", ann.getTarget());
+      taggedEventKey("master", ann.getMaster());
       tagEnd(objectEventAnnotation);
-      
+
       globals.eventAnnotations++;
     }
   }

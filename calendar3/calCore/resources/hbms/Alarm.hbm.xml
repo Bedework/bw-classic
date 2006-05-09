@@ -74,6 +74,10 @@
       <column name="ownerid" not-null="true" index="valarms_user" />
     </many-to-one>
 
+    <property name="publick" type="true_false" >
+      <column name="publick" not-null="true" />
+    </property>
+
     <property name="trigger" column="trigger_rfctime" type="text"/>
 
     <property name="triggerStart" type="true_false">

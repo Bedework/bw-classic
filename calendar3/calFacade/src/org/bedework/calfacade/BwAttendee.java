@@ -53,13 +53,13 @@
 */
 package org.bedework.calfacade;
 
-import org.bedework.calfacade.base.BwDbentity;
+import org.bedework.calfacade.base.BwOwnedDbentity;
 
 /** Represent an attendee
  *
  *  @author Mike Douglass   douglm@rpi.edu
  */
-public class BwAttendee extends BwDbentity implements Comparable {
+public class BwAttendee extends BwOwnedDbentity implements Comparable {
   /* Params fields */
 
   private String cn;
@@ -85,6 +85,8 @@ public class BwAttendee extends BwDbentity implements Comparable {
 
   /** Constructor
    *
+   * @param owner
+   * @param publick
    * @param cn
    * @param cuType
    * @param delegatedFrom
@@ -98,7 +100,9 @@ public class BwAttendee extends BwDbentity implements Comparable {
    * @param sentBy
    * @param attendeeUri
    */
-  public BwAttendee(String cn,
+  public BwAttendee(BwUser owner,
+                    boolean publick,
+                    String cn,
                     String cuType,
                     String delegatedFrom,
                     String delegatedTo,
@@ -110,6 +114,7 @@ public class BwAttendee extends BwDbentity implements Comparable {
                     String partstat,
                     String sentBy,
                     String attendeeUri) {
+    super(owner, publick);
     this.cn = cn;
     this.cuType = cuType;
     this.delegatedFrom = delegatedFrom;
@@ -401,7 +406,9 @@ public class BwAttendee extends BwDbentity implements Comparable {
   }
 
   public Object clone() {
-    BwAttendee nobj = new BwAttendee(getCn(),
+    BwAttendee nobj = new BwAttendee((BwUser)getOwner().clone(),
+                                     getPublick(),
+                                     getCn(),
                                      getCuType(),
                                      getDelegatedFrom(),
                                      getDelegatedTo(),

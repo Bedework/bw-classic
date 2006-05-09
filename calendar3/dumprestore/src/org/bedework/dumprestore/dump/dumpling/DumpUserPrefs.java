@@ -84,10 +84,12 @@ public class DumpUserPrefs extends Dumpling {
 
         taggedVal("sub-id", sub.getId());
         taggedVal("sub-seq", sub.getSeq());
-        taggedVal("sub-name", sub.getName());
         taggedVal("sub-owner", sub.getOwner().getId());
+
+        taggedVal("sub-name", sub.getName());
         taggedVal("sub-uri", sub.getUri());
         taggedVal("sub-affectsFreeBusy", sub.getAffectsFreeBusy());
+        taggedVal("sub-ignoreTransparency", sub.getIgnoreTransparency());
         taggedVal("sub-display", sub.getDisplay());
         taggedVal("sub-style", sub.getStyle());
         taggedVal("sub-internalSubscription", sub.getInternalSubscription());
@@ -118,8 +120,8 @@ public class DumpUserPrefs extends Dumpling {
 
         taggedVal("view-id", view.getId());
         taggedVal("view-seq", view.getSeq());
-        taggedVal("view-name", view.getName());
         taggedVal("view-owner", view.getOwner().getId());
+        taggedVal("view-name", view.getName());
 
         Collection vs = view.getSubscriptions();
 
@@ -131,7 +133,7 @@ public class DumpUserPrefs extends Dumpling {
           while (vsi.hasNext()) {
             BwSubscription sub = (BwSubscription)vsi.next();
 
-            taggedVal("view-sub-id", sub.getId());
+            taggedVal("view-sub-name", sub.getName());
           }
 
           tagEnd("view-subscriptions");
@@ -145,7 +147,7 @@ public class DumpUserPrefs extends Dumpling {
 
     taggedVal("email", p.getEmail());
     if (p.getDefaultCalendar() != null) {
-      taggedVal("default-calendar", p.getDefaultCalendar().getId());
+      taggedVal("defaultCalendar", p.getDefaultCalendar().getPath());
     }
     taggedVal("skinName", p.getSkinName());
     taggedVal("skinStyle", p.getSkinStyle());
@@ -154,6 +156,8 @@ public class DumpUserPrefs extends Dumpling {
     taggedVal("workDays", p.getWorkDays());
     taggedVal("workdayStart", p.getWorkdayStart());
     taggedVal("workdayEnd", p.getWorkdayEnd());
+    taggedVal("preferredEndType", p.getPreferredEndType());
+    taggedVal("userMode", p.getUserMode());
 
     tagEnd(objectUserPrefs);
   }

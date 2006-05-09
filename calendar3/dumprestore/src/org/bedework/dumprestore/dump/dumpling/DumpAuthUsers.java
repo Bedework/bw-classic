@@ -28,6 +28,7 @@
  */
 package org.bedework.dumprestore.dump.dumpling;
 
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
@@ -127,6 +128,21 @@ public class DumpAuthUsers extends Dumpling {
         }
 
         tagEnd("preferredSponsors");
+      }
+
+      s = aup.getPreferredCalendars();
+      if ((s != null) && (s.size() > 0)) {
+        tagStart("preferredCalendars");
+
+        Iterator si = s.iterator();
+
+        while (si.hasNext()) {
+          BwCalendar p = (BwCalendar)si.next();
+
+          taggedVal("preferredCalendar", p.getPath());
+        }
+
+        tagEnd("preferredCalendars");
       }
     }
 

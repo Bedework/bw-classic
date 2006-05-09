@@ -101,15 +101,12 @@ public class SysparsFieldRule extends EntityFieldRule {
 
     } else if (name.equals("httpConnectionsPerUser")) {
       ent.setHttpConnectionsPerUser(parval(globals.syspars.getHttpConnectionsPerUser(),
-                                           globals.sysparsSetHttpConnectionsPerUser,
                                            intFld()));
     } else if (name.equals("httpConnectionsPerHost")) {
       ent.setHttpConnectionsPerHost(parval(globals.syspars.getHttpConnectionsPerHost(),
-                                           globals.sysparsSetHttpConnectionsPerHost,
                                            intFld()));
     } else if (name.equals("httpConnections")) {
       ent.setHttpConnections(parval(globals.syspars.getHttpConnections(),
-                                    globals.sysparsSetHttpConnections,
                                     intFld()));
 
     } else if (name.equals("maxPublicDescriptionLength")) {
@@ -119,11 +116,8 @@ public class SysparsFieldRule extends EntityFieldRule {
     } else if (name.equals("maxUserEntitySize")) {
       ent.setMaxUserEntitySize(intFld());
     } else if (name.equals("defaultUserQuota")) {
-      if (globals.sysparsSetDefaultUserQuota) {
-        ent.setDefaultUserQuota(globals.syspars.getDefaultUserQuota());
-      } else {
-        ent.setDefaultUserQuota(longFld());
-      }
+      ent.setDefaultUserQuota(parval(globals.syspars.getDefaultUserQuota(),
+                                     longFld()));
 
     } else if (name.equals("userauthClass")) {
       ent.setUserauthClass(parval(globals.syspars.getUserauthClass(), stringFld()));
@@ -138,8 +132,16 @@ public class SysparsFieldRule extends EntityFieldRule {
     }
   }
 
-  private int parval(int sysparVal, boolean isSet, int val) {
-    if (isSet) {
+  private int parval(int sysparVal, int val) {
+    if (sysparVal != 0) {
+      return sysparVal;
+    }
+
+    return val;
+  }
+
+  private long parval(long sysparVal, long val) {
+    if (sysparVal != 0) {
       return sysparVal;
     }
 

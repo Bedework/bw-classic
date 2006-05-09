@@ -79,7 +79,7 @@ public class FiltersRule extends RestoreRule {
    * @see org.apache.commons.digester.Rule#end(java.lang.String, java.lang.String)
    */
   public void end(String ns, String name) throws Exception {
-    if (!globals.from2p3px) {
+    if (!globals.config.getFrom2p3px()) {
       // Not converting
       return;
     }
@@ -145,7 +145,7 @@ public class FiltersRule extends RestoreRule {
     cal.setCalendarCollection(true);
     ucal.addChild(cal);
 
-    globals.calendarsTbl.put(new Integer(cal.getId()), cal);
+    globals.calendarsTbl.put(cal);
 
     globals.defaultCalendars.put(new Integer(u.getId()), cal);
 

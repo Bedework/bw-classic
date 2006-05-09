@@ -67,10 +67,11 @@ public class DumpAttendees extends Dumpling {
   private void dumpAttendee(BwAttendee a) throws Throwable {
     tagStart(objectAttendee);
 
-    taggedEntityId(a);
+    ownedEntityTags(a);
     taggedVal("cutype", a.getCuType());
     taggedVal("delegated-from", a.getDelegatedFrom());
-    taggedVal("getDelegatedTo-to", a.getCn());
+    taggedVal("delegated-to", a.getDelegatedTo());
+    taggedVal("cn", a.getCn());
     taggedVal("dir", a.getDir());
     taggedVal("lang", a.getLanguage());
     taggedVal("member", a.getMember());

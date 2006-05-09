@@ -54,33 +54,76 @@
 package org.bedework.calfacade.ifs;
 
 import org.bedework.calfacade.BwAttendee;
+import org.bedework.calfacade.BwUser;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
-import java.util.Vector;
 
-/** An interface defining the operations we can carry out on attendees and
+/** A class defining the operations we can carry out on attendees and
  * collections of attendees
  *
  *  @version 1.0
  *  @author Mike Douglass   douglm @ rpi.edu
  */
 public class Attendees implements Serializable {
+  private BwUser owner;
+  private boolean publick;
   private Collection attendees;
 
   /** Constructor
+   *
+   * @param owner
+   * @param publick
    */
-  public Attendees() {
+  public Attendees(BwUser owner, boolean publick) {
+    this.owner = owner;
+    this.publick = publick;
   }
 
   /** Constructor
    *
+   * @param owner
+   * @param publick
    * @param attendees
    */
-  public Attendees(Collection attendees) {
+  public Attendees(BwUser owner, boolean publick, Collection attendees) {
+    this(owner, publick);
     this.attendees = attendees;
+  }
+
+  /** Set the owner for this object and any contained objects.
+   *
+   * @param val
+   */
+  public void setOwner(BwUser val) {
+    owner = val;
+
+    if (attendees != null) {
+      Iterator it = iterateAttendees();
+      while (it.hasNext()) {
+        BwAttendee att = (BwAttendee)it.next();
+        att.setOwner(owner);
+      }
+    }
+  }
+
+  /** Set the public flag for this object and any contained objects.
+   *
+   * @param val
+   */
+  public void setPublick(boolean val) {
+    publick = val;
+
+    if (attendees != null) {
+      Iterator it = iterateAttendees();
+      while (it.hasNext()) {
+        BwAttendee att = (BwAttendee)it.next();
+        att.setPublick(publick);
+      }
+    }
   }
 
   /** Set the attendees
@@ -125,6 +168,8 @@ public class Attendees implements Serializable {
     Collection as = getAttendees();
 
     if (!as.contains(val)) {
+      val.setOwner(owner);
+      val.setPublick(publick);
       as.add(val);
     }
   }
@@ -137,6 +182,8 @@ public class Attendees implements Serializable {
     Collection as = getAttendees();
     BwAttendee att = new BwAttendee();
 
+    att.setOwner(owner);
+    att.setPublick(publick);
     att.setAttendeeUri(val);
 
     if (!as.contains(att)) {
@@ -149,7 +196,7 @@ public class Attendees implements Serializable {
    *  @return String[]   attendees list
    */
   public String[] getAttendeeEmailList() {
-    Vector v = new Vector();
+    ArrayList al = new ArrayList();
     Iterator it = iterateAttendees();
     while (it.hasNext()) {
       BwAttendee att = (BwAttendee)it.next();
@@ -160,12 +207,12 @@ public class Attendees implements Serializable {
         // ???
       } else if (!uri.toUpperCase().startsWith("MAILTO:")) {
         // Assume an email without MAILTO: prefix.
-        v.add(uri);
+        al.add(uri);
       } else {
-        v.add(uri.substring(7));
+        al.add(uri.substring(7));
       }
     }
-    return (String[])v.toArray(new String[v.size()]);
+    return (String[])al.toArray(new String[al.size()]);
   }
 
   /** Return a copy of the collection

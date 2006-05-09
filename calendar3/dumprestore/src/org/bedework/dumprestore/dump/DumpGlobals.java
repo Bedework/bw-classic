@@ -28,6 +28,8 @@
  */
 package org.bedework.dumprestore.dump;
 
+import org.bedework.dumprestore.DumpRestoreConfig;
+
 import java.io.Writer;
 import java.util.Stack;
 
@@ -35,13 +37,10 @@ import java.util.Stack;
  * @author douglm
  *
  */
-/**
- * @author douglm
- *
- */
 public class DumpGlobals {
-  /** */
-  public boolean debug;
+  /** Config properties from options file.
+   */
+  public DumpRestoreConfig config;
 
   /** */
   public Writer out;
@@ -88,7 +87,7 @@ public class DumpGlobals {
 
   /** */
   public int events;
-  
+
   /** */
   public int eventAnnotations;
 
@@ -150,5 +149,12 @@ public class DumpGlobals {
    */
   public Writer getOut() {
     return out;
+  }
+
+  /**
+   * @param config
+   */
+  public void init(DumpRestoreConfig config) {
+    this.config = config;
   }
 }

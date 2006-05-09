@@ -97,6 +97,9 @@ public class RestoreRuleSet extends RuleSetBase {
     d.addRule("caldata/organizers/organizer", new OrganizerRule(globals));
     d.addRule("caldata/organizers/organizer/*", new OrganizerFieldRule(globals));
 
+    d.addRule("caldata/attendees/attendee", new AttendeeRule(globals));
+    d.addRule("caldata/attendees/attendee/*", new AttendeeFieldRule(globals));
+
     /* 2.3.2
     d.addRule("caldata/dblastmods/dblastmod", new DbLastmodRule(globals));
     d.addRule("caldata/dblastmods/dblastmod/*", new DbLastmodFieldRule(globals));
@@ -129,6 +132,9 @@ public class RestoreRuleSet extends RuleSetBase {
     EventFieldRule efr = new EventFieldRule(globals);
     d.addRule("caldata/events/event", new EventRule(globals));
     d.addRule("caldata/events/event/*", efr);
+
+    d.addRule("caldata/event-annotations/event-annotation", new EventRule(globals));
+    d.addRule("caldata/event-annotations/event-annotation/*", efr);
 
     AlarmRule alr = new AlarmRule(globals);
     AlarmFieldRule alfr = new AlarmFieldRule(globals);

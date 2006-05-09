@@ -11,23 +11,27 @@ cp=@CP@
 DUMPCMD="$JAVA_HOME/bin/java -cp $cp @DUMP-CLASS@"
 RESTORECMD="$JAVA_HOME/bin/java -cp $cp @RESTORE-CLASS@"
 
-
+APPNAME=@BW-APP-NAME@
 
 case "$1" in
   dump)
-    echo $DUMPCMD -debug -f $2 $3 $4 $5 $6 $7 $8 $9
-    $DUMPCMD -debug -f $2 $3 $4 $5 $6 $7 $8 $9
+    echo $DUMPCMD -appname $APPNAME -f $2 $3 $4 $5 $6 $7 $8 $9
+    $DUMPCMD -appname $APPNAME -f $2 $3 $4 $5 $6 $7 $8 $9
     ;;
   restore)
-    echo $RESTORECMD -debug -f $2 $3 $4 $5 $6 $7 $8 $9
-    $RESTORECMD -debug -f $2 $3 $4 $5 $6 $7 $8 $9
+    echo $RESTORECMD -appname $APPNAME -f $2 $3 $4 $5 $6 $7 $8 $9
+    $RESTORECMD -appname $APPNAME -f $2 $3 $4 $5 $6 $7 $8 $9
     ;;
   backup)
     TARGET=$2/$3`date +%Y%m%d_%H%M%S`.ldif
-    echo $RUNCMD -dump -f $TARGET
-    $RUNCMD -dump -f $TARGET
+    echo $DUMPCMD -appname $APPNAME -f $TARGET
+    $DUMPCMD -appname $APPNAME -f $TARGET
+    ;;
+  initdb)
+    echo $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars
+    $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars
     ;;
   *)
-    echo $"Usage: $0 {dump <filename>|restore <filename>|backup <directory> <prefix>}"
+    echo $"Usage: $0 {dump <filename>|restore <filename>|backup <directory> <prefix>} || initdb"
 esac
 

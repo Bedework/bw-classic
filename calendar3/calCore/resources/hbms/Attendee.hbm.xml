@@ -16,6 +16,12 @@
 
     <version name="seq" column="bwsequence" type="integer" />
 
+    <many-to-one name="owner"
+                 class="org.bedework.calfacade.BwUser"
+                 unique="true" >
+      <column name="ownerid" not-null="true" index="vattendees_user" />
+    </many-to-one>
+
     <property name="cn" type="text"/>
     <property name="cuType" column="cutype" type="text"/>
     <property name="delegatedFrom" column="delegated_from" type="text"/>

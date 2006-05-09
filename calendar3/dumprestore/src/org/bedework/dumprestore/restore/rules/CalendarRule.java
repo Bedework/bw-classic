@@ -77,9 +77,16 @@ public class CalendarRule extends EntityRule {
 
     try {
       if (globals.rintf != null) {
-        globals.rintf.restoreCalendar(entity);
+        /* If the parent is null then this should be one of the root calendars,
+         */
+        BwCalendar parent = entity.getCalendar();
+        if (parent == null) {
+          // Ensure root
+          globals.rintf.saveRootCalendar(entity);
+        } else {
+          globals.rintf.addCalendar(entity);
+        }
       }
-      globals.calendarsTbl.put(new Integer(entity.getId()), entity);
     } catch (Throwable t) {
       throw new Exception(t);
     }

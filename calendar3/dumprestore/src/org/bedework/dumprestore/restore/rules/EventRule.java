@@ -89,15 +89,21 @@ public class EventRule extends EntityRule {
   public void end(String ns, String name) throws Exception {
     BwEvent entity = (BwEvent)top();
 
+    if (globals.entityError) {
+      warn("Not restoring event because of previous error");
+      warn(entity.toString());
+      return;
+    }
+
     globals.events++;
 
-    if (globals.debug) {
+    if (globals.config.getDebug()) {
       trace("Restore event # " + globals.events);
     }
 
     fixSharableEntity(entity, "Event");
 
-    /* If it's an alias, save an entry in the alia table then remove the dummy target.
+    /* If it's an alias, save an entry in the alias table then remove the dummy target.
      * We'll update them all at the end
      */
     if (entity instanceof BwEventAnnotation) {
@@ -106,7 +112,7 @@ public class EventRule extends EntityRule {
     }
 
     try {
-      if (globals.from2p3px) {
+      if (globals.config.getFrom2p3px()) {
         if ((entity.getGuid() == null) || (entity.getGuid().length() == 0)) {
           if (globals.syspars.getSystemid() == null) {
             throw new Exception("You must supply a system id");
@@ -121,7 +127,7 @@ public class EventRule extends EntityRule {
 
           String guid = guidPrefix + globals.syspars.getSystemid();
 
-          if (globals.debug) {
+          if (globals.config.getDebug()) {
 //            trace("Set guid for " + entity.getId() + " to " + guid);
           }
 

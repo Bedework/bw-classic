@@ -157,6 +157,9 @@ class TimezonesImpl extends CalTimezones {
       timezones.put(id, tzinfo);
     }
     */
+    if (tzinfo == null) {
+      return null;
+    }
 
     return tzinfo.getTz();
   }
@@ -198,7 +201,7 @@ class TimezonesImpl extends CalTimezones {
     // force refresh now
     lookup("not-a-timezone");
   }
-  
+
   /* ====================================================================
    *                   Private methods
    * ==================================================================== */

@@ -246,7 +246,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
 
   private Collection attendees;
 
-  private Attendees attendeesHelper = new Attendees();
+  private Attendees attendeesHelper;
 
   private boolean recurring;
 
@@ -336,6 +336,27 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
   /* ====================================================================
    *                      Bean methods
    * ==================================================================== */
+
+  /** Set the owner
+   *
+   * @param val     UserVO owner of the entity
+   */
+  public void setOwner(BwUser val) {
+    super.setOwner(val);
+    if (attendeesHelper != null) {
+      attendeesHelper.setOwner(val);
+    }
+  }
+
+  /**
+   * @param val
+   */
+  public void setPublick(boolean val) {
+    super.setPublick(val);
+    if (attendeesHelper != null) {
+      attendeesHelper.setPublick(val);
+    }
+  }
 
   /** Set the event's name
    *
@@ -829,7 +850,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
    */
   public void clearAttendees() {
     getAttendeesHelper().clearAttendees();
-    setAttendees(attendeesHelper.getAttendees());
+    setAttendees(getAttendeesHelper().getAttendees());
     setAttendeesChanged(true);
   }
 
@@ -838,7 +859,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
    */
   public void addAttendee(BwAttendee val) {
     getAttendeesHelper().addAttendee(val);
-    setAttendees(attendeesHelper.getAttendees());
+    setAttendees(getAttendeesHelper().getAttendees());
     setAttendeesChanged(true);
   }
 
@@ -847,7 +868,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
    */
   public void addAttendeeEmail(String val) {
     getAttendeesHelper().addAttendeeEmail(val);
-    setAttendees(attendeesHelper.getAttendees());
+    setAttendees(getAttendeesHelper().getAttendees());
     setAttendeesChanged(true);
   }
 
@@ -859,7 +880,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
       return null;
     }
 
-    return attendeesHelper.getAttendeeEmailList();
+    return getAttendeesHelper().getAttendeeEmailList();
   }
 
   /* (non-Javadoc)
@@ -870,7 +891,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
       return null;
     }
 
-    return attendeesHelper.copyAttendees();
+    return getAttendeesHelper().copyAttendees();
   }
 
   /* (non-Javadoc)
@@ -881,7 +902,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
       return null;
     }
 
-    return attendeesHelper.cloneAttendees();
+    return getAttendeesHelper().cloneAttendees();
   }
 
   /* ====================================================================
@@ -1214,7 +1235,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
 
   private Attendees getAttendeesHelper() {
     if (attendeesHelper == null) {
-      attendeesHelper = new Attendees();
+      attendeesHelper = new Attendees(getOwner(), getPublick());
     }
 
     return attendeesHelper;

@@ -53,48 +53,49 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
-import org.bedework.calfacade.svc.BwAdminGroup;
+import org.bedework.calfacade.BwAttendee;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class AdminGroupRule extends EntityRule {
-  /** Cobstructor
-   *
-   * @param globals
-   */
-  public AdminGroupRule(RestoreGlobals globals) {
+public class AttendeeFieldRule extends EntityFieldRule {
+  AttendeeFieldRule(RestoreGlobals globals) {
     super(globals);
   }
 
-  public void end(String ns, String name) throws Exception {
-    BwAdminGroup entity = (BwAdminGroup)pop();
+  public void field(String name) throws Exception {
+    BwAttendee ent = (BwAttendee)top();
 
-    try {
-      if (entity.getGroupOwner() == null) {
-        error("Missing group owner for admin group " + entity);
-        return;
-      }
+    if (ownedEntityTags(ent, name)) {
+      return;
+    }
 
-      if (entity.getOwner() == null) {
-        error("Missing owner for admin group " + entity);
-        return;
-      }
-
-      globals.adminGroups++;
-
-      if (globals.rintf != null) {
-        globals.rintf.restoreAdminGroup(entity);
-      }
-
-      if (globals.config.getFrom2p3px()) {
-        globals.getSuperGroup().addGroupMember(entity);
-      }
-    } catch (Throwable t) {
-      error("Unable to restore admin group " + entity);
-      throw new Exception(t);
+    if (name.equals("cutype")) {
+      ent.setCuType(stringFld());
+    } else if (name.equals("delegated-from")) {
+      ent.setDelegatedFrom(stringFld());
+    } else if (name.equals("delegated-to")) {
+      ent.setDelegatedTo(stringFld());
+    } else if (name.equals("cn")) {
+      ent.setCn(stringFld());
+    } else if (name.equals("dir")) {
+      ent.setDir(stringFld());
+    } else if (name.equals("lang")) {
+      ent.setLanguage(stringFld());
+    } else if (name.equals("member")) {
+      ent.setMember(stringFld());
+    } else if (name.equals("rsvp")) {
+      ent.setRsvp(booleanFld());
+    } else if (name.equals("role")) {
+      ent.setRole(stringFld());
+    } else if (name.equals("sent-by")) {
+      ent.setSentBy(stringFld());
+    } else if (name.equals("attendee-uri")) {
+      ent.setAttendeeUri(stringFld());
+    } else {
+      unknownTag(name);
     }
   }
 }

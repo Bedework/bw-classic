@@ -179,6 +179,27 @@ public abstract class BwAlarm extends BwOwnedDbentity implements AttendeesI, Com
    *                      Bean methods
    * ==================================================================== */
 
+  /** Set the owner
+   *
+   * @param val     UserVO owner of the entity
+   */
+  public void setOwner(BwUser val) {
+    super.setOwner(val);
+    if (attendeesHelper != null) {
+      attendeesHelper.setOwner(val);
+    }
+  }
+
+  /**
+   * @param val
+   */
+  public void setPublick(boolean val) {
+    super.setPublick(val);
+    if (attendeesHelper != null) {
+      attendeesHelper.setPublick(val);
+    }
+  }
+
   /** Set the alarmType for this event
    *
    * @param val    alarmType
@@ -559,7 +580,7 @@ public abstract class BwAlarm extends BwOwnedDbentity implements AttendeesI, Com
    */
   public void clearAttendees() {
     getAttendeesHelper().clearAttendees();
-    setAttendees(attendeesHelper.getAttendees());
+    setAttendees(getAttendeesHelper().getAttendees());
   }
 
   /* (non-Javadoc)
@@ -567,7 +588,7 @@ public abstract class BwAlarm extends BwOwnedDbentity implements AttendeesI, Com
    */
   public void addAttendee(BwAttendee val) {
     getAttendeesHelper().addAttendee(val);
-    setAttendees(attendeesHelper.getAttendees());
+    setAttendees(getAttendeesHelper().getAttendees());
   }
 
   /* (non-Javadoc)
@@ -575,7 +596,7 @@ public abstract class BwAlarm extends BwOwnedDbentity implements AttendeesI, Com
    */
   public void addAttendeeEmail(String val) {
     getAttendeesHelper().addAttendeeEmail(val);
-    setAttendees(attendeesHelper.getAttendees());
+    setAttendees(getAttendeesHelper().getAttendees());
   }
 
   /* (non-Javadoc)
@@ -586,7 +607,7 @@ public abstract class BwAlarm extends BwOwnedDbentity implements AttendeesI, Com
       return null;
     }
 
-    return attendeesHelper.getAttendeeEmailList();
+    return getAttendeesHelper().getAttendeeEmailList();
   }
 
   /* (non-Javadoc)
@@ -597,7 +618,7 @@ public abstract class BwAlarm extends BwOwnedDbentity implements AttendeesI, Com
       return null;
     }
 
-    return attendeesHelper.copyAttendees();
+    return getAttendeesHelper().copyAttendees();
   }
 
   /* (non-Javadoc)
@@ -608,7 +629,7 @@ public abstract class BwAlarm extends BwOwnedDbentity implements AttendeesI, Com
       return null;
     }
 
-    return attendeesHelper.cloneAttendees();
+    return getAttendeesHelper().cloneAttendees();
   }
 
   /*
@@ -817,7 +838,7 @@ Example
 
   private Attendees getAttendeesHelper() {
     if (attendeesHelper == null) {
-      attendeesHelper = new Attendees();
+      attendeesHelper = new Attendees(getOwner(), getPublick());
     }
 
     return attendeesHelper;

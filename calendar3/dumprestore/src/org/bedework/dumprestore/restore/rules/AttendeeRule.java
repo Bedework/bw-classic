@@ -53,47 +53,33 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
-import org.bedework.calfacade.svc.BwAdminGroup;
+import org.bedework.calfacade.BwAttendee;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class AdminGroupRule extends EntityRule {
-  /** Cobstructor
+public class AttendeeRule extends EntityRule {
+  /** Constructor
    *
    * @param globals
    */
-  public AdminGroupRule(RestoreGlobals globals) {
+  public AttendeeRule(RestoreGlobals globals) {
     super(globals);
   }
 
   public void end(String ns, String name) throws Exception {
-    BwAdminGroup entity = (BwAdminGroup)pop();
+    BwAttendee entity = (BwAttendee)pop();
+    globals.attendees++;
+
+    globals.attendeesTbl.put(entity);
 
     try {
-      if (entity.getGroupOwner() == null) {
-        error("Missing group owner for admin group " + entity);
-        return;
-      }
-
-      if (entity.getOwner() == null) {
-        error("Missing owner for admin group " + entity);
-        return;
-      }
-
-      globals.adminGroups++;
-
       if (globals.rintf != null) {
-        globals.rintf.restoreAdminGroup(entity);
-      }
-
-      if (globals.config.getFrom2p3px()) {
-        globals.getSuperGroup().addGroupMember(entity);
+        globals.rintf.restoreAttendee(entity);
       }
     } catch (Throwable t) {
-      error("Unable to restore admin group " + entity);
       throw new Exception(t);
     }
   }

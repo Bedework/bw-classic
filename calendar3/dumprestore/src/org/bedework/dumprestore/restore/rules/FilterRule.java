@@ -85,7 +85,7 @@ public class FilterRule extends EntityRule {
     globals.filtersTbl.put(entity);
 
     try {
-      if (globals.from2p3px) {
+      if (globals.config.getFrom2p3px()) {
         /* We are converting filter definitions into calendar definitions.
          */
         BwCalendar cal = new BwCalendar();
@@ -107,7 +107,7 @@ public class FilterRule extends EntityRule {
           cal.setCalendarCollection(true);
           globals.calLeaves.add(entity);
           globals.catCalTbl.put(catf.getCategory().getId(), cal);
-          if (globals.debug) {
+          if (globals.config.getDebug()) {
             trace("Save calendar with id " + cal.getId());
           }
         } else if (entity instanceof BwCreatorFilter) {
@@ -152,9 +152,8 @@ public class FilterRule extends EntityRule {
           cal.setId(globals.nextCalKey);
           globals.nextCalKey++;
 
-          globals.calendarsTbl.put(new Integer(cal.getId()), cal);
-
           if (entity.getParent() != null) {
+            // We set the path further up
             BwCalendar parent = (BwCalendar)globals.filterToCal.get(
                 new Integer(entity.getParent().getId()));
 
@@ -164,19 +163,21 @@ public class FilterRule extends EntityRule {
             } else {
               cal.setCalendar(parent);
               cal.setPath(parent.getPath() + "/" + cal.getName());
-              if (cal.getPath().equals(globals.defaultPublicCalPath)) {
+              if (cal.getPath().equals(globals.config.getDefaultPublicCalPath())) {
                 globals.defaultPublicCal = cal;
               }
               parent.addChild(cal);
             }
           }
 
+          globals.calendarsTbl.put(cal);
+
           globals.filterToCal.put(new Integer(entity.getId()), cal);
         }
 
         entity.setOwner(globals.getPublicUser());
         entity.setPublick(true);
-      }
+      } // 2.3
 
       if (globals.rintf != null) {
         trace("About to restore filter " + entity);

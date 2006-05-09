@@ -54,6 +54,7 @@
 package org.bedework.dumprestore.dump.dumpling;
 
 import org.bedework.calfacade.BwDateTime;
+import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwGroup;
 import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.BwUser;
@@ -163,6 +164,11 @@ public abstract class Dumpling implements Defs {
     taggedVal("sponsor-access", val.getSponsorAccess());
   }
 
+  protected void ownerKey(BwPrincipal val) throws Throwable {
+    taggedVal("owner-account", val.getAccount());
+    taggedVal("owner-kind", val.getKind());
+  }
+
   protected void groupTags(BwGroup val) throws Throwable {
     principalTags(val);
     tagStart("groupMembers");
@@ -194,7 +200,12 @@ public abstract class Dumpling implements Defs {
           throws Throwable {
     shareableEntityTags(entity);
 
-    taggedEntityId("calendar", entity.getCalendar());
+    if (entity.getCalendar() == null) {
+      // Sould check validity here. Only valid for calendar roots.
+      taggedVal("calendar", "");
+    } else {
+      taggedVal("calendar", entity.getCalendar().getPath());
+    }
   }
 
   protected void ownedEntityTags(BwOwnedDbentity entity) throws Throwable {
@@ -222,6 +233,14 @@ public abstract class Dumpling implements Defs {
     taggedVal(prefix + "-tzid", dt.getTzid());
     taggedVal(prefix + "-dtval", dt.getDtval());
     taggedVal(prefix + "-date", dt.getDate());
+  }
+
+  protected void taggedEventKey(String prefix, BwEvent ev) throws Throwable {
+    taggedVal(prefix + "-calendar", ev.getCalendar().getPath());
+    taggedVal(prefix + "-guid", ev.getGuid());
+    if (ev.getRecurring()) {
+      taggedVal(prefix + "-recurrenceId", ev.getRecurrence().getRecurrenceId());
+    }
   }
 
   /** Anything for which toString() works OK

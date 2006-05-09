@@ -77,7 +77,7 @@ public class UserPrefsFieldRule extends EntityFieldRule {
 
     if (name.equals("email")) {
       p.setEmail(stringFld());
-    } else if (name.equals("default-calendar")) {
+    } else if (name.equals("defaultCalendar")) {
       p.setDefaultCalendar(calendarFld());
     } else if (name.equals("skinName")) {
       p.setSkinName(stringFld());
@@ -93,6 +93,10 @@ public class UserPrefsFieldRule extends EntityFieldRule {
       p.setWorkdayStart(intFld());
     } else if (name.equals("workdayEnd")) {
       p.setWorkdayEnd(intFld());
+    } else if (name.equals("preferredEndType")) {
+      p.setPreferredEndType(stringFld());
+    } else if (name.equals("userMode")) {
+      p.setUserMode(intFld());
 
     // subscription fields
 
@@ -109,7 +113,7 @@ public class UserPrefsFieldRule extends EntityFieldRule {
       globals.curSub.setName(stringFld());
     } else if (name.equals("sub-owner")) {
       BwUser sowner = userFld();
-      
+
       if (!p.getOwner().equals(sowner)) {
         error("Subscription owners don't match for " + globals.curSub);
         error("  Found owner " + sowner + " expected " + p.getOwner());
@@ -119,6 +123,8 @@ public class UserPrefsFieldRule extends EntityFieldRule {
       globals.curSub.setUri(stringFld());
     } else if (name.equals("sub-affectsFreeBusy")) {
       globals.curSub.setAffectsFreeBusy(booleanFld());
+    } else if (name.equals("sub-ignoreTransparency")) {
+      globals.curSub.setIgnoreTransparency(booleanFld());
     } else if (name.equals("sub-display")) {
       globals.curSub.setDisplay(booleanFld());
     } else if (name.equals("sub-style")) {
@@ -146,7 +152,7 @@ public class UserPrefsFieldRule extends EntityFieldRule {
       globals.curView.setName(stringFld());
     } else if (name.equals("view-owner")) {
       BwUser vowner = userFld();
-      
+
       if (!p.getOwner().equals(vowner)) {
         error("View owners don't match for " + globals.curView);
         error("  Found owner " + vowner + " expected " + p.getOwner());
@@ -154,10 +160,20 @@ public class UserPrefsFieldRule extends EntityFieldRule {
       globals.curView.setOwner(p.getOwner());
     } else if (name.equals("view-subscriptions")) {
     } else if (name.equals("view-sub-id")) {
+      // pre 3.1
       BwSubscription sub = globals.subscriptionsTbl.getSub(p.getOwner(), intFld());
 
       if (sub == null) {
         error("  Missing subscription " + intFld() + " for view " +
+              globals.curView);
+      } else {
+        globals.curView.addSubscription(sub);
+      }
+    } else if (name.equals("view-sub-name")) {
+      BwSubscription sub = globals.subscriptionsTbl.getSub(p.getOwner(), stringFld());
+
+      if (sub == null) {
+        error("  Missing subscription " + stringFld() + " for view " +
               globals.curView);
       } else {
         globals.curView.addSubscription(sub);

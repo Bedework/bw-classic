@@ -160,16 +160,18 @@
    <!-- Limit categories -->
    <!-- ================ -->
 
-   <!-- Limit the org.apache.commons category to INFO as its DEBUG is verbose -->
-   <category name="org.apache.commons">
+   <!-- Limit the org.apache category to INFO as its DEBUG is verbose -->
+   <category name="org.apache">
       <priority value="INFO"/>
    </category>
 
-   <category name="org.apache.commons.digester">
+   <!-- ical4j is noisy -->
+   <category name="net.fortuna.ical4j">
       <priority value="INFO"/>
    </category>
 
-   <category name="org.apache.commons.digester.SimpleRegexMatcher">
+   <!-- caching is noisy too -->
+   <category name="net.sf.ehcache">
       <priority value="INFO"/>
    </category>
 
@@ -202,18 +204,6 @@
    <!-- Set rpi categories -->
    <category name="edu.rpi">
      <priority value="DEBUG"/>
-   </category>
-
-   <!-- Set washington categories -->
-   <category name="edu.washington">
-     <priority value="DEBUG"/>
-   </category>
-
-   <!-- Set hibernate categories
-        Setting to DEBUG gives a lot of output.
-     -->
-   <category name="net.sf.hibernate">
-     <priority value="INFO"/>
    </category>
 
    <!--

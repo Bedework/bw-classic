@@ -55,6 +55,7 @@ package org.bedework.dumprestore.restore;
 
 
 import org.bedework.calfacade.BwAlarm;
+import org.bedework.calfacade.BwAttendee;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
@@ -85,6 +86,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FlushMode;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
@@ -103,11 +105,11 @@ public class HibRestore implements RestoreIntf {
 
   //private HibSession sess;
   private SessionFactory sessFactory;
-  
-  
+
+
   private Session hibSess;
   private StatelessSession sess;
-  
+
   private int adminGroupId = 1;
 
   private transient Logger log;
@@ -126,17 +128,6 @@ public class HibRestore implements RestoreIntf {
   }
 
   /* (non-Javadoc)
-   * @see org.bedework.dumprestore.restore.RestoreIntf#init(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, org.bedework.dumprestore.restore.RestoreGlobals)
-   */
-  public void init(String url,
-                   String className,
-                   String id,
-                   String pw,
-                   RestoreGlobals globals) throws Throwable {
-    this.globals = globals;
-  }
-
-  /* (non-Javadoc)
    * @see org.bedework.dumprestore.restore.RestoreIntf#init(org.bedework.dumprestore.restore.RestoreGlobals)
    */
   public void init(RestoreGlobals globals) throws Throwable {
@@ -147,6 +138,20 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#open()
    */
   public void open() throws Throwable {
+  }
+
+  public void startTransaction() throws Throwable {
+    // Open delayed till retore method called
+  }
+
+  public void endTransaction() throws Throwable {
+    if (sess != null) {
+      closeSession();
+    }
+
+    if (hibSess != null) {
+      closeHibSession();
+    }
   }
 
   /* (non-Javadoc)
@@ -175,11 +180,11 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreUser(org.bedework.calfacade.BwUser)
    */
   public void restoreUser(BwUser o) throws Throwable {
-    if (globals.onlyUsers && 
+    if (globals.onlyUsers &&
         (globals.onlyUsersMap.get(o.getAccount()) == null)) {
       return;
     }
-    
+
     try {
       openSess();
 
@@ -199,11 +204,11 @@ public class HibRestore implements RestoreIntf {
    * @throws Throwable
    */
   public void restoreUserInfo(BwUserInfo o) throws Throwable {
-    if (globals.onlyUsers && 
+    if (globals.onlyUsers &&
         (globals.onlyUsersMap.get(o.getUser().getAccount()) == null)) {
       return;
     }
-    
+
     openHibSess();
 
     hibSave(o);
@@ -215,12 +220,23 @@ public class HibRestore implements RestoreIntf {
     if (!checkOnlyUser(o)) {
       return;
     }
-    
+
     openSess();
 
     save(o);
 
     closeSess();
+  }
+
+  public void restoreAttendee(BwAttendee o) throws Throwable {
+    // Ensure id not set
+    o.setId(CalFacadeDefs.unsavedItemKey);
+
+    openHibSess();
+
+    hibSess.save(o);
+
+    closeHibSess();
   }
 
   /* (non-Javadoc)
@@ -229,18 +245,18 @@ public class HibRestore implements RestoreIntf {
   public void restoreAdminGroup(BwAdminGroup o) throws Throwable {
     openSess();
 
-    if (globals.from2p3px) {
+    if (globals.config.getFrom2p3px()) {
       // No id assigned
       o.setId(adminGroupId);
       adminGroupId++;
     }
-    
+
     if (globals.onlyUsers) {
       if (globals.onlyUsersMap.get(o.getGroupOwner().getAccount()) == null) {
         o.setGroupOwner(globals.getPublicUser());
       }
     }
-    
+
     save(o);
 
     log.debug("Saved admin group " + o);
@@ -253,13 +269,13 @@ public class HibRestore implements RestoreIntf {
     Iterator it = c.iterator();
     while (it.hasNext()) {
       BwPrincipal pr = (BwPrincipal)it.next();
-      
-      if (globals.onlyUsers && 
+
+      if (globals.onlyUsers &&
           (pr instanceof BwUser) &&
           (globals.onlyUsersMap.get(((BwUser)pr).getAccount()) == null)) {
         continue;
       }
-            
+
       openSess();
 
       BwAdminGroupEntry entry = new BwAdminGroupEntry();
@@ -279,17 +295,17 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreAuthUser(org.bedework.calfacade.svc.BwAuthUser)
    */
   public void restoreAuthUser(BwAuthUser o) throws Throwable {
-    if (globals.onlyUsers && 
+    if (globals.onlyUsers &&
         (globals.onlyUsersMap.get(o.getUser().getAccount()) == null)) {
       return;
     }
-    
+
     openHibSess();
 
 //    if (o.getId() <= 0) {
 //      o.setId(o.getUser().getId());
 //    }
-    
+
     hibSave(o);
 
     closeHibSess();
@@ -302,7 +318,7 @@ public class HibRestore implements RestoreIntf {
     if (!checkOnlyUser(o)) {
       return;
     }
-    
+
     openHibSess();
 
     hibSave(o);
@@ -317,7 +333,7 @@ public class HibRestore implements RestoreIntf {
     if (!checkOnlyUser(o)) {
       return;
     }
-    
+
     openHibSess();
 
     hibSess.update(o);
@@ -332,7 +348,7 @@ public class HibRestore implements RestoreIntf {
     if (!checkOnlyUser(o)) {
       return;
     }
-    
+
     openSess();
 
     save(o);
@@ -347,7 +363,7 @@ public class HibRestore implements RestoreIntf {
     if (!checkOnlyUser(o)) {
       return null;
     }
-    
+
     openSess();
 
     StringBuffer sb = new StringBuffer();
@@ -358,7 +374,7 @@ public class HibRestore implements RestoreIntf {
     Query q = sess.createQuery(sb.toString());
     q.setString("address", o.getAddress());
     q.setEntity("owner", o.getOwner());
-    
+
     Integer i = (Integer)q.uniqueResult();
 
     if (i == null) {
@@ -376,7 +392,7 @@ public class HibRestore implements RestoreIntf {
     if (!checkOnlyUser(o)) {
       return null;
     }
-    
+
     openSess();
 
     StringBuffer sb = new StringBuffer();
@@ -413,9 +429,9 @@ public class HibRestore implements RestoreIntf {
     if (false) {
       // XXX need fixing and we're not using them yet
       openHibSess();
-      
+
       hibSave(o);
-      
+
       closeHibSess();
     }
   }
@@ -424,7 +440,7 @@ public class HibRestore implements RestoreIntf {
     if (!checkOnlyUser(o)) {
       return;
     }
-    
+
     openHibSess();
 
     /* Unset the subscription id - hibernate cascades cause an error
@@ -456,7 +472,7 @@ public class HibRestore implements RestoreIntf {
     if (!checkOnlyUser(o)) {
       return;
     }
-    
+
     openHibSess();
 
     hibSave(o);
@@ -465,11 +481,11 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void update(BwUser user) throws Throwable {
-    if (globals.onlyUsers && 
+    if (globals.onlyUsers &&
         (globals.onlyUsersMap.get(user.getAccount()) == null)) {
       return;
     }
-    
+
     openSess();
 
     sess.update(user);
@@ -525,7 +541,7 @@ public class HibRestore implements RestoreIntf {
     if (!checkOnlyUser(o)) {
       return;
     }
-    
+
     openSess();
 
     restoreCalendars(o, sess.connection());
@@ -535,22 +551,55 @@ public class HibRestore implements RestoreIntf {
     closeSess();
   }
 
+  public BwCalendar getCalendar(String path) throws Throwable {
+    openHibSess();
+
+    Query q = hibSess.createQuery("from org.bedework.calfacade.BwCalendar cal where " +
+                        "cal.path=:path");
+    q.setString("path", path);
+    BwCalendar cal = (BwCalendar)q.uniqueResult();
+
+    return cal;
+  }
+
+  public void saveRootCalendar(BwCalendar val) throws Throwable {
+    if (!checkOnlyUser(val)) {
+      return;
+    }
+
+    // Ensure id not set
+    val.setId(CalFacadeDefs.unsavedItemKey);
+
+    openHibSess();
+
+    hibSess.save(val);
+
+    closeHibSess();
+  }
+
   /* We cannot use hibernate to set the db id here as the save will cascade
    * down all the children.
    *
    * <p>We save a skeleton copy of the calendar structure using direct jdbc
    * calls then update the structure with hibernate.
    */
-  public void restoreCalendar(BwCalendar o) throws Throwable {
+  public void addCalendar(BwCalendar o) throws Throwable {
     if (!checkOnlyUser(o)) {
       return;
     }
-    
-    openSess();
 
-    restoreCalendar(o, sess.connection());
+    // Ensure id not set
+    o.setId(CalFacadeDefs.unsavedItemKey);
 
-    closeSess();
+    openHibSess();
+
+    BwCalendar parent = o.getCalendar();
+
+    parent.addChild(o);
+
+//    hibSess.update(parent);
+
+    closeHibSess();
   }
 
   /* ====================================================================
@@ -561,7 +610,7 @@ public class HibRestore implements RestoreIntf {
     if (!checkOnlyUser(val)) {
       return;
     }
-    
+
     restoreCalendar(val, conn);
 
     Collection cals = val.getChildren();
@@ -578,24 +627,27 @@ public class HibRestore implements RestoreIntf {
     }
   }
 
-  /* Restore a single calendar. Don't restore children
+  /* The only reason for this is the need to preserve the calendar id.
+   * From 3.x on this need will not exist. Just use hibernate.
+   *
+   * Restore a single calendar. Don't restore children
    */
   private void restoreCalendar(BwCalendar val, Connection conn) throws Throwable {
     if (!checkOnlyUser(val)) {
       return;
     }
-    
+
     PreparedStatement ps = null;
 
     try {
       ps = conn.prepareStatement(
             "INSERT INTO calendars " +
-                "(id, seq, creatorid, ownerid, access, " +
-                 "publick, name, path, summary, description," +
-                 " mail_list_id, calendar_collection, parent) " +
+                "(id, seq, creatorid, ownerid, bwaccess, " +
+                 "publick, calname, path, summary, description," +
+                 " mail_list_id, calendar_collection, parent, caltype) " +
                "VALUES (?,?,?,?,?," +
                        "?,?,?,?,?," +
-                       "?,?,?)");
+                       "?,?,?,?)");
 
       ps.setInt(1, val.getId());
       ps.setInt(2, val.getSeq());
@@ -617,6 +669,7 @@ public class HibRestore implements RestoreIntf {
       } else {
         ps.setInt(13, val.getCalendar().getId());
       }
+      ps.setInt(14, val.getCalType());
 
       ps.executeUpdate();
     } catch (Throwable t) {
@@ -632,18 +685,23 @@ public class HibRestore implements RestoreIntf {
   private synchronized void openSess() throws Throwable {
     if (sess == null) {
       sess = sessFactory.openStatelessSession();
+      sess.beginTransaction();
     }
-    sess.beginTransaction();
   }
 
   private synchronized void openHibSess() throws Throwable {
     if (hibSess == null) {
       hibSess = sessFactory.openSession();
+      hibSess.setFlushMode(FlushMode.COMMIT);
+      hibSess.beginTransaction();
     }
-    hibSess.beginTransaction();
   }
 
-  private synchronized void closeHibSess() throws Throwable {
+  private void closeHibSess() throws Throwable {
+    endTransaction();
+  }
+
+  private synchronized void closeHibSession() throws Throwable {
     hibSess.getTransaction().commit();
     try {
       if (hibSess != null) {
@@ -659,7 +717,13 @@ public class HibRestore implements RestoreIntf {
   }
 
   private synchronized void closeSess() throws Throwable {
-    sess.getTransaction().commit();
+    endTransaction();
+  }
+
+  private synchronized void closeSession() throws Throwable {
+    if (sess.getTransaction() != null) {
+      sess.getTransaction().commit();
+    }
     try {
       if (sess != null) {
         sess.close();
@@ -672,11 +736,11 @@ public class HibRestore implements RestoreIntf {
       sess = null;
     }
   }
-  
+
   private void hibSave(Object o) throws Throwable {
     hibSess.save(o);
   }
-  
+
   private void save(Object o) throws Throwable {
     sess.insert(o);
   }
@@ -698,32 +762,32 @@ public class HibRestore implements RestoreIntf {
     /* Just commit * /
     sess.commit();
   }*/
-  
+
   private boolean checkOnlyUser(BwOwnedDbentity ent) {
     if (!globals.onlyUsers) {
       return true;
     }
-    
+
     if (globals.onlyUsersMap.get(ent.getOwner().getAccount()) == null) {
       return false;
     }
-    
+
     return true;
   }
-  
+
   private boolean checkOnlyUser(BwShareableDbentity ent) {
     if (!globals.onlyUsers) {
       return true;
     }
-    
+
     if (globals.onlyUsersMap.get(ent.getOwner().getAccount()) == null) {
       return false;
     }
-    
+
     if (globals.onlyUsersMap.get(ent.getCreator().getAccount()) == null) {
       ent.setCreator(ent.getOwner());
     }
-    
+
     return true;
   }
 

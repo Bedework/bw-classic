@@ -53,6 +53,7 @@
 */
 package org.bedework.dumprestore.restore;
 
+import org.bedework.calfacade.BwAttendee;
 import org.bedework.calfacade.BwAlarm;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
@@ -79,20 +80,6 @@ import org.bedework.dumprestore.BwDbLastmod;
  */
 public interface RestoreIntf {
   /**
-   * @param url
-   * @param className
-   * @param id
-   * @param pw
-   * @param globals
-   * @throws Throwable
-   */
-  public void init(String url,
-                   String className,
-                   String id,
-                   String pw,
-                   RestoreGlobals globals) throws Throwable;
-
-  /**
    * @param globals
    * @throws Throwable
    */
@@ -103,6 +90,18 @@ public interface RestoreIntf {
    * @throws Throwable
    */
   public void open() throws Throwable;
+
+  /** Call to start a transaction
+   *
+   * @throws Throwable
+   */
+  public void startTransaction() throws Throwable;
+
+  /** Call to end a transaction
+   *
+   * @throws Throwable
+   */
+  public void endTransaction() throws Throwable;
 
   /** Call at end of restoring to finish up. Will restore any cached values.
    *
@@ -123,6 +122,13 @@ public interface RestoreIntf {
    * @throws Throwable
    */
   public void restoreUser(BwUser o) throws Throwable;
+
+  /** Restore attendee
+   *
+   * @param o
+   * @throws Throwable
+   */
+  public void restoreAttendee(BwAttendee o) throws Throwable;
 
   /** Restore user info
    *
@@ -242,17 +248,31 @@ public interface RestoreIntf {
    */
   public int fixUserEventsCal(BwUser u, BwCalendar cal) throws Throwable;
 
-  /**
+  /** 2.3 only
    * @param val
    * @throws Throwable
    */
   public void restoreCalendars(BwCalendar val) throws Throwable;
 
-  /** Restore a single calendar
+  /**
+   * @param path
+   * @return BwCalendar
+   * @throws Throwable
+   */
+  public BwCalendar getCalendar(String path) throws Throwable;
+
+  /** Save a single root calendar - no parent is set in the entity
    *
    * @param val
    * @throws Throwable
    */
-  public void restoreCalendar(BwCalendar val) throws Throwable;
+  public void saveRootCalendar(BwCalendar val) throws Throwable;
+
+  /** Restore a single calendar - parent is set in the entity
+   *
+   * @param val
+   * @throws Throwable
+   */
+  public void addCalendar(BwCalendar val) throws Throwable;
 }
 

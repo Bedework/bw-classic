@@ -2,6 +2,7 @@
   <org>
     <bedework>
       <global>
+
         <module>
           <user-ldap-group classname="org.bedework.calcore.ldap.LdapConfigProperties">
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
@@ -15,7 +16,70 @@
             <debug>true</debug>
           </user-ldap-group>
         </module>
+
       </global>
+
+      <!-- Only used for system initialisation or conversion from 2.3 - ignored thereafter -->
+      <syspars classname="org.bedework.calfacade.BwSystem">
+        <!-- name must match the global system name -->
+        <name>bedework</name>
+        <tzid>America/New_York</tzid>
+        <systemid>demobedework@mysite.edu</systemid>
+
+        <publicCalendarRoot>public</publicCalendarRoot>
+        <userCalendarRoot>user</userCalendarRoot>
+        <userDefaultCalendar>calendar</userDefaultCalendar>
+        <defaultTrashCalendar>Trash</defaultTrashCalendar>
+        <userInbox>Inbox</userInbox>
+        <userOutbox>Outbox</userOutbox>
+        <deletedCalendar>Deleted</deletedCalendar>
+        <busyCalendar>Busy</busyCalendar>
+
+        <defaultUserViewName>All</defaultUserViewName>
+
+        <publicUser>user</publicUser>
+
+        <httpConnectionsPerUser>10</httpConnectionsPerUser>
+        <httpConnectionsPerHost>50</httpConnectionsPerHost>
+        <httpConnections>200</httpConnections>
+
+
+        <!-- size limits -->
+        <maxPublicDescriptionLength>500</maxPublicDescriptionLength>
+        <maxUserDescriptionLength>1000</maxUserDescriptionLength>
+        <maxUserEntitySize>100000</maxUserEntitySize>
+        <defaultUserQuota>10000000</defaultUserQuota> <!-- 10 Meg OK? -->
+
+        <!-- Max number of instances per recurring event -->
+        <maxInstances>1000</maxInstances>
+
+        <userauthClass>org.bedework.calcore.hibernate.UserAuthUWDbImpl</userauthClass>
+        <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
+        <admingroupsClass>org.bedework.calcore.hibernate.AdminGroupsDbImpl</admingroupsClass>
+        <!--
+        <usergroupsClass>org.bedework.calcore.ldap.UserGroupsLdapImpl</usergroupsClass>
+        -->
+        <usergroupsClass>org.bedework.calcore.hibernate.GroupsDbImpl</usergroupsClass>
+      </syspars>
+
+      <app>
+        <dumpres classname="org.bedework.dumprestore.DumpRestoreConfig">
+          <debug>true</debug>
+          <debugEntity>false</debugEntity>
+          <superGroupName>campusAdminGroups</superGroupName>
+          <defaultPublicCalPath>/public/Other Events/Other</defaultPublicCalPath>
+        </dumpres>
+
+        <!-- Use the restore utility to convert from uwcal 2.3 -->
+        <restoreFrom2p3px classname="org.bedework.dumprestore.DumpRestoreConfig">
+          <debug>true</debug>
+          <debugEntity>false</debugEntity>
+          <from2p3px>true</from2p3px>
+          <timezonesFilename>resources/bwtimezones.xml</timezonesFilename>
+          <superGroupName>campusAdminGroups</superGroupName>
+          <defaultPublicCalPath>/public/Other Events/Other</defaultPublicCalPath>
+        </restoreFrom2p3px>
+      </app>
     </bedework>
   </org>
 </bedework-options>

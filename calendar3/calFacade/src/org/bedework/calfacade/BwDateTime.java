@@ -422,7 +422,8 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
    * @param timezones
    * @throws CalFacadeException
    */
-  public void init(boolean dateType, String date, String tzid, CalTimezones timezones) throws CalFacadeException {
+  public void init(boolean dateType, String date, String tzid,
+                   CalTimezones timezones) throws CalFacadeException {
     setDateType(dateType);
     setDtval(date);
     setTzid(tzid);

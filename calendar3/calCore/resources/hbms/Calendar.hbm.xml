@@ -40,7 +40,7 @@
 
     <!-- I wanted to specify unique="true" on this but mysql complains.
       -->
-    <property name="path" column="path" type="string" length="1000"
+    <property name="path" column="bwpath" type="string" length="1000"
               not-null="true"
               index="calpath" lazy="false" />
 

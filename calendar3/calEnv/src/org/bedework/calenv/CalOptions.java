@@ -98,7 +98,7 @@ public class CalOptions implements Serializable {
     try {
       initOptions();
     } catch (Throwable t) {
-      Logger.getLogger(CalOptions.class).error("Init error", t);
+      error("Init error", t);
       throw new RuntimeException(t);
     }
   }
@@ -577,6 +577,7 @@ public class CalOptions implements Serializable {
 
         Class[] parClasses = meth.getParameterTypes();
         if (parClasses.length != 1) {
+          error("Invalid setter method " + name);
           throw new CalEnvException("org.bedework.calenv.invalid.setter");
         }
 
@@ -587,10 +588,14 @@ public class CalOptions implements Serializable {
         } else if (parClass.getName().equals("int") ||
             parClass.getName().equals("java.lang.Integer")) {
           par = Integer.valueOf(ndval);
+        } else if (parClass.getName().equals("long") ||
+            parClass.getName().equals("java.lang.Long")) {
+          par = Long.valueOf(ndval);
         } else if (parClass.getName().equals("boolean") ||
             parClass.getName().equals("java.lang.Boolean")) {
           par = Boolean.valueOf(ndval);
         } else {
+          error("Unsupported par class for method " + name);
           throw new CalEnvException("org.bedework.calenv.unsupported.setter");
         }
 
@@ -617,6 +622,8 @@ public class CalOptions implements Serializable {
            * object.
            */
           if (val != null) {
+            error("Nested classes not yet supported for element " + valnode.name +
+                  " and class " + className);
             throw new CalEnvException("org.bedework.calenv.nested.classes.unsupported");
           }
 
@@ -628,12 +635,22 @@ public class CalOptions implements Serializable {
         }
 
         doChildren(valnode, el, val);
+
+        val = null;
       }
     } catch (CalEnvException ce) {
       throw ce;
     } catch (Throwable t) {
       throw new CalEnvException(t);
     }
+  }
+
+  private static void error(String msg) {
+    Logger.getLogger(CalOptions.class).error(msg);
+  }
+
+  private static void error(String msg, Throwable t) {
+    Logger.getLogger(CalOptions.class).error(msg, t);
   }
 
   /* We've been dealing with property names - convert the dotted notation to a path

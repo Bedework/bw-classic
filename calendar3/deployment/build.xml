@@ -144,6 +144,8 @@
 
     <antcall target="deploy.standalone.apps" inheritrefs="true" />
 
+    <antcall target="deploy.shellscr.apps" inheritrefs="true" />
+
     <antcall target="deploy.portal.apps" inheritrefs="true" />
 
     <antcall target="deploy.j2ee.apps" inheritrefs="true" />
@@ -165,6 +167,11 @@
 
   <target name="deploy.standalone.apps" if="org.bedework.global.build.standalone.app" >
     <property name="org.bedework.deploy.kind" value="webapp" />
+    <antcall target="deploy.apps" inheritrefs="true" />
+  </target>
+
+  <target name="deploy.shellscr.apps" if="org.bedework.global.build.standalone.app" >
+    <property name="org.bedework.deploy.kind" value="shellscr" />
     <antcall target="deploy.apps" inheritrefs="true" />
   </target>
 
@@ -209,15 +216,9 @@
                 types="${org.bedework.install.app.types}"
                 prefix="org.bedework.deploy">
       <sequential>
-        <propertyset id="app-properties">
-          <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
-          <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
-        </propertyset>
-
-        <ant antfile="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
-             inheritrefs="true" target="build.configured" >
-          <propertyset refid="app-properties" />
-        </ant>
+        <available file="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
+                   property="app.kind.available" />
+        <antcall target="build.available.configured.app" inheritrefs="true" />
       </sequential>
     </forEachApp>
 
@@ -226,25 +227,50 @@
          inheritrefs="true" target="build.configured" />
   </target>
 
+  <target name="build.available.configured.app" if="app.kind.available">
+    <!-- Pick out the application build properties based on the prefix "org.bedework.app."
+         and the deployment name -->
+    <propertyset id="app-properties">
+      <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
+      <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
+    </propertyset>
+
+    <ant antfile="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
+         inheritrefs="true" target="build.configured" >
+      <propertyset refid="app-properties" />
+    </ant>
+  </target>
+
   <target name="deploy.apps">
     <forEachApp names="${org.bedework.install.app.names}"
                 types="${org.bedework.install.app.types}"
                 prefix="org.bedework.deploy">
       <sequential>
-        <propertyset id="app-properties">
-          <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
-          <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
-        </propertyset>
-
-        <ant antfile="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
-             inheritrefs="true" target="deploy" >
-          <propertyset refid="app-properties" />
-        </ant>
+        <antcall target="wrap.deploy.available.app" inheritrefs="true" />
       </sequential>
     </forEachApp>
 
     <!-- ======================= termination tasks ================= -->
     <ant antfile="${org.bedework.deployment.base}/termination/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="deploy" />
+  </target>
+
+  <target name="wrap.deploy.available.app">
+    <!-- just to make app.kind.available go away -->
+    <available file="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
+               property="app.kind.available" />
+    <antcall target="deploy.available.app" inheritrefs="true" />
+  </target>
+
+  <target name="deploy.available.app" if="app.kind.available">
+    <propertyset id="app-properties">
+      <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
+      <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
+    </propertyset>
+
+    <ant antfile="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
+         inheritrefs="true" target="deploy" >
+      <propertyset refid="app-properties" />
+    </ant>
   </target>
 </project>

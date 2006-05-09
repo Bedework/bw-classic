@@ -174,7 +174,11 @@ public abstract class EntityFieldRule extends RestoreRule {
     }
 
     if (name.equals("calendar")) {
-      entity.setCalendar(calendarFld());
+      String path = stringFld();
+
+      if ((path != null) && (path.length() > 0)) {
+        entity.setCalendar(calendarFld());
+      } // Otherwise assume root calendar
       return true;
     }
 
@@ -227,7 +231,8 @@ public abstract class EntityFieldRule extends RestoreRule {
     }
 
     if (name.equals("seq")) {
-      entity.setSeq(intFld());
+      // Don't restore version number.
+      //entity.setSeq(intFld());
       return true;
     }
 
@@ -376,6 +381,9 @@ public abstract class EntityFieldRule extends RestoreRule {
 
       return dtim;
     } catch (Throwable t) {
+      if (t instanceof Exception) {
+        throw (Exception)t;
+      }
       throw new Exception(t);
     }
   }
@@ -404,9 +412,14 @@ public abstract class EntityFieldRule extends RestoreRule {
       throw new Exception("No value for " + tagName);
     }
 
-    int id = Integer.parseInt(fldval);
-
-    return (BwCalendar)globals.calendarsTbl.get(new Integer(id));
+    try {
+      return globals.rintf.getCalendar(fldval);
+    } catch (Throwable t) {
+      if (t instanceof Exception) {
+        throw (Exception)t;
+      }
+      throw new Exception(t);
+    }
   }
 
   protected BwFilter filterFld() throws Exception {

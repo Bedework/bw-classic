@@ -55,10 +55,7 @@ package org.bedework.dumprestore.restore;
 
 import org.bedework.appcommon.TimeZonesParser;
 import org.bedework.calfacade.BwAttendee;
-import org.bedework.calfacade.BwEvent;
-import org.bedework.calfacade.BwEventAlarm;
 import org.bedework.calfacade.BwEventAnnotation;
-import org.bedework.calfacade.BwEventObj;
 import org.bedework.calfacade.BwGroup;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
@@ -66,35 +63,24 @@ import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwOrganizer;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwSystem;
-import org.bedework.calfacade.BwTimeZone;
-import org.bedework.calfacade.BwTodoAlarm;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwUserInfo;
-import org.bedework.calfacade.filter.BwAndFilter;
-import org.bedework.calfacade.filter.BwCategoryFilter;
-import org.bedework.calfacade.filter.BwCreatorFilter;
 import org.bedework.calfacade.filter.BwFilter;
-import org.bedework.calfacade.filter.BwLocationFilter;
-import org.bedework.calfacade.filter.BwNotFilter;
-import org.bedework.calfacade.filter.BwOrFilter;
-import org.bedework.calfacade.filter.BwSponsorFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.BwAdminGroup;
-import org.bedework.calfacade.svc.BwAuthUser;
-import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
-import org.bedework.dumprestore.BwDbLastmod;
+import org.bedework.dumprestore.DumpRestoreConfig;
 
 import edu.rpi.cct.uwcal.access.Access;
 import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.Acl;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
 
 /** Globals for the restore phase
  *
@@ -102,39 +88,22 @@ import java.util.Vector;
  * @version 1.0
  */
 public class RestoreGlobals {
-  /** */
-  public boolean debug;
+  /** Set false at start of entity, set true on entity error
+   */
+  public boolean entityError;
+
+  /** Config properties from options file.
+   */
+  public DumpRestoreConfig config;
 
   /** Map user with id of zero on to this id - fixes oversight */
   public static int mapUser0 = 1;
 
-  /** */
-  public boolean debugEntity;
-
-  /** We can restore timezone info from this file
-   */
-  public String timezonesFilename;
-
   /** System parameters object */
   public BwSystem syspars = new BwSystem();
 
-  /** show syspars.setHttpConnectionsPerUser was set */
-  public boolean sysparsSetHttpConnectionsPerUser;
-  /** show syspars.setHttpConnectionsPerHost was set */
-  public boolean sysparsSetHttpConnectionsPerHost;
-  /** show syspars.setHttpConnections was set */
-  public boolean sysparsSetHttpConnections;
-  /** show syspars.setDefaultUserQuota was set */
-  public boolean sysparsSetDefaultUserQuota;
-
   /* Used when processing timezones */
   private CalTimezones tzcache;
-
-  /** True if we doing the conversion from 2.3.2 to V3 */
-  public boolean from2p3px;
-
-  /** When converting put all admin groups into the new group with this name */
-  public String superGroupName;
 
   /** The super admin group */
   public BwGroup superGroup;
@@ -146,12 +115,8 @@ public class RestoreGlobals {
 
   /** Even number of elements, old-name followd by new-name
    */
-  public Vector fixedCalendarNames = new Vector();
+  public ArrayList fixedCalendarNames = new ArrayList();
 
-  /** If non-null we will set any events with no calendar to this one.
-   * This is mainly to fix errors in the data. All events should have a calendar.
-   */
-  public String defaultPublicCalPath;
   /** */
   public BwCalendar defaultPublicCal;
 
@@ -171,7 +136,7 @@ public class RestoreGlobals {
   /** For each of these we update events to have the appropriate calendar id.
    * Any event which already has a calendar id turned up in two calendars.
    */
-  public Vector calLeaves = new Vector();
+  public Collection calLeaves = new ArrayList();
 
   /** If true stop restore on any error, otherwise just flag it.
    */
@@ -258,13 +223,13 @@ public class RestoreGlobals {
     public void put(BwUser owner, int calid) {
       Integer key = new Integer(owner.getId());
 
-      Vector v = (Vector)get(key);
-      if (v == null) {
-        v = new Vector();
-        put(key, v);
+      ArrayList al = (ArrayList)get(key);
+      if (al == null) {
+        al = new ArrayList();
+        put(key, al);
       }
 
-      v.add(new Integer(calid));
+      al.add(new Integer(calid));
     }
 
     /**
@@ -274,13 +239,13 @@ public class RestoreGlobals {
     public void put(BwUser owner, BwSubscription sub) {
       Integer key = new Integer(owner.getId());
 
-      Vector v = (Vector)get(key);
-      if (v == null) {
-        v = new Vector();
-        put(key, v);
+      ArrayList al = (ArrayList)get(key);
+      if (al == null) {
+        al = new ArrayList();
+        put(key, al);
       }
 
-      v.add(sub);
+      al.add(sub);
     }
 
     /** 2.3.2
@@ -289,7 +254,7 @@ public class RestoreGlobals {
      * @return Collection
      */
     public Collection getCalendarids(BwUser owner) {
-      return (Vector)get(new Integer(owner.getId()));
+      return (Collection)get(new Integer(owner.getId()));
     }
 
     /**
@@ -297,7 +262,7 @@ public class RestoreGlobals {
      * @return Collection
      */
     public Collection getSubs(BwUser owner) {
-      return (Vector)get(new Integer(owner.getId()));
+      return (Collection)get(new Integer(owner.getId()));
     }
 
     /**
@@ -322,6 +287,29 @@ public class RestoreGlobals {
 
       return null;
     }
+
+    /**
+     * @param owner
+     * @param name
+     * @return BwSubscription
+     */
+    public BwSubscription getSub(BwUser owner, String name) {
+      Collection subs = getSubs(owner);
+
+      if (subs == null) {
+        return null;
+      }
+
+      Iterator it = subs.iterator();
+      while (it.hasNext()) {
+        BwSubscription sub = (BwSubscription)it.next();
+        if (sub.getName().equals(name)) {
+          return sub;
+        }
+      }
+
+      return null;
+    }
   }
 
   /**
@@ -334,13 +322,13 @@ public class RestoreGlobals {
     public void put(int keyid, int eventid) {
       Integer key = new Integer(keyid);
 
-      Vector v = (Vector)get(key);
-      if (v == null) {
-        v = new Vector();
-        put(key, v);
+      ArrayList al = (ArrayList)get(key);
+      if (al == null) {
+        al = new ArrayList();
+        put(key, al);
       }
 
-      v.add(new Integer(eventid));
+      al.add(new Integer(eventid));
     }
 
     /**
@@ -348,7 +336,7 @@ public class RestoreGlobals {
      * @return Collection
      */
     public Collection getEventids(int keyid) {
-      return (Vector)get(new Integer(keyid));
+      return (Collection)get(new Integer(keyid));
     }
   }
 
@@ -427,6 +415,25 @@ public class RestoreGlobals {
      */
     public BwUser get(String account) {
       return (BwUser)nameMap.get(account);
+    }
+  }
+
+  /**
+   */
+  public static class CalendarMap extends HashMap {
+    /**
+     * @param val
+     */
+    public void put(BwCalendar val) {
+      put(val.getPath(), val);
+    }
+
+    /**
+     * @param path
+     * @return BwCalendar
+     */
+    public BwCalendar get(String path) {
+      return (BwCalendar)get(path);
     }
   }
 
@@ -574,7 +581,7 @@ public class RestoreGlobals {
   public HashMap trashCalendars = new HashMap();
 
   /** */
-  public HashMap calendarsTbl = new HashMap();
+  public CalendarMap calendarsTbl = new CalendarMap();
 
   /** Subscription we are currently restoring */
   public BwSubscription curSub;
@@ -584,43 +591,6 @@ public class RestoreGlobals {
 
   /** Classes to stand in for 2.3.2 classes */
   public static class AliasFilter extends BwFilter {
-  }
-
-  /** Link tag-name to calendar class. For every entity tag generated by the dump
-   * there should be an entry in this table.
-   */
-  public static final HashMap classes = new HashMap();
-
-  static {
-    classes.put("aliasFilter", AliasFilter.class.getName());
-    classes.put("andFilter", BwAndFilter.class.getName());
-    classes.put("creatorFilter", BwCreatorFilter.class.getName());
-    classes.put("keyFilter", BwCategoryFilter.class.getName());
-    classes.put("locationFilter", BwLocationFilter.class.getName());
-    classes.put("notFilter", BwNotFilter.class.getName());
-    classes.put("orFilter", BwOrFilter.class.getName());
-    classes.put("sponsorFilter", BwSponsorFilter.class.getName());
-
-    classes.put("system", BwSystem.class.getName());
-    classes.put("user", BwUser.class.getName());
-    classes.put("timezone", BwTimeZone.class.getName());
-    classes.put("calendar", BwCalendar.class.getName());
-    classes.put("location", BwLocation.class.getName());
-    classes.put("sponsor", BwSponsor.class.getName());
-    classes.put("organizer", BwOrganizer.class.getName());
-    classes.put("attendee", BwAttendee.class.getName());
-    classes.put("event-alarm", BwEventAlarm.class.getName());
-    classes.put("todo-alarm", BwTodoAlarm.class.getName());
-    classes.put("keyword", BwCategory.class.getName());
-    classes.put("category", BwCategory.class.getName());
-    classes.put("authuser", BwAuthUser.class.getName());
-    classes.put("event", BwEventObj.class.getName());
-    classes.put("adminGroup", BwAdminGroup.class.getName());
-    classes.put("user-prefs", BwPreferences.class.getName());
-    classes.put("dblastmod", BwDbLastmod.class.getName());
-
-    /* 2.3.2 */
-    classes.put("eventRef", BwEvent.class.getName());
   }
 
   /** */
@@ -643,14 +613,14 @@ public class RestoreGlobals {
       throw new Exception("syspars.tzid not initialised");
     }
 
-    tzcache = new TimezonesImpl(debug, getPublicUser(), rintf);
+    tzcache = new TimezonesImpl(config.getDebug(), getPublicUser(), rintf);
     tzcache.setDefaultTimeZoneId(syspars.getTzid());
 
-    if (from2p3px && (timezonesFilename != null)) {
+    if (config.getFrom2p3px() && (config.getTimezonesFilename() != null)) {
       // Populate from a file
       TimeZonesParser tzp = new TimeZonesParser(
-             new FileInputStream(timezonesFilename),
-             debug);
+             new FileInputStream(config.getTimezonesFilename()),
+             config.getDebug());
 
       Collection tzis = tzp.getTimeZones();
 
@@ -715,12 +685,12 @@ public class RestoreGlobals {
       return superGroup;
     }
 
-    if (superGroupName == null) {
+    if (config.getSuperGroupName() == null) {
       throw new Exception("superGroupName must be defined");
     }
 
     // Create it
-    BwAdminGroup sg = new BwAdminGroup(superGroupName);
+    BwAdminGroup sg = new BwAdminGroup(config.getSuperGroupName());
     sg.setGroupOwner(getPublicUser());
     sg.setOwner(getPublicUser());
     superGroup = sg;
@@ -735,7 +705,7 @@ public class RestoreGlobals {
   public String getDefaultPublicAccess() {
     if (defaultPublicAccess == null) {
       try {
-        Access a = new Access(debug);
+        Access a = new Access(config.getDebug());
         defaultPublicAccess = a.getDefaultPublicAccess();
         defaultPersonalAccess = a.getDefaultPublicAccess();
       } catch (Throwable t) {
@@ -767,7 +737,7 @@ public class RestoreGlobals {
    * @throws Throwable
    */
   public String getDefaultPublicCalendarsAccess() throws Throwable {
-    Acl acl = new Acl(debug);
+    Acl acl = new Acl(config.getDebug());
 
     /** all owner, read others, read unauthenticated, (read,writeContent) group=superGroup */
     acl.clear();
@@ -775,7 +745,7 @@ public class RestoreGlobals {
     acl.addAce(new Ace(null, false, Ace.whoTypeOther, Access.read));
     acl.addAce(new Ace(null, false, Ace.whoTypeUnauthenticated, Access.read));
 
-    Ace rwcont = new Ace(getSuperGroup().getAccount(), false,
+    Ace rwcont = new Ace(config.getSuperGroupName(), false,
                         Ace.whoTypeGroup, Access.writeContent);
     rwcont.addPriv(Access.read);
     acl.addAce(rwcont);
@@ -816,5 +786,12 @@ public class RestoreGlobals {
         System.out.println("\"" + it.next() + "\" -> \"" + it.next() + "\"");
       }
     }
+  }
+
+  /**
+   * @param config
+   */
+  public void init(DumpRestoreConfig config) {
+    this.config = config;
   }
 }

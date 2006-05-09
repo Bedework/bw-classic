@@ -150,7 +150,8 @@ public class CalSvcAlarmsTest extends TestCase {
 
       int twoAttendeeAlarm = alarm.getId();
 
-      alarm.addAttendee(new BwAttendee(null, null, null, null,
+      alarm.addAttendee(new BwAttendee(alarm.getOwner(), alarm.getPublick(),
+                                       null, null, null, null,
                                        null, null, null, true,
                                        null, null, "someone@rpi.edu",
                                        "anotherperson@rpi.edu"));
@@ -227,7 +228,8 @@ public class CalSvcAlarmsTest extends TestCase {
 
       int twoAttendeeAlarm = alarm.getId();
 
-      alarm.addAttendee(new BwAttendee(null, null, null, null,
+      alarm.addAttendee(new BwAttendee(alarm.getOwner(), alarm.getPublick(),
+                                       null, null, null, null,
                                        null, null, null, true,
                                        null, null, "someone@rpi.edu",
                                        "anotherperson@rpi.edu"));
@@ -260,14 +262,15 @@ public class CalSvcAlarmsTest extends TestCase {
    * ==================================================================== */
 
   private BwEventAlarm makeAlarm(String user, int mins) {
-    BwEventAlarm alarm = BwEventAlarm.emailAlarm(ev, new BwUser(user),
+    BwUser u = new BwUser(user);
+    BwEventAlarm alarm = BwEventAlarm.emailAlarm(ev, u,
                                                  "-PT" + mins + "M", true, true,
                                                  "PT5M", 1,
                                                  null, // attach
                                                  "Description of alarm",
                                                  "Summary for alarm",
                                                  null);  //attendees
-    BwAttendee att = new BwAttendee(null, null, null, null,
+    BwAttendee att = new BwAttendee(u, false, null, null, null, null,
                                     null, null, null, true,
                                     null, null, "someone@rpi.edu",
                                     "someoneelse@rpi.edu");
