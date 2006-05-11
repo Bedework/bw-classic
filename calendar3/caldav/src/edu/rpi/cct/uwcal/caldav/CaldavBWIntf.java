@@ -130,7 +130,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
   private EmitAccess emitAccess;
 
-  /* Prefix for out properties */
+  /* Prefix for our properties */
   private String envPrefix;
 
   /** Namespace based on the request url.

@@ -70,7 +70,7 @@ import java.util.Iterator;
  */
 public class VFreeUtil extends IcalUtil {
 
-  /** Make a VFreeBusy object from a FreeBusyVO.
+  /** Make a VFreeBusy object from a BwFreeBusy.
    */
   /**
    * @param val

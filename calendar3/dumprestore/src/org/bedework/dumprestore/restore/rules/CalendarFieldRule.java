@@ -84,6 +84,8 @@ public class CalendarFieldRule extends EntityFieldRule {
       ent.setDescription(stringFld());
     } else if (name.equals("calendarCollection")) {
       ent.setCalendarCollection(booleanFld());
+    } else if (name.equals("calType")) {
+      ent.setCalType(intFld());
     } else {
       unknownTag(name);
     }
