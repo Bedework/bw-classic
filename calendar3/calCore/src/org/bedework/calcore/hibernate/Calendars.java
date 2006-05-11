@@ -54,6 +54,7 @@
 package org.bedework.calcore.hibernate;
 
 import org.bedework.calfacade.BwCalendar;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.ifs.CalendarsI;
 import org.bedework.calfacade.ifs.Calintf;
@@ -143,66 +144,6 @@ class Calendars extends CalintfHelper implements CalendarsI {
     cal.setCalendar(usercal);
     cal.setCalendarCollection(true);
     cal.setCalType(BwCalendar.calTypeCollection);
-    usercal.addChild(cal);
-
-    /* Add the trash calendar */
-    cal = new BwCalendar();
-    cal.setName(getSyspars().getDefaultTrashCalendar());
-    cal.setCreator(user);
-    cal.setOwner(user);
-    cal.setPublick(false);
-    cal.setPath(path + "/" + getSyspars().getDefaultTrashCalendar());
-    cal.setCalendar(usercal);
-    cal.setCalendarCollection(true);
-    cal.setCalType(BwCalendar.calTypeTrash);
-    usercal.addChild(cal);
-
-    /* Add the inbox */
-    cal = new BwCalendar();
-    cal.setName(getSyspars().getUserInbox());
-    cal.setCreator(user);
-    cal.setOwner(user);
-    cal.setPublick(false);
-    cal.setPath(path + "/" + getSyspars().getUserInbox());
-    cal.setCalendar(usercal);
-    cal.setCalendarCollection(true);
-    cal.setCalType(BwCalendar.calTypeInbox);
-    usercal.addChild(cal);
-
-    /* Add the outbox */
-    cal = new BwCalendar();
-    cal.setName(getSyspars().getUserOutbox());
-    cal.setCreator(user);
-    cal.setOwner(user);
-    cal.setPublick(false);
-    cal.setPath(path + "/" + getSyspars().getUserOutbox());
-    cal.setCalendar(usercal);
-    cal.setCalendarCollection(true);
-    cal.setCalType(BwCalendar.calTypeOutbox);
-    usercal.addChild(cal);
-
-    /* Add the deleted calendar */
-    cal = new BwCalendar();
-    cal.setName(getSyspars().getDeletedCalendar());
-    cal.setCreator(user);
-    cal.setOwner(user);
-    cal.setPublick(false);
-    cal.setPath(path + "/" + getSyspars().getDeletedCalendar());
-    cal.setCalendar(usercal);
-    cal.setCalendarCollection(true);
-    cal.setCalType(BwCalendar.calTypeDeleted);
-    usercal.addChild(cal);
-
-    /* Add the busy calendar */
-    cal = new BwCalendar();
-    cal.setName(getSyspars().getBusyCalendar());
-    cal.setCreator(user);
-    cal.setOwner(user);
-    cal.setPublick(false);
-    cal.setPath(path + "/" + getSyspars().getBusyCalendar());
-    cal.setCalendar(usercal);
-    cal.setCalendarCollection(true);
-    cal.setCalType(BwCalendar.calTypeBusy);
     usercal.addChild(cal);
 
     sess.save(usercal);
@@ -342,48 +283,41 @@ class Calendars extends CalintfHelper implements CalendarsI {
     return getCalendar(sb.toString(), privRead);
   }
 
-  public BwCalendar getTrashCalendar(BwUser user) throws CalFacadeException {
+  public BwCalendar getSpecialCalendar(BwUser user,
+                                       int calType) throws CalFacadeException {
     StringBuffer sb = new StringBuffer();
+    String name;
+    BwSystem sys = getSyspars();
 
-    sb.append("/");
-    sb.append(getSyspars().getUserCalendarRoot());
-    sb.append("/");
-    sb.append(user.getAccount());
-    sb.append("/");
-    sb.append(getSyspars().getDefaultTrashCalendar());
+    if (calType == BwCalendar.calTypeBusy) {
+      name = sys.getBusyCalendar();
+    } else if (calType == BwCalendar.calTypeDeleted) {
+      name = sys.getDeletedCalendar();
+    } else if (calType == BwCalendar.calTypeInbox) {
+      name = sys.getUserInbox();
+    } else if (calType == BwCalendar.calTypeOutbox) {
+      name = sys.getUserOutbox();
+    } else if (calType == BwCalendar.calTypeTrash) {
+      name = sys.getDefaultTrashCalendar();
+    } else {
+      // Not supported
+      return null;
+    }
 
-    return getCalendar(sb.toString(), privRead);
-  }
-
-  public BwCalendar getDeletedCalendar(BwUser user) throws CalFacadeException {
-    StringBuffer sb = new StringBuffer();
-
-    sb.append("/");
-    sb.append(getSyspars().getUserCalendarRoot());
-    sb.append("/");
-    sb.append(user.getAccount());
-    sb.append("/");
-    sb.append("Deleted");
-    // XXX new syspar sb.append(getSyspars().getDefaultTrashCalendar());
-
-    return getCalendar(sb.toString(), privRead);
-  }
-
-  /** Create the special deleted calendar which holds deletion annotations to
-   * entities for which the user has no write access.
-   *
-   * @param user
-   * @throws CalFacadeException
-   */
-  public void createDeletedCalendar(BwUser user) throws CalFacadeException {
-    StringBuffer sb = new StringBuffer();
-
-    sb.append("/");
-    sb.append(getSyspars().getUserCalendarRoot());
+    sb.append(userCalendarRootPath);
     sb.append("/");
     sb.append(user.getAccount());
 
     String pathTo = sb.toString();
+
+    sb.append("/");
+    sb.append(name);
+
+    BwCalendar cal = getCalendar(sb.toString(), privRead);
+
+    if (cal != null) {
+      return cal;
+    }
 
     /*
     BwCalendar parent = getCalendar(pathTo, privRead);
@@ -393,13 +327,15 @@ class Calendars extends CalintfHelper implements CalendarsI {
     }
     */
 
-    BwCalendar cal = new BwCalendar();
-    cal.setName(getSyspars().getDeletedCalendar());
+    cal = new BwCalendar();
+    cal.setName(name);
     cal.setOwner(user);
     cal.setCreator(user);
     cal.setCalendarCollection(true);
-    cal.setCalType(BwCalendar.calTypeDeleted);
+    cal.setCalType(calType);
     addCalendar(cal, pathTo);
+
+    return cal;
   }
 
   public void addCalendar(BwCalendar val, String parentPath) throws CalFacadeException {
@@ -407,6 +343,10 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
     /* We need write content access to the parent */
     BwCalendar parent = getCalendar(parentPath, privWriteContent, false);
+    if (parent == null) {
+      throw new CalFacadeException("org.bedework.error.nosuchcalendarpath",
+                                   parentPath);
+    }
 
     /** Is the parent a calendar collection?
      */

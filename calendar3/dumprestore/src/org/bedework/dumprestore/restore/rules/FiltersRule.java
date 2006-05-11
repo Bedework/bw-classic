@@ -149,44 +149,6 @@ public class FiltersRule extends RestoreRule {
 
     globals.defaultCalendars.put(new Integer(u.getId()), cal);
 
-    /* Add the trash calendar */
-    cal = new BwCalendar();
-    cal.setId(globals.nextCalKey);
-    globals.nextCalKey++;
-    cal.setName(globals.syspars.getDefaultTrashCalendar());
-    cal.setPath(ucal.getPath() + "/" + cal.getName());
-    cal.setCreator(u);
-    cal.setOwner(u);
-    cal.setCalendar(ucal);
-    cal.setCalendarCollection(true);
-    ucal.addChild(cal);
-
-    globals.trashCalendars.put(new Integer(u.getId()), cal);
-
-    /* Add the inbox */
-    cal = new BwCalendar();
-    cal.setId(globals.nextCalKey);
-    globals.nextCalKey++;
-    cal.setName(globals.syspars.getUserInbox());
-    cal.setPath(ucal.getPath() + "/" + cal.getName());
-    cal.setCreator(u);
-    cal.setOwner(u);
-    cal.setCalendar(ucal);
-    cal.setCalendarCollection(true);
-    ucal.addChild(cal);
-
-    /* Add the outbox */
-    cal = new BwCalendar();
-    cal.setId(globals.nextCalKey);
-    globals.nextCalKey++;
-    cal.setName(globals.syspars.getUserOutbox());
-    cal.setPath(ucal.getPath() + "/" + cal.getName());
-    cal.setCreator(u);
-    cal.setOwner(u);
-    cal.setCalendar(ucal);
-    cal.setCalendarCollection(true);
-    ucal.addChild(cal);
-
     if (globals.rintf != null) {
       globals.rintf.restoreCalendars(ucal);
       globals.rintf.fixUserEventsCal(u, cal);
@@ -194,4 +156,3 @@ public class FiltersRule extends RestoreRule {
     }
   }
 }
-

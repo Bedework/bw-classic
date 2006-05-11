@@ -93,6 +93,11 @@ public class SysparsFieldRule extends EntityFieldRule {
       ent.setUserInbox(parval(globals.syspars.getUserInbox(), stringFld()));
     } else if (name.equals("userOutbox")) {
       ent.setUserOutbox(parval(globals.syspars.getUserOutbox(), stringFld()));
+    } else if (name.equals("deletedCalendar")) {
+      ent.setDeletedCalendar(parval(globals.syspars.getDeletedCalendar(), stringFld()));
+    } else if (name.equals("busyCalendar")) {
+      ent.setBusyCalendar(parval(globals.syspars.getBusyCalendar(), stringFld()));
+
     } else if (name.equals("defaultUserViewName")) {
       ent.setDefaultUserViewName(parval(globals.syspars.getDefaultUserViewName(), stringFld()));
 

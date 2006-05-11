@@ -869,12 +869,9 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return calendars.getDefaultCalendar(user);
   }
 
-  public BwCalendar getTrashCalendar(BwUser user) throws CalFacadeException {
-    return calendars.getTrashCalendar(user);
-  }
-
-  public BwCalendar getDeletedCalendar(BwUser user) throws CalFacadeException {
-    return calendars.getDeletedCalendar(user);
+  public BwCalendar getSpecialCalendar(BwUser user,
+                                       int calType) throws CalFacadeException {
+    return calendars.getSpecialCalendar(user, calType);
   }
 
   public void addCalendar(BwCalendar val, String parentPath) throws CalFacadeException {
@@ -1125,15 +1122,14 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   }
 
   public Collection getDeletedProxies() throws CalFacadeException {
-    BwCalendar cal = this.getDeletedCalendar(user);
+    BwCalendar cal = getSpecialCalendar(user, BwCalendar.calTypeDeleted);
 
     if (cal == null) {
-      // Create the deleted calendar for another time
-      calendars.createDeletedCalendar(user);
+      // Not supported
       return new ArrayList();
     }
 
-    return events.getDeletedProxies(this.getDeletedCalendar(user));
+    return events.getDeletedProxies(cal);
   }
 
   public Collection getDeletedProxies(BwCalendar cal) throws CalFacadeException {

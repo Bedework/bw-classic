@@ -82,6 +82,9 @@ public class DumpSyspars extends Dumpling {
     taggedVal("defaultTrashCalendar", s.getDefaultTrashCalendar());
     taggedVal("userInbox", s.getUserInbox());
     taggedVal("userOutbox", s.getUserOutbox());
+    taggedVal("deletedCalendar", s.getDeletedCalendar());
+    taggedVal("busyCalendar", s.getBusyCalendar());
+
     taggedVal("defaultUserViewName", s.getDefaultUserViewName());
 
     taggedVal("publicUser", s.getPublicUser());

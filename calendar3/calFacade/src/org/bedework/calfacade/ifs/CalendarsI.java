@@ -154,15 +154,17 @@ public interface CalendarsI extends Serializable {
   /** Get a calendar we are interested in. This is represented by the id
    * of a calendar.
    *
-   * @param  val     int id of calendar
-   * @return CalendarVO null for unknown calendar
+   * @param  val        int id of calendar
+   * @return BwCalendar null for unknown calendar
    * @throws CalFacadeException
    */
   public BwCalendar getCalendar(int val) throws CalFacadeException;
 
-  /** Get a calendar given the path
+  /** Get a calendar given the path. If the path is that of a 'special'
+   * calendar, for example the deleted calendar, it may not exist if it has
+   * not been used.
    *
-   * @param  path     String path of calendar
+   * @param  path          String path of calendar
    * @param  desiredAccess int access we need
    * @return BwCalendar null for unknown calendar
    * @throws CalFacadeException
@@ -180,22 +182,16 @@ public interface CalendarsI extends Serializable {
    */
   public BwCalendar getDefaultCalendar(BwUser user) throws CalFacadeException;
 
-  /** Get the trash calendar for the given user.
+  /** Get a special calendar (e.g. Trash) for the given user. If it does not
+   * exist and is supported by the target system it will be created.
    *
    * @param  user
+   * @param  calType   int special calendar type.
    * @return BwCalendar null for unknown calendar
    * @throws CalFacadeException
    */
-  public BwCalendar getTrashCalendar(BwUser user) throws CalFacadeException;
-
-  /** Get the deleted calendar for the given user. This holds annotations
-   * marking other events as deleted
-   *
-   * @param  user
-   * @return BwCalendar null for unknown calendar
-   * @throws CalFacadeException
-   */
-  public BwCalendar getDeletedCalendar(BwUser user) throws CalFacadeException;
+  public BwCalendar getSpecialCalendar(BwUser user,
+                                       int calType) throws CalFacadeException;
 
   /** Add a calendar object
    *
