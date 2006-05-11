@@ -346,6 +346,10 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
     if (attendeesHelper != null) {
       attendeesHelper.setOwner(val);
     }
+
+    if (getOrganizer() != null) {
+      getOrganizer().setOwner(val);
+    }
   }
 
   /**
@@ -355,6 +359,10 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
     super.setPublick(val);
     if (attendeesHelper != null) {
       attendeesHelper.setPublick(val);
+    }
+
+    if (getOrganizer() != null) {
+      getOrganizer().setPublick(val);
     }
   }
 

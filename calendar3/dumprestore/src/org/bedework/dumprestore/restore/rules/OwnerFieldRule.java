@@ -53,36 +53,31 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
-import org.bedework.calfacade.BwAttendee;
+import org.bedework.dumprestore.restore.OwnerInfo;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class AttendeeRule extends EntityRule {
-  /** Constructor
-   *
-   * @param globals
-   */
-  public AttendeeRule(RestoreGlobals globals) {
+public class OwnerFieldRule extends EntityFieldRule {
+  OwnerFieldRule(RestoreGlobals globals) {
     super(globals);
   }
 
   public void end(String ns, String name) throws Exception {
-    BwAttendee entity = (BwAttendee)pop();
-    //globals.attendees++;
+    OwnerInfo oi = (OwnerInfo)top();
 
-    globals.attendeesTbl.put(entity);
+    if (name.equals("account")) {
+      oi.setAccount(stringFld());
+    } else if (name.equals("kind")) {
+      oi.setKind(intFld());
+    } else {
+      unknownTag(name);
+    }
+  }
 
-    /* I think these just cascade when we add an event or alarm.
-    try {
-      if (globals.rintf != null) {
-        globals.rintf.restoreAttendee(entity);
-      }
-    } catch (Throwable t) {
-      throw new Exception(t);
-    } */
+  public void field(String name) throws Exception {
+    // Not used
   }
 }
-

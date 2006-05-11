@@ -75,6 +75,9 @@ public class RestoreRuleSet extends RuleSetBase {
   }
 
   public void addRuleInstances(Digester d) {
+    d.addRule("caldata/*/owner-key", new OwnerRule(globals));
+    d.addRule("caldata/*/owner-key/*", new OwnerFieldRule(globals));
+
     d.addRule("caldata/syspars/system", new SysparsRule(globals));
     d.addRule("caldata/syspars/system/*", new SysparsFieldRule(globals));
 

@@ -57,6 +57,7 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
+import org.bedework.dumprestore.restore.OwnerInfo;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
@@ -161,7 +162,8 @@ public class UserPrefsFieldRule extends EntityFieldRule {
     } else if (name.equals("view-subscriptions")) {
     } else if (name.equals("view-sub-id")) {
       // pre 3.1
-      BwSubscription sub = globals.subscriptionsTbl.getSub(p.getOwner(), intFld());
+      BwSubscription sub = globals.subscriptionsTbl.getSub(
+                           OwnerInfo.makeOwnerInfo(p.getOwner()), intFld());
 
       if (sub == null) {
         error("  Missing subscription " + intFld() + " for view " +
@@ -170,7 +172,8 @@ public class UserPrefsFieldRule extends EntityFieldRule {
         globals.curView.addSubscription(sub);
       }
     } else if (name.equals("view-sub-name")) {
-      BwSubscription sub = globals.subscriptionsTbl.getSub(p.getOwner(), stringFld());
+      BwSubscription sub = globals.subscriptionsTbl.getSub(
+                             OwnerInfo.makeOwnerInfo(p.getOwner()), stringFld());
 
       if (sub == null) {
         error("  Missing subscription " + stringFld() + " for view " +

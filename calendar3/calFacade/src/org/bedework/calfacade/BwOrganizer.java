@@ -53,7 +53,7 @@
 */
 package org.bedework.calfacade;
 
-import org.bedework.calfacade.base.BwDbentity;
+import org.bedework.calfacade.base.BwOwnedDbentity;
 
 import java.util.Set;
 
@@ -61,7 +61,7 @@ import java.util.Set;
  *
  *  @author Mike Douglass   douglm@rpi.edu
  */
-public class BwOrganizer extends BwDbentity {
+public class BwOrganizer extends BwOwnedDbentity {
   /* Params fields */
 
   private String cn;
@@ -85,20 +85,22 @@ public class BwOrganizer extends BwDbentity {
 
   /** Constructor
    *
-   * @param id
+   * @param owner
+   * @param publick
    * @param cn
    * @param dir
    * @param language
    * @param sentBy
    * @param organizerUri
    */
-  public BwOrganizer(int id,
+  public BwOrganizer(BwUser owner,
+                     boolean publick,
                      String cn,
                      String dir,
                      String language,
                      String sentBy,
                      String organizerUri) {
-    super(id);
+    super(owner, publick);
     this.cn = cn;
     this.dir = dir;
     this.language = language;
@@ -190,23 +192,6 @@ public class BwOrganizer extends BwDbentity {
     return organizerUri;
   }
 
-  /* * Set the events - must be a set of EventVO
-   *
-   * @param val      Set of EventVO
-   * /
-  public void setEvents(Set val) {
-    events = val;
-  }
-
-  /* * Get the events
-   *
-   * @param Set      of EventVO
-   * /
-  public Set getEvents() {
-    return events;
-  }
-  */
-
   /* ====================================================================
    *                   Object methods
    * ==================================================================== */
@@ -259,7 +244,9 @@ public class BwOrganizer extends BwDbentity {
   }
 
   public Object clone() {
-    BwOrganizer nobj = new BwOrganizer(getId(), getCn(),
+    BwOrganizer nobj = new BwOrganizer((BwUser)getOwner().clone(),
+                                       getPublick(),
+                                       getCn(),
                                        getDir(),
                                        getLanguage(),
                                        getSentBy(),

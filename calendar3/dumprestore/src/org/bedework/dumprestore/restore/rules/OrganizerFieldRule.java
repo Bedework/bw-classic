@@ -68,7 +68,7 @@ public class OrganizerFieldRule extends EntityFieldRule {
   public void field(String name) throws Exception {
     BwOrganizer ent = (BwOrganizer)top();
 
-    if (taggedEntityId(ent, name)) {
+    if (ownedEntityTags(ent, name)) {
       return;
     }
 

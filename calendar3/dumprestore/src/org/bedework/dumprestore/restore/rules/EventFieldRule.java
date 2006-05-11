@@ -53,11 +53,13 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
+import org.bedework.calfacade.BwAttendee;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwEventAnnotation;
 import org.bedework.calfacade.BwEventObj;
+import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
@@ -195,8 +197,18 @@ public class EventFieldRule extends EntityFieldRule {
       } else if (name.equals("eventAttendees")) {
         // Nothing to do.
       } else if (name.equals("attendee")) {
-        throw new Exception("Unimplemented - attendee");
+        BwAttendee att = globals.attendeesTbl.get(intFld());
 
+        if (att == null) {
+          error("Missing attendee - id=" + intFld());
+          globals.entityError = true;
+        } else {
+          e.addAttendee(att);
+          att.setId(CalFacadeDefs.unsavedItemKey); // Mark unsaved
+
+          // Count it here
+          globals.attendees++;
+        }
       } else if (name.equals("recurring")) {
         e.setRecurring(booleanFld());
       } else if (name.equals("eventRecurrence")) {

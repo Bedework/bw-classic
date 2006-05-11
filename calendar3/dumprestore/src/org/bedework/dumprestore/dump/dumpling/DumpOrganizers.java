@@ -67,7 +67,7 @@ public class DumpOrganizers extends Dumpling {
   private void dumpOrganizer(BwOrganizer o) throws Throwable {
     tagStart(objectOrganizer);
 
-    taggedEntityId(o);
+    ownedEntityTags(o);
     taggedVal("cn", o.getCn());
     taggedVal("dir", o.getDir());
     taggedVal("lang", o.getLanguage());

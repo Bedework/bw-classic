@@ -16,6 +16,16 @@
 
     <version name="seq" column="seq" type="integer" />
 
+    <many-to-one name="owner"
+                 class="org.bedework.calfacade.BwUser"
+                 unique="true" >
+      <column name="ownerid" not-null="true" index="bworganizers_user" />
+    </many-to-one>
+
+    <property name="publick" type="true_false" >
+      <column name="publick" not-null="true" />
+    </property>
+
     <property name="cn" type="text"/>
     <property name="dir" type="text"/>
     <property name="language" type="text"/>

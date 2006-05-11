@@ -88,6 +88,13 @@ import java.util.Iterator;
  * @version 1.0
  */
 public class RestoreGlobals {
+  /** This is not the way to use the digester. We could possibly build the xml
+   * rules directly from the hibernate schema or from java annotations.
+   *
+   * For the moment I just need to get this going.
+   */
+  public boolean inOwnerKey;
+
   /** Set false at start of entity, set true on entity error
    */
   public boolean entityError;
@@ -212,105 +219,6 @@ public class RestoreGlobals {
 
   /** Users we preserve */
   public HashMap onlyUsersMap = new HashMap();
-
-  /** counter */
-  public static class SubscriptionsMap extends HashMap {
-    /** For 2.3.2 conversion
-     *
-     * @param owner
-     * @param calid
-     */
-    public void put(BwUser owner, int calid) {
-      Integer key = new Integer(owner.getId());
-
-      ArrayList al = (ArrayList)get(key);
-      if (al == null) {
-        al = new ArrayList();
-        put(key, al);
-      }
-
-      al.add(new Integer(calid));
-    }
-
-    /**
-     * @param owner
-     * @param sub
-     */
-    public void put(BwUser owner, BwSubscription sub) {
-      Integer key = new Integer(owner.getId());
-
-      ArrayList al = (ArrayList)get(key);
-      if (al == null) {
-        al = new ArrayList();
-        put(key, al);
-      }
-
-      al.add(sub);
-    }
-
-    /** 2.3.2
-     *
-     * @param owner
-     * @return Collection
-     */
-    public Collection getCalendarids(BwUser owner) {
-      return (Collection)get(new Integer(owner.getId()));
-    }
-
-    /**
-     * @param owner
-     * @return Collection
-     */
-    public Collection getSubs(BwUser owner) {
-      return (Collection)get(new Integer(owner.getId()));
-    }
-
-    /**
-     * @param owner
-     * @param subid
-     * @return BwSubscription
-     */
-    public BwSubscription getSub(BwUser owner, int subid) {
-      Collection subs = getSubs(owner);
-
-      if (subs == null) {
-        return null;
-      }
-
-      Iterator it = subs.iterator();
-      while (it.hasNext()) {
-        BwSubscription sub = (BwSubscription)it.next();
-        if (sub.getId() == subid) {
-          return sub;
-        }
-      }
-
-      return null;
-    }
-
-    /**
-     * @param owner
-     * @param name
-     * @return BwSubscription
-     */
-    public BwSubscription getSub(BwUser owner, String name) {
-      Collection subs = getSubs(owner);
-
-      if (subs == null) {
-        return null;
-      }
-
-      Iterator it = subs.iterator();
-      while (it.hasNext()) {
-        BwSubscription sub = (BwSubscription)it.next();
-        if (sub.getName().equals(name)) {
-          return sub;
-        }
-      }
-
-      return null;
-    }
-  }
 
   /**
    */
@@ -560,8 +468,12 @@ public class RestoreGlobals {
   public CatCalMap catCalTbl = new CatCalMap();
   /** */
   public AliasMap aliasTbl = new AliasMap();
-  /** */
+
+  /** < 3.1? */
   public UserMap usersTbl = new UserMap();
+
+  /** */
+  public OwnerMap ownersTbl = new OwnerMap();
   /** */
   public FilterMap filtersTbl = new FilterMap();
   /** */

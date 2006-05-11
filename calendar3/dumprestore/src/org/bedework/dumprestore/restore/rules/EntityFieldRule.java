@@ -211,7 +211,13 @@ public abstract class EntityFieldRule extends RestoreRule {
     }
 
     if (name.equals("owner")) {
+      // < 3.1
       entity.setOwner(userFld());
+      return true;
+    }
+
+    if (name.equals("owner-key")) {
+      // Done already by OwnerRule.end
       return true;
     }
 
@@ -252,6 +258,11 @@ public abstract class EntityFieldRule extends RestoreRule {
   }
 
   public void end(String ns, String name) throws Exception {
+    if (globals.inOwnerKey) {
+      /* Skip any owner-key tags here */
+      return;
+    }
+
     field(name);
   }
 

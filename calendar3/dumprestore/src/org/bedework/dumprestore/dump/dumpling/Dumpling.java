@@ -165,8 +165,10 @@ public abstract class Dumpling implements Defs {
   }
 
   protected void ownerKey(BwPrincipal val) throws Throwable {
-    taggedVal("owner-account", val.getAccount());
-    taggedVal("owner-kind", val.getKind());
+    tagStart("owner-key");
+    taggedVal("account", val.getAccount());
+    taggedVal("kind", val.getKind());
+    tagEnd("owner-key");
   }
 
   protected void groupTags(BwGroup val) throws Throwable {
@@ -211,7 +213,8 @@ public abstract class Dumpling implements Defs {
   protected void ownedEntityTags(BwOwnedDbentity entity) throws Throwable {
     taggedEntityId(entity);
 
-    taggedEntityId("owner", entity.getOwner());
+    //taggedEntityId("owner", entity.getOwner());
+    ownerKey(entity.getOwner());
     taggedVal("public", entity.getPublick());
   }
 

@@ -53,36 +53,47 @@
 */
 package org.bedework.dumprestore.restore.rules;
 
-import org.bedework.calfacade.BwAttendee;
+import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.base.BwOwnedDbentity;
+import org.bedework.dumprestore.restore.OwnerInfo;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
-/**
- * @author Mike Douglass   douglm@rpi.edu
+import org.xml.sax.Attributes;
+
+/** Retrieve an owner and leave on the stack.
+ *
+ * @author Mike Douglass   douglm @ rpi.edu
  * @version 1.0
  */
-public class AttendeeRule extends EntityRule {
-  /** Constructor
-   *
-   * @param globals
-   */
-  public AttendeeRule(RestoreGlobals globals) {
+public class OwnerRule extends RestoreRule {
+  OwnerRule(RestoreGlobals globals) {
     super(globals);
   }
 
+  public void begin(String ns, String name, Attributes att) {
+    push(new OwnerInfo());
+    globals.inOwnerKey = true;
+  }
+
   public void end(String ns, String name) throws Exception {
-    BwAttendee entity = (BwAttendee)pop();
-    //globals.attendees++;
+    /* Top should be the owner info, underneat is the actual entity -
+     * hide the owner under the entity.
+     */
 
-    globals.attendeesTbl.put(entity);
+    OwnerInfo oi = (OwnerInfo)pop();
+    BwOwnedDbentity o = (BwOwnedDbentity)pop();
 
-    /* I think these just cascade when we add an event or alarm.
-    try {
-      if (globals.rintf != null) {
-        globals.rintf.restoreAttendee(entity);
-      }
-    } catch (Throwable t) {
-      throw new Exception(t);
-    } */
+    // XXX could be a group?
+    BwUser owner = globals.ownersTbl.getUserOwner(oi);
+
+    if (oi == null) {
+      warn("Missing owner " + oi);
+      globals.entityError = true;
+      owner = new BwUser();
+    }
+
+    o.setOwner(owner);
+    push(o);
+    globals.inOwnerKey = false;
   }
 }
-

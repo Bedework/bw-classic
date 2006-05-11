@@ -53,6 +53,7 @@
       <pathelement location="${org.bedework.calcore.jar}"/>
       <pathelement location="${org.bedework.calenv.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.caldavClientApi.jar}"/>
       <pathelement location="${org.bedework.calsvci.jar}"/>
       <pathelement location="${org.bedework.calsvc.jar}"/>
       <pathelement location="${org.bedework.ical.jar}"/>

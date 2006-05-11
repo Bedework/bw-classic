@@ -54,6 +54,7 @@
 package org.bedework.dumprestore.restore.rules;
 
 import org.bedework.calfacade.BwUser;
+import org.bedework.dumprestore.restore.OwnerInfo;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
@@ -79,7 +80,7 @@ public class UserFieldRule extends EntityFieldRule {
     } else if (name.equals("subscriptions")) {   // XXX 2.3.2
     } else if (name.equals("calendarid")) {      // XXX 2.3.2
       // Fix it later
-      globals.subscriptionsTbl.put(u, intFld());
+      globals.subscriptionsTbl.put(OwnerInfo.makeOwnerInfo(u), intFld());
     } else {
       unknownTag(name);
     }

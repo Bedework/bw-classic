@@ -110,6 +110,9 @@ public class IcalUtil {
           throws Throwable {
     BwOrganizer org = new BwOrganizer();
 
+    org.setOwner(ev.getOwner());
+    org.setPublick(ev.getPublick());
+
     org.setOrganizerUri(orgProp.getValue());
 
     ParameterList pars = orgProp.getParameters();

@@ -51,51 +51,119 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
+package org.bedework.dumprestore.restore;
 
-package org.bedework.tests.caldav;
+import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.svc.BwSubscription;
 
-import org.bedework.calfacade.CalFacadeException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 
-import java.io.InputStream;
-
-/**
- * @author Mike Douglass  douglm @ rpi.edu
+/** Map for subscriptions
  *
+ * @author Mike Douglass   douglm@rpi.edu
+ * @version 1.0
  */
-public interface CaldavResp {
-  /** Get the response code as defined for HttpServletResponse
+public class SubscriptionsMap extends HashMap {
+  /** For 2.3.2 conversion
    *
-   * @return int
-   * @throws CalFacadeException
+   * @param key   OwnerInfo
+   * @param calid
    */
-  int getRespCode() throws CalFacadeException;
+  public void put(OwnerInfo key, int calid) {
+    ArrayList al = (ArrayList)get(key);
+    if (al == null) {
+      al = new ArrayList();
+      put(key, al);
+    }
 
-  /** Get the content type from the header (if defined)
-   *
-   * @return String
-   * @throws CalFacadeException
-   */
-  public String getContentType() throws CalFacadeException;
+    al.add(new Integer(calid));
+  }
 
-  /** Get the content length from the header (if defined)
-   *
-   * @return long
-   * @throws CalFacadeException
+  /**
+   * @param key   BwUser
+   * @param sub
    */
-  long getContentLength() throws CalFacadeException;
+  public void put(BwUser key, BwSubscription sub) {
+    put(OwnerInfo.makeOwnerInfo(key), sub);
+  }
 
-  /** Get the character set
-   *
-   * @return String
-   * @throws CalFacadeException
+  /**
+   * @param key   OwnerInfo
+   * @param sub
    */
-  String getCharset() throws CalFacadeException;
+  public void put(OwnerInfo key, BwSubscription sub) {
+    ArrayList al = (ArrayList)get(key);
+    if (al == null) {
+      al = new ArrayList();
+      put(key, al);
+    }
 
-  /** An input stream for the content
+    al.add(sub);
+  }
+
+  /** 2.3.2
    *
-   * @return InputStream
-   * @throws CalFacadeException;
+   * @param key   BwUser
+   * @return Collection
    */
-  InputStream getContentStream() throws CalFacadeException;
+  public Collection getCalendarids(BwUser key) {
+    return (Collection)get(OwnerInfo.makeOwnerInfo(key));
+  }
+
+  /**
+   * @param key   OwnerInfo
+   * @return Collection
+   */
+  public Collection getSubs(OwnerInfo key) {
+    return (Collection)get(key);
+  }
+
+  /**
+   * @param key   OwnerInfo
+   * @param subid
+   * @return BwSubscription
+   */
+  public BwSubscription getSub(OwnerInfo key, int subid) {
+    Collection subs = getSubs(key);
+
+    if (subs == null) {
+      return null;
+    }
+
+    Iterator it = subs.iterator();
+    while (it.hasNext()) {
+      BwSubscription sub = (BwSubscription)it.next();
+      if (sub.getId() == subid) {
+        return sub;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * @param key   OwnerInfo
+   * @param name
+   * @return BwSubscription
+   */
+  public BwSubscription getSub(OwnerInfo key, String name) {
+    Collection subs = getSubs(key);
+
+    if (subs == null) {
+      return null;
+    }
+
+    Iterator it = subs.iterator();
+    while (it.hasNext()) {
+      BwSubscription sub = (BwSubscription)it.next();
+      if (sub.getName().equals(name)) {
+        return sub;
+      }
+    }
+
+    return null;
+  }
 }
-

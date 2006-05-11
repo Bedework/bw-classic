@@ -51,38 +51,43 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.dumprestore.restore.rules;
+package org.bedework.dumprestore.restore;
 
-import org.bedework.calfacade.BwAttendee;
-import org.bedework.dumprestore.restore.RestoreGlobals;
+import org.bedework.calfacade.BwPrincipal;
+import org.bedework.calfacade.BwUser;
+import java.util.HashMap;
 
-/**
+/** Globals for the restore phase
+ *
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class AttendeeRule extends EntityRule {
-  /** Constructor
-   *
-   * @param globals
+public class OwnerMap extends HashMap {
+  /**
+   * @param val
    */
-  public AttendeeRule(RestoreGlobals globals) {
-    super(globals);
+  public void put(BwPrincipal val) {
+    OwnerInfo key = OwnerInfo.makeOwnerInfo(val);
+
+    if (get(key) != null) {
+      throw new RuntimeException("Owner already in table with key " + key);
+    }
+    put(key, val);
   }
 
-  public void end(String ns, String name) throws Exception {
-    BwAttendee entity = (BwAttendee)pop();
-    //globals.attendees++;
+  /**
+   * @param key  OwnerInfo
+   * @return BwPrincipal
+   */
+  public BwPrincipal getPrincipal(OwnerInfo key) {
+    return (BwUser)get(key);
+  }
 
-    globals.attendeesTbl.put(entity);
-
-    /* I think these just cascade when we add an event or alarm.
-    try {
-      if (globals.rintf != null) {
-        globals.rintf.restoreAttendee(entity);
-      }
-    } catch (Throwable t) {
-      throw new Exception(t);
-    } */
+  /**
+   * @param key  OwnerInfo
+   * @return BwUser
+   */
+  public BwUser getUserOwner(OwnerInfo key) {
+    return (BwUser)get(key);
   }
 }
-

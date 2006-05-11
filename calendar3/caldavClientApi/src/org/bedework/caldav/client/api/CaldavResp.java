@@ -51,38 +51,51 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.dumprestore.restore.rules;
 
-import org.bedework.calfacade.BwAttendee;
-import org.bedework.dumprestore.restore.RestoreGlobals;
+package org.bedework.caldav.client.api;
+
+import org.bedework.calfacade.CalFacadeException;
+
+import java.io.InputStream;
 
 /**
- * @author Mike Douglass   douglm@rpi.edu
- * @version 1.0
+ * @author Mike Douglass  douglm @ rpi.edu
+ *
  */
-public class AttendeeRule extends EntityRule {
-  /** Constructor
+public interface CaldavResp {
+  /** Get the response code as defined for HttpServletResponse
    *
-   * @param globals
+   * @return int
+   * @throws CalFacadeException
    */
-  public AttendeeRule(RestoreGlobals globals) {
-    super(globals);
-  }
+  int getRespCode() throws CalFacadeException;
 
-  public void end(String ns, String name) throws Exception {
-    BwAttendee entity = (BwAttendee)pop();
-    //globals.attendees++;
+  /** Get the content type from the header (if defined)
+   *
+   * @return String
+   * @throws CalFacadeException
+   */
+  public String getContentType() throws CalFacadeException;
 
-    globals.attendeesTbl.put(entity);
+  /** Get the content length from the header (if defined)
+   *
+   * @return long
+   * @throws CalFacadeException
+   */
+  long getContentLength() throws CalFacadeException;
 
-    /* I think these just cascade when we add an event or alarm.
-    try {
-      if (globals.rintf != null) {
-        globals.rintf.restoreAttendee(entity);
-      }
-    } catch (Throwable t) {
-      throw new Exception(t);
-    } */
-  }
+  /** Get the character set
+   *
+   * @return String
+   * @throws CalFacadeException
+   */
+  String getCharset() throws CalFacadeException;
+
+  /** An input stream for the content
+   *
+   * @return InputStream
+   * @throws CalFacadeException;
+   */
+  InputStream getContentStream() throws CalFacadeException;
 }
 

@@ -57,7 +57,7 @@ package org.bedework.tests.calsvc;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwEventObj;
 import org.bedework.calfacade.BwOrganizer;
-import org.bedework.calfacade.CalFacadeDefs;
+import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.svc.UserAuth;
 
 import junit.framework.TestCase;
@@ -129,7 +129,7 @@ public class CalSvcEventsTest extends TestCase {
         ((BwEventObj)ev).clone();
       }
 
-      ev.setOrganizer(makeOrganizer(orguri1));
+      ev.setOrganizer(makeOrganizer(orguri1, ev.getOwner()));
       svciUtil.getSvci(privateUser1).updateEvent(ev);
       svciUtil.close(privateUser1);
 
@@ -191,8 +191,8 @@ public class CalSvcEventsTest extends TestCase {
    *                       Private methods.
    * ==================================================================== */
 
-  private BwOrganizer makeOrganizer(String uri) {
-    BwOrganizer org = new BwOrganizer(CalFacadeDefs.unsavedItemKey,
+  private BwOrganizer makeOrganizer(String uri, BwUser owner) {
+    BwOrganizer org = new BwOrganizer(owner, false,
                                       null, // cn
                                       null, // dir
                                       null, // language

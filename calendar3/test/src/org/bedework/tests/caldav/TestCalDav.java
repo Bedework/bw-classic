@@ -70,6 +70,9 @@ import net.fortuna.ical4j.model.PeriodList;
 import net.fortuna.ical4j.model.Property;
 */
 
+import org.bedework.caldav.client.api.CaldavClientIo;
+import org.bedework.caldav.client.api.CaldavResp;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
@@ -108,7 +111,7 @@ public class TestCalDav {
 
   private static String fileName;
 
-  private static CaldavClientIo  cio;
+  private static CaldavClientIo cio;
 
   private static class TestFilter implements FileFilter {
     public boolean accept(File f) {

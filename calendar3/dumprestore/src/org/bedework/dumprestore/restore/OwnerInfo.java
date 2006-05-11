@@ -51,38 +51,120 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.dumprestore.restore.rules;
+package org.bedework.dumprestore.restore;
 
-import org.bedework.calfacade.BwAttendee;
-import org.bedework.dumprestore.restore.RestoreGlobals;
+import org.bedework.calfacade.BwPrincipal;
 
-/**
- * @author Mike Douglass   douglm@rpi.edu
- * @version 1.0
+/** Class to represent an owner. Key into various tables.
+ *
+ * @author Mike Douglass   douglm at rpi.edu
  */
-public class AttendeeRule extends EntityRule {
+public class OwnerInfo  implements Comparable {
+  /** */
+  public String account;
+  /** */
+  public int kind;
+
+  /** No-arg Constructor
+   */
+  public OwnerInfo() {
+  }
+
   /** Constructor
    *
-   * @param globals
+   * @param account
+   * @param kind
    */
-  public AttendeeRule(RestoreGlobals globals) {
-    super(globals);
+  public OwnerInfo(String account, int kind) {
+    this.account = account;
+    this.kind = kind;
   }
 
-  public void end(String ns, String name) throws Exception {
-    BwAttendee entity = (BwAttendee)pop();
-    //globals.attendees++;
+  /**
+   * @param val
+   */
+  public void setAccount(String val) {
+    account = val;
+  }
 
-    globals.attendeesTbl.put(entity);
+  /**
+   * @return  String account name
+   */
+  public String getAccount() {
+    return account;
+  }
 
-    /* I think these just cascade when we add an event or alarm.
-    try {
-      if (globals.rintf != null) {
-        globals.rintf.restoreAttendee(entity);
-      }
-    } catch (Throwable t) {
-      throw new Exception(t);
-    } */
+  /**
+   * @param val int
+   */
+  public void setKind(int val) {
+    kind = val;
+  }
+
+  /**
+   * @return int kind
+   */
+  public int getKind() {
+    return kind;
+  }
+
+  /** Make a key to the principal.
+   *
+   * @param p
+   * @return OwnerInfo
+   */
+  public static OwnerInfo makeOwnerInfo(BwPrincipal p) {
+    return new OwnerInfo(p.getAccount(), p.getKind());
+  }
+
+  /**
+   * @param o
+   * @return int
+   */
+  public int compareTo(Object o) {
+    if (o == null) {
+      return -1;
+    }
+
+    if (!(o instanceof OwnerInfo)) {
+      return -1;
+    }
+
+    OwnerInfo that = (OwnerInfo)o;
+
+    if (kind < that.kind) {
+      return -1;
+    }
+
+    if (kind > that.kind) {
+      return -1;
+    }
+
+    return account.compareTo(that.account);
+  }
+
+  public int hashCode() {
+    return account.hashCode() * (kind + 1);
+  }
+
+  /* We always use the compareTo method
+   */
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+
+    return compareTo(obj) == 0;
+  }
+
+  public String toString() {
+    StringBuffer sb = new StringBuffer("OwnerInfo[");
+
+    sb.append(account);
+    sb.append(", ");
+    sb.append(kind);
+    sb.append("]");
+
+    return sb.toString();
   }
 }
-

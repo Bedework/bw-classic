@@ -72,7 +72,7 @@ import java.util.TreeSet;
  *   @author Mike Douglass douglm @ rpi.edu
  *  @version 1.0
  */
-public class BwCalendar extends BwShareableContainedDbentity implements Comparable {
+public class BwCalendar extends BwShareableContainedDbentity {
   /** The internal name of the calendar
    */
   private String name;
@@ -436,10 +436,8 @@ public class BwCalendar extends BwShareableContainedDbentity implements Comparab
    *                   Object methods
    * ==================================================================== */
 
-  /** Compare this calendar and an object
-   *
-   * @param  o    object to compare.
-   * @return int -1, 0, 1
+  /* (non-Javadoc)
+   * @see org.bedework.calfacade.base.BwDbentity#compareTo(java.lang.Object)
    */
   public int compareTo(Object o) {
     if (o == null) {

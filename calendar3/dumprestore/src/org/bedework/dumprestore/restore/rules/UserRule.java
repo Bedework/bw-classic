@@ -81,6 +81,7 @@ public class UserRule extends EntityRule {
     }
 
     globals.usersTbl.put(entity);
+    globals.ownersTbl.put(entity);
 
     try {
       if (globals.rintf != null) {

@@ -52,7 +52,7 @@
     to the maximum extent the law permits.
 */
 
-package org.bedework.tests.caldav;
+package org.bedework.caldav.client.api;
 
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.http.client.caldav.CaldavClient;
