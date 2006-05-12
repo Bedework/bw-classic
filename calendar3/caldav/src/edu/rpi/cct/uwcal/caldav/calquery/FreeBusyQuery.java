@@ -67,11 +67,6 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
 import org.w3c.dom.Node;
 
@@ -85,7 +80,7 @@ public class FreeBusyQuery {
 
   protected transient Logger log;
 
-  private Collection timeRanges;
+  private TimeRange timeRange;
 
   /** Constructor
    *
@@ -98,65 +93,53 @@ public class FreeBusyQuery {
   }
 
   /** The given node is is the free-busy-query time-range element
-   * Should have one or more time-range elements.
+   * Should have exactly one time-range element.
    *
    * @param nd
-   * @return int     htp status
    * @throws WebdavException
    */
-  public int parse(Node nd) throws WebdavException {
+  public void parse(Node nd) throws WebdavException {
     try {
-      if (timeRanges == null) {
-        timeRanges = new ArrayList();
+      if (timeRange != null) {
+        throw new WebdavBadRequest();
       }
 
       if (!MethodBase.nodeMatches(nd, CaldavTags.timeRange)) {
         throw new WebdavBadRequest();
       }
 
-      TimeRange tr = CalDavParseUtil.parseTimeRange(nd, intf.getSvci().getTimezones());
-      timeRanges.add(tr);
+      timeRange = CalDavParseUtil.parseTimeRange(nd, intf.getSvci().getTimezones());
 
       if (debug) {
-        trace("Parsed time range " + tr);
+        trace("Parsed time range " + timeRange);
       }
     } catch (WebdavBadRequest wbr) {
-      return wbr.getStatusCode();
+      throw wbr;
     } catch (Throwable t) {
       throw new WebdavBadRequest();
     }
-
-    return HttpServletResponse.SC_OK;
   }
 
   /**
    * @param svci
    * @param user
-   * @return Collection
+   * @return BwFreeBusy
    * @throws WebdavException
    */
-  public Collection getFreeBusy(CalSvcI svci, String user) throws WebdavException {
-    Iterator it = timeRanges.iterator();
-    Collection fbs = new ArrayList();
+  public BwFreeBusy getFreeBusy(CalSvcI svci, String user) throws WebdavException {
+    try {
+      BwFreeBusy fb = svci.getFreeBusy(null, new BwUser(user),
+                                       timeRange.getStart(), timeRange.getEnd(),
+                                       null, false);
 
-    while (it.hasNext()) {
-      TimeRange tr = (TimeRange)it.next();
-
-      try {
-        BwFreeBusy fb = svci.getFreeBusy(null, new BwUser(user),
-                                         tr.getStart(), tr.getEnd(), null,
-                                         false);
-
-        if (debug) {
-          trace("Got " + fb);
-        }
-        fbs.add(fb);
-      } catch (Throwable t) {
-        throw new WebdavException(t);
+      if (debug) {
+        trace("Got " + fb);
       }
-    }
 
-    return fbs;
+      return fb;
+    } catch (Throwable t) {
+      throw new WebdavException(t);
+    }
   }
 
   /** Debug method
@@ -165,12 +148,7 @@ public class FreeBusyQuery {
   public void dump() {
     trace("<free-busy-query>");
 
-    Iterator it = timeRanges.iterator();
-    while (it.hasNext()) {
-      TimeRange tr = (TimeRange)it.next();
-
-      tr.dump(getLogger(), "  ");
-    }
+    timeRange.dump(getLogger(), "  ");
 
     trace("</free-busy-query>");
   }

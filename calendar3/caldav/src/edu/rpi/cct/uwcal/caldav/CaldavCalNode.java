@@ -68,6 +68,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.VFreeBusy;
 
 /** Class to represent a calendar in caldav.
@@ -75,7 +76,7 @@ import net.fortuna.ical4j.model.component.VFreeBusy;
  *   @author Mike Douglass   douglm@rpi.edu
  */
 public class CaldavCalNode extends CaldavBwNode {
-  private VFreeBusy vfreeBusy;
+  private Calendar ical;
 
   private String vfreeBusyString;
 
@@ -152,14 +153,17 @@ public class CaldavCalNode extends CaldavBwNode {
    */
   public void setFreeBusy(BwFreeBusy fb) throws WebdavIntfException {
     try {
-      vfreeBusy = VFreeUtil.toVFreeBusy(fb);
+      VFreeBusy vfreeBusy = VFreeUtil.toVFreeBusy(fb);
       if (vfreeBusy != null) {
-        vfreeBusyString = vfreeBusy.toString();
+        ical = new Calendar();
+        ical.getComponents().add(vfreeBusy);
+        vfreeBusyString = ical.toString();
         contentLen = vfreeBusyString.length();
       } else {
         vfreeBusyString = null;
         contentLen = 0;
       }
+      allowsGet = true;
     } catch (Throwable t) {
       if (debug) {
         error(t);
@@ -171,7 +175,7 @@ public class CaldavCalNode extends CaldavBwNode {
   public String getContentString() throws WebdavIntfException {
     init(true);
 
-    if (vfreeBusy == null) {
+    if (ical == null) {
       return null;
     }
 

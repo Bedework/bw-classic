@@ -1216,42 +1216,22 @@ public class CaldavBWIntf extends WebdavNsIntf {
   }
 
   /** The node represents a calendar resource for which we must get free-busy
-   * information. We return a copy of the node for each time period in the
-   * request.
+   * information.
    *
-   * @param wdnode
+   * @param cnode  CaldavCalNode
    * @param freeBusy
-   * @return Collection
    * @throws WebdavIntfException
    */
-  public Collection getFreeBusy(WebdavNsNode wdnode,
-                                FreeBusyQuery freeBusy) throws WebdavIntfException {
+  public void getFreeBusy(CaldavCalNode cnode,
+                          FreeBusyQuery freeBusy) throws WebdavIntfException {
     try {
-      CaldavBwNode uwnode = getBwnode(wdnode);
-      if (!(uwnode instanceof CaldavCalNode)) {
-        throw WebdavIntfException.badRequest();
-      }
-
-      CaldavCalNode cnode = (CaldavCalNode)uwnode;
-
       String user = cnode.getCDURI().getOwner();
 
       getSvci();
 
-      Iterator it = freeBusy.getFreeBusy(svci, user).iterator();
-      Collection nodes = new ArrayList();
+      BwFreeBusy fb = freeBusy.getFreeBusy(svci, user);
 
-      while (it.hasNext()) {
-        BwFreeBusy fb = (BwFreeBusy)it.next();
-
-        CaldavCalNode fbnode = (CaldavCalNode)cnode.clone();
-
-        fbnode.setFreeBusy(fb);
-
-        nodes.add(fbnode);
-      }
-
-      return nodes;
+      cnode.setFreeBusy(fb);
     } catch (WebdavIntfException we) {
       throw we;
     } catch (Throwable t) {

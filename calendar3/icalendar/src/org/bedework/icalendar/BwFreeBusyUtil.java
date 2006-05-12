@@ -69,6 +69,7 @@ import net.fortuna.ical4j.model.component.VFreeBusy;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.parameter.FbType;
 import net.fortuna.ical4j.model.property.DtEnd;
+import net.fortuna.ical4j.model.property.DtStamp;
 import net.fortuna.ical4j.model.property.DtStart;
 import net.fortuna.ical4j.model.property.Duration;
 import net.fortuna.ical4j.model.property.FreeBusy;
@@ -167,12 +168,20 @@ public class BwFreeBusyUtil extends IcalUtil {
 
           Iterator perit = perpl.iterator();
           while (perit.hasNext()) {
-            Period per = (Period)it.next();
+            Period per = (Period)perit.next();
 
             fbc.addPeriod(per);
           }
 
           fb.addTime(fbc);
+        } else if (prop instanceof DtEnd) {
+          /* ------------------- DtEnd -------------------- */
+        } else if (prop instanceof DtStamp) {
+          /* ------------------- DtStamp -------------------- */
+
+          //ev.setDtstamp(wrapper.getDtStamp());
+        } else if (prop instanceof DtStart) {
+          /* ------------------- DtStart -------------------- */
         } else {
           if (debug) {
             debugMsg("Unsupported property with class " + prop.getClass() +

@@ -126,8 +126,6 @@ public class ReportMethod extends MethodBase {
       return;
     }
 
-    startEmit(resp);
-
     int st = processDoc(doc);
 
     if (st != HttpServletResponse.SC_OK) {
@@ -144,6 +142,8 @@ public class ReportMethod extends MethodBase {
     if (reportType == reportTypeFreeBusy) {
       processFbResp(req, resp);
     } else {
+      startEmit(resp);
+
       processResp(req, resp, depth);
     }
   }
@@ -181,6 +181,7 @@ public class ReportMethod extends MethodBase {
         reportType = reportTypeMultiGet;
       } else if (nodeMatches(root, CaldavTags.freeBusyQuery)) {
         reportType = reportTypeFreeBusy;
+        freeBusy = new FreeBusyQuery(intf, debug);
       } else if (nodeMatches(root, WebdavTags.expandProperty)) {
         reportType = reportTypeExpandProperty;
       } else {
@@ -203,7 +204,6 @@ public class ReportMethod extends MethodBase {
         }
 
         if (reportType == reportTypeFreeBusy) {
-          freeBusy = new FreeBusyQuery(intf, debug);
           freeBusy.parse(curnode);
         } else if (reportType == reportTypeExpandProperty) {
         } else {
@@ -419,7 +419,6 @@ public class ReportMethod extends MethodBase {
    *
    * @param req
    * @param resp
-   * @param depth
    * @throws WebdavException
    */
   public void processFbResp(HttpServletRequest req,
@@ -432,70 +431,46 @@ public class ReportMethod extends MethodBase {
     CaldavBWIntf intf = (CaldavBWIntf)getNsIntf();
     WebdavNsNode node = intf.getNode(resourceUri);
 
-    int status = HttpServletResponse.SC_OK;
-
-    Collection nodes = null;
-
-    try {
-      nodes = intf.getFreeBusy(node, freeBusy);
-    } catch (WebdavException wde) {
+    if (!(node instanceof CaldavCalNode)) {
       if (debug) {
-        trace("intf.getFreeBusy exception");
+        trace("Expected CaldavCalNode - got " + node);
       }
-      status = wde.getStatusCode();
-    }
-
-    if (status != HttpServletResponse.SC_OK) {
-      if (debug) {
-        trace("REPORT status " + status);
-      }
-      // Entire request failed.
-      node.setStatus(status);
-      doNode(node);
-    } else if (nodes != null) {
-      Iterator it = nodes.iterator();
-
-      // XXX Only one node?
-      while (it.hasNext()) {
-        WebdavNsNode curnode = (WebdavNsNode)it.next();
-
-        if (!(node instanceof CaldavCalNode)) {
-          if (debug) {
-            trace("Expected CaldavCalNode - got " + node);
-          }
-          status = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-        } else {
-          CaldavCalNode cnode = (CaldavCalNode)node;
-
-          Writer out;
-          try {
-            out = resp.getWriter();
-          } catch (Throwable t) {
-            throw new WebdavException(t);
-          }
-
-          /** Get the content now to set up length, type etc.
-           */
-          Reader in = getNsIntf().getContent(node);
-          resp.setContentLength(node.getContentLen());
-          if (in == null) {
-            if (debug) {
-              debugMsg("status: " + HttpServletResponse.SC_NO_CONTENT);
-            }
-
-            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-          } else {
-            if (debug) {
-              debugMsg("send content - length=" + node.getContentLen());
-            }
-
-            writeContent(in, out);
-          }
+      node.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    } else {
+      try {
+        intf.getFreeBusy((CaldavCalNode)node, freeBusy);
+      } catch (WebdavException wde) {
+        if (debug) {
+          trace("intf.getFreeBusy exception");
         }
+        node.setStatus(wde.getStatusCode());
+      }
+
+      Writer out;
+      try {
+        out = resp.getWriter();
+      } catch (Throwable t) {
+        throw new WebdavException(t);
+      }
+
+      /** Get the content now to set up length, type etc.
+       */
+      Reader in = getNsIntf().getContent(node);
+      resp.setContentLength(node.getContentLen());
+      if (in == null) {
+        if (debug) {
+          debugMsg("status: " + HttpServletResponse.SC_NO_CONTENT);
+        }
+
+        resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+      } else {
+        if (debug) {
+          debugMsg("send content - length=" + node.getContentLen());
+        }
+
+        writeContent(in, out);
       }
     }
-
-    flush();
   }
 
   // XXX Make the following part of the interface.
