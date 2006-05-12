@@ -870,8 +870,9 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   }
 
   public BwCalendar getSpecialCalendar(BwUser user,
-                                       int calType) throws CalFacadeException {
-    return calendars.getSpecialCalendar(user, calType);
+                                       int calType,
+                                       boolean create) throws CalFacadeException {
+    return calendars.getSpecialCalendar(user, calType, create);
   }
 
   public void addCalendar(BwCalendar val, String parentPath) throws CalFacadeException {
@@ -1122,10 +1123,10 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   }
 
   public Collection getDeletedProxies() throws CalFacadeException {
-    BwCalendar cal = getSpecialCalendar(user, BwCalendar.calTypeDeleted);
+    BwCalendar cal = getSpecialCalendar(user, BwCalendar.calTypeDeleted, false);
 
     if (cal == null) {
-      // Not supported
+      // Not supported or never deleted anything
       return new ArrayList();
     }
 

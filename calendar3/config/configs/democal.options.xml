@@ -37,7 +37,7 @@
 
         <defaultUserViewName>All</defaultUserViewName>
 
-        <publicUser>user</publicUser>
+        <publicUser>public-user</publicUser>
 
         <httpConnectionsPerUser>10</httpConnectionsPerUser>
         <httpConnectionsPerHost>50</httpConnectionsPerHost>

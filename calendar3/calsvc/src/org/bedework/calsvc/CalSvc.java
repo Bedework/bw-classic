@@ -1701,7 +1701,8 @@ public class CalSvc extends CalSvcI {
       // Have write access - just set the flag and move it into the owners trash
       event.setDeleted(true);
       event.setCalendar(getCal().getSpecialCalendar(event.getOwner(),
-                                                    BwCalendar.calTypeTrash));
+                                                    BwCalendar.calTypeTrash,
+                                                    true));
       updateEvent(event);
       return;
     }
@@ -1711,10 +1712,10 @@ public class CalSvc extends CalSvcI {
     BwEventProxy proxy = BwEventProxy.makeAnnotation(event, event.getOwner());
 
     // Where does the ref go? Not in the same calendar - we have no access
-    // Put it in the trash - but don't delete on empty trash
 
     BwCalendar cal = getCal().getSpecialCalendar(getUser(),
-                                                 BwCalendar.calTypeTrash);
+                                                 BwCalendar.calTypeDeleted,
+                                                 true);
     proxy.setOwner(getUser());
     proxy.setDeleted(true);
     proxy.setCalendar(cal);

@@ -75,6 +75,8 @@ import edu.rpi.sss.util.xml.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -139,7 +141,11 @@ public class ReportMethod extends MethodBase {
       trace("ReportMethod: depth=" + depth);
     }
 
-    processResp(req, resp, depth);
+    if (reportType == reportTypeFreeBusy) {
+      processFbResp(req, resp);
+    } else {
+      processResp(req, resp, depth);
+    }
   }
 
   /* ====================================================================
@@ -385,15 +391,6 @@ public class ReportMethod extends MethodBase {
           }
         }
       }
-    } else if (reportType == reportTypeFreeBusy) {
-      try {
-        nodes = intf.getFreeBusy(node, freeBusy);
-      } catch (WebdavException wde) {
-        if (debug) {
-          trace("intf.getFreeBusy exception");
-        }
-        status = wde.getStatusCode();
-      }
     } else if (reportType == reportTypeExpandProperty) {
     }
 
@@ -418,6 +415,122 @@ public class ReportMethod extends MethodBase {
     flush();
   }
 
+  /** Handle free/busy response
+   *
+   * @param req
+   * @param resp
+   * @param depth
+   * @throws WebdavException
+   */
+  public void processFbResp(HttpServletRequest req,
+                            HttpServletResponse resp) throws WebdavException {
+    resp.setStatus(HttpServletResponse.SC_OK);
+    resp.setContentType("text/calendar; charset=UTF-8");
+
+    String resourceUri = getResourceUri(req);
+
+    CaldavBWIntf intf = (CaldavBWIntf)getNsIntf();
+    WebdavNsNode node = intf.getNode(resourceUri);
+
+    int status = HttpServletResponse.SC_OK;
+
+    Collection nodes = null;
+
+    try {
+      nodes = intf.getFreeBusy(node, freeBusy);
+    } catch (WebdavException wde) {
+      if (debug) {
+        trace("intf.getFreeBusy exception");
+      }
+      status = wde.getStatusCode();
+    }
+
+    if (status != HttpServletResponse.SC_OK) {
+      if (debug) {
+        trace("REPORT status " + status);
+      }
+      // Entire request failed.
+      node.setStatus(status);
+      doNode(node);
+    } else if (nodes != null) {
+      Iterator it = nodes.iterator();
+
+      // XXX Only one node?
+      while (it.hasNext()) {
+        WebdavNsNode curnode = (WebdavNsNode)it.next();
+
+        if (!(node instanceof CaldavCalNode)) {
+          if (debug) {
+            trace("Expected CaldavCalNode - got " + node);
+          }
+          status = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        } else {
+          CaldavCalNode cnode = (CaldavCalNode)node;
+
+          Writer out;
+          try {
+            out = resp.getWriter();
+          } catch (Throwable t) {
+            throw new WebdavException(t);
+          }
+
+          /** Get the content now to set up length, type etc.
+           */
+          Reader in = getNsIntf().getContent(node);
+          resp.setContentLength(node.getContentLen());
+          if (in == null) {
+            if (debug) {
+              debugMsg("status: " + HttpServletResponse.SC_NO_CONTENT);
+            }
+
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+          } else {
+            if (debug) {
+              debugMsg("send content - length=" + node.getContentLen());
+            }
+
+            writeContent(in, out);
+          }
+        }
+      }
+    }
+
+    flush();
+  }
+
+  // XXX Make the following part of the interface.
+
+  /** size of buffer used for copying content to response.
+   */
+  private static final int bufferSize = 4096;
+
+  private void writeContent(Reader in, Writer out)
+      throws WebdavException {
+    try {
+      char[] buff = new char[bufferSize];
+      int len;
+
+      while (true) {
+        len = in.read(buff);
+
+        if (len < 0) {
+          break;
+        }
+
+        out.write(buff, 0, len);
+      }
+    } catch (Throwable t) {
+      throw new WebdavException(t);
+    } finally {
+      try {
+        in.close();
+      } catch (Throwable t) {}
+      try {
+        out.close();
+      } catch (Throwable t) {}
+    }
+  }
+
   /* Apply a node to a parsed request - or the other way - whatever.
    */
   private void doNode(WebdavNsNode node) throws WebdavException {
@@ -438,17 +551,6 @@ public class ReportMethod extends MethodBase {
           if (debug && (status != HttpServletResponse.SC_NOT_FOUND)) {
             error(wde);
           }
-        }
-      } else if (reportType == reportTypeFreeBusy) {
-        if (!(node instanceof CaldavCalNode)) {
-          if (debug) {
-            trace("Expected CaldavCalNode - got " + node);
-          }
-          status = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-        } else {
-          CaldavCalNode cnode = (CaldavCalNode)node;
-
-          content = cnode.getContentString();
         }
       }
     }

@@ -284,7 +284,8 @@ class Calendars extends CalintfHelper implements CalendarsI {
   }
 
   public BwCalendar getSpecialCalendar(BwUser user,
-                                       int calType) throws CalFacadeException {
+                                       int calType,
+                                       boolean create) throws CalFacadeException {
     StringBuffer sb = new StringBuffer();
     String name;
     BwSystem sys = getSyspars();
@@ -315,7 +316,7 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
     BwCalendar cal = getCalendar(sb.toString(), privRead);
 
-    if (cal != null) {
+    if ((cal != null) || !create) {
       return cal;
     }
 

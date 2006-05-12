@@ -56,6 +56,7 @@ package org.bedework.icalendar;
 
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.svc.EventInfo;
@@ -68,6 +69,7 @@ import net.fortuna.ical4j.data.UnfoldingReader;
 //import net.fortuna.ical4j.data.UnfoldingReader;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.component.VFreeBusy;
 import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.ComponentList;
@@ -80,6 +82,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -259,10 +262,8 @@ public class IcalTranslator implements Serializable {
     }
   }
 
-  /** Convert the given string representation of an Icalendar object to an EventVO
-   *
-   * <p>Because an icalendar object can contain 0 or more VEvents we return
-   * a collection of events which may be empty.
+  /** Convert the given string representation of an Icalendar object to a
+   * Collection of Calendar objects
    *
    * @param cal       calendar
    * @param val
@@ -271,24 +272,6 @@ public class IcalTranslator implements Serializable {
    */
   public Collection fromIcal(BwCalendar cal, String val) throws CalFacadeException {
     return fromIcal(cal, new StringReader(val));
-    /*
-    try {
-      CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
-
-      UnfoldingReader ufrdr = new UnfoldingReader(new StringReader(val), true);
-
-      //return fromIcal(cal, bldr.build(new UnfoldingReader(new StringReader(val))));
-      return fromIcal(cal, bldr.build(ufrdr));
-    } catch (ParserException pe) {
-      if (debug) {
-        error(pe);
-      }
-      throw new IcalMalformedException(pe.getMessage());
-    } catch (CalFacadeException cfe) {
-      throw cfe;
-    } catch (Throwable t) {
-      throw new CalFacadeException(t);
-    }*/
   }
 
   /** Convert the Icalendar reader to a Collection of Calendar objects
@@ -325,7 +308,7 @@ public class IcalTranslator implements Serializable {
    * @throws CalFacadeException
    */
   public Collection fromIcal(BwCalendar cal, Calendar val) throws CalFacadeException {
-    Vector objs = new Vector();
+    ArrayList objs = new ArrayList();
 
     if (val == null) {
       return objs;
@@ -343,6 +326,14 @@ public class IcalTranslator implements Serializable {
 
         if (ev != null) {
           objs.add(ev);
+        }
+      } else if (o instanceof VFreeBusy) {
+        BwFreeBusy fb = BwFreeBusyUtil.toFreeBusy(cb,
+                                                  (VFreeBusy)o,
+                                                  debug);
+
+        if (fb != null) {
+          objs.add(fb);
         }
       } else if (o instanceof VTimeZone) {
         doTimeZone((VTimeZone)o);

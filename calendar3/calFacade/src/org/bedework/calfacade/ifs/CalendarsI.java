@@ -187,11 +187,13 @@ public interface CalendarsI extends Serializable {
    *
    * @param  user
    * @param  calType   int special calendar type.
+   * @param  create    true if we shoudl create it if non-existant.
    * @return BwCalendar null for unknown calendar
    * @throws CalFacadeException
    */
   public BwCalendar getSpecialCalendar(BwUser user,
-                                       int calType) throws CalFacadeException;
+                                       int calType,
+                                       boolean create) throws CalFacadeException;
 
   /** Add a calendar object
    *

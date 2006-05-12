@@ -472,7 +472,8 @@ public class CalintfBase implements Calintf {
   }
 
   public BwCalendar getSpecialCalendar(BwUser user,
-                                       int calType) throws CalFacadeException {
+                                       int calType,
+                                       boolean create) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 
