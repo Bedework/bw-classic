@@ -1672,7 +1672,8 @@
   <!--==== EDIT EVENT ====-->
   <xsl:template match="formElements" mode="editEvent">
     <xsl:variable name="subscriptionId" select="subscriptionId"/>
-    <xsl:variable name="calPath" select="calendar/encodedPath"/>
+    <xsl:variable name="calPathEncoded" select="form/calendar/encodedPath"/>
+    <xsl:variable name="calPath" select="form/calendar/path"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
@@ -1689,7 +1690,7 @@
               <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
                 View
               </a> |
-              <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+              <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
                 Delete
               </a>
             </div>

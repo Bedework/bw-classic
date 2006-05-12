@@ -83,6 +83,9 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.added.locations'">
+        <p>Location added.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.deleted.locations'">
         <xsl:choose>
           <xsl:when test="param='1'">
