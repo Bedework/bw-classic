@@ -14,6 +14,9 @@
       <xsl:when test="id='org.bedework.client.error.baddates'">
           <p>Improperly formatted date(s): <em><xsl:value-of select="param"/></em></p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.baddate'">
+          <p>Bad or out-of-range date.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.event.startafterend'">
           <p>Please correct your dates: the end date/time is before the start date/time.</p>
       </xsl:when>

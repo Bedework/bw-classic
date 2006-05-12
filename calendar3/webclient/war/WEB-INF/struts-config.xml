@@ -217,6 +217,8 @@
                scope="session"
                validate="false">
       <forward name="edit" path="/showEditEvent.rdo" redirect="true" />
+      <forward name="doNothing" path="/showEditEvent.rdo" redirect="true" />
+      <forward name="error" path="/showEditEvent.rdo" redirect="true" />
     </action>
 
     <action    path="/event/setAccess"
