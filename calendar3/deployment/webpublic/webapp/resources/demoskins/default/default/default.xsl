@@ -534,15 +534,26 @@
       <tr>
         <td class="fieldname">When:</td>
         <td class="fieldval">
-          <!-- was using abbrev dayname: substring(start/dayname,1,3) -->
           <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text>
           <xsl:if test="start/allday = 'false'">
             <span class="time"><xsl:value-of select="start/time"/></span>
           </xsl:if>
-          <xsl:if test="end/allday = 'false' or end/longdate != start/longdate"> - </xsl:if>
-          <xsl:if test="end/longdate != start/longdate"><xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text></xsl:if>
-          <xsl:if test="end/allday = 'false'"><span class="time"><xsl:value-of select="end/time"/></span></xsl:if>
-          <xsl:if test="start/allday = 'true'"><span class="time"><em>(all day)</em></span></xsl:if>
+          <xsl:if test="(end/longdate != start/longdate) or
+                        ((end/longdate = start/longdate) and (end/time != start/time))"> - </xsl:if>
+          <xsl:if test="end/longdate != start/longdate">
+            <xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text>
+          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="start/allday = 'true'">
+              <span class="time"><em>(all day)</em></span>
+            </xsl:when>
+            <xsl:when test="end/longdate != start/longdate">
+              <span class="time"><xsl:value-of select="end/time"/></span>
+            </xsl:when>
+            <xsl:when test="end/time != start/time">
+              <span class="time"><xsl:value-of select="end/time"/></span>
+            </xsl:when>
+          </xsl:choose>
         </td>
         <th class="icalIcon" rowspan="2">
           <xsl:variable name="id" select="id"/>
@@ -653,18 +664,7 @@
         <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event)">
           <tr>
             <td class="noEventsCell">
-              There are no events posted
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Day'">
-                  today<xsl:if test="/bedework/title!=''"> for <strong><xsl:value-of select="/bedework/title"/></strong></xsl:if><xsl:if test="/bedework/search!=''"> for search term <strong>"<xsl:value-of select="/bedework/search"/>"</strong></xsl:if>.
-                </xsl:when>
-                <xsl:when test="/bedework/periodname='Month'">
-                  this month<xsl:if test="/bedework/title!=''"> for <strong><xsl:value-of select="/bedework/title"/></strong></xsl:if><xsl:if test="/bedework/search!=''"> for search term <strong>"<xsl:value-of select="/bedework/search"/>"</strong></xsl:if>.
-                </xsl:when>
-                <xsl:otherwise>
-                  this week<xsl:if test="/bedework/title!=''"> for <strong><xsl:value-of select="/bedework/title"/></strong></xsl:if><xsl:if test="/bedework/search!=''"> for search term <strong>"<xsl:value-of select="/bedework/search"/>"</strong></xsl:if>.
-                </xsl:otherwise>
-              </xsl:choose>
+              No events to display.
             </td>
           </tr>
         </xsl:when>
@@ -706,6 +706,14 @@
                                   start/shortdate = end/shortdate">
                     <td class="{$dateRangeStyle} center" colspan="3">
                       all day
+                    </td>
+                  </xsl:when>
+                  <xsl:when test="start/shortdate = end/shortdate and 
+                                  start/time = end/time">
+                    <td class="{$dateRangeStyle} center" colspan="3">
+                      <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                        <xsl:value-of select="start/time"/>                      
+                      </a>
                     </td>
                   </xsl:when>
                   <xsl:otherwise>
@@ -783,7 +791,8 @@
                     </xsl:when>
                     <xsl:otherwise>
                       <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        <xsl:value-of select="summary"/>, <xsl:value-of select="location/address"/>
+                        <xsl:value-of select="summary"/>
+                        <xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
                       </a>
                     </xsl:otherwise>
                   </xsl:choose>
@@ -904,7 +913,9 @@
           <xsl:choose>
             <xsl:when test="start/allday = 'false'">
               <xsl:value-of select="start/time"/>
-               - <xsl:value-of select="end/time"/>
+              <xsl:if test="start/time != end/time">
+                - <xsl:value-of select="end/time"/>
+              </xsl:if>
             </xsl:when>
             <xsl:otherwise>
               all day

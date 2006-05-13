@@ -723,6 +723,14 @@
                       all day
                     </td>
                   </xsl:when>
+                  <xsl:when test="start/shortdate = end/shortdate and 
+                                  start/time = end/time">
+                    <td class="{$dateRangeStyle} center" colspan="3">
+                      <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                        <xsl:value-of select="start/time"/>                      
+                      </a>
+                    </td>
+                  </xsl:when>
                   <xsl:otherwise>
                     <td class="{$dateRangeStyle} right">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
@@ -765,15 +773,18 @@
                 </xsl:choose>
                 <xsl:variable name="descriptionClass">
                   <xsl:choose>
-                    <xsl:when test="priority='cancelled'">description cancelled</xsl:when>
+                    <xsl:when test="status='CANCELLED'">description cancelled</xsl:when>
                     <xsl:otherwise>description</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
                 <td class="{$descriptionClass}">
+                  <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        <strong><xsl:value-of select="summary"/>: </strong>
+                        <strong>
+                          <xsl:value-of select="summary"/>:
+                        </strong>
                         <xsl:value-of select="description"/>&#160;
                         <em>
                           <xsl:value-of select="location/address"/>
@@ -931,7 +942,7 @@
     <xsl:variable name="eventClass">
       <xsl:choose>
         <!-- Special styles for the month grid -->
-        <xsl:when test="status='cancelled'">eventCancelled</xsl:when>
+        <xsl:when test="status='CANCELLED'">eventCancelled</xsl:when>
         <xsl:when test="calendar/name='Holidays'">holiday</xsl:when>
         <!-- Alternating colors for all standard events -->
         <xsl:when test="position() mod 2 = 1">eventLinkA</xsl:when>
@@ -940,6 +951,7 @@
     </xsl:variable>
     <li>
       <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass}">
+        <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
         <xsl:value-of select="summary"/>
         <xsl:variable name="eventTipClass">
           <xsl:choose>
@@ -948,12 +960,15 @@
           </xsl:choose>
         </xsl:variable>
         <span class="{$eventTipClass}">
+          <xsl:if test="status='CANCELLED'"><span class="eventTipStatus">CANCELLED</span></xsl:if>
           <strong><xsl:value-of select="summary"/></strong><br/>
           Time:
           <xsl:choose>
             <xsl:when test="start/allday = 'false'">
               <xsl:value-of select="start/time"/>
-               - <xsl:value-of select="end/time"/>
+              <xsl:if test="start/time != end/time">
+                - <xsl:value-of select="end/time"/>
+              </xsl:if>
             </xsl:when>
             <xsl:otherwise>
               all day
@@ -1143,12 +1158,26 @@
       <tr>
         <td class="fieldname">When:</td>
         <td class="fieldval">
-          <!-- was using abbrev dayname: substring(start/dayname,1,3) -->
           <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text>
-          <span class="time"><xsl:value-of select="start/time"/></span>
-          <xsl:if test="end/time != '' or end/longdate != start/longdate"> - </xsl:if>
-          <xsl:if test="end/longdate != start/longdate"><xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text></xsl:if>
-          <xsl:if test="end/time != ''"><span class="time"><xsl:value-of select="end/time"/></span></xsl:if>
+          <xsl:if test="start/allday = 'false'">
+            <span class="time"><xsl:value-of select="start/time"/></span>
+          </xsl:if>
+          <xsl:if test="(end/longdate != start/longdate) or
+                        ((end/longdate = start/longdate) and (end/time != start/time))"> - </xsl:if>
+          <xsl:if test="end/longdate != start/longdate">
+            <xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text>
+          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="start/allday = 'true'">
+              <span class="time"><em>(all day)</em></span>
+            </xsl:when>
+            <xsl:when test="end/longdate != start/longdate">
+              <span class="time"><xsl:value-of select="end/time"/></span>
+            </xsl:when>
+            <xsl:when test="end/time != start/time">
+              <span class="time"><xsl:value-of select="end/time"/></span>
+            </xsl:when>
+          </xsl:choose>
         </td>
         <!--<th class="icon" rowspan="2">
           <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
