@@ -960,7 +960,7 @@
           </xsl:choose>
         </xsl:variable>
         <span class="{$eventTipClass}">
-          <xsl:if test="status='CANCELLED'"><span class="eventTipStatus">CANCELLED</span></xsl:if>
+          <xsl:if test="status='CANCELLED'"><span class="eventTipStatus">CANCELLED: </span></xsl:if>
           <strong><xsl:value-of select="summary"/></strong><br/>
           Time:
           <xsl:choose>
@@ -1076,6 +1076,7 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <h2>
+      <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
           <xsl:variable name="link" select="link"/>
@@ -1215,6 +1216,14 @@
           </xsl:call-template>
         </td>
       </tr>
+      <xsl:if test="status !='' and status != 'CONFIRMED'">
+        <tr>
+          <td class="fieldname">Status:</td>
+          <td class="fieldval">
+            <xsl:value-of select="status"/>
+          </td>
+        </tr>
+      </xsl:if>
       <xsl:if test="organizer">
         <tr>
           <td class="fieldname">Organizer:</td>

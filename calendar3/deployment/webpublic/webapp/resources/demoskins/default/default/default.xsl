@@ -599,7 +599,15 @@
           </xsl:call-template>
         </td>
       </tr>
-       <xsl:if test="cost!=''">
+      <xsl:if test="status !='' and status != 'CONFIRMED'">
+        <tr>
+          <td class="fieldname">Status:</td>
+          <td class="fieldval">
+            <xsl:value-of select="status"/>
+          </td>
+        </tr>
+      </xsl:if>
+      <xsl:if test="cost!=''">
         <tr>
           <td class="fieldname">Cost:</td>
           <td colspan="2" class="fieldval"><xsl:value-of select="cost"/></td>
@@ -907,7 +915,7 @@
           </xsl:choose>
         </xsl:variable>
         <span class="{$eventTipClass}">
-          <xsl:if test="status='CANCELLED'"><span class="eventTipStatus">CANCELLED</span></xsl:if>
+          <xsl:if test="status='CANCELLED'"><span class="eventTipStatus">CANCELLED: </span></xsl:if>
           <strong><xsl:value-of select="summary"/></strong><br/>
           Time:
           <xsl:choose>
