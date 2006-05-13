@@ -432,7 +432,7 @@ table.common th.commonHeader a:hover {
   text-align: left;
 }
 table.common td.filler {
-  height: 200px;
+  height: 250px;
 }
 table.common td.fill {
   background-color: #ddd;
