@@ -68,8 +68,8 @@ import javax.servlet.http.HttpServletRequest;
  *      <li>"enddate"                Optional end date for the event
  *                                   as yymmdd or yymmddTHHmmss</li>
  *      <li>"minutes"                Optional duration in minutes</li>
- *      <li>  subname:   Name of a subscription to an external calendar</li>.
- *      <li>  calPath:   Path to a (writeable) calendar collection</li>.
+ *      <li>  subname:               Name of a subscription to an external calendar</li>.
+ *      <li>  newCalPath:            Path to a (writeable) calendar collection</li>.
  * </ul>
  *
  */

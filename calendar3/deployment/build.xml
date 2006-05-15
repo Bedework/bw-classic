@@ -170,11 +170,6 @@
     <antcall target="deploy.apps" inheritrefs="true" />
   </target>
 
-  <target name="deploy.shellscr.apps" if="org.bedework.global.build.standalone.app" >
-    <property name="org.bedework.deploy.kind" value="shellscr" />
-    <antcall target="deploy.apps" inheritrefs="true" />
-  </target>
-
   <target name="deploy.portal.apps" if="org.bedework.global.portal.platform" >
     <property name="org.bedework.deploy.kind"
               value="${org.bedework.global.portal.platform}" />
@@ -184,6 +179,12 @@
   <target name="deploy.j2ee.apps" if="org.bedework.global.j2ee.platform" >
     <property name="org.bedework.deploy.kind"
               value="${org.bedework.global.j2ee.platform}" />
+    <antcall target="deploy.apps" inheritrefs="true" />
+  </target>
+
+  <!-- Always build the shellscr stuff. -->
+  <target name="deploy.shellscr.apps" >
+    <property name="org.bedework.deploy.kind" value="shellscr" />
     <antcall target="deploy.apps" inheritrefs="true" />
   </target>
 

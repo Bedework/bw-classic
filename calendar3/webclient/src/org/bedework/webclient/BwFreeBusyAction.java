@@ -137,6 +137,12 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
       TimeView tv = form.getCurTimeView();
 
       scal = tv.getFirstDay();
+      Locale loc = scal.getCalInfo().getLocale();  // XXX Locale
+
+      /* Essentially clone so that thbe calculations below don't mess up
+       * the time view.
+       */
+      scal = new MyCalendarVO(scal.getTime(), loc);
       start = scal.getCalendar();
       end = tv.getLastDay().getTomorrow().getCalendar();
     } else {
