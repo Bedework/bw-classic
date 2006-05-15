@@ -374,6 +374,7 @@
                validate="false">
       <forward name="edit" path="/showEditLocation.rdo" redirect="true" />
       <forward name="success" path="/showManageLocations.rdo" redirect="true" />
+      <forward name="cancelled" path="/showManageLocations.rdo" redirect="true" />
     </action>
 
     <action    path="/delLocation"
@@ -383,6 +384,7 @@
                validate="false">
       <forward name="referenced" path="/showManageLocations.rdo" redirect="true" />
       <forward name="success" path="/showManageLocations.rdo" redirect="true" />
+      <forward name="cancelled" path="/showManageLocations.rdo" redirect="true" />
     </action>
 
    <!-- ===============================================================

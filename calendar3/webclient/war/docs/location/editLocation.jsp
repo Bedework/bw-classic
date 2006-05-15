@@ -17,6 +17,13 @@ try {
     <subaddress><html:textarea property="editLocation.subaddress" rows="8" cols="55"/></subaddress>
     <link><html:text property="editLocation.link" /></link>
     <id><bean:write name="calForm" property="editLocation.id"/></id>
+    <locationmenu>
+      <html:select property="locationId">
+        <html:optionsCollection property="locations"
+                                label="address"
+                                value="id"/>
+      </html:select>
+    </locationmenu>
   </genurl:form>
 </formElements>
 

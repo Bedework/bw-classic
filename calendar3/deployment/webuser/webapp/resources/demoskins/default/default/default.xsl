@@ -157,7 +157,6 @@
                       <xsl:call-template name="manageLocations" />
                     </xsl:when>
                     <xsl:when test="/bedework/page='editLocation'">
-                      <!-- edit an event -->
                       <xsl:apply-templates select="/bedework/formElements" mode="editLocation"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
@@ -3138,7 +3137,7 @@
     <xsl:variable name="itemClass">
       <xsl:choose>
         <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
-                        and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
+                        and calendars/calendar/path = /bedework/selectionState/subscriptions/subscription/calendar/path">selected</xsl:when>
         <xsl:otherwise>calendar</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -3341,29 +3340,18 @@
             <input size="60" name="newLocation.link" type="text"/>
           </td>
         </tr>
+      </table>
+      <table border="0" id="submitTable">
         <tr>
-          <td></td>
-          <td class="padMe">
-            <input name="submit" type="submit" value="Submit Location"/>&#160;
+          <td>
+            <input name="submit" type="submit" value="Submit Location"/>
             <input name="cancelled" type="submit" value="Cancel"/>
           </td>
         </tr>
-        <tr>
-          <th class="commonHeader" colspan="2">Edit/Delete Locations</th>
-        </tr>
-        <td colspan="2" class="plain">
-          <ul>
-            <xsl:for-each select="/bedework/formElements/form/location/locationmenu/select/option[@value>'3']">
-              <xsl:sort select="."/>
-              <li>
-                <xsl:variable name="locationId" select="@value"/>
-                <a href="{$editLocation}?locationId={$locationId}"><xsl:value-of select="."/></a>
-              </li>
-            </xsl:for-each>
-          </ul>
-        </td>
       </table>
     </form>
+    <div style="margin-bottom: 1em;">&#160;</div>
+    <xsl:call-template name="editLocationList"/>
   </xsl:template>
 
   <!--==== EDIT LOCATION ====-->
@@ -3375,19 +3363,16 @@
       <table class="common" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">
-            <!--<xsl:variable name="locId" select="form/id"/>
-            <div id="eventActions">
-              <a href="{$delLocation}?locationId={$locId}">Delete Location</a>
-            </div>-->
             Edit Location
           </th>
         </tr>
         <tr>
           <td class="fieldname">
-            Address:
+            Main Address:
           </td>
           <td align="left">
-            <xsl:copy-of select="form/address/*"/>
+            <xsl:variable name="addr" select="form/address/input/@value"/>
+            <input size="60" name="editLocation.address" value="{$addr}" type="text"/>
           </td>
         </tr>
         <tr>
@@ -3395,15 +3380,17 @@
             Subaddress:
           </td>
           <td align="left">
-            <xsl:copy-of select="form/subaddress/*"/>
+            <xsl:variable name="subaddr" select="form/subaddress/textarea"/>
+            <input size="60" name="editLocation.subaddress" value="{$subaddr}" type="text"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Location's URL:
+            Location Link:
           </td>
           <td>
-            <xsl:copy-of select="form/link/*"/>
+            <xsl:variable name="link" select="form/link/input/@value"/>
+            <input size="60" name="editLocation.link" value="{$link}" type="text"/>
           </td>
         </tr>
       </table>
@@ -3423,6 +3410,27 @@
         </tr>
       </table>
     </form>
+    <div style="margin-bottom: 1em;">&#160;</div>
+    <xsl:call-template name="editLocationList"/>
+  </xsl:template>
+  
+  <xsl:template name="editLocationList">
+    <table class="common" cellspacing="0">
+      <tr>
+        <th class="commonHeader" colspan="2">Edit/Delete Locations</th>
+      </tr>
+      <td colspan="2" class="plain">
+        <ul>
+          <xsl:for-each select="/bedework/formElements/form/locationmenu/select/option[@value>'3']">
+            <xsl:sort select="."/>
+            <li>
+              <xsl:variable name="locationId" select="@value"/>
+              <a href="{$editLocation}?locationId={$locationId}"><xsl:value-of select="."/></a>
+            </li>
+          </xsl:for-each>
+        </ul>
+      </td>
+    </table>
   </xsl:template>
 
   <!--==== PREFERENCES ====-->

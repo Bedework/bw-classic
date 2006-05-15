@@ -13,15 +13,13 @@ try {
 <page>manageLocations</page>
 <formElements>
   <genurl:form action="addLocation">
-    <location>
-      <locationmenu>
-        <html:select property="locationId">
-          <html:optionsCollection property="locations"
-                                  label="address"
-                                  value="id"/>
-        </html:select>
-      </locationmenu>
-    </location>
+    <locationmenu>
+      <html:select property="locationId">
+        <html:optionsCollection property="locations"
+                                label="address"
+                                value="id"/>
+      </html:select>
+    </locationmenu>
   </genurl:form>
 </formElements>
 
