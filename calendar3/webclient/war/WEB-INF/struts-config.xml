@@ -612,6 +612,15 @@
       <forward name="success" path="/docs/subs/modSubscription.jsp"/>
     </action>
 
+    <!-- renderUrl -->
+    <action    path="/subs/showAddByUriForm"
+               type="org.bedework.webclient.BwRenderAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/subs/addSubByUri.jsp"/>
+    </action>
+
     <action    path="/subs/initAdd"
                type="org.bedework.webcommon.subs.InitSubscribeAction"
                name="calForm"
@@ -639,6 +648,19 @@
       <forward name="cancelled" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="retry" path="/subs/showModForm.rdo" redirect="true"/>
       <forward name="reffed" path="/subs/showSubs.rdo" redirect="true"/>
+      <forward name="noAccess" path="/subs/showSubs.rdo" redirect="true"/>
+      <forward name="success" path="/subs/showSubs.rdo" redirect="true" />
+    </action>
+
+    <action    path="/subs/subscribeByUri"
+               type="org.bedework.webcommon.subs.SubscribeAction"
+               name="calForm"
+               scope="session"
+               validate="false">
+      <forward name="cancelled" path="/subs/showSubs.rdo" redirect="true"/>
+      <forward name="retry" path="/subs/showAddByUriForm.rdo" redirect="true"/>
+      <forward name="reffed" path="/subs/showSubs.rdo" redirect="true"/>
+      <forward name="noAccess" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="success" path="/subs/showSubs.rdo" redirect="true" />
     </action>
 

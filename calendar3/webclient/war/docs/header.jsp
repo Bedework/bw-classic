@@ -162,6 +162,8 @@ try {
       <subscriptions> <!-- only those listed are used here (no need to clean up) -->
         <fetch><genurl:link page="/subs/fetch.do?b=de"/></fetch>
         <fetchForUpdate><genurl:link page="/subs/fetchForUpdate.do?b=de"/></fetchForUpdate>
+        <addSubByUri><genurl:link page="/subs/showAddByUriForm.rdo?b=de"/></addSubByUri>
+        <subscribeByUri><genurl:link page="/subs/subscribeByUri.do?b=de"/></subscribeByUri>
         <initAdd><genurl:link page="/subs/initAdd.do?b=de"/></initAdd>
         <subscribe><genurl:link page="/subs/subscribe.do?b=de"/></subscribe>
       </subscriptions>

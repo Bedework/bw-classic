@@ -99,6 +99,7 @@ function updateEventFormCalendar(newCalPath,calDisplay) {
   window.close();
 }
 
+// build the workdays parameter as a string when submitting user preferences form
 function setWorkDays(formObj) {
   if (formObj) {
     var workDays = "";
@@ -112,5 +113,26 @@ function setWorkDays(formObj) {
     formObj.workDays.value = workDays;
   } else {
     alert("The preferences form is not available.");
+  }
+}
+
+// build a uri based on user and path in the subscription form
+function setSubscriptionUri(formObj) {
+  if (formObj) {
+    var fullUri = "bwcal:///user/";
+    fullUri += formObj.userId.value;
+    if (formObj.userPath.value != "") {
+      if (formObj.userPath.value.substring(0,1) == "/") {
+        fullUri += formObj.userPath.value;
+      } else {
+        fullUri += "/" + formObj.userPath.value;
+      }
+    }
+    formObj["subscription.uri"].value = fullUri;
+    alert(formObj["subscription.uri"].value);
+    return true;
+  } else {
+    alert("The subscription form is not available.");
+    return false;
   }
 }

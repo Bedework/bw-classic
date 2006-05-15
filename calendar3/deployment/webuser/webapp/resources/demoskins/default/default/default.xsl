@@ -75,6 +75,8 @@
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
+  <xsl:variable name="subscriptions-addSubByUri" select="/bedework/urlPrefixes/subscriptions/addSubByUri/a/@href"/>
+  <xsl:variable name="subscriptions-subscribeByUri" select="/bedework/urlPrefixes/subscriptions/subscribeByUri/a/@href"/>
   <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd/a/@href"/>
   <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/subscriptions/subscribe/a/@href"/>
   <!-- preferences -->
@@ -159,7 +161,9 @@
                     <xsl:when test="/bedework/page='editLocation'">
                       <xsl:apply-templates select="/bedework/formElements" mode="editLocation"/>
                     </xsl:when>
-                    <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
+                    <xsl:when test="/bedework/page='subscriptions' or
+                                    /bedework/page='modSubscription' or
+                                    /bedework/page='addSubByUri'">
                       <xsl:apply-templates select="/bedework/subscriptions"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='calendarList' or
@@ -240,6 +244,7 @@
                   /bedework/page='editEvent' or
                   /bedework/page='selectCalForEvent' or
                   /bedework/page='upload' or
+                  /bedework/page='addSubByUri' or
                   /bedework/page='modPrefs'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
     </xsl:if>
@@ -722,11 +727,11 @@
                       all day
                     </td>
                   </xsl:when>
-                  <xsl:when test="start/shortdate = end/shortdate and 
+                  <xsl:when test="start/shortdate = end/shortdate and
                                   start/time = end/time">
                     <td class="{$dateRangeStyle} center" colspan="3">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        <xsl:value-of select="start/time"/>                      
+                        <xsl:value-of select="start/time"/>
                       </a>
                     </td>
                   </xsl:when>
@@ -2877,8 +2882,11 @@
             <xsl:when test="/bedework/page='subscriptions'">
               <xsl:call-template name="subscriptionList"/>
             </xsl:when>
+            <xsl:when test="/bedework/page='addSubByUri'">
+              <xsl:call-template name="addSubByUri"/>
+            </xsl:when>
             <xsl:when test="/bedework/creating='true'">
-              <xsl:apply-templates select="subscription" mode="addSubscription"/>
+              <xsl:apply-templates select="subscription" mode="addSystemSubscription"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:apply-templates select="subscription" mode="modSubscription"/>
@@ -2913,7 +2921,83 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="subscription" mode="addSubscription">
+  <!-- add a subscription to a user calendar by user and path; this is actually
+       a subscription to an arbitrary URI (which we can expose later) -->
+  <xsl:template name="addSubByUri">
+    <h3>Add Subscription to User Calendar</h3>
+    <p class="note">*the subsciption name must be unique</p>
+    <form name="subscribeForm" action="{$subscriptions-subscribe}" onsubmit="return setSubscriptionUri(this)" method="post">
+      <table class="common" cellspacing="0">
+        <tr>
+          <td class="fieldname">Name:</td>
+          <td>
+            <input type="text" value="" name="subscription.name" size="60"/>
+          </td>
+        </tr>
+        <!-- the following would be for an arbitrary URI.  We'll add this later.
+        <tr>
+          <td class="fieldname">Uri:</td>
+          <td>
+            <input type="text" value="" name="subscription.uri" size="60"/>
+          </td>
+        </tr>-->
+        <tr>
+          <td class="fieldname">User ID:</td>
+          <td>
+            <input type="hidden" value="" name="subscription.uri"/>
+            <input type="text" value="" name="userId" size="20"/>
+            <span class="note">ex: douglm</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">User path:</td>
+          <td>
+            <input type="text" value="" name="userPath" size="20"/>
+            <span class="note">(optional) ex: someDept/meetings</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">Display:</td>
+          <td>
+            <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
+            <input type="radio" value="false" name="subscription.display"/> no
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">Affects Free/Busy:</td>
+          <td>
+            <input type="radio" value="true" name="subscription.affectsFreeBusy"/> yes
+            <input type="radio" value="false" name="subscription.affectsFreeBusy" checked="checked"/> no
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">Style:</td>
+          <td>
+            <input type="text" value="" name="subscription.style" size="60"/>
+          </td>
+        </tr>
+        <!--<tr>
+          <td class="fieldname">Unremovable:</td>
+          <td>
+            <input type="radio" value="true" name="unremoveable" size="60"/> true
+            <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
+          </td>
+        </tr>-->
+      </table>
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="addSubscription" value="Add Subscription"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Clear"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </xsl:template>
+
+  <!-- add a subscription to a public calendar within the system -->
+  <xsl:template match="subscription" mode="addSystemSubscription">
     <h3>Add New Subscription</h3>
     <p class="note">*the subsciption name must be unique</p>
     <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
@@ -3130,7 +3214,7 @@
         </tr>
       </xsl:for-each>
     </table>
-    <h4><a href="{$subscriptions-initAdd}">Subscribe to a calendar</a> (by URI)</h4>
+    <h4><a href="{$subscriptions-addSubByUri}">Subscribe to another user's calendar</a></h4>
   </xsl:template>
 
   <xsl:template match="subscription" mode="mySubscriptions">
@@ -3413,7 +3497,7 @@
     <div style="margin-bottom: 1em;">&#160;</div>
     <xsl:call-template name="editLocationList"/>
   </xsl:template>
-  
+
   <xsl:template name="editLocationList">
     <table class="common" cellspacing="0">
       <tr>
