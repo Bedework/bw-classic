@@ -2938,13 +2938,13 @@
         <tr>
           <td class="fieldname">Uri:</td>
           <td>
-            <input type="text" value="" name="subscription.uri" size="60"/>
+            <input type="text" value="" name="calUri" size="60"/>
           </td>
         </tr>-->
         <tr>
           <td class="fieldname">User ID:</td>
           <td>
-            <input type="hidden" value="" name="subscription.uri"/>
+            <input type="hidden" value="" name="calUri"/>
             <input type="text" value="" name="userId" size="20"/>
             <span class="note">ex: douglm</span>
           </td>
