@@ -361,32 +361,63 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
                    Privileges.makePriv(Privileges.privNone)));
   }
 
-  /** Remove access for a given 'who' entry
+  /* * Remove access for a given 'who' entry
    *
    * @param who
    * @param notWho
    * @param whoType
    * @return boolean true if removed
-   */
-  public boolean removeAccess(String who, boolean notWho, int whoType) {
+   * /
+  public boolean removeWho(String who, boolean notWho, int whoType) {
     if (aces == null) {
       return false;
     }
 
     return aces.remove(new Ace(who, notWho, whoType, (PrivilegeSet)null));
-  }
+  }*/
 
   /** Remove access for a given 'who' entry
    *
    * @param whoDef
    * @return boolean true if removed
    */
-  public boolean removeAccess(Ace whoDef) {
+  public boolean removeWho(Ace whoDef) {
     if (aces == null) {
       return false;
     }
 
-    return aces.remove(whoDef);
+    /* We're called to remove any 'who' entries before adding. Usually there will
+     * be nothing to remove (I assume) so check first.
+     *
+     * We can't remove as we check or we get concurrent mod exception.
+     */
+    boolean remove = false;
+    Iterator it = aces.iterator();
+    while (it.hasNext()) {
+      Ace ace = (Ace)it.next();
+
+      if (ace.compareWho(whoDef) == 0) {
+        remove = true;
+        break;
+      }
+    }
+
+    if (!remove) {
+      return false;
+    }
+
+    TreeSet newAces = new TreeSet();
+    it = aces.iterator();
+    while (it.hasNext()) {
+      Ace ace = (Ace)it.next();
+
+      if (ace.compareWho(whoDef) != 0) {
+        newAces.add(ace);
+      }
+    }
+
+    aces = newAces;
+    return remove;
   }
 
   /* ====================================================================
@@ -476,7 +507,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
    *
    * <p>Also note the encoded value will not reflect the eventual Acl.
    *
-   * @param val char[] val to decode and merge
+   * @param val Acl to merge
    * @throws AccessException
    */
   public void merge(Acl val) throws AccessException {

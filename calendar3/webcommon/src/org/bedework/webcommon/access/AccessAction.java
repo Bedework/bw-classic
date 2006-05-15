@@ -183,7 +183,7 @@ public class AccessAction extends BwAbstractAction {
 
     char[] howchs = how.toCharArray();
 
-    for (int hi = 0; hi <= howchs.length; hi++) {
+    for (int hi = 0; hi < howchs.length; hi++) {
       char howch = howchs[hi];
       boolean found = false;
 
@@ -194,21 +194,21 @@ public class AccessAction extends BwAbstractAction {
           found = true;
           break;
         }
+      }
 
-        if (!found) {
-          form.getErr().emit("org.bedework.client.error.badhow");
-          return "error";
-        }
+      if (!found) {
+        form.getErr().emit("org.bedework.client.error.badhow");
+        return "error";
       }
     }
 
 
     if (ev != null) {
       svci.changeAccess(ev, aces);
-      svci.updateEvent(ev);
+      //svci.updateEvent(ev);
     } else {
       svci.changeAccess(cal, aces);
-      svci.updateCalendar(cal);
+      //svci.updateCalendar(cal);
     }
 
     return "success";

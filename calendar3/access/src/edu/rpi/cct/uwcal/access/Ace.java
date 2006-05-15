@@ -297,6 +297,10 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
    * @return PrivilegeSet array of allowed/denied/undefined indexed by Privilege index
    */
   public PrivilegeSet getHow() {
+    if (how == null) {
+      how = new PrivilegeSet();
+    }
+
     return how;
   }
 
@@ -325,6 +329,7 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
    */
   public void addPriv(Privilege val) {
     getPrivs().add(val);
+    getHow().setPrivilege(val);
   }
 
   /** An ace is inherited if it is merged in from further up the path.
@@ -509,6 +514,29 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
     return sb.toString();
   }
 
+  /**
+   * @param whoMatch
+   * @return int -1, 0, 1
+   */
+  public int compareWho(Ace whoMatch) {
+    if (notWho != whoMatch.notWho) {
+      if (notWho) {
+        return -1;
+      }
+      return 1;
+    }
+
+    if (whoType < whoMatch.whoType) {
+      return -1;
+    }
+
+    if (whoType > whoMatch.whoType) {
+      return 1;
+    }
+
+    return compareWho(who, whoMatch.who);
+  }
+
   /* ====================================================================
    *                   Object methods
    * ==================================================================== */
@@ -523,22 +551,13 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
     }
 
     Ace that = (Ace)o;
-    if (notWho != that.notWho) {
-      if (notWho) {
-        return -1;
-      }
-      return 1;
+
+    int res = compareWho(that);
+    if (res == 0) {
+      res = getHow().compareTo(that.getHow());
     }
 
-    if (whoType < that.whoType) {
-      return -1;
-    }
-
-    if (whoType > that.whoType) {
-      return 1;
-    }
-
-    return compareWho(who, that.who);
+    return res;
   }
 
   public int hashCode() {
@@ -556,19 +575,7 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
   }
 
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-
-    if (!(o instanceof Ace)) {
-      return false;
-    }
-
-    Ace that = (Ace)o;
-
-    return sameWho(who, that.who) &&
-           (notWho == that.notWho) &&
-           (whoType == that.whoType);
+    return compareTo(o) == 0;
   }
 
   public String toString() {
@@ -607,9 +614,9 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
    *                   Private methods
    * ==================================================================== */
 
-  private boolean sameWho(String who1, String who2) {
-    return compareWho(who1, who2) == 0;
-  }
+//  private boolean sameWho(String who1, String who2) {
+//    return compareWho(who1, who2) == 0;
+//  }
 
   private int compareWho(String who1, String who2) {
     if ((who1 == null) && (who2 == null)) {

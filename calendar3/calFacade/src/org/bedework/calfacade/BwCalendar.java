@@ -417,7 +417,7 @@ public class BwCalendar extends BwShareableContainedDbentity {
    * @return BwCalendar object
    */
   public BwCalendar shallowClone() {
-    return new BwCalendar((BwUser)getOwner().clone(),
+    BwCalendar cal =  new BwCalendar((BwUser)getOwner().clone(),
                           getPublick(),
                           (BwUser)getCreator().clone(),
                           getAccess(),
@@ -430,6 +430,10 @@ public class BwCalendar extends BwShareableContainedDbentity {
                           getCalendar(),
                           null,
                           getCalType());
+
+    cal.setId(getId()); // Add to constructor
+    cal.setSeq(getSeq()); // Add to constructor
+    return cal;
   }
 
   /* ====================================================================
@@ -504,7 +508,7 @@ public class BwCalendar extends BwShareableContainedDbentity {
   }
 
   public Object clone() {
-    return new BwCalendar((BwUser)getOwner().clone(),
+    BwCalendar cal = new BwCalendar((BwUser)getOwner().clone(),
                           getPublick(),
                           (BwUser)getCreator().clone(),
                           getAccess(),
@@ -517,5 +521,9 @@ public class BwCalendar extends BwShareableContainedDbentity {
                           getCalendar(),
                           getChildren(),
                           getCalType());
+
+    cal.setId(getId()); // Add to constructor
+    cal.setSeq(getSeq()); // Add to constructor
+    return cal;
   }
 }

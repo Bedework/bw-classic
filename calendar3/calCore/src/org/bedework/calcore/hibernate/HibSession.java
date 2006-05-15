@@ -685,18 +685,20 @@ public class HibSession implements Serializable {
    * session
    *
    * @param obj
+   * @return Object   the persiatent object
    * @throws CalFacadeException
    */
-  public void merge(Object obj) throws CalFacadeException {
+  public Object merge(Object obj) throws CalFacadeException {
     if (exc != null) {
       // Didn't hear me last time?
       throw new CalFacadeException(exc);
     }
 
     try {
-      sess.merge(obj);
+      return sess.merge(obj);
     } catch (Throwable t) {
       handleException(t);
+      return null;
     }
   }
 

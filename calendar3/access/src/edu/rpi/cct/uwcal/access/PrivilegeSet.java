@@ -59,7 +59,7 @@ import java.io.Serializable;
  *
  *  @author Mike Douglass   douglm@rpi.edu
  */
-public class PrivilegeSet implements Serializable, PrivilegeDefs {
+public class PrivilegeSet implements Serializable, PrivilegeDefs, Comparable {
   private char[] privileges;
 
   /** Default privs for an owner
@@ -167,6 +167,12 @@ public class PrivilegeSet implements Serializable, PrivilegeDefs {
     this.privileges = privileges;
   }
 
+  /**
+   */
+  public PrivilegeSet() {
+    privileges = (char[])defaultNonOwnerPrivileges.getPrivileges().clone();
+  }
+
   /** Default privs for an owner
    *
    * @return PrivilegeSet
@@ -204,6 +210,22 @@ public class PrivilegeSet implements Serializable, PrivilegeDefs {
     }
 
     privileges[index] = val;
+  }
+
+  /** Set the given privilege
+   *
+   * @param priv  Privilege object
+   */
+  public void setPrivilege(Privilege priv) {
+    if (privileges == null) {
+      privileges = (char[])defaultNonOwnerPrivileges.getPrivileges().clone();
+    }
+
+    if (priv.getDenial()) {
+      privileges[priv.getIndex()] = denied;
+    } else {
+      privileges[priv.getIndex()] = allowed;
+    }
   }
 
   /** Get the given privilege
@@ -306,6 +328,66 @@ public class PrivilegeSet implements Serializable, PrivilegeDefs {
     return privileges;
   }
 
+  /* ====================================================================
+   *                   Object methods
+   * ==================================================================== */
+
+  public int compareTo(Object o) {
+    if (this == o) {
+      return 0;
+    }
+
+    if (!(o instanceof PrivilegeSet)) {
+      return 1;
+    }
+
+    PrivilegeSet that = (PrivilegeSet)o;
+    if (privileges == null) {
+      if (that.privileges != null) {
+        return -1;
+      }
+
+      return 0;
+    }
+
+    if (that.privileges != null) {
+      return -1;
+    }
+
+    for (int pi = 0; pi < privileges.length; pi++) {
+      char thisp = privileges[pi];
+      char thatp = that.privileges[pi];
+
+      if (thisp < thatp) {
+        return -1;
+      }
+
+      if (thisp > thatp) {
+        return -1;
+      }
+    }
+
+    return 0;
+  }
+
+  public int hashCode() {
+    int hc = 7;
+
+    if (privileges == null) {
+      return hc;
+    }
+
+    for (int pi = 0; pi < privileges.length; pi++) {
+      hc *= privileges[pi];
+    }
+
+    return hc;
+  }
+
+  public boolean equals(Object o) {
+    return compareTo(o) == 0;
+  }
+
   public Object clone() {
     return new PrivilegeSet((char[])getPrivileges().clone());
   }
@@ -319,4 +401,3 @@ public class PrivilegeSet implements Serializable, PrivilegeDefs {
     return sb.toString();
   }
 }
-

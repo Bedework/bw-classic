@@ -221,6 +221,15 @@ public interface CalendarsI extends Serializable {
    */
   public void updateCalendar(BwCalendar val) throws CalFacadeException;
 
+  /** Change the access to the given calendar entity.
+   *
+   * @param cal      Bwcalendar
+   * @param aces     Collection of ace
+   * @throws CalFacadeException
+   */
+  public void changeAccess(BwCalendar cal,
+                           Collection aces) throws CalFacadeException;
+
   /** Delete the given calendar
    *
    * <p>XXX Do we want a recursive flag or do we implement that higher up?

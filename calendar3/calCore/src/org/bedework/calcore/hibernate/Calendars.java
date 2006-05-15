@@ -394,6 +394,15 @@ class Calendars extends CalintfHelper implements CalendarsI {
     getSess().update(val);
   }
 
+  public void changeAccess(BwCalendar cal,
+                           Collection aces) throws CalFacadeException {
+    HibSession sess = getSess();
+
+    cal = getCalendar(cal.getPath(), privWriteAcl, false);
+    access.changeAccess(cal, aces);
+    sess.saveOrUpdate(cal);
+  }
+
   public boolean deleteCalendar(BwCalendar val) throws CalFacadeException {
     HibSession sess = getSess();
 
@@ -471,6 +480,9 @@ class Calendars extends CalintfHelper implements CalendarsI {
 
   /* Returns the cloned (sub)tree of calendars to which user has access
    *
+   * <p>This needs a rethink - cloning effectively disables optimistic
+   * locking - at least I think so.
+   *
    * @return BwCalendar   (sub)root with all accessible children attached
    * @throws CalFacadeException
    */
@@ -489,7 +501,8 @@ class Calendars extends CalintfHelper implements CalendarsI {
     }
 
     BwCalendar cal = (BwCalendar)subroot.shallowClone();
-    // XXX Temp fix - add id to the clone
+    // XXX Temp fix - add id to the clone - only until we get rid of ids in
+    //  admin preferred calendars
     cal.setId(subroot.getId());
 
     cal.setCurrentAccess(ca);

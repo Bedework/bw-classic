@@ -697,9 +697,20 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
   public void changeAccess(BwShareableDbentity ent,
                            Collection aces) throws CalFacadeException {
+    if (ent instanceof BwCalendar) {
+      changeAccess((BwCalendar)ent, aces);
+      return;
+    }
     checkOpen();
+    checkAccess(ent, privWriteAcl, false);
     access.changeAccess(ent, aces);
     sess.saveOrUpdate(ent);
+  }
+
+  public void changeAccess(BwCalendar cal,
+                           Collection aces) throws CalFacadeException {
+    checkOpen();
+    calendars.changeAccess(cal, aces);
   }
 
   public CurrentAccess checkAccess(BwShareableDbentity ent, int desiredAccess,

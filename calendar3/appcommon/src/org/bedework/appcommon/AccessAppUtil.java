@@ -337,6 +337,12 @@ public class AccessAppUtil implements Serializable {
     }
 
     if (tagOpen) {
+      // XXX Wrong - need to encode an href in the acl
+      /*
+      if (ace.getInherited()) {
+        xml.emptyTag(WebdavTags.inherited);
+      }
+      */
       xml.closeTag(tag);
     }
 

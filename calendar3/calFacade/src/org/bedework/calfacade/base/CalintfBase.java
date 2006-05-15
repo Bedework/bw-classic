@@ -488,6 +488,12 @@ public class CalintfBase implements Calintf {
     throw new CalFacadeUnimplementedException();
   }
 
+  public void changeAccess(BwCalendar cal,
+                           Collection aces) throws CalFacadeException {
+    checkOpen();
+    throw new CalFacadeUnimplementedException();
+  }
+
   public boolean deleteCalendar(BwCalendar val) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();

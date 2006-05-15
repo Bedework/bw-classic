@@ -110,7 +110,21 @@ class AccessUtil implements PrivilegeDefs {
     char[] encoded;
   }
 
-  private HashMap pathInfoTable = new HashMap();
+  private static class PathInfoMap extends HashMap {
+    synchronized PathInfo getInfo(String path) {
+      return (PathInfo)get(path);
+    }
+
+    synchronized void putInfo(String path, PathInfo pi) {
+      put(path, pi);
+    }
+
+    synchronized void flush() {
+      clear();
+    }
+  }
+
+  private PathInfoMap pathInfoMap = new PathInfoMap();
 
   /* ====================================================================
    *                   Constructor
@@ -180,6 +194,8 @@ class AccessUtil implements PrivilegeDefs {
   }
 
   /** Change the access to the given calendar entity using the supplied aces.
+   * We are changing access so we remove all access for each who in the list and
+   * then add the new aces.
    *
    * @param ent      BwShareableDbentity
    * @param aces     Collection of ace objects
@@ -190,19 +206,25 @@ class AccessUtil implements PrivilegeDefs {
     try {
       Acl acl = checkAccess(ent, privWriteAcl, false).acl;
 
+      /* First remove for all whos */
       Iterator it = aces.iterator();
       while (it.hasNext()) {
         Ace ace = (Ace)it.next();
 
-        acl.removeAccess(ace);
+        acl.removeWho(ace);
+      }
+
+      /* Now add the access */
+      it = aces.iterator();
+      while (it.hasNext()) {
+        Ace ace = (Ace)it.next();
+
         acl.addAce(ace);
       }
 
       ent.setAccess(new String(acl.encode()));
 
-      if (ent instanceof BwCalendar) {
-        updatePathInfo((BwCalendar)ent, acl);
-      }
+      pathInfoMap.flush();
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -347,11 +369,11 @@ class AccessUtil implements PrivilegeDefs {
       }
 
       String path = container.getPath();
-      PathInfo pi = (PathInfo)pathInfoTable.get(path);
+      PathInfo pi = pathInfoMap.getInfo(path);
 
       if (pi == null) {
         pi = getPathInfo(container);
-        pathInfoTable.put(path, pi);
+        pathInfoMap.putInfo(path, pi);
       }
 
       char[] aclChars = pi.encoded;
@@ -474,11 +496,11 @@ class AccessUtil implements PrivilegeDefs {
   }
 
   /* Update the merged Acl for the given calendar.
-   */
+   * Doesn't work because any children in the table need the access changing.
   private void updatePathInfo(BwCalendar cal, Acl acl) throws CalFacadeException {
     try {
       String path = cal.getPath();
-      PathInfo pi = (PathInfo)pathInfoTable.get(path);
+      PathInfo pi = pathInfoMap.getInfo(path);
 
       if (pi == null) {
         pi = new PathInfo();
@@ -489,11 +511,12 @@ class AccessUtil implements PrivilegeDefs {
       pi.pathAcl = acl;
       pi.encoded = acl.encodeAll();
 
-      pathInfoTable.put(path, pi);
+      pathInfoMap.putInfo(path, pi);
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
   }
+   */
 
   private Logger getLog() {
     if (log == null) {
