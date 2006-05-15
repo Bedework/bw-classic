@@ -1726,9 +1726,11 @@
           <th colspan="2" class="commonHeader">
             <div id="eventActions">
               <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
                 View
               </a> |
               <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                 Delete
               </a>
             </div>
@@ -2350,7 +2352,7 @@
           <!-- set the start date for adding an event to the first day of the
                given period, the hour of "now", and give a duration of 60 minutes -->
           <xsl:variable name="startDate"><xsl:value-of select="/bedework/firstday/date"/>T<xsl:value-of select="substring(/bedework/now/time,1,2)"/>0000</xsl:variable>
-          <a href="{$initEvent}?startdate={$startDate}&amp;calPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event">
+          <a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event">
             <img src="{$resourcesRoot}/resources/addEvent-forCals-icon.gif" width="9" height="12" border="0" alt="add event"/>
           </a>
         </xsl:if>
@@ -2681,7 +2683,7 @@
       <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm">
         <input type="hidden" name="calPath" value="{$calPath}"/>
         <p>
-          Share this calendar with:<br/>
+          Share with:<br/>
           <input type="text" name="who" size="20"/>
           <input type="radio" value="user" name="whoType" checked="checked"/> user
           <input type="radio" value="group" name="whoType"/> group
@@ -3129,7 +3131,7 @@
         </tr>
       </xsl:for-each>
     </table>
-    <h4><a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">Subscribe to a calendar</a> (by URI)</h4>
+    <h4><a href="{$subscriptions-initAdd}">Subscribe to a calendar</a> (by URI)</h4>
   </xsl:template>
 
   <xsl:template match="subscription" mode="mySubscriptions">
