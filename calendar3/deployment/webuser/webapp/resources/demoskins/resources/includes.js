@@ -128,8 +128,8 @@ function setSubscriptionUri(formObj) {
         fullUri += "/" + formObj.userPath.value;
       }
     }
-    formObj["subscription.uri"].value = fullUri;
-    alert(formObj["subscription.uri"].value);
+    formObj.calUri.value = fullUri;
+    alert(formObj.calUri.value);
     return true;
   } else {
     alert("The subscription form is not available.");
