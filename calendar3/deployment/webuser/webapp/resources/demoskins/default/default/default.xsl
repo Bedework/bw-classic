@@ -1148,14 +1148,24 @@
             </xsl:choose>
           </div>
           <xsl:choose>
-            <xsl:when test="isAnnotation">
-              Public Event
-            </xsl:when>
             <xsl:when test="calendar/owner = /bedework/userid">
               Personal Event
             </xsl:when>
+            <xsl:when test="starts-with(calendar/path,'/user/')">
+              User Event (<xsl:value-of select="calendar/owner"/>)
+            </xsl:when>
+            <xsl:when test="isAnnotation">
+              Public Event
+            </xsl:when>
             <xsl:otherwise>
-              Public Event from Subscription
+              <xsl:choose>
+                <xsl:when test="starts-with(calendar/path,'/public/')">
+                  Public Event from Subscription
+                </xsl:when>
+                <xsl:otherwise>
+                  Event from Subscription
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:otherwise>
           </xsl:choose>
         </th>
