@@ -65,6 +65,7 @@ import edu.rpi.cct.uwcal.caldav.TimeRange;
 import edu.rpi.cct.webdav.servlet.common.MethodBase;
 import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
+import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 
 import org.apache.log4j.Logger;
@@ -122,13 +123,17 @@ public class FreeBusyQuery {
 
   /**
    * @param svci
-   * @param user
+   * @param account
    * @return BwFreeBusy
    * @throws WebdavException
    */
-  public BwFreeBusy getFreeBusy(CalSvcI svci, String user) throws WebdavException {
+  public BwFreeBusy getFreeBusy(CalSvcI svci, String account) throws WebdavException {
     try {
-      BwFreeBusy fb = svci.getFreeBusy(null, new BwUser(user),
+      BwUser user = svci.findUser(account);
+      if (user == null) {
+        throw WebdavIntfException.unauthorized();
+      }
+      BwFreeBusy fb = svci.getFreeBusy(null, user,
                                        timeRange.getStart(), timeRange.getEnd(),
                                        null, false);
 

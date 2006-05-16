@@ -668,11 +668,10 @@ public class CalSvc extends CalSvcI {
     }
 
     if ((path.length() > 1) && path.endsWith("/")) {
-      return getCal().getCalendar(path.substring(0, path.length() - 1),
-                                  PrivilegeDefs.privRead);
+      path = path.substring(0, path.length() - 1);
     }
 
-    return getCal().getCalendar(path, PrivilegeDefs.privRead);
+    return getCal().getCalendar(path, PrivilegeDefs.privAny);
   }
 
   /** set the default calendar for the current user.

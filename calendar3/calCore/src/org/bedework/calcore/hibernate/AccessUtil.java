@@ -324,7 +324,9 @@ class AccessUtil implements PrivilegeDefs {
         // Not special
         aclChars = getAclChars(ent);
 
-        if (desiredAccess == privRead) {
+        if (desiredAccess == privAny) {
+          ca = access.checkAny(authUser, account, aclChars, maxPrivs);
+        } else if (desiredAccess == privRead) {
           ca = access.checkRead(authUser, account, aclChars, maxPrivs);
         } else if (desiredAccess == privWrite) {
           ca = access.checkReadWrite(authUser, account, aclChars, maxPrivs);

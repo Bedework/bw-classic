@@ -259,6 +259,30 @@ public class PrivilegeSet implements Serializable, PrivilegeDefs, Comparable {
     }
   }
 
+  /** Retrun true if there is any allowed access
+   *
+   * @return boolean
+   */
+  public boolean getAnyAllowed() {
+    if (privileges == null) {
+      return false;
+    }
+
+    for (int pi = 0; pi < privileges.length; pi++) {
+      char pr = privileges[pi];
+
+      if (pr == allowed) {
+        return true;
+      }
+
+      if (pr == allowedInherited) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   /** If current is null it is set to a cloned copy of morePriv otherwise the
    * privilege(s) in morePriv are merged into current.
    *

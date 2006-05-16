@@ -85,6 +85,9 @@ public class Access implements Serializable {
   /** Defines write access to an object */
   public final static Privilege writeContent = Privileges.makePriv(Privileges.privWriteContent);
 
+  /** Privilege set giving any access to an object */
+  public final static Privilege[] privSetAny = {};
+
   /** Privilege set giving read access to an object */
   public final static Privilege[] privSetRead = {read};
 
@@ -247,6 +250,23 @@ public class Access implements Serializable {
                                       PrivilegeSet filter)
           throws AccessException {
     return new Acl(debug).evaluateAccess(who, owner, privSetReadWrite, aclChars,
+                                         filter);
+  }
+
+  /** convenience method - check for any access
+   *
+   * @param who      Acl.Principal defining who is trying to get access
+   * @param owner    String owner of object
+   * @param aclChars char[] defining current acls for object
+   * @param filter    if not null specifies maximum access
+   * @return CurrentAccess   access + allowed/disallowed
+   * @throws AccessException
+   */
+  public CurrentAccess checkAny(AccessPrincipal who, String owner,
+                                      char[] aclChars,
+                                      PrivilegeSet filter)
+          throws AccessException {
+    return new Acl(debug).evaluateAccess(who, owner, privSetAny, aclChars,
                                          filter);
   }
 

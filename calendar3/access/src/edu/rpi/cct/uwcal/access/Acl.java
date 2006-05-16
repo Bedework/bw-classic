@@ -288,6 +288,13 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       ca.privileges.filterPrivileges(filter);
     }
 
+    if (how.length == 0) {
+      // Means any access will do
+
+      ca.accessAllowed = ca.privileges.getAnyAllowed();
+      return ca;
+    }
+
     for (int i = 0; i < how.length; i++) {
       char priv = ca.privileges.getPrivilege(how[i].getIndex());
 

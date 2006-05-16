@@ -159,6 +159,11 @@ public interface PrivilegeDefs extends Serializable {
    */
   public static final int privMaxType = 12;
 
+  /** Indicate any allowed access will do
+   */
+  public static final int privAny = privMaxType + 1;
+
+
   /* !!!!!!!!!!!!!!!!!! need default access - i.e. remove any mention of who
    */
 

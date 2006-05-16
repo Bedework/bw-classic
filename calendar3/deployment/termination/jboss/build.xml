@@ -40,6 +40,7 @@
       <fileset dir="${org.bedework.temp.home}/earlib">
         <exclude name="commons-logging*" />
         <exclude name="log4j*" />
+        <exclude name="servlet.jsp*" />
       </fileset>
     </copy>
 
