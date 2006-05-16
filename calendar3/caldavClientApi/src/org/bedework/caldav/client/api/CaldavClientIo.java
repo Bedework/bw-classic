@@ -63,6 +63,10 @@ import java.io.InputStream;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.protocol.Protocol;
+import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
+import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
 
 import sun.misc.BASE64Encoder;
 
@@ -86,13 +90,41 @@ public class CaldavClientIo {
    * @throws Throwable
    */
   public CaldavClientIo(String host, int port, boolean debug) throws Throwable {
+    this(host, port, false, debug);
+  }
+
+    /**
+     * @param host
+     * @param port
+     * @param secure
+     * @param debug
+     * @throws Throwable
+     */
+  public CaldavClientIo(String host, int port, boolean secure,
+                        boolean debug) throws Throwable {
     if (httpManager == null) {
       httpManager = new HttpManager("org.bedework.http.client.caldav.CaldavClient");
     }
 
     HostConfiguration config = new HostConfiguration();
 
-    config.setHost(host, port);
+    if (secure) {
+      ProtocolSocketFactory pfact = new SSLProtocolSocketFactory();
+      Protocol pr = new Protocol("https", pfact, port);
+      Protocol.registerProtocol( "https", pr);
+
+      config.setHost(host, port, pr);
+    } else {
+      config.setHost(host, port);
+    }
+    /*
+    if (secure) {
+      config.setHost(new URI("https://" + host + ":" + port, false));
+    } else {
+      config.setHost(new URI("http://" + host + ":" + port, false));
+    }
+    */
+
     client = (CaldavClient)httpManager.getClient(config);
 
     this.debug = debug;
@@ -135,11 +167,11 @@ public class CaldavClientIo {
     if (content != null) {
       sz = content.length;
     }
-    
+
     System.out.println("About to send request: method=" + method +
                        " contentLen=" + contentLen +
                        " content.length=" + sz);
-    
+
     client.setMethodName(method, url);
 
     HttpMethod meth = client.getMethod();

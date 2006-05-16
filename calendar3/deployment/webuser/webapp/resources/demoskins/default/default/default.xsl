@@ -2244,7 +2244,7 @@
         </p>
         <p>
           Access rights:<br/>
-          <input type="radio" value="f" name="how" checked="checked"/> view my free/busy<br/>
+          <input type="radio" value="F" name="how" checked="checked"/> view my free/busy<br/>
           <input type="radio" value="d" name="how"/> default (reset access)
         </p>
         <input type="submit" name="submit" value="Submit"/>

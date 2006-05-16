@@ -180,6 +180,8 @@ public interface PrivilegeDefs extends Serializable {
     'u',     // privUnbind
 
     'U',     // privUnlock
+
+    'N',     // privNone
   };
 
   /** Default privs for an owner
