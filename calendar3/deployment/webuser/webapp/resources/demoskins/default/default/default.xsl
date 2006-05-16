@@ -2013,7 +2013,7 @@
           <td class="fieldval" align="left">
             <span class="std-text">choose: </span>
             <span id="eventFormLocationList">
-              <select name="locationId">
+              <select name="eventLocationId">
                 <option value="-1">select...</option>
                 <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/select/*"/>
               </select>
