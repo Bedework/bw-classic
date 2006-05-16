@@ -628,6 +628,7 @@
                validate="false">
       <forward name="noAccess" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="cancelled" path="/subs/showSubs.rdo" redirect="true"/>
+      <forward name="added" path="/subs/showModForm.rdo" redirect="true" />
       <forward name="success" path="/subs/showModForm.rdo" redirect="true" />
     </action>
 
@@ -641,7 +642,7 @@
     </action>
 
     <action    path="/subs/subscribe"
-               type="org.bedework.webcommon.subs.SubscribeAction"
+               type="org.bedework.webcommon.subs.EndSubscribeAction"
                name="calForm"
                scope="session"
                validate="false">
@@ -649,6 +650,8 @@
       <forward name="retry" path="/subs/showModForm.rdo" redirect="true"/>
       <forward name="reffed" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="noAccess" path="/subs/showSubs.rdo" redirect="true"/>
+      <forward name="added" path="/subs/showSubs.rdo" redirect="true" />
+      <forward name="updated" path="/subs/showSubs.rdo" redirect="true" />
       <forward name="success" path="/subs/showSubs.rdo" redirect="true" />
     </action>
 

@@ -62,14 +62,12 @@ import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;
 
-import edu.rpi.sss.util.Util;
-
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Subscribe a user to a calendar.
+/** Complete or update a subscription to a calendar.
  *
  * <p>Parameters are:<ul>
  *      <li>"name"             Name of subscription</li>
@@ -89,7 +87,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
-public class SubscribeAction extends BwAbstractAction {
+public class EndSubscribeAction extends BwAbstractAction {
   /* (non-Javadoc)
    * @see org.bedework.webcommon.BwAbstractAction#doAction(javax.servlet.http.HttpServletRequest, org.bedework.webcommon.BwSession, org.bedework.webcommon.BwActionFormBase)
    */
@@ -105,81 +103,7 @@ public class SubscribeAction extends BwAbstractAction {
       return unsubscribe(request, form);
     }
 
-    BwSubscription sub = form.getSubscription();
-
-    CalSvcI svc = form.fetchSvci();
-
-    String viewName = getReqPar(request, "view");
-    boolean addToDefaultView = false;
-
-    if (viewName == null) {
-      addToDefaultView = true;
-      String str = getReqPar(request, "addtodefaultview");
-      if (str != null) {
-        addToDefaultView = str.equals("y");
-      }
-    }
-
-    Boolean bool = getBooleanReqPar(request, "unremoveable");
-    if (bool != null) {
-      if (!form.getUserAuth().isSuperUser()) {
-        return "noAccess"; // Only super user for that flag
-      }
-
-      sub.setUnremoveable(bool.booleanValue());
-    }
-
-    if (!validateSub(sub, form)) {
-      return "retry";
-    }
-
-    if (getReqPar(request, "addSubscription") != null) {
-      try {
-        svc.addSubscription(sub);
-      } catch (CalFacadeException cfe) {
-        if (CalFacadeException.duplicateSubscription.equals(cfe.getMessage())) {
-          form.getErr().emit(cfe.getMessage());
-          return "success"; // User will see message and we'll stay on page
-        }
-
-        throw cfe;
-      }
-    } else if (getReqPar(request, "updateSubscription") != null) {
-      svc.updateSubscription(sub);
-    } else {
-    }
-
-    if ((viewName == null) && !addToDefaultView) {
-      // We're done - not adding to a view
-      return "success";
-    }
-
-    if (sub != null) {
-      svc.addViewSubscription(viewName, sub);
-    }
-
-    form.setSubscriptions(svc.getSubscriptions());
-
-    return "success";
-  }
-
-  private boolean validateSub(BwSubscription sub,
-                              BwActionFormBase form) {
-    sub.setName(Util.checkNull(sub.getName()));
-
-    if (sub.getName() == null) {
-      form.getErr().emit("org.bedework.validation.error.missingfield", "name");
-      return false;
-    }
-
-    sub.setUri(Util.checkNull(sub.getUri()));
-
-    if (!sub.getInternalSubscription() && (sub.getUri() == null)) {
-      form.getErr().emit("org.bedework.validation.error.missingfield", "uri");
-      return false;
-    }
-
-    return true;
+    return finishSubscribe(request, form.getSubscription(), form);
   }
 
   private String unsubscribe(HttpServletRequest request,

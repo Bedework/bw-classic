@@ -2042,7 +2042,10 @@ public class CalSvc extends CalSvcI {
     if (calendar == null) {
       // Assume deleted
       val.setCalendarDeleted(true);
-      updateSubscription(val);
+      if (val.getId() != CalFacadeDefs.unsavedItemKey) {
+        // Save the state
+        updateSubscription(val);
+      }
     } else {
       val.setCalendar(calendar);
     }

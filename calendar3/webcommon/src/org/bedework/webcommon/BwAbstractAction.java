@@ -79,6 +79,7 @@ import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
 
+import edu.rpi.sss.util.Util;
 import edu.rpi.sss.util.jsp.UtilAbstractAction;
 import edu.rpi.sss.util.jsp.UtilActionForm;
 
@@ -353,11 +354,107 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return true;
   }
 
+  protected boolean validateSub(BwSubscription sub,
+                                BwActionFormBase form) {
+    sub.setName(Util.checkNull(sub.getName()));
+
+    if (sub.getName() == null) {
+      form.getErr().emit("org.bedework.validation.error.missingfield", "name");
+      return false;
+    }
+
+    sub.setUri(Util.checkNull(sub.getUri()));
+
+    if (!sub.getInternalSubscription() && (sub.getUri() == null)) {
+      form.getErr().emit("org.bedework.validation.error.missingfield", "uri");
+      return false;
+    }
+
+    return true;
+  }
+
+  /** Called to finish off adding or updating a subscription
+   *
+   * @param request
+   * @param sub
+   * @param form
+   * @return String "added" for added, "updated" for updated.
+   * @throws Throwable
+   */
+  protected String finishSubscribe(HttpServletRequest request,
+                                   BwSubscription sub,
+                                   BwActionFormBase form) throws Throwable {
+    CalSvcI svc = form.fetchSvci();
+    String forward;
+
+    String viewName = getReqPar(request, "view");
+    boolean addToDefaultView = false;
+
+    if (viewName == null) {
+      addToDefaultView = true;
+      String str = getReqPar(request, "addtodefaultview");
+      if (str != null) {
+        addToDefaultView = str.equals("y");
+      }
+    }
+
+    Boolean bool = getBooleanReqPar(request, "unremoveable");
+    if (bool != null) {
+      if (!form.getUserAuth().isSuperUser()) {
+        return "noAccess"; // Only super user for that flag
+      }
+
+      sub.setUnremoveable(bool.booleanValue());
+    }
+
+    if (!validateSub(sub, form)) {
+      return "retry";
+    }
+
+    if (getReqPar(request, "addSubscription") != null) {
+      try {
+        svc.addSubscription(sub);
+        forward = "added";
+      } catch (CalFacadeException cfe) {
+        if (CalFacadeException.duplicateSubscription.equals(cfe.getMessage())) {
+          form.getErr().emit(cfe.getMessage());
+          return "success"; // User will see message and we'll stay on page
+        }
+
+        throw cfe;
+      }
+    } else if (getReqPar(request, "updateSubscription") != null) {
+      svc.updateSubscription(sub);
+      forward = "updated";
+    } else {
+      forward = "noaction";
+    }
+
+    if ((viewName == null) && !addToDefaultView) {
+      // We're done - not adding to a view
+      return forward;
+    }
+
+    if (sub != null) {
+      svc.addViewSubscription(viewName, sub);
+    }
+
+    form.setSubscriptions(svc.getSubscriptions());
+
+    return forward;
+  }
+
   /** Find a user object given a "user" request parameter.
    *
    * @param request     HttpServletRequest for parameters
    * @param form
    * @return BwUser     null if not found. Messages emitted
+   * @throws Throwable
+   */
+  /**
+   * @param request
+   * @param form
+   * @return
    * @throws Throwable
    */
   protected BwUser findUser(HttpServletRequest request,

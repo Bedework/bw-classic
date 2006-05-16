@@ -63,9 +63,17 @@ import org.bedework.webcommon.BwSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Subscribe a user to a calendar.
+/** This should be called when we have a displayed list of calendars to which
+ * we can subscribe. We pass the path or uri and a subscription object is
+ * created and placed in the form.
+ *
+ * <p>This should then forward to a page which allows the user to set the rest
+ * of the subscrioption parameters.
  *
  * <p>Parameters are:<ul>
+ *      <li>"name"              Optional name of subscription</li>
+ *      <li>"display"           Optional setting for display flag</li>
+ *      <li>"affctsFreeBusy"    Optional setting for freebusy</li>
  *      <li>"calPath"           Path to local calendar</li>
  *      <li>"calUri"            URI of remote calendar</li>
  * </ul>
@@ -99,14 +107,28 @@ public class InitSubscribeAction extends BwAbstractAction {
 
     BwSubscription sub;
 
-    // XXX Bogus??? Just use path for both.
+    boolean display = true;
+    Boolean flag = getBooleanReqPar(request, "display");
+    if (flag != null) {
+      display = flag.booleanValue();
+    }
+
+    boolean affectsFreeBusy = false;
+    flag = getBooleanReqPar(request, "affectsFreeBusy");
+    if (flag != null) {
+      affectsFreeBusy = flag.booleanValue();
+    }
+
+    String name = getReqPar(request, "name");
+
     if (calPath == null) {
-      calUri = request.getParameter("calUri");
+      calUri = getReqPar(request, "calUri");
       if (calUri == null) {
         return "error";
       }
 
-      sub = BwSubscription.makeSubscription(calUri, null, false, false, false);
+      sub = BwSubscription.makeSubscription(calUri, name, display,
+                                            affectsFreeBusy, false);
 
       /* Try to access the calendar */
       if (svc.getSubCalendar(sub) == null) {
@@ -123,11 +145,21 @@ public class InitSubscribeAction extends BwAbstractAction {
         return "noAccess";
       }
 
-      sub = BwSubscription.makeSubscription(cal, cal.getName(), false, false, false);
+      if (name == null) {
+        name = cal.getName();
+      }
+
+      sub = BwSubscription.makeSubscription(cal, name, display,
+                                            affectsFreeBusy, false);
+    }
+
+    form.setSubscription(sub);
+
+    if (getReqPar(request, "addSubscription") != null) {
+      return finishSubscribe(request, sub, form);
     }
 
     form.assignAddingSubscription(true);
-    form.setSubscription(sub);
 
     return "success";
   }

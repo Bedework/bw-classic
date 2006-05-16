@@ -2926,12 +2926,12 @@
   <xsl:template name="addSubByUri">
     <h3>Add Subscription to User Calendar</h3>
     <p class="note">*the subsciption name must be unique</p>
-    <form name="subscribeForm" action="{$subscriptions-subscribe}" onsubmit="return setSubscriptionUri(this)" method="post">
+    <form name="subscribeForm" action="{$subscriptions-initAdd}" onsubmit="return setSubscriptionUri(this)" method="post">
       <table class="common" cellspacing="0">
         <tr>
           <td class="fieldname">Name:</td>
           <td>
-            <input type="text" value="" name="subscription.name" size="60"/>
+            <input type="text" value="" name="name" size="60"/>
           </td>
         </tr>
         <!-- the following would be for an arbitrary URI.  We'll add this later.
@@ -2959,21 +2959,21 @@
         <tr>
           <td class="fieldname">Display:</td>
           <td>
-            <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
-            <input type="radio" value="false" name="subscription.display"/> no
+            <input type="radio" value="true" name="display" checked="checked"/> yes
+            <input type="radio" value="false" name="display"/> no
           </td>
         </tr>
         <tr>
           <td class="fieldname">Affects Free/Busy:</td>
           <td>
-            <input type="radio" value="true" name="subscription.affectsFreeBusy"/> yes
-            <input type="radio" value="false" name="subscription.affectsFreeBusy" checked="checked"/> no
+            <input type="radio" value="true" name="affectsFreeBusy"/> yes
+            <input type="radio" value="false" name="affectsFreeBusy" checked="checked"/> no
           </td>
         </tr>
         <tr>
           <td class="fieldname">Style:</td>
           <td>
-            <input type="text" value="" name="subscription.style" size="60"/>
+            <input type="text" value="" name="style" size="60"/>
           </td>
         </tr>
         <!--<tr>
