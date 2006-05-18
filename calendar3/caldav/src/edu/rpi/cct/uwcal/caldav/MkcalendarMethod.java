@@ -57,12 +57,14 @@ package edu.rpi.cct.uwcal.caldav;
 import org.bedework.davdefs.CaldavTags;
 
 import edu.rpi.cct.webdav.servlet.common.PropPatchMethod;
+import edu.rpi.cct.webdav.servlet.common.Property;
 import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -98,6 +100,7 @@ public class MkcalendarMethod extends PropPatchMethod {
 
     WebdavNsNode node = getNsIntf().getNode(resourceUri);
 
+    // XXX Make calendar using properties sent in request
     getNsIntf().makeCollection(req, node);
 
     resp.setStatus(HttpServletResponse.SC_CREATED);
@@ -119,6 +122,20 @@ public class MkcalendarMethod extends PropPatchMethod {
       }
 
       Collection setRemoveList = processUpdate(root);
+
+      Iterator it = setRemoveList.iterator();
+      while (it.hasNext()) {
+        Collection sr = (Collection)it.next();
+
+        if (!(sr instanceof PropPatchMethod.PropertySetList)) {
+          throw new WebdavBadRequest();
+        }
+
+        Iterator pit = sr.iterator();
+        while (pit.hasNext()) {
+          Property prop = (Property)pit.next();
+        }
+      }
     } catch (WebdavException wde) {
       throw wde;
     } catch (Throwable t) {

@@ -77,7 +77,9 @@ public class CaldavClient extends Client {
   }
 
   public void setMethodName(String name, String uri) throws CalFacadeException {
-    if ("MKCOL".equals(name)) {
+    if ("MKCALENDAR".equals(name)) {
+      setMethod(new MkcalendarMethod(uri));
+    } else if ("MKCOL".equals(name)) {
       setMethod(new MkColMethod(uri));
     } else if ("PROPFIND".equals(name)) {
       setMethod(new PropFindMethod(uri));
