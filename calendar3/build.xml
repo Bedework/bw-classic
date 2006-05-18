@@ -661,6 +661,9 @@
 
   <target name="schema" depends="init"
           description="Generate schema from mapping files">
+    <echo message="Creating a schema is also available from the generated stand-alone" />
+    <echo message="scripts using the 'schema' or 'schema-export' parameter" />
+
     <input message="text only? no will update db with new schema "
            validargs="yes,no"
            addproperty="schema.text.only" />

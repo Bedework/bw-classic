@@ -10,6 +10,7 @@ cp=@CP@
 
 DUMPCMD="$JAVA_HOME/bin/java -cp $cp @DUMP-CLASS@"
 RESTORECMD="$JAVA_HOME/bin/java -cp $cp @RESTORE-CLASS@"
+SCHEMACMD="$JAVA_HOME/bin/java -cp $cp org.hibernate.tool.hbm2ddl.SchemaExport"
 
 APPNAME=@BW-APP-NAME@
 
@@ -31,7 +32,20 @@ case "$1" in
     echo $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars
     $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars
     ;;
+  schema)
+    echo $SCHEMACMD --text --create --config=./classes/hibernate.cfg.xml --output=schema.sql
+    $SCHEMACMD --text --create --config=./classes/hibernate.cfg.xml --output=schema.sql
+    ;;
+  schema-export)
+    echo $SCHEMACMD --create --config=./classes/hibernate.cfg.xml --output=schema.sql
+    $SCHEMACMD --create --config=./classes/hibernate.cfg.xml --output=schema.sql
+    ;;
   *)
-    echo $"Usage: $0 {dump <filename>|restore <filename>|backup <directory> <prefix>} || initdb"
+    echo $"Usage: $0 {dump <filename> |"
+    echo $"           restore <filename> |"
+    echo $"           backup <directory> <prefix>} |"
+    echo $"           initdb |"
+    echo $"           schema |"
+    echo $"           schema-export"
 esac
 
