@@ -156,7 +156,7 @@ public class InitSubscribeAction extends BwAbstractAction {
     form.setSubscription(sub);
 
     if (getReqPar(request, "addSubscription") != null) {
-      return finishSubscribe(request, sub, form);
+      return forwards[finishSubscribe(request, sub, form)];
     }
 
     form.assignAddingSubscription(true);

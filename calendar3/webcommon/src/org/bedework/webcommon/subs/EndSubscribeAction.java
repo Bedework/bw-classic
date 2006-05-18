@@ -98,15 +98,21 @@ public class EndSubscribeAction extends BwAbstractAction {
       return "noAccess"; // First line of defence
     }
 
+    int result;
+
     if (getReqPar(request, "delete") != null) {
-      return unsubscribe(request, form);
+      result = unsubscribe(request, form);
+    } else {
+      result = finishSubscribe(request, form.getSubscription(), form);
     }
 
-    return finishSubscribe(request, form.getSubscription(), form);
+    resetSelection(form);
+
+    return forwards[result];
   }
 
-  private String unsubscribe(HttpServletRequest request,
-                             BwActionFormBase form) throws Throwable {
+  private int unsubscribe(HttpServletRequest request,
+                          BwActionFormBase form) throws Throwable {
     CalSvcI svc = form.fetchSvci();
 
     String name = request.getParameter("name");
@@ -114,18 +120,18 @@ public class EndSubscribeAction extends BwAbstractAction {
     if (name == null) {
       // Assume no access
       form.getErr().emit("org.bedework.client.error.missingfield", "name");
-      return "error";
+      return forwardError;
     }
 
     BwSubscription sub = svc.findSubscription(name);
 
     if (sub == null) {
       form.getErr().emit("org.bedework.client.error.nosuchsubscription", name);
-      return "notFound";
+      return forwardNotFound;
     }
 
     if (sub.getUnremoveable() && !form.getUserAuth().isSuperUser()) {
-      return "noAccess"; // Only super user can remove the unremovable
+      return forwardNoAccess; // Only super user can remove the unremovable
     }
 
     /* Check for references in views. For user extra simple mode only we will
@@ -144,7 +150,7 @@ public class EndSubscribeAction extends BwAbstractAction {
           if (!svc.removeViewSubscription(v.getName(), sub)) {
             form.getErr().emit("org.bedework.client.error.viewnotfound",
                                v.getName());
-            return "error";
+            return forwardError;
           }
         } else {
           form.getErr().emit("org.bedework.client.error.subscription.reffed",
@@ -155,7 +161,7 @@ public class EndSubscribeAction extends BwAbstractAction {
     }
 
     if (reffed) {
-      return "reffed";
+      return forwardReffed;
     }
 
     svc.removeSubscription(sub);
@@ -164,6 +170,6 @@ public class EndSubscribeAction extends BwAbstractAction {
     /* Refetch to tidy up */
     form.setSubscriptions(svc.getSubscriptions());
 
-    return "success";
+    return forwardSuccess;
   }
 }

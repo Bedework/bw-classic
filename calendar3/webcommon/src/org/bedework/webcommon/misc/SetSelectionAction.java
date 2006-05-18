@@ -106,28 +106,13 @@ public class SetSelectionAction extends BwAbstractAction {
    */
   private String trySub(HttpServletRequest request,
                         BwActionFormBase form) throws Throwable {
-    CalSvcI svci = form.fetchSvci();
-    String name = getReqPar(request, "subname");
+    int result = setSubscription(getReqPar(request, "subname"), form);
 
-    if (name == null) {
+    if (result == forwardNoParameter) {
       return null;
     }
 
-    BwSubscription sub = svci.findSubscription(name);
-
-    if (sub == null) {
-      form.getErr().emit("org.bedework.client.error.unknownsubscription");
-      return "notFound";
-    }
-
-    Collection c = new ArrayList();
-    c.add(sub.clone());
-    svci.setCurrentSubscriptions(c);
-    form.assignCurrentSubscriptions(c);
-    form.setSelectionType(BedeworkDefs.selectionTypeSubscription);
-
-    form.refreshIsNeeded();
-    return "success";
+    return forwards[result];
   }
 
   /* Try for a calendar url. Return with forward or null for not found.

@@ -73,6 +73,7 @@ import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUser;
 import org.bedework.calfacade.svc.BwAuthUserPrefs;
 import org.bedework.calfacade.svc.BwSubscription;
+import org.bedework.calfacade.svc.BwView;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.calsvc.CalSvc;
@@ -83,6 +84,7 @@ import edu.rpi.sss.util.Util;
 import edu.rpi.sss.util.jsp.UtilAbstractAction;
 import edu.rpi.sss.util.jsp.UtilActionForm;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -106,6 +108,53 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
   /** Name of the init parameter holding our name */
   private static final String appNameInitParameter = "rpiappname";
 
+  /* These are all the possible forwards we take. Internal routines should
+   * return one of the following indices.
+   */
+  // ENUM
+  protected int forwardSuccess = 0;
+  protected int forwardContinue = 1;
+  protected int forwardRetry = 2;
+
+  protected int forwardError = 3;
+  protected int forwardNoAccess = 4;
+
+  protected int forwardNotFound = 5;
+
+  protected int forwardNoSuchView = 6;
+
+  /* Set when an optional parameter is not found */
+  protected int forwardNoParameter = 7;
+
+  /* Set when no action was taken */
+  protected int forwardNoAction = 8;
+
+  /* Something is referenced and cannot be removed */
+  protected int forwardReffed = 9;
+
+  /* an object was added/updated */
+  protected int forwardAdded = 10;
+  protected int forwardUpdated = 11;
+
+  protected final String[] forwards = {
+    "success",
+    "continue",
+    "retry",
+    "error",
+    "noAccess",
+    "notFound",
+    "noSuchView",
+    "noParameter",
+    "noAction",
+    "reffed",
+    "added",
+    "updated",
+  };
+
+  /*
+   *  (non-Javadoc)
+   * @see edu.rpi.sss.util.jsp.UtilAbstractAction#getId()
+   */
   public String getId() {
     return getClass().getName();
   }
@@ -281,6 +330,30 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
   protected void initFields(BwActionFormBase form) {
   }
 
+  /* Reset the current selection. Called after updates to views, subscriptions
+   * or calendars.
+   */
+  protected void resetSelection(BwActionFormBase form) throws CalFacadeException {
+    String seltype = form.getSelectionType();
+    CalSvcI svci = form.fetchSvci();
+    String name = null;
+
+    if (seltype.equals(BedeworkDefs.selectionTypeView)) {
+      BwView v = svci.getCurrentView();
+      if (v != null) {
+        name = v.getName();
+      }
+      setView(name, form);
+    } else if (seltype.equals(BedeworkDefs.selectionTypeSubscription)) {
+      // No refresh needed?
+    } else if (seltype.equals(BedeworkDefs.selectionTypeCalendar)) {
+      // No refresh needed?
+    } else {
+      // Set to default
+      setView(null, form);
+    }
+  }
+
   /* Set the view to the given name or the default if null.
    *
    * @return false for not found
@@ -306,6 +379,35 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     form.setSelectionType(BedeworkDefs.selectionTypeView);
     form.refreshIsNeeded();
     return true;
+  }
+
+  /* Set the subscription to the given name or the default if null.
+   *
+   * @return int result code
+   */
+  protected int setSubscription(String name,
+                                BwActionFormBase form) throws CalFacadeException {
+    CalSvcI svci = form.fetchSvci();
+
+    if (name == null) {
+      return forwardNoParameter;
+    }
+
+    BwSubscription sub = svci.findSubscription(name);
+
+    if (sub == null) {
+      form.getErr().emit("org.bedework.client.error.unknownsubscription");
+      return forwardNotFound;
+    }
+
+    Collection c = new ArrayList();
+    c.add(sub.clone());
+    svci.setCurrentSubscriptions(c);
+    form.assignCurrentSubscriptions(c);
+    form.setSelectionType(BedeworkDefs.selectionTypeSubscription);
+
+    form.refreshIsNeeded();
+    return forwardSuccess;
   }
 
   /** Method to find a subscription given its name. Expects a request parameter
@@ -378,14 +480,14 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @param request
    * @param sub
    * @param form
-   * @return String "added" for added, "updated" for updated.
+   * @return int   result code
    * @throws Throwable
    */
-  protected String finishSubscribe(HttpServletRequest request,
+  protected int finishSubscribe(HttpServletRequest request,
                                    BwSubscription sub,
                                    BwActionFormBase form) throws Throwable {
     CalSvcI svc = form.fetchSvci();
-    String forward;
+    int result;
 
     String viewName = getReqPar(request, "view");
     boolean addToDefaultView = false;
@@ -401,38 +503,38 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     Boolean bool = getBooleanReqPar(request, "unremoveable");
     if (bool != null) {
       if (!form.getUserAuth().isSuperUser()) {
-        return "noAccess"; // Only super user for that flag
+        return forwardNoAccess; // Only super user for that flag
       }
 
       sub.setUnremoveable(bool.booleanValue());
     }
 
     if (!validateSub(sub, form)) {
-      return "retry";
+      return forwardRetry;
     }
 
     if (getReqPar(request, "addSubscription") != null) {
       try {
         svc.addSubscription(sub);
-        forward = "added";
+        result = forwardAdded;
       } catch (CalFacadeException cfe) {
         if (CalFacadeException.duplicateSubscription.equals(cfe.getMessage())) {
           form.getErr().emit(cfe.getMessage());
-          return "success"; // User will see message and we'll stay on page
+          return forwardSuccess; // User will see message and we'll stay on page
         }
 
         throw cfe;
       }
     } else if (getReqPar(request, "updateSubscription") != null) {
       svc.updateSubscription(sub);
-      forward = "updated";
+      result = forwardUpdated;
     } else {
-      forward = "noaction";
+      result = forwardNoAction;
     }
 
     if ((viewName == null) && !addToDefaultView) {
       // We're done - not adding to a view
-      return forward;
+      return result;
     }
 
     if (sub != null) {
@@ -441,7 +543,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
     form.setSubscriptions(svc.getSubscriptions());
 
-    return forward;
+    return result;
   }
 
   /** Find a user object given a "user" request parameter.
