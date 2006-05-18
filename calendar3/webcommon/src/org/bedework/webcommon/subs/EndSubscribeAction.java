@@ -53,7 +53,6 @@
 */
 package org.bedework.webcommon.subs;
 
-import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;

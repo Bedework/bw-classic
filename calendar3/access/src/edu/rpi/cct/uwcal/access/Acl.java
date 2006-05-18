@@ -53,6 +53,7 @@
 */
 package edu.rpi.cct.uwcal.access;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -120,7 +121,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
   /** Result of evaluating access to an object for a principal
    */
-  public static class CurrentAccess {
+  public static class CurrentAccess implements Serializable {
     /** The Acl used to evaluate the access. We should not necessarily
      * make this available to the client.
      */

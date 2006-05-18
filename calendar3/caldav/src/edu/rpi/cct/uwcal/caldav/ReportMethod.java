@@ -331,7 +331,7 @@ public class ReportMethod extends MethodBase {
         t.printStackTrace();
       }
 
-      return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+      throw new WebdavException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 

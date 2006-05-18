@@ -54,13 +54,19 @@
 
 package edu.rpi.cct.uwcal.caldav;
 
-import edu.rpi.cct.webdav.servlet.common.MkcolMethod;
+import org.bedework.davdefs.CaldavTags;
+
+import edu.rpi.cct.webdav.servlet.common.PropPatchMethod;
+import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
+import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
+import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
+
+import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.bedework.davdefs.CaldavTags;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -68,28 +74,60 @@ import org.w3c.dom.Element;
  *
  *   @author Mike Douglass   douglm@rpi.edu
  */
-public class CDMkcolMethod extends MkcolMethod {
-  protected int processDoc(HttpServletRequest req,
-                           Document doc) throws WebdavException {
-    if (!"MKCALENDAR".equalsIgnoreCase(req.getMethod())) {
-      return HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
+public class MkcalendarMethod extends PropPatchMethod {
+  /** Called at each request
+   */
+  public void init() {
+  }
+
+  public void doMethod(HttpServletRequest req,
+                        HttpServletResponse resp) throws WebdavException {
+    if (debug) {
+      trace("MkcalendarMethod: doMethod");
     }
 
+    /* Parse any content */
+    Document doc = parseContent(req, resp);
+
+    /* Create the node */
+    String resourceUri = getResourceUri(req);
+
+    if (doc != null) {
+      processDoc(req, doc);
+    }
+
+    WebdavNsNode node = getNsIntf().getNode(resourceUri);
+
+    getNsIntf().makeCollection(req, node);
+
+    resp.setStatus(HttpServletResponse.SC_CREATED);
+  }
+
+  /* ====================================================================
+   *                   Private methods
+   * ==================================================================== */
+
+  protected void processDoc(HttpServletRequest req,
+                            Document doc) throws WebdavException {
     try {
+      WebdavNsIntf intf = getNsIntf();
+
       Element root = doc.getDocumentElement();
 
-      if (nodeMatches(root, CaldavTags.mkcalendar)) {
-        return HttpServletResponse.SC_OK;
+      if (!nodeMatches(root, CaldavTags.mkcalendar)) {
+        throw new WebdavBadRequest();
       }
 
-      return HttpServletResponse.SC_BAD_REQUEST;
+      Collection setRemoveList = processUpdate(root);
+    } catch (WebdavException wde) {
+      throw wde;
     } catch (Throwable t) {
       System.err.println(t.getMessage());
       if (debug) {
         t.printStackTrace();
       }
 
-      return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+      throw new WebdavException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 }

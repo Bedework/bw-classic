@@ -512,6 +512,18 @@ public abstract class MethodBase {
     }
   }
 
+  protected String getElementContent(Element el) throws WebdavException {
+    try {
+      return XmlUtil.getElementContent(el);
+    } catch (Throwable t) {
+      if (debug) {
+        getLogger().error(this, t);
+      }
+
+      throw new WebdavException(t);
+    }
+  }
+
   /* ====================================================================
    *                   XmlEmit wrappers
    * ==================================================================== */

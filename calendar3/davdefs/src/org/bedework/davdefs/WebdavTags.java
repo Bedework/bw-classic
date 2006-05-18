@@ -297,36 +297,30 @@ public class WebdavTags {
                                                   "privilege");
 
   /** */
-  public static final QName prop = new QName(namespace,
-                                             "prop");
+  public static final QName prop = new QName(namespace, "prop");
 
   /** */
-  public static final QName property = new QName(namespace,
-                                             "property");
+  public static final QName property = new QName(namespace, "property");
 
   /** */
   public static final QName propertySearch = new QName(namespace,
                                              "property-search");
 
   /** */
-  public static final QName propname = new QName(namespace,
-                                                 "propname");
+  public static final QName propname = new QName(namespace, "propname");
 
   /** */
-  public static final QName propstat = new QName(namespace,
-                                                 "propstat");
+  public static final QName propstat = new QName(namespace, "propstat");
 
   /** */
   public static final QName _protected = new QName(namespace,
                                                    "protected");
 
   /** */
-  public static final QName read = new QName(namespace,
-                                             "read");
+  public static final QName read = new QName(namespace, "read");
 
   /** */
-  public static final QName readAcl = new QName(namespace,
-                                                "read-acl");
+  public static final QName readAcl = new QName(namespace, "read-acl");
 
   /** */
   public static final QName readCurrentUserPrivilegeSet = new QName(namespace,
@@ -335,6 +329,9 @@ public class WebdavTags {
   /** */
   public static final QName recognizedPrincipal = new QName(namespace,
                                                      "recognized-principal");
+
+  /** */
+  public static final QName remove = new QName(namespace, "remove");
 
   /** */
   public static final QName requiredPrincipal = new QName(namespace,
@@ -349,24 +346,23 @@ public class WebdavTags {
                                                      "resourcetype");
 
   /** */
-  public static final QName response = new QName(namespace,
-                                                 "response");
+  public static final QName response = new QName(namespace, "response");
 
   /** */
   public static final QName responseDescription = new QName(namespace,
                                                       "responsedescription");
 
   /** */
-  public static final QName self = new QName(namespace,
-                                             "self");
+  public static final QName self = new QName(namespace, "self");
 
   /** */
-  public static final QName source = new QName(namespace,
-                                               "source");
+  public static final QName set = new QName(namespace, "set");
 
   /** */
-  public static final QName status = new QName(namespace,
-                                                    "status");
+  public static final QName source = new QName(namespace, "source");
+
+  /** */
+  public static final QName status = new QName(namespace, "status");
 
   /** */
   public static final QName supportedPrivilege = new QName(namespace,

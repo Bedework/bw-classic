@@ -30,7 +30,6 @@ import org.bedework.caldav.client.api.CaldavResp;
 import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;

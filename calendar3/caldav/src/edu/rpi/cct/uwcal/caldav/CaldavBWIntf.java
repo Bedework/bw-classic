@@ -1229,7 +1229,8 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
       getSvci();
 
-      BwFreeBusy fb = freeBusy.getFreeBusy(svci, user);
+      BwFreeBusy fb = freeBusy.getFreeBusy(svci, cnode.getCDURI().getCal(),
+                                           user);
 
       cnode.setFreeBusy(fb);
     } catch (WebdavIntfException we) {

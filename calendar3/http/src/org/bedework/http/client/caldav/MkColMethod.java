@@ -53,38 +53,23 @@
 */
 package org.bedework.http.client.caldav;
 
-import org.bedework.calfacade.CalFacadeException;
-import org.bedework.http.client.Client;
-import org.bedework.http.client.HttpManager;
+import org.apache.commons.httpclient.HttpMethodBase;
 
-/** A caldav client
+/** The PropFind method
 *
 * @author Mike Douglass  douglm @ rpi.edu
 */
-public class CaldavClient extends Client {
-  /** Constructor
- */
- public CaldavClient() {
-   super();
- }
+public class MkColMethod extends HttpMethodBase {
 
   /** Constructor
    *
-   * @param mngr
-  */
-  public CaldavClient(HttpManager mngr) {
-    super(mngr);
+   * @param uri
+   */
+  public MkColMethod(String uri) {
+    super(uri);
   }
 
-  public void setMethodName(String name, String uri) throws CalFacadeException {
-    if ("MKCOL".equals(name)) {
-      setMethod(new MkColMethod(uri));
-    } else if ("PROPFIND".equals(name)) {
-      setMethod(new PropFindMethod(uri));
-    } else if ("REPORT".equals(name)) {
-      setMethod(new ReportMethod(uri));
-    } else {
-      super.setMethodName(name, uri);
-    }
+  public String getName() {
+    return "MKCOL";
   }
 }

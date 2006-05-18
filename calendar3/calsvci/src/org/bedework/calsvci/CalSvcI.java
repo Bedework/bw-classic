@@ -810,8 +810,8 @@ public abstract class CalSvcI implements Serializable {
    * into granularity sized chunks which will only be reported if one or more
    * events fall in the segment.
    *
-   * @param cal    Calendar to provide free-busy for. Null for default
-   *               collection (as specified by user).
+   * @param cal    Calendar to provide free-busy for. Null or the user root
+   *               for default collection (as specified by user).
    * @param who
    * @param start
    * @param end

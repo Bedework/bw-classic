@@ -451,12 +451,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @return BwUser     null if not found. Messages emitted
    * @throws Throwable
    */
-  /**
-   * @param request
-   * @param form
-   * @return
-   * @throws Throwable
-   */
   protected BwUser findUser(HttpServletRequest request,
                              BwActionFormBase form) throws Throwable {
     CalSvcI svci = form.fetchSvci();

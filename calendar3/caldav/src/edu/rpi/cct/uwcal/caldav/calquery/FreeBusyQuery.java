@@ -54,6 +54,7 @@
 
 package edu.rpi.cct.uwcal.caldav.calquery;
 
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calsvci.CalSvcI;
@@ -123,17 +124,19 @@ public class FreeBusyQuery {
 
   /**
    * @param svci
+   * @param cal
    * @param account
    * @return BwFreeBusy
    * @throws WebdavException
    */
-  public BwFreeBusy getFreeBusy(CalSvcI svci, String account) throws WebdavException {
+  public BwFreeBusy getFreeBusy(CalSvcI svci, BwCalendar cal,
+                                String account) throws WebdavException {
     try {
       BwUser user = svci.findUser(account);
       if (user == null) {
         throw WebdavIntfException.unauthorized();
       }
-      BwFreeBusy fb = svci.getFreeBusy(null, user,
+      BwFreeBusy fb = svci.getFreeBusy(cal, user,
                                        timeRange.getStart(), timeRange.getEnd(),
                                        null, false);
 

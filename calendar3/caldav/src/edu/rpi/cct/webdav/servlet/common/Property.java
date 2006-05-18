@@ -54,121 +54,76 @@
 
 package edu.rpi.cct.webdav.servlet.common;
 
-import org.bedework.davdefs.WebdavTags;
-
-import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
-import edu.rpi.cct.webdav.servlet.shared.WebdavException;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.w3c.dom.Element;
-
-/** Class called to handle PROPPATCH
+/** A webdav property
  *
  *   @author Mike Douglass   douglm@rpi.edu
  */
-public class PropPatchMethod extends MethodBase {
-  /** Called at each request
+public class Property {
+  /* Namespace of property */
+  private String nameSpace;
+
+  /* Name of property */
+  private String name;
+
+  private String value;
+
+  /** Constructor
+   * @param name
    */
-  public void init() {
+  public Property(String name) {
+    this.name = name;
   }
 
-  public void doMethod(HttpServletRequest req,
-                        HttpServletResponse resp) throws WebdavException {
-
-  }
-
-  /** List of properties to set
-   *
+  /** Constructor
+   * @param nameSpace
+   * @param name
+   * @param value
    */
-  public static class PropertySetList extends ArrayList {
+  public Property(String nameSpace, String name, String value) {
+    this.nameSpace = nameSpace;
+    this.name = name;
+    this.value = value;
   }
 
-  /** List of properties to remove
-  *
-  */
-  public static class PropertyRemoveList extends ArrayList {
-  }
-
-  /** The given node should contain zero or more set or remove child elements.
-   *
-   * <p>Each set element should contain zero or more property tags with values.
-   *
-   * <p>Each remove element should contain zero or more empty property tags.
-   *
-   * <p>The returned Collection contains zero or more PropertySetList or
-   * PropertyRemoveList entries.
-   *
-   * @param node
-   * @return Collection
-   * @throws WebdavException
+  /**
+   * @param val
    */
-  protected Collection processUpdate(Element node) throws WebdavException {
-    ArrayList res = new ArrayList();
-
-    try {
-      Element[] children = getChildren(node);
-
-      for (int i = 0; i < children.length; i++) {
-        Element curnode = children[i];
-        Collection plist;
-
-        if (nodeMatches(curnode, WebdavTags.set)) {
-          plist = new PropertySetList();
-
-          processPlist(plist, curnode, false);
-        } else if (nodeMatches(curnode, WebdavTags.remove)) {
-          plist = new PropertySetList();
-
-          processPlist(plist, curnode, true);
-        } else {
-          throw new WebdavBadRequest();
-        }
-
-        res.add(plist);
-      }
-    } catch (WebdavException wde) {
-      throw wde;
-    } catch (Throwable t) {
-      System.err.println(t.getMessage());
-      if (debug) {
-        t.printStackTrace();
-      }
-
-      throw new WebdavException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    }
-
-    return res;
+  public void setNameSpace(String val) {
+    nameSpace = val;
   }
 
-  /* Process the node which should contain either empty elements for remove or
-   * elements with or without values for remove==false
+  /**
+   * @return String
    */
-  private void processPlist(Collection plist, Element node,
-                            boolean remove) throws WebdavException {
-    Element[] props = getChildren(node);
+  public String getNameSpace() {
+    return nameSpace;
+  }
 
-    for (int i = 0; i < props.length; i++) {
-      Element prop = props[i];
+  /**
+   * @param val
+   */
+  public void setName(String val) {
+    name = val;
+  }
 
-      String ns = prop.getNamespaceURI();
-      String nm = prop.getLocalName();
-      String value = getElementContent(prop);
+  /**
+   * @return String
+   */
+  public String getName() {
+    return name;
+  }
 
-      if (remove && (value != null)) {
-        throw new WebdavBadRequest();
-      }
+  /**
+   * @param val
+   */
+  public void setValue(String val) {
+    value = val;
+  }
 
-      plist.add(new Property(ns, nm, value));
-
-      if (debug) {
-        trace("reqtype: " + nm + " ns: " + ns + " value: " + value);
-      }
-    }
+  /**
+   * @return String
+   */
+  public String getValue() {
+    return value;
   }
 }
-

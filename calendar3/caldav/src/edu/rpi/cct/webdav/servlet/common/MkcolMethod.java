@@ -78,9 +78,9 @@ public class MkcolMethod extends MethodBase {
       trace("MkcolMethod: doMethod");
     }
 
-    /* Parse any content */
+    /* Parse any content
     Document doc = parseContent(req, resp);
-
+    */
     /* Create the node */
     String resourceUri = getResourceUri(req);
 
@@ -88,6 +88,7 @@ public class MkcolMethod extends MethodBase {
 
     getNsIntf().makeCollection(req, node);
 
+    /*
     if (doc != null) {
       int st = processDoc(req, doc);
 
@@ -96,6 +97,7 @@ public class MkcolMethod extends MethodBase {
         throw new WebdavException(st);
       }
     }
+    */
 
     resp.setStatus(HttpServletResponse.SC_CREATED);
   }

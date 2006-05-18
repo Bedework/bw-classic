@@ -1032,6 +1032,18 @@ public class CalSvc extends CalSvcI {
     BwUser u = (BwUser)who;
     Collection subs;
 
+    /* See if the calendar is a user root. */
+
+    if (cal != null) {
+      String[] ss = cal.getPath().split("/");
+      int pathLength = ss.length - 1;  // First element is empty string
+
+      if ((pathLength == 2) &&
+          (ss[1].equals(getSyspars().getUserCalendarRoot()))) {
+        cal = null;
+      }
+    }
+
     if (cal != null) {
       getCal().checkAccess(cal, PrivilegeDefs.privReadFreeBusy, false);
 
