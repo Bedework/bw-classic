@@ -3240,6 +3240,16 @@
       <a href="{$setSelection}?calUrl={$subUri}">
         <xsl:value-of select="name"/>
       </a>
+      <xsl:if test="calendars/calendar/calendarCollection='true' and
+                    calendars/calendar/currentAccess/current-user-privilege-set/privilege/write-content">
+        <!-- set the start date for adding an event to the first day of the
+             given period, the hour of "now", and give a duration of 60 minutes -->
+        <xsl:variable name="calPath" select="calendars/calendar/encodedPath"/>
+        <xsl:variable name="startDate"><xsl:value-of select="/bedework/firstday/date"/>T<xsl:value-of select="substring(/bedework/now/time,1,2)"/>0000</xsl:variable>
+        <a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event">
+          <img src="{$resourcesRoot}/resources/addEvent-forCals-icon.gif" width="9" height="12" border="0" alt="add event"/>
+        </a>
+      </xsl:if>
     </li>
   </xsl:template>
 
