@@ -38,16 +38,17 @@
       <xsl:when test="id='org.bedework.client.error.calendar.referenced'">
         Cannot delete: the calendar is not empty
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.folder.updated'">
+        Folder updated.
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unimplemented'">
         Unimplemented: the feature you are trying to use has not been implemented yet
       </xsl:when>
-      <!-- ??????????????? -->
-      <!-- some help to clarify the following would be good -->
       <xsl:when test="id='org.bedework.client.error.badhow'">
-        Error: bad how
+        Error: bad ACL request (bad how setting)
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.badwhotype'">
-        Error: bad who type
+        Error: bad who type (user or group)
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.badinterval'">
         Error: bad interval
@@ -58,7 +59,6 @@
       <xsl:when test="id='org.bedework.client.error.mail.norecipient'">
         Error: the email has no recipient
       </xsl:when>
-      <!-- end ??????????????? -->
       <xsl:when test="id='org.bedework.client.error.choosegroupsuppressed'">
         Error: choose group is suppressed.  You cannot perform that action at this time.
       </xsl:when>
