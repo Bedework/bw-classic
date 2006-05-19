@@ -446,9 +446,15 @@
       </tr>
 
       <xsl:for-each select="/bedeworkadmin/events/event">
+        <xsl:variable name="subscriptionId" select="subscription/id"/>
+        <xsl:variable name="calPath" select="calendar/encodedPath"/>
+        <xsl:variable name="guid" select="guid"/>
+        <xsl:variable name="recurrenceId" select="recurrenceId"/>
         <tr>
           <td>
-            <xsl:copy-of select="title/*"/>
+            <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+              <xsl:value-of select="title"/>
+            </a>
           </td>
           <td class="date">
             <xsl:value-of select="start"/>
@@ -1198,10 +1204,17 @@
     </table>
 
 
-    <xsl:if test="/bedeworkadmin/canEdit = 'true' or /bedeworkadmin/userInfo/superUser = 'true'">
-      <xsl:variable name="id" select="id"/>
-      <h3><a href="{$event-fetchForUpdate}&amp;eventId={$id}">Edit Event</a></h3>
-    </xsl:if>
+    <!--<xsl:if test="/bedeworkadmin/canEdit = 'true' or /bedeworkadmin/userInfo/superUser = 'true'">
+      <xsl:variable name="subscriptionId" select="subscription/id"/>
+			<xsl:variable name="calPath" select="calendar/encodedPath"/>
+			<xsl:variable name="guid" select="guid"/>
+			<xsl:variable name="recurrenceId" select="recurrenceId"/>
+      <h3>
+			  <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+      	  Edit Event
+			  </a>
+		  </h3>
+    </xsl:if>-->
   </xsl:template>
 
   <!--+++++++++++++++ Sponsors (Contacts) ++++++++++++++++++++-->
@@ -1549,7 +1562,7 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="listForDisplay">
-    <xsl:variable name="calPath" select="calPath"/>
+    <xsl:variable name="calPath" select="encodedPath"/>
     <xsl:variable name="itemClass">
       <xsl:choose>
         <xsl:when test="calendarCollection='false'">folder</xsl:when>

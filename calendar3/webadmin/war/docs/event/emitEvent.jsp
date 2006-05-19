@@ -10,16 +10,9 @@
   <% rpitemprecurid = String.valueOf(recurid); %>
 </logic:present>
 
-<% String rpitemp="/event/fetchForUpdate.do?calid=" + calid +
-                  "&amp;guid=" + guid + "&amp;recurrenceId=" + rpitemprecurid; %>
-
 <event>
   <id><bean:write name="event" property="id" /></id>
-  <title>
-    <genurl:link page="<%=rpitemp%>">
-      <bean:write name="event" property="summary" />
-    </genurl:link>
-  </title>
+  <title><bean:write name="event" property="summary" /></title>
   <bw:emitText name="event" property="guid" />
   <bw:emitText name="event" property="recurrence.recurrenceId" tagName="recurrenceId" />
   <allday><bean:write name="peForm" property="eventStartDate.dateOnly"/></allday>
