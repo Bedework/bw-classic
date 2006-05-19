@@ -54,6 +54,7 @@
 
 package org.bedework.webadmin.event;
 
+import org.bedework.calfacade.BwEvent;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
@@ -100,7 +101,11 @@ public class PEDeleteEventAction extends PEAbstractAction {
       log.debug("About to delete event " + eventid);
     }
 
-    BwWebUtil.deleteEvent(form, svci.getEvent(eventid).getEvent());
+    BwEvent event = form.getEditEvent();
+
+    BwWebUtil.deleteEvent(form, event);
+
+//    BwWebUtil.deleteEvent(form, svci.getEvent(eventid).getEvent());
 
     form.getMsg().emit("org.bedework.client.message.event.deleted");
 

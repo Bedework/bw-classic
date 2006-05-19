@@ -82,7 +82,7 @@
                  class="org.bedework.calfacade.BwOrganizer"
                  column="organizerid"
                  unique="true"
-                 not-null="false" />
+                 not-null="false" lazy="false" />
 
     <many-to-one name="calendar"
                  class="org.bedework.calfacade.BwCalendar"
@@ -142,7 +142,7 @@
     </property>
 
     <set name="attendees" table="event_attendees"
-         cascade="all-delete-orphan" >
+         cascade="all-delete-orphan" lazy="false" >
       <key column="eventid"/>
       <many-to-many class="org.bedework.calfacade.BwAttendee" />
     </set>

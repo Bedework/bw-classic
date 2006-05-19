@@ -69,9 +69,9 @@ public class EncodedAcl implements Serializable {
   /** Current position in the acl */
   private int pos;
 
-  /** When encoding an acl we build it here.
+  /* When encoding an acl we build it here.
    */
-  private CharArrayWriter caw;
+  private transient CharArrayWriter caw;
 
   /** Set an encoded value
    *
