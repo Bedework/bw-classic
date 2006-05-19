@@ -272,11 +272,15 @@ body {
   text-align: right;
   padding: 0.5em 1em 0.2em 0.5em;
   white-space: nowrap;
+	font-size: 0.9em;
+	font-weight: normal;
 }
-#eventTable th.icalIcon img.addref {
-  margin-right: 0.5em;
-  position: relative;
-  top: -5px;
+#eventTable th.icalIcon a {
+  text-decoration: none;
+}
+#eventTable th.icalIcon img {
+  vertical-align: middle;
+	padding-left: 1em;
 }
 #eventTable th.fieldname {
   text-align: left;
