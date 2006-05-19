@@ -149,7 +149,7 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.error.unknowgroup'">
         Error: unknown admin group:  <em><xsl:value-of select="param"/></em>
-      </xsl:when>>
+      </xsl:when>
       <xsl:when test="id='org.bedework.exception.alreadyonadmingrouppath'">
         Error: group may not be added to itself
       </xsl:when>
