@@ -391,7 +391,9 @@ class Calendars extends CalintfHelper implements CalendarsI {
   }
 
   public void updateCalendar(BwCalendar val) throws CalFacadeException {
-    access.checkAccess(val, privWrite, false);
+    access.checkAccess(val, privWriteProperties, false);
+    val = (BwCalendar)getSess().merge(val);
+
     getSess().update(val);
   }
 

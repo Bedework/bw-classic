@@ -312,8 +312,9 @@ public class CalSvc extends CalSvcI {
     }
   }
 
-  public void setSuperUser(boolean val) {
+  public void setSuperUser(boolean val) throws CalFacadeException {
     superUser = val;
+    getCal().setSuperUser(val);
   }
 
   public boolean getSuperUser() {
