@@ -56,6 +56,7 @@
     <forward name="error" path="/docs/error.jsp"/>
     <forward name="accessError" path="/admin/showMain.rdo" redirect="true"/>
     <forward name="noAccess" path="/admin/showNoAccess.rdo" redirect="true"/>
+    <forward name="noaccess" path="/admin/showNoAccess.rdo" redirect="true"/>
     <forward name="notFound" path="/admin/showMain.rdo" redirect="true"/>
     <forward name="success" path="/admin/showMain.rdo" redirect="true"/>
     <forward name="cancelled" path="/admin/showMain.rdo" redirect="true"/>

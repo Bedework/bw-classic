@@ -1593,13 +1593,13 @@
           <td class="fieldval">
             <xsl:choose>
               <xsl:when test="/bedework/formElements/form/status = 'TENTATIVE'">
-                <input type="radio" name="event.status" value="CONFIRMED"/>confirmed <input type="radio" name="event.status" value="TENTATIVE" checked="checked"/>tentative <input type="radio" name="event.status" value="CANCELLED"/>cancelled
+                <input type="radio" name="newEvent.status" value="CONFIRMED"/>confirmed <input type="radio" name="newEvent.status" value="TENTATIVE" checked="checked"/>tentative <input type="radio" name="newEvent.status" value="CANCELLED"/>cancelled
               </xsl:when>
               <xsl:when test="/bedework/formElements/form/status = 'CANCELLED'">
-                <input type="radio" name="event.status" value="CONFIRMED"/>confirmed <input type="radio" name="event.status" value="TENTATIVE"/>tentative <input type="radio" name="event.status" value="CANCELLED" checked="checked"/>cancelled
+                <input type="radio" name="newEvent.status" value="CONFIRMED"/>confirmed <input type="radio" name="newEvent.status" value="TENTATIVE"/>tentative <input type="radio" name="newEvent.status" value="CANCELLED" checked="checked"/>cancelled
               </xsl:when>
               <xsl:otherwise>
-                <input type="radio" name="event.status" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="event.status" value="TENTATIVE"/>tentative <input type="radio" name="event.status" value="CANCELLED"/>cancelled
+                <input type="radio" name="newEvent.status" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="newEvent.status" value="TENTATIVE"/>tentative <input type="radio" name="newEvent.status" value="CANCELLED"/>cancelled
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -1610,7 +1610,7 @@
             Effects free/busy:
           </td>
           <td class="fieldval">
-            <input type="radio" name="editEvent.transparency" value="OPAQUE" checked="checked"/>yes <input type="radio" name="editEvent.transparency" value="TRANSPARENT"/>no
+            <input type="radio" name="newEvent.transparency" value="OPAQUE" checked="checked"/>yes <input type="radio" name="newEvent.transparency" value="TRANSPARENT"/>no
           </td>
         </tr>
         <!--  Description  -->
