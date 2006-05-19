@@ -4,9 +4,35 @@
           "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
           "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
 
-  <!-- =================================================================
-     This is a the Struts configuration for the public events admin app.
-     =================================================================== -->
+  <!-- =========================================================================
+     This is a the Struts configuration for the Bedework public events admin app.
+     ======================================================================= -->
+
+   <!--
+     The action-mappings below are divided into "normal" actions (suffixed
+     with ".do") and render actions (suffixed with ".rdo").  All normal actions
+     (which are typically used to change the application's state) redirect
+     to a render action that returns a jsp page for display.  Render actions
+     do not change state.
+
+     The action-mappings are grouped together by function; all render
+     actions use the type="org.bedework.webclient.BwRenderAction" class.
+     The division between normal and render actions is required, among other
+     things, to allow Bedework to run in a portal. All render actions
+     are marked with the comment "renderUrl" so that they may be
+     mechanically picked out of this file and built up for portal configuration.
+     By convention, most render actions are named "show[Name]".
+
+     Note that nearly all global forwards map to a render action that produce
+     a jsp page for display.
+
+     All action URLs used in any client are produced in header.jsp to take
+     advantage of appropriate encoding or extensions required by the container
+     and/or portal.  These "urlPrefixes" are then pulled into the xslt
+     for use in constructing links into the application.  Look at the top of
+     header.jsp and the default.xsl files within any client for examples.  Use
+     the url-prefix variables in the xslt rather than calling these paths directly.
+     -->
 
 <struts-config>
   <!-- ========== Form Bean Definitions ================================ -->
@@ -335,7 +361,7 @@
 
 
     <action    path="/subs/subscribe"
-               type="org.bedework.webcommon.subs.SubscribeAction"
+               type="org.bedework.webcommon.subs.EndSubscribeAction"
                name="peForm"
                scope="session"
                validate="false">
@@ -343,10 +369,11 @@
       <forward name="retry" path="/subs/showModForm.rdo" redirect="true"/>
       <forward name="reffed" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="success" path="/subs/showSubs.rdo" redirect="true" />
+      <forward name="added" path="/subs/showSubs.rdo" redirect="true" />
     </action>
 
     <action    path="/subs/unsubscribe"
-               type="org.bedework.webcommon.subs.UnsubscribeAction"
+               type="org.bedework.webcommon.subs.EndSubcribeAction"
                name="peForm"
                scope="session"
                validate="false">

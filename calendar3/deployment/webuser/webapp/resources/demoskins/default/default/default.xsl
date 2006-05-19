@@ -1119,25 +1119,11 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
-              <xsl:when test="calendar/owner = /bedework/userid">
+              <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content">
                 <a href="{$editEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
                   <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="13" border="0" alt="edit"/>
                   Edit
-                </a> |
-                <xsl:choose>
-                  <xsl:when test="recurring=true">
-                    <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                      Delete All (recurring)
-                    </a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                      Delete
-                    </a>
-                  </xsl:otherwise>
-                </xsl:choose>
+                </a>
               </xsl:when>
               <xsl:otherwise>
                 <a href="{$subscriptions-fetch}">
@@ -1146,6 +1132,23 @@
                 </a>
               </xsl:otherwise>
             </xsl:choose>
+            <xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind">
+               |
+              <xsl:choose>
+                <xsl:when test="recurring=true">
+                  <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                    Delete All (recurring)
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                    Delete
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
           </div>
           <xsl:choose>
             <xsl:when test="calendar/owner = /bedework/userid">
@@ -1742,11 +1745,14 @@
               <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
                 <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
                 View
-              </a> |
-              <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                Delete
               </a>
+              <xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind">
+                |
+                <a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                  <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                  Delete
+                </a>
+              </xsl:if>
             </div>
             Personal Event
           </th>
@@ -2089,7 +2095,7 @@
         <p>
           Access rights:<br/>
           <input type="radio" value="R" name="how" checked="checked"/> read<br/>
-          <input type="radio" value="Rc" name="how"/> read/write<br/>
+          <input type="radio" value="Rc" name="how"/> read/write content<br/>
           <input type="radio" value="f" name="how"/> read free/busy only<br/>
           <input type="radio" value="d" name="how"/> default (reset access)
         </p>
@@ -2705,7 +2711,7 @@
         <p>
           Access rights:<br/>
           <input type="radio" value="R" name="how" checked="checked"/> read<br/>
-          <input type="radio" value="Rc" name="how"/> read/write<br/>
+          <input type="radio" value="Rc" name="how"/> read/write content<br/>
           <input type="radio" value="f" name="how"/> read free/busy only<br/>
           <input type="radio" value="d" name="how"/> default (reset access)
         </p>
