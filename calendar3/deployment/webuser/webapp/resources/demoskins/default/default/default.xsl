@@ -2057,17 +2057,17 @@
 
     <div id="sharingBox">
       <h3>Sharing</h3>
-      <table class="common">
+      <!--<table class="common">
         <tr>
           <th class="commonHeader" colspan="2">Current access:</th>
         </tr>
         <tr>
-          <th>Owner:</th>
+          <th>Owner:</th>-->
           <!-- NOTE: we are currently getting the acl information from the
                calendar listing NOT from the current calendar (which does not
                have the means of producing it out of the action form just now.
                We'll fix this soon. -->
-          <td class="fieldval">
+          <!--<td class="fieldval">
             <xsl:value-of select="name(acl/ace[principal/property/owner]/grant/*)"/>
           </td>
         </tr>
@@ -2081,7 +2081,7 @@
             </td>
           </tr>
         </xsl:if>
-      </table>
+      </table>-->
       <form name="eventShareForm" action="{$event-setAccess}" id="shareForm">
         <input type="hidden" name="calPath" value="{$calPath}"/>
         <input type="hidden" name="guid" value="{$guid}"/>
