@@ -129,7 +129,6 @@ function setSubscriptionUri(formObj) {
       }
     }
     formObj.calUri.value = fullUri;
-    alert(formObj.calUri.value);
     return true;
   } else {
     alert("The subscription form is not available.");
