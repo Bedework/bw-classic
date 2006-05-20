@@ -179,7 +179,6 @@
                       <xsl:apply-templates select="/bedework/freebusy"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='modPrefs'">
-                      <!-- show an arbitrary page -->
                       <xsl:apply-templates select="/bedework/prefs"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='other'">

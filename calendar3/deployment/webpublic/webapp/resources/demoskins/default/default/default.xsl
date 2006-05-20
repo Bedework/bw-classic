@@ -17,11 +17,8 @@
      starting point for development of a customized calendar.
 
      For detailed instructions on how to work with the XSLT
-     stylesheets included with this distribution, please see the
-     helper web site found at
-     http://localhost:8080/cal/info/designhelp/
-
-     (you can also get it from the source at ../info/designhelp/)
+     stylesheets included with this distribution, please see the 
+		 Bedework Design Guide at http://www.bedework.org/bedework/update.do?artcenterkey=24
 
 ===============================================================  -->
 
@@ -67,13 +64,7 @@
   <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
   <xsl:variable name="skin">default</xsl:variable>
 
-  <!--========= BEGIN DEPRECATED VARIABLES =========-->
-  <!-- URL of the web application - includes host, port, and web context.  This
-       value was originally prepended to all URLs generated in this stylesheet
-       but will probably be deprecated in favor of relative references
-  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/> -->
-  <!--========= END DEPRECATED VARIABLES =========-->
-
+  
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
     <html lang="en">
