@@ -133,8 +133,8 @@ public class FreeBusyAggregator {
 //                               CalFacadeUtil.isoDateTimeUTC(start) + "\"");
 //    req.addContentLine("                end=\"" +
 //                               CalFacadeUtil.isoDateTimeUTC(end) + "\"/>");
-    req.addContentLine("  <C:time-range start=\"20060521T131358Z\"");
-    req.addContentLine("                end=\"20060528T131358Z\"/>");
+    req.addContentLine("  <C:time-range start=\"20060601T131358Z\"");
+    req.addContentLine("                end=\"20060631T131358Z\"/>");
     req.addContentLine("</C:free-busy-query>");
 
     return req;
@@ -157,14 +157,22 @@ public class FreeBusyAggregator {
                          "localhost", 8080, false,
                          "/ucaldav/user/johnsa"));
                          */
-
+    /*
     addUser(new UserInfo("testuser02", "bedework", "testuser02",
                          "www.bedework.org", 80, false,
                          "/ucaldav/user/testuser02"));
-    addUser(new UserInfo("testuser03", "bedework", "testuser03",
+                         */
+    addUser(new UserInfo("douglm", "bedework", "douglm",
+                         "localhost", 8080, false,
+                         "/ucaldav/user/douglm"));
+/*
+    addUser(new UserInfo("testuser02", "bedework", "testuser02",
                          "www.bedework.org", 80, false,
-                         "/ucaldav/user/testuser03"));
-
+                         "/ucaldav/user/testuser02"));
+    addUser(new UserInfo("testuser08", "bedework", "testuser08",
+                         "www.bedework.org", 80, false,
+                         "/ucaldav/user/testuser08"));
+*/
     getSvci(); //
   }
 
@@ -184,11 +192,13 @@ public class FreeBusyAggregator {
 
       if (r.getAuth()) {
         resp.responseCode = cio.sendRequest(r.getMethod(), r.getUrl(),
-                                            r.getUser(), r.getPw(), r.getHeaders(),
+                                            r.getUser(), r.getPw(),
+                                            r.getHeaders(), 0,
                                             r.getContentType(),
                                             r.getContentLength(), r.getContentBytes());
       } else {
-        resp.responseCode = cio.sendRequest(r.getMethod(), r.getUrl(), r.getHeaders(),
+        resp.responseCode = cio.sendRequest(r.getMethod(), r.getUrl(),
+                                            r.getHeaders(), 0,
                                             r.getContentType(), r.getContentLength(),
                                             r.getContentBytes());
       }

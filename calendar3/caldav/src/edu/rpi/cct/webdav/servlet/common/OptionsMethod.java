@@ -51,7 +51,6 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
 package edu.rpi.cct.webdav.servlet.common;
 
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
@@ -90,11 +89,7 @@ public class OptionsMethod extends MethodBase {
         return;
       }
 
-      if (getNsIntf().getAccessControl()) {
-        resp.addHeader("DAV", "1, 2, access-control");
-      } else {
-        resp.addHeader("DAV", "1, 2");
-      }
+      addDavHeader(resp);
 
       // Lisa say's we need this
       resp.addHeader("MS-Author-Via", "DAV");
@@ -116,6 +111,14 @@ public class OptionsMethod extends MethodBase {
       throw we;
     } catch (Throwable t) {
       throw new WebdavException(t);
+    }
+  }
+
+  protected void addDavHeader(HttpServletResponse resp) throws WebdavException {
+    if (getNsIntf().getAccessControl()) {
+      resp.addHeader("DAV", "1, 2, 3, access-control");
+    } else {
+      resp.addHeader("DAV", "1, 2, 3");
     }
   }
 }

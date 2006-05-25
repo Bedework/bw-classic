@@ -155,7 +155,7 @@ public class CaldavCalNode extends CaldavBwNode {
     try {
       VFreeBusy vfreeBusy = VFreeUtil.toVFreeBusy(fb);
       if (vfreeBusy != null) {
-        ical = new Calendar();
+        ical = IcalTranslator.newIcal();
         ical.getComponents().add(vfreeBusy);
         vfreeBusyString = ical.toString();
         contentLen = vfreeBusyString.length();

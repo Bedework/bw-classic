@@ -54,36 +54,48 @@
 package org.bedework.calfacade.base;
 
 
-import org.bedework.calfacade.BwAlarm;
-import org.bedework.calfacade.BwCalendar;
-import org.bedework.calfacade.BwCategory;
-import org.bedework.calfacade.BwDateTime;
-import org.bedework.calfacade.BwEvent;
-import org.bedework.calfacade.BwLocation;
-import org.bedework.calfacade.BwSponsor;
-import org.bedework.calfacade.BwStats;
-import org.bedework.calfacade.BwSynchInfo;
-import org.bedework.calfacade.BwSynchState;
-import org.bedework.calfacade.BwSystem;
+//import org.bedework.calfacade.BwAlarm;
+//import org.bedework.calfacade.BwCalendar;
+//import org.bedework.calfacade.BwCategory;
+//import org.bedework.calfacade.BwDateTime;
+//import org.bedework.calfacade.BwDuration;
+//import org.bedework.calfacade.BwEvent;
+//import org.bedework.calfacade.BwFreeBusy;
+//import org.bedework.calfacade.BwFreeBusyComponent;
+//import org.bedework.calfacade.BwLocation;
+//import org.bedework.calfacade.BwPrincipal;
+//import org.bedework.calfacade.BwSponsor;
+//import org.bedework.calfacade.BwStats;
+//import org.bedework.calfacade.BwSynchInfo;
+//import org.bedework.calfacade.BwSynchState;
+//import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
-import org.bedework.calfacade.CalFacadeUnimplementedException;
+//import org.bedework.calfacade.CalFacadeDefs;
+//import org.bedework.calfacade.CalFacadeUnimplementedException;
 import org.bedework.calfacade.CalFacadeException;
+//import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.CalintfDefs;
-import org.bedework.calfacade.CoreEventInfo;
-import org.bedework.calfacade.filter.BwFilter;
-import org.bedework.calfacade.ifs.CalTimezones;
+//import org.bedework.calfacade.CoreEventInfo;
+//import org.bedework.calfacade.CalFacadeUtil.EventPeriod;
+//import org.bedework.calfacade.CalFacadeUtil.GetPeriodsPars;
+//import org.bedework.calfacade.filter.BwFilter;
+//import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
-import org.bedework.calfacade.ifs.CalintfInfo;
+//import org.bedework.calfacade.ifs.CalintfInfo;
 import org.bedework.calfacade.ifs.Groups;
+//import org.bedework.calfacade.svc.EventInfo;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+//import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.TreeSet;
+//import java.util.Collection;
+//import java.util.Iterator;
+//import java.util.TreeSet;
 
-import net.fortuna.ical4j.model.component.VTimeZone;
+//import net.fortuna.ical4j.model.DateTime;
+//import net.fortuna.ical4j.model.Period;
+//import net.fortuna.ical4j.model.component.VTimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -91,7 +103,9 @@ import org.apache.log4j.Logger;
 *
 * @author Mike Douglass   douglm@rpi.edu
 */
-public class CalintfBase implements Calintf {
+public abstract class CalintfBase implements Calintf {
+  protected String url;
+
   protected boolean debug;
 
   /** When we were created for debugging */
@@ -109,7 +123,7 @@ public class CalintfBase implements Calintf {
 
   /** Ensure we don't open while open
    */
-  private boolean isOpen;
+  protected boolean isOpen;
 
   /** Ignore owner for superuser
    */
@@ -124,12 +138,14 @@ public class CalintfBase implements Calintf {
   /* (non-Javadoc)
    * @see org.bedework.calfacade.Calintf#init(org.bedework.calfacade.BwUser, java.lang.String, boolean, boolean, boolean, java.lang.String, boolean)
    */
-  public boolean init(String authenticatedUser,
+  public boolean init(String url,
+                      String authenticatedUser,
                       String user,
                       boolean publicAdmin,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException {
+    this.url = url;
     this.debug = debug;
     boolean userCreated = false;
 
@@ -152,6 +168,11 @@ public class CalintfBase implements Calintf {
     return userCreated;
   }
 
+  public boolean getDebug() throws CalFacadeException {
+    return debug;
+  }
+
+  /*
   public void setSuperUser(boolean val) {
   }
 
@@ -159,11 +180,6 @@ public class CalintfBase implements Calintf {
     return false;
   }
 
-  /** Get the current stats
-   *
-   * @return BwStats object
-   * @throws CalFacadeException if not admin
-   */
   public BwStats getStats() throws CalFacadeException {
     return null;
   }
@@ -189,11 +205,6 @@ public class CalintfBase implements Calintf {
   public void updateSyspars(BwSystem val) throws CalFacadeException {
   }
 
-  /** Get the timezones cache object
-   *
-   * @return CalTimezones object
-   * @throws CalFacadeException if not admin
-   */
   public CalTimezones getTimezones() throws CalFacadeException {
     return null;
   }
@@ -205,17 +216,14 @@ public class CalintfBase implements Calintf {
         false      // handlesCategories
       );
   }
-
-  public boolean getDebug() throws CalFacadeException {
-    return debug;
-  }
+  */
 
   public void setUser(String val) throws CalFacadeException {
     refreshEvents();
 
     user = getUser(val);
     if (this.user == null) {
-      throw new CalFacadeException("User " + val + " does not exist.");
+      throw new CalFacadeException(CalFacadeException.noSuchAccount, val);
     }
 
     logon(user);
@@ -229,11 +237,13 @@ public class CalintfBase implements Calintf {
    *                   Misc methods
    * ==================================================================== */
 
+  /*
   public void flushAll() throws CalFacadeException {
     if (debug) {
       log.debug("flushAll for " + objTimestamp);
     }
   }
+  */
 
   /** Default implementation fails if already open and sets the open flag
    * otherwise.
@@ -268,6 +278,7 @@ public class CalintfBase implements Calintf {
     isOpen = false;
   }
 
+  /*
   public void beginTransaction() throws CalFacadeException {
     checkOpen();
   }
@@ -283,6 +294,7 @@ public class CalintfBase implements Calintf {
   public Object getDbSession() throws CalFacadeException {
     return null;
   }
+  */
 
   /* ====================================================================
    *                   General data methods
@@ -292,13 +304,12 @@ public class CalintfBase implements Calintf {
   public void refresh() throws CalFacadeException {
     checkOpen();
     sess.flush();
-  }*/
+  }
 
   public void refreshEvents() throws CalFacadeException {
     checkOpen();
   }
 
-  /*
   public void lockRead(Object val) throws CalFacadeException {
     checkOpen();
     sess.lockRead(val);
@@ -314,6 +325,7 @@ public class CalintfBase implements Calintf {
    *                   Global parameters
    * ==================================================================== */
 
+  /*
   public long getPublicLastmod() throws CalFacadeException {
     checkOpen();
     return 0; // for the moment
@@ -322,6 +334,7 @@ public class CalintfBase implements Calintf {
   public String getSysid() throws CalFacadeException {
     return "";
   }
+  */
 
   /* ====================================================================
    *                   Users
@@ -335,6 +348,7 @@ public class CalintfBase implements Calintf {
     updateUser(getUser());
   }
 
+  /*
   public void updateUser(BwUser user) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
@@ -351,7 +365,6 @@ public class CalintfBase implements Calintf {
     throw new CalFacadeUnimplementedException();
   }
 
-
   public BwUser getUser(String account) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
@@ -366,11 +379,13 @@ public class CalintfBase implements Calintf {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                   Access
    * ==================================================================== */
 
+  /*
   public void changeAccess(BwShareableDbentity ent,
                            Collection aces) throws CalFacadeException {
     checkOpen();
@@ -381,11 +396,13 @@ public class CalintfBase implements Calintf {
                                    boolean returnResult) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                   Timezones
    * ==================================================================== */
 
+  /*
   public void saveTimeZone(String tzid, VTimeZone vtz) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
@@ -406,11 +423,13 @@ public class CalintfBase implements Calintf {
   public void clearPublicTimezones() throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                   Calendars and search
    * ==================================================================== */
 
+  /*
   public BwCalendar getPublicCalendars() throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
@@ -504,11 +523,13 @@ public class CalintfBase implements Calintf {
 
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                   Filters and search
    * ==================================================================== */
 
+  /*
   public void setSearch(String val) throws CalFacadeException {
     checkOpen();
   }
@@ -519,7 +540,7 @@ public class CalintfBase implements Calintf {
     return null;
   }
 
-  /*
+  / *
   public BwFilter getFilter(String name) throws CalFacadeException {
     checkOpen();
     if (currentMode != CalintfUtil.guestMode) {
@@ -546,7 +567,7 @@ public class CalintfBase implements Calintf {
     sess.setInt("id", id);
 
     return (BwFilter)sess.getUnique();
-  } */
+  }
 
   public void addFilter(BwFilter val) throws CalFacadeException {
     checkOpen();
@@ -557,11 +578,13 @@ public class CalintfBase implements Calintf {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                   Categories
    * ==================================================================== */
 
+  /*
   public Collection getCategories(BwUser owner, BwUser creator)
         throws CalFacadeException {
     checkOpen();
@@ -604,11 +627,13 @@ public class CalintfBase implements Calintf {
 
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                   Locations
    * ==================================================================== */
 
+  /*
   public Collection getLocations(BwUser owner, BwUser creator)
         throws CalFacadeException {
     checkOpen();
@@ -651,11 +676,13 @@ public class CalintfBase implements Calintf {
 
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                   Sponsors
    * ==================================================================== */
 
+  /*
   public Collection getSponsors(BwUser owner, BwUser creator)
         throws CalFacadeException {
     checkOpen();
@@ -698,11 +725,13 @@ public class CalintfBase implements Calintf {
 
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                   Events
    * ==================================================================== */
 
+  /*
   public CoreEventInfo getEvent(int id) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
@@ -745,6 +774,7 @@ public class CalintfBase implements Calintf {
   public Collection getDeletedProxies(BwCalendar cal) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                       Caldav support
@@ -752,16 +782,19 @@ public class CalintfBase implements Calintf {
    * names clients might assign to events.
    * ==================================================================== */
 
+  /*
   public Collection getEventsByName(BwCalendar cal, String val)
           throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                   Synchronization
    * ==================================================================== */
 
+  /*
   public BwSynchInfo getSynchInfo() throws CalFacadeException {
     checkOpen();
 
@@ -839,11 +872,13 @@ public class CalintfBase implements Calintf {
 
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                       Alarms
    * ==================================================================== */
 
+  /*
   public Collection getAlarms(BwEvent event, BwUser user) throws CalFacadeException {
     checkOpen();
 
@@ -873,6 +908,7 @@ public class CalintfBase implements Calintf {
 
     throw new CalFacadeUnimplementedException();
   }
+  */
 
   /* ====================================================================
    *                   Protected methods
@@ -893,7 +929,7 @@ public class CalintfBase implements Calintf {
    */
   protected Logger getLogger() {
     if (log == null) {
-      log = Logger.getLogger(this.getClass());
+      log = Logger.getLogger(getClass());
     }
 
     return log;
@@ -903,7 +939,15 @@ public class CalintfBase implements Calintf {
     getLogger().error(msg);
   }
 
+  protected void error(Throwable t) {
+    getLogger().error(this, t);
+  }
+
   protected void trace(String msg) {
+    getLogger().debug(msg);
+  }
+
+  protected void debug(String msg) {
     getLogger().debug(msg);
   }
 

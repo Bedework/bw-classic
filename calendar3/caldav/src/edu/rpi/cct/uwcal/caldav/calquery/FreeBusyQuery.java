@@ -136,7 +136,12 @@ public class FreeBusyQuery {
       if (user == null) {
         throw WebdavIntfException.unauthorized();
       }
-      BwFreeBusy fb = svci.getFreeBusy(cal, user,
+
+      if (svci.isUserRoot(cal)) {
+        cal = null;
+      }
+
+      BwFreeBusy fb = svci.getFreeBusy(null, cal, user,
                                        timeRange.getStart(), timeRange.getEnd(),
                                        null, false);
 

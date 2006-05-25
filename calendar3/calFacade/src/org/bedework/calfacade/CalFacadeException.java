@@ -61,23 +61,23 @@ public class CalFacadeException extends Exception {
   /* Property names used as message value. These should be used to
    * retrieve a localized message and can also be used to identify the
    * cause of the exception.
-   * 
+   *
    * Every CalFacadeException should have one of these as the getMessage()
    * value.
    */
-  
+
   /* ****************** Admin groups ****************************** */
-  
+
   /** The admin group already exists */
   public static final String duplicateAdminGroup =
       "org.bedework.exception.duplicateadmingroup";
-  
+
   /** The admin group is already on the path to the root (makes a loop) */
   public static final String alreadyOnAdminGroupPath =
       "org.bedework.exception.alreadyonadmingrouppath";
 
   /* ****************** Calendars ****************************** */
-  
+
   /** Couldn't find calendar */
   public static final String calendarNotFound =
       "org.bedework.exception.calendarnotfound";
@@ -99,7 +99,7 @@ public class CalFacadeException extends Exception {
       "org.bedework.exception.cannotdeletecalendarroot";
 
   /* ****************** Subscriptions ****************************** */
-  
+
   /** Somebody tried to create a duplicate subscription */
   public static final String duplicateSubscription =
       "org.bedework.exception.duplicatesubscription";
@@ -108,22 +108,28 @@ public class CalFacadeException extends Exception {
   public static final String endAndDuration =
       "org.bedework.exception.ical.endandduration";
 
+  /* ****************** Users ****************************** */
+
+  /** No such account */
+  public static final String noSuchAccount =
+      "org.bedework.exception.nosuchaccount";
+
   /* ****************** Events ****************************** */
-  
+
   /** The guid for this event already exists */
   public static final String duplicateGuid =
       "org.bedework.exception.duplicateguid";
 
   /* ****************** Timezones ****************************** */
-  
+
   /** Error reading timezones */
   public static final String timezonesReadError =
       "org.bedework.error.timezones.readerror";
-  
+
   /** Unknown timezones */
   public static final String unknownTimezone =
       "org.bedework.error.unknown.timezone";
-  
+
   /** Bad date */
   public static final String badDate =
       "org.bedework.error.bad.date";
@@ -133,7 +139,7 @@ public class CalFacadeException extends Exception {
   /** */
   public static final String illegalObjectClass =
       "org.bedework.exception.illegalobjectclass";
-  
+
   private String extra;
 
   /** Constructor

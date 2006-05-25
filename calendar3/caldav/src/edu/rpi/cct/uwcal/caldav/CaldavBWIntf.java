@@ -1037,13 +1037,63 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
     try {
       /* Deal with webdav properties */
-      if (!ns.equals(CaldavDefs.caldavNamespace)) {
+      if ((!ns.equals(CaldavDefs.caldavNamespace) &&
+          !ns.equals(CaldavDefs.icalNamespace))) {
         // Not ours
         super.generatePropValue(node, pr);
         return;
       }
 
-      if (tag.equals(CaldavTags.calendarDescription)) {
+      // XXX Change this to have node class generate???
+      if (tag.equals(ICalTags.summary)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.dtstart)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.dtend)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.duration)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.transp)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.due)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.status)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.uid)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.sequence)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.hasRecurrence)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.hasAlarm)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(ICalTags.hasAttachment)) {
+        openPropstat();
+        xml.property(tag, pr.getPval());
+        closePropstat();
+      } else if (tag.equals(CaldavTags.calendarDescription)) {
         if ((cal != null) && (cal.getDescription() != null)) {
           // XXX lang
           openPropstat();
@@ -1392,6 +1442,10 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
       if (!uri.startsWith("/")) {
         return null;
+      }
+
+      if (uri.endsWith("/")) {
+        uri = uri.substring(0, uri.length() - 1);
       }
 
       String[] ss = uri.split("/");

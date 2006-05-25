@@ -1091,6 +1091,9 @@ public class Events extends CalintfHelper implements EventsI {
       if (calendar.getCalendarCollection()) {
         // Single leaf calendar - always include
         sess.setEntity("calendar", calendar);
+        if (debug) {
+          trace("------------Using calendar " + calendar.getPath());
+        }
       } else {
         // Non leaf - add entities
         setCalendarEntities(calendar, new CalTerm(), allCalendars);
@@ -1105,6 +1108,9 @@ public class Events extends CalintfHelper implements EventsI {
       if (allCalendars || (calendar.getCalType() == BwCalendar.calTypeCollection)) {
         // leaf calendar
         getSess().setEntity("calendar" + calTerm.i, calendar);
+        if (debug) {
+          trace("------------Using calendar " + calendar.getPath());
+        }
         calTerm.i++;
       }
     } else {

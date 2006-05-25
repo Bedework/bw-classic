@@ -364,10 +364,12 @@ public class TestCalDav {
       int respCode;
       if (r.getAuth()) {
         respCode = cio.sendRequest(r.getMethod(), r.getPrefixedUrl(),
-                                   user, pw, r.getHdrs(), r.getContentType(),
+                                   user, pw, r.getHdrs(), r.getDepth(),
+                                   r.getContentType(),
                                    r.getContentLength(), r.getContentBytes());
       } else {
-        respCode = cio.sendRequest(r.getMethod(), r.getPrefixedUrl(), r.getHdrs(),
+        respCode = cio.sendRequest(r.getMethod(), r.getPrefixedUrl(),
+                                   r.getHdrs(), r.getDepth(),
                                    r.getContentType(), r.getContentLength(),
                                    r.getContentBytes());
       }

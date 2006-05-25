@@ -1,0 +1,10 @@
+DESCRIPTION: propfind on user
+
+METHOD: PROPFIND
+
+DEPTH: 2
+
+AUTH: true
+
+URL: calendar
+

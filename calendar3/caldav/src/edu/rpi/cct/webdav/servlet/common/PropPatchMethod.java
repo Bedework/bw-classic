@@ -155,18 +155,18 @@ public class PropPatchMethod extends MethodBase {
     for (int i = 0; i < props.length; i++) {
       Element prop = props[i];
 
-      String ns = prop.getNamespaceURI();
-      String nm = prop.getLocalName();
       String value = getElementContent(prop);
 
       if (remove && (value != null)) {
         throw new WebdavBadRequest();
       }
 
-      plist.add(new Property(ns, nm, value));
+      plist.add(prop);
 
       if (debug) {
-        trace("reqtype: " + nm + " ns: " + ns + " value: " + value);
+        trace("reqtype: " + prop.getLocalName() +
+              " ns: " + prop.getNamespaceURI() +
+              " value: " + value);
       }
     }
   }

@@ -57,10 +57,8 @@ package edu.rpi.cct.uwcal.caldav;
 import org.bedework.davdefs.CaldavTags;
 
 import edu.rpi.cct.webdav.servlet.common.PropPatchMethod;
-import edu.rpi.cct.webdav.servlet.common.Property;
 import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
-import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 
 import java.util.Collection;
@@ -113,8 +111,6 @@ public class MkcalendarMethod extends PropPatchMethod {
   protected void processDoc(HttpServletRequest req,
                             Document doc) throws WebdavException {
     try {
-      WebdavNsIntf intf = getNsIntf();
-
       Element root = doc.getDocumentElement();
 
       if (!nodeMatches(root, CaldavTags.mkcalendar)) {
@@ -133,7 +129,11 @@ public class MkcalendarMethod extends PropPatchMethod {
 
         Iterator pit = sr.iterator();
         while (pit.hasNext()) {
-          Property prop = (Property)pit.next();
+          Element prop = (Element)pit.next();
+
+          if (nodeMatches(prop, CaldavTags.calendarDescription)) {
+            // Some way to set description
+          }
         }
       }
     } catch (WebdavException wde) {

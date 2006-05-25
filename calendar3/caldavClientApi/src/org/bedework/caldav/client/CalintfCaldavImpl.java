@@ -58,10 +58,14 @@ import org.bedework.calfacade.BwAlarm;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwDateTime;
+import org.bedework.calfacade.BwDuration;
 import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwLocation;
+import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwStats;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.CoreEventInfo;
 //import org.bedework.calfacade.BwSynchData;
 import org.bedework.calfacade.BwSynchInfo;
@@ -109,13 +113,14 @@ public class CalintfCaldavImpl extends CalintfBase {
   /* (non-Javadoc)
    * @see org.bedework.calfacade.Calintf#init(org.bedework.calfacade.BwUser, java.lang.String, boolean, boolean, boolean, java.lang.String, boolean)
    */
-  public boolean init(String authenticatedUser,
+  public boolean init(String url,
+                      String authenticatedUser,
                       String user,
                       boolean publicAdmin,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException {
-    boolean userAdded = super.init(authenticatedUser, user, publicAdmin,
+    boolean userAdded = super.init(url, authenticatedUser, user, publicAdmin,
                                    groups, synchId, debug);
 
     if (httpManager == null) {
@@ -129,30 +134,49 @@ public class CalintfCaldavImpl extends CalintfBase {
     return userAdded;
   }
 
-  /** Get the current stats
-   *
-   * @return BwStats object
-   * @throws CalFacadeException if not admin
-   */
+  public void logon(BwUser val) throws CalFacadeException {
+    checkOpen();
+    throw new CalFacadeUnimplementedException();
+  }
+
+  public void setSuperUser(boolean val) {
+  }
+
+  public boolean getSuperUser() {
+    return false;
+  }
+
   public BwStats getStats() throws CalFacadeException {
     return null;
   }
 
-  /** Get the timezones cache object
-   *
-   * @return CalTimezones object
-   * @throws CalFacadeException if not admin
-   */
+  public void setDbStatsEnabled(boolean enable) throws CalFacadeException {
+  }
+
+  public boolean getDbStatsEnabled() throws CalFacadeException {
+    return false;
+  }
+
+  public void dumpDbStats() throws CalFacadeException {
+  }
+
+  public Collection getDbStats() throws CalFacadeException {
+    return null;
+  }
+
+  public BwSystem getSyspars() throws CalFacadeException {
+    return null;
+  }
+
+  public void updateSyspars(BwSystem val) throws CalFacadeException {
+  }
+
   public CalTimezones getTimezones() throws CalFacadeException {
     return null;
   }
 
   public CalintfInfo getInfo() throws CalFacadeException {
     return info;
-  }
-
-  public boolean getDebug() throws CalFacadeException {
-    return debug;
   }
 
   public void setUser(String val) throws CalFacadeException {
@@ -180,14 +204,6 @@ public class CalintfCaldavImpl extends CalintfBase {
     }
   }
 
-  public synchronized void open() throws CalFacadeException {
-    super.open();
-  }
-
-  public synchronized void close() throws CalFacadeException {
-    super.close();
-  }
-
   public void beginTransaction() throws CalFacadeException {
     checkOpen();
   }
@@ -208,27 +224,9 @@ public class CalintfCaldavImpl extends CalintfBase {
    *                   General data methods
    * ==================================================================== */
 
-  /*
-  public void refresh() throws CalFacadeException {
-    checkOpen();
-    sess.flush();
-  }*/
-
   public void refreshEvents() throws CalFacadeException {
     checkOpen();
   }
-
-  /*
-  public void lockRead(Object val) throws CalFacadeException {
-    checkOpen();
-    sess.lockRead(val);
-  }
-
-  public void lockMod(Object val) throws CalFacadeException {
-    checkOpen();
-    sess.lockUpdate(val);
-  }
-  */
 
   /* ====================================================================
    *                   Global parameters
@@ -247,17 +245,7 @@ public class CalintfCaldavImpl extends CalintfBase {
    *                   Users
    * ==================================================================== */
 
-  public BwUser getUser() throws CalFacadeException {
-    return user;
-  }
-
-  public BwUser getUser(int id) throws CalFacadeException {
-    checkOpen();
-    throw new CalFacadeUnimplementedException();
-  }
-
-
-  public BwUser getUser(String user) throws CalFacadeException {
+  public void updateUser(BwUser user) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
@@ -268,22 +256,17 @@ public class CalintfCaldavImpl extends CalintfBase {
     throw new CalFacadeUnimplementedException();
   }
 
-  public void updateUser() throws CalFacadeException {
-    updateUser(getUser());
-  }
-
-  public void updateUser(BwUser user) throws CalFacadeException {
+  public BwUser getUser(int id) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
 
-  /*
-  public void deleteUser(BwUser user) throws CalFacadeException {
+  public BwUser getUser(String user) throws CalFacadeException {
     checkOpen();
-    throw new CalFacadeException("Unimplemented");
-  }*/
+    throw new CalFacadeUnimplementedException();
+  }
 
-  private void logon(BwUser val) throws CalFacadeException {
+  public Collection getInstanceOwners() throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
@@ -347,6 +330,11 @@ public class CalintfCaldavImpl extends CalintfBase {
     throw new CalFacadeUnimplementedException();
   }
 
+  public BwCalendar getCalendars(BwUser user,
+                                 int desiredAccess) throws CalFacadeException {
+    throw new CalFacadeUnimplementedException();
+  }
+
   public Collection getCalendarCollections() throws CalFacadeException {
     checkOpen();
 
@@ -388,6 +376,12 @@ public class CalintfCaldavImpl extends CalintfBase {
     throw new CalFacadeUnimplementedException();
   }
 
+  public BwCalendar getSpecialCalendar(BwUser user,
+                                       int calType,
+                                       boolean create) throws CalFacadeException {
+    throw new CalFacadeUnimplementedException();
+  }
+
   public void addCalendar(BwCalendar val, String parentPath) throws CalFacadeException {
     checkOpen();
 
@@ -395,6 +389,12 @@ public class CalintfCaldavImpl extends CalintfBase {
   }
 
   public void updateCalendar(BwCalendar val) throws CalFacadeException {
+    checkOpen();
+    throw new CalFacadeUnimplementedException();
+  }
+
+  public void changeAccess(BwCalendar cal,
+                           Collection aces) throws CalFacadeException {
     checkOpen();
     throw new CalFacadeUnimplementedException();
   }
@@ -576,6 +576,19 @@ public class CalintfCaldavImpl extends CalintfBase {
   }
 
   /* ====================================================================
+   *                   Free busy
+   * ==================================================================== */
+
+  public BwFreeBusy getFreeBusy(BwCalendar cal, BwPrincipal who,
+                                BwDateTime start, BwDateTime end,
+                                BwDuration granularity,
+                                boolean returnAll,
+                                boolean ignoreTransparency)
+          throws CalFacadeException {
+    throw new CalFacadeUnimplementedException();
+  }
+
+  /* ====================================================================
    *                   Events
    * ==================================================================== */
 
@@ -611,6 +624,14 @@ public class CalintfCaldavImpl extends CalintfBase {
 
   public DelEventResult deleteEvent(BwEvent val) throws CalFacadeException {
     checkOpen();
+    throw new CalFacadeUnimplementedException();
+  }
+
+  public Collection getDeletedProxies() throws CalFacadeException {
+    throw new CalFacadeUnimplementedException();
+  }
+
+  public Collection getDeletedProxies(BwCalendar cal) throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 
@@ -741,5 +762,9 @@ public class CalintfCaldavImpl extends CalintfBase {
 
     throw new CalFacadeUnimplementedException();
   }
+
+  /* ====================================================================
+   *                   Free busy
+   * ==================================================================== */
 }
 

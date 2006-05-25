@@ -77,7 +77,7 @@ import javax.servlet.http.HttpServletRequest;
  * Action to fetch free busy information
  * <p>Request parameters - all optional:<ul>
  *      <li>  userid:   whose free busy we want - default to current user</li>.
- *      <li>  calendar: name of the calendar - default to subscriptions
+ *      <li>  subname:  name of the subscription - default to subscriptions
  *                      specified by user</li>.
  *      <li>  start:    start of period - default to beginning of this week</li>.
  *      <li>  end:      end of period - default to end of this week</li>.
@@ -202,7 +202,7 @@ public class BwFreeBusyAction extends BwCalAbstractAction {
       }
 
       try {
-        BwFreeBusy fb = svci.getFreeBusy(null, user,
+        BwFreeBusy fb = svci.getFreeBusy(null, null, user,
                                          CalFacadeUtil.getDateTime(sdt, false, false, tzs),
                                          CalFacadeUtil.getDateTime(edt, false, false, tzs),
                                          dur, true);

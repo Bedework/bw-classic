@@ -51,74 +51,20 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-
 package edu.rpi.cct.uwcal.caldav;
 
-import edu.rpi.cct.webdav.servlet.common.WebdavServlet;
+import edu.rpi.cct.webdav.servlet.common.OptionsMethod;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
-import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 
-import java.util.HashMap;
-import java.util.Properties;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletResponse;
 
-/** This class extends the webdav servlet class, implementing the abstract
- * methods and overriding others to extend/modify the behaviour.
+/** Add our own dav header
  *
- * @author Mike Douglass   douglm@rpi.edu
+ * @author Mike Douglass   douglm at rpi.edu
+ *
  */
-public class CaldavBWServlet extends WebdavServlet {
-//  private ServletConfig config;
-
-  /** Global resources for the servlet - not to be modified.
-   */
-  protected Properties props;
-
-  //  private static final String intfName = "edu.rpi.cct.uwcal.webdav.intfname";
-
-  private String id = null;
-  /* ====================================================================
-   *                     Abstract servlet methods
-   * ==================================================================== */
-
-  public String getId() {
-    if (id != null) {
-      return id;
-    }
-
-    if (props == null) {
-      return getClass().getName();
-    }
-
-    id = props.getProperty("edu.rpi.cct.uwcal.appname");
-    if (id == null) {
-      id = getClass().getName();
-    }
-
-    return id;
-  }
-
-  public void addMethods(WebdavNsIntf nsIntf) throws WebdavException{
-    HashMap methods = nsIntf.getMethods();
-
-    super.addMethods(nsIntf);
-
-    // Replace methods
-    methods.put("MKCALENDAR", new MkcalendarMethod());
-    methods.put("OPTIONS", new CalDavOptionsMethod());
-    methods.put("REPORT", new ReportMethod());
-  }
-
-  public WebdavNsIntf getNsIntf(HttpServletRequest req,
-                                ServletConfig config,
-                                Properties props)
-      throws WebdavException {
-    //    this.config = config;
-    this.props = props;
-
-    CaldavBWIntf wi = new CaldavBWIntf();
-
-    return wi;
+public class CalDavOptionsMethod extends OptionsMethod {
+  protected void addDavHeader(HttpServletResponse resp) throws WebdavException {
+    resp.addHeader("DAV", "1, 2, 3, access-control, calendar-access");
   }
 }

@@ -56,6 +56,7 @@ package org.bedework.calfacade;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.EventInfo;
 
+import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Parameter;
 import net.fortuna.ical4j.model.ParameterList;
 import net.fortuna.ical4j.model.Property;
@@ -670,13 +671,10 @@ public class CalFacadeUtil implements Serializable {
     //  debugMsg("Did UTC stuff in " + (System.currentTimeMillis() - millis));
     //}
 
+    EntityRange er = new EntityRange();
     Iterator it = pars.events.iterator();
     while (it.hasNext()) {
-      EventInfo ei = (EventInfo)it.next();
-      BwEvent ev = ei.getEvent();
-
-      String evStart = ev.getDtstart().getDate();
-      String evEnd = ev.getDtend().getDate();
+      er.setEntity(it.next());
 
       /* Event is within range if:
          1.   (((evStart <= :start) and (evEnd > :start)) or
@@ -687,15 +685,15 @@ public class CalFacadeUtil implements Serializable {
          3.    ((evEnd > :start) and (evEnd < :end)))
       */
 
-      int evstSt = evStart.compareTo(start);
-      int evendSt = evEnd.compareTo(start);
+      int evstSt = er.start.compareTo(start);
+      int evendSt = er.end.compareTo(start);
 
       //debugMsg("                   event " + evStart + " to " + evEnd);
 
       if (((evstSt <= 0) && (evendSt > 0)) ||
-          ((evstSt >= 0) && (evStart.compareTo(end) < 0)) ||
+          ((evstSt >= 0) && (er.start.compareTo(end) < 0)) ||
           //((evendSt > 0) && (evEnd.compareTo(end) <= 0))) {
-          ((evendSt > 0) && (evEnd.compareTo(end) < 0))) {
+          ((evendSt > 0) && (er.end.compareTo(end) < 0))) {
         // Passed the tests.
         /*
         if (debug) {
@@ -703,7 +701,7 @@ public class CalFacadeUtil implements Serializable {
                    " with dates " + evStart + "-" + evEnd +
                    ": " + ev.getSummary());
         }*/
-        al.add(ei);
+        al.add(er.entity);
       }
     }
 
@@ -730,5 +728,124 @@ public class CalFacadeUtil implements Serializable {
 
     return "0" + String.valueOf(val);
   }
-}
 
+  private static class EntityRange {
+    Object entity;
+
+    String start;
+    String end;
+
+    void setEntity(Object o) throws CalFacadeException {
+      entity = o;
+
+      if (o instanceof EventInfo) {
+        EventInfo ei = (EventInfo)o;
+        BwEvent ev = ei.getEvent();
+
+        start = ev.getDtstart().getDate();
+        start = ev.getDtend().getDate();
+
+        return;
+      }
+
+      if (o instanceof EventPeriod) {
+        EventPeriod ep = (EventPeriod)o;
+
+        start = String.valueOf(ep.getStart());
+        start = String.valueOf(ep.getEnd());
+
+        return;
+      }
+
+      start = null;
+      end = null;
+    }
+  }
+
+  /**
+   *
+   */
+  public static class EventPeriod implements Comparable {
+    private DateTime start;
+    private DateTime end;
+    private int type;  // from BwFreeBusyComponent
+
+    /** Constructor
+     *
+     * @param start
+     * @param end
+     * @param type
+     */
+    public EventPeriod(DateTime start, DateTime end, int type) {
+      this.start = start;
+      this.end = end;
+      this.type = type;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public DateTime getStart() {
+      return start;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public DateTime getEnd() {
+      return end;
+    }
+
+    /**
+     * @return int
+     */
+    public int getType() {
+      return type;
+    }
+
+    public int compareTo(Object o) {
+      if (!(o instanceof EventPeriod)) {
+        return -1;
+      }
+
+      EventPeriod that = (EventPeriod)o;
+
+      /* Sort by type first */
+      if (type < that.type) {
+        return -1;
+      }
+
+      if (type > that.type) {
+        return 1;
+      }
+
+      int res = start.compareTo(that.start);
+      if (res != 0) {
+        return res;
+      }
+
+      return end.compareTo(that.end);
+    }
+
+    public boolean equals(Object o) {
+      return compareTo(o) == 0;
+    }
+
+    public int hashCode() {
+      return 7 * (type + 1) * (start.hashCode() + 1) * (end.hashCode() + 1);
+    }
+
+    public String toString() {
+      StringBuffer sb = new StringBuffer("EventPeriod{start=");
+
+      sb.append(start);
+      sb.append(", end=");
+      sb.append(end);
+      sb.append(", type=");
+      sb.append(type);
+      sb.append("}");
+
+      return sb.toString();
+    }
+  }
+}

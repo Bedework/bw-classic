@@ -184,6 +184,16 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
   private char endType = endTypeDate;
 
   private String link;
+
+  /** Rfc value for a confirmed meeting */
+  public static final String statusConfirmed = "CONFIRMED";
+
+  /** Rfc value for a cancelled meeting */
+  public static final String statusCancelled = "CANCELLED";
+
+  /** Rfc value for a tentative meeting */
+  public static final String statusTentative = "TENTATIVE";
+
   private String status;
   private String cost;
 
@@ -984,6 +994,7 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
     res.setEndType(getEndType());
     res.setGuid(getGuid());
     res.setTransparency(getTransparency());
+    res.setStatus(getStatus());
 
     return res;
   }

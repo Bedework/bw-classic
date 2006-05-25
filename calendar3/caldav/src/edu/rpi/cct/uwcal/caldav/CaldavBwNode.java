@@ -62,8 +62,8 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 
 import java.io.StringReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Vector;
 
 /** Class to represent a caldav node.
  *
@@ -132,7 +132,7 @@ public abstract class CaldavBwNode extends WebdavNsNode {
    * @throws WebdavIntfException
    */
   public Collection getProperties(String ns) throws WebdavIntfException {
-    return new Vector();
+    return new ArrayList();
   }
 
   /** Returns an InputStream for the content.

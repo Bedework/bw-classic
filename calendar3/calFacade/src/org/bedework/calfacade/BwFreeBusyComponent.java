@@ -78,7 +78,7 @@ public class BwFreeBusyComponent implements Serializable {
   /** tentative busy time */
   public static final int typeBusyTentative = 3;
 
-  private int type;
+  private int type = typeBusy;
 
   /** Collection of Period
    */

@@ -729,6 +729,18 @@ public class CalSvc extends CalSvcI {
     return 1; //doesn't exist
   }
 
+  public boolean isUserRoot(BwCalendar cal) throws CalFacadeException {
+    if (cal == null) {
+      return false;
+    }
+
+    String[] ss = cal.getPath().split("/");
+    int pathLength = ss.length - 1;  // First element is empty string
+
+    return (pathLength == 2) &&
+           (ss[1].equals(getSyspars().getUserCalendarRoot()));
+  }
+
   /* ====================================================================
    *                   Views
    * ==================================================================== */
@@ -1021,7 +1033,8 @@ public class CalSvc extends CalSvcI {
    *                   Free busy
    * ==================================================================== */
 
-  public BwFreeBusy getFreeBusy(BwCalendar cal, BwPrincipal who,
+  public BwFreeBusy getFreeBusy(Collection subs,
+                                BwCalendar cal, BwPrincipal who,
                                 BwDateTime start, BwDateTime end,
                                 BwDuration granularity,
                                 boolean returnAll)
@@ -1031,21 +1044,10 @@ public class CalSvc extends CalSvcI {
     }
 
     BwUser u = (BwUser)who;
-    Collection subs;
 
-    /* See if the calendar is a user root. */
-
-    if (cal != null) {
-      String[] ss = cal.getPath().split("/");
-      int pathLength = ss.length - 1;  // First element is empty string
-
-      if ((pathLength == 2) &&
-          (ss[1].equals(getSyspars().getUserCalendarRoot()))) {
-        cal = null;
-      }
-    }
-
-    if (cal != null) {
+    if (subs != null) {
+      // Use these
+    } else if (cal != null) {
       getCal().checkAccess(cal, PrivilegeDefs.privReadFreeBusy, false);
 
       BwSubscription sub = BwSubscription.makeSubscription(cal);
@@ -1091,6 +1093,11 @@ public class CalSvc extends CalSvcI {
 
         if (!sub.getIgnoreTransparency() &&
             BwEvent.transparencyTransparent.equals(ev.getTransparency())) {
+          // Ignore this one.
+          continue;
+        }
+
+        if (BwEvent.statusCancelled.equals(ev.getStatus())) {
           // Ignore this one.
           continue;
         }
@@ -1147,13 +1154,22 @@ public class CalSvc extends CalSvcI {
               fbc.setType(BwFreeBusyComponent.typeFree);
             }
           } else if (periodEvents.size() != 0) {
-            // Some events fall in the period. Add an entry.
+            /* Some events fall in the period. Add an entry.
+             * We eliminated cancelled events earler. Now we should set the
+             * free/busy type based on the events status.
+             */
 
             DateTime psdt = new DateTime(gpp.startDt.getDtval());
             DateTime pedt = new DateTime(gpp.endDt.getDtval());
 
             psdt.setUtc(true);
             pedt.setUtc(true);
+
+            if (fbc == null) {
+              fbc = new BwFreeBusyComponent();
+              fb.addTime(fbc);
+            }
+
             fbc.addPeriod(new Period(psdt, pedt));
           }
         }
@@ -1168,6 +1184,11 @@ public class CalSvc extends CalSvcI {
       while (it.hasNext()) {
         EventInfo ei = (EventInfo)it.next();
         BwEvent ev = ei.getEvent();
+
+        if (BwEvent.statusCancelled.equals(ev.getStatus())) {
+          // Ignore this one.
+          continue;
+        }
 
         // Ignore if times were specified and this event is outside the times
 
@@ -1197,7 +1218,13 @@ public class CalSvc extends CalSvcI {
         psdt.setUtc(true);
         pedt.setUtc(true);
 
-        eventPeriods.add(new EventPeriod(psdt, pedt));
+        int type = BwFreeBusyComponent.typeBusy;
+
+        if (BwEvent.statusTentative.equals(ev.getStatus())) {
+          type = BwFreeBusyComponent.typeBusyTentative;
+       }
+
+        eventPeriods.add(new EventPeriod(psdt, pedt, type));
       }
 
       /* iterate through the sorted periods combining them where they are
@@ -1208,20 +1235,34 @@ public class CalSvc extends CalSvcI {
       /* For the moment just build a single BwFreeBusyComponent
        */
       BwFreeBusyComponent fbc = null;
+      int lastType = 0;
 
       it = eventPeriods.iterator();
       while (it.hasNext()) {
         EventPeriod ep = (EventPeriod)it.next();
 
+        if (debug) {
+          trace(ep.toString());
+        }
+
         if (p == null) {
           p = new Period(ep.start, ep.end);
-        } else if (ep.start.after(p.getEnd())) {
+          lastType = ep.type;
+        } else if ((lastType != ep.type) || ep.start.after(p.getEnd())) {
           // Non adjacent periods
           if (fbc == null) {
             fbc = new BwFreeBusyComponent();
+            fbc.setType(lastType);
+            fb.addTime(fbc);
           }
           fbc.addPeriod(p);
+
+          if (lastType != ep.type) {
+            fbc = null;
+          }
+
           p = new Period(ep.start, ep.end);
+          lastType = ep.type;
         } else if (ep.end.after(p.getEnd())) {
           // Extend the current period
           p = new Period(p.getStart(), ep.end);
@@ -1229,16 +1270,17 @@ public class CalSvc extends CalSvcI {
       }
 
       if (p != null) {
-        if (fbc == null) {
+        if ((fbc == null) || (lastType != fbc.getType())) {
           fbc = new BwFreeBusyComponent();
+          fbc.setType(lastType);
+          fb.addTime(fbc);
         }
         fbc.addPeriod(p);
       }
-
-      if (fbc != null) {
-        fb.addTime(fbc);
-      }
     } catch (Throwable t) {
+      if (debug) {
+        error(t);
+      }
       throw new CalFacadeException(t);
     }
 
@@ -1248,10 +1290,12 @@ public class CalSvc extends CalSvcI {
   private static class EventPeriod implements Comparable {
     DateTime start;
     DateTime end;
+    int type;  // from BwFreeBusyComponent
 
-    EventPeriod(DateTime start, DateTime end) {
+    EventPeriod(DateTime start, DateTime end, int type) {
       this.start = start;
       this.end = end;
+      this.type = type;
     }
 
     public int compareTo(Object o) {
@@ -1261,12 +1305,42 @@ public class CalSvc extends CalSvcI {
 
       EventPeriod that = (EventPeriod)o;
 
+      /* Sort by type first */
+      if (type < that.type) {
+        return -1;
+      }
+
+      if (type > that.type) {
+        return 1;
+      }
+
       int res = start.compareTo(that.start);
       if (res != 0) {
         return res;
       }
 
       return end.compareTo(that.end);
+    }
+
+    public boolean equals(Object o) {
+      return compareTo(o) == 0;
+    }
+
+    public int hashCode() {
+      return 7 * (type + 1) * (start.hashCode() + 1) * (end.hashCode() + 1);
+    }
+
+    public String toString() {
+      StringBuffer sb = new StringBuffer("EventPeriod{start=");
+
+      sb.append(start);
+      sb.append(", end=");
+      sb.append(end);
+      sb.append(", type=");
+      sb.append(type);
+      sb.append("}");
+
+      return sb.toString();
     }
   }
 
@@ -1920,9 +1994,9 @@ public class CalSvc extends CalSvcI {
     if (sub != null) {
       // Explicitly selected calendar - via a subscription.
 
-      return postProcess(getCal().getEvents(sub.getCalendar(), filter, startDate,
-                                            endDate, recurRetrieval,
-                                            freeBusy, true),
+      return postProcess(getCal(sub).getEvents(sub.getCalendar(), filter,
+                                               startDate, endDate,
+                                               recurRetrieval, freeBusy, true),
                          sub);
     }
 
@@ -2211,6 +2285,15 @@ public class CalSvc extends CalSvcI {
                                      true, false);
   }*/
 
+  /* This will get a calintf based on the subscription uri.
+   */
+  Calintf getCal(BwSubscription sub) throws CalFacadeException {
+    return getCal();
+  }
+
+  /* Currently this gets a local calintf only. Later we need to use a par to
+   * get calintf from a table.
+   */
   Calintf getCal() throws CalFacadeException {
     if (cali != null) {
       return cali;
@@ -2226,7 +2309,8 @@ public class CalSvc extends CalSvcI {
       cali.open(); // Just for the user interactions
       cali.beginTransaction();
 
-      boolean userCreated = cali.init(pars.getAuthUser(),
+      boolean userCreated = cali.init(null,
+                                      pars.getAuthUser(),
                                       pars.getUser(),
                                       pars.getPublicAdmin(),
                                       getGroups(),
@@ -2547,6 +2631,10 @@ public class CalSvc extends CalSvcI {
 
   private void trace(String msg) {
     getLogger().debug(msg);
+  }
+
+  private void error(Throwable t) {
+    getLogger().error(this, t);
   }
 }
 

@@ -61,8 +61,12 @@ import org.bedework.calfacade.BwAlarm;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwDateTime;
+import org.bedework.calfacade.BwDuration;
 import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.BwFreeBusy;
+import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.BwLocation;
+import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.BwRWStats;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwStats;
@@ -75,23 +79,30 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.CoreEventInfo;
+import org.bedework.calfacade.CalFacadeUtil.EventPeriod;
+import org.bedework.calfacade.CalFacadeUtil.GetPeriodsPars;
 import org.bedework.calfacade.base.BwShareableDbentity;
+import org.bedework.calfacade.base.CalintfBase;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
-import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.calfacade.ifs.CalintfInfo;
 import org.bedework.calfacade.ifs.EventsI;
 import org.bedework.calfacade.ifs.Groups;
+import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.icalendar.IcalTranslator;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.DateTime;
+import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.component.VTimeZone;
 
 import org.apache.log4j.Logger;
@@ -130,9 +141,7 @@ import org.hibernate.SessionFactory;
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
-public class CalintfImpl implements Calintf, PrivilegeDefs {
-  private boolean debug;
-
+public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
   private BwSystem syspars;
 
   private BwStats stats = new BwRWStats();
@@ -149,21 +158,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
    */
   private AccessUtil access;
 
-  /** Ensure we don't open while open
-   */
-  private boolean isOpen;
-
-  /* * This is all the personal calendars modified while the current transaction
-   *  has been in progress. Just before commit we update the lastmod off all
-   *  the users on this list.
-   * /
-  private Vector personalModified;
-  */
-
-  /** User for whom we maintain this facade
-   */
-  private BwUser user;
-
   private EventsI events;
 
   private Calendars calendars;
@@ -173,12 +167,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   private EventProperties locations;
 
   private EventProperties sponsors;
-
-  private int currentMode = CalintfUtil.guestMode;
-
-  /** Non-null if this is for synchronization. Identifies the client end.
-   */
-  private String synchId;
 
   /** Prevent updates.
    */
@@ -212,11 +200,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     }
   }
 
-  private transient Logger log;
-
-  /** When we were created for debugging */
-  private Timestamp objTimestamp;
-
   /* ====================================================================
    *                   initialisation
    * ==================================================================== */
@@ -224,24 +207,22 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   /* (non-Javadoc)
    * @see org.bedework.calfacade.Calintf#init(org.bedework.calfacade.BwUser, java.lang.String, boolean, boolean, boolean, java.lang.String, boolean)
    */
-  public boolean init(String authenticatedUser,
+  public boolean init(String url,
+                      String authenticatedUser,
                       String user,
                       boolean publicAdmin,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException {
-    this.debug = debug;
+    super.init(url, authenticatedUser, user, publicAdmin,
+               groups, synchId, debug);
+
     boolean userCreated = false;
 
     BwUser authUser;
 
     try {
       access = new AccessUtil(debug);
-
-      objTimestamp = new Timestamp(System.currentTimeMillis());
-
-      this.synchId = synchId;
-      log = Logger.getLogger(getClass());
 
       if ((synchId != null) && publicAdmin) {
         throw new CalFacadeException("synch only valid for non admin");
@@ -324,6 +305,15 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     }
 
     return userCreated;
+  }
+
+  public void logon(BwUser val) throws CalFacadeException {
+    checkOpen();
+    Timestamp now = new Timestamp(System.currentTimeMillis());
+
+    val.setLogon(now);
+    val.setLastAccess(now);
+    sess.update(val);
   }
 
   public void setSuperUser(boolean val) {
@@ -420,32 +410,13 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     return info;
   }
 
-  public boolean getDebug() throws CalFacadeException {
-    return debug;
-  }
-
-  public void setUser(String val) throws CalFacadeException {
-    refreshEvents();
-
-    user = getUser(val);
-    if (this.user == null) {
-      throw new CalFacadeException("User " + val + " does not exist.");
-    }
-
-    logon(user);
-
-    if (debug) {
-      log.debug("User " + val + " set in calintf");
-    }
-  }
-
   /* ====================================================================
    *                   Misc methods
    * ==================================================================== */
 
   public void flushAll() throws CalFacadeException {
     if (debug) {
-      log.debug("flushAll for " + objTimestamp);
+      debug("flushAll for " + objTimestamp);
     }
     if (sess == null) {
       return;
@@ -471,12 +442,12 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
 
     if (sess == null) {
       if (debug) {
-        log.debug("New hibernate session for " + objTimestamp);
+        debug("New hibernate session for " + objTimestamp);
       }
-      sess = new HibSession(sessFactory, log);
+      sess = new HibSession(sessFactory, getLogger());
     } else {
       if (debug) {
-        log.debug("Reconnect hibernate session for " + objTimestamp);
+        debug("Reconnect hibernate session for " + objTimestamp);
       }
       sess.reconnect();
     }
@@ -491,13 +462,13 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   public synchronized void close() throws CalFacadeException {
     if (!isOpen) {
       if (debug) {
-        log.debug("Close for " + objTimestamp + " closed session");
+        debug("Close for " + objTimestamp + " closed session");
       }
       return;
     }
 
     if (debug) {
-      log.debug("Close for " + objTimestamp);
+      debug("Close for " + objTimestamp);
     }
 
     try {
@@ -525,7 +496,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     checkOpen();
 //    sess.close();
     if (debug) {
-      log.debug("Begin transaction for " + objTimestamp);
+      debug("Begin transaction for " + objTimestamp);
     }
     sess.beginTransaction();
   }
@@ -534,7 +505,7 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     checkOpen();
 
     if (debug) {
-      log.debug("End transaction for " + objTimestamp);
+      debug("End transaction for " + objTimestamp);
     }
 
     /* Update the lastmods for any changed users
@@ -604,10 +575,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
    *                   Users
    * ==================================================================== */
 
-  public BwUser getUser() throws CalFacadeException {
-    return user;
-  }
-
   public BwUser getUser(int id) throws CalFacadeException {
     checkOpen();
     StringBuffer q = new StringBuffer();
@@ -655,10 +622,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     sess.save(user);
   }
 
-  public void updateUser() throws CalFacadeException {
-    updateUser(getUser());
-  }
-
   public void updateUser(BwUser user) throws CalFacadeException {
     checkOpen();
     sess.update(user);
@@ -681,15 +644,6 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
     checkOpen();
     throw new CalFacadeException("Unimplemented");
   }*/
-
-  private void logon(BwUser val) throws CalFacadeException {
-    checkOpen();
-    Timestamp now = new Timestamp(System.currentTimeMillis());
-
-    val.setLogon(now);
-    val.setLastAccess(now);
-    sess.update(val);
-  }
 
   /* ====================================================================
    *                   Access
@@ -1081,6 +1035,204 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
   }
 
   /* ====================================================================
+   *                   Free busy
+   * ==================================================================== */
+
+  public BwFreeBusy getFreeBusy(BwCalendar cal, BwPrincipal who,
+                                BwDateTime start, BwDateTime end,
+                                BwDuration granularity,
+                                boolean returnAll,
+                                boolean ignoreTransparency)
+          throws CalFacadeException {
+    if (!(who instanceof BwUser)) {
+      throw new CalFacadeException("Unsupported: non user principal for free-busy");
+    }
+
+    Collection events = getFreeBusyEntities(cal, start, end, ignoreTransparency);
+    BwFreeBusy fb = new BwFreeBusy(who, start, end);
+
+    try {
+      if (granularity != null) {
+        // chunked.
+        GetPeriodsPars gpp = new GetPeriodsPars();
+
+        gpp.events = events;
+        gpp.startDt = start;
+        gpp.dur = granularity;
+        gpp.tzcache = getTimezones();
+
+        BwFreeBusyComponent fbc = null;
+
+        if (!returnAll) {
+          // One component
+          fbc = new BwFreeBusyComponent();
+          fb.addTime(fbc);
+        }
+
+        int limit = 10000; // XXX do this better
+
+        /* endDt is null first time through, then represents end of last
+         * segment.
+         */
+        while ((gpp.endDt == null) || (gpp.endDt.before(end))) {
+          //if (debug) {
+          //  trace("gpp.startDt=" + gpp.startDt + " end=" + end);
+          //}
+          if (limit < 0) {
+            throw new CalFacadeException("org.bedework.svci.limit.exceeded");
+          }
+          limit--;
+
+          Collection periodEvents = CalFacadeUtil.getPeriodsEvents(gpp);
+
+          if (returnAll) {
+            fbc = new BwFreeBusyComponent();
+            fb.addTime(fbc);
+
+            DateTime psdt = new DateTime(gpp.startDt.getDtval());
+            DateTime pedt = new DateTime(gpp.endDt.getDtval());
+
+            psdt.setUtc(true);
+            pedt.setUtc(true);
+            fbc.addPeriod(new Period(psdt, pedt));
+            if (periodEvents.size() == 0) {
+              fbc.setType(BwFreeBusyComponent.typeFree);
+            }
+          } else if (periodEvents.size() != 0) {
+            /* Some events fall in the period. Add an entry.
+             * We eliminated cancelled events earler. Now we should set the
+             * free/busy type based on the events status.
+             */
+
+            DateTime psdt = new DateTime(gpp.startDt.getDtval());
+            DateTime pedt = new DateTime(gpp.endDt.getDtval());
+
+            psdt.setUtc(true);
+            pedt.setUtc(true);
+
+            if (fbc == null) {
+              fbc = new BwFreeBusyComponent();
+              fb.addTime(fbc);
+            }
+
+            fbc.addPeriod(new Period(psdt, pedt));
+          }
+        }
+
+        return fb;
+      }
+
+      Iterator it = events.iterator();
+
+      TreeSet eventPeriods = new TreeSet();
+
+      while (it.hasNext()) {
+        EventInfo ei = (EventInfo)it.next();
+        BwEvent ev = ei.getEvent();
+
+        if (BwEvent.statusCancelled.equals(ev.getStatus())) {
+          // Ignore this one.
+          continue;
+        }
+
+        // Ignore if times were specified and this event is outside the times
+
+        BwDateTime estart = ev.getDtstart();
+        BwDateTime eend = ev.getDtend();
+
+        /* Don't report out of the requested period */
+
+        String dstart;
+        String dend;
+
+        if (estart.before(start)) {
+          dstart = start.getDtval();
+        } else {
+          dstart = estart.getDtval();
+        }
+
+        if (eend.after(end)) {
+          dend = end.getDtval();
+        } else {
+          dend = eend.getDtval();
+        }
+
+        DateTime psdt = new DateTime(dstart);
+        DateTime pedt = new DateTime(dend);
+
+        psdt.setUtc(true);
+        pedt.setUtc(true);
+
+        int type = BwFreeBusyComponent.typeBusy;
+
+        if (BwEvent.statusTentative.equals(ev.getStatus())) {
+          type = BwFreeBusyComponent.typeBusyTentative;
+       }
+
+        eventPeriods.add(new EventPeriod(psdt, pedt, type));
+      }
+
+      /* iterate through the sorted periods combining them where they are
+       adjacent or overlap */
+
+      Period p = null;
+
+      /* For the moment just build a single BwFreeBusyComponent
+       */
+      BwFreeBusyComponent fbc = null;
+      int lastType = 0;
+
+      it = eventPeriods.iterator();
+      while (it.hasNext()) {
+        EventPeriod ep = (EventPeriod)it.next();
+
+        if (debug) {
+          trace(ep.toString());
+        }
+
+        if (p == null) {
+          p = new Period(ep.getStart(), ep.getEnd());
+          lastType = ep.getType();
+        } else if ((lastType != ep.getType()) || ep.getStart().after(p.getEnd())) {
+          // Non adjacent periods
+          if (fbc == null) {
+            fbc = new BwFreeBusyComponent();
+            fbc.setType(lastType);
+            fb.addTime(fbc);
+          }
+          fbc.addPeriod(p);
+
+          if (lastType != ep.getType()) {
+            fbc = null;
+          }
+
+          p = new Period(ep.getStart(), ep.getEnd());
+          lastType = ep.getType();
+        } else if (ep.getEnd().after(p.getEnd())) {
+          // Extend the current period
+          p = new Period(p.getStart(), ep.getEnd());
+        } // else it falls within the existing period
+      }
+
+      if (p != null) {
+        if ((fbc == null) || (lastType != fbc.getType())) {
+          fbc = new BwFreeBusyComponent();
+          fbc.setType(lastType);
+          fb.addTime(fbc);
+        }
+        fbc.addPeriod(p);
+      }
+    } catch (Throwable t) {
+      if (debug) {
+        error(t);
+      }
+      throw new CalFacadeException(t);
+    }
+
+    return fb;
+  }
+
+  /* ====================================================================
    *                   Events
    * ==================================================================== */
 
@@ -1341,24 +1493,38 @@ public class CalintfImpl implements Calintf, PrivilegeDefs {
    *                   Private methods
    * ==================================================================== */
 
-  private void checkOpen() throws CalFacadeException {
-    if (!isOpen) {
-      throw new CalFacadeException("Calintf call when closed");
+  private Collection getFreeBusyEntities(BwCalendar cal,
+                                         BwDateTime start, BwDateTime end,
+                                         boolean ignoreTransparency)
+          throws CalFacadeException {
+    Collection evs = getEvents(cal, null, start, end,
+                               CalFacadeDefs.retrieveRecurExpanded, true,
+                               true);
+
+    // Filter out transparent and cancelled events
+    Iterator evit = evs.iterator();
+
+    Collection events = new TreeSet();
+
+    while (evit.hasNext()) {
+      EventInfo ei = (EventInfo)evit.next();
+      BwEvent ev = ei.getEvent();
+
+      if (!ignoreTransparency &&
+          BwEvent.transparencyTransparent.equals(ev.getTransparency())) {
+        // Ignore this one.
+        continue;
+      }
+
+      if (BwEvent.statusCancelled.equals(ev.getStatus())) {
+        // Ignore this one.
+        continue;
+      }
+
+      events.add(ei);
     }
-  }
 
-  /* Get a logger for messages
-   */
-  private Logger getLogger() {
-    if (log == null) {
-      log = Logger.getLogger(this.getClass());
-    }
-
-    return log;
-  }
-
-  private void trace(String msg) {
-    getLogger().debug(msg);
+    return events;
   }
 }
 

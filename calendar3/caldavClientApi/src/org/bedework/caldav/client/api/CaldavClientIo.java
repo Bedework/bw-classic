@@ -56,6 +56,7 @@ package org.bedework.caldav.client.api;
 
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.http.client.caldav.CaldavClient;
+import org.bedework.http.client.DepthHttpMethod;
 import org.bedework.http.client.HttpManager;
 
 import java.io.InputStream;
@@ -134,6 +135,7 @@ public class CaldavClientIo {
    * @param method
    * @param url
    * @param hdrs
+   * @param depth
    * @param contentType
    * @param contentLen
    * @param content
@@ -141,9 +143,11 @@ public class CaldavClientIo {
    * @throws Throwable
    */
   public int sendRequest(String method, String url,
-                         Header[] hdrs, String contentType, int contentLen,
+                         Header[] hdrs, int depth,
+                         String contentType, int contentLen,
                          byte[] content) throws Throwable {
-    return sendRequest(method, url, null, null, hdrs, contentType, contentLen, content);
+    return sendRequest(method, url, null, null, hdrs, depth,
+                       contentType, contentLen, content);
   }
 
   /** Send an authenticated request to the server
@@ -153,6 +157,7 @@ public class CaldavClientIo {
    * @param user
    * @param pw
    * @param hdrs
+   * @param depth
    * @param contentType
    * @param contentLen
    * @param content
@@ -160,7 +165,8 @@ public class CaldavClientIo {
    * @throws Throwable
    */
   public int sendRequest(String method, String url, String user, String pw,
-                         Header[] hdrs, String contentType, int contentLen,
+                         Header[] hdrs, int depth,
+                         String contentType, int contentLen,
                          byte[] content) throws Throwable {
     int sz = 0;
     if (content != null) {
@@ -174,6 +180,10 @@ public class CaldavClientIo {
     client.setMethodName(method, url);
 
     HttpMethod meth = client.getMethod();
+
+    if (meth instanceof DepthHttpMethod) {
+      ((DepthHttpMethod)meth).setDepth(depth);
+    }
 
     if (user != null) {
       String upw = user + ":" + pw;

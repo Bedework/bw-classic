@@ -611,6 +611,14 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract int deleteCalendar(BwCalendar val) throws CalFacadeException;
 
+  /** Return true if cal != null and it represents a (local) user root
+   *
+   * @param cal
+   * @return boolean
+   * @throws CalFacadeException
+   */
+  public abstract boolean isUserRoot(BwCalendar cal) throws CalFacadeException;
+
   /* ====================================================================
    *                   Views
    * ==================================================================== */
@@ -811,9 +819,12 @@ public abstract class CalSvcI implements Serializable {
    * into granularity sized chunks which will only be reported if one or more
    * events fall in the segment.
    *
-   * @param cal    Calendar to provide free-busy for. Null or the user root
+   * @param subs   If non-null use these as the subscriptions.
+   * @param cal    Calendar to provide free-busy for. Null for the user root
    *               for default collection (as specified by user).
-   * @param who
+   *               Used for local access to a given calendar via e.g. caldav
+   * @param who    If sub and cal are null get the info for this user, otherwise
+   *               this si used as the free/busy result owner
    * @param start
    * @param end
    * @param granularity BwDuration object defining how to divide free/busy
@@ -824,7 +835,8 @@ public abstract class CalSvcI implements Serializable {
    * @return BwFreeBusy
    * @throws CalFacadeException
    */
-  public abstract BwFreeBusy getFreeBusy(BwCalendar cal, BwPrincipal who,
+  public abstract BwFreeBusy getFreeBusy(Collection subs,
+                                         BwCalendar cal, BwPrincipal who,
                                          BwDateTime start, BwDateTime end,
                                          BwDuration granularity,
                                          boolean returnAll)

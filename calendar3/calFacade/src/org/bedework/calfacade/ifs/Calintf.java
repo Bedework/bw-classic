@@ -54,9 +54,14 @@
 package org.bedework.calfacade.ifs;
 
 import org.bedework.calfacade.BwAlarm;
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
+import org.bedework.calfacade.BwDateTime;
+import org.bedework.calfacade.BwDuration;
 import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwLocation;
+import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwStats;
 import org.bedework.calfacade.BwSynchInfo;
@@ -94,6 +99,7 @@ import net.fortuna.ical4j.model.component.VTimeZone;
 public interface Calintf extends CalendarsI, EventsI {
   /** Must be called to initialise the new object.
    *
+   * @param url         String url to which we are connecting
    * @param authenticatedUser    String authenticated user of the application
    *                             or null for guest
    * @param user        String user we are acting as. If null we use authUser
@@ -105,12 +111,20 @@ public interface Calintf extends CalendarsI, EventsI {
    * @return boolean    true if the authUser was added to the db
    * @throws CalFacadeException
    */
-  public boolean init(String authenticatedUser,
+  public boolean init(String url,
+                      String authenticatedUser,
                       String user,
                       boolean publicAdmin,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException;
+
+  /** Can be called after init to flag the arrival of a user.
+   *
+   * @param val       true for a super user
+   * @throws CalFacadeException
+   */
+  public void logon(BwUser val) throws CalFacadeException;
 
   /** Called after init to flag this user as a super user.
    *
@@ -691,6 +705,29 @@ public interface Calintf extends CalendarsI, EventsI {
    * @throws CalFacadeException
    */
   public Collection getSponsorRefs(BwSponsor val) throws CalFacadeException;
+
+  /* ====================================================================
+   *                   Free busy
+   * ==================================================================== */
+
+  /**
+   * @param cal
+   * @param who
+   * @param start
+   * @param end
+   * @param granularity
+   * @param returnAll
+   * @param ignoreTransparency
+   * @return  BwFreeBusy object representing the calendar (or principals)
+   *          free/busy
+   * @throws CalFacadeException
+   */
+  public BwFreeBusy getFreeBusy(BwCalendar cal, BwPrincipal who,
+                                BwDateTime start, BwDateTime end,
+                                BwDuration granularity,
+                                boolean returnAll,
+                                boolean ignoreTransparency)
+          throws CalFacadeException;
 
   /* ====================================================================
    *                   Synchronization

@@ -73,6 +73,7 @@ class Req {
   String pw;
   String description;
   Header[] hdrs;
+  int depth;
   String contentType;
   String[] content;
   boolean auth;
@@ -88,6 +89,7 @@ class Req {
   static final String descHdr = "DESCRIPTION: ";
   static final String exprespHdr = "EXPECT-RESPONSE: ";
   static final String methHdr = "METHOD: ";
+  static final String depthHdr = "DEPTH: ";
   static final String authHdr = "AUTH: ";
   static final String urlHdr = "URL: ";
   static final String hdrHdr = "HEADER: ";
@@ -140,6 +142,11 @@ class Req {
                 METHOD
            */
           method = ln.substring(methHdr.length());
+        } else if (ln.startsWith(depthHdr)) {
+          /*
+                DEPTH
+           */
+          depth = Integer.valueOf(ln.substring(depthHdr.length())).intValue();
         } else if (ln.startsWith(authHdr)) {
           /*
                 AUTH
@@ -258,6 +265,13 @@ class Req {
    */
   public Header[] getHdrs() {
     return hdrs;
+  }
+
+  /**
+   * @return int
+   */
+  public int getDepth() {
+    return depth;
   }
 
   /**
