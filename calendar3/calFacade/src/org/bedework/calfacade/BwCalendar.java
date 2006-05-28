@@ -168,15 +168,15 @@ public class BwCalendar extends BwShareableContainedDbentity {
                     Collection children,
                     int calType) {
     super(owner, publick, creator, access);
-    this.name = name;
-    this.path = path;
-    this.summary = summary;
-    this.description = description;
-    this.mailListId = mailListId;
-    this.calendarCollection = calendarCollection;
+    setName(name);
+    setPath(path);
+    setSummary(summary);
+    setDescription(description);
+    setMailListId(mailListId);
+    setCalendarCollection(calendarCollection);
     setCalendar(parent);
-    this.children = children;
-    this.calType = calType;
+    setChildren(children);
+    setCalType(calType);
   }
 
   /** Set the name

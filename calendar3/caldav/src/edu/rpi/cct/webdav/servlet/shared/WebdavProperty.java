@@ -58,7 +58,7 @@ import edu.rpi.sss.util.xml.QName;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Enumeration;
+import java.util.Iterator;
 
 /** One of these for each property in a request.
  *
@@ -107,18 +107,18 @@ public class WebdavProperty implements Serializable {
     return pval;
   }
 
-  /** Convenience method to provide an enumeration of these objects
+  /** Convenience method to provide an Iterator over these objects
    *
    * @param c
-   * @return Enumeration
+   * @return Iterator
    */
-  public static Enumeration getEnumeration(Collection c) {
+  public static Iterator iterator(Collection c) {
     WebdavProperty[] ps = (WebdavProperty[])c.toArray(
             new WebdavProperty[c.size()]);
-    return new PropertyEnumeration(ps);
+    return new PropertyIterator(ps);
   }
 
-  private static class PropertyEnumeration implements Enumeration {
+  private static class PropertyIterator implements Iterator {
     WebdavProperty[] ps = null;
     int index;
 
@@ -126,11 +126,11 @@ public class WebdavProperty implements Serializable {
      *
      * @param ps
      */
-    public PropertyEnumeration(WebdavProperty[] ps) {
+    public PropertyIterator(WebdavProperty[] ps) {
       this.ps = ps;
     }
 
-    public boolean hasMoreElements() {
+    public boolean hasNext() {
       if ((ps == null) ||
           (index >= ps.length)) {
         return false;
@@ -139,7 +139,7 @@ public class WebdavProperty implements Serializable {
       return true;
     }
 
-    public Object nextElement() {
+    public Object next() {
       if ((ps == null) ||
           (index >= ps.length)) {
         return null;
@@ -149,6 +149,10 @@ public class WebdavProperty implements Serializable {
       index++;
 
       return p;
+    }
+
+    public void remove() {
+      throw new RuntimeException("Unimplemented");
     }
   }
 }

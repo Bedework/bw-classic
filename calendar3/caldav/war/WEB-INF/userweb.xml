@@ -72,7 +72,7 @@
 
   <login-config>
     <auth-method>BASIC</auth-method>
-    <realm-name>rpiLdap</realm-name>
+    <realm-name>@SECURITY-DOMAIN@</realm-name>
   </login-config>
 
   <!-- Insert ejb-ref here -->

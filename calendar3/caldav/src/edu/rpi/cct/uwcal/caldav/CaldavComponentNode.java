@@ -58,10 +58,12 @@ import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.svc.EventInfo;
 
 import org.bedework.calsvci.CalSvcI;
+import org.bedework.davdefs.CaldavTags;
 import org.bedework.icalendar.ComponentWrapper;
 import org.bedework.icalendar.IcalTranslator;
 //import org.bedework.icalendar.IcalUtil;
 
+import edu.rpi.cct.uwcal.caldav.calquery.CalendarData;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
 import edu.rpi.sss.util.xml.QName;
@@ -296,6 +298,9 @@ public class CaldavComponentNode extends CaldavBwNode {
     addProp(al, ICalTags.hasRecurrence, "0");
     addProp(al, ICalTags.hasAlarm, "0");
     addProp(al, ICalTags.hasAttachment, "0");
+
+    /* Default property calendar-data returns all of the object */
+    al.add(new CalendarData(CaldavTags.calendarData, debug));
 
     return al;
   }

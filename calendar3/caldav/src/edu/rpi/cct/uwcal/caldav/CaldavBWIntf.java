@@ -74,6 +74,7 @@ import edu.rpi.cct.uwcal.access.Acl;
 import edu.rpi.cct.uwcal.access.Privileges;
 
 import edu.rpi.cct.uwcal.caldav.filter.Filter;
+import edu.rpi.cct.uwcal.caldav.calquery.CalendarData;
 import edu.rpi.cct.uwcal.caldav.calquery.FreeBusyQuery;
 
 import edu.rpi.cct.webdav.servlet.common.MethodBase;
@@ -95,7 +96,6 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -392,12 +392,11 @@ public class CaldavBWIntf extends WebdavNsIntf {
     return namespace + String.valueOf(node.getLastmodDate());
   }
 
-  public Enumeration getProperties(WebdavNsNode node)
-      throws WebdavIntfException {
+  public Iterator iterateProperties(WebdavNsNode node) throws WebdavIntfException {
     try {
       CaldavBwNode uwnode = getBwnode(node);
 
-      return WebdavProperty.getEnumeration(uwnode.getProperties(namespace));
+      return WebdavProperty.iterator(uwnode.getProperties(namespace));
     } catch (WebdavIntfException we) {
       throw we;
     } catch (Throwable t) {
@@ -1093,6 +1092,35 @@ public class CaldavBWIntf extends WebdavNsIntf {
         openPropstat();
         xml.property(tag, pr.getPval());
         closePropstat();
+      } else if (tag.equals(CaldavTags.calendarData)) {
+        // pr should be a CalendarData object
+        if (!(pr instanceof CalendarData)) {
+          // XXX software error
+        } else {
+          CalendarData caldata = (CalendarData)pr;
+          String content = null;
+          openPropstat();
+          int status = HttpServletResponse.SC_OK;
+
+          try {
+            content = caldata.process(node);
+          } catch (WebdavException wde) {
+            status = wde.getStatusCode();;
+            if (debug && (status != HttpServletResponse.SC_NOT_FOUND)) {
+              error(wde);
+            }
+          }
+
+          if (status != HttpServletResponse.SC_OK) {
+            xml.emptyTag(tag);
+          } else {
+            /* Output the (transformed) node.
+             */
+
+            xml.property(CaldavTags.calendarData, content);
+          }
+          closePropstat(status);
+        }
       } else if (tag.equals(CaldavTags.calendarDescription)) {
         if ((cal != null) && (cal.getDescription() != null)) {
           // XXX lang
@@ -1299,8 +1327,6 @@ public class CaldavBWIntf extends WebdavNsIntf {
    * @throws WebdavIntfException
    */
   public CalSvcI getSvci() throws WebdavIntfException {
-    boolean publicMode = (account == null);
-
     if (svci != null) {
       if (!svci.isOpen()) {
         try {
@@ -1322,7 +1348,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
       CalSvcIPars pars = new CalSvcIPars(account,
                                          account,
                                          envPrefix,
-                                         publicMode,
+                                         false,   // publicAdmin
                                          true,    // caldav
                                          null, // synchId
                                          debug);

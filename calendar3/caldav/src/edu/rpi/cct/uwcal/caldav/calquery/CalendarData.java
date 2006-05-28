@@ -64,6 +64,8 @@ import edu.rpi.cct.webdav.servlet.common.MethodBase;
 import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
+import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
+import edu.rpi.sss.util.xml.QName;
 import edu.rpi.sss.util.xml.XmlUtil;
 
 
@@ -87,7 +89,7 @@ import org.w3c.dom.Node;
  *
  *   @author Mike Douglass   douglm@rpi.edu
  */
-public class CalendarData {
+public class CalendarData extends WebdavProperty {
   /*
       <!ELEMENT calendar-data ((comp?, (expand |
                                            limit-recurrence-set)?,
@@ -117,6 +119,54 @@ public class CalendarData {
 
       <!ATTLIST expand-recurrence-set start CDATA #REQUIRED
                                       end CDATA #REQUIRED>
+----------------------------------------------------------------------
+         <!ELEMENT calendar-data ((comp?, (expand |
+                                           limit-recurrence-set)?,
+                                           limit-freebusy-set?) |
+                                  #PCDATA)?>
+         PCDATA value: iCalendar object
+
+         <!ATTLIST calendar-data content-type CDATA "text/calendar">
+                                 version CDATA "2.0">
+         content-type value: a MIME media type
+         version value: a version string
+
+         <!ELEMENT comp ((allprop | prop*), (allcomp | comp*))>
+
+         <!ATTLIST comp name CDATA #REQUIRED>
+         name value: a calendar component name
+
+         <!ELEMENT allcomp EMPTY>
+
+         <!ELEMENT allprop EMPTY>
+
+         <!ELEMENT prop EMPTY>
+
+         <!ATTLIST prop name CDATA #REQUIRED
+                     novalue (yes | no) "no">
+         name value: a calendar property name
+         novalue value: "yes" or "no"
+
+         <!ELEMENT expand EMPTY>
+
+         <!ATTLIST expand start CDATA #REQUIRED
+                         end   CDATA #REQUIRED>
+         start value: an iCalendar "date with UTC time"
+         end value: an iCalendar "date with UTC time"
+
+         <!ELEMENT limit-recurrence-set EMPTY>
+
+         <!ATTLIST limit-recurrence-set start CDATA #REQUIRED
+                                       end   CDATA #REQUIRED>
+         start value: an iCalendar "date with UTC time"
+         end value: an iCalendar "date with UTC time"
+
+         <!ELEMENT limit-freebusy-set EMPTY>
+
+         <!ATTLIST limit-freebusy-set start CDATA #REQUIRED
+                                     end   CDATA #REQUIRED>
+         start value: an iCalendar "date with UTC time"
+         end value: an iCalendar "date with UTC time"
 
    */
   private boolean debug;
@@ -131,9 +181,12 @@ public class CalendarData {
 
   /** Constructor
    *
+   * @param tag  QName name
    * @param debug
    */
-  public CalendarData(boolean debug) {
+  public CalendarData(QName tag,
+                      boolean debug) {
+    super(tag, null);
     this.debug = debug;
   }
 

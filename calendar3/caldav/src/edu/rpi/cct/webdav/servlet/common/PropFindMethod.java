@@ -70,7 +70,6 @@ import org.w3c.dom.Node;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -83,6 +82,7 @@ public class PropFindMethod extends MethodBase {
   /**
    */
   public static class PropRequest {
+    // ENUM
     //private static final int reqPropNone = 0;
     private static final int reqProp = 1;
     private static final int reqPropName = 2;
@@ -96,7 +96,18 @@ public class PropFindMethod extends MethodBase {
 
     /** For the prop element we build a Collection of WebdavProperty
      */
-    Collection props;
+    private Collection props;
+
+    /**
+     * @return Iterator
+     */
+    public Iterator iterateProperties() {
+      if (props == null) {
+        return new ArrayList().iterator();
+      }
+
+      return props.iterator();
+    }
   }
 
   private PropRequest parsedReq;
@@ -213,10 +224,7 @@ public class PropFindMethod extends MethodBase {
     for (int i = 0; i < children.length; i++) {
       Element propnode = children[i];
 
-      WebdavProperty prop = new WebdavProperty(
-               new QName(propnode.getNamespaceURI(),
-                         propnode.getLocalName()),
-                         null);
+      WebdavProperty prop = makeProp(propnode);
 
       if (debug) {
         trace("prop: " + prop.getTag());
@@ -227,6 +235,18 @@ public class PropFindMethod extends MethodBase {
     }
 
     return pr;
+  }
+
+  /** Override this to create namespace specific property objects.
+   *
+   * @param propnode
+   * @return WebdavProperty
+   * @throws WebdavException
+   */
+  public WebdavProperty makeProp(Element propnode) throws WebdavException {
+    return new WebdavProperty(new QName(propnode.getNamespaceURI(),
+                                        propnode.getLocalName()),
+                                        null);
   }
 
   /**
@@ -306,9 +326,8 @@ public class PropFindMethod extends MethodBase {
     }
   }
 
-  /* Build the response for a single node for a propfind request
-   */
-  /**
+  /** Build the response for a single node for a propfind request
+   *
    * @param node
    * @param preq
    * @throws WebdavException
@@ -367,11 +386,11 @@ public class PropFindMethod extends MethodBase {
   /* Does all the properties special to the underlying namespace
    */
   private void doNodeNsProperties(WebdavNsNode node) throws WebdavException {
-    Enumeration en = getNsIntf().getProperties(node);
+    Iterator it = getNsIntf().iterateProperties(node);
     WebdavNsIntf intf = getNsIntf();
 
-    while (en.hasMoreElements()) {
-      WebdavProperty prop = (WebdavProperty)en.nextElement();
+    while (it.hasNext()) {
+      WebdavProperty prop = (WebdavProperty)it.next();
 
       intf.generatePropValue(node, prop);
     }

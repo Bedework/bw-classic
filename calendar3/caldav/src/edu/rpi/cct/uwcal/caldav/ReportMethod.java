@@ -92,16 +92,19 @@ import javax.servlet.http.HttpServletResponse;
 public class ReportMethod extends MethodBase {
   /* The parsed results go here. We see:
    *  1. Free-busy request
-   *  2. Query - optional props + optional calendar data + filter
-   *  3. Multi-get - optional props + optional calendar data + one or more hrefs
+   *  2. Query - optional props + filter
+   *  3. Multi-get - optional props + one or more hrefs
    */
 
   private FreeBusyQuery freeBusy;
   private PropFindMethod.PropRequest preq;
-  private CalendarData caldata;
+  //private CalendarData caldata;
   private Filter filter;
   private ArrayList hrefs;
 
+  CalendarData caldata;
+
+  // ENUM
   private final static int reportTypeQuery = 0;
   private final static int reportTypeMultiGet = 1;
   private final static int reportTypeFreeBusy = 2;
@@ -208,13 +211,13 @@ public class ReportMethod extends MethodBase {
         } else if (reportType == reportTypeExpandProperty) {
         } else {
           /* Two possibilities:
-               <!ELEMENT calendar-multiget
-                            (DAV:allprop | DAV:propname | DAV:prop)?
-                            calendar-data? DAV:href+>
+               <!ELEMENT calendar-multiget ((DAV:allprop |
+                                      DAV:propname |
+                                      DAV:prop)?, DAV:href+)>
 
-               <!ELEMENT calendar-query
-                       (DAV:allprop | DAV:propname | DAV:prop)?
-                       calendar-data? filter>
+               <!ELEMENT calendar-query ((DAV:allprop |
+                                    DAV:propname |
+                                    DAV:prop)?, filter, timezone?)>
            */
 
           /* First try for a property request */
@@ -228,15 +231,6 @@ public class ReportMethod extends MethodBase {
               throw new WebdavBadRequest();
             }
             preq = pr;
-          } else if (nodeMatches(curnode, CaldavTags.calendarData)) {
-            if (caldata != null) {
-              if (debug) {
-                trace("REPORT: caldata not null");
-              }
-              throw new WebdavBadRequest();
-            }
-            caldata = new CalendarData(debug);
-            caldata.parse(curnode);
           } else if ((reportType == reportTypeQuery) &&
                      nodeMatches(curnode, CaldavTags.filter)) {
             if (filter != null) {
@@ -281,13 +275,20 @@ public class ReportMethod extends MethodBase {
           throw new WebdavBadRequest();
         }
       } else if (reportType == reportTypeQuery) {
-        if (caldata == null) {
-          // same as empty element?
-          caldata = new CalendarData(debug);
-        }
         if (filter == null) {
           // filter required
           throw new WebdavBadRequest();
+        }
+      }
+
+      if (preq != null) {
+        // Look for a calendar-data property
+        Iterator it = preq.iterateProperties();
+        while (it.hasNext()) {
+          Object o = it.next();
+          if (o instanceof CalendarData) {
+            caldata = (CalendarData)o;
+          }
         }
       }
 
@@ -297,21 +298,10 @@ public class ReportMethod extends MethodBase {
           trace("free-busy");
           freeBusy.dump();
         } else if (reportType == reportTypeQuery) {
-          // Query - optional props + optional calendar data + filter
-          if (caldata != null) {
-            caldata.dump();
-          } else {
-            trace("No caldata");
-          }
-
+          // Query - optional props + filter
           filter.dump();
         } else if (reportType == reportTypeMultiGet) {
-          // Multi-get - optional props + optional calendar data + one or more hrefs
-          if (caldata != null) {
-            caldata.dump();
-          } else {
-            trace("No caldata");
-          }
+          // Multi-get - optional props + one or more hrefs
 
           Iterator it = hrefs.iterator();
           while (it.hasNext()) {
@@ -362,7 +352,9 @@ public class ReportMethod extends MethodBase {
       try {
         int retrieveRecur;
 
-        if (caldata.getErs() != null) {
+        if (caldata == null) {
+          retrieveRecur = CalFacadeDefs.retrieveRecurMaster;
+        } else if (caldata.getErs() != null) {
           /* expand XXX use range */
           retrieveRecur = CalFacadeDefs.retrieveRecurExpanded;
         } else if (caldata.getLrs() != null) {
@@ -512,23 +504,8 @@ public class ReportMethod extends MethodBase {
     PropFindMethod pm = (PropFindMethod)getNsIntf().findMethod(
             WebdavMethods.propFind);
     int status = node.getStatus();
-    String content = null;
 
     openTag(WebdavTags.response);
-
-    if (status == HttpServletResponse.SC_OK) {
-      if ((reportType == reportTypeQuery) ||
-          (reportType == reportTypeMultiGet)) {
-        try {
-          content = caldata.process(node);
-        } catch (WebdavException wde) {
-          status = wde.getStatusCode();;
-          if (debug && (status != HttpServletResponse.SC_NOT_FOUND)) {
-            error(wde);
-          }
-        }
-      }
-    }
 
     if (status != HttpServletResponse.SC_OK) {
       openTag(WebdavTags.propstat);
@@ -540,11 +517,6 @@ public class ReportMethod extends MethodBase {
     } else if (reportType == reportTypeExpandProperty) {
     } else {
       pm.doNodeProperties(node, preq);
-
-      /* Output the (transformed) node.
-       */
-
-      property(CaldavTags.calendarData, content);
     }
 
     closeTag(WebdavTags.response);

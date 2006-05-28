@@ -65,7 +65,6 @@ import edu.rpi.cct.webdav.servlet.common.WebdavServlet;
 import java.io.Reader;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -388,11 +387,11 @@ public abstract class WebdavNsIntf implements Serializable {
    * Properties that can be supplied by using node values should not be
    * included.
    *
-   * @param node             node in question
-   * @return Enumeration     proeprties
+   * @param node          node in question
+   * @return Iterator     over proprrties
    * @throws WebdavIntfException
    */
-  public abstract Enumeration getProperties(WebdavNsNode node)
+  public abstract Iterator iterateProperties(WebdavNsNode node)
       throws WebdavIntfException;
 
   /** Returns an InputStream for the content.
@@ -600,7 +599,7 @@ public abstract class WebdavNsIntf implements Serializable {
    * @throws WebdavIntfException
    */
   public void generatePropValue(WebdavNsNode node,
-                                WebdavProperty pr) throws WebdavIntfException {
+                               WebdavProperty pr) throws WebdavIntfException {
     QName tag = pr.getTag();
     String ns = tag.getNamespaceURI();
 
@@ -611,6 +610,7 @@ public abstract class WebdavNsIntf implements Serializable {
         openPropstat();
         xml.emptyTag(tag);
         closePropstat(HttpServletResponse.SC_NOT_FOUND);
+        return;
       }
 
       if (tag.equals(WebdavTags.creationdate)) {
