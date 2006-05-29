@@ -57,10 +57,10 @@ package edu.rpi.cct.uwcal.caldav;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.icalendar.IcalTranslator;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 
 import java.util.Collection;
-import java.util.Enumeration;
 
 /** Class to represent a user in caldav.
 
@@ -126,13 +126,7 @@ public class CaldavUserNode extends CaldavBwNode {
    *                   Abstract methods
    * ==================================================================== */
 
-  /** Return all properties special to this namespace for this node.
-   * For example, if there is a creator property there will be a
-   * WebdavProperty object for the property
-   *
-   * @return Enumeration
-   */
-  public Enumeration properties() {
+  public CurrentAccess getCurrentAccess() throws WebdavIntfException {
     return null;
   }
 

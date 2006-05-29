@@ -54,6 +54,8 @@
 
 package edu.rpi.cct.webdav.servlet.shared;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+
 import java.io.Serializable;
 import javax.servlet.http.HttpServletResponse;
 
@@ -154,6 +156,13 @@ public abstract class WebdavNsNode implements Serializable {
    * @throws WebdavIntfException
    */
   public abstract String getOwner() throws WebdavIntfException;
+
+  /** Get the current access granted to this principal for this node.
+   *
+   * @return CurrentAccess
+   * @throws WebdavIntfException
+   */
+  public abstract CurrentAccess getCurrentAccess() throws WebdavIntfException;
 
   /* ====================================================================
    *                   Property methods

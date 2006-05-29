@@ -62,11 +62,11 @@ import org.bedework.calsvci.CalSvcI;
 import org.bedework.icalendar.IcalTranslator;
 import org.bedework.icalendar.VFreeUtil;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Vector;
 
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.VFreeBusy;
@@ -138,7 +138,7 @@ public class CaldavCalNode extends CaldavBwNode {
       Collection events = svci.getEvents(sub, CalFacadeDefs.retrieveRecurExpanded);
 
       if (events == null) {
-        return new Vector();
+        return new ArrayList();
       }
 
       return events;
@@ -186,14 +186,13 @@ public class CaldavCalNode extends CaldavBwNode {
    *                   Abstract methods
    * ==================================================================== */
 
-  /** Return all properties special to this namespace for this node.
-   * For example, if there is a creator property there will be a
-   * WebdavProperty object for the property
-   *
-   * @return Enumeration
-   */
-  public Enumeration properties() {
-    return null;
+  public CurrentAccess getCurrentAccess() throws WebdavIntfException {
+    BwCalendar cal = getCDURI().getCal();
+    if (cal == null) {
+      return null;
+    }
+
+    return cal.getCurrentAccess();
   }
 
   /* ====================================================================

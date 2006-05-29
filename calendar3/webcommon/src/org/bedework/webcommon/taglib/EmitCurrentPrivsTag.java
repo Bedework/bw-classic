@@ -53,7 +53,8 @@
 */
 package org.bedework.webcommon.taglib;
 
-import org.bedework.appcommon.AccessAppUtil;
+
+import org.bedework.appcommon.AccessXmlUtil;
 
 import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
@@ -121,7 +122,7 @@ public class EmitCurrentPrivsTag extends NameScopePropertyTag {
       return null;
     }
 
-    return AccessAppUtil.getCurrentPrivSetString(ca.privileges);
+    return AccessXmlUtil.getCurrentPrivSetString(ca.privileges);
   }
 
   /**

@@ -63,6 +63,7 @@ import org.bedework.icalendar.ComponentWrapper;
 import org.bedework.icalendar.IcalTranslator;
 //import org.bedework.icalendar.IcalUtil;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.uwcal.caldav.calquery.CalendarData;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
@@ -314,6 +315,14 @@ public class CaldavComponentNode extends CaldavBwNode {
   /* ====================================================================
    *                   Overridden property methods
    * ==================================================================== */
+
+  public CurrentAccess getCurrentAccess() throws WebdavIntfException {
+    if (eventInfo == null) {
+      return null;
+    }
+
+    return eventInfo.getCurrentAccess();
+  }
 
   public void setLastmodDate(String val) throws WebdavIntfException {
     init(true);

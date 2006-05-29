@@ -53,7 +53,8 @@
 */
 package org.bedework.webcommon.taglib;
 
-import org.bedework.appcommon.AccessAppUtil;
+
+import org.bedework.appcommon.AccessXmlUtil;
 
 import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
@@ -104,6 +105,6 @@ public class EmitAclTag extends NameScopePropertyTag {
       return null;
     }
     
-    return AccessAppUtil.getXmlAclString(ca.acl);
+    return AccessXmlUtil.getXmlAclString(ca.acl);
   }
 }

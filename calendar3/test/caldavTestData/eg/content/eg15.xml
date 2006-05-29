@@ -4,6 +4,7 @@
     <D:getetag/>
     <D:owner/>
     <D:acl/>
+    <D:current-user-privilege-set/>
     <C:calendar-timezone/>
     <C:max-resource-size/>
   </D:prop>

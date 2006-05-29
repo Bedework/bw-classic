@@ -76,7 +76,7 @@ import java.util.Iterator;
  *
  *  @author Mike Douglass   douglm @ rpi.edu
  */
-public class AccessAppUtil implements Serializable {
+public class AccessXmlUtil implements Serializable {
   /** xml rpivilege tags */
   public static final QName[] privTags = {
     WebdavTags.all,              // privAll = 0;
@@ -100,7 +100,7 @@ public class AccessAppUtil implements Serializable {
    *
    * @param xml
    */
-  public AccessAppUtil(XmlEmit xml) {
+  public AccessXmlUtil(XmlEmit xml) {
     this.xml = xml;
   }
 
@@ -115,7 +115,7 @@ public class AccessAppUtil implements Serializable {
       XmlEmit xml = new XmlEmit(true);  // no headers
       StringWriter su = new StringWriter();
       xml.startEmit(su);
-      AccessAppUtil au = new AccessAppUtil(xml);
+      AccessXmlUtil au = new AccessXmlUtil(xml);
 
       au.emitAcl(acl);
 
@@ -225,10 +225,12 @@ public class AccessAppUtil implements Serializable {
   /** Produce an xml representation of current user privileges from an array
    * of allowed/disallowed/unspecified flags indexed by a privilege index.
    *
+   * @param xml
    * @param privileges    char[] of allowed/disallowed
    * @throws CalFacadeException
    */
-  public void emitCurrentPrivSet(char[] privileges) throws CalFacadeException {
+  public static void emitCurrentPrivSet(XmlEmit xml,
+                                        char[] privileges) throws CalFacadeException {
     try {
       xml.openTag(WebdavTags.currentUserPrivilegeSet);
 
@@ -266,9 +268,7 @@ public class AccessAppUtil implements Serializable {
       XmlEmit xml = new XmlEmit(true);  // no headers
       StringWriter su = new StringWriter();
       xml.startEmit(su);
-      AccessAppUtil au = new AccessAppUtil(xml);
-
-      au.emitCurrentPrivSet(privileges);
+      AccessXmlUtil.emitCurrentPrivSet(xml, privileges);
 
       su.close();
 

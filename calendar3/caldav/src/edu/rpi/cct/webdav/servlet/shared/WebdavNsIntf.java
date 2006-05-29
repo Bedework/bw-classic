@@ -54,11 +54,14 @@
 
 package edu.rpi.cct.webdav.servlet.shared;
 
+import org.bedework.appcommon.AccessXmlUtil;
 import org.bedework.davdefs.WebdavTags;
 
 import edu.rpi.sss.util.xml.QName;
 import edu.rpi.sss.util.xml.XmlEmit;
 import edu.rpi.sss.util.xml.XmlUtil;
+import edu.rpi.cct.uwcal.access.PrivilegeSet;
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.webdav.servlet.common.MethodBase;
 import edu.rpi.cct.webdav.servlet.common.WebdavServlet;
 
@@ -671,6 +674,15 @@ public abstract class WebdavNsIntf implements Serializable {
         closePropstat();
       } else if (tag.equals(WebdavTags.currentUserPrivilegeSet)) {
         // access 5.3
+        CurrentAccess ca = node.getCurrentAccess();
+        if (ca != null) {
+          PrivilegeSet ps = ca.privileges;
+          char[] privileges = ps.getPrivileges();
+
+          openPropstat();
+          AccessXmlUtil.emitCurrentPrivSet(xml, privileges);
+          closePropstat();
+        }
       } else if (tag.equals(WebdavTags.acl)) {
         // access 5.4
         openPropstat();
