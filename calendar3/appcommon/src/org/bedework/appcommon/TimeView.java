@@ -316,8 +316,12 @@ public class TimeView implements Serializable {
 
          XXX followed caldav which might be wrong. Try
          3.    ((evEnd > :start) and (evEnd < :end)))
+
+             ((evstart < end) and ((evend > start) or
+                 ((evstart = evend) and (evend >= start))))
       */
 
+      /*
       int evstSt = evStart.compareTo(start);
       int evendSt = evEnd.compareTo(start);
 
@@ -328,12 +332,31 @@ public class TimeView implements Serializable {
           //((evendSt > 0) && (evEnd.compareTo(end) <= 0))) {
           ((evendSt > 0) && (evEnd.compareTo(end) < 0))) {
         // Passed the tests.
-        if (debug) {
-          debugMsg("Event passed range " + start + "-" + end +
-                   " with dates " + evStart + "-" + evEnd +
-                   ": " + ev.getSummary());
-        }
+        //if (debug) {
+        //  debugMsg("Event passed range " + start + "-" + end +
+        //           " with dates " + evStart + "-" + evEnd +
+        //           ": " + ev.getSummary());
+        //}
         al.add(ei);
+      }
+      */
+
+      int evstSt = evStart.compareTo(end);
+      if (evstSt < 0) {
+        int evendSt = evEnd.compareTo(start);
+
+      //debugMsg("                   event " + evStart + " to " + evEnd);
+
+        if ((evendSt > 0) ||
+            (evStart.equals(evEnd) && (evendSt >= 0))) {
+          // Passed the tests.
+          if (debug) {
+            debugMsg("Event passed range " + start + "-" + end +
+                     " with dates " + evStart + "-" + evEnd +
+                     ": " + ev.getSummary());
+          }
+          al.add(ei);
+        }
       }
     }
 

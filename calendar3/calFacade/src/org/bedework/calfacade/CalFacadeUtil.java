@@ -678,31 +678,27 @@ public class CalFacadeUtil implements Serializable {
       er.setEntity(it.next());
 
       /* Period is within range if:
-         1.   (((evStart <= :start) and (evEnd > :start)) or
-         2.    ((evStart >= :start) and (evStart < :end)) or
-         3.    ((evEnd > :start) and (evEnd <= :end)))
+             ((evstart < end) and ((evend > start) or
+                 ((evstart = evend) and (evend >= start))))
+       */
 
-         XXX followed caldav which might be wrong. Try
-         3.    ((evEnd > :start) and (evEnd < :end)))
-      */
-
-      int evstSt = er.start.compareTo(start);
-      int evendSt = er.end.compareTo(start);
+      int evstSt = er.start.compareTo(end);
 
       //debugMsg("                   event " + evStart + " to " + evEnd);
 
-      if (((evstSt <= 0) && (evendSt > 0)) ||
-          ((evstSt >= 0) && (er.start.compareTo(end) < 0)) ||
-          //((evendSt > 0) && (evEnd.compareTo(end) <= 0))) {
-          ((evendSt > 0) && (er.end.compareTo(end) < 0))) {
-        // Passed the tests.
-        /*
-        if (debug) {
-          debugMsg("Event passed range " + start + "-" + end +
-                   " with dates " + evStart + "-" + evEnd +
-                   ": " + ev.getSummary());
-        }*/
-        al.add(er.entity);
+      if (evstSt < 0) {
+        int evendSt = er.end.compareTo(start);
+
+        if ((evendSt > 0) ||
+            (er.start.equals(er.end) && (evendSt >= 0))) {
+          // Passed the tests.
+          //if (debug) {
+          //  debugMsg("Event passed range " + start + "-" + end +
+          //           " with dates " + evStart + "-" + evEnd +
+          //           ": " + ev.getSummary());
+          //}
+          al.add(er.entity);
+        }
       }
     }
 
