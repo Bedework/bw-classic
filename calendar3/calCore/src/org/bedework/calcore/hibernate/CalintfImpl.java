@@ -1056,7 +1056,7 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
         // chunked.
         GetPeriodsPars gpp = new GetPeriodsPars();
 
-        gpp.events = events;
+        gpp.periods = events;
         gpp.startDt = start;
         gpp.dur = granularity;
         gpp.tzcache = getTimezones();

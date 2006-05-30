@@ -59,6 +59,7 @@ import org.bedework.calfacade.svc.EventInfo;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Parameter;
 import net.fortuna.ical4j.model.ParameterList;
+import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.property.DateProperty;
 
@@ -629,15 +630,15 @@ public class CalFacadeUtil implements Serializable {
     return tzid;
   }
 
-  /** This class defines the events and the period of interest and can be passed
-   * repeatedly to getPeriodsEvents.
+  /** This class defines the entities which occupy time and the period of
+   * interest and can be passed repeatedly to getPeriodsEvents.
    *
    * <p>The end datetime will be updated ready for the next call. If endDt is
    * non-null on entry it will be used to set the startDt.
    */
   public static class GetPeriodsPars {
-    /** Event Info objects to extract from */
-    public Collection events;
+    /** Event Info or EventPeriod or Period objects to extract from */
+    public Collection periods;
     /** Start of period - updated at each call from endDt */
     public BwDateTime startDt;
     /** Duration of period */
@@ -672,11 +673,11 @@ public class CalFacadeUtil implements Serializable {
     //}
 
     EntityRange er = new EntityRange();
-    Iterator it = pars.events.iterator();
+    Iterator it = pars.periods.iterator();
     while (it.hasNext()) {
       er.setEntity(it.next());
 
-      /* Event is within range if:
+      /* Period is within range if:
          1.   (((evStart <= :start) and (evEnd > :start)) or
          2.    ((evStart >= :start) and (evStart < :end)) or
          3.    ((evEnd > :start) and (evEnd <= :end)))
@@ -753,6 +754,15 @@ public class CalFacadeUtil implements Serializable {
 
         start = String.valueOf(ep.getStart());
         start = String.valueOf(ep.getEnd());
+
+        return;
+      }
+
+      if (o instanceof Period) {
+        Period p = (Period)o;
+
+        start = String.valueOf(p.getStart());
+        start = String.valueOf(p.getEnd());
 
         return;
       }

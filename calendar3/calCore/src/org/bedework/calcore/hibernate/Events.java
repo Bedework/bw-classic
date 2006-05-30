@@ -1302,7 +1302,7 @@ public class Events extends CalintfHelper implements EventsI {
       return false;
     }
 
-    /** Note that the comparisons below are required to ensure that the
+    /* Note that the comparisons below are required to ensure that the
      *  start date is inclusive and the end date is exclusive.
      * From CALDAV:
      * A VEVENT component overlaps a given time-range if:
@@ -1310,10 +1310,7 @@ public class Events extends CalintfHelper implements EventsI {
      * (DTSTART <= start AND DTEND > start) OR
      * (DTSTART <= start AND DTSTART+DURATION > start) OR
      * (DTSTART >= start AND DTSTART < end) OR
-     * (DTEND   > start AND DTEND <= end)
-     *
-     * XXX This is wrong??? Last should be
-     * XXX (DTEND   > start AND DTEND < end)
+     * (DTEND   > start AND DTEND < end)
      *
      *  case 1 has the event starting between the dates.
      *  case 2 has the event ending between the dates.
@@ -1334,6 +1331,7 @@ public class Events extends CalintfHelper implements EventsI {
       return true;
     }
 
+    /*
     sb.append("(((");
 
     sb.append(startField);
@@ -1347,23 +1345,35 @@ public class Events extends CalintfHelper implements EventsI {
     sb.append(" < :toDate)) or ((");
 
     // case 3
-    /*
-    sb.append(endField);
-    sb.append(" > :fromDate) and (");
-    sb.append(endField);
-    sb.append(" <= :toDate)))");
-    */
     sb.append(endField);
     sb.append(" > :fromDate) and (");
     sb.append(endField);
     sb.append(" < :toDate)))");
 
-    /*
+    / *
     (((ev.dtstart.datePart <= :fromDate) and (ev.dtend.datePart > :fromDate)) or
      ((ev.dtstart.datePart >= :fromDate) and (ev.dtstart.datePart < :toDate)) or
      XXX ((ev.dtend.datePart > :fromDate) and (ev.dtend.datePart <= :toDate)))
      ((ev.dtend.datePart >= :fromDate) and (ev.dtend.datePart < :toDate)))
     */
+    sb.append("((");
+    sb.append(startField);
+    sb.append(" < :toDate) and ((");
+
+    sb.append(endField);
+    sb.append(" > :fromDate) or ((");
+
+    sb.append(startField);
+    sb.append("=");
+    sb.append(endField);
+    sb.append(") and (");
+    sb.append(endField);
+    sb.append(" >= :fromDate))))");
+
+    /*
+    ((start < to) and ((end > from) or
+        ((start = end) and (end >= from))))
+        */
     return true;
   }
 
