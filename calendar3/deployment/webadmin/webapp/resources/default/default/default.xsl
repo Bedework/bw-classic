@@ -78,6 +78,7 @@
   <xsl:variable name="calendar-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
   <xsl:variable name="calendar-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calendar/fetchForUpdate/a/@href"/><!-- used -->
   <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/><!-- used -->
+  <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess/a/@href"/>
   <!-- all good - no need to clean any of these out  -->
   <xsl:variable name="subscriptions-fetch" select="/bedeworkadmin/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
@@ -1636,6 +1637,10 @@
         </tr>
       </table>
     </form>
+    <div id="sharingBox">
+      <h3>Sharing</h3>
+      Sharing may be added to a calendar once created.
+    </div>
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="modCalendar">
@@ -1726,6 +1731,49 @@
         </tr>
       </table>
     </form>
+    <div id="sharingBox">
+      <xsl:variable name="calPath" select="path"/>
+      <h3>Sharing</h3>
+      <table class="common">
+        <tr>
+          <th class="commonHeader" colspan="2">Current access:</th>
+        </tr>
+        <tr>
+          <th>Owner:</th>
+          <td>
+            <xsl:value-of select="name(acl/ace[principal/property/owner]/grant/*)"/>
+          </td>
+        </tr>
+        <xsl:if test="acl/ace/principal/href">
+          <tr>
+            <th>Users:</th>
+            <td>
+              <xsl:for-each select="acl/ace[principal/href]">
+                <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
+              </xsl:for-each>
+            </td>
+          </tr>
+        </xsl:if>
+      </table>
+      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm">
+        <input type="hidden" name="calPath" value="{$calPath}"/>
+        <p>
+          Share with group:<br/>
+          <input type="text" name="who" size="20"/>
+          <input type="hidden" value="group" name="whoType"/>
+          <!--<input type="radio" value="user" name="whoType" checked="checked"/> user
+          <input type="radio" value="group" name="whoType"/> group-->
+        </p>
+        <p>
+          Access rights:<br/>
+          <input type="radio" value="R" name="how" checked="checked"/> read<br/>
+          <input type="radio" value="Rc" name="how"/> read/write content<br/>
+          <input type="radio" value="f" name="how"/> read free/busy only<br/>
+          <input type="radio" value="d" name="how"/> default (reset access)
+        </p>
+        <input type="submit" name="submit" value="Submit"/>
+      </form>
+    </div>
   </xsl:template>
 
   <xsl:template name="calendarList">

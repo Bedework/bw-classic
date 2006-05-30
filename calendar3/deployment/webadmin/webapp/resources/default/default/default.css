@@ -328,6 +328,47 @@ table.eventFormTable .durationSpacerText {
   width: 98%; /* less than 100% helps avoid IE weirdness */
   margin-top: 1em;
 }
+#sharingBox {
+  margin: 2em 0;
+  border-top: 1px solid #333;
+}
+#sharingBox h3 {
+  padding: 1em 0 0.5em 0.5em;
+}
+#sharingBox h5 {
+  padding: 1em 0 0.5em 0;
+}
+#sharingBox ul {
+  font-size: 0.8em;
+  margin: 0 1em;
+}
+#shareForm {
+  margin: 1em 0;
+  padding: 0.5em;
+  border-top: 1px dotted #666;
+}
+table.common {
+  width: 100%;
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 0px;
+}
+table.common th {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em;
+  background-color: #ddd;
+  color: black;
+  white-space: nowrap;
+}
+table.common th.commonHeader {
+  vertical-align: middle;
+  background-color: #666;
+  color: #eee;
+  padding: 0.2em 0.5em;
+  text-align: left;
+  font-weight: normal;
+}
 #deleteListTable {
   margin: 1em 0em 2em 1em;
 }

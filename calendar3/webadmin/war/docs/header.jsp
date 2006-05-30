@@ -105,6 +105,7 @@ try {
       <fetchForDisplay><genurl:link page="/calendar/fetchForDisplay.do?b=de"/></fetchForDisplay>
       <fetchForUpdate><genurl:link page="/calendar/fetchForUpdate.do?b=de"/></fetchForUpdate><!-- keep -->
       <update><genurl:link page="/calendar/update.do?b=de"/></update><!-- keep -->
+      <setAccess><genurl:link page="/calendar/setAccess.do?b=de"/></setAccess>
     </calendar>
     <subscriptions> <!-- only those listed are used here (no need to clean up) -->
       <fetch><genurl:link page="/subs/fetch.do?b=de"/></fetch>
