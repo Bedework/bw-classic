@@ -120,6 +120,11 @@ try {
       <update><genurl:link page="/view/update.do?b=de"/></update>
       <remove><genurl:link page="/view/removeView.do?b=de"/></remove>
     </view>
+    <calsuite>
+      <fetch><genurl:link page="/calsuite/showCalSuites.rdo?b=de"/></fetch>
+      <add><genurl:link page="/calsuite/addCalSuite.do?b=de"/></add>
+      <showForm><genurl:link page="/calsuite/showModForm.rdo?b=de"/></showForm>
+    </calsuite>
     <system> <!-- only those listed are used here (no need to clean up) -->
       <fetch><genurl:link page="/syspars/fetch.do?b=de"/></fetch>
       <update><genurl:link page="/syspars/update.do?b=de"/></update>

@@ -77,7 +77,7 @@ import javax.servlet.http.HttpServletResponse;
  *      <li>"error"        some form of fatal error.</li>
  *      <li>"noAccess"     user not authorised.</li>
  *      <li>"notAdded"     duplicate or bad name.</li>
- *      <li>"success"      subscribed ok.</li>
+ *      <li>"success"      created ok.</li>
  * </ul>
  *
  * @author Mike Douglass   douglm@rpi.edu

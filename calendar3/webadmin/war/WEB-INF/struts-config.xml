@@ -396,7 +396,7 @@
                          CalSuite Actions
          =============================================================== -->
 
-    <action    path="/calsuite/showViews"
+    <action    path="/calsuite/showCalSuites"
                type="org.bedework.webadmin.PERenderAction"
                name="peForm"
                scope="session"

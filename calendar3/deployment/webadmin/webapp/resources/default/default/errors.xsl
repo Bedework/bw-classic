@@ -135,6 +135,9 @@
         <p>Cannot delete: the subscription is included in view <em><xsl:value-of select="param"/></em>.<br/>
         You must remove the subscription from this view before deleting.</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.calsuitenotadded'">
+        <p>Error: calendar suite not added.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.error.timezones.readerror'">
         <p>Timzone error: could not read file</p>
       </xsl:when>
@@ -146,6 +149,9 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.error.duplicate.admingroup'">
         Error: duplicate admin group.  <em><xsl:value-of select="param"/></em> already exists.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.nosuchadmingroup'">
+        Error: no such admin group "<em><xsl:value-of select="param"/></em>"
       </xsl:when>
       <xsl:when test="id='org.bedework.error.unknowgroup'">
         Error: unknown admin group:  <em><xsl:value-of select="param"/></em>

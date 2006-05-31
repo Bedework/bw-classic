@@ -91,6 +91,9 @@
   <xsl:variable name="view-remove" select="/bedeworkadmin/urlPrefixes/view/remove/a/@href"/>
   <xsl:variable name="system-fetch" select="/bedeworkadmin/urlPrefixes/system/fetch/a/@href"/>
   <xsl:variable name="system-update" select="/bedeworkadmin/urlPrefixes/system/update/a/@href"/>
+  <xsl:variable name="calsuite-fetch" select="/bedeworkadmin/urlPrefixes/calsuite/fetch/a/@href"/>
+  <xsl:variable name="calsuite-add" select="/bedeworkadmin/urlPrefixes/calsuite/add/a/@href"/>
+  <xsl:variable name="calsuite-showForm" select="/bedeworkadmin/urlPrefixes/calsuite/showForm/a/@href"/>
   <xsl:variable name="timezones-initUpload" select="/bedeworkadmin/urlPrefixes/timezones/initUpload/a/@href"/>
   <xsl:variable name="timezones-upload" select="/bedeworkadmin/urlPrefixes/timezones/upload/a/@href"/>
   <xsl:variable name="stats-update" select="/bedeworkadmin/urlPrefixes/stats/update/a/@href"/>
@@ -205,11 +208,17 @@
             <xsl:when test="/bedeworkadmin/page='modView'">
               <xsl:call-template name="modView"/>
             </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='deleteViewConfirm'">
+              <xsl:call-template name="deleteViewConfirm"/>
+            </xsl:when>
             <xsl:when test="/bedeworkadmin/page='modSyspars'">
               <xsl:call-template name="modSyspars"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='deleteViewConfirm'">
-              <xsl:call-template name="deleteViewConfirm"/>
+            <xsl:when test="/bedeworkadmin/page='calSuiteList'">
+              <xsl:call-template name="calSuiteList"/>
+            </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='modCalSuite'">
+              <xsl:call-template name="modCalSuite"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='authUserList'">
               <xsl:call-template name="authUserList"/>
@@ -351,6 +360,14 @@
           <li>
             <a href="{$view-fetch}">
               Manage views
+            </a>
+          </li>
+        </ul>
+        <h4 class="menuTitle">Super user features</h4>
+        <ul class="adminMenu">
+          <li>
+            <a href="{$calsuite-fetch}">
+              Manage calendar suites
             </a>
           </li>
           <li>
@@ -2363,6 +2380,57 @@
         <tr>
           <td>
             <input type="submit" name="updateSystemParams" value="Update"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Reset"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </xsl:template>
+
+  <!--+++++++++++++++ Calendar Suites (calsuite) ++++++++++++++++++++-->
+  <xsl:template name="calSuiteList">
+    <h2>Manage Calendar Suites</h2>
+    <p>List will go here</p>
+    <p>For now: <a href="{$calsuite-showForm}">Add Calendar Suite</a></p>
+  </xsl:template>
+
+  <xsl:template name="modCalSuite">
+    <h2>Add Calendar Suite</h2>
+    <form name="calSuiteForm" action="{$calsuite-add}" method="post">
+      <table class="eventFormTable">
+        <tr>
+          <th>Name:</th>
+          <td>
+            <input name="name" size="20"/>
+          </td>
+          <td>
+            Name of your calendar suite
+          </td>
+        </tr>
+        <tr>
+          <th>Group:</th>
+          <td>
+            <input name="groupName" size="20"/>
+          </td>
+          <td>
+            Name of admin group which contains event administrators and event owner to which preferences for the suite are attached
+          </td>
+        </tr>
+        <tr>
+          <th>Root calendar:</th>
+          <td>
+            <input name="calPath" size="20"/>
+          </td>
+          <td>
+            Path of root calendar (not required if suite only consists of subscriptions and views)
+          </td>
+        </tr>
+      </table>
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="updateCalSuite" value="Add"/>
             <input type="submit" name="cancelled" value="Cancel"/>
             <input type="reset" value="Reset"/>
           </td>
