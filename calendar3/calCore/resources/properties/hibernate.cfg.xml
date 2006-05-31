@@ -42,5 +42,6 @@
     <mapping resource="User.hbm.xml"/>
     <mapping resource="UserInfo.hbm.xml"/>
     <mapping resource="View.hbm.xml"/>
+    <mapping resource="CalSuite.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

@@ -393,6 +393,35 @@
     </action>
 
     <!-- ===============================================================
+                         CalSuite Actions
+         =============================================================== -->
+
+    <action    path="/calsuite/showViews"
+               type="org.bedework.webadmin.PERenderAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calsuite/calSuiteList.jsp"/>
+    </action>
+
+    <action    path="/calsuite/showModForm"
+               type="org.bedework.webadmin.PERenderAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calsuite/modCalSuite.jsp"/>
+    </action>
+
+    <action    path="/calsuite/addCalSuite"
+               type="org.bedework.webcommon.calsuite.AddCalSuiteAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="notAdded" path="/calsuite/showCalSuites.rdo" redirect="true" />
+      <forward name="success" path="/calsuite/showModForm.rdo" redirect="true" />
+    </action>
+
+    <!-- ===============================================================
                          View Actions
          =============================================================== -->
 

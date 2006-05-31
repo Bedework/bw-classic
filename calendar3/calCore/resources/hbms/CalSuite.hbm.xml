@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- ===================================================================
+                         Calendar Suites
+     =================================================================== -->
+
+<hibernate-mapping>
+  <class name="org.bedework.calfacade.svc.BwCalSuite"
+         table="bwcalsuites">
+    <id name="id" type="integer" column="csid" unsaved-value="-1">
+      <generator class="native"/>
+    </id>
+
+    <version name="seq" column="seq" type="integer" />
+
+    <property name="name" column="csname" type="text" not-null="true"/>
+
+    <many-to-one name="group"
+                class="org.bedework.calfacade.svc.BwAdminGroup"
+                column="ownerid" not-null="true"
+                index="csgroup" />
+
+    <many-to-one name="rootCalendar"
+                class="org.bedework.calfacade.BwCalendar"
+                column="csrootcal"
+                not-null="true"
+                index="idx_csrootcal" />
+  </class>
+
+  <!-- =================================================================
+                  Calendar suite queries
+       ================================================================= -->
+
+  <query name="getCalSuite"><![CDATA[
+    from org.bedework.calfacade.svc.BwCalSuite cal
+      where cal.name=:name
+  ]]></query>
+</hibernate-mapping>
+

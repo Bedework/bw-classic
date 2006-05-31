@@ -75,13 +75,16 @@ import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Groups;
+import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
+import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
 import org.bedework.icalendar.IcalCallback;
 
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.uwcal.resources.Resources;
 
 import java.io.Serializable;
@@ -415,6 +418,20 @@ public abstract class CalSvcI implements Serializable {
  public abstract void changeAccess(BwShareableDbentity ent,
                                    Collection aces) throws CalFacadeException;
 
+ /** Check the access for the given entity. Returns the current access
+  * or null or optionally throws a no access exception.
+  *
+  * @param ent
+  * @param desiredAccess
+  * @param returnResult
+  * @return CurrentAccess
+  * @throws CalFacadeException if returnResult false and no access
+  */
+ public abstract CurrentAccess checkAccess(BwShareableDbentity ent,
+                                           int desiredAccess,
+                                           boolean returnResult)
+         throws CalFacadeException;
+
   /* ====================================================================
    *                   Timezones
    * ==================================================================== */
@@ -475,6 +492,40 @@ public abstract class CalSvcI implements Serializable {
    * @throws CalFacadeException
    */
   public abstract void refreshTimezones() throws CalFacadeException;
+
+  /* ====================================================================
+   *                   Calendar suites
+   * ==================================================================== */
+
+  /** Create a new calendar suite
+   *
+   * @param  val       BwCalSuite calendar suite object
+   * @return BwCalSuiteWrapper for new object
+   * @throws CalFacadeException
+   */
+  public abstract BwCalSuiteWrapper addCalSuite(BwCalSuite val) throws CalFacadeException;
+
+  /** Get a calendar suite given the name
+   *
+   * @param  name     String name of calendar suite
+   * @return BwCalSuiteWrapper null for unknown calendar suite
+   * @throws CalFacadeException
+   */
+  public abstract BwCalSuiteWrapper getCalSuite(String name) throws CalFacadeException;
+
+  /** Get calendar suites to which this user has access
+   *
+   * @return Collection     of BwCalSuiteWrapper
+   * @throws CalFacadeException
+   */
+  public abstract Collection getCalSuites() throws CalFacadeException;
+
+  /** Update a calendar suite object
+   *
+   * @param  val     BwCalSuiteWrapper object
+   * @throws CalFacadeException
+   */
+  public abstract void updateCalSuite(BwCalSuiteWrapper val) throws CalFacadeException;
 
   /* ====================================================================
    *                   Calendars

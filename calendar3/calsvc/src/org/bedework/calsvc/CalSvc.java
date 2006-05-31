@@ -86,11 +86,13 @@ import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.calfacade.ifs.Groups;
 import org.bedework.calfacade.svc.BwAuthUser;
+import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
+import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
 import org.bedework.icalendar.IcalCallback;
@@ -579,6 +581,11 @@ public class CalSvc extends CalSvcI {
     getCal().changeAccess(ent, aces);
   }
 
+  public CurrentAccess checkAccess(BwShareableDbentity ent, int desiredAccess,
+                                   boolean returnResult) throws CalFacadeException {
+    return getCal().checkAccess(ent, desiredAccess, returnResult);
+  }
+
   /* ====================================================================
    *                   Timezones
    * ==================================================================== */
@@ -616,6 +623,32 @@ public class CalSvc extends CalSvcI {
 
   public void refreshTimezones() throws CalFacadeException {
     timezones.refreshTimezones();
+  }
+
+  /* ====================================================================
+   *                   Calendar suites
+   * ==================================================================== */
+
+  public BwCalSuiteWrapper addCalSuite(BwCalSuite val) throws CalFacadeException {
+    updateOK(val);
+
+    setupSharableEntity(val);
+
+    return dbi.addCalSuite(val);
+  }
+
+  public BwCalSuiteWrapper getCalSuite(String name) throws CalFacadeException {
+    return dbi.getCalSuite(name);
+  }
+
+  public Collection getCalSuites() throws CalFacadeException {
+    return dbi.getCalSuites();
+  }
+
+  public void updateCalSuite(BwCalSuiteWrapper val) throws CalFacadeException {
+    updateOK(val);
+
+    dbi.updateCalSuite(val);
   }
 
   /* ====================================================================

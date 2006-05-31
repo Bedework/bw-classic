@@ -317,7 +317,7 @@ public class BwCalendar extends BwShareableContainedDbentity {
    *                   Transient object methods
    * ==================================================================== */
 
-  /** Only call fro cloned object
+  /** Only call for cloned object
    *
    * @param val CurrentAccess
    */

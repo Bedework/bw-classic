@@ -79,6 +79,7 @@ import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
+import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.mail.MailerIntf;
 
@@ -199,6 +200,14 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   private boolean authUserAlerts;
   private boolean authUserPublicEvents;
   private boolean authUserSuperUser;
+
+  /* ....................................................................
+   *                       Calendar suites
+   * .................................................................... */
+
+  private BwCalSuiteWrapper calSuite;
+
+  private boolean addingCalSuite;
 
   /* ....................................................................
    *                       Admin Groups
@@ -529,6 +538,39 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   public boolean getAuthUserSuperUser() {
     return authUserSuperUser;
+  }
+
+  /* ====================================================================
+   *                   Calendar suites
+   * ==================================================================== */
+
+  /**
+   * @param val
+   */
+  public void setCalSuite(BwCalSuiteWrapper val) {
+    calSuite = val;
+  }
+
+  /**
+   * @return BwCalSuiteWrapper
+   */
+  public BwCalSuiteWrapper getCalSuite() {
+    return calSuite;
+  }
+
+  /** Not set - invisible to jsp
+   *
+   * @param val
+   */
+  public void assignCalSuite(boolean val) {
+    addingCalSuite = val;
+  }
+
+  /**
+   * @return bool
+   */
+  public boolean getAddingCalSuite() {
+    return addingCalSuite;
   }
 
   /* ====================================================================

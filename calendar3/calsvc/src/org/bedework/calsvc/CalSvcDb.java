@@ -57,12 +57,21 @@ package org.bedework.calsvc;
 
 import org.bedework.calcore.hibernate.HibSession;
 import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.base.BwShareableDbentity;
+import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
+import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
 //import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.CalFacadeException;
 
+import edu.rpi.cct.uwcal.access.PrivilegeDefs;
+import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 //import org.apache.log4j.Logger;
 
@@ -164,6 +173,91 @@ class CalSvcDb implements Serializable {
   }
 
   /* ====================================================================
+   *                   Calendar suites
+   * ==================================================================== */
+
+  /** Create a new calendar suite
+   *
+   * @param  val       BwCalSuite calendar suite object
+   * @return BwCalSuiteWrapper for new object
+   * @throws CalFacadeException
+   */
+  public BwCalSuiteWrapper addCalSuite(BwCalSuite val) throws CalFacadeException {
+    HibSession sess = getSess();
+
+    sess.save(val);
+
+    CurrentAccess ca = checkAccess(val, PrivilegeDefs.privAny, false);
+
+    return new BwCalSuiteWrapper(val, ca);
+  }
+
+  /** Get a calendar suite given the name
+   *
+   * @param  name     String name of calendar suite
+   * @return BwCalSuiteWrapper null for unknown or inaccessible calendar suite
+   * @throws CalFacadeException
+   */
+  public BwCalSuiteWrapper getCalSuite(String name) throws CalFacadeException {
+    HibSession sess = getSess();
+
+    sess.namedQuery("getCalSuite");
+    sess.setEntity("name", name);
+    sess.cacheableQuery();
+
+    BwCalSuite cs = (BwCalSuite)sess.getUnique();
+
+    CurrentAccess ca = checkAccess(cs, PrivilegeDefs.privAny, false);
+
+    return new BwCalSuiteWrapper(cs, ca);
+  }
+
+  /** Get calendar suites to which this user has access
+   *
+   * @return Collection     of BwCalSuiteWrapper
+   * @throws CalFacadeException
+   */
+  public Collection getCalSuites() throws CalFacadeException {
+    HibSession sess = getSess();
+
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("from ");
+    sb.append(BwCalSuite.class.getName());
+
+    sess.createQuery(sb.toString());
+
+    sess.cacheableQuery();
+
+    Collection css = sess.getList();
+
+    TreeSet retCss = new TreeSet();
+    Iterator it = css.iterator();
+    while (it.hasNext()) {
+      BwCalSuite cs = (BwCalSuite)it.next();
+
+      CurrentAccess ca = checkAccess(cs, PrivilegeDefs.privAny, true);
+
+      if (ca != null) {
+        retCss.add(new BwCalSuiteWrapper(cs, ca));
+      }
+    }
+
+    return retCss;
+  }
+
+  /** Update a calendar suite object
+   *
+   * @param  val     BwCalSuiteWrapper object
+   * @throws CalFacadeException
+   */
+  public void updateCalSuite(BwCalSuiteWrapper val) throws CalFacadeException {
+    HibSession sess = getSess();
+
+    sess.update(val.fetchEntity());
+  }
+
+  /* ====================================================================
    *                  Auth user preferences methods
    * ==================================================================== */
 
@@ -205,6 +299,11 @@ class CalSvcDb implements Serializable {
    */
   private HibSession getSess() throws CalFacadeException {
     return (HibSession)svci.getDbSession();
+  }
+
+  private CurrentAccess checkAccess(BwShareableDbentity ent, int desiredAccess,
+                                    boolean returnResult) throws CalFacadeException {
+    return svci.checkAccess(ent, desiredAccess, returnResult);
   }
 
   /* Get a logger for messages

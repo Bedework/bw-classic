@@ -56,6 +56,7 @@ package org.bedework.webcommon.access;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwAbstractAction;
@@ -78,7 +79,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * <p>Request parameters:<ul>
  *      <li>  calPath alone:         path (or url) of calendar or...</li>.
- *      <li>  calPath+guid+recurid:  event</li>.
+ *      <li>  calPath+guid+recurid:  event or ...</li>.
+ *      <li>  calSuite:              name of calendar suite</li>.
  *      <li>  how:                   concatenated String of desired access rights
  *                               @see edu.rpi.cct.uwcal.access.PrivilegeDefs </li>.
  *      <li>  whoType:               user (default), group</li>.
@@ -110,10 +112,13 @@ public class AccessAction extends BwAbstractAction {
 
     CalSvcI svci = form.fetchSvci();
     BwCalendar cal = null;
+    BwCalSuite calSuite = null;
     EventInfo ei = null;
     BwEvent ev = null;
 
     String rpar = getReqPar(request, "guid");
+    String calPath = getReqPar(request, "calPath");
+
     if (rpar != null) {
       // Assume event
       ei = findEvent(request, form);
@@ -123,17 +128,24 @@ public class AccessAction extends BwAbstractAction {
         return "doNothing";
       }
       ev = ei.getEvent();
+    } else if (calPath != null) {
+      // calendar
+      cal = svci.getCalendar(calPath);
+      if (cal == null) {
+        form.getErr().emit("org.bedework.client.error.nosuchcalendar", calPath);
+        return "notFound";
+      }
     } else {
-      String calPath = request.getParameter("calPath");
+      String calSuiteName = getReqPar(request, "calSuite");
 
-      if (calPath == null) {
+      if (calSuiteName == null) {
         // bogus request
         return "notFound";
       }
 
-      cal = svci.getCalendar(calPath);
-      if (cal == null) {
-        form.getErr().emit("org.bedework.client.error.nosuchcalendar", calPath);
+      calSuite = svci.getCalSuite(calSuiteName);
+      if (calSuite == null) {
+        form.getErr().emit("org.bedework.client.error.nosuchcalendarsuite", calSuite);
         return "notFound";
       }
     }
@@ -206,6 +218,8 @@ public class AccessAction extends BwAbstractAction {
     if (ev != null) {
       svci.changeAccess(ev, aces);
       //svci.updateEvent(ev);
+    } else if (calSuite != null) {
+      svci.changeAccess(calSuite, aces);
     } else {
       svci.changeAccess(cal, aces);
       //svci.updateCalendar(cal);

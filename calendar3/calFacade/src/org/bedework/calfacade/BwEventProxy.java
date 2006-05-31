@@ -141,6 +141,10 @@ public class BwEventProxy extends BwEvent {
     return ref.getTarget();
   }
 
+  /* ====================================================================
+   *                   BwDbentity methods
+   * ==================================================================== */
+
   /* (non-Javadoc)
    * @see org.bedework.calfacade.BwEvent#setId(int)
    */
@@ -169,9 +173,12 @@ public class BwEventProxy extends BwEvent {
     return ref.getSeq();
   }
 
-  /** Set the owner
-   *
-   * @param val     BwUser owner of the entity
+  /* ====================================================================
+   *                   BwOwnedDbentity methods
+   * ==================================================================== */
+
+  /* (non-Javadoc)
+   * @see org.bedework.calfacade.base.BwOwnedDbentity#setOwner(org.bedework.calfacade.BwUser)
    */
   public void setOwner(BwUser val) {
     if (!CalFacadeUtil.eqObjval(ref.getOwner(), val)) {
@@ -180,16 +187,15 @@ public class BwEventProxy extends BwEvent {
     }
   }
 
-  /**
-   *
-   * @return UserVO    owner of the entity
+  /* (non-Javadoc)
+   * @see org.bedework.calfacade.base.BwOwnedDbentity#getOwner()
    */
   public BwUser getOwner() {
     return ref.getOwner();
   }
 
   /* (non-Javadoc)
-   * @see org.bedework.calfacade.BwEvent#setPublic(boolean)
+   * @see org.bedework.calfacade.base.BwOwnedDbentity#setPublick(boolean)
    */
   public void setPublick(boolean val) {
     if (getPublick() != val) {
@@ -198,7 +204,7 @@ public class BwEventProxy extends BwEvent {
   }
 
   /* (non-Javadoc)
-   * @see org.bedework.calfacade.BwEvent#getPublic()
+   * @see org.bedework.calfacade.base.BwOwnedDbentity#getPublick()
    */
   public boolean getPublick() {
     return ref.getPublick() || getTarget().getPublick();
