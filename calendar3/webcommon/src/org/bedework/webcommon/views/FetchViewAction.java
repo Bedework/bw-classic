@@ -62,7 +62,7 @@ import org.bedework.webcommon.BwSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Delete a view.
+/** Fetch a view for update/display/delete.
  *
  * <p>Parameters are:<ul>
  *      <li>"name"             Name of view</li>

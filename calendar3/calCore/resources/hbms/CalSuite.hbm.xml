@@ -19,14 +19,14 @@
     <many-to-one name="creator"
                  class="org.bedework.calfacade.BwUser"
                  unique="true">
-      <column name="creatorid" not-null="true" index="idx_sp_creator" />
+      <column name="creatorid" not-null="true" index="idx_calsuite_creator" />
     </many-to-one>
 
     <many-to-one name="owner"
                  class="org.bedework.calfacade.BwUser"
                  unique="true">
       <column name="ownerid" not-null="true"
-              index="idx_sp_owner" unique-key="sponsor_key" />
+              index="idx_calsuite_owner" unique-key="sponsor_key" />
     </many-to-one>
 
     <property name="access" column="bwaccess" type="text" />

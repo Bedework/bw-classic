@@ -609,6 +609,19 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     return addingCalSuite;
   }
 
+  /** Return the collection of cal suites
+   *
+   * @return views
+   */
+  public Collection getCalSuites() {
+    try {
+      return fetchSvci().getCalSuites();
+    } catch (Throwable t) {
+      err.emit(t);
+      return null;
+    }
+  }
+
   /* ====================================================================
    *                   Admin groups
    * ==================================================================== */

@@ -51,151 +51,65 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
+package org.bedework.webcommon.calsuite;
 
-package org.bedework.webcommon.calendars;
-
-import org.bedework.calfacade.BwCalendar;
+import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;
 
-import edu.rpi.sss.util.Util;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** This action updates a calendar.
+/** Fetch a calendar suite for update/display/delete.
  *
  * <p>Parameters are:<ul>
- *      <li>"calendar.summary"            Summary for calendar</li>
- *      <li>"calendar.description"        Description for calendar</li>
- *      <li>"calendar.calendarCollection" Calendar/Folder flag   true/false</li>
+ *      <li>"name"             Name of suite</li>
  * </ul>
  *
  * <p>Forwards to:<ul>
+ *      <li>"error"        some form of fatal error.</li>
  *      <li>"noAccess"     user not authorised.</li>
- *      <li>"error"        for problems.</li>
- *      <li>"notFound"     no such calendar.</li>
- *      <li>"continue"     continue on to update page.</li>
- *      <li>"delete"       for confirmation.</li>
+ *      <li>"notFound"     no such subscription.</li>
+ *      <li>"retry"        try again.</li>
+ *      <li>"success"      subscribed ok.</li>
  * </ul>
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
-public class UpdateCalendarAction extends BwAbstractAction {
+public class FetchCalSuiteAction extends BwAbstractAction {
   /* (non-Javadoc)
-   * @see org.bedework.webcommon.BwAbstractAction#doAction(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.bedework.webcommon.BwSession, org.bedework.webcommon.BwActionFormBase)
+   * @see org.bedework.webcommon.BwAbstractAction#doAction(javax.servlet.http.HttpServletRequest, org.bedework.webcommon.BwSession, org.bedework.webcommon.BwActionFormBase)
    */
   public String doAction(HttpServletRequest request,
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    if (form.getGuest()) {
-      return "noAccess"; // First line of defence
+    CalSvcI svc = form.fetchSvci();
+
+    String name = getReqPar(request, "name");
+
+    if (name == null) {
+      form.getErr().emit("org.bedework.client.error.missingfield", "name");
+      return "retry";
     }
 
-    String reqpar = request.getParameter("delete");
+    BwCalSuiteWrapper cs = svc.getCalSuite(name);
+
+    if (cs == null) {
+      form.getErr().emit("org.bedework.client.error.notfound", name);
+      return "notFound";
+    }
+
+    form.setCalSuite(cs);
+
+    String reqpar = getReqPar(request, "delete");
 
     if (reqpar != null) {
       return "delete";
     }
 
-    CalSvcI svci = form.fetchSvci();
-    boolean add = form.getAddingCalendar();
-
-    /** We are just updating from the current form values.
-     */
-    if (!validateCalendar(request, form, add)) {
-      return "retry";
-    }
-
-    BwCalendar cal = form.getCalendar();
-
-    if (add) {
-      String parentPath = form.getParentCalendarPath();
-
-      if (parentPath == null) {
-        return "error";
-      }
-      svci.addCalendar(cal, parentPath);
-    } else {
-      svci.updateCalendar(cal);
-    }
-
-    form.setParentCalendarPath(null);
-
-    if (getPublicAdmin(form)) {
-      if (cal.getCalendarCollection()) {
-        updateAuthPrefs(form, null, null, null, cal);
-      }
-    }
-
-    if (cal.getCalendarCollection()) {
-      if (add) {
-        form.getMsg().emit("org.bedework.client.message.calendar.added");
-      } else {
-        form.getMsg().emit("org.bedework.client.message.calendar.updated");
-      }
-    } else {
-      if (add) {
-        form.getMsg().emit("org.bedework.client.message.folder.added");
-      } else {
-        form.getMsg().emit("org.bedework.client.message.folder.updated");
-      }
-    }
-
-    return "continue";
-  }
-
-  /* Validate a calendar - we do not create these as a side effect.
-   *
-   * @return boolean  false means something wrong, message emitted
-   */
-  private boolean validateCalendar(HttpServletRequest request,
-                                   BwActionFormBase form,
-                                   boolean add) throws Throwable {
-    boolean ok = true;
-
-    BwCalendar cal = form.getCalendar();
-
-    Boolean cc = getBooleanReqPar(request, "calendarCollection");
-
-    if (add) {
-      cal.setName(Util.checkNull(cal.getName()));
-
-      if (cc != null) {
-        cal.setCalendarCollection(cc.booleanValue());
-      }
-    } else {
-      // Update
-      if (cc != null) {
-        boolean newCC = cc.booleanValue();
-        if (newCC != cal.getCalendarCollection()) {
-          // Can only change for an empty object.
-          if ((cal.getChildren().size() != 0) ||
-              form.fetchSvci().getCalendarInuse(cal)) {
-            form.getErr().emit("org.bedework.validation.error.forbidden.calmode");
-            return false;
-          }
-        }
-
-        cal.setCalendarCollection(newCC);
-      }
-    }
-
-    cal.setSummary(Util.checkNull(cal.getSummary()));
-    cal.setDescription(Util.checkNull(cal.getDescription()));
-
-    if (cal.getName() == null) {
-      form.getErr().emit("org.bedework.validation.error.missingfield",
-                         "name");
-      ok = false;
-    }
-
-    form.setCalendar(cal);
-
-    return ok;
+    return "success";
   }
 }
-
