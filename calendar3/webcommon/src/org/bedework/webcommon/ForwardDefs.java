@@ -51,52 +51,67 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.calfacade.svc;
+package org.bedework.webcommon;
 
-import org.bedework.calfacade.BwGroup;
-import org.bedework.calfacade.BwUser;
-import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.ifs.Groups;
-
-import java.util.Collection;
-
-/** An interface to handle calendar admin groups.
+/** Define all possible forwards. Internal routines should
+ * return one of the following indices.
  *
- * <p>Groups may be stored in a site specific manner so the actual
- * implementation used is a build-time configuration option. They may be
- * ldap directory based or implemented by storing in the calendar database.
- *
- * <p>Methods may throw an unimplemented exception if functions are not
- * available.
- *
- * <p>If a user is a member of more than one group the admin client should
- * ask which group they want.
- *
- * <p>Events etc are owned by the group which has it's own owner id. It's
- * important that the group owner ids are distinct from user ids. This is
- * dealt with by a configurable prefix and suffix appended to all group ids.
- *
- * <p>If a user is not a member of any group they own the events.
- *
- * @author Mike Douglass douglm@rpi.edu
- * @version 2.2
+ * @author  Mike Douglass  douglm@rpi.edu
  */
-public interface AdminGroups extends Groups {
-  /** Find a group given the event owner.
-   *
-   * @param  owner          BwUser event owner
-   * @return BwAdminGroup   group object
-   * @exception CalFacadeException If there's a problem
-   */
-  public BwAdminGroup findGroupByEventOwner(BwUser owner)
-      throws CalFacadeException;
+public interface ForwardDefs {
+  // ENUM
+  /** */
+  public int forwardSuccess = 0;
+  /** */
+  public int forwardContinue = 1;
+  /** */
+  public int forwardRetry = 2;
 
-  /** Find the parents of a given group.
-  *
-  * @param  group          BwGroup
-  * @return Collection     empty for no parents
-  * @exception CalFacadeException If there's a problem
-  */
- public Collection findGroupParents(BwGroup group)
-     throws CalFacadeException;
+  /** */
+  public int forwardError = 3;
+  /** */
+  public int forwardNoAccess = 4;
+
+  /** */
+  public int forwardNotFound = 5;
+
+  /** */
+  public int forwardNoSuchView = 6;
+
+  /** Set when an optional parameter is not found */
+  public int forwardNoParameter = 7;
+
+  /** Set when no action was taken */
+  public int forwardNoAction = 8;
+
+  /** Something is referenced and cannot be removed */
+  public int forwardReffed = 9;
+
+  /** an object was added/updated */
+  public int forwardAdded = 10;
+  /** */
+  public int forwardUpdated = 11;
+
+  /** */
+  public int forwardChooseGroup = 12;
+  /** */
+  public int forwardNoGroupAssigned = 13;
+
+  /** */
+  public final String[] forwards = {
+    "success",
+    "continue",
+    "retry",
+    "error",
+    "noAccess",
+    "notFound",
+    "noSuchView",
+    "noParameter",
+    "noAction",
+    "reffed",
+    "added",
+    "updated",
+    "chooseGroup",
+    "noGroupAssigned",
+  };
 }

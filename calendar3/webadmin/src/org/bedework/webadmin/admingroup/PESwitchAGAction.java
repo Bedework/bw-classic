@@ -87,8 +87,8 @@ public class PESwitchAGAction extends PEAbstractAction {
 
     // Back to main menu. Abstract action will do the rest.
 
-    String temp = checkGroup(request, form, false);
-    if (temp == null) {
+    int temp = checkGroup(request, form, false);
+    if (temp == forwardNoAction) {
       form.getErr().emit("org.bedework.client.error.choosegroupsuppressed");
       return "error";
     }

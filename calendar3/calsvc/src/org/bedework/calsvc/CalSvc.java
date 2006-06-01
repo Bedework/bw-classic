@@ -85,6 +85,7 @@ import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.calfacade.ifs.Groups;
+import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUser;
 import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.BwPreferences;
@@ -641,6 +642,11 @@ public class CalSvc extends CalSvcI {
 
   public BwCalSuiteWrapper getCalSuite(String name) throws CalFacadeException {
     return dbi.getCalSuite(name);
+  }
+
+  public BwCalSuiteWrapper getCalSuite(BwAdminGroup group)
+        throws CalFacadeException {
+    return dbi.getCalSuite(group);
   }
 
   public Collection getCalSuites() throws CalFacadeException {

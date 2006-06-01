@@ -58,6 +58,7 @@ package org.bedework.calsvc;
 import org.bedework.calcore.hibernate.HibSession;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.base.BwShareableDbentity;
+import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
@@ -200,6 +201,31 @@ class CalSvcDb implements Serializable {
    */
   public BwCalSuiteWrapper getCalSuite(String name) throws CalFacadeException {
     BwCalSuite cs = fetchCalSuite(getSess(), name);
+
+    if (cs == null) {
+      return null;
+    }
+
+    CurrentAccess ca = checkAccess(cs, PrivilegeDefs.privAny, false);
+
+    return new BwCalSuiteWrapper(cs, ca);
+  }
+
+  /** Get a calendar suite given the 'owning' group
+  *
+  * @param  group     BwAdminGroup
+  * @return BwCalSuiteWrapper null for unknown calendar suite
+  * @throws CalFacadeException
+  */
+  public BwCalSuiteWrapper getCalSuite(BwAdminGroup group)
+        throws CalFacadeException {
+    HibSession sess = (HibSession)getSess();
+
+    sess.namedQuery("getCalSuiteByGroup");
+    sess.setEntity("group", group);
+    sess.cacheableQuery();
+
+    BwCalSuite cs = (BwCalSuite)sess.getUnique();
 
     if (cs == null) {
       return null;

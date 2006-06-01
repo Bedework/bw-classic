@@ -75,6 +75,7 @@ import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Groups;
+import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
@@ -519,6 +520,15 @@ public abstract class CalSvcI implements Serializable {
    * @throws CalFacadeException
    */
   public abstract BwCalSuiteWrapper getCalSuite(String name) throws CalFacadeException;
+
+  /** Get a calendar suite given the 'owning' group
+   *
+   * @param  group     BwAdminGroup
+   * @return BwCalSuiteWrapper null for unknown calendar suite
+   * @throws CalFacadeException
+   */
+  public abstract BwCalSuiteWrapper getCalSuite(BwAdminGroup group)
+          throws CalFacadeException;
 
   /** Get calendar suites to which this user has access
    *

@@ -1224,14 +1224,14 @@
 
     <!--<xsl:if test="/bedeworkadmin/canEdit = 'true' or /bedeworkadmin/userInfo/superUser = 'true'">
       <xsl:variable name="subscriptionId" select="subscription/id"/>
-			<xsl:variable name="calPath" select="calendar/encodedPath"/>
-			<xsl:variable name="guid" select="guid"/>
-			<xsl:variable name="recurrenceId" select="recurrenceId"/>
+      <xsl:variable name="calPath" select="calendar/encodedPath"/>
+      <xsl:variable name="guid" select="guid"/>
+      <xsl:variable name="recurrenceId" select="recurrenceId"/>
       <h3>
-			  <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-      	  Edit Event
-			  </a>
-		  </h3>
+        <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+          Edit Event
+        </a>
+      </h3>
     </xsl:if>-->
   </xsl:template>
 
@@ -3087,6 +3087,13 @@
         </td>
         <xsl:if test="/bedeworkadmin/userInfo/user">
           <td class="rightCell">
+            <xsl:if test="/bedeworkadmin/calSuite">
+              Calendar Suite:
+              <span class="status">
+                <xsl:value-of select="/bedeworkadmin/calSuite"/>
+              </span>
+              &#160;
+            </xsl:if>
             Logged in as:
             <span class="status">
               <xsl:value-of select="/bedeworkadmin/userInfo/user"/>

@@ -70,6 +70,7 @@ import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.ifs.Groups;
+import org.bedework.calfacade.svc.AdminGroups;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUser;
 import org.bedework.calfacade.svc.BwAuthUserPrefs;
@@ -77,6 +78,7 @@ import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
+import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
 import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
@@ -105,52 +107,10 @@ import org.apache.struts.util.MessageResources;
  *
  * @author  Mike Douglass  douglm@rpi.edu
  */
-public abstract class BwAbstractAction extends UtilAbstractAction {
+public abstract class BwAbstractAction extends UtilAbstractAction
+                                       implements ForwardDefs {
   /** Name of the init parameter holding our name */
   private static final String appNameInitParameter = "rpiappname";
-
-  /* These are all the possible forwards we take. Internal routines should
-   * return one of the following indices.
-   */
-  // ENUM
-  protected int forwardSuccess = 0;
-  protected int forwardContinue = 1;
-  protected int forwardRetry = 2;
-
-  protected int forwardError = 3;
-  protected int forwardNoAccess = 4;
-
-  protected int forwardNotFound = 5;
-
-  protected int forwardNoSuchView = 6;
-
-  /* Set when an optional parameter is not found */
-  protected int forwardNoParameter = 7;
-
-  /* Set when no action was taken */
-  protected int forwardNoAction = 8;
-
-  /* Something is referenced and cannot be removed */
-  protected int forwardReffed = 9;
-
-  /* an object was added/updated */
-  protected int forwardAdded = 10;
-  protected int forwardUpdated = 11;
-
-  protected final String[] forwards = {
-    "success",
-    "continue",
-    "retry",
-    "error",
-    "noAccess",
-    "notFound",
-    "noSuchView",
-    "noParameter",
-    "noAction",
-    "reffed",
-    "added",
-    "updated",
-  };
 
   /*
    *  (non-Javadoc)
@@ -159,6 +119,20 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
   public String getId() {
     return getClass().getName();
   }
+
+  /** This is the routine which does the work.
+   *
+   * @param request   Needed to locate session
+   * @param response
+   * @param sess      UWCalSession calendar session object
+   * @param frm       Action form
+   * @return String   forward name
+   * @throws Throwable
+   */
+  public abstract String doAction(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  BwSession sess,
+                                  BwActionFormBase frm) throws Throwable;
 
   public String performAction(HttpServletRequest request,
                               HttpServletResponse response,
@@ -230,9 +204,9 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
     /* Set up ready for the action */
 
-    String temp = actionSetup(request, response, form);
-    if (temp != null) {
-      return temp;
+    int temp = actionSetup(request, response, form);
+    if (temp != forwardNoAction) {
+      return forwards[temp];
     }
 
     /* see if we got cancelled */
@@ -277,12 +251,12 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    * @param request
    * @param response
    * @param form
-   * @return String forward for error or null
+   * @return int foward index
    * @throws Throwable
    */
-  public String actionSetup(HttpServletRequest request,
-                            HttpServletResponse response,
-                            BwActionFormBase form) throws Throwable {
+  public int actionSetup(HttpServletRequest request,
+                         HttpServletResponse response,
+                         BwActionFormBase form) throws Throwable {
     if (getPublicAdmin(form)) {
       if (debug) {
         logIt("form.getGroupSet()=" + form.getGroupSet());
@@ -296,11 +270,11 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       }
 
       if (!form.getAuthorisedUser()) {
-        return "noAccess";
+        return forwardNoAccess;
       }
 
-      String temp = checkGroup(request, form, true);
-      if (temp != null) {
+      int temp = checkGroup(request, form, true);
+      if (temp != forwardNoAction) {
         if (debug) {
           logIt("form.getGroupSet()=" + form.getGroupSet());
         }
@@ -311,7 +285,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
        */
       setAuthUser(form);
 
-      return null;
+      return forwardNoAction;
     }
 
     // Not public admin.
@@ -334,7 +308,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       log.debug("curTimeView=" + form.getCurTimeView());
     }
 
-    return null;
+    return forwardNoAction;
   }
 
   /** Set the config object.
@@ -904,20 +878,20 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return svci.getCalendar(url);
   }
 
-  /** Return null if group is chosen else return a forward name.
+  /** Return no action if group is chosen else return a forward index.
    *
    * @param request   Needed to locate session
    * @param form      Action form
    * @param initCheck true if this is a check to see if we're initialised,
    *                  otherwise this is an explicit request to change group.
-   * @return String   forward name
+   * @return int   forward index
    * @throws Throwable
    */
-  protected String checkGroup(HttpServletRequest request,
-                              BwActionFormBase form,
-                              boolean initCheck) throws Throwable {
+  protected int checkGroup(HttpServletRequest request,
+                           BwActionFormBase form,
+                           boolean initCheck) throws Throwable {
     if (form.getGroupSet()) {
-      return null;
+      return forwardNoAction;
     }
 
     CalSvcI svci = form.fetchSvci();
@@ -935,10 +909,19 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         if (reqpar == null) {
           // Make them do it again.
 
-          return "chooseGroup";
+          return forwardChooseGroup;
         }
 
-        return setGroup(request, form, adgrps, reqpar);
+        BwAdminGroup adg = (BwAdminGroup)adgrps.findGroup(reqpar);
+        if (adg != null) {
+          if (debug) {
+            logIt("No user admin group with name " + reqpar);
+          }
+          // We require a group
+          return forwardChooseGroup;
+        }
+
+        return setGroup(request, form, adgrps, adg);
       }
 
       /** If the user is in no group or in one group we just go with that,
@@ -949,11 +932,11 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
       BwUser user = svci.findUser(form.getCurrentUser());
       if (user == null) {
-        return "noAccess";
+        return forwardNoAccess;
       }
 
       if (initCheck || !form.getUserAuth().isSuperUser()) {
-        // Always restrict to groups we're a member of
+        // Always restrict to groups of which we are a member
         adgs = adgrps.getGroups(user);
       } else {
         adgs = adgrps.getAll(false);
@@ -968,10 +951,10 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
             form.getEnv().getAppBoolProperty("nogroupallowed");
         if (form.getUserAuth().isSuperUser() || noGroupAllowed) {
           form.assignAdminGroup(null);
-          return null;
+          return forwardNoAction;
         }
 
-        return "noGroupAssigned";
+        return forwardNoGroupAssigned;
       }
 
       if (adgs.size() == 1) {
@@ -979,15 +962,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
         BwAdminGroup adg = (BwAdminGroup)adgsit.next();
 
-        form.assignAdminGroup(adg);
-        String s = setAdminUser(request, form, adg.getOwner().getAccount(), true);
-
-        if (s != null) {
-          return s;
-        }
-
-        form.setAdminUserId(svci.getUser().getAccount());
-        return null;
+        return setGroup(request, form, adgrps, adg);
       }
 
       /** Go ahead and present the possible groups
@@ -995,75 +970,16 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       form.setUserAdminGroups(adgs);
       form.assignChoosingGroup(true); // reset
 
-      return "chooseGroup";
+      return forwardChooseGroup;
     } catch (Throwable t) {
       form.getErr().emit(t);
-      return "error";
+      return forwardError;
     }
-  }
-
-  protected String setAdminUser(HttpServletRequest request,
-                                BwActionFormBase form,
-                                String user,
-                                boolean isMember) throws Throwable {
-    int access = getAccess(request, getMessages());
-
-//    if (form.getCalSvcI() != null) {
-//      form.getCalSvcI().close();
-//    }
-
-    if (!checkSvci(request, form, form.getSession(), access, user, true,
-                   isMember, debug)) {
-      return "accessError";
-    }
-
-    return null;
   }
 
   protected BwAuthUser getAuthUser(BwActionFormBase form) throws CalFacadeException {
     UserAuth ua = form.retrieveUserAuth();
     return ua.getUser(form.getCurrentUser());
-  }
-
-  private String setGroup(HttpServletRequest request,
-                          BwActionFormBase form,
-                          Groups adgrps,
-                          String groupName) throws Throwable {
-    if (groupName == null) {
-      // We require a name
-      return "chooseGroup";
-    }
-
-    BwAdminGroup ag = (BwAdminGroup)adgrps.findGroup(groupName);
-    if (ag != null) {
-      adgrps.getMembers(ag);
-    }
-
-    if (debug) {
-      if (ag == null) {
-        logIt("No user admin group with name " + groupName);
-      } else {
-        logIt("Retrieved user admin group " + ag.getAccount());
-      }
-    }
-
-    form.assignAdminGroup(ag);
-
-    String s = setAdminUser(request, form, ag.getOwner().getAccount(),
-                            isMember(ag, form));
-
-    if (s != null) {
-      return s;
-    }
-
-    form.setAdminUserId(form.fetchSvci().getUser().getAccount());
-
-    return null;
-  }
-
-  private boolean isMember(BwAdminGroup ag,
-                           BwActionFormBase form) throws Throwable {
-    return ag.isMember(String.valueOf(form.getCurrentUser()), false);
   }
 
   /** Override to return true if this is an admin client
@@ -1074,37 +990,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
    */
   public boolean getPublicAdmin(BwActionFormBase frm) throws Throwable {
     return frm.getEnv().getAppBoolProperty("publicadmin");
-  }
-
-  /** get an env object initialised appropriately for our usage.
-   *
-   * @param request    HttpServletRequest
-   * @param frm
-   * @return CalEnv object - also implanted in form.
-   * @throws Throwable
-   */
-  private CalEnv getEnv(HttpServletRequest request,
-                        BwActionFormBase frm) throws Throwable {
-    CalEnv env = frm.getEnv();
-    if (env != null) {
-      return env;
-    }
-
-    HttpSession session = request.getSession();
-    ServletContext sc = session.getServletContext();
-
-    String appName = sc.getInitParameter("bwappname");
-
-    if ((appName == null) || (appName.length() == 0)) {
-      appName = "unknown-app-name";
-    }
-
-    String envPrefix = "org.bedework.app." + appName + ".";
-
-    env = new CalEnv(envPrefix, debug);
-    frm.assignEnv(env);
-
-    return env;
   }
 
   /** get an options property object. If name is null uses the application
@@ -1152,154 +1037,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     }
   }
 
-  /** This is the routine which does the work.
-   *
-   * @param request   Needed to locate session
-   * @param response
-   * @param sess      UWCalSession calendar session object
-   * @param frm       Action form
-   * @return String   forward name
-   * @throws Throwable
-   */
-  public abstract String doAction(HttpServletRequest request,
-                                  HttpServletResponse response,
-                                  BwSession sess,
-                                  BwActionFormBase frm) throws Throwable;
-
-  /** Get the session state object for a web session. If we've already been
-   * here it's embedded in the current session. Otherwise create a new one.
-   *
-   * <p>We also carry out a number of web related operations.
-   *
-   * @param request       HttpServletRequest Needed to locate session
-   * @param form          Action form
-   * @param messages      MessageResources needed for the resources
-   * @param adminUserId   id we want to administer
-   * @param admin         Get this for the admin client
-   * @return UWCalSession null on failure
-   * @throws Throwable
-   */
-  private synchronized BwSession getState(HttpServletRequest request,
-                                          BwActionFormBase form,
-                                          MessageResources messages,
-                                          String adminUserId,
-                                          boolean admin) throws Throwable {
-    BwSession s = BwWebUtil.getState(request);
-    HttpSession sess = request.getSession(false);
-    String appName = getAppName(sess);
-
-    if (s != null) {
-      if (debug) {
-        debugMsg("getState-- obtainedfrom session");
-        debugMsg("getState-- timeout interval = " +
-                 sess.getMaxInactiveInterval());
-      }
-
-      form.assignNewSession(false);
-    } else {
-      if (debug) {
-        debugMsg("getState-- get new object");
-      }
-
-      form.assignNewSession(true);
-
-      CalEnv env = getEnv(request, form);
-      String appRoot = env.getAppProperty("root");
-
-      /** The actual session class used is possibly site dependent
-       */
-      s = new BwSessionImpl(form.getCurrentUser(), appRoot, appName,
-                            form.getPresentationState(), messages,
-                            form.getSchemeHostPort(), debug);
-
-      BwWebUtil.setState(request, s);
-
-      setSessionAttr(request, "cal.pubevents.client.uri",
-                     messages.getMessage("org.bedework.public.calendar.uri"));
-
-      setSessionAttr(request, "cal.personal.client.uri",
-                     messages.getMessage("org.bedework.personal.calendar.uri"));
-
-      setSessionAttr(request, "cal.admin.client.uri",
-                     messages.getMessage("org.bedework.public.admin.uri"));
-
-      String temp = messages.getMessage("org.bedework.host");
-      if (temp == null) {
-        temp = form.getSchemeHostPort();
-      }
-
-      setSessionAttr(request, "cal.server.host", temp);
-
-      String raddr = request.getRemoteAddr();
-      String rhost = request.getRemoteHost();
-      info("===============" + appName + ": New session (" +
-                       s.getSessionNum() + ") from " +
-                       rhost + "(" + raddr + ")");
-
-      if (!admin) {
-        /** Ensure the session timeout interval is longer than our refresh period
-         */
-        //  Should come from db -- int refInt = s.getRefreshInterval();
-        int refInt = 60; // 1 min refresh?
-
-        if (refInt > 0) {
-          int timeout = sess.getMaxInactiveInterval();
-
-          if (timeout <= refInt) {
-            // An extra minute should do it.
-            debugMsg("@+@+@+@+@+ set timeout to " + (refInt + 60));
-            sess.setMaxInactiveInterval(refInt + 60);
-          }
-        }
-      }
-    }
-
-    int access = getAccess(request, messages);
-    if (debug) {
-      debugMsg("Container says that current user has the type: " + access);
-    }
-
-    /** Ensure we have a CalAdminSvcI object
-     */
-    checkSvci(request, form, s, access, adminUserId,
-              getPublicAdmin(form), false, debug);
-
-    /*
-    UserAuth ua = null;
-    UserAuthPar par = new UserAuthPar();
-    par.svlt = servlet;
-    par.req = request;
-
-    try {
-      ua = form.fetchSvci().getUserAuth(s.getUser(), par);
-
-      form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
-
-      if (debug) {
-        debugMsg("UserAuth says that current user has the type: " +
-                 ua.getUsertype());
-      }
-    } catch (Throwable t) {
-      form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
-      form.getErr().emit(t);
-      return null;
-    }
-    */
-
-    return s;
-  }
-
-  private String getAppName(HttpSession sess) {
-    ServletContext sc = sess.getServletContext();
-
-    String appname = sc.getInitParameter(appNameInitParameter);
-    if (appname == null) {
-      appname = "?";
-    }
-
-    return appname;
-  }
-
   /* We should probably return false for a portlet
    *  (non-Javadoc)
    * @see edu.rpi.sss.util.jsp.UtilAbstractAction#logOutCleanup(javax.servlet.http.HttpServletRequest)
@@ -1327,228 +1064,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     }
 
     return true;
-  }
-
-  /** Ensure we have a CalAdminSvcI object for the given user.
-   *
-   * <p>For an admin client with a super user we may switch to a different
-   * user to administer their events.
-   *
-   * @param request       Needed to locate session
-   * @param form          Action form
-   * @param sess          Session object for global parameters
-   * @param access        int unadjusted access
-   * @param user          String user we want to be
-   * @param publicAdmin   true if this is an administrative client
-   * @param canSwitch     true if we should definitely allow user to switch
-   *                      this allows a user to switch between and into
-   *                      groups of which they are a member
-   * @param debug         true for all that debugging stuff
-   * @return boolean      false for problems.
-   * @throws CalFacadeException
-   */
-  private boolean checkSvci(HttpServletRequest request,
-                            BwActionFormBase form,
-                            BwSession sess,
-                            int access,
-                            String user,
-                            boolean publicAdmin,
-                            boolean canSwitch,
-                            boolean debug) throws CalFacadeException {
-    /** Do some checks first
-     */
-    String authUser = String.valueOf(form.getCurrentUser());
-
-    if (!publicAdmin) {
-      /* We're never allowed to switch identity as a user client.
-       */
-      if (!authUser.equals(String.valueOf(user))) {
-        return false;
-      }
-    } else if (user == null) {
-      throw new CalFacadeException("Null user parameter for public admin.");
-    }
-
-    CalSvcI svci = BwWebUtil.getCalSvcI(request);
-
-    /** Make some checks to see if this is an old - restarted session.
-        If so discard the svc interface
-     */
-    if (svci != null) {
-      if (!svci.isOpen()) {
-        svci = null;
-        info(".Svci interface discarded from old session");
-      }
-    }
-
-    if (svci != null) {
-      /* Already there and already opened */
-      if (debug) {
-        debugMsg("CalSvcI-- Obtained from session for user " +
-                          svci.getUser());
-      }
-
-      // XXX access - disable use of roles
-      access = svci.getUserAuth().getUsertype();
-    } else {
-      if (debug) {
-        debugMsg(".CalSvcI-- get new object for user " + user);
-      }
-
-      /* create a call back object so the filter can open the service
-         interface */
-      BwCallback cb = new Callback(form);
-      HttpSession hsess = request.getSession();
-      hsess.setAttribute(BwCallback.cbAttrName, cb);
-
-      String runAsUser = user;
-      String calSuite = form.retrieveConfig().getCalSuite();
-
-      try {
-        svci = new CalSvc();
-        if (publicAdmin || (user == null)) {
-          if (calSuite == null) {
-            runAsUser = form.getEnv().getAppProperty("run.as.user");
-          }
-        }
-
-        CalSvcIPars pars = new CalSvcIPars(user, //access,
-                                           runAsUser,
-                                           calSuite,
-                                           form.getEnv().getAppPrefix(),
-                                           publicAdmin,
-                                           false,    // caldav
-                                           null, // synchId
-                                           debug);
-        svci.init(pars);
-
-        BwWebUtil.setCalSvcI(request, svci);
-
-        form.setCalSvcI(svci);
-
-        cb.in(true);
-
-        UserAuth ua = null;
-        UserAuthPar par = new UserAuthPar();
-        par.svlt = servlet;
-        par.req = request;
-
-        if (publicAdmin) {
-          try {
-            ua = svci.getUserAuth(user, par);
-
-            form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
-            svci.setSuperUser((ua.getUsertype() & UserAuth.superUser) != 0);
-
-            // XXX access - disable use of roles
-            access = ua.getUsertype();
-
-            if (debug) {
-              debugMsg("UserAuth says that current user has the type: " +
-                       ua.getUsertype());
-            }
-          } catch (Throwable t) {
-            form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
-            form.getErr().emit(t);
-            return false;
-          }
-        }
-      } catch (CalFacadeException cfe) {
-        throw cfe;
-      } catch (Throwable t) {
-        throw new CalFacadeException(t);
-      }
-    }
-
-    form.assignUserVO((BwUser)svci.getUser().clone());
-
-    if (publicAdmin) {
-      canSwitch = canSwitch || ((access & UserAuth.contentAdminUser) != 0) ||
-                           ((access & UserAuth.superUser) != 0);
-
-      BwUser u = svci.getUser();
-      if (u == null) {
-        throw new CalFacadeException("Null user for public admin.");
-      }
-
-      String curUser = u.getAccount();
-
-      if (!canSwitch && !user.equals(curUser)) {
-        /** Trying to switch but not allowed */
-        return false;
-      }
-
-      if (!user.equals(curUser)) {
-        /** Switching user */
-        svci.setUser(user);
-        curUser = user;
-      }
-
-      form.assignCurrentAdminUser(curUser);
-    }
-
-    return true;
-  }
-
-  /** This method determines the access rights of the current user based on
-   * their assigned roles. There are two sections to this which appear to do
-   * the same thing.
-   *
-   * <p>They are there because some servlet containers (jetty for one)
-   * appeared to be broken. Role mapping does not appear to work reliably.
-   * This seems to have something to do with jetty doing internal redirects
-   * to handle login. In the process it seems to lose the appropriate servlet
-   * context and with it the mapping of roles.
-   *
-   * @param req        HttpServletRequest
-   * @param messages   MessageResources
-   * @return int access
-   * @throws CalFacadeException
-   */
-  private int getAccess(HttpServletRequest req,
-                        MessageResources messages) throws CalFacadeException {
-    int access = 0;
-
-    /** This form works with broken containers.
-     */
-    if (req.isUserInRole(
-          getMessages().getMessage("org.bedework.role.admin"))) {
-      access += UserAuth.superUser;
-    }
-
-    if (req.isUserInRole(
-          getMessages().getMessage("org.bedework.role.contentadmin"))) {
-      access += UserAuth.contentAdminUser;
-    }
-
-    if (req.isUserInRole(
-          getMessages().getMessage("org.bedework.role.alert"))) {
-      access += UserAuth.alertUser;
-    }
-
-    if (req.isUserInRole(
-          getMessages().getMessage("org.bedework.role.owner"))) {
-      access += UserAuth.publicEventUser;
-    }
-
-    /** This is how it ought to look
-    if (req.isUserInRole("admin")) {
-      access += UserAuth.superUser;
-    }
-
-    if (req.isUserInRole("contentadmin")) {
-      access += UserAuth.contentAdminUser;
-    }
-
-    if (req.isUserInRole("alert")) {
-      access += UserAuth.alertUser;
-    }
-
-    if (req.isUserInRole("owner")) {
-      access += UserAuth.publicEventUser;
-    } */
-
-    return access;
   }
 
   /** Get a UserAuth object
@@ -1732,6 +1247,439 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
                              private methods
      ******************************************************************** */
 
+  /** Get the session state object for a web session. If we've already been
+   * here it's embedded in the current session. Otherwise create a new one.
+   *
+   * <p>We also carry out a number of web related operations.
+   *
+   * @param request       HttpServletRequest Needed to locate session
+   * @param form          Action form
+   * @param messages      MessageResources needed for the resources
+   * @param adminUserId   id we want to administer
+   * @param admin         Get this for the admin client
+   * @return UWCalSession null on failure
+   * @throws Throwable
+   */
+  private synchronized BwSession getState(HttpServletRequest request,
+                                          BwActionFormBase form,
+                                          MessageResources messages,
+                                          String adminUserId,
+                                          boolean admin) throws Throwable {
+    BwSession s = BwWebUtil.getState(request);
+    HttpSession sess = request.getSession(false);
+    String appName = getAppName(sess);
+
+    if (s != null) {
+      if (debug) {
+        debugMsg("getState-- obtainedfrom session");
+        debugMsg("getState-- timeout interval = " +
+                 sess.getMaxInactiveInterval());
+      }
+
+      form.assignNewSession(false);
+    } else {
+      if (debug) {
+        debugMsg("getState-- get new object");
+      }
+
+      form.assignNewSession(true);
+
+      CalEnv env = getEnv(request, form);
+      String appRoot = env.getAppProperty("root");
+
+      /** The actual session class used is possibly site dependent
+       */
+      s = new BwSessionImpl(form.getCurrentUser(), appRoot, appName,
+                            form.getPresentationState(), messages,
+                            form.getSchemeHostPort(), debug);
+
+      BwWebUtil.setState(request, s);
+
+      setSessionAttr(request, "cal.pubevents.client.uri",
+                     messages.getMessage("org.bedework.public.calendar.uri"));
+
+      setSessionAttr(request, "cal.personal.client.uri",
+                     messages.getMessage("org.bedework.personal.calendar.uri"));
+
+      setSessionAttr(request, "cal.admin.client.uri",
+                     messages.getMessage("org.bedework.public.admin.uri"));
+
+      String temp = messages.getMessage("org.bedework.host");
+      if (temp == null) {
+        temp = form.getSchemeHostPort();
+      }
+
+      setSessionAttr(request, "cal.server.host", temp);
+
+      String raddr = request.getRemoteAddr();
+      String rhost = request.getRemoteHost();
+      info("===============" + appName + ": New session (" +
+                       s.getSessionNum() + ") from " +
+                       rhost + "(" + raddr + ")");
+
+      if (!admin) {
+        /** Ensure the session timeout interval is longer than our refresh period
+         */
+        //  Should come from db -- int refInt = s.getRefreshInterval();
+        int refInt = 60; // 1 min refresh?
+
+        if (refInt > 0) {
+          int timeout = sess.getMaxInactiveInterval();
+
+          if (timeout <= refInt) {
+            // An extra minute should do it.
+            debugMsg("@+@+@+@+@+ set timeout to " + (refInt + 60));
+            sess.setMaxInactiveInterval(refInt + 60);
+          }
+        }
+      }
+    }
+
+    int access = getAccess(request, messages);
+    if (debug) {
+      debugMsg("Container says that current user has the type: " + access);
+    }
+
+    /** Ensure we have a CalAdminSvcI object
+     */
+    String calSuite = form.retrieveConfig().getCalSuite();
+    checkSvci(request, form, s, access, adminUserId, calSuite,
+              getPublicAdmin(form), false, debug);
+
+    /*
+    UserAuth ua = null;
+    UserAuthPar par = new UserAuthPar();
+    par.svlt = servlet;
+    par.req = request;
+
+    try {
+      ua = form.fetchSvci().getUserAuth(s.getUser(), par);
+
+      form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
+
+      if (debug) {
+        debugMsg("UserAuth says that current user has the type: " +
+                 ua.getUsertype());
+      }
+    } catch (Throwable t) {
+      form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
+      form.getErr().emit(t);
+      return null;
+    }
+    */
+
+    return s;
+  }
+
+  private String getAppName(HttpSession sess) {
+    ServletContext sc = sess.getServletContext();
+
+    String appname = sc.getInitParameter(appNameInitParameter);
+    if (appname == null) {
+      appname = "?";
+    }
+
+    return appname;
+  }
+
+  private int setGroup(HttpServletRequest request,
+                       BwActionFormBase form,
+                       Groups adgrps,
+                       BwAdminGroup adg) throws Throwable {
+    CalSvcI svci = form.fetchSvci();
+
+    adgrps.getMembers(adg);
+
+    if (debug) {
+      logIt("Set admin group to " + adg);
+    }
+
+    /* Determine which calsuites they are administering */
+
+    Collection css = findAllCalSuites(svci, adg, adgrps);
+
+    if (css.size() > 1) {
+      form.getErr().emit("org.bedework.error.cannot.handle.this.yet");
+      return forwardError;
+    }
+
+    BwCalSuiteWrapper cs = null;
+    String calSuiteName = null;
+
+    if (css.size() == 1) {
+      cs = (BwCalSuiteWrapper)css.iterator().next();
+      calSuiteName = cs.getName();
+    }
+
+    if (debug) {
+      debugMsg("Found calSuite " + cs);
+    } else {
+      debugMsg("No calsuite found");
+    }
+
+    form.setCurrentCalSuite(cs);
+    form.assignAdminGroup(adg);
+
+    int access = getAccess(request, getMessages());
+
+    if (!checkSvci(request, form, form.getSession(), access,
+                   adg.getOwner().getAccount(),
+                   calSuiteName, true, isMember(adg, form), debug)) {
+      return forwardNoAccess;
+    }
+
+    form.setAdminUserId(form.fetchSvci().getUser().getAccount());
+
+    return forwardNoAction;
+  }
+
+  private boolean isMember(BwAdminGroup ag,
+                           BwActionFormBase form) throws Throwable {
+    return ag.isMember(String.valueOf(form.getCurrentUser()), false);
+  }
+
+  /** Ensure we have a CalAdminSvcI object for the given user.
+   *
+   * <p>For an admin client with a super user we may switch to a different
+   * user to administer their events.
+   *
+   * @param request       Needed to locate session
+   * @param form          Action form
+   * @param sess          Session object for global parameters
+   * @param access        int unadjusted access
+   * @param user          String user we want to be
+   * @param calSuite      Name of calendar suite we are administering
+   * @param publicAdmin   true if this is an administrative client
+   * @param canSwitch     true if we should definitely allow user to switch
+   *                      this allows a user to switch between and into
+   *                      groups of which they are a member
+   * @param debug         true for all that debugging stuff
+   * @return boolean      false for problems.
+   * @throws CalFacadeException
+   */
+  private boolean checkSvci(HttpServletRequest request,
+                            BwActionFormBase form,
+                            BwSession sess,
+                            int access,
+                            String user,
+                            String calSuite,
+                            boolean publicAdmin,
+                            boolean canSwitch,
+                            boolean debug) throws CalFacadeException {
+    /** Do some checks first
+     */
+    String authUser = String.valueOf(form.getCurrentUser());
+
+    if (!publicAdmin) {
+      /* We're never allowed to switch identity as a user client.
+       */
+      if (!authUser.equals(String.valueOf(user))) {
+        return false;
+      }
+    } else if (user == null) {
+      throw new CalFacadeException("Null user parameter for public admin.");
+    }
+
+    CalSvcI svci = BwWebUtil.getCalSvcI(request);
+
+    /** Make some checks to see if this is an old - restarted session.
+        If so discard the svc interface
+     */
+    if (svci != null) {
+      if (!svci.isOpen()) {
+        svci = null;
+        info(".Svci interface discarded from old session");
+      }
+    }
+
+    if (svci != null) {
+      /* Already there and already opened */
+      if (debug) {
+        debugMsg("CalSvcI-- Obtained from session for user " +
+                          svci.getUser());
+      }
+
+      // XXX access - disable use of roles
+      access = svci.getUserAuth().getUsertype();
+    } else {
+      if (debug) {
+        debugMsg(".CalSvcI-- get new object for user " + user);
+      }
+
+      /* create a call back object so the filter can open the service
+         interface */
+      BwCallback cb = new Callback(form);
+      HttpSession hsess = request.getSession();
+      hsess.setAttribute(BwCallback.cbAttrName, cb);
+
+      String runAsUser = user;
+
+      try {
+        svci = new CalSvc();
+        if (publicAdmin || (user == null)) {
+          if (calSuite == null) {
+            runAsUser = form.getEnv().getAppProperty("run.as.user");
+          }
+        }
+
+        CalSvcIPars pars = new CalSvcIPars(user, //access,
+                                           runAsUser,
+                                           calSuite,
+                                           form.getEnv().getAppPrefix(),
+                                           publicAdmin,
+                                           false,    // caldav
+                                           null, // synchId
+                                           debug);
+        svci.init(pars);
+
+        BwWebUtil.setCalSvcI(request, svci);
+
+        form.setCalSvcI(svci);
+
+        cb.in(true);
+
+        UserAuth ua = null;
+        UserAuthPar par = new UserAuthPar();
+        par.svlt = servlet;
+        par.req = request;
+
+        if (publicAdmin) {
+          try {
+            ua = svci.getUserAuth(user, par);
+
+            form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
+            svci.setSuperUser((ua.getUsertype() & UserAuth.superUser) != 0);
+
+            // XXX access - disable use of roles
+            access = ua.getUsertype();
+
+            if (debug) {
+              debugMsg("UserAuth says that current user has the type: " +
+                       ua.getUsertype());
+            }
+          } catch (Throwable t) {
+            form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
+            form.getErr().emit(t);
+            return false;
+          }
+        }
+      } catch (CalFacadeException cfe) {
+        throw cfe;
+      } catch (Throwable t) {
+        throw new CalFacadeException(t);
+      }
+    }
+
+    form.assignUserVO((BwUser)svci.getUser().clone());
+
+    if (publicAdmin) {
+      canSwitch = canSwitch || ((access & UserAuth.contentAdminUser) != 0) ||
+                           ((access & UserAuth.superUser) != 0);
+
+      BwUser u = svci.getUser();
+      if (u == null) {
+        throw new CalFacadeException("Null user for public admin.");
+      }
+
+      String curUser = u.getAccount();
+
+      if (!canSwitch && !user.equals(curUser)) {
+        /** Trying to switch but not allowed */
+        return false;
+      }
+
+      if (!user.equals(curUser)) {
+        /** Switching user */
+        svci.setUser(user);
+        curUser = user;
+      }
+
+      form.assignCurrentAdminUser(curUser);
+    }
+
+    return true;
+  }
+
+  /** This method determines the access rights of the current user based on
+   * their assigned roles. There are two sections to this which appear to do
+   * the same thing.
+   *
+   * <p>They are there because some servlet containers (jetty for one)
+   * appeared to be broken. Role mapping does not appear to work reliably.
+   * This seems to have something to do with jetty doing internal redirects
+   * to handle login. In the process it seems to lose the appropriate servlet
+   * context and with it the mapping of roles.
+   *
+   * @param req        HttpServletRequest
+   * @param messages   MessageResources
+   * @return int access
+   * @throws CalFacadeException
+   */
+  private int getAccess(HttpServletRequest req,
+                        MessageResources messages) throws CalFacadeException {
+    int access = 0;
+
+    /** This form works with broken containers.
+     */
+    if (req.isUserInRole(
+          getMessages().getMessage("org.bedework.role.admin"))) {
+      access += UserAuth.superUser;
+    }
+
+    if (req.isUserInRole(
+          getMessages().getMessage("org.bedework.role.contentadmin"))) {
+      access += UserAuth.contentAdminUser;
+    }
+
+    if (req.isUserInRole(
+          getMessages().getMessage("org.bedework.role.alert"))) {
+      access += UserAuth.alertUser;
+    }
+
+    if (req.isUserInRole(
+          getMessages().getMessage("org.bedework.role.owner"))) {
+      access += UserAuth.publicEventUser;
+    }
+
+    /** This is how it ought to look
+    if (req.isUserInRole("admin")) {
+      access += UserAuth.superUser;
+    }
+
+    if (req.isUserInRole("contentadmin")) {
+      access += UserAuth.contentAdminUser;
+    }
+
+    if (req.isUserInRole("alert")) {
+      access += UserAuth.alertUser;
+    }
+
+    if (req.isUserInRole("owner")) {
+      access += UserAuth.publicEventUser;
+    } */
+
+    return access;
+  }
+
+  private Collection findAllCalSuites(CalSvcI svc,
+                                      BwAdminGroup adg,
+                                      Groups adgrps) throws Throwable {
+    ArrayList al = new ArrayList();
+
+    BwCalSuiteWrapper cs = svc.getCalSuite(adg);
+    if (cs != null) {
+      al.add(cs);
+    }
+
+    Iterator parents = ((AdminGroups)adgrps).findGroupParents(adg).iterator();
+
+    while (parents.hasNext()) {
+      al.addAll(findAllCalSuites(svc, (BwAdminGroup)parents.next(), adgrps));
+    }
+
+    return al;
+  }
+
   /* Set information associated with the current auth user.
    * Set the prefs on each request to reflect other session changes
    */
@@ -1766,5 +1714,36 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
     form.refreshView();
     form.setRefreshNeeded(false);
+  }
+
+  /** get an env object initialised appropriately for our usage.
+   *
+   * @param request    HttpServletRequest
+   * @param frm
+   * @return CalEnv object - also implanted in form.
+   * @throws Throwable
+   */
+  private CalEnv getEnv(HttpServletRequest request,
+                        BwActionFormBase frm) throws Throwable {
+    CalEnv env = frm.getEnv();
+    if (env != null) {
+      return env;
+    }
+
+    HttpSession session = request.getSession();
+    ServletContext sc = session.getServletContext();
+
+    String appName = sc.getInitParameter("bwappname");
+
+    if ((appName == null) || (appName.length() == 0)) {
+      appName = "unknown-app-name";
+    }
+
+    String envPrefix = "org.bedework.app." + appName + ".";
+
+    env = new CalEnv(envPrefix, debug);
+    frm.assignEnv(env);
+
+    return env;
   }
 }

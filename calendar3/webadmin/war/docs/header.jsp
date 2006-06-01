@@ -169,6 +169,10 @@ try {
     </admingroup>
   </urlPrefixes>
 
+  <logic:present name="peForm" property="currentCalSuite" >
+    <bw:emitText name="peForm" property="currentCalSuite.name" tagName="calSuite" />
+  </logic:present>
+
   <userInfo>
     <!-- user type -->
     <logic:equal name="peForm" property="userAuth.contentAdminUser" value="true" >

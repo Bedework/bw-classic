@@ -181,6 +181,8 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    *                       Calendar suites
    * .................................................................... */
 
+  private BwCalSuiteWrapper currentCalSuite;
+
   private BwCalSuiteWrapper calSuite;
 
   private boolean addingCalSuite;
@@ -561,14 +563,31 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    *                   Calendar suites
    * ==================================================================== */
 
+  /** Current calSuite for the application
+   *
+   * @param val
+   */
+  public void setCurrentCalSuite(BwCalSuiteWrapper val) {
+    currentCalSuite = val;
+  }
+
   /**
+   * @return BwCalSuiteWrapper
+   */
+  public BwCalSuiteWrapper getCurrentCalSuite() {
+    return currentCalSuite;
+  }
+
+  /** CalSuite we are editing or creating.
+   *
    * @param val
    */
   public void setCalSuite(BwCalSuiteWrapper val) {
     calSuite = val;
   }
 
-  /**
+  /** CalSuite we are editing or creating.
+   *
    * @return BwCalSuiteWrapper
    */
   public BwCalSuiteWrapper getCalSuite() {
@@ -579,7 +598,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    *
    * @param val
    */
-  public void assignCalSuite(boolean val) {
+  public void assignAddingCalSuite(boolean val) {
     addingCalSuite = val;
   }
 
