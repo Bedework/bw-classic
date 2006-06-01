@@ -68,10 +68,6 @@ import java.util.Collection;
  *
  * @author Mike Douglass   douglm@rpi.edu
  */
-/**
- * @author douglm
- *
- */
 public class EventProperties extends CalintfHelper {
   private String keyFieldName;
 

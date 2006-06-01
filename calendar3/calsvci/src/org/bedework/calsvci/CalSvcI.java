@@ -505,6 +505,13 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract BwCalSuiteWrapper addCalSuite(BwCalSuite val) throws CalFacadeException;
 
+  /** Get the current calendar suite
+   *
+   * @return BwCalSuiteWrapper null for unknown calendar suite
+   * @throws CalFacadeException
+   */
+  public abstract BwCalSuiteWrapper getCalSuite() throws CalFacadeException;
+
   /** Get a calendar suite given the name
    *
    * @param  name     String name of calendar suite

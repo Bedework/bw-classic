@@ -143,6 +143,8 @@ public class CalSvc extends CalSvcI {
    */
   private BwUser publicUser;
 
+  private BwCalSuiteWrapper currentCalSuite;
+
   // Set up by call to getCal()
   private String publicUserAccount;
 
@@ -288,10 +290,6 @@ public class CalSvc extends CalSvcI {
 
     try {
       env = new CalEnv(pars.getEnvPrefix(), debug);
-
-      if (pars.isGuest() && (pars.getUser() == null)) {
-        pars.setUser(env.getAppProperty("run.as.user"));
-      }
 
       if (pars.getPublicAdmin()) {
         //adminAutoDeleteSponsors = env.getAppBoolProperty("app.autodeletesponsors");
@@ -637,6 +635,10 @@ public class CalSvc extends CalSvcI {
     return dbi.addCalSuite(val);
   }
 
+  public BwCalSuiteWrapper getCalSuite() throws CalFacadeException {
+    return currentCalSuite;
+  }
+
   public BwCalSuiteWrapper getCalSuite(String name) throws CalFacadeException {
     return dbi.getCalSuite(name);
   }
@@ -745,6 +747,11 @@ public class CalSvc extends CalSvcI {
     /** Only allow delete if not in use
      */
     if (getCal().checkCalendarRefs(val)) {
+      return 2;
+    }
+
+    BwPreferences prefs = getUserPrefs(val.getOwner());
+    if (val.equals(prefs.getDefaultCalendar())) {
       return 2;
     }
 
@@ -2341,6 +2348,19 @@ public class CalSvc extends CalSvcI {
     try {
       cali.open(); // Just for the user interactions
       cali.beginTransaction();
+
+      if (pars.getCalSuite() != null) {
+        BwCalSuite cs = CalSvcDb.fetchCalSuite(cali.getDbSession(),
+                                               pars.getCalSuite());
+
+        if (cs == null) {
+          throw new CalFacadeException("org.bedework.svci.unknown.calsuite",
+                                       pars.getCalSuite());
+        }
+
+        currentCalSuite = new BwCalSuiteWrapper(cs);
+        pars.setUser(cs.getGroup().getOwner().getAccount());
+      }
 
       boolean userCreated = cali.init(null,
                                       pars.getAuthUser(),

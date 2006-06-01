@@ -57,6 +57,7 @@ package org.bedework.webcommon;
 import org.bedework.appcommon.BedeworkDefs;
 import org.bedework.appcommon.UserAuthPar;
 import org.bedework.calenv.CalEnv;
+import org.bedework.calenv.CalOptions;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
@@ -168,8 +169,11 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     String adminUserId = null;
 
     CalEnv env = getEnv(request, form);
+
+    setConfig(request, form);
+
     setSessionAttr(request, "org.bedework.logprefix",
-                   env.getAppProperty("logprefix"));
+                   form.retrieveConfig().getLogPrefix());
 
     boolean guestMode = env.getAppBoolProperty("guestmode");
 
@@ -192,12 +196,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         adminUserId = temp;
       }
     }
-
-    /*
-    UWCalCallback cb = new Callback(form);
-    HttpSession sess = request.getSession();
-    sess.setAttribute(UWCalCallback.cbAttrName, cb);
-    */
 
     BwSession s = getState(request, form, messages, adminUserId,
                            getPublicAdmin(form));
@@ -232,14 +230,60 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
 
     /* Set up ready for the action */
 
+    String temp = actionSetup(request, response, form);
+    if (temp != null) {
+      return temp;
+    }
+
+    /* see if we got cancelled */
+
+    String reqpar = request.getParameter("cancelled");
+
+    if (reqpar != null) {
+      /** Set the objects to null so we get new ones.
+       */
+      initFields(form);
+
+      form.getMsg().emit("org.bedework.client.message.cancelled");
+      return "cancelled";
+    }
+
+    /* Set up or refresh frequently used information,
+     */
+    CalSvcI svc = form.fetchSvci();
+
+    form.setSubscriptions(svc.getSubscriptions());
+
+    try {
+      forward = doAction(request, response, s, form);
+
+      if (!getPublicAdmin(form)) {
+        /* See if we need to refresh */
+        checkRefresh(form);
+      }
+    } catch (CalFacadeAccessException cfae) {
+      form.getErr().emit("org.bedework.client.error.noaccess", "for that action");
+      forward="noaccess";
+    } catch (Throwable t) {
+      form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
+      form.getErr().emit(t);
+    }
+
+    return forward;
+  }
+
+  /** Called just before action.
+   *
+   * @param request
+   * @param response
+   * @param form
+   * @return String forward for error or null
+   * @throws Throwable
+   */
+  public String actionSetup(HttpServletRequest request,
+                            HttpServletResponse response,
+                            BwActionFormBase form) throws Throwable {
     if (getPublicAdmin(form)) {
-      /* Set some options from the environment */
-
-      form.setAutoCreateSponsors(env.getAppBoolProperty("autocreatesponsors"));
-      form.setAutoCreateLocations(env.getAppBoolProperty("autocreatelocations"));
-      form.setAutoDeleteSponsors(env.getAppBoolProperty("autodeletesponsors"));
-      form.setAutoDeleteLocations(env.getAppBoolProperty("autodeletelocations"));
-
       if (debug) {
         logIt("form.getGroupSet()=" + form.getGroupSet());
       }
@@ -266,65 +310,46 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       /** Ensure we have prefs and other values for the AuthUser
        */
       setAuthUser(form);
-    } else {
-      form.setAutoCreateSponsors(true);
-      form.setAutoCreateLocations(true);
-      form.setAutoDeleteSponsors(true);
-      form.setAutoDeleteLocations(true);
 
-      String refreshAction = form.getEnv().getAppOptProperty("refresh.action");
-
-      if (refreshAction == null) {
-        refreshAction = form.getActionPath();
-      }
-
-      if (refreshAction != null) {
-        setRefreshInterval(request, response,
-                           form.getEnv().getAppIntProperty("refresh.interval"),
-                           refreshAction, form);
-      }
-
-      if (debug) {
-        log.debug("curTimeView=" + form.getCurTimeView());
-      }
+      return null;
     }
 
-    /* see if we got cancelled */
+    // Not public admin.
 
-    String reqpar = request.getParameter("cancelled");
+    ConfigBase conf = form.retrieveConfig();
 
-    if (reqpar != null) {
-      /** Set the objects to null so we get new ones.
-       */
-      initFields(form);
+    String refreshAction = conf.getRefreshAction();
 
-      form.getMsg().emit("org.bedework.client.message.cancelled");
-      return "cancelled";
+    if (refreshAction == null) {
+      refreshAction = form.getActionPath();
     }
 
-    /* Set up or refresh frequently used information,
-     */
-    CalSvcI svc = form.fetchSvci();
-
-    form.setSubscriptions(svc.getSubscriptions());
-
-    try {
-      forward = doAction(request, response, s, form);
-
-      if (getPublicAdmin(form)) {
-      } else {
-        /* See if we need to refresh */
-        checkRefresh(form);
-      }
-    } catch (CalFacadeAccessException cfae) {
-      form.getErr().emit("org.bedework.client.error.noaccess", "for that action");
-      forward="noaccess";
-    } catch (Throwable t) {
-      form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
-      form.getErr().emit(t);
+    if (refreshAction != null) {
+      setRefreshInterval(request, response,
+                         conf.getRefreshInterval(),
+                         refreshAction, form);
     }
 
-    return forward;
+    if (debug) {
+      log.debug("curTimeView=" + form.getCurTimeView());
+    }
+
+    return null;
+  }
+
+  /** Set the config object.
+   *
+   * @param request
+   * @param form
+   * @throws Throwable
+   */
+  public void setConfig(HttpServletRequest request,
+                        BwActionFormBase form) throws Throwable {
+    if (!form.configSet()) {
+      ConfigBase conf = (ConfigBase)getConfigOption(request, null);
+
+      form.setConfig(conf);
+    }
   }
 
   protected void initFields(BwActionFormBase form) {
@@ -1000,25 +1025,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     return ua.getUser(form.getCurrentUser());
   }
 
-  /* Set information associated witht he current auth user.
-   * Set the prefs on each request to reflect other session changes
-   */
-  private void setAuthUser(BwActionFormBase form) throws CalFacadeException {
-    BwAuthUser au = getAuthUser(form);
-    BwAuthUserPrefs prefs = au.getPrefs();
-    if (prefs == null) {
-      prefs = new BwAuthUserPrefs();
-    }
-
-    form.setAuthUserPrefs(prefs);
-
-    int rights = au.getUsertype();
-
-    form.assignAuthUserAlerts((rights & UserAuth.alertUser) != 0);
-    form.assignAuthUserPublicEvents((rights & UserAuth.publicEventUser) != 0);
-    form.assignAuthUserSuperUser((rights & UserAuth.superUser) != 0);
-  }
-
   private String setGroup(HttpServletRequest request,
                           BwActionFormBase form,
                           Groups adgrps,
@@ -1099,6 +1105,31 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
     frm.assignEnv(env);
 
     return env;
+  }
+
+  /** get an options property object. If name is null uses the application
+   * name.
+   *
+   * @param request    HttpServletRequest
+   * @param name
+   * @return Object .
+   * @throws Throwable
+   */
+  protected Object getConfigOption(HttpServletRequest request,
+                                   String name) throws Throwable {
+    if (name == null) {
+      HttpSession session = request.getSession();
+      ServletContext sc = session.getServletContext();
+
+      name = sc.getInitParameter("bwappname");
+
+      if ((name == null) || (name.length() == 0)) {
+        name = "unknown-app-name";
+      }
+    }
+
+    String appPrefix = "org.bedework.app.";
+    return CalOptions.getProperty(appPrefix + name);
   }
 
   /** Get a prefix for the loggers.
@@ -1182,12 +1213,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
                             form.getSchemeHostPort(), debug);
 
       BwWebUtil.setState(request, s);
-
-      form.setHour24(env.getAppBoolProperty("hour24"));
-      form.setMinIncrement(env.getAppIntProperty("minincrement"));
-      if (!admin) {
-        form.assignShowYearData(env.getAppBoolProperty("showyeardata"));
-      }
 
       setSessionAttr(request, "cal.pubevents.client.uri",
                      messages.getMessage("org.bedework.public.calendar.uri"));
@@ -1377,15 +1402,19 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
       hsess.setAttribute(BwCallback.cbAttrName, cb);
 
       String runAsUser = user;
+      String calSuite = form.retrieveConfig().getCalSuite();
 
       try {
         svci = new CalSvc();
         if (publicAdmin || (user == null)) {
-          runAsUser = form.getEnv().getAppProperty("run.as.user");
+          if (calSuite == null) {
+            runAsUser = form.getEnv().getAppProperty("run.as.user");
+          }
         }
 
         CalSvcIPars pars = new CalSvcIPars(user, //access,
                                            runAsUser,
+                                           calSuite,
                                            form.getEnv().getAppPrefix(),
                                            publicAdmin,
                                            false,    // caldav
@@ -1697,6 +1726,29 @@ public abstract class BwAbstractAction extends UtilAbstractAction {
         throw t;
       }
     }
+  }
+
+  /* ********************************************************************
+                             private methods
+     ******************************************************************** */
+
+  /* Set information associated with the current auth user.
+   * Set the prefs on each request to reflect other session changes
+   */
+  private void setAuthUser(BwActionFormBase form) throws CalFacadeException {
+    BwAuthUser au = getAuthUser(form);
+    BwAuthUserPrefs prefs = au.getPrefs();
+    if (prefs == null) {
+      prefs = new BwAuthUserPrefs();
+    }
+
+    form.setAuthUserPrefs(prefs);
+
+    int rights = au.getUsertype();
+
+    form.assignAuthUserAlerts((rights & UserAuth.alertUser) != 0);
+    form.assignAuthUserPublicEvents((rights & UserAuth.publicEventUser) != 0);
+    form.assignAuthUserSuperUser((rights & UserAuth.superUser) != 0);
   }
 
   private void checkRefresh(BwActionFormBase form) {

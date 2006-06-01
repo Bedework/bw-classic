@@ -199,17 +199,34 @@ class CalSvcDb implements Serializable {
    * @throws CalFacadeException
    */
   public BwCalSuiteWrapper getCalSuite(String name) throws CalFacadeException {
-    HibSession sess = getSess();
+    BwCalSuite cs = fetchCalSuite(getSess(), name);
 
-    sess.namedQuery("getCalSuite");
-    sess.setEntity("name", name);
-    sess.cacheableQuery();
-
-    BwCalSuite cs = (BwCalSuite)sess.getUnique();
+    if (cs == null) {
+      return null;
+    }
 
     CurrentAccess ca = checkAccess(cs, PrivilegeDefs.privAny, false);
 
     return new BwCalSuiteWrapper(cs, ca);
+  }
+
+  /** Allows svc to retrieve the calSuite object used to configure a public
+   * client.
+   *
+   * @param session
+   * @param name
+   * @return BwCalSuite object or null
+   * @throws CalFacadeException
+   */
+  public static BwCalSuite fetchCalSuite(Object session,
+                                         String name) throws CalFacadeException {
+    HibSession sess = (HibSession)session;
+
+    sess.namedQuery("getCalSuite");
+    sess.setString("name", name);
+    sess.cacheableQuery();
+
+    return (BwCalSuite)sess.getUnique();
   }
 
   /** Get calendar suites to which this user has access

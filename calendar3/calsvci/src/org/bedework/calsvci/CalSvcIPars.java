@@ -65,9 +65,13 @@ public class CalSvcIPars implements Serializable {
    */
   private String authUser;
 
-  /** The current user - null for guest
+  /** The current user we run as. null to use calSuite
    */
   private String user;
+
+  /** The calendar suite name. user and calSuite null for guest.
+   */
+  private String calSuite;
 
   /** Environment properties prefix - e.g. "org.bedework.webpersonal."
    */
@@ -93,6 +97,7 @@ public class CalSvcIPars implements Serializable {
    *
    * @param authUser    String authenticated user of the application
    * @param user        String user to act as
+   * @param calSuite    String calSuite name
    * @param envPrefix   String Environment properties prefix
    * @param publicAdmin true for admin
    * @param caldav      true if via caldav
@@ -102,6 +107,7 @@ public class CalSvcIPars implements Serializable {
    */
   public CalSvcIPars(String authUser,
                      String user,
+                     String calSuite,
                      String envPrefix,
                      boolean publicAdmin,
                      boolean caldav,
@@ -109,6 +115,7 @@ public class CalSvcIPars implements Serializable {
                      boolean debug) {
     this.authUser = authUser;
     this.user = user;
+    this.calSuite = calSuite;
     this.envPrefix = envPrefix;
     this.publicAdmin = publicAdmin;
     this.caldav = caldav;
@@ -135,6 +142,20 @@ public class CalSvcIPars implements Serializable {
    */
   public String getUser() {
     return user;
+  }
+
+  /**
+   * @param val String calSuite
+   */
+  public void setCalSuite(String  val) {
+    calSuite = val;
+  }
+
+  /**
+   * @return String
+   */
+  public String getCalSuite() {
+    return calSuite;
   }
 
   /**
@@ -193,6 +214,8 @@ public class CalSvcIPars implements Serializable {
     sb.append(getAuthUser());
     sb.append(", user=");
     sb.append(getUser());
+    sb.append(", calSuite=");
+    sb.append(getCalSuite());
     sb.append(", publicAdmin=");
     sb.append(getPublicAdmin());
     sb.append(", caldav=");
@@ -209,6 +232,7 @@ public class CalSvcIPars implements Serializable {
   public Object clone() {
     CalSvcIPars pars = new CalSvcIPars(getAuthUser(),
                                        getUser(),
+                                       getCalSuite(),
                                        getEnvPrefix(),
                                        getPublicAdmin(),
                                        getCaldav(),

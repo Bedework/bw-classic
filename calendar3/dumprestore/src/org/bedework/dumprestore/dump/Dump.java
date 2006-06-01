@@ -28,9 +28,9 @@
  */
 package org.bedework.dumprestore.dump;
 
+import org.bedework.appcommon.configs.DumpRestoreConfig;
 import org.bedework.calenv.CalOptions;
 import org.bedework.dumprestore.Defs;
-import org.bedework.dumprestore.DumpRestoreConfig;
 import org.bedework.dumprestore.dump.dumpling.DumpAll;
 
 import java.io.FileWriter;

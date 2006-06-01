@@ -7,6 +7,8 @@ try {
 %>
 
 <bedework>
+  <bean:define id="bwconfig" name="calForm" property="config" toScope="session" />
+
   <now><%-- The actual date right "now" - this may not be the same as currentdate --%>
     <date><bean:write name="calForm" property="today.dateDigits"/></date><%--
       Value: YYYYMMDD --%>

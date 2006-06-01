@@ -28,7 +28,7 @@
  */
 package org.bedework.dumprestore.dump;
 
-import org.bedework.dumprestore.DumpRestoreConfig;
+import org.bedework.appcommon.configs.DumpRestoreConfig;
 
 import java.io.Writer;
 import java.util.Stack;

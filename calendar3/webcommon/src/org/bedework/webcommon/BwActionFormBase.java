@@ -110,6 +110,8 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   private CalEnv env;
 
+  private ConfigBase config;
+
   // XXX locale - needs to be changed when locale changes
   private transient Collator listCollator;
 
@@ -119,32 +121,6 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   private Collection sysStats;
 
   private transient MailerIntf mailer;
-
-  /** True if we should auto-create sponsors. Some sites may wish to control
-   * the creation of sponsors to enforce consistency in their use. If this
-   * is true we create a sponsor as we create events. If false the sponsor
-   * must already exist.
-   */
-  private boolean autoCreateSponsors;
-
-  /** True if we should auto-create locations. Some sites may wish to control
-   * the creation of locations to enforce consistency in their use. If this
-   * is true we create a location as we create events. If false the location
-   * must already exist.
-   */
-  private boolean autoCreateLocations;
-
-  /** True if we should auto-delete sponsors. Some sites may wish to control
-   * the deletion of sponsors to enforce consistency in their use. If this
-   * is true we delete a sponsor when it becomes unused.
-   */
-  private boolean autoDeleteSponsors;
-
-  /** True if we should auto-delete locations. Some sites may wish to control
-   * the deletion of locations to enforce consistency in their use. If this
-   * is true we delete a location when it becomes unused.
-   */
-  private boolean autoDeleteLocations;
 
   /* Kind of entity we are referring to */
 
@@ -412,6 +388,47 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     return syspars;
   }
 
+  /** Set a copy of the config parameters
+   *
+   * @param val
+   */
+  public void setConfig(ConfigBase val) {
+    config = val;
+
+    /* Set defaults */
+    setHour24(config.getHour24());
+    setMinIncrement(config.getMinIncrement());
+    assignShowYearData(config.getShowYearData());
+  }
+
+  /** Return a cloned copy of the config parameters
+   *
+   * @return Config object
+   */
+  public ConfigBase getConfig() {
+    if (config == null) {
+      return null;
+    }
+
+    return (ConfigBase)config.clone();
+  }
+
+  /** True if we have a config object set.
+   *
+   * @return boolean
+   */
+  public boolean configSet() {
+    return config != null;
+  }
+
+  /** Return the uncloned config parameters
+   *
+   * @return Config object
+   */
+  public ConfigBase retrieveConfig() {
+    return config;
+  }
+
   /** Set system statistics
   *
   * @param val      Collection of BwStats.StatsEntry objects
@@ -638,80 +655,6 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     return userAdminGroups;
   }
 
-  /* ====================================================================
-   *                   Configuration flags
-   * ==================================================================== */
-
-  /** True if we should auto-create sponsors. Some sites may wish to control
-   * the creation of sponsors to enforce consistency in their use. If this
-   * is true we create a sponsor as we create events. If false the sponsor
-   * must already exist.
-   *
-   * @param val
-   */
-  public void setAutoCreateSponsors(boolean val) {
-    autoCreateSponsors = val;
-  }
-
-  /**
-   * @return boolean
-   */
-  public boolean getAutoCreateSponsors() {
-    return autoCreateSponsors;
-  }
-
-  /** True if we should auto-create locations. Some sites may wish to control
-   * the creation of locations to enforce consistency in their use. If this
-   * is true we create a location as we create events. If false the location
-   * must already exist.
-   *
-   * @param val
-   */
-  public void setAutoCreateLocations(boolean val) {
-    autoCreateLocations = val;
-  }
-
-  /**
-   * @return boolean
-   */
-  public boolean getAutoCreateLocations() {
-    return autoCreateLocations;
-  }
-
-  /** True if we should auto-delete sponsors. Some sites may wish to control
-   * the deletion of sponsors to enforce consistency in their use. If this
-   * is true we delete a sponsor when it becomes unused.
-   *
-   * @param val
-   */
-  public void setAutoDeleteSponsors(boolean val) {
-    autoDeleteSponsors = val;
-  }
-
-  /**
-   * @return boolean
-   */
-  public boolean getAutoDeleteSponsors() {
-    return autoDeleteSponsors;
-  }
-
-  /** True if we should auto-delete locations. Some sites may wish to control
-   * the deletion of locations to enforce consistency in their use. If this
-   * is true we delete a location when it becomes unused.
-   *
-   * @param val
-   */
-  public void setAutoDeleteLocations(boolean val) {
-    autoDeleteLocations = val;
-  }
-
-  /**
-   * @return boolean
-   */
-  public boolean getAutoDeleteLocations() {
-    return autoDeleteLocations;
-  }
-
   /**
    * @param val
    */
@@ -918,37 +861,6 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
    */
   public boolean getPublicView() {
     return publicView;
-  }
-
-  /**
-   * @param val
-   */
-  public void setHour24(boolean val) {
-    hour24 = val;
-    eventDates = null;   // reset it
-  }
-
-  /**
-   * @return bool
-   */
-  public boolean getHour24() {
-    return hour24;
-  }
-
-
-  /**
-   * @param val
-   */
-  public void setMinIncrement(int val) {
-    minIncrement = val;
-    eventDates = null;   // reset it
-  }
-
-  /**
-   * @return int
-   */
-  public int getMinIncrement() {
-    return minIncrement;
   }
 
   /**
@@ -1966,10 +1878,42 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   public EventDates getEventDates() {
     if (eventDates == null) {
       eventDates = new EventDates(fetchSvci(), getCalInfo(),
-                                  hour24, minIncrement, err, debug);
+                                  config.getHour24(), config.getMinIncrement(),
+                                  err, debug);
     }
 
     return eventDates;
+  }
+
+  /**
+   * @param val
+   */
+  public void setHour24(boolean val) {
+    hour24 = val;
+    eventDates = null;   // reset it
+  }
+
+  /**
+   * @return bool
+   */
+  public boolean getHour24() {
+    return hour24;
+  }
+
+
+  /**
+   * @param val
+   */
+  public void setMinIncrement(int val) {
+    minIncrement = val;
+    eventDates = null;   // reset it
+  }
+
+  /**
+   * @return int
+   */
+  public int getMinIncrement() {
+    return minIncrement;
   }
 
   /** Return an object representing an events start date.

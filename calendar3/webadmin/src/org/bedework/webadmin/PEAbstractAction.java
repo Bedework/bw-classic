@@ -54,7 +54,6 @@
 
 package org.bedework.webadmin;
 
-
 import org.bedework.appcommon.IntSelectId;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
@@ -68,7 +67,7 @@ import org.bedework.webcommon.BwSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** This provides some pubevents specific services to subclasses
+/** This provides some public events admin specific services to subclasses
  *
  * <p>Forwards to the name returned by the subclass or to:<ul>
  *      <li>"error"        some form of fatal error.</li>
@@ -104,7 +103,6 @@ public abstract class PEAbstractAction extends BwAbstractAction {
   public abstract String doAction(HttpServletRequest request,
                                   BwSession sess,
                                   PEActionForm form) throws Throwable;
-
 
   /* ********************************************************************
                              protected methods
@@ -163,6 +161,5 @@ public abstract class PEAbstractAction extends BwAbstractAction {
 
     form.retrieveCalendarId().reset(id, IntSelectId.AHasPrecedence);
   }
-
 }
 

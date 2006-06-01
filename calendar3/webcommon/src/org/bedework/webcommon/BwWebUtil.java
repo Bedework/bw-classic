@@ -244,7 +244,7 @@ public class BwWebUtil {
     /* If we auto delete and if sponsor id no longer exists in events
        table then delete this sponsor.
      */
-    if (form.getAutoDeleteSponsors() &&
+    if (form.retrieveConfig().getAutoDeleteSponsors() &&
         svci.getSponsorRefs(event.getSponsor()).size() == 0) {
       svci.deleteSponsor(event.getSponsor());
     }
@@ -252,7 +252,7 @@ public class BwWebUtil {
     /* If we auto delete and if location id no longer exists in events
        table then delete this location.
      */
-    if (form.getAutoDeleteLocations() &&
+    if (form.retrieveConfig().getAutoDeleteLocations() &&
         svci.getLocationRefs(event.getLocation()).size() == 0) {
       svci.deleteLocation(event.getLocation());
     }

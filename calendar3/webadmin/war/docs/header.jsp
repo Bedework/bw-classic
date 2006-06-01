@@ -10,6 +10,8 @@ try {
 %>
 
 <bedeworkadmin>
+  <bean:define id="bwconfig" name="peForm" property="config" toScope="session" />
+
   <!-- messages -->
   <logic:iterate id="msg" name="peForm" property="msg.msgList">
     <message>

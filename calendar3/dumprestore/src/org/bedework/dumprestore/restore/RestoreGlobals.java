@@ -54,6 +54,7 @@
 package org.bedework.dumprestore.restore;
 
 import org.bedework.appcommon.TimeZonesParser;
+import org.bedework.appcommon.configs.DumpRestoreConfig;
 import org.bedework.calfacade.BwAttendee;
 import org.bedework.calfacade.BwEventAnnotation;
 import org.bedework.calfacade.BwGroup;
@@ -70,7 +71,6 @@ import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
-import org.bedework.dumprestore.DumpRestoreConfig;
 
 import edu.rpi.cct.uwcal.access.Access;
 import edu.rpi.cct.uwcal.access.Ace;

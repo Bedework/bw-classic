@@ -1347,6 +1347,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
        */
       CalSvcIPars pars = new CalSvcIPars(account,
                                          account,
+                                         null,
                                          envPrefix,
                                          false,   // publicAdmin
                                          true,    // caldav

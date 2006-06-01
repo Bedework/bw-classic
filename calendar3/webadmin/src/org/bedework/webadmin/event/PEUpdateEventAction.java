@@ -65,12 +65,11 @@ import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
+import org.bedework.webcommon.AdminConfig;
 import org.bedework.webcommon.BwSession;
 import org.bedework.webcommon.BwWebUtil;
 
 import edu.rpi.sss.util.log.MessageEmit;
-
-
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -275,7 +274,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
     int id = form.retrieveCategoryId().getVal();
 
     if (id <= 0) {
-      if (form.getEnv().getAppBoolProperty("categoryOptional")) {
+      if (((AdminConfig)form.retrieveConfig()).getCategoryOptional()) {
         return true;
       }
 
@@ -326,7 +325,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
                                        BwEvent event, MessageEmit err)
           throws Throwable {
     if (!form.retrieveSpId().getChanged()) {
-      if (form.getAutoCreateSponsors()) {
+      if (form.retrieveConfig().getAutoCreateSponsors()) {
         BwSponsor s = form.getSponsor();
         if (!BwWebUtil.validateSponsor(s, err)) {
           return false;
@@ -382,7 +381,7 @@ public class PEUpdateEventAction extends PEAbstractAction {
                                         BwEvent event, MessageEmit err)
           throws Throwable {
     if (!form.retrieveLocId().getChanged()) {
-      if (form.getAutoCreateLocations()) {
+      if (form.retrieveConfig().getAutoCreateLocations()) {
         BwLocation l = form.getLocation();
 
         if (!BwWebUtil.validateLocation(l, err)) {

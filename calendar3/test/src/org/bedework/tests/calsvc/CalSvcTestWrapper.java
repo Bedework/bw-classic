@@ -129,7 +129,7 @@ public class CalSvcTestWrapper extends CalSvc {
       envPrefix = webPersonalAppPrefix;
     }
 
-    CalSvcIPars pars = new CalSvcIPars(user, user,
+    CalSvcIPars pars = new CalSvcIPars(user, user, null,
                                        envPrefix,
                                        publicEvents,
                                        false,    // caldav

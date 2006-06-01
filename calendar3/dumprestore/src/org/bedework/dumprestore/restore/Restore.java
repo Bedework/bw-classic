@@ -53,6 +53,7 @@
 */
 package org.bedework.dumprestore.restore;
 
+import org.bedework.appcommon.configs.DumpRestoreConfig;
 import org.bedework.calenv.CalOptions;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwSystem;
@@ -62,7 +63,6 @@ import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
 import org.bedework.dumprestore.Defs;
-import org.bedework.dumprestore.DumpRestoreConfig;
 import org.bedework.dumprestore.restore.rules.RestoreRuleSet;
 
 import java.io.FileReader;

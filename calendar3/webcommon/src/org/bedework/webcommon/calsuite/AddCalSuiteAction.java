@@ -144,7 +144,6 @@ public class AddCalSuiteAction extends BwAbstractAction {
     }
 
     form.setCalSuite(csw);
-    //form.setSubscriptions(svc.getSubscriptions());
 
     return "success";
   }

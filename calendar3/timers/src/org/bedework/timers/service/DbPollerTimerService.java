@@ -139,6 +139,7 @@ public class DbPollerTimerService {
     svci = new CalSvc();
     CalSvcIPars pars = new CalSvcIPars(account,
                                        account,
+                                       null,   // calSuite
                                        null,   // XXX needs envPrefix
                                        true,    // public
                                        false,    // caldav

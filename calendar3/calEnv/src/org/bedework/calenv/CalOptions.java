@@ -38,6 +38,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Stack;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -536,7 +537,7 @@ public class CalOptions implements Serializable {
       OptionElement oel = new OptionElement();
       oel.name = "root";
 
-      doChildren(oel, root, null);
+      doChildren(oel, root, new Stack());
 
       return oel;
     } catch (CalEnvException ce) {
@@ -553,14 +554,14 @@ public class CalOptions implements Serializable {
   }
 
   private static void doChildren(OptionElement oel, Element subroot,
-                                 Object val) throws CalEnvException {
+                                 Stack objStack) throws CalEnvException {
     try {
       if (!XmlUtil.hasChildren(subroot)) {
         // Leaf node
         String ndval = XmlUtil.getElementContent(subroot);
         String name = subroot.getNodeName();
 
-        if (val == null) {
+        if (objStack.empty()) {
           // Add a leaf node and return
           OptionElement valnode = new OptionElement();
           valnode.name = name;
@@ -573,6 +574,7 @@ public class CalOptions implements Serializable {
 
         // Val is an object which should have a setter for the property
 
+        Object val = objStack.peek();
         Method meth = findMethod(val, name);
 
         Class[] parClasses = meth.getParameterTypes();
@@ -621,22 +623,26 @@ public class CalOptions implements Serializable {
           /* This counts as a leaf node. All children provide values for the
            * object.
            */
-          if (val != null) {
+          if (!objStack.empty()) {
             error("Nested classes not yet supported for element " + valnode.name +
                   " and class " + className);
             throw new CalEnvException("org.bedework.calenv.nested.classes.unsupported");
           }
 
-          val = Class.forName(className).newInstance();
+          Object val = Class.forName(className).newInstance();
           valnode.isValue = true;
           valnode.val = val;
+
+          objStack.push(val);
         } else {
           /* Just a non-leaf node */
         }
 
-        doChildren(valnode, el, val);
+        doChildren(valnode, el, objStack);
 
-        val = null;
+        if (className != null) {
+          objStack.pop();
+        }
       }
     } catch (CalEnvException ce) {
       throw ce;

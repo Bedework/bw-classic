@@ -171,8 +171,8 @@
                                     value="id"/>
           </html:select>
       </all>
-      <logic:equal name="peForm" property="autoCreateLocations"
-                 value="true">
+      <logic:equal name="bwconfig" property="autoCreateLocations"
+                   value="true">
         <address>
           <html:text size="30" value="" property="location.address" styleId="iLocation" styleClass="edit"/>
         </address>
@@ -199,7 +199,7 @@
                                     value="id"/>
         </html:select>
       </all>
-      <logic:equal name="peForm" property="autoCreateSponsors"
+      <logic:equal name="bwconfig" property="autoCreateSponsors"
                  value="true">
         <%@include file="/docs/sponsor/modSponsorCommon.jsp"%>
       </logic:equal>

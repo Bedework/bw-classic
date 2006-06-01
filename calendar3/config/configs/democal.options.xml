@@ -1,8 +1,9 @@
+<!-- This provides run time options for each of the configured applications.
+  -->
 <bedework-options>
   <org>
     <bedework>
       <global>
-
         <module>
           <user-ldap-group classname="org.bedework.calcore.ldap.LdapConfigProperties">
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
@@ -16,7 +17,6 @@
             <debug>true</debug>
           </user-ldap-group>
         </module>
-
       </global>
 
       <!-- Only used for system initialisation or conversion from 2.3 - ignored thereafter -->
@@ -63,15 +63,93 @@
       </syspars>
 
       <app>
-        <dumpres classname="org.bedework.dumprestore.DumpRestoreConfig">
+        <!-- ==================================================================
+                          Admin web client CalAdmin
+             ================================================================== -->
+        <CalAdmin classname="org.bedework.webcommon.AdminConfig">
+          <autoCreateSponsors>false</autoCreateSponsors>
+          <autoDeleteSponsors>false</autoDeleteSponsors>
+          <autoCreateLocations>false</autoCreateLocations>
+          <autoDeleteLocations>false</autoDeleteLocations>
+          <!-- When we get svc fixed
+          <allowEditAllCategories>false</allowEditAllCategories>
+          <allowEditAllLocations>false</allowEditAllLocations>
+          <allowEditAllSponsors>false</allowEditAllSponsors>
+          -->
+          <categoryOptional>true</categoryOptional>
+
+          <!-- Default value for 24 hour mode -->
+          <hour24>true</hour24>
+
+          <!-- Default value for minute increments -->
+          <minIncrement>5</minIncrement>
+
+          <logPrefix>PubEventsAdmin</logPrefix>
+        </CalAdmin>
+
+        <!-- ==================================================================
+                          Public web client Events
+             ================================================================== -->
+        <Events classname="org.bedework.webcommon.ClientConfig">
+          <autoCreateSponsors>false</autoCreateSponsors>
+          <autoDeleteSponsors>false</autoDeleteSponsors>
+          <autoCreateLocations>false</autoCreateLocations>
+          <autoDeleteLocations>false</autoDeleteLocations>
+
+          <!-- Default value for 24 hour mode -->
+          <hour24>true</hour24>
+
+          <!-- Default value for minute increments -->
+          <minIncrement>5</minIncrement>
+
+          <showYearData>false</showYearData>
+
+          <logPrefix>PubEvents</logPrefix>
+
+          <refreshAction>setup.do</refreshAction>
+          <refreshInterval>300</refreshInterval>
+
+          <calSuite>mainCampus</calSuite>
+        </Events>
+
+        <!-- ==================================================================
+                          User web client UserCal
+             ================================================================== -->
+        <UserCal classname="org.bedework.webcommon.ClientConfig">
+          <autoCreateSponsors>false</autoCreateSponsors>
+          <autoDeleteSponsors>false</autoDeleteSponsors>
+          <autoCreateLocations>false</autoCreateLocations>
+          <autoDeleteLocations>false</autoDeleteLocations>
+
+          <!-- Default value for 24 hour mode -->
+          <hour24>true</hour24>
+
+          <!-- Default value for minute increments -->
+          <minIncrement>5</minIncrement>
+
+          <showYearData>false</showYearData>
+
+          <logPrefix>PersonalCalendar</logPrefix>
+
+          <refreshAction>setup.do</refreshAction>
+          <refreshInterval>300</refreshInterval>
+        </UserCal>
+
+        <!-- ==================================================================
+                          Dump restore program dumpres
+             ================================================================== -->
+        <dumpres classname="org.bedework.appcommon.configs.DumpRestoreConfig">
           <debug>true</debug>
           <debugEntity>false</debugEntity>
           <superGroupName>campusAdminGroups</superGroupName>
           <defaultPublicCalPath>/public/Other Events/Other</defaultPublicCalPath>
         </dumpres>
 
-        <!-- Use the restore utility to convert from uwcal 2.3 -->
-        <restoreFrom2p3px classname="org.bedework.dumprestore.DumpRestoreConfig">
+        <!-- ==================================================================
+                          Dump restore program restoreFrom2p3px
+             Use the restore utility to convert from uwcal 2.3
+             ================================================================== -->
+        <restoreFrom2p3px classname="org.bedework.appcommon.configs.DumpRestoreConfig">
           <debug>true</debug>
           <debugEntity>false</debugEntity>
           <from2p3px>true</from2p3px>

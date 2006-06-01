@@ -124,6 +124,7 @@ public class Synchml {
     this.debug = debug;
     CalSvcIPars pars = new CalSvcIPars(account,
                                        account,
+                                       null,     // calSuite
                                        null,     // XXX Requires an env prefix
                                        false,    // public
                                        false,    // caldav

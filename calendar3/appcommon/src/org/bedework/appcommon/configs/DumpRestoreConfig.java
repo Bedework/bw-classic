@@ -51,14 +51,16 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.dumprestore;
+package org.bedework.appcommon.configs;
+
+import java.io.Serializable;
 
 /** Configuration propeties for the restore phase
  *
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class DumpRestoreConfig {
+public class DumpRestoreConfig implements Serializable {
   private boolean debug;
 
   private boolean debugEntity;
