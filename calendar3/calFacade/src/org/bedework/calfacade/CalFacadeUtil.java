@@ -740,7 +740,7 @@ public class CalFacadeUtil implements Serializable {
         BwEvent ev = ei.getEvent();
 
         start = ev.getDtstart().getDate();
-        start = ev.getDtend().getDate();
+        end = ev.getDtend().getDate();
 
         return;
       }
@@ -749,7 +749,7 @@ public class CalFacadeUtil implements Serializable {
         EventPeriod ep = (EventPeriod)o;
 
         start = String.valueOf(ep.getStart());
-        start = String.valueOf(ep.getEnd());
+        end = String.valueOf(ep.getEnd());
 
         return;
       }
@@ -758,7 +758,7 @@ public class CalFacadeUtil implements Serializable {
         Period p = (Period)o;
 
         start = String.valueOf(p.getStart());
-        start = String.valueOf(p.getEnd());
+        end = String.valueOf(p.getEnd());
 
         return;
       }
