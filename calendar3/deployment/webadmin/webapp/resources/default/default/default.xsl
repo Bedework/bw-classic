@@ -92,8 +92,11 @@
   <xsl:variable name="system-fetch" select="/bedeworkadmin/urlPrefixes/system/fetch/a/@href"/>
   <xsl:variable name="system-update" select="/bedeworkadmin/urlPrefixes/system/update/a/@href"/>
   <xsl:variable name="calsuite-fetch" select="/bedeworkadmin/urlPrefixes/calsuite/fetch/a/@href"/>
+  <xsl:variable name="calsuite-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calsuite/fetchForUpdate/a/@href"/>
   <xsl:variable name="calsuite-add" select="/bedeworkadmin/urlPrefixes/calsuite/add/a/@href"/>
-  <xsl:variable name="calsuite-showForm" select="/bedeworkadmin/urlPrefixes/calsuite/showForm/a/@href"/>
+  <xsl:variable name="calsuite-update" select="/bedeworkadmin/urlPrefixes/calsuite/update/a/@href"/>
+  <xsl:variable name="calsuite-showAddForm" select="/bedeworkadmin/urlPrefixes/calsuite/showAddForm/a/@href"/>
+  <xsl:variable name="calsuite-setAccess" select="/bedeworkadmin/urlPrefixes/calsuite/setAccess/a/@href"/>
   <xsl:variable name="timezones-initUpload" select="/bedeworkadmin/urlPrefixes/timezones/initUpload/a/@href"/>
   <xsl:variable name="timezones-upload" select="/bedeworkadmin/urlPrefixes/timezones/upload/a/@href"/>
   <xsl:variable name="stats-update" select="/bedeworkadmin/urlPrefixes/stats/update/a/@href"/>
@@ -215,10 +218,13 @@
               <xsl:call-template name="modSyspars"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='calSuiteList'">
-              <xsl:call-template name="calSuiteList"/>
+              <xsl:apply-templates select="/bedeworkadmin/calSuites" mode="calSuiteList"/>
+            </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='addCalSuite'">
+              <xsl:call-template name="addCalSuite"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='modCalSuite'">
-              <xsl:call-template name="modCalSuite"/>
+              <xsl:apply-templates select="/bedeworkadmin/calSuite"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='authUserList'">
               <xsl:call-template name="authUserList"/>
@@ -345,7 +351,7 @@
 
     <xsl:if test="/bedeworkadmin/userInfo/contentAdminUser='true'">
       <h2 class="menuTitle">Administrator's Menu</h2>
-      <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
+      <xsl:if test="/bedeworkadmin/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedeworkadmin/userInfo/superUser='true'">
         <ul class="adminMenu">
           <li>
             <a href="{$calendar-fetch}">
@@ -363,6 +369,8 @@
             </a>
           </li>
         </ul>
+      </xsl:if>
+      <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
         <h4 class="menuTitle">Super user features</h4>
         <ul class="adminMenu">
           <li>
@@ -2389,13 +2397,26 @@
   </xsl:template>
 
   <!--+++++++++++++++ Calendar Suites (calsuite) ++++++++++++++++++++-->
-  <xsl:template name="calSuiteList">
+  <xsl:template match="calSuites" mode="calSuiteList">
     <h2>Manage Calendar Suites</h2>
-    <p>List will go here</p>
-    <p>For now: <a href="{$calsuite-showForm}">Add Calendar Suite</a></p>
+
+    <h4>Calendar suites:</h4>
+    <p><input type="button" name="return" value="Add calendar suite" onclick="javascript:location.replace('{$calsuite-showAddForm}')"/></p>
+
+    <ul>
+      <xsl:for-each select="calSuite">
+       <li>
+         <xsl:variable name="name" select="name"/>
+         <a href="{$calsuite-fetchForUpdate}&amp;name={$name}">
+           <xsl:value-of select="name"/>
+         </a>
+       </li>
+      </xsl:for-each>
+    </ul>
+
   </xsl:template>
 
-  <xsl:template name="modCalSuite">
+  <xsl:template name="addCalSuite">
     <h2>Add Calendar Suite</h2>
     <form name="calSuiteForm" action="{$calsuite-add}" method="post">
       <table class="eventFormTable">
@@ -2437,6 +2458,94 @@
         </tr>
       </table>
     </form>
+  </xsl:template>
+
+  <xsl:template match="calSuite" name="modCalSuite">
+    <h2>Modify Calendar Suite</h2>
+    <xsl:variable name="calSuiteName" select="name"/>
+    <form name="calSuiteForm" action="{$calsuite-update}" method="post">
+      <table class="eventFormTable">
+        <tr>
+          <th>Name:</th>
+          <td>
+            <input name="name" value="{$calSuiteName}" size="20"/>
+          </td>
+          <td>
+            Name of your calendar suite
+          </td>
+        </tr>
+        <tr>
+          <th>Group:</th>
+          <td>
+            <xsl:variable name="group" select="group"/>
+            <input name="groupName" value="{$group}" size="20"/>
+          </td>
+          <td>
+            Name of admin group which contains event administrators and event owner to which preferences for the suite are attached
+          </td>
+        </tr>
+        <tr>
+          <th>Root calendar:</th>
+          <td>
+            <xsl:variable name="calPath" select="calPath"/>
+            <input name="calPath" value="{$calPath}" size="20"/>
+          </td>
+          <td>
+            Path of root calendar (not required if suite only consists of subscriptions and views)
+          </td>
+        </tr>
+      </table>
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="updateCalSuite" value="Update"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="reset" value="Reset"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+    <div id="sharingBox">
+      <h3>Sharing</h3>
+      <table class="common">
+        <tr>
+          <th class="commonHeader" colspan="2">Current access:</th>
+        </tr>
+        <tr>
+          <th>Owner:</th>
+          <td>
+            <xsl:value-of select="name(acl/ace[principal/property/owner]/grant/*)"/>
+          </td>
+        </tr>
+        <xsl:if test="acl/ace/principal/href">
+          <tr>
+            <th>Users:</th>
+            <td>
+              <xsl:for-each select="acl/ace[principal/href]">
+                <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
+              </xsl:for-each>
+            </td>
+          </tr>
+        </xsl:if>
+      </table>
+      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm">
+        <input type="hidden" name="calSuite" value="{$calSuiteName}"/>
+        <p>
+          Share with:<br/>
+          <input type="text" name="who" size="20"/>
+          <input type="radio" value="user" name="whoType" checked="checked"/> user
+          <input type="radio" value="group" name="whoType"/> group
+        </p>
+        <p>
+          Access rights:<br/>
+          <input type="radio" value="R" name="how" checked="checked"/> read<br/>
+          <input type="radio" value="Rc" name="how"/> read/write content<br/>
+          <input type="radio" value="f" name="how"/> read free/busy only<br/>
+          <input type="radio" value="d" name="how"/> default (reset access)
+        </p>
+        <input type="submit" name="submit" value="Submit"/>
+      </form>
+    </div>
   </xsl:template>
 
   <!--+++++++++++++++ Timezones ++++++++++++++++++++-->
@@ -3087,10 +3196,10 @@
         </td>
         <xsl:if test="/bedeworkadmin/userInfo/user">
           <td class="rightCell">
-            <xsl:if test="/bedeworkadmin/calSuite">
+            <xsl:if test="/bedeworkadmin/currentCalSuite/name">
               Calendar Suite:
               <span class="status">
-                <xsl:value-of select="/bedeworkadmin/calSuite"/>
+                <xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/>
               </span>
               &#160;
             </xsl:if>

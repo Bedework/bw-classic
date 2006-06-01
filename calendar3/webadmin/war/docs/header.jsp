@@ -124,8 +124,12 @@ try {
     </view>
     <calsuite>
       <fetch><genurl:link page="/calsuite/showCalSuites.rdo?b=de"/></fetch>
+      <fetchForUpdate><genurl:link page="/calsuite/fetchForUpdate.do?b=de"/></fetchForUpdate>
       <add><genurl:link page="/calsuite/addCalSuite.do?b=de"/></add>
-      <showForm><genurl:link page="/calsuite/showModForm.rdo?b=de"/></showForm>
+      <update><genurl:link page="/calsuite/update.do?b=de"/></update>
+      <showAddForm><genurl:link page="/calsuite/showAddForm.rdo?b=de"/></showAddForm>
+      <showModForm><genurl:link page="/calsuite/showModForm.rdo?b=de"/></showModForm>
+      <setAccess><genurl:link page="/calsuite/setAccess.do?b=de"/></setAccess>
     </calsuite>
     <system> <!-- only those listed are used here (no need to clean up) -->
       <fetch><genurl:link page="/syspars/fetch.do?b=de"/></fetch>
@@ -170,7 +174,10 @@ try {
   </urlPrefixes>
 
   <logic:present name="peForm" property="currentCalSuite" >
-    <bw:emitText name="peForm" property="currentCalSuite.name" tagName="calSuite" />
+    <currentCalSuite>
+      <bw:emitText name="peForm" property="currentCalSuite.name" tagName="name" />
+      <bw:emitCurrentPrivs name="peForm" property="currentCalSuite.currentAccess" tagName="currentAccess"/>
+    </currentCalSuite>
   </logic:present>
 
   <userInfo>

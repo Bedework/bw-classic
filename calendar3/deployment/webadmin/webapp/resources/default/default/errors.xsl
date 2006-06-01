@@ -33,7 +33,7 @@
         Error: no entity id
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nosuchcalendar'">
-        Not found: there is no calendar identified by the id <em><xsl:value-of select="param"/></em>
+        Not found: there is no calendar identified by the path <em><xsl:value-of select="param"/></em>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.calendar.referenced'">
         Cannot delete: the calendar is not empty

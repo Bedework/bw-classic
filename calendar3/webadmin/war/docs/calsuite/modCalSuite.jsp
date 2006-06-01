@@ -7,14 +7,9 @@
 <%@include file="/docs/header.jsp"%>
 
 <page>modCalSuite</page>
-<creating><bean:write name="peForm" property="addingCalSuite"/></creating>
 
-<%/* <bean:define id="calSuite" name="peForm" property="calSuite"/> */%>
-<calSuite>
-  <%/*<bw:emitText name="calSuite" property="name" />
-  <bw:emitText name="calSuite" property="group.name" tagName="group" />
-  <bw:emitText name="calSuite" property="calendar.path" tagName="calPath" />*/%>
-</calSuite>
+<bean:define id="calSuite" name="peForm" property="calSuite"/>
+<%@include file="/docs/calsuite/emitCalSuite.jsp"%>
 
 <%@include file="/docs/footer.jsp"%>
 

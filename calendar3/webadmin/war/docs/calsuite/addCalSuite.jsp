@@ -6,15 +6,7 @@
 
 <%@include file="/docs/header.jsp"%>
 
-<page>displayCalSuite</page>
-
-<calSuites>
-  <logic:iterate id="calSuite" name="peForm" property="calSuite" >
-    <%@include file="/docs/calsuite/emitcalSuite.jsp"%>
-  </logic:iterate>
-</calSuites>
+<page>addCalSuite</page>
 
 <%@include file="/docs/footer.jsp"%>
-
-
 

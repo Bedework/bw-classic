@@ -404,12 +404,28 @@
       <forward name="success" path="/docs/calsuite/calSuiteList.jsp"/>
     </action>
 
+    <action    path="/calsuite/showAddForm"
+               type="org.bedework.webadmin.PERenderAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calsuite/addCalSuite.jsp"/>
+    </action>
+
     <action    path="/calsuite/showModForm"
                type="org.bedework.webadmin.PERenderAction"
                name="peForm"
                scope="session"
                validate="false">
       <forward name="success" path="/docs/calsuite/modCalSuite.jsp"/>
+    </action>
+
+    <action    path="/calsuite/fetchForUpdate"
+               type="org.bedework.webcommon.calsuite.FetchCalSuiteAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/calsuite/showModForm.rdo" redirect="true" />
     </action>
 
     <action    path="/calsuite/addCalSuite"
@@ -419,6 +435,27 @@
                validate="false">
       <forward name="notAdded" path="/calsuite/showCalSuites.rdo" redirect="true" />
       <forward name="success" path="/calsuite/showModForm.rdo" redirect="true" />
+    </action>
+
+    <action    path="/calsuite/update"
+               type="org.bedework.webcommon.calsuite.UpdateCalSuiteAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="cancelled" path="/calsuite/showCalSuites.rdo" redirect="true"/>
+      <forward name="retry" path="/calsuite/showModForm.rdo" redirect="true"/>
+      <forward name="success" path="/calsuite/showModForm.rdo" redirect="true" />
+    </action>
+
+    <action    path="/calsuite/setAccess"
+               type="org.bedework.webcommon.access.AccessAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/calsuite/showModForm.rdo" redirect="true" />
+      <forward name="error" path="/calsuite/showModForm.rdo" redirect="true" />
+      <forward name="notFound" path="/calsuite/showModForm.rdo" redirect="true" />
+      <forward name="doNothing" path="/calsuite/showModForm.rdo" redirect="true" />
     </action>
 
     <!-- ===============================================================

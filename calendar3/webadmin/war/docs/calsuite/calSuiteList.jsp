@@ -8,11 +8,11 @@
 
 <page>calSuiteList</page>
 
-<calsuites>
-<% /*  <logic:iterate id="calSuite" name="peForm" property="accessibleCalSuites" >
-    < % @include file="/docs/calsuite/emitCalSuite.jsp" % >
-  </logic:iterate> */ %>
-</calsuites>
+<calSuites>
+  <logic:iterate id="calSuite" name="peForm" property="calSuites" >
+    <%@include file="/docs/calsuite/emitCalSuite.jsp"%>
+  </logic:iterate>
+</calSuites>
 
 <%@include file="/docs/footer.jsp"%>
 
