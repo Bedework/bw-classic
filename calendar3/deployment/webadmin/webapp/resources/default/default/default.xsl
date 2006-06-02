@@ -345,31 +345,31 @@
       </tr>
     </table>
 
+    <xsl:if test="/bedeworkadmin/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedeworkadmin/userInfo/superUser='true'">
+      <h2 class="menuTitle">Administrator's Menu</h2>
+      <ul class="adminMenu">
+        <li>
+          <a href="{$calendar-fetch}">
+            Manage calendars
+          </a>
+        </li>
+        <li>
+          <a href="{$subscriptions-fetch}">
+            Manage subscriptions
+          </a>
+        </li>
+        <li>
+          <a href="{$view-fetch}">
+            Manage views
+          </a>
+        </li>
+      </ul>
+    </xsl:if>
 
     <!-- Content admin and super user segment of the page.
          Super user will have content admin access. -->
 
     <xsl:if test="/bedeworkadmin/userInfo/contentAdminUser='true'">
-      <h2 class="menuTitle">Administrator's Menu</h2>
-      <xsl:if test="/bedeworkadmin/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedeworkadmin/userInfo/superUser='true'">
-        <ul class="adminMenu">
-          <li>
-            <a href="{$calendar-fetch}">
-              Manage calendars
-            </a>
-          </li>
-          <li>
-            <a href="{$subscriptions-fetch}">
-              Manage subscriptions
-            </a>
-          </li>
-          <li>
-            <a href="{$view-fetch}">
-              Manage views
-            </a>
-          </li>
-        </ul>
-      </xsl:if>
       <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
         <h4 class="menuTitle">Super user features</h4>
         <ul class="adminMenu">
