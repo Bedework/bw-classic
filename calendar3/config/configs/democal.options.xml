@@ -109,8 +109,33 @@
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>300</refreshInterval>
 
-          <calSuite>mainCampus</calSuite>
+          <calSuite>MainCampus</calSuite>
         </Events>
+
+        <!-- ==================================================================
+                          Demo departmental Public web client SoEDept
+             ================================================================== -->
+        <SoEDept classname="org.bedework.webcommon.ClientConfig">
+          <autoCreateSponsors>false</autoCreateSponsors>
+          <autoDeleteSponsors>false</autoDeleteSponsors>
+          <autoCreateLocations>false</autoCreateLocations>
+          <autoDeleteLocations>false</autoDeleteLocations>
+
+          <!-- Default value for 24 hour mode -->
+          <hour24>true</hour24>
+
+          <!-- Default value for minute increments -->
+          <minIncrement>5</minIncrement>
+
+          <showYearData>false</showYearData>
+
+          <logPrefix>SoEDept</logPrefix>
+
+          <refreshAction>setup.do</refreshAction>
+          <refreshInterval>300</refreshInterval>
+
+          <calSuite>SoEDepartmental</calSuite>
+        </SoEDept>
 
         <!-- ==================================================================
                           User web client UserCal

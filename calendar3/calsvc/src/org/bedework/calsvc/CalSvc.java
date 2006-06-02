@@ -380,6 +380,7 @@ public class CalSvc extends CalSvcI {
 
   public void setUser(String val) throws CalFacadeException {
     getCal().setUser(val);
+    dbi.setUser(findUser(val));
   }
 
   public BwUser findUser(String val) throws CalFacadeException {
@@ -2404,7 +2405,7 @@ public class CalSvc extends CalSvcI {
               pars.getUser());
       }
 
-      if (pars.getPublicAdmin()) {
+      if (pars.getPublicAdmin() || pars.isGuest()) {
         /* We may be running as a different user. The preferences we want to see
          * are those of the user we are running as - i.e. the 'run.as' user for
          * not those of the authenticated user.

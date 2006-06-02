@@ -111,6 +111,13 @@ class CalSvcDb implements Serializable {
     prefs = null;
   }
 
+  /**
+   * @param val
+   */
+  public void setUser(BwUser val) {
+    user = val;
+  }
+
   /* ====================================================================
    *                    User preferences methods
    * ==================================================================== */

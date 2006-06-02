@@ -2041,13 +2041,15 @@
             <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
           </td>
         </tr>
-        <tr>
-          <th>Unremovable:</th>
-          <td>
-            <input type="radio" value="true" name="unremoveable" size="60"/> true
-            <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
-          </td>
-        </tr>
+        <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
+          <tr>
+            <th>Unremovable:</th>
+            <td>
+              <input type="radio" value="true" name="unremoveable" size="60"/> true
+              <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
+            </td>
+          </tr>
+        </xsl:if>
       </table>
       <table border="0" id="submitTable">
         <tr>
@@ -2114,21 +2116,23 @@
             <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
           </td>
         </tr>
-        <tr>
-          <th>Unremovable:</th>
-          <td>
-            <xsl:choose>
-              <xsl:when test="unremoveable='true'">
-                <input type="radio" value="true" name="unremoveable" size="60" checked="checked"/> true
-                <input type="radio" value="false" name="unremoveable" size="60"/> false
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="radio" value="true" name="unremoveable" size="60"/> true
-                <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
+        <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
+          <tr>
+            <th>Unremovable:</th>
+            <td>
+              <xsl:choose>
+                <xsl:when test="unremoveable='true'">
+                  <input type="radio" value="true" name="unremoveable" size="60" checked="checked"/> true
+                  <input type="radio" value="false" name="unremoveable" size="60"/> false
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="radio" value="true" name="unremoveable" size="60"/> true
+                  <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
+                </xsl:otherwise>
+              </xsl:choose>
+            </td>
+          </tr>
+        </xsl:if>
       </table>
       <table border="0" id="submitTable">
         <tr>
