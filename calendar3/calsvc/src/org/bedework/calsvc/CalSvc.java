@@ -577,6 +577,9 @@ public class CalSvc extends CalSvcI {
 
   public void changeAccess(BwShareableDbentity ent,
                            Collection aces) throws CalFacadeException {
+    if (ent instanceof BwCalSuiteWrapper) {
+      ent = (BwShareableDbentity)((BwCalSuiteWrapper)ent).fetchEntity();
+    }
     getCal().changeAccess(ent, aces);
   }
 

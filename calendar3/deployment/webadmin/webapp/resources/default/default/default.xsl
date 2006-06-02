@@ -78,7 +78,7 @@
   <xsl:variable name="calendar-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
   <xsl:variable name="calendar-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calendar/fetchForUpdate/a/@href"/><!-- used -->
   <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/><!-- used -->
-  <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess/a/@href"/>
+  <xsl:variable name="calendar-setAccess" select="/bedeworkadmin/urlPrefixes/calendar/setAccess/a/@href"/>
   <!-- all good - no need to clean any of these out  -->
   <xsl:variable name="subscriptions-fetch" select="/bedeworkadmin/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
@@ -1780,7 +1780,7 @@
           </tr>
         </xsl:if>
       </table>
-      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm">
+      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" method="post">
         <input type="hidden" name="calPath" value="{$calPath}"/>
         <p>
           Share with group:<br/>
@@ -2528,8 +2528,8 @@
           </tr>
         </xsl:if>
       </table>
-      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm">
-        <input type="hidden" name="calSuite" value="{$calSuiteName}"/>
+      <form name="calsuiteShareForm" action="{$calsuite-setAccess}" id="shareForm" method="post">
+        <input type="hidden" name="calSuiteName" value="{$calSuiteName}"/>
         <p>
           Share with:<br/>
           <input type="text" name="who" size="20"/>
@@ -2539,6 +2539,7 @@
         <p>
           Access rights:<br/>
           <input type="radio" value="R" name="how" checked="checked"/> read<br/>
+          <input type="radio" value="RW" name="how"/> read/write<br/>
           <input type="radio" value="Rc" name="how"/> read/write content<br/>
           <input type="radio" value="f" name="how"/> read free/busy only<br/>
           <input type="radio" value="d" name="how"/> default (reset access)
