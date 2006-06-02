@@ -458,6 +458,33 @@
       <forward name="doNothing" path="/calsuite/showModForm.rdo" redirect="true" />
     </action>
 
+    <action    path="/calsuite/showModPrefsForm"
+               type="org.bedework.webadmin.PERenderAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="success" path="/docs/calsuite/modPrefs.jsp"/>
+    </action>
+
+    <action    path="/calsuite/fetchPrefsForUpdate"
+               type="org.bedework.webcommon.pref.FetchPrefsAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="notFound" path="/admin/showMain.rdo" redirect="true" />
+      <forward name="success" path="/calsuite/showModPrefsForm.rdo" redirect="true" />
+    </action>
+
+    <action    path="/calsuite/updatePrefs"
+               type="org.bedework.webcommon.pref.UpdatePrefsAction"
+               name="peForm"
+               scope="session"
+               validate="false">
+      <forward name="cancelled" path="/admin/showMain.rdo" redirect="true" />
+      <forward name="retry" path="/calsuite/showModPrefsForm.rdo" />
+      <forward name="success" path="/admin/showMain.rdo" redirect="true" />
+    </action>
+
     <!-- ===============================================================
                          View Actions
          =============================================================== -->
@@ -911,7 +938,7 @@
     </action>
 
     <!-- ===============================================================
-                     User Preferences Actions
+                     User Preferences Actions (super-user mode)
          =============================================================== -->
 
     <action    path="/prefs/showModForm"

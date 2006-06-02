@@ -87,7 +87,7 @@ public class FetchPrefsAction extends BwAbstractAction {
                          BwActionFormBase form) throws Throwable {
     CalSvcI svc = form.fetchSvci();
 
-    if (getPublicAdmin(form)) {
+    if (getReqPar(request, "user") != null) {
       /* Fetch a given users preferences */
       if (!form.getUserAuth().isSuperUser()) {
         return "noAccess"; // First line of defence

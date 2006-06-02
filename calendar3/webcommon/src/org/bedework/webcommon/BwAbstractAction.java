@@ -74,6 +74,7 @@ import org.bedework.calfacade.svc.AdminGroups;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUser;
 import org.bedework.calfacade.svc.BwAuthUserPrefs;
+import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
 import org.bedework.calfacade.svc.EventInfo;
@@ -207,6 +208,16 @@ public abstract class BwAbstractAction extends UtilAbstractAction
     int temp = actionSetup(request, response, form);
     if (temp != forwardNoAction) {
       return forwards[temp];
+    }
+
+    if (form.getNewSession()) {
+      // Set the default skin
+      BwPreferences prefs = form.fetchSvci().getUserPrefs();
+
+      String skinName = prefs.getSkinName();
+
+      form.getPresentationState().setSkinName(skinName);
+      form.getPresentationState().setSkinNameSticky(true);
     }
 
     /* see if we got cancelled */

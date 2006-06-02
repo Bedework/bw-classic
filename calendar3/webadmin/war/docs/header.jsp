@@ -130,6 +130,8 @@ try {
       <showAddForm><genurl:link page="/calsuite/showAddForm.rdo?b=de"/></showAddForm>
       <showModForm><genurl:link page="/calsuite/showModForm.rdo?b=de"/></showModForm>
       <setAccess><genurl:link page="/calsuite/setAccess.do?b=de"/></setAccess>
+      <fetchPrefsForUpdate><genurl:link page="/calsuite/fetchPrefsForUpdate.do?b=de"/></fetchPrefsForUpdate>
+      <updatePrefs><genurl:link page="/calsuite/updatePrefs.do?b=de"/></updatePrefs>
     </calsuite>
     <system> <!-- only those listed are used here (no need to clean up) -->
       <fetch><genurl:link page="/syspars/fetch.do?b=de"/></fetch>

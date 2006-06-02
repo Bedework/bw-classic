@@ -97,6 +97,8 @@
   <xsl:variable name="calsuite-update" select="/bedeworkadmin/urlPrefixes/calsuite/update/a/@href"/>
   <xsl:variable name="calsuite-showAddForm" select="/bedeworkadmin/urlPrefixes/calsuite/showAddForm/a/@href"/>
   <xsl:variable name="calsuite-setAccess" select="/bedeworkadmin/urlPrefixes/calsuite/setAccess/a/@href"/>
+  <xsl:variable name="calsuite-fetchPrefsForUpdate" select="/bedeworkadmin/urlPrefixes/calsuite/fetchPrefsForUpdate/a/@href"/>
+  <xsl:variable name="calsuite-updatePrefs" select="/bedeworkadmin/urlPrefixes/calsuite/updatePrefs/a/@href"/>
   <xsl:variable name="timezones-initUpload" select="/bedeworkadmin/urlPrefixes/timezones/initUpload/a/@href"/>
   <xsl:variable name="timezones-upload" select="/bedeworkadmin/urlPrefixes/timezones/upload/a/@href"/>
   <xsl:variable name="stats-update" select="/bedeworkadmin/urlPrefixes/stats/update/a/@href"/>
@@ -226,6 +228,9 @@
             <xsl:when test="/bedeworkadmin/page='modCalSuite'">
               <xsl:apply-templates select="/bedeworkadmin/calSuite"/>
             </xsl:when>
+            <xsl:when test="/bedeworkadmin/page='calSuitePrefs'">
+              <xsl:call-template name="calSuitePrefs"/>
+            </xsl:when>
             <xsl:when test="/bedeworkadmin/page='authUserList'">
               <xsl:call-template name="authUserList"/>
             </xsl:when>
@@ -346,7 +351,7 @@
     </table>
 
     <xsl:if test="/bedeworkadmin/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedeworkadmin/userInfo/superUser='true'">
-      <h2 class="menuTitle">Administrator's Menu</h2>
+      <h4 class="menuTitle">Manage Calendar Suite</h4>
       <ul class="adminMenu">
         <li>
           <a href="{$calendar-fetch}">
@@ -363,48 +368,15 @@
             Manage views
           </a>
         </li>
+        <li>
+          <a href="{$calsuite-fetchPrefsForUpdate}">
+            Manage preferences
+          </a>
+        </li>
       </ul>
     </xsl:if>
 
-    <!-- Content admin and super user segment of the page.
-         Super user will have content admin access. -->
-
     <xsl:if test="/bedeworkadmin/userInfo/contentAdminUser='true'">
-      <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
-        <h4 class="menuTitle">Super user features</h4>
-        <ul class="adminMenu">
-          <li>
-            <a href="{$calsuite-fetch}">
-              Manage calendar suites
-            </a>
-          </li>
-          <li>
-            <a href="{$system-fetch}">
-              Manage system preferences
-            </a>
-          </li>
-          <li>
-            <a href="{$timezones-initUpload}" >
-              Upload and replace system timezones
-            </a>
-          </li>
-          <li>
-            System statistics:
-            <ul>
-              <li>
-                <a href="{$stats-update}&amp;fetch=yes">
-                  admin web client
-                </a>
-              </li>
-              <li>
-                <a href="{$publicCal}/stats.do" target="pubClient">
-                  public web client
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </xsl:if>
       <h4 class="menuTitle">User management</h4>
       <ul class="adminMenu">
         <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
@@ -434,6 +406,42 @@
             </form>
           </li>
         </xsl:if>
+      </ul>
+    </xsl:if>
+
+    <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
+      <h4 class="menuTitle">Super user features</h4>
+      <ul class="adminMenu">
+        <li>
+          <a href="{$calsuite-fetch}">
+            Manage calendar suites
+          </a>
+        </li>
+        <li>
+          <a href="{$system-fetch}">
+            Manage system preferences
+          </a>
+        </li>
+        <li>
+          <a href="{$timezones-initUpload}" >
+            Upload and replace system timezones
+          </a>
+        </li>
+        <li>
+          System statistics:
+          <ul>
+            <li>
+              <a href="{$stats-update}&amp;fetch=yes">
+                admin web client
+              </a>
+            </li>
+            <li>
+              <a href="{$publicCal}/stats.do" target="pubClient">
+                public web client
+              </a>
+            </li>
+          </ul>
+        </li>
       </ul>
     </xsl:if>
   </xsl:template>
@@ -2510,16 +2518,10 @@
       </table>
     </form>
     <div id="sharingBox">
-      <h3>Sharing</h3>
+      <h3>Manage suite administrators</h3>
       <table class="common">
         <tr>
           <th class="commonHeader" colspan="2">Current access:</th>
-        </tr>
-        <tr>
-          <th>Owner:</th>
-          <td>
-            <xsl:value-of select="name(acl/ace[principal/property/owner]/grant/*)"/>
-          </td>
         </tr>
         <xsl:if test="acl/ace/principal/href">
           <tr>
@@ -2534,23 +2536,116 @@
       </table>
       <form name="calsuiteShareForm" action="{$calsuite-setAccess}" id="shareForm" method="post">
         <input type="hidden" name="calSuiteName" value="{$calSuiteName}"/>
+        <input type="hidden" name="how" value="RW" />
         <p>
-          Share with:<br/>
+          Add administrator:<br/>
           <input type="text" name="who" size="20"/>
           <input type="radio" value="user" name="whoType" checked="checked"/> user
           <input type="radio" value="group" name="whoType"/> group
         </p>
-        <p>
-          Access rights:<br/>
-          <input type="radio" value="R" name="how" checked="checked"/> read<br/>
-          <input type="radio" value="RW" name="how"/> read/write<br/>
-          <input type="radio" value="Rc" name="how"/> read/write content<br/>
-          <input type="radio" value="f" name="how"/> read free/busy only<br/>
-          <input type="radio" value="d" name="how"/> default (reset access)
-        </p>
         <input type="submit" name="submit" value="Submit"/>
       </form>
     </div>
+  </xsl:template>
+
+  <xsl:template name="calSuitePrefs">
+    <h2>Edit Calendar Suite Preferences</h2>
+    <form name="userPrefsForm" method="post" action="{$calsuite-updatePrefs}">
+      <table id="eventFormTable">
+        <tr>
+          <td class="fieldName">
+            Calendar Suite:
+          </td>
+          <td>
+            <xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
+            Preferred view:
+          </td>
+          <td>
+            <xsl:variable name="preferredView" select="/bedeworkadmin/prefs/preferredView"/>
+            <input type="text" name="preferredView" value="{$preferredView}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
+            Preferred view period:
+          </td>
+          <td>
+            <xsl:variable name="preferredViewPeriod" select="/bedeworkadmin/prefs/preferredViewPeriod"/>
+            <select name="viewPeriod">
+              <!-- picking the selected item could be done with javascript. for
+                   now, this will do.  -->
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'dayView'">
+                  <option value="dayView" selected="selected">day</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="dayView">day</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'todayView'">
+                  <option value="todayView" selected="selected">today</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="todayView">today</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'weekView'">
+                  <option value="weekView" selected="selected">week</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="weekView">week</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'monthView'">
+                  <option value="monthView" selected="selected">month</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="monthView">month</option>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$preferredViewPeriod = 'yearView'">
+                  <option value="yearView" selected="selected">year</option>
+                </xsl:when>
+                <xsl:otherwise>
+                  <option value="yearView">year</option>
+                </xsl:otherwise>
+              </xsl:choose>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
+            Skin name:
+          </td>
+          <td>
+            <xsl:variable name="skinName" select="/bedeworkadmin/prefs/skinName"/>
+            <input type="text" name="skin" value="{$skinName}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
+            Skin style:
+          </td>
+          <td>
+            <xsl:variable name="skinStyle" select="/bedeworkadmin/prefs/skinStyle"/>
+            <input type="text" name="skinStyle" value="{$skinStyle}" size="40"/>
+          </td>
+        </tr>
+      </table>
+      <br />
+
+      <input type="submit" name="modPrefs" value="Update"/>
+      <input type="reset" value="Reset"/>
+      <input type="submit" name="cancelled" value="Cancel"/>
+    </form>
   </xsl:template>
 
   <!--+++++++++++++++ Timezones ++++++++++++++++++++-->
