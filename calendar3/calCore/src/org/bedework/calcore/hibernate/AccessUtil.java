@@ -389,17 +389,21 @@ class AccessUtil implements PrivilegeDefs {
        */
 
       String entAccess = ent.getAccess();
+      /*
       if (entAccess == null) {
         // Nomerge needed
         return aclChars;
       }
+      */
 
       try {
         Acl acl = new Acl();
-        acl.decode(aclChars);
-        acl.merge(entAccess.toCharArray());
+        if (entAccess != null) {
+          acl.decode(entAccess.toCharArray());
+        }
+        acl.merge(aclChars);
 
-        return acl.getEncoded();
+        return acl.encodeAll();
       } catch (Throwable t) {
         throw new CalFacadeException(t);
       }
@@ -442,8 +446,8 @@ class AccessUtil implements PrivilegeDefs {
 
     try {
       Acl acl = new Acl();
-      acl.decode(aclString.toCharArray());
-      acl.merge(entAccess.toCharArray());
+      acl.decode(entAccess.toCharArray());
+      acl.merge(aclString.toCharArray());
 
       return acl.getEncoded();
     } catch (Throwable t) {

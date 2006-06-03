@@ -482,16 +482,17 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
    * @throws AccessException
    */
   public void merge(char[] val) throws AccessException {
-    setEncoded(val);
+    EncodedAcl ea = new EncodedAcl();
+    ea.setEncoded(val);
 
-    if (empty()) {
+    if (ea.empty()) {
       return;
     }
 
-    while (hasMore()) {
+    while (ea.hasMore()) {
       Ace ace = new Ace();
 
-      ace.decode(this, true);
+      ace.decode(ea, true);
       ace.setInherited(true);
 
       if (aces == null) {
