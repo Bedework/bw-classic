@@ -121,6 +121,8 @@ public interface Defs {
   public static final String sectionUserPrefs = "user-preferences";
   /** */
   public static final String sectionDbLastmods = "dblastmods";
+  /** */
+  public static final String sectionCalSuites = "cal-suites";
 
   /* ====================================================================
    *                      Tag names for each object
@@ -183,6 +185,8 @@ public interface Defs {
   public static final String objectAdminGroup = "adminGroup";
   /** */
   public static final String objectUserPrefs = "user-prefs";
+  /** */
+  public static final String objectCalSuite = "cal-suite";
   /** */
   public static final String objectDbLastmod = "dblastmod";
 }

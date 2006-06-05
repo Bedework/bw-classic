@@ -67,6 +67,7 @@ import org.bedework.calfacade.base.BwOwnedDbentity;
 import org.bedework.calfacade.base.BwShareableContainedDbentity;
 import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
+import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 import java.sql.Timestamp;
@@ -416,6 +417,21 @@ public abstract class EntityFieldRule extends RestoreRule {
     }
 
     return category;
+  }
+
+  protected BwAdminGroup adminGroupFld() throws Exception {
+    if (fldval == null) {
+      throw new Exception("No value for " + tagName);
+    }
+
+    try {
+      return globals.rintf.getAdminGroup(fldval);
+    } catch (Throwable t) {
+      if (t instanceof Exception) {
+        throw (Exception)t;
+      }
+      throw new Exception(t);
+    }
   }
 
   protected BwCalendar calendarFld() throws Exception {

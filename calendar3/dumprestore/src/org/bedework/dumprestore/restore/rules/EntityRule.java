@@ -77,6 +77,7 @@ import org.bedework.calfacade.filter.BwOrFilter;
 import org.bedework.calfacade.filter.BwSponsorFilter;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUser;
+import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.dumprestore.BwDbLastmod;
 import org.bedework.dumprestore.restore.RestoreGlobals;
@@ -111,6 +112,7 @@ public class EntityRule extends RestoreRule {
     classes.put("user", BwUser.class.getName());
     classes.put("timezone", BwTimeZone.class.getName());
     classes.put("calendar", BwCalendar.class.getName());
+    classes.put("cal-suite", BwCalSuite.class.getName());
     classes.put("location", BwLocation.class.getName());
     classes.put("sponsor", BwSponsor.class.getName());
     classes.put("organizer", BwOrganizer.class.getName());

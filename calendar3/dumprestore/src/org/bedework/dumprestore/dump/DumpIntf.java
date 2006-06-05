@@ -61,6 +61,7 @@ import java.util.Iterator;
  * <li>BwEventAnnotation</li>
  * <li>BwAdminGroup</li>
  * <li>BwPreferences + BwSubscription + BwView</li>
+ * <li>BwCalSuite</li>
  *
  * <li>BwFilter</li>
  * <li>BwRecurrenceInstance</li>
@@ -122,6 +123,13 @@ public interface DumpIntf {
    * @throws Throwable
    */
   public Iterator getCalendars() throws Throwable;
+
+  /** Will return an Iterator returning BwCalSuite objects.
+   *
+   * @return Iterator over entities
+   * @throws Throwable
+   */
+  public Iterator getCalSuites() throws Throwable;
 
   /** Will return an Iterator returning Category objects.
    *

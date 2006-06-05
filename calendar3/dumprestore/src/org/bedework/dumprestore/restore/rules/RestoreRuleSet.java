@@ -91,6 +91,9 @@ public class RestoreRuleSet extends RuleSetBase {
     d.addRule("caldata/calendars/calendar", new CalendarRule(globals));
     d.addRule("caldata/calendars/calendar/*", new CalendarFieldRule(globals));
 
+    d.addRule("caldata/cal-suites/cal-suite", new CalSuiteRule(globals));
+    d.addRule("caldata/cal-suites/cal-suite/*", new CalSuiteFieldRule(globals));
+
     d.addRule("caldata/locations/location", new LocationRule(globals));
     d.addRule("caldata/locations/location/*", new LocationFieldRule(globals));
 

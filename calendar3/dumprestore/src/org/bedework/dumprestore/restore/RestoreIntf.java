@@ -68,6 +68,7 @@ import org.bedework.calfacade.BwUserInfo;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUser;
+import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.dumprestore.BwDbLastmod;
 
@@ -152,6 +153,14 @@ public interface RestoreIntf {
    */
   public void restoreAdminGroup(BwAdminGroup o) throws Throwable;
 
+  /** Get an admin group given it's name.
+   *
+   * @param name     String name of the group
+   * @return BwAdminGroup
+   * @throws Throwable
+   */
+  public BwAdminGroup getAdminGroup(String name) throws Throwable;
+
   /** Restore an auth user and preferences
    *
    * @param o   Object to restore with id set
@@ -179,6 +188,13 @@ public interface RestoreIntf {
    * @throws Throwable
    */
   public void restoreCategory(BwCategory o) throws Throwable;
+
+  /** Restore calendar suite
+   *
+   * @param o   Object to restore
+   * @throws Throwable
+   */
+  public void restoreCalSuite(BwCalSuite o) throws Throwable;
 
   /** Restore location
    *

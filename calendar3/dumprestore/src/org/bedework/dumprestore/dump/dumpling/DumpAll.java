@@ -142,6 +142,11 @@ public class DumpAll extends Dumpling {
     new DumpUserPrefs(globals).dumpSection(di.getPreferences());
     di.close();
 
+    info("Dumping calendar suites.");
+    di.open();
+    new DumpCalSuites(globals).dumpSection(di.getCalSuites());
+    di.close();
+
     /*
     info("Dumping lastmods.");
     di.open();

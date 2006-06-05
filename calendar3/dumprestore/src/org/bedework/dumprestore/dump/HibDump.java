@@ -42,6 +42,7 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.svc.BwAdminGroup;
+import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
@@ -128,6 +129,10 @@ public class HibDump implements DumpIntf {
     sess.setString("path2", "/" + syspars.getUserCalendarRoot());
 
     return sess.getList().iterator();
+  }
+
+  public Iterator getCalSuites() throws Throwable {
+    return getObjects(BwCalSuite.class.getName());
   }
 
   public Iterator getCategories() throws Throwable {

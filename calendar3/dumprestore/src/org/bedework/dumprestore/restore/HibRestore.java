@@ -74,6 +74,7 @@ import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAdminGroupEntry;
 import org.bedework.calfacade.svc.BwAuthUser;
+import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
@@ -291,6 +292,15 @@ public class HibRestore implements RestoreIntf {
     }
   }
 
+  public BwAdminGroup getAdminGroup(String name) throws Throwable {
+    openHibSess();
+
+    Query q = hibSess.createQuery("from org.bedework.calfacade.svc.BwAdminGroup ag" +
+        " where ag.name=:name");
+    q.setString("name", name);
+    return (BwAdminGroup)q.uniqueResult();
+  }
+
   /* (non-Javadoc)
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreAuthUser(org.bedework.calfacade.svc.BwAuthUser)
    */
@@ -320,9 +330,7 @@ public class HibRestore implements RestoreIntf {
     }
 
     openHibSess();
-
     hibSave(o);
-
     closeHibSess();
   }
 
@@ -355,6 +363,13 @@ public class HibRestore implements RestoreIntf {
 
     closeSess();
   }
+
+  public void restoreCalSuite(BwCalSuite o) throws Throwable {
+    openHibSess();
+    hibSave(o);
+    closeHibSess();
+  }
+
 
   /* (non-Javadoc)
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreLocation(org.bedework.calfacade.BwLocation)
