@@ -17,8 +17,9 @@
      starting point for development of a customized calendar.
 
      For detailed instructions on how to work with the XSLT
-     stylesheets included with this distribution, please see the 
-		 Bedework Design Guide at http://www.bedework.org/bedework/update.do?artcenterkey=24
+     stylesheets included with this distribution, please see the
+		 Bedework Design Guide at
+     http://www.bedework.org/bedework/update.do?artcenterkey=24
 
 ===============================================================  -->
 
@@ -64,7 +65,7 @@
   <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
   <xsl:variable name="skin">default</xsl:variable>
 
-  
+
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
     <html lang="en">
@@ -153,9 +154,6 @@
   <!-- these templates are separated out for convenience and to simplify the default template -->
 
   <xsl:template name="headBar">
-    <h1 id="titleBar">
-      Bedework: Demonstration Calendar
-    </h1>
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
       <tr>
         <td colspan="3" id="logoCell"><a href="http://www.bedework.org/"><img src="{$resourcesRoot}/images/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
@@ -555,7 +553,7 @@
 						<xsl:variable name="recurrenceId" select="recurrenceId"/>
 						<a href="{$privateCal}/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
 							<img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
-						add to my calendar</a> 
+						add to my calendar</a>
 						<xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
 						<a href="{$export}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
 							<img src="{$resourcesRoot}/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
@@ -709,11 +707,11 @@
                       all day
                     </td>
                   </xsl:when>
-                  <xsl:when test="start/shortdate = end/shortdate and 
+                  <xsl:when test="start/shortdate = end/shortdate and
                                   start/time = end/time">
                     <td class="{$dateRangeStyle} center" colspan="3">
                       <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        <xsl:value-of select="start/time"/>                      
+                        <xsl:value-of select="start/time"/>
                       </a>
                     </td>
                   </xsl:when>

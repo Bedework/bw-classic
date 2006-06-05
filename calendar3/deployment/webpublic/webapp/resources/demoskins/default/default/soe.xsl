@@ -11,14 +11,26 @@
 
 <!-- =========================================================
 
-              DEMONSTRATION CALENDAR STYLESHEET
+        DEMONSTRATION "DEPARTMENTAL" CALENDAR STYLESHEET
 
-     This stylesheet is devoid of school branding.  It is a good
-     starting point for development of a customized calendar.
+     This stylesheet is for the "soe" (School of Engineering)
+     calendar suite; it is an example of a departmental skin.
+
+     This skin, along with the preferences for the Calendar
+     Suite owner differ from the main public skin (default.xsl) in the
+     following ways:
+       - different header, title, and footer
+       - default view = Month
+       - default layout = list view (rather than calendar grid)
+       - different color scheme
+
+     Otherwise, for the sake of demonstration, we've left most of the
+     functionality of the public client in place.
 
      For detailed instructions on how to work with the XSLT
      stylesheets included with this distribution, please see the
-		 Bedework Design Guide at http://www.bedework.org/bedework/update.do?artcenterkey=24
+		 Bedework Design Guide at
+     http://www.bedework.org/bedework/update.do?artcenterkey=24
 
 ===============================================================  -->
 
@@ -69,20 +81,8 @@
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title>School of Engineering</title>
-        <link rel="stylesheet" type="text/css" href="{$resourcesRoot}/default/default/common.css" />
-        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
-        <xsl:choose>
-          <xsl:when test="/bedework/appvar[key='style']/value='red'">
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/red.css"/>
-          </xsl:when>
-          <xsl:when test="/bedework/appvar[key='style']/value='green'">
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/green.css"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/blue.css"/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <title>School of Engineering: Example Bedework Departmental Calendar Suite</title>
+        <link rel="stylesheet" type="text/css" href="{$resourcesRoot}/default/default/soe.css" />
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
       </head>
       <body>
@@ -119,11 +119,11 @@
               </xsl:when>
               <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
                 <xsl:choose>
-                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                    <xsl:call-template name="listView"/>
+                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='cal'">
+                    <xsl:call-template name="weekView"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:call-template name="weekView"/>
+                    <xsl:call-template name="listView"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
@@ -153,26 +153,28 @@
   <!-- these templates are separated out for convenience and to simplify the default template -->
 
   <xsl:template name="headBar">
-    <h1 id="titleBar">
-      Bedework: Demonstration Calendar
-    </h1>
-    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
-      <tr>
-        <td colspan="3" id="logoCell"><a href="http://www.bedework.org/"><img src="{$resourcesRoot}/images/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
-        <td colspan="2" id="schoolLinksCell">
-          <h2>Public Calendar</h2>
-          <a href="{$privateCal}">Personal Calendar</a> |
-          <a href="http://www.yourschoolhere.edu">School Home</a> |
-          <a href="http://www.bedework.org/">Other Link</a> |
+    <div id="headBar">
+      <div id="bedeworkLogo">
+        <a href="http://www.bedework.org/">
+          <img src="{$resourcesRoot}/images/soecal/soeBedeworkLogo.gif" width="296" height="69" border="0" alt="Bedework" align="right"/>
+        </a>
+      </div>
+      <h1>Example Departmental Calendar Suite</h1>
+      <!--<ul id="schoolLinks">
+        <li><a href="{$privateCal}">Personal Calendar</a></li>
+        <li><a href="http://www.yourschoolhere.edu">School Home</a></li>
+        <li><a href="http://www.bedework.org/">Other Link</a></li>
+        <li>
           <a href="http://helpdesk.rpi.edu/update.do?catcenterkey=51">
             Example Calendar Help
           </a>
-        </td>
-      </tr>
-    </table>
-    <table id="curDateRangeTable"  cellspacing="0">
+        </li>
+      </ul> -->
+    </div>
+    <!--  Turn off the date range table for this departmental view -->
+    <!--<table id="curDateRangeTable"  cellspacing="0">
       <td class="sideBarOpenCloseIcon">
-        &#160;
+        &#160; -->
         <!--
         we may choose to implement calendar selection in the public calendar
         using a sidebar; leave this comment here for now.
@@ -188,7 +190,7 @@
             </a>
           </xsl:otherwise>
         </xsl:choose>-->
-      </td>
+      <!-- </td>
       <td class="date">
         <xsl:choose>
           <xsl:when test="/bedework/page='event'">
@@ -213,7 +215,7 @@
         </a>
         <a class="rss" href="{$setSelection}?setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
       </td>
-    </table>
+    </table>-->
   </xsl:template>
 
   <xsl:template name="tabs">
@@ -261,11 +263,11 @@
                 </xsl:otherwise>
               </xsl:choose>
             </td>
-            <td class="centerCell">
-              &#160;<!--<img src="{$resourcesRoot}/images/std-button-today.gif" width="46" height="17" border="0" alt="TODAY"/>-->
-            </td>
-            <td class="rightCell">
-              &#160;
+            <td class="rssPrint">
+              <a href="javascript:window.print()" title="print this view">
+                <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
+              </a>
+              <a class="rss" href="{$setSelection}?setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
             </td>
           </tr>
         </table>
@@ -285,11 +287,11 @@
             <td>
               <a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
             </td>
-            <td class="centerCell">
-              &#160;<!--<img src="{$resourcesRoot}/images/std-button-today.gif" width="46" height="17" border="0" alt="TODAY"/>-->
-            </td>
-            <td class="rightCell">
-              &#160;
+            <td class="rssPrint">
+              <a href="javascript:window.print()" title="print this view">
+                <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
+              </a>
+              <a class="rss" href="{$setSelection}?setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
             </td>
           </tr>
         </table>
@@ -454,14 +456,14 @@
               </xsl:when>
               <xsl:otherwise>
                 <xsl:choose>
-                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                    <a href="{$setup}?setappvar=weekViewMode(cal)" title="toggle list/calendar view">
-                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='cal'">
+                    <a href="{$setup}?setappvar=weekViewMode(list)" title="toggle list/calendar view">
+                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$setup}?setappvar=weekViewMode(list)" title="toggle list/calendar view">
-                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                    <a href="{$setup}?setappvar=weekViewMode(cal)" title="toggle list/calendar view">
+                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -1115,42 +1117,10 @@
     <div id="footer">
       Demonstration calendar; place footer information here.
     </div>
-    <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td class="leftCell">
-          Based on the <a href="http://www.bedework.org/">Bedework Calendar</a> |
-          <a href="?noxslt=yes">show XML</a> |
-          <a href="?refreshXslt=yes">refresh XSLT</a>
-        </td>
-        <td class="rightCell">
-          <form name="styleSelectForm" method="get" action="{$setup}">
-            <select name="setappvar" onChange="submit()">
-              <option>example styles:</option>
-              <option value="style(green)">green</option>
-              <option value="style(red)">red</option>
-              <option value="style(blue)">blue</option>
-            </select>
-          </form>
-          <form name="skinSelectForm" method="get" action="{$setup}">
-            <input type="hidden" name="setappvar" value="summaryMode(details)"/>
-            <select name="skinPicker" onchange="window.location = this.value">
-              <option>example skins:</option>
-              <option value="{$setViewPeriod}?viewType=weekView&amp;skinName=rss&amp;setappvar=summaryMode(details)">rss feed</option>
-              <option value="{$setViewPeriod}?viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedework.js">javascript feed</option>
-              <option value="{$setViewPeriod}?viewType=todayView&amp;skinName=videocal">video feed</option>
-              <option value="{$setup}?skinName=default">reset to calendar default</option>
-            </select>
-          </form>
-          <form name="skinSelectForm" method="get" action="">
-            <select name="sitePicker" onchange="window.location = this.value">
-              <option>production examples:</option>
-              <option value="http://events.dal.ca/">Dalhousie</option>
-              <option value="http://events.rpi.edu">Rensselaer</option>
-              <option value="http://myuw.washington.edu/cal/">Washington</option>
-            </select>
-          </form>
-        </td>
-      </tr>
-    </table>
+    <div id="subFoot">
+      Based on the <a href="http://www.bedework.org/">Bedework Calendar</a> |
+      <a href="?noxslt=yes">show XML</a> |
+      <a href="?refreshXslt=yes">refresh XSLT</a>
+    </div>
   </xsl:template>
 </xsl:stylesheet>
