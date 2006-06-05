@@ -331,6 +331,15 @@
         <include name="*.jar"/>
       </fileset>
     </copy>
+
+    <copy todir="${app.dest.lib}" file="${antlr.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-beanutils.jar}"/>
+    <copy todir="${app.dest.lib}" file="${digester.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-fileupload.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-logging.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-validator.jar}"/>
+    <copy todir="${app.dest.lib}" file="${jakarta-oro.jar}"/>
+
     <copy todir="${app.dest.lib}" file="${servlet.jsp.jar}"/>
   </target>
 

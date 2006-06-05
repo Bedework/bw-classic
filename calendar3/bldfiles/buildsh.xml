@@ -77,7 +77,7 @@
       <fileset dir="${hibernate.jars.dir}">
         <include name="*.jar"/>
       </fileset>
-      <fileset dir="${digester.dir}">
+      <fileset dir="${commons.dir}">
         <include name="*.jar"/>
       </fileset>
       <fileset dir="${struts.dir}">
