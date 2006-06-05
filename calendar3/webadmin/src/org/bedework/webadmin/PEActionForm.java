@@ -206,7 +206,12 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    * @return int
    */
   public int getMaxDescriptionLength() {
-    return BwEvent.maxDescriptionLength;
+    try {
+      return fetchSvci().getSyspars().getMaxPublicDescriptionLength();
+    } catch (Throwable t) {
+      err.emit(t);
+      return 0;
+    }
   }
 
   /* ====================================================================

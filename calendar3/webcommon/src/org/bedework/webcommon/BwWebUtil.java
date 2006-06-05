@@ -58,6 +58,7 @@ import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.icalendar.BwEventUtil;
@@ -165,35 +166,51 @@ public class BwWebUtil {
    *
    * @param svci
    * @param ev
-   * @param descriptionRequired
+   * @param publicEvent    requirements will differ
    * @param err
    * @return boolean true for ok
    * @throws CalFacadeException
    */
-  public static boolean validateEvent(CalSvcI svci, BwEvent ev, boolean descriptionRequired,
+  public static boolean validateEvent(CalSvcI svci, BwEvent ev,
+                                      boolean publicEvent,
                                       MessageEmit err) throws CalFacadeException {
     boolean ok = true;
 
     ev.setSummary(checkNull(ev.getSummary()));
     ev.setDescription(checkNull(ev.getDescription()));
+    ev.setLink(checkNull(ev.getLink()));
 
     if (ev.getCalendar() == null) {
       err.emit("org.bedework.validation.error.nocalendar");
       ok = false;
     }
 
+    BwSystem syspars = svci.getSyspars();
+    int maxDescLen;
+    if (publicEvent) {
+      maxDescLen = syspars.getMaxPublicDescriptionLength();
+    } else {
+      maxDescLen = syspars.getMaxUserDescriptionLength();
+    }
+
     if (ev.getSummary() == null) {
       err.emit("org.bedework.validation.error.notitle");
+      ok = false;
+    } else if (ev.getSummary().length() > maxDescLen) {
+      // Use the description length here
+      err.emit("org.bedework.validation.error.toolong.summary",
+               String.valueOf(maxDescLen));
       ok = false;
     }
 
     if (ev.getDescription() == null) {
-      if (descriptionRequired) {
+      if (publicEvent) {
         err.emit("org.bedework.validation.error.nodescription");
         ok = false;
       }
-    } else if (ev.getDescription().length() > BwEvent.maxDescriptionLength) {
-      err.emit("org.bedework.validation.error.toolong.description", String.valueOf(BwEvent.maxDescriptionLength));
+    } else if (ev.getDescription().length() > maxDescLen) {
+      err.emit("org.bedework.validation.error.toolong.description",
+               String.valueOf(maxDescLen));
       ok = false;
     }
 

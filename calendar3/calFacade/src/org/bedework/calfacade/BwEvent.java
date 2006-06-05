@@ -158,10 +158,6 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
 
   private String summary;
 
-  /** This should be set by the back end code.
-   */
-  public static final int maxDescriptionLength = 500;
-
   private String description;
 
   private BwDateTime dtstart;

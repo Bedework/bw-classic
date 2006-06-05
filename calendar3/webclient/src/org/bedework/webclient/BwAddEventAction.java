@@ -100,7 +100,7 @@ public class BwAddEventAction extends BwCalAbstractAction {
     }
 
     if (!form.getEventDates().updateEvent(ev, svci.getTimezones()) ||
-        !BwWebUtil.validateEvent(svci, ev, false, //  descriptionRequired
+        !BwWebUtil.validateEvent(svci, ev, false, //  public
                                  form.getErr())) {
       return "doNothing";
     }
