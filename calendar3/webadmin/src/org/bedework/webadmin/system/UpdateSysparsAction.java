@@ -144,6 +144,24 @@ public class UpdateSysparsAction extends PEAbstractAction {
       changed = true;
     }
 
+    intVal = getIntReqPar(request, "maxPublicDescriptionLength", -1);
+    if (intVal >= 0) {
+      syspars.setMaxPublicDescriptionLength(intVal);
+      changed = true;
+    }
+
+    intVal = getIntReqPar(request, "maxUserDescriptionLength", -1);
+    if (intVal >= 0) {
+      syspars.setMaxUserDescriptionLength(intVal);
+      changed = true;
+    }
+
+    intVal = getIntReqPar(request, "maxUserEntitySize", -1);
+    if (intVal >= 0) {
+      syspars.setMaxUserEntitySize(intVal);
+      changed = true;
+    }
+
     long longVal = getLongReqPar(request, "defaultUserQuota", -1);
     if (longVal >= 0) {
       syspars.setDefaultUserQuota(longVal);

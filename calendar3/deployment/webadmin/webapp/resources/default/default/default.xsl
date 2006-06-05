@@ -2387,6 +2387,33 @@
           </td>
         </tr>
         <tr>
+          <th>Maximum length of public event description:</th>
+          <td>
+            <xsl:variable name="maxPublicDescriptionLength" select="/bedeworkadmin/system/maxPublicDescriptionLength"/>
+            <input value="{$maxPublicDescriptionLength}" name="maxPublicDescriptionLength" size="20"/>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <th>Maximum length of user event description:</th>
+          <td>
+            <xsl:variable name="maxUserDescriptionLength" select="/bedeworkadmin/system/maxUserDescriptionLength"/>
+            <input value="{$maxUserDescriptionLength}" name="maxUserDescriptionLength" size="20"/>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <th>Maximum size of a user entity:</th>
+          <td>
+            <xsl:variable name="maxUserEntitySize" select="/bedeworkadmin/system/maxUserEntitySize"/>
+            <input value="{$maxUserEntitySize}" name="maxUserEntitySize" size="20"/>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
           <th>Default user quota:</th>
           <td>
             <xsl:variable name="defaultUserQuota" select="/bedeworkadmin/system/defaultUserQuota"/>
