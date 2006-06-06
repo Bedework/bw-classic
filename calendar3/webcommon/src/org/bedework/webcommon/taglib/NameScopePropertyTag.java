@@ -98,6 +98,10 @@ public class NameScopePropertyTag extends NameScopeTag {
    * @throws JspTagException
    */
   protected String getString(boolean required) throws JspTagException {
-    return String.valueOf(getObject(name, scope, property, required));
+    Object o = getObject(required);
+    if (o == null) {
+      return null;
+    }
+    return String.valueOf(o);
   }
 }

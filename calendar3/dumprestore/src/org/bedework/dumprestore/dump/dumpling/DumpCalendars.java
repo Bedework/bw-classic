@@ -88,6 +88,6 @@ public class DumpCalendars extends Dumpling {
       dumpCalendar((BwCalendar)children.next());
     }
 
-    globals.categories++;
+    globals.calendars++;
   }
 }

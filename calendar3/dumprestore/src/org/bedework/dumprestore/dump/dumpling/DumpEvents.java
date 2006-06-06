@@ -63,14 +63,11 @@ public class DumpEvents extends Dumpling {
       tagStart(sectionEvents);
     }
 
-    long ct = 0;
-
     while (it.hasNext()) {
       dumpEvent((BwEvent)it.next());
-      ct++;
 
-      if ((ct % 100) == 0) {
-        info("        ... " + ct);
+      if ((globals.events % 100) == 0) {
+        info("        ... " +       globals.events);
       }
     }
 

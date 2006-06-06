@@ -65,6 +65,9 @@ public class DumpGlobals {
   public int subscriptions;
 
   /** */
+  public int calendars;
+
+  /** */
   public int locations;
 
   /** */
@@ -106,6 +109,7 @@ public class DumpGlobals {
     System.out.println("          syspars: " + syspars);
     System.out.println("            users: " + users);
     System.out.println("        timezones: " + timezones);
+    System.out.println("        calendars: " + calendars);
     System.out.println("  subscribedUsers: " + subscribedUsers);
     System.out.println("    subscriptions: " + subscriptions);
     System.out.println("        locations: " + locations);
