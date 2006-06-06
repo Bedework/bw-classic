@@ -191,7 +191,7 @@ public interface Calintf extends CalendarsI, EventsI {
    * @return CalTimezones object
    * @throws CalFacadeException if not admin
    */
-  public CalTimezones getTimezones() throws CalFacadeException;
+  public CalTimezones getTimezonesHandler() throws CalFacadeException;
 
   /** Get information about this interface
    *
@@ -432,6 +432,13 @@ public interface Calintf extends CalendarsI, EventsI {
    * @throws CalFacadeException
    */
   public Collection getTimeZones() throws CalFacadeException;
+
+  /** Get all user vtimezone objects.
+   *
+   * @return Collection
+   * @throws CalFacadeException
+   */
+  public Collection getUserTimeZones() throws CalFacadeException;
 
   /** Get all public vtimezone objects.
    *

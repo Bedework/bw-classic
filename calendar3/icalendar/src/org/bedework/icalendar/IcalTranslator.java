@@ -60,6 +60,7 @@ import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.svc.EventInfo;
+//import org.bedework.calfacade.ifs.CalTimezones.
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.CalendarOutputter;
@@ -530,14 +531,7 @@ public class IcalTranslator implements Serializable {
       debugMsg("Got timezone: \n" + vtz.toString() + " with id " + id);
     }
 
-    if (cb.findTimeZone(id, null) != null) {
-      if (debug) {
-        debugMsg("Timezone already in db");
-      }
-      return; // We know this one
-    }
-
-    cb.saveTimeZone(tzid.getValue(), vtz);
+    cb.storeTimeZone(tzid.getValue());
   }
 
   /* If the start or end date references a timezone, we retrieve the timezone definition

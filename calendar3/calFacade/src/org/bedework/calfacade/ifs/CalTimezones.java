@@ -88,6 +88,10 @@ public abstract class CalTimezones implements Serializable {
 
     boolean publick;
 
+    boolean newDef;  // true if this is a new definition
+
+    boolean changed; // true if the def has changed
+
     /**
      * @param tz
      */
@@ -127,10 +131,43 @@ public abstract class CalTimezones implements Serializable {
     public boolean getPublick() {
       return publick;
     }
+
+    /** Set the new flag
+     *
+     * @param val
+     */
+    public void setNewDef(boolean val) {
+      newDef = val;
+    }
+
+    /**
+     * @return true for new def
+     */
+    public boolean getNewDef() {
+      return newDef;
+    }
+
+    /** Set the changed flag
+     *
+     * @param val
+     */
+    public void setChanged(boolean val) {
+      changed = val;
+    }
+
+    /**
+     * @return true for new def
+     */
+    public boolean getChanged() {
+      return changed;
+    }
   }
 
   /* Map of user TimezoneInfo */
   protected HashMap timezones = new HashMap();
+
+  /* subclasses can use this to trigger a read of stored timezone info. */
+  protected boolean userTimezonesInitialised;
 
   /* Cache date only UTC values - we do a lot of those but the number of
    * different dates should be limited.
@@ -178,9 +215,14 @@ public abstract class CalTimezones implements Serializable {
 
     if (tzinfo == null) {
       tzinfo = new TimezoneInfo(timezone);
+      tzinfo.newDef = true;
       timezones.put(id, tzinfo);
     } else {
-      tzinfo.tz = timezone;
+      if (!tzinfo.tz.equals(timezone)) {
+        // XXX Inadequate - different properties order will trigger this.
+        tzinfo.changed = true;
+        tzinfo.tz = timezone;
+      }
     }
   }
 
@@ -233,6 +275,15 @@ public abstract class CalTimezones implements Serializable {
    * @throws CalFacadeException
    */
   public abstract VTimeZone findTimeZone(final String id, BwUser owner) throws CalFacadeException;
+
+  /** Store the definition for a timezone object in the database given the id.
+   * This will do nothing if the timezone is already stored.
+   *
+   * @param id
+   * @param owner     event owner or null for current user
+   * @throws CalFacadeException
+   */
+  public abstract void storeTimeZone(final String id, BwUser owner) throws CalFacadeException;
 
   /** Clear all public timezone objects. Implementing classes should call this.
    *
@@ -465,7 +516,6 @@ public abstract class CalTimezones implements Serializable {
     sb.append(val);
   }
 
-
   /* Get a logger for messages
    */
   protected Logger getLogger() {
@@ -476,7 +526,11 @@ public abstract class CalTimezones implements Serializable {
     return log;
   }
 
+  protected void warn(String msg) {
+    getLogger().warn(msg);
+  }
+
   protected void trace(String msg) {
-    getLogger().debug("trace: " + msg);
+    getLogger().debug(msg);
   }
 }

@@ -171,7 +171,7 @@ public class CalintfCaldavImpl extends CalintfBase {
   public void updateSyspars(BwSystem val) throws CalFacadeException {
   }
 
-  public CalTimezones getTimezones() throws CalFacadeException {
+  public CalTimezones getTimezonesHandler() throws CalFacadeException {
     return null;
   }
 
@@ -301,6 +301,10 @@ public class CalintfCaldavImpl extends CalintfBase {
   }
 
   public Collection getTimeZones() throws CalFacadeException {
+    throw new CalFacadeUnimplementedException();
+  }
+
+  public Collection getUserTimeZones() throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 

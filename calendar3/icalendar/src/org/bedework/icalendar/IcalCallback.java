@@ -142,8 +142,16 @@ public interface IcalCallback extends Serializable {
    * @param vtz
    * @throws CalFacadeException
    */
-  public void saveTimeZone(String tzid, VTimeZone vtz
-                           ) throws CalFacadeException;
+  public void saveTimeZone(String tzid,
+                           VTimeZone vtz) throws CalFacadeException;
+
+  /** Store the definition for a timezone object in the database given the id.
+   * This will do nothing if the timezone is already stored.
+   *
+   * @param id
+   * @throws CalFacadeException
+   */
+  public void storeTimeZone(final String id) throws CalFacadeException;
 
   /** Register a timezone object in the current session.
    *

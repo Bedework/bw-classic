@@ -402,7 +402,7 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
     access.setSyspars((BwSystem)getSyspars().clone());
   }
 
-  public CalTimezones getTimezones() throws CalFacadeException {
+  public CalTimezones getTimezonesHandler() throws CalFacadeException {
     return timezones;
   }
 
@@ -746,6 +746,13 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
     return sess.getList();
   }
 
+  public Collection getUserTimeZones() throws CalFacadeException {
+    sess.namedQuery("getUserTimezones");
+    sess.setEntity("owner", user);
+
+    return sess.getList();
+  }
+
   public Collection getPublicTimeZones() throws CalFacadeException {
     sess.namedQuery("getPublicTimezones");
 
@@ -1059,7 +1066,7 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
         gpp.periods = events;
         gpp.startDt = start;
         gpp.dur = granularity;
-        gpp.tzcache = getTimezones();
+        gpp.tzcache = getTimezonesHandler();
 
         BwFreeBusyComponent fbc = null;
 

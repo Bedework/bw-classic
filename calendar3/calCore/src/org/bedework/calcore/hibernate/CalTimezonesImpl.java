@@ -85,8 +85,6 @@ class CalTimezonesImpl extends CalTimezones {
   private static volatile HashMap systemTimezones = new HashMap();
   private static volatile boolean systemTimezonesInitialised = false;
 
-  //private transient Logger log;
-
   CalTimezonesImpl(Calintf cal, BwStats stats, boolean publicAdmin, boolean debug)
           throws CalFacadeException {
     super(debug);
@@ -176,6 +174,31 @@ class CalTimezonesImpl extends CalTimezones {
     return vTimeZone;
   }
 
+  public void storeTimeZone(final String id, BwUser owner) throws CalFacadeException {
+    TimezoneInfo tzinfo = lookup(id);
+
+    if (tzinfo == null) {
+      throw new CalFacadeException("org.bedework.calcore.unknown.tzid", id);
+    }
+
+    if (!tzinfo.getNewDef() && !tzinfo.getChanged()) {
+      return;
+    }
+
+    if (tzinfo.getPublick()) {
+      warn("Attempt to update public timezone");
+      return;
+    }
+
+    if (tzinfo.getNewDef()) {
+      saveTimeZone(id, tzinfo.getTz().getVTimeZone());
+      tzinfo.setNewDef(false);
+    } else {
+      // XXX Ignore change for the moment.
+      tzinfo.setChanged(false);
+    }
+  }
+
   public void clearPublicTimezones() throws CalFacadeException {
     cal.clearPublicTimezones();
     super.clearPublicTimezones();
@@ -225,6 +248,32 @@ class CalTimezonesImpl extends CalTimezones {
           }
 
           systemTimezonesInitialised = true;
+        }
+      }
+    }
+
+    if (!userTimezonesInitialised) {
+      // First call after object creation.
+      synchronized (this) {
+        if (!userTimezonesInitialised) {
+          Collection tzs = cal.getUserTimeZones();
+          Iterator it = tzs.iterator();
+
+          while (it.hasNext()) {
+            BwTimeZone btz = (BwTimeZone)it.next();
+
+            Calendar cal = IcalTranslator.getCalendar(btz.getVtimezone());
+
+            VTimeZone vtz = (VTimeZone)cal.getComponents().getComponent(Component.VTIMEZONE);
+            if (vtz == null) {
+              throw new CalFacadeException("Incorrectly stored timezone");
+            }
+
+            tzinfo = new TimezoneInfo(new TimeZone(vtz), true);
+            timezones.put(btz.getTzid(), tzinfo);
+          }
+
+          userTimezonesInitialised = true;
         }
       }
     }

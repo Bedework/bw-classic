@@ -192,6 +192,9 @@ class TimezonesImpl extends CalTimezones {
     return null;
   }
 
+  public void storeTimeZone(final String id, BwUser owner) throws CalFacadeException {
+  }
+
   public void refreshTimezones() throws CalFacadeException {
     synchronized (this) {
       //systemTimezonesInitialised = false;

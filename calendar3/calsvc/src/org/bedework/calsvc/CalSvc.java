@@ -301,7 +301,7 @@ public class CalSvc extends CalSvcI {
         adminCanEditAllPublicSponsors = env.getAppBoolProperty("allowEditAllSponsors");
       }
 
-      timezones = getCal().getTimezones();
+      timezones = getCal().getTimezonesHandler();
 
       /* Nominate our timezone registry */
       System.setProperty("net.fortuna.ical4j.timezone.registry",
@@ -371,7 +371,7 @@ public class CalSvc extends CalSvcI {
   }
 
   public CalTimezones getTimezones() throws CalFacadeException {
-    return getCal().getTimezones();
+    return getCal().getTimezonesHandler();
   }
 
   public void logStats() throws CalFacadeException {
@@ -2556,12 +2556,16 @@ public class CalSvc extends CalSvcI {
     }
 
     public CalTimezones getTimezones() throws CalFacadeException {
-      return getCal().getTimezones();
+      return getCal().getTimezonesHandler();
     }
 
-    public void saveTimeZone(String tzid, VTimeZone vtz
-                             ) throws CalFacadeException {
+    public void saveTimeZone(String tzid,
+                             VTimeZone vtz) throws CalFacadeException {
       timezones.saveTimeZone(tzid, vtz);
+    }
+
+    public void storeTimeZone(final String id) throws CalFacadeException {
+      timezones.storeTimeZone(id, getUser());
     }
 
     public void registerTimeZone(String id, TimeZone timezone)

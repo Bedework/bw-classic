@@ -366,7 +366,7 @@ public class Events extends CalintfHelper implements EventsI {
       return;
     }
 
-    CalTimezones tzs = cal.getTimezones();
+    CalTimezones tzs = cal.getTimezonesHandler();
     DtStart vstart = vev.getStartDate();
 
     String stzid = CalFacadeUtil.getTzid(vstart);
@@ -778,7 +778,7 @@ public class Events extends CalintfHelper implements EventsI {
       return;
     }
 
-    CalTimezones tzs = cal.getTimezones();
+    CalTimezones tzs = cal.getTimezonesHandler();
     DtStart vstart = vev.getStartDate();
 
     String stzid = CalFacadeUtil.getTzid(vstart);
