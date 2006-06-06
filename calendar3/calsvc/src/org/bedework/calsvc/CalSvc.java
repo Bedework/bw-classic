@@ -1202,6 +1202,8 @@ public class CalSvc extends CalSvcI {
             fbc.addPeriod(new Period(psdt, pedt));
             if (periodEvents.size() == 0) {
               fbc.setType(BwFreeBusyComponent.typeFree);
+            } else {
+              fbc.setType(getFreeBusyType(periodEvents));
             }
           } else if (periodEvents.size() != 0) {
             /* Some events fall in the period. Add an entry.
@@ -1221,6 +1223,7 @@ public class CalSvc extends CalSvcI {
             }
 
             fbc.addPeriod(new Period(psdt, pedt));
+            fbc.setType(getFreeBusyType(periodEvents));
           }
         }
 
@@ -1335,6 +1338,26 @@ public class CalSvc extends CalSvcI {
     }
 
     return fb;
+  }
+
+  private int getFreeBusyType(Collection periodEvents) {
+    int fbtype = BwFreeBusyComponent.typeFree;
+
+    Iterator it = periodEvents.iterator();
+    while (it.hasNext()) {
+      EventInfo ei = (EventInfo)it.next();
+
+      String status = ei.getEvent().getStatus();
+      if (status.equals(BwEvent.statusConfirmed)) {
+        return BwFreeBusyComponent.typeBusy;
+      }
+
+      if (status.equals(BwEvent.statusTentative)) {
+        fbtype = BwFreeBusyComponent.typeBusyTentative;
+      }
+    }
+
+    return fbtype;
   }
 
   private static class EventPeriod implements Comparable {
