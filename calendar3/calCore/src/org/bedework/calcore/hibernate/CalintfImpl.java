@@ -850,6 +850,11 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
   public void addCalendar(BwCalendar val, String parentPath) throws CalFacadeException {
     checkOpen();
 
+    if (val.getCalendarCollection()) {
+      val.setCalType(BwCalendar.calTypeCollection);
+    } else {
+      val.setCalType(BwCalendar.calTypeFolder);
+    }
     calendars.addCalendar(val, parentPath);
   }
 

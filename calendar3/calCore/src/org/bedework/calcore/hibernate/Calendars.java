@@ -380,11 +380,6 @@ class Calendars extends CalintfHelper implements CalendarsI {
     }
     val.setCalendar(parent);
     val.setPublick(parent.getPublick());
-    if (val.getCalendarCollection()) {
-      val.setCalType(BwCalendar.calTypeCollection);
-    } else {
-      val.setCalType(BwCalendar.calTypeFolder);
-    }
     parent.addChild(val);
 
     sess.update(parent);

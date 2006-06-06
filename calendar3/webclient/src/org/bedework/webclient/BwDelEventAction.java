@@ -54,6 +54,7 @@
 
 package org.bedework.webclient;
 
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
 
@@ -96,22 +97,29 @@ public class BwDelEventAction extends BwCalAbstractAction {
       return "doNothing";
     }
 
-    // XXX temp - just mark as deleted
-    /*
-    CalSvcI.DelEventResult delResult = form.fetchSvci().deleteEvent(ei.getEvent(), true);
+    BwCalendar cal = ei.getEvent().getCalendar();
 
-    if (!delResult.eventDeleted) {
-      form.getErr().emit("org.bedework.client.error.nosuchevent", id);
-      return "doNothing";
+    if (cal.getCalType() == BwCalendar.calTypeTrash) {
+      // Really delete
+      // XXX What about synch?
+
+      CalSvcI.DelEventResult delResult = svci.deleteEvent(ei.getEvent(), true);
+
+      if (!delResult.eventDeleted) {
+        form.getErr().emit("org.bedework.client.error.nosuchevent");
+        return "doNothing";
+      }
+
+      if (delResult.locationDeleted) {
+        form.getMsg().emit("org.bedework.client.message.deleted.locations", 1);
+      }
+    } else {
+      // Mark deleted and move to trash
+      svci.markDeleted(ei.getEvent());
+
+      form.getMsg().emit("org.bedework.client.message.deleted.events", 1);
     }
 
-    if (delResult.locationDeleted) {
-      form.getMsg().emit("org.bedework.client.message.deleted.locations", 1);
-    }
-    */
-    svci.markDeleted(ei.getEvent());
-
-    form.getMsg().emit("org.bedework.client.message.deleted.events", 1);
     form.refreshIsNeeded();
 
     return "success";
