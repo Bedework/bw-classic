@@ -2040,6 +2040,7 @@ public class CalSvc extends CalSvcI {
                                int recurRetrieval,
                                boolean freeBusy) throws CalFacadeException {
     TreeSet ts = new TreeSet();
+    boolean showAllCalendars = true;
 
     if (sub != null) {
       // Explicitly selected calendar - via a subscription.
@@ -2061,6 +2062,8 @@ public class CalSvc extends CalSvcI {
         trace("Use current view \"" + currentView.getName() + "\"");
       }
 
+      /* Don't show special calendars in views */
+      showAllCalendars = false;
       subs = currentView.getSubscriptions();
     } else {
       subs = getCurrentSubscriptions();
@@ -2128,7 +2131,7 @@ public class CalSvc extends CalSvcI {
 
     ts.addAll(postProcess(getCal().getEvents(internal, filter,
                           startDate, endDate,
-                          recurRetrieval, freeBusy, false),
+                          recurRetrieval, freeBusy, showAllCalendars),
               sublookup));
 
     return ts;
