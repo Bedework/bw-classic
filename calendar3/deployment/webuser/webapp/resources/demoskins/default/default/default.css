@@ -12,8 +12,6 @@ h2 {
   font-size: 1.3em;
   border-bottom: 1px solid #ccc;
   /*border-top: 1px solid #ccc;*/
-  background-color: #eee;
-  color: black;
 }
 h2 a:link,
 h2 a:active,
@@ -22,6 +20,18 @@ h2 a:hover {
   color: black;
   background-color: inherit;
   text-decoration: none;
+}
+h2.bwStatusConfirmed {
+  background-color: #eee;
+  color: black;
+}
+h2.bwStatusCancelled {
+  background-color: #eee;
+  color: black;
+}
+h2.bwStatusTentative {
+  background: #eee url('../../resources/tentativeLines.gif') top;
+  color: black;
 }
 h3 {
   margin: 0em;
@@ -635,6 +645,17 @@ table#attendees td.status {
   background-color: #ccc;
   color: black;
 }
+#monthCalendarTable a.eventTentative:link,
+#monthCalendarTable a.eventTentative:visited,
+#monthCalendarTable a.eventTentative:active  {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  background: #eee url('../../resources/tentativeLines.gif') top;
+  color: black;
+}
 #monthCalendarTable a.holiday:link,
 #monthCalendarTable a.holiday:visited,
 #monthCalendarTable a.holiday:active  {
@@ -649,6 +670,7 @@ table#attendees td.status {
 #monthCalendarTable a.eventLinkA:hover,
 #monthCalendarTable a.eventLinkB:hover,
 #monthCalendarTable a.eventCancelled:hover,
+#monthCalendarTable a.eventTentative:hover,
 #monthCalendarTable a.holiday:hover   {
   display: block;
   padding: 0.1em 0.2em 0.1em 0.2em;
@@ -841,8 +863,12 @@ a.calendarAdd img {
   color: black;
   width: 100%;
 }
-#listTable td.cancelled {
+#listTable td.bwStatusCancelled {
   background-color: #ddd;
+  color: black;
+}
+#listTable td.bwStatusTentative {
+  background: white url('../../resources/tentativeLines.gif') top;
   color: black;
 }
 #listTable td.description a {
