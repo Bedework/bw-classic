@@ -474,7 +474,7 @@ h2 {
   text-decoration: none;
   border-bottom: 1px solid #ccc;
   border-top: 1px solid #ccc;
-  background: #f0eee5 url('../../images/tentativeLines.gif') top;
+  background: #eee url('../../images/tentativeLines.gif') top;
   color: black;
 }
 #monthCalendarTable a.holiday:link,
