@@ -1036,7 +1036,7 @@ a.calendarAdd img {
   text-align: center;
   font-size: 0.8em;
   font-weight: normal;
-  padding: 4px;
+  padding: 0;
   margin: 0;
 }
 #freeBusy th.date,
@@ -1053,6 +1053,11 @@ a.calendarAdd img {
   color: #ddd;
   background-color: #ddd;
 }
+#freeBusy td.tentative,
+#freeBusyKey td.tentative {
+  color: #DFE7FB;
+  background: #DFE7FB url('../../resources/tentativeLines.gif') top;
+}
 #freeBusyKey {
   margin: 0.5em auto 1em auto;
 }
@@ -1064,6 +1069,17 @@ a.calendarAdd img {
   background-color: transparent;
   display: block;
   padding: 6px 10px;
+  width: 10px;
+  height: 10px;
+  text-decoration: none;
+}
+#freeBusy td.tentative a  {
+  color: #DFE7FB;
+  background-color: transparent;
+  display: block;
+  padding: 6px 10px;
+  width: 10px;
+  height: 10px;
   text-decoration: none;
 }
 #freeBusy td.busy a {
@@ -1071,10 +1087,13 @@ a.calendarAdd img {
   background-color: transparent;
   display: block;
   padding: 6px 10px;
+  width: 10px;
+  height: 10px;
   text-decoration: none;
 }
 #freeBusy td.busy a:hover,
-#freeBusy td.free a:hover {
+#freeBusy td.free a:hover,
+#freeBusy td.tentative a:hover  {
   color: black;
   background-color: yellow;
   text-decoration: none;

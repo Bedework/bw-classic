@@ -2201,18 +2201,16 @@
             <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
             <xsl:variable name="startDate"><xsl:value-of select="substring(../start,1,8)"/>T<xsl:value-of select="start"/>00</xsl:variable>
             <xsl:variable name="minutes" select="length"/>
-            <xsl:choose>
-              <xsl:when test="fbtype = '0'">
-                <td class="busy">
-                  <a href="{$initEvent}?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
-                </td>
-              </xsl:when>
-              <xsl:otherwise>
-                <td class="free">
-                  <a href="{$initEvent}?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
-                </td>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:variable name="fbClass">
+              <xsl:choose>
+                <xsl:when test="fbtype = '0'">busy</xsl:when>
+                <xsl:when test="fbtype = '3'">tentative</xsl:when>
+                <xsl:otherwise>free</xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <td class="{$fbClass}">
+              <a href="{$initEvent}?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
+            </td>
           </xsl:for-each>
         </tr>
       </xsl:for-each>
@@ -2225,6 +2223,9 @@
         <td>&#160;</td>
         <td class="busy">*</td>
         <td>busy</td>
+        <td>&#160;</td>
+        <td class="tentative">*</td>
+        <td>tentative</td>
         <td>&#160;</td>
         <td>
           <form name="calendarShareForm" action="{$freeBusy-fetch}">
