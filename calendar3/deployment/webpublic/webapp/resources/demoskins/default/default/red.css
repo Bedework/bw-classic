@@ -545,12 +545,22 @@ h2 {
   /*opacity: .80;
   filter: alpha(opacity=80);*/
 }
-#monthCalendarTable a:hover span.eventTipStatus {
+
+#monthCalendarTable a:hover span.eventTipStatusCancelled {
   display: block;
   color: white;
   background-color: #333;
   padding: 2px;
   margin-bottom: 6px;
+  text-align: center;
+}
+#monthCalendarTable a:hover span.eventTipStatusTentative {
+  display: block;
+  color: black;
+  background: #eee url('../../images/tentativeLines.gif') top;
+  padding: 2px;
+  margin-bottom: 6px;
+  border: 1px solid #ccc;
   text-align: center;
 }
 a.gridAdd {
