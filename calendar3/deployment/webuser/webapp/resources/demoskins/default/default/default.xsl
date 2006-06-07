@@ -21,7 +21,7 @@
        set to the application root, but for the personal calendar
        this should be changed to point to a
        web server over https to avoid mixed content errors, e.g.,
-  <xsl:variable name="resourcesRoot" select="'https://mywebserver.edu/myresourcesdir'"/>
+  <xsl:variable name="resourcesRoot">https://mywebserver.edu/myresourcesdir</xsl:variable>
     -->
   <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
 

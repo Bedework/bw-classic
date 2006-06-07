@@ -46,9 +46,6 @@ body {
   color: #333;
   text-decoration: none;
 }
-#titleBar {
-  display: none;
-}
 #curDateRangeTable {
   width: 100%;
   height: 26px;
@@ -471,6 +468,17 @@ body {
   background-color: #ccc;
   color: black;
 }
+#monthCalendarTable a.eventTentative:link,
+#monthCalendarTable a.eventTentative:visited,
+#monthCalendarTable a.eventTentative:active  {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  background: #f0eee5 url('../../images/tentativeLines.gif') top;
+  color: black;
+}
 #monthCalendarTable a.holiday:link,
 #monthCalendarTable a.holiday:visited,
 #monthCalendarTable a.holiday:active  {
@@ -485,6 +493,7 @@ body {
 #monthCalendarTable a.eventLinkA:hover,
 #monthCalendarTable a.eventLinkB:hover,
 #monthCalendarTable a.eventCancelled:hover,
+#monthCalendarTable a.eventTentative:hover,
 #monthCalendarTable a.holiday:hover  {
   display: block;
   padding: 0.1em 0.2em 0.1em 0.2em;
@@ -522,8 +531,6 @@ body {
   color: black;
   padding: 4px;
   border: 1px solid #333;
-  /*opacity: .80;
-  filter: alpha(opacity=80);*/
 }
 #monthCalendarTable a:hover span.eventTipReverse {
   display: block;
@@ -535,8 +542,6 @@ body {
   color: black;
   padding: 4px;
   border: 1px solid #333;
-  /*opacity: .80;
-  filter: alpha(opacity=80);*/
 }
 #monthCalendarTable a:hover span.eventTipStatus {
   display: block;
@@ -687,6 +692,20 @@ a.gridAdd {
   background-color: #fff;
   color: black;
   width: 100%;
+}
+#listTable td.description {
+  text-align: left;
+  background-color: white;
+  color: black;
+  width: 100%;
+}
+#listTable td.bwStatusCancelled {
+  background-color: #ddd;
+  color: black;
+}
+#listTable td.bwStatusTentative {
+  background: white url('../../images/tentativeLines.gif') top;
+  color: black;
 }
 #listTable td.description a {
   display: block;

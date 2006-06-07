@@ -509,7 +509,14 @@
 
   <!--==== SINGLE EVENT ====-->
   <xsl:template match="event">
-    <h2>
+    <xsl:variable name="statusClass">
+      <xsl:choose>
+        <xsl:when test="status='CANCELLED'">bwStatusCancelled</xsl:when>
+        <xsl:when test="status='TENTATIVE'">bwStatusTentative</xsl:when>
+        <xsl:otherwise>bwStatusConfirmed</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <h2 class="{$statusClass}">
       <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
@@ -761,7 +768,8 @@
                 </xsl:choose>
                 <xsl:variable name="descriptionClass">
                   <xsl:choose>
-                    <xsl:when test="status='CANCELLED'">description cancelled</xsl:when>
+                    <xsl:when test="status='CANCELLED'">description bwStatusCancelled</xsl:when>
+                    <xsl:when test="status='TENTATIVE'">description bwStatusTentative</xsl:when>
                     <xsl:otherwise>description</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
@@ -893,6 +901,7 @@
       <xsl:choose>
         <!-- Special styles for the month grid -->
         <xsl:when test="status='CANCELLED'">eventCancelled</xsl:when>
+        <xsl:when test="status='TENTATIVE'">eventTentative</xsl:when>
         <xsl:when test="calendar/name='Holidays'">holiday</xsl:when>
         <!-- Alternating colors for all standard events -->
         <xsl:when test="position() mod 2 = 1">eventLinkA</xsl:when>
