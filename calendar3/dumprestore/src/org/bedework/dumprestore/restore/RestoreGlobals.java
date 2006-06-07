@@ -95,6 +95,16 @@ public class RestoreGlobals {
    */
   public boolean inOwnerKey;
 
+  /** True if we skip creation of special calendars. This is for the conversion
+   * from 3.0 which may have a lot of empty special calendars created
+   */
+  public boolean skipSpecialCals;
+
+  /** True if we fix calendar type of special calendars. This is for the conversion
+   * from 3.0
+   */
+  public boolean fixCaltype;
+
   /** Set false at start of entity, set true on entity error
    */
   public boolean entityError;

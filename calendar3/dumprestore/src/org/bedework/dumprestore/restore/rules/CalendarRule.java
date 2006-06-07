@@ -54,6 +54,7 @@
 package org.bedework.dumprestore.restore.rules;
 
 import org.bedework.calfacade.BwCalendar;
+import org.bedework.calfacade.BwSystem;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 
 /**
@@ -71,9 +72,54 @@ public class CalendarRule extends EntityRule {
 
   public void end(String ns, String name) throws Exception {
     BwCalendar entity = (BwCalendar)pop();
+    boolean special = false;
+
     globals.calendars++;
 
     fixSharableEntity(entity, "Calendar");
+
+    if ((globals.fixCaltype || globals.skipSpecialCals) &&
+        entity.getCalType() == BwCalendar.calTypeFolder) {
+      // might need to fix if from 3.0
+      BwSystem sys = globals.syspars;
+      String calpath = entity.getPath();
+      String[] pes = calpath.split("/");
+      int pathLength = pes.length - 1;  // First element is empty string
+
+      if ((pathLength == 3) &&
+          sys.getUserCalendarRoot().equals(pes[1])) {
+        String calname = pes[3];
+
+        if (!calname.equals(entity.getName())) {
+          throw new Exception("Got path wrong - len = " + pathLength +
+                              " path = " + calpath +
+                              " calname = " + calname);
+        }
+
+        if (calname.equals(sys.getDefaultTrashCalendar())) {
+          entity.setCalType(BwCalendar.calTypeTrash);
+          special = true;
+        } else if (calname.equals(sys.getDeletedCalendar())) {
+          entity.setCalType(BwCalendar.calTypeDeleted);
+          special = true;
+        } else if (calname.equals(sys.getBusyCalendar())) {
+          entity.setCalType(BwCalendar.calTypeBusy);
+          special = true;
+        } else if (calname.equals(sys.getUserInbox())) {
+          entity.setCalType(BwCalendar.calTypeInbox);
+          special = true;
+        } else if (calname.equals(sys.getUserOutbox())) {
+          entity.setCalType(BwCalendar.calTypeOutbox);
+          special = true;
+        } else if (entity.getCalendarCollection()) {
+          entity.setCalType(BwCalendar.calTypeCollection);
+        }
+      }
+    }
+
+    if (special && globals.skipSpecialCals) {
+      return;
+    }
 
     try {
       if (globals.rintf != null) {

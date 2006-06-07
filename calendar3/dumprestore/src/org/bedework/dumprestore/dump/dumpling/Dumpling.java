@@ -204,9 +204,9 @@ public abstract class Dumpling implements Defs {
 
     if (entity.getCalendar() == null) {
       // Sould check validity here. Only valid for calendar roots.
-      taggedVal("calendar", "");
+      taggedVal("calendar-path", "");
     } else {
-      taggedVal("calendar", entity.getCalendar().getPath());
+      taggedVal("calendar-path", entity.getCalendar().getPath());
     }
   }
 

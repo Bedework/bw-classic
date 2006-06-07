@@ -295,6 +295,10 @@ public class Restore implements Defs {
         // done earlier
       } else if (args[i].equals("-initSyspars")) {
         // done earlier
+      } else if (args[i].equals("-skipspecialcals")) {
+        globals.skipSpecialCals = true;
+      } else if (args[i].equals("-fixcaltype")) {
+        globals.fixCaltype = true;
       } else if (argpar("-f", args, i)) {
         i++;
         filename = args[i];

@@ -174,12 +174,17 @@ public abstract class EntityFieldRule extends RestoreRule {
       return true;
     }
 
-    if (name.equals("calendar")) {
+    if (name.equals("calendar-path")) {
       String path = stringFld();
 
       if ((path != null) && (path.length() > 0)) {
         entity.setCalendar(calendarFld());
       } // Otherwise assume root calendar
+      return true;
+    }
+
+    if (name.equals("calendar")) {
+      // 3-0 tag - ignore
       return true;
     }
 
