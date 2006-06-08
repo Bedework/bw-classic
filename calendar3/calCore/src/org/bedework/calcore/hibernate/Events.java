@@ -1071,6 +1071,12 @@ public class Events extends CalintfHelper implements EventsI {
         calTerm.empty = false;
       }
     } else {
+      /*
+      if (calendar.getId() != CalFacadeDefs.unsavedItemKey) {
+        getSess().reAttach(calendar);
+      }
+      */
+
       Iterator it = calendar.getChildren().iterator();
       while (it.hasNext()) {
         appendCalendarClause(sb, qevName, (BwCalendar)it.next(), calTerm,

@@ -99,7 +99,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
                          PEActionForm form) throws Throwable {
     /* Check access
      */
-    if (!form.getUserAuth().isSuperUser()) {
+    if (!form.getCurUserSuperUser()) {
       return "noAccess";
     }
 
@@ -137,46 +137,46 @@ public class PEUpdateAGAction extends PEAbstractAction {
         form.getErr().emit("org.bedework.error.alreadymember", mbr);
         return "retry";
       }
-        
+
       BwPrincipal newMbr = null;
-      
+
       if ("user".equals(kind)) {
         BwUser u = svci.findUser(mbr);
-        
+
         if (u == null) {
           u = new BwUser(mbr);
           svci.addUser(u);
           u = svci.findUser(mbr);
         }
-        
+
         /* Ensure the authorised user exists - create an entry if not
          *
          * @param val      BwUser account
          */
         UserAuth uauth = svci.getUserAuth();
-        
+
         BwAuthUser au = uauth.getUser(u.getAccount());
-        
+
         if ((au != null) && (au.getUsertype() == UserAuth.noPrivileges)) {
           return "notAllowed";
         }
-        
+
         if (au == null) {
           au = new BwAuthUser(u, UserAuth.publicEventUser);
           uauth.updateUser(au);
         }
-        
+
         newMbr = u;
       } else {
         // group
         newMbr = (BwAdminGroup)adgrps.findGroup(mbr);
-        
+
         if (newMbr == null) {
           form.getErr().emit("org.bedework.error.unknowgroup", mbr);
           return "retry";
         }
       }
-      
+
       adgrps.addMember(updgrp, newMbr);
       updgrp.addGroupMember(newMbr);
     } else if (getReqPar(request, "removeGroupMember") != null) {
@@ -211,14 +211,14 @@ public class PEUpdateAGAction extends PEAbstractAction {
         adgrps.addGroup(updgrp);
       } catch (CalFacadeException cfe) {
         if (CalFacadeException.duplicateAdminGroup.equals(cfe.getMessage())) {
-          form.getErr().emit("org.bedework.error.duplicate.admingroup", 
+          form.getErr().emit("org.bedework.error.duplicate.admingroup",
                              updgrp.getAccount());
           return "retry";
         } else {
           throw cfe;
         }
       }
-      
+
       form.assignAddingAdmingroup(false);
     } else {
       if (!validateAdminGroup(form)) {
@@ -367,7 +367,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
 
     return ok;
   }
-  
+
   private boolean validateKind(String kind, PEActionForm form) {
     if (kind == null) {
       form.getErr().emit("org.bedework.error.missingreqpar", "kind");
@@ -377,7 +377,7 @@ public class PEUpdateAGAction extends PEAbstractAction {
     if ("group".equals(kind) || "user".equals(kind)) {
       return true;
     }
-    
+
     form.getErr().emit("org.bedework.error.badrequest", kind);
     return false;
   }

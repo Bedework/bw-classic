@@ -130,7 +130,7 @@ public class EndSubscribeAction extends BwAbstractAction {
       return forwardNotFound;
     }
 
-    if (sub.getUnremoveable() && !form.getUserAuth().isSuperUser()) {
+    if (sub.getUnremoveable() && !form.getCurUserSuperUser()) {
       return forwardNoAccess; // Only super user can remove the unremovable
     }
 

@@ -80,7 +80,7 @@ public class PEFetchUpdateAGListAction extends PEAbstractAction {
                          PEActionForm form) throws Throwable {
     /** Check access
      */
-    if (!form.getUserAuth().isSuperUser()) {
+    if (!form.getCurUserSuperUser()) {
       return "noAccess";
     }
 

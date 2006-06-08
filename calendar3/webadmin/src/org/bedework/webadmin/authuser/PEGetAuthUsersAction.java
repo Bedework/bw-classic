@@ -80,13 +80,13 @@ public class PEGetAuthUsersAction extends PEAbstractAction {
                          PEActionForm form) throws Throwable {
     /** Check access
      */
-    if (!form.getUserAuth().isSuperUser()) {
+    if (!form.getCurUserSuperUser()) {
       return "noAccess";
     }
 
     /** Get the list
      */
-    form.setAuthUsers(retrieveUserAuth(form).getAll());
+    form.setAuthUsers(form.fetchSvci().getUserAuth().getAll());
 
     return "continue";
   }

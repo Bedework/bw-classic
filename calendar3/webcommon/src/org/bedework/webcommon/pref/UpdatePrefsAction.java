@@ -110,7 +110,7 @@ public class UpdatePrefsAction extends BwAbstractAction {
     /* Refetch the prefs */
     if (getReqPar(request, "user") != null) {
       /* Fetch a given users preferences */
-      if (!form.getUserAuth().isSuperUser()) {
+      if (!form.getCurUserSuperUser()) {
         return "noAccess"; // First line of defence
       }
 

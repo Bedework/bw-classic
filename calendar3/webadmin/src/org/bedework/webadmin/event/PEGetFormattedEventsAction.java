@@ -55,10 +55,14 @@
 package org.bedework.webadmin.event;
 
 import org.bedework.appcommon.FormattedEvents;
+import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.filter.BwCreatorFilter;
+import org.bedework.calfacade.svc.BwCalSuite;
+import org.bedework.calfacade.svc.BwSubscription;
+import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
 import org.bedework.webcommon.BwSession;
@@ -94,7 +98,7 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
     form.assignAlertEvent(false);
     form.assignAddingEvent(false);
 
-    form.setFormattedEvents(new FormattedEvents(form.fetchSvci(), 
+    form.setFormattedEvents(new FormattedEvents(form.fetchSvci(),
                                                 getEvents(request, false, form),
                                                 form.getCalInfo(),
                                                 form.fetchSvci().getTimezones()));
@@ -115,6 +119,8 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
        */
     }
 
+    CalSvcI svci = form.fetchSvci();
+
     BwDateTime fromDate = null;
 
     if (!form.getListAllEvents()) {
@@ -123,18 +129,25 @@ public class PEGetFormattedEventsAction extends PEAbstractAction {
 
     BwCreatorFilter crefilter = null;
     boolean ignoreCreator = "yes".equals(getReqPar(request, "ignoreCreator"));
-    
-    if (!form.getUserAuth().isSuperUser()) {
+
+    if (!form.getCurUserSuperUser()) {
       ignoreCreator = false;
     }
-    
+
     if (!ignoreCreator) {
       crefilter = new BwCreatorFilter();
-      crefilter.setCreator(form.fetchSvci().getUser());
+      crefilter.setCreator(svci.getUser());
     }
 
-    return form.fetchSvci().getEvents(null, crefilter, fromDate, null,
-                                      CalFacadeDefs.retrieveRecurExpanded);
+    BwCalSuite cs = svci.getCalSuite();
+    BwSubscription sub = null;
+    if (cs != null) {
+      BwCalendar cal = svci.getCalendar(cs.getRootCalendar().getPath());
+      sub = BwSubscription.makeSubscription(cal);
+    }
+
+    return svci.getEvents(sub, crefilter, fromDate, null,
+                          CalFacadeDefs.retrieveRecurExpanded);
   }
 
   private BwDateTime todaysDateTime(PEActionForm form) throws Throwable {

@@ -83,7 +83,7 @@ public class PEFetchAuthAction extends PEAbstractAction {
                          PEActionForm form) throws Throwable {
     /** Check access
      */
-    if (!form.getUserAuth().isSuperUser()) {
+    if (!form.getCurUserSuperUser()) {
       return "noAccess";
     }
 
@@ -99,7 +99,7 @@ public class PEFetchAuthAction extends PEAbstractAction {
       form.getErr().emit("org.bedework.client.error.nosuchuserid", userid);
       return "notFound";
     }
-    
+
     if (debug) {
       logIt("Retrieved auth user " + au);
     }

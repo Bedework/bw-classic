@@ -80,7 +80,7 @@ public class PEInitAddAlertAction extends PEAbstractAction {
                          PEActionForm form) throws Throwable {
     /** Check access and set request parameters
      */
-    if (!form.getUserAuth().isAlertUser()) {
+    if (!form.getCurUserAlerts()) {
       return "noAccess";
     }
 

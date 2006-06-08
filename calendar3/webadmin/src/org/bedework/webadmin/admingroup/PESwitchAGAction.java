@@ -78,7 +78,7 @@ public class PESwitchAGAction extends PEAbstractAction {
 
     /** Check access
      */
-    if (!form.getUserAuth().isContentAdminUser()) {
+    if (!form.getCurUserContentAdminUser()) {
       return "noAccess";
     }
 

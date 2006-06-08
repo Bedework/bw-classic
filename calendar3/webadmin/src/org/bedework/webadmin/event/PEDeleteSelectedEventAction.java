@@ -86,7 +86,7 @@ public class PEDeleteSelectedEventAction extends PEAbstractAction {
     /** Check access and set request parameters
      */
     if (alerts) {
-      if (!form.getUserAuth().isAlertUser()) {
+      if (!form.getCurUserAlerts()) {
         return "noAccess";
       }
     } else {

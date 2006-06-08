@@ -85,7 +85,7 @@ public class UpdateUserInfoAction extends BwAbstractAction {
                          BwActionFormBase form) throws Throwable {
     /** Check access
      */
-    if (!form.getUserAuth().isSuperUser()) {
+    if (!form.getCurUserSuperUser()) {
       return "noAccess";
     }
 

@@ -186,4 +186,15 @@ public class BwCalSuite extends BwShareableDbentity {
 
     return sb.toString();
   }
+
+  public Object clone() {
+    BwCalSuite cs = new BwCalSuite();
+
+    copyTo(cs);
+    cs.setName(getName());
+    cs.setGroup((BwAdminGroup)getGroup().clone());
+    cs.setRootCalendar((BwCalendar)getRootCalendar().clone());
+
+    return cs;
+  }
 }

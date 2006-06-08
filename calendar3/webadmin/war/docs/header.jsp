@@ -184,19 +184,11 @@ try {
 
   <userInfo>
     <!-- user type -->
-    <logic:equal name="peForm" property="userAuth.contentAdminUser" value="true" >
-      <contentAdminUser>true</contentAdminUser>
-    </logic:equal>
-    <logic:notEqual name="peForm" property="userAuth.contentAdminUser" value="true" >
-      <contentAdminUser>false</contentAdminUser>
-    </logic:notEqual>
+    <bw:emitText name="peForm" property="curUserContentAdminUser"
+                 tagName="contentAdminUser" />
 
-    <logic:equal name="peForm" property="userAuth.superUser" value="true">
-      <superUser>true</superUser>
-    </logic:equal>
-    <logic:notEqual name="peForm" property="userAuth.superUser" value="true">
-      <superUser>false</superUser>
-    </logic:notEqual>
+    <bw:emitText name="peForm" property="curUserSuperUser"
+                 tagName="superUser" />
 
     <logic:equal name="peForm" property="userMaintOK" value="true" >
       <userMaintOK>true</userMaintOK>

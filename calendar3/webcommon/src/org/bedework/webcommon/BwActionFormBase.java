@@ -78,7 +78,6 @@ import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
 import org.bedework.calfacade.svc.EventInfo;
-import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.mail.MailerIntf;
@@ -171,11 +170,13 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
 
   /** Auth prefs for the currently logged in user
    */
-  private BwAuthUserPrefs authUserPrefs;
+  private BwAuthUserPrefs curAuthUserPrefs;
 
-  private boolean authUserAlerts;
-  private boolean authUserPublicEvents;
-  private boolean authUserSuperUser;
+  /* Settings for current authenticated user */
+  private boolean curUserAlerts;
+  private boolean curUserPublicEvents;
+  private boolean curUserContentAdminUser;
+  private boolean curUserSuperUser;
 
   /* ....................................................................
    *                       Calendar suites
@@ -492,71 +493,86 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   }
 
   /* ====================================================================
-   *                   UserAuth Methods
-   * DO NOT return userAuth. We don't want the user auth object
-   * accessible to the request. Use the RO object instead.
+   *                   Current authenticated user Methods
+   * DO NOT set with setXXX. Use assign
    * ==================================================================== */
 
   /**
    * @param val
    */
-  public void setAuthUserPrefs(BwAuthUserPrefs val) {
-    authUserPrefs = val;
+  public void setCurAuthUserPrefs(BwAuthUserPrefs val) {
+    curAuthUserPrefs = val;
   }
 
   /**
    * @return auth user prefs
    */
-  public BwAuthUserPrefs getAuthUserPrefs() {
-    return authUserPrefs;
+  public BwAuthUserPrefs getCurAuthUserPrefs() {
+    return curAuthUserPrefs;
   }
 
-  /** Current auth user rights
+  /** Current user rights
    *
    * @param val
    */
-  public void assignAuthUserAlerts(boolean val) {
-    authUserAlerts = val;
+  public void assignCurUserAlerts(boolean val) {
+    curUserAlerts = val;
   }
 
-  /** Current auth user rights
+  /** Current user rights
   *
    * @return alerts
    */
-  public boolean getAuthUserAlerts() {
-    return authUserAlerts;
+  public boolean getCurUserAlerts() {
+    return curUserAlerts;
   }
 
-  /** Current auth user rights
+  /** Current user rights
    *
    * @param val
    */
-  public void assignAuthUserPublicEvents(boolean val) {
-    authUserPublicEvents = val;
+  public void assignCurUserPublicEvents(boolean val) {
+    curUserPublicEvents = val;
   }
 
-  /** Current auth user rights
+  /** Current user rights
   *
    * @return true for user who can edit public events
    */
-  public boolean getAuthUserPublicEvents() {
-    return authUserPublicEvents;
+  public boolean getCurUserPublicEvents() {
+    return curUserPublicEvents;
   }
 
-  /** Current auth user rights
+  /** True for contentAdminUser
+   *
+   * @param val boolean
+   */
+  public void assignCurUserContentAdminUser(boolean val) {
+    curUserContentAdminUser = val;
+  }
+
+  /** True for contentAdminUser
+   *
+   * @return boolean
+   */
+  public boolean getCurUserContentAdminUser() {
+    return curUserContentAdminUser;
+  }
+
+  /** Current user rights
    *
    * @param val true for superuser
    */
-  public void assignAuthUserSuperUser(boolean val) {
-    authUserSuperUser = val;
+  public void assignCurUserSuperUser(boolean val) {
+    curUserSuperUser = val;
   }
 
-  /** Current auth user rights
+  /** Current user rights
   *
    * @return true for superuser
    */
-  public boolean getAuthUserSuperUser() {
-    return authUserSuperUser;
+  public boolean getCurUserSuperUser() {
+    return curUserSuperUser;
   }
 
   /* ====================================================================
@@ -799,10 +815,10 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     return calsvci;
   }
 
-  /** Returns a read only form for the jsp.
+  /* * Returns a read only form for the jsp.
    *
    * @return UserAuth
-   */
+   * /
   public UserAuth getUserAuth() {
     try {
       return fetchSvci().getUserAuth().getUserAuthRO();
@@ -810,13 +826,13 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
       err.emit(t);
       return null;
     }
-  }
+  } */
 
-  /** Don't call this getUserAuth so it's hidden from the
+  /* * Don't call this getUserAuth so it's hidden from the
    * request stream
    *
    * @return UserAuth
-   */
+   * /
   public UserAuth retrieveUserAuth() {
     try {
       return fetchSvci().getUserAuth();
@@ -824,7 +840,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
       err.emit(t);
       return null;
     }
-  }
+  }*/
 
   /** Set flag to show if this user has any admin rights.
    *

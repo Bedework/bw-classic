@@ -80,13 +80,14 @@ public class PEDeleteAuthAction extends PEAbstractAction {
                          PEActionForm form) throws Throwable {
     /** Check access
      */
-    if (!form.getUserAuth().isSuperUser()) {
+    if (!form.getCurUserSuperUser()) {
       return "noAccess";
     }
 
     CalSvcI svci = form.fetchSvci();
 
-    svci.getUserAuth().removeAuth(getAuthUser(form));
+    // XXX This was set up to remove the current auth user,
+    // svci.getUserAuth().removeAuth("SHould be the selected user");
 
     form.getMsg().emit("org.bedework.client.message.authuser.removed");
 

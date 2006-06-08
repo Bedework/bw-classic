@@ -2080,7 +2080,7 @@ public class CalSvc extends CalSvcI {
      * 'special' calendars.
      */
 
-    if (currentView != null) {
+    if (!isPublicAdmin() && currentView != null) {
       if (debug) {
         trace("Use current view \"" + currentView.getName() + "\"");
       }
@@ -2394,8 +2394,15 @@ public class CalSvc extends CalSvcI {
                                        pars.getCalSuite());
         }
 
-        currentCalSuite = new BwCalSuiteWrapper(cs);
-        pars.setUser(cs.getGroup().getOwner().getAccount());
+        currentCalSuite = new BwCalSuiteWrapper((BwCalSuite)cs.clone());
+        /* For administrative use we use the account of the admin group the user
+         * is a direct member of - already set.
+         *
+         * For public clients we use the calendar suite owning group.
+         */
+        if (!pars.getPublicAdmin()) {
+          pars.setUser(cs.getGroup().getOwner().getAccount());
+        }
       }
 
       boolean userCreated = cali.init(null,

@@ -55,7 +55,6 @@ package org.bedework.webcommon;
 
 // I only need this because request.getInitParameterNames doesn't work
 import org.bedework.appcommon.BedeworkDefs;
-import org.bedework.appcommon.UserAuthPar;
 import org.bedework.calenv.CalEnv;
 import org.bedework.calenv.CalOptions;
 import org.bedework.calfacade.BwCalendar;
@@ -197,8 +196,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction
     }
 
     if (form.getNewSession()) {
-      // First time through here for this session
-
       // Set to default view
       setView(null, form);
     }
@@ -269,6 +266,33 @@ public abstract class BwAbstractAction extends UtilAbstractAction
                          HttpServletResponse response,
                          BwActionFormBase form) throws Throwable {
     if (getPublicAdmin(form)) {
+      CalSvcI svc = form.fetchSvci();
+
+      UserAuth ua = svc.getUserAuth();
+      BwAuthUser au = ua.getUser(form.getCurrentUser());
+
+      // Refresh current auth user prefs.
+      BwAuthUserPrefs prefs = au.getPrefs();
+      if (prefs == null) {
+        prefs = new BwAuthUserPrefs();
+      }
+
+      form.setCurAuthUserPrefs(prefs);
+      if (form.getNewSession()) {
+        // First time through here for this session. svci is still set up for the
+        // authenticated user. Set access rights.
+
+        int rights = au.getUsertype();
+
+        form.assignCurUserAlerts((rights & UserAuth.alertUser) != 0);
+        form.assignCurUserPublicEvents((rights & UserAuth.publicEventUser) != 0);
+        form.assignCurUserContentAdminUser((rights & UserAuth.contentAdminUser) != 0);
+        form.assignCurUserSuperUser((rights & UserAuth.superUser) != 0);
+
+        form.assignAuthorisedUser(rights != UserAuth.noPrivileges);
+        svc.setSuperUser((rights & UserAuth.superUser) != 0);
+      }
+
       if (debug) {
         logIt("form.getGroupSet()=" + form.getGroupSet());
       }
@@ -277,14 +301,11 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       form.setAdminUserId(form.fetchSvci().getUser().getAccount());
 
       if (debug) {
-        logIt("-------- isSuperUser: " + form.getUserAuth().isSuperUser());
-      }
-
-      if (!form.getAuthorisedUser()) {
-        return forwardNoAccess;
+        logIt("-------- isSuperUser: " + form.getCurUserSuperUser());
       }
 
       int temp = checkGroup(request, form, true);
+
       if (temp != forwardNoAction) {
         if (debug) {
           logIt("form.getGroupSet()=" + form.getGroupSet());
@@ -292,9 +313,9 @@ public abstract class BwAbstractAction extends UtilAbstractAction
         return temp;
       }
 
-      /** Ensure we have prefs and other values for the AuthUser
-       */
-      setAuthUser(form);
+      if (!form.getAuthorisedUser()) {
+        return forwardNoAccess;
+      }
 
       return forwardNoAction;
     }
@@ -512,7 +533,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
 
     Boolean bool = getBooleanReqPar(request, "unremoveable");
     if (bool != null) {
-      if (!form.getUserAuth().isSuperUser()) {
+      if (!form.getCurUserSuperUser()) {
         return forwardNoAccess; // Only super user for that flag
       }
 
@@ -924,7 +945,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
         }
 
         BwAdminGroup adg = (BwAdminGroup)adgrps.findGroup(reqpar);
-        if (adg != null) {
+        if (adg == null) {
           if (debug) {
             logIt("No user admin group with name " + reqpar);
           }
@@ -946,7 +967,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
         return forwardNoAccess;
       }
 
-      if (initCheck || !form.getUserAuth().isSuperUser()) {
+      if (initCheck || !form.getCurUserSuperUser()) {
         // Always restrict to groups of which we are a member
         adgs = adgrps.getGroups(user);
       } else {
@@ -960,7 +981,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
 
         boolean noGroupAllowed =
             form.getEnv().getAppBoolProperty("nogroupallowed");
-        if (form.getUserAuth().isSuperUser() || noGroupAllowed) {
+        if (svci.getUserAuth().isSuperUser() || noGroupAllowed) {
           form.assignAdminGroup(null);
           return forwardNoAction;
         }
@@ -986,11 +1007,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       form.getErr().emit(t);
       return forwardError;
     }
-  }
-
-  protected BwAuthUser getAuthUser(BwActionFormBase form) throws CalFacadeException {
-    UserAuth ua = form.retrieveUserAuth();
-    return ua.getUser(form.getCurrentUser());
   }
 
   /** Override to return true if this is an admin client
@@ -1077,16 +1093,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction
     return true;
   }
 
-  /** Get a UserAuth object
-   *
-   * @param form
-   * @return UserAuth
-   * @throws CalFacadeException
-   */
-  protected UserAuth retrieveUserAuth(BwActionFormBase form) throws CalFacadeException {
-    return form.fetchSvci().getUserAuth();
-  }
-
   /** Update an authorised users preferences to reflect usage.
    *
    * @param form
@@ -1103,7 +1109,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       return;
     }
 
-    UserAuth ua = retrieveUserAuth(form);
+    UserAuth ua = form.fetchSvci().getUserAuth();
     BwAuthUser au = ua.getUser(form.getCurrentUser());
     BwAuthUserPrefs prefs = au.getPrefs();
     if (prefs == null) {
@@ -1346,15 +1352,15 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       }
     }
 
-    int access = getAccess(request, messages);
-    if (debug) {
-      debugMsg("Container says that current user has the type: " + access);
-    }
+    //int access = getAccess(request, messages);
+    //if (debug) {
+    //  debugMsg("Container says that current user has the type: " + access);
+    //}
 
     /** Ensure we have a CalAdminSvcI object
      */
     String calSuite = form.retrieveConfig().getCalSuite();
-    checkSvci(request, form, s, access, adminUserId, calSuite,
+    checkSvci(request, form, s, adminUserId, calSuite,
               getPublicAdmin(form), false, debug);
 
     /*
@@ -1431,9 +1437,9 @@ public abstract class BwAbstractAction extends UtilAbstractAction
     form.setCurrentCalSuite(cs);
     form.assignAdminGroup(adg);
 
-    int access = getAccess(request, getMessages());
+    //int access = getAccess(request, getMessages());
 
-    if (!checkSvci(request, form, form.getSession(), access,
+    if (!checkSvci(request, form, form.getSession(),
                    adg.getOwner().getAccount(),
                    calSuiteName, true, isMember(adg, form), debug)) {
       return forwardNoAccess;
@@ -1457,7 +1463,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction
    * @param request       Needed to locate session
    * @param form          Action form
    * @param sess          Session object for global parameters
-   * @param access        int unadjusted access
    * @param user          String user we want to be
    * @param calSuite      Name of calendar suite we are administering
    * @param publicAdmin   true if this is an administrative client
@@ -1471,7 +1476,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction
   private boolean checkSvci(HttpServletRequest request,
                             BwActionFormBase form,
                             BwSession sess,
-                            int access,
                             String user,
                             String calSuite,
                             boolean publicAdmin,
@@ -1497,9 +1501,38 @@ public abstract class BwAbstractAction extends UtilAbstractAction
         If so discard the svc interface
      */
     if (svci != null) {
+      /* Not the first time through here so for a public admin client we
+       * already have the authorised user's rights set in the form.
+       */
+
       if (!svci.isOpen()) {
+        svci.flushAll();
         svci = null;
         info(".Svci interface discarded from old session");
+      } else if (publicAdmin) {
+
+        BwUser u = svci.getUser();
+        if (u == null) {
+          throw new CalFacadeException("Null user for public admin.");
+        }
+
+        canSwitch = canSwitch || form.getCurUserContentAdminUser() ||
+                    form.getCurUserSuperUser();
+
+        String curUser = u.getAccount();
+
+        if (!canSwitch && !user.equals(curUser)) {
+          /** Trying to switch but not allowed */
+          return false;
+        }
+
+        if (!user.equals(curUser)) {
+          /** Switching user */
+          svci.endTransaction();
+          svci.close();
+          svci.flushAll();
+          svci = null;
+        }
       }
     }
 
@@ -1509,9 +1542,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction
         debugMsg("CalSvcI-- Obtained from session for user " +
                           svci.getUser());
       }
-
-      // XXX access - disable use of roles
-      access = svci.getUserAuth().getUsertype();
     } else {
       if (debug) {
         debugMsg(".CalSvcI-- get new object for user " + user);
@@ -1527,10 +1557,8 @@ public abstract class BwAbstractAction extends UtilAbstractAction
 
       try {
         svci = new CalSvc();
-        if (publicAdmin || (user == null)) {
-          if (calSuite == null) {
-            runAsUser = form.getEnv().getAppProperty("run.as.user");
-          }
+        if ((user == null) && (calSuite == null)) {
+          runAsUser = form.getEnv().getAppProperty("run.as.user");
         }
 
         CalSvcIPars pars = new CalSvcIPars(user, //access,
@@ -1549,31 +1577,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
 
         cb.in(true);
 
-        UserAuth ua = null;
-        UserAuthPar par = new UserAuthPar();
-        par.svlt = servlet;
-        par.req = request;
 
-        if (publicAdmin) {
-          try {
-            ua = svci.getUserAuth(user, par);
-
-            form.assignAuthorisedUser(ua.getUsertype() != UserAuth.noPrivileges);
-            svci.setSuperUser((ua.getUsertype() & UserAuth.superUser) != 0);
-
-            // XXX access - disable use of roles
-            access = ua.getUsertype();
-
-            if (debug) {
-              debugMsg("UserAuth says that current user has the type: " +
-                       ua.getUsertype());
-            }
-          } catch (Throwable t) {
-            form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
-            form.getErr().emit(t);
-            return false;
-          }
-        }
       } catch (CalFacadeException cfe) {
         throw cfe;
       } catch (Throwable t) {
@@ -1581,42 +1585,23 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       }
     }
 
-    form.assignUserVO((BwUser)svci.getUser().clone());
+    BwUser u = svci.getUser();
+
+    form.assignUserVO((BwUser)u.clone());
 
     if (publicAdmin) {
-      canSwitch = canSwitch || ((access & UserAuth.contentAdminUser) != 0) ||
-                           ((access & UserAuth.superUser) != 0);
-
-      BwUser u = svci.getUser();
-      if (u == null) {
-        throw new CalFacadeException("Null user for public admin.");
-      }
-
-      String curUser = u.getAccount();
-
-      if (!canSwitch && !user.equals(curUser)) {
-        /** Trying to switch but not allowed */
-        return false;
-      }
-
-      if (!user.equals(curUser)) {
-        /** Switching user */
-        svci.setUser(user);
-        curUser = user;
-      }
-
-      form.assignCurrentAdminUser(curUser);
+      form.assignCurrentAdminUser(u.getAccount());
     }
 
     return true;
   }
 
-  /** This method determines the access rights of the current user based on
+  /* * This method determines the access rights of the current user based on
    * their assigned roles. There are two sections to this which appear to do
    * the same thing.
    *
-   * <p>They are there because some servlet containers (jetty for one)
-   * appeared to be broken. Role mapping does not appear to work reliably.
+   * <p>They are there because at some time servlet containers (jetty for one)
+   * appeared to be broken. Role mapping did not appear to work reliably.
    * This seems to have something to do with jetty doing internal redirects
    * to handle login. In the process it seems to lose the appropriate servlet
    * context and with it the mapping of roles.
@@ -1625,13 +1610,13 @@ public abstract class BwAbstractAction extends UtilAbstractAction
    * @param messages   MessageResources
    * @return int access
    * @throws CalFacadeException
-   */
+   * /
   private int getAccess(HttpServletRequest req,
                         MessageResources messages) throws CalFacadeException {
     int access = 0;
 
     /** This form works with broken containers.
-     */
+     * /
     if (req.isUserInRole(
           getMessages().getMessage("org.bedework.role.admin"))) {
       access += UserAuth.superUser;
@@ -1667,10 +1652,10 @@ public abstract class BwAbstractAction extends UtilAbstractAction
 
     if (req.isUserInRole("owner")) {
       access += UserAuth.publicEventUser;
-    } */
+    } * /
 
     return access;
-  }
+  }*/
 
   private Collection findAllCalSuites(CalSvcI svc,
                                       BwAdminGroup adg,
@@ -1689,25 +1674,6 @@ public abstract class BwAbstractAction extends UtilAbstractAction
     }
 
     return al;
-  }
-
-  /* Set information associated with the current auth user.
-   * Set the prefs on each request to reflect other session changes
-   */
-  private void setAuthUser(BwActionFormBase form) throws CalFacadeException {
-    BwAuthUser au = getAuthUser(form);
-    BwAuthUserPrefs prefs = au.getPrefs();
-    if (prefs == null) {
-      prefs = new BwAuthUserPrefs();
-    }
-
-    form.setAuthUserPrefs(prefs);
-
-    int rights = au.getUsertype();
-
-    form.assignAuthUserAlerts((rights & UserAuth.alertUser) != 0);
-    form.assignAuthUserPublicEvents((rights & UserAuth.publicEventUser) != 0);
-    form.assignAuthUserSuperUser((rights & UserAuth.superUser) != 0);
   }
 
   private void checkRefresh(BwActionFormBase form) {

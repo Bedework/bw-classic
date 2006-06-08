@@ -480,7 +480,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    * @return Collection  preferred categories
    */
   public Collection getPreferredCategories() {
-    return getAuthUserPrefs().getPreferredCategories();
+    return getCurAuthUserPrefs().getPreferredCategories();
   }
 
   /* ====================================================================
@@ -587,7 +587,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    * @return Collection  preferred sponsors
    */
   public Collection getPreferredSponsors() {
-    return getAuthUserPrefs().getPreferredSponsors();
+    return getCurAuthUserPrefs().getPreferredSponsors();
   }
 
   /* ====================================================================
@@ -683,7 +683,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    * @return Collection  preferred locations
    */
   public Collection getPreferredLocations() {
-    return getAuthUserPrefs().getPreferredLocations();
+    return getCurAuthUserPrefs().getPreferredLocations();
   }
 
   /* ====================================================================
@@ -748,7 +748,7 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    * @return Collection  preferred calendars
    */
   public Collection getPreferredCalendars() {
-    return getAuthUserPrefs().getPreferredCalendars();
+    return getCurAuthUserPrefs().getPreferredCalendars();
   }
 
   /* ====================================================================
@@ -761,7 +761,12 @@ public class PEActionForm extends BwActionFormBase implements PEDefs {
    * @return boolean    true if user maintenance is implemented.
    */
   public boolean getUserMaintOK() {
-    return retrieveUserAuth().getUserMaintOK();
+    try {
+      return fetchSvci().getUserAuth().getUserMaintOK();
+    } catch (Throwable t) {
+      err.emit(t);
+      return false;
+    }
   }
 
   /**
