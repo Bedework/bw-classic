@@ -3239,7 +3239,7 @@
         <th>Deleted?</th>-->
       </tr>
       <xsl:for-each select="subscription">
-        <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
+        <xsl:variable name="style" select="style"/>
         <tr>
           <td>
             <xsl:variable name="subname" select="name"/>
@@ -3250,7 +3250,7 @@
           <td>
             <xsl:value-of select="uri"/>
           </td>
-          <td>
+          <td class="{$style}">
             <xsl:value-of select="style"/>
           </td>
           <td class="center">
