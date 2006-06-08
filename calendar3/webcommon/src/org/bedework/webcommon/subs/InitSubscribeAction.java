@@ -73,6 +73,7 @@ import javax.servlet.http.HttpServletResponse;
  * <p>Parameters are:<ul>
  *      <li>"name"              Optional name of subscription</li>
  *      <li>"display"           Optional setting for display flag</li>
+ *      <li>"style"             Optional setting for style</li>
  *      <li>"affctsFreeBusy"    Optional setting for freebusy</li>
  *      <li>"calPath"           Path to local calendar</li>
  *      <li>"calUri"            URI of remote calendar</li>
@@ -151,6 +152,11 @@ public class InitSubscribeAction extends BwAbstractAction {
 
       sub = BwSubscription.makeSubscription(cal, name, display,
                                             affectsFreeBusy, false);
+    }
+
+    String style = getReqPar(request, "style");
+    if (style != null) {
+      sub.setStyle(style);
     }
 
     form.setSubscription(sub);
