@@ -1,0 +1,323 @@
+/* subscription colors for user client.
+   background-color must be "important" to override more
+   specific selectors in the default.css stylesheet */
+.FFFFFF {
+  background-color: #FFFFFF !important;
+  color: black;
+}
+.F8F8FF {
+  background-color: #F8F8FF !important;
+  color: black;
+}
+.FFFAF0 {
+  background-color: #FFFAF0 !important;
+  color: black;
+}
+.FFF5EE {
+  background-color: #FFF5EE !important;
+  color: black;
+}
+.EEE5DE {
+  background-color: #EEE5DE !important;
+  color: black;
+}
+.FFFFF0 {
+  background-color: #FFFFF0 !important;
+  color: black;
+}
+.FAF0E6 {
+  background-color: #FAF0E6 !important;
+  color: black;
+}
+.EEEEE0 {
+  background-color: #EEEEE0 !important;
+  color: black;
+}
+.FFFFE0 {
+  background-color: #FFFFE0 !important;
+  color: black;
+}
+.EEEED1 {
+  background-color: #EEEED1 !important;
+  color: black;
+}
+.CDCDB4 {
+  background-color: #CDCDB4 !important;
+  color: black;
+}
+.FFFACD {
+  background-color: #FFFACD !important;
+  color: black;
+}
+.EEE9BF {
+  background-color: #EEE9BF !important;
+  color: black;
+}
+.CDC9A5{
+  background-color: #CDC9A5 !important;
+  color: black;
+}
+.FFF68F {
+  background-color: #FFF68F !important;
+  color: black;
+}
+.EEE685 {
+  background-color: #EEE685 !important;
+  color: black;
+}
+.CDC673 {
+  background-color: #CDC673 !important;
+  color: black;
+}
+.FFEC8B {
+  background-color: #FFEC8B !important;
+  color: black;
+}
+.EEDC82 {
+  background-color: #EEDC82 !important;
+  color: black;
+}
+.CDBE70 {
+  background-color: #CDBE70 !important;
+  color: black;
+}
+.FFF8DC {
+  background-color: #FFF8DC !important;
+  color: black;
+}
+.EEE8CD {
+  background-color: #EEE8CD !important;
+  color: black;
+}
+.CDC8B1 {
+  background-color: #CDC8B1 !important;
+  color: black;
+}
+.FDF5E6 {
+  background-color: #FDF5E6 !important;
+  color: black;
+}
+.FFEFDB {
+  background-color: #FFEFDB !important;
+  color: black;
+}
+.EEDFCC {
+  background-color: #EEDFCC !important;
+  color: black;
+}
+.FAEBD7 {
+  background-color: #FAEBD7 !important;
+  color: black;
+}
+.FFEFD5 {
+  background-color: #FFEFD5 !important;
+  color: black;
+}
+.FFEBCD {
+  background-color: #FFEBCD !important;
+  color: black;
+}
+.FFDAB9 {
+  background-color: #FFDAB9 !important;
+  color: black;
+}
+.EECBAD {
+  background-color: #EECBAD !important;
+  color: black;
+}
+.CDAF95 {
+  background-color: #CDAF95 !important;
+  color: black;
+}
+.FFE7BA {
+  background-color: #FFE7BA !important;
+  color: black;
+}
+.EED8AE {
+  background-color: #EED8AE !important;
+  color: black;
+}
+.CDBA96 {
+  background-color: #CDBA96 !important;
+  color: black;
+}
+.FFE4B5 {
+  background-color: #FFE4B5 !important;
+  color: black;
+}
+.FFDEAD {
+  background-color: #FFDEAD !important;
+  color: black;
+}
+.EECFA1 {
+  background-color: #EECFA1 !important;
+  color: black;
+}
+.FFE4C4 {
+  background-color: #FFE4C4 !important;
+  color: black;
+}
+.EED5B7 {
+  background-color: #EED5B7 !important;
+  color: black;
+}
+.CDB79E {
+  background-color: #CDB79E !important;
+  color: black;
+}
+.FFD39B {
+  background-color: #FFD39B !important;
+  color: black;
+}
+.EEC591 {
+  background-color: #EEC591 !important;
+  color: black;
+}
+.CDAA7D {
+  background-color: #CDAA7D !important;
+  color: black;
+}
+.FFA07A {
+  background-color: #FFA07A !important;
+  color: black;
+}
+.EE9572 {
+  background-color: #EE9572 !important;
+  color: black;
+}
+.CD8162 {
+  background-color: #CD8162 !important;
+  color: black;
+}
+.FF8C69 {
+  background-color: #FF8C69 !important;
+  color: black;
+}
+.EE8262 {
+  background-color: #EE8262 !important;
+  color: black;
+}
+.CD7054 {
+  background-color: #CD7054 !important;
+  color: black;
+}
+.FFA54F {
+  background-color: #FFA54F !important;
+  color: black;
+}
+.EE9A49 {
+  background-color: #EE9A49 !important;
+  color: black;
+}
+.CD853F {
+  background-color: #CD853F !important;
+  color: black;
+}
+.FFE4E1 {
+  background-color: #FFE4E1 !important;
+  color: black;
+}
+.EED5D2 {
+  background-color: #EED5D2 !important;
+  color: black;
+}
+.CDB7B5 {
+  background-color: #CDB7B5 !important;
+  color: black;
+}
+.FFC1C1 {
+  background-color: #FFC1C1 !important;
+  color: black;
+}
+.EEB4B4 {
+  background-color: #EEB4B4 !important;
+  color: black;
+}
+.CD9B9B {
+  background-color: #CD9B9B !important;
+  color: black;
+}
+.FFB5C5 {
+  background-color: #FFB5C5 !important;
+  color: black;
+}
+.EEA9B8 {
+  background-color: #EEA9B8 !important;
+  color: black;
+}
+.CD919E {
+  background-color: #CD919E !important;
+  color: black;
+}
+.FFAEB9 {
+  background-color: #FFAEB9 !important;
+  color: black;
+}
+.EEA2AD {
+  background-color: #EEA2AD !important;
+  color: black;
+}
+.CD8C95 {
+  background-color: #CD8C95 !important;
+  color: black;
+}
+.FFF0F5 {
+  background-color: #FFF0F5 !important;
+  color: black;
+}
+.EEE0E5 {
+  background-color: #EEE0E5 !important;
+  color: black;
+}
+.CDC1C5 {
+  background-color: #CDC1C5 !important;
+  color: black;
+}
+.FFE1FF {
+  background-color: #FFE1FF !important;
+  color: black;
+}
+.EED2EE {
+  background-color: #EED2EE !important;
+  color: black;
+}
+.CDB5CD {
+  background-color: #CDB5CD !important;
+  color: black;
+}
+.FFBBFF {
+  background-color: #FFBBFF !important;
+  color: black;
+}
+.EEAEEE {
+  background-color: #EEAEEE !important;
+  color: black;
+}
+.CD96CD {
+  background-color: #CD96CD !important;
+  color: black;
+}
+.F0FFF0 {
+  background-color: #F0FFF0 !important;
+  color: black;
+}
+.E0EEE0 {
+  background-color: #E0EEE0 !important;
+  color: black;
+}
+.C1CDC1 {
+  background-color: #C1CDC1 !important;
+  color: black;
+}
+.F0FFFF {
+  background-color: #F0FFFF !important;
+  color: black;
+}
+.F0F8FF {
+  background-color: #F0F8FF !important;
+  color: black;
+}
+.E6E6FA {
+  background-color: #E6E6FA !important;
+  color: black;
+}

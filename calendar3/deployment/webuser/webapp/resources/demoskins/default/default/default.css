@@ -656,27 +656,9 @@ table#attendees td.status {
   background: #eee url('../../resources/tentativeLines.gif') top;
   color: black;
 }
-#monthCalendarTable a.holiday:link,
-#monthCalendarTable a.holiday:visited,
-#monthCalendarTable a.holiday:active  {
-  display: block;
-  padding: 0.1em 0.2em 0.1em 0.2em;
-  text-decoration: none;
-  background-color: #fff;
+#monthCalendarTable a:hover {
   color: black;
-  /*border-top: 1px solid black;
-  border-bottom: 1px solid black;*/
-}
-#monthCalendarTable a.eventLinkA:hover,
-#monthCalendarTable a.eventLinkB:hover,
-#monthCalendarTable a.eventCancelled:hover,
-#monthCalendarTable a.eventTentative:hover,
-#monthCalendarTable a.holiday:hover   {
-  display: block;
-  padding: 0.1em 0.2em 0.1em 0.2em;
-  text-decoration: none;
-  color: black;
-  background-color: #ffa;
+  background-color: #ffa !important; /* must be important to override subscription colors */
 }
 #monthCalendarTable a.dayLink {
   text-decoration: none;
@@ -686,8 +668,8 @@ table#attendees td.status {
 }
 #monthCalendarTable a:hover.dayLink {
   text-decoration: none;
-  color: #eee;
-  background-color: black;
+  color: #eee !important; /* must be important to override a:hover selector above */
+  background-color: black !important; /* must be important to override a:hover selector above */
 }
 #monthCalendarTable a:hover {
   /* required for eventTip to hover correctly;

@@ -154,11 +154,6 @@ public class InitSubscribeAction extends BwAbstractAction {
                                             affectsFreeBusy, false);
     }
 
-    String style = getReqPar(request, "style");
-    if (style != null) {
-      sub.setStyle(style);
-    }
-
     form.setSubscription(sub);
 
     if (getReqPar(request, "addSubscription") != null) {

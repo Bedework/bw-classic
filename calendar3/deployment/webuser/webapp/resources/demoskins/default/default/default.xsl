@@ -236,6 +236,7 @@
     <title>Bedework: Personal Calendar Client</title>
     <meta name="robots" content="noindex,nofollow"/>
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
+    <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
     <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
     <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
     <xsl:if test="/bedework/page='addEvent' or
@@ -881,7 +882,7 @@
             <td>
               <xsl:variable name="dayDate" select="date"/>
               <a href="{$initEvent}?startdate={$dayDate}" class="gridAdd" title="add event">
-                <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event"/>
+                <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="9" height="10" border="0" alt="add event"/>
               </a>
               <a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
                 <xsl:value-of select="value"/>
@@ -948,14 +949,26 @@
         <!-- Special styles for the month grid -->
         <xsl:when test="status='CANCELLED'">eventCancelled</xsl:when>
         <xsl:when test="status='TENTATIVE'">eventTentative</xsl:when>
-        <xsl:when test="calendar/name='Holidays'">holiday</xsl:when>
-        <!-- Alternating colors for all standard events -->
+        <!-- Otherwise: Alternating colors for all standard events -->
         <xsl:when test="position() mod 2 = 1">eventLinkA</xsl:when>
         <xsl:otherwise>eventLinkB</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <!-- User defined subscription styles.
+         These are set in the add/modify subscription forms which
+         rely (in this stylesheet) on subColors.css; if present, these
+         override the background-color set by eventClass. User styles should
+         not be used for cancelled events (tentative is ok). -->
+    <xsl:variable name="subColor">
+      <xsl:choose>
+         <xsl:when test="status != 'CANCELLED' and
+                        subscription/style != '' and
+                        subscription/style != 'default'"><xsl:value-of select="subscription/style"/></xsl:when>
+        <xsl:otherwise></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <li>
-      <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass}">
+      <a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass} {$subColor}">
         <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
         <xsl:value-of select="summary"/>
         <xsl:variable name="eventTipClass">
@@ -2995,7 +3008,15 @@
         <tr>
           <td class="fieldname">Style:</td>
           <td>
-            <input type="text" value="" name="style" size="60"/>
+            <select name="style">
+              <option value="default">default</option>
+              <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
+                <xsl:variable name="subColor" select="."/>
+                <option value="{$subColor}" class="{$subColor}">
+                  <xsl:value-of select="."/>
+                </option>
+              </xsl:for-each>
+            </select>
           </td>
         </tr>
         <!--<tr>
@@ -3028,15 +3049,15 @@
           <td class="fieldname">Name:</td>
           <td>
             <xsl:variable name="subName" select="name"/>
-            <input type="text" value="{$subName}" name="subscription.name" size="60"/>
+            <input type="text" value="{$subName}" name="name" size="60"/>
           </td>
         </tr>
         <xsl:if test="internal='false'">
           <tr>
             <td class="fieldname">Uri:</td>
             <td>
-              <xsl:variable name="subUri" select="uri"/>
-              <input type="text" value="{$subUri}" name="subscription.uri" size="60"/>
+              <xsl:variable name="calPath" select="uri"/>
+              <input type="text" value="{$calPath}" name="calPath" size="60"/>
             </td>
           </tr>
         </xsl:if>
@@ -3050,22 +3071,29 @@
         <tr>
           <td class="fieldname">Affects Free/Busy:</td>
           <td>
-            <input type="radio" value="true" name="subscription.affectsFreeBusy" checked="checked"/> yes
-            <input type="radio" value="false" name="subscription.affectsFreeBusy"/> no
+            <input type="radio" value="true" name="subscription.affectsFreeBusy"/> yes
+            <input type="radio" value="false" name="subscription.affectsFreeBusy" checked="checked"/> no
           </td>
         </tr>
         <tr>
           <td class="fieldname">Style:</td>
           <td>
-            <xsl:variable name="subStyle" select="style"/>
-            <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
+            <select name="subscription.style">
+              <option value="default">default</option>
+              <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
+                <xsl:variable name="subColor" select="."/>
+                <option value="{$subColor}" class="{$subColor}">
+                  <xsl:value-of select="."/>
+                </option>
+              </xsl:for-each>
+            </select>
           </td>
         </tr>
         <!--<tr>
           <td class="fieldname">Unremovable:</td>
           <td>
-            <input type="radio" value="true" name="unremoveable" size="60"/> true
-            <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
+            <input type="radio" value="true" name="subscription.unremoveable" size="60"/> true
+            <input type="radio" value="false" name="subscription.unremoveable" size="60" checked="checked"/> false
           </td>
         </tr>-->
       </table>
@@ -3146,7 +3174,24 @@
           <td class="fieldname">Style:</td>
           <td>
             <xsl:variable name="subStyle" select="style"/>
-            <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
+            <select name="subscription.style">
+              <option value="default">default</option>
+              <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
+                <xsl:variable name="subColor" select="."/>
+                <xsl:choose>
+                  <xsl:when test="$subStyle = $subColor">
+                    <option value="{$subColor}" class="{$subColor}" selected="selected">
+                      <xsl:value-of select="."/>
+                    </option>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <option value="{$subColor}" class="{$subColor}">
+                      <xsl:value-of select="."/>
+                    </option>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:for-each>
+            </select>
           </td>
         </tr>
         <!--<tr>
