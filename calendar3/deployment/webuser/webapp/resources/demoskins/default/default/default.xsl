@@ -3294,6 +3294,11 @@
     </xsl:variable>
     <li class="{$itemClass}">
       <xsl:variable name="subUri" select="uri"/>
+      <xsl:if test="style != '' and style != 'default'">
+        <!-- div to display a block of color (or whatever) based on the subscription style -->
+        <xsl:variable name="subStyle" select="style"/>
+        <div class="subStyle {$subStyle}"></div>
+      </xsl:if>
       <a href="{$setSelection}?calUrl={$subUri}">
         <xsl:value-of select="name"/>
       </a>
