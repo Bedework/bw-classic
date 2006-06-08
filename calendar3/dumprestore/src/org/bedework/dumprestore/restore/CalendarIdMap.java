@@ -51,95 +51,37 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.dumprestore.restore.rules;
+package org.bedework.dumprestore.restore;
 
 import org.bedework.calfacade.BwCalendar;
-import org.bedework.calfacade.BwSystem;
-import org.bedework.dumprestore.restore.RestoreGlobals;
+import java.util.HashMap;
 
-/**
+/** Maps a numeric id to a path
+ *
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class CalendarRule extends EntityRule {
-  /** Constructor
-   *
-   * @param globals
+public class CalendarIdMap extends HashMap {
+  /**
+   * @param val
    */
-  public CalendarRule(RestoreGlobals globals) {
-    super(globals);
+  public void put(BwCalendar val) {
+    Integer key = new Integer(val.getId());
+
+    String path = (String)get(key);
+
+    if (path != null) {
+      throw new RuntimeException("Calendar " +
+          path + " already in table with key " + key);
+    }
+    put(key, val.getPath());
   }
 
-  public void end(String ns, String name) throws Exception {
-    BwCalendar entity = (BwCalendar)pop();
-    boolean special = false;
-
-    globals.calendars++;
-
-    fixSharableEntity(entity, "Calendar");
-
-    if ((globals.fixCaltype || globals.skipSpecialCals) &&
-        entity.getCalType() == BwCalendar.calTypeFolder) {
-      // might need to fix if from 3.0
-      BwSystem sys = globals.syspars;
-      String calpath = entity.getPath();
-      String[] pes = calpath.split("/");
-      int pathLength = pes.length - 1;  // First element is empty string
-
-      if (entity.getCalendarCollection()) {
-        entity.setCalType(BwCalendar.calTypeCollection);
-      }
-
-      if ((pathLength == 3) &&
-          sys.getUserCalendarRoot().equals(pes[1])) {
-        String calname = pes[3];
-
-        if (!calname.equals(entity.getName())) {
-          throw new Exception("Got path wrong - len = " + pathLength +
-                              " path = " + calpath +
-                              " calname = " + calname);
-        }
-
-        if (calname.equals(sys.getDefaultTrashCalendar())) {
-          entity.setCalType(BwCalendar.calTypeTrash);
-          special = true;
-        } else if (calname.equals(sys.getDeletedCalendar())) {
-          entity.setCalType(BwCalendar.calTypeDeleted);
-          special = true;
-        } else if (calname.equals(sys.getBusyCalendar())) {
-          entity.setCalType(BwCalendar.calTypeBusy);
-          special = true;
-        } else if (calname.equals(sys.getUserInbox())) {
-          entity.setCalType(BwCalendar.calTypeInbox);
-          special = true;
-        } else if (calname.equals(sys.getUserOutbox())) {
-          entity.setCalType(BwCalendar.calTypeOutbox);
-          special = true;
-        }
-      }
-    }
-
-    if (special && globals.skipSpecialCals) {
-      return;
-    }
-
-    // 3.0
-    globals.calmap.put(entity);
-
-    try {
-      if (globals.rintf != null) {
-        /* If the parent is null then this should be one of the root calendars,
-         */
-        BwCalendar parent = entity.getCalendar();
-        if (parent == null) {
-          // Ensure root
-          globals.rintf.saveRootCalendar(entity);
-        } else {
-          globals.rintf.addCalendar(entity);
-        }
-      }
-    } catch (Throwable t) {
-      throw new Exception(t);
-    }
+  /**
+   * @param key  Integer
+   * @return String path
+   */
+  public String getPath(Integer key) {
+    return (String)get(key);
   }
 }

@@ -35,8 +35,13 @@
     <property name="display" type="true_false"
               column="display" not-null="true" />
 
+    <property name="style" column="bwsubstyle" type="text" />
+
     <property name="internalSubscription" type="true_false"
               column="internal_Subscription" not-null="true" />
+
+    <property name="emailNotifications" type="true_false"
+              column="email_notifications" not-null="true" />
 
     <property name="calendarDeleted" type="true_false"
               column="calendar_deleted" not-null="true" />

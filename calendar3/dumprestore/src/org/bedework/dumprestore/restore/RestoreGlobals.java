@@ -230,6 +230,10 @@ public class RestoreGlobals {
   /** Users we preserve */
   public HashMap onlyUsersMap = new HashMap();
 
+  // 3.0
+  /** Map ids onto paths */
+  public CalendarIdMap calmap = new CalendarIdMap();
+
   /**
    */
   public static class EventKeyMap extends HashMap {

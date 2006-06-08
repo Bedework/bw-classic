@@ -78,7 +78,7 @@ public class UserPrefsFieldRule extends EntityFieldRule {
 
     if (name.equals("email")) {
       p.setEmail(stringFld());
-    } else if (name.equals("defaultCalendar")) {
+    } else if (name.equals("default-calendar-path")) {
       p.setDefaultCalendar(calendarFld());
     } else if (name.equals("skinName")) {
       p.setSkinName(stringFld());
@@ -98,6 +98,10 @@ public class UserPrefsFieldRule extends EntityFieldRule {
       p.setPreferredEndType(stringFld());
     } else if (name.equals("userMode")) {
       p.setUserMode(intFld());
+
+      // 3.0
+    } else if (name.equals("default-calendar")) {
+      p.setDefaultCalendar(calendarIdFld());
 
     // subscription fields
 

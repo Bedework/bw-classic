@@ -147,7 +147,7 @@ public class DumpUserPrefs extends Dumpling {
 
     taggedVal("email", p.getEmail());
     if (p.getDefaultCalendar() != null) {
-      taggedVal("defaultCalendar", p.getDefaultCalendar().getPath());
+      taggedVal("default-calendar-path", p.getDefaultCalendar().getPath());
     }
     taggedVal("skinName", p.getSkinName());
     taggedVal("skinStyle", p.getSkinStyle());

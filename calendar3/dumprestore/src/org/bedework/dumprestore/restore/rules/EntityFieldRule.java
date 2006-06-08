@@ -439,6 +439,27 @@ public abstract class EntityFieldRule extends RestoreRule {
     }
   }
 
+  // 3.0
+  protected BwCalendar calendarIdFld() throws Exception {
+    if (fldval == null) {
+      throw new Exception("No value for " + tagName);
+    }
+
+    try {
+      Integer key = Integer.valueOf(fldval);
+      String path = globals.calmap.getPath(key);
+      if (globals.config.getDebug()) {
+        trace("key = " + key + " path = '" + path + "'");
+      }
+      return globals.rintf.getCalendar(path);
+    } catch (Throwable t) {
+      if (t instanceof Exception) {
+        throw (Exception)t;
+      }
+      throw new Exception(t);
+    }
+  }
+
   protected BwCalendar calendarFld() throws Exception {
     if (fldval == null) {
       throw new Exception("No value for " + tagName);
