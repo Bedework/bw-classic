@@ -86,6 +86,10 @@ public class CalendarRule extends EntityRule {
       String[] pes = calpath.split("/");
       int pathLength = pes.length - 1;  // First element is empty string
 
+      if (entity.getCalendarCollection()) {
+        entity.setCalType(BwCalendar.calTypeCollection);
+      }
+
       if ((pathLength == 3) &&
           sys.getUserCalendarRoot().equals(pes[1])) {
         String calname = pes[3];
@@ -111,8 +115,6 @@ public class CalendarRule extends EntityRule {
         } else if (calname.equals(sys.getUserOutbox())) {
           entity.setCalType(BwCalendar.calTypeOutbox);
           special = true;
-        } else if (entity.getCalendarCollection()) {
-          entity.setCalType(BwCalendar.calTypeCollection);
         }
       }
     }

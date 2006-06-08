@@ -1411,27 +1411,23 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       logIt("Set admin group to " + adg);
     }
 
-    /* Determine which calsuites they are administering */
+    /* Determine which calsuite they are administering by finding the
+     * first admin group on the path to the roo which has an associated
+     * suite
+     */
 
-    Collection css = findAllCalSuites(svci, adg, adgrps);
-
-    if (css.size() > 1) {
-      form.getErr().emit("org.bedework.error.cannot.handle.this.yet");
-      return forwardError;
-    }
-
-    BwCalSuiteWrapper cs = null;
+    BwCalSuiteWrapper cs = findCalSuite(svci, adg, adgrps);
     String calSuiteName = null;
-
-    if (css.size() == 1) {
-      cs = (BwCalSuiteWrapper)css.iterator().next();
+    if (cs != null) {
       calSuiteName = cs.getName();
     }
 
     if (debug) {
-      debugMsg("Found calSuite " + cs);
-    } else {
-      debugMsg("No calsuite found");
+      if (cs != null) {
+        debugMsg("Found calSuite " + cs);
+      } else {
+        debugMsg("No calsuite found");
+      }
     }
 
     form.setCurrentCalSuite(cs);
@@ -1570,6 +1566,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
                                            null, // synchId
                                            debug);
         svci.init(pars);
+        svci.setSuperUser(form.getCurUserSuperUser());
 
         BwWebUtil.setCalSvcI(request, svci);
 
@@ -1657,23 +1654,24 @@ public abstract class BwAbstractAction extends UtilAbstractAction
     return access;
   }*/
 
-  private Collection findAllCalSuites(CalSvcI svc,
-                                      BwAdminGroup adg,
-                                      Groups adgrps) throws Throwable {
-    ArrayList al = new ArrayList();
-
+  private BwCalSuiteWrapper findCalSuite(CalSvcI svc,
+                                         BwAdminGroup adg,
+                                         Groups adgrps) throws Throwable {
     BwCalSuiteWrapper cs = svc.getCalSuite(adg);
     if (cs != null) {
-      al.add(cs);
+      return cs;
     }
 
     Iterator parents = ((AdminGroups)adgrps).findGroupParents(adg).iterator();
 
     while (parents.hasNext()) {
-      al.addAll(findAllCalSuites(svc, (BwAdminGroup)parents.next(), adgrps));
+      cs = findCalSuite(svc, (BwAdminGroup)parents.next(), adgrps);
+      if (cs != null) {
+        return cs;
+      }
     }
 
-    return al;
+    return null;
   }
 
   private void checkRefresh(BwActionFormBase form) {

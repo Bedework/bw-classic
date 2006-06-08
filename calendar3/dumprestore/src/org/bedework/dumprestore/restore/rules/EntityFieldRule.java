@@ -487,6 +487,9 @@ public abstract class EntityFieldRule extends RestoreRule {
     return user;
   }
 
+  /* It's possible (I think) to get a group before it's been defined.
+   * Make a dummy group.
+   */
   protected BwGroup groupFld() throws Exception {
     if (fldval == null) {
       throw new Exception("No value for " + tagName);
@@ -497,6 +500,7 @@ public abstract class EntityFieldRule extends RestoreRule {
     BwGroup g = new BwGroup();
 
     g.setId(id);
+    g.setAccount("Group" + id);
 
     return g;
   }
