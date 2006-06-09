@@ -56,6 +56,9 @@
 .C1B3D7 {
   background-color: #C1B3D7 !important;
   color: black;
+  /* purple swallows up the default border color, so for this one alone,
+     override it */
+  border-bottom: 1px solid #999 !important;
 }
 .94A8D0 {
   background-color: #94A8D0 !important;

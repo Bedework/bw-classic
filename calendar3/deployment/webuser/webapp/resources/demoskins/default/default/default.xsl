@@ -1001,7 +1001,8 @@
 			</xsl:choose>
 		</xsl:variable>
 		<li>
-			<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventRootClass} {$eventClass} {$subColor}">
+			<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"
+				class="{$eventRootClass} {$eventClass} {$subColor}">
 				<xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
 				<xsl:value-of select="summary"/>
 				<xsl:variable name="eventTipClass">
