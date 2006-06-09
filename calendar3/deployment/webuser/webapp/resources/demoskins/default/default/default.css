@@ -618,39 +618,32 @@ table#attendees td.status {
   padding: 0em;
   display: inline;
 }
-#monthCalendarTable a.eventLinkA:link,
-#monthCalendarTable a.eventLinkA:visited,
-#monthCalendarTable a.eventLinkA:active  {
+#monthCalendarTable a.event {
   display: block;
   padding: 0.1em 0.2em 0.1em 0.2em;
   text-decoration: none;
+}
+#monthCalendarTable a.eventLinkA:link,
+#monthCalendarTable a.eventLinkA:visited,
+#monthCalendarTable a.eventLinkA:active  {
   background-color: #CCD7F5;
   color: black;
 }
 #monthCalendarTable a.eventLinkB:link,
 #monthCalendarTable a.eventLinkB:visited,
 #monthCalendarTable a.eventLinkB:active  {
-  display: block;
-  padding: 0.1em 0.2em 0.1em 0.2em;
-  text-decoration: none;
   background-color: #EBF0FF;
   color: black;
 }
 #monthCalendarTable a.eventCancelled:link,
 #monthCalendarTable a.eventCancelled:visited,
 #monthCalendarTable a.eventCancelled:active  {
-  display: block;
-  padding: 0.1em 0.2em 0.1em 0.2em;
-  text-decoration: none;
   background-color: #ccc;
   color: black;
 }
 #monthCalendarTable a.eventTentative:link,
 #monthCalendarTable a.eventTentative:visited,
 #monthCalendarTable a.eventTentative:active  {
-  display: block;
-  padding: 0.1em 0.2em 0.1em 0.2em;
-  text-decoration: none;
   border-bottom: 1px solid #ccc;
   border-top: 1px solid #ccc;
   background: #eee url('../../resources/tentativeLines.gif') top;
@@ -659,6 +652,10 @@ table#attendees td.status {
 #monthCalendarTable a:hover {
   color: black;
   background-color: #ffa !important; /* must be important to override subscription colors */
+  /* required for eventTip to hover correctly;
+     apply only to the hover pseudo class, or
+     the other anchors nearby will cover the eventTip in IE */
+  position: relative;
 }
 #monthCalendarTable a.dayLink {
   text-decoration: none;
@@ -670,12 +667,6 @@ table#attendees td.status {
   text-decoration: none;
   color: #eee !important; /* must be important to override a:hover selector above */
   background-color: black !important; /* must be important to override a:hover selector above */
-}
-#monthCalendarTable a:hover {
-  /* required for eventTip to hover correctly;
-     apply only to the hover pseudo class, or
-     the other anchors nearby will cover the eventTip in IE */
-  position: relative;
 }
 #monthCalendarTable a span.eventTip,
 #monthCalendarTable a span.eventTipReverse {
@@ -883,7 +874,7 @@ a.calendarAdd img {
   text-decoration: underline;
 }
 #listTable td.description:hover {
-  background-color: #eee;
+  background-color: #eee !important;
   color: black;
   text-decoration: none;
 }
@@ -964,6 +955,7 @@ a.calendarAdd img {
 }
 .calendarTree li {
   padding-top: 0.25em;
+  position: relative;
 }
 .calendarTree li.folder {
   list-style-image: url(../../resources/catIcon.gif);
@@ -982,18 +974,22 @@ a.calendarAdd img {
 .calendarTree a:active,
 .calendarTree a:visited {
   text-decoration: none;
+  border: none;
 }
 .calendarTree a:hover {
   color: black;
   background-color: #ff3;
 }
-.subStyle {
+img.subStyle {
   float: right;
-  clear: none;
-  width: 1em;
-  height: 1em;
+  /*position: absolute;
+  left: -20px;
+  top: 10px;*/
+  padding: 0;
   margin: 0 10px 0 2px;
-  border: 1px solid #666;
+  width: 0.8em;
+  height: 0.5em;
+  border: 1px solid #666 !important; /* must override subColors.css borders */
 }
 #submitTable {
   width: 98%; /* less than 100% helps avoid IE weirdness */
