@@ -622,6 +622,7 @@ table#attendees td.status {
   display: block;
   padding: 0.1em 0.2em 0.1em 0.2em;
   text-decoration: none;
+  border-bottom: 1px solid #bbb;
 }
 #monthCalendarTable a.eventLinkA:link,
 #monthCalendarTable a.eventLinkA:visited,
