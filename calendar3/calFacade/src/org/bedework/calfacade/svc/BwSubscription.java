@@ -359,6 +359,7 @@ public class BwSubscription extends BwOwnedDbentity {
     sub.setUri(getUri());
     sub.setInternalSubscription(getInternalSubscription());
     sub.setDisplay(getDisplay());
+    sub.setStyle(getStyle());
     sub.setAffectsFreeBusy(getAffectsFreeBusy());
     sub.setEmailNotifications(getEmailNotifications());
     sub.setUnremoveable(getUnremoveable());
@@ -413,6 +414,20 @@ public class BwSubscription extends BwOwnedDbentity {
     sb.append(String.valueOf(getName()));
     sb.append(", uri=");
     sb.append(String.valueOf(getUri()));
+    sb.append(", affectsFreeBusy=");
+    sb.append(String.valueOf(getAffectsFreeBusy()));
+    sb.append(", ignoreTransparency=");
+    sb.append(String.valueOf(getIgnoreTransparency()));
+    sb.append(", display=");
+    sb.append(String.valueOf(getDisplay()));
+    sb.append(", style=");
+    sb.append(String.valueOf(getStyle()));
+    sb.append(", internalSubscription=");
+    sb.append(String.valueOf(getInternalSubscription()));
+    sb.append(", emailNotifications=");
+    sb.append(String.valueOf(getEmailNotifications()));
+    sb.append(", calendarDeleted=");
+    sb.append(String.valueOf(getCalendarDeleted()));
     sb.append(", unremoveable=");
     sb.append(getUnremoveable());
     sb.append(")");
