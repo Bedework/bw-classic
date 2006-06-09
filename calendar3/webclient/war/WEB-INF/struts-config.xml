@@ -64,6 +64,7 @@
     <forward name="error" path="/showMain.rdo" redirect="true" />
     <forward name="success" path="/showMain.rdo" redirect="true" />
     <forward name="cancelled" path="/showMain.rdo" redirect="true" />
+    <forward name="noAccess" path="/showMain.rdo" redirect="true" />
   </global-forwards>
 
   <!-- ========== Action Mapping Definitions ============================== -->
