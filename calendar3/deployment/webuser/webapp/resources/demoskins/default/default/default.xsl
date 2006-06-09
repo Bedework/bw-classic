@@ -2611,16 +2611,8 @@
 				<tr>
 					<th>Calendar/Folder:</th>
 					<td>
-						<xsl:choose>
-							<xsl:when test="calendarCollection='true'">
-								<input type="radio" value="true" name="calendarCollection" checked="checked"/> Calendar
-								<input type="radio" value="false" name="calendarCollection"/> Folder
-							</xsl:when>
-							<xsl:otherwise>
-								<input type="radio" value="true" name="calendarCollection"/> Calendar
-								<input type="radio" value="false" name="calendarCollection" checked="checked"/> Folder
-							</xsl:otherwise>
-						</xsl:choose>
+						<input type="radio" value="true" name="calendarCollection" checked="checked"/> Calendar
+						<input type="radio" value="false" name="calendarCollection"/> Folder
 					</td>
 				</tr>
 			</table>
