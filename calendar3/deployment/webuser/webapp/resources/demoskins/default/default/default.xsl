@@ -2428,7 +2428,9 @@
 					<!-- set the start date for adding an event to the first day of the
 							 given period, the hour of "now", and give a duration of 60 minutes -->
 					<xsl:variable name="startDate"><xsl:value-of select="/bedework/firstday/date"/>T<xsl:value-of select="substring(/bedework/now/time,1,2)"/>0000</xsl:variable>
-					<a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event">
+          <!-- skip setting duration for now; this should be set in the user's prefs-->
+          <!-- <a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event"> -->
+          <a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}" class="calendarAdd" title="add event">
 						<img src="{$resourcesRoot}/resources/addEvent-forCals-icon.gif" width="9" height="12" border="0" alt="add event"/>
 					</a>
 				</xsl:if>
@@ -2497,15 +2499,15 @@
 		<form name="toggleCals" action="{$event-selectCalForEvent}">
 			<xsl:choose>
 				<xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
-					<input type="radio" name="setappvar" value="showAllCalsForEvent(false)" onchange="submit()"/>
+					<input type="radio" name="setappvar" value="showAllCalsForEvent(false)" onclick="submit()"/>
 					show only writable calendars
-					<input type="radio" name="setappvar" value="showAllCalsForEvent(true)" checked="checked" onchange="submit()"/>
+					<input type="radio" name="setappvar" value="showAllCalsForEvent(true)" checked="checked" onclick="submit()"/>
 					show all calendars
 				</xsl:when>
 				<xsl:otherwise>
-					<input type="radio" name="setappvar" value="showAllCalsForEvent(false)" checked="checked" onchange="submit()"/>
+					<input type="radio" name="setappvar" value="showAllCalsForEvent(false)" checked="checked" onclick="submit()"/>
 					show only writable calendars
-					<input type="radio" name="setappvar" value="showAllCalsForEvent(true)" onchange="submit()"/>
+					<input type="radio" name="setappvar" value="showAllCalsForEvent(true)" onclick="submit()"/>
 					show all calendars
 				</xsl:otherwise>
 			</xsl:choose>

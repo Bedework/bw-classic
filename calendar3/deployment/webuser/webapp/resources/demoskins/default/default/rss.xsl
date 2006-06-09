@@ -11,20 +11,20 @@
    <xsl:template match="/">
      <rss version="2.0">
       <channel>
-        <title>Rensselaer Events Calendar</title>
-        <link><xsl:value-of select="/ucalendar/urlprefix"/></link>
-        <description>Rensselaer Events</description>
-        <language>en-us</language>
-        <copyright>Copyright <xsl:value-of select="substring(/ucalendar/currentdate/date,1,4)"/>, Rensselaer Polytechnic Institute</copyright>
-        <managingEditor>wentod@rpi.edu, Deb Wentorf</managingEditor>
-        <xsl:apply-templates select="/ucalendar//event"/>
+        <title>Bedework Events Calendar</title>
+        <link><xsl:value-of select="/bedework/urlprefix"/></link>
+        <description>My Site's Events</description>
+        <language>en-US</language>
+        <copyright>Copyright <xsl:value-of select="substring(/bedework/currentdate,1,4)"/>, Your Institution Here</copyright>
+        <managingEditor>editor@mysite.edu, Editor Name</managingEditor>
+        <xsl:apply-templates select="/bedework//event"/>
       </channel>
     </rss>
   </xsl:template>
   <xsl:template match="event">
     <item>
       <title><xsl:value-of select="summary"/> - <xsl:value-of select="substring(start/monthname,1,3)"/><xsl:text> </xsl:text><xsl:value-of select="start/day"/></title>
-      <link><xsl:value-of select="/ucalendar/urlprefix"/>/eventView.do?eventId=<xsl:value-of select="id"/></link>
+      <link><xsl:value-of select="/bedework/urlprefix"/>/eventView.do?subid=<xsl:value-of select="subscription/id"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></link>
       <pubDate><xsl:value-of select="substring(start/dayname,1,3)"/>,
                <xsl:value-of select="start/twodigitday"/><xsl:text> </xsl:text>
                <xsl:value-of select="substring(start/monthname,1,3)"/><xsl:text> </xsl:text>
