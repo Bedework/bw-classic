@@ -79,6 +79,9 @@
 .BFE476 {
   background-color: #BFE476 !important;
   color: black;
+  /* gree swallows up the default border color, so for this one alone,
+     override it */
+  border-bottom: 1px solid #999 !important;
 }
 .FFFA81 {
   background-color: #FFFA81 !important;

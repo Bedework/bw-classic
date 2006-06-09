@@ -990,7 +990,7 @@ img.subStyle {
   margin: 0 10px 0 2px;
   width: 0.8em;
   height: 0.5em;
-  border: 1px solid #666;
+  border: 1px solid #666 !important;
 }
 #submitTable {
   width: 98%; /* less than 100% helps avoid IE weirdness */
