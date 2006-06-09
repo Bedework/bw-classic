@@ -12,6 +12,31 @@
 	<!--       PERSONAL CALENDAR STYLESHEET        -->
 	<!-- ========================================= -->
 
+  <!-- **********************************************************************
+    Copyright 2006 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+
+    Redistribution and use of this distribution in source and binary forms,
+    with or without modification, are permitted provided that:
+       The above copyright notice and this permission notice appear in all
+        copies and supporting documentation;
+
+        The name, identifiers, and trademarks of Rensselaer Polytechnic
+        Institute are not used in advertising or publicity without the
+        express prior written permission of Rensselaer Polytechnic Institute;
+
+    DISCLAIMER: The software is distributed" AS IS" without any express or
+    implied warranty, including but not limited to, any implied warranties
+    of merchantability or fitness for a particular purpose or any warrant)'
+    of non-infringement of any current or pending patent rights. The authors
+    of the software make no representations about the suitability of this
+    software for any particular purpose. The entire risk as to the quality
+    and performance of the software is with the user. Should the software
+    prove defective, the user assumes the cost of all necessary servicing,
+    repair or correction. In particular, neither Rensselaer Polytechnic
+    Institute, nor the authors of the software are liable for any indirect,
+    special, consequential, or incidental damages related to the software,
+    to the maximum extent the law permits. -->
+
 	<!-- DEFINE INCLUDES -->
 	<xsl:include href="errors.xsl"/>
 	<xsl:include href="messages.xsl"/>
@@ -945,6 +970,13 @@
 		<xsl:variable name="calPath" select="calendar/encodedPath"/>
 		<xsl:variable name="guid" select="guid"/>
 		<xsl:variable name="recurrenceId" select="recurrenceId"/>
+    <xsl:variable name="eventRootClass">
+			<xsl:choose>
+				<!-- Otherwise: Alternating colors for all standard events -->
+				<xsl:when test="position() = 1">event firstEvent</xsl:when>
+				<xsl:otherwise>event</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="eventClass">
 			<xsl:choose>
 				<!-- Special styles for the month grid -->
@@ -969,7 +1001,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		<li>
-			<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="event {$eventClass} {$subColor}">
+			<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventRootClass} {$eventClass} {$subColor}">
 				<xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
 				<xsl:value-of select="summary"/>
 				<xsl:variable name="eventTipClass">
@@ -3295,9 +3327,12 @@
 		</xsl:variable>
 		<li class="{$itemClass}">
 			<xsl:variable name="subUri" select="uri"/>
-			<!-- the following variable assumes colors for the subscription style; this should be done differently -->
-			<xsl:variable name="underlineStyle">border-bottom: 2px solid #<xsl:value-of select="style"/>;</xsl:variable>
-			<a href="{$setSelection}?calUrl={$subUri}" style="{$underlineStyle}">
+      <xsl:if test="style != '' and style != 'default'">
+        <!-- the spacer gif approach allows us to avoid some IE misbehavior -->
+        <xsl:variable name="subStyle" select="style"/>
+        <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="subscription style" class="subStyle {$subStyle}"/>
+      </xsl:if>
+      <a href="{$setSelection}?calUrl={$subUri}">
 				<xsl:value-of select="name"/>
 			</a>
 			<xsl:if test="calendars/calendar/calendarCollection='true' and

@@ -13,7 +13,7 @@
     <uri><bean:write name="calForm" property="subscription.uri" /></uri>
     <affectsFreeBusy><bean:write name="calForm" property="subscription.affectsFreeBusy" /></affectsFreeBusy>
     <display><bean:write name="calForm" property="subscription.display" /></display>
-    <bw:emitText name="calForm" property="subscription.style" />
+    <bw:emitText name="calForm" property="subscription.style" tagName="style"/>
     <internal><bean:write name="calForm" property="subscription.internalSubscription" /></internal>
     <emailNotifications><bean:write name="calForm" property="subscription.emailNotifications" /></emailNotifications>
     <calendarDeleted><bean:write name="calForm" property="subscription.calendarDeleted" /></calendarDeleted>

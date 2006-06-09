@@ -624,6 +624,9 @@ table#attendees td.status {
   text-decoration: none;
   border-bottom: 1px solid #bbb;
 }
+#monthCalendarTable a.firstEvent {
+  border-top: 1px solid #bbb; /* first item in the grid needs a top border */
+}
 #monthCalendarTable a.eventLinkA:link,
 #monthCalendarTable a.eventLinkA:visited,
 #monthCalendarTable a.eventLinkA:active  {
@@ -956,7 +959,6 @@ a.calendarAdd img {
 }
 .calendarTree li {
   padding-top: 0.25em;
-  position: relative;
 }
 .calendarTree li.folder {
   list-style-image: url(../../resources/catIcon.gif);
@@ -983,14 +985,12 @@ a.calendarAdd img {
 }
 img.subStyle {
   float: right;
-  /*position: absolute;
-  left: -20px;
-  top: 10px;*/
+  clear: right;
   padding: 0;
   margin: 0 10px 0 2px;
   width: 0.8em;
   height: 0.5em;
-  border: 1px solid #666 !important; /* must override subColors.css borders */
+  border: 1px solid #666;
 }
 #submitTable {
   width: 98%; /* less than 100% helps avoid IE weirdness */

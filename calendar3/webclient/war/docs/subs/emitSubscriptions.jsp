@@ -8,7 +8,7 @@
     <bw:emitText name="subscription" property="uri" />
     <affectsFreeBusy><bean:write name="subscription" property="affectsFreeBusy" /></affectsFreeBusy>
     <display><bean:write name="subscription" property="display" /></display>
-    <bw:emitText name="subscription" property="style" />
+    <bw:emitText name="subscription" property="style"/>
     <internal><bean:write name="subscription" property="internalSubscription" /></internal>
     <emailNotifications><bean:write name="subscription" property="emailNotifications" /></emailNotifications>
     <calendarDeleted><bean:write name="subscription" property="calendarDeleted" /></calendarDeleted>
