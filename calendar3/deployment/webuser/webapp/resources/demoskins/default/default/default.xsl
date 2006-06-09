@@ -3295,7 +3295,9 @@
 		</xsl:variable>
 		<li class="{$itemClass}">
 			<xsl:variable name="subUri" select="uri"/>
-			<a href="{$setSelection}?calUrl={$subUri}">
+			<!-- the following variable assumes colors for the subscription style; this should be done differently -->
+			<xsl:variable name="underlineStyle">border-bottom: 2px solid #<xsl:value-of select="style"/>;</xsl:variable>
+			<a href="{$setSelection}?calUrl={$subUri}" style="{$underlineStyle}">
 				<xsl:value-of select="name"/>
 			</a>
 			<xsl:if test="calendars/calendar/calendarCollection='true' and
