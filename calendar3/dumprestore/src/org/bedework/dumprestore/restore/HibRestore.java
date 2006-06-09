@@ -181,8 +181,7 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreUser(org.bedework.calfacade.BwUser)
    */
   public void restoreUser(BwUser o) throws Throwable {
-    if (globals.onlyUsers &&
-        (globals.onlyUsersMap.get(o.getAccount()) == null)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return;
     }
 
@@ -205,8 +204,7 @@ public class HibRestore implements RestoreIntf {
    * @throws Throwable
    */
   public void restoreUserInfo(BwUserInfo o) throws Throwable {
-    if (globals.onlyUsers &&
-        (globals.onlyUsersMap.get(o.getUser().getAccount()) == null)) {
+    if (!globals.onlyUsersMap.check(o.getUser())) {
       return;
     }
 
@@ -218,7 +216,7 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void restoreTimezone(BwTimeZone o) throws Throwable {
-    if (!checkOnlyUser(o)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return;
     }
 
@@ -252,10 +250,8 @@ public class HibRestore implements RestoreIntf {
       adminGroupId++;
     }
 
-    if (globals.onlyUsers) {
-      if (globals.onlyUsersMap.get(o.getGroupOwner().getAccount()) == null) {
-        o.setGroupOwner(globals.getPublicUser());
-      }
+    if (!globals.onlyUsersMap.check(o.getGroupOwner())) {
+      o.setGroupOwner(globals.getPublicUser());
     }
 
     save(o);
@@ -271,9 +267,7 @@ public class HibRestore implements RestoreIntf {
     while (it.hasNext()) {
       BwPrincipal pr = (BwPrincipal)it.next();
 
-      if (globals.onlyUsers &&
-          (pr instanceof BwUser) &&
-          (globals.onlyUsersMap.get(((BwUser)pr).getAccount()) == null)) {
+      if ((pr instanceof BwUser) && !globals.onlyUsersMap.check(pr)) {
         continue;
       }
 
@@ -305,8 +299,7 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreAuthUser(org.bedework.calfacade.svc.BwAuthUser)
    */
   public void restoreAuthUser(BwAuthUser o) throws Throwable {
-    if (globals.onlyUsers &&
-        (globals.onlyUsersMap.get(o.getUser().getAccount()) == null)) {
+    if (!globals.onlyUsersMap.check(o.getUser())) {
       return;
     }
 
@@ -325,7 +318,7 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreEvent(org.bedework.calfacade.BwEvent)
    */
   public void restoreEvent(BwEvent o) throws Throwable {
-    if (!checkOnlyUser(o)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return;
     }
 
@@ -338,7 +331,7 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#update(org.bedework.calfacade.BwEvent)
    */
   public void update(BwEvent o) throws Throwable {
-    if (!checkOnlyUser(o)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return;
     }
 
@@ -353,7 +346,7 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreCategory(org.bedework.calfacade.BwCategory)
    */
   public void restoreCategory(BwCategory o) throws Throwable {
-    if (!checkOnlyUser(o)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return;
     }
 
@@ -375,7 +368,7 @@ public class HibRestore implements RestoreIntf {
    * @see org.bedework.dumprestore.restore.RestoreIntf#restoreLocation(org.bedework.calfacade.BwLocation)
    */
   public Integer restoreLocation(BwLocation o) throws Throwable {
-    if (!checkOnlyUser(o)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return null;
     }
 
@@ -404,7 +397,7 @@ public class HibRestore implements RestoreIntf {
   }
 
   public Integer restoreSponsor(BwSponsor o) throws Throwable {
-    if (!checkOnlyUser(o)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return null;
     }
 
@@ -452,7 +445,7 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void restoreUserPrefs(BwPreferences o) throws Throwable {
-    if (!checkOnlyUser(o)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return;
     }
 
@@ -484,7 +477,7 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void restoreAlarm(BwAlarm o) throws Throwable {
-    if (!checkOnlyUser(o)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return;
     }
 
@@ -496,8 +489,7 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void update(BwUser user) throws Throwable {
-    if (globals.onlyUsers &&
-        (globals.onlyUsersMap.get(user.getAccount()) == null)) {
+    if (!globals.onlyUsersMap.check(user)) {
       return;
     }
 
@@ -553,7 +545,7 @@ public class HibRestore implements RestoreIntf {
    * calls then update the structure with hibernate.
    */
   public void restoreCalendars(BwCalendar o) throws Throwable {
-    if (!checkOnlyUser(o)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return;
     }
 
@@ -578,7 +570,7 @@ public class HibRestore implements RestoreIntf {
   }
 
   public void saveRootCalendar(BwCalendar val) throws Throwable {
-    if (!checkOnlyUser(val)) {
+    if (!globals.onlyUsersMap.check(val)) {
       return;
     }
 
@@ -599,7 +591,7 @@ public class HibRestore implements RestoreIntf {
    * calls then update the structure with hibernate.
    */
   public void addCalendar(BwCalendar o) throws Throwable {
-    if (!checkOnlyUser(o)) {
+    if (!globals.onlyUsersMap.check(o)) {
       return;
     }
 
@@ -622,7 +614,7 @@ public class HibRestore implements RestoreIntf {
    * ==================================================================== */
 
   private void restoreCalendars(BwCalendar val, Connection conn) throws Throwable {
-    if (!checkOnlyUser(val)) {
+    if (!globals.onlyUsersMap.check(val)) {
       return;
     }
 
@@ -648,7 +640,7 @@ public class HibRestore implements RestoreIntf {
    * Restore a single calendar. Don't restore children
    */
   private void restoreCalendar(BwCalendar val, Connection conn) throws Throwable {
-    if (!checkOnlyUser(val)) {
+    if (!globals.onlyUsersMap.check(val)) {
       return;
     }
 
@@ -777,34 +769,6 @@ public class HibRestore implements RestoreIntf {
     /* Just commit * /
     sess.commit();
   }*/
-
-  private boolean checkOnlyUser(BwOwnedDbentity ent) {
-    if (!globals.onlyUsers) {
-      return true;
-    }
-
-    if (globals.onlyUsersMap.get(ent.getOwner().getAccount()) == null) {
-      return false;
-    }
-
-    return true;
-  }
-
-  private boolean checkOnlyUser(BwShareableDbentity ent) {
-    if (!globals.onlyUsers) {
-      return true;
-    }
-
-    if (globals.onlyUsersMap.get(ent.getOwner().getAccount()) == null) {
-      return false;
-    }
-
-    if (globals.onlyUsersMap.get(ent.getCreator().getAccount()) == null) {
-      ent.setCreator(ent.getOwner());
-    }
-
-    return true;
-  }
 
   private String boolVal(boolean val) {
     if (val) {

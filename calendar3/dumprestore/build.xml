@@ -102,7 +102,7 @@
   <target name="restoredb-nousers" depends="init"
           description="Run bedework db restore app to initialise db">
     <property name="org.bedework.onlyusers"
-              value="public-user,caladmin,douglm,agrp_cct,agrp_arc,agrp_Admissions,agrp_HSS,agrp_IACS,agrp_Arch,agrp_OoC,agrp_MANE,agrp_health,agrp_ccc,agrp_hr,agrp_physics,agrp_advance,agrp_provost,agrp_empac,agrp_it,agrp_soe,agrp_lally,agrp_CogSci,agrp_alum,agrp_parking,agrp_Athletics,agrp_construct,agrp_union,agrp_Library,agrp_chemistry,agrp_ItOps,agrp_Arts,agrp_President,agrp_facilities,agrp_CDC,agrp_fye,agrp_ECSE,agrp_NetTel,agrp_Math,agrp_dses,agrp_compsci,agrp_Economics,agrp_govrel,agrp_CHME,agrp_Bookstore,agrp_mse,agrp_Diversity,agrp_OriginsOfLife,agrp_doso,agrp_CEE,agrp_SoS,agrp_CreditUnion,agrp_ResLife,agrp_Purchasing,agrp_LRC,agrp_STS,agrp_ComputerStore,agrp_catering,agrp_CIUE,agrp_Biology,agrp_PublicSafety,agrp_UnionClubs,agrp_cpfd,agrp_FYS,agrp_SRFS,agrp_EES,agrp_ALAC,agrp_SCOREC,agrp_CFES,agrp_CATS,agrp_LLC,agrp_Archer,agrp_OMSA,agrp_Nanotech,agrp_BioMed,agrp_CBIS" />
+              value="public-user,caladmin,douglm,agrp_*" />
     <antcall target="restoredb" inheritrefs="true" />
   </target>
 </project>

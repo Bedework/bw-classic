@@ -322,11 +322,13 @@ public class Restore implements Defs {
         if (args[i].equals("*")) {
           // means ignore this par
         } else {
-          globals.onlyUsers = true;
+          globals.onlyUsersMap.setOnlyUsers(true);
           String[] users = args[i].split(",");
           for (int oui = 0; oui < users.length; oui++) {
-            info("Only user: " + users[oui]);
-            globals.onlyUsersMap.put(users[oui], users[oui]);
+            String ou = users[oui];
+            info("Only user: " + ou);
+
+            globals.onlyUsersMap.add(ou);
           }
         }
 
