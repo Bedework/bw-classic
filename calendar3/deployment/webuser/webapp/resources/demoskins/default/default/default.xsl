@@ -12,30 +12,30 @@
 	<!--       PERSONAL CALENDAR STYLESHEET        -->
 	<!-- ========================================= -->
 
-  <!-- **********************************************************************
-    Copyright 2006 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+	<!-- **********************************************************************
+		Copyright 2006 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
-    Redistribution and use of this distribution in source and binary forms,
-    with or without modification, are permitted provided that:
-       The above copyright notice and this permission notice appear in all
-        copies and supporting documentation;
+		Redistribution and use of this distribution in source and binary forms,
+		with or without modification, are permitted provided that:
+			 The above copyright notice and this permission notice appear in all
+				copies and supporting documentation;
 
-        The name, identifiers, and trademarks of Rensselaer Polytechnic
-        Institute are not used in advertising or publicity without the
-        express prior written permission of Rensselaer Polytechnic Institute;
+				The name, identifiers, and trademarks of Rensselaer Polytechnic
+				Institute are not used in advertising or publicity without the
+				express prior written permission of Rensselaer Polytechnic Institute;
 
-    DISCLAIMER: The software is distributed" AS IS" without any express or
-    implied warranty, including but not limited to, any implied warranties
-    of merchantability or fitness for a particular purpose or any warrant)'
-    of non-infringement of any current or pending patent rights. The authors
-    of the software make no representations about the suitability of this
-    software for any particular purpose. The entire risk as to the quality
-    and performance of the software is with the user. Should the software
-    prove defective, the user assumes the cost of all necessary servicing,
-    repair or correction. In particular, neither Rensselaer Polytechnic
-    Institute, nor the authors of the software are liable for any indirect,
-    special, consequential, or incidental damages related to the software,
-    to the maximum extent the law permits. -->
+		DISCLAIMER: The software is distributed" AS IS" without any express or
+		implied warranty, including but not limited to, any implied warranties
+		of merchantability or fitness for a particular purpose or any warrant)'
+		of non-infringement of any current or pending patent rights. The authors
+		of the software make no representations about the suitability of this
+		software for any particular purpose. The entire risk as to the quality
+		and performance of the software is with the user. Should the software
+		prove defective, the user assumes the cost of all necessary servicing,
+		repair or correction. In particular, neither Rensselaer Polytechnic
+		Institute, nor the authors of the software are liable for any indirect,
+		special, consequential, or incidental damages related to the software,
+		to the maximum extent the law permits. -->
 
 	<!-- DEFINE INCLUDES -->
 	<xsl:include href="errors.xsl"/>
@@ -692,7 +692,7 @@
 					 </xsl:choose>
 
 					 <!-- refresh button -->
-					 <a href="setup.do"><img src="{$resourcesRoot}/resources/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
+					 <a href="{$setup}"><img src="{$resourcesRoot}/resources/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
 				 </td>
 			 </tr>
 		</table>
@@ -970,7 +970,7 @@
 		<xsl:variable name="calPath" select="calendar/encodedPath"/>
 		<xsl:variable name="guid" select="guid"/>
 		<xsl:variable name="recurrenceId" select="recurrenceId"/>
-    <xsl:variable name="eventRootClass">
+		<xsl:variable name="eventRootClass">
 			<xsl:choose>
 				<!-- Otherwise: Alternating colors for all standard events -->
 				<xsl:when test="position() = 1">event firstEvent</xsl:when>
@@ -2428,9 +2428,9 @@
 					<!-- set the start date for adding an event to the first day of the
 							 given period, the hour of "now", and give a duration of 60 minutes -->
 					<xsl:variable name="startDate"><xsl:value-of select="/bedework/firstday/date"/>T<xsl:value-of select="substring(/bedework/now/time,1,2)"/>0000</xsl:variable>
-          <!-- skip setting duration for now; this should be set in the user's prefs-->
-          <!-- <a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event"> -->
-          <a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}" class="calendarAdd" title="add event">
+					<!-- skip setting duration for now; this should be set in the user's prefs-->
+					<!-- <a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event"> -->
+					<a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}" class="calendarAdd" title="add event">
 						<img src="{$resourcesRoot}/resources/addEvent-forCals-icon.gif" width="9" height="12" border="0" alt="add event"/>
 					</a>
 				</xsl:if>
@@ -3329,12 +3329,12 @@
 		</xsl:variable>
 		<li class="{$itemClass}">
 			<xsl:variable name="subUri" select="uri"/>
-      <xsl:if test="style != '' and style != 'default'">
-        <!-- the spacer gif approach allows us to avoid some IE misbehavior -->
-        <xsl:variable name="subStyle" select="style"/>
-        <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="subscription style" class="subStyle {$subStyle}"/>
-      </xsl:if>
-      <a href="{$setSelection}?calUrl={$subUri}">
+			<xsl:if test="style != '' and style != 'default'">
+				<!-- the spacer gif approach allows us to avoid some IE misbehavior -->
+				<xsl:variable name="subStyle" select="style"/>
+				<img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="subscription style" class="subStyle {$subStyle}"/>
+			</xsl:if>
+			<a href="{$setSelection}?calUrl={$subUri}">
 				<xsl:value-of select="name"/>
 			</a>
 			<xsl:if test="calendars/calendar/calendarCollection='true' and
