@@ -206,7 +206,9 @@ try {
 
     <!-- user and group -->
     <bw:emitText name="peForm" property="adminUserId" tagName="user"/>
-    <bw:emitText name="peForm" property="adminGroup.account" tagName="group"/>
+    <logic:present name="peForm" property="adminGroup" >
+      <bw:emitText name="peForm" property="adminGroup.account" tagName="group"/>
+    </logic:present>
   </userInfo>
 
   <logic:iterate id="appvar" name="peForm" property="appVars">
