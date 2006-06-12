@@ -333,7 +333,8 @@
 
 	<xsl:template name="sideBar">
 		<h3>
-			<img alt="manage views" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> views
+			<!--<img alt="manage views" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/>-->
+      views
 		</h3>
 		<ul id="myViews">
 			<xsl:choose>
@@ -3315,19 +3316,19 @@
 	<xsl:template match="subscription" mode="mySubscriptions">
 		<xsl:variable name="itemClass">
 			<xsl:choose>
-				<xsl:when test="/bedework/selectionState/selectionType = 'calendar'
-												and calendars/calendar/path = /bedework/selectionState/subscriptions/subscription/calendar/path">selected</xsl:when>
+				<xsl:when test="/bedework/selectionState/selectionType = 'subscription'
+												and /bedework/selectionState/subscriptions/subscription/name = name">selected</xsl:when>
 				<xsl:otherwise>calendar</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<li class="{$itemClass}">
-			<xsl:variable name="subUri" select="uri"/>
+			<xsl:variable name="subName" select="name"/>
 			<xsl:if test="style != '' and style != 'default'">
 				<!-- the spacer gif approach allows us to avoid some IE misbehavior -->
 				<xsl:variable name="subStyle" select="style"/>
 				<img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="subscription style" class="subStyle {$subStyle}"/>
 			</xsl:if>
-			<a href="{$setSelection}?calUrl={$subUri}">
+			<a href="{$setSelection}?subname={$subName}">
 				<xsl:value-of select="name"/>
 			</a>
 			<xsl:if test="calendars/calendar/calendarCollection='true' and
