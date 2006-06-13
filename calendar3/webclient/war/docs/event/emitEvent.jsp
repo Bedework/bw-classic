@@ -99,5 +99,7 @@
     <%-- ****************************************************************
           the following code should not be produced in the public client
          **************************************************************** --%>
-    <bw:emitCurrentPrivs name="eventInfo" property="currentAccess" />
+    <logic:equal name="calForm" property="guest" value="false">
+      <bw:emitCurrentPrivs name="eventInfo" property="currentAccess" />
+    </logic:equal>
   </event>

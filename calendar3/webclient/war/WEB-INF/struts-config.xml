@@ -325,6 +325,7 @@
                scope="session"
                validate="false">
       <forward name="baddata" path="/showMain.rdo" redirect="true" />
+      <forward name="retry" path="/initUpload.rdo" redirect="true" />
       <forward name="success" path="/setup.do" redirect="true"/>
     </action>
 

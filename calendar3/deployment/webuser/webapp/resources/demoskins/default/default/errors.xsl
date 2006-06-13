@@ -47,6 +47,9 @@
       <xsl:when test="id='org.bedework.exception.duplicateguid'">
           <p>Duplicate guid: this event already exists in your calendar.</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.nofilename'">
+          <p>You must supply a file name (required).</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.missingfield'">
           <p>You must supply the following field: <em><xsl:value-of select="param"/></em></p>
       </xsl:when>

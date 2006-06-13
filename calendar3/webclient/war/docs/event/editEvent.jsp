@@ -2,6 +2,7 @@
 <%@ taglib uri='struts-logic' prefix='logic' %>
 <%@ taglib uri='struts-html' prefix='html' %>
 <%@ taglib uri='struts-genurl' prefix='genurl' %>
+<%@ taglib uri='bedework' prefix='bw' %>
 <html:xhtml/>
 
 <%@ include file="/docs/header.jsp" %>
@@ -134,6 +135,9 @@ try {
     </location>
   </genurl:form>
 </formElements>
+<bean:define id="eventFormatter" name="calForm" property="curEventFmt"/>
+<bw:emitText name="eventFormatter" property="xmlAccess" tagName="access"
+                 filter="no"/>
 
 <%
 } catch (Throwable t) {
