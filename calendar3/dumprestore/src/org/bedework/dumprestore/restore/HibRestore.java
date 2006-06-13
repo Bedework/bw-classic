@@ -68,8 +68,6 @@ import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwUserInfo;
 import org.bedework.calfacade.CalFacadeDefs;
-import org.bedework.calfacade.base.BwOwnedDbentity;
-import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAdminGroupEntry;

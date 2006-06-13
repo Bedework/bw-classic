@@ -67,9 +67,8 @@
               index="idx_event_deleted" />
     </property>
 
-    <property name="summary" type="string" >
-      <column name="summary" not-null="true" />
-    </property>
+    <property name="summary" type="string" />
+
     <property name="description" column="description" type="text"/>
 
     <property name="link" column="bwlink" type="string" />
