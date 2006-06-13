@@ -124,6 +124,7 @@ public class UploadAction extends BwAbstractAction {
     String fileName = upFile.getFileName();
 
     if ((fileName == null) || (fileName.length() == 0)) {
+      form.getErr().emit("org.bedework.client.error.nofilename", 1);
       return "retry";
     }
 
