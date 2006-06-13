@@ -669,12 +669,16 @@
       <forward name="continue" path="/sponsor/showUpdateList.rdo" redirect="true" />
     </action>
 
+    <!-- delete sponsor: at some point we should give the user a chance to set referenced sponsors
+         to a different sponsor so the item can be removed.  For now just return
+         to the list.
+      <forward name="inUse" path="/sponsor/showReferenced.rdo" redirect="true" />-->
     <action    path="/sponsor/delete"
                type="org.bedework.webadmin.sponsor.PEDeleteSponsorAction"
                name="peForm"
                scope="session"
                validate="false">
-      <forward name="inUse" path="/sponsor/showReferenced.rdo" redirect="true" />
+      <forward name="inUse" path="/sponsor/showUpdateList.rdo" redirect="true" />
       <forward name="notFound" path="/sponsor/showUpdateList.rdo" redirect="true" />
       <forward name="cancelled" path="/sponsor/showUpdateList.rdo" redirect="true" />
       <forward name="continue" path="/sponsor/showUpdateList.rdo" redirect="true" />
@@ -769,12 +773,16 @@
       <forward name="continue" path="/location/showUpdateList.rdo" redirect="true" />
     </action>
 
+    <!-- delete location: at some point we should give the user a chance to set referenced locations
+         to a different location so the item can be removed.  For now just return
+         to the list.
+         <forward name="inUse" path="/location/showReferenced.rdo" redirect="true" /> -->
     <action    path="/location/delete"
                type="org.bedework.webadmin.location.PEDeleteLocationAction"
                name="peForm"
                scope="session"
                validate="false">
-      <forward name="inUse" path="/location/showReferenced.rdo" redirect="true" />
+      <forward name="inUse" path="/location/showUpdateList.rdo" redirect="true" />
       <forward name="notFound" path="/location/showUpdateList.rdo" redirect="true" />
       <forward name="cancelled" path="/location/showUpdateList.rdo" redirect="true" />
       <forward name="continue" path="/location/showUpdateList.rdo" redirect="true" />

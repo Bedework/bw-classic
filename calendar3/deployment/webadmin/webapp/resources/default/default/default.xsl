@@ -210,7 +210,8 @@
             <xsl:when test="/bedeworkadmin/page='modSponsor'">
               <xsl:call-template name="modSponsor"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='deleteSponsorConfirm'">
+            <xsl:when test="/bedeworkadmin/page='deleteSponsorConfirm' or
+                            /bedeworkadmin/page='sponsorReferenced'">
               <xsl:call-template name="deleteSponsorConfirm"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='locationList'">
@@ -1543,8 +1544,8 @@
             Location's URL:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/location/link/*"/>
-            <span class="fieldInfo">(optional)</span>
+            <xsl:variable name="link" select="/bedeworkadmin/location/link"/>
+            <a href="{$link}"><xsl:value-of select="/bedeworkadmin/location/link"/></a>
           </td>
         </tr>
       </table>
