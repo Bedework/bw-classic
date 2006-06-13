@@ -1667,7 +1667,8 @@
 						Effects free/busy:
 					</td>
 					<td class="fieldval">
-						<input type="radio" name="newEvent.transparency" value="OPAQUE" checked="checked"/>yes <input type="radio" name="newEvent.transparency" value="TRANSPARENT"/>no
+						<input type="radio" name="newEvent.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status effects your free/busy)</span><br/>
+            <input type="radio" name="newEvent.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not effect your free/busy)</span>
 					</td>
 				</tr>
 				<!--  Description  -->
@@ -2064,10 +2065,12 @@
 					<td class="fieldval">
 						<xsl:choose>
 							<xsl:when test="form/transparency = 'TRANSPARENT'">
-								<input type="radio" name="editEvent.transparency" value="OPAQUE"/>yes <input type="radio" name="editEvent.transparency" value="TRANSPARENT" checked="checked"/>no
+								<input type="radio" name="editEvent.transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status effects your free/busy)</span><br/>
+                <input type="radio" name="editEvent.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not effect your free/busy)</span>
 							</xsl:when>
 							<xsl:otherwise>
-								<input type="radio" name="editEvent.transparency" value="OPAQUE" checked="checked"/>yes <input type="radio" name="editEvent.transparency" value="TRANSPARENT"/>no
+								<input type="radio" name="editEvent.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status effects your free/busy)</span><br/>
+                <input type="radio" name="editEvent.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not effect your free/busy)</span>
 							</xsl:otherwise>
 						</xsl:choose>
 					</td>
@@ -2199,8 +2202,8 @@
 						Affects Free/busy:
 					</td>
 					<td align="left">
-						<input type="radio" value="OPAQUE" name="transparency"/> yes
-						<input type="radio" value="TRANSPARENT" name="transparency" checked="checked"/> no
+						<input type="radio" value="OPAQUE" name="transparency"/> yes <span class="note">(opaque: event status effects your free/busy)</span><br/>
+						<input type="radio" value="TRANSPARENT" name="transparency" checked="checked"/> no <span class="note">(transparent: event status does not effect your free/busy)</span>
 					</td>
 				</tr>
 			</table>
@@ -3443,12 +3446,12 @@
 				</tr>
 				<tr>
 					<td class="fieldname padMeTop">
-						Transparency:
+						Effects free/busy:
 					</td>
 					<td align="left" class="padMeTop">
-            <input type="radio" value="" name="transparency" checked="checked"/> accept event's transparency<br/>
-						<input type="radio" value="TRANSPARENT" name="transparency"/> transparent <span class="note">(does not effect your free/busy)</span><br/>
-						<input type="radio" value="OPAQUE" name="transparency"/> opaque <span class="note">(effects your free/busy)</span><br/>
+            <input type="radio" value="" name="transparency" checked="checked"/> accept event's settings<br/>
+						<input type="radio" value="OPAQUE" name="transparency"/> yes <span class="note">(opaque: event status effects your free/busy)</span><br/>
+						<input type="radio" value="TRANSPARENT" name="transparency"/> no <span class="note">(transparent: event status does not effect your free/busy)</span><br/>
 					</td>
 				</tr>
 				<tr>
