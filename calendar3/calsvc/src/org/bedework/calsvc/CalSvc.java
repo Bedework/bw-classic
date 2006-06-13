@@ -1107,6 +1107,7 @@ public class CalSvc extends CalSvcI {
     } else if (currentUser().equals(who)) {
       subs = getSubscriptions();
     } else {
+      /* First see if we have free busy access to the users calendar */
       cal = getCal().getCalendars(u, PrivilegeDefs.privReadFreeBusy);
       if (cal == null) {
         throw new CalFacadeAccessException();
@@ -2067,6 +2068,7 @@ public class CalSvc extends CalSvcI {
 
     if (sub != null) {
       // Explicitly selected calendar - via a subscription.
+      getSubCalendar(sub, freeBusy);
 
       return postProcess(getCal(sub).getEvents(sub.getCalendar(), filter,
                                                startDate, endDate,
