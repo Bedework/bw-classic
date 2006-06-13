@@ -3019,13 +3019,13 @@
 						<span class="note">(optional) ex: someDept/meetings</span>
 					</td>
 				</tr>
-				<tr>
+				<!--<tr>
 					<td class="fieldname">Display:</td>
 					<td>
 						<input type="radio" value="true" name="display" checked="checked"/> yes
 						<input type="radio" value="false" name="display"/> no
 					</td>
-				</tr>
+				</tr>-->
 				<tr>
 					<td class="fieldname">Affects Free/Busy:</td>
 					<td>
@@ -3089,13 +3089,13 @@
 						</td>
 					</tr>
 				</xsl:if>
-				<tr>
+				<!--<tr>
 					<td class="fieldname">Display:</td>
 					<td>
 						<input type="radio" value="true" name="subscription.display" checked="checked"/> yes
 						<input type="radio" value="false" name="subscription.display"/> no
 					</td>
-				</tr>
+				</tr>-->
 				<tr>
 					<td class="fieldname">Affects Free/Busy:</td>
 					<td>
@@ -3168,7 +3168,7 @@
 						</tr>
 					</xsl:otherwise>
 				</xsl:choose>
-				<tr>
+				<!-- <tr>
 					<td class="fieldname">Display:</td>
 					<td>
 						<xsl:choose>
@@ -3182,7 +3182,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<td class="fieldname">Affects Free/Busy:</td>
 					<td>
@@ -3260,7 +3260,7 @@
 				<th>Name</th>
 				<th>URI</th>
 				<th>Style</th>
-				<th>Display</th>
+				<!--<th>Display</th>-->
 				<th>Free/Busy</th>
 				<!--<th>Unremovable</th>
 				<th>External</th>
@@ -3281,11 +3281,11 @@
 					<td class="{$style}" style="border: none;">
 						&#160; <!-- just make room and let the style show -->
 					</td>
-					<td class="center">
+					<!-- <td class="center">
 						<xsl:if test="display='true'">
 							<img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
 						</xsl:if>
-					</td>
+					</td> -->
 					<td class="center">
 						<xsl:if test="affectsFreeBusy='true'">
 							<img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
