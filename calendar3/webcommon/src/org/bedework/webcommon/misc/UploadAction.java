@@ -54,6 +54,7 @@
 
 package org.bedework.webcommon.misc;
 
+import org.bedework.appcommon.CheckData;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.CalFacadeException;
@@ -92,6 +93,18 @@ public class UploadAction extends BwAbstractAction {
                          BwActionFormBase form) throws Throwable {
     if (form.getGuest()) {
       return "noAccess"; // First line of defence
+    }
+
+    String transparency = getReqPar(request, "transparency");
+    if (!CheckData.checkTransparency(transparency)) {
+      form.getErr().emit("org.bedework.client.error.badtransparency", transparency);
+      return "retry";
+    }
+
+    String status = getReqPar(request, "status");
+    if (!CheckData.checkStatus(status)) {
+      form.getErr().emit("org.bedework.client.error.badstatus", status);
+      return "retry";
     }
 
     CalSvcI svci = form.fetchSvci();
@@ -145,6 +158,14 @@ public class UploadAction extends BwAbstractAction {
         if (o instanceof EventInfo) {
           EventInfo ei = (EventInfo)o;
           BwEvent ev = ei.getEvent();
+
+          if (transparency != null) {
+            ev.setTransparency(transparency);
+          }
+
+          if (status != null) {
+            ev.setStatus(status);
+          }
 
           if (ei.getNewEvent()) {
             svci.addEvent(cal, ev, ei.getOverrides());

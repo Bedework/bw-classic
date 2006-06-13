@@ -28,6 +28,8 @@
  */
 package org.bedework.appcommon;
 
+import org.bedework.calfacade.BwEvent;
+
 import java.util.Calendar;
 
 /** A class to check various data fields for consistency and correctness
@@ -43,11 +45,17 @@ public class CheckData {
   private static final int MONTH_START_INDEX = 4;
   private static final int DAY_START_INDEX = 6;
 
-  /** Used to obtain a number of values we might need.
-   */
-  private static final Calendar refCal = Calendar.getInstance();
-  private static final int maxMonth = refCal.getMaximum(Calendar.MONTH);
-  private static final int maxDay = refCal.getMaximum(Calendar.DATE);
+  private static final int maxMonth;
+  private static final int maxDay;
+
+  static {
+    /** Used to obtain a number of values we might need.
+     */
+    Calendar refCal = Calendar.getInstance();
+
+    maxMonth = refCal.getMaximum(Calendar.MONTH);
+    maxDay = refCal.getMaximum(Calendar.DATE);
+  }
 
   private CheckData() {}  // No instantiation allowed.
 
@@ -122,5 +130,26 @@ public class CheckData {
   public static int dayNum(String eightDigitDate) {
      return Integer.parseInt(eightDigitDate.substring(DAY_START_INDEX,
        DAY_START_INDEX + 2));
+  }
+
+  /** Check for valid transparency setting
+   *
+   * @param val
+   * @return boolean true for ok
+   */
+  public static boolean checkTransparency(String val) {
+    return  BwEvent.transparencyOpaque.equals(val) ||
+            BwEvent.transparencyTransparent.equals(val);
+  }
+
+  /** Check for valid status setting
+   *
+   * @param val
+   * @return boolean true for ok
+   */
+  public static boolean checkStatus(String val) {
+    return  BwEvent.statusConfirmed.equals(val) ||
+            BwEvent.statusTentative.equals(val) ||
+            BwEvent.statusCancelled.equals(val);
   }
 }
