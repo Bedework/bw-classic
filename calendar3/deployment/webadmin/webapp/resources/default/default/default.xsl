@@ -377,7 +377,10 @@
     </table>
 
     <xsl:if test="/bedeworkadmin/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedeworkadmin/userInfo/superUser='true'">
-      <h4 class="menuTitle">Manage Calendar Suite</h4>
+      <h4 class="menuTitle">
+        Manage Calendar Suite:
+        <em><xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/></em>
+      </h4>
       <ul class="adminMenu">
         <li>
           <a href="{$calendar-fetch}">
@@ -1007,7 +1010,6 @@
               <td>
                 <input type="submit" name="updateEvent" value="Update Event"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Reset"/>
                 <input type="submit" name="copy" value="Duplicate Event"/>
               </td>
               <td align="right">
