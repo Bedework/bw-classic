@@ -28,10 +28,16 @@
         Calendar / folder deleted
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.calendar.added'">
-        Calendar / folder added
+        Calendar added
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.calendar.updated'">
-        Calendar / folder updated
+        Calendar updated
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.folder.added'">
+        Folder added
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.folder.updated'">
+        Folder updated
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.sponsor.deleted'">
         Contact deleted
