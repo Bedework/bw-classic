@@ -108,7 +108,7 @@ public class UpdatePrefsAction extends BwAbstractAction {
     BwPreferences prefs;
 
     /* Refetch the prefs */
-    if (getReqPar(request, "user") != null) {
+    if (getPublicAdmin(form) && (getReqPar(request, "user") != null)) {
       /* Fetch a given users preferences */
       if (!form.getCurUserSuperUser()) {
         return "noAccess"; // First line of defence
