@@ -474,6 +474,11 @@ table.common #eventActions {
   float: right;
   clear: none;
 }
+table.common #eventActions img {
+  display: inline;
+  margin-right: 2px;
+  vertical-align: middle;
+}
 table.common td.allField {
   white-space: nowrap;
   text-align: right;
@@ -509,6 +514,9 @@ table.common div.durationBox {
 table.common .durationSpacerText {
   font-weight: bold;
   margin: 0 1em;
+}
+table.common .padMeTop {
+  padding-top: 1em !important;
 }
 #bwEventCalDisplay {
   font-weight: bold;

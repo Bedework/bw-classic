@@ -1156,7 +1156,7 @@
 					<div id="eventActions">
 						<xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
 						<a href="{$export}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-							<img src="{$resourcesRoot}/resources/std-ical_iconDkGray.gif" width="12" height="13" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+							<img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
 							Download
 						</a> |
 						<xsl:choose>
@@ -1178,18 +1178,18 @@
 							</xsl:when>
 							<xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content">
 								<a href="{$editEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
-									<img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="13" border="0" alt="edit"/>
+									<img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
 									Edit
 								</a>
 							</xsl:when>
 							<xsl:otherwise>
 								<a href="{$subscriptions-fetch}">
-									<img src="{$resourcesRoot}/resources/std-ical_iconSubsDkGray.gif" width="12" height="13" border="0" alt="edit"/>
+									<img src="{$resourcesRoot}/resources/std-ical_iconSubsDkGray.gif" width="12" height="16" border="0" alt="edit"/>
 									Manage Subscriptions
 								</a>
 							</xsl:otherwise>
 						</xsl:choose>
-						<xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind">
+						<xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind and not(isAnnotation)">
 							 |
 							<xsl:choose>
 								<xsl:when test="recurring=true">
@@ -3426,14 +3426,14 @@
 						Filename:
 					</td>
 					<td align="left">
-						<input type="file" name="uploadFile" size="80" />
+						<input type="file" name="uploadFile" size="60" />
 					</td>
 				</tr>
 				<tr>
-					<td class="fieldname">
+					<td class="fieldname padMeTop">
 						Into calendar:
 					</td>
-					<td align="left">
+					<td align="left" class="padMeTop">
 						<input type="hidden" name="newCalPath" value=""/>
 						<span id="bwEventCalDisplay">
 							<em>default calendar</em>
@@ -3442,12 +3442,24 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="fieldname">
-						Affects Free/busy:
+					<td class="fieldname padMeTop">
+						Transparency:
 					</td>
-					<td align="left">
-						<input type="radio" value="true" name="affectsFreeBusy"/> yes
-						<input type="radio" value="false" name="affectsFreeBusy" checked="checked"/> no
+					<td align="left" class="padMeTop">
+            <input type="radio" value="" name="transparency" checked="checked"/> accept event's transparency<br/>
+						<input type="radio" value="TRANSPARENT" name="transparency"/> transparent <span class="note">(does not effect your free/busy)</span><br/>
+						<input type="radio" value="OPAQUE" name="transparency"/> opaque <span class="note">(effects your free/busy)</span><br/>
+					</td>
+				</tr>
+				<tr>
+					<td class="fieldname padMeTop">
+						Status:
+					</td>
+					<td align="left" class="padMeTop">
+            <input type="radio" value="" name="status" checked="checked"/> accept event's status<br/>
+						<input type="radio" value="CONFIRMED" name="status"/> confirmed<br/>
+						<input type="radio" value="TENTATIVE" name="status"/> tentative<br/>
+            <input type="radio" value="CANCELLED" name="status"/> cancelled<br/>
 					</td>
 				</tr>
 			</table>
