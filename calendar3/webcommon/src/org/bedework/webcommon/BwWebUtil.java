@@ -54,6 +54,7 @@
 
 package org.bedework.webcommon;
 
+import org.bedework.appcommon.CheckData;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwLocation;
@@ -193,7 +194,7 @@ public class BwWebUtil {
       maxDescLen = syspars.getMaxUserDescriptionLength();
     }
 
-    if (ev.getSummary() == null) {
+    if (publicEvent && (ev.getSummary() == null)) {
       err.emit("org.bedework.validation.error.notitle");
       ok = false;
     } else if (ev.getSummary().length() > maxDescLen) {
@@ -235,6 +236,18 @@ public class BwWebUtil {
       dur = new Duration(new Dur(ev.getDuration()));
     } else {
       err.emit("org.bedework.validation.error.invalid.endtype");
+      ok = false;
+    }
+
+    if (!CheckData.checkTransparency(ev.getTransparency())) {
+      err.emit("org.bedework.validation.error.badtransparency",
+               ev.getTransparency());
+      ok = false;
+    }
+
+    if (!CheckData.checkStatus(ev.getStatus())) {
+      err.emit("org.bedework.validation.error.badstatus",
+               ev.getStatus());
       ok = false;
     }
 

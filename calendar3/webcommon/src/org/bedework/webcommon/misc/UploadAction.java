@@ -97,13 +97,13 @@ public class UploadAction extends BwAbstractAction {
 
     String transparency = getReqPar(request, "transparency");
     if (!CheckData.checkTransparency(transparency)) {
-      form.getErr().emit("org.bedework.client.error.badtransparency", transparency);
+      form.getErr().emit("org.bedework.validation.error.badtransparency", transparency);
       return "retry";
     }
 
     String status = getReqPar(request, "status");
     if (!CheckData.checkStatus(status)) {
-      form.getErr().emit("org.bedework.client.error.badstatus", status);
+      form.getErr().emit("org.bedework.validation.error.badstatus", status);
       return "retry";
     }
 

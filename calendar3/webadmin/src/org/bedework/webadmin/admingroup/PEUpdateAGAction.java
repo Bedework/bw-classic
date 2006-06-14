@@ -65,6 +65,7 @@ import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
 import org.bedework.webcommon.BwSession;
+import org.bedework.webcommon.BwWebUtil;
 
 import edu.rpi.sss.util.Util;
 
@@ -107,7 +108,9 @@ public class PEUpdateAGAction extends PEAbstractAction {
       return "delete";
     }
 
-    Groups adgrps = form.fetchSvci().getGroups();
+    CalSvcI svci = form.fetchSvci();
+
+    Groups adgrps = svci.getGroups();
     form.assignChoosingGroup(false); // reset
     boolean add = form.getAddingAdmingroup();
 
@@ -118,12 +121,10 @@ public class PEUpdateAGAction extends PEAbstractAction {
       return "done";
     }
 
-    CalSvcI svci = form.fetchSvci();
-
     if (request.getParameter("addGroupMember") != null) {
       /** Add a user to the group we are updating.
        */
-      String mbr = form.getUpdGroupMember();
+      String mbr = BwWebUtil.checkNull(form.getUpdGroupMember());
       if (mbr == null) {
         return "continue";
       }
