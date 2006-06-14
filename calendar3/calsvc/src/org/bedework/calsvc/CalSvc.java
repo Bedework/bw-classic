@@ -1071,6 +1071,19 @@ public class CalSvc extends CalSvcI {
     return c;
   }
 
+  public Collection getSubscriptions(BwUser user) throws CalFacadeException {
+    Collection c = getUserPrefs(user).getSubscriptions();
+
+    Iterator it = c.iterator();
+    while (it.hasNext()) {
+      BwSubscription sub = (BwSubscription)it.next();
+
+      getSubCalendar(sub);
+    }
+
+    return c;
+  }
+
   public BwSubscription getSubscription(int id) throws CalFacadeException {
     return dbi.getSubscription(id);
   }
@@ -2446,7 +2459,15 @@ public class CalSvc extends CalSvcI {
          * not those of the authenticated user.
          */
         dbi.close();
-        BwUser user = cali.getUser(pars.getUser());
+
+        BwUser user;
+
+        if (currentCalSuite != null) {
+          // Use this user
+          user = currentCalSuite.getGroup().getOwner();
+        } else {
+          user = cali.getUser(pars.getUser());
+        }
         dbi = new CalSvcDb(this, user);
       }
 

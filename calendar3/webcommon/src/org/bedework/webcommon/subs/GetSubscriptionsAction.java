@@ -67,8 +67,6 @@ import javax.servlet.http.HttpServletResponse;
  * </ul>
  *
  * @author Mike Douglass   douglm@rpi.edu
- *
- * @deprecated  Probably don't need this. Abstract action always sets the subscriptions.
  */
 public class GetSubscriptionsAction extends BwAbstractAction {
   /* (non-Javadoc)
@@ -78,9 +76,7 @@ public class GetSubscriptionsAction extends BwAbstractAction {
                          HttpServletResponse response,
                          BwSession sess,
                          BwActionFormBase form) throws Throwable {
-    //CalSvcI svc = form.fetchSvci();
-
-    //form.setSubscriptions(svc.getSubscriptions());
+    getSubscriptions(form);
 
     return "success";
   }

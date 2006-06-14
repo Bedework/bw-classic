@@ -168,7 +168,7 @@ public class EndSubscribeAction extends BwAbstractAction {
     form.getMsg().emit("org.bedework.client.message.subscription.removed");
 
     /* Refetch to tidy up */
-    form.setSubscriptions(svc.getSubscriptions());
+    getSubscriptions(form);
 
     return forwardSuccess;
   }

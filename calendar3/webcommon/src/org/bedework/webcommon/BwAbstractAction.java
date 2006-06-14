@@ -53,7 +53,6 @@
 */
 package org.bedework.webcommon;
 
-// I only need this because request.getInitParameterNames doesn't work
 import org.bedework.appcommon.BedeworkDefs;
 import org.bedework.calenv.CalEnv;
 import org.bedework.calenv.CalOptions;
@@ -230,11 +229,11 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       return "cancelled";
     }
 
-    /* Set up or refresh frequently used information,
-     */
-    CalSvcI svc = form.fetchSvci();
-
-    form.setSubscriptions(svc.getSubscriptions());
+    if (!getPublicAdmin(form)) {
+      /* Set up or refresh frequently used information,
+       */
+      getSubscriptions(form);
+    }
 
     try {
       forward = doAction(request, response, s, form);
@@ -245,7 +244,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       }
     } catch (CalFacadeAccessException cfae) {
       form.getErr().emit("org.bedework.client.error.noaccess", "for that action");
-      forward="noaccess";
+      forward="noAccess";
     } catch (Throwable t) {
       form.getErr().emit("org.bedework.client.error.exc", t.getMessage());
       form.getErr().emit(t);
@@ -572,9 +571,20 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       svc.addViewSubscription(viewName, sub);
     }
 
-    form.setSubscriptions(svc.getSubscriptions());
+    getSubscriptions(form);
 
     return result;
+  }
+
+  /** Implant current subscriptions in the form.
+   *
+   * @param form
+   * @throws Throwable
+   */
+  public void getSubscriptions(BwActionFormBase form) throws Throwable {
+    CalSvcI svc = form.fetchSvci();
+    Collection subs = svc.getSubscriptions();
+    form.setSubscriptions(subs);
   }
 
   /** Find a user object given a "user" request parameter.

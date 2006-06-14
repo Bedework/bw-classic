@@ -854,6 +854,14 @@ public abstract class CalSvcI implements Serializable {
    */
   public abstract Collection getSubscriptions() throws CalFacadeException;
 
+  /** Get the given users subscription.
+   *
+   * @param user     BwUser
+   * @return Collection of subscriptions
+   * @throws CalFacadeException
+   */
+  public abstract Collection getSubscriptions(BwUser user) throws CalFacadeException;
+
   /** Fetch the subscription from the db given an id
    *
    * @param id
