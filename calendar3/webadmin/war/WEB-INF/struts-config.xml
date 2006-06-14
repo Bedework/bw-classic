@@ -379,6 +379,7 @@
                validate="false">
       <forward name="cancelled" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="retry" path="/subs/showModForm.rdo" redirect="true"/>
+      <forward name="updated" path="/subs/showModForm.rdo" redirect="true"/>
       <forward name="reffed" path="/subs/showSubs.rdo" redirect="true"/>
       <forward name="success" path="/subs/showSubs.rdo" redirect="true" />
       <forward name="added" path="/subs/showSubs.rdo" redirect="true" />
@@ -1084,6 +1085,7 @@
                validate="false">
       <forward name="cancelled" path="/admingroup/showUpdateList.rdo" redirect="true" />
       <forward name="continue" path="/admingroup/showModMembersForm.rdo" redirect="true" />
+      <forward name="success" path="/admingroup/showModMembersForm.rdo" redirect="true" />
       <forward name="retry" path="/admingroup/showModMembersForm.rdo" redirect="true" />
     </action>
 

@@ -2,8 +2,15 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:template match="error">
     <xsl:choose>
-      <xsl:when test="id='org.bedework.client.error.exc'">
-        <xsl:value-of select="param"/>
+      <xsl:when test="id='org.bedework.client.error.exc'"><!-- trap exceptions first -->
+        <xsl:choose>
+          <xsl:when test="param='org.bedework.exception.alreadyonadmingrouppath'">
+            Error: a group may not be added to itself.<br/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="param"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.noaccess'">
         Error: no access

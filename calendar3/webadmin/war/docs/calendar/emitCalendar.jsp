@@ -6,6 +6,7 @@
   <name><bean:write name="calendar" property="name" /></name>
   <path><bean:write name="calendar" property="path" /></path>
   <encodedPath><bean:write name="calendar" property="encodedPath" /></encodedPath>
+  <summary><bean:write name="calendar" property="summary" /></summary>
   <desc><bean:write name="calendar" property="description" /></desc>
   <calendarCollection><bean:write name="calendar" property="calendarCollection" /></calendarCollection>
   <mailListId><bean:write name="calendar" property="mailListId" /></mailListId>
