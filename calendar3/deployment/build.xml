@@ -150,9 +150,12 @@
 
     <antcall target="deploy.j2ee.apps" inheritrefs="true" />
 
-    <!-- copy an index file that sends you to the applications -->
-    <copy file="${app.root.dir}/resources/html/cal.html"
-          todir="${webapp.root.dir}"/>
+    <!-- copy startup website that sends you to the applications -->
+    <delete dir="${webapp.root.dir}/bedework"/>
+    <mkdir dir="${webapp.root.dir}/bedework"/>
+    <copy todir="${webapp.root.dir}/bedework">
+      <fileset dir="${app.root.dir}/resources/bedework"/>
+    </copy>
 
     <!-- copy libs that the application server needs -->
     <antcall target="deploy.appserver.jdbcdriver" inheritrefs="true" />
