@@ -3971,12 +3971,12 @@
 			<xsl:choose>
 				<xsl:when test="$currentTime = $selectedVal">
 					<option value="{$currentTime}" selected="selected">
-						<xsl:if test="ceiling($currentTime div 60) &lt; 10">0</xsl:if><xsl:value-of select="ceiling($currentTime div 60)"/>:<xsl:if test="string-length($currentTime mod 60)=1">0</xsl:if><xsl:value-of select="$currentTime mod 60"/>
+						<xsl:if test="floor($currentTime div 60) &lt; 10">0</xsl:if><xsl:value-of select="floor($currentTime div 60)"/>:<xsl:if test="string-length($currentTime mod 60)=1">0</xsl:if><xsl:value-of select="$currentTime mod 60"/>
 					</option>
 				</xsl:when>
 				<xsl:otherwise>
 					<option value="{$currentTime}">
-						<xsl:if test="ceiling($currentTime div 60) &lt; 10">0</xsl:if><xsl:value-of select="ceiling($currentTime div 60)"/>:<xsl:if test="string-length($currentTime mod 60)=1">0</xsl:if><xsl:value-of select="$currentTime mod 60"/>
+						<xsl:if test="floor($currentTime div 60) &lt; 10">0</xsl:if><xsl:value-of select="floor($currentTime div 60)"/>:<xsl:if test="string-length($currentTime mod 60)=1">0</xsl:if><xsl:value-of select="$currentTime mod 60"/>
 					</option>
 				</xsl:otherwise>
 			</xsl:choose>
