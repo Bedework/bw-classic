@@ -27,28 +27,51 @@
           Welcome to Bedework!
         </h1>
         <p>Please select a Bedework web client:</p>
-        <table id="clientSelectTable">
-          <tr>
-            <td>
-              <a href="/cal">
-                <img src="resources/publicEvents.gif" width="150" height="145" alt="Public events calendar" border="0"/>
-                Public events<br/>calendar suite
-              </a>
-            </td>
-            <td>
-              <a href="/ucal">
-                <img src="resources/personalEvents.gif" width="150" height="145" alt="Personal events calendar" border="0"/>
-                Personal events<br/>calendar
-              </a>
-            </td>
-            <td>
-              <a href="/caladmin">
-                <img src="resources/calAdmin.gif" width="150" height="145" alt="Public events admin client" border="0"/>
-                Public events<br/>administration
-              </a>
-            </td>
-          </tr>
-        </table>
+        <div id="clientSelect">
+          <fieldset id="calsuites">
+            <legend>Calendar Suites</legend>
+            <table border="0" summary="calendar suites">
+              <tr>
+                <td>
+                  <a href="/cal">
+                    <img src="resources/publicEvents.gif" width="150" height="145" alt="Public calendar suite" border="0"/>
+                    Public calendar<br/>suite example
+                  </a>
+                </td>
+                <td>
+                  <a href="/soedept">
+                    <img src="resources/deptEvents.gif" width="150" height="145" alt="Departmental calendar suite" border="0"/>
+                    Departmental calendar<br/>suite example
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </fieldset>
+          <fieldset id="personalCal">
+            <legend>Personal calendar</legend>
+            <a href="/ucal">
+              <img src="resources/personalEvents.gif" width="150" height="145" alt="Personal calendar" border="0"/>
+              User calendar
+            </a>
+            <div class="loginInfo">
+              Login: caluser1<br />
+              Password: bedework<br />
+              For more users, see <a href="http://www.bedework.org/bedework/update.do?artcenterkey=21">Getting Started</a>
+            </div>
+          </fieldset>
+          <fieldset id="calAdmin">
+            <legend>Calendar admin</legend>
+            <a href="/caladmin">
+              <img src="resources/calAdmin.gif" width="150" height="145" alt="Public events admin client" border="0"/>
+              Public events administration
+            </a>
+            <div class="loginInfo">
+              Public calsuite and super-user login: douglm<br />
+              Departmental calsuite login: jill<br />
+              Password: bedework
+            </div>
+          </fieldset>
+        </div>
         <h4>Other resources:</h4>
         <ul>
           <!--<li>
