@@ -113,8 +113,8 @@ public class CalRewriteTag extends RewriteTag {
     }
   }
 
-  /* bedework dummy request parameter - it's an encoded form of ?be=d */
-  private static final String bedeworkDummyPar = "%3Fbe%3Dd";
+  /* bedework dummy request parameter - it's an encoded form of ?b=de */
+  private static final String bedeworkDummyPar = "%3Fb%3Dde";
 
   /** Generates a PortletURL or a ResourceURL for the link when in the context of a
    * {@link PortletServlet#isPortletRequest(ServletRequest) PortletRequest}, otherwise

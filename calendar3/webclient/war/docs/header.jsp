@@ -122,12 +122,12 @@ try {
     <setup><genurl:rewrite action="setup.do"/></setup>
     <setSelection><genurl:rewrite action="setSelection.do"/></setSelection>
     <setViewPeriod><genurl:rewrite action="setViewPeriod.do"/></setViewPeriod>
-    <eventView><genurl:rewrite action="eventView.do"/></eventView>
+    <eventView><genurl:rewrite action="eventView.do?b=de"/></eventView>
     <mailEvent><genurl:rewrite action="mailEvent.do"/></mailEvent>
     <showPage><genurl:rewrite action="showPage.do"/></showPage>
 
     <export><genurl:rewrite action="export.do"/></export>
-    <stats><genurl:rewrite action="stats.do?be=d"/></stats>
+    <stats><genurl:rewrite action="stats.do?b=de"/></stats>
 
     <fetchPublicCalendars><genurl:rewrite action="fetchPublicCalendars"/></fetchPublicCalendars>
     <fetchCalendars><genurl:rewrite action="fetchCalendars"/></fetchCalendars>
