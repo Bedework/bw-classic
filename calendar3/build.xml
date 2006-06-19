@@ -107,7 +107,7 @@
                    bld.calenv,bld.ical,bld.core,
                    bld.http,bld.caldavclientapi,
                    bld.calsvci,bld.mail,bld.logging,
-                   bld.calsvc,bld.appcommon,
+                   bld.calsvc,bld.appcommon,bld.uportal,
                    bld.webadmin,bld.webclient,
                    bld.synchml,bld.caldav,
                    bld.timers,build.tools,
@@ -258,6 +258,7 @@
                          ${org.bedework.synchml.base}/src:
                          ${org.bedework.timers.base}/src:
                          ${org.bedework.tools.base}/src:
+                         ${org.bedework.uportal.base}/src:
                          ${org.bedework.webadmin.base}/src:
                          ${org.bedework.webclient.base}/src:
                          ${org.bedework.webcommon.base}/src:"
@@ -443,6 +444,17 @@
           depends="init,bld.common,bld.locale"
           description="Build icalendar classes jar">
       <ant antfile="${org.bedework.ical.base}/build.xml" inheritrefs="true"
+           target="build" />
+  </target>
+
+  <!-- ======================== uportal target =======================
+       This builds the uportal support classes jar.
+       ================================================================= -->
+
+  <target name="bld.uportal"
+          depends="init,bld.locale"
+          description="Build calendar uportal support classes jar">
+      <ant antfile="${org.bedework.uportal.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
 

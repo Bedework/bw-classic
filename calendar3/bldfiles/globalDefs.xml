@@ -87,6 +87,7 @@
     <property name="org.bedework.testsuite.base" location="${calendar.dir}/test" />
     <property name="org.bedework.timers.base" location="${calendar.dir}/timers" />
     <property name="org.bedework.tools.base" location="${calendar.dir}/tools" />
+    <property name="org.bedework.uportal.base" location="${calendar.dir}/uportal" />
     <property name="org.bedework.webadmin.base" location="${calendar.dir}/webadmin" />
     <property name="org.bedework.webclient.base" location="${calendar.dir}/webclient" />
     <property name="org.bedework.webcommon.base" location="${calendar.dir}/webcommon" />
