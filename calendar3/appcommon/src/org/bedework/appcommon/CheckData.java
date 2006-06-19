@@ -138,8 +138,9 @@ public class CheckData {
    * @return boolean true for ok
    */
   public static boolean checkTransparency(String val) {
-    return  BwEvent.transparencyOpaque.equals(val) ||
-            BwEvent.transparencyTransparent.equals(val);
+    return (val == null) ||  // Defaulted
+           BwEvent.transparencyOpaque.equals(val) ||
+           BwEvent.transparencyTransparent.equals(val);
   }
 
   /** Check for valid status setting
@@ -148,8 +149,9 @@ public class CheckData {
    * @return boolean true for ok
    */
   public static boolean checkStatus(String val) {
-    return  BwEvent.statusConfirmed.equals(val) ||
-            BwEvent.statusTentative.equals(val) ||
-            BwEvent.statusCancelled.equals(val);
+    return (val == null) ||  // Defaulted
+           BwEvent.statusConfirmed.equals(val) ||
+           BwEvent.statusTentative.equals(val) ||
+           BwEvent.statusCancelled.equals(val);
   }
 }
