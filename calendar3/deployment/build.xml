@@ -227,7 +227,10 @@
     </forEachApp>
 
     <!-- ======================= termination tasks ================= -->
-    <ant antfile="${org.bedework.deployment.base}/termination/${org.bedework.deploy.kind}/build.xml"
+    <property name="org.bedework.deploy.type.dir"
+              location="${org.bedework.deployment.base}/termination" />
+
+    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="build.configured" />
   </target>
 
@@ -239,7 +242,10 @@
       <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
     </propertyset>
 
-    <ant antfile="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
+    <property name="org.bedework.deploy.type.dir"
+              location="${org.bedework.deployment.base}/termination" />
+
+    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="build.configured" >
       <propertyset refid="app-properties" />
     </ant>
@@ -255,14 +261,21 @@
     </forEachApp>
 
     <!-- ======================= termination tasks ================= -->
-    <ant antfile="${org.bedework.deployment.base}/termination/${org.bedework.deploy.kind}/build.xml"
+    <property name="org.bedework.deploy.type.dir"
+              location="${org.bedework.deployment.base}/termination" />
+
+    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="deploy" />
   </target>
 
   <target name="wrap.deploy.available.app">
     <!-- just to make app.kind.available go away -->
-    <available file="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
+    <property name="org.bedework.deploy.type.dir"
+              location="${org.bedework.deployment.base}/${org.bedework.deploy.type}" />
+
+    <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
                property="app.kind.available" />
+
     <antcall target="deploy.available.app" inheritrefs="true" />
   </target>
 
@@ -272,7 +285,10 @@
       <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
     </propertyset>
 
-    <ant antfile="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
+    <property name="org.bedework.deploy.type.dir"
+              location="${org.bedework.deployment.base}/${org.bedework.deploy.type}" />
+
+    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="deploy" >
       <propertyset refid="app-properties" />
     </ant>

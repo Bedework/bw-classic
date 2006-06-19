@@ -79,7 +79,6 @@ try {
 }
 %>
 
-<%-- Required to force write in jetspeed2 portal-struts bridge
-< % pageContext.getOut().flush(); % >
---%>
+<%-- Required to force write in portal-struts bridge --%>
+<% pageContext.getOut().flush(); %>
 
