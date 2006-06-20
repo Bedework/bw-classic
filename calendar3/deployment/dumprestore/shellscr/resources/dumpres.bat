@@ -6,13 +6,13 @@
 :: JAVA_HOME needs to be defined
 
 if not "%JAVA_HOME%"=="" goto noJavaWarn
-::
-::
-:: ***************************************************************************
-::          Warning: JAVA_HOME is not set - results unpredictable
-:: ***************************************************************************
-::
-::
+ECHO
+ECHO
+ECHO ***************************************************************************
+ECHO          Warning: JAVA_HOME is not set - results unpredictable
+ECHO ***************************************************************************
+ECHO
+ECHO
 :noJavaWarn
 
 SET cp=@CP@
