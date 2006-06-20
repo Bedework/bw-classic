@@ -18,6 +18,9 @@
     <property name="app.run.shellscr"
               location="${app.resources.dir}/dumpres.sh" />
 
+    <property name="app.run.batscr"
+              location="${app.resources.dir}/dumpres.bat" />
+
     <property name="org.bedework.runsh.log4j.xml"
               location="${app.resources.dir}/log4j.xml" />
   </target>

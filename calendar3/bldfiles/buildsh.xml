@@ -164,6 +164,11 @@
       <map from="${app.dest.lib}" to="./lib"/>
       <map from="${app.dest.resources}" to="./resources"/>
     </pathconvert>
+    <pathconvert property="app.run.wincp" refid="app.run.path"
+                 targetos="windows" >
+      <map from="${app.dest.lib}" to="./lib"/>
+      <map from="${app.dest.resources}" to="./resources"/>
+    </pathconvert>
 
     <!-- ===============================================================
                        Copy and modify the shell script
@@ -174,6 +179,15 @@
       <filterset>
         <filter token="CP"
                 value=".:./classes:${app.run.cp}"/>
+      </filterset>
+      <filterset refid="property.filters" />
+    </copy>
+
+    <copy tofile="${app.dest.home}/${propval.app.batscr.name}"
+          file="${app.run.batscr}" >
+      <filterset>
+        <filter token="CP"
+                value=".;./classes;${app.run.wincp}"/>
       </filterset>
       <filterset refid="property.filters" />
     </copy>
