@@ -28,7 +28,7 @@ case "$1" in
     $RESTORECMD -appname $APPNAME -onlyusers "public-user,caladmin,douglm,agrp_*" -f $2 $3 $4 $5 $6 $7 $8 $9
     ;;
   backup)
-    TARGET=$2/$3`date +%Y%m%d_%H%M%S`.ldif
+    TARGET=$2/$3`date +%Y%m%d_%H%M%S`.xml
     echo $DUMPCMD -appname $APPNAME -f $TARGET
     $DUMPCMD -appname $APPNAME -f $TARGET
     ;;
