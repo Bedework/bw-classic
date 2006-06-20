@@ -242,6 +242,22 @@
       <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
     </propertyset>
 
+    <!--
+    <property name="${propval.app.portal.platform}" value="" />
+
+    <condition property="org.bedework.build.for.jetspeed2">
+      <equals arg1="jetspeed2" arg2="${propval.app.portal.platform}"/>
+    </condition>
+
+    <condition property="org.bedework.build.for.uportal2">
+      <equals arg1="uportal2" arg2="${propval.app.portal.platform}"/>
+    </condition>
+
+    <condition property="org.bedework.build.for.jboss">
+      <equals arg1="jboss" arg2="${org.bedework.global.j2ee.platform}"/>
+    </condition>
+    -->
+
     <property name="org.bedework.deploy.type.dir"
               location="${org.bedework.deployment.base}/termination" />
 
@@ -284,6 +300,22 @@
       <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
       <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
     </propertyset>
+
+    <!--
+    <property name="${propval.app.portal.platform}" value="" />
+
+    <condition property="org.bedework.build.for.jetspeed2">
+      <equals arg1="jetspeed2" arg2="${propval.app.portal.platform}"/>
+    </condition>
+
+    <condition property="org.bedework.build.for.uportal2">
+      <equals arg1="uportal2" arg2="${propval.app.portal.platform}"/>
+    </condition>
+
+    <condition property="org.bedework.build.for.jboss">
+      <equals arg1="jboss" arg2="${org.bedework.global.j2ee.platform}"/>
+    </condition>
+    -->
 
     <property name="org.bedework.deploy.type.dir"
               location="${org.bedework.deployment.base}/${org.bedework.deploy.type}" />

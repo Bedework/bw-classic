@@ -85,6 +85,9 @@
           <minIncrement>5</minIncrement>
 
           <logPrefix>PubEventsAdmin</logPrefix>
+
+          <appRoot>@APPLICATION-ROOT@</appRoot>
+          <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
         </CalAdmin>
 
         <!-- ==================================================================
@@ -105,6 +108,9 @@
           <showYearData>false</showYearData>
 
           <logPrefix>PubEvents</logPrefix>
+
+          <appRoot>@APPLICATION-ROOT@</appRoot>
+          <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
 
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>300</refreshInterval>
@@ -131,6 +137,9 @@
 
           <logPrefix>SoEDept</logPrefix>
 
+          <appRoot>@APPLICATION-ROOT@</appRoot>
+          <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
+
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>300</refreshInterval>
 
@@ -155,6 +164,9 @@
           <showYearData>false</showYearData>
 
           <logPrefix>PersonalCalendar</logPrefix>
+
+          <appRoot>@APPLICATION-ROOT@</appRoot>
+          <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
 
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>300</refreshInterval>

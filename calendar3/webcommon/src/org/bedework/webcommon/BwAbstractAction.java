@@ -1311,8 +1311,15 @@ public abstract class BwAbstractAction extends UtilAbstractAction
 
       form.assignNewSession(true);
 
-      CalEnv env = getEnv(request, form);
-      String appRoot = env.getAppProperty("root");
+      String appRoot = form.retrieveConfig().getAppRoot();
+
+      /* If we're running as a portlet change the app root to point to a
+       * portlet specific directory.
+       */
+      String portalPlatform = form.retrieveConfig().getPortalPlatform();
+      if (isPortlet && (portalPlatform != null)) {
+        appRoot += "." + portalPlatform;
+      }
 
       /** The actual session class used is possibly site dependent
        */

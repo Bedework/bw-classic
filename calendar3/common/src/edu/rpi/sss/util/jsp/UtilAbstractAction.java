@@ -182,7 +182,7 @@ public abstract class UtilAbstractAction extends Action
 
   private boolean noActionErrors = false;
 
-  private boolean isPortlet;
+  protected boolean isPortlet;
 
   /** This is the routine which does the work.
    *

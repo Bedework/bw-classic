@@ -5,6 +5,8 @@
      =================================================================== -->
 
 <project name="bwdumpres.deploy" default="deploy" >
+  <import file="${org.bedework.deployment.base}/deployprops.xml" />
+
   <target name="init" >
     <dirname property="this.dir" file="${ant.file}"/>
 

@@ -95,6 +95,10 @@ public class ConfigBase implements Serializable {
 
   private String logPrefix;
 
+  private String appRoot;
+
+  private String portalPlatform;
+
   private String refreshAction;
 
   private int refreshInterval;
@@ -232,6 +236,36 @@ public class ConfigBase implements Serializable {
    */
   public String getLogPrefix() {
     return logPrefix;
+  }
+
+  /** Where the xslt and resources are based.
+   *
+   * @param val
+   */
+  public void setAppRoot(String val) {
+    appRoot = val;
+  }
+
+  /**
+   * @return String
+   */
+  public String getAppRoot() {
+    return appRoot;
+  }
+
+  /** Define the name of the portal platform.
+   *
+   * @param val
+   */
+  public void setPortalPlatform(String val) {
+    portalPlatform = val;
+  }
+
+  /**
+   * @return String
+   */
+  public String getPortalPlatform() {
+    return portalPlatform;
   }
 
   /**

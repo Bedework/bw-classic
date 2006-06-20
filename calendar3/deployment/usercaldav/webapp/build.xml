@@ -5,6 +5,8 @@
      =================================================================== -->
 
 <project name="bwusercaldav.deploy" default="deploy" >
+  <import file="${org.bedework.deployment.base}/deployprops.xml" />
+
   <target name="init" >
     <!-- and define some properties based on those -->
     <property name="app.war.file"

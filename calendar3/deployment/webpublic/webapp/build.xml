@@ -5,6 +5,8 @@
      =================================================================== -->
 
 <project name="bwpublic.deploy" default="deploy" >
+  <import file="${org.bedework.deployment.base}/deployprops.xml" />
+
   <target name="init">
     <!-- and define some properties based on those -->
     <property name="app.war.file"
@@ -58,6 +60,13 @@
 
     <!-- Delete expanded version -->
     <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.context.root}" />
+
+    <antcall target="deploy.uportal2" inheritRefs="true" />
+  </target>
+
+  <target name="deploy.uportal2" if="org.bedework.build.for.uportal2" >
+    <ant antfile="${org.bedework.deploy.type.dir}/${propval.app.portal.platform}/build.xml"
+         inheritrefs="true" target="deploy" />
   </target>
 
   <target name="build.configured" depends="init" >
