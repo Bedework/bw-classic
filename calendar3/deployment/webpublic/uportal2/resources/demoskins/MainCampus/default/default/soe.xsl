@@ -17,10 +17,9 @@
      calendar suite; it is an example of a departmental skin.
 
      This skin, along with the preferences for the Calendar
-     Suite owner differ from the main public skin (default.xsl) in the
+     Suite owner, differs from the main public skin (default.xsl) in the
      following ways:
        - different header, title, and footer
-       - default view = Month
        - default layout = list view (rather than calendar grid)
        - different color scheme
 

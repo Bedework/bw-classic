@@ -11,7 +11,18 @@
 
 <!-- =========================================================
 
-              DEMONSTRATION CALENDAR STYLESHEET
+           DEMONSTRATION PORTLET CALENDAR STYLESHEET
+
+     This stylesheet is indended for use as a generic portlet
+     stylesheet.
+
+     This skin differs from the stand-alone public skin in the
+     following ways:
+       - header, title, and footer have been removed (they should be
+         rendered by the portal)
+
+     See the bedework.css file for information about color and style
+     issues as they pertain to the portlet implementation.
 
      This stylesheet is devoid of school branding.  It is a good
      starting point for development of a customized calendar.
@@ -94,20 +105,7 @@
     <html lang="en">
       <head>
         <title>Bedework Events Calendar</title>
-        <link rel="stylesheet" type="text/css" href="{$resourcesRoot}/default/default/common.css" />
-        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
-        <xsl:choose>
-          <xsl:when test="/bedework/appvar[key='style']/value='red'">
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/red.css"/>
-          </xsl:when>
-          <xsl:when test="/bedework/appvar[key='style']/value='green'">
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/green.css"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/blue.css"/>
-          </xsl:otherwise>
-        </xsl:choose>
-        <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
+        <link rel="stylesheet" type="text/css" href="{$resourcesRoot}/default/default/bedework.css" />
       </head>
       <body>
         <xsl:call-template name="headBar"/>
@@ -177,20 +175,6 @@
   <!-- these templates are separated out for convenience and to simplify the default template -->
 
   <xsl:template name="headBar">
-    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
-      <tr>
-        <td colspan="3" id="logoCell"><a href="http://www.bedework.org/"><img src="{$resourcesRoot}/images/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
-        <td colspan="2" id="schoolLinksCell">
-          <h2>Public Calendar</h2>
-          <a href="{$privateCal}">Personal Calendar</a> |
-          <a href="http://www.yourschoolhere.edu">School Home</a> |
-          <a href="http://www.bedework.org/">Other Link</a> |
-          <a href="http://helpdesk.rpi.edu/update.do?catcenterkey=51">
-            Example Calendar Help
-          </a>
-        </td>
-      </tr>
-    </table>
     <table id="curDateRangeTable"  cellspacing="0">
       <td class="sideBarOpenCloseIcon">
         &#160;
