@@ -1321,6 +1321,12 @@ public abstract class BwAbstractAction extends UtilAbstractAction
         appRoot += "." + portalPlatform;
       }
 
+      /* If calendar suite is non-null append that. */
+      String calSuite = form.retrieveConfig().getCalSuite();
+      if (calSuite != null) {
+        appRoot += "." + calSuite;
+      }
+
       /** The actual session class used is possibly site dependent
        */
       s = new BwSessionImpl(form.getCurrentUser(), appRoot, appName,

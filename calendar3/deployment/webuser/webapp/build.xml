@@ -23,10 +23,6 @@
     <property name="app.web.xml"
               value="${app.sou.dir}/war/WEB-INF/userweb.xml" />
 
-    <!-- This should be in the config stuff -->
-    <property name="propval.directory.browsing.disallowed"
-              value="${app.directory.browsing.disallowed}" />
-
     <property name="propval.app.guestmode" value="false" />
 
     <property name="app.resources.dir"
@@ -47,7 +43,7 @@
     <echo message="###################${app.resources.dir}/${propval.app.skinset.name}" />
     <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}" />
     <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}">
-      <fileset dir="${app.resources.dir}/${propval.app.skinset.name}" />
+      <fileset dir="${app.resources.dir}/demoskins" />
     </copy>
 
     <echo message="***************************************************************" />
@@ -60,6 +56,13 @@
 
     <!-- Delete expanded version -->
     <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.context.root}" />
+
+    <antcall target="deploy.uportal2" inheritRefs="true" />
+  </target>
+
+  <target name="deploy.uportal2" if="org.bedework.build.for.uportal2" >
+    <ant antfile="${org.bedework.deploy.type.dir}/${propval.app.portal.platform}/build.xml"
+         inheritrefs="true" target="deploy" />
   </target>
 
   <target name="build.configured" depends="init" >

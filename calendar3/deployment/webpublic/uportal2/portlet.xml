@@ -6,9 +6,9 @@
   Author: Mike Douglass    douglm@rpi.edu
 -->
 <portlet-app id="calApp" version="1.0">
-  <portlet id="PublicEventsPortlet">
-    <portlet-name>PublicCal</portlet-name>
-    <display-name>Public Events Display</display-name>
+  <portlet id="@CONTEXT-ROOT@.@PORTLET-NAME@">
+    <portlet-name>@PORTLET-NAME@</portlet-name>
+    <display-name>@DISPLAY-NAME@</display-name>
     <portlet-class>org.apache.portals.bridges.struts.StrutsPortlet</portlet-class>
     <init-param>
       <name>ServletContextProvider</name>
@@ -18,8 +18,8 @@
       <name>ViewPage</name>
       <value>/initialise.rdo</value>
     </init-param>
-    <description>
-        The Bedework application displays public events.
+    <description>@APP-DESCRIPTION@
+    </description>
     </description>
     <expiration-cache>-1</expiration-cache>
     <supports>
@@ -28,8 +28,8 @@
       <!--<portlet-mode>HELP</portlet-mode>-->
     </supports>
     <portlet-info>
-      <title>PublicCal</title>
-      <short-title>PublicCal</short-title>
+      <title>@PORTLET-NAME@</title>
+      <short-title>@PORTLET-NAME@</short-title>
       <keywords>Struts, Bedework, Calendar, Public, Events</keywords>
     </portlet-info>
   </portlet>

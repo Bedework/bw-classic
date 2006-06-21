@@ -43,9 +43,9 @@
   <target name="deploy" depends="init,build.configured" >
     <!-- Copy the resources into the server -->
     <echo message="###################${app.resources.dir}/${propval.app.skinset.name}" />
-    <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}_${propval.app.portal.platform}" />
-    <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}_${propval.app.portal.platform}">
-      <fileset dir="${app.resources.dir}/${propval.app.skinset.name}" />
+    <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.portal.platform}.${propval.app.cal.suite}" />
+    <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.portal.platform}.${propval.app.cal.suite}">
+      <fileset dir="${app.resources.dir}/demoskins/${propval.app.cal.suite}" />
     </copy>
   </target>
 

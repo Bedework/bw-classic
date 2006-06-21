@@ -156,6 +156,12 @@
       <filter token="PORTAL-PLATFORM"
               value="${propval.app.portal.platform}"/>
 
+      <filter token="PORTLET-NAME"
+              value="${propval.app.portlet.name}"/>
+
+      <filter token="CAL-SUITE"
+              value="${propval.app.cal.suite}"/>
+
       <filter token="SERVLET-CLASS"
               value="${propval.app.servlet.class}"/>
 
@@ -423,7 +429,10 @@
     <copy todir="${app.dest.webinf}"
           file="${org.bedework.deploy.type.dir}/uportal2/portlet.xml"
           overwrite="yes"
-          failonerror="no" />
+          failonerror="no" >
+      <filterset refid="property.filters" />
+    </copy>
+
     <copy todir="${app.dest.webinf}"
           file="${org.bedework.deploy.type.dir}/uportal2/struts-portlet-config.xml"
           overwrite="yes"

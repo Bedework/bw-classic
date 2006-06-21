@@ -9,7 +9,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
-  <display-name>UWCal public client</display-name>
+  <display-name>Bedwork personal client</display-name>
 
   <context-param>
     <param-name>rpiappname</param-name>
@@ -36,6 +36,10 @@
     <init-param>
       <param-name>directoryBrowsingDisallowed</param-name>
       <param-value>@DIRECTORY-BROWSING-DISALLOWED@</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ignoreContentType</param-name>
+      <param-value>@IGNORE-CONTENT-TYPE@</param-value>
     </init-param>
   </filter>
 
@@ -102,10 +106,25 @@
   <servlet>
     <servlet-name>action</servlet-name>
     <servlet-class>
-      org.apache.struts.action.ActionServlet
+      @SERVLET-CLASS@
     </servlet-class>
 
     <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!-- Servlet definition for portlet use. uportal only at the moment -->
+  <servlet>
+    <servlet-name>@PORTLET-NAME@</servlet-name>
+    <display-name>@PORTLET-NAME@ Wrapper</display-name>
+    <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-class</param-name>
+      <param-value>org.apache.portals.bridges.struts.StrutsPortlet</param-value>
+    </init-param>
+    <init-param>
+      <param-name>portlet-guid</param-name>
+      <param-value>@CONTEXT-ROOT@.@PORTLET-NAME@</param-value>
+    </init-param>
   </servlet>
 
   <servlet-mapping>
@@ -117,6 +136,8 @@
     <servlet-name>action</servlet-name>
     <url-pattern>*.do</url-pattern>
   </servlet-mapping>
+
+  <!-- uPortal2 portlet servlet mapping here -->
 
   <session-config>
     <session-timeout>30</session-timeout>
@@ -142,11 +163,12 @@
       <taglib-uri>struts-html</taglib-uri>
       <taglib-location>/WEB-INF/tlds/struts-html.tld</taglib-location>
     </taglib>
-    <!-- use html struts tag library for genurl -->
+
     <taglib>
       <taglib-uri>struts-genurl</taglib-uri>
-      <taglib-location>/WEB-INF/tlds/struts-html.tld</taglib-location>
+      <taglib-location>/WEB-INF/tlds/@GENURL-TAGLIB-TLD@</taglib-location>
     </taglib>
+
     <taglib>
       <taglib-uri>struts-logic</taglib-uri>
       <taglib-location>/WEB-INF/tlds/struts-logic.tld</taglib-location>
@@ -159,6 +181,12 @@
     <taglib>
       <taglib-uri>bedework</taglib-uri>
       <taglib-location>/WEB-INF/tlds/bedework.tld</taglib-location>
+    </taglib>
+
+    <!-- Only used for portlet -->
+    <taglib>
+        <taglib-uri>http://java.sun.com/portlet</taglib-uri>
+        <taglib-location>/WEB-INF/tlds/pluto-portlet.tld</taglib-location>
     </taglib>
   </jsp-config>
 

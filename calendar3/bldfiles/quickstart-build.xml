@@ -98,6 +98,8 @@
               location="${basedir}/hsqldb-1.7.3.3" />
     <property name="org.bedework.hsqldb.dbname"
               value="demo/events" />
+    <property name="org.bedework.hsqldb.uportal2.dbname"
+              value="uportal2/uportal" />
     <property name="org.bedework.hsqldb.test.dbdir"
               value="test" />
 
@@ -380,7 +382,7 @@
         <pathelement path="${org.bedework.hsqldb.dir}/lib/hsqldb.jar"/>
       </classpath>
       <arg value="-database"/>
-      <arg value="${org.bedework.hsqldb.dir}/uportal"/>
+      <arg value="${org.bedework.hsqldb.dir}/${org.bedework.hsqldb.uportal2.dbname}"/>
       <arg value="-port"/>
       <arg value="9887"/>
     </java>

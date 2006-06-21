@@ -237,7 +237,7 @@
   <target name="build.available.configured.app" if="app.kind.available">
     <!-- Pick out the application build properties based on the prefix "org.bedework.app."
          and the deployment name -->
-    <propertyset id="app-properties">
+    <propertyset id="build-app-properties">
       <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
       <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
     </propertyset>
@@ -263,7 +263,7 @@
 
     <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="build.configured" >
-      <propertyset refid="app-properties" />
+      <propertyset refid="build-app-properties" />
     </ant>
   </target>
 
@@ -296,10 +296,13 @@
   </target>
 
   <target name="deploy.available.app" if="app.kind.available">
-    <propertyset id="app-properties">
+    <propertyset id="deploy-app-properties">
       <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
       <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
     </propertyset>
+
+    <echo message="XXXXXXXXXXXX      type=${org.bedework.deploy.type}" />
+    <echo message="XXXXXXXXXXXX      name=${org.bedework.deploy.name}" />
 
     <!--
     <property name="${propval.app.portal.platform}" value="" />
@@ -322,7 +325,7 @@
 
     <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="deploy" >
-      <propertyset refid="app-properties" />
+      <propertyset refid="deploy-app-properties" />
     </ant>
   </target>
 </project>
