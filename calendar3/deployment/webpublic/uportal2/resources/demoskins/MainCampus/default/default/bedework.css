@@ -12,10 +12,6 @@ wraps the entire html output with <div id="org-bedework"> so that calendar
 specific styles cannot break portal styles.
 
 */
-body {
-  padding: 0;
-  margin: 0;
-}
 #org-bedework {
   font-family : Arial, Helvetica, sans-serif;
   font-size: 100%; /* needed for IE */
