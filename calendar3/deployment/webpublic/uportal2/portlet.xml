@@ -20,7 +20,6 @@
     </init-param>
     <description>@APP-DESCRIPTION@
     </description>
-    </description>
     <expiration-cache>-1</expiration-cache>
     <supports>
       <mime-type>text/html</mime-type>
