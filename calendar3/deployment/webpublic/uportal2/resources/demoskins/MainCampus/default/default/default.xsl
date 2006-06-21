@@ -22,10 +22,12 @@
          rendered by the portal)
 
      See the bedework.css file for information about color and style
-     issues as they pertain to the portlet implementation.
-
-     This stylesheet is devoid of school branding.  It is a good
-     starting point for development of a customized calendar.
+     issues as they pertain to the portlet implementation.  The entire
+     html body is wrapped in a single div with ID of #org-bedework; this
+     encapsulates the css selectors for this portlet allowing for local
+     overrides without impacting the surrounding portal (while also
+     allowing the global portal styles to affect the portlet where
+     appropriate).
 
      For detailed instructions on how to work with the XSLT
      stylesheets included with this distribution, please see the
@@ -108,6 +110,7 @@
         <link rel="stylesheet" type="text/css" href="{$resourcesRoot}/default/default/bedework.css" />
       </head>
       <body>
+       <div id="org-bedework">
         <xsl:call-template name="headBar"/>
         <xsl:if test="/bedework/error">
           <div id="errors">
@@ -167,6 +170,7 @@
         </xsl:choose>
         <!-- footer -->
         <xsl:call-template name="footer"/>
+        </div>
       </body>
     </html>
   </xsl:template>
@@ -1128,44 +1132,9 @@
 
   <xsl:template name="footer">
     <div id="footer">
-      Demonstration calendar; place footer information here.
+      Based on the <a href="http://www.bedework.org/">Bedework Calendar</a> |
+      <a href="?noxslt=yes">show XML</a> |
+      <a href="?refreshXslt=yes">refresh XSLT</a>
     </div>
-    <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td class="leftCell">
-          Based on the <a href="http://www.bedework.org/">Bedework Calendar</a> |
-          <a href="?noxslt=yes">show XML</a> |
-          <a href="?refreshXslt=yes">refresh XSLT</a>
-        </td>
-        <td class="rightCell">
-          <form name="styleSelectForm" method="get" action="{$setup}">
-            <select name="setappvar" onChange="submit()">
-              <option>example styles:</option>
-              <option value="style(green)">green</option>
-              <option value="style(red)">red</option>
-              <option value="style(blue)">blue</option>
-            </select>
-          </form>
-          <form name="skinSelectForm" method="get" action="{$setup}">
-            <input type="hidden" name="setappvar" value="summaryMode(details)"/>
-            <select name="skinPicker" onchange="window.location = this.value">
-              <option>example skins:</option>
-              <option value="{$setViewPeriod}?viewType=weekView&amp;skinName=rss&amp;setappvar=summaryMode(details)">rss feed</option>
-              <option value="{$setViewPeriod}?viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedework.js">javascript feed</option>
-              <option value="{$setViewPeriod}?viewType=todayView&amp;skinName=videocal">video feed</option>
-              <option value="{$setup}?skinName=default">reset to calendar default</option>
-            </select>
-          </form>
-          <form name="skinSelectForm" method="get" action="">
-            <select name="sitePicker" onchange="window.location = this.value">
-              <option>production examples:</option>
-              <option value="http://events.dal.ca/">Dalhousie</option>
-              <option value="http://events.rpi.edu">Rensselaer</option>
-              <option value="http://myuw.washington.edu/cal/">Washington</option>
-            </select>
-          </form>
-        </td>
-      </tr>
-    </table>
   </xsl:template>
 </xsl:stylesheet>
