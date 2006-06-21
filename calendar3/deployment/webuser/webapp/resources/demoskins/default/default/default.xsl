@@ -326,7 +326,7 @@
 				<a href="javascript:window.print()" title="print this view">
 					<img alt="print this view" src="{$resourcesRoot}/resources/std-print-icon.gif" width="20" height="14" border="0"/> print
 				</a>
-				<a class="rss" href="{$setSelection}?setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
+				<a class="rss" href="{$setSelection}&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
 			</td>
 		</table>
 	</xsl:template>
@@ -344,10 +344,10 @@
 						<xsl:choose>
 							<xsl:when test="/bedework/selectionState/selectionType = 'view'
 															and name=/bedework/selectionState/view/name">
-								<li class="selected"><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
+								<li class="selected"><a href="{$setSelection}&amp;viewName={$viewName}"><xsl:value-of select="name"/></a></li>
 							</xsl:when>
 							<xsl:otherwise>
-								<li><a href="{$setSelection}?viewName={$viewName}"><xsl:value-of select="name"/></a></li>
+								<li><a href="{$setSelection}&amp;viewName={$viewName}"><xsl:value-of select="name"/></a></li>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:for-each>
@@ -398,7 +398,7 @@
 				<xsl:variable name="navAction">
 					<xsl:choose>
 						<xsl:when test="/bedework/page='freeBusy'"><xsl:value-of select="$freeBusy-fetch"/></xsl:when>
-						<xsl:otherwise><xsl:value-of select="$setViewPeriod"/>?b=de</xsl:otherwise>
+						<xsl:otherwise><xsl:value-of select="$setViewPeriod"/></xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
 				<table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
@@ -437,10 +437,10 @@
 							<xsl:choose>
 								<!-- don't allow switching to year for free busy view, so only use setViewPeriod action -->
 								<xsl:when test="/bedework/periodname='Year'">
-									<a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
+									<a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
 								</xsl:when>
 								<xsl:otherwise>
-									<a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
+									<a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
 								</xsl:otherwise>
 							</xsl:choose>
 						</td>
@@ -449,7 +449,7 @@
 							<xsl:text> </xsl:text>
 							<strong><xsl:value-of select="/bedework/userid"/></strong>
 							<xsl:text> </xsl:text>
-							<span class="logout"><a href="{$setup}?logout=true">logout</a></span>
+							<span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
 						</td>
 					</tr>
 				</table>
@@ -458,23 +458,23 @@
 				<table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
 					<tr>
 						<td>
-							<a href="{$setViewPeriod}?viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
+							<a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
 						</td>
 						<td>
-							<a href="{$setViewPeriod}?viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
+							<a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
 						</td>
 						<td>
-							<a href="{$setViewPeriod}?viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
+							<a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
 						</td>
 						<td>
-							<a href="{$setViewPeriod}?viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
+							<a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
 						</td>
 						<td class="rightCell">
 							logged in as
 							<xsl:text> </xsl:text>
 							<strong><xsl:value-of select="/bedework/userid"/></strong>
 							<xsl:text> </xsl:text>
-							<span class="logout"><a href="{$setup}?logout=true">logout</a></span>
+							<span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
 						</td>
 					</tr>
 				</table>
@@ -486,7 +486,7 @@
 		<xsl:variable name="navAction">
 			<xsl:choose>
 				<xsl:when test="/bedework/page='freeBusy'"><xsl:value-of select="$freeBusy-fetch"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="$setViewPeriod"/>?b=de</xsl:otherwise>
+				<xsl:otherwise><xsl:value-of select="$setViewPeriod"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<table border="0" cellpadding="0" cellspacing="0" id="navigationBarTable">
@@ -584,7 +584,7 @@
 					 <xsl:choose>
 						 <xsl:when test="/bedework/periodname = 'day'">
 							 <xsl:variable name="date" select="/bedework/firstday/date"/>
-							 <a href="{$initEvent}?startdate={$date}" title="add event">
+							 <a href="{$initEvent}&amp;startdate={$date}" title="add event">
 									<img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
 									add event
 							 </a>
@@ -608,7 +608,7 @@
 						 <xsl:when test="/bedework/periodname!='Year'">
 							 <xsl:choose>
 								 <xsl:when test="/bedework/page='freeBusy'">
-									 <a href="{$setViewPeriod}?date={$curdate}"><img src="{$resourcesRoot}/resources/std-button-events.gif" width="70" height="21" border="0" alt="show events"/></a>
+									 <a href="{$setViewPeriod}&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-button-events.gif" width="70" height="21" border="0" alt="show events"/></a>
 								 </xsl:when>
 								 <xsl:otherwise>
 									 <a href="{$freeBusy-fetch}&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-button-freebusy.gif" width="70" height="21" border="0" alt="show free/busy"/></a>
@@ -631,12 +631,12 @@
 						 <xsl:when test="/bedework/periodname='Month'">
 							 <xsl:choose>
 								 <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-									 <a href="{$setup}?setappvar=monthViewMode(cal)" title="toggle list/calendar view">
+									 <a href="{$setup}&amp;setappvar=monthViewMode(cal)" title="toggle list/calendar view">
 										 <img src="{$resourcesRoot}/resources/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
 									 </a>
 								 </xsl:when>
 								 <xsl:otherwise>
-									 <a href="{$setup}?setappvar=monthViewMode(list)" title="toggle list/calendar view">
+									 <a href="{$setup}&amp;setappvar=monthViewMode(list)" title="toggle list/calendar view">
 										 <img src="{$resourcesRoot}/resources/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
 									 </a>
 								 </xsl:otherwise>
@@ -645,12 +645,12 @@
 						 <xsl:otherwise>
 							 <xsl:choose>
 								 <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-									 <a href="{$setup}?setappvar=weekViewMode(cal)" title="toggle list/calendar view">
+									 <a href="{$setup}&amp;setappvar=weekViewMode(cal)" title="toggle list/calendar view">
 										 <img src="{$resourcesRoot}/resources/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
 									 </a>
 								 </xsl:when>
 								 <xsl:otherwise>
-									 <a href="{$setup}?setappvar=weekViewMode(list)" title="toggle list/calendar view">
+									 <a href="{$setup}&amp;setappvar=weekViewMode(list)" title="toggle list/calendar view">
 										 <img src="{$resourcesRoot}/resources/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
 									 </a>
 								 </xsl:otherwise>
@@ -679,12 +679,12 @@
 						 <xsl:otherwise>
 							 <xsl:choose>
 								 <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-									 <a href="{$setup}?setappvar=summaryMode(summary)" title="toggle summary/detailed view">
+									 <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="toggle summary/detailed view">
 										 <img src="{$resourcesRoot}/resources/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
 									 </a>
 								 </xsl:when>
 								 <xsl:otherwise>
-									 <a href="{$setup}?setappvar=summaryMode(details)" title="toggle summary/detailed view">
+									 <a href="{$setup}&amp;setappvar=summaryMode(details)" title="toggle summary/detailed view">
 										 <img src="{$resourcesRoot}/resources/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
 									 </a>
 								 </xsl:otherwise>
@@ -716,10 +716,10 @@
 							<tr>
 								<td colspan="6" class="dateRow">
 									 <xsl:variable name="date" select="date"/>
-									 <a href="{$initEvent}?startdate={$date}" class="listAdd">
+									 <a href="{$initEvent}&amp;startdate={$date}" class="listAdd">
 										 add event
 									 </a>
-									 <a href="{$setViewPeriod}?viewType=dayView&amp;date={$date}">
+									 <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$date}">
 										 <xsl:value-of select="name"/>, <xsl:value-of select="longdate"/>
 									 </a>
 								 </td>
@@ -756,14 +756,14 @@
 									<xsl:when test="start/shortdate = end/shortdate and
 																	start/time = end/time">
 										<td class="{$dateRangeStyle} center" colspan="3">
-											<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+											<a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
 												<xsl:value-of select="start/time"/>
 											</a>
 										</td>
 									</xsl:when>
 									<xsl:otherwise>
 										<td class="{$dateRangeStyle} right">
-											<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+											<a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
 											<xsl:choose>
 												<xsl:when test="start/allday = 'true' and
 																				parent::day/shortdate = start/shortdate">
@@ -780,10 +780,10 @@
 											</a>
 										</td>
 										<td class="{$dateRangeStyle} center">
-											<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">-</a>
+											<a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">-</a>
 										</td>
 										<td class="{$dateRangeStyle} left">
-											<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+											<a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
 											<xsl:choose>
 												<xsl:when test="end/allday = 'true' and
 																				parent::day/shortdate = end/shortdate">
@@ -813,7 +813,7 @@
 									<xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
 									<xsl:choose>
 										<xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-											<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+											<a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
 												<strong>
 													<xsl:value-of select="summary"/>:
 												</strong>
@@ -837,7 +837,7 @@
 											</xsl:if>
 										</xsl:when>
 										<xsl:otherwise>
-											<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+											<a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
 												<xsl:value-of select="summary"/>
 												<xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
 											</a>
@@ -849,7 +849,7 @@
 								</td>
 								<td class="smallIcon">
 									<xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-									<a href="{$export}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+									<a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
 										<img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
 									</a>
 								</td>
@@ -870,21 +870,21 @@
 			<xsl:when test="isAnnotation">
 				<xsl:choose>
 					<xsl:when test="recurring=true">
-						<a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">Remove All</a>
+						<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">Remove All</a>
 					</xsl:when>
 					<xsl:otherwise>
-						<a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Remove</a>
+						<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Remove</a>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
 			<xsl:when test="calendar/owner = /bedework/userid">
-				<a href="{$editEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">Edit</a> |
+				<a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">Edit</a> |
 				<xsl:choose>
 					<xsl:when test="recurring=true">
-						<a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Delete All</a>
+						<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Delete All</a>
 					</xsl:when>
 					<xsl:otherwise>
-						<a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Delete</a>
+						<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Delete</a>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
@@ -908,10 +908,10 @@
 					<xsl:if test="filler='false'">
 						<td>
 							<xsl:variable name="dayDate" select="date"/>
-							<a href="{$initEvent}?startdate={$dayDate}" class="gridAdd" title="add event">
+							<a href="{$initEvent}&amp;startdate={$dayDate}" class="gridAdd" title="add event">
 								<img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="9" height="10" border="0" alt="add event"/>
 							</a>
-							<a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
+							<a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
 								<xsl:value-of select="value"/>
 							</a>
 							<ul>
@@ -945,10 +945,10 @@
 							<xsl:otherwise>
 								<td>
 									<xsl:variable name="dayDate" select="date"/>
-									<a href="{$initEvent}?startdate={$dayDate}" class="gridAdd" title="add event">
+									<a href="{$initEvent}&amp;startdate={$dayDate}" class="gridAdd" title="add event">
 										<img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event"/>
 									</a>
-									<a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
+									<a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
 										<xsl:value-of select="value"/>
 									</a>
 									<ul>
@@ -1002,7 +1002,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		<li>
-			<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"
+			<a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"
 				class="{$eventRootClass} {$eventClass} {$subColor}">
 				<xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
 				<xsl:value-of select="summary"/>
@@ -1083,7 +1083,7 @@
 				<tr>
 					<td colspan="8" class="monthName">
 						<xsl:variable name="firstDayOfMonth" select="week/day/date"/>
-						<a href="{$setViewPeriod}?viewType=monthView&amp;date={$firstDayOfMonth}">
+						<a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$firstDayOfMonth}">
 							<xsl:value-of select="longname"/>
 						</a>
 					</td>
@@ -1098,7 +1098,7 @@
 					<tr>
 						<td class="weekCell">
 							<xsl:variable name="firstDayOfWeek" select="day/date"/>
-							<a href="{$setViewPeriod}?viewType=weekView&amp;date={$firstDayOfWeek}">
+							<a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$firstDayOfWeek}">
 								<xsl:value-of select="value"/>
 							</a>
 						</td>
@@ -1110,7 +1110,7 @@
 								<xsl:otherwise>
 									<td>
 										<xsl:variable name="dayDate" select="date"/>
-										<a href="{$setViewPeriod}?viewType=dayView&amp;date={$dayDate}">
+										<a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}">
 											<xsl:value-of select="value"/>
 										</a>
 									</td>
@@ -1155,7 +1155,7 @@
 				<th colspan="2" class="commonHeader">
 					<div id="eventActions">
 						<xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-						<a href="{$export}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+						<a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
 							<img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
 							Download
 						</a> |
@@ -1163,13 +1163,13 @@
 							<xsl:when test="isAnnotation">
 								<xsl:choose>
 									<xsl:when test="recurring=true">
-										<a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+										<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
 											<img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
 											Remove All (recurring)
 										</a>
 									</xsl:when>
 									<xsl:otherwise>
-										<a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+										<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
 											<img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
 											Remove
 										</a>
@@ -1177,7 +1177,7 @@
 								</xsl:choose>
 							</xsl:when>
 							<xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content">
-								<a href="{$editEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+								<a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
 									<img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
 									Edit
 								</a>
@@ -1193,13 +1193,13 @@
 							 |
 							<xsl:choose>
 								<xsl:when test="recurring=true">
-									<a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+									<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
 										<img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
 										Delete All (recurring)
 									</a>
 								</xsl:when>
 								<xsl:otherwise>
-									<a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+									<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
 										<img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
 										Delete
 									</a>
@@ -1256,7 +1256,7 @@
 				</td>
 				<!--<th class="icon" rowspan="2">
 					<xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-					<a href="{$export}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+					<a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
 						<img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
 					</a>
 				</th>-->
@@ -1377,7 +1377,7 @@
 							<br />
 							<xsl:variable name="email" select="sponsor/email"/>
 							<xsl:variable name="subject" select="summary"/>
-							<a href="mailto:{$email}?subject={$subject}">
+							<a href="mailto:{$email}&amp;subject={$subject}">
 								<xsl:value-of select="sponsor/email"/>
 							</a>
 						</xsl:if>
@@ -1390,7 +1390,7 @@
 					<td class="fieldval">
 						<xsl:variable name="calUrl" select="calendar/encodedPath"/>
 						<xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-						<a href="{$setSelection}?calUrl={$calUrl}">
+						<a href="{$setSelection}&amp;calUrl={$calUrl}">
 							<xsl:choose>
 								<xsl:when test="contains(calendar/path,$userPath)">
 									<xsl:value-of select="substring-after(calendar/path,$userPath)"/>
@@ -1800,13 +1800,13 @@
 				<tr>
 					<th colspan="2" class="commonHeader">
 						<div id="eventActions">
-							<a href="{$eventView}?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+							<a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
 								<img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
 								View
 							</a>
 							<xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind">
 								|
-								<a href="{$delEvent}?subid={$subscriptionId}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+								<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
 									<img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
 									Delete
 								</a>
@@ -2256,7 +2256,7 @@
 							</xsl:choose>
 						</xsl:variable>
 						<td class="{$fbClass}">
-							<a href="{$initEvent}?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
+							<a href="{$initEvent}&amp;startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
 						</td>
 					</xsl:for-each>
 				</tr>
@@ -2417,7 +2417,7 @@
 			</xsl:variable>
 			<li class="{$itemClass}">
 				<xsl:variable name="calPath" select="path"/>
-				<a href="{$setSelection}?calUrl={$calPath}">
+				<a href="{$setSelection}&amp;calUrl={$calPath}">
 					<xsl:value-of select="name"/>
 				</a>
 				<xsl:if test="calendar">
@@ -2430,8 +2430,8 @@
 							 given period, the hour of "now", and give a duration of 60 minutes -->
 					<xsl:variable name="startDate"><xsl:value-of select="/bedework/firstday/date"/>T<xsl:value-of select="substring(/bedework/now/time,1,2)"/>0000</xsl:variable>
 					<!-- skip setting duration for now; this should be set in the user's prefs-->
-					<!-- <a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event"> -->
-					<a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}" class="calendarAdd" title="add event">
+					<!-- <a href="{$initEvent}&amp;startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event"> -->
+					<a href="{$initEvent}&amp;startdate={$startDate}&amp;newCalPath={$calPath}" class="calendarAdd" title="add event">
 						<img src="{$resourcesRoot}/resources/addEvent-forCals-icon.gif" width="9" height="12" border="0" alt="add event"/>
 					</a>
 				</xsl:if>
@@ -3327,7 +3327,7 @@
 				<xsl:variable name="subStyle" select="style"/>
 				<img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="subscription style" class="subStyle {$subStyle}"/>
 			</xsl:if>
-			<a href="{$setSelection}?subname={$subName}">
+			<a href="{$setSelection}&amp;subname={$subName}">
 				<xsl:value-of select="name"/>
 			</a>
 			<xsl:if test="calendars/calendar/calendarCollection='true' and
@@ -3336,7 +3336,7 @@
 						 given period, the hour of "now", and give a duration of 60 minutes -->
 				<xsl:variable name="calPath" select="calendars/calendar/encodedPath"/>
 				<xsl:variable name="startDate"><xsl:value-of select="/bedework/firstday/date"/>T<xsl:value-of select="substring(/bedework/now/time,1,2)"/>0000</xsl:variable>
-				<a href="{$initEvent}?startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event">
+				<a href="{$initEvent}&amp;startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event">
 					<img src="{$resourcesRoot}/resources/addEvent-forCals-icon.gif" width="9" height="12" border="0" alt="add event"/>
 				</a>
 			</xsl:if>
@@ -3609,7 +3609,7 @@
 					</td>
 					<td align="right">
 						<xsl:variable name="locId" select="form/id"/>
-						<a href="{$delLocation}?locationId={$locId}">
+						<a href="{$delLocation}&amp;locationId={$locId}">
 							<input type="button" name="delete" value="Delete Location"/>
 						</a>
 					</td>
@@ -3631,7 +3631,7 @@
 						<xsl:sort select="."/>
 						<li>
 							<xsl:variable name="locationId" select="@value"/>
-							<a href="{$editLocation}?locationId={$locationId}"><xsl:value-of select="."/></a>
+							<a href="{$editLocation}&amp;locationId={$locationId}"><xsl:value-of select="."/></a>
 						</li>
 					</xsl:for-each>
 				</ul>
@@ -3991,7 +3991,7 @@
 	<xsl:template match="calendar" mode="sideList">
 		<xsl:variable name="calPath" select="encodedPath"/>
 		<div class="std-text">
-			<a href="{$setSelection}?calPath={$calPath}"><xsl:value-of select="title"/></a>
+			<a href="{$setSelection}&amp;calPath={$calPath}"><xsl:value-of select="title"/></a>
 		</div>
 	</xsl:template>
 
