@@ -10,21 +10,19 @@
     <property name="app.war.file"
               location="${dist.home}/${propval.app.war.name}.war" />
 
-    <dirname property="this.dir" file="${ant.file}"/>
-
-    <property name="app.sou.dir" location="${org.bedework.webclient.base}" />
-
-    <!-- Flag as struts -->
-    <property name="org.bedework.strutsapp" value="true" />
-
     <!-- Properties that differ from the personal client -->
     <property name="app.web.xml"
               value="${app.sou.dir}/war/WEB-INF/userweb.xml" />
 
     <property name="propval.app.guestmode" value="false" />
 
-    <property name="app.resources.dir"
-              location="${this.dir}/resources" />
+    <dirname property="portlet.build.dir" file="${ant.file}"/>
+
+    <property name="portlet.resources.dir"
+              location="${portlet.build.dir}/resources" />
+
+    <property name="portlet.skins.dir"
+              location="${portlet.resources.dir}/demoskins" />
   </target>
 
   <!-- =================================================================
@@ -38,10 +36,13 @@
 
   <target name="deploy" depends="init,build.configured" >
     <!-- Copy the resources into the server -->
-    <echo message="###################${app.resources.dir}/${propval.app.skinset.name}" />
-    <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.portal.platform}" />
-    <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.portal.platform}">
-      <fileset dir="${app.resources.dir}/demoskins" />
+
+    <echo message="Copy from ${portlet.skins.dir}" />
+    <property name="dest.skins.dir"
+              location="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.portal.platform}" />
+    <delete dir="${dest.skins.dir}" />
+    <copy todir="${dest.skins.dir}">
+      <fileset dir="${portlet.skins.dir}" />
     </copy>
   </target>
 
