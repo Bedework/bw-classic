@@ -25,15 +25,8 @@
 */
 package org.bedework.freebusyServer;
 
-import org.bedework.caldav.client.api.CaldavClientIo;
-import org.bedework.caldav.client.api.CaldavResp;
 import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwUser;
-import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calsvc.CalSvc;
-import org.bedework.calsvci.CalSvcI;
-import org.bedework.calsvci.CalSvcIPars;
-import org.bedework.icalendar.IcalTranslator;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletResponse;
@@ -54,75 +46,20 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class FreeBusyAggregator {
   private boolean debug = true;
-  private CalSvcI svci;
-  IcalTranslator trans;
+  private IcalTrans trans;
 
-  private static class UserInfo {
-    /* user id for server authentication. May be null if anon ok */
-    String authUser;
-    String authPw;
+  private FBInfoSet infoset;
 
-    /* Whose free busy? */
-    String account;
-
-    String host;
-    int port;
-
-    boolean secure;
-
-    String url;
-
-    UserInfo(String authUser,
-             String authPw,
-             String account,
-             String host,
-             int port,
-             boolean secure,
-             String url) {
-      this.authUser = authUser;
-      this.authPw = authPw;
-      this.account = account;
-      this.host = host;
-      this.port = port;
-      this.secure = secure;
-      this.url = url;
-    }
-  }
-
-  private static class Response {
-    UserInfo ui;
-
-    int responseCode;
-
-    Collection fbs = new ArrayList();
-  }
-
-  Collection uiList;
-
-  private HashMap cioTable = new HashMap();
-
-  private CaldavClientIo getCio(String host, int port) throws Throwable {
-    CaldavClientIo cio = (CaldavClientIo)cioTable.get(host + port);
-
-    if (cio == null) {
-      cio = new CaldavClientIo(host, port, debug);
-
-      cioTable.put(host + port, cio);
-    }
-
-    return cio;
-  }
-
-  private Req makeFreeBusyRequest(Date start, Date end, UserInfo ui) throws Throwable {
+  private Req makeFreeBusyRequest(Date start, Date end, FBUserInfo ui) throws Throwable {
     Req req;
 
-    if (ui.authUser == null) {
+    if (ui.getAuthUser() == null) {
       req = new Req();
     } else {
-      req = new Req(ui.authUser, ui.authPw);
+      req = new Req(ui.getAuthUser(), ui.getAuthPw());
     }
 
-    req.setUrl(ui.url);
+    req.setUrl(ui.getUrl());
     req.setContentType("text/xml");
     req.setMethod("REPORT");
     req.addHeader("Depth", "0");
@@ -140,84 +77,34 @@ public class FreeBusyAggregator {
     return req;
   }
 
-  private void addUser(UserInfo ui) {
-    if (uiList == null) {
-      uiList = new ArrayList();
-    }
-
-    uiList.add(ui);
-  }
-
   private void init() throws Throwable {
-    /*
-    addUser(new UserInfo("testuser01", "bedework", "douglm",
-                         "localhost", 8080, false,
-                         "/ucaldav/user/douglm"));
-    addUser(new UserInfo("testuser01", "bedework", "johnsa",
-                         "localhost", 8080, false,
-                         "/ucaldav/user/johnsa"));
-                         */
-    /*
-    addUser(new UserInfo("testuser02", "bedework", "testuser02",
-                         "www.bedework.org", 80, false,
-                         "/ucaldav/user/testuser02"));
-                         */
-    addUser(new UserInfo("douglm", "bedework", "douglm",
-                         "localhost", 8080, false,
-                         "/ucaldav/user/douglm"));
-/*
-    addUser(new UserInfo("testuser02", "bedework", "testuser02",
-                         "www.bedework.org", 80, false,
-                         "/ucaldav/user/testuser02"));
-    addUser(new UserInfo("testuser08", "bedework", "testuser08",
-                         "www.bedework.org", 80, false,
-                         "/ucaldav/user/testuser08"));
-*/
-    getSvci(); //
+    infoset = new FBInfoSet();
+    trans = new IcalTrans(debug);
   }
 
   private Collection getFreeBusy(Date start, Date end) throws Throwable {
     ArrayList responses = new ArrayList();
-    Iterator it = uiList.iterator();
+    Iterator it = infoset.getAll().iterator();
+
+    CalDavClient cd = new CalDavClient(debug);
 
     while (it.hasNext()) {
-      UserInfo ui = (UserInfo)it.next();
+      FBUserInfo ui = (FBUserInfo)it.next();
 
       Req r = makeFreeBusyRequest(start, end, ui);
-      CaldavClientIo cio = getCio(ui.host, ui.port);
-      Response resp = new Response();
-      resp.ui = ui;
+      CalDavClient.Response resp = cd.send(r, ui);
 
       responses.add(resp);
 
-      if (r.getAuth()) {
-        resp.responseCode = cio.sendRequest(r.getMethod(), r.getUrl(),
-                                            r.getUser(), r.getPw(),
-                                            r.getHeaders(), 0,
-                                            r.getContentType(),
-                                            r.getContentLength(), r.getContentBytes());
-      } else {
-        resp.responseCode = cio.sendRequest(r.getMethod(), r.getUrl(),
-                                            r.getHeaders(), 0,
-                                            r.getContentType(), r.getContentLength(),
-                                            r.getContentBytes());
-      }
-
       if (resp.responseCode != HttpServletResponse.SC_OK) {
-        error("Got response " + resp.responseCode +
-              " for account " + ui.account +
-              ", host " + ui.host +
-              " and url " + ui.url);
         continue;
       }
 
-      CaldavResp cdresp = cio.getResponse();
-
       /* We expect a VCALENDAR object containg VFREEBUSY components
        */
-      InputStream in = cdresp.getContentStream();
+      InputStream in = resp.cdresp.getContentStream();
 
-      Collection fbs = trans.fromIcal(null, new InputStreamReader(in));
+      Collection fbs = trans.getFreeBusy(new InputStreamReader(in));
 
       Iterator fbit = fbs.iterator();
       while (fbit.hasNext()) {
@@ -226,7 +113,7 @@ public class FreeBusyAggregator {
         if (o instanceof BwFreeBusy) {
           BwFreeBusy fb = (BwFreeBusy)o;
 
-          fb.setWho(new BwUser(ui.account));
+          fb.setWho(new BwUser(ui.getAccount()));
           resp.fbs.add(fb);
         }
       }
@@ -240,7 +127,7 @@ public class FreeBusyAggregator {
    */
   public void close() {
     try {
-      close(svci);
+      trans.close();
     } catch (Throwable t) {
     }
   }
@@ -248,69 +135,6 @@ public class FreeBusyAggregator {
   /* ====================================================================
    *                         Private methods
    * ==================================================================== */
-
-  /** Use this for timezones
-   *
-   * @return CalSvcI
-   * @throws CalFacadeException
-   */
-  private CalSvcI getSvci() throws CalFacadeException {
-    boolean publicMode = true;
-
-    if (svci != null) {
-      if (!svci.isOpen()) {
-        svci.open();
-        svci.beginTransaction();
-      }
-
-      return svci;
-    }
-
-    svci = new CalSvc();
-    /* account is what we authenticated with.
-     * user, if non-null, is the user calendar we want to access.
-     */
-    CalSvcIPars pars = new CalSvcIPars(null, // account,
-                                       null, // account,
-                                       null, // calSuite,
-                                       "org.bedework.app.freebusy.",
-                                       publicMode,
-                                       true,    // caldav
-                                       null, // synchId
-                                       debug);
-    svci.init(pars);
-
-    svci.open();
-    svci.beginTransaction();
-
-    trans = new IcalTranslator(svci.getIcalCallback(), debug);
-
-    return svci;
-  }
-
-  private void close(CalSvcI svci) throws CalFacadeException {
-    if ((svci == null) || !svci.isOpen()) {
-      return;
-    }
-
-    try {
-      svci.endTransaction();
-    } catch (CalFacadeException cfe) {
-      try {
-        svci.close();
-      } catch (Throwable t1) {
-      }
-      svci = null;
-      throw cfe;
-    }
-
-    try {
-      svci.close();
-    } catch (CalFacadeException cfe) {
-      svci = null;
-      throw cfe;
-    }
-  }
 
   boolean processArgs(String[] args) throws Throwable {
     if (args == null) {
@@ -350,10 +174,6 @@ public class FreeBusyAggregator {
     return true;
   }
 
-  private void error(String msg) {
-    System.err.println(msg);
-  }
-
   /** Main
    *
    * @param args
@@ -373,10 +193,10 @@ public class FreeBusyAggregator {
 
       Iterator it = responses.iterator();
       while (it.hasNext()) {
-        Response resp = (Response)it.next();
+        CalDavClient.Response resp = (CalDavClient.Response)it.next();
 
         if (resp.responseCode != HttpServletResponse.SC_OK) {
-          out("Response code for " + resp.ui.account + " = " + resp.responseCode);
+          out("Response code for " + resp.ui.getAccount() + " = " + resp.responseCode);
         } else {
 
         }
@@ -385,6 +205,10 @@ public class FreeBusyAggregator {
       t.printStackTrace();
       fba.error(t.getMessage());
     }
+  }
+
+  private void error(String msg) {
+    System.err.println(msg);
   }
 
   private static void out(String msg) {
