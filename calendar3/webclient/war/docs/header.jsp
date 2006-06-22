@@ -119,71 +119,71 @@ try {
     <initUpload><genurl:rewrite forward="initUpload"/></initUpload>
 
     <%-- action urls --%>
-    <setup><genurl:rewrite action="setup.do?b=de"/></setup>
-    <setSelection><genurl:rewrite action="setSelection.do?b=de"/></setSelection>
-    <setViewPeriod><genurl:rewrite action="setViewPeriod.do?b=de"/></setViewPeriod>
-    <eventView><genurl:rewrite action="eventView.do?b=de"/></eventView>
-    <mailEvent><genurl:rewrite action="mailEvent.do?b=de"/></mailEvent>
-    <showPage><genurl:rewrite action="showPage.do?b=de"/></showPage>
+    <setup><genurl:rewrite action="setup.do"/></setup>
+    <setSelection><genurl:rewrite action="setSelection.do"/></setSelection>
+    <setViewPeriod><genurl:rewrite action="setViewPeriod.do"/></setViewPeriod>
+    <eventView><genurl:rewrite action="eventView.do"/></eventView>
+    <mailEvent><genurl:rewrite action="mailEvent.do"/></mailEvent>
+    <showPage><genurl:rewrite action="showPage.do"/></showPage>
 
-    <export><genurl:rewrite action="export.do?b=de"/></export>
-    <stats><genurl:rewrite action="stats.do?b=de"/></stats>
+    <export><genurl:rewrite action="export.do"/></export>
+    <stats><genurl:rewrite action="stats.do?be=d"/></stats>
 
     <fetchPublicCalendars><genurl:rewrite action="fetchPublicCalendars"/></fetchPublicCalendars>
     <fetchCalendars><genurl:rewrite action="fetchCalendars"/></fetchCalendars>
 
     <!-- The following URLs are used only in the personal client -->
     <logic:equal name="calForm" property="guest" value="false">
-      <initEvent><genurl:rewrite action="initEvent.do?b=de"/></initEvent>
-      <addEvent><genurl:rewrite action="addEvent.do?b=de"/></addEvent>
-      <addEventUsingPage><genurl:rewrite action="addEventUsingPage.do?b=de"/></addEventUsingPage>
-      <editEvent><genurl:rewrite action="editEvent.do?b=de"/></editEvent>
-      <delEvent><genurl:rewrite action="delEvent.do?b=de"/></delEvent>
+      <initEvent><genurl:rewrite action="initEvent.do"/></initEvent>
+      <addEvent><genurl:rewrite action="addEvent.do"/></addEvent>
+      <addEventUsingPage><genurl:rewrite action="addEventUsingPage.do"/></addEventUsingPage>
+      <editEvent><genurl:rewrite action="editEvent.do"/></editEvent>
+      <delEvent><genurl:rewrite action="delEvent.do"/></delEvent>
       <event>
-        <setAccess><genurl:rewrite action="event/setAccess.do?b=de"/></setAccess>
-        <addEventRefComplete><genurl:rewrite action="event/addEventRefComplete.do?b=de"/></addEventRefComplete>
-        <selectCalForEvent><genurl:rewrite action="event/selectCalForEvent.do?b=de"/></selectCalForEvent>
+        <setAccess><genurl:link page="/event/setAccess.do?b=de"/></setAccess>
+        <addEventRefComplete><genurl:link page="/event/addEventRefComplete.do?b=de"/></addEventRefComplete>
+        <selectCalForEvent><genurl:link page="/event/selectCalForEvent.do?b=de"/></selectCalForEvent>
       </event>
 
       <freeBusy>
-        <fetch><genurl:rewrite action="freeBusy/getFreeBusy.do?b=de"/></fetch>
-        <setAccess><genurl:rewrite action="freeBusy/setAccess.do?b=de"/></setAccess>
+        <fetch><genurl:link page="/freeBusy/getFreeBusy.do?b=de"/></fetch>
+        <setAccess><genurl:link page="/freeBusy/setAccess.do?b=de"/></setAccess>
       </freeBusy>
 
       <calendar>
-        <fetch><genurl:rewrite action="calendar/showUpdateList.rdo?b=de"/></fetch><!-- keep -->
-        <fetchDescriptions><genurl:rewrite action="calendar/showDescriptionList.rdo?b=de"/></fetchDescriptions><!-- keep -->
-        <initAdd><genurl:rewrite action="calendar/initAdd.do?b=de"/></initAdd><!-- keep -->
-        <delete><genurl:rewrite action="calendar/delete.do?b=de"/></delete>
-        <fetchForDisplay><genurl:rewrite action="calendar/fetchForDisplay.do?b=de"/></fetchForDisplay>
-        <fetchForUpdate><genurl:rewrite action="calendar/fetchForUpdate.do?b=de"/></fetchForUpdate><!-- keep -->
-        <update><genurl:rewrite action="calendar/update.do?b=de"/></update><!-- keep -->
-        <setAccess><genurl:rewrite action="calendar/setAccess.do?b=de"/></setAccess>
+        <fetch><genurl:link page="/calendar/showUpdateList.rdo?b=de"/></fetch><!-- keep -->
+        <fetchDescriptions><genurl:link page="/calendar/showDescriptionList.rdo?b=de"/></fetchDescriptions><!-- keep -->
+        <initAdd><genurl:link page="/calendar/initAdd.do?b=de"/></initAdd><!-- keep -->
+        <delete><genurl:link page="/calendar/delete.do?b=de"/></delete>
+        <fetchForDisplay><genurl:link page="/calendar/fetchForDisplay.do?b=de"/></fetchForDisplay>
+        <fetchForUpdate><genurl:link page="/calendar/fetchForUpdate.do?b=de"/></fetchForUpdate><!-- keep -->
+        <update><genurl:link page="/calendar/update.do?b=de"/></update><!-- keep -->
+        <setAccess><genurl:link page="/calendar/setAccess.do?b=de"/></setAccess>
       </calendar>
 
       <subscriptions> <!-- only those listed are used here (no need to clean up) -->
-        <fetch><genurl:rewrite action="subs/fetch.do?b=de"/></fetch>
-        <fetchForUpdate><genurl:rewrite action="subs/fetchForUpdate.do?b=de"/></fetchForUpdate>
-        <addSubByUri><genurl:rewrite action="subs/showAddByUriForm.rdo?b=de"/></addSubByUri>
-        <subscribeByUri><genurl:rewrite action="subs/subscribeByUri.do?b=de"/></subscribeByUri>
-        <initAdd><genurl:rewrite action="subs/initAdd.do?b=de"/></initAdd>
-        <subscribe><genurl:rewrite action="subs/subscribe.do?b=de"/></subscribe>
+        <fetch><genurl:link page="/subs/fetch.do?b=de"/></fetch>
+        <fetchForUpdate><genurl:link page="/subs/fetchForUpdate.do?b=de"/></fetchForUpdate>
+        <addSubByUri><genurl:link page="/subs/showAddByUriForm.rdo?b=de"/></addSubByUri>
+        <subscribeByUri><genurl:link page="/subs/subscribeByUri.do?b=de"/></subscribeByUri>
+        <initAdd><genurl:link page="/subs/initAdd.do?b=de"/></initAdd>
+        <subscribe><genurl:link page="/subs/subscribe.do?b=de"/></subscribe>
       </subscriptions>
 
-      <manageLocations><genurl:rewrite action="manageLocations.do?b=de"/></manageLocations>
-      <addLocation><genurl:rewrite action="addLocation.do?b=de"/></addLocation>
-      <editLocation><genurl:rewrite action="editLoc.do?b=de"/></editLocation>
-      <delLocation><genurl:rewrite action="delLocation.do?b=de"/></delLocation>
+      <manageLocations><genurl:rewrite action="manageLocations.do"/></manageLocations>
+      <addLocation><genurl:rewrite action="addLocation.do"/></addLocation>
+      <editLocation><genurl:rewrite action="editLoc.do"/></editLocation>
+      <delLocation><genurl:rewrite action="delLocation.do"/></delLocation>
 
       <prefs>
-        <fetchForUpdate><genurl:rewrite action="prefs/fetchForUpdate.do?b=de"/></fetchForUpdate>
-        <update><genurl:rewrite action="prefs/update.do?b=de"/></update>
+        <fetchForUpdate><genurl:link page="/prefs/fetchForUpdate.do?b=de"/></fetchForUpdate>
+        <update><genurl:link page="/prefs/update.do?b=de"/></update>
       </prefs>
 
-      <initEventAlarm><genurl:rewrite action="initEventAlarm.do?b=de"/></initEventAlarm>
-      <setAlarm><genurl:rewrite action="setAlarm.do?b=de"/></setAlarm>
-      <addEventRef><genurl:rewrite action="addEventRef.do?b=de"/></addEventRef>
-      <upload><genurl:rewrite action="upload.do?b=de"/></upload>
+      <initEventAlarm><genurl:rewrite action="initEventAlarm.do"/></initEventAlarm>
+      <setAlarm><genurl:rewrite action="setAlarm.do"/></setAlarm>
+      <addEventRef><genurl:rewrite action="addEventRef.do"/></addEventRef>
+      <upload><genurl:rewrite action="upload.do"/></upload>
     </logic:equal>
   </urlPrefixes>
   <confirmationid><bean:write name="calForm" property="confirmationId"/></confirmationid><%--
