@@ -119,14 +119,14 @@ try {
     <initUpload><genurl:rewrite forward="initUpload"/></initUpload>
 
     <%-- action urls --%>
-    <setup><genurl:rewrite action="setup.do"/></setup>
-    <setSelection><genurl:rewrite action="setSelection.do"/></setSelection>
-    <setViewPeriod><genurl:rewrite action="setViewPeriod.do"/></setViewPeriod>
-    <eventView><genurl:rewrite action="eventView.do"/></eventView>
-    <mailEvent><genurl:rewrite action="mailEvent.do"/></mailEvent>
-    <showPage><genurl:rewrite action="showPage.do"/></showPage>
+    <setup><genurl:rewrite action="setup.do?b=de"/></setup>
+    <setSelection><genurl:rewrite action="setSelection.do?b=de"/></setSelection>
+    <setViewPeriod><genurl:rewrite action="setViewPeriod.do?b=de"/></setViewPeriod>
+    <eventView><genurl:rewrite action="eventView.do?b=de"/></eventView>
+    <mailEvent><genurl:rewrite action="mailEvent.do?b=de"/></mailEvent>
+    <showPage><genurl:rewrite action="showPage.do?b=de"/></showPage>
 
-    <export><genurl:rewrite action="export.do"/></export>
+    <export><genurl:rewrite action="export.do?b=de"/></export>
     <stats><genurl:rewrite action="stats.do?be=d"/></stats>
 
     <fetchPublicCalendars><genurl:rewrite action="fetchPublicCalendars"/></fetchPublicCalendars>
@@ -134,11 +134,11 @@ try {
 
     <!-- The following URLs are used only in the personal client -->
     <logic:equal name="calForm" property="guest" value="false">
-      <initEvent><genurl:rewrite action="initEvent.do"/></initEvent>
-      <addEvent><genurl:rewrite action="addEvent.do"/></addEvent>
-      <addEventUsingPage><genurl:rewrite action="addEventUsingPage.do"/></addEventUsingPage>
-      <editEvent><genurl:rewrite action="editEvent.do"/></editEvent>
-      <delEvent><genurl:rewrite action="delEvent.do"/></delEvent>
+      <initEvent><genurl:rewrite action="initEvent.do?b=de"/></initEvent>
+      <addEvent><genurl:rewrite action="addEvent.do?b=de"/></addEvent>
+      <addEventUsingPage><genurl:rewrite action="addEventUsingPage.do?b=de"/></addEventUsingPage>
+      <editEvent><genurl:rewrite action="editEvent.do?b=de"/></editEvent>
+      <delEvent><genurl:rewrite action="delEvent.do?b=de"/></delEvent>
       <event>
         <setAccess><genurl:link page="/event/setAccess.do?b=de"/></setAccess>
         <addEventRefComplete><genurl:link page="/event/addEventRefComplete.do?b=de"/></addEventRefComplete>
@@ -170,20 +170,20 @@ try {
         <subscribe><genurl:link page="/subs/subscribe.do?b=de"/></subscribe>
       </subscriptions>
 
-      <manageLocations><genurl:rewrite action="manageLocations.do"/></manageLocations>
-      <addLocation><genurl:rewrite action="addLocation.do"/></addLocation>
-      <editLocation><genurl:rewrite action="editLoc.do"/></editLocation>
-      <delLocation><genurl:rewrite action="delLocation.do"/></delLocation>
+      <manageLocations><genurl:rewrite action="manageLocations.do?b=de"/></manageLocations>
+      <addLocation><genurl:rewrite action="addLocation.do?b=de"/></addLocation>
+      <editLocation><genurl:rewrite action="editLoc.do?b=de"/></editLocation>
+      <delLocation><genurl:rewrite action="delLocation.do?b=de"/></delLocation>
 
       <prefs>
         <fetchForUpdate><genurl:link page="/prefs/fetchForUpdate.do?b=de"/></fetchForUpdate>
         <update><genurl:link page="/prefs/update.do?b=de"/></update>
       </prefs>
 
-      <initEventAlarm><genurl:rewrite action="initEventAlarm.do"/></initEventAlarm>
-      <setAlarm><genurl:rewrite action="setAlarm.do"/></setAlarm>
-      <addEventRef><genurl:rewrite action="addEventRef.do"/></addEventRef>
-      <upload><genurl:rewrite action="upload.do"/></upload>
+      <initEventAlarm><genurl:rewrite action="initEventAlarm.do?b=de"/></initEventAlarm>
+      <setAlarm><genurl:rewrite action="setAlarm.do?b=de"/></setAlarm>
+      <addEventRef><genurl:rewrite action="addEventRef.do?b=de"/></addEventRef>
+      <upload><genurl:rewrite action="upload.do?b=de"/></upload>
     </logic:equal>
   </urlPrefixes>
   <confirmationid><bean:write name="calForm" property="confirmationId"/></confirmationid><%--
