@@ -140,34 +140,34 @@ try {
       <editEvent><genurl:rewrite action="editEvent.do?b=de"/></editEvent>
       <delEvent><genurl:rewrite action="delEvent.do?b=de"/></delEvent>
       <event>
-        <setAccess><genurl:link page="/event/setAccess.do?b=de"/></setAccess>
-        <addEventRefComplete><genurl:link page="/event/addEventRefComplete.do?b=de"/></addEventRefComplete>
-        <selectCalForEvent><genurl:link page="/event/selectCalForEvent.do?b=de"/></selectCalForEvent>
+        <setAccess><genurl:rewrite action="/event/setAccess.do?b=de"/></setAccess>
+        <addEventRefComplete><genurl:rewrite action="/event/addEventRefComplete.do?b=de"/></addEventRefComplete>
+        <selectCalForEvent><genurl:rewrite action="/event/selectCalForEvent.do?b=de"/></selectCalForEvent>
       </event>
 
       <freeBusy>
-        <fetch><genurl:link page="/freeBusy/getFreeBusy.do?b=de"/></fetch>
-        <setAccess><genurl:link page="/freeBusy/setAccess.do?b=de"/></setAccess>
+        <fetch><genurl:rewrite action="/freeBusy/getFreeBusy.do?b=de"/></fetch>
+        <setAccess><genurl:rewrite action="/freeBusy/setAccess.do?b=de"/></setAccess>
       </freeBusy>
 
       <calendar>
-        <fetch><genurl:link page="/calendar/showUpdateList.rdo?b=de"/></fetch><!-- keep -->
-        <fetchDescriptions><genurl:link page="/calendar/showDescriptionList.rdo?b=de"/></fetchDescriptions><!-- keep -->
-        <initAdd><genurl:link page="/calendar/initAdd.do?b=de"/></initAdd><!-- keep -->
-        <delete><genurl:link page="/calendar/delete.do?b=de"/></delete>
-        <fetchForDisplay><genurl:link page="/calendar/fetchForDisplay.do?b=de"/></fetchForDisplay>
-        <fetchForUpdate><genurl:link page="/calendar/fetchForUpdate.do?b=de"/></fetchForUpdate><!-- keep -->
-        <update><genurl:link page="/calendar/update.do?b=de"/></update><!-- keep -->
-        <setAccess><genurl:link page="/calendar/setAccess.do?b=de"/></setAccess>
+        <fetch><genurl:rewrite action="/calendar/showUpdateList.rdo?b=de"/></fetch><!-- keep -->
+        <fetchDescriptions><genurl:rewrite action="/calendar/showDescriptionList.rdo?b=de"/></fetchDescriptions><!-- keep -->
+        <initAdd><genurl:rewrite action="/calendar/initAdd.do?b=de"/></initAdd><!-- keep -->
+        <delete><genurl:rewrite action="/calendar/delete.do?b=de"/></delete>
+        <fetchForDisplay><genurl:rewrite action="/calendar/fetchForDisplay.do?b=de"/></fetchForDisplay>
+        <fetchForUpdate><genurl:rewrite action="/calendar/fetchForUpdate.do?b=de"/></fetchForUpdate><!-- keep -->
+        <update><genurl:rewrite action="/calendar/update.do?b=de"/></update><!-- keep -->
+        <setAccess><genurl:rewrite action="/calendar/setAccess.do?b=de"/></setAccess>
       </calendar>
 
       <subscriptions> <!-- only those listed are used here (no need to clean up) -->
-        <fetch><genurl:link page="/subs/fetch.do?b=de"/></fetch>
-        <fetchForUpdate><genurl:link page="/subs/fetchForUpdate.do?b=de"/></fetchForUpdate>
-        <addSubByUri><genurl:link page="/subs/showAddByUriForm.rdo?b=de"/></addSubByUri>
-        <subscribeByUri><genurl:link page="/subs/subscribeByUri.do?b=de"/></subscribeByUri>
-        <initAdd><genurl:link page="/subs/initAdd.do?b=de"/></initAdd>
-        <subscribe><genurl:link page="/subs/subscribe.do?b=de"/></subscribe>
+        <fetch><genurl:rewrite action="subs/fetch.do?b=de"/></fetch>
+        <fetchForUpdate><genurl:rewrite action="subs/fetchForUpdate.do?b=de"/></fetchForUpdate>
+        <addSubByUri><genurl:rewrite action="subs/showAddByUriForm.rdo?b=de"/></addSubByUri>
+        <subscribeByUri><genurl:rewrite action="subs/subscribeByUri.do?b=de"/></subscribeByUri>
+        <initAdd><genurl:rewrite action="subs/initAdd.do?b=de"/></initAdd>
+        <subscribe><genurl:rewrite action="subs/subscribe.do?b=de"/></subscribe>
       </subscriptions>
 
       <manageLocations><genurl:rewrite action="manageLocations.do?b=de"/></manageLocations>
@@ -176,8 +176,8 @@ try {
       <delLocation><genurl:rewrite action="delLocation.do?b=de"/></delLocation>
 
       <prefs>
-        <fetchForUpdate><genurl:link page="/prefs/fetchForUpdate.do?b=de"/></fetchForUpdate>
-        <update><genurl:link page="/prefs/update.do?b=de"/></update>
+        <fetchForUpdate><genurl:rewrite action="/prefs/fetchForUpdate.do?b=de"/></fetchForUpdate>
+        <update><genurl:rewrite action="/prefs/update.do?b=de"/></update>
       </prefs>
 
       <initEventAlarm><genurl:rewrite action="initEventAlarm.do?b=de"/></initEventAlarm>

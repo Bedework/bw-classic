@@ -81,7 +81,11 @@
   <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
 
   <!-- Properly encoded prefixes to the application actions; use these to build
-       urls; allows the application to be used without cookies or within a portal. -->
+       urls; allows the application to be used without cookies or within a portal.
+       These urls are rewritten in header.jsp and simply passed through for use
+       here. Every url includes a query string (either ?b=de or a real query
+       string) so that all links constructed in this stylesheet may begin the
+       query string with an ampersand. -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/setSelection"/>
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
