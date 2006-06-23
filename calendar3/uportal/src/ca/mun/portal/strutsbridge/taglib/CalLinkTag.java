@@ -138,7 +138,7 @@ public class CalLinkTag extends LinkTag {
       String path = url.getPath();
       if (path.endsWith(".rdo")) {
         setRenderURL("true");
-      } else if (path.endsWith(".rdo")) {
+      } else if (path.endsWith(".do")) {
         setActionURL("true");
       }
 
