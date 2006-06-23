@@ -19,9 +19,9 @@ ECHO
 
 SET cp=@CP@
 
-SET DUMPCMD=%JAVA_HOME%/bin/java -cp %cp% @DUMP-CLASS@
-SET RESTORECMD=%JAVA_HOME%/bin/java -cp %cp% @RESTORE-CLASS@
-SET SCHEMACMD=%JAVA_HOME%/bin/java -cp %cp% org.hibernate.tool.hbm2ddl.SchemaExport
+SET DUMPCMD="%JAVA_HOME%/bin/java" -cp %cp% @DUMP-CLASS@
+SET RESTORECMD="%JAVA_HOME%/bin/java" -cp %cp% @RESTORE-CLASS@
+SET SCHEMACMD="%JAVA_HOME%/bin/java" -cp %cp% org.hibernate.tool.hbm2ddl.SchemaExport
 
 SET APPNAME=@BW-APP-NAME@
 
