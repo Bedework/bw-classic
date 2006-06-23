@@ -20,14 +20,12 @@ import java.net.URL;
 
 import javax.servlet.ServletRequest; // for javadoc
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyContent;
 
 import org.apache.portals.bridges.struts.PortletServlet;
 import org.apache.portals.bridges.struts.config.PortletURLTypes; // javadoc
-import org.apache.struts.taglib.html.RewriteTag;
-import org.apache.struts.taglib.TagUtils;
+import org.apache.struts.taglib.html.LinkTag;
 
-/** Supports the Struts html:rewrite tag to be used within uPortlet context for
+/** Supports the Struts html:link tag to be used within uPortlet context for
  * generating urls for the bedework portlet.
  *
  * @author <a href="mailto:ate@douma.nu">Ate Douma</a>
@@ -35,7 +33,7 @@ import org.apache.struts.taglib.TagUtils;
  * @author Mike Douglass    douglm at rpi.edu
  * @version $Id: RewriteTag.java 2005-10-25 12:31:13Z satish $
  */
-public class CalRewriteTag extends RewriteTag {
+public class CalLinkTag extends LinkTag {
   /** Indicates which type of a url must be generated: action, render or resource.
    * <p>If not specified, the type will be determined by
    * {@link PortletURLTypes#getType(String)}</p>.
@@ -127,17 +125,15 @@ public class CalRewriteTag extends RewriteTag {
    * @return the link url
    * @exception JspException if a JSP exception has occurred
    */
-  public int doStartTag() throws JspException {
+  protected String calculateURL() throws JspException {
+    String urlStr = super.calculateURL();
+
     if (!PortletServlet.isPortletRequest(pageContext.getRequest())) {
-      return super.doStartTag();
+      return urlStr;
     }
 
-    String urlStr = null;
-    BodyContent bodyContent = pageContext.pushBody();
-
     try {
-      super.doStartTag();
-      URL url = new URL(bodyContent.getString());
+      URL url = new URL(urlStr);
 
       String path = url.getPath();
       if (path.endsWith(".rdo")) {
@@ -149,7 +145,7 @@ public class CalRewriteTag extends RewriteTag {
       /* We want a context relative url */
       urlStr = url.getFile();
 
-      //System.out.println("RRRRRRRRRRRRRRRRRUrlStr = " + urlStr);
+      //System.out.println("LLLLLLLLLLLLLLLLLLUrlStr = " + urlStr);
 
       /* Drop the context
        */
@@ -175,16 +171,12 @@ public class CalRewriteTag extends RewriteTag {
       //Generate valid xml markup for transformationthrow new
       urlStr = urlStr.replaceAll("&", "&amp;");
 
-      //System.out.println("RRRRRRRRRRRRRRRRRUrlStr = " + urlStr);
+      //System.out.println("LLLLLLLLLLLLLLLLLLLLLLLUrlStr = " + urlStr);
     } catch (MalformedURLException mue) {
       throw new JspException(mue);
-    } finally {
-      pageContext.popBody();
     }
 
-    TagUtils.getInstance().write(pageContext, urlStr);
-
-    return (SKIP_BODY);
+    return urlStr;
   }
 
   public void release() {

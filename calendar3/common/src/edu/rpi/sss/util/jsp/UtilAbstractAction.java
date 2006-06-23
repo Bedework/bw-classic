@@ -312,12 +312,19 @@ public abstract class UtilAbstractAction extends Action
          Everything is set up and ready to go. Execute something
          ---------------------------------------------------------------- */
 
-      forward = checkLogOut(request, form);
+      if (!isPortlet) {
+        forward = checkLogOut(request, form);
+      } else {
+        forward = null;
+      }
+
       if (forward != null) {
         // Disable xslt filters
         response.setContentType("text/html");
       } else {
-        response.setContentType(defaultContentType);
+        if (!isPortlet) {
+          response.setContentType(defaultContentType);
+        }
         forward = checkVarReq(request, form);
 
         if (forward == null) {
