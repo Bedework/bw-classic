@@ -24,7 +24,7 @@ limitations under the License.
 <uri>http://portals.apache.org/bridges/struts/tags-portlet</uri>
 <tag>
 <name>form</name>
-<tagclass>org.apache.portals.bridges.struts.taglib.FormTag</tagclass>
+<tagclass>ca.mun.portal.strutsbridge.taglib.CalFormTag</tagclass>
 <bodycontent>JSP</bodycontent>
 <attribute>
 <name>action</name>
@@ -503,7 +503,7 @@ limitations under the License.
 </tag>
 <tag>
 <name>link</name>
-<tagclass>org.apache.portals.bridges.struts.taglib.LinkTag</tagclass>
+<tagclass>ca.mun.portal.strutsbridge.taglib.CalLinkTag</tagclass>
 <attribute>
 <name>actionURL</name>
 <required>false</required>

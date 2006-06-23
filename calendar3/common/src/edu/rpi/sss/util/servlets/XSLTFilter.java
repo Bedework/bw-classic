@@ -325,6 +325,7 @@ public class XSLTFilter extends AbstractFilter {
           getLogger().debug("+*+*+*+*+*+*+*+*+*+*+* about to transform: len=" +
                             bytes.length);
         }
+        //getLogger().debug(new String(bytes));
 
         TransformerException te = null;
         Transformer xmlt = null;
