@@ -1181,40 +1181,6 @@ public class BwEvent extends BwShareableContainedDbentity implements AttendeesI,
 
     /* If the guids are the same it's the same event for non recurring.
        For recurring events the recurrence id must also be equal.
-     * /
-    int res = e1.getGuid().compareTo(e2.getGuid());
-    if (res == 0) {
-      if (!e1.getRecurring()) {
-        return 0;
-      }
-
-      /* Recurring - only the same if the recurrence id is equal * /
-      return CalFacadeUtil.cmpObjval(e1.getRecurrence().getRecurrenceId(),
-                                     e2.getRecurrence().getRecurrenceId());
-    }
-
-    res = e1.getDtstart().compareTo(e2.getDtstart());
-    if (res != 0) {
-      return res;
-    }
-
-    res = e1.getDtend().compareTo(e2.getDtend());
-    if (res != 0) {
-      return res;
-    }
-
-    /* Dates are the same - try summary. * /
-
-    res = e1.getSummary().compareTo(e2.getSummary());
-    if (res != 0) {
-      return res;
-    }
-
-    // Just use guid
-    return e1.getGuid().compareTo(e2.getGuid());
-    */
-    /* If the guids are the same it's the same event for non recurring.
-       For recurring events the recurrence id must also be equal.
      */
     int res = e1.getGuid().compareTo(e2.getGuid());
     if ((res == 0) && (!e1.getRecurring())) {

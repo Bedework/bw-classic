@@ -454,6 +454,9 @@ public class Events extends CalintfHelper implements EventsI {
          */
         updateRecurrences(val);
       }
+
+      updateRefs(val);
+
       return;
     }
 
@@ -549,17 +552,7 @@ public class Events extends CalintfHelper implements EventsI {
        annotations related to the master i.e. not just a target field but a
        master field.
      */
-    sb = new StringBuffer();
-
-    sb.append("from ");
-    sb.append(BwEventAnnotation.class.getName());
-    sb.append(" where target=:target");
-
-    sess.createQuery(sb.toString());
-    sess.setEntity("target", val);
-
-    Collection anns = sess.getList();
-    Iterator it = anns.iterator();
+    Iterator it = getAnnotations(val).iterator();
 
     while (it.hasNext()) {
       BwEventAnnotation ann = (BwEventAnnotation)it.next();
@@ -746,6 +739,47 @@ public class Events extends CalintfHelper implements EventsI {
     val.setGuid(guid);
   }
 
+  /* XXX This needs more work, OK until we allow modification of annotations - which
+   * could happen anyway through caldav or by synch.
+   *
+   * If the master changes then either we change the referencing annotations or
+   * we let the user know it's changed. At the moment we have no notification
+   * mechanism.
+   */
+  private void updateRefs(BwEvent val) throws CalFacadeException {
+    HibSession sess = getSess();
+    Iterator it = getAnnotations(val).iterator();
+
+    while (it.hasNext()) {
+      BwEventAnnotation ann = (BwEventAnnotation)it.next();
+      boolean changed = false;
+
+      if (!val.getDtstart().equals(ann.getDtstart())) {
+        ann.setDtstart(val.getDtstart());
+        changed = true;
+      }
+
+      if (!val.getDtend().equals(ann.getDtend())) {
+        ann.setDtend(val.getDtend());
+        changed = true;
+      }
+
+      if (!val.getDuration().equals(ann.getDuration())) {
+        ann.setDuration(val.getDuration());
+        changed = true;
+      }
+
+      if (val.getEndType() != ann.getEndType()) {
+        ann.setEndType(val.getEndType());
+        changed = true;
+      }
+
+      if (changed) {
+        sess.update(ann);
+      }
+    }
+  }
+
   /* Called when adding an event with overrides
    */
   private void addOverride(BwEventProxy proxy,
@@ -847,6 +881,20 @@ public class Events extends CalintfHelper implements EventsI {
         sess.delete(ri);
       }
     }
+  }
+
+  private Collection getAnnotations(BwEvent val) throws CalFacadeException {
+    HibSession sess = getSess();
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("from ");
+    sb.append(BwEventAnnotation.class.getName());
+    sb.append(" where target=:target");
+
+    sess.createQuery(sb.toString());
+    sess.setEntity("target", val);
+
+    return sess.getList();
   }
 
   private void eventQuery(Class cl, BwCalendar calendar, String guid, String rid,

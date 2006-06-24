@@ -35,10 +35,8 @@
       Values for these properties are set by the first place they are
       defined, from the following list:
       * Definitions on the "ant" command line (ant -Ddeploy.home=xyz compile)
-      * Definitions from a "uwcal.build.properties" file in the developer's
+      * Definitions from a "bedework.build.properties" file in the developer's
         home directory
-      * Definitions from a "local.build.properties" file in the top level
-        source directory
       * Definitions from a "build.properties" file in the top level
         source directory
       * Default definitions in this build.xml file
