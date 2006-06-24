@@ -61,10 +61,10 @@
 
 	<!-- Properly encoded prefixes to the application actions; use these to build
 			 urls; allows the application to be used without cookies or within a portal.
-       These urls are rewritten in header.jsp and simply passed through for use
-       here. Every url includes a query string (either ?b=de or a real query
-       string) so that all links constructed in this stylesheet may begin the
-       query string with an ampersand. -->
+			 These urls are rewritten in header.jsp and simply passed through for use
+			 here. Every url includes a query string (either ?b=de or a real query
+			 string) so that all links constructed in this stylesheet may begin the
+			 query string with an ampersand. -->
 	<xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
 	<xsl:variable name="setSelection" select="/bedework/urlPrefixes/setSelection"/>
 	<xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/setViewPeriod"/>
@@ -305,40 +305,42 @@
 			</tr>
 		</table>
 		<table id="curDateRangeTable"  cellspacing="0">
-			<td class="sideBarOpenCloseIcon">
-				<xsl:choose>
-					<xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
-						<a href="?setappvar=sidebar(opened)">
-							<img alt="open sidebar" src="{$resourcesRoot}/resources/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
-						</a>
-					</xsl:when>
-					<xsl:otherwise>
-						<a href="?setappvar=sidebar(closed)">
-							<img alt="close sidebar" src="{$resourcesRoot}/resources/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
-						</a>
-					</xsl:otherwise>
-				</xsl:choose>
-			</td>
-			<td class="date">
-				<xsl:value-of select="/bedework/firstday/longdate"/>
-				<xsl:if test="/bedework/periodname!='Day'">
-					-
-					<xsl:value-of select="/bedework/lastday/longdate"/>
-				</xsl:if>
-			</td>
-			<td class="rssPrint">
-				<a href="javascript:window.print()" title="print this view">
-					<img alt="print this view" src="{$resourcesRoot}/resources/std-print-icon.gif" width="20" height="14" border="0"/> print
-				</a>
-				<a class="rss" href="{$setSelection}&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
-			</td>
+			<tr>
+				<td class="sideBarOpenCloseIcon">
+					<xsl:choose>
+						<xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
+							<a href="?setappvar=sidebar(opened)">
+								<img alt="open sidebar" src="{$resourcesRoot}/resources/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
+							</a>
+						</xsl:when>
+						<xsl:otherwise>
+							<a href="?setappvar=sidebar(closed)">
+								<img alt="close sidebar" src="{$resourcesRoot}/resources/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
+							</a>
+						</xsl:otherwise>
+					</xsl:choose>
+				</td>
+				<td class="date">
+					<xsl:value-of select="/bedework/firstday/longdate"/>
+					<xsl:if test="/bedework/periodname!='Day'">
+						-
+						<xsl:value-of select="/bedework/lastday/longdate"/>
+					</xsl:if>
+				</td>
+				<td class="rssPrint">
+					<a href="javascript:window.print()" title="print this view">
+						<img alt="print this view" src="{$resourcesRoot}/resources/std-print-icon.gif" width="20" height="14" border="0"/> print
+					</a>
+					<a class="rss" href="{$setSelection}&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
+				</td>
+			</tr>
 		</table>
 	</xsl:template>
 
 	<xsl:template name="sideBar">
 		<h3>
 			<!--<img alt="manage views" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/>-->
-      views
+			views
 		</h3>
 		<ul id="myViews">
 			<xsl:choose>
@@ -1672,7 +1674,7 @@
 					</td>
 					<td class="fieldval">
 						<input type="radio" name="newEvent.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-            <input type="radio" name="newEvent.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+						<input type="radio" name="newEvent.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
 					</td>
 				</tr>
 				<!--  Description  -->
@@ -2070,11 +2072,11 @@
 						<xsl:choose>
 							<xsl:when test="form/transparency = 'TRANSPARENT'">
 								<input type="radio" name="editEvent.transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                <input type="radio" name="editEvent.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+								<input type="radio" name="editEvent.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
 							</xsl:when>
 							<xsl:otherwise>
 								<input type="radio" name="editEvent.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                <input type="radio" name="editEvent.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+								<input type="radio" name="editEvent.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
 							</xsl:otherwise>
 						</xsl:choose>
 					</td>
@@ -3453,7 +3455,7 @@
 						Effects free/busy:
 					</td>
 					<td align="left" class="padMeTop">
-            <input type="radio" value="" name="transparency" checked="checked"/> accept event's settings<br/>
+						<input type="radio" value="" name="transparency" checked="checked"/> accept event's settings<br/>
 						<input type="radio" value="OPAQUE" name="transparency"/> yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
 						<input type="radio" value="TRANSPARENT" name="transparency"/> no <span class="note">(transparent: event status does not affect your free/busy)</span><br/>
 					</td>
@@ -3463,10 +3465,10 @@
 						Status:
 					</td>
 					<td align="left" class="padMeTop">
-            <input type="radio" value="" name="status" checked="checked"/> accept event's status<br/>
+						<input type="radio" value="" name="status" checked="checked"/> accept event's status<br/>
 						<input type="radio" value="CONFIRMED" name="status"/> confirmed<br/>
 						<input type="radio" value="TENTATIVE" name="status"/> tentative<br/>
-            <input type="radio" value="CANCELLED" name="status"/> cancelled<br/>
+						<input type="radio" value="CANCELLED" name="status"/> cancelled<br/>
 					</td>
 				</tr>
 			</table>
