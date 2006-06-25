@@ -54,12 +54,9 @@
 package org.bedework.calfacade;
 
 import org.bedework.calfacade.ifs.CalTimezones;
-import org.bedework.calfacade.svc.EventInfo;
 
-import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Parameter;
 import net.fortuna.ical4j.model.ParameterList;
-import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.property.DateProperty;
 
@@ -630,81 +627,6 @@ public class CalFacadeUtil implements Serializable {
     return tzid;
   }
 
-  /** This class defines the entities which occupy time and the period of
-   * interest and can be passed repeatedly to getPeriodsEvents.
-   *
-   * <p>The end datetime will be updated ready for the next call. If endDt is
-   * non-null on entry it will be used to set the startDt.
-   */
-  public static class GetPeriodsPars {
-    /** Event Info or EventPeriod or Period objects to extract from */
-    public Collection periods;
-    /** Start of period - updated at each call from endDt */
-    public BwDateTime startDt;
-    /** Duration of period */
-    public BwDuration dur;
-    /** */
-    public CalTimezones tzcache;
-
-    /** On return has the end date of the period. */
-    public BwDateTime endDt;
-  }
-
-  /** Select the events in the collection which fall within the period
-   * defined by the start and duration.
-   *
-   * @param   pars      GetPeriodsPars object
-   * @return  Collection of EventInfo being one days events or empty for no events.
-   * @throws CalFacadeException
-   */
-  public static Collection getPeriodsEvents(GetPeriodsPars pars) throws CalFacadeException {
-    ArrayList al = new ArrayList();
-    //long millis = System.currentTimeMillis();
-
-    if (pars.endDt != null) {
-      pars.startDt = pars.endDt.copy(pars.tzcache);
-    }
-    pars.endDt = pars.startDt.addDuration(pars.dur, pars.tzcache);
-    String start = pars.startDt.getDate();
-    String end = pars.endDt.getDate();
-
-    //if (debug) {
-    //  debugMsg("Did UTC stuff in " + (System.currentTimeMillis() - millis));
-    //}
-
-    EntityRange er = new EntityRange();
-    Iterator it = pars.periods.iterator();
-    while (it.hasNext()) {
-      er.setEntity(it.next());
-
-      /* Period is within range if:
-             ((evstart < end) and ((evend > start) or
-                 ((evstart = evend) and (evend >= start))))
-       */
-
-      int evstSt = er.start.compareTo(end);
-
-      //debugMsg("                   event " + evStart + " to " + evEnd);
-
-      if (evstSt < 0) {
-        int evendSt = er.end.compareTo(start);
-
-        if ((evendSt > 0) ||
-            (er.start.equals(er.end) && (evendSt >= 0))) {
-          // Passed the tests.
-          //if (debug) {
-          //  debugMsg("Event passed range " + start + "-" + end +
-          //           " with dates " + evStart + "-" + evEnd +
-          //           ": " + ev.getSummary());
-          //}
-          al.add(er.entity);
-        }
-      }
-    }
-
-    return al;
-  }
-
   /** Turn the int minutes into a 4 digit String hours and minutes value
    *
    * @param minutes  int
@@ -724,134 +646,5 @@ public class CalFacadeUtil implements Serializable {
     }
 
     return "0" + String.valueOf(val);
-  }
-
-  private static class EntityRange {
-    Object entity;
-
-    String start;
-    String end;
-
-    void setEntity(Object o) throws CalFacadeException {
-      entity = o;
-
-      if (o instanceof EventInfo) {
-        EventInfo ei = (EventInfo)o;
-        BwEvent ev = ei.getEvent();
-
-        start = ev.getDtstart().getDate();
-        end = ev.getDtend().getDate();
-
-        return;
-      }
-
-      if (o instanceof EventPeriod) {
-        EventPeriod ep = (EventPeriod)o;
-
-        start = String.valueOf(ep.getStart());
-        end = String.valueOf(ep.getEnd());
-
-        return;
-      }
-
-      if (o instanceof Period) {
-        Period p = (Period)o;
-
-        start = String.valueOf(p.getStart());
-        end = String.valueOf(p.getEnd());
-
-        return;
-      }
-
-      start = null;
-      end = null;
-    }
-  }
-
-  /**
-   *
-   */
-  public static class EventPeriod implements Comparable {
-    private DateTime start;
-    private DateTime end;
-    private int type;  // from BwFreeBusyComponent
-
-    /** Constructor
-     *
-     * @param start
-     * @param end
-     * @param type
-     */
-    public EventPeriod(DateTime start, DateTime end, int type) {
-      this.start = start;
-      this.end = end;
-      this.type = type;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public DateTime getStart() {
-      return start;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public DateTime getEnd() {
-      return end;
-    }
-
-    /**
-     * @return int
-     */
-    public int getType() {
-      return type;
-    }
-
-    public int compareTo(Object o) {
-      if (!(o instanceof EventPeriod)) {
-        return -1;
-      }
-
-      EventPeriod that = (EventPeriod)o;
-
-      /* Sort by type first */
-      if (type < that.type) {
-        return -1;
-      }
-
-      if (type > that.type) {
-        return 1;
-      }
-
-      int res = start.compareTo(that.start);
-      if (res != 0) {
-        return res;
-      }
-
-      return end.compareTo(that.end);
-    }
-
-    public boolean equals(Object o) {
-      return compareTo(o) == 0;
-    }
-
-    public int hashCode() {
-      return 7 * (type + 1) * (start.hashCode() + 1) * (end.hashCode() + 1);
-    }
-
-    public String toString() {
-      StringBuffer sb = new StringBuffer("EventPeriod{start=");
-
-      sb.append(start);
-      sb.append(", end=");
-      sb.append(end);
-      sb.append(", type=");
-      sb.append(type);
-      sb.append("}");
-
-      return sb.toString();
-    }
   }
 }

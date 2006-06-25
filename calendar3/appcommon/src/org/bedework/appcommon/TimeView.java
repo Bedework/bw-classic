@@ -286,8 +286,10 @@ public class TimeView implements Serializable {
     }
 
     ArrayList al = new ArrayList();
-//  Dur oneDay = new Dur(1, 0, 0, 0);
-    long millis = System.currentTimeMillis();
+    long millis = 0;
+    if (debug) {
+      millis = System.currentTimeMillis();
+    }
 
     //tzcache.setSysTimezones(cal.getTimezones());
     BwDateTime startDt = CalFacadeUtil.getDateTime(date.getDateDigits(),

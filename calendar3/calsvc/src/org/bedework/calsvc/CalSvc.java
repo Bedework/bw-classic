@@ -54,7 +54,6 @@
 package org.bedework.calsvc;
 
 import org.bedework.calenv.CalEnv;
-import org.bedework.calfacade.CalFacadeUtil.GetPeriodsPars;
 import org.bedework.calfacade.base.BwOwnedDbentity;
 import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.BwAlarm;
@@ -94,6 +93,8 @@ import org.bedework.calfacade.svc.BwView;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
+import org.bedework.calfacade.util.Granulator;
+import org.bedework.calfacade.util.Granulator.GetPeriodsPars;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
 import org.bedework.icalendar.IcalCallback;
@@ -1202,7 +1203,7 @@ public class CalSvc extends CalSvcI {
           }
           limit--;
 
-          Collection periodEvents = CalFacadeUtil.getPeriodsEvents(gpp);
+          Collection periodEvents = Granulator.getPeriodsEvents(gpp);
 
           if (returnAll) {
             fbc = new BwFreeBusyComponent();

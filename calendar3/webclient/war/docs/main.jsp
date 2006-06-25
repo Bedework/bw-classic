@@ -48,18 +48,13 @@
                     <shortdate><bean:write name="dayInfo" property="dateShort"/></shortdate>
                     <%/* Do not produce events if we are in the year view */%>
                     <logic:equal name="calForm"
-                                    property="curTimeView.showData"
-                                    value="true">
-                      <logic:notEqual name="dayInfo" property="filler" value="true" >
-                        <logic:notEmpty name="dayInfo" property="eventFormatters" >
-                          <logic:iterate id="eventFmt" name="dayInfo"
-                                         property="eventFormatters" >
-                            <bean:define id="eventFormatter" name="eventFmt"
-                                         toScope="request" />
-                            <jsp:include page="/docs/event/emitEvent.jsp" />
-                          </logic:iterate>
-                        </logic:notEmpty>
-                      </logic:notEqual>
+                                 property="curTimeView.showData" value="true">
+                      <logic:iterate id="eventFmt" name="dayInfo"
+                                     property="eventFormatters" >
+                        <bean:define id="eventFormatter" name="eventFmt"
+                                     toScope="request" />
+                        <jsp:include page="/docs/event/emitEvent.jsp" />
+                      </logic:iterate>
                     </logic:equal>
                   </logic:equal>
                 </day>

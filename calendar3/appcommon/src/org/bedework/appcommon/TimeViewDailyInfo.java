@@ -548,7 +548,7 @@ public class TimeViewDailyInfo implements Serializable {
   }
 
   /**
-   * @return Collection
+   * @return Collection - never null.
    * @throws Throwable
    */
   public Collection getEventFormatters() throws Throwable {
@@ -564,7 +564,7 @@ public class TimeViewDailyInfo implements Serializable {
         Iterator it = events.iterator();
 
         while (it.hasNext()) {
-          eventFormatters.add(new EventFormatter(view.getSvcI(), 
+          eventFormatters.add(new EventFormatter(view.getSvcI(),
                                                  (EventInfo)it.next(), view,
                                                  calInfo, view.getTimezones()));
         }

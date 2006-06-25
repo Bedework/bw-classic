@@ -79,10 +79,7 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.CoreEventInfo;
-import org.bedework.calfacade.CalFacadeUtil.EventPeriod;
-import org.bedework.calfacade.CalFacadeUtil.GetPeriodsPars;
 import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.base.CalintfBase;
 import org.bedework.calfacade.filter.BwFilter;
@@ -91,6 +88,9 @@ import org.bedework.calfacade.ifs.CalintfInfo;
 import org.bedework.calfacade.ifs.EventsI;
 import org.bedework.calfacade.ifs.Groups;
 import org.bedework.calfacade.svc.EventInfo;
+import org.bedework.calfacade.util.Granulator;
+import org.bedework.calfacade.util.Granulator.EventPeriod;
+import org.bedework.calfacade.util.Granulator.GetPeriodsPars;
 import org.bedework.icalendar.IcalTranslator;
 
 import java.sql.Timestamp;
@@ -1095,7 +1095,7 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
           }
           limit--;
 
-          Collection periodEvents = CalFacadeUtil.getPeriodsEvents(gpp);
+          Collection periodEvents = Granulator.getPeriodsEvents(gpp);
 
           if (returnAll) {
             fbc = new BwFreeBusyComponent();
