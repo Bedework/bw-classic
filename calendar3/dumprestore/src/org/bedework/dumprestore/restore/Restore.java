@@ -154,8 +154,6 @@ public class Restore implements Defs {
         globals.rintf.restoreAdminGroup((BwAdminGroup)globals.getSuperGroup());
       }
     }
-
-    error("Need to implement eventrefs fixup");
   }
 
   void stats() {
@@ -361,7 +359,8 @@ public class Restore implements Defs {
   }
 
   void getConfigProperties(String[] args) throws Throwable {
-    /* Look for the appname arg */
+    /* Look for the appname and initSyspars arg */
+    boolean initSyspars = false;
 
     if (args != null) {
       for (int i = 0; i < args.length; i++) {
@@ -369,7 +368,7 @@ public class Restore implements Defs {
           i++;
           appName = args[i];
         } else if (args[i].equals("-initSyspars")) {
-          globals.config.setInitSyspars(true);
+          initSyspars = true;
         }
       }
     }
@@ -380,7 +379,9 @@ public class Restore implements Defs {
     }
 
     globals.init((DumpRestoreConfig)CalOptions.getProperty(appPrefix + appName));
-    if (globals.config.getInitSyspars() || globals.config.getFrom2p3px()) {
+    if (initSyspars ||
+        globals.config.getInitSyspars() ||
+        globals.config.getFrom2p3px()) {
       globals.syspars = (BwSystem)CalOptions.getProperty("org.bedework.syspars");
     }
   }
