@@ -144,6 +144,8 @@ public class CalRewriteTag extends RewriteTag {
         setRenderURL("true");
       } else if (path.endsWith(".do")) {
         setActionURL("true");
+      } else if (path.endsWith(".gdo")) {
+        setResourceURL("true");
       }
 
       /* We want a context relative url */

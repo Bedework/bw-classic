@@ -29,7 +29,7 @@
 
      For detailed instructions on how to work with the XSLT
      stylesheets included with this distribution, please see the
-		 Bedework Design Guide at
+     Bedework Design Guide at
      http://www.bedework.org/bedework/update.do?artcenterkey=24
 
 ===============================================================  -->
@@ -89,7 +89,7 @@
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/setViewPeriod"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/eventView"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
-  <xsl:variable name="export" select="/bedework/urlPrefixes/export"/>
+  <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
   <xsl:variable name="stats" select="/bedework/urlPrefixes/stats"/>
@@ -582,19 +582,19 @@
         </td>
         <th class="icalIcon" rowspan="2">
           <div id="eventIcons">
-						<xsl:variable name="id" select="id"/>
-						<xsl:variable name="subscriptionId" select="subscription/id"/>
-						<xsl:variable name="calPath" select="calendar/encodedPath"/>
-						<xsl:variable name="guid" select="guid"/>
-						<xsl:variable name="recurrenceId" select="recurrenceId"/>
-						<a href="{$privateCal}/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
-							<img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
-						add to my calendar</a>
-						<xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-						<a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-							<img src="{$resourcesRoot}/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
-						 download</a>
-					</div>
+            <xsl:variable name="id" select="id"/>
+            <xsl:variable name="subscriptionId" select="subscription/id"/>
+            <xsl:variable name="calPath" select="calendar/encodedPath"/>
+            <xsl:variable name="guid" select="guid"/>
+            <xsl:variable name="recurrenceId" select="recurrenceId"/>
+            <a href="{$privateCal}/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+              <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
+            add to my calendar</a>
+            <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
+            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+              <img src="{$resourcesRoot}/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
+             download</a>
+          </div>
         </th>
       </tr>
       <tr>

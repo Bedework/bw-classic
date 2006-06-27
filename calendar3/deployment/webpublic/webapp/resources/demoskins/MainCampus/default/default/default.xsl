@@ -81,7 +81,7 @@
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/setViewPeriod"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/eventView"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
-  <xsl:variable name="export" select="/bedework/urlPrefixes/export"/>
+  <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
   <xsl:variable name="stats" select="/bedework/urlPrefixes/stats"/>

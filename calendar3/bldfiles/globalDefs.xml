@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 
 <!-- ===================================================================
+     bedework calendar global definitions.
      This file is imported by build files that want to define all the
      global settings. It defines a globalDefs target
      =================================================================== -->
 
-<project name="uwcalGlobalDefs" default="globalDefs">
+<project name="bwGlobalDefs" default="globalDefs">
   <property environment="env"/>
 
   <target name="globalDefs" >

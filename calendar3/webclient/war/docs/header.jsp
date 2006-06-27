@@ -126,7 +126,7 @@ try {
     <mailEvent><genurl:rewrite action="mailEvent.do?b=de"/></mailEvent>
     <showPage><genurl:rewrite action="showPage.do?b=de"/></showPage>
 
-    <export><genurl:rewrite action="export.do?b=de"/></export>
+    <export><genurl:link page="/export.gdo?b=de"/></export>
     <stats><genurl:rewrite action="stats.do?be=d"/></stats>
 
     <fetchPublicCalendars><genurl:rewrite action="fetchPublicCalendars"/></fetchPublicCalendars>

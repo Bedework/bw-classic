@@ -2,7 +2,7 @@
 
 <!-- This is the main build file for bedework which can be used in
      conjunction with Ant (http://jakarta.apache.org/ant/) to
-     build, deploy, and distribute the UW calendar project. Type
+     build, deploy, and distribute the bedework calendar project. Type
      "ant -projecthelp" to see a list of ant targets.
 
      The assumption is that deployers of the calendar will want to create

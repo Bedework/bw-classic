@@ -33,17 +33,8 @@
     <echo message=""/>
     <echo message="Once tomcat is running you should be able to go to a"/>
     <echo message="browser and connect to"/>
-    <echo message="    http://localhost:8080/caladmin"/>
-    <echo message="and get a login prompt. Login with user 'caladmin' and"/>
-    <echo message="password 'uwcal'"/>
-    <echo message=""/>
-    <echo message="Connecting to"/>
-    <echo message="    http://localhost:8080/cal"/>
-    <echo message="should give you the public (guest) view of the calendar"/>
-    <echo message="which probably has no events."/>
-    <echo message=""/>
-    <echo message="Try entering them with the admin calendar ('add events')"/>
-    <echo message="and they should appear."/>
+    <echo message="    http://localhost:8080/bedework"/>
+    <echo message="and follow the instructions."/>
     <echo message=""/>
     <echo message="To build the calendar do"/>
     <echo message="    ant deploy    or "/>
@@ -55,9 +46,8 @@
     <echo message="    ant clean.deploy.debug "/>
     <echo message="which does a clean, build and deploy of all components"/>
     <echo message=""/>
-    <echo message="Creating a locally configured calendar application"/>
-    <echo message="should involve following the instructions for the"/>
-    <echo message="appsuite target in calendar/build.xml"/>
+    <echo message="See documentation in the docs directory or on bedework.org"/>
+    <echo message="for instructions on creating a locally configured calendar application"/>
     <echo message=""/>
   </target>
 

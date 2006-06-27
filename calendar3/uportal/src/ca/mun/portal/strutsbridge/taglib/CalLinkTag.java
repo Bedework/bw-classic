@@ -140,6 +140,8 @@ public class CalLinkTag extends LinkTag {
         setRenderURL("true");
       } else if (path.endsWith(".do")) {
         setActionURL("true");
+      } else if (path.endsWith(".gdo")) {
+        setResourceURL("true");
       }
 
       /* We want a context relative url */

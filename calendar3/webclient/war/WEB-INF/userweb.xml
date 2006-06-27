@@ -76,16 +76,17 @@
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
 
-<!--
-  <filter-mapping>
-    <filter-name>FOP Filter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-       -->
-
   <filter-mapping>
     <filter-name>SvcI Filter</filter-name>
     <url-pattern>*.rdo</url-pattern>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>SvcI Filter</filter-name>
+    <url-pattern>*.gdo</url-pattern>
     <dispatcher>INCLUDE</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>REQUEST</dispatcher>
@@ -129,9 +130,15 @@
 
   <servlet-mapping>
     <servlet-name>action</servlet-name>
+    <url-pattern>*.gdo</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>action</servlet-name>
     <url-pattern>*.rdo</url-pattern>
   </servlet-mapping>
 
+  <!-- This probably has to be last for struts -->
   <servlet-mapping>
     <servlet-name>action</servlet-name>
     <url-pattern>*.do</url-pattern>

@@ -91,7 +91,7 @@
               value="true" />
 
     <property name="propval.app.genurl.taglib.tld"
-              value="struts-portlet.tld" />
+              value="bedework-uportal2.tld" />
   </target>
 
   <target name="init.standalone" if="org.bedework.global.build.standalone.app">
