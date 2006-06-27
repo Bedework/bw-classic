@@ -270,6 +270,11 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       UserAuth ua = svc.getUserAuth();
       BwAuthUser au = ua.getUser(form.getCurrentUser());
 
+      if (au == null) {
+        // No authuser entry for this user.
+        return forwardNoAccess;
+      }
+
       // Refresh current auth user prefs.
       BwAuthUserPrefs prefs = au.getPrefs();
       if (prefs == null) {
