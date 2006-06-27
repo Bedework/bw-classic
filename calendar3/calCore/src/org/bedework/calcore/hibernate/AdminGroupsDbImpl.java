@@ -102,7 +102,18 @@ public class AdminGroupsDbImpl implements AdminGroups {
       sess.setString("isgroup", "F");
     }
 
-    return sess.getList();
+    Collection gs = sess.getList();
+
+    if (val instanceof BwUser) {
+      /* Event owner for group is implicit member of group. */
+
+      sess.namedQuery("getAdminGroupsByEventOwner");
+      sess.setEntity("owner", val);
+
+      gs.addAll(sess.getList());
+    }
+
+    return gs;
   }
 
   public Collection getAllGroups(BwPrincipal val) throws CalFacadeException {

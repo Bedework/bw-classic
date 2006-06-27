@@ -92,9 +92,16 @@
       order by ag.account
   ]]></query>
 
+  <!-- Groups principal is a member of -->
   <query name="getAdminGroups"><![CDATA[
     select ag.grp from org.bedework.calfacade.svc.BwAdminGroupEntry ag
       where ag.memberId=:entId and ag.memberIsGroup=:isgroup
+  ]]></query>
+
+  <!-- Groups principal is a event owner for -->
+  <query name="getAdminGroupsByEventOwner"><![CDATA[
+    from org.bedework.calfacade.svc.BwAdminGroup ag
+      where ag.owner=:owner
   ]]></query>
 
   <query name="getGroupUserMembers"><![CDATA[
