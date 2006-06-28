@@ -9902,7 +9902,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>2</calendar>
+      <calendar-path>/public</calendar-path>
       <name>Alumni Events</name>
       <path>/public/Alumni Events</path>
       <summary>Alumni Events</summary>
@@ -9914,7 +9914,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>2</calendar>
+      <calendar-path>/public</calendar-path>
       <name>Arts</name>
       <path>/public/Arts</path>
       <summary>Arts</summary>
@@ -9926,7 +9926,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>16</calendar>
+      <calendar-path>/public/Arts</calendar-path>
       <name>Concerts</name>
       <path>/public/Arts/Concerts</path>
       <summary>Concerts</summary>
@@ -9938,7 +9938,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>16</calendar>
+      <calendar-path>/public/Arts</calendar-path>
       <name>Dance</name>
       <path>/public/Arts/Dance</path>
       <summary>Dance</summary>
@@ -9950,7 +9950,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>16</calendar>
+      <calendar-path>/public/Arts</calendar-path>
       <name>Exhibits</name>
       <path>/public/Arts/Exhibits</path>
       <summary>Exhibits</summary>
@@ -9962,7 +9962,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>16</calendar>
+      <calendar-path>/public/Arts</calendar-path>
       <name>Films</name>
       <path>/public/Arts/Films</path>
       <summary>Films</summary>
@@ -9974,7 +9974,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>16</calendar>
+      <calendar-path>/public/Arts</calendar-path>
       <name>Readings</name>
       <path>/public/Arts/Readings</path>
       <summary>Readings</summary>
@@ -9986,7 +9986,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>16</calendar>
+      <calendar-path>/public/Arts</calendar-path>
       <name>Theater</name>
       <path>/public/Arts/Theater</path>
       <summary>Theater</summary>
@@ -9998,7 +9998,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>2</calendar>
+      <calendar-path>/public</calendar-path>
       <name>Athletics</name>
       <path>/public/Athletics</path>
       <summary>Athletics</summary>
@@ -10010,7 +10010,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>2</calendar>
+      <calendar-path>/public</calendar-path>
       <name>Conferences_Meetings</name>
       <path>/public/Conferences_Meetings</path>
       <summary>Conferences_Meetings</summary>
@@ -10022,7 +10022,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>23</calendar>
+      <calendar-path>/public/Conferences_Meetings</calendar-path>
       <name>Conferences</name>
       <path>/public/Conferences_Meetings/Conferences</path>
       <summary>Conferences</summary>
@@ -10034,7 +10034,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>23</calendar>
+      <calendar-path>/public/Conferences_Meetings</calendar-path>
       <name>Discussions</name>
       <path>/public/Conferences_Meetings/Discussions</path>
       <summary>Discussions</summary>
@@ -10046,7 +10046,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>23</calendar>
+      <calendar-path>/public/Conferences_Meetings</calendar-path>
       <name>Forums</name>
       <path>/public/Conferences_Meetings/Forums</path>
       <summary>Forums</summary>
@@ -10058,7 +10058,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>23</calendar>
+      <calendar-path>/public/Conferences_Meetings</calendar-path>
       <name>Meetings</name>
       <path>/public/Conferences_Meetings/Meetings</path>
       <summary>Meetings</summary>
@@ -10070,7 +10070,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>2</calendar>
+      <calendar-path>/public</calendar-path>
       <name>General Calendars</name>
       <path>/public/General Calendars</path>
       <summary>General Calendars</summary>
@@ -10082,7 +10082,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Academic Calendar</name>
       <path>/public/General Calendars/Academic Calendar</path>
       <summary>Academic Calendar</summary>
@@ -10094,7 +10094,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Alerts</name>
       <path>/public/General Calendars/Alerts</path>
       <summary>Alerts</summary>
@@ -10106,7 +10106,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Commencement</name>
       <path>/public/General Calendars/Commencement</path>
       <summary>Commencement</summary>
@@ -10118,7 +10118,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Construction</name>
       <path>/public/General Calendars/Construction</path>
       <summary>Construction</summary>
@@ -10130,7 +10130,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Deadlines</name>
       <path>/public/General Calendars/Deadlines</path>
       <summary>Deadlines</summary>
@@ -10142,7 +10142,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Facilities</name>
       <path>/public/General Calendars/Facilities</path>
       <summary>Facilities</summary>
@@ -10154,7 +10154,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Holidays</name>
       <path>/public/General Calendars/Holidays</path>
       <summary>Holidays</summary>
@@ -10166,7 +10166,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Parking</name>
       <path>/public/General Calendars/Parking</path>
       <summary>Parking</summary>
@@ -10178,7 +10178,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Room Closings</name>
       <path>/public/General Calendars/Room Closings</path>
       <summary>Room Closings</summary>
@@ -10190,7 +10190,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Scheduled openings_closings</name>
       <path>/public/General Calendars/Scheduled openings_closings</path>
       <summary>Scheduled openings_closings</summary>
@@ -10202,7 +10202,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>School Closings</name>
       <path>/public/General Calendars/School Closings</path>
       <summary>School Closings</summary>
@@ -10214,7 +10214,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>3</calendar>
+      <calendar-path>/public/General Calendars</calendar-path>
       <name>Service outages_changes</name>
       <path>/public/General Calendars/Service outages_changes</path>
       <summary>Service outages_changes</summary>
@@ -10226,7 +10226,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>2</calendar>
+      <calendar-path>/public</calendar-path>
       <name>Lectures_Seminars</name>
       <path>/public/Lectures_Seminars</path>
       <summary>Lectures_Seminars</summary>
@@ -10238,7 +10238,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>33</calendar>
+      <calendar-path>/public/Lectures_Seminars</calendar-path>
       <name>Lectures</name>
       <path>/public/Lectures_Seminars/Lectures</path>
       <summary>Lectures</summary>
@@ -10250,7 +10250,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>33</calendar>
+      <calendar-path>/public/Lectures_Seminars</calendar-path>
       <name>Seminars</name>
       <path>/public/Lectures_Seminars/Seminars</path>
       <summary>Seminars</summary>
@@ -10262,7 +10262,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>2</calendar>
+      <calendar-path>/public</calendar-path>
       <name>Other Events</name>
       <path>/public/Other Events</path>
       <summary>Other Events</summary>
@@ -10274,7 +10274,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>44</calendar>
+      <calendar-path>/public/Other Events</calendar-path>
       <name>Employee Events</name>
       <path>/public/Other Events/Employee Events</path>
       <summary>Employee Events</summary>
@@ -10286,7 +10286,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>44</calendar>
+      <calendar-path>/public/Other Events</calendar-path>
       <name>Fund Raising</name>
       <path>/public/Other Events/Fund Raising</path>
       <summary>Fund Raising</summary>
@@ -10298,7 +10298,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>44</calendar>
+      <calendar-path>/public/Other Events</calendar-path>
       <name>Health Services</name>
       <path>/public/Other Events/Health Services</path>
       <summary>Health Services</summary>
@@ -10310,7 +10310,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>44</calendar>
+      <calendar-path>/public/Other Events</calendar-path>
       <name>Open Houses</name>
       <path>/public/Other Events/Open Houses</path>
       <summary>Open Houses</summary>
@@ -10322,7 +10322,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>44</calendar>
+      <calendar-path>/public/Other Events</calendar-path>
       <name>Other</name>
       <path>/public/Other Events/Other</path>
       <summary>Other</summary>
@@ -10334,7 +10334,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>44</calendar>
+      <calendar-path>/public/Other Events</calendar-path>
       <name>Sales</name>
       <path>/public/Other Events/Sales</path>
       <summary>Sales</summary>
@@ -10346,7 +10346,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>44</calendar>
+      <calendar-path>/public/Other Events</calendar-path>
       <name>Special Events</name>
       <path>/public/Other Events/Special Events</path>
       <summary>Special Events</summary>
@@ -10358,7 +10358,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>44</calendar>
+      <calendar-path>/public/Other Events</calendar-path>
       <name>Tours</name>
       <path>/public/Other Events/Tours</path>
       <summary>Tours</summary>
@@ -10370,7 +10370,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>44</calendar>
+      <calendar-path>/public/Other Events</calendar-path>
       <name>University Governance</name>
       <path>/public/Other Events/University Governance</path>
       <summary>University Governance</summary>
@@ -10382,7 +10382,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>2</calendar>
+      <calendar-path>/public</calendar-path>
       <name>Social Events</name>
       <path>/public/Social Events</path>
       <summary>Social Events</summary>
@@ -10394,7 +10394,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>36</calendar>
+      <calendar-path>/public/Social Events</calendar-path>
       <name>Rececptions</name>
       <path>/public/Social Events/Rececptions</path>
       <summary>Rececptions</summary>
@@ -10406,7 +10406,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>36</calendar>
+      <calendar-path>/public/Social Events</calendar-path>
       <name>Recognitions</name>
       <path>/public/Social Events/Recognitions</path>
       <summary>Recognitions</summary>
@@ -10418,7 +10418,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>36</calendar>
+      <calendar-path>/public/Social Events</calendar-path>
       <name>Religious_Spiritual</name>
       <path>/public/Social Events/Religious_Spiritual</path>
       <summary>Religious_Spiritual</summary>
@@ -10430,7 +10430,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>36</calendar>
+      <calendar-path>/public/Social Events</calendar-path>
       <name>Social Gatherings</name>
       <path>/public/Social Events/Social Gatherings</path>
       <summary>Social Gatherings</summary>
@@ -10442,7 +10442,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>36</calendar>
+      <calendar-path>/public/Social Events</calendar-path>
       <name>Volunteer Opportunities</name>
       <path>/public/Social Events/Volunteer Opportunities</path>
       <summary>Volunteer Opportunities</summary>
@@ -10454,7 +10454,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>2</calendar>
+      <calendar-path>/public</calendar-path>
       <name>Training</name>
       <path>/public/Training</path>
       <summary>Training</summary>
@@ -10466,7 +10466,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>28</calendar>
+      <calendar-path>/public/Training</calendar-path>
       <name>Short Courses</name>
       <path>/public/Training/Short Courses</path>
       <summary>Short Courses</summary>
@@ -10478,7 +10478,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>28</calendar>
+      <calendar-path>/public/Training</calendar-path>
       <name>Student Career Development</name>
       <path>/public/Training/Student Career Development</path>
       <summary>Student Career Development</summary>
@@ -10490,7 +10490,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>28</calendar>
+      <calendar-path>/public/Training</calendar-path>
       <name>Training</name>
       <path>/public/Training/Training</path>
       <summary>Training</summary>
@@ -10502,7 +10502,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>true</public>
       <creator>0</creator>
-      <calendar>28</calendar>
+      <calendar-path>/public/Training</calendar-path>
       <name>Workshops</name>
       <path>/public/Training/Workshops</path>
       <summary>Workshops</summary>
@@ -10526,47 +10526,11 @@ END:VCALENDAR
       <owner>2</owner>
       <public>false</public>
       <creator>2</creator>
-      <calendar>54</calendar>
+      <calendar-path>/user</calendar-path>
       <name>caladmin</name>
       <path>/user/caladmin</path>
       <summary>caladmin</summary>
       <calendarCollection>false</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>58</id>
-      <seq>1</seq>
-      <owner>2</owner>
-      <public>false</public>
-      <creator>2</creator>
-      <calendar>55</calendar>
-      <name>Inbox</name>
-      <path>/user/caladmin/Inbox</path>
-      <summary>Inbox</summary>
-      <calendarCollection>true</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>59</id>
-      <seq>1</seq>
-      <owner>2</owner>
-      <public>false</public>
-      <creator>2</creator>
-      <calendar>55</calendar>
-      <name>Outbox</name>
-      <path>/user/caladmin/Outbox</path>
-      <summary>Outbox</summary>
-      <calendarCollection>true</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>57</id>
-      <seq>1</seq>
-      <owner>2</owner>
-      <public>false</public>
-      <creator>2</creator>
-      <calendar>55</calendar>
-      <name>Trash</name>
-      <path>/user/caladmin/Trash</path>
-      <summary>Trash</summary>
-      <calendarCollection>true</calendarCollection>
     </calendar>
     <calendar>
       <id>56</id>
@@ -10574,7 +10538,7 @@ END:VCALENDAR
       <owner>2</owner>
       <public>false</public>
       <creator>2</creator>
-      <calendar>55</calendar>
+      <calendar-path>/user/caladmin</calendar-path>
       <name>calendar</name>
       <path>/user/caladmin/calendar</path>
       <summary>calendar</summary>
@@ -10586,47 +10550,11 @@ END:VCALENDAR
       <owner>3</owner>
       <public>false</public>
       <creator>3</creator>
-      <calendar>54</calendar>
+      <calendar-path>/user</calendar-path>
       <name>calowner</name>
       <path>/user/calowner</path>
       <summary>calowner</summary>
       <calendarCollection>false</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>68</id>
-      <seq>1</seq>
-      <owner>3</owner>
-      <public>false</public>
-      <creator>3</creator>
-      <calendar>65</calendar>
-      <name>Inbox</name>
-      <path>/user/calowner/Inbox</path>
-      <summary>Inbox</summary>
-      <calendarCollection>true</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>69</id>
-      <seq>1</seq>
-      <owner>3</owner>
-      <public>false</public>
-      <creator>3</creator>
-      <calendar>65</calendar>
-      <name>Outbox</name>
-      <path>/user/calowner/Outbox</path>
-      <summary>Outbox</summary>
-      <calendarCollection>true</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>67</id>
-      <seq>1</seq>
-      <owner>3</owner>
-      <public>false</public>
-      <creator>3</creator>
-      <calendar>65</calendar>
-      <name>Trash</name>
-      <path>/user/calowner/Trash</path>
-      <summary>Trash</summary>
-      <calendarCollection>true</calendarCollection>
     </calendar>
     <calendar>
       <id>66</id>
@@ -10634,7 +10562,7 @@ END:VCALENDAR
       <owner>3</owner>
       <public>false</public>
       <creator>3</creator>
-      <calendar>65</calendar>
+      <calendar-path>/user/calowner</calendar-path>
       <name>calendar</name>
       <path>/user/calowner/calendar</path>
       <summary>calendar</summary>
@@ -10646,47 +10574,11 @@ END:VCALENDAR
       <owner>4</owner>
       <public>false</public>
       <creator>4</creator>
-      <calendar>54</calendar>
+      <calendar-path>/user</calendar-path>
       <name>caluser</name>
       <path>/user/caluser</path>
       <summary>caluser</summary>
       <calendarCollection>false</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>63</id>
-      <seq>1</seq>
-      <owner>4</owner>
-      <public>false</public>
-      <creator>4</creator>
-      <calendar>60</calendar>
-      <name>Inbox</name>
-      <path>/user/caluser/Inbox</path>
-      <summary>Inbox</summary>
-      <calendarCollection>true</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>64</id>
-      <seq>1</seq>
-      <owner>4</owner>
-      <public>false</public>
-      <creator>4</creator>
-      <calendar>60</calendar>
-      <name>Outbox</name>
-      <path>/user/caluser/Outbox</path>
-      <summary>Outbox</summary>
-      <calendarCollection>true</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>62</id>
-      <seq>1</seq>
-      <owner>4</owner>
-      <public>false</public>
-      <creator>4</creator>
-      <calendar>60</calendar>
-      <name>Trash</name>
-      <path>/user/caluser/Trash</path>
-      <summary>Trash</summary>
-      <calendarCollection>true</calendarCollection>
     </calendar>
     <calendar>
       <id>61</id>
@@ -10694,7 +10586,7 @@ END:VCALENDAR
       <owner>4</owner>
       <public>false</public>
       <creator>4</creator>
-      <calendar>60</calendar>
+      <calendar-path>/user/caluser</calendar-path>
       <name>calendar</name>
       <path>/user/caluser/calendar</path>
       <summary>calendar</summary>
@@ -10706,47 +10598,11 @@ END:VCALENDAR
       <owner>0</owner>
       <public>false</public>
       <creator>0</creator>
-      <calendar>54</calendar>
+      <calendar-path>/user</calendar-path>
       <name>public-user</name>
       <path>/user/public-user</path>
       <summary>public-user</summary>
       <calendarCollection>false</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>73</id>
-      <seq>1</seq>
-      <owner>0</owner>
-      <public>false</public>
-      <creator>0</creator>
-      <calendar>70</calendar>
-      <name>Inbox</name>
-      <path>/user/public-user/Inbox</path>
-      <summary>Inbox</summary>
-      <calendarCollection>true</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>74</id>
-      <seq>1</seq>
-      <owner>0</owner>
-      <public>false</public>
-      <creator>0</creator>
-      <calendar>70</calendar>
-      <name>Outbox</name>
-      <path>/user/public-user/Outbox</path>
-      <summary>Outbox</summary>
-      <calendarCollection>true</calendarCollection>
-    </calendar>
-    <calendar>
-      <id>72</id>
-      <seq>1</seq>
-      <owner>0</owner>
-      <public>false</public>
-      <creator>0</creator>
-      <calendar>70</calendar>
-      <name>Trash</name>
-      <path>/user/public-user/Trash</path>
-      <summary>Trash</summary>
-      <calendarCollection>true</calendarCollection>
     </calendar>
     <calendar>
       <id>71</id>
@@ -10754,7 +10610,7 @@ END:VCALENDAR
       <owner>0</owner>
       <public>false</public>
       <creator>0</creator>
-      <calendar>70</calendar>
+      <calendar-path>/user/public-user</calendar-path>
       <name>calendar</name>
       <path>/user/public-user/calendar</path>
       <summary>calendar</summary>
@@ -11275,24 +11131,11 @@ END:VCALENDAR
         <subscription>
           <sub-id>2</sub-id>
           <sub-seq>0</sub-seq>
-          <sub-name>calendar</sub-name>
+          <sub-name>All</sub-name>
           <sub-owner>2</sub-owner>
-          <sub-uri>bwcal:///user/caladmin/calendar</sub-uri>
+          <sub-uri>bwcal:///user/caladmin</sub-uri>
           <sub-affectsFreeBusy>true</sub-affectsFreeBusy>
           <sub-display>true</sub-display>
-          <sub-internalSubscription>true</sub-internalSubscription>
-          <sub-emailNotifications>false</sub-emailNotifications>
-          <sub-calendarDeleted>false</sub-calendarDeleted>
-          <sub-unremoveable>false</sub-unremoveable>
-        </subscription>
-        <subscription>
-          <sub-id>1</sub-id>
-          <sub-seq>0</sub-seq>
-          <sub-name>Trash</sub-name>
-          <sub-owner>2</sub-owner>
-          <sub-uri>bwcal:///user/caladmin/Trash</sub-uri>
-          <sub-affectsFreeBusy>false</sub-affectsFreeBusy>
-          <sub-display>false</sub-display>
           <sub-internalSubscription>true</sub-internalSubscription>
           <sub-emailNotifications>false</sub-emailNotifications>
           <sub-calendarDeleted>false</sub-calendarDeleted>
@@ -11306,11 +11149,11 @@ END:VCALENDAR
           <view-name>All</view-name>
           <view-owner>2</view-owner>
           <view-subscriptions>
-            <view-sub-id>2</view-sub-id>
+            <view-sub-name>All</view-sub-name>
           </view-subscriptions>
         </view>
       </views>
-      <default-calendar>56</default-calendar>
+      <default-calendar-path>/user/caladmin/calendar</default-calendar-path>
       <workdayStart>0</workdayStart>
       <workdayEnd>0</workdayEnd>
     </user-prefs>
@@ -11323,24 +11166,11 @@ END:VCALENDAR
         <subscription>
           <sub-id>4</sub-id>
           <sub-seq>0</sub-seq>
-          <sub-name>calendar</sub-name>
+          <sub-name>All</sub-name>
           <sub-owner>4</sub-owner>
-          <sub-uri>bwcal:///user/caluser/calendar</sub-uri>
+          <sub-uri>bwcal:///user/caluser</sub-uri>
           <sub-affectsFreeBusy>true</sub-affectsFreeBusy>
           <sub-display>true</sub-display>
-          <sub-internalSubscription>true</sub-internalSubscription>
-          <sub-emailNotifications>false</sub-emailNotifications>
-          <sub-calendarDeleted>false</sub-calendarDeleted>
-          <sub-unremoveable>false</sub-unremoveable>
-        </subscription>
-        <subscription>
-          <sub-id>3</sub-id>
-          <sub-seq>0</sub-seq>
-          <sub-name>Trash</sub-name>
-          <sub-owner>4</sub-owner>
-          <sub-uri>bwcal:///user/caluser/Trash</sub-uri>
-          <sub-affectsFreeBusy>false</sub-affectsFreeBusy>
-          <sub-display>false</sub-display>
           <sub-internalSubscription>true</sub-internalSubscription>
           <sub-emailNotifications>false</sub-emailNotifications>
           <sub-calendarDeleted>false</sub-calendarDeleted>
@@ -11354,11 +11184,11 @@ END:VCALENDAR
           <view-name>All</view-name>
           <view-owner>4</view-owner>
           <view-subscriptions>
-            <view-sub-id>4</view-sub-id>
+            <view-sub-name>All</view-sub-name>
           </view-subscriptions>
         </view>
       </views>
-      <default-calendar>61</default-calendar>
+      <default-calendar-path>/user/caluser</default-calendar-path>
       <workdayStart>0</workdayStart>
       <workdayEnd>0</workdayEnd>
     </user-prefs>
@@ -11371,24 +11201,11 @@ END:VCALENDAR
         <subscription>
           <sub-id>6</sub-id>
           <sub-seq>0</sub-seq>
-          <sub-name>calendar</sub-name>
+          <sub-name>All</sub-name>
           <sub-owner>3</sub-owner>
-          <sub-uri>bwcal:///user/calowner/calendar</sub-uri>
+          <sub-uri>bwcal:///user/calowner</sub-uri>
           <sub-affectsFreeBusy>true</sub-affectsFreeBusy>
           <sub-display>true</sub-display>
-          <sub-internalSubscription>true</sub-internalSubscription>
-          <sub-emailNotifications>false</sub-emailNotifications>
-          <sub-calendarDeleted>false</sub-calendarDeleted>
-          <sub-unremoveable>false</sub-unremoveable>
-        </subscription>
-        <subscription>
-          <sub-id>5</sub-id>
-          <sub-seq>0</sub-seq>
-          <sub-name>Trash</sub-name>
-          <sub-owner>3</sub-owner>
-          <sub-uri>bwcal:///user/calowner/Trash</sub-uri>
-          <sub-affectsFreeBusy>false</sub-affectsFreeBusy>
-          <sub-display>false</sub-display>
           <sub-internalSubscription>true</sub-internalSubscription>
           <sub-emailNotifications>false</sub-emailNotifications>
           <sub-calendarDeleted>false</sub-calendarDeleted>
@@ -11402,11 +11219,11 @@ END:VCALENDAR
           <view-name>All</view-name>
           <view-owner>3</view-owner>
           <view-subscriptions>
-            <view-sub-id>6</view-sub-id>
+            <view-sub-name>All</view-sub-name>
           </view-subscriptions>
         </view>
       </views>
-      <default-calendar>66</default-calendar>
+      <default-calendar-path>/user/calowner/calendar</default-calendar-path>
       <workdayStart>0</workdayStart>
       <workdayEnd>0</workdayEnd>
     </user-prefs>
