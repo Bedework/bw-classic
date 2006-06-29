@@ -11,9 +11,19 @@
 <project name="quickstart-build-file" default="usage" basedir=".">
   <property environment="env"/>
 
+  <property name="org.bedework.calendar.dir"
+            location="${basedir}/calendar3" />
+
+    <!-- ===============================================================
+              Default properties.
+         =============================================================== -->
+
+  <property name="org.bedework.defaultdefs.properties"
+            location="${org.bedework.calendar.dir}/bldfiles/defaultDefs.properties"/>
+
   <target name="README" depends="init"
           description="Describe targets and their usage">
-    <loadfile property="org.bedework.README" srcFile="${calendar.dir}/docs/README"/>
+    <loadfile property="org.bedework.README" srcFile="${org.bedework.calendar.dir}/docs/README"/>
     <echo message="${org.bedework.README}" />
   </target>
 
@@ -63,11 +73,8 @@
   <target name="init" >
     <dirname property="quickstart.dir" file="${ant.file}"/>
 
-    <property name="calendar.dir"
-              location="${basedir}/calendar3" />
-
     <property name="calendar.build.file"
-              location="${calendar.dir}/build.xml" />
+              location="${org.bedework.calendar.dir}/build.xml" />
 
     <!-- Overriding this when invoking ant allows different user property
          files to be included e.g.
@@ -81,25 +88,13 @@
     <!-- Load user property definition overrides -->
     <property file="${org.bedework.user.build.properties}" />
 
-    <!-- Then standard build properties -->
-    <property file="${calendar.dir}/build.properties"/>
+    <!-- ===============================================================
+              Default properties.
+         =============================================================== -->
+    <property file="${org.bedework.defaultdefs.properties}" />
 
-    <property name="org.bedework.hsqldb.dir"
-              location="${basedir}/hsqldb-1.7.3.3" />
-    <property name="org.bedework.hsqldb.dbname"
-              value="demo/events" />
-    <property name="org.bedework.hsqldb.uportal2.dbname"
-              value="uportal2/uportal" />
-    <property name="org.bedework.hsqldb.test.dbdir"
-              value="test" />
-
-    <property name="org.bedework.appserver.dir"
-              location="${basedir}/jakarta-tomcat-5.0.28" />
     <property name="sync4j.dir"
               location="${basedir}/Sync4j2.2b3" />
-
-    <property name="org.bedework.appserver.deploy.dir"
-              location="${org.bedework.appserver.dir}/webapps" />
   </target>
 
   <!-- =================================================================

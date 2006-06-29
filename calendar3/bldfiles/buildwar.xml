@@ -4,8 +4,8 @@
      This file is called by other build files to create web applications.
 
      It is assumed that no changes will be made to this file. It should be
-     possible to make all changes needed by modifying the build.properties
-     and app.properties files of the individual applications.
+     possible to make all changes needed by modifying the configuration
+     properties or a bedework.build.proeprties file
 
      An unwrapped web application will be built in the temp directory
      and a war and ear file will be left in the dist directory.

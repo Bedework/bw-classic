@@ -37,19 +37,19 @@
       * Definitions on the "ant" command line (ant -Ddeploy.home=xyz compile)
       * Definitions from a "bedework.build.properties" file in the developer's
         home directory
-      * Definitions from a "build.properties" file in the top level
-        source directory
       * Default definitions in this build.xml file
 
       You will note below that property values can be composed based on the
       contents of previously defined properties.  This is a powerful
       technique that helps you minimize the number of changes required when
-      your development environment is modified. Note that property
-      composition is allowed within "build.properties" files as well as in
-      the "build.xml" script.
+      your development environment is modified.
        ================================================================= -->
 
-  <property name="org.bedework.globaldefs.file" value="bldfiles/globalDefs.xml"/>
+  <!-- This may already be set from calling dir -->
+  <dirname property="org.bedework.calendar.dir" file="${ant.file}"/>
+
+  <property name="org.bedework.globaldefs.file"
+            location="${org.bedework.calendar.dir}/bldfiles/globalDefs.xml"/>
   <import file="${org.bedework.globaldefs.file}"/>
 
   <!-- =================================================================
@@ -184,14 +184,14 @@
     -->
   <target name="deploy.log4j.xml" >
     <copy todir="${log4j.config.destination}"
-          file="${calendar.dir}/resources/log4j.xml"
+          file="${org.bedework.calendar.dir}/resources/log4j.xml"
           overwrite="${org.bedework.deploy.log4j.config}" />
   </target>
 
   <!-- Target used to build from property files built by config tool -->
   <target name="deploy.config" >
     <copy todir="${log4j.config.destination}"
-          file="${calendar.dir}/resources/log4j.xml"
+          file="${org.bedework.calendar.dir}/resources/log4j.xml"
           overwrite="${org.bedework.deploy.log4j.config}" />
 
     <!-- The property org.bedework.deploy.config.name must be set -->
@@ -773,13 +773,13 @@
           description="copy files to quickstart directories">
 
     <property name="quickstart.files.dir"
-              location="${calendar.dir}/quickstartFiles"/>
+              location="${org.bedework.calendar.dir}/quickstartFiles"/>
 
     <copy todir="${org.bedework.appserver.dir}/conf" overwrite="yes">
        <fileset dir="${quickstart.files.dir}/tomcat.conf" />
     </copy>
 
-    <copy todir="${calendar.dir}/.." overwrite="yes">
+    <copy todir="${org.bedework.calendar.dir}/.." overwrite="yes">
        <fileset dir="${quickstart.files.dir}/root" />
     </copy>
   </target>
@@ -790,15 +790,15 @@
           description="copy files to quickstart directories">
 
     <property name="quickstart.files.dir"
-              location="${calendar.dir}/quickstartFiles"/>
+              location="${org.bedework.calendar.dir}/quickstartFiles"/>
 
     <copy todir="${org.bedework.appserver.dir}/common/lib" overwrite="yes">
-       <fileset dir="${calendar.dir}/lib/acegi"
+       <fileset dir="${org.bedework.calendar.dir}/lib/acegi"
                 excludes="acegi-security-catalina-server.jar" />
     </copy>
 
     <copy todir="${org.bedework.appserver.dir}/server/lib" overwrite="yes">
-       <fileset dir="${calendar.dir}/lib/acegi"
+       <fileset dir="${org.bedework.calendar.dir}/lib/acegi"
                 includes="acegi-security-catalina-server.jar" />
     </copy>
 
@@ -808,7 +808,7 @@
     <copy tofile="${org.bedework.appserver.dir}/conf/acegisecurity.xml" overwrite="yes"
           file="${quickstart.files.dir}/tomcat.conf/acegisecurity.xml" />
 
-    <copy todir="${calendar.dir}/.." overwrite="yes">
+    <copy todir="${org.bedework.calendar.dir}/.." overwrite="yes">
        <fileset dir="${quickstart.files.dir}/root" />
     </copy>
   </target>
