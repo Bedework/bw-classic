@@ -1948,7 +1948,6 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     return hour24;
   }
 
-
   /**
    * @param val
    */
