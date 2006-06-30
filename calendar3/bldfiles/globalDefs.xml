@@ -1,5 +1,3 @@
-<?xml version="1.0"?>
-
 <!-- ===================================================================
      bedework calendar global definitions.
      This file is imported by build files that want to define all the
@@ -36,9 +34,6 @@
          -->
     <property name="xalan.in.tomcat.common.endorsed" value="yes" />
 
-    <!-- comment out to disable build of caldav components.-->
-    <property name="org.bedework.build.caldav" value="yes" />
-
     <!-- Overriding this when invoking ant allows different user property
          files to be included e.g.
             ant -Dorg.bedework.user.build.properties=/home/me/bedework.properties ...
@@ -61,8 +56,6 @@
     <!-- ===============================================================
               Properties derived from org.bedework.calendar.dir
          =============================================================== -->
-
-    <property name="uwcal.home" location="${org.bedework.calendar.dir}" />
 
     <!-- This is the default location for the canoo files.
       -->
@@ -106,13 +99,6 @@
     <property name="org.bedework.webclient.base" location="${org.bedework.calendar.dir}/webclient" />
     <property name="org.bedework.webcommon.base" location="${org.bedework.calendar.dir}/webcommon" />
     <property name="org.bedework.webtest.base" location="${org.bedework.calendar.dir}/webtest" />
-
-    <!-- ===============================================================
-              Properties derived from org.bedework.appserver.dir
-         =============================================================== -->
-
-    <property name="org.bedework.appserver.deploy.dir"
-              location="${org.bedework.appserver.dir}/webapps" />
 
     <!-- ======================= Directory Names =======================
         These properties generally define file and directory names (or
@@ -189,7 +175,7 @@
     <property name="application.xml"
               location="${org.bedework.bld.home}/application.xml" />
 
-    <!-- define location of default property files -->
+    <!-- define location of jar files -->
     <property name="org.bedework.defjars"
               location="${org.bedework.bld.home}/defjars.properties" />
 
@@ -201,12 +187,6 @@
     <!-- Define where test suite finds resources -->
     <property name="uwcal.test.env.properties.root"
               location="${org.bedework.testsuite.base}/resources" />
-
-    <!-- Enable/disable replacement of log4j config during deployment
-         Set this to yes in your home bedework.build.properties file if you
-         want the log4j file overwritten if it already exists.
-      -->
-    <property name="org.bedework.deploy.log4j.config" value="no" />
   </target>
 </project>
 

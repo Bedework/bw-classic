@@ -61,44 +61,44 @@ package org.bedework.webcommon;
 public interface ForwardDefs {
   // ENUM
   /** */
-  public int forwardSuccess = 0;
+  public static final int forwardSuccess = 0;
   /** */
-  public int forwardContinue = 1;
+  public static final int forwardContinue = 1;
   /** */
-  public int forwardRetry = 2;
+  public static final int forwardRetry = 2;
 
   /** */
-  public int forwardError = 3;
+  public static final int forwardError = 3;
   /** */
-  public int forwardNoAccess = 4;
+  public static final int forwardNoAccess = 4;
 
   /** */
-  public int forwardNotFound = 5;
+  public static final int forwardNotFound = 5;
 
   /** */
-  public int forwardNoSuchView = 6;
+  public static final int forwardNoSuchView = 6;
 
   /** Set when an optional parameter is not found */
-  public int forwardNoParameter = 7;
+  public static final int forwardNoParameter = 7;
 
   /** Set when no action was taken */
-  public int forwardNoAction = 8;
+  public static final int forwardNoAction = 8;
 
   /** Something is referenced and cannot be removed */
-  public int forwardReffed = 9;
+  public static final int forwardReffed = 9;
 
   /** an object was added/updated */
-  public int forwardAdded = 10;
+  public static final int forwardAdded = 10;
   /** */
-  public int forwardUpdated = 11;
+  public static final int forwardUpdated = 11;
 
   /** */
-  public int forwardChooseGroup = 12;
+  public static final int forwardChooseGroup = 12;
   /** */
-  public int forwardNoGroupAssigned = 13;
+  public static final int forwardNoGroupAssigned = 13;
 
   /** */
-  public final String[] forwards = {
+  public static final String[] forwards = {
     "success",
     "continue",
     "retry",

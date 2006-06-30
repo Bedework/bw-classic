@@ -83,17 +83,17 @@ import org.apache.log4j.Logger;
 public class BwWebUtil {
   /** Name of the session attribute holding our session state
    */
-  static final String sessStateAttr = "edu.washington.cac.uwcal.sessstate";
+  static final String sessStateAttr = "org.bedework.sessstate";
 
   /** Name of the session attribute holding our calendar interface
    */
-  static final String sessCalSvcIAttr = "edu.washington.cac.uwcal.calsvci";
+  static final String sessCalSvcIAttr = "org.bedework.calsvci";
 
   /** Try to get the session state object  embedded in
    *  the current session.
    *
    * @param request  Needed to locate session
-   * @return UWCalSession null on failure
+   * @return BwSession null on failure
    */
   public static BwSession getState(HttpServletRequest request) {
     HttpSession sess = request.getSession(false);
@@ -113,7 +113,7 @@ public class BwWebUtil {
   /** Set the session state object into the current session.
    *
    * @param request  HttpServletRequest Needed to locate session
-   * @param s        UWCalSession session object
+   * @param s        BwSession session object
    */
   public static void setState(HttpServletRequest request,
                               BwSession s) {

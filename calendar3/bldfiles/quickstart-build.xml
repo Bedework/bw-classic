@@ -14,6 +14,9 @@
   <property name="org.bedework.calendar.dir"
             location="${basedir}/calendar3" />
 
+  <property name="org.bedework.freebusy.dir"
+            location="${basedir}/freebusy" />
+
     <!-- ===============================================================
               Default properties.
          =============================================================== -->
@@ -76,6 +79,9 @@
     <property name="calendar.build.file"
               location="${org.bedework.calendar.dir}/build.xml" />
 
+    <property name="org.bedework.freebusy.build.file"
+              location="${org.bedework.freebusy.dir}/build.xml" />
+
     <!-- Overriding this when invoking ant allows different user property
          files to be included e.g.
             ant -Dorg.bedework.user.build.properties=/home/me/bedework.properties ...
@@ -114,19 +120,29 @@
   </target>
 
   <!-- =================================================================
+       The "build.freebusy" target builds the freebusy jar files
+       ================================================================= -->
+
+  <target name="build.freebusy" depends="init"
+          description="builds the jars" if="org.bedework.build.freebusy" >
+    <ant antfile="${org.bedework.freebusy.build.file}" inheritrefs="true"
+           target="bld.all" />
+  </target>
+
+  <!-- =================================================================
        The "deploy" target builds and deploys the applications
        ================================================================= -->
 
-  <target name="deploy" depends="init"
+  <target name="deploy" depends="build,build.freebusy"
           description="builds and deploys the applications">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
-           target="deploy" />
+           target="deploy.nobuild" />
   </target>
 
-  <target name="deploy.debug" depends="init"
+  <target name="deploy.debug" depends="build,build.freebusy"
           description="builds and deploys the applications">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
-           target="deploy.debug" />
+           target="deploy.debug.nobuild" />
   </target>
 
   <!-- =================================================================
@@ -175,62 +191,17 @@
        dump and restore targets
        ================================================================= -->
 
-  <target name="dumpdb" depends="build,dumpdb.nobuild"
-          description="run dump "/>
-
-  <target name="dumpdb.nobuild" depends="init"
-          description="run dump without a rebuild">
-    <ant antfile="${calendar.build.file}" inheritrefs="true"
-           target="dumpdb" />
+  <target name="dumpdb" >
+    <echo message="===============================================================" />
+    <echo message=" use the zipped dump/restore utility to dump, restore or initialise" />
+    <echo message=" the system The default build places it in the dist directory," />
+    <echo message=" instructions for use are in the quickstart documentation" />
+    <echo message="===============================================================" />
   </target>
 
-  <target name="restoredb" depends="build,restoredb.nobuild"
-          description="run restore "/>
+  <target name="restoredb" depends="dumpdb"/>
 
-  <target name="restoredb-nousers" depends="build"
-          description="run restore but strip out most user stuff. Useful for demo data">
-    <input message="Restoring will destroy this calendar db. Proceed with restore"
-           validargs="y,n"
-           addproperty="do.restore" />
-    <condition property="do.abort">
-      <equals arg1="n" arg2="${do.restore}"/>
-    </condition>
-    <fail if="do.abort">restore aborted by user.</fail>
-
-    <ant antfile="${calendar.build.file}" inheritrefs="true"
-         target="restoredb-nousers" />
-  </target>
-
-  <target name="restoredb.nobuild" depends="init"
-          description="run restore without a rebuild">
-    <input message="Restoring will destroy this calendar db. Proceed with restore"
-           validargs="y,n"
-           addproperty="do.restore" />
-    <condition property="do.abort">
-      <equals arg1="n" arg2="${do.restore}"/>
-    </condition>
-    <fail if="do.abort">restore aborted by user.</fail>
-
-    <ant antfile="${calendar.build.file}" inheritrefs="true"
-         target="restoredb" />
-  </target>
-
-  <target name="initdb" depends="build,initdb.nobuild"
-          description="run restore to initialise db"/>
-
-  <target name="initdb.nobuild" depends="init"
-          description="run restore to initialise db">
-    <input message="Restoring will destroy this calendar db. Proceed with restore"
-           validargs="y,n"
-           addproperty="do.restore" />
-    <condition property="do.abort">
-      <equals arg1="n" arg2="${do.restore}"/>
-    </condition>
-    <fail if="do.abort">restore aborted by user.</fail>
-
-    <ant antfile="${calendar.build.file}" inheritrefs="true"
-         target="initdb" />
-  </target>
+  <target name="initdb" depends="dumpdb"/>
 
   <target name="tzconvert" depends="build"
           description="Convert timezones for use in bedework">

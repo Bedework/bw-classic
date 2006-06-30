@@ -191,6 +191,12 @@ public class Granulator {
     private DateTime end;
     private int type;  // from BwFreeBusyComponent
 
+    /* Number of busy entries this period - for the free/busy aggregator */
+    private int numBusy;
+
+    /* Number of tentative entries this period - for the free/busy aggregator */
+    private int numTentative;
+
     /** Constructor
      *
      * @param start
@@ -215,6 +221,13 @@ public class Granulator {
      */
     public DateTime getEnd() {
       return end;
+    }
+
+    /**
+     * @param val int
+     */
+    public void setType(int val) {
+      type = val;
     }
 
     /**
@@ -246,6 +259,34 @@ public class Granulator {
       }
 
       return end.compareTo(that.end);
+    }
+
+    /**
+     * @param val
+     */
+    public void setNumBusy(int val) {
+      numBusy = val;
+    }
+
+    /**
+     * @return int
+     */
+    public int getNumBusy() {
+      return numBusy;
+    }
+
+    /**
+     * @param val
+     */
+    public void setNumTentative(int val) {
+      numTentative = val;
+    }
+
+    /**
+     * @return int
+     */
+    public int getNumTentative() {
+      return numTentative;
     }
 
     public boolean equals(Object o) {

@@ -16,16 +16,6 @@
      modify the application specific properties and html/jsp pages to create
      a customized application.
 
-     This file will only need modification to add a specific target for your
-     new application. These targets should be added in the appsuite
-     section of the file.
-
-     apps.root.dir  (Optional - defaults to apps)
-                    We expect to find a file
-                         ${apps.root.dir}/${app-name}.properties
-                    which defines build time properties for the application.
-                    Note this file does not get built in to the application.
-
      Authors: Mike Douglass   douglm@rpi.edu
 -->
 
@@ -158,6 +148,23 @@
     </ant>
   </target>
 
+  <!-- nobuild targets for quickstart so bld isn't executed twice -->
+  <target name="deploy.debug.nobuild" depends="init,deploy.log4j.xml"
+          description="Deploy applications to servlet container" >
+    <ant antfile="${org.bedework.deployment.base}/build.xml" inheritrefs="true"
+           target="deploy"  >
+      <property name="app.debug.val" value="9" />
+    </ant>
+  </target>
+
+  <target name="deploy.nobuild" depends="init,deploy.log4j.xml"
+          description="Deploy applications to servlet container" >
+    <ant antfile="${org.bedework.deployment.base}/build.xml" inheritrefs="true"
+           target="deploy"  >
+      <property name="org.bedework.clone.name" value="${org.bedework.clone.default}" />
+    </ant>
+  </target>
+
 <!-- ================== build.configured Target ========================
      Build configured war files but don't deploy. Use to build versions to
      be deployed elsewhere.
@@ -265,8 +272,7 @@
            packagenames="org.bedework.access.*,
                          org.bedework.*,
                          edu.rpi.cct.uwcal.access.*,
-                         edu.rpi.*,
-                         edu.washington.*"
+                         edu.rpi.*"
                  access="public"
                  author="true"
                 version="true"
@@ -521,11 +527,9 @@
   </target>
 
   <!-- ======================== caldav Targets ========================
-       *
-       *  NOTE: Incomplete and under development
        ================================================================= -->
 
-  <target name="bld.caldav" if="org.bedework.build.caldav"
+  <target name="bld.caldav"
           depends="init,bld.davdefs,bld.appcommon"
           description="Build calendar caldav suite">
     <ant antfile="${org.bedework.caldav.base}/build.xml" inheritrefs="true"
