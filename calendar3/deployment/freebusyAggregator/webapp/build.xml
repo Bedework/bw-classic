@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 
 <!-- ===================================================================
-     Default public events web application deployer
+     Default free busy aggregator web application deployer
      =================================================================== -->
 
-<project name="bwpublic.deploy" default="deploy" >
+<project name="fbaggregator.deploy" default="deploy" >
   <import file="${org.bedework.deployment.base}/deployprops.xml" />
   <echo message="XXXXXXXXXXXX  app.name=${propval.app.name}" />
 
@@ -15,14 +15,13 @@
 
     <dirname property="this.dir" file="${ant.file}"/>
 
-    <property name="app.sou.dir" location="${org.bedework.webclient.base}" />
+    <property name="app.sou.dir" location="${org.bedework.fbwebclient.base}" />
 
     <!-- Flag as struts -->
     <property name="org.bedework.strutsapp" value="true" />
 
-    <!-- Properties that differ from the personal client -->
     <property name="app.web.xml"
-              value="${app.sou.dir}/war/WEB-INF/publicweb.xml" />
+              value="${app.sou.dir}/war/WEB-INF/web.xml" />
 
     <!-- This should be in the config stuff -->
     <property name="propval.directory.browsing.disallowed"

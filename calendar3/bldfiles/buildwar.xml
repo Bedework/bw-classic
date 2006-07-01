@@ -286,15 +286,23 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.calsvci.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.calsvc.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.ical.jar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.caldavClientApi.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.common.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.davdefs.jar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.http.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appcommon.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.webcommon.jar}" />
+
+    <!-- free busy -->
+    <copy todir="${app.dest.lib}" file="${org.bedework.fbclient.jar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.fbaggregator.jar}" />
 
     <!-- Some more standard libs -->
     <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
     <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-codec.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-collections.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-httclient.jar}"/>
 
     <!-- add the jdbcdriver if defined -->
     <antcall target="add.jdbcdriver" inheritRefs="true" />

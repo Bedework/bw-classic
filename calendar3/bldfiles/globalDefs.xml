@@ -100,6 +100,10 @@
     <property name="org.bedework.webcommon.base" location="${org.bedework.calendar.dir}/webcommon" />
     <property name="org.bedework.webtest.base" location="${org.bedework.calendar.dir}/webtest" />
 
+    <!-- This has to be here for now -->
+    <property name="org.bedework.fbwebclient.base"
+              location="${org.bedework.freebusy.dir}/webclient" />
+
     <!-- ======================= Directory Names =======================
         These properties generally define file and directory names (or
         paths) that affect where the build process stores its outputs.
