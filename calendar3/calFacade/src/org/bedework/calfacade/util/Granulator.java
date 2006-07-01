@@ -35,6 +35,7 @@ import org.bedework.calfacade.svc.EventInfo;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Period;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -67,7 +68,7 @@ public class Granulator {
    * <p>The end datetime will be updated ready for the next call. If endDt is
    * non-null on entry it will be used to set the startDt.
    */
-  public static class GetPeriodsPars {
+  public static class GetPeriodsPars implements Serializable {
     boolean debug = false;
 
     /** Event Info or EventPeriod or Period objects to extract from */
@@ -186,7 +187,7 @@ public class Granulator {
   /**
    *
    */
-  public static class EventPeriod implements Comparable {
+  public static class EventPeriod implements Comparable, Serializable {
     private DateTime start;
     private DateTime end;
     private int type;  // from BwFreeBusyComponent

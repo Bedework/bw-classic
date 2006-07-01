@@ -747,6 +747,12 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
   }
 
   public Collection getUserTimeZones() throws CalFacadeException {
+    if (currentMode == CalintfUtil.publicAdminMode ||
+        currentMode == CalintfUtil.guestMode) {
+      // No user timezones
+      return new ArrayList();
+    }
+
     sess.namedQuery("getUserTimezones");
     sess.setEntity("owner", user);
 
