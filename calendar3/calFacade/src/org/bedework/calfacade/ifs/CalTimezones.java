@@ -58,7 +58,7 @@ import org.apache.log4j.Logger;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeBadDateException;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.util.CalFacadeUtil;
 
 import net.fortuna.ical4j.model.TimeZone;
 import net.fortuna.ical4j.model.component.VTimeZone;

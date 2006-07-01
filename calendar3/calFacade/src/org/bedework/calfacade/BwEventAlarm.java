@@ -53,6 +53,8 @@
 */
 package org.bedework.calfacade;
 
+import org.bedework.calfacade.util.CalFacadeUtil;
+
 import java.util.Collection;
 import java.util.Date;
 

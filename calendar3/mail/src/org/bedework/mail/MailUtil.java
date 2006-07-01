@@ -55,7 +55,7 @@ package org.bedework.mail;
 
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
-import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.util.CalFacadeUtil;
 
 import edu.rpi.cct.uwcal.resources.Resources;
 

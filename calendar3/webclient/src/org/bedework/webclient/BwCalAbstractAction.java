@@ -56,7 +56,7 @@ package org.bedework.webclient;
 import org.bedework.appcommon.BedeworkDefs;
 import org.bedework.appcommon.MyCalendarVO;
 import org.bedework.appcommon.TimeView;
-import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.util.CalFacadeUtil;
 import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;

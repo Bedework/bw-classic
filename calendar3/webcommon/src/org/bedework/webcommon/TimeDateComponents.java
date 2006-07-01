@@ -57,7 +57,7 @@ package org.bedework.webcommon;
 import org.bedework.appcommon.CalendarInfo;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.util.CalFacadeUtil;
 import org.bedework.calsvci.CalSvcI;
 
 import java.io.Serializable;

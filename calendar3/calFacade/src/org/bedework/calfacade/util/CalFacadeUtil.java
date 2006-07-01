@@ -51,8 +51,12 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.calfacade;
+package org.bedework.calfacade.util;
 
+import org.bedework.calfacade.BwDateTime;
+import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.CalFacadeBadDateException;
+import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.ifs.CalTimezones;
 
 import net.fortuna.ical4j.model.Parameter;

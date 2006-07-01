@@ -58,7 +58,7 @@ import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.util.CalFacadeUtil;
 
 import net.fortuna.ical4j.model.Period;
 

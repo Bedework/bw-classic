@@ -53,6 +53,8 @@
 */
 package org.bedework.calfacade;
 
+import org.bedework.calfacade.util.CalFacadeUtil;
+
 /** The location of an <code>Event</code>
  *
  *  @version 1.0

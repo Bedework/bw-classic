@@ -54,6 +54,7 @@
 package org.bedework.calfacade;
 
 import org.bedework.calfacade.base.BwDbentity;
+import org.bedework.calfacade.util.CalFacadeUtil;
 import org.bedework.calfacade.BwUser;
 
 import java.util.Collection;

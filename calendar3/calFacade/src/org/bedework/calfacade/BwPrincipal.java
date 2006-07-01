@@ -54,6 +54,7 @@
 package org.bedework.calfacade;
 
 import org.bedework.calfacade.base.BwDbentity;
+import org.bedework.calfacade.util.CalFacadeUtil;
 
 import edu.rpi.cct.uwcal.access.AccessPrincipal;
 

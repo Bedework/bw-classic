@@ -53,6 +53,8 @@
 */
 package org.bedework.calfacade;
 
+import org.bedework.calfacade.util.CalFacadeUtil;
+
 /** Value object representing the sponsor of an event
  *
  * @author Mike Douglass

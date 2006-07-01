@@ -54,6 +54,7 @@
 package org.bedework.calfacade;
 
 import org.bedework.calfacade.base.BwOwnedDbentity;
+import org.bedework.calfacade.util.CalFacadeUtil;
 
 /** Represent an attendee
  *

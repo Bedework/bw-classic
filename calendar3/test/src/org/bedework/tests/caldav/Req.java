@@ -54,7 +54,7 @@
 
 package org.bedework.tests.caldav;
 
-import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.util.CalFacadeUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

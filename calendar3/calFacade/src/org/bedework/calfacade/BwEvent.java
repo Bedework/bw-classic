@@ -56,6 +56,7 @@ package org.bedework.calfacade;
 import org.bedework.calfacade.base.BwShareableContainedDbentity;
 import org.bedework.calfacade.ifs.Attendees;
 import org.bedework.calfacade.ifs.AttendeesI;
+import org.bedework.calfacade.util.CalFacadeUtil;
 
 import java.util.Collection;
 import java.util.Comparator;

@@ -62,8 +62,8 @@ import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeDefs;
-import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.svc.EventInfo;
+import org.bedework.calfacade.util.CalFacadeUtil;
 import org.bedework.calsvci.CalSvcI;
 
 import java.util.Hashtable;

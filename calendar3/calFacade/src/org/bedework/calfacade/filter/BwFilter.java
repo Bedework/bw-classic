@@ -30,7 +30,7 @@ package org.bedework.calfacade.filter;
 
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeDefs;
-import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.util.CalFacadeUtil;
 
 import java.io.Serializable;
 import java.util.Collection;

@@ -65,9 +65,9 @@ import org.bedework.calfacade.BwRecurrenceId;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.EventInfo;
+import org.bedework.calfacade.util.CalFacadeUtil;
 
 import net.fortuna.ical4j.model.Dur;
 import net.fortuna.ical4j.model.CategoryList;

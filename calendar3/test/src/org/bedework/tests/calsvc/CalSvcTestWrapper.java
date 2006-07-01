@@ -62,7 +62,7 @@ import org.bedework.calfacade.BwEventObj;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwUser;
-import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.util.CalFacadeUtil;
 import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcIPars;
 

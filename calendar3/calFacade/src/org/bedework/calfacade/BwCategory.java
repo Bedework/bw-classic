@@ -53,6 +53,8 @@
 */
 package org.bedework.calfacade;
 
+import org.bedework.calfacade.util.CalFacadeUtil;
+
 /** A category in Bedework. This value object does no consistency or validity
  * checking
  *.

@@ -56,7 +56,7 @@ package org.bedework.calfacade.svc;
 import org.bedework.calfacade.BwGroup;
 import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.CalFacadeDefs;
-import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.util.CalFacadeUtil;
 
 import java.io.Serializable;
 

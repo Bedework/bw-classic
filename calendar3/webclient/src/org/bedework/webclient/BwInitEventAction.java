@@ -54,7 +54,7 @@
 package org.bedework.webclient;
 
 import org.bedework.calfacade.BwEvent;
-import org.bedework.calfacade.CalFacadeUtil;
+import org.bedework.calfacade.util.CalFacadeUtil;
 import org.bedework.webcommon.DurationBean;
 import org.bedework.webcommon.EventDates;
 

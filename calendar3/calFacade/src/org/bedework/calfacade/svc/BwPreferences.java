@@ -29,9 +29,9 @@
 package org.bedework.calfacade.svc;
 
 import org.bedework.calfacade.base.BwOwnedDbentity;
+import org.bedework.calfacade.util.CalFacadeUtil;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.CalFacadeUtil;
 
 import java.util.Collection;
 import java.util.Iterator;

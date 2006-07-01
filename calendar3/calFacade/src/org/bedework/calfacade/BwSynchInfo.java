@@ -53,6 +53,8 @@
 */
 package org.bedework.calfacade;
 
+import org.bedework.calfacade.util.CalFacadeUtil;
+
 import java.io.Serializable;
 
 /** Information about synchronization with a given device

@@ -62,12 +62,12 @@ import org.bedework.calfacade.BwEventProxy;
 import org.bedework.calfacade.BwRecurrenceInstance;
 import org.bedework.calfacade.BwSynchState;
 import org.bedework.calfacade.CalFacadeDefs;
-import org.bedework.calfacade.CalFacadeUtil;
 import org.bedework.calfacade.CoreEventInfo;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.calfacade.ifs.EventsI;
+import org.bedework.calfacade.util.CalFacadeUtil;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.icalendar.VEventUtil;
 
