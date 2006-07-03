@@ -88,6 +88,7 @@ import org.bedework.http.client.HttpManager;
 import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.TreeSet;
 
 //import net.fortuna.ical4j.model.Calendar;
@@ -313,6 +314,10 @@ public class CalintfCaldavImpl extends CalintfBase {
   }
 
   public void clearPublicTimezones() throws CalFacadeException {
+    throw new CalFacadeUnimplementedException();
+  }
+
+  public List getTimeZoneIds() throws CalFacadeException {
     throw new CalFacadeUnimplementedException();
   }
 

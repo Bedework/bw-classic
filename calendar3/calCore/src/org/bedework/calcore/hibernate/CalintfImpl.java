@@ -80,6 +80,7 @@ import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CoreEventInfo;
+import org.bedework.calfacade.TimeZoneInfo;
 import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.base.CalintfBase;
 import org.bedework.calfacade.filter.BwFilter;
@@ -97,6 +98,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
 import net.fortuna.ical4j.model.Calendar;
@@ -771,6 +773,42 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
     /* Delete all public timezones */
     sess.namedQuery("deleteAllPublicTzs");
     /*int numDeleted =*/ sess.executeUpdate();
+  }
+
+  public List getTimeZoneIds() throws CalFacadeException {
+    ArrayList l = new ArrayList();
+
+    sess.namedQuery("getPublicTimezoneIds");
+
+    Iterator it = sess.getList().iterator();
+
+    while (it.hasNext()) {
+      Object[] os = (Object[])it.next();
+
+      String tzid = (String)os[0];
+
+      l.add(new TimeZoneInfo(tzid, true));
+    }
+
+    if (currentMode == CalintfUtil.publicAdminMode ||
+        currentMode == CalintfUtil.guestMode) {
+      // No user timezones
+      return l;
+    }
+
+    sess.namedQuery("getUserTimezoneIds");
+
+    it = sess.getList().iterator();
+
+    while (it.hasNext()) {
+      Object[] os = (Object[])it.next();
+
+      String tzid = (String)os[0];
+
+      l.add(new TimeZoneInfo(tzid, false));
+    }
+
+    return l;
   }
 
   /* ====================================================================

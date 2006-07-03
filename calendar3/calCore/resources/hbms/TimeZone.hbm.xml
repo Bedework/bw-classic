@@ -46,6 +46,16 @@
       where tz.publick = false and tz.owner = :owner
   ]]></query>
 
+  <query name="getPublicTimezoneIds"><![CDATA[
+    select tz.tzid,tz.owner from org.bedework.calfacade.BwTimeZone as tz
+      where tz.publick = true order by tz.tzid
+  ]]></query>
+
+  <query name="getUserTimezoneIds"><![CDATA[
+    select tz.tzid,tz.owner from org.bedework.calfacade.BwTimeZone as tz
+      where tz.publick = false and tz.owner = :owner
+  ]]></query>
+
   <query name="getMergedTimezones"><![CDATA[
     from org.bedework.calfacade.BwTimeZone as tz
       where (tz.publick = true and not exists

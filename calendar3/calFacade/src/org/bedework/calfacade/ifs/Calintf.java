@@ -76,6 +76,7 @@ import org.bedework.calfacade.ifs.Groups;
 import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 
 import java.util.Collection;
+import java.util.List;
 
 import net.fortuna.ical4j.model.component.VTimeZone;
 
@@ -473,6 +474,13 @@ public interface Calintf extends CalendarsI, EventsI {
    * @throws CalFacadeException
    */
   public void clearPublicTimezones() throws CalFacadeException;
+
+  /** Get all of the timezone ids.
+   *
+   * @return List  of TimeZoneInfo
+   * @throws CalFacadeException
+   */
+  public List getTimeZoneIds() throws CalFacadeException;
 
   /* ====================================================================
    *                   Filters and search

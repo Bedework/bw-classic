@@ -90,6 +90,7 @@ import edu.rpi.cct.uwcal.resources.Resources;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.TimeZone;
@@ -493,6 +494,13 @@ public abstract class CalSvcI implements Serializable {
    * @throws CalFacadeException
    */
   public abstract void refreshTimezones() throws CalFacadeException;
+
+  /** Get all of timezone ids.
+   *
+   * @return List  of TimeZoneInfo
+   * @throws CalFacadeException
+   */
+  public abstract List getTimeZoneIds() throws CalFacadeException;
 
   /* ====================================================================
    *                   Calendar suites

@@ -111,6 +111,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
 import net.fortuna.ical4j.model.component.VTimeZone;
@@ -627,6 +628,10 @@ public class CalSvc extends CalSvcI {
 
   public void refreshTimezones() throws CalFacadeException {
     timezones.refreshTimezones();
+  }
+
+  public List getTimeZoneIds() throws CalFacadeException {
+    return getCal().getTimeZoneIds();
   }
 
   /* ====================================================================
