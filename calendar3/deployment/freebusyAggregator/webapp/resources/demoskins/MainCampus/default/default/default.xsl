@@ -88,9 +88,11 @@
       <head>
         <title>Bedework: Personal Calendar Client</title>
         <meta name="robots" content="noindex,nofollow"/>
-        <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
+        <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css" media="screen,all"/>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
         <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
+        <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
+        <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
       </head>
       <body>
         <xsl:call-template name="headBar"/>
@@ -104,10 +106,6 @@
             <xsl:apply-templates select="/bedework-fbaggregator/error"/>
           </div>
         </xsl:if>
-
-        <xsl:value-of select="$appRoot"/><br/>
-        <xsl:value-of select="$resourcesRoot"/>
-
         <table id="bodyBlock" cellspacing="0">
           <tr>
             <td id="fbForm">
@@ -116,24 +114,22 @@
             <td id="bodyContent">
               <xsl:choose>
                 <xsl:when test="/bedework-fbaggregator/page='timeZones'">
-                  <xsl:call-template name="utilBar"/>
-                  <xsl:apply-templates select="/bedework-fbaggregator/timezones"/>
+                 <xsl:apply-templates select="/bedework-fbaggregator/timezones"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <!-- otherwise, show freeBusy -->
-                  <xsl:call-template name="utilBar"/>
                   <xsl:apply-templates select="/bedework-fbaggregator/freebusy"/>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
             <td id="logos">
-
+              logos here
             </td>
           </tr>
         </table>
         <!-- footer -->
         <div id="footer">
-          Freebusy Aggregator
+          <a href="/fbagg/getFreeBusy.do?all=true&amp;startdt=20060703&amp;enddt=20060710&amp;refreshXslt=yes">Refresh Freebusy Aggregator</a>
         </div>
       </body>
     </html>
@@ -142,20 +138,14 @@
   <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
 
   <xsl:template name="headBar">
-    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
-      <tr>
-        <td colspan="3" id="logoCell"><a href="http://www.bedework.org/"><img src="{$resourcesRoot}/resources/bedework-fbaggregatorLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
-        <td colspan="2" id="schoolLinksCell">
-          <h2>Personal Calendar</h2>
-          <a href="{$publicCal}">Public Calendar</a> |
-          <a href="http://www.yourschoolhere.edu">School Home</a> |
-          <a href="http://www.bedework.org/">Other Link</a> |
-          <a href="http://helpdesk.rpi.edu/update.do?catcenterkey=51">
-            Example Calendar Help
-          </a>
-        </td>
-      </tr>
-    </table>
+    <div id="headBar">
+      <h1>CALCONNECT BOEING CALDAV FREEBUSY AGGREGATOR</h1>
+      <!--<h1>Calconnect Boeing CalDav Freebusy Aggregator</h1>-->
+    </div>
+    <div id="menuBar">
+      <a href="">Display Freebusy</a> |
+      <a href="">User Management</a>
+    </div>
   </xsl:template>
 
   <xsl:template name="fbForm">
@@ -170,8 +160,13 @@
   <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->
   <xsl:template match="freebusy">
     <h2>Free / Busy</h2>
-    <div id="freeBusyWho">for <xsl:value-of select="day/who"/></div>
     <table id="freeBusy">
+      <tr>
+        <td>&#160;</td>
+        <td colspan="16" id="morning">AM</td>
+        <td colspan="16" id="noon">NOON</td>
+        <td colspan="16" id="evening">PM</td>
+      </tr>
       <tr>
         <td>&#160;</td>
         <xsl:for-each select="day[position()=1]/period">
@@ -228,31 +223,31 @@
 
   <xsl:template match="start" mode="timeDisplay">
     <xsl:choose>
-      <xsl:when test="node()=0000">12am</xsl:when>
-      <xsl:when test="node()=0100">1am</xsl:when>
-      <xsl:when test="node()=0200">2am</xsl:when>
-      <xsl:when test="node()=0300">3am</xsl:when>
-      <xsl:when test="node()=0400">4am</xsl:when>
-      <xsl:when test="node()=0500">5am</xsl:when>
-      <xsl:when test="node()=0600">6am</xsl:when>
-      <xsl:when test="node()=0700">7am</xsl:when>
-      <xsl:when test="node()=0800">8am</xsl:when>
-      <xsl:when test="node()=0900">9am</xsl:when>
-      <xsl:when test="node()=1000">10am</xsl:when>
-      <xsl:when test="node()=1100">11am</xsl:when>
-      <xsl:when test="node()=1200">NOON</xsl:when>
-      <xsl:when test="node()=1300">1pm</xsl:when>
-      <xsl:when test="node()=1400">2pm</xsl:when>
-      <xsl:when test="node()=1500">3pm</xsl:when>
-      <xsl:when test="node()=1600">4pm</xsl:when>
-      <xsl:when test="node()=1700">5pm</xsl:when>
-      <xsl:when test="node()=1800">6pm</xsl:when>
-      <xsl:when test="node()=1900">7pm</xsl:when>
-      <xsl:when test="node()=2000">8pm</xsl:when>
-      <xsl:when test="node()=2100">9pm</xsl:when>
-      <xsl:when test="node()=2200">10pm</xsl:when>
-      <xsl:when test="node()=2300">11pm</xsl:when>
-      <xsl:when test="node()=2400">12am</xsl:when>
+      <xsl:when test="node()=0000">12</xsl:when>
+      <xsl:when test="node()=0100">1</xsl:when>
+      <xsl:when test="node()=0200">2</xsl:when>
+      <xsl:when test="node()=0300">3</xsl:when>
+      <xsl:when test="node()=0400">4</xsl:when>
+      <xsl:when test="node()=0500">5</xsl:when>
+      <xsl:when test="node()=0600">6</xsl:when>
+      <xsl:when test="node()=0700">7</xsl:when>
+      <xsl:when test="node()=0800">8</xsl:when>
+      <xsl:when test="node()=0900">9</xsl:when>
+      <xsl:when test="node()=1000">10</xsl:when>
+      <xsl:when test="node()=1100">11</xsl:when>
+      <xsl:when test="node()=1200">12</xsl:when>
+      <xsl:when test="node()=1300">1</xsl:when>
+      <xsl:when test="node()=1400">2</xsl:when>
+      <xsl:when test="node()=1500">3</xsl:when>
+      <xsl:when test="node()=1600">4</xsl:when>
+      <xsl:when test="node()=1700">5</xsl:when>
+      <xsl:when test="node()=1800">6</xsl:when>
+      <xsl:when test="node()=1900">7</xsl:when>
+      <xsl:when test="node()=2000">8</xsl:when>
+      <xsl:when test="node()=2100">9</xsl:when>
+      <xsl:when test="node()=2200">10</xsl:when>
+      <xsl:when test="node()=2300">11</xsl:when>
+      <xsl:when test="node()=2400">12</xsl:when>
       <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
