@@ -1,8 +1,7 @@
 body {
   margin: 0;
   font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: small;
-  _font-size: x-small;/*ie 6*/
+  font-size: 10pt;
   background-color : white;
   color : black;
 }
@@ -51,6 +50,13 @@ body {
   vertical-align: top;
   white-space: nowrap;
 }
+#bodyBlock td#fbForm p {
+  margin: 0 0 0.5em 0;
+  padding: 0;
+}
+#bodyBlock td#fbForm p.submit {
+  margin: 1em 0 0 0;
+}
 #bodyBlock td#bodyContent {
   padding: 1em;
 }
@@ -87,6 +93,9 @@ body {
   font-weight: normal;
   padding: 0;
   margin: 0;
+}
+#freeBusy td.dayDate {
+  white-space: nowrap;
 }
 #freeBusy td.free,
 #freeBusyKey td.free {

@@ -67,7 +67,7 @@
        query string with an ampersand. -->
   <xsl:variable name="setup" select="/bedework-fbaggregator/urlPrefixes/setup"/>
   <xsl:variable name="initialise" select="/bedework-fbaggregator/urlPrefixes/initialise"/>
-  <xsl:variable name="fetchFreeBusy" select="/bedework-fbaggregator/urlPrefixes/fetchFreeBusy/a/@href"/>
+  <xsl:variable name="fetchFreeBusy" select="/bedework-fbaggregator/urlPrefixes/fetchFreeBusy"/>
   <xsl:variable name="addUser" select="/bedework-fbaggregator/urlPrefixes/addUser"/>
   <xsl:variable name="getTimeZones" select="/bedework-fbaggregator/urlPrefixes/getTimeZones"/>
 
@@ -156,26 +156,45 @@
        action="{$fetchFreeBusy}"
        enctype="multipart/form-data"
        id="freebusyForm">
-      <input
-       type="text"
-       name="startDate"
-       size="8"
-       value="" />
-       <span class="calWidget">
-         <script language="JavaScript" type="text/javascript">
-           startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
-         </script>
-       </span><br/>
-      <input
-       type="text"
-       name="endDate"
-       size="8"
-       value="" />
-       <span class="calWidget">
-         <script language="JavaScript" type="text/javascript">
-           endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
-         </script>
-       </span>
+
+      <p>
+        Start date:<br/>
+        <input
+         type="text"
+         name="startDate"
+         size="8"
+         value="" />
+        <span class="calWidget">
+          <script language="JavaScript" type="text/javascript">
+            startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
+          </script>
+        </span>
+      </p>
+      <p>
+        End date:<br/>
+        <input
+         type="text"
+         name="endDate"
+         size="8"
+         value="" />
+        <span class="calWidget">
+          <script language="JavaScript" type="text/javascript">
+            endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
+          </script>
+        </span>
+      </p>
+      <p>
+        Add user/group:<br/>
+        <input
+         type="text"
+         name="user"
+         size="12"
+         value="" />
+       </p>
+       <p class="submit">
+         <input type="submit" value="aggregate"/>
+       </p>
+       <!--<input type="reset" value="reset"/>-->
      </form>
   </xsl:template>
 
@@ -192,7 +211,7 @@
     <xsl:variable name="endDate">
       <xsl:value-of select="substring(end,1,4)"/>-<xsl:value-of select="substring(end,5,2)"/>-<xsl:value-of select="substring(end,7,2)"/>
     </xsl:variable>
-    <h2>Free / Busy</h2>
+    <h2>Freebusy Aggregator</h2>
     <table id="freeBusy">
       <tr>
         <th colspan="16" class="">
@@ -229,10 +248,10 @@
         <tr>
           <xsl:choose>
             <xsl:when test="position()=1">
-              <td><xsl:value-of select="substring-after($startDate,'-')"/></td>
+              <td class="dayDate"><xsl:value-of select="substring-after($startDate,'-')"/></td>
             </xsl:when>
             <xsl:when test="position()=last()">
-              <td><xsl:value-of select="substring-after($endDate,'-')"/></td>
+              <td class="dayDate"><xsl:value-of select="substring-after($endDate,'-')"/></td>
             </xsl:when>
             <xsl:otherwise>
               <td></td>
