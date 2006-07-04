@@ -1,6 +1,7 @@
 .calWidget {
   position: relative;
-  margin-left: 2px;
+  margin: 0 0 0 2px;
+  padding: 0;
 }
 .dynCalendar {
   visibility: hidden;

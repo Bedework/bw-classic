@@ -150,18 +150,19 @@
   </xsl:template>
 
   <xsl:template name="fbForm">
+    <h4>aggregation</h4>
     <form
        name="freebusyForm"
        method="post"
        action="{$fetchFreeBusy}"
        enctype="multipart/form-data"
        id="freebusyForm">
-
+      <input type="hidden" name="all" value="true"/>
       <p>
         Start date:<br/>
         <input
          type="text"
-         name="startDate"
+         name="startdt"
          size="8"
          value="" />
         <span class="calWidget">
@@ -174,28 +175,99 @@
         End date:<br/>
         <input
          type="text"
-         name="endDate"
+         name="enddt"
          size="8"
          value="" />
         <span class="calWidget">
           <script language="JavaScript" type="text/javascript">
             endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
           </script>
-        </span>
+        </span><!--<br />
+        <em>yyyymmdd</em>-->
       </p>
-      <p>
+      <p class="padTop">
         Add user/group:<br/>
         <input
          type="text"
          name="user"
          size="12"
-         value="" />
+         value="" /><br/>
+         <input type="radio" value="user" name="kind" checked="checked"/>user
+        <input type="radio" value="group" name="kind"/>group
        </p>
-       <p class="submit">
+       <p class="padTop center">
          <input type="submit" value="aggregate"/>
        </p>
        <!--<input type="reset" value="reset"/>-->
      </form>
+
+     <h4>users</h4>
+     <table id="users">
+       <tr>
+          <td>
+            <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+          </td>
+          <td>
+            douglm
+          </td>
+          <td>
+            <xsl:variable name="acct" select="account"/>
+              <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
+                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+              <!--</a>-->
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+          </td>
+          <td>
+            johnsa
+          </td>
+          <td>
+            <xsl:variable name="acct" select="account"/>
+              <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
+                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+              <!--</a>-->
+          </td>
+        </tr>
+      <!--<xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
+        <xsl:choose>
+          <xsl:when test="kind='0'">--><!-- kind = user -->
+            <!--<tr>
+              <td>
+                <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+              </td>
+              <td>
+                <xsl:value-of select="account"/>
+              </td>
+              <td>
+                <xsl:variable name="acct" select="account"/>
+                  <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
+                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                  </a>
+              </td>
+            </tr>
+          </xsl:when>
+          <xsl:otherwise>--><!-- kind = group -->
+            <!--<tr>
+              <td>
+                <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+              </td>
+              <td>
+                <strong><xsl:value-of select="account"/></strong>
+              </td>
+              <td>
+                <xsl:variable name="acct" select="account"/>
+                <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=group" title="remove">
+                  <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                </a>
+              </td>
+            </tr>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each> -->
+    </table>
   </xsl:template>
 
   <xsl:template name="utilBar">
