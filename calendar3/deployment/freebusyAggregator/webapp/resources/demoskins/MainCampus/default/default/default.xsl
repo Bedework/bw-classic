@@ -144,12 +144,14 @@
       <!--<h1>Calconnect Boeing CalDav Freebusy Aggregator</h1>-->
     </div>
     <div id="menuBar">
-      <a href="">Display Freebusy</a> |
+      <a href="{$setup}">Display Freebusy</a> |
       <a href="">User Management</a>
     </div>
   </xsl:template>
 
   <xsl:template name="fbForm">
+    <xsl:variable name="startdt" select="substring(/bedework-fbaggregator/freebusy/start,1,8)"/>
+    <xsl:variable name="enddt" select="substring(/bedework-fbaggregator/freebusy/end,1,8)"/>
     <h4>aggregation</h4>
     <form
        name="freebusyForm"
@@ -185,16 +187,6 @@
         </span><!--<br />
         <em>yyyymmdd</em>-->
       </p>
-      <p class="padTop">
-        Add user/group:<br/>
-        <input
-         type="text"
-         name="user"
-         size="12"
-         value="" /><br/>
-         <input type="radio" value="user" name="kind" checked="checked"/>user
-        <input type="radio" value="group" name="kind"/>group
-       </p>
        <p class="padTop center">
          <input type="submit" value="aggregate"/>
        </p>
@@ -202,13 +194,23 @@
      </form>
 
      <h4>users</h4>
+     <p class="center">
+      Add user/group:<br/>
+      <input
+       type="text"
+       name="user"
+       size="12"
+       value="" /><br/>
+       <input type="radio" value="user" name="kind" checked="checked"/>user
+      <input type="radio" value="group" name="kind"/>group
+     </p>
      <table id="users">
        <tr>
           <td>
             <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
           </td>
           <td>
-            douglm
+            <a href="{$fetchFreeBusy}&amp;account=douglm&amp;startdt={$startdt}&amp;enddt={$enddt}" title="fetch douglm's freebusy">douglm</a>
           </td>
           <td>
             <xsl:variable name="acct" select="account"/>
@@ -222,7 +224,7 @@
             <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
           </td>
           <td>
-            johnsa
+            <a href="{$fetchFreeBusy}&amp;account=johnsa&amp;startdt={$startdt}&amp;enddt={$enddt}" title="fetch johnsa's freebusy">johnsa</a>
           </td>
           <td>
             <xsl:variable name="acct" select="account"/>
