@@ -2,7 +2,7 @@ body {
   margin: 0;
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: small;
-	_font-size: x-small;/*ie 6*/
+  _font-size: x-small;/*ie 6*/
   background-color : white;
   color : black;
 }
@@ -46,7 +46,10 @@ body {
   border-top: 1px solid #ccc;
 }
 #bodyBlock td#fbForm {
+  padding: 1em 0.5em 1em 1em;
   border-right: 1px solid #ccc;
+  vertical-align: top;
+  white-space: nowrap;
 }
 #bodyBlock td#bodyContent {
   padding: 1em;
@@ -54,13 +57,14 @@ body {
 #bodyBlock td#bodyContent h2 {
   margin: 0;
   padding: 0;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 #bodyBlock td#logos {
+  padding: 1em;
   border-left: 1px solid #ccc;
 }
 #freeBusy {
-  margin: 1em;
+  margin: 1em auto;
 }
 #freeBusy td {
   vertical-align: middle;
@@ -68,17 +72,21 @@ body {
   padding: 0;
   margin: 0;
 }
-#freeBusy th {
+#freeBusy td.morning {
+  color: black;
+  background: #ddf;
+}
+#freeBusy td.evening {
+  color: black;
+  background: #dde;
+}
+#freeBusy td.timeLabels {
   vertical-align: middle;
   text-align: center;
   font-size: 0.8em;
   font-weight: normal;
   padding: 0;
   margin: 0;
-}
-#freeBusy th.date,
-#freeBusy th.time {
-  font-weight: bold;
 }
 #freeBusy td.free,
 #freeBusyKey td.free {
@@ -139,12 +147,11 @@ body {
   font-size: 0.75em;
   text-align : center;
   margin-top: 0em;
-  padding: 1em;
+  padding: 1em 1em 1.2em 1em;
   color: #333;
   background-color: #eee;
-  border-bottom: 2px solid #999;
-  border-left: 2px solid #999;
-  border-right: 2px solid #999;
+  border-top: 1px solid #ddd;
+  border-bottom: 2px solid #ccc;
   white-space: nowrap;
 }
 #footer a {

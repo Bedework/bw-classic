@@ -75,18 +75,19 @@
   <!-- URL of the web application - includes web context
   <xsl:variable name="urlPrefix" select="/bedework-fbaggregator/urlprefix"/> -->
 
-  <!-- Other generally useful global variables -->
+  <!-- Other generally useful global variables
   <xsl:variable name="prevdate" select="/bedework-fbaggregator/previousdate"/>
   <xsl:variable name="nextdate" select="/bedework-fbaggregator/nextdate"/>
   <xsl:variable name="curdate" select="/bedework-fbaggregator/currentdate/date"/>
   <xsl:variable name="skin">default</xsl:variable>
-  <xsl:variable name="publicCal">/cal</xsl:variable>
+  <xsl:variable name="publicCal">/cal</xsl:variable>-->
+
 
  <!-- BEGIN MAIN TEMPLATE -->
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title>Bedework: Personal Calendar Client</title>
+        <title>CalConnect Boeing CalDav Freebusy Aggregator</title>
         <meta name="robots" content="noindex,nofollow"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css" media="screen,all"/>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
@@ -149,7 +150,33 @@
   </xsl:template>
 
   <xsl:template name="fbForm">
-    form here
+    <form
+       name="freebusyForm"
+       method="post"
+       action="{$fetchFreeBusy}"
+       enctype="multipart/form-data"
+       id="freebusyForm">
+      <input
+       type="text"
+       name="startDate"
+       size="8"
+       value="" />
+       <span class="calWidget">
+         <script language="JavaScript" type="text/javascript">
+           startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
+         </script>
+       </span><br/>
+      <input
+       type="text"
+       name="endDate"
+       size="8"
+       value="" />
+       <span class="calWidget">
+         <script language="JavaScript" type="text/javascript">
+           endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
+         </script>
+       </span>
+     </form>
   </xsl:template>
 
   <xsl:template name="utilBar">
@@ -159,18 +186,34 @@
 
   <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->
   <xsl:template match="freebusy">
+    <xsl:variable name="startDate">
+      <xsl:value-of select="substring(start,1,4)"/>-<xsl:value-of select="substring(start,5,2)"/>-<xsl:value-of select="substring(start,7,2)"/>
+    </xsl:variable>
+    <xsl:variable name="endDate">
+      <xsl:value-of select="substring(end,1,4)"/>-<xsl:value-of select="substring(end,5,2)"/>-<xsl:value-of select="substring(end,7,2)"/>
+    </xsl:variable>
     <h2>Free / Busy</h2>
     <table id="freeBusy">
       <tr>
+        <th colspan="16" class="">
+          All aggregated
+        </th>
+        <th colspan="16">
+          <xsl:value-of select="$startDate"/> to <xsl:value-of select="$endDate"/>
+        </th>
+        <th colspan="16">
+          America/New_York [<a href="{$getTimeZones}">change</a>]
+        </th>
+      </tr>
+      <tr>
         <td>&#160;</td>
-        <td colspan="16" id="morning">AM</td>
-        <td colspan="16" id="noon">NOON</td>
-        <td colspan="16" id="evening">PM</td>
+        <td colspan="24" class="morning">AM</td>
+        <td colspan="24" class="evening">PM</td>
       </tr>
       <tr>
         <td>&#160;</td>
         <xsl:for-each select="day[position()=1]/period">
-          <th>
+          <td class="timeLabels">
             <xsl:choose>
               <xsl:when test="number(start) mod 200 = 0">
                 <xsl:apply-templates select="start" mode="timeDisplay"/>
@@ -179,16 +222,24 @@
                 &#160;
               </xsl:otherwise>
             </xsl:choose>
-          </th>
+          </td>
         </xsl:for-each>
       </tr>
       <xsl:for-each select="day">
         <tr>
-          <th>
-            <xsl:value-of select="substring(start,1,4)"/>-<xsl:value-of select="substring(start,5,2)"/>-<xsl:value-of select="substring(start,7,2)"/>
-          </th>
+          <xsl:choose>
+            <xsl:when test="position()=1">
+              <td><xsl:value-of select="substring-after($startDate,'-')"/></td>
+            </xsl:when>
+            <xsl:when test="position()=last()">
+              <td><xsl:value-of select="substring-after($endDate,'-')"/></td>
+            </xsl:when>
+            <xsl:otherwise>
+              <td></td>
+            </xsl:otherwise>
+          </xsl:choose>
           <xsl:for-each select="period">
-            <xsl:variable name="startTime"><xsl:apply-templates  select="start" mode="timeDisplay"/></xsl:variable>
+            <xsl:variable name="startTime" select="start"/>
             <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
             <xsl:variable name="startDate"><xsl:value-of select="substring(../start,1,8)"/>T<xsl:value-of select="start"/>00</xsl:variable>
             <xsl:variable name="minutes" select="length"/>
