@@ -209,23 +209,25 @@
         </span><!--<br />
         <em>yyyymmdd</em>-->
       </p>
-       <p class="padTop center">
+       <p class="padTop">
          <input type="submit" value="aggregate"/>
        </p>
        <!--<input type="reset" value="reset"/>-->
      </form>
 
      <h4>users</h4>
-     <p class="center">
+     <form action="{$addUser}" method="post">
       Add user/group:<br/>
       <input
        type="text"
        name="user"
-       size="12"
-       value="" /><br/>
+       size="6"
+       value="" />
+       <input type="submit" value="add"/><br/>
        <input type="radio" value="user" name="kind" checked="checked"/>user
       <input type="radio" value="group" name="kind"/>group
-     </p>
+
+     </form>
      <table id="users">
        <tr>
           <td>

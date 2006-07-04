@@ -52,6 +52,9 @@ body {
   white-space: nowrap;
 }
 #bodyBlock td#fbForm form {
+  margin: 0;
+}
+#bodyBlock td#fbForm form#freebusyForm {
   margin: 1em 0.5em 1em 1em;
 }
 #bodyBlock td#fbForm form input {
@@ -76,7 +79,7 @@ body {
   padding: 0;
 }
 #bodyBlock td#fbForm #users {
-  margin: 0 auto;
+  margin: 1em auto 0 auto;
   padding: 0;
 }
 #bodyBlock td#bodyContent {
