@@ -124,7 +124,15 @@
               </xsl:choose>
             </td>
             <td id="logos">
-              logos here
+              <h4>participants</h4>
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/fbagg-logos.gif" width="100" height="403" alt="participant logos" usemap="#logoMap" border="0"/>
+              <map name="logoMap">
+                <area shape="rect" alt="Timebridge" coords="0,340,100,380" href="http://www.timebridge.com/"/>
+                <area shape="rect" alt="OSAF" coords="0,260,100,302" href="http://www.osafoundation.org/"/>
+                <area shape="rect" alt="Oracle" coords="0,187,100,225" href="http://www.oracle.com"/>
+                <area shape="rect" alt="Boeing" coords="0,101,100,153" href="http://www.boeing.com/"/>
+                <area shape="rect" alt="Bedework" coords="0,13,100,77" href="http://www.bedework.org/bedework/"/>
+              </map>
             </td>
           </tr>
         </table>
