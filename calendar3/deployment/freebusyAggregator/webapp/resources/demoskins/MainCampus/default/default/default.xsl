@@ -114,12 +114,26 @@
             </td>
             <td id="bodyContent">
               <xsl:choose>
+                <xsl:when test="/bedework-fbaggregator/page='freeBusy'">
+                  <xsl:apply-templates select="/bedework-fbaggregator/freebusy"/>
+                </xsl:when>
                 <xsl:when test="/bedework-fbaggregator/page='timeZones'">
-                 <xsl:apply-templates select="/bedework-fbaggregator/timezones"/>
+                  <xsl:apply-templates select="/bedework-fbaggregator/timezones"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <!-- otherwise, show freeBusy -->
-                  <xsl:apply-templates select="/bedework-fbaggregator/freebusy"/>
+                  <!-- otherwise, show main -->
+                  <div id="frontPage">
+                    <p>
+                      <a href="http://www.calconnect.org">
+                        <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/calconnect.gif" width="175" height="67" alt="calconnect" border="0"/>
+                      </a>
+                      <a href="http://www.boeing.com">
+                        <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/boeing.gif" width="100" height="67" alt="calconnect" border="0"/>
+                      </a>
+                    </p>
+                    <h2>CalDAV Freebusy Aggregator</h2>
+                    <p>To begin, enter a date range on the left and click "aggregate".</p>
+                  </div>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
