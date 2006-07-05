@@ -344,8 +344,8 @@
         <tr>
           <td id="userCell" colspan="2">
             <h4>attendees</h4>
-            <p class="padTop">
-              aggregate for:<br/>
+            <p>
+              aggregate for
               <input type="radio" name="all" value="true" checked="checked"/>all attendees
               <input type="radio" name="all" value="false"/>selected attendees
             </p>
