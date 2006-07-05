@@ -107,49 +107,18 @@
             <xsl:apply-templates select="/bedework-fbaggregator/error"/>
           </div>
         </xsl:if>
-        <table id="bodyBlock" cellspacing="0">
-          <tr>
-            <td id="fbForm">
-              <xsl:call-template name="fbForm"/>
-            </td>
-            <td id="bodyContent">
-              <xsl:choose>
-                <xsl:when test="/bedework-fbaggregator/page='freeBusy'">
-                  <xsl:apply-templates select="/bedework-fbaggregator/freebusy"/>
-                </xsl:when>
-                <xsl:when test="/bedework-fbaggregator/page='timeZones'">
-                  <xsl:apply-templates select="/bedework-fbaggregator/timezones"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <!-- otherwise, show main -->
-                  <div id="frontPage">
-                    <p>
-                      <a href="http://www.calconnect.org">
-                        <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/calconnect.gif" width="175" height="67" alt="calconnect" border="0"/>
-                      </a>
-                      <a href="http://www.boeing.com">
-                        <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/boeing.gif" width="100" height="67" alt="calconnect" border="0"/>
-                      </a>
-                    </p>
-                    <h2>CalDAV Freebusy Aggregator</h2>
-                    <p>To begin, enter a date range on the left and click "aggregate".</p>
-                  </div>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td id="logos">
-              <h4>participants</h4>
-              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/fbagg-logos.gif" width="100" height="403" alt="participant logos" usemap="#logoMap" border="0"/>
-              <map name="logoMap">
-                <area shape="rect" alt="Timebridge" coords="0,340,100,380" href="http://www.timebridge.com/"/>
-                <area shape="rect" alt="OSAF" coords="0,260,100,302" href="http://www.osafoundation.org/"/>
-                <area shape="rect" alt="Oracle" coords="0,187,100,225" href="http://www.oracle.com"/>
-                <area shape="rect" alt="Boeing" coords="0,101,100,153" href="http://www.boeing.com/"/>
-                <area shape="rect" alt="Bedework" coords="0,13,100,77" href="http://www.bedework.org/bedework/"/>
-              </map>
-            </td>
-          </tr>
-        </table>
+        <xsl:choose>
+          <xsl:when test="/bedework-fbaggregator/page='manageUsers'">
+            <xsl:call-template name="manageUsers"/>
+          </xsl:when>
+          <xsl:when test="/bedework-fbaggregator/page='timeZones'">
+            <xsl:apply-templates select="/bedework-fbaggregator/timezones"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- otherwise, show frontPage or freeBusy -->
+            <xsl:call-template name="freebusy"/>
+          </xsl:otherwise>
+        </xsl:choose>
         <!-- footer -->
         <div id="footer">
           <a href="/fbagg/getFreeBusy.do?all=true&amp;startdt=20060703&amp;enddt=20060710&amp;refreshXslt=yes">Refresh Freebusy Aggregator</a>
@@ -171,128 +140,290 @@
     </div>
   </xsl:template>
 
-  <xsl:template name="fbForm">
+  <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->
+  <xsl:template name="freebusy">
     <xsl:variable name="startdt" select="substring(/bedework-fbaggregator/freebusy/start,1,8)"/>
     <xsl:variable name="enddt" select="substring(/bedework-fbaggregator/freebusy/end,1,8)"/>
-    <h4>aggregation</h4>
-    <form
-       name="freebusyForm"
-       method="post"
-       action="{$fetchFreeBusy}"
-       enctype="multipart/form-data"
-       id="freebusyForm">
-      <input type="hidden" name="all" value="true"/>
-      <p>
-        Start date:<br/>
-        <input
-         type="text"
-         name="startdt"
-         size="8"
-         value="" />
-        <span class="calWidget">
-          <script language="JavaScript" type="text/javascript">
-            startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
-          </script>
-        </span>
-      </p>
-      <p>
-        End date:<br/>
-        <input
-         type="text"
-         name="enddt"
-         size="8"
-         value="" />
-        <span class="calWidget">
-          <script language="JavaScript" type="text/javascript">
-            endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
-          </script>
-        </span>
-      </p>
-      <div class="dateFormat">yyyymmdd</div>
-       <p class="padTop">
-         <input type="submit" value="aggregate"/>
-       </p>
-       <!--<input type="reset" value="reset"/>-->
-     </form>
+    <xsl:variable name="startDate">
+      <xsl:value-of select="substring($startdt,1,4)"/>-<xsl:value-of select="substring($startdt,5,2)"/>-<xsl:value-of select="substring($startdt,7,2)"/>
+    </xsl:variable>
+    <xsl:variable name="endDate">
+      <xsl:value-of select="substring($enddt,1,4)"/>-<xsl:value-of select="substring($enddt,5,2)"/>-<xsl:value-of select="substring($enddt,7,2)"/>
+    </xsl:variable>
+    <table id="bodyBlock" cellspacing="0">
+      <tr>
+        <td id="fbForm">
+          <h4>aggregation</h4>
+          <form
+             name="freebusyForm"
+             method="post"
+             action="{$fetchFreeBusy}"
+             enctype="multipart/form-data"
+             id="freebusyForm">
+            <input type="hidden" name="all" value="true"/>
+            <p>
+              Start date:<br/>
+              <input
+               type="text"
+               name="startdt"
+               size="8"
+               value="{$startdt}" />
+              <span class="calWidget">
+                <script language="JavaScript" type="text/javascript">
+                  startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
+                </script>
+              </span>
+            </p>
+            <p>
+              End date:<br/>
+              <input
+               type="text"
+               name="enddt"
+               size="8"
+               value="{$enddt}" />
+              <span class="calWidget">
+                <script language="JavaScript" type="text/javascript">
+                  endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
+                </script>
+              </span>
+            </p>
+            <div class="dateFormat">yyyymmdd</div>
+             <p class="padTop">
+               <input type="submit" value="aggregate"/>
+             </p>
+             <!--<input type="reset" value="reset"/>-->
+           </form>
 
-     <h4>users</h4>
-     <form action="{$addUser}" method="post">
-      Add user/group:<br/>
-      <input
-       type="text"
-       name="account"
-       size="6"
-       value="" />
-       <input type="submit" value="add"/><br/>
-       <input type="radio" value="user" name="kind" checked="checked"/>user <!--
-    --><input type="radio" value="group" name="kind"/>group
-     </form>
-     <table id="users">
-       <tr>
-          <td>
-            <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-          </td>
-          <td>
-            <a href="{$fetchFreeBusy}&amp;account=douglm&amp;startdt={$startdt}&amp;enddt={$enddt}" title="fetch douglm's freebusy">douglm</a>
-          </td>
-          <td>
-            <xsl:variable name="acct" select="account"/>
-              <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-              <!--</a>-->
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-          </td>
-          <td>
-            <a href="{$fetchFreeBusy}&amp;account=johnsa&amp;startdt={$startdt}&amp;enddt={$enddt}" title="fetch johnsa's freebusy">johnsa</a>
-          </td>
-          <td>
-            <xsl:variable name="acct" select="account"/>
-              <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-              <!--</a>-->
-          </td>
-        </tr>
-      <!--<xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
-        <xsl:choose>
-          <xsl:when test="kind='0'">--><!-- kind = user -->
-            <!--<tr>
-              <td>
-                <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-              </td>
-              <td>
-                <xsl:value-of select="account"/>
-              </td>
-              <td>
-                <xsl:variable name="acct" select="account"/>
-                  <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
-                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+           <h4>users</h4>
+           <table id="users">
+             <tr>
+                <td>
+                  <input type="checkbox" checked="checked"/>
+                </td>
+                <td>
+                  <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                </td>
+                <td>
+                  <a href="{$fetchFreeBusy}&amp;account=douglm&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display douglm's freebusy">douglm</a>
+                </td>
+                <td>
+                  <xsl:variable name="acct" select="account"/>
+                    <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                    <!--</a>-->
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" checked="checked"/>
+                </td>
+                <td>
+                  <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                </td>
+                <td>
+                  <a href="{$fetchFreeBusy}&amp;account=johnsa&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display johnsa's freebusy">johnsa</a>
+                </td>
+                <td>
+                  <xsl:variable name="acct" select="account"/>
+                    <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                    <!--</a>-->
+                </td>
+              </tr>
+            <!--<xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
+              <xsl:choose>
+                <xsl:when test="kind='0'">--><!-- kind = user -->
+                  <!--<tr>
+                    <td>
+                      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                    </td>
+                    <td>
+                      <xsl:value-of select="account"/>
+                    </td>
+                    <td>
+                      <xsl:variable name="acct" select="account"/>
+                        <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
+                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                        </a>
+                    </td>
+                  </tr>
+                </xsl:when>
+                <xsl:otherwise>--><!-- kind = group -->
+                  <!--<tr>
+                    <td>
+                      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+                    </td>
+                    <td>
+                      <strong><xsl:value-of select="account"/></strong>
+                    </td>
+                    <td>
+                      <xsl:variable name="acct" select="account"/>
+                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=group" title="remove">
+                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                      </a>
+                    </td>
+                  </tr>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each> -->
+          </table>
+        </td>
+        <td id="bodyContent">
+          <xsl:choose>
+            <xsl:when test="/bedework-fbaggregator/page='freeBusy'">
+              <xsl:for-each select="/bedework-fbaggregator/freebusy">
+              <!-- there's only one collection of freebusy; this for-each is
+                   being used to pick out just the freebusy node and
+                   shorten the select statements below. -->
+                <h2>Freebusy Aggregator</h2>
+                Day count: <xsl:value-of select="count(day)"/>
+                <table id="freeBusy">
+                  <tr>
+                    <th colspan="16" class="">
+                      All users
+                    </th>
+                    <th colspan="16">
+                      <xsl:value-of select="$startDate"/> to <xsl:value-of select="$endDate"/>
+                    </th>
+                    <th colspan="16">
+                      America/New_York <span class="tzLink">[<a href="{$getTimeZones}">change</a>]</span>
+                    </th>
+                  </tr>
+                  <tr>
+                    <td>&#160;</td>
+                    <td colspan="24" class="morning">AM</td>
+                    <td colspan="24" class="evening">PM</td>
+                  </tr>
+                  <tr>
+                    <td>&#160;</td>
+                    <xsl:for-each select="day[position()=1]/period">
+                      <td class="timeLabels">
+                        <xsl:choose>
+                          <xsl:when test="number(start) mod 200 = 0">
+                            <xsl:call-template name="timeFormatter">
+                              <xsl:with-param name="timeString" select="start"/>
+                              <xsl:with-param name="showMinutes">no</xsl:with-param>
+                              <xsl:with-param name="showAmPm">no</xsl:with-param>
+                            </xsl:call-template>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            &#160;
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </td>
+                    </xsl:for-each>
+                  </tr>
+                  <xsl:for-each select="day">
+                    <tr>
+                      <td></td>
+                      <!-- for now, don't display dates. We need to produce these
+                           for each day.
+                      <xsl:choose>
+                        <xsl:when test="position()=1">
+                          <td class="dayDate"><xsl:value-of select="substring-after($startDate,'-')"/></td>
+                        </xsl:when>
+                        <xsl:when test="position()=last()">
+                          <td class="dayDate"><xsl:value-of select="substring-after($endDate,'-')"/></td>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <td></td>
+                        </xsl:otherwise>
+                      </xsl:choose>-->
+                      <xsl:for-each select="period">
+                        <xsl:variable name="startTime" select="start"/>
+                        <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
+                        <xsl:variable name="startDate"><xsl:value-of select="substring(../start,1,8)"/>T<xsl:value-of select="start"/>00</xsl:variable>
+                        <xsl:variable name="minutes" select="length"/>
+                        <xsl:variable name="fbClass">
+                          <xsl:choose>
+                            <xsl:when test="fbtype = '0'">busy</xsl:when>
+                            <xsl:when test="fbtype = '3'">tentative</xsl:when>
+                            <xsl:otherwise>free</xsl:otherwise>
+                          </xsl:choose>
+                        </xsl:variable>
+                        <td class="{$fbClass}">
+                          <a href="/ucal/initEvent.do?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
+                        </td>
+                      </xsl:for-each>
+                    </tr>
+                  </xsl:for-each>
+                </table>
+
+                <table id="freeBusyKey">
+                  <tr>
+                    <td class="free">*</td>
+                    <td>free</td>
+                    <td>&#160;</td>
+                    <td class="busy">*</td>
+                    <td>busy</td>
+                    <td>&#160;</td>
+                    <td class="tentative">*</td>
+                    <td>tentative</td>
+                  </tr>
+                </table>
+              </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+              <!-- just show the default message -->
+              <div id="frontPage">
+                <p>
+                  <a href="http://www.calconnect.org">
+                    <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/calconnect.gif" width="175" height="67" alt="calconnect" border="0"/>
                   </a>
-              </td>
-            </tr>
-          </xsl:when>
-          <xsl:otherwise>--><!-- kind = group -->
-            <!--<tr>
-              <td>
-                <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
-              </td>
-              <td>
-                <strong><xsl:value-of select="account"/></strong>
-              </td>
-              <td>
-                <xsl:variable name="acct" select="account"/>
-                <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=group" title="remove">
-                  <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                </a>
-              </td>
-            </tr>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each> -->
+                  <a href="http://www.boeing.com">
+                    <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/boeing.gif" width="100" height="67" alt="calconnect" border="0"/>
+                  </a>
+                </p>
+                <h2>CalDAV Freebusy Aggregator</h2>
+                <p>To begin, enter a date range on the left and click "aggregate".</p>
+              </div>
+            </xsl:otherwise>
+          </xsl:choose>
+        </td>
+        <td id="logos">
+          <h4>participants</h4>
+          <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/fbagg-logos.gif" width="100" height="403" alt="participant logos" usemap="#logoMap" border="0"/>
+          <map name="logoMap">
+            <area shape="rect" alt="Timebridge" coords="0,340,100,380" href="http://www.timebridge.com/"/>
+            <area shape="rect" alt="OSAF" coords="0,260,100,302" href="http://www.osafoundation.org/"/>
+            <area shape="rect" alt="Oracle" coords="0,187,100,225" href="http://www.oracle.com"/>
+            <area shape="rect" alt="Boeing" coords="0,101,100,153" href="http://www.boeing.com/"/>
+            <area shape="rect" alt="Bedework" coords="0,13,100,77" href="http://www.bedework.org/bedework/"/>
+          </map>
+        </td>
+      </tr>
     </table>
+  </xsl:template>
+
+  <xsl:template match="timezones">
+    <div id="content">
+      <h2>Select Timezone</h2>
+      <form name="timezoneForm" action="setTimeZone" method="post">
+        <select name="timezone">
+          <xsl:for-each select="tzid">
+            <option>
+              <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
+              <xsl:value-of select="."/>
+            </option>
+          </xsl:for-each>
+        </select>
+        <input type="submit" value="select"/>
+      </form>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="manageUsers">
+    <form action="{$addUser}" method="post">
+        Add user/group:<br/>
+        <input
+         type="text"
+         name="account"
+         size="6"
+         value="" />
+         <input type="submit" value="add"/><br/>
+         <input type="radio" value="user" name="kind" checked="checked"/>user <!--
+      --><input type="radio" value="group" name="kind"/>group
+    </form>
   </xsl:template>
 
   <xsl:template name="utilBar">
@@ -300,127 +431,37 @@
     <a href="{$setup}"><img src="{$resourcesRoot}/resources/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
   </xsl:template>
 
-  <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->
-  <xsl:template match="freebusy">
-    <xsl:variable name="startDate">
-      <xsl:value-of select="substring(start,1,4)"/>-<xsl:value-of select="substring(start,5,2)"/>-<xsl:value-of select="substring(start,7,2)"/>
-    </xsl:variable>
-    <xsl:variable name="endDate">
-      <xsl:value-of select="substring(end,1,4)"/>-<xsl:value-of select="substring(end,5,2)"/>-<xsl:value-of select="substring(end,7,2)"/>
-    </xsl:variable>
-    <h2>Freebusy Aggregator</h2>
-    Day count: <xsl:value-of select="count(day)"/>
-    <table id="freeBusy">
-      <tr>
-        <th colspan="16" class="">
-          All aggregated
-        </th>
-        <th colspan="16">
-          <xsl:value-of select="$startDate"/> to <xsl:value-of select="$endDate"/>
-        </th>
-        <th colspan="16">
-          America/New_York [<a href="{$getTimeZones}">change</a>]
-        </th>
-      </tr>
-      <tr>
-        <td>&#160;</td>
-        <td colspan="24" class="morning">AM</td>
-        <td colspan="24" class="evening">PM</td>
-      </tr>
-      <tr>
-        <td>&#160;</td>
-        <xsl:for-each select="day[position()=1]/period">
-          <td class="timeLabels">
-            <xsl:choose>
-              <xsl:when test="number(start) mod 200 = 0">
-                <xsl:apply-templates select="start" mode="timeDisplay"/>
-              </xsl:when>
-              <xsl:otherwise>
-                &#160;
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </xsl:for-each>
-      </tr>
-      <xsl:for-each select="day">
-        <tr>
-          <xsl:choose>
-            <xsl:when test="position()=1">
-              <td class="dayDate"><xsl:value-of select="substring-after($startDate,'-')"/></td>
-            </xsl:when>
-            <xsl:when test="position()=last()">
-              <td class="dayDate"><xsl:value-of select="substring-after($endDate,'-')"/></td>
-            </xsl:when>
-            <xsl:otherwise>
-              <td></td>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:for-each select="period">
-            <xsl:variable name="startTime" select="start"/>
-            <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
-            <xsl:variable name="startDate"><xsl:value-of select="substring(../start,1,8)"/>T<xsl:value-of select="start"/>00</xsl:variable>
-            <xsl:variable name="minutes" select="length"/>
-            <xsl:variable name="fbClass">
-              <xsl:choose>
-                <xsl:when test="fbtype = '0'">busy</xsl:when>
-                <xsl:when test="fbtype = '3'">tentative</xsl:when>
-                <xsl:otherwise>free</xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <td class="{$fbClass}">
-              <a href="/ucal/initEvent.do?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
-            </td>
-          </xsl:for-each>
-        </tr>
-      </xsl:for-each>
-    </table>
+  <!--==== UTILITY TEMPLATES ====-->
 
-    <table id="freeBusyKey">
-      <tr>
-        <td class="free">*</td>
-        <td>free</td>
-        <td>&#160;</td>
-        <td class="busy">*</td>
-        <td>busy</td>
-        <td>&#160;</td>
-        <td class="tentative">*</td>
-        <td>tentative</td>
-      </tr>
-    </table>
-  </xsl:template>
-
-  <xsl:template match="start" mode="timeDisplay">
+  <!-- time formatter (should be extended over time) -->
+  <xsl:template name="timeFormatter">
+    <xsl:param name="timeString"/><!-- required -->
+    <xsl:param name="showMinutes">yes</xsl:param>
+    <xsl:param name="showAmPm">yes</xsl:param>
+    <xsl:param name="hour24">no</xsl:param>
+    <xsl:variable name="hour" select="number(substring($timeString,1,2))"/>
+    <xsl:variable name="minutes" select="substring($timeString,3,2)"/>
+    <xsl:variable name="AmPm">
+      <xsl:choose>
+        <xsl:when test="$hour &lt; 13">AM</xsl:when>
+        <xsl:otherwise>PM</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:choose>
-      <xsl:when test="node()=0000">12</xsl:when>
-      <xsl:when test="node()=0100">1</xsl:when>
-      <xsl:when test="node()=0200">2</xsl:when>
-      <xsl:when test="node()=0300">3</xsl:when>
-      <xsl:when test="node()=0400">4</xsl:when>
-      <xsl:when test="node()=0500">5</xsl:when>
-      <xsl:when test="node()=0600">6</xsl:when>
-      <xsl:when test="node()=0700">7</xsl:when>
-      <xsl:when test="node()=0800">8</xsl:when>
-      <xsl:when test="node()=0900">9</xsl:when>
-      <xsl:when test="node()=1000">10</xsl:when>
-      <xsl:when test="node()=1100">11</xsl:when>
-      <xsl:when test="node()=1200">12</xsl:when>
-      <xsl:when test="node()=1300">1</xsl:when>
-      <xsl:when test="node()=1400">2</xsl:when>
-      <xsl:when test="node()=1500">3</xsl:when>
-      <xsl:when test="node()=1600">4</xsl:when>
-      <xsl:when test="node()=1700">5</xsl:when>
-      <xsl:when test="node()=1800">6</xsl:when>
-      <xsl:when test="node()=1900">7</xsl:when>
-      <xsl:when test="node()=2000">8</xsl:when>
-      <xsl:when test="node()=2100">9</xsl:when>
-      <xsl:when test="node()=2200">10</xsl:when>
-      <xsl:when test="node()=2300">11</xsl:when>
-      <xsl:when test="node()=2400">12</xsl:when>
-      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+      <xsl:when test="hour24 = 'yes'">
+        <xsl:value-of select="$hour"/><!--
+     --><xsl:if test="$showMinutes = 'yes'">:<xsl:value-of select="$minutes"/></xsl:if>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="$hour = 0">12</xsl:when>
+          <xsl:when test="$hour &lt; 13"><xsl:value-of select="$hour"/></xsl:when>
+          <xsl:otherwise><xsl:value-of select="$hour - 12"/></xsl:otherwise>
+        </xsl:choose><!--
+     --><xsl:if test="$showMinutes = 'yes'">:<xsl:value-of select="$minutes"/></xsl:if>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-
-  <!--==== UTILITY TEMPLATES ====-->
 
   <!-- search and replace template taken from
        http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
