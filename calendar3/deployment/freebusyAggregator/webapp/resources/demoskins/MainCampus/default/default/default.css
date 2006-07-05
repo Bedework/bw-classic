@@ -43,6 +43,7 @@ body {
 #bodyBlock {
   width: 100%;
   border-top: 1px solid #ccc;
+  font-size: 0.8em;
 }
 #bodyBlock td#fbForm {
   width: 120px;
@@ -50,7 +51,6 @@ body {
   border-right: 1px solid #ccc;
   vertical-align: top;
   white-space: nowrap;
-  font-size: 0.8em;
 }
 #bodyBlock td#fbForm form {
   margin: 1em 0.5em 1em 1em;
@@ -60,8 +60,7 @@ body {
   margin: 2px 0;
   padding: 0;
 }
-#bodyBlock td#fbForm h4,
-#bodyBlock td#logos h4 {
+#bodyBlock h4 {
   background: #eee;
   color: black;
   font-size: 1em;
@@ -70,6 +69,10 @@ body {
   margin: 0 0 1em 0;
   border-bottom: 1px solid #ddd;
   /*border-top: 1px solid #ddd;*/
+}
+#bodyBlock td#userCell h4 {
+  text-align: left;
+  padding-left: 1em;
 }
 #bodyBlock td#fbForm p {
   margin: 0 0 0.5em 0;
@@ -87,9 +90,8 @@ body {
   margin: 0;
   font-style: italic;
 }
-#bodyBlock td#fbForm #users {
-  margin: 1em auto 0 auto;
-  padding: 0;
+#bodyBlock td#fbForm .aggSubmit {
+  width: 100px;
 }
 #bodyBlock td#bodyContent {
   vertical-align: top;
@@ -98,10 +100,15 @@ body {
 h2 {
   margin: 0;
   padding: 0;
-  font-size: 1.2em;
+  font-size: 1.4em;
+}
+#bodyBlock .who {
+  color: #0038A8;
+  background: transparent;
+  font-style: italic;
 }
 #bodyBlock .tzLink {
-  font-size: 0.7em;
+  font-size: 0.9em;
   font-weight: normal;
 }
 #bodyBlock .tzLink a {
@@ -112,6 +119,10 @@ h2 {
 }
 #bodyBlock #frontPage {
   text-align: center;
+}
+#bodyBlock td#users {
+  margin: 1em auto 0 auto;
+  padding: 0;
 }
 #bodyBlock td#logos {
   width: 112px;
@@ -165,7 +176,7 @@ h2 {
   background: #eee url('../../resources/tentativeLines.gif') top;
 }
 #freeBusyKey {
-  margin: 0.5em auto 1em auto;
+  margin: 0.5em auto 0 auto;
 }
 #freeBusyKey td {
   padding: 5px;

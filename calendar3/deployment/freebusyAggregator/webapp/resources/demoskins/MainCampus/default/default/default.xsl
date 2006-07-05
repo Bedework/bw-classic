@@ -68,6 +68,7 @@
   <xsl:variable name="setup" select="/bedework-fbaggregator/urlPrefixes/setup"/>
   <xsl:variable name="initialise" select="/bedework-fbaggregator/urlPrefixes/initialise"/>
   <xsl:variable name="fetchFreeBusy" select="/bedework-fbaggregator/urlPrefixes/fetchFreeBusy"/>
+  <xsl:variable name="manageUsers" select="/bedework-fbaggregator/urlPrefixes/manageUsers"/>
   <xsl:variable name="addUser" select="/bedework-fbaggregator/urlPrefixes/addUser"/>
   <xsl:variable name="getTimeZones" select="/bedework-fbaggregator/urlPrefixes/getTimeZones"/>
 
@@ -136,7 +137,7 @@
     </div>
     <div id="menuBar">
       <a href="{$setup}">Display Freebusy</a> |
-      <a href="">User Management</a>
+      <a href="{$manageUsers}">User Management</a>
     </div>
   </xsl:template>
 
@@ -189,84 +190,10 @@
             </p>
             <div class="dateFormat">yyyymmdd</div>
              <p class="padTop">
-               <input type="submit" value="aggregate"/>
+               <input type="submit" value="aggregate" class="aggSubmit"/>
              </p>
              <!--<input type="reset" value="reset"/>-->
            </form>
-
-           <h4>users</h4>
-           <table id="users">
-             <tr>
-                <td>
-                  <input type="checkbox" checked="checked"/>
-                </td>
-                <td>
-                  <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-                </td>
-                <td>
-                  <a href="{$fetchFreeBusy}&amp;account=douglm&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display douglm's freebusy">douglm</a>
-                </td>
-                <td>
-                  <xsl:variable name="acct" select="account"/>
-                    <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                    <!--</a>-->
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox" checked="checked"/>
-                </td>
-                <td>
-                  <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-                </td>
-                <td>
-                  <a href="{$fetchFreeBusy}&amp;account=johnsa&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display johnsa's freebusy">johnsa</a>
-                </td>
-                <td>
-                  <xsl:variable name="acct" select="account"/>
-                    <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                    <!--</a>-->
-                </td>
-              </tr>
-            <!--<xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
-              <xsl:choose>
-                <xsl:when test="kind='0'">--><!-- kind = user -->
-                  <!--<tr>
-                    <td>
-                      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-                    </td>
-                    <td>
-                      <xsl:value-of select="account"/>
-                    </td>
-                    <td>
-                      <xsl:variable name="acct" select="account"/>
-                        <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
-                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                        </a>
-                    </td>
-                  </tr>
-                </xsl:when>
-                <xsl:otherwise>--><!-- kind = group -->
-                  <!--<tr>
-                    <td>
-                      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
-                    </td>
-                    <td>
-                      <strong><xsl:value-of select="account"/></strong>
-                    </td>
-                    <td>
-                      <xsl:variable name="acct" select="account"/>
-                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=group" title="remove">
-                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                      </a>
-                    </td>
-                  </tr>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:for-each> -->
-          </table>
         </td>
         <td id="bodyContent">
           <xsl:choose>
@@ -280,13 +207,35 @@
                 <table id="freeBusy">
                   <tr>
                     <th colspan="16" class="">
-                      All users
+                      Freebusy for
+                      <span class="who">
+                        <xsl:choose>
+                          <xsl:when test="who != ''">
+                            <xsl:value-of select="who"/>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            all users
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </span>
                     </th>
                     <th colspan="16">
                       <xsl:value-of select="$startDate"/> to <xsl:value-of select="$endDate"/>
                     </th>
                     <th colspan="16">
                       America/New_York <span class="tzLink">[<a href="{$getTimeZones}">change</a>]</span>
+                      <!--<form name="timezones" action="setTimeZone" method="post">
+                        <select name="timezone">
+                        <xsl:for-each select="/bedework-fbaggregator/timezones/tzid">
+                          <option>
+                            <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
+                            <xsl:value-of select="."/>
+                          </option>
+                        </xsl:for-each>
+                      </select>
+                      <input type="submit" value="change"/>
+                        <span class="tzLink">[<a href="{$getTimeZones}">map</a>]</span>
+                      </form>-->
                     </th>
                   </tr>
                   <tr>
@@ -380,7 +329,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </td>
-        <td id="logos">
+        <td rowspan="2" id="logos">
           <h4>participants</h4>
           <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/fbagg-logos.gif" width="100" height="403" alt="participant logos" usemap="#logoMap" border="0"/>
           <map name="logoMap">
@@ -390,6 +339,71 @@
             <area shape="rect" alt="Boeing" coords="0,101,100,153" href="http://www.boeing.com/"/>
             <area shape="rect" alt="Bedework" coords="0,13,100,77" href="http://www.bedework.org/bedework/"/>
           </map>
+        </td>
+      </tr>
+      <tr>
+        <td id="userCell" colspan="2">
+          <h4>attendees</h4>
+           <table id="users">
+             <xsl:for-each select="/bedework-fbaggregator/users/user">
+               <xsl:variable name="account" select="account"/>
+               <tr>
+                  <td>
+                    <input type="checkbox" checked="checked"/>
+                  </td>
+                  <td>
+                    <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                  </td>
+                  <td>
+                    <a href="{$fetchFreeBusy}&amp;account={$account}&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display {$account}'s freebusy">
+                      <xsl:value-of select="account"/>
+                    </a>
+                  </td>
+                  <td>
+                    <xsl:variable name="acct" select="account"/>
+                      <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
+                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                      <!--</a>-->
+                  </td>
+                </tr>
+              </xsl:for-each>
+            <!--<xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
+              <xsl:choose>
+                <xsl:when test="kind='0'">--><!-- kind = user -->
+                  <!--<tr>
+                    <td>
+                      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                    </td>
+                    <td>
+                      <xsl:value-of select="account"/>
+                    </td>
+                    <td>
+                      <xsl:variable name="acct" select="account"/>
+                        <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
+                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                        </a>
+                    </td>
+                  </tr>
+                </xsl:when>
+                <xsl:otherwise>--><!-- kind = group -->
+                  <!--<tr>
+                    <td>
+                      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+                    </td>
+                    <td>
+                      <strong><xsl:value-of select="account"/></strong>
+                    </td>
+                    <td>
+                      <xsl:variable name="acct" select="account"/>
+                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=group" title="remove">
+                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                      </a>
+                    </td>
+                  </tr>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each> -->
+          </table>
         </td>
       </tr>
     </table>
