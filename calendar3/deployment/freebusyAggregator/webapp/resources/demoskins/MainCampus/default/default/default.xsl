@@ -206,9 +206,9 @@
           <script language="JavaScript" type="text/javascript">
             endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
           </script>
-        </span><!--<br />
-        <em>yyyymmdd</em>-->
+        </span>
       </p>
+      <div class="dateFormat">yyyymmdd</div>
        <p class="padTop">
          <input type="submit" value="aggregate"/>
        </p>
@@ -220,13 +220,12 @@
       Add user/group:<br/>
       <input
        type="text"
-       name="user"
+       name="account"
        size="6"
        value="" />
        <input type="submit" value="add"/><br/>
-       <input type="radio" value="user" name="kind" checked="checked"/>user
-      <input type="radio" value="group" name="kind"/>group
-
+       <input type="radio" value="user" name="kind" checked="checked"/>user <!--
+    --><input type="radio" value="group" name="kind"/>group
      </form>
      <table id="users">
        <tr>

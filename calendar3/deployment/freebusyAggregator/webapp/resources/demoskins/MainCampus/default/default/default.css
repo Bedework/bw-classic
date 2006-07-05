@@ -50,12 +50,11 @@ body {
   border-right: 1px solid #ccc;
   vertical-align: top;
   white-space: nowrap;
+  font-size: 0.8em;
 }
 #bodyBlock td#fbForm form {
-  margin: 0;
-}
-#bodyBlock td#fbForm form#freebusyForm {
   margin: 1em 0.5em 1em 1em;
+  white-space: nowrap;
 }
 #bodyBlock td#fbForm form input {
   margin: 2px 0;
@@ -69,6 +68,8 @@ body {
   padding: 2px 0;
   text-align: center;
   margin: 0 0 1em 0;
+  border-bottom: 1px solid #ddd;
+  /*border-top: 1px solid #ddd;*/
 }
 #bodyBlock td#fbForm p {
   margin: 0 0 0.5em 0;
@@ -77,6 +78,14 @@ body {
 #bodyBlock td#fbForm p.padTop {
   margin: 1em 0 0 0;
   padding: 0;
+}
+#bodyBlock td#fbForm .dateFormat {
+  position: relative;
+  top: -4px;
+  left: 2px;
+  padding: 0;
+  margin: 0;
+  font-style: italic;
 }
 #bodyBlock td#fbForm #users {
   margin: 1em auto 0 auto;
