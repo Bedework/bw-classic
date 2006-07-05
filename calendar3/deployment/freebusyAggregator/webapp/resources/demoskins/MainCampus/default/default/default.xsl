@@ -309,6 +309,7 @@
       <xsl:value-of select="substring(end,1,4)"/>-<xsl:value-of select="substring(end,5,2)"/>-<xsl:value-of select="substring(end,7,2)"/>
     </xsl:variable>
     <h2>Freebusy Aggregator</h2>
+    Day count: <xsl:value-of select="count(day)"/>
     <table id="freeBusy">
       <tr>
         <th colspan="16" class="">
