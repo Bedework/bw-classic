@@ -1271,19 +1271,30 @@ public class CalSvc extends CalSvcI {
         /* Don't report out of the requested period */
 
         String dstart;
+        String sttzid;
         String dend;
+        String endtzid;
 
         if (estart.before(start)) {
           dstart = start.getDtval();
+          sttzid = start.getTzid();
         } else {
           dstart = estart.getDtval();
+          sttzid = estart.getTzid();
         }
 
         if (eend.after(end)) {
           dend = end.getDtval();
+          endtzid = end.getTzid();
         } else {
           dend = eend.getDtval();
+          endtzid = eend.getTzid();
         }
+
+        CalTimezones ctz = getTimezones();
+
+        dstart = ctz.getUtc(dstart, sttzid, null);
+        dend = ctz.getUtc(dend, endtzid, null);
 
         DateTime psdt = new DateTime(dstart);
         DateTime pedt = new DateTime(dend);

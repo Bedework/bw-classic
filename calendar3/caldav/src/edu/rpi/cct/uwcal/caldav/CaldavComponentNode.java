@@ -177,7 +177,7 @@ public class CaldavComponentNode extends CaldavBwNode {
         }
 
         if (events == null) {
-          events = svci.findEventsByName(cdURI.getCal(), entityName);
+          events = getSvci().findEventsByName(cdURI.getCal(), entityName);
         }
         if ((events == null) || (events.size() == 0)) {
           exists = false;

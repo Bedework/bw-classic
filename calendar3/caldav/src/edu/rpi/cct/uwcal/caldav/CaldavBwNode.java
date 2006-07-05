@@ -75,7 +75,7 @@ public abstract class CaldavBwNode extends WebdavNsNode {
   protected CaldavURI cdURI;
 
   /* for accessing calendars */
-  protected CalSvcI svci;
+  private CalSvcI svci;
 
   protected IcalTranslator trans;
 

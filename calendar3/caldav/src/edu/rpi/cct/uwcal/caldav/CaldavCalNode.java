@@ -135,7 +135,7 @@ public class CaldavCalNode extends CaldavBwNode {
 
       BwSubscription sub = BwSubscription.makeSubscription(cal);
 
-      Collection events = svci.getEvents(sub, CalFacadeDefs.retrieveRecurExpanded);
+      Collection events = getSvci().getEvents(sub, CalFacadeDefs.retrieveRecurExpanded);
 
       if (events == null) {
         return new ArrayList();
@@ -212,7 +212,7 @@ public class CaldavCalNode extends CaldavBwNode {
   }
 
   public Object clone() {
-    return new CaldavCalNode(getCDURI(), svci, trans, debug);
+    return new CaldavCalNode(getCDURI(), getSvci(), trans, debug);
   }
 
   /* ====================================================================
