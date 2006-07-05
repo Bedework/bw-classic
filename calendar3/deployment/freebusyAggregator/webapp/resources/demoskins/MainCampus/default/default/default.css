@@ -52,7 +52,7 @@ body {
   vertical-align: top;
   white-space: nowrap;
 }
-#bodyBlock td#fbForm form {
+#bodyBlock td#fbForm #dateForm {
   margin: 1em 0.5em 1em 1em;
   white-space: nowrap;
 }
