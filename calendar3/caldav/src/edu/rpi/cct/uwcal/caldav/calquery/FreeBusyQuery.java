@@ -56,17 +56,15 @@ package edu.rpi.cct.uwcal.caldav.calquery;
 
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwFreeBusy;
-import org.bedework.calfacade.BwUser;
-import org.bedework.calsvci.CalSvcI;
 import org.bedework.davdefs.CaldavTags;
 
 import edu.rpi.cct.uwcal.caldav.CalDavParseUtil;
 import edu.rpi.cct.uwcal.caldav.CaldavBWIntf;
+import edu.rpi.cct.uwcal.caldav.SysIntf;
 import edu.rpi.cct.uwcal.caldav.TimeRange;
 import edu.rpi.cct.webdav.servlet.common.MethodBase;
 import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
-import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 
 import org.apache.log4j.Logger;
@@ -110,7 +108,7 @@ public class FreeBusyQuery {
         throw new WebdavBadRequest();
       }
 
-      timeRange = CalDavParseUtil.parseTimeRange(nd, intf.getSvci().getTimezones());
+      timeRange = CalDavParseUtil.parseTimeRange(nd, intf.getSysi().getTimezones());
 
       if (debug) {
         trace("Parsed time range " + timeRange);
@@ -123,27 +121,18 @@ public class FreeBusyQuery {
   }
 
   /**
-   * @param svci
+   * @param sysi
    * @param cal
    * @param account
    * @return BwFreeBusy
    * @throws WebdavException
    */
-  public BwFreeBusy getFreeBusy(CalSvcI svci, BwCalendar cal,
+  public BwFreeBusy getFreeBusy(SysIntf sysi, BwCalendar cal,
                                 String account) throws WebdavException {
     try {
-      BwUser user = svci.findUser(account);
-      if (user == null) {
-        throw WebdavIntfException.unauthorized();
-      }
-
-      if (svci.isUserRoot(cal)) {
-        cal = null;
-      }
-
-      BwFreeBusy fb = svci.getFreeBusy(null, cal, user,
-                                       timeRange.getStart(), timeRange.getEnd(),
-                                       null, false);
+      BwFreeBusy fb = sysi.getFreeBusy(cal, account,
+                                       timeRange.getStart(),
+                                       timeRange.getEnd());
 
       if (debug) {
         trace("Got " + fb);

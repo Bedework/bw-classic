@@ -57,17 +57,10 @@ import org.bedework.appcommon.AccessXmlUtil;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
-import org.bedework.calfacade.CalFacadeAccessException;
-import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.svc.EventInfo;
-import org.bedework.calsvc.CalSvc;
-import org.bedework.calsvci.CalSvcI;
-import org.bedework.calsvci.CalSvcIPars;
 import org.bedework.davdefs.CaldavDefs;
 import org.bedework.davdefs.CaldavTags;
 import org.bedework.davdefs.WebdavTags;
-import org.bedework.icalendar.IcalMalformedException;
-import org.bedework.icalendar.IcalTranslator;
 
 import edu.rpi.cct.uwcal.access.Ace;
 import edu.rpi.cct.uwcal.access.Acl;
@@ -100,10 +93,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -130,22 +121,16 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
   private EmitAccess emitAccess;
 
-  /* Prefix for our properties */
-  private String envPrefix;
-
   /** Namespace based on the request url.
    */
   private String namespace;
 
-  /* Used when decoding uris
-   */
-  private String publicCalendarRoot;
-  private String userCalendarRoot;
+  SysIntf sysi;
 
   /* These two set after a call to getSvci()
    */
-  private IcalTranslator trans;
-  private CalSvcI svci;
+  //private IcalTranslator trans;
+  //private CalSvcI svci;
 
   //private CalEnv env;
 
@@ -177,22 +162,11 @@ public class CaldavBWIntf extends WebdavNsIntf {
     super.init(servlet, req, props, debug);
 
     try {
-      HttpSession session = req.getSession();
-      ServletContext sc = session.getServletContext();
-
-      String appName = sc.getInitParameter("bwappname");
-
-      if ((appName == null) || (appName.length() == 0)) {
-        appName = "unknown-app-name";
-      }
-
-      envPrefix = "org.bedework.app." + appName + ".";
-
       namespacePrefix = WebdavUtils.getUrlPrefix(req);
       namespace = namespacePrefix + "/schema";
 
-      publicCalendarRoot = getSvci().getSyspars().getPublicCalendarRoot();
-      userCalendarRoot = getSvci().getSyspars().getUserCalendarRoot();
+      sysi = new BwSysIntfImpl();
+      sysi.init(req, account, debug);
 
       emitAccess = new EmitAccess(namespacePrefix, xml);
     } catch (Throwable t) {
@@ -201,7 +175,14 @@ public class CaldavBWIntf extends WebdavNsIntf {
   }
 
   public void close() throws WebdavIntfException {
-    close(svci);
+    sysi.close();
+  }
+
+  /**
+   * @return SysIntf
+   */
+  public SysIntf getSysi() {
+    return sysi;
   }
 
   public String getSupportedLocks() {
@@ -256,12 +237,10 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
       CaldavBwNode nd = null;
 
-      getSvci();
-
       if (wi.isCalendar()) {
-        nd = new CaldavCalNode(wi, svci, trans, debug);
+        nd = new CaldavCalNode(wi, sysi, debug);
       } else {
-        nd = new CaldavComponentNode(wi, svci, trans, debug);
+        nd = new CaldavComponentNode(wi, sysi, debug);
       }
 
       return nd;
@@ -298,7 +277,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
         if (debug) {
           trace("About to delete event " + ev);
         }
-        svci.deleteEvent(ev, true);
+        sysi.deleteEvent(ev);
       } else {
         if (debug) {
           trace("No event object available");
@@ -355,20 +334,19 @@ public class CaldavBWIntf extends WebdavNsIntf {
         }
 
         CaldavURI wi = findURI(uri + "/" + name, true, cal);
-        getSvci();
 
         if (wi.isCalendar()) {
           if (debug) {
             debugMsg("Add child as calendar");
           }
 
-          al.add(new CaldavCalNode(wi, svci, trans, debug));
+          al.add(new CaldavCalNode(wi, sysi, debug));
         } else {
           if (debug) {
             debugMsg("Add child as component");
           }
 
-          CaldavComponentNode cnode = new CaldavComponentNode(wi, svci, trans, debug);
+          CaldavComponentNode cnode = new CaldavComponentNode(wi, sysi, debug);
           cnode.addEvent(ev);
           al.add(cnode);
         }
@@ -521,7 +499,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
       String entityName = cdUri.getEntityName();
       BwCalendar cal = cdUri.getCal();
 
-      Collection c = trans.fromIcal(cal, new MyReader(contentRdr));
+      Collection c = sysi.fromIcal(cal, new MyReader(contentRdr));
 
       /** if more than one event these must all be instances of the same recurrence, i.e the
        * uid must be the same for each.
@@ -562,7 +540,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
           if (evinfo.getNewEvent()) {
             pcr.created = true;
             ev.setName(entityName);
-            svci.addEvent(cal, ev, evinfo.getOverrides());
+            sysi.addEvent(cal, ev, evinfo.getOverrides());
 
             StringBuffer sb = new StringBuffer(cdUri.getPath());
             sb.append("/");
@@ -583,7 +561,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
             if (debug) {
               debugMsg("putContent: update event " + ev);
             }
-            svci.updateEvent(ev);
+            sysi.updateEvent(ev);
           }
         } else {
           fail = true;
@@ -598,17 +576,8 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
 
       return pcr;
-    } catch (IcalMalformedException ime) {
-      throw WebdavIntfException.badRequest(ime.getMessage());
-    } catch (CalFacadeAccessException cfae) {
-      throw WebdavIntfException.forbidden();
     } catch (WebdavIntfException we) {
       throw we;
-    } catch (CalFacadeException cfe) {
-      if (CalFacadeException.duplicateGuid.equals(cfe.getMessage())) {
-        throw WebdavIntfException.badRequest("Duplicate-guid");
-      }
-      throw new WebdavIntfException(cfe);
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -663,20 +632,15 @@ public class CaldavBWIntf extends WebdavNsIntf {
         throw WebdavIntfException.forbidden();
       }
 
-      BwCalendar newcal = new BwCalendar();
-
       String name = cdUri.getEntityName();
 
       if (name == null) {
         throw WebdavIntfException.forbidden();
       }
 
-      newcal.setName(name);
-      newcal.setCalendarCollection("MKCALENDAR".equalsIgnoreCase(req.getMethod()));
-
-      getSvci().addCalendar(newcal, parent.getPath());
-    } catch (CalFacadeAccessException cfae) {
-      throw WebdavIntfException.forbidden();
+      sysi.makeCollection(name,
+                          "MKCALENDAR".equalsIgnoreCase(req.getMethod()),
+                          parent.getPath());
     } catch (WebdavIntfException we) {
       throw we;
     } catch (Throwable t) {
@@ -801,19 +765,12 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
     CaldavBwNode node = (CaldavBwNode)getNode(info.what);
 
-    CalSvcI svci = getSvci();
-
     try {
       if (node.isCalendar()) {
-        BwCalendar cal = node.getCDURI().getCal();
-
-        svci.changeAccess(cal, info.aces);
-        svci.updateCalendar(cal);
+        sysi.updateAccess(node.getCDURI().getCal(), info.aces);
       } else {
-        BwEvent ev = ((CaldavComponentNode)node).getEventInfo().getEvent();
-
-        svci.changeAccess(ev, info.aces);
-        svci.updateEvent(ev);
+        sysi.updateAccess(((CaldavComponentNode)node).getEventInfo().getEvent(),
+                          info.aces);
       }
     } catch (WebdavIntfException wi) {
       throw wi;
@@ -1129,9 +1086,9 @@ public class CaldavBWIntf extends WebdavNsIntf {
           closePropstat();
         }
       } else if (tag.equals(CaldavTags.calendarTimezone)) {
-        TimeZone tz = getSvci().getTimezones().getDefaultTimeZone();
         openPropstat();
-        xml.property(tag, trans.toStringTzCalendar(tz.getID()));
+        TimeZone tz = sysi.getDefaultTimeZone();
+        xml.property(tag, sysi.toStringTzCalendar(tz.getID()));
         closePropstat();
       } else if (tag.equals(CaldavTags.supportedCalendarComponentSet)) {
         /* e.g.
@@ -1170,7 +1127,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
          *    xmlns:C="urn:ietf:params:xml:ns:caldav">102400</C:max-resource-size>
          */
         openPropstat();
-        xml.property(tag, String.valueOf(getSvci().getSyspars().getMaxUserEntitySize()));
+        xml.property(tag, String.valueOf(sysi.getMaxUserEntitySize()));
         closePropstat();
       } else if (tag.equals(CaldavTags.minDateTime)) {
       } else {
@@ -1233,11 +1190,10 @@ public class CaldavBWIntf extends WebdavNsIntf {
   public Collection query(WebdavNsNode wdnode, int retrieveRecur,
                           Filter fltr) throws WebdavIntfException {
     CaldavBwNode node = getBwnode(wdnode);
-    CalSvcI svci = getSvci();
     Collection events;
 
     try {
-      events = fltr.query(node, retrieveRecur, svci);
+      events = fltr.query(node, retrieveRecur);
     } catch (WebdavException wde) {
       throw new WebdavIntfException(wde.getStatusCode());
     }
@@ -1305,9 +1261,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
     try {
       String user = cnode.getCDURI().getOwner();
 
-      getSvci();
-
-      BwFreeBusy fb = freeBusy.getFreeBusy(svci, cnode.getCDURI().getCal(),
+      BwFreeBusy fb = freeBusy.getFreeBusy(sysi, cnode.getCDURI().getCal(),
                                            user);
 
       cnode.setFreeBusy(fb);
@@ -1321,74 +1275,6 @@ public class CaldavBWIntf extends WebdavNsIntf {
   /* ====================================================================
    *                         Private methods
    * ==================================================================== */
-
-  /**
-   * @return CalSvcI
-   * @throws WebdavIntfException
-   */
-  public CalSvcI getSvci() throws WebdavIntfException {
-    if (svci != null) {
-      if (!svci.isOpen()) {
-        try {
-          svci.open();
-          svci.beginTransaction();
-        } catch (Throwable t) {
-          throw new WebdavIntfException(t);
-        }
-      }
-
-      return svci;
-    }
-
-    try {
-      svci = new CalSvc();
-      /* account is what we authenticated with.
-       * user, if non-null, is the user calendar we want to access.
-       */
-      CalSvcIPars pars = new CalSvcIPars(account,
-                                         account,
-                                         null,
-                                         envPrefix,
-                                         false,   // publicAdmin
-                                         true,    // caldav
-                                         null, // synchId
-                                         debug);
-      svci.init(pars);
-
-      svci.open();
-      svci.beginTransaction();
-
-      trans = new IcalTranslator(svci.getIcalCallback(), debug);
-    } catch (Throwable t) {
-      throw new WebdavIntfException(t);
-    }
-
-    return svci;
-  }
-
-  private void close(CalSvcI svci) throws WebdavIntfException {
-    if ((svci == null) || !svci.isOpen()) {
-      return;
-    }
-
-    try {
-      svci.endTransaction();
-    } catch (Throwable t) {
-      try {
-        svci.close();
-      } catch (Throwable t1) {
-      }
-      svci = null;
-      throw new WebdavIntfException(t);
-    }
-
-    try {
-      svci.close();
-    } catch (Throwable t) {
-      svci = null;
-      throw new WebdavIntfException(t);
-    }
-  }
 
   /*
   private void setAccess(HttpServletRequest request,
@@ -1482,26 +1368,8 @@ public class CaldavBWIntf extends WebdavNsIntf {
       if (pathLength == 0) {
         throw WebdavIntfException.badRequest();
       }
-      boolean publicUri = ss[1].equals(publicCalendarRoot);
+
       int minLength = 1;
-
-      if (!publicUri) {
-        minLength = 2;
-        if (!ss[1].equals(userCalendarRoot)) {
-          if (debug) {
-            debugMsg("First path component \"" + ss[1] +
-                     "\" neither " + publicCalendarRoot +
-                     "\" nor \"" + userCalendarRoot + "\"");
-          }
-          throw WebdavIntfException.notFound();
-        }
-
-        /* For the time being at least stop somebody browsing the user ids.
-         */
-        if (pathLength < 2) {
-          throw WebdavIntfException.notFound();
-        }
-      }
 
       /* If the uri ends with .ics or .ifb split it off
        */
@@ -1527,35 +1395,30 @@ public class CaldavBWIntf extends WebdavNsIntf {
           /* We've avoided a search - can we use this caldavuri object
            */
 
-          if (curi.sameURI(publicUri, curi.getCal(), namePart)) {
+          if (curi.sameURI(curi.getCal(), namePart)) {
             if (debug) {
-              debugMsg("reuse uri - ispublic=" + publicUri +
-                       " cal=\"" + curi.getCal().getPath() +
+              debugMsg("reuse uri - cal=\"" + curi.getCal().getPath() +
                        "\" entityName=\"" + namePart + "\"");
             }
             return curi;
           }
 
           if (debug) {
-            debugMsg("create uri from mapped uri - ispublic=" + publicUri +
+            debugMsg("create uri from mapped uri -" +
                      " cal=\"" + curi.getCal().getPath() +
                      "\" entityName=\"" + namePart + "\"");
           }
-          curi = new CaldavURI(publicUri, curi.getCal(), namePart);
+          curi = new CaldavURI(curi.getCal(), namePart);
           putUriPath(curi);
 
           return curi;
         }
 
         // Search to see if the uri exists
-        try {
-          if (debug) {
-            trace("SEARCH: for calendar " + uri);
-          }
-          cal = getSvci().getCalendar(uri);
-        } catch (CalFacadeAccessException cae) {
-          throw WebdavIntfException.unauthorized();
+        if (debug) {
+          trace("SEARCH: for calendar " + uri);
         }
+        cal = sysi.getCalendar(uri);
 
         if (cal == null) {
           if (namePart != null) {
@@ -1577,14 +1440,10 @@ public class CaldavBWIntf extends WebdavNsIntf {
           uri = uri.substring(0, pos);
 
           // See if the uri exists
-          try {
-            if (debug) {
-              trace("SEARCH: for calendar " + uri);
-            }
-            cal = getSvci().getCalendar(uri);
-          } catch (CalFacadeAccessException cae) {
-            throw WebdavIntfException.unauthorized();
+          if (debug) {
+            trace("SEARCH: for calendar " + uri);
           }
+          cal = sysi.getCalendar(uri);
         }
 
         if (cal == null) {
@@ -1600,11 +1459,10 @@ public class CaldavBWIntf extends WebdavNsIntf {
        */
 
       if (debug) {
-        debugMsg("create uri - ispublic=" + publicUri +
-                 " cal=\"" + cal.getPath() +
+        debugMsg("create uri - cal=\"" + cal.getPath() +
                  "\" entityName=\"" + namePart + "\"");
       }
-      CaldavURI curi = new CaldavURI(publicUri, cal, namePart);
+      CaldavURI curi = new CaldavURI(cal, namePart);
       putUriPath(curi);
 
       return curi;

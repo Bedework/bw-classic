@@ -1342,7 +1342,7 @@ public abstract class CalSvcI implements Serializable {
 
   /** Update an event.
    *
-   * @param event         updated EventVO object
+   * @param event         updated BwEvent object
    * @throws CalFacadeException
    */
   public abstract void updateEvent(BwEvent event) throws CalFacadeException;

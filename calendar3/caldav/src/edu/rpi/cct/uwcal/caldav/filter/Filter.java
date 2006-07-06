@@ -53,8 +53,6 @@
 */
 
 package edu.rpi.cct.uwcal.caldav.filter;
-import org.bedework.calfacade.svc.BwSubscription;
-import org.bedework.calsvci.CalSvcI;
 import org.bedework.davdefs.CaldavTags;
 
 import edu.rpi.cct.uwcal.caldav.CaldavBWIntf;
@@ -235,12 +233,11 @@ public class Filter {
    *
    * @param wdnode    WebdavNsNode defining root of search
    * @param retrieveRecur  How we retrieve recurring events
-   * @param svci      CalSvci object
    * @return Collection of result nodes (empty for no result)
    * @throws WebdavException
    */
-  public Collection query(CaldavBwNode wdnode, int retrieveRecur,
-                          CalSvcI svci) throws WebdavException {
+  public Collection query(CaldavBwNode wdnode,
+                          int retrieveRecur) throws WebdavException {
     CompFilter cfltr = filter;
 
     // Currently only accept VCALENDAR for top level.
@@ -331,22 +328,21 @@ public class Filter {
     Collection events;
 
     try {
-      BwSubscription sub = BwSubscription.makeSubscription(wdnode.getCDURI().getCal());
-
       if (eventq.trange == null) {
         if (debug) {
           debugMsg("SEARCH: Filter get all events");
         }
-        events = svci.getEvents(sub, retrieveRecur);
+        events = wdnode.getSysi().getEvents(wdnode.getCDURI().getCal(),
+                                            retrieveRecur);
       } else {
         // fetch within time range
         if (debug) {
           debugMsg("SEARCH: Filter get events in time range");
         }
-        events = svci.getEvents(sub,
-                                null,  // BwFilter filter
-                                eventq.trange.getStart(),
-                                eventq.trange.getEnd(), retrieveRecur);
+        events = wdnode.getSysi().getEvents(wdnode.getCDURI().getCal(),
+                                            eventq.trange.getStart(),
+                                            eventq.trange.getEnd(),
+                                            retrieveRecur);
       }
     } catch (Throwable t) {
       error(t);
@@ -546,7 +542,7 @@ public class Filter {
 
         if (MethodBase.nodeMatches(curnode, CaldavTags.timeRange)) {
           cf.setTimeRange(CalDavParseUtil.parseTimeRange(curnode,
-              intf.getSvci().getTimezones()));
+                          intf.getSysi().getTimezones()));
 
           if (cf.getTimeRange() == null) {
             return null;
@@ -630,7 +626,7 @@ public class Filter {
             pf.setIsNotDefined(true);
           } else if (MethodBase.nodeMatches(curnode, CaldavTags.timeRange)) {
             pf.setTimeRange(CalDavParseUtil.parseTimeRange(curnode,
-                intf.getSvci().getTimezones()));
+                                               intf.getSysi().getTimezones()));
           } else if (MethodBase.nodeMatches(curnode, CaldavTags.textMatch)) {
             pf.setMatch(parseTextMatch(curnode));
 

@@ -69,35 +69,17 @@ import org.bedework.calfacade.BwCalendar;
  *   @author Mike Douglass   douglm@rpi.edu
  */
 public class CaldavURI {
-  /* true if this represents a public uri */
-  boolean ispublic;
-
   BwCalendar cal;
 
   String entityName;
 
-  CaldavURI(boolean ispublic, BwCalendar cal, String entityName) {
-    init(ispublic, cal, entityName);
+  CaldavURI(BwCalendar cal, String entityName) {
+    init(cal, entityName);
   }
 
-  private void init(boolean ispublic, BwCalendar cal, String entityName) {
-    this.ispublic = ispublic;
+  private void init(BwCalendar cal, String entityName) {
     this.cal = cal;
     this.entityName = entityName;
-  }
-
-  /**
-   * @param val
-   */
-  public void setPublic(boolean val) {
-    ispublic = val;
-  }
-
-  /**
-   * @return boolean
-   */
-  public boolean getPublic() {
-    return ispublic;
   }
 
   /**
@@ -153,16 +135,11 @@ public class CaldavURI {
   }
 
   /**
-   * @param ispublic
    * @param cal
    * @param entityName
    * @return true if pars represent same URI
    */
-  public boolean sameURI(boolean ispublic, BwCalendar cal, String entityName) {
-    if (getPublic() != ispublic) {
-      return false;
-    }
-
+  public boolean sameURI(BwCalendar cal, String entityName) {
     if (!getPath().equals(cal.getPath())) {
       return false;
     }

@@ -54,9 +54,6 @@
 
 package edu.rpi.cct.uwcal.caldav;
 
-import org.bedework.calsvci.CalSvcI;
-import org.bedework.icalendar.IcalTranslator;
-
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 
@@ -75,17 +72,13 @@ public abstract class CaldavBwNode extends WebdavNsNode {
   protected CaldavURI cdURI;
 
   /* for accessing calendars */
-  private CalSvcI svci;
+  private SysIntf sysi;
 
-  protected IcalTranslator trans;
-
-  CaldavBwNode(CaldavURI cdURI, CalSvcI svci, IcalTranslator trans,
-                  boolean debug) {
+  CaldavBwNode(CaldavURI cdURI, SysIntf sysi, boolean debug) {
     super(debug);
 
     this.cdURI = cdURI;
-    this.svci = svci;
-    this.trans = trans;
+    this.sysi = sysi;
 
     if (cdURI != null) {
       this.uri = cdURI.getUri();
@@ -176,8 +169,8 @@ public abstract class CaldavBwNode extends WebdavNsNode {
   /**
    * @return CalSvcI
    */
-  public CalSvcI getSvci() {
-    return svci;
+  public SysIntf getSysi() {
+    return sysi;
   }
 
   /* ====================================================================

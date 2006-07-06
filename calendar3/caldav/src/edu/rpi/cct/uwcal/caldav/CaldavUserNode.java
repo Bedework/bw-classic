@@ -54,9 +54,6 @@
 
 package edu.rpi.cct.uwcal.caldav;
 
-import org.bedework.calsvci.CalSvcI;
-import org.bedework.icalendar.IcalTranslator;
-
 import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 
@@ -73,13 +70,11 @@ response to an incoming url which references principals.
 public class CaldavUserNode extends CaldavBwNode {
   /**
    * @param cdURI
-   * @param svci
-   * @param trans
+   * @param sysi
    * @param debug
    */
-  public CaldavUserNode(CaldavURI cdURI, CalSvcI svci,
-                        IcalTranslator trans, boolean debug) {
-    super(cdURI, svci, trans, debug);
+  public CaldavUserNode(CaldavURI cdURI, SysIntf sysi, boolean debug) {
+    super(cdURI, sysi, debug);
 /*
     this.name = cdURI.getUserName();
     collection = true;

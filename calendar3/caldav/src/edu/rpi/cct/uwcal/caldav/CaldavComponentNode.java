@@ -57,11 +57,8 @@ package edu.rpi.cct.uwcal.caldav;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.svc.EventInfo;
 
-import org.bedework.calsvci.CalSvcI;
 import org.bedework.davdefs.CaldavTags;
 import org.bedework.icalendar.ComponentWrapper;
-import org.bedework.icalendar.IcalTranslator;
-//import org.bedework.icalendar.IcalUtil;
 
 import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.uwcal.caldav.calquery.CalendarData;
@@ -103,13 +100,11 @@ public class CaldavComponentNode extends CaldavBwNode {
   /** Constructor
    *
    * @param cdURI
-   * @param svci
-   * @param trans
+   * @param sysi
    * @param debug
    */
-  public CaldavComponentNode(CaldavURI cdURI, CalSvcI svci,
-                             IcalTranslator trans, boolean debug) {
-    super(cdURI, svci, trans, debug);
+  public CaldavComponentNode(CaldavURI cdURI, SysIntf sysi, boolean debug) {
+    super(cdURI, sysi, debug);
 
     collection = false;
     allowsGet = true;
@@ -130,7 +125,7 @@ public class CaldavComponentNode extends CaldavBwNode {
 
     try {
       if ((eventInfo != null) && (vevent == null)) {
-        Calendar ical = trans.toIcal(eventInfo.getEvent());
+        Calendar ical = getSysi().toCalendar(eventInfo.getEvent());
         if (events.size() == 1) {
           this.ical = ical; // Save doing it again
         }
@@ -177,7 +172,7 @@ public class CaldavComponentNode extends CaldavBwNode {
         }
 
         if (events == null) {
-          events = getSvci().findEventsByName(cdURI.getCal(), entityName);
+          events = getSysi().findEventsByName(cdURI.getCal(), entityName);
         }
         if ((events == null) || (events.size() == 0)) {
           exists = false;
@@ -254,10 +249,10 @@ public class CaldavComponentNode extends CaldavBwNode {
     try {
       if (ical == null) {
         if (events.size() == 1) {
-          ical = trans.toIcal(eventInfo.getEvent());
+          ical = getSysi().toCalendar(eventInfo.getEvent());
         } else {
           // recurring
-          ical = trans.toIcal(events);
+          ical = getSysi().toCalendar(events);
         }
       }
       if ((veventString == null)) {

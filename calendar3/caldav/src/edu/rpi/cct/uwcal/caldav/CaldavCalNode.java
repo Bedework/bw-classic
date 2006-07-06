@@ -56,16 +56,12 @@ package edu.rpi.cct.uwcal.caldav;
 
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwFreeBusy;
-import org.bedework.calfacade.CalFacadeDefs;
-import org.bedework.calfacade.svc.BwSubscription;
-import org.bedework.calsvci.CalSvcI;
 import org.bedework.icalendar.IcalTranslator;
 import org.bedework.icalendar.VFreeUtil;
 
 import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import net.fortuna.ical4j.model.Calendar;
@@ -86,19 +82,17 @@ public class CaldavCalNode extends CaldavBwNode {
    * @param debug
    */
   public CaldavCalNode(int status, boolean debug) {
-    super(null, null, null, debug);
+    super(null, null, debug);
     setStatus(status);
   }
 
   /**
    * @param cdURI
-   * @param svci
-   * @param trans
+   * @param sysi
    * @param debug
    */
-  public CaldavCalNode(CaldavURI cdURI, CalSvcI svci,
-                       IcalTranslator trans, boolean debug) {
-    super(cdURI, svci, trans, debug);
+  public CaldavCalNode(CaldavURI cdURI, SysIntf sysi, boolean debug) {
+    super(cdURI, sysi, debug);
 
     this.name = cdURI.getCalName();
     collection = true;
@@ -130,18 +124,10 @@ public class CaldavCalNode extends CaldavBwNode {
 
       /* Othewise, return the events in this calendar */
       if (debug) {
-        debugMsg("SEARCH: getEvents in calendar " + cal.getId());
+        debugMsg("SEARCH: getEvents in calendar " + cal.getPath());
       }
 
-      BwSubscription sub = BwSubscription.makeSubscription(cal);
-
-      Collection events = getSvci().getEvents(sub, CalFacadeDefs.retrieveRecurExpanded);
-
-      if (events == null) {
-        return new ArrayList();
-      }
-
-      return events;
+      return getSysi().getEventsExpanded(cal);
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -212,7 +198,7 @@ public class CaldavCalNode extends CaldavBwNode {
   }
 
   public Object clone() {
-    return new CaldavCalNode(getCDURI(), getSvci(), trans, debug);
+    return new CaldavCalNode(getCDURI(), getSysi(), debug);
   }
 
   /* ====================================================================
