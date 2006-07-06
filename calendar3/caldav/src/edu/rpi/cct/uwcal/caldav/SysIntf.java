@@ -80,11 +80,13 @@ public interface SysIntf {
    * take place at the first or subsequent requests
    *
    * @param req
+   * @param envPrefix
    * @param account
    * @param debug
    * @throws WebdavIntfException
    */
   public void init(HttpServletRequest req,
+                   String envPrefix,
                    String account,
                    boolean debug) throws WebdavIntfException;
 

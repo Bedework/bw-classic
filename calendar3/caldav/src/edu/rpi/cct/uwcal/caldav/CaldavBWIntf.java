@@ -54,6 +54,7 @@
 package edu.rpi.cct.uwcal.caldav;
 
 import org.bedework.appcommon.AccessXmlUtil;
+import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
@@ -93,8 +94,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -124,6 +127,9 @@ public class CaldavBWIntf extends WebdavNsIntf {
   /** Namespace based on the request url.
    */
   private String namespace;
+
+  /* Prefix for our properties */
+  private String envPrefix;
 
   SysIntf sysi;
 
@@ -162,11 +168,26 @@ public class CaldavBWIntf extends WebdavNsIntf {
     super.init(servlet, req, props, debug);
 
     try {
+
+      HttpSession session = req.getSession();
+      ServletContext sc = session.getServletContext();
+
+      String appName = sc.getInitParameter("bwappname");
+
+      if ((appName == null) || (appName.length() == 0)) {
+        appName = "unknown-app-name";
+      }
+
+      envPrefix = "org.bedework.app." + appName + ".";
+
       namespacePrefix = WebdavUtils.getUrlPrefix(req);
       namespace = namespacePrefix + "/schema";
 
-      sysi = new BwSysIntfImpl();
-      sysi.init(req, account, debug);
+      CalEnv env = new CalEnv(envPrefix, debug);
+
+      sysi = (SysIntf)env.getAppObject("sysintfimpl", SysIntf.class);
+
+      sysi.init(req, envPrefix, account, debug);
 
       emitAccess = new EmitAccess(namespacePrefix, xml);
     } catch (Throwable t) {

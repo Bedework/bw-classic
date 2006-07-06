@@ -79,9 +79,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /** Bedework implementation of SysIntf.
  *
@@ -101,27 +99,13 @@ public class BwSysIntfImpl implements SysIntf {
   private CalSvcI svci;
 
   public void init(HttpServletRequest req,
+                   String envPrefix,
                    String account,
                    boolean debug) throws WebdavIntfException {
     try {
+      this.envPrefix = envPrefix;
       this.account = account;
       this.debug = debug;
-
-      HttpSession session = req.getSession();
-      ServletContext sc = session.getServletContext();
-
-      String appName = sc.getInitParameter("bwappname");
-
-      if ((appName == null) || (appName.length() == 0)) {
-        appName = "unknown-app-name";
-      }
-
-      envPrefix = "org.bedework.app." + appName + ".";
-
-      /*
-      namespacePrefix = WebdavUtils.getUrlPrefix(req);
-      namespace = namespacePrefix + "/schema";
-      */
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
