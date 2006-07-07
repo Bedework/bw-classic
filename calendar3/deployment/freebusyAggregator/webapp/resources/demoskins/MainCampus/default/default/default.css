@@ -207,7 +207,7 @@ h2 {
   text-decoration: none;
 }
 #freeBusy td.busy a {
-  color: #fbb;
+  color: #333;
   background-color: transparent;
   display: block;
   padding: 3px 3px;
@@ -225,7 +225,7 @@ h2 {
 #freeBusy #timezonesDropDown {
   width: 14em;
   font-size: 8pt;
-  margin: 0 1em 0 2em;
+  margin: 0 0 0 2em;
 }
 #freeBusy #timezonesButton {
   font-size: 8pt;

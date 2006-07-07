@@ -69,10 +69,10 @@
   <xsl:variable name="initialise" select="/bedework-fbaggregator/urlPrefixes/initialise"/>
   <xsl:variable name="fetchFreeBusy" select="/bedework-fbaggregator/urlPrefixes/fetchFreeBusy"/>
   <xsl:variable name="manageAttendees" select="/bedework-fbaggregator/urlPrefixes/manageAttendees"/>
-  <xsl:variable name="showAddAttendee" select="/bedework-fbaggregator/urlPrefixes/showAddAttendee"/>
-  <xsl:variable name="editAttendee" select="/bedework-fbaggregator/urlPrefixes/editAttendee"/>
-  <xsl:variable name="addAttendee" select="/bedework-fbaggregator/urlPrefixes/addAttendee"/>
-  <xsl:variable name="getTimeZones" select="/bedework-fbaggregator/urlPrefixes/getTimeZones"/>
+  <xsl:variable name="showAddUser" select="/bedework-fbaggregator/urlPrefixes/showAddUser"/>
+  <xsl:variable name="showEditUser" select="/bedework-fbaggregator/urlPrefixes/showEditUser"/>
+  <xsl:variable name="editUser" select="/bedework-fbaggregator/urlPrefixes/editUser"/>
+  <xsl:variable name="addUser" select="/bedework-fbaggregator/urlPrefixes/addUser"/>
 
 
   <!-- URL of the web application - includes web context
@@ -127,8 +127,8 @@
           <xsl:when test="/bedework-fbaggregator/page='manageAttendees'">
             <xsl:call-template name="manageAttendees"/>
           </xsl:when>
-          <xsl:when test="/bedework-fbaggregator/page='addAttendee'">
-            <xsl:call-template name="addAttendee"/>
+          <xsl:when test="/bedework-fbaggregator/page='addUser'">
+            <xsl:call-template name="addUser"/>
           </xsl:when>
           <xsl:when test="/bedework-fbaggregator/page='timeZones'">
             <xsl:apply-templates select="/bedework-fbaggregator/timezones"/>
@@ -155,7 +155,7 @@
     </div>
     <div id="menuBar">
       <a href="{$setup}">Display Freebusy</a> |
-      <a href="{$manageAttendees}&amp;refreshXslt=yes">Manage Attendees</a>
+      <a href="{$showAddUser}&amp;refreshXslt=yes">Register User</a>
     </div>
   </xsl:template>
 
@@ -223,7 +223,8 @@
                   Day count: <xsl:value-of select="count(day)"/>
                   <table id="freeBusy">
                     <tr>
-                      <th colspan="16" class="">
+                      <td></td>
+                      <th colspan="16" class="left">
                         Freebusy for
                         <span class="who">
                           <xsl:choose>
@@ -238,7 +239,7 @@
                       </th>
                       <th colspan="32" class="right">
                         <xsl:value-of select="$startDate"/> to <xsl:value-of select="$endDate"/>
-                        <select name="timezone" id="timezonesDropDown">
+                        <select name="timezone" id="timezonesDropDown" onchange="submit()">
                           <xsl:for-each select="/bedework-fbaggregator/timezones/tzid">
                             <option>
                               <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
@@ -291,7 +292,14 @@
                             </xsl:choose>
                           </xsl:variable>
                           <td class="{$fbClass}">
-                            <a href="/ucal/initEvent.do?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
+                            <a href="/ucal/initEvent.do?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">
+                              <xsl:choose>
+                                <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
+                                  <xsl:value-of select="number(numBusy) + number(numTentative)"/>
+                                </xsl:when>
+                                <xsl:otherwise>*</xsl:otherwise>
+                              </xsl:choose>
+                            </a>
                           </td>
                         </xsl:for-each>
                       </tr>
@@ -443,7 +451,7 @@
   <xsl:template name="manageAttendees">
     <div id="content">
       <h2>Manage Attendees</h2>
-      <p><a href="{$showAddAttendee}"><input type="button" value="add attendee"/></a></p>
+      <p><a href="{$showAddUser}"><input type="button" value="add attendee"/></a></p>
       <fieldset id="attendeeList">
         <legend>Edit/remove attendees:</legend>
         <table cellspacing="0">
@@ -480,15 +488,15 @@
     </div>
   </xsl:template>
 
-  <xsl:template name="addAttendee">
+  <xsl:template name="addUser">
     <div id="content">
-      <h2>Manage Attendees</h2>
-      <form action="{$addAttendee}" method="post">
+      <h2>Register a New User</h2>
+      <form action="{$addUser}" method="post">
         <fieldset id="modAttendee">
-          <legend>Add attendee:</legend>
+          <legend>Add user:</legend>
           <table cellspacing="0">
             <tr>
-              <th>Attendee's account:</th>
+              <th>User's account:</th>
               <td>
                 <input
                  type="text"
@@ -496,7 +504,7 @@
                  size="40"
                  value="" />
                  <xsl:text> </xsl:text>
-                 <em>e.g. attendee@somehost.org</em>
+                 <em>e.g. user@somehost.org</em>
                </td>
              </tr>
              <tr>
@@ -514,7 +522,7 @@
                  size="40"
                  value="" />
                  <xsl:text> </xsl:text>
-                 <em>user requesting freebusy data</em>
+                 <em>user requesting freebusy data (e.g. you)</em>
                </td>
             </tr>
             <tr>
