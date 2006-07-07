@@ -198,7 +198,7 @@ h2 {
   text-decoration: none;
 }
 #freeBusy td.tentative a  {
-  color: #ddd;
+  color: #333;
   background-color: transparent;
   display: block;
   padding: 3px 3px;
