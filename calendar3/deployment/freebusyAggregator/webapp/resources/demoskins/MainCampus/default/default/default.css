@@ -119,15 +119,15 @@ h2 {
 #bodyBlock #frontPage {
   text-align: center;
 }
-#bodyBlock td#userCell h4 {
+#bodyBlock td#attendeeCell h4 {
   margin-top: 0;
   text-align: left;
   padding-left: 1em;
 }
-#bodyBlock td#userCell p {
+#bodyBlock td#attendeeCell p {
   margin: 0.5em;
 }
-#bodyBlock table#users {
+#bodyBlock table#attendees {
   margin: 1em;
   padding: 0;
 }
@@ -222,6 +222,14 @@ h2 {
   background-color: yellow;
   text-decoration: none;
 }
+#freeBusy #timezonesDropDown {
+  width: 14em;
+  font-size: 8pt;
+  margin: 0 1em 0 2em;
+}
+#freeBusy #timezonesButton {
+  font-size: 8pt;
+}
 #content {
   border-top: 1px solid #ccc;
   padding: 1em;
@@ -229,16 +237,47 @@ h2 {
 #content form {
   margin-top: 1em;
 }
-#content img {
+/*#content img {
   margin: 1em auto;
-}
-#modUser legend {
+}*/
+legend {
   font-weight: bold;
 }
-#modUser table {
-  display: block;
+#attendeeList tr.a td {
+  background: white;
+  color: black;
 }
-#modUser th {
+#attendeeList tr.b td {
+  background: #eee;
+  color: black;
+}
+#attendeeList th {
+  color: white;
+  background: #0038A8;
+  text-align: center;
+  padding: 4px;
+  border-bottom: 1px solid #bbb;
+  border-top: 1px solid #bbb;
+}
+#attendeeList td {
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #bbb;
+}
+#attendeeList td.editIcon {
+  border-right: 1px solid #bbb;
+  border-bottom: none !important;
+  color: black;
+  background: white !important;
+  text-align: center;
+}
+#attendeeList td.trashIcon {
+  border-left: 1px solid #bbb;
+  border-bottom: none !important;
+  color: black;
+  background: white !important;
+  text-align: center;
+}
+#modAttendee th {
   font-weight: normal;
   text-align: right;
 }

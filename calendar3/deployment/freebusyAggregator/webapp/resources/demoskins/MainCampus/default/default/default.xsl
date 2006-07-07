@@ -68,16 +68,19 @@
   <xsl:variable name="setup" select="/bedework-fbaggregator/urlPrefixes/setup"/>
   <xsl:variable name="initialise" select="/bedework-fbaggregator/urlPrefixes/initialise"/>
   <xsl:variable name="fetchFreeBusy" select="/bedework-fbaggregator/urlPrefixes/fetchFreeBusy"/>
-  <xsl:variable name="manageAttendees" select="/bedework-fbaggregator/urlPrefixes/manageUsers"/>
-  <xsl:variable name="addUser" select="/bedework-fbaggregator/urlPrefixes/addUser"/>
+  <xsl:variable name="manageAttendees" select="/bedework-fbaggregator/urlPrefixes/manageAttendees"/>
+  <xsl:variable name="showAddAttendee" select="/bedework-fbaggregator/urlPrefixes/showAddAttendee"/>
+  <xsl:variable name="editAttendee" select="/bedework-fbaggregator/urlPrefixes/editAttendee"/>
+  <xsl:variable name="addAttendee" select="/bedework-fbaggregator/urlPrefixes/addAttendee"/>
   <xsl:variable name="getTimeZones" select="/bedework-fbaggregator/urlPrefixes/getTimeZones"/>
 
 
   <!-- URL of the web application - includes web context
   <xsl:variable name="urlPrefix" select="/bedework-fbaggregator/urlprefix"/> -->
 
-  <!-- Other generally useful global variables
-  <xsl:variable name="prevdate" select="/bedework-fbaggregator/previousdate"/>
+  <!-- Other generally useful global variables-->
+  <xsl:variable name="currentTimezone">America/New_York</xsl:variable><!-- for now just set it -->
+  <!--<xsl:variable name="prevdate" select="/bedework-fbaggregator/previousdate"/>
   <xsl:variable name="nextdate" select="/bedework-fbaggregator/nextdate"/>
   <xsl:variable name="curdate" select="/bedework-fbaggregator/currentdate/date"/>
   <xsl:variable name="skin">default</xsl:variable>
@@ -121,8 +124,11 @@
           </div>
         </xsl:if>
         <xsl:choose>
-          <xsl:when test="/bedework-fbaggregator/page='manageUsers'">
+          <xsl:when test="/bedework-fbaggregator/page='manageAttendees'">
             <xsl:call-template name="manageAttendees"/>
+          </xsl:when>
+          <xsl:when test="/bedework-fbaggregator/page='addAttendee'">
+            <xsl:call-template name="addAttendee"/>
           </xsl:when>
           <xsl:when test="/bedework-fbaggregator/page='timeZones'">
             <xsl:apply-templates select="/bedework-fbaggregator/timezones"/>
@@ -230,23 +236,19 @@
                           </xsl:choose>
                         </span>
                       </th>
-                      <th colspan="16">
+                      <th colspan="32" class="right">
                         <xsl:value-of select="$startDate"/> to <xsl:value-of select="$endDate"/>
-                      </th>
-                      <th colspan="16">
-                        America/New_York <span class="subLink">[<a href="{$getTimeZones}">change</a>]</span>
-                        <!--<form name="timezones" action="setTimeZone" method="post">
-                          <select name="timezone">
+                        <select name="timezone" id="timezonesDropDown">
                           <xsl:for-each select="/bedework-fbaggregator/timezones/tzid">
                             <option>
                               <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
+                              <xsl:if test="node() = $currentTimezone"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
                               <xsl:value-of select="."/>
                             </option>
                           </xsl:for-each>
                         </select>
-                        <input type="submit" value="change"/>
-                          <span class="tzLink">[<a href="{$getTimeZones}">map</a>]</span>
-                        </form>-->
+                        <!--<input type="submit" value="change" id="timezonesButton"/>
+                        <span class="subLink">[<a href="{$getTimeZones}">map</a>]</span>-->
                       </th>
                     </tr>
                     <tr>
@@ -342,15 +344,15 @@
           </td>
         </tr>
         <tr>
-          <td id="userCell" colspan="2">
+          <td id="attendeeCell" colspan="2">
             <h4>attendees <span class="subLink">[<a href="{$manageAttendees}">manage</a>]</span></h4>
             <p>
               Aggregate for
               <input type="radio" name="all" value="true" checked="checked"/>all attendees
               <input type="radio" name="all" value="false"/>selected attendees
             </p>
-             <table id="users">
-               <xsl:for-each select="/bedework-fbaggregator/users/user">
+             <table id="attendees">
+               <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
                  <xsl:variable name="account" select="account"/>
                  <xsl:variable name="accountClass">
                      <xsl:choose>
@@ -363,7 +365,7 @@
                       <input type="checkbox" checked="checked" value="{$account}" name="account"/>
                     </td>
                     <td>
-                      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="attendee"/>
                     </td>
                     <td>
                       <a href="{$fetchFreeBusy}&amp;account={$account}&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display {$account}'s freebusy" class="{$accountClass}">
@@ -383,7 +385,7 @@
                   <xsl:when test="kind='0'">--><!-- kind = user -->
                     <!--<tr>
                       <td>
-                        <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                        <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="attendee"/>
                       </td>
                       <td>
                         <xsl:value-of select="account"/>
@@ -441,10 +443,50 @@
   <xsl:template name="manageAttendees">
     <div id="content">
       <h2>Manage Attendees</h2>
-      <form action="{$addUser}" method="post">
-        <fieldset id="modUser">
-          <legend>Add user/group:</legend>
-          <table>
+      <p><a href="{$showAddAttendee}"><input type="button" value="add attendee"/></a></p>
+      <fieldset id="attendeeList">
+        <legend>Edit/remove attendees:</legend>
+        <table cellspacing="0">
+          <tr class="header">
+            <td class="editIcon">edit</td>
+            <th>account</th>
+            <th>type</th>
+            <th>host</th>
+            <th>port</th>
+            <th>secure</th>
+            <th>url</th>
+            <td class="trashIcon">remove</td>
+          </tr>
+          <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
+            <xsl:variable name="rowClass">
+              <xsl:choose>
+                <xsl:when test="position() mod 2 = 1">a</xsl:when>
+                <xsl:otherwise>b</xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <tr class="{$rowClass}">
+              <td class="editIcon"><img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="remove"/></td>
+              <td><xsl:value-of select="account"/></td>
+              <td><xsl:value-of select="type"/></td>
+              <td><xsl:value-of select="host"/></td>
+              <td><xsl:value-of select="port"/></td>
+              <td><xsl:value-of select="secure"/></td>
+              <td><xsl:value-of select="url"/></td>
+              <td class="trashIcon"><img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/></td>
+            </tr>
+          </xsl:for-each>
+        </table>
+      </fieldset>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="addAttendee">
+    <div id="content">
+      <h2>Manage Attendees</h2>
+      <form action="{$addAttendee}" method="post">
+        <fieldset id="modAttendee">
+          <legend>Add attendee:</legend>
+          <table cellspacing="0">
             <tr>
               <th>Attendee's account:</th>
               <td>
@@ -479,7 +521,7 @@
               <th>Authorized user's password:</th>
               <td>
                 <input
-                 type="text"
+                 type="password"
                  name="authPw"
                  size="40"
                  value="" /></td>
