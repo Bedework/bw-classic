@@ -44,12 +44,15 @@ body {
   width: 100%;
   border-top: 1px solid #ccc;
   font-size: 0.8em;
+  margin: 0;
+}
+#bodyBlock td {
+  vertical-align: top;
 }
 #bodyBlock td#fbForm {
   width: 120px;
   padding: 0;
   border-right: 1px solid #ccc;
-  vertical-align: top;
   white-space: nowrap;
 }
 #bodyBlock td#fbForm #dateForm {
@@ -69,10 +72,6 @@ body {
   margin: 0 0 1em 0;
   border-bottom: 1px solid #ddd;
   /*border-top: 1px solid #ddd;*/
-}
-#bodyBlock td#userCell h4 {
-  text-align: left;
-  padding-left: 1em;
 }
 #bodyBlock td#fbForm p {
   margin: 0 0 0.5em 0;
@@ -107,21 +106,29 @@ h2 {
   background: transparent;
   font-style: italic;
 }
-#bodyBlock .tzLink {
+#bodyBlock .subLink {
   font-size: 0.9em;
   font-weight: normal;
 }
-#bodyBlock .tzLink a {
+#bodyBlock .subLink a {
   text-decoration: none;
 }
-#bodyBlock .tzLink a:hover {
+#bodyBlock .subLink a:hover {
   text-decoration: underline;
 }
 #bodyBlock #frontPage {
   text-align: center;
 }
-#bodyBlock td#users {
-  margin: 1em auto 0 auto;
+#bodyBlock td#userCell h4 {
+  margin-top: 0;
+  text-align: left;
+  padding-left: 1em;
+}
+#bodyBlock td#userCell p {
+  margin: 0.5em;
+}
+#bodyBlock table#users {
+  margin: 1em;
   padding: 0;
 }
 #bodyBlock td#logos {
@@ -172,8 +179,8 @@ h2 {
 }
 #freeBusy td.tentative,
 #freeBusyKey td.tentative {
-  color: #eee;
-  background: #eee url('../../resources/tentativeLines.gif') top;
+  color: #ddd;
+  background: #ddd url('../../resources/tentativeLines.gif') top;
 }
 #freeBusyKey {
   margin: 0.5em auto 0 auto;
@@ -191,7 +198,7 @@ h2 {
   text-decoration: none;
 }
 #freeBusy td.tentative a  {
-  color: #eee;
+  color: #ddd;
   background-color: transparent;
   display: block;
   padding: 3px 3px;
@@ -225,6 +232,16 @@ h2 {
 #content img {
   margin: 1em auto;
 }
+#modUser legend {
+  font-weight: bold;
+}
+#modUser table {
+  display: block;
+}
+#modUser th {
+  font-weight: normal;
+  text-align: right;
+}
 #footer {
   font-size: 0.75em;
   text-align : center;
@@ -241,6 +258,7 @@ h2 {
   color: #333;
   background-color: transparent;
   text-decoration: underline;
+  margin: 0;
 }
 /*   LINKS    */
 a:link, a:active, a:visited {

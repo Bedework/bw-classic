@@ -68,7 +68,7 @@
   <xsl:variable name="setup" select="/bedework-fbaggregator/urlPrefixes/setup"/>
   <xsl:variable name="initialise" select="/bedework-fbaggregator/urlPrefixes/initialise"/>
   <xsl:variable name="fetchFreeBusy" select="/bedework-fbaggregator/urlPrefixes/fetchFreeBusy"/>
-  <xsl:variable name="manageUsers" select="/bedework-fbaggregator/urlPrefixes/manageUsers"/>
+  <xsl:variable name="manageAttendees" select="/bedework-fbaggregator/urlPrefixes/manageUsers"/>
   <xsl:variable name="addUser" select="/bedework-fbaggregator/urlPrefixes/addUser"/>
   <xsl:variable name="getTimeZones" select="/bedework-fbaggregator/urlPrefixes/getTimeZones"/>
 
@@ -95,8 +95,20 @@
         <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
         <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
         <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
+        <script language="JavaScript" type="text/javascript">
+          <xsl:comment>
+          <![CDATA[
+          // select first element when the page is loaded
+          // if a form exists on the page
+          function selectFirstElement() {
+            if (window.document.forms[0]) {
+              window.document.forms[0].elements[0].select();
+            }
+          }]]>
+          </xsl:comment>
+        </script>
       </head>
-      <body>
+      <body onload="selectFirstElement()">
         <xsl:call-template name="headBar"/>
         <xsl:if test="/bedework-fbaggregator/message">
           <div id="messages">
@@ -110,7 +122,7 @@
         </xsl:if>
         <xsl:choose>
           <xsl:when test="/bedework-fbaggregator/page='manageUsers'">
-            <xsl:call-template name="manageUsers"/>
+            <xsl:call-template name="manageAttendees"/>
           </xsl:when>
           <xsl:when test="/bedework-fbaggregator/page='timeZones'">
             <xsl:apply-templates select="/bedework-fbaggregator/timezones"/>
@@ -137,7 +149,7 @@
     </div>
     <div id="menuBar">
       <a href="{$setup}">Display Freebusy</a> |
-      <a href="{$manageUsers}">User Management</a>
+      <a href="{$manageAttendees}&amp;refreshXslt=yes">Manage Attendees</a>
     </div>
   </xsl:template>
 
@@ -157,7 +169,6 @@
      action="{$fetchFreeBusy}"
      enctype="multipart/form-data"
      id="freebusyForm">
-     <input type="hidden" name="all" value="true"/>
       <table id="bodyBlock" cellspacing="0">
         <tr>
           <td id="fbForm">
@@ -223,7 +234,7 @@
                         <xsl:value-of select="$startDate"/> to <xsl:value-of select="$endDate"/>
                       </th>
                       <th colspan="16">
-                        America/New_York <span class="tzLink">[<a href="{$getTimeZones}">change</a>]</span>
+                        America/New_York <span class="subLink">[<a href="{$getTimeZones}">change</a>]</span>
                         <!--<form name="timezones" action="setTimeZone" method="post">
                           <select name="timezone">
                           <xsl:for-each select="/bedework-fbaggregator/timezones/tzid">
@@ -264,20 +275,7 @@
                     </tr>
                     <xsl:for-each select="day">
                       <tr>
-                        <td></td>
-                        <!-- for now, don't display dates. We need to produce these
-                             for each day.
-                        <xsl:choose>
-                          <xsl:when test="position()=1">
-                            <td class="dayDate"><xsl:value-of select="substring-after($startDate,'-')"/></td>
-                          </xsl:when>
-                          <xsl:when test="position()=last()">
-                            <td class="dayDate"><xsl:value-of select="substring-after($endDate,'-')"/></td>
-                          </xsl:when>
-                          <xsl:otherwise>
-                            <td></td>
-                          </xsl:otherwise>
-                        </xsl:choose>-->
+                        <td class="dayDate"><xsl:value-of select="number(substring(dateString,5,2))"/>-<xsl:value-of select="number(substring(dateString,7,2))"/></td>
                         <xsl:for-each select="period">
                           <xsl:variable name="startTime" select="start"/>
                           <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
@@ -324,7 +322,9 @@
                     </a>
                   </p>
                   <h2>CalDAV Freebusy Aggregator</h2>
-                  <p>To begin, enter a date range on the left and click "aggregate".</p>
+                  <p>To begin, <a href="{$manageAttendees}">add attendees</a>,
+                  <!--<a href="javascript:document.freebusyForm.startdt.select();">-->
+                  enter a date range<!--</a>--> on the left and click "aggregate".</p>
                 </div>
               </xsl:otherwise>
             </xsl:choose>
@@ -343,24 +343,30 @@
         </tr>
         <tr>
           <td id="userCell" colspan="2">
-            <h4>attendees</h4>
+            <h4>attendees <span class="subLink">[<a href="{$manageAttendees}">manage</a>]</span></h4>
             <p>
-              aggregate for
+              Aggregate for
               <input type="radio" name="all" value="true" checked="checked"/>all attendees
               <input type="radio" name="all" value="false"/>selected attendees
             </p>
              <table id="users">
                <xsl:for-each select="/bedework-fbaggregator/users/user">
                  <xsl:variable name="account" select="account"/>
-                 <tr>
+                 <xsl:variable name="accountClass">
+                     <xsl:choose>
+                       <xsl:when test="/bedework-fbaggregator/freebusy/who=$account">selected</xsl:when>
+                       <xsl:otherwise>none</xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+                  <tr>
                     <td>
-                      <input type="checkbox" checked="checked" name="acccount"/>
+                      <input type="checkbox" checked="checked" value="{$account}" name="account"/>
                     </td>
                     <td>
                       <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
                     </td>
                     <td>
-                      <a href="{$fetchFreeBusy}&amp;account={$account}&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display {$account}'s freebusy">
+                      <a href="{$fetchFreeBusy}&amp;account={$account}&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display {$account}'s freebusy" class="{$accountClass}">
                         <xsl:value-of select="account"/>
                       </a>
                     </td>
@@ -432,18 +438,104 @@
     </div>
   </xsl:template>
 
-  <xsl:template name="manageUsers">
-    <form action="{$addUser}" method="post">
-        Add user/group:<br/>
-        <input
-         type="text"
-         name="account"
-         size="6"
-         value="" />
-         <input type="submit" value="add"/><br/>
-         <input type="radio" value="user" name="kind" checked="checked"/>user <!--
-      --><input type="radio" value="group" name="kind"/>group
-    </form>
+  <xsl:template name="manageAttendees">
+    <div id="content">
+      <h2>Manage Attendees</h2>
+      <form action="{$addUser}" method="post">
+        <fieldset id="modUser">
+          <legend>Add user/group:</legend>
+          <table>
+            <tr>
+              <th>Attendee's account:</th>
+              <td>
+                <input
+                 type="text"
+                 name="account"
+                 size="40"
+                 value="" />
+                 <xsl:text> </xsl:text>
+                 <em>e.g. attendee@somehost.org</em>
+               </td>
+             </tr>
+             <tr>
+              <th></th>
+              <td>
+                 <input type="radio" value="user" name="kind" checked="checked"/>user <!--
+              --><input type="radio" value="group" name="kind"/>group
+              </td>
+            </tr>
+            <tr>
+              <th>Authorized user:</th>
+              <td><input
+                 type="text"
+                 name="authUser"
+                 size="40"
+                 value="" />
+                 <xsl:text> </xsl:text>
+                 <em>user requesting freebusy data</em>
+               </td>
+            </tr>
+            <tr>
+              <th>Authorized user's password:</th>
+              <td>
+                <input
+                 type="text"
+                 name="authPw"
+                 size="40"
+                 value="" /></td>
+            </tr>
+            <tr>
+              <th>Host:</th>
+              <td>
+                <input
+                 type="text"
+                 name="host"
+                 size="60"
+                 value="" /></td>
+            </tr>
+            <tr>
+              <th>Port:</th>
+              <td>
+                <input
+                 type="text"
+                 name="port"
+                 size="8"
+                 value="" /></td>
+            </tr>
+            <tr>
+              <th>Secure:</th>
+              <td>
+                <input
+                 type="radio"
+                 name="secure"
+                 value="true" />yes
+                <input
+                 type="radio"
+                 name="secure"
+                 value="false"
+                 checked="checked"/>no
+               </td>
+            </tr>
+            <tr>
+              <th>URL:</th>
+              <td>
+                <input
+                 type="text"
+                 name="url"
+                 size="60"
+                 value="" /></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td>
+                <input type="submit" value="add"/>
+                <input type="submit" value="cancel"/>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+      </form>
+    </div>
   </xsl:template>
 
   <xsl:template name="utilBar">
