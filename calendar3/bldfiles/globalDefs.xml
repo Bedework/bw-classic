@@ -77,6 +77,8 @@
               location="${org.bedework.calendar.dir}/caldavGoogle" />
     <property name="org.bedework.caldavClientApi.base"
               location="${org.bedework.calendar.dir}/caldavClientApi" />
+    <property name="org.bedework.caldavtest.base"
+              location="${org.bedework.calendar.dir}/caldavTest" />
     <property name="org.bedework.calenv.base" location="${org.bedework.calendar.dir}/calEnv" />
     <property name="org.bedework.calfacade.base" location="${org.bedework.calendar.dir}/calFacade" />
     <property name="org.bedework.calsvc.base" location="${org.bedework.calendar.dir}/calsvc" />

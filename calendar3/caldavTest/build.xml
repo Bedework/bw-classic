@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     This is the build.xml for the caldav test suite.
+
+     On entry we also require the usual global properties.
+
+     On exit:
+       jar files built for this component
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="caldavTest.compile" default="build" >
+  <property name="source.home" location="${org.bedework.caldavtest.base}/src"/>
+  <property name="base.name" value="caldavTest"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+  </target>
+
+  <!-- =================================================================
+       The "build" target does a build of the caldav component
+       ================================================================= -->
+
+  <target name="build" depends="init"
+          description="Build calendar test">
+
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+      <include name="org/bedework/caldav/test/**/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/caldav/test/**/*.class"/>
+    </patternset>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <pathelement location="${httpclient.jar}"/>
+      <pathelement location="${ical4j.jar}"/>
+      <pathelement location="${log4j.jar}"/>
+
+      <!-- Include the location of the compiled calendar classes -->
+      <pathelement location="${org.bedework.ical.jar}"/>
+      <pathelement location="${org.bedework.caldavClientApi.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+    </path>
+
+    <property name="build.jar.file" location="${org.bedework.caldavtest.jar}" />
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+</project>

@@ -96,8 +96,8 @@
                    bld.http,bld.caldavclientapi,
                    bld.calsvci,bld.mail,bld.logging,
                    bld.calsvc,bld.appcommon,bld.uportal,
-                   bld.webadmin,bld.webclient,
-                   bld.synchml,bld.caldav,bld.caldavGoogle,
+                   bld.webadmin,bld.webclient,bld.synchml,
+                   bld.caldav,bld.caldavGoogle,bld.caldavTest,
                    bld.timers,build.tools,
                    bld.dumprestore,
                    bld.test,bld.config"
@@ -385,14 +385,35 @@
            target="build" />
   </target>
 
-  <!-- ======================== caldavclientapi target =======================
-       This builds the http-client classes jar.
+  <!-- ======================== caldav Targets ========================
        ================================================================= -->
 
   <target name="bld.caldavclientapi"
           depends="init,bld.http,bld.davdefs,bld.calfacade"
           description="Build calendar caldav client api classes jar">
       <ant antfile="${org.bedework.caldavClientApi.base}/build.xml" inheritrefs="true"
+           target="build" />
+  </target>
+
+  <target name="bld.caldav"
+          depends="init,bld.davdefs,bld.appcommon"
+          description="Build calendar caldav suite">
+    <ant antfile="${org.bedework.caldav.base}/build.xml" inheritrefs="true"
+           target="build" />
+  </target>
+
+  <target name="bld.caldavGoogle"
+          depends="bld.caldav"
+          description="Build calendar caldav Google interface"
+          if="org.bedework.build.caldav.google">
+    <ant antfile="${org.bedework.caldavgoogle.base}/build.xml" inheritrefs="true"
+           target="build" />
+  </target>
+
+  <target name="bld.caldavTest"
+          depends="bld.caldav"
+          description="Build caldav test suite" >
+    <ant antfile="${org.bedework.caldavtest.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
 
@@ -524,24 +545,6 @@
       <property name="org.bedework.clone.name" value="${org.bedework.clone.default}" />
       <property name="app.debug.val" value="9" />
     </ant>
-  </target>
-
-  <!-- ======================== caldav Targets ========================
-       ================================================================= -->
-
-  <target name="bld.caldav"
-          depends="init,bld.davdefs,bld.appcommon"
-          description="Build calendar caldav suite">
-    <ant antfile="${org.bedework.caldav.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-
-  <target name="bld.caldavGoogle"
-          depends="bld.caldav"
-          description="Build calendar caldav Google interface"
-          if="org.bedework.build.caldav.google">
-    <ant antfile="${org.bedework.caldavgoogle.base}/build.xml" inheritrefs="true"
-           target="build" />
   </target>
 
   <!-- ======================== config Target ========================
