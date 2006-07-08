@@ -23,16 +23,20 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.freebusyServer;
+package edu.rpi.cct.bedework.caldav;
 
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;
 import org.bedework.icalendar.IcalTranslator;
 
+import net.fortuna.ical4j.model.TimeZone;
+
 import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.List;
 
 /** Translate to/from ical. This requires the ability to get timezone info so
  * we use the bedework svci and ical translator.
@@ -42,18 +46,47 @@ import java.util.Collection;
 public class IcalTrans {
   private boolean debug;
 
-  private CalSvcI svci;
-  private IcalTranslator trans;
+  private transient CalSvcI svci;
+  private transient IcalTranslator trans;
 
   /** Constructor
    *
    * @param debug
-   * @throws Throwable
    */
-  public IcalTrans(boolean debug) throws Throwable {
+  public IcalTrans(boolean debug) {
     this.debug = debug;
+  }
 
-    getSvci(); //
+  /**
+   * @throws CalFacadeException
+   */
+  public void open() throws CalFacadeException {
+    getSvci();
+  }
+
+  /**
+   * @return CalTimezones
+   * @throws CalFacadeException
+   */
+  public CalTimezones getTimezones() throws CalFacadeException {
+    return svci.getTimezones();
+  }
+
+  /**
+   * @return TimeZone
+   * @throws CalFacadeException
+   */
+  public TimeZone getDefaultTimeZone() throws CalFacadeException {
+    return svci.getTimezones().getDefaultTimeZone();
+  }
+
+  /**
+   * @param tzid
+   * @return TimeZone
+   * @throws CalFacadeException
+   */
+  public TimeZone getTimeZone(String tzid) throws CalFacadeException {
+    return svci.getTimezones().getTimeZone(tzid);
   }
 
   /**
@@ -61,8 +94,6 @@ public class IcalTrans {
    * @throws CalFacadeException
    */
   private void getSvci() throws CalFacadeException {
-    boolean publicMode = true;
-
     if (svci != null) {
       if (!svci.isOpen()) {
         svci.open();
@@ -80,7 +111,7 @@ public class IcalTrans {
                                        null, // account,
                                        null, // calSuite,
                                        "org.bedework.app.freebusy.",
-                                       publicMode,
+                                       false,  // publicAdmin
                                        true,    // caldav
                                        null, // synchId
                                        debug);

@@ -269,6 +269,7 @@
     </copy>
 
     <antcall target="jboss-stuff" inheritRefs="true" />
+    <antcall target="google-stuff" inheritRefs="true" />
 
     <!-- ===============================================================
          Any jar files required
@@ -293,10 +294,6 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.appcommon.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.webcommon.jar}" />
 
-    <!-- free busy -->
-    <copy todir="${app.dest.lib}" file="${org.bedework.fbclient.jar}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.fbaggregator.jar}" />
-
     <!-- Some more standard libs -->
     <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
     <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
@@ -306,6 +303,9 @@
 
     <!-- add the jdbcdriver if defined -->
     <antcall target="add.jdbcdriver" inheritRefs="true" />
+
+    <!-- free busy -->
+    <antcall target="add.freebusy" inheritRefs="true" />
 
      <!-- any extra -->
     <copy todir="${app.dest.lib}" >
@@ -325,6 +325,11 @@
     <!-- build the ear file for a j2ee app
     <antcall target="build.ear" inheritRefs="true" />
     -->
+  </target>
+
+  <target name="add.freebusy" if="org.bedework.build.freebusy">
+    <copy todir="${app.dest.lib}" file="${org.bedework.fbclient.jar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.fbaggregator.jar}" />
   </target>
 
   <target name="add.jdbcdriver" if="app.jdbcdriver.jar">
@@ -355,6 +360,16 @@
     <copy todir="${app.dest.docs}">
       <fileset dir="${app.sou.dir}/war/docs" />
     </copy>
+  </target>
+
+  <target name="google-stuff" if="org.bedework.build.caldav.google">
+    <copy todir="${app.dest.lib}">
+      <fileset dir="${google.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${app.dest.lib}" file="${org.bedework.caldavgoogle.jar}" />
   </target>
 
   <!-- =================================================================

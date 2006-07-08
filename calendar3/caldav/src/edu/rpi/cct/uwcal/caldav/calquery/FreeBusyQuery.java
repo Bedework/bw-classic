@@ -113,8 +113,8 @@ public class FreeBusyQuery {
       if (debug) {
         trace("Parsed time range " + timeRange);
       }
-    } catch (WebdavBadRequest wbr) {
-      throw wbr;
+    } catch (WebdavException wde) {
+      throw wde;
     } catch (Throwable t) {
       throw new WebdavBadRequest();
     }
