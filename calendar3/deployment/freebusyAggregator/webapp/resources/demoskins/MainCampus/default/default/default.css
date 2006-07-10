@@ -106,7 +106,8 @@ h2 {
   background: transparent;
   font-style: italic;
 }
-#bodyBlock .subLink {
+#bodyBlock .subLink,
+#bodyBlock .subLink option {
   font-size: 0.9em;
   font-weight: normal;
 }
@@ -242,6 +243,15 @@ h2 {
 }*/
 legend {
   font-weight: bold;
+}
+#attendeeContent {
+  margin: 1em;
+}
+#attendeeContent fieldset {
+  float: left;
+}
+#attendeeContent fieldset ul {
+  margin-left: 0;
 }
 #attendeeList tr.a td {
   background: white;

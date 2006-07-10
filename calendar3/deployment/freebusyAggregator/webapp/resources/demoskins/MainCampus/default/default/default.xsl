@@ -107,7 +107,15 @@
             if (window.document.forms[0]) {
               window.document.forms[0].elements[0].select();
             }
-          }]]>
+          }
+
+          // change the group
+          function setGroup(groupObj) {
+            if (groupObj.selectedIndex != 0) {
+              window.location = "selectGroup.do?name=" + groupObj.value;
+            }
+          }
+          ]]>
           </xsl:comment>
         </script>
       </head>
@@ -341,10 +349,10 @@
           </td>
           <td rowspan="2" id="logos">
             <h4>participants</h4>
-            <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/fbagg-logos.gif" width="100" height="403" alt="participant logos" usemap="#logoMap" border="0"/>
+            <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/fbagg-logos2.gif" width="100" height="403" alt="participant logos" usemap="#logoMap" border="0"/>
             <map name="logoMap">
-              <area shape="rect" alt="Timebridge" coords="0,340,100,380" href="http://www.timebridge.com/"/>
-              <area shape="rect" alt="OSAF" coords="0,260,100,302" href="http://www.osafoundation.org/"/>
+              <!--<area shape="rect" alt="Timebridge" coords="0,340,100,380" href="http://www.timebridge.com/"/>
+              <area shape="rect" alt="OSAF" coords="0,260,100,302" href="http://www.osafoundation.org/"/>-->
               <area shape="rect" alt="Oracle" coords="0,187,100,225" href="http://www.oracle.com"/>
               <area shape="rect" alt="Boeing" coords="0,101,100,153" href="http://www.boeing.com/"/>
               <area shape="rect" alt="Bedework" coords="0,13,100,77" href="http://www.bedework.org/bedework/"/>
@@ -353,78 +361,73 @@
         </tr>
         <tr>
           <td id="attendeeCell" colspan="2">
-            <h4>attendees <span class="subLink">[<a href="{$manageAttendees}">manage</a>]</span></h4>
-            <p>
-              Aggregate for
-              <input type="radio" name="all" value="true" checked="checked"/>all attendees
-              <input type="radio" name="all" value="false"/>selected attendees
-            </p>
-             <table id="attendees">
-               <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
-                 <xsl:variable name="account" select="account"/>
-                 <xsl:variable name="accountClass">
-                     <xsl:choose>
-                       <xsl:when test="/bedework-fbaggregator/freebusy/who=$account">selected</xsl:when>
-                       <xsl:otherwise>none</xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:variable>
-                  <tr>
-                    <td>
-                      <input type="checkbox" checked="checked" value="{$account}" name="account"/>
-                    </td>
-                    <td>
-                      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="attendee"/>
-                    </td>
-                    <td>
-                      <a href="{$fetchFreeBusy}&amp;account={$account}&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display {$account}'s freebusy" class="{$accountClass}">
-                        <xsl:value-of select="account"/>
-                      </a>
-                    </td>
-                    <td>
-                      <xsl:variable name="acct" select="account"/>
-                        <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
-                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                        <!--</a>-->
-                    </td>
-                  </tr>
+            <h4>
+              current group
+            </h4>
+            <div id="attendeeContent">
+            <xsl:value-of select="/bedework-fbaggregator/currentGroup"/>
+              <select name="selectGroup" action="" onchange="javascript:setGroup(this)">
+                <option value="">select group...</option>
+                <xsl:for-each select="/bedework-fbaggregator/groups/group">
+                  <option>
+                    <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
+                    <xsl:if test="/bedework-fbaggregator/currentGroup = node()">
+                      <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="."/>
+                  </option>
                 </xsl:for-each>
-              <!--<xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
-                <xsl:choose>
-                  <xsl:when test="kind='0'">--><!-- kind = user -->
+              </select>
+              <!--<p>
+                Aggregate for
+                <input type="radio" name="all" value="true" checked="checked"/>all attendees
+                <input type="radio" name="all" value="false"/>selected attendees
+              </p>-->
+              <xsl:choose>
+                <xsl:when test="/bedework-fbaggregator/attendees/attendee">
+                  <table id="attendees">
                     <!--<tr>
-                      <td>
-                        <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="attendee"/>
-                      </td>
-                      <td>
-                        <xsl:value-of select="account"/>
-                      </td>
-                      <td>
-                        <xsl:variable name="acct" select="account"/>
-                          <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
-                            <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                     <th>include</th>
+                     <th>required</th>
+                     <th>type</th>
+                     <th>account</th>
+                    </tr>-->
+                    <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
+                      <xsl:variable name="account" select="account"/>
+                      <tr>
+                        <!--<td>
+                          <input type="checkbox" checked="checked" value="{$account}" name="account"/>
+                        </td>
+                        <td>
+                          <input type="checkbox" checked="checked" value="required" name="required"/>
+                        </td>-->
+                        <td>
+                          <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="attendee"/>
+                        </td>
+                        <td>
+                          <a href="{$fetchFreeBusy}&amp;account={$account}&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display {$account}'s freebusy">
+                            <xsl:if test="/bedework-fbaggregator/freebusy/who=$account">
+                              <xsl:attribute name="class">selected</xsl:attribute>
+                            </xsl:if>
+                            <xsl:value-of select="account"/>
                           </a>
-                      </td>
-                    </tr>
-                  </xsl:when>
-                  <xsl:otherwise>--><!-- kind = group -->
-                    <!--<tr>
-                      <td>
-                        <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
-                      </td>
-                      <td>
-                        <strong><xsl:value-of select="account"/></strong>
-                      </td>
-                      <td>
-                        <xsl:variable name="acct" select="account"/>
-                        <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=group" title="remove">
-                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                        </a>
-                      </td>
-                    </tr>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:for-each> -->
-            </table>
+                        </td>
+                        <td>
+                          <xsl:variable name="acct" select="account"/>
+                           <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
+                             <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                           <!--</a>-->
+                        </td>
+                      </tr>
+                    </xsl:for-each>
+                  </table>
+                </xsl:when>
+                <xsl:otherwise>
+                  <p>no attendees</p>
+                </xsl:otherwise>
+              </xsl:choose>
+
+            </div>
           </td>
         </tr>
       </table>
@@ -451,7 +454,15 @@
   <xsl:template name="manageAttendees">
     <div id="content">
       <h2>Manage Attendees</h2>
-      <p><a href="{$showAddUser}"><input type="button" value="add attendee"/></a></p>
+      <fieldset id="addAttendee">
+        <legend>Search attendees:</legend>
+        <form name="addAttendeeForm">
+          <input type="text" name="holder" size="20"/>
+          <input type="submit" value="account"/>
+          <input type="submit" value="prefix"/>
+          <input type="submit" value="suffix"/>
+        </form>
+      </fieldset>
       <fieldset id="attendeeList">
         <legend>Edit/remove attendees:</legend>
         <table cellspacing="0">
