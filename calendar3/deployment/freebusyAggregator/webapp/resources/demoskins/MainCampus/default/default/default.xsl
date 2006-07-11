@@ -113,7 +113,7 @@
           </xsl:comment>
         </script>
       </head>
-      <body onload="selectFirstElement()">
+      <body>
         <xsl:call-template name="headBar"/>
         <xsl:if test="/bedework-fbaggregator/message">
           <div id="messages">
@@ -260,8 +260,8 @@
                         </tr>
                         <xsl:if test="message">
                           <tr>
-                            <td class="right"><em>message:</em></td>
-                            <td colspan="2">
+                            <td class="messageTitle">message:</td>
+                            <td colspan="2" class="message">
                               <xsl:value-of select="message"/>
                             </td>
                           </tr>
@@ -386,17 +386,17 @@
               </xsl:otherwise>
             </xsl:choose>
           </td>
-          <td rowspan="2" id="logos">
+          <!--<td rowspan="2" id="logos">
             <h4>participants</h4>
             <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/fbagg-logos2.gif" width="100" height="403" alt="participant logos" usemap="#logoMap" border="0"/>
-            <map name="logoMap">
+            <map name="logoMap">-->
               <!--<area shape="rect" alt="Timebridge" coords="0,340,100,380" href="http://www.timebridge.com/"/>
               <area shape="rect" alt="OSAF" coords="0,260,100,302" href="http://www.osafoundation.org/"/>-->
-              <area shape="rect" alt="Oracle" coords="0,187,100,225" href="http://www.oracle.com"/>
+              <!--<area shape="rect" alt="Oracle" coords="0,187,100,225" href="http://www.oracle.com"/>
               <area shape="rect" alt="Boeing" coords="0,101,100,153" href="http://www.boeing.com/"/>
               <area shape="rect" alt="Bedework" coords="0,13,100,77" href="http://www.bedework.org/bedework/"/>
             </map>
-          </td>
+          </td>-->
         </tr>
         <tr>
           <td id="groupCell" colspan="2">
@@ -467,7 +467,7 @@
                 </table>
               </xsl:when>
               <xsl:otherwise>
-                <p>no attendees</p>
+                <p id="attendees">no attendees</p>
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -533,12 +533,12 @@
           </table>
         </fieldset>
         <fieldset id="users">
-          <legend>Add attendees:</legend>
+          <legend>Search users:</legend>
           <form name="addAttendeeForm">
             <input type="text" name="holder" size="20"/>
-            <input type="submit" value="account"/>
-            <input type="submit" value="prefix"/>
-            <input type="submit" value="suffix"/>
+            <input type="submit" value="by account"/>
+            <input type="submit" value="by prefix"/>
+            <input type="submit" value="by suffix"/>
           </form>
         </fieldset>
       </form>
@@ -635,8 +635,8 @@
             <tr>
               <th></th>
               <td>
-                <input type="submit" value="add"/>
-                <input type="submit" value="cancel"/>
+                <input type="submit" name="submit" value="add"/>
+                <input type="submit" name="cancelled" value="cancel"/>
               </td>
             </tr>
           </table>

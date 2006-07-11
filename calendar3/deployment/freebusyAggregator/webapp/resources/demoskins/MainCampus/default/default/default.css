@@ -141,20 +141,29 @@ h2 {
   border-right: 1px solid #ccc;
 }
 #failures {
-  width: 100%;
-  margin: 1em 2em 0 2em;
+  width: auto;
+  margin: 2em auto;
   border: 1px solid #999;
 }
-#failures th {
+#failures th,
+#failures td {
   text-align: left;
+  padding: 6px;
 }
 #failures tr.title th {
-  color: black;
-  background: #ffd;
+  color: #ff9;
+  background: #333;
 }
 #failures tr.headers th {
   color: black;
-  background: #eee;
+  background: #bbb;
+}
+#failures td {
+  border-top: 1px solid #ddd;
+}
+#failures td.messageTitle {
+  text-align: right;
+  font-style: italic;
 }
 #freeBusy {
   margin: 1em auto;
@@ -320,6 +329,9 @@ legend {
   color: black;
   background: white !important;
   text-align: center;
+}
+#users {
+  margin-top: 1em;
 }
 #modAttendee th {
   font-weight: normal;
