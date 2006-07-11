@@ -67,6 +67,7 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
+import org.apache.log4j.Logger;
 
 import sun.misc.BASE64Encoder;
 
@@ -77,6 +78,8 @@ import sun.misc.BASE64Encoder;
 public class CaldavClientIo {
   private boolean debug;
 
+  private Logger log;
+
   private static HttpManager httpManager;
 
   private CaldavClient client;
@@ -86,21 +89,24 @@ public class CaldavClientIo {
   /**
    * @param host
    * @param port
+   * @param timeOut - millisecs, 0 for no timeout
    * @param debug
    * @throws Throwable
    */
-  public CaldavClientIo(String host, int port, boolean debug) throws Throwable {
-    this(host, port, false, debug);
+  public CaldavClientIo(String host, int port, int timeOut,
+                        boolean debug) throws Throwable {
+    this(host, port, timeOut, false, debug);
   }
 
-    /**
-     * @param host
-     * @param port
-     * @param secure
-     * @param debug
-     * @throws Throwable
-     */
-  public CaldavClientIo(String host, int port, boolean secure,
+  /**
+   * @param host
+   * @param port
+   * @param timeOut - millisecs, 0 for no timeout
+   * @param secure
+   * @param debug
+   * @throws Throwable
+   */
+  public CaldavClientIo(String host, int port, int timeOut, boolean secure,
                         boolean debug) throws Throwable {
     if (httpManager == null) {
       httpManager = new HttpManager("org.bedework.http.client.caldav.CaldavClient");
@@ -124,6 +130,8 @@ public class CaldavClientIo {
       config.setHost(new URI("http://" + host + ":" + port, false));
     }
     */
+
+    httpManager.getParams().setConnectionTimeout(timeOut);
 
     client = (CaldavClient)httpManager.getClient(config);
 
@@ -173,9 +181,11 @@ public class CaldavClientIo {
       sz = content.length;
     }
 
-    System.out.println("About to send request: method=" + method +
-                       " contentLen=" + contentLen +
-                       " content.length=" + sz);
+    if (debug) {
+       debugMsg("About to send request: method=" + method +
+                " contentLen=" + contentLen +
+                " content.length=" + sz);
+    }
 
     client.setMethodName(method, url);
 
@@ -260,6 +270,37 @@ public class CaldavClientIo {
         throw new CalFacadeException(t);
       }
     }
+  }
+
+  /** ===================================================================
+   *                   Logging methods
+   *  =================================================================== */
+
+  /**
+   * @return Logger
+   */
+  protected Logger getLogger() {
+    if (log == null) {
+      log = Logger.getLogger(this.getClass());
+    }
+
+    return log;
+  }
+
+  protected void debugMsg(String msg) {
+    getLogger().debug(msg);
+  }
+
+  protected void error(Throwable t) {
+    getLogger().error(this, t);
+  }
+
+  protected void logIt(String msg) {
+    getLogger().info(msg);
+  }
+
+  protected void trace(String msg) {
+    getLogger().debug(msg);
   }
 }
 

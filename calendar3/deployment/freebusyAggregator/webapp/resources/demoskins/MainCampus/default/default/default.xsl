@@ -215,6 +215,7 @@
                 </span>
               </p>
               <div class="dateFormat">yyyymmdd</div>
+              <input type="hidden" name="all" value="true" />
               <p class="padTop">
                 <input type="submit" value="aggregate" class="aggSubmit"/>
               </p>

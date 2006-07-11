@@ -176,7 +176,7 @@ public class TestCalDav {
         return;
       }
 
-      cio = new CaldavClientIo(host, port, debug);
+      cio = new CaldavClientIo(host, port, 0, debug);
 
       File dir = new File(dirName);
 

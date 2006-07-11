@@ -1140,6 +1140,24 @@ public abstract class UtilAbstractAction extends Action
     return Util.checkNull(req.getParameter(name));
   }
 
+  /** Get an Integer request parameter or null.
+   *
+   * @param req
+   * @param name    name of parameter
+   * @return  Integer   value or null
+   * @throws Throwable
+   */
+  protected Integer getIntReqPar(HttpServletRequest req,
+                                 String name) throws Throwable {
+    String reqpar = req.getParameter(name);
+
+    if (reqpar == null) {
+      return null;
+    }
+
+    return Integer.valueOf(reqpar);
+  }
+
   /** Get an integer valued request parameter.
    *
    * @param req
@@ -1190,7 +1208,7 @@ public abstract class UtilAbstractAction extends Action
    *
    * @param req
    * @param name    name of parameter
-   * @return  boolean   value
+   * @return  Boolean   value or null for absent parameter
    * @throws Throwable
    */
   protected Boolean getBooleanReqPar(HttpServletRequest req, String name)
@@ -1206,6 +1224,25 @@ public abstract class UtilAbstractAction extends Action
     } catch (Throwable t) {
       return null; // XXX exception?
     }
+  }
+
+  /** Get a boolean valued request parameter giving a default value.
+   *
+   * @param req
+   * @param name    name of parameter
+   * @param defVal default value for absent parameter
+   * @return  boolean   value
+   * @throws Throwable
+   */
+  protected boolean getBooleanReqPar(HttpServletRequest req, String name,
+                                     boolean defVal) throws Throwable {
+    boolean val = defVal;
+    Boolean valB = getBooleanReqPar(req, name);
+    if (valB != null) {
+      val = valB.booleanValue();
+    }
+
+    return val;
   }
 
   /* ==================================================================
