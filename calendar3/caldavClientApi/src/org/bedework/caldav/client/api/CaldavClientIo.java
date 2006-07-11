@@ -64,9 +64,11 @@ import java.io.InputStream;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.contrib.ssl.BaseProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.Protocol;
-import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
-import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
+//import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
+//import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
+import org.apache.commons.ssl.TrustMaterial;
 import org.apache.log4j.Logger;
 
 import sun.misc.BASE64Encoder;
@@ -115,11 +117,26 @@ public class CaldavClientIo {
     HostConfiguration config = new HostConfiguration();
 
     if (secure) {
+      /*
       ProtocolSocketFactory pfact = new SSLProtocolSocketFactory();
       Protocol pr = new Protocol("https", pfact, port);
       Protocol.registerProtocol( "https", pr);
+      */
+      BaseProtocolSocketFactory f = new BaseProtocolSocketFactory();
 
-      config.setHost(host, port, pr);
+      warn("Trusting all certificates");
+      // might as well trust the usual suspects:
+      //f.addTrustMaterial(TrustMaterial.CACERTS);
+      f.addTrustMaterial(TrustMaterial.TRUST_ALL);
+
+      // here's where we start trusting usertrust.com's CA:
+      //f.addTrustMaterial(new TrustMaterial(pemCert));
+
+      Protocol trustHttps = new Protocol("https", f, 443);
+      Protocol.registerProtocol("https", trustHttps);
+
+
+      config.setHost(host, port, trustHttps);
     } else {
       config.setHost(host, port);
     }
@@ -130,6 +147,9 @@ public class CaldavClientIo {
       config.setHost(new URI("http://" + host + ":" + port, false));
     }
     */
+    if (debug) {
+      debugMsg("uri set to " + config.getHostURL());
+    }
 
     httpManager.getParams().setConnectionTimeout(timeOut);
 
@@ -293,6 +313,10 @@ public class CaldavClientIo {
 
   protected void error(Throwable t) {
     getLogger().error(this, t);
+  }
+
+  protected void warn(String msg) {
+    getLogger().warn(msg);
   }
 
   protected void logIt(String msg) {

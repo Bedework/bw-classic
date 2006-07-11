@@ -39,6 +39,7 @@
     <!-- ==================== Compilation Classpath ==================== -->
 
     <path id="compile.classpath">
+      <pathelement location="${commons-ssl.jar}"/>
       <pathelement location="${httpclient.jar}"/>
       <pathelement location="${ical4j.jar}"/>
       <pathelement location="${log4j.jar}"/>

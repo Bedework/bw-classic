@@ -300,6 +300,7 @@
     <copy todir="${app.dest.lib}" file="${commons-codec.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-collections.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-httclient.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-ssl.jar}"/>
 
     <!-- add the jdbcdriver if defined -->
     <antcall target="add.jdbcdriver" inheritRefs="true" />
