@@ -162,7 +162,7 @@
       <!--<h1>Calconnect Boeing CalDav Freebusy Aggregator</h1>-->
     </div>
     <div id="menuBar">
-      <a href="{$setup}">Display Freebusy</a> |
+      <a href="{$setup}&amp;refreshXslt=yes">Display Freebusy</a> |
       <a href="{$showAddUser}&amp;refreshXslt=yes">Register User</a>
     </div>
   </xsl:template>
@@ -341,9 +341,8 @@
                     </a>
                   </p>
                   <h2>CalDAV Freebusy Aggregator</h2>
-                  <p>To begin, <a href="{$manageAttendees}">add attendees</a>,
-                  <!--<a href="javascript:document.freebusyForm.startdt.select();">-->
-                  enter a date range<!--</a>--> on the left and click "aggregate".</p>
+                  <p>To begin, select or create a group of attendees,<br/>
+                  enter a date range on the left and click "aggregate".</p>
                 </div>
               </xsl:otherwise>
             </xsl:choose>
@@ -361,29 +360,35 @@
           </td>
         </tr>
         <tr>
-          <td id="attendeeCell" colspan="2">
+          <td id="groupCell" colspan="2">
             <h4>
               current group
             </h4>
-            <div id="attendeeContent">
-            <xsl:value-of select="/bedework-fbaggregator/currentGroup"/>
-              <select name="selectGroup" action="" onchange="javascript:setGroup(this)">
-                <option value="">select group...</option>
-                <xsl:for-each select="/bedework-fbaggregator/groups/group">
-                  <option>
-                    <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
-                    <xsl:if test="/bedework-fbaggregator/currentGroup = node()">
-                      <xsl:attribute name="selected">selected</xsl:attribute>
-                    </xsl:if>
-                    <xsl:value-of select="."/>
-                  </option>
-                </xsl:for-each>
-              </select>
-              <!--<p>
-                Aggregate for
-                <input type="radio" name="all" value="true" checked="checked"/>all attendees
-                <input type="radio" name="all" value="false"/>selected attendees
-              </p>-->
+            <div id="groupContent">
+              <div id="groupMenu">
+                <select name="selectGroup" action="" onchange="javascript:setGroup(this)">
+                  <option value="">select group...</option>
+                  <xsl:for-each select="/bedework-fbaggregator/groups/group">
+                    <option>
+                      <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
+                      <xsl:if test="/bedework-fbaggregator/currentGroup = node()">
+                        <xsl:attribute name="selected">selected</xsl:attribute>
+                      </xsl:if>
+                      <xsl:value-of select="."/>
+                    </option>
+                  </xsl:for-each>
+                </select>
+                <ul>
+                  <li><a href="{$manageAttendees}">modify</a></li>
+                  <li>duplicate</li>
+                  <li>create</li>
+                </ul>
+                <!--<p>
+                  Aggregate for
+                  <input type="radio" name="all" value="true" checked="checked"/>all attendees
+                  <input type="radio" name="all" value="false"/>selected attendees
+                </p>-->
+              </div>
               <xsl:choose>
                 <xsl:when test="/bedework-fbaggregator/attendees/attendee">
                   <table id="attendees">
@@ -413,12 +418,9 @@
                             <xsl:value-of select="account"/>
                           </a>
                         </td>
-                        <td>
-                          <xsl:variable name="acct" select="account"/>
-                           <!--<a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">-->
-                             <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                           <!--</a>-->
-                        </td>
+                        <!--<td>
+                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                        </td>-->
                       </tr>
                     </xsl:for-each>
                   </table>
@@ -427,7 +429,6 @@
                   <p>no attendees</p>
                 </xsl:otherwise>
               </xsl:choose>
-
             </div>
           </td>
         </tr>

@@ -120,12 +120,12 @@ h2 {
 #bodyBlock #frontPage {
   text-align: center;
 }
-#bodyBlock td#attendeeCell h4 {
+#bodyBlock td#groupCell h4 {
   margin-top: 0;
   text-align: left;
   padding-left: 1em;
 }
-#bodyBlock td#attendeeCell p {
+#bodyBlock td#groupCell p {
   margin: 0.5em;
 }
 #bodyBlock table#attendees {
@@ -244,14 +244,33 @@ h2 {
 legend {
   font-weight: bold;
 }
-#attendeeContent {
+#groupContent {
   margin: 1em;
 }
-#attendeeContent fieldset {
+#groupContent fieldset {
   float: left;
 }
-#attendeeContent fieldset ul {
+#groupContent fieldset ul {
   margin-left: 0;
+}
+#groupContent select  {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+#groupMenu {
+  float: left;
+  margin: 0 1em 0 0;
+}
+#groupMenu ul {
+  margin: 0 0 0 1.5em;
+  padding: 0;
+}
+#groupMenu li {
+  margin-top: 0.5em;
+}
+#attendees {
+  margin: 0;
+  padding: 0;
 }
 #attendeeList tr.a td {
   background: white;
