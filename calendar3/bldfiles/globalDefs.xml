@@ -75,6 +75,8 @@
     <property name="org.bedework.caldav.base" location="${org.bedework.calendar.dir}/caldav" />
     <property name="org.bedework.caldavgoogle.base"
               location="${org.bedework.calendar.dir}/caldavGoogle" />
+    <property name="org.bedework.caldavdomino.base"
+              location="${org.bedework.calendar.dir}/caldavDomino" />
     <property name="org.bedework.caldavClientApi.base"
               location="${org.bedework.calendar.dir}/caldavClientApi" />
     <property name="org.bedework.caldavtest.base"

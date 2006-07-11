@@ -270,6 +270,7 @@
 
     <antcall target="jboss-stuff" inheritRefs="true" />
     <antcall target="google-stuff" inheritRefs="true" />
+    <antcall target="domino-stuff" inheritRefs="true" />
 
     <!-- ===============================================================
          Any jar files required
@@ -371,6 +372,10 @@
     </copy>
 
     <copy todir="${app.dest.lib}" file="${org.bedework.caldavgoogle.jar}" />
+  </target>
+
+  <target name="domino-stuff" if="org.bedework.build.caldav.domino">
+    <copy todir="${app.dest.lib}" file="${org.bedework.caldavdomino.jar}" />
   </target>
 
   <!-- =================================================================
