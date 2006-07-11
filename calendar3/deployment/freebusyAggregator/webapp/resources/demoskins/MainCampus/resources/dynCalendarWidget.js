@@ -31,7 +31,7 @@
         */
     // Todays date
     this.today          = new Date();
-    this.today.setFullYear(2006,5,21);
+    //this.today.setFullYear(2006,5,21);
     this.date           = this.today.getDate();
     this.month          = this.today.getMonth();
     this.year           = this.today.getFullYear();

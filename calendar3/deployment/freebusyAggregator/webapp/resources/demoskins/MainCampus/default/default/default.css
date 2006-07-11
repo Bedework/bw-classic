@@ -147,7 +147,6 @@ h2 {
 }
 #failures th {
   text-align: left;
-  text-transform: small-caps;
 }
 #failures tr.title th {
   color: black;
@@ -261,22 +260,17 @@ h2 {
 legend {
   font-weight: bold;
 }
-#groupContent {
-  margin: 1em;
+#groupCell {
+  padding: 0;
 }
-#groupContent fieldset {
-  float: left;
-}
-#groupContent fieldset ul {
-  margin-left: 0;
-}
-#groupContent select  {
+#groupCell select  {
   font-weight: bold;
   font-size: 1.2em;
+  margin: 0;
 }
 #groupMenu {
   float: left;
-  margin: 0 1em 0 0;
+  margin: 0.5em 1em 1em 1em;
 }
 #groupMenu ul {
   margin: 0 0 0 1.5em;
@@ -286,7 +280,8 @@ legend {
   margin-top: 0.5em;
 }
 #attendees {
-  margin: 0;
+  float: left;
+  margin: 1em;
   padding: 0;
 }
 #attendeeList table {

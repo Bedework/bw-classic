@@ -109,13 +109,6 @@
               window.document.forms[0].elements[0].select();
             }
           }
-
-          // change the group
-          function setGroup(groupObj) {
-            if (groupObj.selectedIndex != 0) {
-              window.location = "selectGroup.do?name=" + groupObj.value;
-            }
-          }
           ]]>
           </xsl:comment>
         </script>
@@ -195,7 +188,8 @@
                  type="text"
                  name="startdt"
                  size="8"
-                 value="{$startdt}" />
+                 value="{$startdt}"
+                 onfocus="enableFbSubmit('start')"/>
                 <span class="calWidget">
                   <script language="JavaScript" type="text/javascript">
                     startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
@@ -208,7 +202,8 @@
                  type="text"
                  name="enddt"
                  size="8"
-                 value="{$enddt}" />
+                 value="{$enddt}"
+                 onfocus="enableFbSubmit('end')"/>
                 <span class="calWidget">
                   <script language="JavaScript" type="text/javascript">
                     endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback','<xsl:value-of select="$resourcesRoot"/>/resources/');
@@ -216,9 +211,12 @@
                 </span>
               </p>
               <div class="dateFormat">yyyymmdd</div>
-              <input type="hidden" name="all" value="true" />
               <p class="padTop">
-                <input type="submit" value="aggregate" class="aggSubmit"/>
+                <input type="submit" name="submitFb" value="aggregate" class="aggSubmit">
+                  <xsl:if test="$startdt = '' and $enddt = ''">
+                    <xsl:attribute name="disabled">disabled</xsl:attribute>
+                  </xsl:if>
+                </input>
               </p>
             </div>
           </td>
@@ -402,75 +400,76 @@
         </tr>
         <tr>
           <td id="groupCell" colspan="2">
+            <input type="hidden" name="all" value="true" />
+            <input type="hidden" name="account" value="" />
             <h4>
               current group
             </h4>
-            <div id="groupContent">
-              <div id="groupMenu">
-                <select name="selectGroup" action="" onchange="javascript:setGroup(this)">
-                  <option value="">select group...</option>
-                  <xsl:for-each select="/bedework-fbaggregator/groups/group">
-                    <option>
-                      <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
-                      <xsl:if test="/bedework-fbaggregator/currentGroup = node()">
-                        <xsl:attribute name="selected">selected</xsl:attribute>
-                      </xsl:if>
-                      <xsl:value-of select="."/>
-                    </option>
-                  </xsl:for-each>
-                </select>
-                <ul>
-                  <li><a href="{$manageGroup}">modify</a></li>
-                  <li>duplicate</li>
-                  <li>create</li>
-                </ul>
-                <!--<p>
-                  Aggregate for
-                  <input type="radio" name="all" value="true" checked="checked"/>all attendees
-                  <input type="radio" name="all" value="false"/>selected attendees
-                </p>-->
-              </div>
-              <xsl:choose>
-                <xsl:when test="/bedework-fbaggregator/attendees/attendee">
-                  <table id="attendees">
-                    <!--<tr>
-                     <th>include</th>
-                     <th>required</th>
-                     <th>type</th>
-                     <th>account</th>
-                    </tr>-->
-                    <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
-                      <xsl:variable name="account" select="account"/>
-                      <tr>
-                        <!--<td>
-                          <input type="checkbox" checked="checked" value="{$account}" name="account"/>
-                        </td>
-                        <td>
-                          <input type="checkbox" checked="checked" value="required" name="required"/>
-                        </td>-->
-                        <td>
-                          <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="attendee"/>
-                        </td>
-                        <td>
-                          <a href="{$fetchFreeBusy}&amp;account={$account}&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display {$account}'s freebusy">
-                            <xsl:if test="/bedework-fbaggregator/freebusy/who=$account">
-                              <xsl:attribute name="class">selected</xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="account"/>
-                          </a>
-                        </td>
-                        <!--<td>
-                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                        </td>-->
-                      </tr>
-                    </xsl:for-each>
-                  </table>
-                </xsl:when>
-                <xsl:otherwise>
-                  <p>no attendees</p>
-                </xsl:otherwise>
-              </xsl:choose>
+            <div id="groupMenu">
+              <select name="selectGroup" action="" onchange="javascript:setGroup(this)">
+                <option value="">select group...</option>
+                <xsl:for-each select="/bedework-fbaggregator/groups/group">
+                  <option>
+                    <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
+                    <xsl:if test="/bedework-fbaggregator/currentGroup = node()">
+                      <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="."/>
+                  </option>
+                </xsl:for-each>
+              </select>
+              <ul>
+                <li><a href="{$manageGroup}">modify</a></li>
+                <li>duplicate</li>
+                <li>create</li>
+              </ul>
+              <!--<p>
+                Aggregate for
+                <input type="radio" name="all" value="true" checked="checked"/>all attendees
+                <input type="radio" name="all" value="false"/>selected attendees
+              </p>-->
             </div>
+            <xsl:choose>
+              <xsl:when test="/bedework-fbaggregator/attendees/attendee">
+                <table id="attendees">
+                  <!--<tr>
+                   <th>include</th>
+                   <th>required</th>
+                   <th>type</th>
+                   <th>account</th>
+                  </tr>-->
+                  <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
+                    <xsl:variable name="account" select="account"/>
+                    <tr>
+                      <!--<td>
+                        <input type="checkbox" checked="checked" value="{$account}" name="account"/>
+                      </td>
+                      <td>
+                        <input type="checkbox" checked="checked" value="required" name="required"/>
+                      </td>-->
+                      <td>
+                        <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="attendee"/>
+                      </td>
+                      <td>
+                        <!--<a href="{$fetchFreeBusy}&amp;account={$account}&amp;startdt={$startdt}&amp;enddt={$enddt}" title="display {$account}'s freebusy">-->
+                        <a href="javascript:showAccountFreebusy('{$account}')" title="display {$account}'s freebusy">
+                          <xsl:if test="/bedework-fbaggregator/freebusy/who=$account">
+                            <xsl:attribute name="class">selected</xsl:attribute>
+                          </xsl:if>
+                          <xsl:value-of select="account"/>
+                        </a>
+                      </td>
+                      <!--<td>
+                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                      </td>-->
+                    </tr>
+                  </xsl:for-each>
+                </table>
+              </xsl:when>
+              <xsl:otherwise>
+                <p>no attendees</p>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
       </table>
