@@ -140,6 +140,23 @@ h2 {
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
 }
+#failures {
+  width: 100%;
+  margin: 1em 2em 0 2em;
+  border: 1px solid #999;
+}
+#failures th {
+  text-align: left;
+  text-transform: small-caps;
+}
+#failures tr.title th {
+  color: black;
+  background: #ffd;
+}
+#failures tr.headers th {
+  color: black;
+  background: #eee;
+}
 #freeBusy {
   margin: 1em auto;
 }
@@ -271,6 +288,9 @@ legend {
 #attendees {
   margin: 0;
   padding: 0;
+}
+#attendeeList table {
+  margin-top: 1em;
 }
 #attendeeList tr.a td {
   background: white;

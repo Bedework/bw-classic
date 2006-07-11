@@ -68,7 +68,8 @@
   <xsl:variable name="setup" select="/bedework-fbaggregator/urlPrefixes/setup"/>
   <xsl:variable name="initialise" select="/bedework-fbaggregator/urlPrefixes/initialise"/>
   <xsl:variable name="fetchFreeBusy" select="/bedework-fbaggregator/urlPrefixes/fetchFreeBusy"/>
-  <xsl:variable name="manageAttendees" select="/bedework-fbaggregator/urlPrefixes/manageAttendees"/>
+  <xsl:variable name="manageGroup" select="/bedework-fbaggregator/urlPrefixes/manageGroup"/>
+  <xsl:variable name="updateGroup" select="/bedework-fbaggregator/urlPrefixes/updateGroup"/>
   <xsl:variable name="showAddUser" select="/bedework-fbaggregator/urlPrefixes/showAddUser"/>
   <xsl:variable name="showEditUser" select="/bedework-fbaggregator/urlPrefixes/showEditUser"/>
   <xsl:variable name="editUser" select="/bedework-fbaggregator/urlPrefixes/editUser"/>
@@ -132,8 +133,8 @@
           </div>
         </xsl:if>
         <xsl:choose>
-          <xsl:when test="/bedework-fbaggregator/page='manageAttendees'">
-            <xsl:call-template name="manageAttendees"/>
+          <xsl:when test="/bedework-fbaggregator/page='manageGroup'">
+            <xsl:call-template name="manageGroup"/>
           </xsl:when>
           <xsl:when test="/bedework-fbaggregator/page='addUser'">
             <xsl:call-template name="addUser"/>
@@ -230,6 +231,46 @@
                      shorten the select statements below. -->
                   <h2>Freebusy Aggregator</h2>
                   Day count: <xsl:value-of select="count(day)"/>
+                  <xsl:if test="/bedework-fbaggregator/failures/failure">
+                    <table id="failures" cellspacing="0">
+                      <tr class="title">
+                        <th colspan="3">request failures</th>
+                      </tr>
+                      <tr class="headers">
+                        <th>account</th>
+                        <th>host:port</th>
+                        <th>code</th>
+                      </tr>
+                      <xsl:for-each select="/bedework-fbaggregator/failures/failure">
+                        <tr>
+                          <td>
+                            <xsl:value-of select="account"/>
+                          </td>
+                          <td>
+                            <xsl:value-of select="host"/>:<xsl:value-of select="port"/>
+                          </td>
+                          <td>
+                            <xsl:choose>
+                              <xsl:when test="noResponse = 'true'">
+                                none
+                              </xsl:when>
+                              <xsl:otherwise>
+                                <xsl:value-of select="respCode"/>
+                              </xsl:otherwise>
+                            </xsl:choose>
+                          </td>
+                        </tr>
+                        <xsl:if test="message">
+                          <tr>
+                            <td class="right"><em>message:</em></td>
+                            <td colspan="2">
+                              <xsl:value-of select="message"/>
+                            </td>
+                          </tr>
+                        </xsl:if>
+                      </xsl:for-each>
+                    </table>
+                  </xsl:if>
                   <table id="freeBusy">
                     <tr>
                       <td></td>
@@ -379,7 +420,7 @@
                   </xsl:for-each>
                 </select>
                 <ul>
-                  <li><a href="{$manageAttendees}">modify</a></li>
+                  <li><a href="{$manageGroup}">modify</a></li>
                   <li>duplicate</li>
                   <li>create</li>
                 </ul>
@@ -453,51 +494,55 @@
     </div>
   </xsl:template>
 
-  <xsl:template name="manageAttendees">
+  <xsl:template name="manageGroup">
     <div id="content">
-      <h2>Manage Attendees</h2>
-      <fieldset id="addAttendee">
-        <legend>Search attendees:</legend>
-        <form name="addAttendeeForm">
-          <input type="text" name="holder" size="20"/>
-          <input type="submit" value="account"/>
-          <input type="submit" value="prefix"/>
-          <input type="submit" value="suffix"/>
-        </form>
-      </fieldset>
-      <fieldset id="attendeeList">
-        <legend>Edit/remove attendees:</legend>
-        <table cellspacing="0">
-          <tr class="header">
-            <td class="editIcon">edit</td>
-            <th>account</th>
-            <th>type</th>
-            <th>host</th>
-            <th>port</th>
-            <th>secure</th>
-            <th>url</th>
-            <td class="trashIcon">remove</td>
-          </tr>
-          <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
-            <xsl:variable name="rowClass">
-              <xsl:choose>
-                <xsl:when test="position() mod 2 = 1">a</xsl:when>
-                <xsl:otherwise>b</xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <tr class="{$rowClass}">
-              <td class="editIcon"><img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="remove"/></td>
-              <td><xsl:value-of select="account"/></td>
-              <td><xsl:value-of select="type"/></td>
-              <td><xsl:value-of select="host"/></td>
-              <td><xsl:value-of select="port"/></td>
-              <td><xsl:value-of select="secure"/></td>
-              <td><xsl:value-of select="url"/></td>
-              <td class="trashIcon"><img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/></td>
+      <h2>Manage Group</h2>
+      <form action="{$updateGroup}" method="post">
+        <fieldset id="attendeeList">
+          <legend>Attendees for group: <em><xsl:value-of select="/bedework-fbaggregator/currentGroup"/></em></legend>
+          <table cellspacing="0">
+            <tr class="header">
+              <th>account</th>
+              <th>type</th>
+              <th>host</th>
+              <th>port</th>
+              <th>secure</th>
+              <th>url</th>
+              <td class="trashIcon">remove</td>
             </tr>
-          </xsl:for-each>
-        </table>
-      </fieldset>
+            <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
+              <xsl:variable name="rowClass">
+                <xsl:choose>
+                  <xsl:when test="position() mod 2 = 1">a</xsl:when>
+                  <xsl:otherwise>b</xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <tr class="{$rowClass}">
+                <td><xsl:value-of select="account"/></td>
+                <td>
+                  <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="type"/>
+                </td>
+                <td><xsl:value-of select="host"/></td>
+                <td><xsl:value-of select="port"/></td>
+                <td><xsl:value-of select="secure"/></td>
+                <td><xsl:value-of select="url"/></td>
+                <td class="trashIcon"><img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/></td>
+              </tr>
+            </xsl:for-each>
+          </table>
+        </fieldset>
+        <fieldset id="users">
+          <legend>Add attendees:</legend>
+          <form name="addAttendeeForm">
+            <input type="text" name="holder" size="20"/>
+            <input type="submit" value="account"/>
+            <input type="submit" value="prefix"/>
+            <input type="submit" value="suffix"/>
+          </form>
+        </fieldset>
+      </form>
     </div>
   </xsl:template>
 
