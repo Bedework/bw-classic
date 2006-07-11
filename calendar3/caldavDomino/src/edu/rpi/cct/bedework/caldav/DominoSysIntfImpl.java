@@ -64,6 +64,7 @@ import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.ifs.CalTimezones;
 
+import edu.rpi.cct.uwcal.caldav.IcalTrans;
 import edu.rpi.cct.uwcal.caldav.SysIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;

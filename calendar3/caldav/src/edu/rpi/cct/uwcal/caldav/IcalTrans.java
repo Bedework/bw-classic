@@ -23,7 +23,7 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package edu.rpi.cct.bedework.caldav;
+package edu.rpi.cct.uwcal.caldav;
 
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.ifs.CalTimezones;
@@ -36,7 +36,6 @@ import net.fortuna.ical4j.model.TimeZone;
 
 import java.io.InputStreamReader;
 import java.util.Collection;
-import java.util.List;
 
 /** Translate to/from ical. This requires the ability to get timezone info so
  * we use the bedework svci and ical translator.
