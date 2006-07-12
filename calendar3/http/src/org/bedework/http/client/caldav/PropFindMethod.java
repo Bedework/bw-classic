@@ -79,7 +79,7 @@ public class PropFindMethod extends DepthHttpMethod {
    * @param depth
    * @param uri
    */
-  public PropFindMethod(int depth, String uri) {
+  public PropFindMethod(String depth, String uri) {
     super(depth, uri);
   }
 

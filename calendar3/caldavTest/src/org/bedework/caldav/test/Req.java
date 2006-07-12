@@ -73,7 +73,7 @@ class Req {
   String pw;
   String description;
   Header[] hdrs;
-  int depth;
+  String depth;
   String contentType;
   String[] content;
   boolean auth;
@@ -153,7 +153,7 @@ class Req {
           /*
                 DEPTH
            */
-          depth = Integer.valueOf(ln.substring(depthHdr.length())).intValue();
+          depth = ln.substring(depthHdr.length());
         } else if (ln.startsWith(authHdr)) {
           /*
                 AUTH
@@ -282,9 +282,9 @@ class Req {
   }
 
   /**
-   * @return int
+   * @return String
    */
-  public int getDepth() {
+  public String getDepth() {
     return depth;
   }
 

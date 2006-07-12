@@ -73,6 +73,8 @@ public class CaldavReq {
   private String method;
   private String url;
 
+  private String depth;
+
   private Collection hdrs;
   private Header[] headers;
 
@@ -144,6 +146,20 @@ public class CaldavReq {
    */
   public String getUrl() {
     return url;
+  }
+
+  /**
+   * @param val   String
+   */
+  public void setDepth(String val) {
+    depth = val;
+  }
+
+  /**
+   * @return String
+   */
+  public String getDepth() {
+    return depth;
   }
 
   /**

@@ -65,7 +65,7 @@ import org.apache.commons.httpclient.methods.EntityEnclosingMethod;
  * @author Mike Douglass  douglm @ rpi.edu
  */
 public abstract class DepthHttpMethod extends EntityEnclosingMethod {
-  private int depth;
+  private String depth;
 
   /** Constructor
    *
@@ -80,7 +80,7 @@ public abstract class DepthHttpMethod extends EntityEnclosingMethod {
    * @param depth
    * @param uri
    */
-  public DepthHttpMethod(int depth, String uri) {
+  public DepthHttpMethod(String depth, String uri) {
     super(uri);
     this.depth = depth;
   }
@@ -88,21 +88,29 @@ public abstract class DepthHttpMethod extends EntityEnclosingMethod {
   public void addRequestHeaders(HttpState st, HttpConnection conn)
           throws IOException, HttpException {
     super.addRequestHeaders(st, conn);
-    setRequestHeader("Depth", String.valueOf(depth));
+
+    if ("0".equals(depth) ||
+        "1".equals(depth) ||
+        "infinity".equals(depth)) {
+      setRequestHeader("Depth", depth);
+    } else {
+      throw new IOException("Illegal value for depth");
+    }
+
   }
 
   /** Set the depth
    *
    * @param val
    */
-  public void setDepth(int val) {
+  public void setDepth(String val) {
     depth = val;
   }
 
   /**
-   * @return int current depth
+   * @return String current depth
    */
-  public int getDepth() {
+  public String getDepth() {
     return depth;
   }
 }

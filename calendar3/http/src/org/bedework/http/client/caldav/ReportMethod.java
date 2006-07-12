@@ -79,7 +79,7 @@ public class ReportMethod extends DepthHttpMethod {
    * @param depth
    * @param uri
    */
-  public ReportMethod(int depth, String uri) {
+  public ReportMethod(String depth, String uri) {
     super(depth, uri);
   }
 

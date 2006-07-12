@@ -171,7 +171,7 @@ public class CaldavClientIo {
    * @throws Throwable
    */
   public int sendRequest(String method, String url,
-                         Header[] hdrs, int depth,
+                         Header[] hdrs, String depth,
                          String contentType, int contentLen,
                          byte[] content) throws Throwable {
     return sendRequest(method, url, null, null, hdrs, depth,
@@ -193,7 +193,7 @@ public class CaldavClientIo {
    * @throws Throwable
    */
   public int sendRequest(String method, String url, String user, String pw,
-                         Header[] hdrs, int depth,
+                         Header[] hdrs, String depth,
                          String contentType, int contentLen,
                          byte[] content) throws Throwable {
     int sz = 0;

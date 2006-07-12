@@ -497,12 +497,12 @@ public class DominoSysIntfImpl implements SysIntf {
       if (r.getAuth()) {
         responseCode = cio.sendRequest(r.getMethod(), r.getUrl(),
                                        r.getUser(), r.getPw(),
-                                       r.getHeaders(), 0,
+                                       r.getHeaders(), r.getDepth(),
                                        r.getContentType(),
                                        r.getContentLength(), r.getContentBytes());
       } else {
         responseCode = cio.sendRequest(r.getMethod(), r.getUrl(),
-                                       r.getHeaders(), 0,
+                                       r.getHeaders(), r.getDepth(),
                                        r.getContentType(), r.getContentLength(),
                                        r.getContentBytes());
       }
