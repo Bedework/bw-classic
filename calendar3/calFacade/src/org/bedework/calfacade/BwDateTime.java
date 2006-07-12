@@ -182,9 +182,8 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
    * string comparisons will work.
    *
    * @return String date
-   * @throws CalFacadeException
    */
-  public String getDate() throws CalFacadeException {
+  public String getDate() {
     return date;
   }
 
@@ -495,11 +494,7 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
     BwDateTime dt1 = (BwDateTime)o1;
     BwDateTime dt2 = (BwDateTime)o2;
 
-    try {
-      return dt1.getDate().compareTo(dt2.getDate());
-    } catch (CalFacadeException cfe) {
-      throw new RuntimeException(cfe);
-    }
+    return dt1.getDate().compareTo(dt2.getDate());
   }
 
   public int compareTo(Object o2) {
@@ -562,6 +557,17 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
     }
 
     return CalFacadeUtil.eqObjval(getDtval(), that.getDtval());
+  }
+
+  public Object clone() {
+    BwDateTime ndt = new BwDateTime();
+
+    ndt.setDateType(getDateType());
+    ndt.setTzid(getTzid());
+    ndt.setDtval(getDtval());
+    ndt.setDate(getDate());
+
+    return ndt;
   }
 
   public String toString() {

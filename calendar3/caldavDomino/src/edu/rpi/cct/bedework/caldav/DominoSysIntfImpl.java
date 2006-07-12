@@ -53,6 +53,7 @@
 */
 package edu.rpi.cct.bedework.caldav;
 
+import org.bedework.caldav.client.api.BwIcalTrans;
 import org.bedework.caldav.client.api.CaldavClientIo;
 import org.bedework.caldav.client.api.CaldavReq;
 import org.bedework.caldav.client.api.CaldavResp;
@@ -64,28 +65,29 @@ import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.ifs.CalTimezones;
 
-import edu.rpi.cct.uwcal.caldav.IcalTrans;
 import edu.rpi.cct.uwcal.caldav.SysIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.TimeZone;
 
 import org.apache.commons.httpclient.NoHttpResponseException;
 import org.apache.log4j.Logger;
 
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -162,23 +164,16 @@ public class DominoSysIntfImpl implements SysIntf {
 
   private transient Logger log;
 
-  /* Prefix for our properties */
-  private String envPrefix;
-
-  private String account;
-
-  private IcalTrans trans;
+  private BwIcalTrans trans;
 
   public void init(HttpServletRequest req,
                    String envPrefix,
                    String account,
                    boolean debug) throws WebdavIntfException {
     try {
-      this.envPrefix = envPrefix;
-      this.account = account;
       this.debug = debug;
 
-      trans = new IcalTrans(debug);
+      trans = new BwIcalTrans(envPrefix, debug);
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -243,7 +238,63 @@ public class DominoSysIntfImpl implements SysIntf {
 
       CaldavResp resp = send(req, di);
 
-      return null;
+      Collection fbs = getTrans().getFreeBusy(
+                          new InputStreamReader(resp.getContentStream()));
+
+      /* Domino returns free time - invert to get busy time
+       * First we'll order all the periods in the result.
+       */
+
+      TreeSet periods = new TreeSet();
+      Iterator fbit = fbs.iterator();
+      while (fbit.hasNext()) {
+        Object o = fbit.next();
+
+        if (o instanceof BwFreeBusy) {
+          BwFreeBusy fb = (BwFreeBusy)o;
+
+          Iterator fbpit = fb.iterateTimes();
+          while (fbpit.hasNext()) {
+            BwFreeBusyComponent fbcomp = (BwFreeBusyComponent)fbpit.next();
+
+            if (fbcomp.getType() != BwFreeBusyComponent.typeFree) {
+              throw WebdavIntfException.serverError();
+            }
+
+            Iterator perit = fbcomp.iteratePeriods();
+            while (perit.hasNext()) {
+              periods.add(perit.next());
+            }
+          }
+        }
+      }
+
+      BwFreeBusy fb = new BwFreeBusy();
+
+      fb.setStart(start);
+      fb.setEnd(end);
+
+      BwFreeBusyComponent fbcomp = new BwFreeBusyComponent();
+
+      fb.addTime(fbcomp);
+
+      fbcomp.setType(BwFreeBusyComponent.typeBusy);
+
+      /* Fill in the gaps between the free periods with busy time. */
+
+      DateTime bstart = (DateTime)start.makeDate();
+
+      Iterator pit = periods.iterator();
+      while (pit.hasNext()) {
+        Period p = (Period)pit.next();
+
+        Period busyp = new Period(bstart, p.getStart());
+        fbcomp.addPeriod(busyp);
+
+        bstart = p.getEnd();
+      }
+
+      return fb;
     } catch (WebdavIntfException wie) {
       throw wie;
     } catch (Throwable t) {
@@ -334,7 +385,7 @@ public class DominoSysIntfImpl implements SysIntf {
    *                         Private methods
    * ==================================================================== */
 
-  private IcalTrans getTrans() throws WebdavIntfException {
+  private BwIcalTrans getTrans() throws WebdavIntfException {
     try {
       trans.open();
 
@@ -352,15 +403,15 @@ public class DominoSysIntfImpl implements SysIntf {
 
       // from 20060716T120000Z make 2006-07-16T12:00:00Z
       //      0   4 6    1 3
-      sb.append(sb.substring(0, 4));
+      sb.append(utcdt.substring(0, 4));
       sb.append("-");
-      sb.append(sb.substring(4, 6));
+      sb.append(utcdt.substring(4, 6));
       sb.append("-");
-      sb.append(sb.substring(6, 11));
+      sb.append(utcdt.substring(6, 11));
       sb.append(":");
-      sb.append(sb.substring(11, 13));
+      sb.append(utcdt.substring(11, 13));
       sb.append(":");
-      sb.append(sb.substring(13));
+      sb.append(utcdt.substring(13));
 
       return sb.toString();
     } catch (Throwable t) {
@@ -368,6 +419,7 @@ public class DominoSysIntfImpl implements SysIntf {
     }
   }
 
+  /*
   private net.fortuna.ical4j.model.DateTime makeIcalDateTime(String val)
           throws WebdavIntfException {
     try {
@@ -379,6 +431,7 @@ public class DominoSysIntfImpl implements SysIntf {
       throw new WebdavIntfException(t);
     }
   }
+  */
 
   private List splitUri(String uri, boolean decoded) throws WebdavIntfException {
     try {
@@ -432,7 +485,6 @@ public class DominoSysIntfImpl implements SysIntf {
   /**
    * @param r
    * @param di
-   * @param url
    * @return CaldavResp
    * @throws Throwable
    */

@@ -40,6 +40,7 @@
 
     <path id="compile.classpath">
       <pathelement location="${servlet.jar}"/>
+      <pathelement location="${httpclient.jar}"/>
       <pathelement location="${ical4j.jar}"/>
       <pathelement location="${log4j.jar}"/>
 
@@ -49,9 +50,8 @@
       <pathelement location="${org.bedework.access.jar}"/>
       <pathelement location="${org.bedework.common.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
-      <pathelement location="${org.bedework.calsvci.jar}"/>
-      <pathelement location="${org.bedework.calsvc.jar}"/>
       <pathelement location="${org.bedework.caldav.jar}"/>
+      <pathelement location="${org.bedework.caldavClientApi.jar}"/>
       <pathelement location="${org.bedework.davdefs.jar}"/>
       <pathelement location="${org.bedework.ical.jar}"/>
     </path>

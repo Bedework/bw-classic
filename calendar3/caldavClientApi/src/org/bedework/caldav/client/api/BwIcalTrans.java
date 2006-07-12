@@ -23,7 +23,7 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package edu.rpi.cct.uwcal.caldav;
+package org.bedework.caldav.client.api;
 
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.ifs.CalTimezones;
@@ -36,23 +36,26 @@ import net.fortuna.ical4j.model.TimeZone;
 
 import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.List;
 
 /** Translate to/from ical. This requires the ability to get timezone info so
  * we use the bedework svci and ical translator.
  *
  * @author Mike Douglass
  */
-public class IcalTrans {
+public class BwIcalTrans {
   private boolean debug;
 
+  private String envPrefix;
   private transient CalSvcI svci;
   private transient IcalTranslator trans;
 
   /** Constructor
    *
+   * @param envPrefix
    * @param debug
    */
-  public IcalTrans(boolean debug) {
+  public BwIcalTrans(String envPrefix, boolean debug) {
     this.debug = debug;
   }
 
@@ -61,6 +64,15 @@ public class IcalTrans {
    */
   public void open() throws CalFacadeException {
     getSvci();
+  }
+
+  /** Get all of the timezone ids.
+   *
+   * @return List  of TimeZoneInfo
+   * @throws CalFacadeException
+   */
+  public List getTimeZoneIds() throws CalFacadeException {
+    return svci.getTimeZoneIds();
   }
 
   /**
@@ -109,7 +121,7 @@ public class IcalTrans {
     CalSvcIPars pars = new CalSvcIPars(null, // account,
                                        null, // account,
                                        null, // calSuite,
-                                       "org.bedework.app.freebusy.",
+                                       envPrefix,
                                        false,  // publicAdmin
                                        true,    // caldav
                                        null, // synchId

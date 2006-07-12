@@ -53,6 +53,7 @@
 */
 package edu.rpi.cct.bedework.caldav;
 
+import org.bedework.caldav.client.api.BwIcalTrans;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
@@ -61,7 +62,6 @@ import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.ifs.CalTimezones;
 
-import edu.rpi.cct.uwcal.caldav.IcalTrans;
 import edu.rpi.cct.uwcal.caldav.SysIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
@@ -101,23 +101,16 @@ public class GoogleSysIntfImpl implements SysIntf {
 
   private transient Logger log;
 
-  /* Prefix for our properties */
-  private String envPrefix;
-
-  private String account;
-
-  private IcalTrans trans;
+  private BwIcalTrans trans;
 
   public void init(HttpServletRequest req,
                    String envPrefix,
                    String account,
                    boolean debug) throws WebdavIntfException {
     try {
-      this.envPrefix = envPrefix;
-      this.account = account;
       this.debug = debug;
 
-      trans = new IcalTrans(debug);
+      trans = new BwIcalTrans(envPrefix, debug);
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -373,7 +366,7 @@ public class GoogleSysIntfImpl implements SysIntf {
    *                         Private methods
    * ==================================================================== */
 
-  private IcalTrans getTrans() throws WebdavIntfException {
+  private BwIcalTrans getTrans() throws WebdavIntfException {
     try {
       trans.open();
 

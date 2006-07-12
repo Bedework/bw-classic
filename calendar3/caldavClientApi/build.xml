@@ -49,6 +49,8 @@
       <pathelement location="${org.bedework.http.jar}"/>
       <pathelement location="${org.bedework.ical.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
+      <pathelement location="${org.bedework.calsvci.jar}"/>
+      <pathelement location="${org.bedework.calsvc.jar}"/>
     </path>
 
     <property name="build.jar.file" location="${org.bedework.caldavClientApi.jar}" />

@@ -93,11 +93,12 @@
   <target name="bld.all"
           depends="bld.locale,bld.common,bld.access,bld.davdefs,bld.calfacade,
                    bld.calenv,bld.ical,bld.core,
-                   bld.http,bld.caldavclientapi,
+                   bld.http,
                    bld.calsvci,bld.mail,bld.logging,
                    bld.calsvc,bld.appcommon,bld.uportal,
                    bld.webadmin,bld.webclient,bld.synchml,
-                   bld.caldav,bld.caldavGoogle,bld.caldavTest,
+                   bld.caldav,bld.caldavclientapi,
+                   bld.caldavGoogle,bld.caldavDomino,bld.caldavTest,
                    bld.timers,build.tools,
                    bld.dumprestore,
                    bld.test,bld.config"
@@ -399,6 +400,14 @@
           depends="init,bld.davdefs,bld.appcommon"
           description="Build calendar caldav suite">
     <ant antfile="${org.bedework.caldav.base}/build.xml" inheritrefs="true"
+           target="build" />
+  </target>
+
+  <target name="bld.caldavDomino"
+          depends="bld.caldav"
+          description="Build calendar caldav Domino interface"
+          if="org.bedework.build.caldav.domino">
+    <ant antfile="${org.bedework.caldavdomino.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
 
