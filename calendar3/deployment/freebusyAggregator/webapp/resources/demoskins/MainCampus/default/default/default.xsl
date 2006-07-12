@@ -68,8 +68,9 @@
   <xsl:variable name="setup" select="/bedework-fbaggregator/urlPrefixes/setup"/>
   <xsl:variable name="initialise" select="/bedework-fbaggregator/urlPrefixes/initialise"/>
   <xsl:variable name="fetchFreeBusy" select="/bedework-fbaggregator/urlPrefixes/fetchFreeBusy"/>
-  <xsl:variable name="manageGroup" select="/bedework-fbaggregator/urlPrefixes/manageGroup"/>
+  <xsl:variable name="showManageGroup" select="/bedework-fbaggregator/urlPrefixes/showManageGroup"/>
   <xsl:variable name="updateGroup" select="/bedework-fbaggregator/urlPrefixes/updateGroup"/>
+  <xsl:variable name="selectUsers" select="/bedework-fbaggregator/urlPrefixes/selectUsers"/>
   <xsl:variable name="showAddUser" select="/bedework-fbaggregator/urlPrefixes/showAddUser"/>
   <xsl:variable name="showEditUser" select="/bedework-fbaggregator/urlPrefixes/showEditUser"/>
   <xsl:variable name="editUser" select="/bedework-fbaggregator/urlPrefixes/editUser"/>
@@ -386,17 +387,35 @@
               </xsl:otherwise>
             </xsl:choose>
           </td>
-          <!--<td rowspan="2" id="logos">
+          <td rowspan="2" id="logos">
             <h4>participants</h4>
-            <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/fbagg-logos2.gif" width="100" height="403" alt="participant logos" usemap="#logoMap" border="0"/>
-            <map name="logoMap">-->
-              <!--<area shape="rect" alt="Timebridge" coords="0,340,100,380" href="http://www.timebridge.com/"/>
-              <area shape="rect" alt="OSAF" coords="0,260,100,302" href="http://www.osafoundation.org/"/>-->
-              <!--<area shape="rect" alt="Oracle" coords="0,187,100,225" href="http://www.oracle.com"/>
+            <a href="http://www.bedework.org">
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/bedework.png" width="100" height="" alt="Bedework" border="0"/>
+            </a>
+            <a href="http://www.boeing.com/">
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/boeing.png" width="100" height="" alt="Boeing" border="0"/>
+            </a>
+            <a href="http://www.ibm.com">
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/ibm.png" width="100" height="" alt="IBM" border="0"/>
+            </a>
+            <a href="http://www.oracle.com">
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/oracle.png" width="100" height="" alt="Oracle" border="0"/>
+            </a>
+            <a href="http://www.osafoundation.org/">
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/osaf.png" width="100" height="" alt="OSAF" border="0"/>
+            </a>
+            <a href="http://www.timebridge.com/">
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/timebridge.png" width="100" height="" alt="Timebridge" border="0"/>
+            </a>
+            <!--<img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/fbagg-logos2.gif" width="100" height="403" alt="participant logos" usemap="#logoMap" border="0"/>
+            <map name="logoMap">
+              <area shape="rect" alt="Timebridge" coords="0,340,100,380" href="http://www.timebridge.com/"/>
+              <area shape="rect" alt="OSAF" coords="0,260,100,302" href="http://www.osafoundation.org/"/>
+              <area shape="rect" alt="Oracle" coords="0,187,100,225" href="http://www.oracle.com"/>
               <area shape="rect" alt="Boeing" coords="0,101,100,153" href="http://www.boeing.com/"/>
               <area shape="rect" alt="Bedework" coords="0,13,100,77" href="http://www.bedework.org/bedework/"/>
-            </map>
-          </td>-->
+            </map>-->
+          </td>
         </tr>
         <tr>
           <td id="groupCell" colspan="2">
@@ -419,7 +438,7 @@
                 </xsl:for-each>
               </select>
               <ul>
-                <li><a href="{$manageGroup}">modify</a></li>
+                <li><a href="{$showManageGroup}">modify</a></li>
                 <li>duplicate</li>
                 <li>create</li>
               </ul>
@@ -496,52 +515,90 @@
   <xsl:template name="manageGroup">
     <div id="content">
       <h2>Manage Group</h2>
-      <form action="{$updateGroup}" method="post">
-        <fieldset id="attendeeList">
-          <legend>Attendees for group: <em><xsl:value-of select="/bedework-fbaggregator/currentGroup"/></em></legend>
-          <table cellspacing="0">
-            <tr class="header">
-              <th>account</th>
-              <th>type</th>
-              <th>host</th>
-              <th>port</th>
-              <th>secure</th>
-              <th>url</th>
-              <td class="trashIcon">remove</td>
-            </tr>
-            <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
-              <xsl:variable name="rowClass">
-                <xsl:choose>
-                  <xsl:when test="position() mod 2 = 1">a</xsl:when>
-                  <xsl:otherwise>b</xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-              <tr class="{$rowClass}">
-                <td><xsl:value-of select="account"/></td>
-                <td>
-                  <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                  <xsl:text> </xsl:text>
-                  <xsl:value-of select="type"/>
-                </td>
-                <td><xsl:value-of select="host"/></td>
-                <td><xsl:value-of select="port"/></td>
-                <td><xsl:value-of select="secure"/></td>
-                <td><xsl:value-of select="url"/></td>
-                <td class="trashIcon"><img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/></td>
-              </tr>
-            </xsl:for-each>
-          </table>
-        </fieldset>
-        <fieldset id="users">
-          <legend>Search users:</legend>
-          <form name="addAttendeeForm">
-            <input type="text" name="holder" size="20"/>
-            <input type="submit" value="by account"/>
-            <input type="submit" value="by prefix"/>
-            <input type="submit" value="by suffix"/>
-          </form>
-        </fieldset>
-      </form>
+      <table cellspacing="0" id="attendeeList">
+        <tr class="title">
+          <th colspan="6">
+            Attendees for group: <em><xsl:value-of select="/bedework-fbaggregator/currentGroup"/></em>
+          </th>
+          <td>
+            <a href="">delete group</a>
+          </td>
+        </tr>
+        <tr class="headers">
+          <th>account</th>
+          <th>type</th>
+          <th>host</th>
+          <th>port</th>
+          <th>secure</th>
+          <th>url</th>
+          <th></th>
+        </tr>
+        <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
+          <xsl:variable name="rowClass">
+            <xsl:choose>
+              <xsl:when test="position() mod 2 = 1">a</xsl:when>
+              <xsl:otherwise>b</xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <tr class="{$rowClass}">
+            <td class="first"><xsl:value-of select="account"/></td>
+            <td>
+              <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="remove"/>
+              <xsl:text> </xsl:text>
+              <xsl:value-of select="type"/>
+            </td>
+            <td><xsl:value-of select="host"/></td>
+            <td><xsl:value-of select="port"/></td>
+            <td><xsl:value-of select="secure"/></td>
+            <td><xsl:value-of select="url"/></td>
+            <td class="last"><img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/></td>
+          </tr>
+        </xsl:for-each>
+      </table>
+      <table cellspacing="0" id="searchUsers">
+        <tr>
+          <th>Search users:</th>
+          <th>Search results:</th>
+        </tr>
+        <tr>
+          <td>
+            <!--<form name="searchForm" onsubmit="doSearch(this,'{$selectUsers}')">-->
+            <form name="searchForm" action="{$selectUsers}" method="post">
+              <input type="text" name="term" size="40"/>
+              <input type="submit" name="search" value="search"/><br/>
+              <input type="radio" name="type" value="account" checked="checked"/>for account, <em>e.g. johndoe@somehost.org</em><br/>
+              <input type="radio" name="type" value="prefix"/>by email prefix, <em>e.g. johndoe</em><br/>
+              <input type="radio" name="type" value="suffix"/>by email suffix, <em>e.g. somehost.org</em><br/>
+            </form>
+          </td>
+          <td>
+            <xsl:if test="not(/bedework-fbaggregator/selectedUsers/user)">
+              To add attendees to this group, perform a search and click
+              "add all search results to current group".  (Individual additions
+              to be added later.)
+            </xsl:if>
+            <ul>
+              <xsl:for-each select="/bedework-fbaggregator/selectedUsers/user">
+                <li>
+                  <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">b</xsl:attribute></xsl:if>
+                  <strong><xsl:value-of select="account"/></strong><br/>
+                  <xsl:choose>
+                    <xsl:when test="secure='true'">https:</xsl:when>
+                    <xsl:otherwise>http:</xsl:otherwise>
+                  </xsl:choose>
+                  <xsl:value-of select="host"/>:<xsl:value-of select="port"/>
+                  <xsl:value-of select="url"/>
+                </li>
+              </xsl:for-each>
+            </ul>
+            <p>
+              <xsl:if test="/bedework-fbaggregator/selectedUsers/user">
+                <strong><a href="{$updateGroup}&amp;addSelected=true">Add all search results to current group</a></strong>
+              </xsl:if>
+            </p>
+          </td>
+        </tr>
+      </table>
     </div>
   </xsl:template>
 

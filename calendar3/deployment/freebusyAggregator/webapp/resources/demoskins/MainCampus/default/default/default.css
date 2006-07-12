@@ -293,7 +293,14 @@ legend {
   margin: 1em;
   padding: 0;
 }
-#attendeeList table {
+#groupMgmt {
+  margin: 0;
+}
+#groupName {
+  font-weight: bold;
+  font-size: 2em;
+}
+#attendeeList {
   margin-top: 1em;
 }
 #attendeeList tr.a td {
@@ -304,34 +311,53 @@ legend {
   background: #eee;
   color: black;
 }
-#attendeeList th {
+#attendeeList tr.title th {
+  color: black;
+  background: white;
+  text-align: left;
+  border: none;
+}
+#attendeeList tr.headers th {
+  font-size: 0.8em;
   color: white;
   background: #0038A8;
-  text-align: center;
-  padding: 4px;
-  border-bottom: 1px solid #bbb;
-  border-top: 1px solid #bbb;
-}
-#attendeeList td {
+  text-align: left;
   padding: 0.5em 1em;
   border-bottom: 1px solid #bbb;
 }
-#attendeeList td.editIcon {
-  border-right: 1px solid #bbb;
-  border-bottom: none !important;
-  color: black;
-  background: white !important;
-  text-align: center;
+#attendeeList td {
+  font-size: 0.8em;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #bbb;
+  white-space: nowrap;
 }
-#attendeeList td.trashIcon {
+#attendeeList td.first {
   border-left: 1px solid #bbb;
-  border-bottom: none !important;
-  color: black;
-  background: white !important;
+}
+#attendeeList td.last {
+  border-right: 1px solid #bbb;
   text-align: center;
 }
-#users {
-  margin-top: 1em;
+#searchUsers {
+  margin: 2em 0;
+}
+#searchUsers form {
+  margin: 0;
+}
+#searchUsers th {
+  text-align: left;
+}
+#searchUsers td {
+  padding-right: 1em;
+  vertical-align: top;
+}
+#searchUsers li {
+  padding: 0.5em;
+  font-size: 0.8em;
+}
+#searchUsers li.b {
+  background-color: #eee;
+  color: black;
 }
 #modAttendee th {
   font-weight: normal;
