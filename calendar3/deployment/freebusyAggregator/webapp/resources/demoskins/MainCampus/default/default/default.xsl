@@ -164,8 +164,8 @@
 
   <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->
   <xsl:template name="freebusy">
-    <xsl:variable name="startdt" select="substring(/bedework-fbaggregator/freebusy/start,1,8)"/>
-    <xsl:variable name="enddt" select="substring(/bedework-fbaggregator/freebusy/end,1,8)"/>
+    <xsl:variable name="startdt" select="/bedework-fbaggregator/startDate"/>
+    <xsl:variable name="enddt" select="/bedework-fbaggregator/endDate"/>
     <xsl:variable name="startDate">
       <xsl:value-of select="substring($startdt,1,4)"/>-<xsl:value-of select="substring($startdt,5,2)"/>-<xsl:value-of select="substring($startdt,7,2)"/>
     </xsl:variable>
@@ -247,6 +247,9 @@
                           </td>
                           <td>
                             <xsl:value-of select="host"/>:<xsl:value-of select="port"/>
+                            <xsl:if test="message">
+                              <br/>message: <em><xsl:value-of select="message"/></em>
+                            </xsl:if>
                           </td>
                           <td>
                             <xsl:choose>
@@ -259,14 +262,6 @@
                             </xsl:choose>
                           </td>
                         </tr>
-                        <xsl:if test="message">
-                          <tr>
-                            <td class="messageTitle">message:</td>
-                            <td colspan="2" class="message">
-                              <xsl:value-of select="message"/>
-                            </td>
-                          </tr>
-                        </xsl:if>
                       </xsl:for-each>
                     </table>
                   </xsl:if>
