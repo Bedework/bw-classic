@@ -169,11 +169,11 @@
   <xsl:template name="freebusy">
     <xsl:variable name="startdt" select="/bedework-fbaggregator/startDate"/>
     <xsl:variable name="enddt" select="/bedework-fbaggregator/endDate"/>
-    <xsl:variable name="startDate">
-      <xsl:value-of select="substring($startdt,1,4)"/>-<xsl:value-of select="substring($startdt,5,2)"/>-<xsl:value-of select="substring($startdt,7,2)"/>
+    <xsl:variable name="formattedStartDate">
+      <xsl:value-of select="substring($startdt,1,4)"/>-<xsl:value-of select="number(substring($startdt,5,2))"/>-<xsl:value-of select="number(substring($startdt,7,2))"/>
     </xsl:variable>
-    <xsl:variable name="endDate">
-      <xsl:value-of select="substring($enddt,1,4)"/>-<xsl:value-of select="substring($enddt,5,2)"/>-<xsl:value-of select="substring($enddt,7,2)"/>
+    <xsl:variable name="formattedEndDate">
+      <xsl:value-of select="substring($enddt,1,4)"/>-<xsl:value-of select="number(substring($enddt,5,2))"/>-<xsl:value-of select="number(substring($enddt,7,2))"/>
     </xsl:variable>
     <form
      name="freebusyForm"
@@ -285,7 +285,7 @@
                         </span>
                       </th>
                       <th colspan="32" class="right">
-                        <xsl:value-of select="$startDate"/> to <xsl:value-of select="$endDate"/>
+                        <xsl:value-of select="$formattedStartDate"/> to <xsl:value-of select="$formattedEndDate"/>
                         <select name="timezone" id="timezonesDropDown" onchange="submit()">
                           <xsl:for-each select="/bedework-fbaggregator/timezones/tzid">
                             <option>
@@ -346,6 +346,23 @@
                                 </xsl:when>
                                 <xsl:otherwise>*</xsl:otherwise>
                               </xsl:choose>
+                              <span class="eventTip">
+                                <xsl:value-of select="$formattedStartDate"/><br/>
+                                <strong>
+                                  <xsl:call-template name="timeFormatter">
+                                    <xsl:with-param name="timeString" select="$startTime"/>
+                                  </xsl:call-template>
+                                </strong>
+                                <xsl:if test="numBusy &gt; 0">
+                                  <br/><xsl:value-of select="numBusy"/> busy
+                                </xsl:if>
+                                <xsl:if test="numTentative &gt; 0">
+                                  <br/><xsl:value-of select="numTentative"/> tentative
+                                </xsl:if>
+                                <xsl:if test="numBusy = 0 and numTentative = 0">
+                                  <br/><em>all free</em>
+                                </xsl:if>
+                              </span>
                             </a>
                           </td>
                         </xsl:for-each>

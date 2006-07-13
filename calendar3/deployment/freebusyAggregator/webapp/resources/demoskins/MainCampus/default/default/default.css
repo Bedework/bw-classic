@@ -248,6 +248,26 @@ h2 {
   background-color: yellow;
   text-decoration: none;
 }
+#freeBusy a:hover {
+  /* required for eventTip to hover correctly;
+     apply only to the hover pseudo class, or
+     the other anchors nearby will cover the eventTip in IE */
+  position: relative;
+}
+#freeBusy a span.eventTip {
+  display: none;
+}
+#freeBusy a:hover span.eventTip {
+  display: block;
+  position: absolute;
+  width: 8em;
+  top: 3em;
+  left: -4em;
+  background-color: #ffe;
+  color: black;
+  padding: 4px;
+  border: 1px solid #333;
+}
 #freeBusy #timezonesDropDown {
   width: 14em;
   font-size: 8pt;
