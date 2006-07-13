@@ -75,7 +75,7 @@
   <xsl:variable name="showEditUser" select="/bedework-fbaggregator/urlPrefixes/showEditUser"/>
   <xsl:variable name="editUser" select="/bedework-fbaggregator/urlPrefixes/editUser"/>
   <xsl:variable name="addUser" select="/bedework-fbaggregator/urlPrefixes/addUser"/>
-
+  <xsl:variable name="initInvitation" select="/bedework-fbaggregator/urlPrefixes/initInvitation"/>
 
   <!-- URL of the web application - includes web context
   <xsl:variable name="urlPrefix" select="/bedework-fbaggregator/urlprefix"/> -->
@@ -132,6 +132,9 @@
           </xsl:when>
           <xsl:when test="/bedework-fbaggregator/page='addUser'">
             <xsl:call-template name="addUser"/>
+          </xsl:when>
+          <xsl:when test="/bedework-fbaggregator/page='invitation'">
+            <xsl:call-template name="invitation"/>
           </xsl:when>
           <xsl:when test="/bedework-fbaggregator/page='timeZones'">
             <xsl:apply-templates select="/bedework-fbaggregator/timezones"/>
@@ -326,17 +329,17 @@
                         <xsl:for-each select="period">
                           <xsl:variable name="startTime" select="start"/>
                           <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
-                          <xsl:variable name="startDate"><xsl:value-of select="substring(../start,1,8)"/>T<xsl:value-of select="start"/>00</xsl:variable>
-                          <xsl:variable name="minutes" select="length"/>
-                          <xsl:variable name="fbClass">
-                            <xsl:choose>
-                              <xsl:when test="fbtype = '0'">busy</xsl:when>
-                              <xsl:when test="fbtype = '3'">tentative</xsl:when>
-                              <xsl:otherwise>free</xsl:otherwise>
-                            </xsl:choose>
-                          </xsl:variable>
-                          <td class="{$fbClass}">
-                            <a href="/ucal/initEvent.do?startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">
+                          <xsl:variable name="startDate"><xsl:value-of select="../dateString"/>T<xsl:value-of select="start"/>00</xsl:variable>
+                          <xsl:variable name="meetingDuration" select="length"/>
+                          <td>
+                            <xsl:attribute name="class">
+                              <xsl:choose>
+                                <xsl:when test="fbtype = '0'">busy</xsl:when>
+                                <xsl:when test="fbtype = '3'">tentative</xsl:when>
+                                <xsl:otherwise>free</xsl:otherwise>
+                              </xsl:choose>
+                            </xsl:attribute>
+                            <a href="{$initInvitation}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}" title="{$startTime}">
                               <xsl:choose>
                                 <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
                                   <xsl:value-of select="number(numBusy) + number(numTentative)"/>
@@ -601,7 +604,7 @@
     <div id="content">
       <h2>Register a New User</h2>
       <form action="{$addUser}" method="post">
-        <fieldset id="modAttendee">
+        <fieldset id="commonForm">
           <legend>Add user:</legend>
           <table cellspacing="0">
             <tr>
@@ -685,6 +688,16 @@
                  value="" /></td>
             </tr>
             <tr>
+              <th>Depth:</th>
+              <td>
+                <select name="depth">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="infinity">infinity</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
               <th></th>
               <td>
                 <input type="submit" name="submit" value="add"/>
@@ -692,6 +705,63 @@
               </td>
             </tr>
           </table>
+        </fieldset>
+      </form>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="invitation">
+    <div id="content">
+      <h2>Send Meeting Invitation</h2>
+      <form action="" method="post">
+        <!--<p>
+          <input type="submit" value="send invitation" name="submit"/>
+          <xsl:text> </xsl:text>
+          <input type="submit" value="cancel" name="cancelled"/>
+        </p>-->
+        <fieldset id="commonForm">
+          <legend>meeting information</legend>
+          <table cellspacing="0">
+            <tr>
+              <th>Date:</th>
+              <td>
+                <strong><xsl:value-of select="substring(/bedework-fbaggregator/meetingStart,1,4)"/>-<xsl:value-of select="substring(/bedework-fbaggregator/meetingStart,5,2)"/>-<xsl:value-of select="substring(/bedework-fbaggregator/meetingStart,7,2)"/></strong>
+              </td>
+            </tr>
+            <tr>
+              <th>Duration:</th>
+              <td>
+                <input type="text" name="meetingDuration" size="3"><xsl:attribute name="value"><xsl:value-of select="/bedework-fbaggregator/meetingDuration"/></xsl:attribute></input> minutes
+              </td>
+            </tr>
+            <tr>
+              <th>Summary:</th>
+              <td><input type="text" name="summary" size="90"/></td>
+            </tr>
+            <tr>
+              <th>Description:</th>
+              <td><textarea name="description" rows="6" cols="70"></textarea></td>
+            </tr>
+            <tr>
+              <th>Location:</th>
+              <td><input type="text" name="location" size="90"/></td>
+            </tr>
+            <tr>
+              <th>URL:</th>
+              <td><input type="text" name="url" size="90"/></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="padTop">
+                <input type="submit" value="send invitation" name="submit"/>
+                <xsl:text> </xsl:text>
+                <input type="submit" value="cancel" name="cancelled"/>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+        <fieldset>
+          <legend>attendees</legend>
         </fieldset>
       </form>
     </div>
