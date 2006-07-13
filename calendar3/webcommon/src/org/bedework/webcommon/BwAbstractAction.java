@@ -194,7 +194,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
       request.setAttribute("org.bedework.action.appbase", appBase);
     }
 
-    if (form.getNewSession()) {
+    if (form.getNewSession() && !getPublicAdmin(form)) {
       // Set to default view
       setView(null, form);
     }

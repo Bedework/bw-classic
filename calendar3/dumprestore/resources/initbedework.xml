@@ -11153,6 +11153,7 @@ END:VCALENDAR
           </view-subscriptions>
         </view>
       </views>
+      <preferredView>All</preferredView>
       <default-calendar-path>/user/caladmin/calendar</default-calendar-path>
       <workdayStart>0</workdayStart>
       <workdayEnd>0</workdayEnd>
@@ -11188,6 +11189,7 @@ END:VCALENDAR
           </view-subscriptions>
         </view>
       </views>
+      <preferredView>All</preferredView>
       <default-calendar-path>/user/caluser</default-calendar-path>
       <workdayStart>0</workdayStart>
       <workdayEnd>0</workdayEnd>
@@ -11223,6 +11225,7 @@ END:VCALENDAR
           </view-subscriptions>
         </view>
       </views>
+      <preferredView>All</preferredView>
       <default-calendar-path>/user/calowner/calendar</default-calendar-path>
       <workdayStart>0</workdayStart>
       <workdayEnd>0</workdayEnd>

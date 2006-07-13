@@ -253,5 +253,10 @@
     <role-name>@SECURITY-PREFIX@.owner</role-name>
   </security-role>
 
+  <security-role>
+    <description>A user</description>
+    <role-name>@SECURITY-PREFIX@.user</role-name>
+  </security-role>
+
   <!-- Insert ejb-ref here -->
 </web-app>

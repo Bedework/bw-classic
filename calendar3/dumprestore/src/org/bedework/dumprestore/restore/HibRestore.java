@@ -469,6 +469,7 @@ public class HibRestore implements RestoreIntf {
       globals.views++;
     }
 
+    o.setId(CalFacadeDefs.unsavedItemKey);
     hibSave(o);
 
     closeHibSess();
