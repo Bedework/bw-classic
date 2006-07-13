@@ -837,7 +837,7 @@
     <xsl:variable name="minutes" select="substring($timeString,3,2)"/>
     <xsl:variable name="AmPm">
       <xsl:choose>
-        <xsl:when test="$hour &lt; 13">AM</xsl:when>
+        <xsl:when test="$hour &lt; 12">AM</xsl:when>
         <xsl:otherwise>PM</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
