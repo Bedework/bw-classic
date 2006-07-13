@@ -723,14 +723,24 @@
           <legend>meeting information</legend>
           <table cellspacing="0">
             <tr>
-              <th>Date:</th>
+              <th>Start date:</th>
               <td>
                 <strong><xsl:value-of select="substring(/bedework-fbaggregator/meetingStart,1,4)"/>-<xsl:value-of select="substring(/bedework-fbaggregator/meetingStart,5,2)"/>-<xsl:value-of select="substring(/bedework-fbaggregator/meetingStart,7,2)"/></strong>
               </td>
             </tr>
             <tr>
-              <th>Duration:</th>
+              <th>Start time:</th>
               <td>
+                <strong>
+                  <xsl:call-template name="timeFormatter">
+                    <xsl:with-param name="timeString" select="substring(/bedework-fbaggregator/meetingStart,10,4)"/>
+                  </xsl:call-template>
+                </strong>
+              </td>
+            </tr>
+            <tr>
+              <th class="padTop">Duration:</th>
+              <td class="padTop">
                 <input type="text" name="meetingDuration" size="3"><xsl:attribute name="value"><xsl:value-of select="/bedework-fbaggregator/meetingDuration"/></xsl:attribute></input> minutes
               </td>
             </tr>
@@ -762,6 +772,32 @@
         </fieldset>
         <fieldset>
           <legend>attendees</legend>
+          <xsl:choose>
+            <xsl:when test="/bedework-fbaggregator/attendees/attendee">
+              <table id="attendees">
+                <xsl:for-each select="/bedework-fbaggregator/attendees/attendee">
+                  <xsl:variable name="account" select="account"/>
+                  <tr>
+                    <td>
+                      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="attendee"/>
+                    </td>
+                    <td>
+                      <xsl:if test="/bedework-fbaggregator/freebusy/who=$account">
+                        <xsl:attribute name="class">selected</xsl:attribute>
+                      </xsl:if>
+                      <xsl:value-of select="account"/>
+                    </td>
+                    <!--<td>
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                    </td>-->
+                  </tr>
+                </xsl:for-each>
+              </table>
+            </xsl:when>
+            <xsl:otherwise>
+              <p id="attendees">no attendees</p>
+            </xsl:otherwise>
+          </xsl:choose>
         </fieldset>
       </form>
     </div>
@@ -774,7 +810,7 @@
 
   <!--==== UTILITY TEMPLATES ====-->
 
-  <!-- time formatter (should be extended over time) -->
+  <!-- time formatter (should be extended as needed) -->
   <xsl:template name="timeFormatter">
     <xsl:param name="timeString"/><!-- required -->
     <xsl:param name="showMinutes">yes</xsl:param>
@@ -800,6 +836,10 @@
           <xsl:otherwise><xsl:value-of select="$hour - 12"/></xsl:otherwise>
         </xsl:choose><!--
      --><xsl:if test="$showMinutes = 'yes'">:<xsl:value-of select="$minutes"/></xsl:if>
+        <xsl:if test="$showAmPm = 'yes'">
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="$AmPm"/>
+        </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
