@@ -72,7 +72,7 @@
   <xsl:variable name="updateGroup" select="/bedework-fbaggregator/urlPrefixes/updateGroup"/>
   <xsl:variable name="selectUsers" select="/bedework-fbaggregator/urlPrefixes/selectUsers"/>
   <xsl:variable name="showAddUser" select="/bedework-fbaggregator/urlPrefixes/showAddUser"/>
-  <xsl:variable name="showEditUser" select="/bedework-fbaggregator/urlPrefixes/showEditUser"/>
+  <xsl:variable name="getUser" select="/bedework-fbaggregator/urlPrefixes/getUser"/>
   <xsl:variable name="editUser" select="/bedework-fbaggregator/urlPrefixes/editUser"/>
   <xsl:variable name="addUser" select="/bedework-fbaggregator/urlPrefixes/addUser"/>
   <xsl:variable name="initInvitation" select="/bedework-fbaggregator/urlPrefixes/initInvitation"/>
@@ -132,6 +132,9 @@
           </xsl:when>
           <xsl:when test="/bedework-fbaggregator/page='addUser'">
             <xsl:call-template name="addUser"/>
+          </xsl:when>
+          <xsl:when test="/bedework-fbaggregator/page='editUser'">
+            <xsl:call-template name="editUser"/>
           </xsl:when>
           <xsl:when test="/bedework-fbaggregator/page='invitation'">
             <xsl:call-template name="invitation"/>
@@ -339,7 +342,7 @@
                                 <xsl:otherwise>free</xsl:otherwise>
                               </xsl:choose>
                             </xsl:attribute>
-                            <a href="{$initInvitation}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}" title="{$startTime}">
+                            <a href="{$initInvitation}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}">
                               <xsl:choose>
                                 <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
                                   <xsl:value-of select="number(numBusy) + number(numTentative)"/>
@@ -405,22 +408,25 @@
           <td rowspan="2" id="logos">
             <h4>participants</h4>
             <a href="http://www.bedework.org">
-              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/bedework.png" width="100" height="" alt="Bedework" border="0"/>
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/bedework.png" width="100" height="88" alt="Bedework" border="0"/>
             </a>
             <a href="http://www.boeing.com/">
-              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/boeing.png" width="100" height="" alt="Boeing" border="0"/>
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/boeing.png" width="100" height="67" alt="Boeing" border="0"/>
             </a>
             <a href="http://www.ibm.com">
-              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/ibm.png" width="100" height="" alt="IBM" border="0"/>
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/ibm.png" width="100" height="85" alt="IBM" border="0"/>
             </a>
             <a href="http://www.oracle.com">
-              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/oracle.png" width="100" height="" alt="Oracle" border="0"/>
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/oracle.png" width="100" height="48" alt="Oracle" border="0"/>
             </a>
             <a href="http://www.osafoundation.org/">
-              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/osaf.png" width="100" height="" alt="OSAF" border="0"/>
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/osaf.png" width="100" height="54" alt="OSAF" border="0"/>
+            </a>
+            <a href="http://www.egenconsulting.com/">
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/pec.png" width="100" height="61" alt="PEC" border="0"/>
             </a>
             <a href="http://www.timebridge.com/">
-              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/timebridge.png" width="100" height="" alt="Timebridge" border="0"/>
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/timebridge.png" width="100" height="55" alt="Timebridge" border="0"/>
             </a>
             <!--<img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/fbagg-logos2.gif" width="100" height="403" alt="participant logos" usemap="#logoMap" border="0"/>
             <map name="logoMap">
@@ -558,7 +564,10 @@
           <tr class="{$rowClass}">
             <td class="first"><xsl:value-of select="account"/></td>
             <td>
-              <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="remove"/>
+              <xsl:variable name="account" select="account"/>
+              <a href="{$getUser}&amp;account={$account}">
+                <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="edit"/>
+              </a>
               <xsl:text> </xsl:text>
               <xsl:value-of select="type"/>
             </td>
@@ -723,6 +732,165 @@
             </tr>
           </table>
         </fieldset>
+      </form>
+    </div>
+    <div id="getUserForm">
+      <form action="{$getUser}" method="post">
+        Modify existing user (enter account name):
+        <input type="text" name="account" size="40"/>
+        <input type="submit" value="get user"/>
+      </form>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="editUser">
+    <div id="content">
+      <h2>Modify User</h2>
+      <form action="{$addUser}" method="post">
+        <fieldset id="commonForm">
+          <legend>User information:</legend>
+          <table cellspacing="0">
+            <tr>
+              <th>User's account:</th>
+              <td>
+                <input
+                 type="text"
+                 name="account"
+                 size="40">
+                 <xsl:attribute name="value"><xsl:value-of select="/bedework-fbaggregator/user/account"/></xsl:attribute>
+                </input>
+                <xsl:text> </xsl:text>
+                <em>e.g. user@somehost.org</em>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td>
+                 <input type="radio" value="user" name="kind" checked="checked"/>user <!--
+              --><input type="radio" value="group" name="kind"/>group
+              </td>
+            </tr>
+            <tr>
+              <th>Authorized user:</th>
+              <td><input
+                 type="text"
+                 name="authUser"
+                 size="40">
+                 <xsl:attribute name="value"><xsl:value-of select="/bedework-fbaggregator/user/authUser"/></xsl:attribute>
+                 </input>
+                 <xsl:text> </xsl:text>
+                 <em>user requesting freebusy data (e.g. you)</em>
+               </td>
+            </tr>
+            <tr>
+              <th><strong>Authorized user's password:</strong></th>
+              <td>
+                <input
+                 type="password"
+                 name="authPw"
+                 size="40"
+                 value="" />
+                 <xsl:text> </xsl:text>
+                 <em>please re-enter</em>
+              </td>
+            </tr>
+            <tr>
+              <th>Host:</th>
+              <td>
+                <input
+                 type="text"
+                 name="host"
+                 size="60">
+                 <xsl:attribute name="value"><xsl:value-of select="/bedework-fbaggregator/user/host"/></xsl:attribute>
+                </input>
+              </td>
+            </tr>
+            <tr>
+              <th>Port:</th>
+              <td>
+                <input
+                 type="text"
+                 name="port"
+                 size="8">
+                <xsl:attribute name="value"><xsl:value-of select="/bedework-fbaggregator/user/port"/></xsl:attribute>
+                </input>
+              </td>
+            </tr>
+            <tr>
+              <th>Secure:</th>
+              <td>
+                <input
+                 type="radio"
+                 name="secure"
+                 value="true">
+                 <xsl:if test="/bedework-fbaggregator/user/secure = 'true'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                 </xsl:if>
+                </input>
+                 yes
+                <input
+                 type="radio"
+                 name="secure"
+                 value="false">
+                 <xsl:if test="/bedework-fbaggregator/user/secure = 'false'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                 </xsl:if>
+                </input>
+                 no
+              </td>
+            </tr>
+            <tr>
+              <th>URL:</th>
+              <td>
+                <input
+                 type="text"
+                 name="url"
+                 size="60">
+                <xsl:attribute name="value"><xsl:value-of select="/bedework-fbaggregator/user/url"/></xsl:attribute>
+                </input>
+              </td>
+            </tr>
+            <tr>
+              <th>Depth:</th>
+              <td>
+                <select name="depth">
+                  <option value="0">
+                    <xsl:if test="/bedework-fbaggregator/user/depth = '0'">
+                     <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    0
+                  </option>
+                  <option value="1">
+                    <xsl:if test="/bedework-fbaggregator/user/depth = '1'">
+                     <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    1
+                  </option>
+                  <option value="infinity">
+                    <xsl:if test="/bedework-fbaggregator/user/depth = 'infinity'">
+                     <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    infinity
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td>
+                <input type="submit" name="submit" value="update"/>
+                <input type="submit" name="cancelled" value="cancel"/>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+      </form>
+    </div>
+    <div id="getUserForm">
+      <form action="{$getUser}" method="post">
+        Modify existing user (enter account name):<br/>
+        <input type="text" name="account" size="40"/>
+        <input type="submit" value="get user"/>
       </form>
     </div>
   </xsl:template>
