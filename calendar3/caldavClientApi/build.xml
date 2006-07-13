@@ -43,6 +43,7 @@
       <pathelement location="${httpclient.jar}"/>
       <pathelement location="${ical4j.jar}"/>
       <pathelement location="${log4j.jar}"/>
+      <pathelement location="${hibernate.jar}"/>
 
       <!-- Include the location of the compiled calendar classes -->
       <pathelement location="${org.bedework.access.jar}"/>

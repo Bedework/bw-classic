@@ -68,6 +68,7 @@ import org.bedework.calfacade.ifs.CalTimezones;
 import edu.rpi.cct.uwcal.caldav.SysIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
+import edu.rpi.sss.util.xml.XmlUtil;
 
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.DateTime;
@@ -76,10 +77,16 @@ import net.fortuna.ical4j.model.TimeZone;
 
 import org.apache.commons.httpclient.NoHttpResponseException;
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
+import java.io.StringReader;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.Arrays;
@@ -91,6 +98,8 @@ import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 /** Domino implementation of SysIntf.
  *
@@ -236,10 +245,22 @@ public class DominoSysIntfImpl implements SysIntf {
                  "start-min=" + makeDateTime(start) + "&" +
                  "start-max=" + makeDateTime(end));
 
+      req.addHeader("Accept",
+                    "text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
+      req.addHeader("Accept-Language", "en-us,en;q=0.7,es;q=0.3");
+      req.addHeader("Accept-Encoding", "gzip,deflate");
+      req.addHeader("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
       CaldavResp resp = send(req, di);
 
-      Collection fbs = getTrans().getFreeBusy(
-                          new InputStreamReader(resp.getContentStream()));
+      /* He switched to XML! - parse back to a vfreebusy object */
+
+      String vfb = makeVfb(new InputStreamReader(resp.getContentStream()));
+
+      if (debug) {
+        debugMsg(vfb);
+      }
+
+      Collection fbs = getTrans().getFreeBusy(new StringReader(vfb));
 
       /* Domino returns free time - invert to get busy time
        * First we'll order all the periods in the result.
@@ -385,6 +406,137 @@ public class DominoSysIntfImpl implements SysIntf {
    *                         Private methods
    * ==================================================================== */
 
+  /* <?xml version="1.0" encoding="UTF-8"?>
+   <iCalendar>
+   <vcalendar method="REPLY" version="2.0" prodid="-//IBM Domino Freetime//NONSGML Prototype//EN">
+   <vfreebusy>
+   <attendee>John</attendee>
+   <url>http://t1.egenconsulting.com:80/servlet/Freetime/John</url>
+   <dtstamp>20060713T185253Z</dtstamp>
+   <dtstart>20060717T030000Z</dtstart>
+   <dtend>20060723T030000Z</dtend>
+   <freebusy fbtype="FREE">20060717T130000Z/20060717T160000Z</freebusy>
+   <freebusy fbtype="FREE">20060717T170000Z/20060717T210000Z</freebusy>
+   <freebusy fbtype="FREE">20060718T130000Z/20060718T160000Z</freebusy>
+   <freebusy fbtype="FREE">20060718T170000Z/20060718T210000Z</freebusy>
+   <freebusy fbtype="FREE">20060719T130000Z/20060719T160000Z</freebusy>
+   <freebusy fbtype="FREE">20060719T170000Z/20060719T210000Z</freebusy>
+   <freebusy fbtype="FREE">20060720T130000Z/20060720T160000Z</freebusy>
+   <freebusy fbtype="FREE">20060720T170000Z/20060720T210000Z</freebusy>
+   <freebusy fbtype="FREE">20060721T130000Z/20060721T160000Z</freebusy>
+   <freebusy fbtype="FREE">20060721T170000Z/20060721T210000Z</freebusy>
+   </vfreebusy>
+
+   </vcalendar>
+   </iCalendar>
+   */
+  private String makeVfb(Reader rdr) throws WebdavException{
+    try {
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      factory.setNamespaceAware(true);
+
+      DocumentBuilder builder = factory.newDocumentBuilder();
+
+      Document doc = builder.parse(new InputSource(rdr));
+
+      StringBuffer sb = new StringBuffer();
+
+      sb.append("BEGIN:VCALENDAR\n");
+      sb.append("VERSION:2.0\n");
+      sb.append("PRODID:-//Bedework Domino/caldav interface//EN\n");
+      sb.append("BEGIN:VFREEBUSY\n");
+
+      Element root = doc.getDocumentElement(); // </iCalendar>
+      Element child = getOnlyChild(root);  //  </vcalendar>
+
+      child = getOnlyChild(child);  //  </vfreebusy>
+
+      Element[] children = getChildren(child);
+
+      for (int i = 0; i < children.length; i++) {
+        Element curnode = children[i];
+
+        String nm = curnode.getLocalName();
+
+        if (nm.equals("attendee")) {
+          sb.append("ATTENDEE:");
+          sb.append(getElementContent(curnode));
+          sb.append("\n");
+        } else if (nm.equals("url")) {
+          sb.append("URL:");
+          sb.append(getElementContent(curnode));
+          sb.append("\n");
+        } else if (nm.equals("dtstamp")) {
+          sb.append("DTSTAMP:");
+          sb.append(getElementContent(curnode));
+          sb.append("\n");
+        } else if (nm.equals("dtstart")) {
+          sb.append("DTSTART:");
+          sb.append(getElementContent(curnode));
+          sb.append("\n");
+        } else if (nm.equals("dtend")) {
+          sb.append("DTEND:");
+          sb.append(getElementContent(curnode));
+          sb.append("\n");
+        } else if (nm.equals("freebusy")) {
+          sb.append("FREEBUSY;FBTYPE=FREE:");
+          sb.append(getElementContent(curnode));
+          sb.append("\n");
+        }
+      }
+      sb.append("END:VFREEBUSY\n");
+      sb.append("END:VCALENDAR\n");
+
+      return sb.toString();
+    } catch (SAXException e) {
+      throw new WebdavException(HttpServletResponse.SC_BAD_REQUEST);
+    } catch (Throwable t) {
+      throw new WebdavException(t);
+    } finally {
+      if (rdr != null) {
+        try {
+          rdr.close();
+        } catch (Throwable t) {}
+      }
+    }
+  }
+
+  protected Element[] getChildren(Node nd) throws WebdavException {
+    try {
+      return XmlUtil.getElementsArray(nd);
+    } catch (Throwable t) {
+      if (debug) {
+        getLogger().error(this, t);
+      }
+
+      throw new WebdavException(t);
+    }
+  }
+
+  protected Element getOnlyChild(Node nd) throws WebdavException {
+    try {
+      return XmlUtil.getOnlyElement(nd);
+    } catch (Throwable t) {
+      if (debug) {
+        getLogger().error(this, t);
+      }
+
+      throw new WebdavException(t);
+    }
+  }
+
+  protected String getElementContent(Element el) throws WebdavException {
+    try {
+      return XmlUtil.getElementContent(el);
+    } catch (Throwable t) {
+      if (debug) {
+        getLogger().error(this, t);
+      }
+
+      throw new WebdavException(t);
+    }
+  }
+
   private BwIcalTrans getTrans() throws WebdavIntfException {
     try {
       trans.open();
@@ -397,6 +549,7 @@ public class DominoSysIntfImpl implements SysIntf {
 
   private String makeDateTime(BwDateTime dt) throws WebdavIntfException {
     try {
+      /*
       String utcdt = dt.getDate();
 
       StringBuffer sb = new StringBuffer();
@@ -414,6 +567,8 @@ public class DominoSysIntfImpl implements SysIntf {
       sb.append(utcdt.substring(13));
 
       return sb.toString();
+      */
+      return dt.getDate();
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }

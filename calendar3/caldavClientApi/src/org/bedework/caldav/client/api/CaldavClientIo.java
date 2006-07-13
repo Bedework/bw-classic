@@ -65,6 +65,7 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.contrib.ssl.BaseProtocolSocketFactory;
+import org.apache.commons.httpclient.methods.EntityEnclosingMethod;
 import org.apache.commons.httpclient.protocol.Protocol;
 //import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 //import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
@@ -229,12 +230,14 @@ public class CaldavClientIo {
       }
     }
 
-    if (contentType == null) {
-      contentType = "text/xml";
-    }
+    if (meth instanceof EntityEnclosingMethod) {
+      if (contentType == null) {
+        contentType = "text/xml";
+      }
 
-    if (content != null) {
-      client.setContent(content, contentType);
+      if (content != null) {
+        client.setContent(content, contentType);
+      }
     }
 
     status = client.execute();
