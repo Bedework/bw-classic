@@ -97,6 +97,8 @@ public class TestCalDav {
 
   private static int port = 8080;
 
+  private static boolean secure = false;
+
   private static String user = "douglm";
   private static String pw = "bedework";
 
@@ -176,7 +178,7 @@ public class TestCalDav {
         return;
       }
 
-      cio = new CaldavClientIo(host, port, 0, debug);
+      cio = new CaldavClientIo(host, port, 0, secure, debug);
 
       File dir = new File(dirName);
 
@@ -303,6 +305,8 @@ public class TestCalDav {
       } else if (argpar("-port", args, i)) {
         i++;
         port = Integer.parseInt(args[i]);
+      } else if (args[i].equals("-secure")) {
+        secure = true;
       } else if (argpar("-user", args, i)) {
         i++;
         user = args[i];
