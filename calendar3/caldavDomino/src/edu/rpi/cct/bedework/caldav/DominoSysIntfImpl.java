@@ -101,7 +101,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-/** Domino implementation of SysIntf.
+/** Domino implementation of SysIntf. This interacts with a servlet on Domino
+ * which presents requested calendar information.
  *
  * @author Mike Douglass douglm at rpi.edu
  */
@@ -309,10 +310,21 @@ public class DominoSysIntfImpl implements SysIntf {
       while (pit.hasNext()) {
         Period p = (Period)pit.next();
 
-        Period busyp = new Period(bstart, p.getStart());
-        fbcomp.addPeriod(busyp);
+        if (!bstart.equals(p.getStart())) {
+          /* First free period may be at start of requested time */
+          Period busyp = new Period(bstart, p.getStart());
+          fbcomp.addPeriod(busyp);
+        }
 
         bstart = p.getEnd();
+      }
+
+      /* Fill in to end of requested period */
+      DateTime bend = (DateTime)end.makeDate();
+
+      if (!bstart.equals(bend)) {
+        Period busyp = new Period(bstart, bend);
+        fbcomp.addPeriod(busyp);
       }
 
       return fb;
