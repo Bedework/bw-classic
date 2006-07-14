@@ -461,8 +461,8 @@
               </select>
               <ul>
                 <li><a href="{$showManageGroup}">modify</a></li>
-                <li>duplicate</li>
-                <li>create</li>
+                <!--<li>duplicate</li>
+                <li>create</li>-->
               </ul>
               <!--<p>
                 Aggregate for
@@ -599,7 +599,7 @@
           <td>
             <xsl:if test="not(/bedework-fbaggregator/selectedUsers/user)">
               To add attendees to this group, perform a search and click
-              "add all search results to current group".  (Individual additions
+              "add search results to current group".  (Individual additions
               to be added later.)
             </xsl:if>
             <ul>
@@ -618,7 +618,7 @@
             </ul>
             <p>
               <xsl:if test="/bedework-fbaggregator/selectedUsers/user">
-                <strong><a href="{$updateGroup}&amp;addSelected=true">Add all search results to current group</a></strong>
+                <strong><a href="{$updateGroup}&amp;addSelected=true">Add search results to current group</a></strong>
               </xsl:if>
             </p>
           </td>
