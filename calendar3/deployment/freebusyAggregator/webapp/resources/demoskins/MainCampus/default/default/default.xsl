@@ -900,6 +900,12 @@
     <div id="content">
       <h2>Send Meeting Invitation</h2>
       <form action="{$makeMeeting}" method="post">
+        <input type="hidden" name="skinName" value="ical"/>
+        <input type="hidden" name="nocache" value="no"/>
+        <input type="hidden" name="contentType" value="text/calendar"/>
+        <input type="hidden" name="contentName">
+          <xsl:attribute name="value">meeting-<xsl:value-of select="/bedework-fbaggregator/meetingStart"/>.ics</xsl:attribute>
+        </input>
         <!--<p>
           <input type="submit" value="send invitation" name="submit"/>
           <xsl:text> </xsl:text>
