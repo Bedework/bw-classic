@@ -12,11 +12,15 @@
 .dynCalendar table {
   width: 170px;
   height: 150px;
-  font-family: Arial, Verdana, Helvetica, Sans-Serif;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
   font-size: 12px;
   background-color: #eee;
   color: black;
   border: 2px solid #ddd;
+}
+.dynCalendar table td,
+.dynCalendar table th {
+  position: static;
 }
 .dynCalendar_header{
   background-color: #00a;
@@ -42,7 +46,6 @@
   background-color: white;
   padding: 0;
   color: black;
-  color: #000000;
 }
 .dynCalendar_today {
   background-color: #ddf;
