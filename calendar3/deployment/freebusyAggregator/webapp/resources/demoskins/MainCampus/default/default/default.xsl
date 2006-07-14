@@ -747,7 +747,7 @@
   <xsl:template name="editUser">
     <div id="content">
       <h2>Modify User</h2>
-      <form action="{$addUser}" method="post">
+      <form action="{$editUser}" method="post">
         <fieldset id="commonForm">
           <legend>User information:</legend>
           <table cellspacing="0">
