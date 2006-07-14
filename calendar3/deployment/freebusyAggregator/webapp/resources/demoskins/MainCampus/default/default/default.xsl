@@ -76,6 +76,7 @@
   <xsl:variable name="editUser" select="/bedework-fbaggregator/urlPrefixes/editUser"/>
   <xsl:variable name="addUser" select="/bedework-fbaggregator/urlPrefixes/addUser"/>
   <xsl:variable name="initInvitation" select="/bedework-fbaggregator/urlPrefixes/initInvitation"/>
+  <xsl:variable name="makeMeeting" select="/bedework-fbaggregator/urlPrefixes/makeMeeting"/>
 
   <!-- URL of the web application - includes web context
   <xsl:variable name="urlPrefix" select="/bedework-fbaggregator/urlprefix"/> -->
@@ -898,7 +899,7 @@
   <xsl:template name="invitation">
     <div id="content">
       <h2>Send Meeting Invitation</h2>
-      <form action="" method="post">
+      <form action="{$makeMeeting}" method="post">
         <!--<p>
           <input type="submit" value="send invitation" name="submit"/>
           <xsl:text> </xsl:text>

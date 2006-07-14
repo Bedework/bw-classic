@@ -39,6 +39,7 @@ import net.fortuna.ical4j.model.PropertyList;
 import net.fortuna.ical4j.model.TimeZone;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.parameter.TzId;
+import net.fortuna.ical4j.model.property.Attendee;
 import net.fortuna.ical4j.model.property.Description;
 import net.fortuna.ical4j.model.property.DtStart;
 import net.fortuna.ical4j.model.property.Duration;
@@ -51,6 +52,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -130,6 +132,7 @@ public class BwIcalTrans {
    * @param description
    * @param location
    * @param uri  - URI or null
+   * @param attendees
    * @return Calendar
    * @throws Throwable
    */
@@ -139,7 +142,8 @@ public class BwIcalTrans {
                               String summary,
                               String description,
                               String location,
-                              URI uri) throws Throwable {
+                              URI uri,
+                              Collection attendees) throws Throwable {
     String guid = getGuid();
 
     Calendar vcal = IcalTranslator.newIcal();
@@ -175,6 +179,15 @@ public class BwIcalTrans {
 
     if (uri != null) {
       props.add(new Url(uri));
+    }
+
+    if (attendees != null) {
+      Iterator it = attendees.iterator();
+      while (it.hasNext()) {
+        String a = (String)it.next();
+        Attendee att = new Attendee("MAILTO:" + a);
+        props.add(att);
+      }
     }
 
     return vcal;
