@@ -91,8 +91,10 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
 
   private String dtval; // rfc2554 date or datetime value
 
-  private static Dur oneDayForward = new Dur(1, 0, 0, 0);
-  private static Dur oneDayBack = new Dur(-1, 0, 0, 0);
+  /**   */
+  public static Dur oneDayForward = new Dur(1, 0, 0, 0);
+  /**   */
+  public static Dur oneDayBack = new Dur(-1, 0, 0, 0);
 
   /** This is a UTC datetime value to make searching easier. There are a number of
    * complications to dates, the end date is specified as non-inclusive
@@ -473,6 +475,19 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
 
     return makeDateTime(makeDtStart(), true, oneDayBack, timezones);
   }
+
+  /** Add a duration and return the result
+   *
+   * @param d      Dur
+   * @param timezones
+   * @return BwDateTime
+   * @throws CalFacadeException
+   */
+  public BwDateTime addDur(Dur d,
+                           CalTimezones timezones) throws CalFacadeException {
+    return makeDateTime(makeDtStart(), true, d, timezones);
+  }
+
 
   /* ====================================================================
    *                        Object methods

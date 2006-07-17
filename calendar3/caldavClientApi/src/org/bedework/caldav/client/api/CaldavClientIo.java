@@ -293,6 +293,14 @@ public class CaldavClientIo {
         throw new CalFacadeException(t);
       }
     }
+
+    public String getResponseBodyAsString() throws CalFacadeException {
+      try {
+        return client.getResponseBodyAsString();
+      } catch (Throwable t) {
+        throw new CalFacadeException(t);
+      }
+    }
   }
 
   /** ===================================================================

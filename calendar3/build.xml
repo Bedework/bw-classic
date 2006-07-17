@@ -98,7 +98,8 @@
                    bld.calsvc,bld.appcommon,bld.uportal,
                    bld.webadmin,bld.webclient,bld.synchml,
                    bld.caldav,bld.caldavclientapi,
-                   bld.caldavGoogle,bld.caldavDomino,bld.caldavTest,
+                   bld.caldavBexchange,bld.caldavDomino,bld.caldavGoogle,
+                   bld.caldavTest,
                    bld.timers,build.tools,
                    bld.dumprestore,
                    bld.test,bld.config"
@@ -400,6 +401,14 @@
           depends="init,bld.davdefs,bld.appcommon"
           description="Build calendar caldav suite">
     <ant antfile="${org.bedework.caldav.base}/build.xml" inheritrefs="true"
+           target="build" />
+  </target>
+
+  <target name="bld.caldavBexchange"
+          depends="bld.caldav"
+          description="Build calendar caldav exchange interface using Boeng exchange service"
+          if="org.bedework.build.caldav.bexchange">
+    <ant antfile="${org.bedework.caldavbexchange.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
 

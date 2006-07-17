@@ -269,8 +269,9 @@
     </copy>
 
     <antcall target="jboss-stuff" inheritRefs="true" />
-    <antcall target="google-stuff" inheritRefs="true" />
+    <antcall target="bexchange-stuff" inheritRefs="true" />
     <antcall target="domino-stuff" inheritRefs="true" />
+    <antcall target="google-stuff" inheritRefs="true" />
 
     <!-- ===============================================================
          Any jar files required
@@ -364,6 +365,14 @@
     </copy>
   </target>
 
+  <target name="bexchange-stuff" if="org.bedework.build.caldav.bexchange">
+    <copy todir="${app.dest.lib}" file="${org.bedework.caldavbexchange.jar}" />
+  </target>
+
+  <target name="domino-stuff" if="org.bedework.build.caldav.domino">
+    <copy todir="${app.dest.lib}" file="${org.bedework.caldavdomino.jar}" />
+  </target>
+
   <target name="google-stuff" if="org.bedework.build.caldav.google">
     <copy todir="${app.dest.lib}">
       <fileset dir="${google.dir}">
@@ -372,10 +381,6 @@
     </copy>
 
     <copy todir="${app.dest.lib}" file="${org.bedework.caldavgoogle.jar}" />
-  </target>
-
-  <target name="domino-stuff" if="org.bedework.build.caldav.domino">
-    <copy todir="${app.dest.lib}" file="${org.bedework.caldavdomino.jar}" />
   </target>
 
   <!-- =================================================================

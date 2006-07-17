@@ -229,4 +229,26 @@ public class Client extends HttpClient {
       throw new CalFacadeException(t);
     }
   }
+
+  /**
+   * Returns the response body of the HTTP method, if any, as a {@link String}.
+   * If response body is not available or cannot be read, returns <tt>null</tt>
+   * The string conversion on the data is done using the character encoding specified
+   * in <tt>Content-Type</tt> header.
+   *
+   * Note: This will cause the entire response body to be buffered in memory. A
+   * malicious server may easily exhaust all the VM memory. It is strongly
+   * recommended, to use getResponseAsStream if the content length of the response
+   * is unknown or resonably large.
+   *
+   * @return The response body.
+   * @throws CalFacadeException
+   */
+  public String getResponseBodyAsString() throws CalFacadeException {
+    try {
+      return method.getResponseBodyAsString();
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
 }
