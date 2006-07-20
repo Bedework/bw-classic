@@ -5,8 +5,7 @@
      =================================================================== -->
 
 <project name="bwpublic.deploy" default="deploy" >
-  <import file="${org.bedework.deployment.base}/deployprops.xml" />
-  <echo message="XXXXXXXXXXXX  app.name=${propval.app.name}" />
+  <import file="${org.bedework.bld.home}/deployment/deployprops.xml" />
 
   <target name="init" >
     <!-- and define some properties based on those -->
@@ -66,20 +65,6 @@
   </target>
 
   <target name="deploy.uportal2" if="org.bedework.build.for.uportal2" >
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
-    <echo message="BBBBBBBBBBBBBBBBBBBBB basedir=${basedir}" />
     <ant antfile="${org.bedework.deploy.type.dir}/${propval.app.portal.platform}/build.xml"
          inheritrefs="true" target="deploy" />
   </target>

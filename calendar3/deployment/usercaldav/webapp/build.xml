@@ -5,7 +5,7 @@
      =================================================================== -->
 
 <project name="bwusercaldav.deploy" default="deploy" >
-  <import file="${org.bedework.deployment.base}/deployprops.xml" />
+  <import file="${org.bedework.bld.home}/deployment/deployprops.xml" />
 
   <target name="init" >
     <!-- and define some properties based on those -->
