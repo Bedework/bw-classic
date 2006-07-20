@@ -14,7 +14,10 @@
   <property name="org.bedework.calendar.dir"
             location="${basedir}/calendar3" />
 
-  <property name="org.bedework.freebusy.dir"
+  <property name="org.bedework.project.calendar"
+            location="${basedir}/calendar3" />
+
+  <property name="org.bedework.project.freebusy"
             location="${basedir}/freebusy" />
 
     <!-- ===============================================================
@@ -80,7 +83,7 @@
               location="${org.bedework.calendar.dir}/build.xml" />
 
     <property name="org.bedework.freebusy.build.file"
-              location="${org.bedework.freebusy.dir}/build.xml" />
+              location="${org.bedework.project.freebusy}/build.xml" />
 
     <!-- Overriding this when invoking ant allows different user property
          files to be included e.g.

@@ -62,12 +62,22 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.PropertyHelper;
 import org.apache.tools.ant.taskdefs.Sequential;
 
-/** Ant task to build the applications based on two lists given as attributes.
+/** Ant task to build the applications based on a list of names
  *
  * <p>Task attributes are <ul>
- * <li>names     Comma separated list of application names</li>
- * <li>types     Comma separated list of application types, e.g. webadmin</li>
- * <li>prefix    Property name prefix for generated proerties</li>
+ * <li>names            Comma separated list of application names</li>
+ * <li>prefix           Property name prefix for generated properties</li>
+ * <li>appPrefix        Property name prefix for applications</li>
+ * <li>projectPrefix    Property name prefix for project locations</li>
+ * </ul>
+ *
+ * <p>Prefixes will be automatically appended with "." if needed.
+ *
+ * <p>Generated properties are all prefixed by the prefix attribute and are:<ul>
+ * <li>project.base     Path to project</li>
+ * <li>type             type of application</li>
+ * <li>type.dir         location of application type deployment directory</li>
+ * <li>name             name of the application</li>
  * </ul>
  *
  * <p>Body is ant
@@ -77,9 +87,11 @@ import org.apache.tools.ant.taskdefs.Sequential;
 public class ForEachAppTask extends Sequential {
   private String names;
 
-  private String types;
-
   private String prefix;
+
+  private String appPrefix;
+
+  private String projectPrefix;
 
   /** Set the names
    *
@@ -89,15 +101,7 @@ public class ForEachAppTask extends Sequential {
     names = val;
   }
 
-  /** Set the types
-   *
-   * @param val   File
-   */
-  public void setTypes(String val) {
-    types = val;
-  }
-
-  /** Set the proeprty prefix
+  /** Set the generated property prefix
    *
    * @param val   String
    */
@@ -105,41 +109,95 @@ public class ForEachAppTask extends Sequential {
     prefix = val;
   }
 
+  /** Set the applications property prefix
+   *
+   * @param val   String
+   */
+  public void setAppPrefix(String val) {
+    appPrefix = val;
+  }
+
+  /** Set the project locations property prefix
+   *
+   * @param val   String
+   */
+  public void setProjectPrefix(String val) {
+    projectPrefix = val;
+  }
+
   /** Execute the task
    */
   public void execute() throws BuildException {
-    List nameList = getList(names);
-    List typeList = getList(types);
+    try {
+      List nameList = getList(names);
 
-    if ((nameList.size() == 0) || (typeList.size() == 0)) {
-      throw new BuildException("Must supply names and types.");
-    }
+      if (nameList.size() == 0) {
+        throw new BuildException("Must supply deployment names.");
+      }
 
-    if (nameList.size() != typeList.size()) {
-      throw new BuildException("names and types must have same number of entries.");
-    }
+      if (prefix == null) {
+        throw new BuildException("Must supply property name prefix.");
+      }
 
-    if (prefix == null) {
-      throw new BuildException("Must supply property name prefix.");
-    }
+      if (!prefix.endsWith(".")) {
+        prefix += ".";
+      }
 
-    if (!prefix.endsWith(".")) {
-      prefix += ".";
-    }
+      if (!appPrefix.endsWith(".")) {
+        appPrefix += ".";
+      }
 
-    PropertyHelper props = PropertyHelper.getPropertyHelper(getProject());
+      if (!projectPrefix.endsWith(".")) {
+        projectPrefix += ".";
+      }
 
-    Iterator nit = nameList.iterator();
-    Iterator kit = typeList.iterator();
+      PropertyHelper props = PropertyHelper.getPropertyHelper(getProject());
 
-    while (nit.hasNext()) {
-      String name = (String)nit.next();
-      String type = (String)kit.next();
+      Iterator nit = nameList.iterator();
 
-      props.setProperty(null, prefix + "name", name, false);
-      props.setProperty(null, prefix + "type", type, false);
+      while (nit.hasNext()) {
+        String name = (String)nit.next();
 
-      super.execute();
+        String appTypeProperty = appPrefix + name + ".type";
+        String type = (String)props.getProperty(null, appTypeProperty);
+
+        if (type == null) {
+          throw new BuildException("Must supply property " + appTypeProperty);
+        }
+
+        String appProjectProperty = appPrefix + name + ".project";
+        String project = (String)props.getProperty(null, appProjectProperty);
+
+        if (project == null) {
+          throw new BuildException("Property " + appProjectProperty +
+                                   " is undefined");
+        }
+
+        /* Build full project property from project name and get value */
+
+        String projectProperty = projectPrefix + project;
+        String projectPath = (String)props.getProperty(null, projectProperty);
+
+        if (projectPath == null) {
+          throw new BuildException("Property " + projectProperty +
+                                   " is undefined");
+        }
+
+        props.setProperty(null, prefix + "name", name, false);
+        props.setProperty(null, prefix + "projectName", project, false);
+        props.setProperty(null, prefix + "project", projectPath, false);
+        props.setProperty(null, prefix + "type", type, false);
+        props.setProperty(null, prefix + "type.dir",
+                          projectPath + "/deployment/" + type,
+                          false);
+
+        super.execute();
+      }
+    } catch (BuildException be) {
+      throw be;
+    } catch (Throwable t) {
+      t.printStackTrace();
+      throw new BuildException(t);
     }
   }
 

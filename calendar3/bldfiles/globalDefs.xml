@@ -110,7 +110,7 @@
 
     <!-- This has to be here for now -->
     <property name="org.bedework.fbwebclient.base"
-              location="${org.bedework.freebusy.dir}/webclient" />
+              location="${org.bedework.project.freebusy}/webclient" />
 
     <!-- ======================= Directory Names =======================
         These properties generally define file and directory names (or

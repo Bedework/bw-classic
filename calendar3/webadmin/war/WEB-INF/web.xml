@@ -126,6 +126,12 @@
       <role-name>owner</role-name>
       <role-link>@SECURITY-PREFIX@.owner</role-link>
     </security-role-ref>
+
+    <security-role-ref>
+      <description>A user</description>
+      <role-name>user</role-name>
+      <role-link>@SECURITY-PREFIX@.user</role-link>
+    </security-role-ref>
   </servlet>
 
   <servlet-mapping>

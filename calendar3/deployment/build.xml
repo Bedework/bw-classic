@@ -101,10 +101,6 @@
     <antcall target="build.portal.apps" inheritrefs="true" />
 
     <antcall target="build.j2ee.apps" inheritrefs="true" />
-
-    <!-- dump restore - always built (until we have a choice of windows/unix. -->
-    <ant antfile="${org.bedework.deployment.base}/dumprestore/shellscr/build.xml"
-         inheritrefs="true" target="build.configured" />
   </target>
 
   <!-- =================================================================
@@ -114,9 +110,10 @@
        ================================================================= -->
 
   <target name="build.standalone.apps" if="org.bedework.global.build.standalone.app" >
-    <!-- ======================= webconfig - only standalone ================= -->
+    <!-- ======================= webconfig - only standalone =================
     <ant antfile="${org.bedework.deployment.base}/webconfig/webapp/build.xml"
          inheritrefs="true" target="build.configured" />
+          -->
 
     <property name="org.bedework.deploy.kind" value="webapp" />
     <antcall target="build.configured.apps" inheritrefs="true" />
@@ -217,20 +214,23 @@
        ================================================================= -->
   <target name="build.configured.apps">
     <forEachApp names="${org.bedework.install.app.names}"
-                types="${org.bedework.install.app.types}"
-                prefix="org.bedework.deploy">
+                prefix="org.bedework.deploy"
+                appPrefix="org.bedework.app"
+                projectPrefix="org.bedework.project">
       <sequential>
-        <available file="${org.bedework.deployment.base}/${org.bedework.deploy.type}/${org.bedework.deploy.kind}/build.xml"
+        <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
                    property="app.kind.available" />
         <antcall target="build.available.configured.app" inheritrefs="true" />
       </sequential>
     </forEachApp>
 
     <!-- ======================= termination tasks ================= -->
+    <!--
     <property name="org.bedework.deploy.type.dir"
               location="${org.bedework.deployment.base}/termination" />
+              -->
 
-    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
+    <ant antfile="${org.bedework.deployment.base}/termination/build.xml"
          inheritrefs="true" target="build.configured" />
   </target>
 
@@ -241,54 +241,29 @@
       <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
       <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
     </propertyset>
-
-    <!--
-    <property name="${propval.app.portal.platform}" value="" />
-
-    <condition property="org.bedework.build.for.jetspeed2">
-      <equals arg1="jetspeed2" arg2="${propval.app.portal.platform}"/>
-    </condition>
-
-    <condition property="org.bedework.build.for.uportal2">
-      <equals arg1="uportal2" arg2="${propval.app.portal.platform}"/>
-    </condition>
-
-    <condition property="org.bedework.build.for.jboss">
-      <equals arg1="jboss" arg2="${org.bedework.global.j2ee.platform}"/>
-    </condition>
-    -->
-
-    <property name="org.bedework.deploy.type.dir"
-              location="${org.bedework.deployment.base}/termination" />
-
-    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
-         inheritrefs="true" target="build.configured" >
-      <propertyset refid="build-app-properties" />
-    </ant>
   </target>
 
   <target name="deploy.apps">
     <forEachApp names="${org.bedework.install.app.names}"
-                types="${org.bedework.install.app.types}"
-                prefix="org.bedework.deploy">
+                prefix="org.bedework.deploy"
+                appPrefix="org.bedework.app"
+                projectPrefix="org.bedework.project">
       <sequential>
         <antcall target="wrap.deploy.available.app" inheritrefs="true" />
       </sequential>
     </forEachApp>
 
     <!-- ======================= termination tasks ================= -->
+    <!--
     <property name="org.bedework.deploy.type.dir"
               location="${org.bedework.deployment.base}/termination" />
+              -->
 
-    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
+    <ant antfile="${org.bedework.deployment.base}/termination/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="deploy" />
   </target>
 
   <target name="wrap.deploy.available.app">
-    <!-- just to make app.kind.available go away -->
-    <property name="org.bedework.deploy.type.dir"
-              location="${org.bedework.deployment.base}/${org.bedework.deploy.type}" />
-
     <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
                property="app.kind.available" />
 
@@ -304,28 +279,10 @@
     <echo message="XXXXXXXXXXXX      type=${org.bedework.deploy.type}" />
     <echo message="XXXXXXXXXXXX      name=${org.bedework.deploy.name}" />
 
-    <!--
-    <property name="${propval.app.portal.platform}" value="" />
-
-    <condition property="org.bedework.build.for.jetspeed2">
-      <equals arg1="jetspeed2" arg2="${propval.app.portal.platform}"/>
-    </condition>
-
-    <condition property="org.bedework.build.for.uportal2">
-      <equals arg1="uportal2" arg2="${propval.app.portal.platform}"/>
-    </condition>
-
-    <condition property="org.bedework.build.for.jboss">
-      <equals arg1="jboss" arg2="${org.bedework.global.j2ee.platform}"/>
-    </condition>
-    -->
-
-    <property name="org.bedework.deploy.type.dir"
-              location="${org.bedework.deployment.base}/${org.bedework.deploy.type}" />
-
     <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="deploy" >
       <propertyset refid="deploy-app-properties" />
     </ant>
   </target>
 </project>
+
