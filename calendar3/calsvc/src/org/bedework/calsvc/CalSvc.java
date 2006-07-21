@@ -103,9 +103,9 @@ import org.bedework.icalendar.URIgen;
 //import org.bedework.mail.MailerIntf;
 
 import edu.rpi.cct.misc.indexing.Index;
-import edu.rpi.cct.uwcal.access.PrivilegeDefs;
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.uwcal.resources.Resources;
+import edu.rpi.cmt.access.PrivilegeDefs;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.util.ArrayList;
 import java.util.Collection;

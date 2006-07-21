@@ -66,7 +66,7 @@ import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
-import edu.rpi.cct.uwcal.access.Acl;
+import edu.rpi.cmt.access.Acl;
 
 /** Object to provide formatting services for a BwEvent.
  *

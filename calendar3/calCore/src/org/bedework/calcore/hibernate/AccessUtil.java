@@ -53,12 +53,12 @@
 */
 package org.bedework.calcore.hibernate;
 
-import edu.rpi.cct.uwcal.access.Access;
-import edu.rpi.cct.uwcal.access.Ace;
-import edu.rpi.cct.uwcal.access.Acl;
-import edu.rpi.cct.uwcal.access.PrivilegeDefs;
-import edu.rpi.cct.uwcal.access.PrivilegeSet;
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Access;
+import edu.rpi.cmt.access.Ace;
+import edu.rpi.cmt.access.Acl;
+import edu.rpi.cmt.access.PrivilegeDefs;
+import edu.rpi.cmt.access.PrivilegeSet;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import org.bedework.calfacade.base.BwShareableContainedDbentity;
 import org.bedework.calfacade.base.BwShareableDbentity;

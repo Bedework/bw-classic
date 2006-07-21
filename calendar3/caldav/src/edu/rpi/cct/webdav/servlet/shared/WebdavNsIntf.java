@@ -60,10 +60,10 @@ import org.bedework.davdefs.WebdavTags;
 import edu.rpi.sss.util.xml.QName;
 import edu.rpi.sss.util.xml.XmlEmit;
 import edu.rpi.sss.util.xml.XmlUtil;
-import edu.rpi.cct.uwcal.access.PrivilegeSet;
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.webdav.servlet.common.MethodBase;
 import edu.rpi.cct.webdav.servlet.common.WebdavServlet;
+import edu.rpi.cmt.access.PrivilegeSet;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.io.Reader;
 import java.io.Serializable;

@@ -55,7 +55,7 @@ package org.bedework.calfacade;
 
 import org.bedework.calfacade.base.BwShareableContainedDbentity;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.net.URLEncoder;
 import java.util.Collection;

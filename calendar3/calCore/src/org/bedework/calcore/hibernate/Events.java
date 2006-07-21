@@ -71,7 +71,7 @@ import org.bedework.calfacade.util.CalFacadeUtil;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.icalendar.VEventUtil;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.Date;

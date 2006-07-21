@@ -53,8 +53,8 @@
 */
 package org.bedework.calcore.hibernate;
 
-import edu.rpi.cct.uwcal.access.PrivilegeDefs;
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.PrivilegeDefs;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwAlarm;

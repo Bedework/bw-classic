@@ -85,7 +85,7 @@ import org.bedework.calfacade.ifs.CalintfInfo;
 import org.bedework.calfacade.ifs.Groups;
 import org.bedework.http.client.HttpManager;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.util.Collection;
 import java.util.List;

@@ -60,7 +60,7 @@ import org.bedework.calfacade.ifs.CalendarsI;
 import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.calfacade.CalFacadeException;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.util.Collection;
 import java.util.Iterator;

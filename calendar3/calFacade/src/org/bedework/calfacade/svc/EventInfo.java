@@ -57,7 +57,7 @@ import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwEventAlarm;
 import org.bedework.calfacade.BwEventAnnotation;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.io.Serializable;
 import java.util.Collection;

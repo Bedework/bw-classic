@@ -58,11 +58,11 @@ import org.bedework.calfacade.BwGroup;
 import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.BwUser;
 
-import edu.rpi.cct.uwcal.access.Ace;
-import edu.rpi.cct.uwcal.access.Acl;
-import edu.rpi.cct.uwcal.access.Privilege;
-import edu.rpi.cct.uwcal.access.Privileges;
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Ace;
+import edu.rpi.cmt.access.Acl;
+import edu.rpi.cmt.access.Privilege;
+import edu.rpi.cmt.access.Privileges;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import junit.framework.TestCase;
 

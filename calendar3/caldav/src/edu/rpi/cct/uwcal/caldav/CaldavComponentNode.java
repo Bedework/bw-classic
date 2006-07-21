@@ -60,10 +60,10 @@ import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.davdefs.CaldavTags;
 import org.bedework.icalendar.ComponentWrapper;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.uwcal.caldav.calquery.CalendarData;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 import edu.rpi.sss.util.xml.QName;
 
 import net.fortuna.ical4j.model.Calendar;

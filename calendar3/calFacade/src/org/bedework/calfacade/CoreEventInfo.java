@@ -53,7 +53,7 @@
 */
 package org.bedework.calfacade;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.io.Serializable;
 import java.util.Comparator;

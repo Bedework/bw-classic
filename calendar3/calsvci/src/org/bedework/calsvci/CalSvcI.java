@@ -85,8 +85,8 @@ import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
 import org.bedework.icalendar.IcalCallback;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.uwcal.resources.Resources;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.io.Serializable;
 import java.util.Collection;

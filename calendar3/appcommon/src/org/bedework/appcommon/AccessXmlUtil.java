@@ -57,12 +57,12 @@ import org.bedework.calfacade.CalFacadeException;
 import org.bedework.davdefs.CaldavTags;
 import org.bedework.davdefs.WebdavTags;
 
-import edu.rpi.cct.uwcal.access.Ace;
-import edu.rpi.cct.uwcal.access.Acl;
-import edu.rpi.cct.uwcal.access.Privilege;
-import edu.rpi.cct.uwcal.access.PrivilegeDefs;
-import edu.rpi.cct.uwcal.access.PrivilegeSet;
-import edu.rpi.cct.uwcal.access.Privileges;
+import edu.rpi.cmt.access.Ace;
+import edu.rpi.cmt.access.Acl;
+import edu.rpi.cmt.access.Privilege;
+import edu.rpi.cmt.access.PrivilegeDefs;
+import edu.rpi.cmt.access.PrivilegeSet;
+import edu.rpi.cmt.access.Privileges;
 import edu.rpi.sss.util.xml.QName;
 import edu.rpi.sss.util.xml.XmlEmit;
 

@@ -51,11 +51,11 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package edu.rpi.cct.uwcal.access;
+package edu.rpi.cmt.access;
 
 import java.io.Serializable;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 /** Class to handle access control. Because we may be evaluating access
  * frequently we try do so without creating (many) objects.

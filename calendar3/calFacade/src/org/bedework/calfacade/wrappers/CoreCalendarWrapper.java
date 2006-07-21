@@ -56,7 +56,7 @@ package org.bedework.calfacade.wrappers;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwUser;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.util.Collection;
 

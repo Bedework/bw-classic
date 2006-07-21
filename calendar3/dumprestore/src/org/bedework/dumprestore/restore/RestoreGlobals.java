@@ -72,9 +72,9 @@ import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
 
-import edu.rpi.cct.uwcal.access.Access;
-import edu.rpi.cct.uwcal.access.Ace;
-import edu.rpi.cct.uwcal.access.Acl;
+import edu.rpi.cmt.access.Access;
+import edu.rpi.cmt.access.Ace;
+import edu.rpi.cmt.access.Acl;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;

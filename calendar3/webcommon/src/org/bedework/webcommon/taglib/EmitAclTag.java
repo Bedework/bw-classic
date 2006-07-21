@@ -56,7 +56,7 @@ package org.bedework.webcommon.taglib;
 
 import org.bedework.appcommon.AccessXmlUtil;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.JspTagException;

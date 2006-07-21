@@ -63,9 +63,6 @@ import org.bedework.davdefs.CaldavDefs;
 import org.bedework.davdefs.CaldavTags;
 import org.bedework.davdefs.WebdavTags;
 
-import edu.rpi.cct.uwcal.access.Ace;
-import edu.rpi.cct.uwcal.access.Acl;
-import edu.rpi.cct.uwcal.access.Privileges;
 
 import edu.rpi.cct.uwcal.caldav.filter.Filter;
 import edu.rpi.cct.uwcal.caldav.calquery.CalendarData;
@@ -79,6 +76,9 @@ import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavNsNode;
 import edu.rpi.cct.webdav.servlet.shared.WebdavProperty;
+import edu.rpi.cmt.access.Ace;
+import edu.rpi.cmt.access.Acl;
+import edu.rpi.cmt.access.Privileges;
 import edu.rpi.sss.util.xml.QName;
 
 import net.fortuna.ical4j.model.TimeZone;

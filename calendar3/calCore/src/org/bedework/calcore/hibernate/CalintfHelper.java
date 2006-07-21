@@ -59,7 +59,7 @@ import org.bedework.calfacade.CalintfDefs;
 import org.bedework.calfacade.ifs.Calintf;
 import org.bedework.calfacade.CalFacadeException;
 
-import edu.rpi.cct.uwcal.access.PrivilegeDefs;
+import edu.rpi.cmt.access.PrivilegeDefs;
 
 import org.apache.log4j.Logger;
 

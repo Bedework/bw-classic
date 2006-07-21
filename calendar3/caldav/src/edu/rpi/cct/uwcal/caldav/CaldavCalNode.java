@@ -59,8 +59,8 @@ import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.icalendar.IcalTranslator;
 import org.bedework.icalendar.VFreeUtil;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.util.Collection;
 

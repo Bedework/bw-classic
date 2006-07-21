@@ -66,8 +66,8 @@ import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
 //import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.CalFacadeException;
 
-import edu.rpi.cct.uwcal.access.PrivilegeDefs;
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.PrivilegeDefs;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.io.Serializable;
 import java.util.Collection;

@@ -63,9 +63,9 @@ import org.bedework.webcommon.BwAbstractAction;
 import org.bedework.webcommon.BwActionFormBase;
 import org.bedework.webcommon.BwSession;
 
-import edu.rpi.cct.uwcal.access.Ace;
-import edu.rpi.cct.uwcal.access.PrivilegeDefs;
-import edu.rpi.cct.uwcal.access.Privileges;
+import edu.rpi.cmt.access.Ace;
+import edu.rpi.cmt.access.PrivilegeDefs;
+import edu.rpi.cmt.access.Privileges;
 
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
@@ -82,7 +82,7 @@ import javax.servlet.http.HttpServletResponse;
  *      <li>  calPath+guid+recurid:  event or ...</li>.
  *      <li>  calSuiteName:          name of calendar suite</li>.
  *      <li>  how:                   concatenated String of desired access rights
- *                               @see edu.rpi.cct.uwcal.access.PrivilegeDefs </li>.
+ *                               @see edu.rpi.cmt.access.PrivilegeDefs </li>.
  *      <li>  whoType:               user (default), group</li>.
  *      <li>  who:                   name of principal - default to owner</li>.
  * </ul>

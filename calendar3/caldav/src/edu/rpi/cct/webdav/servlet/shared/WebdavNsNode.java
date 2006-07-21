@@ -54,7 +54,7 @@
 
 package edu.rpi.cct.webdav.servlet.shared;
 
-import edu.rpi.cct.uwcal.access.Acl.CurrentAccess;
+import edu.rpi.cmt.access.Acl.CurrentAccess;
 
 import java.io.Serializable;
 import javax.servlet.http.HttpServletResponse;
