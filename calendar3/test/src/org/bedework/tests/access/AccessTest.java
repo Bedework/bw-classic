@@ -101,7 +101,7 @@ public class AccessTest extends TestCase {
 
       Acl acl = new Acl(debug);
 
-      char[] encoded = logEncoded(acl, "default encoded");
+      char[] encoded = logEncoded(acl, "default");
       tryDecode(encoded, "default");
       tryEvaluateAccess(owner, owner, privSetRead, encoded, true,
                         "Owner access for default");
@@ -111,7 +111,8 @@ public class AccessTest extends TestCase {
       log("---------------------------------------------------------");
 
       /* read others - i.e. not owner */
-      acl.clear();
+      acl = new Acl(debug);
+
       acl.addAce(new Ace(null, false, Ace.whoTypeOther,
                          Privileges.makePriv(Privileges.privRead)));
       encoded = logEncoded(acl, "read others");
@@ -126,7 +127,8 @@ public class AccessTest extends TestCase {
       log("---------------------------------------------------------");
 
       /* read for group "agroup", rw for user "auser" */
-      acl.clear();
+      acl = new Acl(debug);
+
       Ace ace = new Ace("agroup", false, Ace.whoTypeGroup,
                         Privileges.makePriv(Privileges.privRead));
       acl.addAce(ace);
@@ -141,6 +143,25 @@ public class AccessTest extends TestCase {
                         "Owner access for read g=agroup,rw auser");
       tryEvaluateAccess(auserInGroup, owner, privSetRead, encoded, true,
                         "User access for read g=agroup,rw auser");
+
+      log("---------------------------------------------------------");
+
+      /* read for group "agroup", rw for user "auser" */
+      acl = new Acl(debug);
+
+      acl.addAce(new Ace(null, false, Ace.whoTypeAll,
+                         Privileges.makePriv(Privileges.privRead)));
+
+      acl.addAce(new Ace(null, false, Ace.whoTypeUnauthenticated,
+                         Privileges.makePriv(Privileges.privNone)));
+      encoded = logEncoded(acl, "read others,none unauthenticated");
+      tryDecode(encoded, "read others,none unauthenticated");
+      tryEvaluateAccess(owner, owner, privSetReadWrite, encoded, true,
+                        "Owner access for read others,none unauthenticated");
+      tryEvaluateAccess(auser, owner, privSetRead, encoded, true,
+                        "User access for read others,none unauthenticated");
+      tryEvaluateAccess(unauth, owner, privSetRead, encoded, false,
+                        "Unauthenticated access for read others,none unauthenticated");
     } catch (Throwable t) {
       t.printStackTrace();
       fail("Exception testing access: " + t.getMessage());
@@ -154,8 +175,8 @@ public class AccessTest extends TestCase {
   private void tryEvaluateAccess(BwPrincipal who, BwPrincipal owner,
                                  Privilege[] how,char[] encoded,
                                  boolean expected, String title) throws Throwable {
-    CurrentAccess ca = new Acl().evaluateAccess(who, owner.getAccount(), how,
-                                                encoded, null);
+    CurrentAccess ca = new Acl(debug).evaluateAccess(who, owner.getAccount(), how,
+                                                     encoded, null);
 
     if (debug) {
       log(title + " got " + ca.accessAllowed + " and expected " + expected);

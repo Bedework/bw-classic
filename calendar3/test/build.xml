@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!-- ================ Test suite build Targets ======================
-     This is the ant build file for the test suite for the UW Calendar.
+     This is the ant build file for the test suite for the Bedework calendar.
 
      This file will probably need no modification as most of this is largely
      site and application independent.

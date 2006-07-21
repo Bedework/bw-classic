@@ -62,7 +62,7 @@ import java.util.Iterator;
  * <p>These are based on webdav + caldav privileges and are flagged below as
  * W for webdav and C for caldav
  *
- * <p>Ideally we will initialise this once per session and resuse the objects
+ * <p>Ideally we will initialise this once per session and reuse the objects
  * during processing.
  *
  *  @author Mike Douglass   douglm@rpi.edu
@@ -141,9 +141,6 @@ public class Privileges implements PrivilegeDefs {
     privs[privUnlock] = new Privilege("unlock", "Remove a lock",
                                       privUnlock);
 
-    privs[privNone] = (Privilege)privs[privAll].clone();
-    privs[privNone].setDenial(true);
-
     privs[privAll].addContainedPrivilege(privs[privRead]);
     privs[privAll].addContainedPrivilege(privs[privWrite]);
     privs[privAll].addContainedPrivilege(privs[privUnlock]);
@@ -157,6 +154,8 @@ public class Privileges implements PrivilegeDefs {
     privs[privWrite].addContainedPrivilege(privs[privWriteContent]);
     privs[privWrite].addContainedPrivilege(privs[privBind]);
     privs[privWrite].addContainedPrivilege(privs[privUnbind]);
+
+    privs[privNone] = Privilege.cloneDenied(privs[privAll]);
   }
 
   /** Constructor
@@ -185,7 +184,7 @@ public class Privileges implements PrivilegeDefs {
    * @return Privilege defining access
    */
   public static Privilege makePriv(int privType) {
-    return (Privilege)privs[privType].clone();
+    return /*(Privilege)*/privs[privType]/*.clone()*/;
   }
 
   /** Returns a set of flags indicating if the indexed privilege (see above
@@ -219,10 +218,12 @@ public class Privileges implements PrivilegeDefs {
       }
       acl.back();
 
-      Privilege p = findPriv(privs[privAll], acl);
+      Privilege p = Privilege.findPriv(privs[privAll], privs[privNone], acl);
       if (p == null) {
-        throw AccessException.badACL("unknown priv");
+        throw AccessException.badACL("unknown priv " + acl.getErrorInfo());
       }
+
+      //System.out.println("found " + p);\
 
       // Set the states based on the priv we just found.
       setState(privStates, p, p.getDenial());
@@ -262,7 +263,7 @@ public class Privileges implements PrivilegeDefs {
       }
       acl.back();
 
-      Privilege p = findPriv(privs[privAll], acl);
+      Privilege p = Privilege.findPriv(privs[privAll], privs[privNone], acl);
       if (p == null) {
         throw AccessException.badACL("unknown priv");
       }
@@ -286,28 +287,6 @@ public class Privileges implements PrivilegeDefs {
     while (it.hasNext()) {
       setState(states, (Privilege)it.next(), denial);
     }
-  }
-
-  /* Works its way down the tree of privileges finding the highest entry
-   * that matches the privilege in the acl.
-   */
-  private static Privilege findPriv(Privilege p, EncodedAcl acl)
-          throws AccessException {
-    if (p.match(acl)) {
-      return p;
-    }
-
-    /* Iterate over the children */
-
-    Iterator it = p.iterateContainedPrivileges();
-    while (it.hasNext()) {
-      p = findPriv((Privilege)it.next(), acl);
-      if (p != null) {
-        return p;
-      }
-    }
-
-    return null;
   }
 }
 

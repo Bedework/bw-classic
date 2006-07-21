@@ -56,6 +56,8 @@ package edu.rpi.cct.uwcal.access;
 import java.io.CharArrayWriter;
 import java.io.Serializable;
 
+import org.apache.log4j.Logger;
+
 /** Object to represent an encoded acl for a calendar entity or service.
  *
  *  @author Mike Douglass   douglm@rpi.edu
@@ -72,6 +74,10 @@ public class EncodedAcl implements Serializable {
   /* When encoding an acl we build it here.
    */
   private transient CharArrayWriter caw;
+
+  private transient Logger log;
+
+  private boolean debug = false;
 
   /** Set an encoded value
    *
@@ -116,10 +122,16 @@ public class EncodedAcl implements Serializable {
    */
   public char getChar() {
     if ((encoded == null) || (pos == encoded.length)) {
+      if (debug) {
+        debugMsg("getChar=-1");
+      }
       return (char)-1;
     }
 
     char c = encoded[pos];
+    if (debug) {
+      debugMsg("getChar='" + c + "'");
+    }
     pos++;
 
     return c;
@@ -144,6 +156,10 @@ public class EncodedAcl implements Serializable {
     }
 
     pos -= n;
+
+    if (debug) {
+      debugMsg("pos back to " + pos);
+    }
   }
 
   /** Get current position
@@ -160,6 +176,20 @@ public class EncodedAcl implements Serializable {
    */
   public void setPos(int val) {
     pos = val;
+
+    if (debug) {
+      debugMsg("set pos to " + pos);
+    }
+  }
+
+  /** Rewind to the start
+   */
+  public void rewind() {
+    pos = 0;
+
+    if (debug) {
+      debugMsg("rewind");
+    }
   }
 
   /** Get number of chars remaining
@@ -187,12 +217,6 @@ public class EncodedAcl implements Serializable {
    */
   public boolean empty() {
     return (encoded == null) || (encoded.length == 0);
-  }
-
-  /** Rewind to the start
-   */
-  public void rewind() {
-    pos = 0;
   }
 
   /** Return the value of a blank terminated length. On success current pos
@@ -332,6 +356,22 @@ public class EncodedAcl implements Serializable {
     return caw.toCharArray();
   }
 
+  protected Logger getLog() {
+    if (log == null) {
+      log = Logger.getLogger(this.getClass());
+    }
+
+    return log;
+  }
+
+  protected void debugMsg(String msg) {
+    getLog().debug(msg);
+  }
+
+  protected void error(Throwable t) {
+    getLog().error(this, t);
+  }
+
   /* ====================================================================
    *                   Object methods
    * ==================================================================== */
@@ -363,8 +403,8 @@ public class EncodedAcl implements Serializable {
   public String toString() {
     StringBuffer sb = new StringBuffer();
 
-    sb.append("AclVO{");
-//    sb.append(entityId);
+    sb.append("EncodedAcl{pos=");
+    sb.append(pos);
     sb.append("}");
 
     return sb.toString();

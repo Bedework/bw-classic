@@ -54,6 +54,7 @@
 package edu.rpi.cct.uwcal.access;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
 /** Allowed privileges for a principal
  *
@@ -65,19 +66,19 @@ public class PrivilegeSet implements Serializable, PrivilegeDefs, Comparable {
   /** Default privs for an owner
    */
   public static PrivilegeSet defaultOwnerPrivileges =
-    new PrivilegeSet(denied,   // privAll
-                     denied,   // privRead
-                     denied,   // privReadAcl
-                     denied,   // privReadCurrentUserPrivilegeSet
-                     denied,   // privReadFreeBusy
-                     denied,   // privWrite
-                     denied,   // privWriteAcl
-                     denied,   // privWriteProperties
-                     denied,   // privWriteContent
-                     denied,   // privBind
-                     denied,   // privUnbind
-                     denied,   // privUnlock
-                     denied);   // privNone
+    new PrivilegeSet(allowed,   // privAll
+                     allowed,   // privRead
+                     allowed,   // privReadAcl
+                     allowed,   // privReadCurrentUserPrivilegeSet
+                     allowed,   // privReadFreeBusy
+                     allowed,   // privWrite
+                     allowed,   // privWriteAcl
+                     allowed,   // privWriteProperties
+                     allowed,   // privWriteContent
+                     allowed,   // privBind
+                     allowed,   // privUnbind
+                     allowed,   // privUnlock
+                     allowed);   // privNone
 
   /** User home max privileges for non-super user
    * This allows us to turn off privileges which would allow delete or rename
@@ -225,6 +226,13 @@ public class PrivilegeSet implements Serializable, PrivilegeDefs, Comparable {
       privileges[priv.getIndex()] = denied;
     } else {
       privileges[priv.getIndex()] = allowed;
+    }
+
+    /* Iterate over the children */
+
+    Iterator it = priv.iterateContainedPrivileges();
+    while (it.hasNext()) {
+      setPrivilege((Privilege)it.next());
     }
   }
 

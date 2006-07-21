@@ -98,10 +98,21 @@
       <fileset dir="${hibernate.jars.dir}">
         <include name="**/*.jar"/>
       </fileset>
-    </copy>
-    <copy todir="${unittest.run.lib}" >
+      <fileset dir="${commons.dir}">
+        <include name="*.jar"/>
+      </fileset>
       <fileset dir="${struts.dir}">
         <include name="**/*.jar"/>
+      </fileset>
+      <fileset dir="${org.bedework.temp.jars}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${org.bedework.default.lib}">
+        <include name="*.jar"/>
+      </fileset>
+      <!-- local jdbc drivers -->
+      <fileset dir="${org.bedework.jdbc.lib}">
+        <include name="*.jar"/>
       </fileset>
     </copy>
     <copy todir="${unittest.run.lib}" file="${servlet.jar}"/>
@@ -110,19 +121,9 @@
     <copy todir="${unittest.run.lib}" file="${junit.jar}"/>
     <copy todir="${unittest.run.lib}" file="${httpunit.jar}"/>
     <copy todir="${unittest.run.lib}" file="${p6spy.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${appserver.jdbcdriver.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.common.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.calcore.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.calenv.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.calfacadeshared.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.access.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.locale.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.calsvci.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.calsvc.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.ical.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.appcommon.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.webcommon.jar}"/>
-    <copy todir="${unittest.run.lib}" file="${org.bedework.synchmlcommon.jar}"/>
+
+    <!-- Include the quickstart jdbc driver -->
+    <copy todir="${unittest.run.lib}" file="${hsqldb.jdbcdriver.jar}"/>
 
     <mkdir dir="${unittest.run.lib}/extras"/>
     <antcall target="init.extra.lib.files" inheritrefs="yes" />
@@ -173,7 +174,6 @@
       <pathelement location="${unittest.run.lib}/extras"/>
 
       <pathelement location="${log4j.jar}"/>
-      <pathelement location="${uwcal.env.properties.root}" />
       <pathelement location="${unittest.testcases.dir}" />
 
       <pathelement location="${unittest.run.resources}" />

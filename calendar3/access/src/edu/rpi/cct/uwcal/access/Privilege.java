@@ -117,24 +117,10 @@ public class Privilege implements PrivilegeDefs {
   }
 
   /**
-   * @param val
-   */
-  public void setName(String val) {
-    name = val;
-  }
-
-  /**
    * @return String
    */
   public String getName() {
     return name;
-  }
-
-  /**
-   * @param val
-   */
-  public void setDescription(String val) {
-    description = val;
   }
 
   /**
@@ -145,13 +131,6 @@ public class Privilege implements PrivilegeDefs {
   }
 
   /**
-   * @param val
-   */
-  public void setAbstractPriv(boolean val) {
-    abstractPriv = val;
-  }
-
-  /**
    * @return String
    */
   public boolean getAbstractPriv() {
@@ -159,25 +138,10 @@ public class Privilege implements PrivilegeDefs {
   }
 
   /**
-   * @param val
-   */
-  public void setDenial(boolean val) {
-    denial = val;
-  }
-
-  /**
    * @return String
    */
   public boolean getDenial() {
     return denial;
-  }
-
-  /**
-   * @param val
-   */
-  public void setIndex(int val) {
-    index = val;
-    encoding = privEncoding[index];
   }
 
   /**
@@ -190,7 +154,7 @@ public class Privilege implements PrivilegeDefs {
   /**
    * @param val
    */
-  public void addContainedPrivilege(Privilege val) {
+  void addContainedPrivilege(Privilege val) {
     containedPrivileges.add(val);
   }
 
@@ -205,39 +169,89 @@ public class Privilege implements PrivilegeDefs {
    *                 Decoding methods
    * ==================================================================== */
 
-  /** If the characters at the current position match the encoding for this
-   * privilege, returns true else false.
-   */
-  /**
+  /** Works its way down the tree of privileges finding the highest entry
+   * that matches the privilege in the acl.
+   *
+   * @param allowedRoot
+   * @param deniedRoot
    * @param acl
-   * @return String
+   * @return Privilege
    * @throws AccessException
    */
-  public boolean match(EncodedAcl acl) throws AccessException {
+  public static Privilege findPriv(Privilege allowedRoot,
+                                   Privilege deniedRoot,
+                                   EncodedAcl acl)
+          throws AccessException {
     if (acl.remaining() < 2) {
-      return false;
+      return null;
     }
 
+    Privilege p;
+
+    if (matchDenied(acl)) {
+      p = matchEncoding(deniedRoot, acl);
+    } else {
+      p = matchEncoding(allowedRoot, acl);
+    }
+
+    if (p == null) {
+      acl.back();  // back up over denied flag
+    }
+
+    return p;
+  }
+
+  private static boolean matchDenied(EncodedAcl acl) throws AccessException {
     char c = acl.getChar();
 
     /* Expect the privilege allowed/denied flag
      * (or the oldDenied or oldAllowed flag)
      */
     if ((c == denied) || (c == oldDenied)) {
-      denial = true;
-    } else if ((c == allowed) || (c == oldAllowed)) {
-      denial = false;
-    } else {
-      throw AccessException.badACE("privilege flag=" + c +
-                                   " " + acl.getErrorInfo());
+      return true;
     }
 
-    if (encoding != acl.getChar()) {
-      acl.back(2);
+    if ((c == allowed) || (c == oldAllowed)) {
       return false;
     }
 
-    return true;
+    throw AccessException.badACE("privilege flag=" + c +
+                                 " " + acl.getErrorInfo());
+  }
+
+  /** We matched denied at the start. Here only the encoding is compared.
+   *
+   * @param subRoot Privilege
+   * @param acl
+   * @return Privilege or null
+   * @throws AccessException
+   */
+  private static Privilege matchEncoding(Privilege subRoot,
+                                         EncodedAcl acl) throws AccessException {
+    if (acl.remaining() < 1) {
+      return null;
+    }
+
+    char c = acl.getChar();
+
+    //System.out.println("subRoot.encoding='" + subRoot.encoding + " c='" + c + "'");
+    if (subRoot.encoding == c) {
+      return subRoot;
+    }
+
+    /* Try the children */
+
+    acl.back();
+
+    Iterator it = subRoot.iterateContainedPrivileges();
+    while (it.hasNext()) {
+      Privilege p = matchEncoding((Privilege)it.next(), acl);
+      if (p != null) {
+        return p;
+      }
+    }
+
+    return null;
   }
 
   /* ====================================================================
@@ -260,6 +274,38 @@ public class Privilege implements PrivilegeDefs {
     }
 
     acl.addChar(encoding);
+  }
+
+  /** Make a copy including children with the denied flag set true
+   *
+   * @param val Privilege to clone
+   * @return Privilege cloned value
+   */
+  public static Privilege cloneDenied(Privilege val) {
+    Privilege newval = new Privilege(val.getName(),
+                                     val.getDescription(),
+                                     val.getAbstractPriv(),
+                                     true,
+                                     val.getIndex());
+
+    Iterator it = val.iterateContainedPrivileges();
+    while (it.hasNext()) {
+      newval.addContainedPrivilege(cloneDenied((Privilege)it.next()));
+    }
+
+    return newval;
+  }
+
+  /* ====================================================================
+   *                    private methods
+   * ==================================================================== */
+
+  /**
+   * @param val
+   */
+  private void setIndex(int val) {
+    index = val;
+    encoding = privEncoding[index];
   }
 
   /* ====================================================================

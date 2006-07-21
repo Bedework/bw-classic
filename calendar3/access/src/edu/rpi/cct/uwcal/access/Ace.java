@@ -356,7 +356,8 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
    * @throws AccessException
    */
   public static PrivilegeSet findMergedPrivilege(Acl acl,
-                                           String name, int whoType) throws AccessException {
+                                                 String name,
+                                                 int whoType) throws AccessException {
     PrivilegeSet privileges = null;
     Iterator it = acl.getAces().iterator();
 
@@ -581,7 +582,7 @@ public class Ace implements PrivilegeDefs, Serializable, Comparable {
   public String toString() {
     StringBuffer sb = new StringBuffer();
 
-    sb.append("AceVO{who=");
+    sb.append("Ace{who=");
     sb.append(who);
     sb.append(", notWho=");
     sb.append(notWho);

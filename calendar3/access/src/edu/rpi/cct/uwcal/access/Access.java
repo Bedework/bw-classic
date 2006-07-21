@@ -135,7 +135,7 @@ public class Access implements Serializable {
    *
    * @return String value for default access
    */
-  public String getDefaultPublicAccess() {
+  public static String getDefaultPublicAccess() {
     return defaultPublicAccess;
   }
 
@@ -143,7 +143,7 @@ public class Access implements Serializable {
    *
    * @return String default user access
    */
-  public String getDefaultPersonalAccess() {
+  public static String getDefaultPersonalAccess() {
     return defaultPersonalAccess;
   }
 

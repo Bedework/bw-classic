@@ -182,7 +182,7 @@ class AccessUtil implements PrivilegeDefs {
    * @return String value for default access
    */
   public String getDefaultPublicAccess() {
-    return access.getDefaultPublicAccess();
+    return Access.getDefaultPublicAccess();
   }
 
   /**
@@ -190,7 +190,7 @@ class AccessUtil implements PrivilegeDefs {
    * @return String default user access
    */
   public String getDefaultPersonalAccess() {
-    return access.getDefaultPersonalAccess();
+    return Access.getDefaultPersonalAccess();
   }
 
   /** Change the access to the given calendar entity using the supplied aces.
@@ -433,9 +433,9 @@ class AccessUtil implements PrivilegeDefs {
     if (aclString == null) {
       if (entAccess == null) {
         if (ent.getPublick()) {
-          return access.getDefaultPublicAccess().toCharArray();
+          return Access.getDefaultPublicAccess().toCharArray();
         }
-        return access.getDefaultPersonalAccess().toCharArray();
+        return Access.getDefaultPersonalAccess().toCharArray();
       }
       return entAccess.toCharArray();
     }

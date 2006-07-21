@@ -46,8 +46,6 @@
     <!-- ==================== Compilation Classpath ==================== -->
 
     <path id="compile.classpath">
-      <pathelement location="${org.bedework.common.jar}"/>
-      <pathelement location="${org.bedework.locale.jar}"/>
       <pathelement location="${log4j.jar}"/>
     </path>
 

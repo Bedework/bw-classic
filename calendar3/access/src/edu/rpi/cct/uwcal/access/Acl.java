@@ -58,8 +58,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
-
 /** Object to represent an acl for a calendar entity or service. We should
  * have one of these per session - or perhaps thread - and lock it during
  * processing.
@@ -84,8 +82,6 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
   boolean debug;
 
   private TreeSet aces;
-
-  private transient Logger log;
 
   /** Used while evaluating access */
 
@@ -218,6 +214,11 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
       if (!authenticated) {
         ca.privileges = Ace.findMergedPrivilege(this, null, Ace.whoTypeUnauthenticated);
 
+        if (ca.privileges == null) {
+          // All might be available
+          ca.privileges = Ace.findMergedPrivilege(this, null, Ace.whoTypeAll);
+        }
+
         break getPrivileges;
       }
 
@@ -225,6 +226,9 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
         ca.privileges = Ace.findMergedPrivilege(this, null, Ace.whoTypeOwner);
         if (ca.privileges == null) {
           ca.privileges = PrivilegeSet.makeDefaultOwnerPrivileges();
+        }
+        if (debug) {
+          debugsb.append("... For owner got: " + ca.privileges);
         }
 
         break getPrivileges;
@@ -267,6 +271,12 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
       // "other" access set?
       ca.privileges = Ace.findMergedPrivilege(this, null, Ace.whoTypeOther);
+
+      if (ca.privileges == null) {
+        // All might be available
+        ca.privileges = Ace.findMergedPrivilege(this, null, Ace.whoTypeAll);
+      }
+
       if (ca.privileges != null) {
         if (debug) {
           debugsb.append("...For other got: " + ca.privileges);
@@ -301,7 +311,9 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
 
       if ((priv != allowed) && (priv != allowedInherited)) {
         if (debug) {
-          debugMsg(debugsb.toString() + "...Check access denied (!allowed)");
+          debugsb.append("...Check access denied (!allowed) ");
+          debugsb.append(ca.privileges);
+          debugMsg(debugsb.toString());
         }
         return ca;
       }
@@ -619,7 +631,7 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
   public String toString() {
     StringBuffer sb = new StringBuffer();
 
-    sb.append("AclVO{");
+    sb.append("Acl{");
     if (!empty()) {
       sb.append("encoded=[");
 
@@ -651,22 +663,6 @@ public class Acl extends EncodedAcl implements PrivilegeDefs {
     sb.append("}");
 
     return sb.toString();
-  }
-
-  private Logger getLog() {
-    if (log == null) {
-      log = Logger.getLogger(this.getClass());
-    }
-
-    return log;
-  }
-
-  private void debugMsg(String msg) {
-    getLog().debug(msg);
-  }
-
-  private void error(Throwable t) {
-    getLog().error(this, t);
   }
 
   /** For testing
