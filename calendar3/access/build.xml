@@ -36,11 +36,11 @@
     <!-- ==================== Sources and classes ====================== -->
 
     <fileset id="base.java.sources" dir="${source.home}" >
-      <include name="edu/rpi/cct/uwcal/access/**/*.java"/>
+      <include name="edu/rpi/cmt/access/**/*.java"/>
     </fileset>
 
     <patternset id="base.class.patternset">
-      <include name="edu/rpi/cct/uwcal/access/**/*.class"/>
+      <include name="edu/rpi/cmt/access/**/*.class"/>
     </patternset>
 
     <!-- ==================== Compilation Classpath ==================== -->
