@@ -91,7 +91,7 @@
      =================================================================== -->
 
   <target name="bld.all"
-          depends="bld.locale,bld.common,bld.access,bld.davdefs,bld.calfacade,
+          depends="bld.locale,bld.common,bld.davdefs,bld.calfacade,
                    bld.calenv,bld.ical,bld.core,
                    bld.http,
                    bld.calsvci,bld.mail,bld.logging,
@@ -244,8 +244,7 @@
       <pathelement location="${jtidy.jar}"/>
     </path>
     <mkdir dir="${dist.home}/docs/api"/>
-    <javadoc sourcepath="${org.bedework.access.base}/src:
-                         ${org.bedework.appcommon.base}/src:
+    <javadoc sourcepath="${org.bedework.appcommon.base}/src:
                          ${org.bedework.core.base}/src:
                          ${org.bedework.caldav.base}/src:
                          ${org.bedework.caldavClientApi.base}/src:
@@ -271,9 +270,7 @@
                          ${org.bedework.webcommon.base}/src:"
            classpathref="javadoc.classpath"
                 destdir="${dist.home}/docs/api"
-           packagenames="org.bedework.access.*,
-                         org.bedework.*,
-                         edu.rpi.cct.uwcal.access.*,
+           packagenames="org.bedework.*,
                          edu.rpi.*"
                  access="public"
                  author="true"
@@ -291,7 +288,7 @@
        ================================================================= -->
 
   <target name="bld.appcommon"
-          depends="init,bld.access,bld.calsvci,bld.davdefs"
+          depends="init,bld.calsvci,bld.davdefs"
           description="Build calendar service interface classes jar">
       <ant antfile="${org.bedework.appcommon.base}/build.xml" inheritrefs="true"
            target="build" />
@@ -302,7 +299,7 @@
        ================================================================= -->
 
   <target name="bld.calfacade"
-          depends="bld.access"
+          depends="init"
           description="Build calendar calfacade jars" >
       <ant antfile="${org.bedework.calfacade.base}/build.xml" inheritrefs="true"
            target="build" />
@@ -340,17 +337,6 @@
           depends="init"
           description="Build calendar localization suite jars" >
       <ant antfile="${org.bedework.locale.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-
-  <!-- ======================== access target =========================
-       This builds the access control suite of the calendar.
-       ================================================================= -->
-
-  <target name="bld.access"
-          depends="bld.locale"
-          description="Build calendar access control suite jars" >
-      <ant antfile="${org.bedework.access.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
 
@@ -663,7 +649,7 @@
   </target>
 
   <target name="run.test"
-          depends="init,bld.core,bld.access,bld.appcommon,bld.synchml"
+          depends="init,bld.core,bld.appcommon,bld.synchml"
           description="Run JUnit tests and generate a report">
       <ant antfile="${org.bedework.testsuite.base}/build.xml" inheritrefs="true"
            target="run.unittest" />

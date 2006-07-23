@@ -45,8 +45,10 @@
       <pathelement location="${ical4j.jar}"/>
       <pathelement location="${junit.jar}"/>
 
-      <!-- Include the location of the compiled calendar classes -->
+      <!-- Include other project jars -->
       <pathelement location="${org.bedework.access.jar}"/>
+
+      <!-- Include the location of the compiled calendar classes -->
       <pathelement location="${org.bedework.locale.jar}"/>
       <pathelement location="${org.bedework.common.jar}"/>
       <pathelement location="${org.bedework.http.jar}"/>
