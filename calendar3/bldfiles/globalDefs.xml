@@ -87,7 +87,6 @@
     <property name="org.bedework.calfacade.base" location="${org.bedework.calendar.dir}/calFacade" />
     <property name="org.bedework.calsvc.base" location="${org.bedework.calendar.dir}/calsvc" />
     <property name="org.bedework.calsvci.base" location="${org.bedework.calendar.dir}/calsvci" />
-    <property name="org.bedework.common.base" location="${org.bedework.calendar.dir}/common" />
     <property name="org.bedework.config.base" location="${org.bedework.calendar.dir}/config" />
     <property name="org.bedework.core.base" location="${org.bedework.calendar.dir}/calCore" />
     <property name="org.bedework.davdefs.base" location="${org.bedework.calendar.dir}/davdefs" />

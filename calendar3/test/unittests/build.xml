@@ -47,10 +47,10 @@
 
       <!-- Include other project jars -->
       <pathelement location="${org.bedework.access.jar}"/>
+      <pathelement location="${org.bedework.rpiutil.jar}"/>
 
       <!-- Include the location of the compiled calendar classes -->
       <pathelement location="${org.bedework.locale.jar}"/>
-      <pathelement location="${org.bedework.common.jar}"/>
       <pathelement location="${org.bedework.http.jar}"/>
       <pathelement location="${org.bedework.calcore.jar}"/>
       <pathelement location="${org.bedework.calenv.jar}"/>

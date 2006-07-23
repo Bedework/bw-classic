@@ -35,9 +35,10 @@
       <pathelement location="${struts.jar}"/>
       <pathelement location="${log4j.jar}"/>
 
-      <!-- Include the location of the compiled calendar classes -->
       <pathelement location="${org.bedework.access.jar}"/>
-      <pathelement location="${org.bedework.common.jar}"/>
+      <pathelement location="${org.bedework.rpiutil.jar}"/>
+
+      <!-- Include the location of the compiled calendar classes -->
       <pathelement location="${org.bedework.calenv.jar}"/>
       <pathelement location="${org.bedework.mail.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>

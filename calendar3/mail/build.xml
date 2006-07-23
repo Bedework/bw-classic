@@ -33,7 +33,6 @@
       <pathelement location="${struts.jar}"/>
       <pathelement location="${ical4j.jar}"/>
       <pathelement location="${log4j.jar}"/>
-      <pathelement location="${org.bedework.common.jar}"/>
       <pathelement location="${org.bedework.calsvci.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
       <pathelement location="${org.bedework.locale.jar}"/>

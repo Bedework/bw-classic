@@ -47,7 +47,6 @@
       <pathelement location="${org.bedework.calenv.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
       <pathelement location="${org.bedework.ical.jar}"/>
-      <pathelement location="${org.bedework.common.jar}"/>
       <pathelement location="${hibernate.jar}"/>
     </path>
 

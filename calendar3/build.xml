@@ -91,7 +91,7 @@
      =================================================================== -->
 
   <target name="bld.all"
-          depends="bld.locale,bld.common,bld.davdefs,bld.calfacade,
+          depends="bld.locale,bld.davdefs,bld.calfacade,
                    bld.calenv,bld.ical,bld.core,
                    bld.http,
                    bld.calsvci,bld.mail,bld.logging,
@@ -252,7 +252,6 @@
                          ${org.bedework.calfacade.base}/src:
                          ${org.bedework.calsvc.base}/src:
                          ${org.bedework.calsvci.base}/src:
-                         ${org.bedework.common.base}/src:
                          ${org.bedework.config.base}/src:
                          ${org.bedework.davdefs.base}/src:
                          ${org.bedework.dumprestore.base}/src:
@@ -340,23 +339,12 @@
            target="build" />
   </target>
 
-  <!-- ======================== common target =======================
-       This builds the common classes jar.
-       ================================================================= -->
-
-  <target name="bld.common"
-          depends="init,bld.locale"
-          description="Build calendar common classes jar">
-      <ant antfile="${org.bedework.common.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-
   <!-- ======================== davdefs target =========================
        This builds some global webdav and caldav definitions
        ================================================================= -->
 
   <target name="bld.davdefs"
-          depends="bld.common"
+          depends="init"
           description="Build calendar davdefs jars" >
       <ant antfile="${org.bedework.davdefs.base}/build.xml" inheritrefs="true"
            target="build" />
@@ -448,7 +436,7 @@
        ================================================================= -->
 
   <target name="bld.calsvci"
-          depends="init,bld.common,bld.ical"
+          depends="init,bld.ical"
           description="Build calendar service interface classes jar">
       <ant antfile="${org.bedework.calsvci.base}/build.xml" inheritrefs="true"
            target="build" />
@@ -459,7 +447,7 @@
        ================================================================= -->
 
   <target name="bld.calsvc"
-          depends="init,bld.common,bld.mail"
+          depends="init,bld.mail"
           description="Build calendar service interface implementation classes jar">
       <ant antfile="${org.bedework.calsvc.base}/build.xml" inheritrefs="true"
            target="build" />
@@ -470,7 +458,7 @@
        ================================================================= -->
 
   <target name="bld.ical"
-          depends="init,bld.common,bld.locale"
+          depends="init,bld.locale"
           description="Build icalendar classes jar">
       <ant antfile="${org.bedework.ical.base}/build.xml" inheritrefs="true"
            target="build" />

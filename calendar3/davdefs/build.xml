@@ -46,7 +46,7 @@
     <!-- ==================== Compilation Classpath ==================== -->
 
     <path id="compile.classpath">
-      <pathelement location="${org.bedework.common.jar}"/>
+      <pathelement location="${org.bedework.rpiutil.jar}"/>
     </path>
 
     <!-- ==================== Build Target ============================= -->

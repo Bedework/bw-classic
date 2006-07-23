@@ -11,6 +11,9 @@
 <project name="quickstart-build-file" default="usage" basedir=".">
   <property environment="env"/>
 
+  <property name="org.bedework.project.access"
+            location="${basedir}/access" />
+
   <property name="org.bedework.calendar.dir"
             location="${basedir}/calendar3" />
 
@@ -19,6 +22,9 @@
 
   <property name="org.bedework.project.freebusy"
             location="${basedir}/freebusy" />
+
+  <property name="org.bedework.project.rpiutil"
+            location="${basedir}/rpiutil" />
 
     <!-- ===============================================================
               Default properties.
@@ -104,6 +110,61 @@
 
     <property name="sync4j.dir"
               location="${basedir}/Sync4j2.2b3" />
+  </target>
+
+  <!-- =================================================================
+       Targets to build sub-projects and copy the results into a common library
+       (for the moment use the calendar lib as the common library)
+       ================================================================= -->
+
+  <!-- .................................................................
+                          access
+       .................................................................. -->
+  <target name="build.access" depends="init"
+          description="builds the access project">
+    <ant antfile="${org.bedework.project.access}/build.xml" inheritrefs="true"
+           target="build-all" />
+    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.access}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="clean.build.access" depends="init"
+          description="builds the access project">
+    <ant antfile="${org.bedework.project.access}/build.xml" inheritrefs="true"
+           target="clean-build-all" />
+    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.access}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- .................................................................
+                          rpiutil
+       .................................................................. -->
+  <target name="build.rpiutil" depends="init"
+          description="builds the rpiutil project">
+    <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritrefs="true"
+           target="build-all" />
+    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.rpiutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="clean.build.rpiutil" depends="init"
+          description="builds the rpiutil project">
+    <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritrefs="true"
+           target="clean-build-all" />
+    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.rpiutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
   </target>
 
   <!-- =================================================================

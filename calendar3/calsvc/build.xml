@@ -31,9 +31,10 @@
       <pathelement location="${ical4j.jar}"/>
       <pathelement location="${log4j.jar}"/>
       <pathelement location="${lucene.jar}"/>
+      <pathelement location="${org.bedework.rpiutil.jar}"/>
+
       <pathelement location="${org.bedework.calsvci.jar}"/>
       <pathelement location="${org.bedework.calcore.jar}"/>
-      <pathelement location="${org.bedework.common.jar}"/>
       <pathelement location="${org.bedework.calenv.jar}"/>
       <pathelement location="${org.bedework.access.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>

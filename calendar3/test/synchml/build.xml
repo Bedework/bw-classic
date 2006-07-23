@@ -39,7 +39,6 @@
       <pathelement location="${junit.jar}"/>
 
       <!-- Include the location of the compiled calendar classes -->
-      <pathelement location="${org.bedework.common.jar}"/>
       <pathelement location="${org.bedework.calcore.jar}"/>
       <pathelement location="${org.bedework.calenv.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
@@ -94,12 +93,12 @@
                  targetos="unix"  pathsep=":" />
 
     <echo message="cp: ${lib.txt.classpath}" />
-		<java	classname="org.bedework.tests.synchml.TestSynchml"
+    <java	classname="org.bedework.tests.synchml.TestSynchml"
           fork="true"
           failonerror="true">
-			<classpath refid="lib.class.path" />
+      <classpath refid="lib.class.path" />
       <arg value="-initdb" />
-		</java>
+    </java>
   </target>
 
   <target name="synchmltest" depends="initRun"
@@ -110,11 +109,11 @@
 
     <echo message="cp: ${lib.txt.classpath}" />
 
-		<java	classname="org.bedework.tests.synchml.TestSynchml"
+    <java	classname="org.bedework.tests.synchml.TestSynchml"
           fork="true"
           failonerror="true">
-			<classpath refid="lib.class.path" />
+      <classpath refid="lib.class.path" />
       <arg value="-runtest" />
-		</java>
+    </java>
   </target>
 </project>

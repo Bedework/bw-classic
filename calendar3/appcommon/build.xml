@@ -16,7 +16,7 @@
   </target>
 
   <target name="build" depends="init"
-          description="Compile UW calendar client common classes source">
+          description="Compile bedework calendar client common classes source">
     <!-- ==================== Sources and classes ====================== -->
 
     <fileset id="base.java.sources" dir="${source.home}" >
@@ -34,8 +34,9 @@
       <pathelement location="${struts.jar}"/>
       <pathelement location="${ical4j.jar}"/>
       <pathelement location="${log4j.jar}"/>
+      <pathelement location="${org.bedework.rpiutil.jar}"/>
+
       <pathelement location="${org.bedework.access.jar}"/>
-      <pathelement location="${org.bedework.common.jar}"/>
       <pathelement location="${org.bedework.calsvci.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
       <pathelement location="${org.bedework.davdefs.jar}"/>
