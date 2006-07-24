@@ -100,6 +100,7 @@ import net.fortuna.ical4j.model.component.VTimeZone;
 public interface Calintf extends CalendarsI, EventsI {
   /** Must be called to initialise the new object.
    *
+   * @param systemName  Used to retrieve configuration about systems.
    * @param url         String url to which we are connecting
    * @param authenticatedUser    String authenticated user of the application
    *                             or null for guest
@@ -112,13 +113,20 @@ public interface Calintf extends CalendarsI, EventsI {
    * @return boolean    true if the authUser was added to the db
    * @throws CalFacadeException
    */
-  public boolean init(String url,
+  public boolean init(String systemName,
+                      String url,
                       String authenticatedUser,
                       String user,
                       boolean publicAdmin,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException;
+
+  /** Retrieve systemName supplied at init
+   *
+   * @return String name
+   */
+  public String getSystemName();
 
   /** Can be called after init to flag the arrival of a user.
    *

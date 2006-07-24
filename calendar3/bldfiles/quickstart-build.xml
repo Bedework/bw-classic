@@ -26,6 +26,9 @@
   <property name="org.bedework.project.rpiutil"
             location="${basedir}/rpiutil" />
 
+  <property name="org.bedework.project.webdav"
+            location="${basedir}/webdav" />
+
     <!-- ===============================================================
               Default properties.
          =============================================================== -->
@@ -161,6 +164,12 @@
         <include name="*.jar" />
       </fileset>
     </copy>
+
+    <copy todir="${org.bedework.project.webdav}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.rpiutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
   </target>
 
   <target name="clean.build.rpiutil" depends="init"
@@ -176,6 +185,37 @@
 
     <copy todir="${org.bedework.project.access}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.rpiutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+
+    <copy todir="${org.bedework.project.webdav}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.rpiutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- .................................................................
+                          webdav
+       .................................................................. -->
+  <target name="build.webdav" depends="init"
+          description="builds the webdav project">
+    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritrefs="true"
+           target="build-all" />
+    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.webdav}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="clean.build.webdav" depends="init"
+          description="builds the webdav project">
+    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritrefs="true"
+           target="clean-build-all" />
+    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.webdav}/dist">
         <include name="*.jar" />
       </fileset>
     </copy>

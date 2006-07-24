@@ -38,6 +38,21 @@
   <!-- This may already be set from calling dir -->
   <dirname property="org.bedework.calendar.dir" file="${ant.file}"/>
 
+  <property name="org.bedework.project.access"
+            location="${basedir}/../access" />
+
+  <property name="org.bedework.project.calendar"
+            location="${basedir}/../calendar3" />
+
+  <property name="org.bedework.project.freebusy"
+            location="${basedir}/../freebusy" />
+
+  <property name="org.bedework.project.rpiutil"
+            location="${basedir}/../rpiutil" />
+
+  <property name="org.bedework.project.webdav"
+            location="${basedir}/../webdav" />
+
   <property name="org.bedework.globaldefs.file"
             location="${org.bedework.calendar.dir}/bldfiles/globalDefs.xml"/>
   <import file="${org.bedework.globaldefs.file}"/>

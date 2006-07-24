@@ -104,6 +104,8 @@ import org.apache.log4j.Logger;
 * @author Mike Douglass   douglm@rpi.edu
 */
 public abstract class CalintfBase implements Calintf {
+  private String systemName;
+
   protected String url;
 
   protected boolean debug;
@@ -138,13 +140,15 @@ public abstract class CalintfBase implements Calintf {
   /* (non-Javadoc)
    * @see org.bedework.calfacade.Calintf#init(org.bedework.calfacade.BwUser, java.lang.String, boolean, boolean, boolean, java.lang.String, boolean)
    */
-  public boolean init(String url,
+  public boolean init(String systemName,
+                      String url,
                       String authenticatedUser,
                       String user,
                       boolean publicAdmin,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException {
+    this.systemName = systemName;
     this.url = url;
     this.debug = debug;
     boolean userCreated = false;
@@ -168,55 +172,13 @@ public abstract class CalintfBase implements Calintf {
     return userCreated;
   }
 
+  public String getSystemName() {
+    return systemName;
+  }
+
   public boolean getDebug() throws CalFacadeException {
     return debug;
   }
-
-  /*
-  public void setSuperUser(boolean val) {
-  }
-
-  public boolean getSuperUser() {
-    return false;
-  }
-
-  public BwStats getStats() throws CalFacadeException {
-    return null;
-  }
-
-  public void setDbStatsEnabled(boolean enable) throws CalFacadeException {
-  }
-
-  public boolean getDbStatsEnabled() throws CalFacadeException {
-    return false;
-  }
-
-  public void dumpDbStats() throws CalFacadeException {
-  }
-
-  public Collection getDbStats() throws CalFacadeException {
-    return null;
-  }
-
-  public BwSystem getSyspars() throws CalFacadeException {
-    return null;
-  }
-
-  public void updateSyspars(BwSystem val) throws CalFacadeException {
-  }
-
-  public CalTimezones getTimezones() throws CalFacadeException {
-    return null;
-  }
-
-  public CalintfInfo getInfo() throws CalFacadeException {
-    return new CalintfInfo(
-        false,     // handlesLocations
-        false,     // handlesSponsors
-        false      // handlesCategories
-      );
-  }
-  */
 
   public void setUser(String val) throws CalFacadeException {
     refreshEvents();

@@ -56,7 +56,6 @@ package org.bedework.calcore.hibernate;
 import edu.rpi.cmt.access.PrivilegeDefs;
 import edu.rpi.cmt.access.Acl.CurrentAccess;
 
-import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwAlarm;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
@@ -209,14 +208,15 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
   /* (non-Javadoc)
    * @see org.bedework.calfacade.Calintf#init(org.bedework.calfacade.BwUser, java.lang.String, boolean, boolean, boolean, java.lang.String, boolean)
    */
-  public boolean init(String url,
+  public boolean init(String systemName,
+                      String url,
                       String authenticatedUser,
                       String user,
                       boolean publicAdmin,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException {
-    super.init(url, authenticatedUser, user, publicAdmin,
+    super.init(systemName, url, authenticatedUser, user, publicAdmin,
                groups, synchId, debug);
 
     boolean userCreated = false;
@@ -372,22 +372,15 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
 
   public BwSystem getSyspars() throws CalFacadeException {
     if (syspars == null) {
-      String name;
-
-      try {
-        name = CalEnv.getGlobalProperty("system.name");
-      } catch (Throwable t) {
-        throw new CalFacadeException(t);
-      }
-
       sess.namedQuery("getSystemPars");
 
-      sess.setString("name", name);
+      sess.setString("name", getSystemName());
 
       syspars = (BwSystem)sess.getUnique();
 
       if (syspars == null) {
-        throw new CalFacadeException("No system parameters with name " + name);
+        throw new CalFacadeException("No system parameters with name " +
+                                     getSystemName());
       }
 
       if (debug) {

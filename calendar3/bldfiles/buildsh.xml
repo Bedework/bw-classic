@@ -89,6 +89,10 @@
     <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
     <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
 
+    <!-- associated projects -->
+    <copy todir="${app.dest.lib}" file="${org.bedework.access.jar}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.rpiutil.jar}"/>
+
     <!-- Extra libraries specified in calling build file -->
     <copy todir="${app.dest.lib}" flatten="yes" >
       <fileset refid="org.bedework.run.jars" />

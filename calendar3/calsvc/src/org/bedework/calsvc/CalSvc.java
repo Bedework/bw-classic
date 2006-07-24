@@ -2407,8 +2407,11 @@ public class CalSvc extends CalSvcI {
       return cali;
     }
 
+    String systemName;
+
     try {
       cali = (Calintf)CalEnv.getGlobalObject("calintfclass", Calintf.class);
+      systemName = CalEnv.getGlobalProperty("system.name");
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }
@@ -2437,7 +2440,8 @@ public class CalSvc extends CalSvcI {
         }
       }
 
-      boolean userCreated = cali.init(null,
+      boolean userCreated = cali.init(systemName,
+                                      null,
                                       pars.getAuthUser(),
                                       pars.getUser(),
                                       pars.getPublicAdmin(),

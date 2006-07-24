@@ -53,7 +53,6 @@
 */
 package edu.rpi.cct.uwcal.caldav;
 
-import org.bedework.appcommon.AccessXmlUtil;
 import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;

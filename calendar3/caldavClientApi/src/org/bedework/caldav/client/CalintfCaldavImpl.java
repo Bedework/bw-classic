@@ -114,14 +114,15 @@ public class CalintfCaldavImpl extends CalintfBase {
   /* (non-Javadoc)
    * @see org.bedework.calfacade.Calintf#init(org.bedework.calfacade.BwUser, java.lang.String, boolean, boolean, boolean, java.lang.String, boolean)
    */
-  public boolean init(String url,
+  public boolean init(String systemName,
+                      String url,
                       String authenticatedUser,
                       String user,
                       boolean publicAdmin,
                       Groups groups,
                       String synchId,
                       boolean debug) throws CalFacadeException {
-    boolean userAdded = super.init(url, authenticatedUser, user, publicAdmin,
+    boolean userAdded = super.init(systemName, url, authenticatedUser, user, publicAdmin,
                                    groups, synchId, debug);
 
     if (httpManager == null) {
