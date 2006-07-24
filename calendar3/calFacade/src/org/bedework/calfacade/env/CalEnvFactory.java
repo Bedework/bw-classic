@@ -26,25 +26,46 @@
    NEGLIGENCE) OR STRICT LIABILITY, ARISING OUT OF OR IN CONNECTION WITH
    THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-package org.bedework.calenv;
+package org.bedework.calfacade.env;
 
-/** Exception possibly thrown by calendar environment methods.
+import org.bedework.calfacade.CalEnvException;
+
+/** Obtain a CalEnv object.
+ *
  */
-public class CalEnvException extends Exception {
-  /** Constructor
-   *
-   * @param msg
-   */
-  public CalEnvException(String msg) {
-    super(msg);
-  }
+public class CalEnvFactory {
+  private final static String envclass = "org.bedework.calenv.CalEnv";
 
-  /** Constructor
-   *
-   * @param t
-   */
-  public CalEnvException(Throwable t) {
-    super(t);
+  /** Obtain and initialise a caldav object using the given prefix.
+  *
+  * @param appPrefix
+  * @param debug
+   * @return CalEnvI
+  * @throws CalEnvException
+  */
+  public static CalEnvI getEnv(String appPrefix, boolean debug) throws CalEnvException {
+    try {
+      Object o = Class.forName(envclass).newInstance();
+
+      if (o == null) {
+        throw new CalEnvException("Class " + envclass + " not found");
+      }
+
+      if (!(o instanceof CalEnvI)) {
+        throw new CalEnvException("Class " + envclass +
+                                  " is not a subclass of " +
+                                  CalEnvI.class.getName());
+      }
+
+      CalEnvI env = (CalEnvI)o;
+
+      env.init(appPrefix, debug);
+
+      return env;
+    } catch (CalEnvException ce) {
+      throw ce;
+    } catch (Throwable t) {
+      throw new CalEnvException(t);
+    }
   }
 }
-

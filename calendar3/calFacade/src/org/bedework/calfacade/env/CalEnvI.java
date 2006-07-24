@@ -26,15 +26,37 @@
    NEGLIGENCE) OR STRICT LIABILITY, ARISING OUT OF OR IN CONNECTION WITH
    THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-package org.bedework.calenv;
+/* **********************************************************************
+    Copyright 2006 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+
+    Redistribution and use of this distribution in source and binary forms,
+    with or without modification, are permitted provided that:
+       The above copyright notice and this permission notice appear in all
+        copies and supporting documentation;
+
+        The name, identifiers, and trademarks of Rensselaer Polytechnic
+        Institute are not used in advertising or publicity without the
+        express prior written permission of Rensselaer Polytechnic Institute;
+
+    DISCLAIMER: The software is distributed" AS IS" without any express or
+    implied warranty, including but not limited to, any implied warranties
+    of merchantability or fitness for a particular purpose or any warrant)'
+    of non-infringement of any current or pending patent rights. The authors
+    of the software make no representations about the suitability of this
+    software for any particular purpose. The entire risk as to the quality
+    and performance of the software is with the user. Should the software
+    prove defective, the user assumes the cost of all necessary servicing,
+    repair or correction. In particular, neither Rensselaer Polytechnic
+    Institute, nor the authors of the software are liable for any indirect,
+    special, consequential, or incidental damages related to the software,
+    to the maximum extent the law permits.
+*/
+package org.bedework.calfacade.env;
 
 import org.bedework.calfacade.CalEnvException;
-import org.bedework.calfacade.env.CalEnvI;
 
-import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Properties;
-import org.apache.log4j.Logger;
-
 
 /** An interface to the outside world - the methods here provide access to
  * properties and resources supplied by the environment. The concrete class
@@ -53,98 +75,27 @@ import org.apache.log4j.Logger;
  * <p>This approach needs revisiting to split out core parameters, those
  * that affect the back end only and those that are client only.
  */
-public class CalEnv implements CalEnvI {
-  /** Location of the properties file */
-  private static final String propertiesFile =
-      "/properties/calendar/env.properties";
-
-  private static volatile Properties pr;
-
-  private static volatile Integer lockit = new Integer(0);
-
-  /** Global properties have this prefix.
-   */
-  public static final String globalPrefix = "org.bedework.global.";
-
-  private String appPrefix;
-
-  /** Initialise a caldav object using the given prefix.
+public interface CalEnvI extends Serializable {
+  /** Called after object is created
    *
    * @param appPrefix
    * @param debug
    * @throws CalEnvException
    */
-  public void init(String appPrefix, boolean debug) throws CalEnvException {
-    this.appPrefix = appPrefix;
-  }
-
-  private static Properties getPr() throws CalEnvException {
-    synchronized (lockit) {
-      if (pr != null) {
-        return pr;
-      }
-
-      /** Load properties file */
-
-      pr = new Properties();
-      InputStream is = null;
-
-      try {
-        try {
-          // The jboss?? way - should work for others as well.
-          ClassLoader cl = Thread.currentThread().getContextClassLoader();
-          is = cl.getResourceAsStream(propertiesFile);
-        } catch (Throwable clt) {}
-
-        if (is == null) {
-          // Try another way
-          is = CalEnv.class.getResourceAsStream(propertiesFile);
-        }
-
-        if (is == null) {
-          throw new CalEnvException("Unable to load properties file" +
-                                      propertiesFile);
-        }
-
-        pr.load(is);
-
-        //if (debug) {
-        //  pr.list(System.out);
-        //  Logger.getLogger(CalEnv.class).debug(
-        //      "file.encoding=" + System.getProperty("file.encoding"));
-        //}
-        return pr;
-      } catch (CalEnvException cee) {
-        throw cee;
-      } catch (Throwable t) {
-        Logger.getLogger(CalEnv.class).error("getEnv error", t);
-        throw new CalEnvException(t.getMessage());
-      } finally {
-        if (is != null) {
-          try {
-            is.close();
-          } catch (Throwable t1) {}
-        }
-      }
-    }
-  }
+  public void init (String appPrefix, boolean debug) throws CalEnvException;
 
   /** Return current app prefix
    *
    * @return String app prefix
    */
-  public String getAppPrefix() {
-    return appPrefix;
-  }
+  public String getAppPrefix();
 
   /** Return all properties from the global environment.
    *
    * @return Properties    global properties object
    * @throws CalEnvException
    */
-  public Properties getProperties() throws CalEnvException {
-    return getPr();
-  }
+  public Properties getProperties() throws CalEnvException;
 
   /** Get required property, throw exception if absent
    *
@@ -152,15 +103,7 @@ public class CalEnv implements CalEnvI {
    * @return String value
    * @throws CalEnvException
    */
-  public String getProperty(String name) throws CalEnvException {
-    String val = getPr().getProperty(name);
-
-    if (val == null) {
-      throw new CalEnvException("Missing property " + name);
-    }
-
-    return val;
-  }
+  public String getProperty(String name) throws CalEnvException;
 
   /** Get optional property.
    *
@@ -168,11 +111,7 @@ public class CalEnv implements CalEnvI {
    * @return String value or null
    * @throws CalEnvException
    */
-  public String getOptProperty(String name) throws CalEnvException {
-    String val = getPr().getProperty(name);
-
-    return val;
-  }
+  public String getOptProperty(String name) throws CalEnvException;
 
   /** Return the value of the named property.
    *
@@ -180,13 +119,7 @@ public class CalEnv implements CalEnvI {
    * @return boolean value of property
    * @throws CalEnvException
    */
-  public boolean getBoolProperty(String name) throws CalEnvException {
-    String val = getProperty(name);
-
-    val = val.toLowerCase();
-
-    return "true".equals(val) || "yes".equals(val);
-  }
+  public boolean getBoolProperty(String name) throws CalEnvException;
 
   /** Return the value of the named property.
    *
@@ -194,15 +127,7 @@ public class CalEnv implements CalEnvI {
    * @return int value of property
    * @throws CalEnvException
    */
-  public int getIntProperty(String name) throws CalEnvException {
-    String val = getProperty(name);
-
-    try {
-      return Integer.valueOf(val).intValue();
-    } catch (Throwable t) {
-      throw new CalEnvException("Invalid property " + name + " = " + val);
-    }
-  }
+  public int getIntProperty(String name) throws CalEnvException;
 
   /* ====================================================================
    *                 Methods returning global properties.
@@ -214,9 +139,7 @@ public class CalEnv implements CalEnvI {
    * @return String value
    * @throws CalEnvException
    */
-  public String getGlobalProperty(String name) throws CalEnvException {
-    return getProperty(globalPrefix + name);
-  }
+  public String getGlobalProperty(String name) throws CalEnvException;
 
   /** Return the value of the named property or false if absent.
    *
@@ -224,9 +147,7 @@ public class CalEnv implements CalEnvI {
    * @return boolean value of global property
    * @throws CalEnvException
    */
-  public boolean getGlobalBoolProperty(String name) throws CalEnvException {
-    return getBoolProperty(globalPrefix + name);
-  }
+  public boolean getGlobalBoolProperty(String name) throws CalEnvException;
 
   /** Return the value of the named property.
    *
@@ -234,9 +155,7 @@ public class CalEnv implements CalEnvI {
    * @return int value of global property
    * @throws CalEnvException
    */
-  public int getGlobalIntProperty(String name) throws CalEnvException {
-    return getIntProperty(globalPrefix + name);
-  }
+  public int getGlobalIntProperty(String name) throws CalEnvException;
 
   /** Given a global property (hence the "Global" in the name) return an
    * object of that class. The class parameter is used to check that the
@@ -247,29 +166,7 @@ public class CalEnv implements CalEnvI {
    * @return     Object checked to be an instance of that class
    * @throws CalEnvException
    */
-  public Object getGlobalObject(String name, Class cl) throws CalEnvException {
-    try {
-      String className = getGlobalProperty(name);
-
-      Object o = Class.forName(className).newInstance();
-
-      if (o == null) {
-        throw new CalEnvException("Class " + className + " not found");
-      }
-
-      if (!cl.isInstance(o)) {
-        throw new CalEnvException("Class " + className +
-                                  " is not a subclass of " +
-                                  cl.getName());
-      }
-
-      return o;
-    } catch (CalEnvException ce) {
-      throw ce;
-    } catch (Throwable t) {
-      throw new CalEnvException(t);
-    }
-  }
+  public Object getGlobalObject(String name, Class cl) throws CalEnvException;
 
   /* ====================================================================
    *                 Methods returning application properties.
@@ -281,9 +178,7 @@ public class CalEnv implements CalEnvI {
    * @return String value
    * @throws CalEnvException
    */
-  public String getAppProperty(String name) throws CalEnvException {
-    return getProperty(appPrefix + name);
-  }
+  public String getAppProperty(String name) throws CalEnvException;
 
   /** Get optional app property.
    *
@@ -291,9 +186,7 @@ public class CalEnv implements CalEnvI {
    * @return String value or null
    * @throws CalEnvException
    */
-  public String getAppOptProperty(String name) throws CalEnvException {
-    return getOptProperty(appPrefix + name);
-  }
+  public String getAppOptProperty(String name) throws CalEnvException;
 
   /** Return the value of the named property or false if absent.
    *
@@ -301,9 +194,7 @@ public class CalEnv implements CalEnvI {
    * @return boolean value of global property
    * @throws CalEnvException
    */
-  public boolean getAppBoolProperty(String name) throws CalEnvException {
-    return getBoolProperty(appPrefix + name);
-  }
+  public boolean getAppBoolProperty(String name) throws CalEnvException;
 
   /** Return the value of the named property.
    *
@@ -311,9 +202,7 @@ public class CalEnv implements CalEnvI {
    * @return int value of global property
    * @throws CalEnvException
    */
-  public int getAppIntProperty(String name) throws CalEnvException {
-    return getIntProperty(appPrefix + name);
-  }
+  public int getAppIntProperty(String name) throws CalEnvException;
 
   /** Given an application property (hence the "App" in the name) return an
    * object of that class. The class parameter is used to check that the
@@ -324,28 +213,5 @@ public class CalEnv implements CalEnvI {
    * @return     Object checked to be an instance of that class
    * @throws CalEnvException
    */
-  public Object getAppObject(String name, Class cl) throws CalEnvException {
-    try {
-      String className = getAppProperty(name);
-
-      Object o = Class.forName(className).newInstance();
-
-      if (o == null) {
-        throw new CalEnvException("Class " + className + " not found");
-      }
-
-      if (!cl.isInstance(o)) {
-        throw new CalEnvException("Class " + className +
-                                  " is not a subclass of " +
-                                  cl.getName());
-      }
-
-      return o;
-    } catch (CalEnvException ce) {
-      throw ce;
-    } catch (Throwable t) {
-      throw new CalEnvException(t);
-    }
-  }
+  public Object getAppObject(String name, Class cl) throws CalEnvException;
 }
-

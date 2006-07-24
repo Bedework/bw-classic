@@ -181,12 +181,20 @@ public interface Calintf extends CalendarsI, EventsI {
    */
   public Collection getDbStats() throws CalFacadeException;
 
-  /** Get the system pars
+  /** Get the system pars using name supplied at init
    *
    * @return BwSystem object
    * @throws CalFacadeException if not admin
    */
   public BwSystem getSyspars() throws CalFacadeException;
+
+  /** Get the system pars given name
+   *
+   * @param name
+   * @return BwSystem object
+   * @throws CalFacadeException if not admin
+   */
+  public BwSystem getSyspars(String name) throws CalFacadeException;
 
   /** Update the system pars
    *

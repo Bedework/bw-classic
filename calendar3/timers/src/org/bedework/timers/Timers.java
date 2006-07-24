@@ -54,10 +54,10 @@
 
 package org.bedework.timers;
 
-import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwAlarm;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.env.CalEnvFactory;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.mail.MailerIntf;
 
@@ -118,7 +118,7 @@ public class Timers {
       }
 
       try {
-        mailer = (MailerIntf)CalEnv.getGlobalObject("mailerclass",
+        mailer = (MailerIntf)CalEnvFactory.getEnv(null, debug).getGlobalObject("mailerclass",
                                                     MailerIntf.class);
         mailer.init(svci, debug);
       } catch (Throwable t) {

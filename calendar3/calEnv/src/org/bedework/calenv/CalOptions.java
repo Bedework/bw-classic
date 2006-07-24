@@ -28,6 +28,8 @@
  */
 package org.bedework.calenv;
 
+import org.bedework.calfacade.CalEnvException;
+
 import edu.rpi.sss.util.xml.XmlUtil;
 
 import java.io.InputStream;

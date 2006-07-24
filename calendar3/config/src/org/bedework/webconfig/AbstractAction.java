@@ -54,7 +54,8 @@
 
 package org.bedework.webconfig;
 
-import org.bedework.calenv.CalEnv;
+import org.bedework.calfacade.env.CalEnvFactory;
+import org.bedework.calfacade.env.CalEnvI;
 import org.bedework.webcommon.BwSession;
 import org.bedework.webcommon.BwSessionImpl;
 import org.bedework.webcommon.BwWebUtil;
@@ -145,7 +146,7 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
 
     if (s != null) {
     } else {
-      CalEnv env = getEnv(form);
+      CalEnvI env = getEnv(form);
       String appName = env.getAppProperty("name");
       String appRoot = env.getAppProperty("root");
 
@@ -155,15 +156,15 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
 
       BwWebUtil.setState(request, s);
     }
-    
+
     boolean changed = false;
-    
+
     if (form.getPropertyCollections().size() == 0) {
       changed = true;
     } else {
       changed = modulesChanged(form);
     }
-    
+
     if (changed) {
       resetProperties(form);
     }
@@ -174,47 +175,47 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
 
     ConfigCollection modules = new Modules();
     form.addPropertyCollection(modules);
-    
+
     ConfigCollection globals = new Globals();
     form.addPropertyCollection(globals);
-    
+
     ConfigCollection syspars = new Syspars();
     form.addPropertyCollection(syspars);
 
     Properties pr = form.getProperties();
-    
+
     /* Initialise those two as they may affect the rest. */
     if (pr != null) {
       modules.initialise(pr, form.getErr());
       globals.initialise(pr, form.getErr());
       syspars.initialise(pr, form.getErr());
     }
-    
+
     /* Ensure module names and types same size */
-    
-    OrderedListProperty moduleNames = 
+
+    OrderedListProperty moduleNames =
       (OrderedListProperty)modules.findProperty("app.names");
-    
-    OrderedMultiListProperty moduleTypes = 
+
+    OrderedMultiListProperty moduleTypes =
       (OrderedMultiListProperty)modules.findProperty("app.types");
-      
+
     debugMsg("sizes - names=" + moduleNames.size() + " types=" + moduleTypes.size());
-    
+
     if (moduleNames.size() != moduleTypes.size()) {
-      form.getErr().emit("org.bedework.config.error.badmodulenames", 
+      form.getErr().emit("org.bedework.config.error.badmodulenames",
                          moduleNames.getValue(), moduleTypes.getValue());
       return;
     }
-    
+
     Iterator nmit = moduleNames.iterateValues();
     Iterator typeit = moduleTypes.iterateValues();
-    
+
     while (nmit.hasNext()) {
       String nm = (String)nmit.next();
       String type = (String)typeit.next();
-      
+
       debugMsg("generate app properties - name=" + nm + " type=" + type);
-      
+
       if (type.equals(webconfigType)) {
         form.addPropertyCollection(new Webconfig(nm));
       } else if (type.equals(webadminType)) {
@@ -245,7 +246,7 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
     }
   }
 
-  protected ConfigCollection findCollection(String name, 
+  protected ConfigCollection findCollection(String name,
                                             ActionForm form) throws Throwable {
     Collection c = form.getPropertyCollections();
 
@@ -264,22 +265,22 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
 
   protected boolean modulesChanged(ActionForm form) throws Throwable {
     ConfigCollection modules = findCollection(modulesCollectionName, form);
-    
+
     if (modules == null) {
       return false;
     }
-    
-    OrderedListProperty moduleNames = 
+
+    OrderedListProperty moduleNames =
       (OrderedListProperty)modules.findProperty("app.names");
-    
-    OrderedMultiListProperty moduleTypes = 
+
+    OrderedMultiListProperty moduleTypes =
       (OrderedMultiListProperty)modules.findProperty("app.types");
 
     boolean changed = moduleNames.getChanged() || moduleTypes.getChanged();
-    
+
     moduleNames.resetChanged();
     moduleTypes.resetChanged();
-    
+
     return changed;
   }
 
@@ -363,16 +364,16 @@ public abstract class AbstractAction extends UtilAbstractAction implements Defs 
   /** get an env object initialised appropriately for our usage.
    *
    * @param frm
-   * @return CalEnv object - also implanted in form.
+   * @return CalEnvI object - also implanted in form.
    * @throws Throwable
    */
-  public CalEnv getEnv(ActionForm frm) throws Throwable {
-    CalEnv env = frm.getEnv();
+  public CalEnvI getEnv(ActionForm frm) throws Throwable {
+    CalEnvI env = frm.getEnv();
     if (env != null) {
       return env;
     }
 
-    env = new CalEnv(envPrefix, debug);
+    env = CalEnvFactory.getEnv(envPrefix, debug);
     frm.assignEnv(env);
     return env;
   }

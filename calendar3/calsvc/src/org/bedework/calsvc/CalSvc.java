@@ -53,7 +53,6 @@
 */
 package org.bedework.calsvc;
 
-import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.base.BwOwnedDbentity;
 import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.BwAlarm;
@@ -79,6 +78,8 @@ import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CoreEventInfo;
+import org.bedework.calfacade.env.CalEnvFactory;
+import org.bedework.calfacade.env.CalEnvI;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
@@ -130,6 +131,8 @@ import org.apache.log4j.Logger;
  * @author Mike Douglass       douglm@rpi.edu
  */
 public class CalSvc extends CalSvcI {
+  private String systemName;
+
   private CalSvcIPars pars;
 
   private Index indexer;
@@ -268,7 +271,7 @@ public class CalSvc extends CalSvcI {
 
   private transient Logger log;
 
-  private CalEnv env;
+  private CalEnvI env;
 
   private Resources res = new Resources();
 
@@ -278,6 +281,9 @@ public class CalSvc extends CalSvcI {
   public void init(CalSvcIPars parsParam) throws CalFacadeException {
     pars = (CalSvcIPars)parsParam.clone();
     debug = pars.getDebug();
+
+    env = CalEnvFactory.getEnv(pars.getEnvPrefix(), debug);
+    systemName = env.getGlobalProperty("system.name");
 
     //if (userAuth != null) {
     //  userAuth.reinitialise(getUserAuthCallBack());
@@ -292,8 +298,6 @@ public class CalSvc extends CalSvcI {
     }
 
     try {
-      env = new CalEnv(pars.getEnvPrefix(), debug);
-
       if (pars.getPublicAdmin()) {
         //adminAutoDeleteSponsors = env.getAppBoolProperty("app.autodeletesponsors");
         //adminAutoDeleteLocations = env.getAppBoolProperty("app.autodeletelocations");
@@ -362,7 +366,7 @@ public class CalSvc extends CalSvcI {
   }
 
   public BwSystem getSyspars() throws CalFacadeException {
-    return getCal().getSyspars();
+    return getCal().getSyspars(systemName);
   }
 
   public void updateSyspars(BwSystem val) throws CalFacadeException {
@@ -436,11 +440,7 @@ public class CalSvc extends CalSvcI {
   }
 
   public String getEnvProperty(String name) throws CalFacadeException {
-    try {
-      return CalEnv.getProperty(name);
-    } catch (Throwable t) {
-      throw new CalFacadeException(t);
-    }
+    return env.getProperty(name);
   }
 
    public Resources getResources() {
@@ -2407,14 +2407,7 @@ public class CalSvc extends CalSvcI {
       return cali;
     }
 
-    String systemName;
-
-    try {
-      cali = (Calintf)CalEnv.getGlobalObject("calintfclass", Calintf.class);
-      systemName = CalEnv.getGlobalProperty("system.name");
-    } catch (Throwable t) {
-      throw new CalFacadeException(t);
-    }
+    cali = (Calintf)env.getGlobalObject("calintfclass", Calintf.class);
 
     try {
       cali.open(); // Just for the user interactions

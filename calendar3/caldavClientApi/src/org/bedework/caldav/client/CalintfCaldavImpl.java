@@ -170,6 +170,10 @@ public class CalintfCaldavImpl extends CalintfBase {
     return null;
   }
 
+  public BwSystem getSyspars(String name) throws CalFacadeException {
+    return null;
+  }
+
   public void updateSyspars(BwSystem val) throws CalFacadeException {
   }
 

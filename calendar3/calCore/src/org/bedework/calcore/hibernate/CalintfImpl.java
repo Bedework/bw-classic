@@ -371,16 +371,20 @@ public class CalintfImpl extends CalintfBase implements PrivilegeDefs {
   }
 
   public BwSystem getSyspars() throws CalFacadeException {
+    return getSyspars(getSystemName());
+  }
+
+  public BwSystem getSyspars(String name) throws CalFacadeException {
     if (syspars == null) {
       sess.namedQuery("getSystemPars");
 
-      sess.setString("name", getSystemName());
+      sess.setString("name", name);
 
       syspars = (BwSystem)sess.getUnique();
 
       if (syspars == null) {
         throw new CalFacadeException("No system parameters with name " +
-                                     getSystemName());
+                                     name);
       }
 
       if (debug) {

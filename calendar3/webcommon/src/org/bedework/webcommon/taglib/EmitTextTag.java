@@ -125,6 +125,7 @@ public class EmitTextTag extends NameScopePropertyTag {
       out.print(tagName);
       out.println('>');
     } catch(Throwable t) {
+      t.printStackTrace();
       throw new JspTagException("Error: " + t.getMessage());
     } finally {
       tagName = null; // reset for next time.

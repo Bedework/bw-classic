@@ -40,6 +40,10 @@ public class WebdavTags implements AccessTags {
    */
   public static final String namespace = "DAV:";
 
+  /** Tables of QNames indexed by name
+   */
+  public final static HashMap qnames = new HashMap();
+
   /** */
   public static final QName _abstract = makeQName("abstract");
 
@@ -279,7 +283,7 @@ public class WebdavTags implements AccessTags {
   public static final QName supportedPrivilege = makeQName("supported-privilege");
 
   /** */
-  public static final QName supportedPrivilegeSet = makeQName("supported-privilege-set");
+  public static final QName supportedPrivilegeSet = makeQName("c");
 
   /** */
   public static final QName supportedlock = makeQName("supportedlock");
@@ -304,10 +308,6 @@ public class WebdavTags implements AccessTags {
 
   /** */
   public static final QName writeProperties = makeQName("write-properties");
-
-  /** Tables of QNames indexed by name
-   */
-  public final static HashMap qnames = new HashMap();
 
   private static QName makeQName(String name) {
     QName q = new QName(namespace, name);

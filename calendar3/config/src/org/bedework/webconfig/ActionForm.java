@@ -54,7 +54,7 @@
 
 package org.bedework.webconfig;
 
-import org.bedework.calenv.CalEnv;
+import org.bedework.calfacade.env.CalEnvI;
 import org.bedework.webconfig.collections.ConfigCollection;
 
 import edu.rpi.sss.util.jsp.UtilActionForm;
@@ -74,12 +74,12 @@ public class ActionForm extends UtilActionForm {
   /** This object will be set up appropriately for the kind of client,
    * e.g. admin, guest etc.
    */
-  private CalEnv env;
-  
+  private CalEnvI env;
+
   private FormFile uploadFile;
 
   private Collection propertyCollections;
-	private Hashtable map;
+  private Hashtable map;
 
   /* The result of all this */
   private Properties properties;
@@ -116,7 +116,7 @@ public class ActionForm extends UtilActionForm {
    */
   public Collection getPropertyCollections() {
     if (propertyCollections == null) {
-			propertyCollections = new Vector();
+      propertyCollections = new Vector();
       map = new Hashtable();
     }
     return propertyCollections;
@@ -137,7 +137,10 @@ public class ActionForm extends UtilActionForm {
   public Properties getProperties() {
     if (properties == null) {
       try {
-        properties = (Properties)CalEnv.getProperties().clone();
+        if (env == null) {
+          throw new Exception("No env set");
+        }
+        properties = (Properties)env.getProperties().clone();
       } catch (Throwable t) {
         getErr().emit(t);
       }
@@ -145,42 +148,42 @@ public class ActionForm extends UtilActionForm {
     return properties;
   }
 
-	/** Add a collection
-	 *
-	 * @param val
-	 * @throws Throwable
-	 */
-	public void addPropertyCollection(ConfigCollection val) throws Throwable {
-		String name = val.getName();
+  /** Add a collection
+   *
+   * @param val
+   * @throws Throwable
+   */
+  public void addPropertyCollection(ConfigCollection val) throws Throwable {
+    String name = val.getName();
 
-		if (findPropertyCollection(name) != null) {
-			throw new Exception("Duplicate property collection " + name);
-		}
+    if (findPropertyCollection(name) != null) {
+      throw new Exception("Duplicate property collection " + name);
+    }
 
-		getPropertyCollections().add(val);
-		map.put(name, val);
-	}
-	/** Find the collection with the given name
-	 *
-	 * @param name
-	 * @return ConfigCollection
-	 */
-	public ConfigCollection findPropertyCollection(String name) {
+    getPropertyCollections().add(val);
+    map.put(name, val);
+  }
+  /** Find the collection with the given name
+   *
+   * @param name
+   * @return ConfigCollection
+   */
+  public ConfigCollection findPropertyCollection(String name) {
     getPropertyCollections();
-		return (ConfigCollection)map.get(name);
-	}
+    return (ConfigCollection)map.get(name);
+  }
 
   /**
    * @param val
    */
-  public void assignEnv(CalEnv val) {
+  public void assignEnv(CalEnvI val) {
     env = val;
   }
 
   /**
    * @return env object
    */
-  public CalEnv getEnv() {
+  public CalEnvI getEnv() {
     return env;
   }
 }

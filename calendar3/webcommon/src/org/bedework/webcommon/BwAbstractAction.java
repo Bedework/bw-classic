@@ -54,7 +54,6 @@
 package org.bedework.webcommon;
 
 import org.bedework.appcommon.BedeworkDefs;
-import org.bedework.calenv.CalEnv;
 import org.bedework.calenv.CalOptions;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
@@ -66,6 +65,8 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
 import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.env.CalEnvFactory;
+import org.bedework.calfacade.env.CalEnvI;
 import org.bedework.calfacade.ifs.Groups;
 import org.bedework.calfacade.svc.AdminGroups;
 import org.bedework.calfacade.svc.BwAdminGroup;
@@ -141,7 +142,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
     BwActionFormBase form = (BwActionFormBase)frm;
     String adminUserId = null;
 
-    CalEnv env = getEnv(request, form);
+    CalEnvI env = getEnv(request, form);
 
     setConfig(request, form);
 
@@ -1726,9 +1727,9 @@ public abstract class BwAbstractAction extends UtilAbstractAction
    * @return CalEnv object - also implanted in form.
    * @throws Throwable
    */
-  private CalEnv getEnv(HttpServletRequest request,
+  private CalEnvI getEnv(HttpServletRequest request,
                         BwActionFormBase frm) throws Throwable {
-    CalEnv env = frm.getEnv();
+    CalEnvI env = frm.getEnv();
     if (env != null) {
       return env;
     }
@@ -1744,7 +1745,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
 
     String envPrefix = "org.bedework.app." + appName + ".";
 
-    env = new CalEnv(envPrefix, debug);
+    env = CalEnvFactory.getEnv(envPrefix, debug);
     frm.assignEnv(env);
 
     return env;

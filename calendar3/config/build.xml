@@ -91,7 +91,7 @@ org.bedework.jdbcpw=${org.bedework.jdbcpw}
 
       <pathelement location="${org.bedework.rpiutil.jar}"/>
 
-      <pathelement location="${org.bedework.calenv.jar}"/>
+      <pathelement location="${org.bedework.calfacadeshared.jar}"/>
       <pathelement location="${org.bedework.webcommon.jar}"/>
     </path>
 

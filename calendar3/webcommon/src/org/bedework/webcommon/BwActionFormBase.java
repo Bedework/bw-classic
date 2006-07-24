@@ -62,7 +62,6 @@ import org.bedework.appcommon.MyCalendarVO;
 import org.bedework.appcommon.TimeView;
 import org.bedework.appcommon.WeekView;
 import org.bedework.appcommon.YearView;
-import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
@@ -72,6 +71,7 @@ import org.bedework.calfacade.BwSponsor;
 import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeDefs;
+import org.bedework.calfacade.env.CalEnvI;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwAuthUserPrefs;
 import org.bedework.calfacade.svc.BwPreferences;
@@ -107,7 +107,7 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   /** This object will be set up appropriately for the kind of client,
    * e.g. admin, guest etc.
    */
-  private CalEnv env;
+  private CalEnvI env;
 
   private ConfigBase config;
 
@@ -706,14 +706,14 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   /**
    * @param val
    */
-  public void assignEnv(CalEnv val) {
+  public void assignEnv(CalEnvI val) {
     env = val;
   }
 
   /**
    * @return env object
    */
-  public CalEnv getEnv() {
+  public CalEnvI getEnv() {
     return env;
   }
 
@@ -726,7 +726,10 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
     }
 
     try {
-      mailer = (MailerIntf)CalEnv.getGlobalObject("mailerclass",
+      if (env == null) {
+        throw new Exception("env not set");
+      }
+      mailer = (MailerIntf)env.getGlobalObject("mailerclass",
                                                   MailerIntf.class);
       mailer.init(fetchSvci(), debug);
     } catch (Throwable t) {

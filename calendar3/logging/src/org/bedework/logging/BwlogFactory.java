@@ -28,7 +28,7 @@
  */
 package org.bedework.logging;
 
-import org.bedework.calenv.CalEnv;
+import org.bedework.calfacade.env.CalEnvFactory;
 
 /** This package is intended for logging of activity in the bedework calendar
     allowing tracking of changes.
@@ -46,7 +46,7 @@ public class BwlogFactory {
     BwLog logger = null;
 
     try {
-      logger = (BwLog)CalEnv.getGlobalObject("loggerclass", BwLog.class);
+      logger = (BwLog)CalEnvFactory.getEnv(null, false).getGlobalObject("loggerclass", BwLog.class);
     } catch (Throwable t) {
       logger = new BwLogImpl();
     }

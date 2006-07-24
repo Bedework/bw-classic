@@ -51,92 +51,31 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.webcommon.taglib;
+package org.bedework.calfacade;
 
-
-import org.bedework.appcommon.AccessXmlUtil;
-
-import edu.rpi.cmt.access.Acl.CurrentAccess;
-
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.JspTagException;
-
-/** A simple Tag to emit a tagged text object. This tag has the
- * attributes, <ul>
- * <li><b>name<b> (Required) defines the name of object embedded somewhere
- *               in the page context containing the path object.</li>
- * <li><b>tagName<b> (Optional)defines the name of the tag. </li>
- * <li><b>indent<b> (Optional) string indent value</li>
- * </ul>
+/** Exception in environment classes
  *
- * We retrieve the value and emit xml.
- *
- * @author Mike Douglass
+ * @author Mike Douglass douglm@rpi.edu
  */
-public class EmitCurrentPrivsTag extends NameScopePropertyTag {
-  /** Optional attribute: name of outer tag */
-  private String tagName;
-
+public class CalEnvException extends CalFacadeException {
   /**
-   * Constructor
-   */
-  public EmitCurrentPrivsTag() {
-  }
-
-  /** Called at end of Tag
    *
-   * @return int      either EVAL_PAGE or SKIP_PAGE
    */
-  public int doEndTag() throws JspTagException {
-    try {
-      /* Try to retrieve the value */
-      String val = getXmlAccess((CurrentAccess)getObject(false));
-
-      JspWriter out = pageContext.getOut();
-
-      if (tagName == null) {
-        tagName = property;
-      }
-
-      // Assume we're indented for the first tag
-      out.print('<');
-      out.print(tagName);
-      out.print('>');
-      if (val != null) {
-        out.print(val);
-      }
-      out.print("</");
-      out.print(tagName);
-      out.println('>');
-    } catch(Throwable t) {
-      t.printStackTrace();
-      throw new JspTagException("Error: " + t.getMessage());
-    } finally {
-      tagName = null; // reset for next time.
-    }
-
-    return EVAL_PAGE;
-  }
-
-  private String getXmlAccess(CurrentAccess ca) throws Throwable {
-    if (ca == null) {
-      return null;
-    }
-
-    return AccessXmlUtil.getCurrentPrivSetString(ca.privileges);
+  public CalEnvException() {
+    super("org.bedework.exception.calenv");
   }
 
   /**
-   * @param val String name
+   * @param msg
    */
-  public void setTagName(String val) {
-    tagName = val;
+  public CalEnvException(String msg) {
+    super(msg);
   }
 
   /**
-   * @return String name
+   * @param t
    */
-  public String getTagName() {
-    return tagName;
+  public CalEnvException(Throwable t) {
+    super(t);
   }
 }

@@ -53,10 +53,11 @@
 */
 package edu.rpi.cct.uwcal.caldav;
 
-import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
+import org.bedework.calfacade.env.CalEnvFactory;
+import org.bedework.calfacade.env.CalEnvI;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.davdefs.CaldavDefs;
 import org.bedework.davdefs.CaldavTags;
@@ -182,7 +183,7 @@ public class CaldavBWIntf extends WebdavNsIntf {
       namespacePrefix = WebdavUtils.getUrlPrefix(req);
       namespace = namespacePrefix + "/schema";
 
-      CalEnv env = new CalEnv(envPrefix, debug);
+      CalEnvI env = CalEnvFactory.getEnv(envPrefix, debug);
 
       sysi = (SysIntf)env.getAppObject("sysintfimpl", SysIntf.class);
 
