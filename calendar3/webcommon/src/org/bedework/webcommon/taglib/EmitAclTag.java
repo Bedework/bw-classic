@@ -53,7 +53,6 @@
 */
 package org.bedework.webcommon.taglib;
 
-
 import org.bedework.appcommon.AccessXmlUtil;
 
 import edu.rpi.cmt.access.Acl.CurrentAccess;
@@ -77,7 +76,7 @@ public class EmitAclTag extends NameScopePropertyTag {
    */
   public EmitAclTag() {
   }
-  
+
   /** Called at end of Tag
    *
    * @return int      either EVAL_PAGE or SKIP_PAGE
@@ -99,12 +98,12 @@ public class EmitAclTag extends NameScopePropertyTag {
 
     return EVAL_PAGE;
   }
-  
+
   private String getXmlAcl(CurrentAccess ca) throws Throwable {
     if (ca == null) {
       return null;
     }
-    
+
     return AccessXmlUtil.getXmlAclString(ca.acl);
   }
 }

@@ -680,7 +680,8 @@ public abstract class WebdavNsIntf implements Serializable {
           char[] privileges = ps.getPrivileges();
 
           openPropstat();
-          AccessXmlUtil.emitCurrentPrivSet(xml, privileges);
+          AccessXmlUtil.emitCurrentPrivSet(xml, getPrivTags(),
+                                           new WebdavTags(), privileges);
           closePropstat();
         }
       } else if (tag.equals(WebdavTags.acl)) {
@@ -759,6 +760,30 @@ public abstract class WebdavNsIntf implements Serializable {
     }
 
     return "W/\"" + val + "\"";
+  }
+
+  /** xml rpivilege tags */
+  private static final QName[] privTags = {
+    WebdavTags.all,              // privAll = 0;
+    WebdavTags.read,             // privRead = 1;
+    WebdavTags.readAcl,          // privReadAcl = 2;
+    WebdavTags.readCurrentUserPrivilegeSet,  // privReadCurrentUserPrivilegeSet = 3;
+    null,                        // privReadFreeBusy = 4;
+    WebdavTags.write,            // privWrite = 5;
+    WebdavTags.writeAcl,         // privWriteAcl = 6;
+    WebdavTags.writeProperties,  // privWriteProperties = 7;
+    WebdavTags.writeContent,     // privWriteContent = 8;
+    WebdavTags.bind,             // privBind = 9;
+    WebdavTags.unbind,           // privUnbind = 10;
+    WebdavTags.unlock,           // privUnlock = 11;
+    null                         // privNone = 12;
+  };
+
+  /**
+   * @return QName[]
+   */
+  public QName[] getPrivTags() {
+    return privTags;
   }
 
   /* ====================================================================

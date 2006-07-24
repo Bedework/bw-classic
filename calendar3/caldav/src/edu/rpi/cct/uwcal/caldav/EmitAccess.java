@@ -53,8 +53,11 @@
  */
 package edu.rpi.cct.uwcal.caldav;
 
-import org.bedework.appcommon.AccessXmlUtil;
+import org.bedework.davdefs.CaldavTags;
+import org.bedework.davdefs.WebdavTags;
 
+import edu.rpi.cmt.access.AccessXmlUtil;
+import edu.rpi.sss.util.xml.QName;
 import edu.rpi.sss.util.xml.XmlEmit;
 
 /**
@@ -64,6 +67,23 @@ import edu.rpi.sss.util.xml.XmlEmit;
 public class EmitAccess extends AccessXmlUtil {
   private String namespacePrefix;
 
+  /** xml rpivilege tags */
+  private static final QName[] privTags = {
+    WebdavTags.all,              // privAll = 0;
+    WebdavTags.read,             // privRead = 1;
+    WebdavTags.readAcl,          // privReadAcl = 2;
+    WebdavTags.readCurrentUserPrivilegeSet,  // privReadCurrentUserPrivilegeSet = 3;
+    CaldavTags.readFreeBusy,     // privReadFreeBusy = 4;
+    WebdavTags.write,            // privWrite = 5;
+    WebdavTags.writeAcl,         // privWriteAcl = 6;
+    WebdavTags.writeProperties,  // privWriteProperties = 7;
+    WebdavTags.writeContent,     // privWriteContent = 8;
+    WebdavTags.bind,             // privBind = 9;
+    WebdavTags.unbind,           // privUnbind = 10;
+    WebdavTags.unlock,           // privUnlock = 11;
+    null                         // privNone = 12;
+  };
+
   /** Acls use tags in the webdav and caldav namespace. For use over caldav
    * we shoud supply the uris. Otherwise a null namespace will be used.
    *
@@ -71,7 +91,7 @@ public class EmitAccess extends AccessXmlUtil {
    * @param xml   XmlEmit
    */
   public EmitAccess(String namespacePrefix, XmlEmit xml) {
-    super(xml);
+    super(privTags, new WebdavTags(), xml);
 
     this.namespacePrefix = namespacePrefix;
   }
@@ -92,5 +112,12 @@ public class EmitAccess extends AccessXmlUtil {
    */
   public String makeGroupHref(String who) {
     return namespacePrefix + "/principals/groups/" + who;
+  }
+
+  /**
+   * @return QName[]
+   */
+  public QName[] getPrivTags() {
+    return privTags;
   }
 }

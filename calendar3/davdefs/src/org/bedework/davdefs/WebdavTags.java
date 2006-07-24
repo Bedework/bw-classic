@@ -1,31 +1,3 @@
-/*
- Copyright (c) 2000-2005 University of Washington.  All rights reserved.
-
- Redistribution and use of this distribution in source and binary forms,
- with or without modification, are permitted provided that:
-
-   The above copyright notice and this permission notice appear in
-   all copies and supporting documentation;
-
-   The name, identifiers, and trademarks of the University of Washington
-   are not used in advertising or publicity without the express prior
-   written permission of the University of Washington;
-
-   Recipients acknowledge that this distribution is made available as a
-   research courtesy, "as is", potentially with defects, without
-   any obligation on the part of the University of Washington to
-   provide support, services, or repair;
-
-   THE UNIVERSITY OF WASHINGTON DISCLAIMS ALL WARRANTIES, EXPRESS OR
-   IMPLIED, WITH REGARD TO THIS SOFTWARE, INCLUDING WITHOUT LIMITATION
-   ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-   PARTICULAR PURPOSE, AND IN NO EVENT SHALL THE UNIVERSITY OF
-   WASHINGTON BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL
-   DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
-   PROFITS, WHETHER IN AN ACTION OF CONTRACT, TORT (INCLUDING
-   NEGLIGENCE) OR STRICT LIABILITY, ARISING OUT OF OR IN CONNECTION WITH
-   THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
 /* **********************************************************************
     Copyright 2005 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
@@ -53,355 +25,299 @@
 */
 package org.bedework.davdefs;
 
+import edu.rpi.cmt.access.AccessXmlUtil.AccessTags;
+
 import edu.rpi.sss.util.xml.QName;
+
+import java.util.HashMap;
 
 /** Define Webdav tags for XMlEmit
  *
  * @author Mike Douglass douglm@rpi.edu
  */
-public class WebdavTags {
+public class WebdavTags implements AccessTags {
   /** Namespace for these tags
    */
   public static final String namespace = "DAV:";
 
   /** */
-  public static final QName _abstract = new QName(namespace,
-                                                  "abstract");
+  public static final QName _abstract = makeQName("abstract");
 
   /** */
-  public static final QName ace = new QName(namespace,
-                                              "ace");
+  public static final QName ace = makeQName("ace");
 
   /** */
-  public static final QName acl = new QName(namespace,
-                                            "acl");
+  public static final QName acl = makeQName("acl");
 
   /** */
-  public static final QName aclPrincipalPropSet = new QName(namespace,
-                                            "acl-principal-prop-set");
+  public static final QName aclPrincipalPropSet = makeQName("acl-principal-prop-set");
 
   /** */
-  public static final QName aclRestrictions = new QName(namespace,
-                                                        "acl-restrictions");
+  public static final QName aclRestrictions = makeQName("acl-restrictions");
 
   /** */
-  public static final QName all = new QName(namespace,
-                                            "all");
+  public static final QName all = makeQName("all");
 
   /** */
-  public static final QName allowedPrincipal = new QName(namespace,
-                                                         "allowed-principal");
+  public static final QName allowedPrincipal = makeQName("allowed-principal");
 
   /** */
-  public static final QName allprop = new QName(namespace,
-                                                "allprop");
+  public static final QName allprop = makeQName("allprop");
 
   /** */
-  public static final QName alternateURISet = new QName(namespace,
-                                                        "alternate-URI-set");
+  public static final QName alternateURISet = makeQName("alternate-URI-set");
 
   /** */
-  public static final QName authenticated = new QName(namespace,
-                                                      "authenticated");
+  public static final QName authenticated = makeQName("authenticated");
 
   /** */
-  public static final QName bind = new QName(namespace,
-                                             "bind");
+  public static final QName bind = makeQName("bind");
 
   /** */
-  public static final QName collection = new QName(namespace,
-                                                   "collection");
+  public static final QName collection = makeQName("collection");
 
   /** */
-  public static final QName creationdate = new QName(namespace,
-                                                     "creationdate");
+  public static final QName creationdate = makeQName("creationdate");
 
   /** */
-  public static final QName currentUserPrivilegeSet = new QName(namespace,
-                                                 "current-user-privilege-set");
+  public static final QName currentUserPrivilegeSet = makeQName("current-user-privilege-set");
 
   /** */
-  public static final QName denyBeforeGrant = new QName(namespace,
-                                                        "deny-before-grant");
+  public static final QName denyBeforeGrant = makeQName("deny-before-grant");
 
   /** */
-  public static final QName deny = new QName(namespace,
-                                             "deny");
+  public static final QName deny = makeQName("deny");
 
   /** */
-  public static final QName description = new QName(namespace,
-                                                    "description");
+  public static final QName description = makeQName("description");
 
   /** */
-  public static final QName displayname = new QName(namespace,
-                                                    "displayname");
+  public static final QName displayname = makeQName("displayname");
 
   /** */
-  public static final QName expandProperty = new QName(namespace,
-                                                       "expand-property");
+  public static final QName expandProperty = makeQName("expand-property");
 
   /** */
-  public static final QName getcontentlanguage = new QName(namespace,
-                                                           "getcontentlanguage");
+  public static final QName getcontentlanguage = makeQName("getcontentlanguage");
 
   /** */
-  public static final QName getcontentlength = new QName(namespace,
-                                                       "getcontentlength");
+  public static final QName getcontentlength = makeQName("getcontentlength");
 
   /** */
-  public static final QName getcontenttype = new QName(namespace,
-                                                       "getcontenttype");
+  public static final QName getcontenttype = makeQName("getcontenttype");
 
   /** */
-  public static final QName getetag = new QName(namespace,
-                                                     "getetag");
+  public static final QName getetag = makeQName("getetag");
 
   /** */
-  public static final QName getlastmodified = new QName(namespace,
-                                                       "getlastmodified");
+  public static final QName getlastmodified = makeQName("getlastmodified");
 
   /** */
-  public static final QName grant = new QName(namespace,
-                                             "grant");
+  public static final QName grant = makeQName("grant");
 
   /** */
-  public static final QName grantOnly = new QName(namespace,
-                                             "grant-only");
+  public static final QName grantOnly = makeQName("grant-only");
 
   /** */
-  public static final QName group = new QName(namespace,
-                                             "group");
+  public static final QName group = makeQName("group");
 
   /** */
-  public static final QName groupMemberSet = new QName(namespace,
-                                                       "group-member-set");
+  public static final QName groupMemberSet = makeQName("group-member-set");
 
   /** */
-  public static final QName groupMembership = new QName(namespace,
-                                                        "group-membership");
+  public static final QName groupMembership = makeQName("group-membership");
 
   /** */
-  public static final QName href = new QName(namespace,
-                                             "href");
+  public static final QName href = makeQName("href");
 
   /** */
-  public static final QName inherited = new QName(namespace,
-                                                  "inherited");
+  public static final QName inherited = makeQName("inherited");
 
   /** */
-  public static final QName inheritedAclSet = new QName(namespace,
-                                                        "inherited-acl-set");
+  public static final QName inheritedAclSet = makeQName("inherited-acl-set");
 
   /** */
-  public static final QName invert = new QName(namespace,
-                                               "invert");
+  public static final QName invert = makeQName("invert");
 
   /** */
-  public static final QName limitedNumberOfAces = new QName(namespace,
-                                                      "limited-number-of-aces");
+  public static final QName limitedNumberOfAces = makeQName("limited-number-of-aces");
 
   /** */
-  public static final QName lockdiscovery = new QName(namespace,
-                                                      "lockdiscovery");
+  public static final QName lockdiscovery = makeQName("lockdiscovery");
 
   /** */
-  public static final QName lockentry = new QName(namespace,
-                                                  "lockentry");
+  public static final QName lockentry = makeQName("lockentry");
 
   /** */
-  public static final QName lockscope = new QName(namespace,
-                                                  "lockscope");
+  public static final QName lockscope = makeQName("lockscope");
 
   /** */
-  public static final QName locktype = new QName(namespace,
-                                                 "locktype");
+  public static final QName locktype = makeQName("locktype");
 
   /** */
-  public static final QName match = new QName(namespace,
-                                              "match");
+  public static final QName match = makeQName("match");
 
   /** */
-  public static final QName missingRequiredPrincipal = new QName(namespace,
-                                                 "missing-required-principal");
+  public static final QName missingRequiredPrincipal = makeQName("missing-required-principal");
 
   /** */
-  public static final QName multistatus = new QName(namespace,
-                                                    "multistatus");
+  public static final QName multistatus = makeQName("multistatus");
 
   /** */
-  public static final QName needPrivileges = new QName(namespace,
-                                                   "need-privileges");
+  public static final QName needPrivileges = makeQName("need-privileges");
 
   /** */
-  public static final QName noAbstract = new QName(namespace,
-                                                   "no-abstract");
+  public static final QName noAbstract = makeQName("no-abstract");
 
   /** */
-  public static final QName noAceConflict = new QName(namespace,
-                                                      "no-ace-conflict");
+  public static final QName noAceConflict = makeQName("no-ace-conflict");
 
   /** */
-  public static final QName noInheritedAceConflict = new QName(namespace,
-                                                      "no-inherited-ace-conflict");
+  public static final QName noInheritedAceConflict = makeQName("no-inherited-ace-conflict");
 
   /** */
-  public static final QName noInvert = new QName(namespace,
-                                                 "no-invert");
+  public static final QName noInvert = makeQName("no-invert");
 
   /** */
-  public static final QName noProtectedAceConflict = new QName(namespace,
-                                                      "no-protected-ace-conflict");
+  public static final QName noProtectedAceConflict = makeQName("no-protected-ace-conflict");
 
   /** */
-  public static final QName notSupportedPrivilege = new QName(namespace,
-                                              "not-supported-privilege");
+  public static final QName notSupportedPrivilege = makeQName("not-supported-privilege");
 
   /** */
-  public static final QName owner = new QName(namespace,
-                                              "owner");
+  public static final QName owner = makeQName("owner");
 
   /** */
-  public static final QName principal = new QName(namespace,
-                                                 "principal");
+  public static final QName principal = makeQName("principal");
 
   /** */
-  public static final QName principalCollectionSet = new QName(namespace,
-                                                 "principal-collection-set");
+  public static final QName principalCollectionSet = makeQName("principal-collection-set");
 
   /** */
-  public static final QName principalMatch = new QName(namespace,
-                                                 "principal-match");
+  public static final QName principalMatch = makeQName("principal-match");
 
   /** */
-  public static final QName principalProperty = new QName(namespace,
-                                                 "principal-property");
+  public static final QName principalProperty = makeQName("principal-property");
 
   /** */
-  public static final QName principalPropertySearch = new QName(namespace,
-                                                 "principal-property-search");
+  public static final QName principalPropertySearch = makeQName("principal-property-search");
 
   /** */
-  public static final QName principalSearchProperty = new QName(namespace,
-                                                 "principal-search-property");
+  public static final QName principalSearchProperty = makeQName("principal-search-property");
 
   /** */
-  public static final QName principalSearchPropertySet = new QName(namespace,
-                                                 "principal-search-property-set");
+  public static final QName principalSearchPropertySet = makeQName("principal-search-property-set");
 
   /** */
-  public static final QName principalURL = new QName(namespace,
-                                                 "principal-URL");
+  public static final QName principalURL = makeQName("principal-URL");
 
   /** */
-  public static final QName privilege = new QName(namespace,
-                                                  "privilege");
+  public static final QName privilege = makeQName("privilege");
 
   /** */
-  public static final QName prop = new QName(namespace, "prop");
+  public static final QName prop = makeQName("prop");
 
   /** */
-  public static final QName property = new QName(namespace, "property");
+  public static final QName property = makeQName("property");
 
   /** */
-  public static final QName propertySearch = new QName(namespace,
-                                             "property-search");
+  public static final QName propertySearch = makeQName("property-search");
 
   /** */
-  public static final QName propname = new QName(namespace, "propname");
+  public static final QName propname = makeQName("propname");
 
   /** */
-  public static final QName propstat = new QName(namespace, "propstat");
+  public static final QName propstat = makeQName("propstat");
 
   /** */
-  public static final QName _protected = new QName(namespace,
-                                                   "protected");
+  public static final QName _protected = makeQName("protected");
 
   /** */
-  public static final QName read = new QName(namespace, "read");
+  public static final QName read = makeQName("read");
 
   /** */
-  public static final QName readAcl = new QName(namespace, "read-acl");
+  public static final QName readAcl = makeQName("read-acl");
 
   /** */
-  public static final QName readCurrentUserPrivilegeSet = new QName(namespace,
+  public static final QName readCurrentUserPrivilegeSet = makeQName(
                                                 "read-current-user-privilege-set");
 
   /** */
-  public static final QName recognizedPrincipal = new QName(namespace,
-                                                     "recognized-principal");
+  public static final QName recognizedPrincipal = makeQName("recognized-principal");
 
   /** */
-  public static final QName remove = new QName(namespace, "remove");
+  public static final QName remove = makeQName("remove");
 
   /** */
-  public static final QName requiredPrincipal = new QName(namespace,
-                                                     "required-principal");
+  public static final QName requiredPrincipal = makeQName("required-principal");
 
   /** */
-  public static final QName resource = new QName(namespace,
-                                                 "resource");
+  public static final QName resource = makeQName("resource");
 
   /** */
-  public static final QName resourcetype = new QName(namespace,
-                                                     "resourcetype");
+  public static final QName resourcetype = makeQName("resourcetype");
 
   /** */
-  public static final QName response = new QName(namespace, "response");
+  public static final QName response = makeQName("response");
 
   /** */
-  public static final QName responseDescription = new QName(namespace,
-                                                      "responsedescription");
+  public static final QName responseDescription = makeQName("responsedescription");
 
   /** */
-  public static final QName self = new QName(namespace, "self");
+  public static final QName self = makeQName("self");
 
   /** */
-  public static final QName set = new QName(namespace, "set");
+  public static final QName set = makeQName("set");
 
   /** */
-  public static final QName source = new QName(namespace, "source");
+  public static final QName source = makeQName("source");
 
   /** */
-  public static final QName status = new QName(namespace, "status");
+  public static final QName status = makeQName("status");
 
   /** */
-  public static final QName supportedPrivilege = new QName(namespace,
-                                                        "supported-privilege");
+  public static final QName supportedPrivilege = makeQName("supported-privilege");
 
   /** */
-  public static final QName supportedPrivilegeSet = new QName(namespace,
-                                                        "supported-privilege-set");
+  public static final QName supportedPrivilegeSet = makeQName("supported-privilege-set");
 
   /** */
-  public static final QName supportedlock = new QName(namespace,
-                                                  "supportedlock");
+  public static final QName supportedlock = makeQName("supportedlock");
 
   /** */
-  public static final QName unauthenticated = new QName(namespace,
-                                                        "unauthenticated");
+  public static final QName unauthenticated = makeQName("unauthenticated");
 
   /** */
-  public static final QName unbind = new QName(namespace,
-                                               "unbind");
+  public static final QName unbind = makeQName("unbind");
 
   /** */
-  public static final QName unlock = new QName(namespace,
-                                               "unlock");
+  public static final QName unlock = makeQName("unlock");
 
   /** */
-  public static final QName write = new QName(namespace,
-                                              "write");
+  public static final QName write = makeQName("write");
 
   /** */
-  public static final QName writeAcl = new QName(namespace,
-                                                 "write-acl");
+  public static final QName writeAcl = makeQName("write-acl");
 
   /** */
-  public static final QName writeContent = new QName(namespace,
-                                                 "write-content");
+  public static final QName writeContent = makeQName("write-content");
 
   /** */
-  public static final QName writeProperties = new QName(namespace,
-                                                 "write-properties");
+  public static final QName writeProperties = makeQName("write-properties");
+
+  /** Tables of QNames indexed by name
+   */
+  public final static HashMap qnames = new HashMap();
+
+  private static QName makeQName(String name) {
+    QName q = new QName(namespace, name);
+    qnames.put(name, q);
+
+    return q;
+  }
+
+  public QName getTag(String name) {
+    return (QName)qnames.get(name);
+  }
 }
 

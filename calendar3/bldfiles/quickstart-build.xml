@@ -149,7 +149,14 @@
           description="builds the rpiutil project">
     <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritrefs="true"
            target="build-all" />
+
     <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.rpiutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+
+    <copy todir="${org.bedework.project.access}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.rpiutil}/dist">
         <include name="*.jar" />
       </fileset>
@@ -160,7 +167,14 @@
           description="builds the rpiutil project">
     <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritrefs="true"
            target="clean-build-all" />
+
     <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.rpiutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+
+    <copy todir="${org.bedework.project.access}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.rpiutil}/dist">
         <include name="*.jar" />
       </fileset>

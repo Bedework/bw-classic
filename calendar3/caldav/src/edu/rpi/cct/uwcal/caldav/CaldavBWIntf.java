@@ -767,10 +767,12 @@ public class CaldavBWIntf extends WebdavNsIntf {
 
     int priv;
 
+    QName[] privTags = emitAccess.getPrivTags();
+
     findPriv: {
       // ENUM
-      for (priv = 0; priv < AccessXmlUtil.privTags.length; priv++) {
-        if (MethodBase.nodeMatches(el, AccessXmlUtil.privTags[priv])) {
+      for (priv = 0; priv < privTags.length; priv++) {
+        if (MethodBase.nodeMatches(el, privTags[priv])) {
           break findPriv;
         }
       }
@@ -826,121 +828,6 @@ public class CaldavBWIntf extends WebdavNsIntf {
     }
   }
 
-  /*
-  public void emitAcl(WebdavNsNode node) throws WebdavIntfException {
-    CaldavBwNode uwnode = getBwnode(node);
-    CaldavURI cdUri = uwnode.getCDURI();
-    Collection aces = null;
-
-    try {
-      if (cdUri.isCalendar()) {
-        aces = getSvci().getAces(cdUri.getCal());
-      } else {
-        aces = getSvci().getAces(((CaldavComponentNode)node).getEvent());
-      }
-
-      xml.openTag(WebdavTags.acl);
-
-      if (aces != null) {
-        Iterator it = aces.iterator();
-        while (it.hasNext()) {
-          Ace ace = (Ace)it.next();
-
-          emitAce(ace, true);
-          emitAce(ace, false);
-        }
-      }
-      xml.closeTag(WebdavTags.acl);
-    } catch (WebdavIntfException wi) {
-      throw wi;
-    } catch (Throwable t) {
-      throw new WebdavIntfException(t);
-    }
-  }
-
-  private void emitAce(Ace ace, boolean denials) throws Throwable {
-    Collection privs = ace.getPrivs();
-    boolean emittedWho = false;
-
-    QName tag;
-    if (denials) {
-      tag = WebdavTags.deny;
-    } else {
-      tag = WebdavTags.grant;
-    }
-
-    Iterator it = privs.iterator();
-    while (it.hasNext()) {
-      Privilege p = (Privilege)it.next();
-
-      if (denials == p.getDenial()) {
-        if (!emittedWho) {
-          emitAceWho(ace);
-          emittedWho = true;
-        }
-
-        xml.openTag(tag);
-        xml.emptyTag(privTags[p.getIndex()]);
-        xml.closeTag(tag);
-      }
-    }
-
-    if (emittedWho) {
-      xml.closeTag(WebdavTags.ace);
-    }
-  }
-
-  private void emitAceWho(Ace ace) throws Throwable {
-    xml.openTag(WebdavTags.ace);
-
-    boolean invert = ace.getNotWho();
-
-    if (ace.getWhoType() == Ace.whoTypeOther) {
-      invert = !invert;
-    }
-
-    if (invert) {
-      xml.openTag(WebdavTags.invert);
-    }
-
-    xml.openTag(WebdavTags.principal);
-
-    int whoType = ace.getWhoType();
-
-    /*
-           <!ELEMENT principal (href)
-                  | all | authenticated | unauthenticated
-                  | property | self)>
-    * /
-
-    if (whoType == Ace.whoTypeUser) {
-      xml.property(WebdavTags.href, makeUserHref(ace.getWho()));
-    } else if (whoType == Ace.whoTypeGroup) {
-      xml.property(WebdavTags.href, makeGroupHref(ace.getWho()));
-    } else if ((whoType == Ace.whoTypeOwner) ||
-               (whoType == Ace.whoTypeOther)) {
-      // Other is !owner
-      xml.openTag(WebdavTags.property);
-      xml.emptyTag(WebdavTags.owner);
-      xml.closeTag(WebdavTags.property);
-    } else if (whoType == Ace.whoTypeUnauthenticated) {
-      xml.emptyTag(WebdavTags.unauthenticated);
-    } else if (whoType == Ace.whoTypeAuthenticated) {
-      xml.emptyTag(WebdavTags.authenticated);
-    } else if (whoType == Ace.whoTypeAll) {
-      xml.emptyTag(WebdavTags.all);
-    } else  {
-      throw WebdavIntfException.serverError();
-    }
-
-    xml.closeTag(WebdavTags.principal);
-
-    if (invert) {
-      xml.closeTag(WebdavTags.invert);
-    }
-  }
-  */
-
   /** This class is the result of interpreting a principal url
    */
   public static class PrincipalInfo {
@@ -986,6 +873,14 @@ public class CaldavBWIntf extends WebdavNsIntf {
       }
       throw WebdavIntfException.badRequest();
     }
+  }
+
+  /** Override to include free and busy access.
+   *
+   * @return QName[]
+   */
+  public QName[] getPrivTags() {
+    return emitAccess.getPrivTags();
   }
 
   /* ====================================================================

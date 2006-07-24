@@ -530,7 +530,7 @@ public abstract class MethodBase {
 
   protected void startEmit(HttpServletResponse resp) throws WebdavException {
     try {
-      xml.startEmit(resp);
+      xml.startEmit(resp.getWriter());
     } catch (Throwable t) {
       throw new WebdavException(t);
     }
