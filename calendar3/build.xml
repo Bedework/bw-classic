@@ -587,25 +587,19 @@
            target="build" />
   </target>
 
-  <target name="dumpdb" depends="init">
-    <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
-           target="dumpdb" />
+  <target name="dumpdb" >
+    <echo message="===============================================================" />
+    <echo message=" use the zipped dump/restore utility to dump, restore or initialise" />
+    <echo message=" the system The default build places it in the dist directory," />
+    <echo message=" instructions for use are in the quickstart documentation" />
+    <echo message="===============================================================" />
   </target>
 
-  <target name="restoredb" depends="init">
-    <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
-           target="restoredb" />
-  </target>
+  <target name="restoredb" depends="dumpdb"/>
 
-  <target name="restoredb-nousers" depends="init">
-    <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
-           target="restoredb-nousers" />
-  </target>
+  <target name="initdb" depends="dumpdb"/>
 
-  <target name="initdb" depends="init">
-    <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
-           target="initdb" />
-  </target>
+  <target name="restoredb-nousers" depends="dumpdb"/>
 
   <target name="tzconvert" depends="init">
     <ant antfile="${org.bedework.tools.base}/build.xml" inheritrefs="true"
