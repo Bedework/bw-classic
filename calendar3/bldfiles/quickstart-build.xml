@@ -20,6 +20,9 @@
   <property name="org.bedework.project.calendar"
             location="${basedir}/calendar3" />
 
+  <property name="org.bedework.project.davutil"
+            location="${basedir}/davutil" />
+
   <property name="org.bedework.project.freebusy"
             location="${basedir}/freebusy" />
 
@@ -127,19 +130,58 @@
           description="builds the access project">
     <ant antfile="${org.bedework.project.access}/build.xml" inheritrefs="true"
            target="build-all" />
-    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
-      <fileset dir="${org.bedework.project.access}/dist">
-        <include name="*.jar" />
-      </fileset>
-    </copy>
+
+    <antcall target="copy.access" inheritrefs="true" />
   </target>
 
   <target name="clean.build.access" depends="init"
           description="builds the access project">
     <ant antfile="${org.bedework.project.access}/build.xml" inheritrefs="true"
            target="clean-build-all" />
+
+    <antcall target="copy.access" inheritrefs="true" />
+  </target>
+
+  <target name="copy.access" >
     <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.access}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+    <copy todir="${org.bedework.project.davutil}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.access}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- .................................................................
+                          davutil
+       .................................................................. -->
+  <target name="build.davutil" depends="init"
+          description="builds the davutil project">
+    <ant antfile="${org.bedework.project.davutil}/build.xml" inheritrefs="true"
+           target="build-all" />
+
+    <antcall target="copy.davutil" inheritrefs="true" />
+  </target>
+
+  <target name="clean.build.davutil" depends="init"
+          description="builds the davutil project">
+    <ant antfile="${org.bedework.project.davutil}/build.xml" inheritrefs="true"
+           target="clean-build-all" />
+
+    <antcall target="copy.davutil" inheritrefs="true" />
+  </target>
+
+  <target name="copy.davutil" >
+    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.davutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+    <copy todir="${org.bedework.project.webdav}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.davutil}/dist">
         <include name="*.jar" />
       </fileset>
     </copy>
@@ -153,23 +195,7 @@
     <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritrefs="true"
            target="build-all" />
 
-    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
-      <fileset dir="${org.bedework.project.rpiutil}/dist">
-        <include name="*.jar" />
-      </fileset>
-    </copy>
-
-    <copy todir="${org.bedework.project.access}/lib" overwrite="yes">
-      <fileset dir="${org.bedework.project.rpiutil}/dist">
-        <include name="*.jar" />
-      </fileset>
-    </copy>
-
-    <copy todir="${org.bedework.project.webdav}/lib" overwrite="yes">
-      <fileset dir="${org.bedework.project.rpiutil}/dist">
-        <include name="*.jar" />
-      </fileset>
-    </copy>
+    <antcall target="copy.rpiutil" inheritrefs="true" />
   </target>
 
   <target name="clean.build.rpiutil" depends="init"
@@ -177,13 +203,23 @@
     <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritrefs="true"
            target="clean-build-all" />
 
+    <antcall target="copy.rpiutil" inheritrefs="true" />
+  </target>
+
+  <target name="copy.rpiutil" >
+    <copy todir="${org.bedework.project.access}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.rpiutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+
     <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.rpiutil}/dist">
         <include name="*.jar" />
       </fileset>
     </copy>
 
-    <copy todir="${org.bedework.project.access}/lib" overwrite="yes">
+    <copy todir="${org.bedework.project.davutil}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.rpiutil}/dist">
         <include name="*.jar" />
       </fileset>
@@ -203,15 +239,17 @@
           description="builds the webdav project">
     <ant antfile="${org.bedework.project.webdav}/build.xml" inheritrefs="true"
            target="build-all" />
-    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
-      <fileset dir="${org.bedework.project.webdav}/dist">
-        <include name="*.jar" />
-      </fileset>
-    </copy>
+
+    <antcall target="copy.webdav" inheritrefs="true" />
   </target>
 
   <target name="clean.build.webdav" depends="init"
           description="builds the webdav project">
+
+    <antcall target="copy.webdav" inheritrefs="true" />
+  </target>
+
+  <target name="copy.webdav" >
     <ant antfile="${org.bedework.project.webdav}/build.xml" inheritrefs="true"
            target="clean-build-all" />
     <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">

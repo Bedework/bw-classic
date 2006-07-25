@@ -89,10 +89,8 @@
     <property name="org.bedework.calsvci.base" location="${org.bedework.calendar.dir}/calsvci" />
     <property name="org.bedework.config.base" location="${org.bedework.calendar.dir}/config" />
     <property name="org.bedework.core.base" location="${org.bedework.calendar.dir}/calCore" />
-    <property name="org.bedework.davdefs.base" location="${org.bedework.calendar.dir}/davdefs" />
     <property name="org.bedework.deployment.base" location="${org.bedework.calendar.dir}/deployment" />
     <property name="org.bedework.dumprestore.base" location="${org.bedework.calendar.dir}/dumprestore" />
-    <property name="org.bedework.http.base" location="${org.bedework.calendar.dir}/http" />
     <property name="org.bedework.ical.base" location="${org.bedework.calendar.dir}/icalendar" />
     <property name="org.bedework.locale.base" location="${org.bedework.calendar.dir}/locale" />
     <property name="org.bedework.logging.base" location="${org.bedework.calendar.dir}/logging" />

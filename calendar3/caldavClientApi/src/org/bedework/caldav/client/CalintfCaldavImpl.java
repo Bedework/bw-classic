@@ -83,6 +83,7 @@ import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.CalintfInfo;
 import org.bedework.calfacade.ifs.Groups;
+import org.bedework.http.client.DavioException;
 import org.bedework.http.client.HttpManager;
 
 import edu.rpi.cmt.access.Acl.CurrentAccess;
@@ -124,13 +125,16 @@ public class CalintfCaldavImpl extends CalintfBase {
                       boolean debug) throws CalFacadeException {
     boolean userAdded = super.init(systemName, url, authenticatedUser, user, publicAdmin,
                                    groups, synchId, debug);
-
-    if (httpManager == null) {
-      synchronized (this) {
-        if (httpManager == null) {
-          httpManager = new HttpManager("org.bedework.http.client.caldav.CaldavClient");
+    try {
+      if (httpManager == null) {
+        synchronized (this) {
+          if (httpManager == null) {
+            httpManager = new HttpManager("org.bedework.http.client.caldav.CaldavClient");
+          }
         }
       }
+    } catch (DavioException de) {
+      throw new CalFacadeException(de);
     }
 
     return userAdded;

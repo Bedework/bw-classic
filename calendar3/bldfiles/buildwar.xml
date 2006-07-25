@@ -289,8 +289,6 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.calsvc.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.ical.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.caldavClientApi.jar}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.davdefs.jar}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.http.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appcommon.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.webcommon.jar}" />
 
@@ -305,6 +303,8 @@
     <!-- from other projects -->
     <copy todir="${app.dest.lib}" file="${org.bedework.rpiutil.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.access.jar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.davdefs.jar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.davio.jar}" />
 
 
     <!-- add the jdbcdriver if defined -->

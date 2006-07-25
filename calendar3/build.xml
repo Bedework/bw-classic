@@ -44,6 +44,9 @@
   <property name="org.bedework.project.calendar"
             location="${basedir}/../calendar3" />
 
+  <property name="org.bedework.project.davutil"
+            location="${basedir}/../davutil" />
+
   <property name="org.bedework.project.freebusy"
             location="${basedir}/../freebusy" />
 
@@ -106,9 +109,8 @@
      =================================================================== -->
 
   <target name="bld.all"
-          depends="bld.locale,bld.davdefs,bld.calfacade,
+          depends="bld.locale,bld.calfacade,
                    bld.calenv,bld.ical,bld.core,
-                   bld.http,
                    bld.calsvci,bld.mail,bld.logging,
                    bld.calsvc,bld.appcommon,bld.uportal,
                    bld.webadmin,bld.webclient,bld.synchml,
@@ -268,9 +270,7 @@
                          ${org.bedework.calsvc.base}/src:
                          ${org.bedework.calsvci.base}/src:
                          ${org.bedework.config.base}/src:
-                         ${org.bedework.davdefs.base}/src:
                          ${org.bedework.dumprestore.base}/src:
-                         ${org.bedework.http.base}/src:
                          ${org.bedework.ical.base}/src:
                          ${org.bedework.locale.base}/src:
                          ${org.bedework.logging.base}/src:
@@ -302,7 +302,7 @@
        ================================================================= -->
 
   <target name="bld.appcommon"
-          depends="init,bld.calsvci,bld.davdefs"
+          depends="init,bld.calsvci"
           description="Build calendar service interface classes jar">
       <ant antfile="${org.bedework.appcommon.base}/build.xml" inheritrefs="true"
            target="build" />
@@ -354,40 +354,18 @@
            target="build" />
   </target>
 
-  <!-- ======================== davdefs target =========================
-       This builds some global webdav and caldav definitions
-       ================================================================= -->
-
-  <target name="bld.davdefs"
-          depends="init"
-          description="Build calendar davdefs jars" >
-      <ant antfile="${org.bedework.davdefs.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-
-  <!-- ======================== http target =======================
-       This builds the http-client classes jar.
-       ================================================================= -->
-
-  <target name="bld.http"
-          depends="init,bld.calenv,bld.calfacade,bld.locale"
-          description="Build calendar http classes jar">
-      <ant antfile="${org.bedework.http.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-
   <!-- ======================== caldav Targets ========================
        ================================================================= -->
 
   <target name="bld.caldavclientapi"
-          depends="init,bld.http,bld.davdefs,bld.calfacade"
+          depends="init,bld.calfacade"
           description="Build calendar caldav client api classes jar">
       <ant antfile="${org.bedework.caldavClientApi.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
 
   <target name="bld.caldav"
-          depends="init,bld.davdefs,bld.appcommon"
+          depends="init,bld.appcommon"
           description="Build calendar caldav suite">
     <ant antfile="${org.bedework.caldav.base}/build.xml" inheritrefs="true"
            target="build" />

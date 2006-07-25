@@ -56,6 +56,7 @@ package org.bedework.caldav.client.api;
 
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.http.client.caldav.CaldavClient;
+import org.bedework.http.client.DavioException;
 import org.bedework.http.client.DepthHttpMethod;
 import org.bedework.http.client.HttpManager;
 
@@ -271,19 +272,35 @@ public class CaldavClientIo {
     }
 
     public int getRespCode() throws CalFacadeException {
-      return client.getStatusCode();
+      try {
+        return client.getStatusCode();
+      } catch (DavioException de) {
+        throw new CalFacadeException(de);
+      }
     }
 
     public String getContentType() throws CalFacadeException {
-      return client.getResponseContentType();
+      try {
+        return client.getResponseContentType();
+      } catch (DavioException de) {
+        throw new CalFacadeException(de);
+      }
     }
 
     public long getContentLength() throws CalFacadeException {
-      return client.getResponseContentLength();
+      try {
+        return client.getResponseContentLength();
+      } catch (DavioException de) {
+        throw new CalFacadeException(de);
+      }
     }
 
     public String getCharset() throws CalFacadeException {
-      return client.getResponseCharSet();
+      try {
+        return client.getResponseCharSet();
+      } catch (DavioException de) {
+        throw new CalFacadeException(de);
+      }
     }
 
     public InputStream getContentStream() throws CalFacadeException {
