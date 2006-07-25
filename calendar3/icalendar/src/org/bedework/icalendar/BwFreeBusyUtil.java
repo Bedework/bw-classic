@@ -59,7 +59,7 @@ import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.ifs.CalTimezones;
+import org.bedework.calfacade.timezones.CalTimezones;
 
 import net.fortuna.ical4j.model.Dur;
 import net.fortuna.ical4j.model.Parameter;

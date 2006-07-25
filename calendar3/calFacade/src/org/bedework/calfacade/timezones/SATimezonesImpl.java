@@ -51,75 +51,107 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
+package org.bedework.calfacade.timezones;
 
-package org.bedework.appcommon;
+import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.CalFacadeException;
 
-import org.bedework.calfacade.svc.EventInfo;
-import org.bedework.calfacade.timezones.CalTimezones;
-import org.bedework.calsvci.CalSvcI;
+import net.fortuna.ical4j.model.component.VTimeZone;
+import net.fortuna.ical4j.model.TimeZone;
 
-import java.util.AbstractCollection;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
-/** Object to provide a Collection of formatted BwEvent.
+/** Standalone implementation.
  *
- * @author Mike Douglass   douglm@rpi.edu
+ * @author Mike Douglass       douglm@rpi.edu
  */
-public class FormattedEvents extends AbstractCollection {
-  private Collection events;
-  private CalendarInfo calInfo;
-  private CalTimezones ctz;
-  private CalSvcI svci;
+public class SATimezonesImpl extends CalTimezones {
+  private boolean publick = true; // current mode
+  private BwUser user;
 
   /** Constructor
-   *
-   * @param svci
-   * @param events
-   * @param calInfo
-   * @param ctz
+   * @param debug
+   * @param user
+   * @throws CalFacadeException
    */
-  public FormattedEvents(CalSvcI svci, Collection events,
-                         CalendarInfo calInfo, CalTimezones ctz) {
-    if (events == null) {
-      this.events = new ArrayList();
+  public SATimezonesImpl(boolean debug, BwUser user) throws CalFacadeException {
+    super(debug);
+  }
+
+  public TimeZone getTimeZone(final String id) throws CalFacadeException {
+    TimezoneInfo tzinfo = lookup(id);
+
+    if (tzinfo == null) {
+      return null;
+    }
+
+    return tzinfo.getTz();
+  }
+
+  public VTimeZone findTimeZone(final String id, BwUser owner) throws CalFacadeException {
+    if (debug) {
+      trace("find timezone with id " + id + " for owner " + owner);
+    }
+
+    TimezoneInfo tzinfo = lookup(id);
+
+    if ((tzinfo != null) && (tzinfo.getTz().getVTimeZone() != null)) {
+      return tzinfo.getTz().getVTimeZone();
+    }
+
+    return null;
+  }
+
+  /** Set current publick mode
+   *
+   * @param val
+   */
+  public void setPublick(boolean val) {
+    publick = val;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getPublick() {
+    return publick;
+  }
+
+  /** Set current user
+   *
+   * @param val
+   */
+  public void setUser(BwUser val) {
+    user = val;
+  }
+
+  /**
+   * @return BwUser
+   */
+  public BwUser getUser() {
+    return user;
+  }
+
+  public void storeTimeZone(final String id, BwUser owner) throws CalFacadeException {
+  }
+
+  public void refreshTimezones() throws CalFacadeException {
+    // force refresh now
+    lookup("not-a-timezone");
+  }
+
+  public void saveTimeZone(String tzid, VTimeZone vtz)
+          throws CalFacadeException {
+    /* For a user update the map to avoid a refetch. For system timezones we will
+       force a refresh when we're done.
+    */
+
+    TimezoneInfo tzinfo = lookup(tzid);
+    TimeZone tz = new TimeZone(vtz);
+
+    if (tzinfo == null) {
+      tzinfo = new TimezoneInfo(tz);
+      timezones.put(tzid, tzinfo);
     } else {
-      this.events = events;
-    }
-    this.calInfo = calInfo;
-    this.ctz = ctz;
-    this.svci = svci;
-  }
-
-  public Iterator iterator() {
-    return new FormattedEventsIterator(events.iterator());
-  }
-
-  public int size() {
-    return events.size();
-  }
-
-  private class FormattedEventsIterator implements Iterator {
-    private Iterator it;
-
-    private FormattedEventsIterator(Iterator it) {
-      this.it = it;
-    }
-
-    public boolean hasNext() {
-      return it.hasNext();
-    }
-
-    public Object next() {
-      EventInfo ev = (EventInfo)it.next();
-
-      return new EventFormatter(svci, ev, null, calInfo, ctz);
-    }
-
-    public void remove() {
-      throw new RuntimeException("Iterator is read-only");
+      tzinfo.init(tz);
     }
   }
 }
-

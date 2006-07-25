@@ -51,75 +51,100 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
+package org.bedework.calfacade.timezones;
 
-package org.bedework.appcommon;
+import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.CalFacadeException;
 
-import org.bedework.calfacade.svc.EventInfo;
-import org.bedework.calfacade.timezones.CalTimezones;
-import org.bedework.calsvci.CalSvcI;
-
-import java.util.AbstractCollection;
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
-/** Object to provide a Collection of formatted BwEvent.
+import org.apache.log4j.Logger;
+
+/** Standalone implementation which initialises from a resource.
  *
- * @author Mike Douglass   douglm@rpi.edu
+ * @author Mike Douglass       douglm@rpi.edu
  */
-public class FormattedEvents extends AbstractCollection {
-  private Collection events;
-  private CalendarInfo calInfo;
-  private CalTimezones ctz;
-  private CalSvcI svci;
+public class ResourceTimezones extends SATimezonesImpl {
+  private static String timezonesFile = "/properties/calendar/timezones.xml";
 
   /** Constructor
-   *
-   * @param svci
-   * @param events
-   * @param calInfo
-   * @param ctz
+   * @param debug
+   * @param user
+   * @throws CalFacadeException
    */
-  public FormattedEvents(CalSvcI svci, Collection events,
-                         CalendarInfo calInfo, CalTimezones ctz) {
-    if (events == null) {
-      this.events = new ArrayList();
-    } else {
-      this.events = events;
-    }
-    this.calInfo = calInfo;
-    this.ctz = ctz;
-    this.svci = svci;
+  public ResourceTimezones(boolean debug, BwUser user) throws CalFacadeException {
+    super(debug, user);
   }
 
-  public Iterator iterator() {
-    return new FormattedEventsIterator(events.iterator());
+  /* ====================================================================
+   *                   Protected methods
+   * ==================================================================== */
+
+  protected TimezoneInfo lookup(String id) throws CalFacadeException {
+    if (!userTimezonesInitialised) {
+      // First call after object creation.
+      synchronized (this) {
+        loadTimezones();
+      }
+    }
+
+    TimezoneInfo tzinfo;
+    tzinfo = (TimezoneInfo)timezones.get(id);
+
+    return tzinfo;
   }
 
-  public int size() {
-    return events.size();
-  }
+  /* ====================================================================
+   *                   Private methods
+   * ==================================================================== */
 
-  private class FormattedEventsIterator implements Iterator {
-    private Iterator it;
-
-    private FormattedEventsIterator(Iterator it) {
-      this.it = it;
+  private void loadTimezones() throws CalFacadeException {
+    if (userTimezonesInitialised) {
+      return;
     }
 
-    public boolean hasNext() {
-      return it.hasNext();
-    }
+    InputStream is = null;
 
-    public Object next() {
-      EventInfo ev = (EventInfo)it.next();
+    try {
+      try {
+        // The jboss?? way - should work for others as well.
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        is = cl.getResourceAsStream(timezonesFile);
+      } catch (Throwable clt) {}
 
-      return new EventFormatter(svci, ev, null, calInfo, ctz);
-    }
+      if (is == null) {
+        // Try another way
+        is = ResourceTimezones.class.getResourceAsStream(timezonesFile);
+      }
 
-    public void remove() {
-      throw new RuntimeException("Iterator is read-only");
+      if (is == null) {
+        throw new CalFacadeException("Unable to load properties file" +
+                                  timezonesFile);
+      }
+
+      TimeZonesParser tzp = new TimeZonesParser(is, debug);
+
+      Collection tzis = tzp.getTimeZones();
+
+      Iterator it = tzis.iterator();
+      while (it.hasNext()) {
+        TimeZonesParser.TimeZoneInfo tzi = (TimeZonesParser.TimeZoneInfo)it.next();
+
+        saveTimeZone(tzi.tzid, tzi.timezone);
+      }
+    } catch (CalFacadeException cfe) {
+      throw cfe;
+    } catch (Throwable t) {
+      Logger.getLogger(ResourceTimezones.class).error("loadTimezones error", t);
+      throw new CalFacadeException(t.getMessage());
+    } finally {
+      if (is != null) {
+        try {
+          is.close();
+        } catch (Throwable t1) {}
+      }
     }
   }
 }
-

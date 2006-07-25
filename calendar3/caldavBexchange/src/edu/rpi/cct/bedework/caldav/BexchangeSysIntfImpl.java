@@ -53,18 +53,20 @@
 */
 package edu.rpi.cct.bedework.caldav;
 
-import org.bedework.caldav.client.api.BwIcalTrans;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.BwUser;
-import org.bedework.calfacade.ifs.CalTimezones;
+import org.bedework.calfacade.timezones.CalTimezones;
+import org.bedework.calfacade.timezones.ResourceTimezones;
 import org.bedework.http.client.dav.DavClient;
 import org.bedework.http.client.dav.DavReq;
 import org.bedework.http.client.dav.DavResp;
+import org.bedework.icalendar.IcalTranslator;
 
+import edu.rpi.cct.uwcal.caldav.SAICalCallback;
 import edu.rpi.cct.uwcal.caldav.SysIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
 import edu.rpi.cct.webdav.servlet.shared.WebdavIntfException;
@@ -111,6 +113,11 @@ public class BexchangeSysIntfImpl implements SysIntf {
    * the objects between calls.
    */
   private HashMap cioTable = new HashMap();
+
+  private ResourceTimezones timezones;
+
+  // XXX get from properties
+  private static String defaultTimezone = "America/New_York";
 
   /* These could come from a db
    */
@@ -190,7 +197,7 @@ public class BexchangeSysIntfImpl implements SysIntf {
 
   private transient Logger log;
 
-  private BwIcalTrans trans;
+  private IcalTranslator trans;
 
   public void init(HttpServletRequest req,
                    String envPrefix,
@@ -199,7 +206,8 @@ public class BexchangeSysIntfImpl implements SysIntf {
     try {
       this.debug = debug;
 
-      trans = new BwIcalTrans(envPrefix, debug);
+      trans = new IcalTranslator(new SAICalCallback(getTimezones(), null),
+                                 debug);
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -296,7 +304,7 @@ public class BexchangeSysIntfImpl implements SysIntf {
 
       Collection fbs = getTrans().getFreeBusy(new StringReader(vfb));
       */
-      Collection fbs = getTrans().getFreeBusy(new InputStreamReader(resp.getContentStream()));
+      Collection fbs = trans.fromIcal(null, new InputStreamReader(resp.getContentStream()));
       Iterator fbit = fbs.iterator();
       while (fbit.hasNext()) {
         Object o = fbit.next();
@@ -369,7 +377,12 @@ public class BexchangeSysIntfImpl implements SysIntf {
 
   public CalTimezones getTimezones() throws WebdavIntfException {
     try {
-      return getTrans().getTimezones();
+      if (timezones == null) {
+        timezones = new ResourceTimezones(debug, null);
+        timezones.setDefaultTimeZoneId(defaultTimezone);
+      }
+
+      return timezones;
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -377,7 +390,7 @@ public class BexchangeSysIntfImpl implements SysIntf {
 
   public TimeZone getDefaultTimeZone() throws WebdavIntfException {
     try {
-      return getTrans().getDefaultTimeZone();
+      return getTimezones().getDefaultTimeZone();
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -392,11 +405,6 @@ public class BexchangeSysIntfImpl implements SysIntf {
   }
 
   public void close() throws WebdavIntfException {
-    try {
-      trans.close();
-    } catch (Throwable t) {
-      throw new WebdavIntfException(t);
-    }
   }
 
   /* ====================================================================
@@ -583,16 +591,6 @@ END:VCALENDAR
       }
 
       throw new WebdavException(t);
-    }
-  }
-
-  private BwIcalTrans getTrans() throws WebdavIntfException {
-    try {
-      trans.open();
-
-      return trans;
-    } catch (Throwable t) {
-      throw new WebdavIntfException(t);
     }
   }
 

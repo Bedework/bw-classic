@@ -73,7 +73,6 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
-import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Groups;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwCalSuite;
@@ -83,6 +82,7 @@ import org.bedework.calfacade.svc.BwView;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calfacade.svc.UserAuth;
 import org.bedework.calfacade.svc.wrappers.BwCalSuiteWrapper;
+import org.bedework.calfacade.timezones.CalTimezones;
 import org.bedework.icalendar.IcalCallback;
 
 import edu.rpi.cct.uwcal.resources.Resources;

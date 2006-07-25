@@ -58,7 +58,7 @@ import org.bedework.calfacade.BwAttendee;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwOrganizer;
-import org.bedework.calfacade.ifs.CalTimezones;
+import org.bedework.calfacade.timezones.CalTimezones;
 
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;

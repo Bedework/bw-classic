@@ -53,7 +53,6 @@
 */
 package org.bedework.dumprestore.restore;
 
-import org.bedework.appcommon.TimeZonesParser;
 import org.bedework.appcommon.configs.DumpRestoreConfig;
 import org.bedework.calfacade.BwAttendee;
 import org.bedework.calfacade.BwEventAnnotation;
@@ -67,10 +66,11 @@ import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwUserInfo;
 import org.bedework.calfacade.filter.BwFilter;
-import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
+import org.bedework.calfacade.timezones.CalTimezones;
+import org.bedework.calfacade.timezones.TimeZonesParser;
 
 import edu.rpi.cmt.access.Access;
 import edu.rpi.cmt.access.Ace;
@@ -626,9 +626,8 @@ public class RestoreGlobals {
   public String getDefaultPublicAccess() {
     if (defaultPublicAccess == null) {
       try {
-        Access a = new Access(config.getDebug());
-        defaultPublicAccess = a.getDefaultPublicAccess();
-        defaultPersonalAccess = a.getDefaultPublicAccess();
+        defaultPublicAccess = Access.getDefaultPublicAccess();
+        defaultPersonalAccess = Access.getDefaultPublicAccess();
       } catch (Throwable t) {
         throw new RuntimeException(t);
       }

@@ -72,6 +72,7 @@ import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.ifs.Groups;
+import org.bedework.calfacade.timezones.CalTimezones;
 
 import edu.rpi.cmt.access.Acl.CurrentAccess;
 

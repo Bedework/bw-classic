@@ -61,7 +61,7 @@ import org.bedework.calfacade.BwDuration;
 import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeAccessException;
-import org.bedework.calfacade.ifs.CalTimezones;
+import org.bedework.calfacade.timezones.CalTimezones;
 import org.bedework.calfacade.util.CalFacadeUtil;
 import org.bedework.calsvci.CalSvcI;
 

@@ -52,24 +52,28 @@
     to the maximum extent the law permits.
 */
 
-package org.bedework.appcommon;
+package org.bedework.calfacade.timezones;
 
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.icalendar.IcalTranslator;
-import org.bedework.icalendar.IcalUtil;
 
 import edu.rpi.sss.util.xml.XmlUtil;
 
+import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.data.CalendarParserImpl;
+import net.fortuna.ical4j.data.UnfoldingReader;
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.ComponentList;
 import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.PropertyList;
 import net.fortuna.ical4j.model.component.VTimeZone;
 
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -144,6 +148,32 @@ public class TimeZonesParser implements Serializable {
     return al;
   }
 
+  /** Convert the given string representation of an Icalendar object to a
+   * Calendar object
+   *
+   * @param val
+   * @return Calendar
+   * @throws CalFacadeException
+   */
+  public static Calendar getCalendar(String val) throws CalFacadeException {
+    try {
+      setSystemProperties();
+      CalendarBuilder bldr = new CalendarBuilder(new CalendarParserImpl());
+
+      UnfoldingReader ufrdr = new UnfoldingReader(new StringReader(val), true);
+
+      return bldr.build(ufrdr);
+    } catch (CalFacadeException cfe) {
+      throw cfe;
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
+  /* ====================================================================
+                      Private methods
+     ==================================================================== */
+
   private String doDir(ArrayList al, DirClass dir, String indent) throws CalFacadeException {
     if (debug) {
       trace(indent + "Dir: " + dir.cal.getName());
@@ -174,7 +204,7 @@ public class TimeZonesParser implements Serializable {
       TimeZoneInfo tzi = new TimeZoneInfo();
 
       tzi.timezone = (VTimeZone)o;
-      tzi.tzid = IcalUtil.getProperty(tzi.timezone, Property.TZID).getValue();
+      tzi.tzid = getProperty(tzi.timezone, Property.TZID).getValue();
 
       al.add(tzi);
 
@@ -184,6 +214,17 @@ public class TimeZonesParser implements Serializable {
     }
 
     return null;
+  }
+
+  /**
+   * @param comp
+   * @param name
+   * @return Property
+   */
+  private static Property getProperty(Component comp, String name) {
+    PropertyList props =  comp.getProperties();
+
+    return props.getProperty(name);
   }
 
   private static class DirClass {
@@ -281,9 +322,19 @@ public class TimeZonesParser implements Serializable {
             "Expected <data>, found: " + el.getTagName());
       }
 
-      return IcalTranslator.getCalendar(XmlUtil.getElementContent(el));
+      return getCalendar(XmlUtil.getElementContent(el));
     } catch (CalFacadeException cfe) {
       throw cfe;
+    } catch (Throwable t) {
+      throw new CalFacadeException(t);
+    }
+  }
+
+  private static void setSystemProperties() throws CalFacadeException {
+    try {
+      System.setProperty("ical4j.unfolding.relaxed", "true");
+      System.setProperty("ical4j.parsing.relaxed", "true");
+      System.setProperty("ical4j.compatibility.outlook", "true");
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }

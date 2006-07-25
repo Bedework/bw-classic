@@ -26,7 +26,7 @@
 package org.bedework.caldav.client.api;
 
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.ifs.CalTimezones;
+import org.bedework.calfacade.timezones.CalTimezones;
 import org.bedework.calsvc.CalSvc;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.calsvci.CalSvcIPars;

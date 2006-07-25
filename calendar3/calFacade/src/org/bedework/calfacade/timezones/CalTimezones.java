@@ -52,7 +52,7 @@
     to the maximum extent the law permits.
 */
 
-package org.bedework.calfacade.ifs;
+package org.bedework.calfacade.timezones;
 
 import org.apache.log4j.Logger;
 import org.bedework.calfacade.BwUser;
@@ -211,6 +211,7 @@ public abstract class CalTimezones implements Serializable {
       trace("register timezone with id " + id);
     }
 
+    /* Don't lookup - this may be called via lookup overrides */
     TimezoneInfo tzinfo = (TimezoneInfo)timezones.get(id);
 
     if (tzinfo == null) {
@@ -224,6 +225,17 @@ public abstract class CalTimezones implements Serializable {
         tzinfo.tz = timezone;
       }
     }
+  }
+
+  /* ====================================================================
+   *                   Protected methods
+   * ==================================================================== */
+
+  protected TimezoneInfo lookup(String id) throws CalFacadeException {
+    TimezoneInfo tzinfo;
+    tzinfo = (TimezoneInfo)timezones.get(id);
+
+    return tzinfo;
   }
 
  /** Get a timezone object given the id. This will return transient objects

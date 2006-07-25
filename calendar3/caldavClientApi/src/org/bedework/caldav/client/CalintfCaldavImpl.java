@@ -80,9 +80,9 @@ import org.bedework.calfacade.CalintfDefs;
 import org.bedework.calfacade.base.BwShareableDbentity;
 import org.bedework.calfacade.base.CalintfBase;
 import org.bedework.calfacade.filter.BwFilter;
-import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.CalintfInfo;
 import org.bedework.calfacade.ifs.Groups;
+import org.bedework.calfacade.timezones.CalTimezones;
 import org.bedework.http.client.DavioException;
 import org.bedework.http.client.HttpManager;
 

@@ -53,14 +53,14 @@
 */
 package edu.rpi.cct.bedework.caldav;
 
-import org.bedework.caldav.client.api.BwIcalTrans;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.BwUser;
-import org.bedework.calfacade.ifs.CalTimezones;
+import org.bedework.calfacade.timezones.CalTimezones;
+import org.bedework.calfacade.timezones.ResourceTimezones;
 
 import edu.rpi.cct.uwcal.caldav.SysIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
@@ -99,9 +99,12 @@ public class GoogleSysIntfImpl implements SysIntf {
 
   private boolean debug;
 
-  private transient Logger log;
+  private ResourceTimezones timezones;
 
-  private BwIcalTrans trans;
+  // XXX get from properties
+  private static String defaultTimezone = "America/New_York";
+
+  private transient Logger log;
 
   public void init(HttpServletRequest req,
                    String envPrefix,
@@ -109,8 +112,6 @@ public class GoogleSysIntfImpl implements SysIntf {
                    boolean debug) throws WebdavIntfException {
     try {
       this.debug = debug;
-
-      trans = new BwIcalTrans(envPrefix, debug);
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -332,7 +333,12 @@ public class GoogleSysIntfImpl implements SysIntf {
 
   public CalTimezones getTimezones() throws WebdavIntfException {
     try {
-      return getTrans().getTimezones();
+      if (timezones == null) {
+        timezones = new ResourceTimezones(debug, null);
+        timezones.setDefaultTimeZoneId(defaultTimezone);
+      }
+
+      return timezones;
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -340,7 +346,7 @@ public class GoogleSysIntfImpl implements SysIntf {
 
   public TimeZone getDefaultTimeZone() throws WebdavIntfException {
     try {
-      return getTrans().getDefaultTimeZone();
+      return getTimezones().getDefaultTimeZone();
     } catch (Throwable t) {
       throw new WebdavIntfException(t);
     }
@@ -355,26 +361,11 @@ public class GoogleSysIntfImpl implements SysIntf {
   }
 
   public void close() throws WebdavIntfException {
-    try {
-      trans.close();
-    } catch (Throwable t) {
-      throw new WebdavIntfException(t);
-    }
   }
 
   /* ====================================================================
    *                         Private methods
    * ==================================================================== */
-
-  private BwIcalTrans getTrans() throws WebdavIntfException {
-    try {
-      trans.open();
-
-      return trans;
-    } catch (Throwable t) {
-      throw new WebdavIntfException(t);
-    }
-  }
 
   private CalendarService getCalendarService() {
     return new CalendarService("org.bedework-caldav-1");
@@ -382,7 +373,7 @@ public class GoogleSysIntfImpl implements SysIntf {
 
   private DateTime makeDateTime(BwDateTime dt) throws WebdavIntfException {
     try {
-      TimeZone tz = trans.getTimeZone(dt.getTzid());
+      TimeZone tz = getTimezones().getTimeZone(dt.getTzid());
       long millis = dt.makeDate().getTime();
       return new DateTime(millis, tz.getOffset(millis) / 60000);
     } catch (Throwable t) {

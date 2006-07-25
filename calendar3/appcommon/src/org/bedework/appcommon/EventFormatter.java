@@ -56,8 +56,8 @@ package org.bedework.appcommon;
 
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
-import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.svc.EventInfo;
+import org.bedework.calfacade.timezones.CalTimezones;
 import org.bedework.calsvci.CalSvcI;
 
 import java.io.Serializable;

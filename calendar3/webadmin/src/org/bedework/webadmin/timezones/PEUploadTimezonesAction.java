@@ -54,7 +54,7 @@
 
 package org.bedework.webadmin.timezones;
 
-import org.bedework.appcommon.TimeZonesParser;
+import org.bedework.calfacade.timezones.TimeZonesParser;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;

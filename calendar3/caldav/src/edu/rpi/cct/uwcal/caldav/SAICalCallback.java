@@ -51,75 +51,93 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
+package edu.rpi.cct.uwcal.caldav;
 
-package org.bedework.appcommon;
-
-import org.bedework.calfacade.svc.EventInfo;
+import org.bedework.calfacade.BwCalendar;
+import org.bedework.calfacade.BwCategory;
+import org.bedework.calfacade.BwLocation;
+import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.timezones.CalTimezones;
-import org.bedework.calsvci.CalSvcI;
+import org.bedework.icalendar.IcalCallback;
+import org.bedework.icalendar.URIgen;
 
-import java.util.AbstractCollection;
-import java.util.ArrayList;
+import net.fortuna.ical4j.model.TimeZone;
+import net.fortuna.ical4j.model.component.VTimeZone;
+
 import java.util.Collection;
-import java.util.Iterator;
 
-/** Object to provide a Collection of formatted BwEvent.
+/** Class to allow icaltranslator to be used from a standalone non-bedework
+ * caldav server.
  *
- * @author Mike Douglass   douglm@rpi.edu
+ * @author douglm
+ *
  */
-public class FormattedEvents extends AbstractCollection {
-  private Collection events;
-  private CalendarInfo calInfo;
-  private CalTimezones ctz;
-  private CalSvcI svci;
+public class SAICalCallback implements IcalCallback {
+  private CalTimezones timezones;
+  private BwUser user;
 
   /** Constructor
    *
-   * @param svci
-   * @param events
-   * @param calInfo
-   * @param ctz
+   * @param timezones
+   * @param account
    */
-  public FormattedEvents(CalSvcI svci, Collection events,
-                         CalendarInfo calInfo, CalTimezones ctz) {
-    if (events == null) {
-      this.events = new ArrayList();
-    } else {
-      this.events = events;
-    }
-    this.calInfo = calInfo;
-    this.ctz = ctz;
-    this.svci = svci;
+  public SAICalCallback(CalTimezones timezones, String account) {
+    this.timezones = timezones;
+    user = new BwUser(account);
   }
 
-  public Iterator iterator() {
-    return new FormattedEventsIterator(events.iterator());
+  public BwUser getUser() throws CalFacadeException {
+    return user;
   }
 
-  public int size() {
-    return events.size();
+  public BwCategory findCategory(BwCategory val) throws CalFacadeException {
+    return null;
   }
 
-  private class FormattedEventsIterator implements Iterator {
-    private Iterator it;
+  public void addCategory(BwCategory val) throws CalFacadeException {
+  }
 
-    private FormattedEventsIterator(Iterator it) {
-      this.it = it;
-    }
+  public BwLocation ensureLocationExists(String address) throws CalFacadeException {
+    BwLocation loc = new BwLocation();
+    loc.setAddress(address);
+    loc.setOwner(getUser());
 
-    public boolean hasNext() {
-      return it.hasNext();
-    }
+    return loc;
+  }
 
-    public Object next() {
-      EventInfo ev = (EventInfo)it.next();
+  public Collection getEvent(BwCalendar cal, String guid, String rid,
+                             int recurRetrieval) throws CalFacadeException {
+    return null;
+  }
 
-      return new EventFormatter(svci, ev, null, calInfo, ctz);
-    }
+  public URIgen getURIgen() throws CalFacadeException {
+    return null;
+  }
 
-    public void remove() {
-      throw new RuntimeException("Iterator is read-only");
-    }
+  public CalTimezones getTimezones() throws CalFacadeException {
+    return timezones;
+  }
+
+  public void saveTimeZone(String tzid,
+                           VTimeZone vtz) throws CalFacadeException {
+    timezones.saveTimeZone(tzid, vtz);
+  }
+
+  public void storeTimeZone(final String id) throws CalFacadeException {
+    timezones.storeTimeZone(id, getUser());
+  }
+
+  public void registerTimeZone(String id, TimeZone timezone)
+            throws CalFacadeException {
+    timezones.registerTimeZone(id, timezone);
+  }
+
+  public TimeZone getTimeZone(final String id) throws CalFacadeException {
+    return timezones.getTimeZone(id);
+  }
+
+  public VTimeZone findTimeZone(final String id, BwUser owner) throws CalFacadeException {
+    return timezones.findTimeZone(id, owner);
   }
 }
-

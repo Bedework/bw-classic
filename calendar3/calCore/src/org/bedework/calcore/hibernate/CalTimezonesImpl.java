@@ -59,8 +59,8 @@ import org.bedework.calfacade.BwStats;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.CalFacadeException;
-import org.bedework.calfacade.ifs.CalTimezones;
 import org.bedework.calfacade.ifs.Calintf;
+import org.bedework.calfacade.timezones.CalTimezones;
 import org.bedework.icalendar.IcalTranslator;
 
 import net.fortuna.ical4j.model.Calendar;
@@ -215,10 +215,10 @@ class CalTimezonesImpl extends CalTimezones {
   }
 
   /* ====================================================================
-   *                   Private methods
+   *                   Protected methods
    * ==================================================================== */
 
-  private TimezoneInfo lookup(String id) throws CalFacadeException {
+  protected TimezoneInfo lookup(String id) throws CalFacadeException {
     TimezoneInfo tzinfo;
 
     if (!systemTimezonesInitialised) {

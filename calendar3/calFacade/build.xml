@@ -57,6 +57,7 @@
       <pathelement location="${log4j.jar}"/>
       <pathelement location="${ical4j.jar}"/>
       <pathelement location="${org.bedework.access.jar}"/>
+      <pathelement location="${org.bedework.rpiutil.jar}"/>
     </path>
 
     <!-- ==================== Build Target ============================= -->

@@ -55,7 +55,7 @@
 package edu.rpi.cct.uwcal.caldav;
 
 import org.bedework.calfacade.BwDateTime;
-import org.bedework.calfacade.ifs.CalTimezones;
+import org.bedework.calfacade.timezones.CalTimezones;
 import org.bedework.calfacade.util.CalFacadeUtil;
 
 import edu.rpi.cct.webdav.servlet.shared.WebdavBadRequest;
