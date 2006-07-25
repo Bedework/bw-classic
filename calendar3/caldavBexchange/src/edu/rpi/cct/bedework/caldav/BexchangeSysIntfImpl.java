@@ -54,9 +54,6 @@
 package edu.rpi.cct.bedework.caldav;
 
 import org.bedework.caldav.client.api.BwIcalTrans;
-import org.bedework.caldav.client.api.CaldavClientIo;
-import org.bedework.caldav.client.api.CaldavReq;
-import org.bedework.caldav.client.api.CaldavResp;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwDateTime;
 import org.bedework.calfacade.BwEvent;
@@ -64,6 +61,9 @@ import org.bedework.calfacade.BwFreeBusy;
 import org.bedework.calfacade.BwFreeBusyComponent;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.ifs.CalTimezones;
+import org.bedework.http.client.dav.DavClient;
+import org.bedework.http.client.dav.DavReq;
+import org.bedework.http.client.dav.DavResp;
 
 import edu.rpi.cct.uwcal.caldav.SysIntf;
 import edu.rpi.cct.webdav.servlet.shared.WebdavException;
@@ -86,7 +86,6 @@ import org.xml.sax.SAXException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
-import java.io.StringReader;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.Arrays;
@@ -95,7 +94,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SimpleTimeZone;
-import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -256,7 +254,7 @@ public class BexchangeSysIntfImpl implements SysIntf {
         throw WebdavIntfException.badRequest();
       }
 
-      CaldavReq req = new CaldavReq();
+      DavReq req = new DavReq();
 
       req.setMethod("GET");
 
@@ -277,7 +275,7 @@ public class BexchangeSysIntfImpl implements SysIntf {
 //      req.addHeader("Accept-Encoding", "gzip,deflate");
 //      req.addHeader("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
 
-      CaldavResp resp = send(req, di);
+      DavResp resp = send(req, di);
 
       if (debug) {
         debugMsg("Got response \n" + resp.getResponseBodyAsString());
@@ -684,11 +682,11 @@ END:VCALENDAR
   /**
    * @param r
    * @param di
-   * @return CaldavResp
+   * @return DavResp
    * @throws Throwable
    */
-  private CaldavResp send(CaldavReq r, BexchangeInfo di) throws Throwable {
-    CaldavClientIo cio = getCio(di.getHost(), di.getPort(), di.getSecure());
+  private DavResp send(DavReq r, BexchangeInfo di) throws Throwable {
+    DavClient cio = getCio(di.getHost(), di.getPort(), di.getSecure());
 
     int responseCode;
 
@@ -726,11 +724,11 @@ END:VCALENDAR
     return cio.getResponse();
   }
 
-  private CaldavClientIo getCio(String host, int port, boolean secure) throws Throwable {
-    CaldavClientIo cio = (CaldavClientIo)cioTable.get(host + port + secure);
+  private DavClient getCio(String host, int port, boolean secure) throws Throwable {
+    DavClient cio = (DavClient)cioTable.get(host + port + secure);
 
     if (cio == null) {
-      cio = new CaldavClientIo(host, port, 30 * 1000, secure, debug);
+      cio = new DavClient(host, port, 30 * 1000, secure, debug);
 
       cioTable.put(host + port + secure, cio);
     }

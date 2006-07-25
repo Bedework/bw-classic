@@ -43,9 +43,10 @@
       <pathelement location="${ical4j.jar}"/>
       <pathelement location="${log4j.jar}"/>
 
+      <pathelement location="${org.bedework.davio.jar}"/>
+
       <!-- Include the location of the compiled calendar classes -->
       <pathelement location="${org.bedework.ical.jar}"/>
-      <pathelement location="${org.bedework.caldavClientApi.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
     </path>
 
