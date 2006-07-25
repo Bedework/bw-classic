@@ -14,6 +14,9 @@
   <property name="org.bedework.project.access"
             location="${basedir}/access" />
 
+  <property name="org.bedework.project.caldavTest"
+            location="${basedir}/caldavTest" />
+
   <property name="org.bedework.calendar.dir"
             location="${basedir}/calendar3" />
 
@@ -156,6 +159,21 @@
   </target>
 
   <!-- .................................................................
+                          caldavTest
+       .................................................................. -->
+  <target name="build.caldavTest" depends="init"
+          description="builds the caldavTest project">
+    <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritrefs="true"
+           target="build-all" />
+  </target>
+
+  <target name="clean.build.caldavTest" depends="init"
+          description="builds the caldavTest project">
+    <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritrefs="true"
+           target="clean-build-all" />
+  </target>
+
+  <!-- .................................................................
                           davutil
        .................................................................. -->
   <target name="build.davutil" depends="init"
@@ -175,11 +193,18 @@
   </target>
 
   <target name="copy.davutil" >
+    <copy todir="${org.bedework.project.caldavTest}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.davutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+
     <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.davutil}/dist">
         <include name="*.jar" />
       </fileset>
     </copy>
+
     <copy todir="${org.bedework.project.webdav}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.davutil}/dist">
         <include name="*.jar" />

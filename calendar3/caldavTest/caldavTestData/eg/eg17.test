@@ -1,8 +1,0 @@
-DESCRIPTION: mkcalendar: create a collection
-
-METHOD: MKCALENDAR
-
-AUTH: true
-
-URL: RPI_TEST/RPI_TEST/
-
