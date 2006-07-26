@@ -95,6 +95,7 @@
     <property name="org.bedework.locale.base" location="${org.bedework.calendar.dir}/locale" />
     <property name="org.bedework.logging.base" location="${org.bedework.calendar.dir}/logging" />
     <property name="org.bedework.mail.base" location="${org.bedework.calendar.dir}/mail" />
+    <property name="org.bedework.resources.base" location="${org.bedework.calendar.dir}/resources" />
     <property name="org.bedework.synchml.base" location="${org.bedework.calendar.dir}/synchml" />
     <property name="org.bedework.testsuite.base" location="${org.bedework.calendar.dir}/test" />
     <property name="org.bedework.timers.base" location="${org.bedework.calendar.dir}/timers" />

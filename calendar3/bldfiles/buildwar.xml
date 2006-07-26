@@ -57,6 +57,10 @@
     </condition>
     -->
 
+    <condition property="org.bedework.war.build.freebusy">
+      <equals arg1="yes" arg2="${org.bedework.build.freebusy}"/>
+    </condition>
+
     <!-- Destinations - where we build an unwrapped war -->
     <property name="app.dest.war"
               location="${org.bedework.temp.wars.home}/${propval.app.war.name}.war" />
@@ -288,7 +292,6 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.calsvci.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.calsvc.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.ical.jar}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.caldavClientApi.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appcommon.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.webcommon.jar}" />
 
@@ -333,7 +336,7 @@
     -->
   </target>
 
-  <target name="add.freebusy" if="org.bedework.build.freebusy">
+  <target name="add.freebusy" if="org.bedework.war.build.freebusy">
     <copy todir="${app.dest.lib}" file="${org.bedework.fbclient.jar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.fbaggregator.jar}" />
   </target>
@@ -370,10 +373,16 @@
 
   <target name="bexchange-stuff" if="org.bedework.build.caldav.bexchange">
     <copy todir="${app.dest.lib}" file="${org.bedework.caldavbexchange.jar}" />
+
+    <copy tofile="${app.dest.properties}/timezones.xml"
+          file="${org.bedework.resources.base}/bwtimezones.xml" />
   </target>
 
   <target name="domino-stuff" if="org.bedework.build.caldav.domino">
     <copy todir="${app.dest.lib}" file="${org.bedework.caldavdomino.jar}" />
+
+    <copy tofile="${app.dest.properties}/timezones.xml"
+          file="${org.bedework.resources.base}/bwtimezones.xml" />
   </target>
 
   <target name="google-stuff" if="org.bedework.build.caldav.google">
@@ -384,6 +393,9 @@
     </copy>
 
     <copy todir="${app.dest.lib}" file="${org.bedework.caldavgoogle.jar}" />
+
+    <copy tofile="${app.dest.properties}/timezones.xml"
+          file="${org.bedework.resources.base}/bwtimezones.xml" />
   </target>
 
   <!-- =================================================================

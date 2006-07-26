@@ -41,6 +41,9 @@
   <property name="org.bedework.project.access"
             location="${basedir}/../access" />
 
+  <property name="org.bedework.project.caldav"
+            location="${basedir}/../caldav" />
+
   <property name="org.bedework.project.calendar"
             location="${basedir}/../calendar3" />
 
@@ -108,14 +111,16 @@
   This target builds jar files ready for the deploy target.
      =================================================================== -->
 
+  <!-- deleted
+                   bld.caldav,bld.caldavclientapi,
+                   bld.caldavBexchange,bld.caldavDomino,bld.caldavGoogle,
+                   -->
   <target name="bld.all"
           depends="bld.locale,bld.calfacade,
                    bld.calenv,bld.ical,bld.core,
                    bld.calsvci,bld.mail,bld.logging,
                    bld.calsvc,bld.appcommon,bld.uportal,
                    bld.webadmin,bld.webclient,bld.synchml,
-                   bld.caldav,bld.caldavclientapi,
-                   bld.caldavBexchange,bld.caldavDomino,bld.caldavGoogle,
                    bld.timers,build.tools,
                    bld.dumprestore,
                    bld.test,bld.config"
@@ -213,19 +218,6 @@
           overwrite="${org.bedework.deploy.log4j.config}" />
   </target>
 
-  <!-- Target used to build from property files built by config tool -->
-  <target name="deploy.config" >
-    <copy todir="${log4j.config.destination}"
-          file="${org.bedework.calendar.dir}/resources/log4j.xml"
-          overwrite="${org.bedework.deploy.log4j.config}" />
-
-    <!-- The property org.bedework.deploy.config.name must be set -->
-    <ant antfile="${org.bedework.appsuite.base}/build.xml" inheritrefs="true"
-           target="deploy.config"  />
-
-    <antcall inheritrefs="true" target="deploy.caldav" />
-  </target>
-
 <!-- ==================== Dist Target ==================================
      The "dist" target creates a binary distribution of your application
      in a directory structure ready to be archived in a tar.gz or zip file.
@@ -262,8 +254,6 @@
     <mkdir dir="${dist.home}/docs/api"/>
     <javadoc sourcepath="${org.bedework.appcommon.base}/src:
                          ${org.bedework.core.base}/src:
-                         ${org.bedework.caldav.base}/src:
-                         ${org.bedework.caldavClientApi.base}/src:
                          ${org.bedework.calenv.base}/src:
                          ${org.bedework.calfacade.base}/src:
                          ${org.bedework.calsvc.base}/src:
@@ -354,7 +344,7 @@
   </target>
 
   <!-- ======================== caldav Targets ========================
-       ================================================================= -->
+       =================================================================
 
   <target name="bld.caldavclientapi"
           depends="init,bld.calfacade"
@@ -393,6 +383,7 @@
     <ant antfile="${org.bedework.caldavgoogle.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
+  -->
 
   <!-- ======================== logging target =======================
        This builds the logging classes jar.

@@ -14,6 +14,9 @@
   <property name="org.bedework.project.access"
             location="${basedir}/access" />
 
+  <property name="org.bedework.project.caldav"
+            location="${basedir}/caldav" />
+
   <property name="org.bedework.project.caldavTest"
             location="${basedir}/caldavTest" />
 
@@ -112,6 +115,18 @@
     <!-- Load user property definition overrides -->
     <property file="${org.bedework.user.build.properties}" />
 
+    <property name="org.bedework.build.caldav" value="yes" />
+
+    <condition property="org.bedework.qs.build.caldav">
+      <equals arg1="yes" arg2="${org.bedework.build.caldav}"/>
+    </condition>
+
+    <property name="org.bedework.build.freebusy" value="no" />
+
+    <condition property="org.bedework.qs.build.freebusy">
+      <equals arg1="yes" arg2="${org.bedework.build.freebusy}"/>
+    </condition>
+
     <!-- ===============================================================
               Default properties.
          =============================================================== -->
@@ -159,6 +174,39 @@
   </target>
 
   <!-- .................................................................
+                          caldav
+       .................................................................. -->
+  <target name="build.caldav" depends="init"
+          description="builds the caldav project">
+    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritrefs="true"
+           target="build-all" />
+
+    <antcall target="copy.caldav" inheritrefs="true" />
+  </target>
+
+  <target name="clean.caldav" depends="init"
+          description="clean the caldav project">
+    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritrefs="true"
+           target="clean" />
+
+    <antcall target="copy.caldav" inheritrefs="true" />
+  </target>
+
+  <target name="clean.build.caldav" depends="init"
+          description="builds the caldav project">
+    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritrefs="true"
+           target="clean-build-all" />
+  </target>
+
+  <target name="copy.caldav" >
+    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes" failonerror="false" >
+      <fileset dir="${org.bedework.project.caldav}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- .................................................................
                           caldavTest
        .................................................................. -->
   <target name="build.caldavTest" depends="init"
@@ -171,6 +219,21 @@
           description="builds the caldavTest project">
     <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritrefs="true"
            target="clean-build-all" />
+  </target>
+
+  <!-- .................................................................
+                          freebusy
+       .................................................................. -->
+  <target name="build.freebusy" depends="init"
+          description="builds the freebusy project">
+    <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritrefs="true"
+           target="build-all" />
+  </target>
+
+  <target name="clean.build.freebusy" depends="init"
+          description="builds the freebusy project">
+    <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritrefs="true"
+           target="build-all" />
   </target>
 
   <!-- .................................................................
@@ -270,13 +333,19 @@
 
   <target name="clean.build.webdav" depends="init"
           description="builds the webdav project">
+    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritrefs="true"
+           target="clean-build-all" />
 
     <antcall target="copy.webdav" inheritrefs="true" />
   </target>
 
-  <target name="copy.webdav" >
+  <target name="clean.webdav" depends="init"
+          description="cleans the webdav project">
     <ant antfile="${org.bedework.project.webdav}/build.xml" inheritrefs="true"
-           target="clean-build-all" />
+           target="clean" />
+  </target>
+
+  <target name="copy.webdav" >
     <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.webdav}/dist">
         <include name="*.jar" />
@@ -301,26 +370,57 @@
   </target>
 
   <!-- =================================================================
-       The "build.freebusy" target builds the freebusy jar files
+       The "build.freebusy.if" target conditionally builds the freebusy jar files
        ================================================================= -->
 
-  <target name="build.freebusy" depends="init"
-          description="builds the jars" if="org.bedework.build.freebusy" >
-    <ant antfile="${org.bedework.freebusy.build.file}" inheritrefs="true"
-           target="bld.all" />
+  <target name="build.freebusy.if" depends="init"
+          description="builds the jars" if="org.bedework.qs.build.freebusy" >
+    <antcall inheritrefs="true" target="build.freebusy" />
+  </target>
+
+  <target name="clean.freebusy.if" depends="init" if="org.bedework.qs.build.freebusy" >
+  </target>
+
+  <!-- =================================================================
+       The "XXX.caldav.if" target conditionally executes the caldav targets
+       ================================================================= -->
+
+  <target name="build.caldav.if" depends="init"
+          description="builds the jars" if="org.bedework.qs.build.caldav" >
+    <antcall inheritrefs="true" target="build.caldav" />
+  </target>
+
+  <target name="clean.caldav.if" depends="init"
+          description="cleans jars" if="org.bedework.qs.build.caldav" >
+    <antcall inheritrefs="true" target="clean.caldav" />
+  </target>
+
+  <!-- =================================================================
+       The "XXX.webdav.if" target conditionally executes the webdav targets
+       (needed for caldav)
+       ================================================================= -->
+
+  <target name="build.webdav.if" depends="init"
+          description="builds the jars" if="org.bedework.qs.build.caldav" >
+    <antcall inheritrefs="true" target="build.webdav" />
+  </target>
+
+  <target name="clean.webdav.if" depends="init"
+          description="cleans jars" if="org.bedework.qs.build.caldav" >
+    <antcall inheritrefs="true" target="clean.webdav" />
   </target>
 
   <!-- =================================================================
        The "deploy" target builds and deploys the applications
        ================================================================= -->
 
-  <target name="deploy" depends="build,build.freebusy"
+  <target name="deploy" depends="build,build.webdav.if,build.caldav.if,build.freebusy.if"
           description="builds and deploys the applications">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="deploy.nobuild" />
   </target>
 
-  <target name="deploy.debug" depends="build,build.freebusy"
+  <target name="deploy.debug" depends="build,build.webdav.if,build.caldav.if,build.freebusy.if"
           description="builds and deploys the applications">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="deploy.debug.nobuild" />
@@ -334,7 +434,7 @@
 
   <target name="clean.deploy.debug" depends="clean,deploy.debug" />
 
-  <target name="clean" depends="init"
+  <target name="clean" depends="init,clean.freebusy.if"
           description="Remove all generated files.">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="clean" />
