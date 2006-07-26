@@ -372,15 +372,11 @@
   </target>
 
   <target name="bexchange-stuff" if="org.bedework.build.caldav.bexchange">
-    <copy todir="${app.dest.lib}" file="${org.bedework.caldavbexchange.jar}" />
-
     <copy tofile="${app.dest.properties}/timezones.xml"
           file="${org.bedework.resources.base}/bwtimezones.xml" />
   </target>
 
   <target name="domino-stuff" if="org.bedework.build.caldav.domino">
-    <copy todir="${app.dest.lib}" file="${org.bedework.caldavdomino.jar}" />
-
     <copy tofile="${app.dest.properties}/timezones.xml"
           file="${org.bedework.resources.base}/bwtimezones.xml" />
   </target>
@@ -391,8 +387,6 @@
         <include name="*.jar"/>
       </fileset>
     </copy>
-
-    <copy todir="${app.dest.lib}" file="${org.bedework.caldavgoogle.jar}" />
 
     <copy tofile="${app.dest.properties}/timezones.xml"
           file="${org.bedework.resources.base}/bwtimezones.xml" />
