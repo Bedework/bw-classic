@@ -95,18 +95,28 @@ public class ResourceTimezones extends SATimezonesImpl {
    *                   Protected methods
    * ==================================================================== */
 
-  protected TimezoneInfo lookup(String id) throws CalFacadeException {
-    if (!userTimezonesInitialised) {
-      // First call after object creation.
-      synchronized (this) {
-        loadTimezones();
+  /** Called when the lookup method finds that system timezones need to
+   * be initialised.
+   *
+   * @throws CalFacadeException
+   */
+  protected void initSystemTimeZones() throws CalFacadeException {
+    synchronized (this) {
+      if (systemTimezonesInitialised) {
+        return;
       }
+
+      loadTimezones();
     }
+  }
 
-    TimezoneInfo tzinfo;
-    tzinfo = (TimezoneInfo)timezones.get(id);
-
-    return tzinfo;
+  /** Called when the lookup method finds that user timezones need to
+   * be initialised.
+   *
+   * @throws CalFacadeException
+   */
+  protected void initUserTimeZones() throws CalFacadeException {
+    userTimezonesInitialised = true;
   }
 
   /* ====================================================================

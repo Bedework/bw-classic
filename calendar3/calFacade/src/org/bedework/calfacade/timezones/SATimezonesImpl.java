@@ -59,11 +59,13 @@ import org.bedework.calfacade.CalFacadeException;
 import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.TimeZone;
 
+import java.util.HashMap;
+
 /** Standalone implementation.
  *
  * @author Mike Douglass       douglm@rpi.edu
  */
-public class SATimezonesImpl extends CalTimezones {
+public abstract class SATimezonesImpl extends CalTimezones {
   private boolean publick = true; // current mode
   private BwUser user;
 
@@ -138,19 +140,56 @@ public class SATimezonesImpl extends CalTimezones {
     lookup("not-a-timezone");
   }
 
+  /** Update the system timezone map
+   *
+   * @param tzid
+   * @param vtz
+   * @throws CalFacadeException
+   */
+  public void savePublicTimeZone(String tzid, VTimeZone vtz)
+          throws CalFacadeException {
+    saveTimeZone(tzid, vtz, true);
+  }
+
+  /** Update the user timezone map
+   *
+   * @param tzid
+   * @param vtz
+   * @throws CalFacadeException
+   */
   public void saveTimeZone(String tzid, VTimeZone vtz)
+          throws CalFacadeException {
+    saveTimeZone(tzid, vtz, false);
+  }
+
+  /** Update the system or user timezone map
+   *
+   * @param tzid
+   * @param vtz
+   * @param publick
+   * @throws CalFacadeException
+   */
+  public void saveTimeZone(String tzid, VTimeZone vtz, boolean publick)
           throws CalFacadeException {
     /* For a user update the map to avoid a refetch. For system timezones we will
        force a refresh when we're done.
     */
 
+    HashMap tzs;
+
+    if (publick) {
+      tzs = systemTimezones;
+    } else {
+      tzs = timezones;
+    }
+
     /* Don't use lookup - we might be called from lookup on init */
-    TimezoneInfo tzinfo = (TimezoneInfo)timezones.get(tzid);
+    TimezoneInfo tzinfo = (TimezoneInfo)tzs.get(tzid);
     TimeZone tz = new TimeZone(vtz);
 
     if (tzinfo == null) {
       tzinfo = new TimezoneInfo(tz);
-      timezones.put(tzid, tzinfo);
+      tzs.put(tzid, tzinfo);
     } else {
       tzinfo.init(tz);
     }

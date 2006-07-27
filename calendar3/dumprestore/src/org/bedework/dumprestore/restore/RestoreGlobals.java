@@ -69,14 +69,12 @@ import org.bedework.calfacade.filter.BwFilter;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwSubscription;
 import org.bedework.calfacade.svc.BwView;
-import org.bedework.calfacade.timezones.CalTimezones;
-import org.bedework.calfacade.timezones.TimeZonesParser;
+import org.bedework.calfacade.timezones.SATimezonesImpl;
 
 import edu.rpi.cmt.access.Access;
 import edu.rpi.cmt.access.Ace;
 import edu.rpi.cmt.access.Acl;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -120,7 +118,7 @@ public class RestoreGlobals {
   public BwSystem syspars = new BwSystem();
 
   /* Used when processing timezones */
-  private CalTimezones tzcache;
+  private SATimezonesImpl tzcache;
 
   /** The super admin group */
   public BwGroup superGroup;
@@ -525,7 +523,7 @@ public class RestoreGlobals {
    * @return CalTimezones object
    * @throws Throwable
    */
-  public CalTimezones getTzcache() throws Throwable {
+  public SATimezonesImpl getTzcache() throws Throwable {
     if (tzcache != null) {
       return tzcache;
     }
@@ -534,25 +532,8 @@ public class RestoreGlobals {
       throw new Exception("syspars.tzid not initialised");
     }
 
-    tzcache = new TimezonesImpl(config.getDebug(), getPublicUser(), rintf);
+    tzcache = new TimezonesImpl(config.getDebug(), getPublicUser(), this);
     tzcache.setDefaultTimeZoneId(syspars.getTzid());
-
-    if (config.getFrom2p3px() && (config.getTimezonesFilename() != null)) {
-      // Populate from a file
-      TimeZonesParser tzp = new TimeZonesParser(
-             new FileInputStream(config.getTimezonesFilename()),
-             config.getDebug());
-
-      Collection tzis = tzp.getTimeZones();
-
-      Iterator it = tzis.iterator();
-      while (it.hasNext()) {
-        TimeZonesParser.TimeZoneInfo tzi = (TimeZonesParser.TimeZoneInfo)it.next();
-
-        tzcache.saveTimeZone(tzi.tzid, tzi.timezone);
-        timezones++;
-      }
-    }
 
     return tzcache;
   }

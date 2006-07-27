@@ -82,9 +82,6 @@ class CalTimezonesImpl extends CalTimezones {
 
   private boolean publicAdmin;
 
-  private static volatile HashMap systemTimezones = new HashMap();
-  private static volatile boolean systemTimezonesInitialised = false;
-
   CalTimezonesImpl(Calintf cal, BwStats stats, boolean publicAdmin, boolean debug)
           throws CalFacadeException {
     super(debug);
@@ -218,73 +215,79 @@ class CalTimezonesImpl extends CalTimezones {
    *                   Protected methods
    * ==================================================================== */
 
-  protected TimezoneInfo lookup(String id) throws CalFacadeException {
+  /** Called when the lookup method finds that system timezones need to
+   * be initialised.
+   *
+   * @throws CalFacadeException
+   */
+  protected void initSystemTimeZones() throws CalFacadeException {
     TimezoneInfo tzinfo;
 
-    if (!systemTimezonesInitialised) {
+    synchronized (this) {
+      if (systemTimezonesInitialised) {
+        return;
+      }
+
       // First call (after reinit)
-      synchronized (this) {
-        if (!systemTimezonesInitialised) {
-          Collection tzs = cal.getPublicTimeZones();
-          Iterator it = tzs.iterator();
+      Collection tzs = cal.getPublicTimeZones();
+      Iterator it = tzs.iterator();
 
-          while (it.hasNext()) {
-            BwTimeZone btz = (BwTimeZone)it.next();
+      while (it.hasNext()) {
+        BwTimeZone btz = (BwTimeZone)it.next();
 
-            Calendar cal = IcalTranslator.getCalendar(btz.getVtimezone());
+        Calendar cal = IcalTranslator.getCalendar(btz.getVtimezone());
 
-            VTimeZone vtz = (VTimeZone)cal.getComponents().getComponent(Component.VTIMEZONE);
-            if (vtz == null) {
-              throw new CalFacadeException("Incorrectly stored timezone");
-            }
-
-            /* Don't save the vtimezone, there are a lot and it's a significant
-             * amount of space. We probably only look at 2-3 of them after this.
-             * The find timezone method will look it up again if requested and
-             * cache it at that point.
-             */
-            tzinfo = new TimezoneInfo(new TimeZone(vtz), true);
-            systemTimezones.put(btz.getTzid(), tzinfo);
-          }
-
-          systemTimezonesInitialised = true;
+        VTimeZone vtz = (VTimeZone)cal.getComponents().getComponent(Component.VTIMEZONE);
+        if (vtz == null) {
+          throw new CalFacadeException("Incorrectly stored timezone");
         }
-      }
-    }
 
-    if (!userTimezonesInitialised) {
+        /* Don't save the vtimezone, there are a lot and it's a significant
+         * amount of space. We probably only look at 2-3 of them after this.
+         * The find timezone method will look it up again if requested and
+         * cache it at that point.
+         */
+        tzinfo = new TimezoneInfo(new TimeZone(vtz), true);
+        systemTimezones.put(btz.getTzid(), tzinfo);
+      }
+
+      systemTimezonesInitialised = true;
+    }
+  }
+
+  /** Called when the lookup method finds that user timezones need to
+   * be initialised.
+   *
+   * @throws CalFacadeException
+   */
+  protected void initUserTimeZones() throws CalFacadeException {
+    TimezoneInfo tzinfo;
+
+    synchronized (this) {
+      if (userTimezonesInitialised) {
+        return;
+      }
+
       // First call after object creation.
-      synchronized (this) {
-        if (!userTimezonesInitialised) {
-          Collection tzs = cal.getUserTimeZones();
-          Iterator it = tzs.iterator();
+      Collection tzs = cal.getUserTimeZones();
+      Iterator it = tzs.iterator();
 
-          while (it.hasNext()) {
-            BwTimeZone btz = (BwTimeZone)it.next();
+      while (it.hasNext()) {
+        BwTimeZone btz = (BwTimeZone)it.next();
 
-            Calendar cal = IcalTranslator.getCalendar(btz.getVtimezone());
+        Calendar cal = IcalTranslator.getCalendar(btz.getVtimezone());
 
-            VTimeZone vtz = (VTimeZone)cal.getComponents().getComponent(Component.VTIMEZONE);
-            if (vtz == null) {
-              throw new CalFacadeException("Incorrectly stored timezone");
-            }
-
-            tzinfo = new TimezoneInfo(new TimeZone(vtz), true);
-            timezones.put(btz.getTzid(), tzinfo);
-          }
-
-          userTimezonesInitialised = true;
+        VTimeZone vtz = (VTimeZone)cal.getComponents().getComponent(Component.VTIMEZONE);
+        if (vtz == null) {
+          throw new CalFacadeException("Incorrectly stored timezone");
         }
+
+        tzinfo = new TimezoneInfo(new TimeZone(vtz), true);
+        timezones.put(btz.getTzid(), tzinfo);
       }
+
+      userTimezonesInitialised = true;
     }
-
-    tzinfo = (TimezoneInfo)systemTimezones.get(id);
-
-    if (tzinfo == null) {
-      tzinfo = (TimezoneInfo)timezones.get(id);
-    }
-
-    return tzinfo;
   }
 }
 

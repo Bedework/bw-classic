@@ -58,26 +58,31 @@ import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.timezones.SATimezonesImpl;
+import org.bedework.calfacade.timezones.TimeZonesParser;
 
 import net.fortuna.ical4j.model.component.VTimeZone;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.Iterator;
 
 /** Handle timezones for bedework restore program.
  *
  * @author Mike Douglass       douglm@rpi.edu
  */
 class TimezonesImpl extends SATimezonesImpl {
-  private RestoreIntf ri;
+  private RestoreGlobals globals;
 
 //  private static volatile HashMap systemTimezones = new HashMap();
   //private static volatile boolean systemTimezonesInitialised = false;
 
-  TimezonesImpl(boolean debug, BwUser user, RestoreIntf ri)
+  TimezonesImpl(boolean debug, BwUser user, RestoreGlobals globals)
           throws CalFacadeException {
     super(debug, user);
-    this.ri = ri;
+    this.globals = globals;
 
-    // Force fetch of timezones
-    //lookup("not-a-timezone");
+    initSystemTimeZones();
   }
 
   public void saveTimeZone(String tzid, VTimeZone vtz)
@@ -88,10 +93,69 @@ class TimezonesImpl extends SATimezonesImpl {
 
     super.saveTimeZone(tzid, vtz);
 
+    saveTZ(tzid, vtz, false, getUser());
+  }
+
+  /** Saves a public timezone for restores.
+   *
+   * @param tzid
+   * @param vtz
+   * @throws CalFacadeException
+   */
+  public void savePublicTimeZone(String tzid, VTimeZone vtz)
+          throws CalFacadeException {
+    /* For a user update the map to avoid a refetch. For system timezones we will
+       force a refresh when we're done.
+    */
+
+    super.savePublicTimeZone(tzid, vtz);
+
+    saveTZ(tzid, vtz, true, getUser());
+  }
+
+  /** Called when the lookup method finds that system timezones need to
+   * be initialised.
+   *
+   * @throws CalFacadeException
+   */
+  protected void initSystemTimeZones() throws CalFacadeException {
+    try {
+      if (globals.config.getFrom2p3px() &&
+          (globals.config.getTimezonesFilename() != null)) {
+        // Populate from a file
+        TimeZonesParser tzp = new TimeZonesParser(
+                                                  new FileInputStream(globals.config.getTimezonesFilename()),
+                                                  globals.config.getDebug());
+
+        Collection tzis = tzp.getTimeZones();
+
+        Iterator it = tzis.iterator();
+        while (it.hasNext()) {
+          TimeZonesParser.TimeZoneInfo tzi = (TimeZonesParser.TimeZoneInfo)it.next();
+
+          savePublicTimeZone(tzi.tzid, tzi.timezone);
+        }
+      }
+    } catch (FileNotFoundException fnfe) {
+      throw new CalFacadeException(fnfe);
+    }
+  }
+
+  /** Called when the lookup method finds that user timezones need to
+   * be initialised.
+   *
+   * @throws CalFacadeException
+   */
+  protected void initUserTimeZones() throws CalFacadeException {
+    userTimezonesInitialised = true;
+  }
+
+  private void saveTZ(String tzid, VTimeZone vtz,
+                      boolean publick, BwUser user) throws CalFacadeException {
     BwTimeZone btz = new BwTimeZone();
 
     btz.setTzid(tzid);
-    btz.setPublick(getPublick());
+    btz.setPublick(true);
     btz.setOwner(getUser());
 
     StringBuffer sb = new StringBuffer();
@@ -105,7 +169,7 @@ class TimezonesImpl extends SATimezonesImpl {
     btz.setVtimezone(sb.toString());
 
     try {
-      ri.restoreTimezone(btz);
+      globals.rintf.restoreTimezone(btz);
     } catch (Throwable t) {
       throw new CalFacadeException(t);
     }

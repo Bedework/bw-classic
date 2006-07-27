@@ -70,7 +70,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
-/** Handle caching, retrieval and registration of timezones.
+/** Handle caching, retrieval and registration of timezones. There are possibly
+ * two sets of timezones, public or system - shared across a system, and user owned,
+ * private to the current user.
+ *
+ * <p>System timezones are typically initialised once per system while user
+ * timezones are initialised once per session.
+ *
+ * <p>As there is a limited set of timezones (currenly around 350) it makes sense
+ * to hold all the system timezones in memory. Thus, there will be no updates to
+ * the pool of system timezones. Any updates therefore are assumed to be to the
+ * set of user timezones.
  *
  * @author Mike Douglass
  *
@@ -163,11 +173,20 @@ public abstract class CalTimezones implements Serializable {
     }
   }
 
+  /* Map of system TimezoneInfo */
+  protected static volatile HashMap systemTimezones = new HashMap();
+
+  /* subclasses can use this to trigger a read of stored timezone info. */
+  protected static volatile boolean systemTimezonesInitialised = false;
+
   /* Map of user TimezoneInfo */
   protected HashMap timezones = new HashMap();
 
   /* subclasses can use this to trigger a read of stored timezone info. */
   protected boolean userTimezonesInitialised;
+
+  /* flag which order we look up timezones */
+  protected boolean systemHasPrecedence = true;
 
   /* Cache date only UTC values - we do a lot of those but the number of
    * different dates should be limited.
@@ -231,9 +250,46 @@ public abstract class CalTimezones implements Serializable {
    *                   Protected methods
    * ==================================================================== */
 
+  /** Called when the lookup method finds that system timezones need to
+   * be initialised.
+   *
+   * @throws CalFacadeException
+   */
+  protected abstract void initSystemTimeZones() throws CalFacadeException;
+
+  /** Called when the lookup method finds that user timezones need to
+   * be initialised.
+   *
+   * @throws CalFacadeException
+   */
+  protected abstract void initUserTimeZones() throws CalFacadeException;
+
   protected TimezoneInfo lookup(String id) throws CalFacadeException {
+    if (!systemTimezonesInitialised) {
+      initSystemTimeZones();
+    }
+
+    if (!userTimezonesInitialised) {
+      initUserTimeZones();
+    }
+
     TimezoneInfo tzinfo;
-    tzinfo = (TimezoneInfo)timezones.get(id);
+
+    if (systemHasPrecedence) {
+      tzinfo = (TimezoneInfo)systemTimezones.get(id);
+    } else {
+      tzinfo = (TimezoneInfo)timezones.get(id);
+    }
+
+    if (tzinfo == null) {
+      if (systemHasPrecedence) {
+        // Looked in system - try user
+        tzinfo = (TimezoneInfo)timezones.get(id);
+      } else {
+        // Looked in user - try system
+        tzinfo = (TimezoneInfo)systemTimezones.get(id);
+      }
+    }
 
     return tzinfo;
   }

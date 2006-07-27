@@ -97,7 +97,10 @@ public class TimeZoneRule extends EntityRule {
 
     try {
       // Add it to the cache. Will save in db.
-      globals.getTzcache().saveTimeZone(entity.getTzid(), (VTimeZone)o);
+      VTimeZone vtz = (VTimeZone)o;
+      String tzid = entity.getTzid();
+
+      globals.getTzcache().saveTimeZone(tzid, vtz, entity.getPublick());
     } catch (Throwable t) {
       error("Exception restoring " + entity);
       throw new Exception(t);
