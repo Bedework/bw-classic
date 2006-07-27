@@ -55,10 +55,13 @@ package org.bedework.calfacade.timezones;
 
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.TimeZoneInfo;
 
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -69,6 +72,8 @@ import org.apache.log4j.Logger;
 public class ResourceTimezones extends SATimezonesImpl {
   private static String timezonesFile = "/properties/calendar/timezones.xml";
 
+  private Set timezoneIds = new TreeSet();
+
   /** Constructor
    * @param debug
    * @param user
@@ -76,6 +81,14 @@ public class ResourceTimezones extends SATimezonesImpl {
    */
   public ResourceTimezones(boolean debug, BwUser user) throws CalFacadeException {
     super(debug, user);
+  }
+
+  /** Get Set of timezone info containing ids.
+   *
+   * @return Set of TimeZoneInfo
+   */
+  public Set getTimezoneIds() {
+    return timezoneIds;
   }
 
   /* ====================================================================
@@ -132,6 +145,7 @@ public class ResourceTimezones extends SATimezonesImpl {
       while (it.hasNext()) {
         TimeZonesParser.TimeZoneInfo tzi = (TimeZonesParser.TimeZoneInfo)it.next();
 
+        timezoneIds.add(new TimeZoneInfo(tzi.tzid, true));
         saveTimeZone(tzi.tzid, tzi.timezone);
       }
     } catch (CalFacadeException cfe) {

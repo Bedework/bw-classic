@@ -54,7 +54,6 @@
 package org.bedework.webcommon;
 
 import org.bedework.appcommon.BedeworkDefs;
-import org.bedework.calenv.CalOptions;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
@@ -67,6 +66,7 @@ import org.bedework.calfacade.CalFacadeDefs;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.env.CalEnvFactory;
 import org.bedework.calfacade.env.CalEnvI;
+import org.bedework.calfacade.env.CalOptionsFactory;
 import org.bedework.calfacade.ifs.Groups;
 import org.bedework.calfacade.svc.AdminGroups;
 import org.bedework.calfacade.svc.BwAdminGroup;
@@ -1057,7 +1057,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
     }
 
     String appPrefix = "org.bedework.app.";
-    return CalOptions.getProperty(appPrefix + name);
+    return CalOptionsFactory.getOptions(appPrefix, false).getAppProperty(name);
   }
 
   /** Get a prefix for the loggers.

@@ -54,10 +54,11 @@
 package org.bedework.dumprestore.restore;
 
 import org.bedework.appcommon.configs.DumpRestoreConfig;
-import org.bedework.calenv.CalOptions;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwSystem;
 import org.bedework.calfacade.BwUser;
+import org.bedework.calfacade.env.CalOptionsFactory;
+import org.bedework.calfacade.env.CalOptionsI;
 import org.bedework.calfacade.svc.BwAdminGroup;
 import org.bedework.calfacade.svc.BwPreferences;
 import org.bedework.calfacade.svc.BwSubscription;
@@ -378,11 +379,13 @@ public class Restore implements Defs {
       throw new Exception("Invalid args");
     }
 
-    globals.init((DumpRestoreConfig)CalOptions.getProperty(appPrefix + appName));
+    CalOptionsI opts = CalOptionsFactory.getOptions(appPrefix, false);
+
+    globals.init((DumpRestoreConfig)opts.getAppProperty(appName));
     if (initSyspars ||
         globals.config.getInitSyspars() ||
         globals.config.getFrom2p3px()) {
-      globals.syspars = (BwSystem)CalOptions.getProperty("org.bedework.syspars");
+      globals.syspars = (BwSystem)opts.getProperty("org.bedework.syspars");
     }
   }
 

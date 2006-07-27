@@ -59,7 +59,7 @@ import java.io.Serializable;
  *
  * @author douglm
  */
-public class TimeZoneInfo implements Serializable {
+public class TimeZoneInfo implements Comparable, Serializable {
   String tzid;
   boolean publick;
 
@@ -84,5 +84,27 @@ public class TimeZoneInfo implements Serializable {
    */
   public boolean getPublick() {
     return publick;
+  }
+
+  public int compareTo(Object o) {
+    if (o == this) {
+      return 0;
+    }
+
+    if (!(o instanceof TimeZoneInfo)) {
+      return -1;
+    }
+
+    TimeZoneInfo that = (TimeZoneInfo)o;
+
+    if (getPublick() != that.getPublick()) {
+      if (getPublick()) {
+        return 1;
+      }
+
+      return -1;
+    }
+
+    return getTzid().compareTo(that.getTzid());
   }
 }

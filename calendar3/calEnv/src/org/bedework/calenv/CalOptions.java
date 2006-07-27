@@ -29,13 +29,13 @@
 package org.bedework.calenv;
 
 import org.bedework.calfacade.CalEnvException;
+import org.bedework.calfacade.env.CalOptionsI;
 
 import edu.rpi.sss.util.xml.XmlUtil;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,7 +89,7 @@ import org.xml.sax.InputSource;
  * @author Mike Douglass    douglm @ rpi.edu
  *
  */
-public class CalOptions implements Serializable {
+public class CalOptions implements CalOptionsI {
   /** Location of the options file */
   private static final String optionsFile =
       "/properties/calendar/options.xml";
@@ -114,13 +114,7 @@ public class CalOptions implements Serializable {
 
   private String appPrefix;
 
-  /** Constructor. Create a caldav object using the given prefix.
-   *
-   * @param appPrefix
-   * @param debug
-   * @throws CalEnvException
-   */
-  public CalOptions(String appPrefix, boolean debug) throws CalEnvException {
+  public void init(String appPrefix, boolean debug) throws CalEnvException {
     this.appPrefix = appPrefix;
   }
 
@@ -183,7 +177,7 @@ public class CalOptions implements Serializable {
    * @return Object value
    * @throws CalEnvException
    */
-  public static Object getProperty(String name) throws CalEnvException {
+  public Object getProperty(String name) throws CalEnvException {
     Object val = getOptProperty(name);
 
     if (val == null) {
@@ -199,7 +193,7 @@ public class CalOptions implements Serializable {
    * @return Object value
    * @throws CalEnvException
    */
-  public static Object getOptProperty(String name) throws CalEnvException {
+  public Object getOptProperty(String name) throws CalEnvException {
     return findValue(makePathElements(name));
   }
 
@@ -209,7 +203,7 @@ public class CalOptions implements Serializable {
    * @return String value of property
    * @throws CalEnvException
    */
-  public static String getStringProperty(String name) throws CalEnvException {
+  public String getStringProperty(String name) throws CalEnvException {
     Object val = getProperty(name);
 
     if (!(val instanceof String)) {
@@ -225,7 +219,7 @@ public class CalOptions implements Serializable {
    * @return String value
    * @throws CalEnvException
    */
-  public static String getOptStringProperty(String name) throws CalEnvException {
+  public String getOptStringProperty(String name) throws CalEnvException {
     Object val = findValue(makePathElements(name));
 
     if (val == null) {
@@ -245,7 +239,7 @@ public class CalOptions implements Serializable {
    * @return boolean value of property
    * @throws CalEnvException
    */
-  public static boolean getBoolProperty(String name) throws CalEnvException {
+  public boolean getBoolProperty(String name) throws CalEnvException {
     String val = getStringProperty(name);
 
     val = val.toLowerCase();
@@ -259,7 +253,7 @@ public class CalOptions implements Serializable {
    * @return int value of property
    * @throws CalEnvException
    */
-  public static int getIntProperty(String name) throws CalEnvException {
+  public int getIntProperty(String name) throws CalEnvException {
     String val = getStringProperty(name);
 
     try {
@@ -279,7 +273,7 @@ public class CalOptions implements Serializable {
    * @return Object value
    * @throws CalEnvException
    */
-  public static Object getGlobalProperty(String name) throws CalEnvException {
+  public Object getGlobalProperty(String name) throws CalEnvException {
     return getProperty(globalPrefix + name);
   }
 
@@ -289,7 +283,7 @@ public class CalOptions implements Serializable {
    * @return String value
    * @throws CalEnvException
    */
-  public static String getGlobalStringProperty(String name) throws CalEnvException {
+  public String getGlobalStringProperty(String name) throws CalEnvException {
     return getStringProperty(globalPrefix + name);
   }
 
@@ -299,7 +293,7 @@ public class CalOptions implements Serializable {
    * @return boolean value of global property
    * @throws CalEnvException
    */
-  public static boolean getGlobalBoolProperty(String name) throws CalEnvException {
+  public boolean getGlobalBoolProperty(String name) throws CalEnvException {
     return getBoolProperty(globalPrefix + name);
   }
 
@@ -309,7 +303,7 @@ public class CalOptions implements Serializable {
    * @return int value of global property
    * @throws CalEnvException
    */
-  public static int getGlobalIntProperty(String name) throws CalEnvException {
+  public int getGlobalIntProperty(String name) throws CalEnvException {
     return getIntProperty(globalPrefix + name);
   }
 
@@ -322,7 +316,7 @@ public class CalOptions implements Serializable {
    * @return     Object checked to be an instance of that class
    * @throws CalEnvException
    */
-  public static Object getGlobalObject(String name, Class cl) throws CalEnvException {
+  public Object getGlobalObject(String name, Class cl) throws CalEnvException {
     try {
       String className = getGlobalStringProperty(name);
 

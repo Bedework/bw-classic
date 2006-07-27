@@ -144,7 +144,8 @@ public class SATimezonesImpl extends CalTimezones {
        force a refresh when we're done.
     */
 
-    TimezoneInfo tzinfo = lookup(tzid);
+    /* Don't use lookup - we might be called from lookup on init */
+    TimezoneInfo tzinfo = (TimezoneInfo)timezones.get(tzid);
     TimeZone tz = new TimeZone(vtz);
 
     if (tzinfo == null) {

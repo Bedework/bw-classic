@@ -126,6 +126,15 @@
                    bld.test,bld.config"
           description="Build war and ear files">
     <antcall inheritrefs="true" target="copy.to.jars.repository" />
+
+    <!-- Copy selected jars which define the external interface to dist -->
+    <copy todir="${org.bedework.project.calendar}/dist" >
+      <fileset dir="${org.bedework.temp.jars}">
+        <include name="${org.bedework.calfacadeshared.jar.name}"/>
+        <include name="${org.bedework.calsvci.jar.name}"/>
+        <include name="${org.bedework.ical.jar.name}"/>
+      </fileset>
+    </copy>
   </target>
 
   <target name="copy.to.jars.repository" if="org.bedework.jars.repository">

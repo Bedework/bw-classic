@@ -53,12 +53,12 @@
 */
 package org.bedework.calcore.ldap;
 
-import org.bedework.calenv.CalOptions;
 import org.bedework.calfacade.BwGroup;
 import org.bedework.calfacade.BwPrincipal;
 import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.CalFacadeException;
 import org.bedework.calfacade.CalFacadeUnimplementedException;
+import org.bedework.calfacade.env.CalOptionsFactory;
 import org.bedework.calfacade.ifs.Groups;
 
 import java.util.ArrayList;
@@ -623,7 +623,7 @@ public class UserGroupsLdapImpl implements Groups {
   private LdapConfigProperties getProps() throws CalFacadeException {
     if (props == null) {
       try {
-        props = (LdapConfigProperties)CalOptions.getGlobalProperty("module.user-ldap-group");
+        props = (LdapConfigProperties)CalOptionsFactory.getOptions(null, false).getGlobalProperty("module.user-ldap-group");
       } catch (Throwable t) {
         throw new CalFacadeException(t);
       }

@@ -228,12 +228,24 @@
           description="builds the freebusy project">
     <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritrefs="true"
            target="build-all" />
+
+    <antcall target="copy.freebusy" inheritrefs="true" />
   </target>
 
   <target name="clean.build.freebusy" depends="init"
           description="builds the freebusy project">
     <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritrefs="true"
            target="build-all" />
+
+    <antcall target="copy.freebusy" inheritrefs="true" />
+  </target>
+
+  <target name="copy.freebusy" >
+    <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.freebusy}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
   </target>
 
   <!-- .................................................................
@@ -434,7 +446,7 @@
 
   <target name="clean.deploy.debug" depends="clean,deploy.debug" />
 
-  <target name="clean" depends="init,clean.freebusy.if"
+  <target name="clean" depends="init,clean.webdav.if,clean.caldav.if,clean.freebusy.if"
           description="Remove all generated files.">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="clean" />

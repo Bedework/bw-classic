@@ -29,7 +29,7 @@
 package org.bedework.dumprestore.dump;
 
 import org.bedework.appcommon.configs.DumpRestoreConfig;
-import org.bedework.calenv.CalOptions;
+import org.bedework.calfacade.env.CalOptionsFactory;
 import org.bedework.dumprestore.Defs;
 import org.bedework.dumprestore.dump.dumpling.DumpAll;
 
@@ -150,7 +150,7 @@ public class Dump implements Defs {
       throw new Exception("Invalid args");
     }
 
-    globals.init((DumpRestoreConfig)CalOptions.getProperty(appPrefix + appName));
+    globals.init((DumpRestoreConfig)CalOptionsFactory.getOptions(appPrefix, false).getAppProperty(appName));
   }
 
   protected Logger getLog() {
