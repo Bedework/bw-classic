@@ -59,6 +59,7 @@ import org.bedework.calfacade.BwAttendee;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
+import org.bedework.calfacade.BwEventObj;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.BwOrganizer;
 import org.bedework.calfacade.BwPrincipal;
@@ -288,8 +289,8 @@ public class HibRestore implements RestoreIntf {
     openHibSess();
 
     Query q = hibSess.createQuery("from org.bedework.calfacade.svc.BwAdminGroup ag" +
-        " where ag.name=:name");
-    q.setString("name", name);
+        " where ag.account=:account");
+    q.setString("account", name);
     return (BwAdminGroup)q.uniqueResult();
   }
 
@@ -323,6 +324,19 @@ public class HibRestore implements RestoreIntf {
     openHibSess();
     hibSave(o);
     closeHibSess();
+  }
+
+  public BwEvent getEvent(BwCalendar cal, String guid) throws Throwable {
+    openHibSess();
+
+    Query q = hibSess.createQuery("from " + BwEventObj.class.getName() +
+                                  " ev where ev.calendar=:cal " +
+                                  " and ev.guid=:guid ");
+    q.setEntity("cal", cal);
+    q.setString("guid", guid);
+    BwEvent ev = (BwEvent)q.uniqueResult();
+
+    return ev;
   }
 
   /* (non-Javadoc)
@@ -560,8 +574,8 @@ public class HibRestore implements RestoreIntf {
   public BwCalendar getCalendar(String path) throws Throwable {
     openHibSess();
 
-    Query q = hibSess.createQuery("from org.bedework.calfacade.BwCalendar cal where " +
-                        "cal.path=:path");
+    Query q = hibSess.createQuery("from " + BwCalendar.class.getName() +
+                                  " cal where cal.path=:path");
     q.setString("path", path);
     BwCalendar cal = (BwCalendar)q.uniqueResult();
 

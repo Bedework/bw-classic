@@ -51,65 +51,31 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
+package org.bedework.dumprestore.restore.rules;
 
-package org.bedework.webadmin.event;
+import org.bedework.dumprestore.restore.RestoreGlobals;
 
-import org.bedework.calfacade.BwEvent;
-//import org.bedework.calsvci.CalSvcI;
-import org.bedework.webadmin.PEAbstractAction;
-import org.bedework.webadmin.PEActionForm;
-import org.bedework.webcommon.BwSession;
-import org.bedework.webcommon.BwWebUtil;
+import org.xml.sax.Attributes;
 
-
-import javax.servlet.http.HttpServletRequest;
-
-/** This action deletes events or alerts.
+/** Flag start and end of a section
  *
- * <p>Forwards to:<ul>
- *      <li>"noAccess"     user not authorised.</li>
- *      <li>"continue"     continue to event list page.</li>
- * </ul>
- *
- * @author Mike Douglass   douglm@rpi.edu
+ * @author Mike Douglass   douglm @ rpi.edu
+ * @version 1.0
  */
-public class PEDeleteEventAction extends PEAbstractAction {
-  /* (non-Javadoc)
-   * @see org.bedework.webadmin.PEAbstractAction#doAction(javax.servlet.http.HttpServletRequest, org.bedework.webcommon.BwSession, org.bedework.webadmin.PEActionForm)
-   */
-  public String doAction(HttpServletRequest request,
-                         BwSession sess,
-                         PEActionForm form) throws Throwable {
-    //CalSvcI svci = form.fetchSvci();
-    boolean alerts = form.getAlertEvent();
+public class SectionRule extends RestoreRule {
+  String sectionName;
 
-    /** Check access and set request parameters
-     */
-    if (alerts) {
-      if (!form.getCurUserAlerts()) {
-        return "noAccess";
-      }
-    } else {
-      if (!form.getAuthorisedUser()) {
-        return "noAccess";
-      }
-    }
+  SectionRule(RestoreGlobals globals, String sectionName) {
+    super(globals);
 
-    int eventid = form.getEventId();
+    this.sectionName = sectionName;
+  }
 
-    if (debug) {
-      log.debug("About to delete event " + eventid);
-    }
+  public void begin(String ns, String name, Attributes att) {
+    info("Starting restore of " + sectionName);
+  }
 
-    BwEvent event = form.getEditEvent();
-
-    BwWebUtil.deleteEvent(form, event);
-
-//    BwWebUtil.deleteEvent(form, svci.getEvent(eventid).getEvent());
-
-    form.getMsg().emit("org.bedework.client.message.event.deleted");
-
-    return "continue";
+  public void end(String ns, String name) throws Exception {
+    info("Ending restore of " + sectionName);
   }
 }
-

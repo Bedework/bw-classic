@@ -85,32 +85,11 @@ class TimezonesImpl extends SATimezonesImpl {
     initSystemTimeZones();
   }
 
-  public void saveTimeZone(String tzid, VTimeZone vtz)
+  public void saveTimeZone(String tzid, VTimeZone vtz, boolean publick)
           throws CalFacadeException {
-    /* For a user update the map to avoid a refetch. For system timezones we will
-       force a refresh when we're done.
-    */
+    super.saveTimeZone(tzid, vtz, publick);
 
-    super.saveTimeZone(tzid, vtz);
-
-    saveTZ(tzid, vtz, false, getUser());
-  }
-
-  /** Saves a public timezone for restores.
-   *
-   * @param tzid
-   * @param vtz
-   * @throws CalFacadeException
-   */
-  public void savePublicTimeZone(String tzid, VTimeZone vtz)
-          throws CalFacadeException {
-    /* For a user update the map to avoid a refetch. For system timezones we will
-       force a refresh when we're done.
-    */
-
-    super.savePublicTimeZone(tzid, vtz);
-
-    saveTZ(tzid, vtz, true, getUser());
+    saveTZ(tzid, vtz, publick, getUser());
   }
 
   /** Called when the lookup method finds that system timezones need to
@@ -124,8 +103,8 @@ class TimezonesImpl extends SATimezonesImpl {
           (globals.config.getTimezonesFilename() != null)) {
         // Populate from a file
         TimeZonesParser tzp = new TimeZonesParser(
-                                                  new FileInputStream(globals.config.getTimezonesFilename()),
-                                                  globals.config.getDebug());
+                    new FileInputStream(globals.config.getTimezonesFilename()),
+                    globals.config.getDebug());
 
         Collection tzis = tzp.getTimeZones();
 

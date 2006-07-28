@@ -103,106 +103,34 @@ public class EventRule extends EntityRule {
 
     fixSharableEntity(entity, "Event");
 
-    /* If it's an alias, save an entry in the alias table then remove the dummy target.
-     * We'll update them all at the end
-     */
-    if (entity instanceof BwEventAnnotation) {
-      globals.aliasTbl.put((BwEventAnnotation)entity);
-      ((BwEventAnnotation)entity).setTarget(null);
-    }
-
     try {
+      /* If it's an alias, save an entry in the alias table then remove the dummy target.
+       * We'll update them all at the end
+       */
+      if (entity instanceof BwEventAnnotation) {
+        BwEventAnnotation ann = (BwEventAnnotation)entity;
+
+        globals.aliasTbl.put(ann);
+
+        BwEvent target = ann.getTarget();
+        BwEvent ntarget = globals.rintf.getEvent(target.getCalendar(), target.getGuid());
+
+        if (ntarget == null) {
+          error("Unknown target " + target);
+        }
+        ann.setTarget(ntarget);
+
+        BwEvent master = ann.getMaster();
+        BwEvent nmaster = globals.rintf.getEvent(master.getCalendar(), master.getGuid());
+
+        if (nmaster == null) {
+          error("Unknown master " + master);
+        }
+        ann.setMaster(nmaster);
+      }
+
       if (globals.config.getFrom2p3px()) {
-        if ((entity.getGuid() == null) || (entity.getGuid().length() == 0)) {
-          if (globals.syspars.getSystemid() == null) {
-            throw new Exception("You must supply a system id");
-          }
-
-          /* ************** Duplicated code from calintfimpl **************** */
-          String guidPrefix = "CAL-" + (String)uuidGen.generate(null, null);
-
-          if (entity.getName() == null) {
-            entity.setName(guidPrefix + ".ics");
-          }
-
-          String guid = guidPrefix + globals.syspars.getSystemid();
-
-          if (globals.config.getDebug()) {
-//            trace("Set guid for " + entity.getId() + " to " + guid);
-          }
-
-          entity.setGuid(guid);
-        }
-
-        /* Try to fix up dates and times.
-           Non-inclusive ends seems to mean:
-
-           DATE-TIME start, no end        --  zero time at indicated time
-           DATE-TIME start, DATE end      --  is that allowed, means remainder of day?
-           DATE-TIME start, DATE-TIME end --  from start, up to, not including end
-           DATE start                     --  all day event
-           DATE start, DATE end           --  end - start + 1 all day(s)
-        */
-
-        BwDateTime start = entity.getDtstart();
-        BwDateTime end = entity.getDtend();
-
-        entity.setEndType(BwEvent.endTypeDate);
-
-        if (!start.getDateType() && !end.getDateType()) {
-          // Both date-time, assume OK
-        } else if (start.getDateType() && end.getDateType()) {
-          // Both date - could be trouble
-          if (start.equals(end)) {
-            // Assume OK
-          } else {
-            Dur dur = new Dur(start.makeDate(), end.makeDate());
-
-            warn(dur.getDays() + " day event " + entity.getId() +
-                 " start = " + start);
-          }
-
-          /* Increment the end by one day to take account of current practice */
-          end = end.getNextDay(globals.getTzcache());
-          entity.setDtend(end);
-        } else if (!end.getDateType()) {
-          // date start, date-time end --- illegal
-          warn("date start, date-time end for event " + entity.getId() +
-               " start = " + start.getDtval() +
-               " end = " + end.getDtval());
-        } else {
-          /* date-time start, date end --- is this OK?
-             We'll fix it by setting end to start.
-
-          warn("date-time start, date end for event " + entity.getId() +
-               " start = " + start.getDtval() +
-               " end = " + end.getDtval());
-           */
-          globals.fixedNoEndTime++;
-          entity.setDtend(start);
-          entity.setEndType(BwEvent.endTypeNone);
-          end = start;
-        }
-
-        if (end.before(start)) {
-          warn("end before start for " + entity.getId() + " start = " + start +
-               " end = " + end);
-
-          end.init(start.getDateType(), start.getDtval(), null,
-                   globals.getTzcache());
-        }
-
-        if (entity.getSummary() == null) {
-          warn("Event " + entity.getId() + " has no summary.");
-          entity.setSummary("Missing summary");
-        }
-
-        if (entity.getCalendar() == null) {
-          warn("Event " + entity.getId() + " has no calendar.");
-          entity.setCalendar(globals.defaultPublicCal);
-        }
-
-        entity.setDuration(BwDateTime.makeDuration(start, end).toString());
+        fixFor2p3(entity);
       }
 
       if ((entity.getGuid() == null) || (entity.getGuid().length() == 0)) {
@@ -219,6 +147,99 @@ public class EventRule extends EntityRule {
     }
 
     pop();
+  }
+
+  private void fixFor2p3(BwEvent entity) throws Throwable {
+    if ((entity.getGuid() == null) || (entity.getGuid().length() == 0)) {
+      if (globals.syspars.getSystemid() == null) {
+        throw new Exception("You must supply a system id");
+      }
+
+      /* ************** Duplicated code from calintfimpl **************** */
+      String guidPrefix = "CAL-" + (String)uuidGen.generate(null, null);
+
+      if (entity.getName() == null) {
+        entity.setName(guidPrefix + ".ics");
+      }
+
+      String guid = guidPrefix + globals.syspars.getSystemid();
+
+      if (globals.config.getDebug()) {
+//        trace("Set guid for " + entity.getId() + " to " + guid);
+      }
+
+      entity.setGuid(guid);
+    }
+
+    /* Try to fix up dates and times.
+       Non-inclusive ends seems to mean:
+
+       DATE-TIME start, no end        --  zero time at indicated time
+       DATE-TIME start, DATE end      --  is that allowed, means remainder of day?
+       DATE-TIME start, DATE-TIME end --  from start, up to, not including end
+       DATE start                     --  all day event
+       DATE start, DATE end           --  end - start + 1 all day(s)
+    */
+
+    BwDateTime start = entity.getDtstart();
+    BwDateTime end = entity.getDtend();
+
+    entity.setEndType(BwEvent.endTypeDate);
+
+    if (!start.getDateType() && !end.getDateType()) {
+      // Both date-time, assume OK
+    } else if (start.getDateType() && end.getDateType()) {
+      // Both date - could be trouble
+      if (start.equals(end)) {
+        // Assume OK
+      } else {
+        Dur dur = new Dur(start.makeDate(), end.makeDate());
+
+        warn(dur.getDays() + " day event " + entity.getId() +
+             " start = " + start);
+      }
+
+      /* Increment the end by one day to take account of current practice */
+      end = end.getNextDay(globals.getTzcache());
+      entity.setDtend(end);
+    } else if (!end.getDateType()) {
+      // date start, date-time end --- illegal
+      warn("date start, date-time end for event " + entity.getId() +
+           " start = " + start.getDtval() +
+           " end = " + end.getDtval());
+    } else {
+      /* date-time start, date end --- is this OK?
+         We'll fix it by setting end to start.
+
+      warn("date-time start, date end for event " + entity.getId() +
+           " start = " + start.getDtval() +
+           " end = " + end.getDtval());
+       */
+      globals.fixedNoEndTime++;
+      entity.setDtend(start);
+      entity.setEndType(BwEvent.endTypeNone);
+      end = start;
+    }
+
+    if (end.before(start)) {
+      warn("end before start for " + entity.getId() + " start = " + start +
+           " end = " + end);
+
+      end.init(start.getDateType(), start.getDtval(), null,
+               globals.getTzcache());
+    }
+
+    if (entity.getSummary() == null) {
+      warn("Event " + entity.getId() + " has no summary.");
+      entity.setSummary("Missing summary");
+    }
+
+    if (entity.getCalendar() == null) {
+      warn("Event " + entity.getId() + " has no calendar.");
+      entity.setCalendar(globals.defaultPublicCal);
+    }
+
+    entity.setDuration(BwDateTime.makeDuration(start, end).toString());
   }
 }
 

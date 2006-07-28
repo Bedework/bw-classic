@@ -82,27 +82,35 @@ public class RestoreRuleSet extends RuleSetBase {
     d.addRule("caldata/syspars/system/*", new SysparsFieldRule(globals));
 
     UserFieldRule ufr = new UserFieldRule(globals);
+    d.addRule("caldata/users", new SectionRule(globals, "users"));
     d.addRule("caldata/users/user", new UserRule(globals));
     d.addRule("caldata/users/user/*", ufr);
 
+    d.addRule("caldata/timezones", new SectionRule(globals, "timezones"));
     d.addRule("caldata/timezones/timezone", new TimeZoneRule(globals));
     d.addRule("caldata/timezones/timezone/*", new TimeZoneFieldRule(globals));
 
+    d.addRule("caldata/calendars", new SectionRule(globals, "calendars"));
     d.addRule("caldata/calendars/calendar", new CalendarRule(globals));
     d.addRule("caldata/calendars/calendar/*", new CalendarFieldRule(globals));
 
+    d.addRule("caldata/cal-suites", new SectionRule(globals, "cal-suites"));
     d.addRule("caldata/cal-suites/cal-suite", new CalSuiteRule(globals));
     d.addRule("caldata/cal-suites/cal-suite/*", new CalSuiteFieldRule(globals));
 
+    d.addRule("caldata/locations", new SectionRule(globals, "locations"));
     d.addRule("caldata/locations/location", new LocationRule(globals));
     d.addRule("caldata/locations/location/*", new LocationFieldRule(globals));
 
+    d.addRule("caldata/sponsors", new SectionRule(globals, "sponsors"));
     d.addRule("caldata/sponsors/sponsor", new SponsorRule(globals));
     d.addRule("caldata/sponsors/sponsor/*", new SponsorFieldRule(globals));
 
+    d.addRule("caldata/organizers", new SectionRule(globals, "organizers"));
     d.addRule("caldata/organizers/organizer", new OrganizerRule(globals));
     d.addRule("caldata/organizers/organizer/*", new OrganizerFieldRule(globals));
 
+    d.addRule("caldata/attendees", new SectionRule(globals, "attendees"));
     d.addRule("caldata/attendees/attendee", new AttendeeRule(globals));
     d.addRule("caldata/attendees/attendee/*", new AttendeeFieldRule(globals));
 
@@ -124,10 +132,12 @@ public class RestoreRuleSet extends RuleSetBase {
     d.addRule("caldata/categories/category/*", catfr);
 
     AdminGroupFieldRule agfr = new AdminGroupFieldRule(globals);
+    d.addRule("caldata/adminGroups", new SectionRule(globals, "adminGroups"));
     d.addRule("caldata/adminGroups/adminGroup", new AdminGroupRule(globals));
     d.addRule("caldata/adminGroups/adminGroup/*", agfr);
 
     AuthUserFieldRule aufr = new AuthUserFieldRule(globals);
+    d.addRule("caldata/authusers", new SectionRule(globals, "authusers"));
     d.addRule("caldata/authusers/authuser", new AuthUserRule(globals));
     d.addRule("caldata/authusers/authuser/*", aufr);
 
@@ -136,9 +146,11 @@ public class RestoreRuleSet extends RuleSetBase {
     d.addRule("caldata/user-preferences/user-prefs/*", upfr);
 
     EventFieldRule efr = new EventFieldRule(globals);
+    d.addRule("caldata/events", new SectionRule(globals, "events"));
     d.addRule("caldata/events/event", new EventRule(globals));
     d.addRule("caldata/events/event/*", efr);
 
+    d.addRule("caldata/event-annotations", new SectionRule(globals, "event annotations"));
     d.addRule("caldata/event-annotations/event-annotation", new EventRule(globals));
     d.addRule("caldata/event-annotations/event-annotation/*", efr);
 

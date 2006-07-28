@@ -91,6 +91,10 @@ public class RestoreRule extends Rule {
     return log;
   }
 
+  protected void info(String msg) {
+    getLog().info(msg);
+  }
+
   protected void error(String msg) {
     getLog().error(msg);
   }

@@ -111,10 +111,24 @@ public class EventFieldRule extends EntityFieldRule {
       } else if (name.equals("eventKeywords")) { // pre-hibernate
         // Nothing to do.
 
+      /* --------------- Annotation fields ---------------------- */
       } else if (name.equals("target-calendar")) {
         BwEvent target = getAnnotationTarget(e);
 
-        // target.setCalendar()
+        target.setCalendar(calendarFld());
+      } else if (name.equals("target-guid")) {
+        BwEvent target = getAnnotationTarget(e);
+
+        target.setGuid(stringFld());
+      } else if (name.equals("master-calendar")) {
+        BwEvent master = getAnnotationMaster(e);
+
+        master.setCalendar(calendarFld());
+      } else if (name.equals("master-guid")) {
+        BwEvent master = getAnnotationMaster(e);
+
+        master.setGuid(stringFld());
+
       } else if (name.equals("name")) {
         e.setName(stringFld());
       } else if (name.equals("guid")) {

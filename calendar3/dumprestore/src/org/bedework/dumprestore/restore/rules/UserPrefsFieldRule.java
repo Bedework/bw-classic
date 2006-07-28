@@ -86,6 +86,8 @@ public class UserPrefsFieldRule extends EntityFieldRule {
       p.setSkinStyle(stringFld());
     } else if (name.equals("preferredView")) {
       p.setPreferredView(stringFld());
+    } else if (name.equals("preferredViewPeriod")) {
+      p.setPreferredViewPeriod(stringFld());
     } else if (name.equals("subscriptions")) {
       // Nothing to do now
     } else if (name.equals("workDays")) {

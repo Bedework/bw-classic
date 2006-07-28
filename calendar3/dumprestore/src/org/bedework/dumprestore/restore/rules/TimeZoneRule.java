@@ -59,6 +59,7 @@ import net.fortuna.ical4j.model.component.VTimeZone;
 
 import org.bedework.calfacade.BwTimeZone;
 import org.bedework.calfacade.CalFacadeException;
+import org.bedework.calfacade.timezones.SATimezonesImpl;
 import org.bedework.dumprestore.restore.RestoreGlobals;
 import org.bedework.icalendar.IcalTranslator;
 
@@ -100,7 +101,9 @@ public class TimeZoneRule extends EntityRule {
       VTimeZone vtz = (VTimeZone)o;
       String tzid = entity.getTzid();
 
-      globals.getTzcache().saveTimeZone(tzid, vtz, entity.getPublick());
+      SATimezonesImpl tzs = globals.getTzcache();
+      tzs.setUser(entity.getOwner());
+      tzs.saveTimeZone(tzid, vtz, entity.getPublick());
     } catch (Throwable t) {
       error("Exception restoring " + entity);
       throw new Exception(t);

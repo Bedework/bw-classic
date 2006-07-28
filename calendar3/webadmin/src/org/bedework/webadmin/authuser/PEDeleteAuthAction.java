@@ -54,7 +54,7 @@
 
 package org.bedework.webadmin.authuser;
 
-import org.bedework.calsvci.CalSvcI;
+//import org.bedework.calsvci.CalSvcI;
 import org.bedework.webadmin.PEAbstractAction;
 import org.bedework.webadmin.PEActionForm;
 import org.bedework.webcommon.BwSession;
@@ -84,7 +84,7 @@ public class PEDeleteAuthAction extends PEAbstractAction {
       return "noAccess";
     }
 
-    CalSvcI svci = form.fetchSvci();
+    //CalSvcI svci = form.fetchSvci();
 
     // XXX This was set up to remove the current auth user,
     // svci.getUserAuth().removeAuth("SHould be the selected user");

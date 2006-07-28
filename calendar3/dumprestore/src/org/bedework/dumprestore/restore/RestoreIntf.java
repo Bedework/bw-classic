@@ -175,6 +175,15 @@ public interface RestoreIntf {
    */
   public void restoreEvent(BwEvent o) throws Throwable;
 
+  /** Get an event
+  *
+   * @param cal
+   * @param guid
+   * @return BwEvent
+   * @throws Throwable
+   */
+  public BwEvent getEvent(BwCalendar cal, String guid) throws Throwable;
+
   /** Update an event
    *
    * @param o   Object to restore with id set

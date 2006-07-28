@@ -81,6 +81,10 @@ public class DumpEvents extends Dumpling {
   private void dumpEvent(BwEvent e) throws Throwable {
     BwEventAnnotation ann = null;
 
+    if (e instanceof BwEventAnnotation) {
+      ann = (BwEventAnnotation)e;
+    }
+
     if (ann == null) {
       tagStart(objectEvent);
     } else {
