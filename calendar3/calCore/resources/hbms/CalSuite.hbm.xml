@@ -35,8 +35,8 @@
       <column name="publick" not-null="true" />
     </property>
 
-    <property name="name" column="csname" type="text" not-null="true"
-              unique="true" />
+    <property name="name" column="csname" type="string" not-null="true"
+              length="255" unique="true" />
 
     <many-to-one name="group"
                 class="org.bedework.calfacade.svc.BwAdminGroup"

@@ -191,6 +191,12 @@ class CalSvcDb implements Serializable {
    * @throws CalFacadeException
    */
   public BwCalSuiteWrapper addCalSuite(BwCalSuite val) throws CalFacadeException {
+    BwCalSuite cs = fetchCalSuite(getSess(), val.getName());
+
+    if (cs != null) {
+      throw new CalFacadeException("org.bedework.duplicate.calsuite");
+    }
+
     HibSession sess = getSess();
 
     sess.save(val);

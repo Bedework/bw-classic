@@ -38,13 +38,6 @@
   <property name="org.bedework.project.webdav"
             location="${basedir}/webdav" />
 
-    <!-- ===============================================================
-              Default properties.
-         =============================================================== -->
-
-  <property name="org.bedework.defaultdefs.properties"
-            location="${org.bedework.calendar.dir}/bldfiles/defaultDefs.properties"/>
-
   <target name="README" depends="init"
           description="Describe targets and their usage">
     <loadfile property="org.bedework.README" srcFile="${org.bedework.calendar.dir}/docs/README"/>
@@ -114,6 +107,13 @@
 
     <!-- Load user property definition overrides -->
     <property file="${org.bedework.user.build.properties}" />
+
+    <!-- ===============================================================
+              Default properties.
+         =============================================================== -->
+
+  <property name="org.bedework.defaultdefs.properties"
+            location="${org.bedework.calendar.dir}/bldfiles/defaultDefs.properties"/>
 
     <property name="org.bedework.build.caldav" value="yes" />
 

@@ -102,6 +102,11 @@ public class AddCalSuiteAction extends BwAbstractAction {
       return "notAdded";
     }
 
+    if (name.length() > BwCalSuite.maxNameLength) {
+      form.getErr().emit("org.bedework.client.error.toolong", "name");
+      return "notAdded";
+    }
+
     String groupName = getReqPar(request, "groupName");
 
     if (name == null) {

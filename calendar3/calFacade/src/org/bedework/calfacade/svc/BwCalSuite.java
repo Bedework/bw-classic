@@ -64,9 +64,14 @@ import org.bedework.calfacade.base.BwShareableDbentity;
  *  @version 1.0
  */
 public class BwCalSuite extends BwShareableDbentity {
-  /** A printable name for the view
+  /** A unique name for the calendar suite. This name is mostly for internal
+   * use and only presented to adminitrators. It must be unique for the system.
    */
   private String name;
+
+  /** We can easily limit this name
+   */
+  public final static int maxNameLength = 255;
 
   /** The admin group which 'owns' this calendar suite
    */

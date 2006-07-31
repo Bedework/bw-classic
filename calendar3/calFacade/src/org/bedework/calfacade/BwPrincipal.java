@@ -285,7 +285,11 @@ public abstract class BwPrincipal extends BwDbentity
     return sponsorAccess;
   }
 
-  /** Set of groups of which principal is a member
+  /** Set of groups of which principal is a member. These are not just those
+   * of which the principal is a direct member but also those it is a member of
+   * by virtue of membership of other groups. For example <br/>
+   * If the principal is a member of groupA and groupA is a member of groupB
+   * the groupB should appear in the list.
    *
    * @param val        Collection of BwPrincipal
    */
@@ -330,7 +334,11 @@ public abstract class BwPrincipal extends BwDbentity
     return account == null;
   }
 
-  /** Set of groupNames of which principal is a member
+  /** Set of groupNames of which principal is a member. These are not just those
+   * of which the principal is a direct member but also those it is a member of
+   * by virtue of membership of other groups. For example <br/>
+   * If the principal is a member of groupA and groupA is a member of groupB
+   * the groupB should appear in the list.
    *
    * @param val        Set of String
    */
