@@ -227,6 +227,8 @@ public class AccessAction extends BwAbstractAction {
 
     if (ev != null) {
       svci.changeAccess(ev, aces);
+
+      return refreshEvent(fetchEvent(ev, form), request, form);
     } else if (calSuite != null) {
       svci.changeAccess(calSuite, aces);
     } else {
@@ -234,6 +236,6 @@ public class AccessAction extends BwAbstractAction {
       //svci.updateCalendar(cal);
     }
 
-    return refreshEvent(fetchEvent(ev, form), request, form);
+    return "success";
   }
 }
