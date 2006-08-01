@@ -57,6 +57,7 @@ package org.bedework.webcommon;
 import org.bedework.appcommon.BedeworkDefs;
 import org.bedework.appcommon.CalendarInfo;
 import org.bedework.appcommon.DayView;
+import org.bedework.appcommon.EventFormatter;
 import org.bedework.appcommon.MonthView;
 import org.bedework.appcommon.MyCalendarVO;
 import org.bedework.appcommon.TimeView;
@@ -225,6 +226,8 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
 
   private int locationId;
 
+  private int eventLocationId;
+
   private int sponsorId;
 
   private int eventId;
@@ -258,6 +261,10 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   /** editSponsor is where we hold a Sponsor object for editing
    */
   private BwSponsor editSponsor;
+
+  /** Formatter for the current event
+   */
+  private EventFormatter curEventFmt;
 
   /** newEvent is where we build a new Event object
    */
@@ -1663,6 +1670,20 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   }
 
   /**
+   * @param val
+   */
+  public void setEventLocationId(int val) {
+    eventLocationId = val;
+  }
+
+  /**
+   * @return event locid
+   */
+  public int getEventLocationId() {
+    return eventLocationId;
+  }
+
+  /**
    * @return locations
    */
   public Collection getLocations() {
@@ -1799,6 +1820,20 @@ public class BwActionFormBase extends UtilActionForm implements BedeworkDefs {
   /* ====================================================================
    *                   Events
    * ==================================================================== */
+
+  /**
+   * @param val
+   */
+  public void setCurEventFmt(EventFormatter val) {
+    curEventFmt = val;
+  }
+
+  /**
+   * @return event formatter
+   */
+  public EventFormatter getCurEventFmt() {
+    return curEventFmt;
+  }
 
   /** Event id for next action
    *

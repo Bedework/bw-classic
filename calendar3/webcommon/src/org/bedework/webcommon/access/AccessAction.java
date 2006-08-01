@@ -55,7 +55,6 @@ package org.bedework.webcommon.access;
 
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwEvent;
-import org.bedework.calfacade.BwUser;
 import org.bedework.calfacade.svc.BwCalSuite;
 import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
@@ -89,6 +88,7 @@ import javax.servlet.http.HttpServletResponse;
  * <p>Forwards to:<ul>
  *      <li>"doNothing"    input error or we want to ignore the request.</li>
  *      <li>"notFound"     entity not found.</li>
+ *      <li>"edit"         to edit the event.</li>
  *      <li>"error"        input error - correct and retry.</li>
  *      <li>"success"      OK.</li>
  * </ul>
@@ -152,17 +152,21 @@ public class AccessAction extends BwAbstractAction {
 
     String whoTypeStr = request.getParameter("whoType");
     int whoType = -1;
+    boolean needWho = false;
 
     if (whoTypeStr == null) {
       whoType = Ace.whoTypeUser;
+      needWho = true;
     } else if (whoTypeStr.equals("owner")) {
       whoType = Ace.whoTypeOwner;
     } else if (whoTypeStr.equals("user")) {
       whoType = Ace.whoTypeUser;
+      needWho = true;
     } else if (whoTypeStr.equals("group")) {
       whoType = Ace.whoTypeGroup;
-      form.getErr().emit("org.bedework.client.error.unimplemented");
-      return "error";
+      needWho = true;
+      //form.getErr().emit("org.bedework.client.error.unimplemented");
+      //return "error";
     } else if (whoTypeStr.equals("unauth")) {
       whoType = Ace.whoTypeUnauthenticated;
     } else if (whoTypeStr.equals("other")) {
@@ -174,6 +178,7 @@ public class AccessAction extends BwAbstractAction {
 
     String who = request.getParameter("who");
 
+    /*
     if (who != null) {
       BwUser user = svci.findUser(who);
       if (user == null) {
@@ -182,6 +187,11 @@ public class AccessAction extends BwAbstractAction {
       }
     } else {
       who = null;
+    }
+    */
+    if (needWho && (who == null)) {
+      form.getErr().emit("org.bedework.client.error.missingwho");
+      return "error";
     }
 
     ArrayList aces = new ArrayList();
@@ -217,7 +227,6 @@ public class AccessAction extends BwAbstractAction {
 
     if (ev != null) {
       svci.changeAccess(ev, aces);
-      //svci.updateEvent(ev);
     } else if (calSuite != null) {
       svci.changeAccess(calSuite, aces);
     } else {
@@ -225,6 +234,6 @@ public class AccessAction extends BwAbstractAction {
       //svci.updateCalendar(cal);
     }
 
-    return "success";
+    return refreshEvent(fetchEvent(ev, form), request, form);
   }
 }

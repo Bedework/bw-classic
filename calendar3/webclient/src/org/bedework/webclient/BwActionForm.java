@@ -60,7 +60,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.bedework.appcommon.CheckData;
-import org.bedework.appcommon.EventFormatter;
 import org.bedework.appcommon.MyCalendarVO;
 import org.bedework.webcommon.DurationBean;
 import org.bedework.webcommon.BwActionFormBase;
@@ -88,10 +87,6 @@ public class BwActionForm extends BwActionFormBase {
    *                   Event fields
    *  ................................................................... */
 
-  /** Formatter for the current event
-   */
-  private EventFormatter curEventFmt;
-
   private String evSummary;
   private String evLink;
 
@@ -102,10 +97,6 @@ public class BwActionForm extends BwActionFormBase {
   /** (New) Location address for event
    */
   private String laddress;
-
-  /** Location id for event update
-   */
-  private int eventLocationId;
 
   /* ....................................................................
    *                   Alarm fields
@@ -191,20 +182,6 @@ public class BwActionForm extends BwActionFormBase {
   /**
    * @param val
    */
-  public void setCurEventFmt(EventFormatter val) {
-    curEventFmt = val;
-  }
-
-  /**
-   * @return event formatter
-   */
-  public EventFormatter getCurEventFmt() {
-    return curEventFmt;
-  }
-
-  /**
-   * @param val
-   */
   public void setEvSummary(String val) {
     evSummary = Util.checkNull(val);
   }
@@ -265,20 +242,6 @@ public class BwActionForm extends BwActionFormBase {
    */
   public String getLaddress() {
     return laddress;
-  }
-
-  /**
-   * @param val
-   */
-  public void setEventLocationId(int val) {
-    eventLocationId = val;
-  }
-
-  /**
-   * @return event locid
-   */
-  public int getEventLocationId() {
-    return eventLocationId;
   }
 
   /**

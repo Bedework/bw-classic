@@ -57,7 +57,6 @@ package org.bedework.webclient;
 import org.bedework.calfacade.BwEvent;
 import org.bedework.calfacade.BwLocation;
 import org.bedework.calfacade.CalFacadeDefs;
-import org.bedework.calfacade.svc.EventInfo;
 import org.bedework.calsvci.CalSvcI;
 import org.bedework.webcommon.BwWebUtil;
 
@@ -106,40 +105,7 @@ public class BwEditEventAction extends BwCalAbstractAction {
       return updateEvent(request, form);
     }
 
-    EventInfo ei = findEvent(request, form);
-
-    if (ei == null) {
-      return "doNothing";
-    }
-
-    BwEvent ev = ei.getEvent();
-
-    form.setEditEvent(ev);
-
-    String fwd = setEventCalendar(request, form, ev);
-    if (fwd != null) {
-      return fwd;
-    }
-
-    BwLocation loc = ev.getLocation();
-
-    if (debug) {
-      if (loc == null) {
-        debugMsg("Set event with null location");
-      } else {
-        debugMsg("Set event with location " + loc);
-      }
-    }
-
-    form.setEditLocation(null);
-
-    if (loc != null) {
-      form.setEventLocationId(loc.getId());
-    } else {
-      form.setEventLocationId(CalFacadeDefs.defaultLocationId);
-    }
-
-    return "edit";
+    return refreshEvent(findEvent(request, form), request, form);
   }
 
   /** Update the db with the event in editEvent.

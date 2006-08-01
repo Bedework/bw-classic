@@ -54,6 +54,7 @@
 package org.bedework.webcommon;
 
 import org.bedework.appcommon.BedeworkDefs;
+import org.bedework.appcommon.EventFormatter;
 import org.bedework.calfacade.BwCalendar;
 import org.bedework.calfacade.BwCategory;
 import org.bedework.calfacade.BwEvent;
@@ -652,7 +653,7 @@ public abstract class BwAbstractAction extends UtilAbstractAction
    * is specified we use the named calendar as the event calendar.
    *
    * <p>If newCalPath is not speciifed and subname is specified it should refer to
-   * an external calendar. We will use teh dummy calendar object for the event.
+   * an external calendar. We will use the dummy calendar object for the event.
    *
    * <p>If neither newCalPath or subname is specified we use the default.
    *
@@ -844,6 +845,61 @@ public abstract class BwAbstractAction extends UtilAbstractAction
 
     return ev;
   }
+
+  /** Given the EventInfo object refresh the information in the form.
+   *
+   * @param ei
+   * @param request
+   * @param form
+   * @return String forward.
+   * @throws Throwable
+   */
+  protected String refreshEvent(EventInfo ei,
+                                HttpServletRequest request,
+                                BwActionFormBase form) throws Throwable {
+    if (ei == null) {
+      return "doNothing";
+    }
+
+    BwEvent ev = ei.getEvent();
+
+    form.setEditEvent(ev);
+
+    String fwd = setEventCalendar(request, form, ev);
+    if (fwd != null) {
+      return fwd;
+    }
+
+    BwLocation loc = ev.getLocation();
+
+    if (debug) {
+      if (loc == null) {
+        debugMsg("Set event with null location");
+      } else {
+        debugMsg("Set event with location " + loc);
+      }
+    }
+
+    form.setEditLocation(null);
+
+    if (loc != null) {
+      form.setEventLocationId(loc.getId());
+    } else {
+      form.setEventLocationId(CalFacadeDefs.defaultLocationId);
+    }
+
+    // Not export - just set up for display
+
+    EventFormatter ef = new EventFormatter(form.fetchSvci(), ei,
+                                           form.getCurTimeView(),
+                                           form.getCalInfo(),
+                                           form.fetchSvci().getTimezones());
+
+    form.setCurEventFmt(ef);
+
+    return "edit";
+  }
+
 
   /** Add an event ref. The calendar to add it to is defined by the request
    * parameter newCalPath.
