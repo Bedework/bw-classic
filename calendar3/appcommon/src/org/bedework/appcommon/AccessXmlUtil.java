@@ -82,9 +82,15 @@ public class AccessXmlUtil extends edu.rpi.cmt.access.AccessXmlUtil {
     WebdavTags.writeProperties,  // privWriteProperties = 7;
     WebdavTags.writeContent,     // privWriteContent = 8;
     WebdavTags.bind,             // privBind = 9;
-    WebdavTags.unbind,           // privUnbind = 10;
-    WebdavTags.unlock,           // privUnlock = 11;
-    null                         // privNone = 12;
+
+    CaldavTags.schedule,         // privSchedule = 10;
+    CaldavTags.scheduleRequest,  // privScheduleRequest = 11;
+    CaldavTags.scheduleReply,    // privScheduleReply = 12;
+    CaldavTags.scheduleFreeBusy, // privScheduleFreeBusy = 13;
+
+    WebdavTags.unbind,           // privUnbind = 14;
+    WebdavTags.unlock,           // privUnlock = 15;
+    null                         // privNone = 16;
   };
 
   /** Acls use tags in the webdav and caldav namespace.

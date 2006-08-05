@@ -161,11 +161,18 @@
   </target>
 
   <target name="copy.access" >
+    <copy todir="${org.bedework.project.caldav}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.access}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+
     <copy todir="${org.bedework.project.calendar}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.access}/dist">
         <include name="*.jar" />
       </fileset>
     </copy>
+
     <copy todir="${org.bedework.project.davutil}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.access}/dist">
         <include name="*.jar" />
@@ -269,6 +276,12 @@
 
   <target name="copy.davutil" >
     <copy todir="${org.bedework.project.caldavTest}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.davutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+
+    <copy todir="${org.bedework.project.caldav}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.davutil}/dist">
         <include name="*.jar" />
       </fileset>
