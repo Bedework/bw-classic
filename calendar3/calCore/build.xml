@@ -43,11 +43,14 @@
     <path id="compile.classpath">
       <pathelement location="${ical4j.jar}"/>
       <pathelement location="${log4j.jar}"/>
+      <pathelement location="${hibernate.jar}"/>
+      <pathelement location="${commons-httpclient.jar}"/>
       <pathelement location="${org.bedework.access.jar}"/>
+      <pathelement location="${org.bedework.davio.jar}"/>
+
       <pathelement location="${org.bedework.calenv.jar}"/>
       <pathelement location="${org.bedework.calfacadeshared.jar}"/>
       <pathelement location="${org.bedework.ical.jar}"/>
-      <pathelement location="${hibernate.jar}"/>
     </path>
 
     <!-- ==================== Build Target ============================= -->

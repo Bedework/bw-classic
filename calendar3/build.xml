@@ -114,16 +114,12 @@
   This target builds jar files ready for the deploy target.
      =================================================================== -->
 
-  <!-- deleted
-                   bld.caldav,bld.caldavclientapi,
-                   bld.caldavBexchange,bld.caldavDomino,bld.caldavGoogle,
-                   -->
   <target name="bld.all"
           depends="bld.locale,bld.calfacade,
                    bld.calenv,bld.ical,bld.core,
                    bld.calsvci,bld.mail,bld.logging,
                    bld.calsvc,bld.appcommon,bld.uportal,
-                   bld.webadmin,bld.webclient,bld.synchml,
+                   bld.webadmin,bld.webclient,
                    bld.timers,build.tools,
                    bld.test,bld.config"
           description="Build war and ear files">
@@ -274,7 +270,6 @@
                          ${org.bedework.locale.base}/src:
                          ${org.bedework.logging.base}/src:
                          ${org.bedework.mail.base}/src:
-                         ${org.bedework.synchml.base}/src:
                          ${org.bedework.timers.base}/src:
                          ${org.bedework.tools.base}/src:
                          ${org.bedework.uportal.base}/src:
@@ -352,48 +347,6 @@
       <ant antfile="${org.bedework.locale.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
-
-  <!-- ======================== caldav Targets ========================
-       =================================================================
-
-  <target name="bld.caldavclientapi"
-          depends="init,bld.calfacade"
-          description="Build calendar caldav client api classes jar">
-      <ant antfile="${org.bedework.caldavClientApi.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-
-  <target name="bld.caldav"
-          depends="init,bld.appcommon"
-          description="Build calendar caldav suite">
-    <ant antfile="${org.bedework.caldav.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-
-  <target name="bld.caldavBexchange"
-          depends="bld.caldav"
-          description="Build calendar caldav exchange interface using Boeng exchange service"
-          if="org.bedework.build.caldav.bexchange">
-    <ant antfile="${org.bedework.caldavbexchange.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-
-  <target name="bld.caldavDomino"
-          depends="bld.caldav"
-          description="Build calendar caldav Domino interface"
-          if="org.bedework.build.caldav.domino">
-    <ant antfile="${org.bedework.caldavdomino.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-
-  <target name="bld.caldavGoogle"
-          depends="bld.caldav"
-          description="Build calendar caldav Google interface"
-          if="org.bedework.build.caldav.google">
-    <ant antfile="${org.bedework.caldavgoogle.base}/build.xml" inheritrefs="true"
-           target="build" />
-  </target>
-  -->
 
   <!-- ======================== logging target =======================
        This builds the logging classes jar.
@@ -490,41 +443,6 @@
            target="build" />
   </target>
 
-  <!-- ======================== synchml Targets ========================
-       *
-       *  NOTE: Incomplete and under development
-       * The following comments map out an approach rather than document the
-       * facts
-       This builds the synchml library and applications.
-       Many build properties are taken from the appsuite clones property files.
-       To build a version for your site you should probably copy and modify the
-                  appsuite/clones/democal.properties
-       file and change the value of org.bedework.clone.name to the name of your
-       new clone.
-
-       To build more than  one appsuite duplicate the ant task
-       invocation below with a different clone name in each.
-       ================================================================= -->
-
-  <target name="bld.synchml"
-          depends="init,bld.appcommon,bld.calsvci,bld.ical,bld.calsvc,bld.webcommon"
-          description="Build calendar synchml suite">
-    <ant antfile="${org.bedework.synchml.base}/build.xml" inheritrefs="true"
-           target="build"  >
-      <property name="org.bedework.clone.name" value="${org.bedework.clone.default}" />
-    </ant>
-  </target>
-
-  <target name="bld.synchml.debug"
-          depends="init,bld.appcommon,bld.calsvci,bld.ical,bld.calsvc,bld.webcommon"
-          description="Build calendar synchml suite">
-    <ant antfile="${org.bedework.synchml.base}/build.xml" inheritrefs="true"
-           target="build" >
-      <property name="org.bedework.clone.name" value="${org.bedework.clone.default}" />
-      <property name="app.debug.val" value="9" />
-    </ant>
-  </target>
-
   <!-- ======================== config Target ========================
        This builds the config and deploy application
        ================================================================= -->
@@ -604,14 +522,14 @@
   </target>
 
   <target name="bld.test"
-          depends="init,bld.core,bld.appcommon,bld.synchml"
+          depends="init,bld.core,bld.appcommon"
           description="Build all calendar test jars">
       <ant antfile="${org.bedework.testsuite.base}/build.xml" inheritrefs="true"
            target="build" />
   </target>
 
   <target name="run.test"
-          depends="init,bld.core,bld.appcommon,bld.synchml"
+          depends="init,bld.core,bld.appcommon"
           description="Run JUnit tests and generate a report">
       <ant antfile="${org.bedework.testsuite.base}/build.xml" inheritrefs="true"
            target="run.unittest" />
@@ -633,17 +551,6 @@
 
       <ant antfile="${org.bedework.testsuite.base}/build.xml" inheritrefs="true"
            target="run.httptest" />
-  </target>
-
-  <target name="synchmltest"
-          depends="bld.test"
-          description="Run calendar synchml test">
-    <!-- Define location of run-time env.properties -->
-    <property name="uwcal.env.properties.root"
-              location="${uwcal.test.env.properties.root}" />
-
-    <ant antfile="${org.bedework.testsuite.base}/build.xml" inheritrefs="true"
-         target="synchmltest" />
   </target>
 
   <!-- ======================== schema target =======================

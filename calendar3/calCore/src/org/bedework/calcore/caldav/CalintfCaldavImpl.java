@@ -51,7 +51,7 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.caldav.client;
+package org.bedework.calcore.caldav;
 
 //import org.bedework.calenv.CalEnv;
 import org.bedework.calfacade.BwAlarm;
