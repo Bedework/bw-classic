@@ -53,13 +53,6 @@
            target="synchmltest.initdb" />
   </target>
 
-  <target name="synchmltest"
-          depends="init"
-          description="Run calendar synchml test">
-      <ant antfile="${org.bedework.testsuite.base}/synchml/build.xml" inheritrefs="true"
-           target="synchmltest" />
-  </target>
-
   <!-- Clean out any generated files.
     -->
   <target name="bldclean" >

@@ -38,6 +38,9 @@
   <property name="org.bedework.project.rpiutil"
             location="${basedir}/rpiutil" />
 
+  <property name="org.bedework.project.synchml"
+            location="${basedir}/synchml" />
+
   <property name="org.bedework.project.webdav"
             location="${basedir}/webdav" />
 
@@ -92,6 +95,7 @@
      -->
   <target name="init" >
     <dirname property="quickstart.dir" file="${ant.file}"/>
+    <property name="org.bedework.qs.build.synchml" value="yes" />
 
     <property name="calendar.build.file"
               location="${org.bedework.calendar.dir}/build.xml" />
@@ -398,6 +402,45 @@
         <include name="*.jar" />
       </fileset>
     </copy>
+
+    <copy todir="${org.bedework.project.webdav}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.rpiutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- .................................................................
+                          synchml
+       .................................................................. -->
+  <target name="build.synchml" depends="init"
+          description="builds the synchml project">
+    <ant antfile="${org.bedework.project.synchml}/build.xml" inheritrefs="true"
+           target="build-all" />
+
+    <antcall target="copy.synchml" inheritrefs="true" />
+  </target>
+
+  <target name="clean.synchml" depends="init"
+          description="clean the synchml project">
+    <ant antfile="${org.bedework.project.synchml}/build.xml" inheritrefs="true"
+           target="clean" />
+  </target>
+
+  <target name="clean.build.synchml" depends="init"
+          description="builds the synchml project">
+    <ant antfile="${org.bedework.project.synchml}/build.xml" inheritrefs="true"
+           target="build-all" />
+
+    <antcall target="copy.synchml" inheritrefs="true" />
+  </target>
+
+  <target name="copy.synchml" >
+    <copy todir="${org.bedework.calendar.dist}" overwrite="yes">
+      <fileset dir="${org.bedework.project.synchml}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
   </target>
 
   <!-- .................................................................
@@ -492,6 +535,20 @@
   </target>
 
   <!-- =================================================================
+       The "XXX.synchml.if" target conditionally executes the synchml targets
+       ================================================================= -->
+
+  <target name="build.synchml.if" depends="init"
+          description="builds the jars" if="org.bedework.qs.build.synchml" >
+    <antcall inheritrefs="true" target="build.synchml" />
+  </target>
+
+  <target name="clean.synchml.if" depends="init"
+          description="cleans jars" if="org.bedework.qs.build.synchml" >
+    <antcall inheritrefs="true" target="clean.synchml" />
+  </target>
+
+  <!-- =================================================================
        The "XXX.webdav.if" target conditionally executes the webdav targets
        (needed for caldav)
        ================================================================= -->
@@ -510,13 +567,13 @@
        The "deploy" target builds and deploys the applications
        ================================================================= -->
 
-  <target name="deploy" depends="build,build.dumprestore,build.webdav.if,build.caldav.if,build.freebusy.if"
+  <target name="deploy" depends="build,build.dumprestore,build.synchml.if,build.webdav.if,build.caldav.if,build.freebusy.if"
           description="builds and deploys the applications">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="deploy.nobuild" />
   </target>
 
-  <target name="deploy.debug" depends="build,build.dumprestore,build.webdav.if,build.caldav.if,build.caldavTest.if,build.freebusy.if"
+  <target name="deploy.debug" depends="build,build.dumprestore,build.synchml.if,build.webdav.if,build.caldav.if,build.caldavTest.if,build.freebusy.if"
           description="builds and deploys the applications">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="deploy.debug.nobuild" />
@@ -530,7 +587,7 @@
 
   <target name="clean.deploy.debug" depends="clean,deploy.debug" />
 
-  <target name="clean" depends="init,clean.dumprestore,clean.webdav.if,clean.caldav.if,clean.caldavTest.if,clean.freebusy.if"
+  <target name="clean" depends="init,clean.dumprestore,clean.synchml,clean.webdav.if,clean.caldav.if,clean.caldavTest.if,clean.freebusy.if"
           description="Remove all generated files.">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="clean" />
