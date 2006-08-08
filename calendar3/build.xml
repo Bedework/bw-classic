@@ -50,6 +50,9 @@
   <property name="org.bedework.project.davutil"
             location="${basedir}/../davutil" />
 
+  <property name="org.bedework.project.dumprestore"
+            location="${basedir}/../dumprestore" />
+
   <property name="org.bedework.project.freebusy"
             location="${basedir}/../freebusy" />
 
@@ -122,7 +125,6 @@
                    bld.calsvc,bld.appcommon,bld.uportal,
                    bld.webadmin,bld.webclient,bld.synchml,
                    bld.timers,build.tools,
-                   bld.dumprestore,
                    bld.test,bld.config"
           description="Build war and ear files">
     <antcall inheritrefs="true" target="copy.to.jars.repository" />
@@ -268,7 +270,6 @@
                          ${org.bedework.calsvc.base}/src:
                          ${org.bedework.calsvci.base}/src:
                          ${org.bedework.config.base}/src:
-                         ${org.bedework.dumprestore.base}/src:
                          ${org.bedework.ical.base}/src:
                          ${org.bedework.locale.base}/src:
                          ${org.bedework.logging.base}/src:
@@ -558,13 +559,6 @@
     </ant>
   </target>
 
-  <target name="bld.dumprestore"
-          depends="init,bld.appcommon"
-          description="Build calendar dumprestore suite">
-    <ant antfile="${org.bedework.dumprestore.base}/build.xml" inheritrefs="true"
-         target="build" />
-  </target>
-
   <!-- ======================== tools Targets ========================
        This builds the tools
 
@@ -582,8 +576,9 @@
   <target name="dumpdb" >
     <echo message="===============================================================" />
     <echo message=" use the zipped dump/restore utility to dump, restore or initialise" />
-    <echo message=" the system The default build places it in the dist directory," />
-    <echo message=" instructions for use are in the quickstart documentation" />
+    <echo message=" the system The default build places it in the dumprestore project " />
+    <echo message=" dist directory." />
+    <echo message=" Instructions for use are in the quickstart documentation" />
     <echo message="===============================================================" />
   </target>
 

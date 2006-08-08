@@ -173,7 +173,7 @@
         <!-- ==================================================================
                           Dump restore program dumpres
              ================================================================== -->
-        <dumpres classname="org.bedework.appcommon.configs.DumpRestoreConfig">
+        <dumpres classname="org.bedework.calfacade.configs.DumpRestoreConfig">
           <debug>true</debug>
           <debugEntity>false</debugEntity>
           <superGroupName>campusAdminGroups</superGroupName>
@@ -184,7 +184,7 @@
                           Dump restore program restoreFrom2p3px
              Use the restore utility to convert from uwcal 2.3
              ================================================================== -->
-        <restoreFrom2p3px classname="org.bedework.appcommon.configs.DumpRestoreConfig">
+        <restoreFrom2p3px classname="org.bedework.calfacade.configs.DumpRestoreConfig">
           <debug>true</debug>
           <debugEntity>false</debugEntity>
           <from2p3px>true</from2p3px>

@@ -51,119 +51,150 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits.
 */
-package org.bedework.dumprestore.restore;
+package org.bedework.calfacade.configs;
 
-import org.bedework.calfacade.BwUser;
-import org.bedework.calfacade.svc.BwSubscription;
+import java.io.Serializable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-
-/** Map for subscriptions
+/** Configuration propeties for the restore phase
  *
  * @author Mike Douglass   douglm@rpi.edu
  * @version 1.0
  */
-public class SubscriptionsMap extends HashMap {
-  /** For 2.3.2 conversion
+public class DumpRestoreConfig implements Serializable {
+  private boolean debug;
+
+  private boolean debugEntity;
+
+  private boolean initSyspars;
+
+  /* Initdb: We can restore timezone info from this file
+   */
+  private String timezonesFilename;
+
+  /* When converting put all admin groups into the new group with this name
+   * When initialising set default access to be read/write-content for this group
+   */
+  private String superGroupName;
+
+  /* If non-null we will set any events with no calendar to this one.
+   * This is mainly to fix errors in the data. All events should have a calendar.
+   */
+  private String defaultPublicCalPath;
+
+  /* From uwcal 2.3 */
+
+  /* True if we doing the conversion from 2.3.2 to V3 */
+  private boolean from2p3px;
+
+  /**
+   * @param val
+   */
+  public void setDebug(boolean val)  {
+    debug = val;
+  }
+
+  /** .
    *
-   * @param key   OwnerInfo
-   * @param calid
+   * @return booelan val
    */
-  public void put(OwnerInfo key, int calid) {
-    ArrayList al = (ArrayList)get(key);
-    if (al == null) {
-      al = new ArrayList();
-      put(key, al);
-    }
-
-    al.add(new Integer(calid));
+  public boolean getDebug()  {
+    return debug;
   }
 
   /**
-   * @param key   BwUser
-   * @param sub
+   * @param val
    */
-  public void put(BwUser key, BwSubscription sub) {
-    put(OwnerInfo.makeOwnerInfo(key), sub);
+  public void setDebugEntity(boolean val)  {
+    debugEntity = val;
   }
 
   /**
-   * @param key   OwnerInfo
-   * @param sub
-   */
-  public void put(OwnerInfo key, BwSubscription sub) {
-    ArrayList al = (ArrayList)get(key);
-    if (al == null) {
-      al = new ArrayList();
-      put(key, al);
-    }
-
-    al.add(sub);
-  }
-
-  /** 2.3.2
    *
-   * @param key   BwUser
-   * @return Collection
+   * @return boolean val
    */
-  public Collection getCalendarids(BwUser key) {
-    return (Collection)get(OwnerInfo.makeOwnerInfo(key));
+  public boolean getDebugEntity()  {
+    return debugEntity;
   }
 
-  /**
-   * @param key   OwnerInfo
-   * @return Collection
+  /** True if we initialise the system parameters
+   *
+   * @param val
    */
-  public Collection getSubs(OwnerInfo key) {
-    return (Collection)get(key);
+  public void setInitSyspars(boolean val)  {
+    initSyspars = val;
   }
 
-  /**
-   * @param key   OwnerInfo
-   * @param subid
-   * @return BwSubscription
+  /** True if we initialise the system parameters
+   *
+   * @return booelan val
    */
-  public BwSubscription getSub(OwnerInfo key, int subid) {
-    Collection subs = getSubs(key);
-
-    if (subs == null) {
-      return null;
-    }
-
-    Iterator it = subs.iterator();
-    while (it.hasNext()) {
-      BwSubscription sub = (BwSubscription)it.next();
-      if (sub.getId() == subid) {
-        return sub;
-      }
-    }
-
-    return null;
+  public boolean getInitSyspars()  {
+    return initSyspars;
   }
 
-  /**
-   * @param key   OwnerInfo
-   * @param name
-   * @return BwSubscription
+  /** Are we doing the conversion from 2.3.2 to V3
+   *
+   * @param val
    */
-  public BwSubscription getSub(OwnerInfo key, String name) {
-    Collection subs = getSubs(key);
+  public void setFrom2p3px(boolean val)  {
+    from2p3px = val;
+  }
 
-    if (subs == null) {
-      return null;
-    }
+  /** Are we doing the conversion from 2.3.2 to V3
+   *
+   * @return String val
+   */
+  public boolean getFrom2p3px()  {
+    return from2p3px;
+  }
 
-    Iterator it = subs.iterator();
-    while (it.hasNext()) {
-      BwSubscription sub = (BwSubscription)it.next();
-      if (sub.getName().equals(name)) {
-        return sub;
-      }
-    }
+  /** We can restore timezone info from this file
+   *
+   * @param val
+   */
+  public void setTimezonesFilename(String val)  {
+    timezonesFilename = val;
+  }
 
-    return null;
+  /** We can restore timezone info from this file
+   *
+   * @return String val
+   */
+  public String getTimezonesFilename()  {
+    return timezonesFilename;
+  }
+
+  /** When converting put all admin groups into the new group with this name
+   *
+   * @param val
+   */
+  public void setSuperGroupName(String val)  {
+    superGroupName = val;
+  }
+
+  /** When converting put all admin groups into the new group with this name
+   *
+   * @return String val
+   */
+  public String getSuperGroupName()  {
+    return superGroupName;
+  }
+
+  /** If non-null we will set any events with no calendar to this one.
+   * This is mainly to fix errors in the data. All events should have a calendar.
+   *
+   * @param val
+   */
+  public void setDefaultPublicCalPath(String val)  {
+    defaultPublicCalPath = val;
+  }
+
+  /** If non-null we will set any events with no calendar to this one.
+   * This is mainly to fix errors in the data. All events should have a calendar.
+   *
+   * @return String val
+   */
+  public String getDefaultPublicCalPath()  {
+    return defaultPublicCalPath;
   }
 }

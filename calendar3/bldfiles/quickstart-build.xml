@@ -29,6 +29,9 @@
   <property name="org.bedework.project.davutil"
             location="${basedir}/davutil" />
 
+  <property name="org.bedework.project.dumprestore"
+            location="${basedir}/dumprestore" />
+
   <property name="org.bedework.project.freebusy"
             location="${basedir}/freebusy" />
 
@@ -182,6 +185,12 @@
       </fileset>
     </copy>
 
+    <copy todir="${org.bedework.project.dumprestore}/lib" overwrite="yes">
+      <fileset dir="${org.bedework.project.access}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+
     <copy todir="${org.bedework.project.webdav}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.access}/dist">
         <include name="*.jar" />
@@ -242,33 +251,6 @@
   </target>
 
   <!-- .................................................................
-                          freebusy
-       .................................................................. -->
-  <target name="build.freebusy" depends="init"
-          description="builds the freebusy project">
-    <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritrefs="true"
-           target="build-all" />
-
-    <antcall target="copy.freebusy" inheritrefs="true" />
-  </target>
-
-  <target name="clean.build.freebusy" depends="init"
-          description="builds the freebusy project">
-    <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritrefs="true"
-           target="build-all" />
-
-    <antcall target="copy.freebusy" inheritrefs="true" />
-  </target>
-
-  <target name="copy.freebusy" >
-    <copy todir="${org.bedework.calendar.dist}" overwrite="yes">
-      <fileset dir="${org.bedework.project.freebusy}/dist">
-        <include name="*.jar" />
-      </fileset>
-    </copy>
-  </target>
-
-  <!-- .................................................................
                           davutil
        .................................................................. -->
   <target name="build.davutil" depends="init"
@@ -308,6 +290,54 @@
 
     <copy todir="${org.bedework.project.webdav}/lib" overwrite="yes">
       <fileset dir="${org.bedework.project.davutil}/dist">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- .................................................................
+                          dumprestore
+       .................................................................. -->
+  <target name="build.dumprestore" depends="init"
+          description="builds the dumprestore project">
+    <ant antfile="${org.bedework.project.dumprestore}/build.xml" inheritrefs="true"
+           target="build-all" />
+  </target>
+
+  <target name="clean.dumprestore" depends="init"
+          description="clean the dumprestore project">
+    <ant antfile="${org.bedework.project.dumprestore}/build.xml" inheritrefs="true"
+           target="clean" />
+  </target>
+
+  <target name="clean.build.dumprestore" depends="init"
+          description="builds the dumprestore project">
+    <ant antfile="${org.bedework.project.dumprestore}/build.xml" inheritrefs="true"
+           target="build-all" />
+  </target>
+
+  <!-- .................................................................
+                          freebusy
+       .................................................................. -->
+  <target name="build.freebusy" depends="init"
+          description="builds the freebusy project">
+    <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritrefs="true"
+           target="build-all" />
+
+    <antcall target="copy.freebusy" inheritrefs="true" />
+  </target>
+
+  <target name="clean.build.freebusy" depends="init"
+          description="builds the freebusy project">
+    <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritrefs="true"
+           target="build-all" />
+
+    <antcall target="copy.freebusy" inheritrefs="true" />
+  </target>
+
+  <target name="copy.freebusy" >
+    <copy todir="${org.bedework.calendar.dist}" overwrite="yes">
+      <fileset dir="${org.bedework.project.freebusy}/dist">
         <include name="*.jar" />
       </fileset>
     </copy>
@@ -480,13 +510,13 @@
        The "deploy" target builds and deploys the applications
        ================================================================= -->
 
-  <target name="deploy" depends="build,build.webdav.if,build.caldav.if,build.freebusy.if"
+  <target name="deploy" depends="build,build.dumprestore,build.webdav.if,build.caldav.if,build.freebusy.if"
           description="builds and deploys the applications">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="deploy.nobuild" />
   </target>
 
-  <target name="deploy.debug" depends="build,build.webdav.if,build.caldav.if,build.caldavTest.if,build.freebusy.if"
+  <target name="deploy.debug" depends="build,build.dumprestore,build.webdav.if,build.caldav.if,build.caldavTest.if,build.freebusy.if"
           description="builds and deploys the applications">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="deploy.debug.nobuild" />
@@ -500,7 +530,7 @@
 
   <target name="clean.deploy.debug" depends="clean,deploy.debug" />
 
-  <target name="clean" depends="init,clean.webdav.if,clean.caldav.if,clean.caldavTest.if,clean.freebusy.if"
+  <target name="clean" depends="init,clean.dumprestore,clean.webdav.if,clean.caldav.if,clean.caldavTest.if,clean.freebusy.if"
           description="Remove all generated files.">
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="clean" />
