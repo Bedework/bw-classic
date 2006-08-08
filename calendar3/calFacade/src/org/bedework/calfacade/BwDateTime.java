@@ -69,7 +69,7 @@ import net.fortuna.ical4j.model.property.DateProperty;
 import net.fortuna.ical4j.model.property.DtEnd;
 import net.fortuna.ical4j.model.property.DtStart;
 
-/** Class to represent an RFC2554 date and datetime type. These are not stored
+/** Class to represent an RFC2445 date and datetime type. These are not stored
  * in separate tables but as components of the including class.
  *
  * <p>DateTime values take 3 forms:
@@ -89,7 +89,7 @@ public class BwDateTime implements Comparable, Comparator, Serializable {
    */
   private String tzid;
 
-  private String dtval; // rfc2554 date or datetime value
+  private String dtval; // rfc2445 date or datetime value
 
   /**   */
   public static Dur oneDayForward = new Dur(1, 0, 0, 0);

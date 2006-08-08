@@ -63,6 +63,7 @@ import org.bedework.calfacade.svc.BwAdminGroupEntry;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
@@ -102,7 +103,7 @@ public class AdminGroupsDbImpl implements AdminGroups {
       sess.setString("isgroup", "F");
     }
 
-    Collection gs = sess.getList();
+    Set gs = new TreeSet(sess.getList());
 
     if (val instanceof BwUser) {
       /* Event owner for group is implicit member of group. */

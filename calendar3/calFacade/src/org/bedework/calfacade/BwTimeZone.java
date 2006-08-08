@@ -57,7 +57,7 @@ import org.bedework.calfacade.base.BwOwnedDbentity;
 import org.bedework.calfacade.util.CalFacadeUtil;
 
 /** Represents a stored timezone. This whole area is somewhat problematical,
- * RFC2554 refers to timezones by tzid but thereis as yet not statndard
+ * RFC2445 refers to timezones by tzid but thereis as yet not statndard
  * source for timezones, nor any standard way of naming them.
  *
  * <p>Currently, the best we can do is store a timezone when we see a new
@@ -75,7 +75,7 @@ public class BwTimeZone extends BwOwnedDbentity {
    */
   private String tzid;
 
-  private String vtimezone; // rfc2554 representation
+  private String vtimezone; // rfc2445 representation
 
   /** This is the corresponding java.util.TimeZone id.
    * It provides a mapping from external timezones to java timezones.

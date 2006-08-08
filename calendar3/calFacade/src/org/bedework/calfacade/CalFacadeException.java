@@ -178,4 +178,16 @@ public class CalFacadeException extends Exception {
   public String getExtra() {
     return extra;
   }
+
+  /**
+   * Overrides parent
+   * @return String message and 'extra'
+   */
+  public String getMessage() {
+    if (getExtra() != null) {
+      return super.getMessage() + "\t" + getExtra();
+    }
+
+    return super.getMessage();
+  }
 }

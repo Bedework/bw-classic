@@ -53,7 +53,7 @@
 */
 package org.bedework.calfacade;
 
-/** Class to represent an RFC2554 recurrence id type. These are not stored
+/** Class to represent an RFC2445 recurrence id type. These are not stored
  * in separate tables but as components of the including class.
  *
  * <p>A Recurrence id is a DateTime type with the additon of a possible

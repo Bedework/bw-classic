@@ -322,7 +322,8 @@ public class BwPreferences extends BwOwnedDbentity {
   public void addSubscription(BwSubscription val) throws CalFacadeException {
     Collection c = getSubscriptions();
     if (c.contains(val)) {
-      throw new CalFacadeException(CalFacadeException.duplicateSubscription);
+      throw new CalFacadeException(CalFacadeException.duplicateSubscription,
+                                   val.toString());
     }
     c.add(val);
   }
