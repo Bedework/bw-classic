@@ -81,6 +81,10 @@ public class CalSvcIPars implements Serializable {
    */
   private boolean publicAdmin;
 
+  private boolean adminCanEditAllPublicCategories;
+  private boolean adminCanEditAllPublicLocations;
+  private boolean adminCanEditAllPublicSponsors;
+
   /** True if this is via caldav
    */
   private boolean caldav;
@@ -100,6 +104,9 @@ public class CalSvcIPars implements Serializable {
    * @param calSuite    String calSuite name
    * @param envPrefix   String Environment properties prefix
    * @param publicAdmin true for admin
+   * @param adminCanEditAllPublicCategories
+   * @param adminCanEditAllPublicLocations
+   * @param adminCanEditAllPublicSponsors
    * @param caldav      true if via caldav
    * @param synchId     non-null if this is for synchronization. Identifies the
    *                    client end.
@@ -109,7 +116,12 @@ public class CalSvcIPars implements Serializable {
                      String user,
                      String calSuite,
                      String envPrefix,
+
                      boolean publicAdmin,
+                     boolean adminCanEditAllPublicCategories,
+                     boolean adminCanEditAllPublicLocations,
+                     boolean adminCanEditAllPublicSponsors,
+
                      boolean caldav,
                      String synchId,
                      boolean debug) {
@@ -118,6 +130,9 @@ public class CalSvcIPars implements Serializable {
     this.calSuite = calSuite;
     this.envPrefix = envPrefix;
     this.publicAdmin = publicAdmin;
+    this.adminCanEditAllPublicCategories = adminCanEditAllPublicCategories;
+    this.adminCanEditAllPublicLocations = adminCanEditAllPublicLocations;
+    this.adminCanEditAllPublicSponsors = adminCanEditAllPublicSponsors;
     this.caldav = caldav;
     this.synchId = synchId;
     this.debug = debug;
@@ -180,6 +195,27 @@ public class CalSvcIPars implements Serializable {
   }
 
   /**
+   * @return boolean
+   */
+  public boolean getAdminCanEditAllPublicCategories() {
+    return adminCanEditAllPublicCategories;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getAdminCanEditAllPublicLocations() {
+    return adminCanEditAllPublicLocations;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getAdminCanEditAllPublicSponsors() {
+    return adminCanEditAllPublicSponsors;
+  }
+
+  /**
    * @return boolean true if this is a caldav client..
    */
   public boolean getCaldav() {
@@ -218,6 +254,12 @@ public class CalSvcIPars implements Serializable {
     sb.append(getCalSuite());
     sb.append(", publicAdmin=");
     sb.append(getPublicAdmin());
+    sb.append(", adminCanEditAllPublicCategories()=");
+    sb.append(getAdminCanEditAllPublicCategories());
+    sb.append(", adminCanEditAllPublicLocations()=");
+    sb.append(getAdminCanEditAllPublicLocations());
+    sb.append(", adminCanEditAllPublicSponsors()=");
+    sb.append(getAdminCanEditAllPublicSponsors());
     sb.append(", caldav=");
     sb.append(getCaldav());
     sb.append(", synchid=");
@@ -235,6 +277,9 @@ public class CalSvcIPars implements Serializable {
                                        getCalSuite(),
                                        getEnvPrefix(),
                                        getPublicAdmin(),
+                                       getAdminCanEditAllPublicCategories(),
+                                       getAdminCanEditAllPublicLocations(),
+                                       getAdminCanEditAllPublicSponsors(),
                                        getCaldav(),
                                        getSynchId(),
                                        getDebug());

@@ -216,6 +216,9 @@ public class BwIcalTrans {
                                        null, // calSuite,
                                        envPrefix,
                                        false,  // publicAdmin
+                                       false,  // adminCanEditAllPublicCategories
+                                       false,  // adminCanEditAllPublicLocations
+                                       false,  // adminCanEditAllPublicSponsors
                                        true,    // caldav
                                        null, // synchId
                                        debug);

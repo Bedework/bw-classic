@@ -71,11 +71,9 @@
           <autoDeleteSponsors>false</autoDeleteSponsors>
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
-          <!-- When we get svc fixed
           <allowEditAllCategories>false</allowEditAllCategories>
           <allowEditAllLocations>false</allowEditAllLocations>
           <allowEditAllSponsors>false</allowEditAllSponsors>
-          -->
           <categoryOptional>true</categoryOptional>
 
           <!-- Default value for 24 hour mode -->

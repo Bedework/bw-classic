@@ -132,6 +132,9 @@ public class CalSvcTestWrapper extends CalSvc {
     CalSvcIPars pars = new CalSvcIPars(user, user, null,
                                        envPrefix,
                                        publicEvents,
+                                       false,  // adminCanEditAllPublicCategories
+                                       false,  // adminCanEditAllPublicLocations
+                                       false,  // adminCanEditAllPublicSponsors
                                        false,    // caldav
                                        null, // synch
                                        debug);

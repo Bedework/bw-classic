@@ -265,10 +265,6 @@ public class CalSvc extends CalSvcI {
   //private boolean adminAutoDeleteSponsors;
   //private boolean adminAutoDeleteLocations;
 
-  private boolean adminCanEditAllPublicCategories;
-  private boolean adminCanEditAllPublicLocations;
-  private boolean adminCanEditAllPublicSponsors;
-
   private transient Logger log;
 
   private CalEnvI env;
@@ -298,20 +294,20 @@ public class CalSvc extends CalSvcI {
     }
 
     try {
-      if (pars.getPublicAdmin()) {
-        //adminAutoDeleteSponsors = env.getAppBoolProperty("app.autodeletesponsors");
-        //adminAutoDeleteLocations = env.getAppBoolProperty("app.autodeletelocations");
-
-        adminCanEditAllPublicCategories = env.getAppBoolProperty("allowEditAllCategories");
-        adminCanEditAllPublicLocations = env.getAppBoolProperty("allowEditAllLocations");
-        adminCanEditAllPublicSponsors = env.getAppBoolProperty("allowEditAllSponsors");
-      }
-
       timezones = getCal().getTimezonesHandler();
 
       /* Nominate our timezone registry */
       System.setProperty("net.fortuna.ical4j.timezone.registry",
                     "org.bedework.icalendar.TimeZoneRegistryFactoryImpl");
+
+      if (pars.getCaldav()) {
+        /* Ensure scheduling resources exist */
+        getCal().getSpecialCalendar(getUser(), BwCalendar.calTypeInbox,
+                                    true);
+
+        getCal().getSpecialCalendar(getUser(), BwCalendar.calTypeOutbox,
+                                    true);
+      }
     } catch (CalFacadeException cfe) {
       throw cfe;
     } catch (Throwable t) {
@@ -1465,7 +1461,7 @@ public class CalSvc extends CalSvcI {
       return getCal().getCategories(getUser(), null);
     }
 
-    if (isSuper() || adminCanEditAllPublicCategories) {
+    if (isSuper() || pars.getAdminCanEditAllPublicCategories()) {
       return getCal().getCategories(getPublicUser(), null);
     }
     return getCal().getCategories(getPublicUser(), getUser());
@@ -1548,7 +1544,7 @@ public class CalSvc extends CalSvcI {
       return getCal().getLocations(getUser(), null);
     }
 
-    if (isSuper() || adminCanEditAllPublicLocations) {
+    if (isSuper() || pars.getAdminCanEditAllPublicLocations()) {
       return getCal().getLocations(getPublicUser(), null);
     }
     return getCal().getLocations(getPublicUser(), getUser());
@@ -1660,7 +1656,7 @@ public class CalSvc extends CalSvcI {
       return getCal().getSponsors(getUser(), null);
     }
 
-    if (isSuper() || adminCanEditAllPublicSponsors) {
+    if (isSuper() || pars.getAdminCanEditAllPublicSponsors()) {
       return getCal().getSponsors(getPublicUser(), null);
     }
     return getCal().getSponsors(getPublicUser(), getUser());
@@ -2028,7 +2024,7 @@ public class CalSvc extends CalSvcI {
 
     BwShareableDbentity ent = (BwShareableDbentity)o;
 
-    if (adminCanEditAllPublicSponsors ||
+    if (pars.getAdminCanEditAllPublicSponsors() ||
         ent.getCreator().equals(currentUser())) {
       return;
     }

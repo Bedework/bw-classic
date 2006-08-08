@@ -52,6 +52,9 @@
       <filter token="APP-DESCRIPTION"
               value="${propval.app.description}" />
 
+      <filter token="CALDAVTEST-CLASS"
+              value="org.bedework.caldav.test.TestCalDav"/>
+
       <filter token="DUMP-CLASS"
               value="org.bedework.dumprestore.dump.Dump"/>
       <filter token="RESTORE-CLASS"
@@ -88,10 +91,13 @@
     <!-- Some more standard libs -->
     <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
     <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-httpclient.jar}"/>
 
     <!-- associated projects -->
     <copy todir="${app.dest.lib}" file="${org.bedework.access.jar}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.rpiutil.jar}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.davdefs.jar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.davio.jar}" />
 
     <!-- Extra libraries specified in calling build file -->
     <copy todir="${app.dest.lib}" flatten="yes" >

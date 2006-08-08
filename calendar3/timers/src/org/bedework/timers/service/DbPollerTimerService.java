@@ -141,7 +141,10 @@ public class DbPollerTimerService {
                                        account,
                                        null,   // calSuite
                                        null,   // XXX needs envPrefix
-                                       true,    // public
+                                       true,    // publicadmin
+                                       false,  // adminCanEditAllPublicCategories
+                                       false,  // adminCanEditAllPublicLocations
+                                       false,  // adminCanEditAllPublicSponsors
                                        false,    // caldav
                                        null, // synchId
                                        debug);

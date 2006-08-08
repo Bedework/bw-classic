@@ -127,6 +127,9 @@ public class Synchml {
                                        null,     // calSuite
                                        null,     // XXX Requires an env prefix
                                        false,    // public
+                                       false,  // adminCanEditAllPublicCategories
+                                       false,  // adminCanEditAllPublicLocations
+                                       false,  // adminCanEditAllPublicSponsors
                                        false,    // caldav
                                        deviceId, // synchId
                                        debug);

@@ -1642,11 +1642,26 @@ public abstract class BwAbstractAction extends UtilAbstractAction
           runAsUser = form.getEnv().getAppProperty("run.as.user");
         }
 
+        boolean adminCanEditAllPublicCategories = false;
+        boolean adminCanEditAllPublicLocations = false;
+        boolean adminCanEditAllPublicSponsors = false;
+
+        if (publicAdmin) {
+          AdminConfig conf = (AdminConfig)form.getConfig();
+
+          adminCanEditAllPublicCategories = conf.getAllowEditAllCategories();
+          adminCanEditAllPublicLocations = conf.getAllowEditAllLocations();
+          adminCanEditAllPublicSponsors = conf.getAllowEditAllSponsors();
+        }
+
         CalSvcIPars pars = new CalSvcIPars(user, //access,
                                            runAsUser,
                                            calSuite,
                                            form.getEnv().getAppPrefix(),
                                            publicAdmin,
+                                           adminCanEditAllPublicCategories,
+                                           adminCanEditAllPublicLocations,
+                                           adminCanEditAllPublicSponsors,
                                            false,    // caldav
                                            null, // synchId
                                            debug);

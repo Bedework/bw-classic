@@ -63,6 +63,10 @@ public class AdminConfig extends ConfigBase {
    */
   private boolean categoryOptional = true;
 
+  private boolean allowEditAllCategories;
+  private boolean allowEditAllLocations;
+  private boolean allowEditAllSponsors;
+
   /** Constructor
    *
    */
@@ -84,12 +88,57 @@ public class AdminConfig extends ConfigBase {
     return categoryOptional;
   }
 
+  /**
+   *  @param val
+   */
+  public void setAllowEditAllCategories(boolean val) {
+    allowEditAllCategories = val;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getAllowEditAllCategories() {
+    return allowEditAllCategories;
+  }
+
+  /**
+   *  @param val
+   */
+  public void setAllowEditAllLocations(boolean val) {
+    allowEditAllLocations = val;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getAllowEditAllLocations() {
+    return allowEditAllLocations;
+  }
+
+  /**
+   *  @param val
+   */
+  public void setAllowEditAllSponsors(boolean val) {
+    allowEditAllSponsors = val;
+  }
+
+  /**
+   * @return boolean
+   */
+  public boolean getAllowEditAllSponsors() {
+    return allowEditAllSponsors;
+  }
+
   public Object clone() {
     AdminConfig conf = new AdminConfig();
 
     copyTo(conf);
 
     conf.setCategoryOptional(getCategoryOptional());
+    conf.setAllowEditAllCategories(getAllowEditAllCategories());
+    conf.setAllowEditAllLocations(getAllowEditAllLocations());
+    conf.setAllowEditAllSponsors(getAllowEditAllSponsors());
 
     return conf;
   }
