@@ -133,7 +133,7 @@ body {
   border-left: 1px solid #333;
 }
 #tabsTable td.rssPrint {
-  background : url(../../images/demo/std-tab-space.gif);
+  background : url(../../images/std-tab-space.gif);
   padding-right: 0.5em;
   width: 100%;
   font-weight : bold;
@@ -756,12 +756,12 @@ a.gridAdd {
   font-weight: normal;
 }
 #calPageTable ul.calendarTree li.folder {
-  list-style-image: url(../../images/demo/catIcon.gif);
+  list-style-image: url(../../images/catIcon.gif);
   padding-top: 0.25em;
   padding-bottom: 0.25em;
 }
 #calPageTable ul.calendarTree li.calendar {
-  list-style-image: url(../../images/demo/calIcon-sm.gif);
+  list-style-image: url(../../images/calIcon-sm.gif);
 }
 .noEventsCell {
   padding: 1em;
@@ -864,7 +864,7 @@ h2.bwStatusTentative {
 }
 #tabsTable .centerCell {
   text-align: left;
-  background : url(../../images/demo/std-tab-space.gif);
+  background : url(../../images/std-tab-space.gif);
   font-size: 0.8em;
   white-space: nowrap;
   width: 100%;

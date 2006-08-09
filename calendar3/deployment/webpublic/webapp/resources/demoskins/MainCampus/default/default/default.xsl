@@ -351,7 +351,7 @@
           </a>
         </td>
         <td align="right" class="gotoForm">
-          <form name="calForm" method="get" action="{$setViewPeriod}">
+          <form name="calForm" method="post" action="{$setViewPeriod}">
              <table border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <xsl:if test="/bedework/periodname!='Year'">
@@ -438,7 +438,7 @@
              </xsl:when>
              <xsl:otherwise><!-- view -->
                View:
-               <form name="selectViewForm" method="get" action="{$setSelection}">
+               <form name="selectViewForm" method="post" action="{$setSelection}">
                 <select name="viewName" onChange="submit()" >
                   <xsl:for-each select="/bedework/views/view">
                     <xsl:variable name="name" select="name"/>
@@ -683,7 +683,7 @@
       <tr>
         <td class="fieldname">Calendar:</td>
         <td class="fieldval">
-          <xsl:variable name="calUrl" select="calendar/path"/>
+          <xsl:variable name="calUrl" select="calendar/encodedPath"/>
           <a href="{$setSelection}&amp;calUrl={$calUrl}">
             <xsl:value-of select="calendar/name"/>
           </a>
@@ -1069,7 +1069,7 @@
         <xsl:otherwise>calendar</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="url" select="path"/>
+    <xsl:variable name="url" select="encodedPath"/>
     <li class="{$itemClass}">
       <a href="{$setSelection}&amp;calUrl={$url}"><xsl:value-of select="name"/></a>
       <xsl:if test="calendar">
@@ -1160,7 +1160,7 @@
           <a href="?refreshXslt=yes">refresh XSLT</a>
         </td>
         <td class="rightCell">
-          <form name="styleSelectForm" method="get" action="{$setup}">
+          <form name="styleSelectForm" method="post" action="{$setup}">
             <select name="setappvar" onChange="submit()">
               <option>example styles:</option>
               <option value="style(green)">green</option>
@@ -1168,7 +1168,7 @@
               <option value="style(blue)">blue</option>
             </select>
           </form>
-          <form name="skinSelectForm" method="get" action="{$setup}">
+          <form name="skinSelectForm" method="post" action="{$setup}">
             <input type="hidden" name="setappvar" value="summaryMode(details)"/>
             <select name="skinPicker" onchange="window.location = this.value">
               <option>example skins:</option>
@@ -1178,7 +1178,7 @@
               <option value="{$setup}&amp;skinName=default">reset to calendar default</option>
             </select>
           </form>
-          <form name="skinSelectForm" method="get" action="">
+          <form name="skinSelectForm" method="post" action="">
             <select name="sitePicker" onchange="window.location = this.value">
               <option>production examples:</option>
               <option value="http://events.dal.ca/">Dalhousie</option>

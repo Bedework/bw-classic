@@ -521,7 +521,7 @@
           </a>
         </td>
         <td align="right" class="gotoForm">
-          <form name="calForm" method="get" action="{$navAction}">
+          <form name="calForm" method="post" action="{$navAction}">
              <table border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <xsl:if test="/bedework/periodname!='Year'">
@@ -3351,7 +3351,7 @@
 
   <!--==== ALARM OPTIONS ====-->
   <xsl:template name="alarmOptions">
-    <form method="get" action="{$setAlarm}" id="standardForm">
+    <form method="post" action="{$setAlarm}" id="standardForm">
       <input type="hidden" name="updateAlarmOptions" value="true"/>
       <table class="common" cellspacing="0">
         <tr>
@@ -3485,7 +3485,7 @@
 
   <!--==== EMAIL OPTIONS ====-->
   <xsl:template name="emailOptions">
-    <form method="get" action="{$mailEvent}" id="standardForm">
+    <form method="post" action="{$mailEvent}" id="standardForm">
       <input type="hidden" name="updateEmailOptions" value="true"/>
       <table class="common" cellspacing="0">
         <tr>
@@ -4062,7 +4062,7 @@
           <a href="?refreshXslt=yes">refresh XSLT</a>
         </td>
         <td class="rightCell">
-          <!--<form name="skinSelectForm" method="get" action="{$setup}">
+          <!--<form name="skinSelectForm" method="post" action="{$setup}">
             skin selector:
             <select name="skinNameSticky" onChange="submit()">
               <option>select a skin</option>

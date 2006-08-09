@@ -27,8 +27,8 @@
       <!--<portlet-mode>HELP</portlet-mode>-->
     </supports>
     <portlet-info>
-      <title>@PORTLET-NAME@</title>
-      <short-title>@PORTLET-NAME@</short-title>
+      <title>@DISPLAY-NAME@</title>
+      <short-title>@DISPLAY-NAME@</short-title>
       <keywords>Struts, Bedework, Calendar, Public, Events</keywords>
     </portlet-info>
   </portlet>

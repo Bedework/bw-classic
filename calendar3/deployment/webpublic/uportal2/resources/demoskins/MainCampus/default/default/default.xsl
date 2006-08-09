@@ -335,7 +335,7 @@
           </a>
         </td>
         <td align="right" class="gotoForm">
-          <form name="calForm" method="get" action="{$setViewPeriod}">
+          <form name="calForm" method="post" action="{$setViewPeriod}">
              <table border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <xsl:if test="/bedework/periodname!='Year'">
@@ -422,7 +422,7 @@
              </xsl:when>
              <xsl:otherwise><!-- view -->
                View:
-               <form name="selectViewForm" method="get" action="{$setSelection}">
+               <form name="selectViewForm" method="post" action="{$setSelection}">
                 <select name="viewName" onChange="submit()" >
                   <xsl:for-each select="/bedework/views/view">
                     <xsl:variable name="name" select="name"/>
@@ -667,7 +667,7 @@
       <tr>
         <td class="fieldname">Calendar:</td>
         <td class="fieldval">
-          <xsl:variable name="calUrl" select="calendar/path"/>
+          <xsl:variable name="calUrl" select="calendar/encodedPath"/>
           <a href="{$setSelection}&amp;calUrl={$calUrl}">
             <xsl:value-of select="calendar/name"/>
           </a>
@@ -1053,7 +1053,7 @@
         <xsl:otherwise>calendar</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="url" select="path"/>
+    <xsl:variable name="url" select="encodedPath"/>
     <li class="{$itemClass}">
       <a href="{$setSelection}&amp;calUrl={$url}"><xsl:value-of select="name"/></a>
       <xsl:if test="calendar">

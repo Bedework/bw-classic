@@ -354,7 +354,7 @@
           </a>
         </td>
         <td align="right" class="gotoForm">
-          <form name="calForm" method="get" action="{$setViewPeriod}">
+          <form name="calForm" method="post" action="{$setViewPeriod}">
              <table border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <xsl:if test="/bedework/periodname!='Year'">
@@ -441,7 +441,7 @@
              </xsl:when>
              <xsl:otherwise><!-- view -->
                View:
-               <form name="selectViewForm" method="get" action="{$setSelection}">
+               <form name="selectViewForm" method="post" action="{$setSelection}">
                 <select name="viewName" onChange="submit()" >
                   <xsl:for-each select="/bedework/views/view">
                     <xsl:variable name="name" select="name"/>

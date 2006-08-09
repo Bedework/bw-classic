@@ -401,7 +401,7 @@
   </xsl:template> -->
 
   <xsl:template name="dateSelect">
-    <form name="calForm" method="get" action="{$urlPrefix}/setView.do">
+    <form name="calForm" method="post" action="{$urlPrefix}/setView.do">
       <table border="0" cellpadding="0" cellspacing="0">
         <tr>
           <xsl:if test="/ucalendar/periodname!='Year'">

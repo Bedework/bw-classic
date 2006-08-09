@@ -24,8 +24,14 @@
       <xsl:when test="id='org.bedework.client.error.unknownview'">
           Unknown view
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.nodefaultview'">
+          No default view
+      </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="id"/> = <xsl:value-of select="param"/>
+        <xsl:value-of select="id"/>
+        <xsl:if test="param">
+            = <xsl:value-of select="param"/>
+        </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
