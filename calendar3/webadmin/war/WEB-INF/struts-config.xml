@@ -435,6 +435,7 @@
                scope="session"
                validate="false">
       <forward name="notAdded" path="/calsuite/showCalSuites.rdo" redirect="true" />
+      <forward name="notFound" path="/calsuite/showCalSuites.rdo" redirect="true" />
       <forward name="success" path="/calsuite/showModForm.rdo" redirect="true" />
     </action>
 
