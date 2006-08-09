@@ -27,8 +27,8 @@
 * @param int    mth          Month value (0-11)
 * @param int    dy           Day (date) value (1-31)
 * @param string callbackFunc Name of the callback function
+* @param string OPTIONAL     Optional images root path
 * @param string OPTIONAL     Optional layer name
-* @param string OPTIONAL     Optional images path
 */
 	function dynCalendar(objName, yr, mth, dy, callbackFunc)
 	{
@@ -49,7 +49,11 @@
 
 		this.objName        = objName;
 		this.callbackFunc   = callbackFunc;
-		this.imagesPath     = arguments[5] ? arguments[5] : '/caladminrsrc/resources/';
+    if (arguments[5]) {
+			this.imagesPath = arguments[5];
+		} else {
+			this.imagesPath = '/ucalrsrc/resources/';
+		}
 		this.layerID        = arguments[6] ? arguments[6] : 'dynCalendar_layer_' + dynCalendar_layers.length;
 
 		this.offsetX        = 5;
