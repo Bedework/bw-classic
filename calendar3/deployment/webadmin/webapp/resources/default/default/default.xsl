@@ -620,7 +620,7 @@
               </div>
               <script language="JavaScript" type="text/javascript">
               <xsl:comment>
-                startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback');
+                startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
               </xsl:comment>
               </script>
               <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
@@ -668,7 +668,7 @@
                 </div>
                 <script language="JavaScript" type="text/javascript">
                 <xsl:comment>
-                  endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback');
+                  endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
                 </xsl:comment>
                 </script>
                 <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->

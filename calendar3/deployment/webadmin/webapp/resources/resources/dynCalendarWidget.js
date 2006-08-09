@@ -6,8 +6,8 @@
 * Copyright......: 2001, 2002 Richard Heyes
 *
 *
-* Modifications for inclusion in Bedework calendar system 
-* by Arlen Johnson 2006 
+* Modifications for inclusion in Bedework calendar system
+* by Arlen Johnson & Dave Brondsema 2006
 */
 
 /**
@@ -24,8 +24,8 @@
 * @access public
 * @param string objName      Name of the object that you create
 * @param string callbackFunc Name of the callback function
+* @param string OPTIONAL     Optional images root path
 * @param string OPTIONAL     Optional layer name
-* @param string OPTIONAL     Optional images path
 */
 	function dynCalendar(objName, callbackFunc)
 	{
@@ -40,7 +40,11 @@
 
 		this.objName        = objName;
 		this.callbackFunc   = callbackFunc;
-		this.imagesPath     = arguments[2] ? arguments[2] : '/caladminrsrc/resources/';
+    if (arguments[2]) {
+			this.imagesPath = arguments[2];
+		} else {
+			this.imagesPath = '/caladminrsrc/resources/';
+ 		}
 		this.layerID        = arguments[3] ? arguments[3] : 'dynCalendar_layer_' + dynCalendar_layers.length;
 
 		this.offsetX        = 5;
@@ -106,7 +110,7 @@
 		var ret, row, i, cssClass, linkHTML, previousMonth, previousYear;
 		var nextMonth, nextYear, prevImgHTML, prevLinkHTML, nextImgHTML, nextLinkHTML;
 		var monthComboOptions, monthCombo, yearComboOptions, yearCombo, html;
-		
+
 		this.currentMonth = month = arguments[0] != null ? arguments[0] : this.currentMonth;
 		this.currentYear  = year  = arguments[1] != null ? arguments[1] : this.currentYear;
 
@@ -149,7 +153,7 @@
 			previousMonth = 11;
 			previousYear--;
 		}
-		
+
 		nextYear  = thisMonth.getFullYear();
 		nextMonth = thisMonth.getMonth() + 1;
 		if(nextMonth > 11){
@@ -177,7 +181,7 @@
 		} else {
 			monthCombo = monthnames[thisMonth.getMonth()];
 		}
-		
+
 		/**
         * Build year combo
         */
@@ -266,7 +270,7 @@
 	{
 		this.offsetY = Yoffset;
 	}
-	
+
 /**
 * Sets the images path
 *
@@ -360,7 +364,7 @@
 	function dynCalendar_hideLayer()
 	{
 		this._getLayer().style.visibility = 'hidden';
-    
+
     // for Bedework event editing; reveal time fields when cal widget is hidden
     changeClass('calWidgetStartTimeHider','shown');
     changeClass('calWidgetEndTimeHider','shown');
@@ -374,7 +378,7 @@
 	function dynCalendar_showLayer()
 	{
 		this._getLayer().style.visibility = 'visible';
-    
+
     // for Bedework event editing; hide time fields when cal widget is visible
     // to avoid IE rendering oddities (IE always displays the "windowed" layer
     // above everything else -- that includes select boxes.
@@ -449,7 +453,7 @@
 				dynCalendar_mouseY = event.clientY + document.body.scrollTop;
 				arguments[0] = null;
 			}
-	
+
 			dynCalendar_oldOnmousemove();
 		}
 	}
@@ -467,7 +471,7 @@
 					dynCalendar_layers[i]._hideLayer();
 				}
 			}
-	
+
 			dynCalendar_oldOnclick(arguments[0] ? arguments[0] : null);
 		}
 	}
