@@ -14,7 +14,7 @@
 
     <dirname property="this.dir" file="${ant.file}"/>
 
-    <property name="app.sou.dir" location="${org.bedework.project.freebusy}/webclient" />
+    <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
 
     <!-- Flag as struts -->
     <property name="org.bedework.strutsapp" value="true" />

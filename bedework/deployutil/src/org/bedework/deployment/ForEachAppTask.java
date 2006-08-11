@@ -68,7 +68,7 @@ import org.apache.tools.ant.taskdefs.Sequential;
  * <li>names            Comma separated list of application names</li>
  * <li>prefix           Property name prefix for generated properties</li>
  * <li>appPrefix        Property name prefix for applications</li>
- * <li>projectPrefix    Property name prefix for project locations</li>
+ * <li>projectPrefix    Property name prefix for project properties</li>
  * </ul>
  *
  * <p>Prefixes will be automatically appended with "." if needed.
@@ -191,9 +191,24 @@ public class ForEachAppTask extends Sequential {
                                    " is undefined");
         }
 
+        String appSouProperty = appPrefix + name + ".sou.dir";
+        String appSou = (String)props.getProperty(null, appSouProperty);
+
+        if (appSou == null) {
+          throw new BuildException("Property " + appSouProperty +
+                                   " is undefined");
+        }
+
+        if (appSou.length() == 0) {
+          appSou = projectPath;
+        } else {
+          appSou = projectPath + "/" + appSou;
+        }
+
         props.setProperty(null, prefix + "name", name, false);
         props.setProperty(null, prefix + "projectName", project, false);
         props.setProperty(null, prefix + "project.path", projectPath, false);
+        props.setProperty(null, prefix + "app.sou", appSou, false);
         props.setProperty(null, prefix + "type", type, false);
         props.setProperty(null, prefix + "type.dir",
                           bedeworkHome + "/deployment/" + type,

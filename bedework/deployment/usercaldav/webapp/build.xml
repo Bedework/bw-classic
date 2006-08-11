@@ -14,7 +14,7 @@
 
     <dirname property="this.dir" file="${ant.file}"/>
 
-    <property name="app.sou.dir" location="${org.bedework.project.caldav}/server" />
+    <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
 
     <!-- Properties that differ from the personal client -->
     <property name="app.web.xml"

@@ -305,10 +305,6 @@
 
         <!-- Common jars for web apps -->
         <include name="bw-appcommon*.jar"/>
-        <include name="bw-appcommon*.jar"/>
-        <include name="bw-appcommon*.jar"/>
-        <include name="bw-appcommon*.jar"/>
-        <include name="bw-appcommon*.jar"/>
       </fileset>
     </copy>
 
@@ -332,7 +328,7 @@
      <!-- any extra lib files-->
     <copy todir="${app.dest.lib}" >
       <fileset refid="app.lib.files" />
-      <fileset refid="app.temp.lib.files" />
+      <!-- <fileset refid="app.temp.lib.files" /> -->
     </copy>
 
     <!-- build the war file -->

@@ -16,6 +16,9 @@
 
 <project name="uwcal.buildsh" default="build">
   <target name="init">
+    <!-- Load the location of the libraries -->
+    <property file="${org.bedework.project.bedework}/build/libjars.properties" />
+
     <!-- Destinations - where we build stuff -->
     <property name="app.dest.home"
               location="${org.bedework.temp.shellscr.home}/${propval.app.zip.name}" />
@@ -73,31 +76,37 @@
     <mkdir dir="${app.dest.lib}" />
 
     <!-- core files -->
-    <copy todir="${app.dest.lib}" flatten="yes" >
-      <fileset dir="${org.bedework.temp.jars}">
-        <include name="*.jar"/>
+
+    <copy todir="${app.dest.lib}" overwrite="yes">
+      <fileset dir="${bin.home}">
+        <!-- jars from sub-projects needed by all -->
+        <include name="rpiaccess*.jar"/>
+        <include name="rpiutil*.jar"/>
+        <include name="bw-davdefs*.jar"/>
+        <include name="bw-davio*.jar"/>
+
+        <!-- Calendar api jars -->
+        <include name="bw-calcore*.jar"/>
+        <include name="bw-calcorei*.jar"/>
+        <include name="bw-calenv*.jar"/>
+        <include name="bw-calfacade*.jar"/>
+        <include name="bw-calsvc*.jar"/>
+        <include name="bw-calsvci*.jar"/>
+        <include name="bw-icalendar*.jar"/>
+        <include name="bw-locale*.jar"/>
+        <include name="bw-logging*.jar"/>
       </fileset>
-      <fileset dir="${hibernate.jars.dir}">
-        <include name="*.jar"/>
-      </fileset>
-      <fileset dir="${commons.dir}">
-        <include name="*.jar"/>
-      </fileset>
-      <fileset dir="${struts.dir}">
-        <include name="*.jar"/>
-      </fileset>
+    </copy>
+
+     <!-- any extra bin files-->
+    <copy todir="${app.dest.lib}" >
+      <fileset refid="app.bin.files" />
     </copy>
 
     <!-- Some more standard libs -->
     <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
     <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-httpclient.jar}"/>
-
-    <!-- associated projects -->
-    <copy todir="${app.dest.lib}" file="${org.bedework.access.jar}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.rpiutil.jar}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.davdefs.jar}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.davio.jar}" />
 
     <!-- Extra libraries specified in calling build file -->
     <copy todir="${app.dest.lib}" flatten="yes" >
@@ -114,12 +123,12 @@
     <copy todir="${app.dest.lib}" file="${hsqldb.jdbcdriver.jar}"/>
 
     <copy todir="${app.dest.classes}">
-      <fileset dir="${org.bedework.core.base}/resources/properties" />
+      <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/properties" />
       <filterset refid="property.filters" />
     </copy>
 
     <copy todir="${app.dest.classes}">
-      <fileset dir="${org.bedework.core.base}/resources/hbms" />
+      <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/hbms" />
       <filterset refid="property.filters" />
     </copy>
 

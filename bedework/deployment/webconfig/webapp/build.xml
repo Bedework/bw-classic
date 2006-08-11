@@ -14,7 +14,7 @@
 
     <dirname property="this.dir" file="${ant.file}"/>
 
-    <property name="app.sou.dir" location="${org.bedework.deploy.project.path}/${org.bedework.deploy.type}" />
+    <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
 
     <!-- Flag as struts -->
     <property name="org.bedework.strutsapp" value="true" />
@@ -71,12 +71,7 @@
     <!-- from  the bin directory -->
     <fileset id="app.bin.files" dir="${bin.home}" >
       <include name="bw-webcommon*.jar" />
-      <include name="bw-webcommon*.jar" />
-    </fileset>
-
-    <!-- from  the temp jars directory -->
-    <fileset id="app.temp.lib.files" dir="${org.bedework.temp.jars}" >
-      <include name="${org.bedework.config.jar.name}" />
+      <include name="bw-webconfig*.jar" />
     </fileset>
 
     <!-- ===============================================================
