@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<!-- ============= deployutil classes build Targets ============
+     This is the ant build file for the deployment classes for bedework.
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="bedework.deployutil" default="build">
+  <property name="base.name" value="deployutil"/>
+
+  <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+    <property name="source.home" location="${this.dir}/src"/>
+  </target>
+
+  <target name="build" depends="init"
+          description="Compile bedework logging classes">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="base.java.sources" dir="${source.home}" >
+      <include name="org/bedework/*/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/*/*.class"/>
+    </patternset>
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+</project>
