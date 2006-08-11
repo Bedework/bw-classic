@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+  <render-context>
+    <attribute name="errors"/>
+    <attribute name="message"/>
+  </render-context>
+  <portlet-url-type>
+    <render path="/show"/>
+    <action path="/setup"/>
+    <action path="/selectFilter"/>
+    <action path="/showCals"/>
+    <action path="/setView"/>
+    <action path="/eventView"/>
+    <action path="/addEvent"/>
+    <action path="/editEvent"/>
+    <action path="/addEventRef"/>
+    <action path="/delEventRef"/>
+    <action path="/showPage"/>
+    <action path="/manageLocations"/>
+    <action path="/addLocation"/>
+    <action path="/editLocation"/>
+    <action path="/delLocation"/>
+    <action path="/subscribe"/>
+  </portlet-url-type>
+</config>
+

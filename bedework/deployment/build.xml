@@ -1,0 +1,281 @@
+<?xml version="1.0"?>
+
+<!-- ===================== Deployment build file =======================
+     This directory and the files within it are to be part of the config
+     and deployment process.
+
+     A number of properties of the form org.bedework.install.XXX will be
+     defined, each indicating that a particualr component is to be deployed.
+
+     Targets below will be executed only if that property is defined.
+
+     Adding a new configuration, e.g. a different portal platform, requires
+     the steps:
+        Create a subdirectory in each components subdirectory,
+        e.g.  webadmin/myportal
+
+        Create any other required resource directories and resources and
+        create a build.xml file to configure and package the component(s).
+
+        Update the config program to load, save and display the new
+        properties for that configuration.
+
+        Add an antcall for each component and a corresponding target
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="deploy.bedework" default="init">
+  <property name="base.name" value="deployment"/>
+
+  <target name="init" >
+    <dirname property="this.build.dir" file="${ant.file}"/>
+
+    <property name="source.home" location="${this.build.dir}/src"/>
+
+    <!-- Load default deploy properties -->
+    <property file="${this.build.dir}/deploy.properties"/>
+
+    <!-- ==================== config properties ========================= -->
+    <property name="org.bedework.clone.name" value="${org.bedework.clone.default}" />
+    <property name="org.bedework.config.properties"
+              location="${org.bedework.config.base}/configs/${org.bedework.clone.name}.properties" />
+    <property name="org.bedework.config.options"
+              location="${org.bedework.config.base}/configs/${org.bedework.clone.name}.options.xml" />
+
+    <echo message="==========================================================" />
+    <echo message="Use config properties ${org.bedework.config.properties}" />
+    <loadproperties
+          srcFile="${org.bedework.config.properties}" >
+      <filterchain>
+        <expandproperties/>
+      </filterchain>
+    </loadproperties>
+
+    <!-- default to debug off -->
+    <property name="app.debug.val" value="0" />
+
+    <!-- set this for the war builds -->
+    <dirname property="app.root.dir" file="${ant.file}"/>
+
+    <!-- ==================== config properties =========================
+    <property name="org.bedework.config.properties"
+              location="${org.bedework.config.base}/configs/${org.bedework.clone.name}.properties" />
+
+    <echo message="==========================================================" />
+    <echo message="Use clone properties ${org.bedework.config.properties}" />
+    <loadproperties
+          srcFile="${org.bedework.config.properties}" >
+      <filterchain>
+        <expandproperties/>
+      </filterchain>
+    </loadproperties>
+    -->
+  </target>
+
+  <target name="deftasks" depends="init">
+    <path id="app.xml.cp">
+      <pathelement location="${org.bedework.deployutil.jar}"/>
+    </path>
+
+    <taskdef name="forEachApp"
+             classname="org.bedework.deployment.ForEachAppTask">
+      <classpath refid="app.xml.cp"/>
+    </taskdef>
+  </target>
+
+  <target name="build.configured" depends="deftasks" >
+    <!-- Clean up before we start -->
+    <delete dir="${org.bedework.temp.wars.home}" />
+
+    <antcall target="build.standalone.apps" inheritrefs="true" />
+
+    <antcall target="build.portal.apps" inheritrefs="true" />
+
+    <antcall target="build.j2ee.apps" inheritrefs="true" />
+  </target>
+
+  <!-- =================================================================
+       Targets called by the build.configured target. Each is conditional on a
+       config property and each executes a build file in a subdirectory of
+       this component.
+       ================================================================= -->
+
+  <target name="build.standalone.apps" if="org.bedework.global.build.standalone.app" >
+    <!-- ======================= webconfig - only standalone =================
+    <ant antfile="${org.bedework.deployment.base}/webconfig/webapp/build.xml"
+         inheritrefs="true" target="build.configured" />
+          -->
+
+    <property name="org.bedework.deploy.kind" value="webapp" />
+    <antcall target="build.configured.apps" inheritrefs="true" />
+  </target>
+
+  <target name="build.portal.apps" if="org.bedework.global.portal.platform" >
+    <property name="org.bedework.deploy.kind"
+              value="${org.bedework.global.portal.platform}" />
+    <antcall target="build.configured.apps" inheritrefs="true" />
+  </target>
+
+  <target name="build.j2ee.apps" if="org.bedework.global.j2ee.platform" >
+    <property name="org.bedework.deploy.kind"
+              value="${org.bedework.global.j2ee.platform}" />
+    <antcall target="build.configured.apps" inheritrefs="true" />
+  </target>
+
+  <!-- =================================================================
+                         The deploy target.
+       ================================================================= -->
+
+  <target name="deploy" depends="deftasks" >
+    <!-- Clean up before we start -->
+    <delete dir="${org.bedework.temp.wars.home}" />
+
+    <antcall target="deploy.standalone.apps" inheritrefs="true" />
+
+    <antcall target="deploy.shellscr.apps" inheritrefs="true" />
+
+    <antcall target="deploy.portal.apps" inheritrefs="true" />
+
+    <antcall target="deploy.j2ee.apps" inheritrefs="true" />
+
+    <!-- copy startup website that sends you to the applications -->
+    <delete dir="${webapp.root.dir}/bedework"/>
+    <mkdir dir="${webapp.root.dir}/bedework"/>
+    <copy todir="${webapp.root.dir}/bedework">
+      <fileset dir="${app.root.dir}/resources/bedework"/>
+    </copy>
+
+    <!-- copy libs that the application server needs -->
+    <antcall target="deploy.appserver.jdbcdriver" inheritrefs="true" />
+    <antcall target="deploy.appserver.javatools" inheritrefs="true" />
+  </target>
+
+  <!-- =================================================================
+       Targets called by the deploy target. Each is conditional on a
+       config property and each executes a build file in a subdirectory of
+       this component.
+       ================================================================= -->
+
+  <target name="deploy.standalone.apps" if="org.bedework.global.build.standalone.app" >
+    <property name="org.bedework.deploy.kind" value="webapp" />
+    <antcall target="deploy.apps" inheritrefs="true" />
+  </target>
+
+  <target name="deploy.portal.apps" if="org.bedework.global.portal.platform" >
+    <property name="org.bedework.deploy.kind"
+              value="${org.bedework.global.portal.platform}" />
+    <antcall target="deploy.apps" inheritrefs="true" />
+  </target>
+
+  <target name="deploy.j2ee.apps" if="org.bedework.global.j2ee.platform" >
+    <property name="org.bedework.deploy.kind"
+              value="${org.bedework.global.j2ee.platform}" />
+    <antcall target="deploy.apps" inheritrefs="true" />
+  </target>
+
+  <!-- Always build the shellscr stuff. -->
+  <target name="deploy.shellscr.apps" >
+    <property name="org.bedework.deploy.kind" value="shellscr" />
+    <antcall target="deploy.apps" inheritrefs="true" />
+  </target>
+
+  <!-- The cp.xalan task conditionally copies the xalan.jar file, if
+       necessary -->
+  <target name="cp.xalan" if="xalan.in.tomcat.common.endorsed">
+    <copy file="${org.bedework.default.lib}/xalan.jar"
+          todir="${appserver.endorsed.dir}"/>
+  </target>
+
+  <target name="deploy.appserver.jdbcdriver"
+          if="appserver.jdbcdriver.jar" >
+    <!-- copy jdbc jar so datasources work -->
+    <copy todir="${appserver.lib.dir}" file="${appserver.jdbcdriver.jar}"/>
+  </target>
+
+  <target name="deploy.appserver.javatools"
+          if="java.tools.jar" >
+    <!-- copy tools jar so jsps work -->
+    <copy todir="${appserver.lib.dir}" file="${java.tools.jar}"/>
+  </target>
+
+  <!-- =================================================================
+       Targets called by the build.configured target. Each is conditional on a
+       config property and each executes a build file in a subdirectory of
+       this component.
+       ================================================================= -->
+  <target name="build.configured.apps">
+    <forEachApp names="${org.bedework.install.app.names}"
+                prefix="org.bedework.deploy"
+                appPrefix="org.bedework.app"
+                projectPrefix="org.bedework.project">
+      <sequential>
+        <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
+                   property="app.kind.available" />
+        <antcall target="build.available.configured.app" inheritrefs="true" />
+      </sequential>
+    </forEachApp>
+
+    <!-- ======================= termination tasks ================= -->
+    <!--
+    <property name="org.bedework.deploy.type.dir"
+              location="${org.bedework.deployment.base}/termination" />
+              -->
+
+    <ant antfile="${org.bedework.deployment.base}/termination/build.xml"
+         inheritrefs="true" target="build.configured" />
+  </target>
+
+  <target name="build.available.configured.app" if="app.kind.available">
+    <!-- Pick out the application build properties based on the prefix "org.bedework.app."
+         and the deployment name -->
+    <propertyset id="build-app-properties">
+      <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
+      <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
+    </propertyset>
+  </target>
+
+  <target name="deploy.apps">
+    <forEachApp names="${org.bedework.install.app.names}"
+                prefix="org.bedework.deploy"
+                appPrefix="org.bedework.app"
+                projectPrefix="org.bedework.project">
+      <sequential>
+        <antcall target="wrap.deploy.available.app" inheritrefs="true" />
+      </sequential>
+    </forEachApp>
+
+    <!-- ======================= termination tasks ================= -->
+    <!--
+    <property name="org.bedework.deploy.type.dir"
+              location="${org.bedework.deployment.base}/termination" />
+              -->
+
+    <ant antfile="${org.bedework.deployment.base}/termination/${org.bedework.deploy.kind}/build.xml"
+         inheritrefs="true" target="deploy" />
+  </target>
+
+  <target name="wrap.deploy.available.app">
+    <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
+               property="app.kind.available" />
+
+    <antcall target="deploy.available.app" inheritrefs="true" />
+  </target>
+
+  <target name="deploy.available.app" if="app.kind.available">
+    <propertyset id="deploy-app-properties">
+      <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
+      <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
+    </propertyset>
+
+    <echo message="XXXXXXXXXXXX      type=${org.bedework.deploy.type}" />
+    <echo message="XXXXXXXXXXXX      name=${org.bedework.deploy.name}" />
+    <echo message="XXXXXXXXXXXX      path=${org.bedework.deploy.project.path}" />
+
+    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
+         inheritrefs="true" target="deploy" >
+      <propertyset refid="deploy-app-properties" />
+    </ant>
+  </target>
+</project>
+

@@ -1,0 +1,884 @@
+/* Bedework Calendar portlet styles
+
+The color scheme for the interior components of the calendar
+is set in shades of gray (as it is in the stand-alone skin)
+with the intention of fitting into any surrounding color scheme.
+The HTML is generated in such a way to allow global portal styles
+to simply "wash" into the calendar without the need for local
+portlet class definitions.  Local stylistic overrides (needed for
+impacting spacing and numerous other features) are defined in this
+document prefixed by the id #org.bedework.  The generated portlet skin
+wraps the entire html output with <div id="org-bedework"> so that calendar
+specific styles cannot break portal styles.
+
+*/
+#org-bedework {
+  font-family : Arial, Helvetica, sans-serif;
+  font-size: 100%; /* needed for IE */
+  background-color : white;
+  color : black;
+  padding: 0;
+  margin: 0;
+  min-width: 700px;
+}
+#org-bedework #curDateRangeTable {
+  width: 100%;
+  height: 26px;
+  background: #2c5f89 url(../../images/curDateRangeBlue.gif) repeat-x bottom;
+  color : #eee;
+  margin: 0em;
+  font-weight : bold;
+  text-align : center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+#org-bedework #curDateRangeTable td {
+  padding-top: 5px;
+  padding-bottom: 1px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+#org-bedework #curDateRangeTable td.sideBarOpenCloseIcon {
+  width: 200px;
+}
+#org-bedework #curDateRangeTable td.date {
+  font-weight : bold;
+  text-align : center;
+  white-space: nowrap;
+}
+#org-bedework #curDateRangeTable td.rssPrint {
+  width: 200px;
+  font-weight : bold;
+  text-align : right;
+  white-space: nowrap;
+}
+#org-bedework #curDateRangeTable td.rssPrint img {
+  position: relative;
+  top: 3px;
+}
+#org-bedework #curDateRangeTable td.rssPrint a:link,
+#org-bedework #curDateRangeTable td.rssPrint a:active,
+#org-bedework #curDateRangeTable td.rssPrint a:visited {
+  font-size: 10px;
+  color: #eee;
+  background-color: transparent;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+  text-decoration: none;
+  margin-right: 0.5em;
+  position: relative;
+  top: -3px;
+}
+#org-bedework #curDateRangeTable td.rssPrint a:hover {
+  color: #663;
+  background-color: #fff;
+}
+#org-bedework #curDateRangeTable td.rssPrint a.rss:link,
+#org-bedework #curDateRangeTable td.rssPrint a.rss:active,
+#org-bedework #curDateRangeTable td.rssPrint a.rss:visited {
+  font-size: 10px;
+  font-weight: bold;
+  color: #444;
+  background-color: #ddd;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  padding: 0px 1px 0px 1px;
+  text-decoration: none;
+  margin-right: 0.5em;
+  margin-left: 2px;
+  position: relative;
+  top: -3px;
+  border: solid 1px #666;
+}
+#org-bedework #curDateRangeTable td.rssPrint a.rss:hover {
+  color: #900;
+  background-color: #fff;
+}
+#org-bedework #searchBarTable {
+  margin: 0px;
+  padding: 0em;
+  background-color : #eee;
+  color: black;
+  font-size: 0.9em;
+}
+#org-bedework #searchBarTable .leftCell {
+  margin: 0px;
+  padding: 0em;
+  border-left: 3px solid #aaa;
+  padding: 0.1em 0 0 0.5em;
+  white-space: nowrap;
+}
+#org-bedework #searchBarTable .leftCell .link {
+  font-size: 0.8em;
+  padding-left: 1em;
+  color: #999;
+  background-color: transparent;
+}
+#org-bedework #searchBarTable .leftCell a {
+  color: #888;
+  background-color: transparent;
+}
+#org-bedework #searchBarTable .leftCell a:hover {
+  color: #b00;
+  background-color: transparent;
+}
+#org-bedework #searchBarTable .rightCell {
+  margin: 0px;
+  padding: 0em;
+  text-align: right;
+  border-right: 3px solid #aaa;
+  padding: 0.1em 0.1em 0em 0em;
+  white-space: nowrap;
+}
+#org-bedework #searchBarTable form {
+  display: inline;
+  margin: 0px 0px 1px 0px;
+  padding: 0em;
+}
+#org-bedework #tabsTable {
+  margin: 0em;
+  padding: 4px 0px 0px 0px;
+  text-align: center;
+  background-color: #333;
+  color: #eee;
+}
+#org-bedework #tabsTable .centerCell  a {
+  text-decoration: none;
+  color: #eee;
+}
+#org-bedework #tabsTable .centerCell  img {
+  margin-right: 1px;
+}
+#org-bedework #tabsTable .rightCell {
+  background : url(../../images/demo/std-tab-space.gif);
+  padding-right: 0.5em;
+}
+#org-bedework #navigationBarTable {
+  font-size: 0.8em;
+  margin: 0em;
+  padding: 0em;
+  vertical-align: top;
+  border-left : 2px solid #aaa;
+  border-right : 2px solid #aaa;
+  border-bottom: 1px solid Gray;
+}
+#org-bedework #navigationBarTable a {
+  text-decoration: none;
+  white-space: nowrap;
+}
+#org-bedework #navigationBarTable td {
+  vertical-align: top;
+}
+#org-bedework #navigationBarTable form {
+  display: inline;
+  margin-bottom: 0em;
+}
+#org-bedework #navigationBarTable table {
+  display: inline;
+  margin-bottom: 0em;
+}
+#org-bedework #navigationBarTable td.todayButton {
+  padding: 1em 1em 0 1em;
+}
+#org-bedework #navigationBarTable td.gotoForm {
+  padding: 1em 0.5em 0 0;
+}
+#org-bedework #navigationBarTable td.leftCell {
+  text-align: left;
+  white-space: nowrap;
+  padding-left: 0.5em;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 0.75em 0em 0.75em 1em;
+  width: 100%;
+  vertical-align: middle;
+}
+#org-bedework #navigationBarTable td.leftCell .prevImg {
+  margin: 0 0.2em 0 0;
+  vertical-align: top;
+}
+#org-bedework #navigationBarTable td.leftCell .nextImg {
+  margin: 0 0.75em 0 0;
+  vertical-align: top;
+}
+#org-bedework #navigationBarTable td.rightCell {
+  text-align: right;
+  padding: 1em 0.5em 0em 0em;
+}
+#org-bedework #navigationBarTable td.rightCell select {
+  padding-right: 0em;
+  margin: 0em;
+  width: 10em;
+}
+#org-bedework #searchBarTable .calLinks {
+  white-space: nowrap;
+}
+#org-bedework #eventTable {
+  width: 100%;
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 0px;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#org-bedework #eventTable td.fieldname {
+  margin: 0em;
+  vertical-align: top;
+  padding: 0.5em 0.5em 0.2em 0.5em;
+  background-color: #eee;
+  /*background-color: #EDF5F9;*/
+  color: black;
+}
+#org-bedework #eventTable td.fieldval {
+  margin: 0em;
+  vertical-align: top;
+  padding: 0.5em 0.5em 0.2em 1em;
+}
+#org-bedework #eventTable th.icalIcon {
+  margin: 0em;
+  vertical-align: middle;
+  text-align: right;
+  padding: 0.5em 1em 0.2em 0.5em;
+  white-space: nowrap;
+	font-size: 0.9em;
+	font-weight: normal;
+}
+#org-bedework #eventTable th.icalIcon a {
+  text-decoration: none;
+}
+#org-bedework #eventTable th.icalIcon img {
+  vertical-align: middle;
+	padding-left: 1em;
+}
+#org-bedework #eventTable th.fieldname {
+  text-align: left;
+  padding: 1em 0.5em 1em 0.5em;
+  background-color: #eee;
+  /*background-color: #EDF5F9;*/
+  color: black;
+}
+#org-bedework #eventTable th.fieldval {
+  text-align: left;
+  padding: 1em 0.5em 0.5em 1em;
+  background-color: #fff;
+  color: black;
+  width: 100%;
+}
+#org-bedework #calPageTable {
+  width: 100%;
+  font-size: 100%;
+  margin: 0px;
+  padding: 0px;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#org-bedework #calPageTable td {
+  width: 50%;
+  vertical-align: top;
+  padding: 0.5em 2em 1em 3em;
+}
+#org-bedework #calPageTable th {
+  font-size: 1.2em;
+  background-color: #ccc;
+  color: black;
+  font-weight: bold;
+}
+#org-bedework #calPageTable td.leftCell {
+  border-right : thin dashed #999;
+}
+#org-bedework #calPageTable h2 {
+  font-size: 1.2em;
+}
+#org-bedework #calPageTable td.infoCell {
+  background-color: #eee;
+  color: black;
+  text-align: center;
+}
+#org-bedework #dayCalendarTable {
+  width: 100%;
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 0px;
+  border-top: 1px solid #666;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#org-bedework #dayCalendarTable td {
+  padding: 0.4em;
+  margin: 0em;
+}
+#org-bedework #dayCalendarTable .dateRange {
+  text-align: left;
+  background-color: #D3E4F0;
+  color: black;
+  white-space: nowrap;
+}
+#org-bedework #dayCalendarTable .description {
+  text-align: left;
+  background-color: #fff;
+  color: black;
+  width: 100%;
+}
+#org-bedework #dayCalendarTable .more {
+  text-align: center;
+  background-color: #eee;
+  color: black;
+  font-size: 0.8em;
+}
+#org-bedework #weekCalendarTable {
+  width: 100%;
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 0px;
+  border-top: 1px solid #666;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#org-bedework #weekCalendarTable td {
+  padding: 0.4em;
+  margin: 0em;
+}
+#org-bedework #weekCalendarTable .dateRange {
+  text-align: left;
+  background-color: #D3E4F0;
+  color: black;
+  white-space: nowrap;
+}
+#org-bedework #weekCalendarTable .description {
+  text-align: left;
+  background-color: #fff;
+  color: black;
+  width: 100%;
+}
+#org-bedework #weekCalendarTable .more {
+  text-align: center;
+  background-color: #eee;
+  color: black;
+  font-size: 0.8em;
+}
+#org-bedework #monthCalendarTable {
+  width: 100%;
+  font-size: 0.8em;
+  margin: 0px;
+  padding: 0px;
+  border-top: 1px solid #666;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#org-bedework #monthCalendarTable th.dayHeading {
+  width: 14%;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #2c5f89;
+  color: #eee;
+  border: 1px solid black;
+}
+#org-bedework #monthCalendarTable td {
+  width: 14%;
+  height: 60px;
+  vertical-align: top;
+  text-align: left;
+  padding: 0em;
+  border: 1px solid #aaa;
+  background-color: white;
+  color: black;
+}
+#org-bedework #monthCalendarTable td.filler {
+  border: none;
+  background-color: #eee;
+  color: black;
+  /*border: 1px solid #aaa;*/
+}
+/*#monthCalendarTable ul {
+  font-size: 0.8em;
+  list-style : disc;
+  margin: 0em 0em 0em 1em;
+  padding-left: 0.75em;
+  padding-right: 0.1em;
+  color: #999;
+}*/
+#org-bedework #monthCalendarTable ul {
+  font-size: 0.8em;
+  list-style : none;
+  margin: 0em;
+  padding: 0.3em 0em 0em 0em;
+}
+#org-bedework #monthCalendarTable ul li {
+  margin: 0em;
+  padding: 0em;
+  display: inline;
+}
+#org-bedework #monthCalendarTable a.eventLinkA:link,
+#org-bedework #monthCalendarTable a.eventLinkA:visited,
+#org-bedework #monthCalendarTable a.eventLinkA:active  {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  background-color: #A3C8D9;
+  color: black;
+}
+#org-bedework #monthCalendarTable a.eventLinkB:link,
+#org-bedework #monthCalendarTable a.eventLinkB:visited,
+#org-bedework #monthCalendarTable a.eventLinkB:active  {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  background-color: #DEECF2;
+  color: black;
+}
+#org-bedework #monthCalendarTable a.eventCancelled:link,
+#org-bedework #monthCalendarTable a.eventCancelled:visited,
+#org-bedework #monthCalendarTable a.eventCancelled:active  {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  background-color: #ccc;
+  color: black;
+}
+#org-bedework #monthCalendarTable a.eventTentative:link,
+#org-bedework #monthCalendarTable a.eventTentative:visited,
+#org-bedework #monthCalendarTable a.eventTentative:active  {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  background: #eee url('../../images/tentativeLines.gif') top;
+  color: black;
+}
+#org-bedework #monthCalendarTable a.holiday:link,
+#org-bedework #monthCalendarTable a.holiday:visited,
+#org-bedework #monthCalendarTable a.holiday:active  {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  background-color: #fff;
+  color: black;
+  /*border-top: 1px solid black;
+  border-bottom: 1px solid black;*/
+}
+#org-bedework #monthCalendarTable a.eventLinkA:hover,
+#org-bedework #monthCalendarTable a.eventLinkB:hover,
+#org-bedework #monthCalendarTable a.eventCancelled:hover,
+#org-bedework #monthCalendarTable a.eventTentative:hover,
+#org-bedework #monthCalendarTable a.holiday:hover  {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+  color: black;
+  background-color: #ddd;
+}
+#org-bedework #monthCalendarTable a.dayLink {
+  text-decoration: none;
+  color: black;
+  background-color: transparent;
+}
+#org-bedework #monthCalendarTable a:hover.dayLink {
+  text-decoration: none;
+  color: #eee;
+  background-color: black;
+}
+#org-bedework #monthCalendarTable a:hover {
+  /* required for eventTip to hover correctly;
+     apply only to the hover pseudo class, or
+     the other anchors nearby will cover the eventTip in IE */
+  position: relative;
+}
+#org-bedework #monthCalendarTable a span.eventTip,
+#org-bedework #monthCalendarTable a span.eventTipReverse {
+  display: none;
+}
+#org-bedework #monthCalendarTable a:hover span.eventTip {
+  display: block;
+  position: absolute;
+  width: 20em;
+  top: 1em;
+  left: 12em;
+  background-color: #ffe;
+  color: black;
+  padding: 4px;
+  border: 1px solid #333;
+}
+#org-bedework #monthCalendarTable a:hover span.eventTipReverse {
+  display: block;
+  position: absolute;
+  width: 20em;
+  top: 1em;
+  left: -21em;
+  background-color: #ffe;
+  color: black;
+  padding: 4px;
+  border: 1px solid #333;
+}
+#org-bedework #monthCalendarTable a:hover span.eventTipStatusCancelled {
+  display: block;
+  color: white;
+  background-color: #333;
+  padding: 2px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+#org-bedework #monthCalendarTable a:hover span.eventTipStatusTentative {
+  display: block;
+  color: black;
+  background: #eee url('../../images/tentativeLines.gif') top;
+  padding: 2px;
+  margin-bottom: 6px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+#org-bedework a.gridAdd {
+  display: block;
+  float: right;
+  font-size: 0.8em;
+  text-decoration: none;
+  margin-right: 2px;
+}
+#org-bedework #yearCalendarTable {
+  width: 100%;
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 0em;
+  border-top: 1px solid #666;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#org-bedework #yearCalendarTable td {
+  padding: 1em 0em 0em 0em;
+  margin: 0em;
+  vertical-align: top;
+  text-align: center;
+  width: 33%;
+}
+#org-bedework #yearCalendarTable table.yearViewMonthTable {
+  margin: 0em  1em 0.5em 1em;
+  border: 1px solid #ddd;
+}
+#org-bedework #yearCalendarTable table.yearViewMonthTable td {
+  text-align: center;
+  padding: 0.2em;
+  width: 12.5%;
+}
+#org-bedework #yearCalendarTable table.yearViewMonthTable th {
+  font-weight: bold;
+  background-color: #f5f5f5;
+  color: black;
+  padding: 0.2em;
+}
+#org-bedework #yearCalendarTable table.yearViewMonthTable td.monthName {
+  font-weight: bold;
+  text-align: center;
+  background-color: #EDF5F9;
+  color: black;
+  white-space: nowrap;
+  border-bottom: 1px solid #999;
+}
+#org-bedework #yearCalendarTable table.yearViewMonthTable td.weekCell {
+  font-weight: bold;
+  font-size: 0.8em;
+  background-color: #f5f5f5;
+  color: black;
+}
+#org-bedework #yearCalendarTable  table.yearViewMonthTable td  a  {
+  text-decoration: none;
+  background-color: inherit;
+  padding: 1px;
+  color: black;
+}
+#org-bedework #yearCalendarTable  table.yearViewMonthTable td.weekCell a  {
+  text-decoration: none;
+  background-color: inherit;
+  padding: 1px;
+  color: black;
+}
+#org-bedework #yearCalendarTable  table.yearViewMonthTable td.monthName a  {
+  text-decoration: none;
+  background-color: inherit;
+  padding: 1px;
+  color: black;
+}
+#org-bedework #yearCalendarTable  table.yearViewMonthTable td a:hover  {
+  text-decoration: none;
+  background-color: #FFC;
+  color: black;
+  border: 1px solid black;
+  padding: 0;
+}
+#org-bedework #listTable {
+  width: 100%;
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 0px;
+  border-top: 1px solid #666;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#org-bedework #listTable td {
+  padding: 0.5em;
+  margin: 0em;
+  border-bottom: 1px solid #bbb;
+}
+#org-bedework #listTable td a {
+  background-color: transparent;
+  color: black;
+  text-decoration: none;
+}
+#org-bedework #listTable td.dateRangeCrossDay {
+  font-size: 0.9em;
+  text-transform: lowercase;
+  background-color: #eee;
+  color: black;
+  white-space: nowrap;
+}
+#org-bedework #listTable td.dateRangeEarlyMorning {
+  font-size: 0.9em;
+  text-transform: lowercase;
+  background-color: #C0D4DD;
+  color: black;
+  white-space: nowrap;
+}
+#org-bedework #listTable td.dateRangeMorning {
+  font-size: 0.9em;
+  text-transform: lowercase;
+  background-color: #F0F9FF;
+  color: black;
+  white-space: nowrap;
+}
+#org-bedework #listTable td.dateRangeAfternoon {
+  font-size: 0.9em;
+  text-transform: lowercase;
+  background-color: #DEECF2;
+  color: black;
+  white-space: nowrap;
+}
+#org-bedework #listTable td.dateRangeEvening {
+  font-size: 0.9em;
+  text-transform: lowercase;
+  background-color: #A3C8D9;
+  color: black;
+  white-space: nowrap;
+}
+#org-bedework #listTable span.littleArrow {
+  font-size: 1.4em;
+}
+#org-bedework #listTable td.description {
+  text-align: left;
+  background-color: #fff;
+  color: black;
+  width: 100%;
+}
+#org-bedework #listTable td.description {
+  text-align: left;
+  background-color: white;
+  color: black;
+  width: 100%;
+}
+#org-bedework #listTable td.bwStatusCancelled {
+  background-color: #ddd;
+  color: black;
+}
+#org-bedework #listTable td.bwStatusTentative {
+  background: white url('../../images/tentativeLines.gif') top;
+  color: black;
+}
+#org-bedework #listTable td.description a {
+  display: block;
+  background-color: transparent;
+  color: black;
+  text-decoration: none;
+}
+#org-bedework #listTable td.description a.moreLink {
+  display: inline;
+  background-color: transparent;
+  color: #009;
+  text-decoration: underline;
+}
+#org-bedework #listTable td.description:hover {
+  background-color: #f5f5f5;
+  color: black;
+}
+#org-bedework #listTable td.dateRow {
+  text-align: left;
+  background-color: #B1D4E3;
+  color: #333;
+  font-size: 0.8em;
+  padding: 0.2em 0.5em 0.2em 0.5em;
+  margin: 0em;
+}
+#org-bedework #listTable td.dateRow a {
+  display: block;
+  color: #333;
+  background-color: transparent;
+  font-weight: bold;
+  text-decoration : none;
+}
+#org-bedework #listTable td.icons {
+  color: black;
+  background-color: #ddd;
+  white-space: nowrap;
+}
+#org-bedework #listTable td.icons img.addref {
+  margin-right: 0.5em;
+}
+#org-bedework #calPageTable ul.calendarTree li {
+  font-weight: bold;
+}
+#org-bedework #calPageTable ul.calendarTree li ul li {
+  font-weight: normal;
+}
+#org-bedework #calPageTable ul.calendarTree li.folder {
+  list-style-image: url(../../images/demo/catIcon.gif);
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+#org-bedework #calPageTable ul.calendarTree li.calendar {
+  list-style-image: url(../../images/demo/calIcon-sm.gif);
+}
+#org-bedework .noEventsCell {
+  padding: 1em;
+}
+#org-bedework #footer {
+  font-size: 0.75em;
+  text-align : center;
+  margin-top: 0em;
+  padding: 1em;
+  color: #333;
+  background-color: #eee;
+  border-bottom: 2px solid #999;
+  border-left: 2px solid #999;
+  border-right: 2px solid #999;
+  white-space: nowrap;
+}
+#org-bedework #footer a {
+  color: #333;
+  background-color: transparent;
+  text-decoration: underline;
+}
+#org-bedework #skinSelectorTable {
+  width: 100%;
+  padding-top: 0.5em;
+  font-size: 0.7em;
+  color: #333;
+  background-color: inherit;
+}
+#org-bedework #skinSelectorTable td {
+  vertical-align: top;
+}
+#org-bedework #skinSelectorTable td.rightCell {
+  text-align: right;
+}
+#org-bedework #skinSelectorTable td.leftCell {
+  text-align: left;
+  color: #999;
+  background-color: inherit;
+}
+#org-bedework #skinSelectorTable td.leftCell  a {
+  color: #999;
+  background-color: inherit;
+}
+#org-bedework #skinSelectorTable td.rightCell form {
+  display: inline;
+  margin: 0em;
+  padding: 0em;
+}
+#org-bedework #skinSelectorTable td.rightCell select {
+  font-size: 0.9em;
+  color: #333;
+  background-color: #eee;
+}
+#org-bedework #featureHighlight {
+  color: #dd0;
+  font-style: italic;
+}
+/*   LINKS    */
+#org-bedework a:link,
+#org-bedework a:active,
+#org-bedework a:visited {
+  color: #2c5f89;
+  background-color: transparent;
+}
+#org-bedework a:hover {
+  color: #b00;
+  background-color: transparent;
+}
+#org-bedework .center {
+  text-align: center;
+}
+#org-bedework .left {
+  text-align: left;
+}
+#org-bedework .right {
+  text-align: right;
+}
+/* Generic selectors*/
+#org-bedework h2 {
+  margin: 0em;
+  padding: 0.2em 0.2em 0.2em 0.5em;
+  font-size: 1.3em;
+  border-bottom: 1px solid #ccc;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#org-bedework h2 a:link,
+#org-bedework h2 a:active,
+#org-bedework h2 a:visited,
+#org-bedework h2 a:hover {
+  color: black;
+  background-color: inherit;
+  text-decoration: none;
+}
+#org-bedework h2.bwStatusConfirmed {
+  background-color: #eee;
+  color: black;
+}
+#org-bedework h2.bwStatusCancelled {
+  background-color: #eee;
+  color: black;
+}
+#org-bedework h2.bwStatusTentative {
+  background: #eee url('../../images/tentativeLines.gif') top;
+  color: black;
+}
+/* Header IDs and classes */
+#org-bedework #errors {
+  margin: 0;
+  padding: 1em;
+  background-color: #333;
+  color: #ff9;
+  font-weight: bold;
+}
+#org-bedework #tabsTable .centerCell {
+  text-align: left;
+  background : url(../../images/demo/std-tab-space.gif);
+  font-size: 0.8em;
+  white-space: nowrap;
+  width: 100%;
+  padding: 0 1em;
+}
+#org-bedework #stats {
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 1em;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#org-bedework #statsTable {
+  margin: 1em 0 0 4em;
+  width: 300px;
+}
+#org-bedework #statsTable th {
+  padding: 0.5em;
+  background-color: #eee;
+  color: black;
+}
+#org-bedework #statsTable td.label {
+  text-align: right;
+  padding-right: 2em;
+}

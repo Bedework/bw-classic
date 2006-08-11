@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Based on jpetstore example application with contributions from:
+
+  Author: Xavier Lawrence @ jahia . com
+  Author: Mike Douglass    douglm@rpi.edu
+-->
+<portlet-app id="calApp" version="1.0">
+  <portlet id="PublicEventsPortlet">
+    <init-param>
+      <name>ServletContextProvider</name>
+      <value>org.apache.jetspeed.portlet.ServletContextProviderImpl</value>
+    </init-param>
+    <init-param>
+      <name>ViewPage</name>
+      <value>/initialise.rdo</value>
+    </init-param>
+    <portlet-name>PublicCal</portlet-name>
+    <display-name>Public Events Display</display-name>
+    <description>
+        The UWCal application displays public events.
+    </description>
+    <portlet-class>org.apache.portals.bridges.struts.StrutsPortlet</portlet-class>
+    <expiration-cache>-1</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+      <!--<portlet-mode>HELP</portlet-mode>-->
+    </supports>
+    <portlet-info>
+      <title>PublicCal</title>
+      <short-title>PublicCal</short-title>
+      <keywords>Struts, UWCal, Calendar, Public, Events</keywords>
+    </portlet-info>
+  </portlet>
+</portlet-app>
+

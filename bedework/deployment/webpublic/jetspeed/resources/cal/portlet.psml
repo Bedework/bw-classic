@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  This is a Jetspeed2 psml file for the calendar public events portlet.
+
+  The fragment id's must be unique among all .psml files, and the name of the
+  portlet is read from the portlet.xml file.
+-->
+<page id="/@CONTEXT-ROOT@.psml">
+  <defaults
+     skin="orange"
+     layout-decorator="tigris"
+     portlet-decorator="tigris"
+  />
+  <title>Public Events</title>
+  <fragment id="pubcal-1" type="layout" name="jetspeed-layouts::VelocityOneColumn">
+    <fragment id="pubcal-2" type="portlet" name="@CONTEXT-ROOT@::PublicCal"/>
+  </fragment>
+</page>

@@ -1,0 +1,439 @@
+body {
+  margin: 0;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  background-color : white;
+  color : black;
+}
+#headBar {
+  margin: 0;
+  padding: 1em;
+  color: #eee;
+  background: #0038A8;
+  text-align: right;
+}
+#headBar h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.3em;
+}
+#menuBar {
+  color: #999;
+  background: white url("../../resources/menubar.gif") repeat-x;
+  height: 49px;
+  margin: 0 0 3px 0;
+  padding: 13px 0 0 10px;
+  vertical-align: middle;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+}
+#menuBar a:link,
+#menuBar a:active,
+#menuBar a:visited {
+  color: black;
+  background: transparent;
+  text-decoration: none;
+}
+#menuBar a:hover {
+  color: #0038A8;
+  background: transparent;
+  text-decoration: underline;
+}
+#bodyBlock {
+  width: 100%;
+  border-top: 1px solid #ccc;
+  font-size: 0.8em;
+  margin: 0;
+}
+#bodyBlock td {
+  vertical-align: top;
+}
+#bodyBlock td#fbForm {
+  width: 120px;
+  padding: 0;
+  border-right: 1px solid #ccc;
+  white-space: nowrap;
+}
+#bodyBlock td#fbForm #dateForm {
+  margin: 1em 0.5em 1em 1em;
+  white-space: nowrap;
+}
+#bodyBlock td#fbForm form input {
+  margin: 2px 0;
+  padding: 0;
+}
+#bodyBlock h4 {
+  background: #eee;
+  color: black;
+  font-size: 1em;
+  padding: 2px 0;
+  text-align: center;
+  margin: 0 0 1em 0;
+  border-bottom: 1px solid #ddd;
+  /*border-top: 1px solid #ddd;*/
+}
+#bodyBlock td#fbForm p {
+  margin: 0 0 0.5em 0;
+  padding: 0;
+}
+#bodyBlock td#fbForm p.padTop {
+  margin: 1em 0 0 0;
+  padding: 0;
+}
+#bodyBlock td#fbForm .dateFormat {
+  position: relative;
+  top: -4px;
+  left: 2px;
+  padding: 0;
+  margin: 0;
+  font-style: italic;
+}
+#bodyBlock td#fbForm .aggSubmit {
+  width: 100px;
+}
+#bodyBlock td#bodyContent {
+  vertical-align: top;
+  padding: 1em;
+}
+h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.4em;
+}
+#bodyBlock .who {
+  color: #0038A8;
+  background: transparent;
+  font-style: italic;
+}
+#bodyBlock .subLink,
+#bodyBlock .subLink option {
+  font-size: 0.9em;
+  font-weight: normal;
+}
+#bodyBlock .subLink a {
+  text-decoration: none;
+}
+#bodyBlock .subLink a:hover {
+  text-decoration: underline;
+}
+#bodyBlock #frontPage {
+  text-align: center;
+}
+#bodyBlock td#groupCell h4 {
+  margin-top: 0;
+  text-align: left;
+  padding-left: 1em;
+}
+#bodyBlock td#groupCell p {
+  margin: 0.5em;
+}
+#bodyBlock table#attendees {
+  margin: 1em;
+  padding: 0;
+}
+#bodyBlock td#logos {
+  width: 112px;
+  padding: 0;
+  text-align: center;
+  vertical-align: top;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+#failures {
+  width: auto;
+  margin: 2em auto;
+  border: 1px solid #999;
+}
+#failures th,
+#failures td {
+  text-align: left;
+  padding: 6px;
+}
+#failures tr.title th {
+  color: #ff9;
+  background: #333;
+}
+#failures tr.headers th {
+  color: black;
+  background: #bbb;
+}
+#failures td {
+  border-top: 1px solid #ddd;
+}
+#failures td.messageTitle {
+  text-align: right;
+  font-style: italic;
+}
+#freeBusy {
+  margin: 1em auto;
+}
+#freeBusy td {
+  vertical-align: middle;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+#freeBusy td.morning {
+  color: black;
+  background: #ddf;
+}
+#freeBusy td.evening {
+  color: black;
+  background: #dde;
+}
+#freeBusy td.timeLabels {
+  vertical-align: middle;
+  text-align: center;
+  font-size: 0.8em;
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
+}
+#freeBusy td.dayDate {
+  white-space: nowrap;
+}
+#freeBusy td.free,
+#freeBusyKey td.free {
+  color: #A3BAEA;
+  background-color: #A3BAEA;
+}
+#freeBusy td.busy,
+#freeBusyKey td.busy {
+  color: #fbb;
+  background-color: #fbb;
+}
+#freeBusy td.tentative,
+#freeBusyKey td.tentative {
+  color: #ddd;
+  background: #ddd url('../../resources/tentativeLines.gif') top;
+}
+#freeBusyKey {
+  margin: 0.5em auto 0 auto;
+}
+#freeBusyKey td {
+  padding: 5px;
+}
+#freeBusy td.free a {
+  color: #A3BAEA;
+  background-color: transparent;
+  display: block;
+  padding: 3px 3px;
+  width: 10px;
+  height: 10px;
+  text-decoration: none;
+}
+#freeBusy td.tentative a  {
+  color: #333;
+  background-color: transparent;
+  display: block;
+  padding: 3px 3px;
+  width: 10px;
+  height: 10px;
+  text-decoration: none;
+}
+#freeBusy td.busy a {
+  color: #333;
+  background-color: transparent;
+  display: block;
+  padding: 3px 3px;
+  width: 10px;
+  height: 10px;
+  text-decoration: none;
+}
+#freeBusy td.busy a:hover,
+#freeBusy td.free a:hover,
+#freeBusy td.tentative a:hover  {
+  color: black;
+  background-color: yellow;
+  text-decoration: none;
+}
+#freeBusy a:hover {
+  /* required for eventTip to hover correctly;
+     apply only to the hover pseudo class, or
+     the other anchors nearby will cover the eventTip in IE */
+  position: relative;
+}
+#freeBusy a span.eventTip {
+  display: none;
+}
+#freeBusy a:hover span.eventTip {
+  display: block;
+  position: absolute;
+  width: 8em;
+  top: 3em;
+  left: -4em;
+  background-color: #ffe;
+  color: black;
+  padding: 4px;
+  border: 1px solid #333;
+}
+#freeBusy #timezonesDropDown {
+  width: 14em;
+  font-size: 8pt;
+  margin: 0 0 0 2em;
+}
+#freeBusy #timezonesButton {
+  font-size: 8pt;
+}
+#content {
+  border-top: 1px solid #ccc;
+  padding: 1em;
+}
+#content form {
+  margin-top: 1em;
+}
+/*#content img {
+  margin: 1em auto;
+}*/
+legend {
+  font-weight: bold;
+}
+#groupCell {
+  padding: 0;
+}
+#groupCell select  {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 0;
+}
+#groupMenu {
+  float: left;
+  margin: 0.5em 1em 1em 1em;
+}
+#groupMenu ul {
+  margin: 0 0 0 1.5em;
+  padding: 0;
+}
+#groupMenu li {
+  margin-top: 0.5em;
+}
+#attendees {
+  float: left;
+  margin: 1em;
+  padding: 0;
+}
+#groupMgmt {
+  margin: 0;
+}
+#groupName {
+  font-weight: bold;
+  font-size: 2em;
+}
+#attendeeList {
+  margin-top: 1em;
+}
+#attendeeList tr.a td {
+  background: white;
+  color: black;
+}
+#attendeeList tr.b td {
+  background: #eee;
+  color: black;
+}
+#attendeeList tr.title th {
+  color: black;
+  background: white;
+  text-align: left;
+  border: none;
+}
+#attendeeList tr.headers th {
+  font-size: 0.8em;
+  color: white;
+  background: #0038A8;
+  text-align: left;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #bbb;
+}
+#attendeeList td {
+  font-size: 0.8em;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #bbb;
+  white-space: nowrap;
+}
+#attendeeList td.first {
+  border-left: 1px solid #bbb;
+}
+#attendeeList td.last {
+  border-right: 1px solid #bbb;
+  text-align: center;
+}
+#searchUsers {
+  margin: 2em 0;
+}
+#searchUsers form {
+  margin: 0;
+}
+#searchUsers th {
+  text-align: left;
+}
+#searchUsers td {
+  padding-right: 1em;
+  vertical-align: top;
+}
+#searchUsers li {
+  padding: 0.5em;
+  font-size: 0.8em;
+}
+#searchUsers li.b {
+  background-color: #eee;
+  color: black;
+}
+#commonForm th {
+  font-weight: normal;
+  text-align: right;
+  vertical-align: top;
+}
+fieldset {
+  margin-top: 2em;
+}
+#getUserForm {
+  margin: 0 1em 1em 1em;
+}
+#footer {
+  font-size: 0.75em;
+  text-align : center;
+  margin-top: 0em;
+  padding: 1em 1em 1.2em 1em;
+  color: #333;
+  background-color: #eee;
+  border-top: 1px solid #ddd;
+  border-right: 1px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  white-space: nowrap;
+}
+#footer a {
+  color: #333;
+  background-color: transparent;
+  text-decoration: underline;
+  margin: 0;
+}
+/*   LINKS    */
+a:link, a:active, a:visited {
+  color: #2c5f89;
+  background-color: transparent;
+}
+a:hover {
+  color: #b00;
+  background-color: transparent;
+}
+.center {
+  text-align: center;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.padTop {
+  padding-top: 0.5em;
+}
+/* Header IDs and classes */
+#errors {
+  margin: 0;
+  padding: 1em;
+  background-color: #333;
+  color: #ff9;
+  font-weight: bold;
+}

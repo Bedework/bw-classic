@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Bedework Calendar subscription colors -->
+<subscriptionColors>
+  <!-- light pastels -->
+  <color name="white">FFFFFF</color>
+  <color name="lt pink">FDDEEE</color>
+  <color name="lt purple">DDD4E8</color>
+  <color name="lt steelblue">BFD5E8</color>
+  <color name="lt blue">CCECEF</color>
+  <color name="lt aquamarine">B3E2DD</color>
+  <color name="lt seagreen">CFECCF</color>
+  <color name="lt green">E0F3B0</color>
+  <color name="lt yellow">FFFFB0</color>
+  <color name="lt salmon">FEEBC9</color>
+
+  <!-- medium pastels -->
+  <color name="gray">EEEEEE</color>
+  <color name="pink">FBB6D1</color>
+  <color name="purple">C1B3D7</color>
+  <!-- these colors are broken for some reason
+  <color name="steelblue">94A8D0</color>
+  <color name="blue">9ACEDF</color>
+  <color name="aquamarine">86CFBE</color>-->
+  <color name="seagreen">B5E1AE</color>
+  <color name="green">BFE476</color>
+  <!-- don't allow bright yellow - reserve for a hover color
+  <color name="yellow">FFFA81</color> -->
+  <color name="salmon">FDCAA2</color>
+
+  <!-- dark pastels -->
+  <color name="md gray">DDDDDD</color>
+  <color name="md pink">F98CB6</color>
+  <color name="md purple">A589C1</color>
+  <!-- these colors are broken for some reason
+  <color name="md steelblue">7589BF</color>
+  <color name="md blue">6FB7D6</color>
+  <color name="md aquamarine">48B5A3</color>
+  <color name="md seagreen">91D290</color>
+  <color name="md green">85CA5D</color> -->
+  <!-- don't allow bright yellow - reserve for a hover color
+  <color name="md yellow">FFED62</color> -->
+  <color name="md salmon">FCA985</color>
+</subscriptionColors>

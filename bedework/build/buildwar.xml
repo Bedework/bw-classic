@@ -1,0 +1,572 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     This file is called by other build files to create web applications.
+
+     It is assumed that no changes will be made to this file. It should be
+     possible to make all changes needed by modifying the configuration
+     properties or a bedework.build.proeprties file
+
+     An unwrapped web application will be built in the temp directory
+     and a war and ear file will be left in the dist directory.
+
+     Properties which must be defined on entry, apart from those described
+     in the main build file are:
+    app.root.dir       Location of the root directory for the apps
+    app.sou.dir        Location of the application skeleton,
+    app.name           Name of the application. This wil be used to determine
+                       the name of the file containing the rest of the
+                       application properties, the directory we build in
+                       and the name of war and ear files.
+    cal.j2ee           Defined if this is a j2ee application
+    cal.j2ee.jboss     Defined if this is a jboss application
+    cal.strutsapp      Defined if this is a struts application
+     These should be defined in the build properties for the application.
+
+     It is possible to define any of the app.dest properties below to override
+     the location of destination files.
+
+     In the directory
+        ${apps.sou.dir}
+     we expect an application skeleton formatted like a web-application
+     For the purposes of this build it should contain a
+     structure like
+              war - docs    (contains jsp and html for this app)
+                    WEB-INF - struts-config.xml
+                              web.xml
+                              jboss-web.xml (for jboss only)
+
+     Authors: Mike Douglass   douglm@rpi.edu
+     =================================================================== -->
+
+<project name="bedework.buildwar" default="build" >
+  <target name="init" depends="init.common,init.uportal2,init.j2ee,init.standalone" />
+
+  <target name="init.common">
+    <!-- Load the location of the libraries -->
+    <property file="${org.bedework.project.bedework}/build/libjars.properties" />
+
+    <!--
+    <condition property="org.bedework.build.for.jetspeed2">
+      <equals arg1="jetspeed2" arg2="${propval.app.portal.platform}"/>
+    </condition>
+
+    <condition property="org.bedework.build.for.uportal2">
+      <equals arg1="uportal2" arg2="${propval.app.portal.platform}"/>
+    </condition>
+
+    <condition property="org.bedework.build.for.jboss">
+      <equals arg1="jboss" arg2="${org.bedework.global.j2ee.platform}"/>
+    </condition>
+    -->
+
+    <condition property="org.bedework.war.build.freebusy">
+      <equals arg1="yes" arg2="${org.bedework.build.freebusy}"/>
+    </condition>
+
+    <!-- Destinations - where we build an unwrapped war -->
+    <property name="app.dest.war"
+              location="${org.bedework.temp.wars.home}/${propval.app.war.name}.war" />
+    <property name="app.dest.docs"
+              location="${app.dest.war}/docs" />
+    <property name="app.dest.webinf"
+              location="${app.dest.war}/WEB-INF" />
+    <property name="app.dest.classes"
+              location="${app.dest.webinf}/classes" />
+    <property name="app.dest.properties"
+              location="${app.dest.classes}/properties/calendar" />
+
+    <!--temp web.xml location  -->
+    <property name="app.dest.web.xml"
+              location="${app.dest.webinf}/web.xml" />
+
+    <property name="app.war.file"
+              location="${dist.home}/${propval.app.war.name}.war" />
+
+    <!-- These may have been set already -->
+    <property name="app.web.xml"
+              value="${app.sou.dir}/war/WEB-INF/web.xml" />
+    <property name="app.sou.properties"
+              location="${app.sou.dir}/war/WEB-INF/classes/servlet.properties" />
+  </target>
+
+  <target name="init.uportal2" if="org.bedework.build.for.uportal2" >
+    <property name="propval.app.servlet.class"
+              value="org.apache.portals.bridges.struts.PortletServlet" />
+
+    <property name="propval.app.ignoreContentType"
+              value="true" />
+
+    <property name="propval.app.genurl.taglib.tld"
+              value="bedework-uportal2.tld" />
+  </target>
+
+  <target name="init.standalone" if="org.bedework.global.build.standalone.app">
+    <property name="propval.app.servlet.class"
+              value="org.apache.struts.action.ActionServlet" />
+
+    <property name="propval.app.ignoreContentType"
+              value="false" />
+
+    <property name="propval.app.portlet.mapping" value="" />
+
+    <property name="propval.app.genurl.taglib.tld"
+              value="struts-html.tld" />
+
+    <property name="app.dest.lib"
+              location="${app.dest.webinf}/lib" />
+  </target>
+
+  <target name="init.j2ee" if="org.bedework.global.j2ee.platform">
+    <property name="app.dest.lib"
+              location="${org.bedework.temp.home}/earlib" />
+  </target>
+
+  <target name="build" depends="init">
+    <delete dir="${app.dest.war}" />
+
+    <!-- Add modifed login pages -->
+    <copy todir="${app.dest.docs}/login" failonerror="false" >
+      <fileset dir="${app.root.dir}/resources/login" />
+      <filterset>
+        <filter token="DISPLAY-NAME" value="${propval.app.display.name}"/>
+      </filterset>
+    </copy>
+
+    <!-- ===============================================================
+         We copy 3 sets of properties.
+
+         First (for struts) are the servlet properties which ends up as
+              classes/servlet.properties
+         Next we copy in a set of generic property files and then with
+         overwrite we copy in a set of base specific files.
+
+         All are updated with new values.
+         =============================================================== -->
+
+    <filterset id="property.filters" >
+      <filter token="BW-APP-NAME"
+              value="${org.bedework.deploy.name}"/>
+
+      <filter token="HIBERNATE-DIALECT"
+              value="${org.bedework.global.hibernate.dialect}" />
+
+      <filter token="DIRECTORY-BROWSING-DISALLOWED"
+              value="${org.bedework.global.directory.browsing.disallowed}" />
+
+      <filter token="IGNORE-CONTENT-TYPE"
+              value="${propval.app.ignoreContentType}" />
+
+      <filter token="APP-DESCRIPTION"
+              value="${propval.app.description}" />
+
+      <filter token="PORTAL-PLATFORM"
+              value="${propval.app.portal.platform}"/>
+
+      <filter token="PORTLET-NAME"
+              value="${propval.app.portlet.name}"/>
+
+      <filter token="CAL-SUITE"
+              value="${propval.app.cal.suite}"/>
+
+      <filter token="SERVLET-CLASS"
+              value="${propval.app.servlet.class}"/>
+
+      <filter token="GENURL-TAGLIB-TLD"
+              value="${propval.app.genurl.taglib.tld}"/>
+
+      <filter token="SECURITY-DOMAIN"
+              value="${propval.app.security.domain}"/>
+      <filter token="SECURITY-PREFIX"
+              value="${propval.app.security.prefix}"/>
+      <filter token="TRANSPORT-GUARANTEE"
+              value="${propval.app.transport.guarantee}"/>
+
+      <filter token="DISPLAY-NAME"
+              value="${propval.app.display.name}"/>
+      <filter token="CONTEXT-ROOT"
+              value="${propval.app.context.root}" />
+      <filter token="APP-NAME"
+              value="${propval.app.name}"/>
+      <filter token="APP-VERSION"
+              value="${propval.app.version}"/>
+
+      <filter token="DEFAULT-CONTENTTYPE"
+              value="${propval.app.default.contenttype}" />
+      <filter token="NOXSLT"
+              value="${propval.app.noxslt}" />
+      <filter token="APPLICATION-ROOT"
+              value="${propval.app.root}" />
+
+      <filter token="APP-GUESTMODE"
+              value="${propval.app.guestmode}" />
+
+      <!-- Change this to be an app par -->
+      <filter token="RUN-AS-USER"
+              value="${org.bedework.syspar.public.user}" />
+
+              <!-- ???????
+      <filter token="CALFILE-NAME"
+              value="${propval.app.calfile.name}" /> -->
+      <filter token="ADMIN-URI"
+              value="${org.bedework.global.public.admin.uri}" />
+      <filter token="PUBEVENTS-URI"
+              value="${org.bedework.global.public.calendar.uri}" />
+      <filter token="PERSONAL-URI"
+              value="${org.bedework.global.personal.calendar.uri}" />
+    </filterset>
+
+    <available file="${app.sou.dir}/properties" type="dir"
+               property="org.bedework.properties.dir.exists" />
+
+    <available file="${app.sou.properties}" type="file"
+               property="org.bedework.servlet.properties.exists" />
+
+    <available file="${app.sou.dir}/war/docs" type="dir"
+               property="org.bedework.war.docs.exists" />
+
+    <antcall target="copy.properties" inheritRefs="true" />
+    <antcall target="copy.servlet.properties" inheritRefs="true" />
+    <antcall target="copy.war.docs" inheritRefs="true" />
+
+    <!-- Create the env.properties file -->
+    <mkdir dir="${app.dest.properties}" />
+
+    <copy tofile="${app.dest.properties}/env.properties"
+          file="${org.bedework.config.properties}" />
+
+    <copy tofile="${app.dest.properties}/options.xml"
+          file="${org.bedework.config.options}" >
+      <filterset>
+        <filter token="RPI-DEBUG" value="${app.debug.val}"/>
+      </filterset>
+      <filterset refid="property.filters" />
+    </copy>
+
+    <!-- Make a modified copy of the web.xml file -->
+    <copy tofile="${app.dest.web.xml}"
+          file="${app.web.xml}"
+          overwrite="yes" >
+      <filterset>
+        <filter token="RPI-DEBUG" value="${app.debug.val}"/>
+      </filterset>
+      <filterset refid="property.filters" />
+    </copy>
+
+    <antcall target="struts-stuff" inheritRefs="true" />
+
+    <!-- ===============================================================
+         Add hibernate jars and property files from calendar api.
+         =============================================================== -->
+
+    <copy todir="${app.dest.classes}">
+      <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/properties" />
+      <filterset refid="property.filters" />
+    </copy>
+
+    <copy todir="${app.dest.classes}">
+      <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/hbms" />
+      <filterset refid="property.filters" />
+    </copy>
+
+    <copy todir="${app.dest.lib}">
+      <fileset dir="${hibernate.jars.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+
+    <antcall target="jboss-stuff" inheritRefs="true" />
+    <antcall target="bexchange-stuff" inheritRefs="true" />
+    <antcall target="domino-stuff" inheritRefs="true" />
+    <antcall target="google-stuff" inheritRefs="true" />
+
+    <!-- ===============================================================
+         Any jar files required
+         =============================================================== -->
+
+    <copy todir="${app.dest.lib}" overwrite="yes">
+      <fileset dir="${bin.home}">
+        <!-- jars from sub-projects needed by all -->
+        <include name="rpiaccess*.jar"/>
+        <include name="rpiutil*.jar"/>
+        <include name="bw-davdefs*.jar"/>
+        <include name="bw-davio*.jar"/>
+
+        <!-- Calendar api jars -->
+        <include name="bw-calcore*.jar"/>
+        <include name="bw-calcorei*.jar"/>
+        <include name="bw-calenv*.jar"/>
+        <include name="bw-calfacade*.jar"/>
+        <include name="bw-calsvc*.jar"/>
+        <include name="bw-calsvci*.jar"/>
+        <include name="bw-icalendar*.jar"/>
+        <include name="bw-locale*.jar"/>
+        <include name="bw-logging*.jar"/>
+
+        <!-- Common jars for web apps -->
+        <include name="bw-appcommon*.jar"/>
+        <include name="bw-appcommon*.jar"/>
+        <include name="bw-appcommon*.jar"/>
+        <include name="bw-appcommon*.jar"/>
+        <include name="bw-appcommon*.jar"/>
+      </fileset>
+    </copy>
+
+     <!-- any extra bin files-->
+    <copy todir="${app.dest.lib}" >
+      <fileset refid="app.bin.files" />
+    </copy>
+
+    <!-- Some more standard libs -->
+    <copy todir="${app.dest.lib}" file="${commons-codec.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-collections.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-ssl.jar}"/>
+
+
+    <!-- add the jdbcdriver if defined -->
+    <antcall target="add.jdbcdriver" inheritRefs="true" />
+
+    <!-- free busy -->
+    <antcall target="add.freebusy" inheritRefs="true" />
+
+     <!-- any extra lib files-->
+    <copy todir="${app.dest.lib}" >
+      <fileset refid="app.lib.files" />
+      <fileset refid="app.temp.lib.files" />
+    </copy>
+
+    <!-- build the war file -->
+    <mkdir dir="${dist.home}" />
+    <delete file="${app.war.file}" />
+
+    <war warfile="${app.war.file}"
+         webxml="${app.dest.web.xml}"
+         basedir="${app.dest.war}"
+         excludes="${app.dest.web.xml}" />
+
+    <!-- build the ear file for a j2ee app
+    <antcall target="build.ear" inheritRefs="true" />
+    -->
+  </target>
+
+  <target name="add.freebusy" if="org.bedework.war.build.freebusy">
+    <copy todir="${app.dest.lib}" file="${org.bedework.fbclient.jar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.fbaggregator.jar}" />
+  </target>
+
+  <target name="add.jdbcdriver" if="app.jdbcdriver.jar">
+    <copy todir="${app.dest.lib}" file="${app.jdbcdriver.jar}"/>
+  </target>
+
+  <target name="copy.properties" if="org.bedework.properties.dir.exists">
+    <!-- ===============================================================
+         Any property files we need for configuration, other than the
+         standard struts file, should be in the "${app.sou.dir}/properties
+         directory. They will be copied into the appropriate place for the
+         war and transformed by the above filter.
+         =============================================================== -->
+    <copy todir="${app.dest.properties}" overwrite="yes" >
+      <fileset dir="${app.sou.dir}/properties"
+               includes="*.properties"/>
+      <filterset refid="property.filters" />
+    </copy>
+  </target>
+
+  <target name="copy.servlet.properties" if="org.bedework.servlet.properties.exists">
+    <copy tofile="${app.dest.classes}/servlet.properties" file="${app.sou.properties}">
+      <filterset refid="property.filters" />
+    </copy>
+  </target>
+
+  <target name="copy.war.docs" if="org.bedework.war.docs.exists">
+    <copy todir="${app.dest.docs}">
+      <fileset dir="${app.sou.dir}/war/docs" />
+    </copy>
+  </target>
+
+  <target name="bexchange-stuff" if="org.bedework.build.caldav.bexchange">
+    <copy tofile="${app.dest.properties}/timezones.xml"
+          file="${org.bedework.resources.base}/bwtimezones.xml" />
+  </target>
+
+  <target name="domino-stuff" if="org.bedework.build.caldav.domino">
+    <copy tofile="${app.dest.properties}/timezones.xml"
+          file="${org.bedework.resources.base}/bwtimezones.xml" />
+  </target>
+
+  <target name="google-stuff" if="org.bedework.build.caldav.google">
+    <copy todir="${app.dest.lib}">
+      <fileset dir="${google.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+
+    <copy tofile="${app.dest.properties}/timezones.xml"
+          file="${org.bedework.resources.base}/bwtimezones.xml" />
+  </target>
+
+  <!-- =================================================================
+       If this is a struts app the following gets executed.
+       We create an updated struts-config.xml file and add some jars.
+       ================================================================= -->
+
+  <target name="struts-stuff" if="org.bedework.strutsapp">
+    <!-- Copy a dummy startup file into the war. -->
+    <copy todir="${app.dest.war}">
+      <fileset dir="${app.sou.dir}/war/" includes="setup.do" />
+    </copy>
+
+    <copy todir="${app.dest.webinf}"
+          file="${app.sou.dir}/war/WEB-INF/struts-config.xml"/>
+
+    <mkdir  dir="${app.dest.webinf}/tlds"/>
+    <copy todir="${app.dest.webinf}/tlds" >
+      <fileset dir="${struts.tlds.dir}">
+        <include name="*"/>
+      </fileset>
+    </copy>
+    <copy todir="${app.dest.webinf}/tlds" >
+      <fileset dir="${org.bedework.default.lib}/tlds">
+        <include name="*"/>
+      </fileset>
+    </copy>
+
+    <antcall target="add.xalan" inheritRefs="true" />
+    <antcall target="add.jetspeed2" inheritRefs="true" />
+    <antcall target="add.uportal2" inheritRefs="true" />
+
+    <copy todir="${app.dest.lib}">
+      <fileset dir="${struts.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${app.dest.lib}" file="${antlr.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-beanutils.jar}"/>
+    <copy todir="${app.dest.lib}" file="${digester.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-fileupload.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-logging.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-validator.jar}"/>
+    <copy todir="${app.dest.lib}" file="${jakarta-oro.jar}"/>
+  </target>
+
+  <target name="add.jetspeed2" if="org.bedework.build.for.jetspeed2" >
+    <copy todir="${app.dest.webinf}"
+          file="${org.bedework.deploy.type.dir}/jetspeed2/${propval.app.war.name}/portlet.xml"
+          overwrite="yes"
+          failonerror="no" />
+    <copy todir="${app.dest.webinf}"
+          file="${org.bedework.deploy.type.dir}/jetspeed2/struts-portlet-config.xml"
+          overwrite="yes"
+          failonerror="no" />
+
+    <copy todir="${app.dest.lib}" >
+      <fileset dir="${org.bedework.default.lib}/${jetspeed2.jars.dir}/portals-bridges-struts">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${app.dest.webinf}/tlds" >
+      <fileset dir="${org.bedework.default.lib}/${jetspeed2.jars.dir}/portals-bridges-struts">
+        <include name="*.tld"/>
+      </fileset>
+    </copy>
+
+    <!-- Add the portal bridge controller def -->
+    <replace file="${app.dest.webinf}/struts-config.xml">
+      <replacetoken><![CDATA[<!-- Jetspeed2 controller def here -->]]></replacetoken>
+      <replacevalue><![CDATA[<controller pagePattern="$M$P" inputForward="true"
+              processorClass="org.apache.portals.bridges.struts.PortletRequestProcessor"/>]]>
+      </replacevalue>
+    </replace>
+  </target>
+
+  <target name="add.uportal2" if="org.bedework.build.for.uportal2" >
+    <copy todir="${app.dest.webinf}"
+          file="${org.bedework.deploy.type.dir}/uportal2/portlet.xml"
+          overwrite="yes"
+          failonerror="no" >
+      <filterset refid="property.filters" />
+    </copy>
+
+    <copy todir="${app.dest.webinf}"
+          file="${org.bedework.deploy.type.dir}/uportal2/struts-portlet-config.xml"
+          overwrite="yes"
+          failonerror="no" />
+
+    <copy todir="${app.dest.lib}" >
+      <fileset dir="${portals-bridges.jars.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${bin.home}">
+        <include name="bw-uportal*.jar"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${app.dest.webinf}/tlds"
+          overwrite="yes"
+          failonerror="no" >
+      <fileset dir="${org.bedework.deploy.type.dir}/uportal2" >
+        <include name="*.tld"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${app.dest.lib}" file="${org.bedework.uportal.jar}" />
+
+    <!-- Add the portlet servlet mapping -->
+    <replace file="${app.dest.webinf}/web.xml">
+      <replacetoken><![CDATA[<!-- uPortal2 portlet servlet mapping here -->]]></replacetoken>
+      <replacevalue><![CDATA[<servlet-mapping>
+    <servlet-name>@PORTLET-NAME@</servlet-name>
+    <url-pattern>/@PORTLET-NAME@/*</url-pattern>
+  </servlet-mapping>]]>
+      </replacevalue>
+    </replace>
+
+    <replace file="${app.dest.webinf}/web.xml">
+      <replacefilter token="@PORTLET-NAME@" value="${propval.app.portlet.name}"/>
+    </replace>
+
+    <!-- Add the portal bridge controller def -->
+    <replace file="${app.dest.webinf}/struts-config.xml">
+      <replacetoken><![CDATA[<!-- Jetspeed2 controller def here -->]]></replacetoken>
+      <replacevalue><![CDATA[<controller pagePattern="$M$P" inputForward="true"
+              processorClass="org.apache.portals.bridges.struts.PortletRequestProcessor"/>]]>
+      </replacevalue>
+    </replace>
+  </target>
+
+  <target name="add.xalan" unless="xalan.in.tomcat.common.endorsed" >
+    <copy todir="${app.dest.lib}" file="${xalan.jar}"/>
+  </target>
+
+  <!-- =================================================================
+       If this is a j2ee app the following gets executed.
+       We create an uodated jboss-web.xml file (for jboss) and a ear
+       ================================================================= -->
+
+  <target name="jboss-stuff" if="org.bedework.build.for.jboss">
+    <copy todir="${app.dest.webinf}"
+          file="${app.sou.dir}/war/WEB-INF/jboss-web.xml">
+      <filterset refid="property.filters" />
+    </copy>
+    <antcall target="jboss-virtual-host" inheritRefs="true" />
+  </target>
+
+  <target name="jboss-virtual-host" if="org.bedework.global.virtual.host">
+    <replace file="${app.dest.webinf}/jboss-web.xml">
+      <replacetoken><![CDATA[<!-- Virtual host -->]]></replacetoken>
+      <replacevalue><![CDATA[<virtual-host>@VIRTUAL-HOST@</virtual-host>
+      ]]>
+      </replacevalue>
+    </replace>
+    <replace file="${app.dest.webinf}/jboss-web.xml">
+      <replacefilter token="@VIRTUAL-HOST@" value="${org.bedework.global.virtual.host}"/>
+    </replace>
+  </target>
+
+  <target name="build.ear" if="cal.j2ee">
+    <ant antfile="${buildear}"
+         inheritRefs="true" target="build" />
+  </target>
+</project>
