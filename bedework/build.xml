@@ -237,7 +237,7 @@
        The "deploy" and "deploy.all" target builds and deploys the applications
        ================================================================= -->
 
-  <target name="deploy" depends="build"
+  <target name="deploy.debug" depends="build"
           description="builds and deploys the applications">
     <ant antfile="${org.bedework.project.bedework}/deployment}/build.xml" inheritrefs="true"
          target="deploy"  >
@@ -245,7 +245,7 @@
     </ant>
   </target>
 
-  <target name="deploy.debug" depends="build"
+  <target name="deploy" depends="build"
           description="builds and deploys the applications">
     <ant antfile="${org.bedework.project.bedework}/deployment/build.xml" inheritrefs="true"
          target="deploy" />

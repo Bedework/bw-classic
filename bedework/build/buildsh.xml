@@ -75,6 +75,15 @@
 
     <mkdir dir="${app.dest.lib}" />
 
+    <copy todir="${app.dest.lib}">
+      <fileset dir="${hibernate.jars.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${app.dest.lib}" file="${commons-collections.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-logging.jar}"/>
+
     <!-- core files -->
 
     <copy todir="${app.dest.lib}" overwrite="yes">
