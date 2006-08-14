@@ -239,7 +239,7 @@
 
   <target name="deploy.debug" depends="build"
           description="builds and deploys the applications">
-    <ant antfile="${org.bedework.project.bedework}/deployment}/build.xml" inheritrefs="true"
+    <ant antfile="${org.bedework.project.bedework}/deployment/build.xml" inheritrefs="true"
          target="deploy"  >
       <property name="app.debug.val" value="9" />
     </ant>
