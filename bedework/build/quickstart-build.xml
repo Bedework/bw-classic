@@ -125,6 +125,12 @@
            target="clean" />
   </target>
 
+  <target name="quickstart-clean" depends="init"
+          description="partial clean up for quickstart.">
+    <ant antfile="${bedework.build.file}" inheritrefs="true"
+           target="quickstart-clean" />
+  </target>
+
   <target name="clean.deploy" depends="init"
           description="builds and deploys the applications">
     <ant antfile="${bedework.build.file}" inheritrefs="true"

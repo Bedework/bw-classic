@@ -216,6 +216,20 @@
     <delete dir="${bin.home}" />
   </target>
 
+  <target name="quickstart-clean" depends="clean.rpiutil,clean.access,clean.davutil,
+                                           clean.calendarapi,clean.dumprestore,clean.synchml.if,
+                                           clean.webdav.if,clean.caldav.if,clean.caldavTest.if,
+                                           clean.freebusy.if,clean.bwtools,clean.webapps"
+          description="partial clean up for quickstart.">
+    <delete dir="${bin.home}" />
+    <delete dir="${org.bedework.temp.dir}" />
+    <delete dir="${org.bedework.empty.dir}" />
+
+    <delete>
+      <fileset dir="${dist.home}" includes="*.war"/>
+    </delete>
+  </target>
+
   <target name="clean.build" depends="clean, build"
           description="cleans then builds the project"/>
 
