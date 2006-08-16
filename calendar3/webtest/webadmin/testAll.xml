@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<project name="testAll" basedir="." default="main">
-  <target name="main" >
-    <ant antfile="basicEvent.xml" inheritrefs="true"/>
-  </target>
-</project>
-
-
