@@ -66,7 +66,7 @@
         <!-- ==================================================================
                           Admin web client CalAdmin
              ================================================================== -->
-        <CalAdmin classname="org.bedework.webcommon.AdminConfig">
+        <CalAdmin classname="org.bedework.calfacade.configs.AdminConfig">
           <autoCreateSponsors>false</autoCreateSponsors>
           <autoDeleteSponsors>false</autoDeleteSponsors>
           <autoCreateLocations>false</autoCreateLocations>
@@ -84,14 +84,14 @@
 
           <logPrefix>PubEventsAdmin</logPrefix>
 
-          <appRoot>@APPLICATION-ROOT@</appRoot>
+          <appRoot>/caladminrsrc</appRoot>
           <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
         </CalAdmin>
 
         <!-- ==================================================================
                           Public web client Events
              ================================================================== -->
-        <Events classname="org.bedework.webcommon.ClientConfig">
+        <Events classname="org.bedework.calfacade.configs.ClientConfig">
           <autoCreateSponsors>false</autoCreateSponsors>
           <autoDeleteSponsors>false</autoDeleteSponsors>
           <autoCreateLocations>false</autoCreateLocations>
@@ -107,19 +107,19 @@
 
           <logPrefix>PubEvents</logPrefix>
 
-          <appRoot>@APPLICATION-ROOT@</appRoot>
+          <appRoot>/calrsrc</appRoot>
           <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
 
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>300</refreshInterval>
 
-          <calSuite>@CAL-SUITE@</calSuite>
+          <calSuite>MainCampus</calSuite>
         </Events>
 
         <!-- ==================================================================
                           Demo departmental Public web client SoEDept
              ================================================================== -->
-        <SoEDept classname="org.bedework.webcommon.ClientConfig">
+        <SoEDept classname="org.bedework.calfacade.configs.ClientConfig">
           <autoCreateSponsors>false</autoCreateSponsors>
           <autoDeleteSponsors>false</autoDeleteSponsors>
           <autoCreateLocations>false</autoCreateLocations>
@@ -135,19 +135,19 @@
 
           <logPrefix>SoEDept</logPrefix>
 
-          <appRoot>@APPLICATION-ROOT@</appRoot>
+          <appRoot>/calrsrc</appRoot>
           <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
 
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>300</refreshInterval>
 
-          <calSuite>@CAL-SUITE@</calSuite>
+          <calSuite>SoEDepartmental</calSuite>
         </SoEDept>
 
         <!-- ==================================================================
                           User web client UserCal
              ================================================================== -->
-        <UserCal classname="org.bedework.webcommon.ClientConfig">
+        <UserCal classname="org.bedework.calfacade.configs.ClientConfig">
           <autoCreateSponsors>false</autoCreateSponsors>
           <autoDeleteSponsors>false</autoDeleteSponsors>
           <autoCreateLocations>false</autoCreateLocations>
@@ -163,7 +163,7 @@
 
           <logPrefix>PersonalCalendar</logPrefix>
 
-          <appRoot>@APPLICATION-ROOT@</appRoot>
+          <appRoot>/ucalrsrc</appRoot>
           <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
 
           <refreshAction>setup.do</refreshAction>

@@ -118,8 +118,19 @@
   </target>
 
   <target name="init.j2ee" if="org.bedework.global.j2ee.platform">
+    <property name="propval.app.servlet.class"
+              value="org.apache.struts.action.ActionServlet" />
+
+    <property name="propval.app.ignoreContentType"
+              value="false" />
+
+    <property name="propval.app.portlet.mapping" value="" />
+
+    <property name="propval.app.genurl.taglib.tld"
+              value="struts-html.tld" />
+
     <property name="app.dest.lib"
-              location="${org.bedework.temp.home}/earlib" />
+              location="${org.bedework.temp.dir}/earlib" />
   </target>
 
   <target name="build" depends="init">

@@ -24,10 +24,10 @@
     <echo message="***************************************************************" />
 
     <property name="ear.dir"
-              location="${org.bedework.temp.home}/ear" />
+              location="${org.bedework.temp.dir}/ear" />
 
     <path id="app.xml.cp">
-      <pathelement location="${org.bedework.deployment.jar}"/>
+      <pathelement location="${org.bedework.deployutil.jar}"/>
     </path>
 
     <taskdef name="applicationXml"
@@ -37,7 +37,7 @@
 
     <!-- We have to drop some of the libraries so they don't conflict -->
     <copy toDir="${ear.dir}">
-      <fileset dir="${org.bedework.temp.home}/earlib">
+      <fileset dir="${org.bedework.temp.dir}/earlib">
         <exclude name="commons-logging*" />
         <exclude name="log4j*" />
         <exclude name="servlet.jsp*" />
@@ -46,7 +46,7 @@
 
     <applicationXml displayName="Bedework calendar suite"
                     outFile="${ear.dir}/META-INF/application.xml"
-                    warDir="${org.bedework.temp.home}/wars">
+                    warDir="${org.bedework.temp.dir}/wars">
       <fileset dir="${ear.dir}">
         <include name="*.jar"/>
       </fileset>
@@ -55,7 +55,7 @@
     <manifest file="${ear.dir}/META-INF/MANIFEST.MF" />
 
     <copy toDir="${ear.dir}">
-      <fileset dir="${org.bedework.temp.home}/wars"/>
+      <fileset dir="${org.bedework.temp.wars.home}"/>
     </copy>
 
     <zip destfile="${app.ear.file}"

@@ -200,14 +200,14 @@
        subsidiary projects like rpiutil and access
        ================================================================= -->
 
-  <target name="build" depends="build.rpiutil,build.access,build.davutil,
+  <target name="build" depends="init,build.rpiutil,build.access,build.davutil,
                                 build.calendarapi,build.dumprestore,build.synchml.if,
                                 build.webdav.if,build.caldav.if,build.caldavTest.if,
                                 build.freebusy.if,build.bwtools,build.webapps,
                                 build.deployutil"
           description="builds the project"/>
 
-  <target name="clean" depends="clean.rpiutil,clean.access,clean.davutil,
+  <target name="clean" depends="init,clean.rpiutil,clean.access,clean.davutil,
                                 clean.calendarapi,clean.dumprestore,clean.synchml.if,
                                 clean.webdav.if,clean.caldav.if,clean.caldavTest.if,
                                 clean.freebusy.if,clean.bwtools,clean.webapps"
@@ -216,7 +216,7 @@
     <delete dir="${bin.home}" />
   </target>
 
-  <target name="quickstart-clean" depends="clean.rpiutil,clean.access,clean.davutil,
+  <target name="quickstart-clean" depends="init,clean.rpiutil,clean.access,clean.davutil,
                                            clean.calendarapi,clean.dumprestore,clean.synchml.if,
                                            clean.webdav.if,clean.caldav.if,clean.caldavTest.if,
                                            clean.freebusy.if,clean.bwtools,clean.webapps"
@@ -232,20 +232,6 @@
 
   <target name="clean.build" depends="clean, build"
           description="cleans then builds the project"/>
-
-  <!-- =================================================================
-       "build.all" and "clean.all" targets for the project - build
-       subsidiary projects as well
-       ================================================================= -->
-
-  <target name="build.all" depends="build.rpiutil,build.access,build"
-          description="builds the entire project"/>
-
-  <target name="clean.all" depends="clean.rpiutil,clean.access,clean"
-          description="Remove all generated files for entire project."/>
-
-  <target name="clean.build.all" depends="clean.all, build.all"
-          description="cleans then builds the entire project"/>
 
   <!-- =================================================================
        The "deploy" and "deploy.all" target builds and deploys the applications
