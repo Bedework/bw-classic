@@ -117,6 +117,8 @@
     <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-digester.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-httpclient.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-ssl.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-codec.jar}"/>
 
     <!-- Extra libraries specified in calling build file -->
     <copy todir="${app.dest.lib}" flatten="yes" >
