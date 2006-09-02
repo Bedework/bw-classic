@@ -1,7 +1,9 @@
 Bedework Calendar System
 ------------------------
 
-Most documenation is available at bedework.org
+Most documenation is available at bedework.org.
+
+Documentation is also included in the quickstart release in the docs directory.
 
 This quickstart release allows those who want a packaged working demonstration
 system to easily see the bedework calendar system in operation.
