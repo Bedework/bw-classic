@@ -135,3 +135,10 @@ function setSubscriptionUri(formObj) {
     return false;
   }
 }
+
+function setScheduleHow(multibox) {
+  var accessString = "";
+  for (i=0; i<multibox.length; i++) {
+    alert(mulitbox[i].value);
+  }
+}

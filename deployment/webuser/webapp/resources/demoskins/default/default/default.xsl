@@ -111,6 +111,8 @@
   <!-- preferences -->
   <xsl:variable name="prefs-fetchForUpdate" select="/bedework/urlPrefixes/prefs/fetchForUpdate/a/@href"/>
   <xsl:variable name="prefs-update" select="/bedework/urlPrefixes/prefs/update/a/@href"/>
+  <xsl:variable name="prefs-fetchSchedulingForUpdate" select="/bedework/urlPrefixes/prefs/fetchSchedulingForUpdate/a/@href"/>
+  <xsl:variable name="prefs-setAccess" select="/bedework/urlPrefixes/prefs/setAccess/a/@href"/>
 
   <!-- URL of the web application - includes web context
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/> -->
@@ -209,6 +211,9 @@
                     </xsl:when>
                     <xsl:when test="/bedework/page='modPrefs'">
                       <xsl:apply-templates select="/bedework/prefs"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='modSchedulingPrefs'">
+                      <xsl:apply-templates select="/bedework/schPrefs"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='other'">
                       <!-- show an arbitrary page -->
@@ -3648,6 +3653,10 @@
   <!--==== PREFERENCES ====-->
   <xsl:template match="prefs">
     <h2>Manage Preferences</h2>
+    <ul class="submenu">
+      <li class="selected">General</li>
+      <li><a href="{$prefs-fetchSchedulingForUpdate}">Scheduling/Meetings</a></li>
+    </ul>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$prefs-update}" onSubmit="setWorkDays(this)">
@@ -3891,8 +3900,7 @@
               </xsl:choose>
             </select>
           </td>
-        </tr>
-        <!-- as you add skins, update this list and set the selected flag
+        </tr><!-- as you add skins, update this list and set the selected flag
                  as required; hide if not in use -->
         <!--<tr>
           <td class="fieldname">
@@ -3960,6 +3968,60 @@
       <input type="submit" name="modPrefs" value="Update"/>
       <input type="reset" value="Reset"/>
       <input type="submit" name="cancelled" value="Cancel"/>
+    </form>
+  </xsl:template>
+
+  <xsl:template match="schPrefs">
+    <h2>Manage Preferences</h2>
+    <ul class="submenu">
+      <li><a href="{$prefs-fetchForUpdate}">General</a></li>
+      <li class="selected"><a href="">Scheduling/Meetings</a></li>
+    </ul>
+    <form name="eventForm" method="post" action="{$prefs-setAccess}">
+      <table id="prefSchedulingForm">
+        <tr>
+          <td>
+            <input type="text" width="40"/>
+            <input type="radio" name="whoType" value="user" checked="checked"/>user
+            <input type="radio" name="whoType" value="group"/>group
+            <input type="radio" name="whoType" value="owner"/>owner<br/>
+            <input type="radio" name="how" value="inbox" checked="checked"/>can send me meeting requests<br/>
+            <input type="radio" name="how" value="outbox"/>can send meeting requests on my behalf<br/><br/>
+            <input type="submit" name="modPrefs" value="Update"/>
+            <input type="reset" value="Reset"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+          </td>
+          <td>
+            <input type="hidden" name="how" value="S"/>
+            Access control settings:<br/>
+            <dl>
+              <dt>
+                <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="setScheduleHow(this)"/>schedule
+              </dt>
+              <dd>
+                <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>schedule-request<br/>
+                <input type="checkbox" name="howSetter" value="y" checked="checked" disabled="disabled"/>schedule-reply<br/>
+                <input type="checkbox" name="howSetter" value="s" checked="checked" disabled="disabled"/>schedule-free-busy
+              </dd>
+            </dl>
+          </td>
+        </tr>
+      </table>
+
+      <table class="common">
+        <tr>
+          <th>Can send me meeting requests:</th>
+          <th>Can schedule meetings on my behalf:</th>
+        </tr>
+        <tr>
+          <td>
+            <em>list not implemented</em>
+          </td>
+          <td>
+            <em>list not implemented</em>
+          </td>
+        </tr>
+      </table>
     </form>
   </xsl:template>
 

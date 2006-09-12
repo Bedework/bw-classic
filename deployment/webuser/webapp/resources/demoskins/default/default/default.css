@@ -43,6 +43,9 @@ h4 {
   padding: 1em 0.2em 0em 0.2em;
   font-size: 1em;
 }
+td {
+  vertical-align: top;
+}
 .center {
   text-align: center;
 }
@@ -391,6 +394,39 @@ messages.
   color: black;
   background: #FF8B86 url(../../resources/glassFill-error.gif) repeat-x bottom;
 }*/
+ul.submenu {
+  margin: 0 0 1em 0;
+  padding: 0;
+  font-size: 0.9em;
+  color: black;
+  background: #eee;
+  border-bottom: 1px solid #666;
+  border-top: 1px solid #666;
+}
+ul.submenu li {
+  display: inline;
+  margin: 0;
+  padding: 0 0.5em;
+  border-right: 1px solid #999;
+}
+ul.submenu li.selected {
+  color: black;
+  background: white;
+  font-weight: bold;
+  border-bottom: 1px solid white;
+}
+ul.submenu li a:link,
+ul.submenu li a:active,
+ul.submenu li a:visited {
+}
+table#prefSchedulingForm {
+  margin: 0 1em 1em 1em;
+  padding: 0;
+  border: 1px solid #999;
+}
+table#prefSchedulingForm td {
+  padding: 1em;
+}
 #standardForm {
   margin: 0;
   padding: 0;

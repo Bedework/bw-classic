@@ -2,133 +2,134 @@
    These colors correspond to subColors.xml, which is used
    to create the web forms. Background-color must be
    "important" to override more specific selectors in
-   the default.css stylesheet. */
+   the default.css stylesheet.  Note - class names must not
+   begin with a number, so all color classes are prepended with "c" */
 
-.FFFFFF {
+.cFFFFFF {
   background-color: #FFFFFF !important;
   color: black;
 }
-.FDDEEE {
+.cFDDEEE {
   background-color: #FDDEEE !important;
   color: black;
 }
-.DDD4E8 {
+.cDDD4E8 {
   background-color: #DDD4E8 !important;
   color: black;
 }
-.BFD5E8 {
+.cBFD5E8 {
   background-color: #BFD5E8 !important;
   color: black;
 }
-.CCECEF {
+.cCCECEF {
   background-color: #CCECEF !important;
   color: black;
 }
-.B3E2DD {
+.cB3E2DD {
   background-color: #B3E2DD !important;
   color: black;
 }
-.CFECCF {
+.cCFECCF {
   background-color: #CFECCF !important;
   color: black;
 }
-.E0F3B0 {
+.cE0F3B0 {
   background-color: #E0F3B0 !important;
   color: black;
 }
-.FFFFB0 {
+.cFFFFB0 {
   background-color: #FFFFB0 !important;
   color: black;
 }
-.FEEBC9 {
+.cFEEBC9 {
   background-color: #FEEBC9 !important;
   color: black;
 }
 /* medium pastels */
-.EEEEEE {
+.cEEEEEE {
   background-color: #EEEEEE !important;
   color: black;
 }
-.FBB6D1 {
+.cFBB6D1 {
   background-color: #FBB6D1 !important;
   color: black;
 }
-.C1B3D7 {
+.cC1B3D7 {
   background-color: #C1B3D7 !important;
   color: black;
   /* purple swallows up the default border color, so for this one alone,
      override it */
   border-bottom: 1px solid #999 !important;
 }
-.94A8D0 {
+.c94A8D0 {
   background-color: #94A8D0 !important;
   color: black;
 }
-.9ACEDF {
+.c9ACEDF {
   background-color: #9ACEDF !important;
   color: black;
 }
-.86CFBE {
+.c86CFBE {
   background-color: #86CFBE !important;
   color: black;
 }
-.B5E1AE {
+.cB5E1AE {
   background-color: #B5E1AE !important;
   color: black;
 }
-.BFE476 {
+.cBFE476 {
   background-color: #BFE476 !important;
   color: black;
   /* gree swallows up the default border color, so for this one alone,
      override it */
   border-bottom: 1px solid #999 !important;
 }
-.FFFA81 {
+.cFFFA81 {
   background-color: #FFFA81 !important;
   color: black;
 }
-.FDCAA2 {
+.cFDCAA2 {
   background-color: #FDCAA2 !important;
   color: black;
 }
 /* dark pastels */
-.DDDDDD {
+.cDDDDDD {
   background-color: #DDDDDD !important;
   color: black;
 }
-.F98CB6 {
+.cF98CB6 {
   background-color: #F98CB6 !important;
   color: black;
 }
-.A589C1 {
+.cA589C1 {
   background-color: #A589C1 !important;
   color: black;
 }
-.7589BF {
+.c7589BF {
   background-color: #7589BF !important;
   color: black;
 }
-.6FB7D6 {
+.c6FB7D6 {
   background-color: #6FB7D6 !important;
   color: black;
 }
-.48B5A3 {
+.c48B5A3 {
   background-color: #48B5A3 !important;
   color: black;
 }
-.91D290 {
+.c91D290 {
   background-color: #91D290 !important;
   color: black;
 }
-.85CA5D {
+.c85CA5D {
   background-color: #85CA5D !important;
   color: black;
 }
-.FFED62 {
+.cFFED62 {
   background-color: #FFED62 !important;
   color: black;
 }
-.FCA985 {
+.cFCA985 {
   background-color: #FCA985 !important;
   color: black;
 }
