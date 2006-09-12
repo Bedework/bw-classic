@@ -419,14 +419,6 @@ ul.submenu li a:link,
 ul.submenu li a:active,
 ul.submenu li a:visited {
 }
-table#prefSchedulingForm {
-  margin: 0 1em 1em 1em;
-  padding: 0;
-  border: 1px solid #999;
-}
-table#prefSchedulingForm td {
-  padding: 1em;
-}
 #standardForm {
   margin: 0;
   padding: 0;
@@ -485,6 +477,11 @@ table.common td.fill {
   color: black;
   font-weight: bold;
   padding: 0.2em 0.5em 0.2em 0.5em;
+}
+table.common th.leftBorder,
+table.common td.leftBorder {
+  border-left: 1px solid #999;
+  padding-left: 1em;
 }
 table.common td.fieldval {
   margin: 0em;

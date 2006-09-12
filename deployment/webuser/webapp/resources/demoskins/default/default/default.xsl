@@ -3977,52 +3977,77 @@
       <li><a href="{$prefs-fetchForUpdate}">General</a></li>
       <li class="selected"><a href="">Scheduling/Meetings</a></li>
     </ul>
-    <form name="eventForm" method="post" action="{$prefs-setAccess}">
-      <table id="prefSchedulingForm">
-        <tr>
-          <td>
-            <input type="text" width="40"/>
-            <input type="radio" name="whoType" value="user" checked="checked"/>user
-            <input type="radio" name="whoType" value="group"/>group
-            <input type="radio" name="whoType" value="owner"/>owner<br/>
-            <input type="radio" name="how" value="inbox" checked="checked"/>can send me meeting requests<br/>
-            <input type="radio" name="how" value="outbox"/>can send meeting requests on my behalf<br/><br/>
-            <input type="submit" name="modPrefs" value="Update"/>
-            <input type="reset" value="Reset"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
-          </td>
-          <td>
-            <input type="hidden" name="how" value="S"/>
-            Access control settings:<br/>
-            <dl>
-              <dt>
-                <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="setScheduleHow(this)"/>schedule
-              </dt>
-              <dd>
-                <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>schedule-request<br/>
-                <input type="checkbox" name="howSetter" value="y" checked="checked" disabled="disabled"/>schedule-reply<br/>
-                <input type="checkbox" name="howSetter" value="s" checked="checked" disabled="disabled"/>schedule-free-busy
-              </dd>
-            </dl>
-          </td>
-        </tr>
-      </table>
 
-      <table class="common">
+      <table class="common" cellspacing="0">
         <tr>
-          <th>Can send me meeting requests:</th>
-          <th>Can schedule meetings on my behalf:</th>
+          <th>Can send me scheduling requests:</th>
+          <th class="leftBorder">Can schedule on my behalf:</th>
         </tr>
         <tr>
           <td>
-            <em>list not implemented</em>
+            <form name="eventForm" method="post" action="{$prefs-setAccess}">
+              <input type="hidden" name="what" value="in"/>
+              <input type="text" name="who" width="40"/>
+              <input type="radio" name="whoType" value="user" checked="checked"/>user
+              <input type="radio" name="whoType" value="group"/>group
+              <input type="radio" name="whoType" value="owner"/>owner
+
+              <p>may send the following to me:</p>
+
+              <input type="hidden" name="how" value="S"/>
+              <dl>
+                <dt>
+                  <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="setScheduleHow(this)"/>all scheduling
+                </dt>
+                <dd>
+                  <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>scheduling requests<br/>
+                  <input type="checkbox" name="howSetter" value="y" checked="checked" disabled="disabled"/>scheduling replies<br/>
+                  <input type="checkbox" name="howSetter" value="s" checked="checked" disabled="disabled"/>free-busy requests
+                </dd>
+              </dl>
+
+              <input type="submit" name="modPrefs" value="Update"/>
+              <input type="reset" value="Reset"/>
+              <input type="submit" name="cancelled" value="Cancel"/>
+            </form>
+            <h3>Current Access:</h3>
+            <xsl:for-each select="inbox/acl/ace[principal/href]">
+              <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
+            </xsl:for-each>
           </td>
-          <td>
-            <em>list not implemented</em>
+          <td class="leftBorder">
+            <form name="eventForm" method="post" action="{$prefs-setAccess}">
+              <input type="hidden" name="what" value="out"/>
+              <input type="text" name="who" width="40"/>
+              <input type="radio" name="whoType" value="user" checked="checked"/>user
+              <input type="radio" name="whoType" value="group"/>group
+              <input type="radio" name="whoType" value="owner"/>owner
+
+              <p>may send the following on my behalf:</p>
+
+              <input type="hidden" name="how" value="S"/>
+              <dl>
+                <dt>
+                  <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="setScheduleHow(this)"/>all scheduling
+                </dt>
+                <dd>
+                  <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>scheduling requests<br/>
+                  <input type="checkbox" name="howSetter" value="y" checked="checked" disabled="disabled"/>scheduling replies<br/>
+                  <input type="checkbox" name="howSetter" value="s" checked="checked" disabled="disabled"/>free-busy requests
+                </dd>
+              </dl>
+
+              <input type="submit" name="modPrefs" value="Update"/>
+              <input type="reset" value="Reset"/>
+              <input type="submit" name="cancelled" value="Cancel"/>
+            </form>
+            <h3>Current Access:</h3>
+            <xsl:for-each select="outbox/acl/ace[principal/href]">
+              <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
+            </xsl:for-each>
           </td>
         </tr>
       </table>
-    </form>
   </xsl:template>
 
   <!-- construct the workDay times options listings from minute 0 to less than
