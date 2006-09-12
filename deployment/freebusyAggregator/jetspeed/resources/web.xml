@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<!-- guest/web.xml and user/web.xml in uwcalxml should be
+<!-- publicweb.xml and userweb.xml in source WEB-INF should be
      identical except for the security piece.
   -->
 

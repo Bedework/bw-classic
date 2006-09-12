@@ -82,6 +82,11 @@
              classname="org.bedework.deployment.ForEachAppTask">
       <classpath refid="app.xml.cp"/>
     </taskdef>
+
+    <taskdef name="resolveFile"
+             classname="org.bedework.deployment.ResolveFile">
+      <classpath refid="app.xml.cp"/>
+    </taskdef>
   </target>
 
   <target name="build.configured" depends="deftasks" >
@@ -267,10 +272,6 @@
       <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
       <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
     </propertyset>
-
-    <echo message="XXXXXXXXXXXX      type=${org.bedework.deploy.type}" />
-    <echo message="XXXXXXXXXXXX      name=${org.bedework.deploy.name}" />
-    <echo message="XXXXXXXXXXXX      path=${org.bedework.deploy.project.path}" />
 
     <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="deploy" >

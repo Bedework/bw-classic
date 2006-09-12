@@ -68,6 +68,13 @@
 
     <property name="bedework.build.file"
               location="${basedir}/bedework/build.xml" />
+    <property name="org.bedework.user.build.properties"
+              location="${user.home}/bedework.build.properties" />
+
+    <echo message="Load user properties from ${org.bedework.user.build.properties}" />
+
+    <!-- Load user property definition overrides -->
+    <property file="${org.bedework.user.build.properties}" />
 
     <property file="${basedir}/bedework/deployment/deploy.properties" />
   </target>

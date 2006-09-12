@@ -19,8 +19,10 @@
     <!-- Flag as struts -->
     <property name="org.bedework.strutsapp" value="true" />
 
+    <!--
     <property name="app.web.xml"
               value="${app.sou.dir}/war/WEB-INF/web.xml" />
+              -->
 
     <!-- This should be in the config stuff -->
     <property name="propval.directory.browsing.disallowed"
@@ -56,7 +58,10 @@
           overwrite="yes" />
 
     <!-- Delete expanded version -->
-    <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.context.root}" />
+    <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.war.name}" />
+
+    <!-- Delete the quickstart context def -->
+    <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
   </target>
 
   <target name="build.configured" depends="init" >

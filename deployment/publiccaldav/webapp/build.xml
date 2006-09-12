@@ -18,8 +18,10 @@
     <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
 
     <!-- Properties that differ from the personal client -->
+    <!--
     <property name="app.web.xml"
-              value="${app.sou.dir}/war/WEB-INF/publicweb.xml" />
+              value="${app.sou.dir}/war/WEB-INF/web.xml" />
+              -->
   </target>
 
   <!-- =================================================================
@@ -41,7 +43,10 @@
           overwrite="yes" />
 
     <!-- Delete expanded version -->
-    <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.context.root}" />
+    <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.war.name}" />
+
+    <!-- Delete the quickstart context def -->
+    <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
   </target>
 
   <target name="build.configured" depends="init" >

@@ -20,8 +20,10 @@
     <property name="org.bedework.strutsapp" value="true" />
 
     <!-- Properties that differ from the personal client -->
+    <!--
     <property name="app.web.xml"
-              value="${app.sou.dir}/war/WEB-INF/publicweb.xml" />
+              value="${app.sou.dir}/war/WEB-INF/web.xml" />
+              -->
 
     <!-- This should be in the config stuff -->
     <property name="propval.directory.browsing.disallowed"
@@ -54,12 +56,16 @@
     <echo message="Deploying standalone app ${app.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />
     <echo message="***************************************************************" />
 
+    <!-- Delete expanded version -->
+    <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.war.name}" />
+
     <!-- copy the war file. -->
-    <copy todir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}" file="${app.war.file}"
+    <copy todir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}"
+          file="${app.war.file}"
           overwrite="yes" />
 
-    <!-- Delete expanded version -->
-    <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.context.root}" />
+    <!-- Delete the quickstart context def -->
+    <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
 
     <antcall target="deploy.uportal2" inheritRefs="true" />
   </target>

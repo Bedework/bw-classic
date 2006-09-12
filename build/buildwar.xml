@@ -71,6 +71,8 @@
               location="${app.dest.war}/docs" />
     <property name="app.dest.webinf"
               location="${app.dest.war}/WEB-INF" />
+    <property name="app.dest.metainf"
+              location="${app.dest.war}/META-INF" />
     <property name="app.dest.classes"
               location="${app.dest.webinf}/classes" />
     <property name="app.dest.properties"
@@ -83,9 +85,21 @@
     <property name="app.war.file"
               location="${dist.home}/${propval.app.war.name}.war" />
 
-    <!-- These may have been set already -->
+    <property name="app.sou.tomcat.context.xml"
+              location="${app.sou.dir}/war/META-INF/context.xml" />
+
+    <!-- default web.xml -->
+    <property name="propval.app.web.xml"
+              value="war/WEB-INF/web.xml" />
+
+              <!--
     <property name="app.web.xml"
-              value="${app.sou.dir}/war/WEB-INF/web.xml" />
+              location="${propval.app.web.xml}" />
+              -->
+    <resolveFile name="app.web.xml"
+                 file="${propval.app.web.xml}"
+                 base="${app.sou.dir}"/>
+
     <property name="app.sou.properties"
               location="${app.sou.dir}/war/WEB-INF/classes/servlet.properties" />
   </target>
@@ -201,6 +215,10 @@
               value="${propval.app.name}"/>
       <filter token="APP-VERSION"
               value="${propval.app.version}"/>
+      <filter token="WAR-NAME"
+              value="${propval.app.war.name}"/>
+      <filter token="TOMCAT-DOC-BASE"
+              value="${org.bedework.appserver.dir}${propval.app.deploy.dir}/${propval.app.war.name}"/>
 
       <filter token="DEFAULT-CONTENTTYPE"
               value="${propval.app.default.contenttype}" />
@@ -338,6 +356,9 @@
     <!-- free busy -->
     <antcall target="add.freebusy" inheritRefs="true" />
 
+    <!-- tomcat -->
+    <antcall target="add.tomcat" inheritRefs="true" />
+
      <!-- any extra lib files-->
     <copy todir="${app.dest.lib}" >
       <fileset refid="app.lib.files" />
@@ -351,7 +372,7 @@
     <war warfile="${app.war.file}"
          webxml="${app.dest.web.xml}"
          basedir="${app.dest.war}"
-         excludes="${app.dest.web.xml}" />
+         excludes="WEB-INF/web.xml" />
 
     <!-- build the ear file for a j2ee app
     <antcall target="build.ear" inheritRefs="true" />
@@ -365,6 +386,20 @@
 
   <target name="add.jdbcdriver" if="app.jdbcdriver.jar">
     <copy todir="${app.dest.lib}" file="${app.jdbcdriver.jar}"/>
+  </target>
+
+  <target name="add.tomcat" if="org.bedework.global.deploy.on.tomcat">
+    <property name="propval.app.tomcat.context.xml"
+              location="${app.sou.dir}/war/META-INF/context.xml" />
+    <resolveFile name="app.tomcat.context.xml"
+                 file="${propval.app.tomcat.context.xml}"
+                 base="${app.sou.dir}"/>
+
+    <copy tofile="${app.dest.metainf}/context.xml"
+          file="${app.tomcat.context.xml}"
+          overwrite="yes" >
+      <filterset refid="property.filters" />
+    </copy>
   </target>
 
   <target name="copy.properties" if="org.bedework.properties.dir.exists">
