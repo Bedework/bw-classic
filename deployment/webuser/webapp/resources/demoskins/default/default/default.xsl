@@ -1446,6 +1446,16 @@
         </tr>
         <tr>
           <td class="fieldname">
+            Type:
+          </td>
+          <td class="fieldval">
+            <input type="radio" name="schedule" size="80" value="" checked="checked"/>my event
+            <input type="radio" name="schedule" size="80" value="request"/>meeting request
+            <input type="radio" name="schedule" size="80" value="publish"/>published event
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
             Calendar:
           </td>
           <td class="fieldval">
@@ -1675,6 +1685,14 @@
                 <input type="radio" name="newEvent.status" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="newEvent.status" value="TENTATIVE"/>tentative <input type="radio" name="newEvent.status" value="CANCELLED"/>cancelled
               </xsl:otherwise>
             </xsl:choose>
+          </td>
+        </tr>
+        <!--  Recipients and Attendees  -->
+        <tr>
+          <td class="fieldname">
+          </td>
+          <td class="fieldval">
+            Add recipients and attendees
           </td>
         </tr>
         <!--  Transparency  -->
@@ -2383,10 +2401,10 @@
             <xsl:choose>
               <xsl:when test="/bedework/page='calendarDescriptions' or
                               /bedework/page='displayCalendar'">
-                <xsl:apply-templates select="calendar" mode="listForDisplay"/>
+                <xsl:apply-templates select="calendar[calType &lt; 2]" mode="listForDisplay"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:apply-templates select="calendar" mode="listForUpdate"/>
+                <xsl:apply-templates select="calendar[calType &lt; 2]" mode="listForUpdate"/>
               </xsl:otherwise>
             </xsl:choose>
           </ul>
@@ -2498,57 +2516,53 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="listForUpdate">
-    <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
-      <xsl:variable name="calPath" select="encodedPath"/>
-      <li>
-        <xsl:attribute name="class">
-          <xsl:choose>
-            <xsl:when test="calendarCollection='false'">folder</xsl:when>
-            <xsl:otherwise>calendar</xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-        <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="update">
-          <xsl:value-of select="name"/>
+    <xsl:variable name="calPath" select="encodedPath"/>
+    <li>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="update">
+        <xsl:value-of select="name"/>
+      </a>
+      <xsl:if test="calendarCollection='false'">
+        <xsl:text> </xsl:text>
+        <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="add a calendar or folder">
+          <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
         </a>
-        <xsl:if test="calendarCollection='false'">
-          <xsl:text> </xsl:text>
-          <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="add a calendar or folder">
-            <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
-          </a>
-        </xsl:if>
-        <xsl:if test="calendar">
-          <ul>
-            <xsl:apply-templates select="calendar" mode="listForUpdate">
-              <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
-            </xsl:apply-templates>
-          </ul>
-        </xsl:if>
-      </li>
-    </xsl:if>
+      </xsl:if>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="listForUpdate">
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
+          </xsl:apply-templates>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <xsl:template match="calendar" mode="listForDisplay">
-    <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
-      <xsl:variable name="calPath" select="encodedPath"/>
-      <li>
-        <xsl:attribute name="class">
-          <xsl:choose>
-            <xsl:when test="calendarCollection='false'">folder</xsl:when>
-            <xsl:otherwise>calendar</xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-        <a href="{$calendar-fetchForDisplay}&amp;calPath={$calPath}" title="display">
-          <xsl:value-of select="name"/>
-        </a>
-        <xsl:if test="calendar">
-          <ul>
-            <xsl:apply-templates select="calendar" mode="listForDisplay">
-              <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
-            </xsl:apply-templates>
-          </ul>
-        </xsl:if>
-      </li>
-    </xsl:if>
+    <xsl:variable name="calPath" select="encodedPath"/>
+    <li>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <a href="{$calendar-fetchForDisplay}&amp;calPath={$calPath}" title="display">
+        <xsl:value-of select="name"/>
+      </a>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="listForDisplay">
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
+          </xsl:apply-templates>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <!-- the selectCalForEvent listing creates a calendar tree in a pop-up window
@@ -2575,10 +2589,10 @@
     <ul class="calendarTree">
       <xsl:choose>
         <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
-          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="selectCalForEventCalTree"/>
+          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType &lt; 2]" mode="selectCalForEventCalTree"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content and calType &lt; 2]" mode="selectCalForEventCalTree"/>
         </xsl:otherwise>
       </xsl:choose>
     </ul>
@@ -2587,59 +2601,55 @@
       <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
       <xsl:choose>
         <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
-          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar" mode="selectCalForEventCalTree"/>
+          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[calType &lt; 2]" mode="selectCalForEventCalTree"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content and calType &lt; 2]" mode="selectCalForEventCalTree"/>
         </xsl:otherwise>
       </xsl:choose>
     </ul>
   </xsl:template>
 
   <xsl:template match="calendar" mode="selectCalForEventCalTree">
-  <!-- supress Inbox and Outbox for the moment -->
-    <!--<xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">-->
-    <xsl:if test="name != 'Deleted'">
-      <xsl:variable name="id" select="id"/>
-      <li>
-        <xsl:attribute name="class">
-          <xsl:choose>
-            <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
-                            and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
-            <xsl:when test="name='Trash'">trash</xsl:when>
-            <xsl:when test="calendarCollection='false'">folder</xsl:when>
-            <xsl:otherwise>calendar</xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-        <xsl:variable name="calPath" select="path"/>
-        <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-        <xsl:variable name="calDisplay">
-          <xsl:choose>
-            <xsl:when test="contains(path,$userPath)">
-              <xsl:value-of select="substring-after(path,$userPath)"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="path"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
+    <xsl:variable name="id" select="id"/>
+    <li>
+      <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calendarCollection = 'true')">
-            <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
-              <strong><xsl:value-of select="name"/></strong>
-            </a>
+          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
+                          and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
+          <xsl:when test="name='Trash'">trash</xsl:when>
+          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:variable name="calPath" select="path"/>
+      <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+      <xsl:variable name="calDisplay">
+        <xsl:choose>
+          <xsl:when test="contains(path,$userPath)">
+            <xsl:value-of select="substring-after(path,$userPath)"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="path"/>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:if test="calendar">
-          <ul>
-            <xsl:apply-templates select="calendar" mode="selectCalForEventCalTree"/>
-          </ul>
-        </xsl:if>
-      </li>
-    </xsl:if>
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calendarCollection = 'true')">
+          <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
+            <strong><xsl:value-of select="name"/></strong>
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="name"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="selectCalForEventCalTree"/>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="addCalendar">
@@ -2861,23 +2871,21 @@
         <th>Name</th>
         <th>Description</th>
       </tr>
-      <xsl:for-each select="//calendar">
-        <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
-          <xsl:variable name="descClass">
-            <xsl:choose>
-              <xsl:when test="position() mod 2 = 0">even</xsl:when>
-              <xsl:otherwise>odd</xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-          <tr class="{$descClass}">
-            <td>
-              <xsl:value-of select="name"/>
-            </td>
-            <td>
-              <xsl:value-of select="desc"/>
-            </td>
-          </tr>
-        </xsl:if>
+      <xsl:for-each select="//calendar[calType &lt; 2]">
+        <xsl:variable name="descClass">
+          <xsl:choose>
+            <xsl:when test="position() mod 2 = 0">even</xsl:when>
+            <xsl:otherwise>odd</xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <tr class="{$descClass}">
+          <td>
+            <xsl:value-of select="name"/>
+          </td>
+          <td>
+            <xsl:value-of select="desc"/>
+          </td>
+        </tr>
       </xsl:for-each>
     </table>
   </xsl:template>
@@ -2992,11 +3000,11 @@
           </p>
           <h3>My calendars</h3>
           <ul class="calendarTree">
-            <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="subscribe"/>
+            <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType &lt; 2]" mode="subscribe"/>
           </ul>
           <h3>Public calendars</h3>
           <ul class="calendarTree">
-            <xsl:apply-templates select="/bedework/subscriptions/subscribe/calendars/calendar" mode="subscribe"/>
+            <xsl:apply-templates select="/bedework/subscriptions/subscribe/calendars/calendar[calType &lt; 2]" mode="subscribe"/>
           </ul>
         </td>
         <td class="subs">
@@ -3020,27 +3028,25 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="subscribe">
-    <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
-      <xsl:variable name="calPath" select="encodedPath"/>
-      <xsl:variable name="itemClass">
-        <xsl:choose>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
-          <xsl:otherwise>calendar</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <li class="{$itemClass}">
-        <a href="{$subscriptions-initAdd}&amp;calPath={$calPath}">
-          <xsl:value-of select="name"/>
-        </a>
-        <xsl:if test="calendar">
-          <ul>
-            <xsl:apply-templates select="calendar" mode="subscribe">
-              <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
-            </xsl:apply-templates>
-          </ul>
-        </xsl:if>
-      </li>
-    </xsl:if>
+    <xsl:variable name="calPath" select="encodedPath"/>
+    <xsl:variable name="itemClass">
+      <xsl:choose>
+        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:otherwise>calendar</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <li class="{$itemClass}">
+      <a href="{$subscriptions-initAdd}&amp;calPath={$calPath}">
+        <xsl:value-of select="name"/>
+      </a>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="subscribe">
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
+          </xsl:apply-templates>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <!-- add a subscription to a user calendar by user and path; this is actually
