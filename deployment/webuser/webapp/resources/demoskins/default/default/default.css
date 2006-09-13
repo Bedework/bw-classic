@@ -577,6 +577,9 @@ table.common .padMe {
 .padMe {
   padding: 1em 0 !important;
 }
+.strong {
+  font-weight: bold;
+}
 form#subscriptions {
   margin: 0;
   padding: 0;

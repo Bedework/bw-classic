@@ -2472,12 +2472,14 @@
             <xsl:when test="name='Inbox' and /bedework/inbox/numActive != '0'">
               <strong>
                 <xsl:value-of select="name"/>
+                <xsl:text> </xsl:text>
                 <xsl:value-of select="/bedework/inbox/numActive"/>
               </strong>
             </xsl:when>
             <xsl:when test="name='Outbox' and /bedework/outbox/numActive != '0'">
               <strong>
                 <xsl:value-of select="name"/>
+                <xsl:text> </xsl:text>
                 <xsl:value-of select="/bedework/inbox/numActive"/>
               </strong>
             </xsl:when>
