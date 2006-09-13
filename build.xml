@@ -347,9 +347,6 @@
            target="build-all" />
 
     <copy-to-bin this="${org.bedework.project.caldav}"/>
-    <copy-to-dependent this="${org.bedework.project.caldav}"
-                       target="${org.bedework.project.freebusy}"
-                       fromdir="dist" />
   </target>
 
   <target name="clean.caldav" depends="init"
