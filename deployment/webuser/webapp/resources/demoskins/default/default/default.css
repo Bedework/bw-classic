@@ -408,6 +408,8 @@ ul.submenu li {
   margin: 0;
   padding: 0 0.5em;
   border-right: 1px solid #999;
+  color: black;
+  background: #ddd;
 }
 ul.submenu li.selected {
   color: black;
@@ -418,6 +420,8 @@ ul.submenu li.selected {
 ul.submenu li a:link,
 ul.submenu li a:active,
 ul.submenu li a:visited {
+  margin: 0;
+  padding: 0;
 }
 #standardForm {
   margin: 0;
@@ -550,6 +554,9 @@ table.common .durationSpacerText {
 }
 table.common .padMeTop {
   padding-top: 1em !important;
+}
+table.common .padMe {
+  padding: 1em !important;
 }
 #bwEventCalDisplay {
   font-weight: bold;

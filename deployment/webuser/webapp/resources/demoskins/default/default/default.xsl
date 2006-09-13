@@ -374,8 +374,13 @@
         <img alt="manage calendars" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> calendars
       </a>
     </h3>
+    <!-- normal calendars -->
     <ul class="calendarTree">
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="myCalendars"/>
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType &lt; 2]" mode="myCalendars"/>
+    </ul>
+    <!-- special calendars: inbox, outbox, and trash -->
+    <ul class="calendarTree">
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType &gt; 1]" mode="myCalendars"/>
     </ul>
 
     <h3>
@@ -2415,18 +2420,19 @@
 
   <xsl:template match="calendar" mode="myCalendars">
     <!-- supress Inbox and Outbox for the moment -->
-    <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
+    <!--<xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">-->
+    <xsl:if test="name != 'Deleted'">
       <xsl:variable name="id" select="id"/>
-      <xsl:variable name="itemClass">
-        <xsl:choose>
-          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
-                          and path = /bedework/selectionState/subscriptions/subscription/calendar/path">selected</xsl:when>
-          <xsl:when test="name='Trash'">trash</xsl:when>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
-          <xsl:otherwise>calendar</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <li class="{$itemClass}">
+      <li>
+        <xsl:attribute name="class">
+          <xsl:choose>
+            <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
+                            and path = /bedework/selectionState/subscriptions/subscription/calendar/path">selected</xsl:when>
+            <xsl:when test="name='Trash'">trash</xsl:when>
+            <xsl:when test="calendarCollection='false'">folder</xsl:when>
+            <xsl:otherwise>calendar</xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
         <xsl:variable name="calPath" select="path"/>
         <a href="{$setSelection}&amp;calUrl={$calPath}">
           <xsl:value-of select="name"/>
@@ -2453,13 +2459,13 @@
   <xsl:template match="calendar" mode="listForUpdate">
     <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
       <xsl:variable name="calPath" select="encodedPath"/>
-      <xsl:variable name="itemClass">
-        <xsl:choose>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
-          <xsl:otherwise>calendar</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <li class="{$itemClass}">
+      <li>
+        <xsl:attribute name="class">
+          <xsl:choose>
+            <xsl:when test="calendarCollection='false'">folder</xsl:when>
+            <xsl:otherwise>calendar</xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
         <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="update">
           <xsl:value-of select="name"/>
         </a>
@@ -2483,13 +2489,13 @@
   <xsl:template match="calendar" mode="listForDisplay">
     <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
       <xsl:variable name="calPath" select="encodedPath"/>
-      <xsl:variable name="itemClass">
-        <xsl:choose>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
-          <xsl:otherwise>calendar</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <li class="{$itemClass}">
+      <li>
+        <xsl:attribute name="class">
+          <xsl:choose>
+            <xsl:when test="calendarCollection='false'">folder</xsl:when>
+            <xsl:otherwise>calendar</xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
         <a href="{$calendar-fetchForDisplay}&amp;calPath={$calPath}" title="display">
           <xsl:value-of select="name"/>
         </a>
@@ -2551,18 +2557,19 @@
 
   <xsl:template match="calendar" mode="selectCalForEventCalTree">
   <!-- supress Inbox and Outbox for the moment -->
-    <xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">
+    <!--<xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">-->
+    <xsl:if test="name != 'Deleted'">
       <xsl:variable name="id" select="id"/>
-      <xsl:variable name="itemClass">
-        <xsl:choose>
-          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
-                          and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
-          <xsl:when test="name='Trash'">trash</xsl:when>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
-          <xsl:otherwise>calendar</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <li class="{$itemClass}">
+      <li>
+        <xsl:attribute name="class">
+          <xsl:choose>
+            <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
+                            and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
+            <xsl:when test="name='Trash'">trash</xsl:when>
+            <xsl:when test="calendarCollection='false'">folder</xsl:when>
+            <xsl:otherwise>calendar</xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
         <xsl:variable name="calPath" select="path"/>
         <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
         <xsl:variable name="calDisplay">
@@ -3984,15 +3991,22 @@
           <th class="leftBorder">Can schedule on my behalf:</th>
         </tr>
         <tr>
-          <td>
+          <td class="padMe">
             <form name="eventForm" method="post" action="{$prefs-setAccess}">
               <input type="hidden" name="what" value="in"/>
-              <input type="text" name="who" width="40"/>
-              <input type="radio" name="whoType" value="user" checked="checked"/>user
-              <input type="radio" name="whoType" value="group"/>group
-              <input type="radio" name="whoType" value="owner"/>owner
+              <p>
+                <input type="text" name="who" width="40"/>
+                <input type="radio" name="whoType" value="user" checked="checked"/>user
+                <input type="radio" name="whoType" value="group"/>group
+              </p>
+              <p>
+                <strong>or</strong>
+                <input type="radio" name="whoType" value="owner"/>owner
+                <input type="radio" name="whoType" value="auth"/>authenticated users
+                <input type="radio" name="whoType" value="other"/>anyone
+              </p>
 
-              <p>may send the following to me:</p>
+              <p><strong>may send the following to me:</strong></p>
 
               <input type="hidden" name="how" value="S"/>
               <dl>
@@ -4015,15 +4029,22 @@
               <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
             </xsl:for-each>
           </td>
-          <td class="leftBorder">
+          <td class="leftBorder padMe">
             <form name="eventForm" method="post" action="{$prefs-setAccess}">
               <input type="hidden" name="what" value="out"/>
-              <input type="text" name="who" width="40"/>
-              <input type="radio" name="whoType" value="user" checked="checked"/>user
-              <input type="radio" name="whoType" value="group"/>group
-              <input type="radio" name="whoType" value="owner"/>owner
+              <p>
+                <input type="text" name="who" width="40"/>
+                <input type="radio" name="whoType" value="user" checked="checked"/>user
+                <input type="radio" name="whoType" value="group"/>group
+              </p>
+              <p>
+                <strong>or</strong>
+                <input type="radio" name="whoType" value="owner"/>owner
+                <input type="radio" name="whoType" value="auth"/>authenticated users
+                <input type="radio" name="whoType" value="other"/>anyone
+              </p>
 
-              <p>may send the following on my behalf:</p>
+              <p><strong>may send the following on my behalf:</strong></p>
 
               <input type="hidden" name="how" value="S"/>
               <dl>
