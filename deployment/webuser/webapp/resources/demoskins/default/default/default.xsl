@@ -380,7 +380,7 @@
     </ul>
     <!-- special calendars: inbox, outbox, and trash -->
     <ul class="calendarTree">
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType &gt; 1]" mode="myCalendars"/>
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType &gt; 1]" mode="mySpecialCalendars"/>
     </ul>
 
     <h3>
@@ -2419,8 +2419,41 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="myCalendars">
-    <!-- supress Inbox and Outbox for the moment -->
-    <!--<xsl:if test="(name != 'Inbox') and (name != 'Outbox') and (name != 'Deleted')">-->
+    <xsl:variable name="id" select="id"/>
+    <li>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
+                          and path = /bedework/selectionState/subscriptions/subscription/calendar/path">selected</xsl:when>
+          <xsl:when test="name='Trash'">trash</xsl:when>
+          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:variable name="calPath" select="path"/>
+      <a href="{$setSelection}&amp;calUrl={$calPath}">
+        <xsl:value-of select="name"/>
+      </a>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="myCalendars"/>
+        </ul>
+      </xsl:if>
+      <xsl:if test="calendarCollection='true'">
+        <!-- set the start date for adding an event to the first day of the
+             given period, the hour of "now", and give a duration of 60 minutes -->
+        <xsl:variable name="startDate"><xsl:value-of select="/bedework/firstday/date"/>T<xsl:value-of select="substring(/bedework/now/time,1,2)"/>0000</xsl:variable>
+        <!-- skip setting duration for now; this should be set in the user's prefs-->
+        <!-- <a href="{$initEvent}&amp;startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event"> -->
+        <a href="{$initEvent}&amp;startdate={$startDate}&amp;newCalPath={$calPath}" class="calendarAdd" title="add event">
+          <img src="{$resourcesRoot}/resources/addEvent-forCals-icon.gif" width="9" height="12" border="0" alt="add event"/>
+        </a>
+      </xsl:if>
+    </li>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="mySpecialCalendars">
+    <!-- Inbox, Outbox, Trash, etc. -->
     <xsl:if test="name != 'Deleted'">
       <xsl:variable name="id" select="id"/>
       <li>
@@ -2435,22 +2468,28 @@
         </xsl:attribute>
         <xsl:variable name="calPath" select="path"/>
         <a href="{$setSelection}&amp;calUrl={$calPath}">
-          <xsl:value-of select="name"/>
+          <xsl:choose>
+            <xsl:when test="name='Inbox' and /bedework/inbox/numActive != '0'">
+              <strong>
+                <xsl:value-of select="name"/>
+                <xsl:value-of select="/bedework/inbox/numActive"/>
+              </strong>
+            </xsl:when>
+            <xsl:when test="name='Outbox' and /bedework/outbox/numActive != '0'">
+              <strong>
+                <xsl:value-of select="name"/>
+                <xsl:value-of select="/bedework/inbox/numActive"/>
+              </strong>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="name"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </a>
         <xsl:if test="calendar">
           <ul>
             <xsl:apply-templates select="calendar" mode="myCalendars"/>
           </ul>
-        </xsl:if>
-        <xsl:if test="calendarCollection='true'">
-          <!-- set the start date for adding an event to the first day of the
-               given period, the hour of "now", and give a duration of 60 minutes -->
-          <xsl:variable name="startDate"><xsl:value-of select="/bedework/firstday/date"/>T<xsl:value-of select="substring(/bedework/now/time,1,2)"/>0000</xsl:variable>
-          <!-- skip setting duration for now; this should be set in the user's prefs-->
-          <!-- <a href="{$initEvent}&amp;startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event"> -->
-          <a href="{$initEvent}&amp;startdate={$startDate}&amp;newCalPath={$calPath}" class="calendarAdd" title="add event">
-            <img src="{$resourcesRoot}/resources/addEvent-forCals-icon.gif" width="9" height="12" border="0" alt="add event"/>
-          </a>
         </xsl:if>
       </li>
     </xsl:if>
