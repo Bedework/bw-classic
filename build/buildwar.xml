@@ -60,10 +60,6 @@
     </condition>
     -->
 
-    <condition property="org.bedework.war.build.freebusy">
-      <equals arg1="yes" arg2="${org.bedework.build.freebusy}"/>
-    </condition>
-
     <!-- Destinations - where we build an unwrapped war -->
     <property name="app.dest.war"
               location="${org.bedework.temp.wars.home}/${propval.app.war.name}.war" />
@@ -353,9 +349,6 @@
     <!-- add the jdbcdriver if defined -->
     <antcall target="add.jdbcdriver" inheritRefs="true" />
 
-    <!-- free busy -->
-    <antcall target="add.freebusy" inheritRefs="true" />
-
     <!-- tomcat -->
     <antcall target="add.tomcat" inheritRefs="true" />
 
@@ -377,11 +370,6 @@
     <!-- build the ear file for a j2ee app
     <antcall target="build.ear" inheritRefs="true" />
     -->
-  </target>
-
-  <target name="add.freebusy" if="org.bedework.war.build.freebusy">
-    <copy todir="${app.dest.lib}" file="${org.bedework.fbclient.jar}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.fbaggregator.jar}" />
   </target>
 
   <target name="add.jdbcdriver" if="app.jdbcdriver.jar">
@@ -430,12 +418,12 @@
 
   <target name="bexchange-stuff" if="org.bedework.build.caldav.bexchange">
     <copy tofile="${app.dest.properties}/timezones.xml"
-          file="${org.bedework.resources.base}/bwtimezones.xml" />
+          file="${org.bedework.project.bedework}/docs/bwtimezones.xml" />
   </target>
 
   <target name="domino-stuff" if="org.bedework.build.caldav.domino">
     <copy tofile="${app.dest.properties}/timezones.xml"
-          file="${org.bedework.resources.base}/bwtimezones.xml" />
+          file="${org.bedework.project.bedework}/docs/bwtimezones.xml" />
   </target>
 
   <target name="google-stuff" if="org.bedework.build.caldav.google">
@@ -446,7 +434,7 @@
     </copy>
 
     <copy tofile="${app.dest.properties}/timezones.xml"
-          file="${org.bedework.resources.base}/bwtimezones.xml" />
+          file="${org.bedework.project.bedework}/docs/bwtimezones.xml" />
   </target>
 
   <!-- =================================================================
