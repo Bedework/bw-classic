@@ -580,6 +580,12 @@ table.common .padMe {
 .strong {
   font-weight: bold;
 }
+.posrelative {
+  /* this class is used primarily to lock absolutely positioned elements to
+     their parent.  Be careful removing this class from elements that
+     contain an absolutely positioned div. */
+  position: relative;
+}
 form#subscriptions {
   margin: 0;
   padding: 0;
@@ -598,6 +604,41 @@ table#attendees td.role,
 table#attendees td.status {
   font-size: 0.7em;
   text-transform: lowercase;
+}
+/* this is the recipients and attendees dialog box */
+#recipientsAndAttendees {
+  position: relative;
+}
+#recipientsAndAttendeesBox {
+  position: absolute;
+  top: -300px;
+  left: -100px;
+  width: 500px;
+  padding: 1em;
+  border: 2px solid #666;
+  background: white;
+  color: black;
+}
+#recipientsAndAttendeesBox h4 {
+  padding: 4px;
+  margin: -1em -1em 1em -1em;
+  text-align: center;
+  color: black;
+  background: #ddd;
+}
+#recipientsAndAttendeesBox table {
+  width: 100%;
+  margin: 1em 0;
+}
+#recipientsAndAttendeesBox table th {
+  padding: 2px;
+  text-align: center;
+  color: black;
+  background: #eee;
+}
+/* default title of movable dialog boxes */
+#dialogTitle {
+  cursor: move;
 }
 #weekCalendarTable {
   width: 100%;

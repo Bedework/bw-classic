@@ -142,3 +142,70 @@ function setScheduleHow(multibox) {
     alert(mulitbox[i].value);
   }
 }
+
+
+/*var mouseX = 0;
+var mouseY = 0;
+window.document.onmousemove = getMousePosition();
+function getMousePosition() {
+  mouseX = event.clientX + document.body.scrollLeft;
+  mouseY = event.clientY + document.body.scrollTop;
+}*/
+
+function bwDrag(id) {
+  box = document.getElementById(id);
+}
+function bwDrop(id) {
+  box = document.getElementById(id);
+}
+
+/****************************************/
+/* AJAX-style asynchronous interactions */
+/****************************************/
+var req;
+
+function postRecipientsAndAttendees(formId,urlPrefix) {
+  formObj = document.getElementById(formId);
+
+  var val = escape(formObj.raHolder.value);
+  var isRecipient = formObj.recipient.checked;
+  var isAttendee = formObj.attendee.checked;
+  var role = formObj.role.value;
+  var status = formObj.partstat.value;
+
+  var url = urlPrefix;
+  url += "&uri=" + val;
+  if (isRecipient) {
+    url += "&recipient=yes";
+  }
+  if (isAttendee) {
+    url += "&attendee=yes&role=" + role + "&status=" + status;
+  }
+
+  if (window.XMLHttpRequest) {
+    req = new XMLHttpRequest();
+  } else if (window.ActiveXObject) {
+    req = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  req.open("GET", url, true);
+  req.onreadystatechange = callback();
+  req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  req.send(url);
+
+  /*updateRecipientAndAttendeesListing(req);*/
+}
+function callback() {
+  if (req.readyState == 4) {
+    if (req.status == 200) {
+      /*do nothing for now*/
+    }
+  }
+}
+function updateRecipientAndAttendeesListing(req) {
+  var recipients = req.responseXML.getElementsByTagName("recipients")[0];
+  var attendees = req.responseXML.getElementsByTagName("attendees")[0];
+  recipientList = document.getElementById("recipientList");
+  attendeeList = document.getElementById("attendeeList");
+  recipientList.innerHTML = recipients;
+  attendeeList.innerHTML = attendeeList;
+}

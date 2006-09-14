@@ -75,6 +75,7 @@
   <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete/a/@href"/>
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
+  <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent/a/@href"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/editEvent"/>
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/delEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
@@ -1348,7 +1349,7 @@
                   </td>
                   <td>
                     <xsl:variable name="attendeeUri" select="attendeeUri"/>
-                    <a href="{$attendeeUri}"><xsl:value-of select="cn"/></a>
+                    <a href="{$attendeeUri}"><xsl:value-of select="attendeeUri"/></a>
                   </td>
                 </tr>
               </xsl:for-each>
@@ -1687,14 +1688,6 @@
             </xsl:choose>
           </td>
         </tr>
-        <!--  Recipients and Attendees  -->
-        <tr>
-          <td class="fieldname">
-          </td>
-          <td class="fieldval">
-            Add recipients and attendees
-          </td>
-        </tr>
         <!--  Transparency  -->
         <tr>
           <td class="fieldname">
@@ -1712,6 +1705,68 @@
             <textarea name="newEvent.description" cols="60" rows="4">
               <xsl:value-of select="/bedework/formElements/form/desc/textarea"/>
             </textarea>
+          </td>
+        </tr>
+        <!--  Recipients and Attendees  -->
+        <tr>
+          <td class="fieldname">
+            Recipients &amp;<br/> Attendees:
+          </td>
+          <td class="fieldval posrelative">
+            <input type="button" value="Add recipients and attendees" onclick="changeClass('recipientsAndAttendees','shown')"/>
+            <!-- the following is the recipients and attendees dialog box -->
+            <div id="recipientsAndAttendees" class="invisible">
+              <div id="recipientsAndAttendeesBox">
+                <h4 id="dialogTitle"><!--onmousedown="bwDrag('recipientsAndAttendeesBox')" onmouseup="bwDrop('recipientsAndAttendeesBox')"-->
+                  Recipients and Attendees
+                </h4>
+                <table cellspacing="0">
+                  <tr>
+                    <td>
+                      <input name="raHolder" width="40"/>
+                      <input type="button" value="add" onclick="postRecipientsAndAttendees('standardForm','{$event-attendeesForEvent}');"/>
+                      <br/>
+                      <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
+                      <input type="checkbox" name="attendee" value="true" checked="checked"/> attendee
+                    </td>
+                    <td>
+                      Role:
+                      <select name="role">
+                        <option value="REQ-PARTICIPANT">required participant</option>
+                        <option value="OPT-PARTICIPANT">optional participant</option>
+                        <option value="CHAIR">chair</option>
+                        <option value="NON-PARTICIPANT">non-participant</option>
+                      </select><br/>
+                      Status:
+                      <select name="partstat">
+                        <option value="NEEDS-ACTION">needs action</option>
+                        <option value="ACCEPTED">accepted</option>
+                        <option value="DECLINED">declined</option>
+                        <option value="TENTATIVE">tentative</option>
+                        <option value="DELEGATED">delegated</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+                <table cellspacing="0">
+                  <tr>
+                    <th>Recipients</th>
+                    <th>Attendees</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div id="recipientList">
+                      </div>
+                    </td>
+                    <td>
+                      <div id="attendeeList">
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <input type="button" value="done" onclick="changeClass('recipientsAndAttendees','invisible');"/>
+              </div>
+            </div>
           </td>
         </tr>
         <tr>
