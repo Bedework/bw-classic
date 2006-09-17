@@ -154,7 +154,7 @@
           <xsl:otherwise>true</xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <body onload="checkStatus('{$inbox}','{$outbox}','{$inboxChanged}','{$outboxChanged}','{$calendar-inbox}','{$calendar-outbox}','{$inboxFlagged}','{$outboxFlagged}')">
+      <body onload="checkStatus({$inbox},{$outbox},{$inboxChanged},{$outboxChanged},'{$calendar-inbox}','{$calendar-outbox}',{$inboxFlagged},{$outboxFlagged})">
       <xsl:choose>
         <xsl:when test="/bedework/page='selectCalForEvent'">
           <xsl:call-template name="selectCalForEvent"/>
@@ -319,7 +319,7 @@
       // Check status of inbox and outbox and alert user appropriately.
       // Just take care of inbox for now.
       function checkStatus(inbox,outbox,inboxChanged,outboxChanged,inboxUrl,outboxUrl,inboxFlagged,outboxFlagged) {
-        if ((inbox > 0) && ((inboxFlagged == 'true') || (inboxChanged > 0))) {
+        if (inbox && (inboxFlagged || inboxChanged)) {
         alert("You have " + inbox + " pending meeting requests.");
         inboxUrl = "showMain.rdo?setappvar=inboxFlagged(false)"; //just refresh for now
         window.location.replace(inboxUrl);
