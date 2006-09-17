@@ -76,6 +76,7 @@
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
   <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent/a/@href"/>
+  <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent/a/@href"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/editEvent"/>
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/delEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
@@ -1584,9 +1585,6 @@
                   </span>
                 </div>
               </div><br/>
-              <div id="clock" class="invisible">
-                <xsl:call-template name="clock"/>
-              </div>
               <div class="dateFields">
                 <xsl:choose>
                   <xsl:when test="/bedework/formElements/form/end/type='D'">
@@ -1713,60 +1711,7 @@
             Recipients &amp;<br/> Attendees:
           </td>
           <td class="fieldval posrelative">
-            <input type="button" value="Add recipients and attendees" onclick="changeClass('recipientsAndAttendees','shown')"/>
-            <!-- the following is the recipients and attendees dialog box -->
-            <div id="recipientsAndAttendees" class="invisible">
-              <div id="recipientsAndAttendeesBox">
-                <h4 id="dialogTitle"><!--onmousedown="bwDrag('recipientsAndAttendeesBox')" onmouseup="bwDrop('recipientsAndAttendeesBox')"-->
-                  Recipients and Attendees
-                </h4>
-                <table cellspacing="0">
-                  <tr>
-                    <td>
-                      <input name="raHolder" width="40"/>
-                      <input type="button" value="add" onclick="postRecipientsAndAttendees('standardForm','{$event-attendeesForEvent}');"/>
-                      <br/>
-                      <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
-                      <input type="checkbox" name="attendee" value="true" checked="checked"/> attendee
-                    </td>
-                    <td>
-                      Role:
-                      <select name="role">
-                        <option value="REQ-PARTICIPANT">required participant</option>
-                        <option value="OPT-PARTICIPANT">optional participant</option>
-                        <option value="CHAIR">chair</option>
-                        <option value="NON-PARTICIPANT">non-participant</option>
-                      </select><br/>
-                      Status:
-                      <select name="partstat">
-                        <option value="NEEDS-ACTION">needs action</option>
-                        <option value="ACCEPTED">accepted</option>
-                        <option value="DECLINED">declined</option>
-                        <option value="TENTATIVE">tentative</option>
-                        <option value="DELEGATED">delegated</option>
-                      </select>
-                    </td>
-                  </tr>
-                </table>
-                <table cellspacing="0">
-                  <tr>
-                    <th>Recipients</th>
-                    <th>Attendees</th>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div id="recipientList">
-                      </div>
-                    </td>
-                    <td>
-                      <div id="attendeeList">
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-                <input type="button" value="done" onclick="changeClass('recipientsAndAttendees','invisible');"/>
-              </div>
-            </div>
+            <input type="button" value="Manage recipients and attendees" onclick="changeClass('recipientsAndAttendees','shown')"/>
           </td>
         </tr>
         <tr>
@@ -1798,6 +1743,69 @@
           </td>
         </tr>
       </table>
+    </form>
+
+    <!-- pop-up dialog boxes in use with the events page -->
+    <!-- these should follow other items in the form and in some cases
+         be in a different form -->
+
+    <div id="clock" class="invisible">
+      <xsl:call-template name="clock"/>
+    </div>
+
+    <form name="raForm" id="recipientsAndAttendees" class="invisible">
+      <div id="recipientsAndAttendeesBox">
+        <h4 id="dialogTitle"><!--onmousedown="bwDrag('recipientsAndAttendeesBox')" onmouseup="bwDrop('recipientsAndAttendeesBox')"-->
+          Recipients and Attendees
+        </h4>
+        <div id="raContent">
+          <table cellspacing="0">
+            <tr>
+              <td>
+                <input name="raHolder" width="40"/>
+                <input type="button" value="add" onclick="postRecipientsAndAttendees('recipientsAndAttendees','{$event-attendeesForEvent}','{$event-showAttendeesForEvent}');"/>
+                <br/>
+                <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
+                <input type="checkbox" name="attendee" value="true" checked="checked"/> attendee
+              </td>
+              <td>
+                Role:
+                <select name="role">
+                  <option value="REQ-PARTICIPANT">required participant</option>
+                  <option value="OPT-PARTICIPANT">optional participant</option>
+                  <option value="CHAIR">chair</option>
+                  <option value="NON-PARTICIPANT">non-participant</option>
+                </select><br/>
+                Status:
+                <select name="partstat">
+                  <option value="NEEDS-ACTION">needs action</option>
+                  <option value="ACCEPTED">accepted</option>
+                  <option value="DECLINED">declined</option>
+                  <option value="TENTATIVE">tentative</option>
+                  <option value="DELEGATED">delegated</option>
+                </select>
+              </td>
+            </tr>
+          </table>
+          <table cellspacing="0">
+            <tr>
+              <th>Recipients</th>
+              <th>Attendees</th>
+            </tr>
+            <tr>
+              <td>
+                <div id="recipientList">
+                </div>
+              </td>
+              <td>
+                <div id="attendeeList">
+                </div>
+              </td>
+            </tr>
+          </table>
+          <input type="button" value="done" onclick="changeClass('recipientsAndAttendees','invisible');"/>
+        </div>
+      </div>
     </form>
   </xsl:template>
 

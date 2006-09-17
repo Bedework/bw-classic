@@ -162,9 +162,10 @@ function bwDrop(id) {
 /****************************************/
 /* AJAX-style asynchronous interactions */
 /****************************************/
+
 var req;
 
-function postRecipientsAndAttendees(formId,urlPrefix) {
+function postRecipientsAndAttendees(formId,urlActionPrefix,urlRenderPrefix) {
   formObj = document.getElementById(formId);
 
   var val = escape(formObj.raHolder.value);
@@ -173,13 +174,13 @@ function postRecipientsAndAttendees(formId,urlPrefix) {
   var role = formObj.role.value;
   var status = formObj.partstat.value;
 
-  var url = urlPrefix;
-  url += "&uri=" + val;
+  var postUrl = urlActionPrefix;
+  postUrl += "&uri=" + val;
   if (isRecipient) {
-    url += "&recipient=yes";
+    postUrl += "&recipient=yes";
   }
   if (isAttendee) {
-    url += "&attendee=yes&role=" + role + "&status=" + status;
+    postUrl += "&attendee=yes&role=" + role + "&status=" + status;
   }
 
   if (window.XMLHttpRequest) {
@@ -187,25 +188,25 @@ function postRecipientsAndAttendees(formId,urlPrefix) {
   } else if (window.ActiveXObject) {
     req = new ActiveXObject("Microsoft.XMLHTTP");
   }
-  req.open("GET", url, true);
+  req.open("GET", postUrl, true);
   req.onreadystatechange = callback();
   req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  req.send(url);
+  req.send(postUrl);
 
-  /*updateRecipientAndAttendeesListing(req);*/
+  /* return the data */
+  var getUrl = urlRenderPrefix;
+  req.open("GET", getUrl, true);
+  req.onreadystatechange = callback();
 }
 function callback() {
   if (req.readyState == 4) {
     if (req.status == 200) {
-      /*do nothing for now*/
+      /*var recipients = req.responseXML.getElementsByTagName("recipients")[0];
+      var attendees = req.responseXML.getElementsByTagName("attendees")[0];
+      recipientList = document.getElementById("recipientList");
+      attendeeList = document.getElementById("attendeeList");
+      recipientList.innerHTML = recipients;
+      attendeeList.innerHTML = attendeeList;*/
     }
   }
-}
-function updateRecipientAndAttendeesListing(req) {
-  var recipients = req.responseXML.getElementsByTagName("recipients")[0];
-  var attendees = req.responseXML.getElementsByTagName("attendees")[0];
-  recipientList = document.getElementById("recipientList");
-  attendeeList = document.getElementById("attendeeList");
-  recipientList.innerHTML = recipients;
-  attendeeList.innerHTML = attendeeList;
 }

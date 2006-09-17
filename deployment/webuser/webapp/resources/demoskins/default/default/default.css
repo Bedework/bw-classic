@@ -563,7 +563,9 @@ table.common .padMe {
   margin-right: 1em;
 }
 #clock {
-  position: relative;
+  position: absolute;
+  top: 460px;
+  left: 320px;
 }
 .shown {
   display: inline;
@@ -612,19 +614,20 @@ table#attendees td.status {
 #recipientsAndAttendeesBox {
   position: absolute;
   top: -300px;
-  left: -100px;
+  left: 150px;
   width: 500px;
-  padding: 1em;
-  border: 2px solid #666;
+  padding: 18px;
+  border: 2px solid #ccc;
   background: white;
   color: black;
 }
 #recipientsAndAttendeesBox h4 {
   padding: 4px;
-  margin: -1em -1em 1em -1em;
+  margin: -20px -20px 10px -20px;
   text-align: center;
-  color: black;
-  background: #ddd;
+  color: #eee;
+  background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
+  border: 2px solid #233979;
 }
 #recipientsAndAttendeesBox table {
   width: 100%;
