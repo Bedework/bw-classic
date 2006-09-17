@@ -103,6 +103,11 @@
   <xsl:variable name="calendar-fetchForUpdate" select="/bedework/urlPrefixes/calendar/fetchForUpdate/a/@href"/><!-- used -->
   <xsl:variable name="calendar-update" select="/bedework/urlPrefixes/calendar/update/a/@href"/><!-- used -->
   <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess/a/@href"/>
+  <!-- special calendars -->
+  <xsl:variable name="calendar-inbox" select="/bedework/urlPrefixes/calendar/inbox/a/@href"/>
+  <xsl:variable name="calendar-outbox" select="/bedework/urlPrefixes/calendar/outbox/a/@href"/>
+  <xsl:variable name="calendar-trash" select="/bedework/urlPrefixes/calendar/trash/a/@href"/>
+  <xsl:variable name="calendar-emptyTrash" select="/bedework/urlPrefixes/calendar/emptyTrash/a/@href"/>
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
@@ -133,7 +138,23 @@
       <head>
         <xsl:call-template name="headSection"/>
       </head>
-      <body>
+      <xsl:variable name="inbox" select="/bedework/inbox/numActive"/>
+      <xsl:variable name="outbox" select="/bedework/outbox/numActive"/>
+      <xsl:variable name="inboxChanged" select="/bedework/inbox/changed"/>
+      <xsl:variable name="outboxChanged" select="/bedework/outbox/changed"/>
+      <xsl:variable name="inboxFlagged">
+        <xsl:choose>
+          <xsl:when test="/bedework/appvar[key='inboxFlagged']/value='false'">false</xsl:when>
+          <xsl:otherwise>true</xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="outboxFlagged">
+        <xsl:choose>
+          <xsl:when test="/bedework/appvar[key='outboxFlagged']/value='false'">false</xsl:when>
+          <xsl:otherwise>true</xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <body onload="checkStatus('{$inbox}','{$outbox}','{$inboxChanged}','{$outboxChanged}','{$calendar-inbox}','{$calendar-outbox}','{$inboxFlagged}','{$outboxFlagged}')">
       <xsl:choose>
         <xsl:when test="/bedework/page='selectCalForEvent'">
           <xsl:call-template name="selectCalForEvent"/>
@@ -292,6 +313,21 @@
       <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
       <script type="text/javascript" src="{$resourcesRoot}/resources/browserSniffer.js"></script>
     </xsl:if>
+    <script type="text/javascript">
+      <xsl:comment>
+      <![CDATA[
+      // Check status of inbox and outbox and alert user appropriately.
+      // Just take care of inbox for now.
+      function checkStatus(inbox,outbox,inboxChanged,outboxChanged,inboxUrl,outboxUrl,inboxFlagged,outboxFlagged) {
+        if ((inbox > 0) && ((inboxFlagged == 'true') || (inboxChanged > 0))) {
+        alert("You have " + inbox + " pending meeting requests.");
+        inboxUrl = "showMain.rdo?setappvar=inboxFlagged(false)"; //just refresh for now
+        window.location.replace(inboxUrl);
+        }
+      }
+      ]]>
+      </xsl:comment>
+    </script>
   </xsl:template>
 
   <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
@@ -2548,27 +2584,31 @@
           </xsl:choose>
         </xsl:attribute>
         <xsl:variable name="calPath" select="path"/>
-        <a href="{$setSelection}&amp;calUrl={$calPath}">
           <xsl:choose>
             <xsl:when test="name='Inbox' and /bedework/inbox/numActive != '0'">
               <strong>
-                <xsl:value-of select="name"/>
+                <a href="{$setSelection}&amp;calUrl={$calPath}">
+                  <xsl:value-of select="name"/>
+                </a>
                 <xsl:text> </xsl:text>
-                <xsl:value-of select="/bedework/inbox/numActive"/>
+                (<xsl:value-of select="/bedework/inbox/numActive"/>)
               </strong>
             </xsl:when>
             <xsl:when test="name='Outbox' and /bedework/outbox/numActive != '0'">
               <strong>
-                <xsl:value-of select="name"/>
+                <a href="{$setSelection}&amp;calUrl={$calPath}">
+                  <xsl:value-of select="name"/>
+                </a>
                 <xsl:text> </xsl:text>
-                <xsl:value-of select="/bedework/inbox/numActive"/>
+                (<xsl:value-of select="/bedework/inbox/numActive"/>)
               </strong>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="name"/>
+              <a href="{$setSelection}&amp;calUrl={$calPath}">
+                <xsl:value-of select="name"/>
+              </a>
             </xsl:otherwise>
           </xsl:choose>
-        </a>
         <xsl:if test="calendar">
           <ul>
             <xsl:apply-templates select="calendar" mode="myCalendars"/>
