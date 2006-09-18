@@ -21,7 +21,8 @@ h2 a:hover {
   background-color: inherit;
   text-decoration: none;
 }
-h2.bwStatusConfirmed {
+h2.bwStatusConfirmed,
+h2.common {
   background-color: #eee;
   color: black;
 }

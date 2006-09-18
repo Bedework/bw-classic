@@ -103,9 +103,6 @@
   <xsl:variable name="calendar-fetchForUpdate" select="/bedework/urlPrefixes/calendar/fetchForUpdate/a/@href"/><!-- used -->
   <xsl:variable name="calendar-update" select="/bedework/urlPrefixes/calendar/update/a/@href"/><!-- used -->
   <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess/a/@href"/>
-  <!-- special calendars -->
-  <xsl:variable name="calendar-inbox" select="/bedework/urlPrefixes/calendar/inbox/a/@href"/>
-  <xsl:variable name="calendar-outbox" select="/bedework/urlPrefixes/calendar/outbox/a/@href"/>
   <xsl:variable name="calendar-trash" select="/bedework/urlPrefixes/calendar/trash/a/@href"/>
   <xsl:variable name="calendar-emptyTrash" select="/bedework/urlPrefixes/calendar/emptyTrash/a/@href"/>
   <!-- subscriptions -->
@@ -120,6 +117,9 @@
   <xsl:variable name="prefs-update" select="/bedework/urlPrefixes/prefs/update/a/@href"/>
   <xsl:variable name="prefs-fetchSchedulingForUpdate" select="/bedework/urlPrefixes/prefs/fetchSchedulingForUpdate/a/@href"/>
   <xsl:variable name="prefs-setAccess" select="/bedework/urlPrefixes/prefs/setAccess/a/@href"/>
+  <!-- scheduling -->
+  <xsl:variable name="showInbox" select="/bedework/urlPrefixes/schedule/showInbox/a/@href"/>
+  <xsl:variable name="showOutbox" select="/bedework/urlPrefixes/schedule/showOutbox/a/@href"/>
 
   <!-- URL of the web application - includes web context
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/> -->
@@ -138,23 +138,9 @@
       <head>
         <xsl:call-template name="headSection"/>
       </head>
-      <xsl:variable name="inbox" select="/bedework/inbox/numActive"/>
-      <xsl:variable name="outbox" select="/bedework/outbox/numActive"/>
-      <xsl:variable name="inboxChanged" select="/bedework/inbox/changed"/>
-      <xsl:variable name="outboxChanged" select="/bedework/outbox/changed"/>
-      <xsl:variable name="inboxFlagged">
-        <xsl:choose>
-          <xsl:when test="/bedework/appvar[key='inboxFlagged']/value='false'">false</xsl:when>
-          <xsl:otherwise>true</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <xsl:variable name="outboxFlagged">
-        <xsl:choose>
-          <xsl:when test="/bedework/appvar[key='outboxFlagged']/value='false'">false</xsl:when>
-          <xsl:otherwise>true</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <body onload="checkStatus({$inbox},{$outbox},{$inboxChanged},{$outboxChanged},'{$calendar-inbox}','{$calendar-outbox}',{$inboxFlagged},{$outboxFlagged})">
+      <xsl:variable name="inboxNumActive" select="/bedework/inboxState/numActive"/>
+      <xsl:variable name="inboxChanged" select="/bedework/inboxState/changed"/>
+      <body onload="checkStatus({$inboxNumActive},{$inboxChanged},'{$showInbox}')">
       <xsl:choose>
         <xsl:when test="/bedework/page='selectCalForEvent'">
           <xsl:call-template name="selectCalForEvent"/>
@@ -238,6 +224,12 @@
                     <xsl:when test="/bedework/page='modSchedulingPrefs'">
                       <xsl:apply-templates select="/bedework/schPrefs"/>
                     </xsl:when>
+                    <xsl:when test="/bedework/page='inbox'">
+                      <xsl:apply-templates select="/bedework/inbox"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='outbox'">
+                      <xsl:apply-templates select="/bedework/outbox"/>
+                    </xsl:when>
                     <xsl:when test="/bedework/page='other'">
                       <!-- show an arbitrary page -->
                       <xsl:call-template name="selectPage"/>
@@ -318,11 +310,10 @@
       <![CDATA[
       // Check status of inbox and outbox and alert user appropriately.
       // Just take care of inbox for now.
-      function checkStatus(inbox,outbox,inboxChanged,outboxChanged,inboxUrl,outboxUrl,inboxFlagged,outboxFlagged) {
-        if (inbox && (inboxFlagged || inboxChanged)) {
-        alert("You have " + inbox + " pending meeting requests.");
-        inboxUrl = "showMain.rdo?setappvar=inboxFlagged(false)"; //just refresh for now
-        window.location.replace(inboxUrl);
+      function checkStatus(inboxCount,changed,url) {
+        if (inboxCount && changed) {
+        alert("You have " + inboxCount + " pending meeting requests.");
+        window.location.replace(url);
         }
       }
       ]]>
@@ -2585,22 +2576,22 @@
         </xsl:attribute>
         <xsl:variable name="calPath" select="path"/>
           <xsl:choose>
-            <xsl:when test="name='Inbox' and /bedework/inbox/numActive != '0'">
+            <xsl:when test="name='Inbox' and /bedework/inboxState/numActive != '0'">
               <strong>
-                <a href="{$setSelection}&amp;calUrl={$calPath}">
+                <a href="{$showInbox}">
                   <xsl:value-of select="name"/>
                 </a>
                 <xsl:text> </xsl:text>
-                (<xsl:value-of select="/bedework/inbox/numActive"/>)
+                (<xsl:value-of select="/bedework/inboxState/numActive"/>)
               </strong>
             </xsl:when>
             <xsl:when test="name='Outbox' and /bedework/outbox/numActive != '0'">
               <strong>
-                <a href="{$setSelection}&amp;calUrl={$calPath}">
+                <a href="{$showOutbox}">
                   <xsl:value-of select="name"/>
                 </a>
                 <xsl:text> </xsl:text>
-                (<xsl:value-of select="/bedework/inbox/numActive"/>)
+                (<xsl:value-of select="/bedework/outboxState/numActive"/>)
               </strong>
             </xsl:when>
             <xsl:otherwise>
@@ -3805,6 +3796,55 @@
         </ul>
       </td>
     </table>
+  </xsl:template>
+
+  <!--==== INBOX and OUTBOX ====-->
+  <xsl:template match="inbox">
+    <h2 class="common">Inbox</h2>
+    <table id="inbox" class="common" cellspacing="0">
+      <tr>
+        <th class="commonHeader">start</th>
+        <th class="commonHeader">end</th>
+        <th class="commonHeader">method</th>
+        <th class="commonHeader">title</th>
+        <th class="commonHeader">status</th>
+      </tr>
+      <xsl:for-each select="events/event">
+        <tr>
+          <xsl:attribute name="class">
+            <xsl:choose>
+              <xsl:when test="scheduleMethod=1">publish</xsl:when>
+              <xsl:when test="scheduleMethod=2">request</xsl:when>
+              <xsl:when test="scheduleMethod=5">cancel</xsl:when>
+              <xsl:when test="scheduleMethod=7 or scheduleMethod=8">counter</xsl:when>
+            </xsl:choose>
+          </xsl:attribute>
+          <td><xsl:value-of select="start/shortdate"/> <xsl:value-of select="start/time"/></td>
+          <td><xsl:value-of select="end/shortdate"/> <xsl:value-of select="end/time"/></td>
+          <td><xsl:apply-templates select="scheduleMethod"/></td>
+          <td><xsl:value-of select="title"/></td>
+          <td><xsl:value-of select="requestStatus"/></td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+
+  <xsl:template match="Outbox">
+    <h2>Outbox</h2>
+  </xsl:template>
+
+  <xsl:template match="scheduleMethod">
+    <xsl:choose>
+      <xsl:when test="node()=1">publish</xsl:when>
+      <xsl:when test="node()=2">request</xsl:when>
+      <xsl:when test="node()=3">reply</xsl:when>
+      <xsl:when test="node()=4">add</xsl:when>
+      <xsl:when test="node()=5">cancel</xsl:when>
+      <xsl:when test="node()=6">refresh</xsl:when>
+      <xsl:when test="node()=7">counter</xsl:when>
+      <xsl:when test="node()=8">declined</xsl:when><!-- declinecounter -->
+      <xsl:otherwise>unknown</xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!--==== PREFERENCES ====-->
