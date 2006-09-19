@@ -559,6 +559,9 @@ table.common .padMeTop {
 table.common .padMe {
   padding: 1em !important;
 }
+table#inbox td {
+  padding: 0.2em 0.5em;
+}
 #bwEventCalDisplay {
   font-weight: bold;
   margin-right: 1em;
