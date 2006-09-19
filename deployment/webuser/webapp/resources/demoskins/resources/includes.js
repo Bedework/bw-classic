@@ -188,14 +188,14 @@ function postRecipientsAndAttendees(formId,urlActionPrefix,urlRenderPrefix) {
   } else if (window.ActiveXObject) {
     req = new ActiveXObject("Microsoft.XMLHTTP");
   }
-  req.open("GET", postUrl, true);
+  req.open("GET", postUrl, false);
   req.onreadystatechange = callback();
   req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   req.send(postUrl);
 
   /* return the data */
   var getUrl = urlRenderPrefix;
-  req.open("GET", getUrl, true);
+  req.open("GET", getUrl, false);
   req.onreadystatechange = callback();
 }
 function callback() {
