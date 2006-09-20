@@ -559,9 +559,6 @@ table.common .padMeTop {
 table.common .padMe {
   padding: 1em !important;
 }
-table#inbox td {
-  padding: 0.2em 0.5em;
-}
 #bwEventCalDisplay {
   font-weight: bold;
   margin-right: 1em;
@@ -591,6 +588,13 @@ table#inbox td {
      their parent.  Be careful removing this class from elements that
      contain an absolutely positioned div. */
   position: relative;
+}
+table#inbox td {
+  padding: 0.2em 0.5em;
+}
+table.common td.scheduleActions {
+  color: black;
+  background: #ddc;
 }
 form#subscriptions {
   margin: 0;

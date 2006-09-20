@@ -143,20 +143,18 @@ function setScheduleHow(multibox) {
   }
 }
 
-
-/*var mouseX = 0;
-var mouseY = 0;
-window.document.onmousemove = getMousePosition();
-function getMousePosition() {
-  mouseX = event.clientX + document.body.scrollLeft;
-  mouseY = event.clientY + document.body.scrollTop;
-}*/
-
-function bwDrag(id) {
-  box = document.getElementById(id);
-}
-function bwDrop(id) {
-  box = document.getElementById(id);
+function swapScheduleDisplay(val) {
+  if (val == "show") {
+    changeClass('scheduleLocationDisplay','invisible');
+    changeClass('scheduleLocationEdit','shown');
+    changeClass('scheduleDateDisplay','invisible');
+    changeClass('scheduleDateEdit','shown');
+  } else {
+    changeClass('scheduleLocationDisplay','shown');
+    changeClass('scheduleLocationEdit','invisible');
+    changeClass('scheduleDateDisplay','shown');
+    changeClass('scheduleDateEdit','invisible');
+  }
 }
 
 /****************************************/
