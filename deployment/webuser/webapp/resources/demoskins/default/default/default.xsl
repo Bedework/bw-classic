@@ -3860,7 +3860,12 @@
           <td><xsl:value-of select="start/shortdate"/> <xsl:value-of select="start/time"/></td>
           <td><xsl:value-of select="end/shortdate"/> <xsl:value-of select="end/time"/></td>
           <td><xsl:apply-templates select="scheduleMethod"/></td>
-          <td><xsl:value-of select="requestStatus"/></td>
+          <td>
+            <xsl:choose>
+              <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
+              <xsl:otherwise>processed</xsl:otherwise>
+            </xsl:choose>
+          </td>
         </tr>
       </xsl:for-each>
     </table>
