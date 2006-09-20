@@ -4184,16 +4184,16 @@
         <tr>
           <td class="fieldname">Action:</td>
           <td class="fieldval">
-            <input type="radio" name="method" value="reply" checked="checked"/>reply as
+            <input type="radio" name="method" value="REPLY" checked="checked"/>reply as
             <select name="partstat">
               <option value="ACCEPTED">accepted</option>
               <option value="DECLINED">declined</option>
               <option value="TENTATIVE">tentative</option>
             </select><br/>
-            <input type="radio" name="method" value="refresh"/>refresh this event<br/>
-            <input type="radio" name="method" value="delegate"/>delegate to
+            <input type="radio" name="method" value="REFRESH"/>refresh this event<br/>
+            <input type="radio" name="method" value="DELEGATE"/>delegate to
             <input type="test" name="delegate" value=""/> (uri or account)<br/>
-            <input type="radio" name="method" value="counter"/>counter (suggest a different date, time, and/or location)
+            <input type="radio" name="method" value="COUNTER"/>counter (suggest a different date, time, and/or location)
           </td>
         </tr>
         <tr>
