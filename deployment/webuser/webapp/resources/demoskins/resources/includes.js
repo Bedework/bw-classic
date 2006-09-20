@@ -181,20 +181,19 @@ function postRecipientsAndAttendees(formId,urlActionPrefix,urlRenderPrefix) {
     postUrl += "&attendee=yes&role=" + role + "&status=" + status;
   }
 
-  if (window.XMLHttpRequest) {
-    req = new XMLHttpRequest();
-  } else if (window.ActiveXObject) {
-    req = new ActiveXObject("Microsoft.XMLHTTP");
+  try {
+    if (window.XMLHttpRequest) {
+      req = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+      req = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    req.open("POST", postUrl, false);
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    req.send(postUrl);
+    //req.onreadystatechange = callback();
+  } catch(e) {
+    alert("There was an error posting the data:\n\n" + e);
   }
-  req.open("GET", postUrl, false);
-  req.onreadystatechange = callback();
-  req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  req.send(postUrl);
-
-  /* return the data */
-  var getUrl = urlRenderPrefix;
-  req.open("GET", getUrl, false);
-  req.onreadystatechange = callback();
 }
 function callback() {
   if (req.readyState == 4) {
