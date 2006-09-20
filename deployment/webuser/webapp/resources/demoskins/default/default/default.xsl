@@ -3841,7 +3841,7 @@
       <xsl:for-each select="events/event">
         <xsl:variable name="subscriptionId" select="subscription/id"/>
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
-        <xsl:variable name="guid" select="guid"/>
+        <xsl:variable name="eventName" select="name"/>
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
         <tr>
           <xsl:attribute name="class">
@@ -3853,7 +3853,7 @@
             </xsl:choose>
           </xsl:attribute>
           <td>
-            <a href="{$schedule-initAttendeeRespond}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$schedule-initAttendeeRespond}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
               <xsl:value-of select="title"/>
             </a>
           </td>
