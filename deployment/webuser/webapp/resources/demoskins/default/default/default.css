@@ -591,10 +591,27 @@ table.common .padMe {
 }
 table#inbox td {
   padding: 0.2em 0.5em;
+  border-bottom: 1px solid #ccc;
 }
 table.common td.scheduleActions {
   color: black;
   background: #ddc;
+}
+table#inbox tr.publish {
+  background: #ddf;
+  color: black;
+}
+table#inbox tr.request {
+  background: #ffd;
+  color: black;
+}
+table#inbox tr.cancel {
+  background: #ddd;
+  color: black;
+}
+table#inbox tr.counter {
+  background: #fcc;
+  color: black;
 }
 form#subscriptions {
   margin: 0;

@@ -122,6 +122,8 @@
   <xsl:variable name="showOutbox" select="/bedework/urlPrefixes/schedule/showOutbox/a/@href"/>
   <xsl:variable name="schedule-initAttendeeRespond" select="/bedework/urlPrefixes/schedule/initAttendeeRespond/a/@href"/>
   <xsl:variable name="schedule-attendeeRespond" select="/bedework/urlPrefixes/schedule/attendeeRespond/a/@href"/>
+  <xsl:variable name="schedule-initAttendeeReply" select="/bedework/urlPrefixes/schedule/initAttendeeReply/a/@href"/>
+  <xsl:variable name="schedule-processAttendeeReply" select="/bedework/urlPrefixes/schedule/processAttendeeReply/a/@href"/>
 
   <!-- URL of the web application - includes web context
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/> -->
@@ -234,6 +236,9 @@
                     </xsl:when>
                     <xsl:when test="/bedework/page='attendeeRespond'">
                       <xsl:apply-templates select="/bedework/formElements" mode="attendeeRespond"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='attendeeReply'">
+                      <xsl:apply-templates select="/bedework/event" mode="attendeeReply"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='other'">
                       <!-- show an arbitrary page -->
@@ -3832,6 +3837,7 @@
     <h2 class="common">Inbox</h2>
     <table id="inbox" class="common" cellspacing="0">
       <tr>
+        <th class="commonHeader">from</th>
         <th class="commonHeader">title</th>
         <th class="commonHeader">start</th>
         <th class="commonHeader">end</th>
@@ -3853,7 +3859,17 @@
             </xsl:choose>
           </xsl:attribute>
           <td>
-            <a href="{$schedule-initAttendeeRespond}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
+            <xsl:value-of select="from"/>
+          </td>
+          <td>
+            <xsl:variable name="inboxItemAction">
+              <xsl:choose>
+                <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:when>
+                <xsl:when test="scheduleMethod=3"><xsl:value-of select="$schedule-initAttendeeReply"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
               <xsl:value-of select="title"/>
             </a>
           </td>
@@ -4298,6 +4314,175 @@
         </tr>
       </table>
     </form>
+  </xsl:template>
+
+  <xsl:template match="event" mode="attendeeReply">
+    <xsl:variable name="subscriptionId" select="subscription/id"/>
+    <xsl:variable name="calPath" select="calendar/encodedPath"/>
+    <xsl:variable name="guid" select="guid"/>
+    <xsl:variable name="recurrenceId" select="recurrenceId"/>
+    <xsl:variable name="statusClass">
+      <xsl:choose>
+        <xsl:when test="status='CANCELLED'">bwStatusCancelled</xsl:when>
+        <xsl:when test="status='TENTATIVE'">bwStatusTentative</xsl:when>
+        <xsl:otherwise>bwStatusConfirmed</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <h2>
+      Meeting Reply
+    </h2>
+    <table class="common" cellspacing="0">
+      <tr>
+        <th colspan="2" class="commonHeader">
+          <div id="eventActions">
+          </div>
+          Organizer:
+          <xsl:choose>
+            <xsl:when test="organizer/cn != ''">
+              <xsl:value-of select="organizer/cn"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="substring-after(organizer/organizerUri,'mailto:')"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </th>
+      </tr>
+      <tr>
+        <td class="fieldname">
+          From:
+        </td>
+        <td class="fieldval scheduleActions">
+          <strong>
+            <a>
+              <xsl:attribute name="href"><xsl:value-of select="attendee/attendeeUri"/></xsl:attribute>
+              <xsl:choose>
+                <xsl:when test="cn != ''">
+                  <xsl:value-of select="cn"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="substring-after(attendee/attendeeUri,'mailto:')"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </a>
+          </strong>
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldname">
+          Status:
+        </td>
+        <td class="fieldval scheduleActions">
+          <xsl:value-of select="attendee/partstat"/>
+          <xsl:if test="comments/comment">
+            <p><strong>Comments:</strong></p>
+            <xsl:for-each select="comment">
+              <p><xsl:value-of select="."/></p>
+            </xsl:for-each>
+          </xsl:if>
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldname">
+          Action:
+        </td>
+        <td class="fieldval scheduleActions">
+          <form name="processReply" action="{$schedule-processAttendeeReply}">
+            <input type="submit" value="Accept" name="update"/>
+            <input type="submit" value="Cancel" name="cancelled"/>
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldname">Title:</td>
+        <td class="fieldval">
+          <strong>
+            <xsl:choose>
+              <xsl:when test="link != ''">
+                <xsl:variable name="link" select="link"/>
+                <a href="{$link}">
+                  <xsl:value-of select="summary"/>
+                </a>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="summary"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </strong>
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldname">When:</td>
+        <td class="fieldval">
+          <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text>
+          <xsl:if test="start/allday = 'false'">
+            <span class="time"><xsl:value-of select="start/time"/></span>
+          </xsl:if>
+          <xsl:if test="(end/longdate != start/longdate) or
+                        ((end/longdate = start/longdate) and (end/time != start/time))"> - </xsl:if>
+          <xsl:if test="end/longdate != start/longdate">
+            <xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text>
+          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="start/allday = 'true'">
+              <span class="time"><em>(all day)</em></span>
+            </xsl:when>
+            <xsl:when test="end/longdate != start/longdate">
+              <span class="time"><xsl:value-of select="end/time"/></span>
+            </xsl:when>
+            <xsl:when test="end/time != start/time">
+              <span class="time"><xsl:value-of select="end/time"/></span>
+            </xsl:when>
+          </xsl:choose>
+        </td>
+        <!--<th class="icon" rowspan="2">
+          <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
+          <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+            <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
+          </a>
+        </th>-->
+      </tr>
+      <tr>
+        <td class="fieldname">Where:</td>
+        <td class="fieldval">
+          <xsl:choose>
+            <xsl:when test="location/link=''">
+              <xsl:value-of select="location/address"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:variable name="locationLink" select="location/link"/>
+              <a href="{$locationLink}">
+                <xsl:value-of select="location/address"/>
+              </a>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:if test="location/subaddress!=''">
+            <br/><xsl:value-of select="location/subaddress"/>
+          </xsl:if>
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldname">Description:</td>
+        <td class="fieldval">
+          <xsl:call-template name="replace">
+            <xsl:with-param name="string" select="description"/>
+            <xsl:with-param name="pattern" select="'&#xA;'"/>
+            <xsl:with-param name="replacement"><br/></xsl:with-param>
+          </xsl:call-template>
+        </td>
+      </tr>
+      <xsl:if test="status !='' and status != 'CONFIRMED'">
+        <tr>
+          <td class="fieldname">Status:</td>
+          <td class="fieldval">
+            <xsl:value-of select="status"/>
+          </td>
+        </tr>
+      </xsl:if>
+      <tr>
+        <td class="fieldname filler">&#160;</td>
+        <td class="fieldval">&#160;</td>
+      </tr>
+    </table>
   </xsl:template>
 
   <xsl:template match="event" mode="addEventRef">
