@@ -4260,7 +4260,7 @@
             <xsl:variable name="newCalPath" select="/bedework/formElements/form/calendar/path"/>
             <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-            <span id="bwEventCalDisplay">
+            <!--<span id="bwEventCalDisplay">
               <xsl:choose>
                 <xsl:when test="contains(/bedework/formElements/form/calendar/path,$userPath)">
                   <xsl:value-of select="substring-after(/bedework/formElements/form/calendar/path,$userPath)"/>
@@ -4269,8 +4269,8 @@
                   <xsl:value-of select="/bedework/formElements/form/calendar/path"/>
                 </xsl:otherwise>
               </xsl:choose>
-            </span>
-            <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">[set calendar]</a>
+            </span>-->
+            <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">copy this event to a calendar</a>
           </td>
         </tr>
         <!--  Transparency  -->
