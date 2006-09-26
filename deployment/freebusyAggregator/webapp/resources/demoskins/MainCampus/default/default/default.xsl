@@ -408,6 +408,9 @@
           </td>
           <td rowspan="2" id="logos">
             <h4>participants</h4>
+            <a href="http://www.apple.com">
+              <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/appleIcal.png" width="100" height="88" alt="Apple" border="0"/>
+            </a>
             <a href="http://www.bedework.org">
               <img src="http://www.rpi.edu/dept/cct/apps/bedeworkLuwak2/images/freebusy/logos/bedework.png" width="100" height="88" alt="Bedework" border="0"/>
             </a>
