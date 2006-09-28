@@ -331,6 +331,23 @@
     </java>
   </target>
 
+  <target name="tomcatstart-large" depends="run.init"
+          description="starts a large memory version of the tomcat server">
+    <echo message="Starting Tomcat from ${org.bedework.appserver.dir}"/>
+    <java fork="true" dir="${basedir}"
+          classname="org.apache.catalina.startup.Bootstrap">
+      <classpath>
+        <pathelement path="${org.bedework.appserver.dir}/bin/bootstrap.jar"/>
+      </classpath>
+      <sysproperty key="catalina.home" value="${org.bedework.appserver.dir}"/>
+      <!--jvmarg value="-Dcatalina.home=${tomcat.dir}"/-->
+      <jvmarg value="-Xms128m" />
+      <jvmarg value="-Xmx630m" />
+      <jvmarg value="-Djava.net.preferIPv4Stack=true"/>
+      <arg value="start"/>
+    </java>
+  </target>
+
   <target name="tomcatstart-profile" depends="run.init"
           description="starts the tomcat server with rpofiling">
     <echo message="Starting Tomcat from ${org.bedework.appserver.dir}"/>

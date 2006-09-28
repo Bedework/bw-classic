@@ -47,8 +47,9 @@
        this should be changed to point to a
        web server over https to avoid mixed content errors, e.g.,
   <xsl:variable name="resourcesRoot">https://mywebserver.edu/myresourcesdir</xsl:variable>
-    -->
   <xsl:variable name="resourcesRoot" select="/bedework-fbaggregator/approot"/>
+    -->
+  <xsl:variable name="resourcesRoot">http://bedework.org:8585/fbagg.MainCampus</xsl:variable>
 
   <!-- URL of the XSL template directory -->
   <!-- The approot is an appropriate place to put
@@ -82,7 +83,7 @@
   <xsl:variable name="urlPrefix" select="/bedework-fbaggregator/urlprefix"/> -->
 
   <!-- Other generally useful global variables-->
-  <xsl:variable name="currentTimezone">America/New_York</xsl:variable><!-- for now just set it -->
+  <xsl:variable name="currentTimezone">America/Los_Angeles</xsl:variable><!-- for now just set it -->
   <!--<xsl:variable name="prevdate" select="/bedework-fbaggregator/previousdate"/>
   <xsl:variable name="nextdate" select="/bedework-fbaggregator/nextdate"/>
   <xsl:variable name="curdate" select="/bedework-fbaggregator/currentdate/date"/>
