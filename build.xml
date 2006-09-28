@@ -304,6 +304,8 @@
     <copy-to-dependent this="${org.bedework.project.access}"
                        target="${org.bedework.project.dumprestore}" />
     <copy-to-dependent this="${org.bedework.project.access}"
+                       target="${org.bedework.project.webapps}" />
+    <copy-to-dependent this="${org.bedework.project.access}"
                        target="${org.bedework.project.webdav}" />
 
     <copy-to-bin this="${org.bedework.project.access}"/>
@@ -528,6 +530,8 @@
                        target="${org.bedework.project.davutil}" />
     <copy-to-dependent this="${org.bedework.project.rpiutil}"
                        target="${org.bedework.project.freebusy}" />
+    <copy-to-dependent this="${org.bedework.project.rpiutil}"
+                       target="${org.bedework.project.webapps}" />
     <copy-to-dependent this="${org.bedework.project.rpiutil}"
                        target="${org.bedework.project.webdav}" />
 
