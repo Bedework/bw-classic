@@ -386,6 +386,9 @@ table.common th {
   color: black;
   white-space: nowrap;
 }
+table.common th.thin {
+  width: 80px;
+}
 table.common th.commonHeader {
   vertical-align: middle;
   background-color: #666;

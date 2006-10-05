@@ -1801,14 +1801,14 @@
           <th class="commonHeader" colspan="2">Current access:</th>
         </tr>
         <tr>
-          <th>Owner:</th>
+          <th class="thin">Owner:</th>
           <td>
             <xsl:value-of select="name(acl/ace[principal/property/owner]/grant/*)"/>
           </td>
         </tr>
         <xsl:if test="acl/ace/principal/href">
           <tr>
-            <th>Users:</th>
+            <th class="thin">Users:</th>
             <td>
               <xsl:for-each select="acl/ace[principal/href]">
                 <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
@@ -1838,7 +1838,7 @@
             <td>
               <h5>Rights:</h5>
               <ul id="howList">
-                <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
+
                 <!--<li>
                   <input type="radio" value="A" name="how"/> All
                   <ul>
@@ -1877,7 +1877,12 @@
                       </ul>
                     </li>
                   </ul>
+                </li>
+                <li>
+                  <input type="radio" value="N" name="how"/> None
                 </li>-->
+
+                <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
                 <li class="padTop">
                   <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
                 </li>

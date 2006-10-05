@@ -428,7 +428,6 @@ ul.submenu li a:visited {
   margin: 0;
   padding: 0;
 }
-
 /* table below is used for almost all forms  */
 table.common {
   width: 100%;
@@ -443,6 +442,9 @@ table.common th {
   background-color: #ddd;
   color: black;
   white-space: nowrap;
+}
+table.common th.thin {
+  width: 80px;
 }
 table.common th.icon {
   margin: 0em;
@@ -1221,8 +1223,35 @@ img.subStyle {
 }
 #shareForm {
   margin: 1em 0;
-  padding: 0.5em;
-  border-top: 1px dotted #666;
+  padding: 0;
+}
+#shareFormTable {
+  width: 96%; /* less than 100% helps avoid IE weirdness */
+}
+#shareFormTable td {
+  border: 1px solid #666;
+  padding-bottom: 0.5em;
+}
+#shareFormTable h5 {
+  background: #e5e5e5;
+  color: black;
+  margin: 0 -0.5em;
+  padding: 4px;
+}#shareFormTable h5.margOk {
+  margin: 0;
+}
+#howList {
+  margin: 0;
+  padding: 0 0 1em 0;
+}
+#howList ul {
+  margin: 0 0 0 2em;
+  padding: 0 0 0.5em 0;
+}
+#howList li {
+  list-style-type: none;
+  margin-left: 0;
+  font-size: 11px;
 }
 /* Footer */
 #footer {
@@ -1292,6 +1321,9 @@ a:hover {
 }
 span.time {
   text-transform : lowercase;
+}
+.padTop {
+  padding-top: 1em;
 }
 #featureHighlight {
   color: #dd0;

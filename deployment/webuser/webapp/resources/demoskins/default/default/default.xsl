@@ -2280,14 +2280,14 @@
           <th class="commonHeader" colspan="2">Current access:</th>
         </tr>
         <tr>
-          <th>Owner:</th>
+          <th class="thin">Owner:</th>
           <td class="fieldval">
             <xsl:value-of select="name(/bedework/access/acl/ace[principal/property/owner]/grant/*)"/>
           </td>
         </tr>
         <xsl:if test="/bedework/access/acl/ace/principal/href">
           <tr>
-            <th>Users:</th>
+            <th class="thin">Users:</th>
             <td>
               <xsl:for-each select="/bedework/access/acl/ace[principal/href]">
                 <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
@@ -2300,7 +2300,52 @@
         <input type="hidden" name="calPath" value="{$calPath}"/>
         <input type="hidden" name="guid" value="{$guid}"/>
         <input type="hidden" name="recurid" value="{$recurrenceId}"/>
-        <p>
+        <table cellpadding="0" id="shareFormTable" class="common">
+          <tr>
+            <th colspan="2" class="commonHeader">Add:</th>
+          </tr>
+          <tr>
+            <td>
+              <h5 class="margOk">Who:</h5>
+              <input type="text" name="who" size="20"/><br/>
+              <input type="radio" value="user" name="whoType" checked="checked"/> user
+              <input type="radio" value="group" name="whoType"/> group
+              <p>OR</p>
+              <p>
+                <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
+                <input type="radio" value="other" name="whoType"/> other users
+              </p>
+            </td>
+            <td>
+              <h5 class="margOk">Rights:</h5>
+              <ul id="howList">
+                <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
+                <li class="padTop">
+                  <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
+                </li>
+                <li>
+                  <input type="radio" value="f" name="how"/> Read freebusy only
+                </li>
+                <li class="padTop">
+                  <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
+                </li>
+                <li>
+                  <input type="radio" value="c" name="how"/> Write content only
+                </li>
+                <li>
+                 <input type="radio" value="u" name="how"/> Delete only
+                </li>
+                <li class="padTop">
+                  <input type="radio" value="Rc" name="how"/> <strong>Read</strong> and <strong>Write content only</strong>
+                </li>
+                <li class="padTop">
+                  <input type="radio" value="N" name="how"/> <strong>None</strong>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </table>
+        <!--<p>
           Share this event with:<br/>
           <input type="text" name="who" size="20"/>
           <input type="radio" value="user" name="whoType" checked="checked"/> user
@@ -2312,7 +2357,7 @@
           <input type="radio" value="Rc" name="how"/> read/write content<br/>
           <input type="radio" value="f" name="how"/> read free/busy only<br/>
           <input type="radio" value="d" name="how"/> default (reset access)
-        </p>
+        </p>-->
         <input type="submit" name="submit" value="Submit"/>
       </form>
     </div>
@@ -2928,14 +2973,14 @@
           <th class="commonHeader" colspan="2">Current access:</th>
         </tr>
         <tr>
-          <th>Owner:</th>
+          <th class="thin">Owner:</th>
           <td>
             <xsl:value-of select="name(acl/ace[principal/property/owner]/grant/*)"/>
           </td>
         </tr>
         <xsl:if test="acl/ace/principal/href">
           <tr>
-            <th>Users:</th>
+            <th class="thin">Users:</th>
             <td>
               <xsl:for-each select="acl/ace[principal/href]">
                 <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
@@ -2946,7 +2991,52 @@
       </table>
       <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm">
         <input type="hidden" name="calPath" value="{$calPath}"/>
-        <p>
+        <table cellpadding="0" id="shareFormTable" class="common">
+          <tr>
+            <th colspan="2" class="commonHeader">Add:</th>
+          </tr>
+          <tr>
+            <td>
+              <h5>Who:</h5>
+              <input type="text" name="who" size="20"/><br/>
+              <input type="radio" value="user" name="whoType" checked="checked"/> user
+              <input type="radio" value="group" name="whoType"/> group
+              <p>OR</p>
+              <p>
+                <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
+                <input type="radio" value="other" name="whoType"/> other users
+              </p>
+            </td>
+            <td>
+              <h5>Rights:</h5>
+              <ul id="howList">
+                <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
+                <li class="padTop">
+                  <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
+                </li>
+                <li>
+                  <input type="radio" value="f" name="how"/> Read freebusy only
+                </li>
+                <li class="padTop">
+                  <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
+                </li>
+                <li>
+                  <input type="radio" value="c" name="how"/> Write content only
+                </li>
+                <li>
+                 <input type="radio" value="u" name="how"/> Delete only
+                </li>
+                <li class="padTop">
+                  <input type="radio" value="Rc" name="how"/> <strong>Read</strong> and <strong>Write content only</strong>
+                </li>
+                <li class="padTop">
+                  <input type="radio" value="N" name="how"/> <strong>None</strong>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </table>
+        <!--<p>
           Share with:<br/>
           <input type="text" name="who" size="20"/>
           <input type="radio" value="user" name="whoType" checked="checked"/> user
@@ -2958,7 +3048,7 @@
           <input type="radio" value="Rc" name="how"/> read/write content<br/>
           <input type="radio" value="f" name="how"/> read free/busy only<br/>
           <input type="radio" value="d" name="how"/> default (reset access)
-        </p>
+        </p>-->
         <input type="submit" name="submit" value="Submit"/>
       </form>
     </div>
