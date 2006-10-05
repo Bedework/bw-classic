@@ -1819,20 +1819,90 @@
       </table>
       <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" method="post">
         <input type="hidden" name="calPath" value="{$calPath}"/>
-        <p>
-          Share with group:<br/>
-          <input type="text" name="who" size="20"/>
-          <input type="hidden" value="group" name="whoType"/>
-          <!--<input type="radio" value="user" name="whoType" checked="checked"/> user
-          <input type="radio" value="group" name="whoType"/> group-->
-        </p>
-        <p>
-          Access rights:<br/>
-          <input type="radio" value="R" name="how" checked="checked"/> read<br/>
-          <input type="radio" value="Rc" name="how"/> read/write content<br/>
-          <input type="radio" value="f" name="how"/> read free/busy only<br/>
-          <input type="radio" value="d" name="how"/> default (reset access)
-        </p>
+        <table cellpadding="0" id="shareFormTable" class="common">
+          <tr>
+            <th colspan="2" class="commonHeader">Add:</th>
+          </tr>
+          <tr>
+            <td>
+              <h5>Who:</h5>
+              <input type="text" name="who" size="20"/><br/>
+              <input type="radio" value="user" name="whoType" checked="checked"/> user
+              <input type="radio" value="group" name="whoType"/> group
+              <p>OR</p>
+              <p>
+                <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
+                <input type="radio" value="other" name="whoType"/> other users
+              </p>
+            </td>
+            <td>
+              <h5>Rights:</h5>
+              <ul id="howList">
+                <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
+                <!--<li>
+                  <input type="radio" value="A" name="how"/> All
+                  <ul>
+                    <li>
+                      <input type="radio" value="R" name="how" checked="checked"/> Read
+                      <ul>
+                        <li>
+                          <input type="radio" value="r" name="how" disabled="disabled"/> Read acl
+                        </li>
+                        <li>
+                          <input type="radio" value="P" name="how" disabled="disabled"/> Read current user privilege set
+                        </li>
+                        <li>
+                          <input type="radio" value="f" name="how"/> Read free/busy
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <input type="radio" value="W" name="how"/> Write
+                      <ul>
+                        <li>
+                          <input type="radio" value="a" name="how" disabled="disabled"/> Write acl
+                        </li>
+                        <li>
+                          <input type="radio" value="p" name="how" disabled="disabled"/> Write properties
+                        </li>
+                        <li>
+                          <input type="radio" value="c" name="how"/> Write content
+                        </li>
+                        <li>
+                          <input type="radio" value="b" name="how" disabled="disabled"/> Bind (includes scheduling)
+                        </li>
+                        <li>
+                          <input type="radio" value="u" name="how"/> Unbind (destroy)
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>-->
+                <li class="padTop">
+                  <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
+                </li>
+                <li>
+                  <input type="radio" value="f" name="how"/> Read freebusy only
+                </li>
+                <li class="padTop">
+                  <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
+                </li>
+                <li>
+                  <input type="radio" value="c" name="how"/> Write content only
+                </li>
+                <li>
+                 <input type="radio" value="u" name="how"/> Delete only
+                </li>
+                <li class="padTop">
+                  <input type="radio" value="Rc" name="how"/> <strong>Read</strong> and <strong>Write content only</strong>
+                </li>
+                <li class="padTop">
+                  <input type="radio" value="N" name="how"/> <strong>None</strong>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </table>
         <input type="submit" name="submit" value="Submit"/>
       </form>
     </div>

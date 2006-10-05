@@ -80,8 +80,8 @@ body {
   text-align: center;
 }
 #content {
-  margin: 0em;
-  padding: 0em 1em 1em 1em;
+  margin: 0;
+  padding: 0 1em 1em 1em;
 }
 #content h2 {
   margin: 0em;
@@ -325,7 +325,7 @@ table.eventFormTable .durationSpacerText {
   height: 20px;
 }
 #submitTable {
-  width: 98%; /* less than 100% helps avoid IE weirdness */
+  width: 96%; /* less than 100% helps avoid IE weirdness */
   margin-top: 1em;
 }
 #sharingBox {
@@ -344,8 +344,33 @@ table.eventFormTable .durationSpacerText {
 }
 #shareForm {
   margin: 1em 0;
-  padding: 0.5em;
-  border-top: 1px dotted #666;
+  padding: 0;
+}
+#shareFormTable {
+  width: 96%; /* less than 100% helps avoid IE weirdness */
+}
+#shareFormTable td {
+  border: 1px solid #666;
+  padding-bottom: 0.5em;
+}
+#shareFormTable h5 {
+  background: #e5e5e5;
+  color: black;
+  margin: 0 -0.5em;
+  padding: 4px;
+}
+#howList {
+  margin: 0;
+  padding: 0 0 1em 0;
+}
+#howList ul {
+  margin: 0 0 0 2em;
+  padding: 0 0 0.5em 0;
+}
+#howList li {
+  list-style-type: none;
+  margin-left: 0;
+  font-size: 11px;
 }
 table.common {
   width: 100%;
@@ -384,6 +409,8 @@ table.common th.commonHeader {
 #deleteListTable .summary {
   font-style: italic;
 }
+#calendarTable {
+}
 #calendarTable td,
 #subsTable td {
   padding: 0 0.5em;
@@ -393,7 +420,6 @@ table.common th.commonHeader {
 #subsTable td.cals {
   border-right: 1px solid #aaa;
   font-size: 0.9em;
-  width: 200px;
 }
 #calendarTable td.cals {
   width: 300px;
@@ -505,6 +531,9 @@ p.note {
 .odd {
   background-color: transparent;
   color: black;
+}
+.padTop {
+  padding-top: 1em;
 }
 #footer {
   padding: 1em;
