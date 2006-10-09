@@ -932,7 +932,15 @@
       <xsl:when test="isAnnotation">
         <xsl:choose>
           <xsl:when test="recurring=true">
-            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">Remove All</a>
+            Remove:
+            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+              <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+              all
+            </a> |
+            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+              <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+              this instance
+            </a>
           </xsl:when>
           <xsl:otherwise>
             <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Remove</a>
@@ -1230,9 +1238,14 @@
               <xsl:when test="isAnnotation">
                 <xsl:choose>
                   <xsl:when test="recurring=true">
+                    Remove:
                     <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                      Remove All (recurring)
+                      all
+                    </a> |
+                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                      this instance
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
