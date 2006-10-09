@@ -1835,7 +1835,9 @@
               </xsl:choose>
             </th>
             <td>
-              <xsl:value-of select="name(.//grant/*)"/>
+              <xsl:for-each select="grant/node()">
+                <xsl:value-of select="name(.)"/>&#160;&#160;
+              </xsl:for-each>
             </td>
           </tr>
         </xsl:for-each>
@@ -2713,7 +2715,9 @@
               </xsl:choose>
             </th>
             <td>
-              <xsl:value-of select="name(.//grant/*)"/>
+              <xsl:for-each select="grant/node()">
+                <xsl:value-of select="name(.)"/>&#160;&#160;
+              </xsl:for-each>
             </td>
           </tr>
         </xsl:for-each>
