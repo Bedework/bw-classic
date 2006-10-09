@@ -940,12 +940,14 @@
         </xsl:choose>
       </xsl:when>
       <xsl:when test="calendar/owner = /bedework/userid">
-        <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">Edit</a> |
         <xsl:choose>
           <xsl:when test="recurring=true">
+            Edit: <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">master</a> |
+            <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">instance</a> |
             <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Delete All</a>
           </xsl:when>
           <xsl:otherwise>
+            <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">Edit</a> |
             <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Delete</a>
           </xsl:otherwise>
         </xsl:choose>
@@ -1105,6 +1107,9 @@
             </xsl:choose><br/>
           Type:
           <xsl:choose>
+            <xsl:when test="recurring=true">
+              recurring event
+            </xsl:when>
             <xsl:when test="isAnnotation">
               public event
             </xsl:when>
@@ -1239,10 +1244,25 @@
                 </xsl:choose>
               </xsl:when>
               <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content">
-                <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
-                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                  Edit
-                </a>
+                 <xsl:choose>
+                  <xsl:when test="recurring=true">
+                    Edit:
+                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+                      <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                      master event
+                    </a> |
+                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                      <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                      this instance
+                    </a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+                      <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                      Edit
+                    </a>
+                  </xsl:otherwise>
+                </xsl:choose>
               </xsl:when>
               <xsl:otherwise>
                 <a href="{$subscriptions-fetch}">
@@ -1270,6 +1290,9 @@
             </xsl:if>
           </div>
           <xsl:choose>
+            <xsl:when test="recurring=true">
+              Recurring Event
+            </xsl:when>
             <xsl:when test="calendar/owner = /bedework/userid">
               Personal Event
             </xsl:when>
