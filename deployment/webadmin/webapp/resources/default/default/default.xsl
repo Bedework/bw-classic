@@ -1800,22 +1800,45 @@
         <tr>
           <th class="commonHeader" colspan="2">Current access:</th>
         </tr>
-        <tr>
-          <th class="thin">Owner:</th>
-          <td>
-            <xsl:value-of select="name(acl/ace[principal/property/owner]/grant/*)"/>
-          </td>
-        </tr>
-        <xsl:if test="acl/ace/principal/href">
+        <xsl:for-each select="acl/ace">
           <tr>
-            <th class="thin">Users:</th>
+            <th class="thin">
+              <xsl:choose>
+                <xsl:when test="invert">
+                  <em>Deny to
+                  <xsl:choose>
+                    <xsl:when test="invert/principal/href">
+                      <xsl:value-of select="invert/principal/href"/>
+                    </xsl:when>
+                    <xsl:when test="invert/principal/property">
+                      <xsl:value-of select="name(invert/principal/property/*)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="name(invert/principal/*)"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  </em>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:choose>
+                    <xsl:when test="principal/href">
+                      <xsl:value-of select="principal/href"/>
+                    </xsl:when>
+                    <xsl:when test="principal/property">
+                      <xsl:value-of select="name(principal/property/*)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="name(principal/*)"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:otherwise>
+              </xsl:choose>
+            </th>
             <td>
-              <xsl:for-each select="acl/ace[principal/href]">
-                <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
-              </xsl:for-each>
+              <xsl:value-of select="name(.//grant/*)"/>
             </td>
           </tr>
-        </xsl:if>
+        </xsl:for-each>
       </table>
       <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" method="post">
         <input type="hidden" name="calPath" value="{$calPath}"/>
@@ -2654,16 +2677,46 @@
         <tr>
           <th class="commonHeader" colspan="2">Current access:</th>
         </tr>
-        <xsl:if test="acl/ace/principal/href">
+
+        <xsl:for-each select="acl/ace">
           <tr>
-            <th>Users:</th>
+            <th class="thin">
+              <xsl:choose>
+                <xsl:when test="invert">
+                  <em>Deny to
+                  <xsl:choose>
+                    <xsl:when test="invert/principal/href">
+                      <xsl:value-of select="invert/principal/href"/>
+                    </xsl:when>
+                    <xsl:when test="invert/principal/property">
+                      <xsl:value-of select="name(invert/principal/property/*)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="name(invert/principal/*)"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  </em>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:choose>
+                    <xsl:when test="principal/href">
+                      <xsl:value-of select="principal/href"/>
+                    </xsl:when>
+                    <xsl:when test="principal/property">
+                      <xsl:value-of select="name(principal/property/*)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="name(principal/*)"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:otherwise>
+              </xsl:choose>
+            </th>
             <td>
-              <xsl:for-each select="acl/ace[principal/href]">
-                <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
-              </xsl:for-each>
+              <xsl:value-of select="name(.//grant/*)"/>
             </td>
           </tr>
-        </xsl:if>
+        </xsl:for-each>
       </table>
       <form name="calsuiteShareForm" action="{$calsuite-setAccess}" id="shareForm" method="post">
         <input type="hidden" name="calSuiteName" value="{$calSuiteName}"/>
