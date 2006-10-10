@@ -53,7 +53,7 @@ function startDateCalWidgetCallback(date, month, year) {
   }
   if (String(date).length == 1) {
       date = '0' + date;
-  }    
+  }
   today = new Date();
   if (year < today.getFullYear()) {
     alert("You may not create an event in a previous year.");
@@ -69,7 +69,7 @@ function endDateCalWidgetCallback(date, month, year) {
   }
   if (String(date).length == 1) {
       date = '0' + date;
-  }    
+  }
   today = new Date();
   if (year < today.getFullYear()) {
     alert("You may not create an event in a previous year.");
@@ -78,4 +78,23 @@ function endDateCalWidgetCallback(date, month, year) {
     document.peForm['eventEndDate.day'].value = date;
     document.peForm['eventEndDate.year'].value = year;
   }
+}
+// launch the calSelect pop-up window for selecting a calendar when creating,
+// editing, and importing events
+function launchCalSelectWindow(URL) {
+  calSelect = window.open(URL, "calSelect", "width=500,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
+  window.calSelect.focus();
+}
+// used to update the calendar in an upload event form from
+// the calSelect pop-up window.  We must do two things: update the hidden calendar
+// input field and update the displayed text.
+function updateEventFormCalendar(newCalPath,calDisplay) {
+  if (window.opener.document.eventForm) {
+    window.opener.document.eventForm.newCalPath.value = newCalPath;
+    bwCalDisplay = window.opener.document.getElementById("bwEventCalDisplay");
+    bwCalDisplay.innerHTML = calDisplay;
+  } else {
+    alert("The event form is not available.");
+  }
+  window.close();
 }

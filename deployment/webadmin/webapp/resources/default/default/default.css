@@ -474,6 +474,10 @@ p.note {
   font-size: 0.8em;
   font-style: italic;
 }
+#calTreeBlock {
+  font-size: 0.9em;
+  padding: 2em;
+}
 #calendarTree ul {
   padding-left: 10px;
   margin-left: 10px;

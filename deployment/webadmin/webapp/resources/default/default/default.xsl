@@ -74,6 +74,9 @@
   <xsl:variable name="event-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/event/fetchForDisplay/a/@href"/>
   <xsl:variable name="event-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/event/fetchForUpdate/a/@href"/>
   <xsl:variable name="event-update" select="/bedeworkadmin/urlPrefixes/event/update/a/@href"/>
+  <xsl:variable name="event-selectCalForEvent" select="/bedeworkadmin/urlPrefixes/event/selectCalForEvent/a/@href"/>
+  <xsl:variable name="event-initUpload" select="/bedeworkadmin/urlPrefixes/event/initUpload/a/@href"/>
+  <xsl:variable name="event-upload" select="/bedeworkadmin/urlPrefixes/event/upload/a/@href"/>
   <xsl:variable name="sponsor-showSponsor" select="/bedeworkadmin/urlPrefixes/sponsor/showSponsor/a/@href"/>
   <xsl:variable name="sponsor-showReferenced" select="/bedeworkadmin/urlPrefixes/sponsor/showReferenced/a/@href"/>
   <xsl:variable name="sponsor-showModForm" select="/bedeworkadmin/urlPrefixes/sponsor/showModForm/a/@href"/>
@@ -172,6 +175,9 @@
           <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
           <script type="text/javascript" src="{$resourcesRoot}/resources/browserSniffer.js"></script>
         </xsl:if>
+        <xsl:if test="/bedeworkadmin/page='upload' or /bedeworkadmin/page='selectCalForEvent'">
+          <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
+        </xsl:if>
         <xsl:if test="/bedeworkadmin/page='calendarDescriptions' or
                       /bedeworkadmin/page='displayCalendar'">
           <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
@@ -191,129 +197,139 @@
       </script>
       </head>
       <body onLoad="focusFirstElement()">
-        <xsl:call-template name="header"/>
-        <div id="content">
-          <xsl:choose>
-            <xsl:when test="/bedeworkadmin/page='eventList'">
-              <xsl:call-template name="eventList"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='modEvent'">
-              <xsl:call-template name="modEvent"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='displayEvent' or
-                            /bedeworkadmin/page='deleteEventConfirm'">
-              <xsl:apply-templates select="/bedeworkadmin/event" mode="displayEvent"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='sponsorList'">
-              <xsl:call-template name="sponsorList"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='modSponsor'">
-              <xsl:call-template name="modSponsor"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='deleteSponsorConfirm' or
-                            /bedeworkadmin/page='sponsorReferenced'">
-              <xsl:call-template name="deleteSponsorConfirm"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='locationList'">
-              <xsl:call-template name="locationList"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='modLocation'">
-              <xsl:call-template name="modLocation"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='deleteLocationConfirm'">
-              <xsl:call-template name="deleteLocationConfirm"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='calendarList' or
-                            /bedeworkadmin/page='calendarDescriptions' or
-                            /bedeworkadmin/page='displayCalendar' or
-                            /bedeworkadmin/page='modCalendar' or
-                            /bedeworkadmin/page='deleteCalendarConfirm' or
-                            /bedeworkadmin/page='calendarReferenced'">
-              <xsl:apply-templates select="/bedeworkadmin/calendars"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
-              <xsl:apply-templates select="/bedeworkadmin/subscriptions"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='views'">
-              <xsl:apply-templates select="/bedeworkadmin/views" mode="viewList"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='modView'">
-              <xsl:call-template name="modView"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='deleteViewConfirm'">
-              <xsl:call-template name="deleteViewConfirm"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='modSyspars'">
-              <xsl:call-template name="modSyspars"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='calSuiteList'">
-              <xsl:apply-templates select="/bedeworkadmin/calSuites" mode="calSuiteList"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='addCalSuite'">
-              <xsl:call-template name="addCalSuite"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='modCalSuite'">
-              <xsl:apply-templates select="/bedeworkadmin/calSuite"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='calSuitePrefs'">
-              <xsl:call-template name="calSuitePrefs"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='authUserList'">
-              <xsl:call-template name="authUserList"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='modAuthUser'">
-              <xsl:call-template name="modAuthUser"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='modPrefs'">
-              <xsl:call-template name="modPrefs"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='chooseGroup'">
-              <xsl:apply-templates select="/bedeworkadmin/groups" mode="chooseGroup"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='adminGroupList'">
-              <xsl:call-template name="listAdminGroups"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='modAdminGroup'">
-              <xsl:call-template name="modAdminGroup"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='modAdminGroupMembers'">
-              <xsl:call-template name="modAdminGroupMembers"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='deleteAdminGroupConfirm'">
-              <xsl:call-template name="deleteAdminGroupConfirm"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='noGroup'">
-              <h2>No administrative group</h2>
-              <p>Your userid has not been assigned to an administrative group.
-                Please inform your administrator.</p>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='uploadTimezones'">
-              <xsl:call-template name="uploadTimezones"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='showSysStats'">
-              <xsl:apply-templates select="/bedeworkadmin/sysStats" mode="showSysStats"/>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='noAccess'">
-              <h2>No Access</h2>
-              <p>
-                You have no access to the action you just attempted. If you believe
-                you should have access and the problem persists, contact your
-                administrator.
-              </p>
-              <p><a href="{$setup}">continue</a></p>
-            </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='error'">
-              <h2>Application error</h2>
-              <p>An application error occurred.</p>
-              <p><a href="{$setup}">continue</a></p>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:call-template name="mainMenu"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </div>
-        <!-- footer -->
-        <xsl:call-template name="footer"/>
+        <xsl:choose>
+          <xsl:when test="/bedeworkadmin/page='selectCalForEvent'">
+            <xsl:call-template name="selectCalForEvent"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="header"/>
+            <div id="content">
+              <xsl:choose>
+                <xsl:when test="/bedeworkadmin/page='eventList'">
+                  <xsl:call-template name="eventList"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modEvent'">
+                  <xsl:call-template name="modEvent"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='displayEvent' or
+                                /bedeworkadmin/page='deleteEventConfirm'">
+                  <xsl:apply-templates select="/bedeworkadmin/event" mode="displayEvent"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='sponsorList'">
+                  <xsl:call-template name="sponsorList"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modSponsor'">
+                  <xsl:call-template name="modSponsor"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='deleteSponsorConfirm' or
+                                /bedeworkadmin/page='sponsorReferenced'">
+                  <xsl:call-template name="deleteSponsorConfirm"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='locationList'">
+                  <xsl:call-template name="locationList"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modLocation'">
+                  <xsl:call-template name="modLocation"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='deleteLocationConfirm'">
+                  <xsl:call-template name="deleteLocationConfirm"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='calendarList' or
+                                /bedeworkadmin/page='calendarDescriptions' or
+                                /bedeworkadmin/page='displayCalendar' or
+                                /bedeworkadmin/page='modCalendar' or
+                                /bedeworkadmin/page='deleteCalendarConfirm' or
+                                /bedeworkadmin/page='calendarReferenced'">
+                  <xsl:apply-templates select="/bedeworkadmin/calendars"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
+                  <xsl:apply-templates select="/bedeworkadmin/subscriptions"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='views'">
+                  <xsl:apply-templates select="/bedeworkadmin/views" mode="viewList"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modView'">
+                  <xsl:call-template name="modView"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='deleteViewConfirm'">
+                  <xsl:call-template name="deleteViewConfirm"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modSyspars'">
+                  <xsl:call-template name="modSyspars"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='calSuiteList'">
+                  <xsl:apply-templates select="/bedeworkadmin/calSuites" mode="calSuiteList"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='addCalSuite'">
+                  <xsl:call-template name="addCalSuite"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modCalSuite'">
+                  <xsl:apply-templates select="/bedeworkadmin/calSuite"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='calSuitePrefs'">
+                  <xsl:call-template name="calSuitePrefs"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='authUserList'">
+                  <xsl:call-template name="authUserList"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modAuthUser'">
+                  <xsl:call-template name="modAuthUser"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modPrefs'">
+                  <xsl:call-template name="modPrefs"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='chooseGroup'">
+                  <xsl:apply-templates select="/bedeworkadmin/groups" mode="chooseGroup"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='adminGroupList'">
+                  <xsl:call-template name="listAdminGroups"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modAdminGroup'">
+                  <xsl:call-template name="modAdminGroup"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modAdminGroupMembers'">
+                  <xsl:call-template name="modAdminGroupMembers"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='deleteAdminGroupConfirm'">
+                  <xsl:call-template name="deleteAdminGroupConfirm"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='noGroup'">
+                  <h2>No administrative group</h2>
+                  <p>Your userid has not been assigned to an administrative group.
+                    Please inform your administrator.</p>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='upload'">
+                  <xsl:call-template name="upload"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='uploadTimezones'">
+                  <xsl:call-template name="uploadTimezones"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='showSysStats'">
+                  <xsl:apply-templates select="/bedeworkadmin/sysStats" mode="showSysStats"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='noAccess'">
+                  <h2>No Access</h2>
+                  <p>
+                    You have no access to the action you just attempted. If you believe
+                    you should have access and the problem persists, contact your
+                    administrator.
+                  </p>
+                  <p><a href="{$setup}">continue</a></p>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='error'">
+                  <h2>Application error</h2>
+                  <p>An application error occurred.</p>
+                  <p><a href="{$setup}">continue</a></p>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:call-template name="mainMenu"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </div>
+            <!-- footer -->
+            <xsl:call-template name="footer"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </body>
     </html>
   </xsl:template>
@@ -401,6 +417,11 @@
         <li>
           <a href="{$calsuite-fetchPrefsForUpdate}">
             Manage preferences
+          </a>
+        </li>
+        <li>
+          <a href="{$event-initUpload}">
+            Upload iCAL file
           </a>
         </li>
       </ul>
@@ -2085,7 +2106,62 @@
         </tr>
       </table>
     </form>
+  </xsl:template>
 
+  <!-- the selectCalForEvent listing creates a calendar tree in a pop-up window -->
+  <xsl:template name="selectCalForEvent">
+    <div id="calTreeBlock">
+      <h2>Select a calendar</h2>
+      <!--<form name="toggleCals" action="{$event-selectCalForEvent}">
+        <xsl:choose>
+          <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
+            <input type="radio" name="setappvar" value="showAllCalsForEvent(false)" onclick="submit()"/>
+            show only writable calendars
+            <input type="radio" name="setappvar" value="showAllCalsForEvent(true)" checked="checked" onclick="submit()"/>
+            show all calendars
+          </xsl:when>
+          <xsl:otherwise>
+            <input type="radio" name="setappvar" value="showAllCalsForEvent(false)" checked="checked" onclick="submit()"/>
+            show only writable calendars
+            <input type="radio" name="setappvar" value="showAllCalsForEvent(true)" onclick="submit()"/>
+            show all calendars
+          </xsl:otherwise>
+        </xsl:choose>
+      </form>-->
+      <h4>Calendars</h4>
+      <ul id="calendarTree">
+         <xsl:apply-templates select="/bedeworkadmin/calendars/calendar" mode="selectCalForEventCalTree"/>
+      </ul>
+     </div>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="selectCalForEventCalTree">
+    <xsl:variable name="id" select="id"/>
+    <li>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:variable name="calPath" select="encodedPath"/>
+      <xsl:variable name="calDisplay" select="path"/>
+      <xsl:choose>
+        <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calendarCollection = 'true')">
+          <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
+            <strong><xsl:value-of select="name"/></strong>
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="name"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="selectCalForEventCalTree"/>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->
@@ -2457,6 +2533,67 @@
       <input type="submit" name="cancelled" value="No: Cancel"/>
     </form>
 
+  </xsl:template>
+
+  <!--==== UPLOAD ====-->
+  <xsl:template name="upload">
+  <!-- The name "eventForm" is referenced by several javascript functions. Do not
+    change it without modifying includes.js -->
+    <form name="eventForm" method="post" action="{$event-upload}" id="standardForm"  enctype="multipart/form-data">
+      <h2>Upload iCAL File</h2>
+      <table class="common" cellspacing="0">
+        <tr>
+          <td class="fieldname">
+            Filename:
+          </td>
+          <td align="left">
+            <input type="file" name="uploadFile" size="60" />
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname padMeTop">
+            Into calendar:
+          </td>
+          <td align="left" class="padMeTop">
+            <input type="hidden" name="newCalPath" value=""/>
+            <span id="bwEventCalDisplay">
+              <em>none selected</em>
+            </span>
+            <xsl:text> </xsl:text>
+            [<a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">change</a>]
+          </td>
+        </tr>
+        <!--<tr>
+          <td class="fieldname padMeTop">
+            Effects free/busy:
+          </td>
+          <td align="left" class="padMeTop">
+            <input type="radio" value="" name="transparency" checked="checked"/> accept event's settings<br/>
+            <input type="radio" value="OPAQUE" name="transparency"/> yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+            <input type="radio" value="TRANSPARENT" name="transparency"/> no <span class="note">(transparent: event status does not affect your free/busy)</span><br/>
+          </td>
+        </tr>-->
+        <tr>
+          <td class="fieldname padMeTop">
+            Status:
+          </td>
+          <td align="left" class="padMeTop">
+            <input type="radio" value="" name="status" checked="checked"/> accept event's status<br/>
+            <input type="radio" value="CONFIRMED" name="status"/> confirmed<br/>
+            <input type="radio" value="TENTATIVE" name="status"/> tentative<br/>
+            <input type="radio" value="CANCELLED" name="status"/> cancelled<br/>
+          </td>
+        </tr>
+      </table>
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <input name="submit" type="submit" value="Continue"/>
+            <input name="cancelled" type="submit" value="Cancel"/>
+          </td>
+        </tr>
+      </table>
+    </form>
   </xsl:template>
 
   <!--+++++++++++++++ System Parameters (preferences) ++++++++++++++++++++-->
