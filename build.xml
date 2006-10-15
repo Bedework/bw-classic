@@ -412,6 +412,9 @@
                        target="${org.bedework.project.caldav}" />
     <copy-to-dependent this="${org.bedework.project.calendarapi}"
                        target="${org.bedework.project.dumprestore}" />
+    <copy-special-to-dependent this="${org.bedework.project.calendarapi}"
+                       target="${org.bedework.project.dumprestore}"
+                       prefix="bw-calcore" />
     <copy-to-dependent this="${org.bedework.project.calendarapi}"
                        target="${org.bedework.project.freebusy}" />
     <copy-to-dependent this="${org.bedework.project.calendarapi}"
@@ -692,6 +695,24 @@
     <echo message="*************** Needs to do javadoc for all sub-projects and" />
     <echo message="*************** link them in some way." />
   </target>
+
+  <!-- =============================================================================
+       Update dependent project (target) from a project just built (this)
+       with a special library (i.e. not one in libapi
+       ============================================================================= -->
+  <macrodef name="copy-special-to-dependent">
+    <attribute name="target"/>
+    <attribute name="this"/>
+    <attribute name="fromdir" default="dist"/>
+    <attribute name="prefix" />
+    <sequential>
+      <copy todir="@{target}/lib" overwrite="yes">
+        <fileset dir="@{this}/@{fromdir}">
+          <include name="@{prefix}*.jar" />
+        </fileset>
+      </copy>
+    </sequential>
+  </macrodef>
 
   <!-- =============================================================================
        Update dependent project (target) from a project just built (this).
