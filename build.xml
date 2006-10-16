@@ -12,7 +12,7 @@
   <property name="org.bedework.project.bedework"
             location="${basedir}" />
 
-  <!-- Wheer we put other projects -->
+  <!-- Where we put other projects -->
   <property name="org.bedework.projects"
             location="${org.bedework.project.bedework}/projects" />
 
