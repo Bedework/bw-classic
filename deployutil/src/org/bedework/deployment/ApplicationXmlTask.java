@@ -81,11 +81,11 @@ import org.apache.tools.ant.util.FileUtils;
  * @author douglm @ rpi.edu
  */
 public class ApplicationXmlTask extends MatchingTask {
-  private List filesets = new LinkedList();
+  private List<FileSet> filesets = new LinkedList<FileSet>();
 
-  private List wars = new LinkedList();
+  private List<String> wars = new LinkedList<String>();
 
-  private List jars = new LinkedList();
+  private List<String> jars = new LinkedList<String>();
 
   private File warDir;
 
