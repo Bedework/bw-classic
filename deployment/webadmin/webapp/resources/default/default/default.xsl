@@ -2300,7 +2300,7 @@
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
-      <xsl:variable name="calPath" select="encodedPath"/>
+      <xsl:variable name="calPath" select="path"/><!-- not the encodedPath when put in a form - otherwise it gets double encoded -->
       <xsl:variable name="calDisplay" select="path"/>
       <xsl:choose>
         <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calendarCollection = 'true')">
