@@ -46,12 +46,15 @@
 
         <!-- size limits -->
         <maxPublicDescriptionLength>500</maxPublicDescriptionLength>
-        <maxUserDescriptionLength>1000</maxUserDescriptionLength>
+        <maxUserDescriptionLength>5000</maxUserDescriptionLength>
         <maxUserEntitySize>100000</maxUserEntitySize>
         <defaultUserQuota>10000000</defaultUserQuota> <!-- 10 Meg OK? -->
 
         <!-- Max number of instances per recurring event -->
         <maxInstances>1000</maxInstances>
+
+        <!-- Max number of years per recurring event -->
+        <maxYears>10</maxYears>
 
         <userauthClass>org.bedework.calcore.hibernate.UserAuthUWDbImpl</userauthClass>
         <mailerClass>org.bedework.mail.DummyMailer</mailerClass>

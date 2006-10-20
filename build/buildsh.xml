@@ -95,6 +95,7 @@
         <include name="bw-davio*.jar"/>
 
         <!-- Calendar api jars -->
+        <include name="bw-apiutil*.jar"/>
         <include name="bw-calcore*.jar"/>
         <include name="bw-calcorei*.jar"/>
         <include name="bw-calenv*.jar"/>
