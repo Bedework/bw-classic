@@ -61,15 +61,18 @@
   <xsl:variable name="appRoot" select="/bedeworkadmin/approot"/>
 
   <!-- Properly encoded prefixes to the application actions; use these to build
-       urls; allows the application to be used without cookies or within a portal. -->
-  <xsl:variable name="setup" select="/bedeworkadmin/urlPrefixes/setup/a/@href"/> <!-- used -->
-  <xsl:variable name="logout" select="/bedeworkadmin/urlPrefixes/logout/a/@href"/><!-- used -->
+       urls; allows the application to be used without cookies or within a portal.
+       we will probably change the way we create these before long (e.g. build them
+       dynamically in the xslt). -->
+  <xsl:variable name="setup" select="/bedeworkadmin/urlPrefixes/setup/a/@href"/>
+  <xsl:variable name="logout" select="/bedeworkadmin/urlPrefixes/logout/a/@href"/>
+  <!-- events -->
   <xsl:variable name="event-showEvent" select="/bedeworkadmin/urlPrefixes/event/showEvent/a/@href"/>
   <xsl:variable name="event-showModForm" select="/bedeworkadmin/urlPrefixes/event/showModForm/a/@href"/>
-  <xsl:variable name="event-showUpdateList" select="/bedeworkadmin/urlPrefixes/event/showUpdateList/a/@href"/><!-- used -->
+  <xsl:variable name="event-showUpdateList" select="/bedeworkadmin/urlPrefixes/event/showUpdateList/a/@href"/>
   <xsl:variable name="event-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/event/showDeleteConfirm/a/@href"/>
-  <xsl:variable name="event-initAddEvent" select="/bedeworkadmin/urlPrefixes/event/initAddEvent/a/@href"/><!-- used -->
-  <xsl:variable name="event-initUpdateEvent" select="/bedeworkadmin/urlPrefixes/event/initUpdateEvent/a/@href"/><!-- used -->
+  <xsl:variable name="event-initAddEvent" select="/bedeworkadmin/urlPrefixes/event/initAddEvent/a/@href"/>
+  <xsl:variable name="event-initUpdateEvent" select="/bedeworkadmin/urlPrefixes/event/initUpdateEvent/a/@href"/>
   <xsl:variable name="event-delete" select="/bedeworkadmin/urlPrefixes/event/delete/a/@href"/>
   <xsl:variable name="event-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/event/fetchForDisplay/a/@href"/>
   <xsl:variable name="event-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/event/fetchForUpdate/a/@href"/>
@@ -77,49 +80,64 @@
   <xsl:variable name="event-selectCalForEvent" select="/bedeworkadmin/urlPrefixes/event/selectCalForEvent/a/@href"/>
   <xsl:variable name="event-initUpload" select="/bedeworkadmin/urlPrefixes/event/initUpload/a/@href"/>
   <xsl:variable name="event-upload" select="/bedeworkadmin/urlPrefixes/event/upload/a/@href"/>
+  <!-- sponsors -->
   <xsl:variable name="sponsor-showSponsor" select="/bedeworkadmin/urlPrefixes/sponsor/showSponsor/a/@href"/>
   <xsl:variable name="sponsor-showReferenced" select="/bedeworkadmin/urlPrefixes/sponsor/showReferenced/a/@href"/>
   <xsl:variable name="sponsor-showModForm" select="/bedeworkadmin/urlPrefixes/sponsor/showModForm/a/@href"/>
   <xsl:variable name="sponsor-showUpdateList" select="/bedeworkadmin/urlPrefixes/sponsor/showUpdateList/a/@href"/>
   <xsl:variable name="sponsor-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/sponsor/showDeleteConfirm/a/@href"/>
-  <xsl:variable name="sponsor-initAdd" select="/bedeworkadmin/urlPrefixes/sponsor/initAdd/a/@href"/><!-- used -->
+  <xsl:variable name="sponsor-initAdd" select="/bedeworkadmin/urlPrefixes/sponsor/initAdd/a/@href"/>
   <xsl:variable name="sponsor-initUpdate" select="/bedeworkadmin/urlPrefixes/sponsor/initUpdate/a/@href"/>
   <xsl:variable name="sponsor-delete" select="/bedeworkadmin/urlPrefixes/sponsor/delete/a/@href"/>
   <xsl:variable name="sponsor-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/sponsor/fetchForDisplay/a/@href"/>
   <xsl:variable name="sponsor-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/sponsor/fetchForUpdate/a/@href"/>
   <xsl:variable name="sponsor-update" select="/bedeworkadmin/urlPrefixes/sponsor/update/a/@href"/>
+  <!-- locations -->
   <xsl:variable name="location-showLocation" select="/bedeworkadmin/urlPrefixes/location/showLocation/a/@href"/>
   <xsl:variable name="location-showReferenced" select="/bedeworkadmin/urlPrefixes/location/showReferenced/a/@href"/>
   <xsl:variable name="location-showModForm" select="/bedeworkadmin/urlPrefixes/location/showModForm/a/@href"/>
   <xsl:variable name="location-showUpdateList" select="/bedeworkadmin/urlPrefixes/location/showUpdateList/a/@href"/>
   <xsl:variable name="location-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/location/showDeleteConfirm/a/@href"/>
-  <xsl:variable name="location-initAdd" select="/bedeworkadmin/urlPrefixes/location/initAdd/a/@href"/><!-- used -->
+  <xsl:variable name="location-initAdd" select="/bedeworkadmin/urlPrefixes/location/initAdd/a/@href"/>
   <xsl:variable name="location-initUpdate" select="/bedeworkadmin/urlPrefixes/location/initUpdate/a/@href"/>
   <xsl:variable name="location-delete" select="/bedeworkadmin/urlPrefixes/location/delete/a/@href"/>
   <xsl:variable name="location-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/location/fetchForDisplay/a/@href"/>
   <xsl:variable name="location-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/location/fetchForUpdate/a/@href"/>
   <xsl:variable name="location-update" select="/bedeworkadmin/urlPrefixes/location/update/a/@href"/>
-  <!-- cals should all be good -->
-  <xsl:variable name="calendar-fetch" select="/bedeworkadmin/urlPrefixes/calendar/fetch/a/@href"/><!-- used -->
-  <xsl:variable name="calendar-fetchDescriptions" select="/bedeworkadmin/urlPrefixes/calendar/fetchDescriptions/a/@href"/><!-- used -->
-  <xsl:variable name="calendar-initAdd" select="/bedeworkadmin/urlPrefixes/calendar/initAdd/a/@href"/><!-- used -->
+  <!-- categories -->
+  <xsl:variable name="category-showReferenced" select="/bedeworkadmin/urlPrefixes/category/showReferenced/a/@href"/>
+  <xsl:variable name="category-showModForm" select="/bedeworkadmin/urlPrefixes/category/showModForm/a/@href"/>
+  <xsl:variable name="category-showUpdateList" select="/bedeworkadmin/urlPrefixes/category/showUpdateList/a/@href"/>
+  <xsl:variable name="category-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/category/showDeleteConfirm/a/@href"/>
+  <xsl:variable name="category-initAdd" select="/bedeworkadmin/urlPrefixes/category/initAdd/a/@href"/>
+  <xsl:variable name="category-initUpdate" select="/bedeworkadmin/urlPrefixes/category/initUpdate/a/@href"/>
+  <xsl:variable name="category-delete" select="/bedeworkadmin/urlPrefixes/category/delete/a/@href"/>
+  <xsl:variable name="category-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/category/fetchForUpdate/a/@href"/>
+  <xsl:variable name="category-update" select="/bedeworkadmin/urlPrefixes/category/update/a/@href"/>
+  <!-- calendars -->
+  <xsl:variable name="calendar-fetch" select="/bedeworkadmin/urlPrefixes/calendar/fetch/a/@href"/>
+  <xsl:variable name="calendar-fetchDescriptions" select="/bedeworkadmin/urlPrefixes/calendar/fetchDescriptions/a/@href"/>
+  <xsl:variable name="calendar-initAdd" select="/bedeworkadmin/urlPrefixes/calendar/initAdd/a/@href"/>
   <xsl:variable name="calendar-delete" select="/bedeworkadmin/urlPrefixes/calendar/delete/a/@href"/>
   <xsl:variable name="calendar-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
-  <xsl:variable name="calendar-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calendar/fetchForUpdate/a/@href"/><!-- used -->
-  <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/><!-- used -->
+  <xsl:variable name="calendar-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calendar/fetchForUpdate/a/@href"/>
+  <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/>
   <xsl:variable name="calendar-setAccess" select="/bedeworkadmin/urlPrefixes/calendar/setAccess/a/@href"/>
-  <!-- all good - no need to clean any of these out  -->
+  <!-- subscriptions -->
   <xsl:variable name="subscriptions-fetch" select="/bedeworkadmin/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
   <xsl:variable name="subscriptions-initAdd" select="/bedeworkadmin/urlPrefixes/subscriptions/initAdd/a/@href"/>
   <xsl:variable name="subscriptions-subscribe" select="/bedeworkadmin/urlPrefixes/subscriptions/subscribe/a/@href"/>
+  <!-- views -->
   <xsl:variable name="view-fetch" select="/bedeworkadmin/urlPrefixes/view/fetch/a/@href"/>
   <xsl:variable name="view-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/view/fetchForUpdate/a/@href"/>
   <xsl:variable name="view-addView" select="/bedeworkadmin/urlPrefixes/view/addView/a/@href"/>
   <xsl:variable name="view-update" select="/bedeworkadmin/urlPrefixes/view/update/a/@href"/>
   <xsl:variable name="view-remove" select="/bedeworkadmin/urlPrefixes/view/remove/a/@href"/>
+  <!-- system -->
   <xsl:variable name="system-fetch" select="/bedeworkadmin/urlPrefixes/system/fetch/a/@href"/>
   <xsl:variable name="system-update" select="/bedeworkadmin/urlPrefixes/system/update/a/@href"/>
+  <!-- calsuites -->
   <xsl:variable name="calsuite-fetch" select="/bedeworkadmin/urlPrefixes/calsuite/fetch/a/@href"/>
   <xsl:variable name="calsuite-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calsuite/fetchForUpdate/a/@href"/>
   <xsl:variable name="calsuite-add" select="/bedeworkadmin/urlPrefixes/calsuite/add/a/@href"/>
@@ -128,30 +146,32 @@
   <xsl:variable name="calsuite-setAccess" select="/bedeworkadmin/urlPrefixes/calsuite/setAccess/a/@href"/>
   <xsl:variable name="calsuite-fetchPrefsForUpdate" select="/bedeworkadmin/urlPrefixes/calsuite/fetchPrefsForUpdate/a/@href"/>
   <xsl:variable name="calsuite-updatePrefs" select="/bedeworkadmin/urlPrefixes/calsuite/updatePrefs/a/@href"/>
+  <!-- timezones and stats -->
   <xsl:variable name="timezones-initUpload" select="/bedeworkadmin/urlPrefixes/timezones/initUpload/a/@href"/>
   <xsl:variable name="timezones-upload" select="/bedeworkadmin/urlPrefixes/timezones/upload/a/@href"/>
   <xsl:variable name="stats-update" select="/bedeworkadmin/urlPrefixes/stats/update/a/@href"/>
-  <!-- === -->
+  <!-- authuser and prefs -->
   <xsl:variable name="authuser-showModForm" select="/bedeworkadmin/urlPrefixes/authuser/showModForm/a/@href"/>
   <xsl:variable name="authuser-showUpdateList" select="/bedeworkadmin/urlPrefixes/authuser/showUpdateList/a/@href"/>
   <xsl:variable name="authuser-initUpdate" select="/bedeworkadmin/urlPrefixes/authuser/initUpdate/a/@href"/>
-  <xsl:variable name="authuser-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/authuser/fetchForUpdate/a/@href"/><!-- used -->
+  <xsl:variable name="authuser-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/authuser/fetchForUpdate/a/@href"/>
   <xsl:variable name="authuser-update" select="/bedeworkadmin/urlPrefixes/authuser/update/a/@href"/>
-  <xsl:variable name="prefs-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/prefs/fetchForUpdate/a/@href"/><!-- used -->
-  <xsl:variable name="prefs-update" select="/bedeworkadmin/urlPrefixes/prefs/update/a/@href"/><!-- used -->
+  <xsl:variable name="prefs-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/prefs/fetchForUpdate/a/@href"/>
+  <xsl:variable name="prefs-update" select="/bedeworkadmin/urlPrefixes/prefs/update/a/@href"/>
+  <!-- admin groups -->
   <xsl:variable name="admingroup-showModForm" select="/bedeworkadmin/urlPrefixes/admingroup/showModForm/a/@href"/>
   <xsl:variable name="admingroup-showModMembersForm" select="/bedeworkadmin/urlPrefixes/admingroup/showModMembersForm/a/@href"/>
   <xsl:variable name="admingroup-showUpdateList" select="/bedeworkadmin/urlPrefixes/admingroup/showUpdateList/a/@href"/>
   <xsl:variable name="admingroup-showChooseGroup" select="/bedeworkadmin/urlPrefixes/admingroup/showChooseGroup/a/@href"/>
   <xsl:variable name="admingroup-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/admingroup/showDeleteConfirm/a/@href"/>
-  <xsl:variable name="admingroup-initAdd" select="/bedeworkadmin/urlPrefixes/admingroup/initAdd/a/@href"/><!-- used -->
-  <xsl:variable name="admingroup-initUpdate" select="/bedeworkadmin/urlPrefixes/admingroup/initUpdate/a/@href"/><!-- used -->
+  <xsl:variable name="admingroup-initAdd" select="/bedeworkadmin/urlPrefixes/admingroup/initAdd/a/@href"/>
+  <xsl:variable name="admingroup-initUpdate" select="/bedeworkadmin/urlPrefixes/admingroup/initUpdate/a/@href"/>
   <xsl:variable name="admingroup-delete" select="/bedeworkadmin/urlPrefixes/admingroup/delete/a/@href"/>
-  <xsl:variable name="admingroup-fetchUpdateList" select="/bedeworkadmin/urlPrefixes/admingroup/fetchUpdateList/a/@href"/><!-- used -->
-  <xsl:variable name="admingroup-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/admingroup/fetchForUpdate/a/@href"/><!-- used -->
-  <xsl:variable name="admingroup-fetchForUpdateMembers" select="/bedeworkadmin/urlPrefixes/admingroup/fetchForUpdateMembers/a/@href"/><!-- used -->
-  <xsl:variable name="admingroup-update" select="/bedeworkadmin/urlPrefixes/admingroup/update/a/@href"/><!-- used -->
-  <xsl:variable name="admingroup-updateMembers" select="/bedeworkadmin/urlPrefixes/admingroup/updateMembers/a/@href"/><!-- used -->
+  <xsl:variable name="admingroup-fetchUpdateList" select="/bedeworkadmin/urlPrefixes/admingroup/fetchUpdateList/a/@href"/>
+  <xsl:variable name="admingroup-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/admingroup/fetchForUpdate/a/@href"/>
+  <xsl:variable name="admingroup-fetchForUpdateMembers" select="/bedeworkadmin/urlPrefixes/admingroup/fetchForUpdateMembers/a/@href"/>
+  <xsl:variable name="admingroup-update" select="/bedeworkadmin/urlPrefixes/admingroup/update/a/@href"/>
+  <xsl:variable name="admingroup-updateMembers" select="/bedeworkadmin/urlPrefixes/admingroup/updateMembers/a/@href"/>
   <xsl:variable name="admingroup-switch" select="/bedeworkadmin/urlPrefixes/admingroup/switch/a/@href"/>
 
   <!-- URL of the web application - includes web context
@@ -233,6 +253,15 @@
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='deleteLocationConfirm'">
                   <xsl:call-template name="deleteLocationConfirm"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='categoryList'">
+                  <xsl:call-template name="categoryList"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='modCategory'">
+                  <xsl:call-template name="modCategory"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='deleteCategoryConfirm'">
+                  <xsl:call-template name="deleteCategoryConfirm"/>
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='calendarList' or
                                 /bedeworkadmin/page='calendarDescriptions' or
@@ -387,6 +416,19 @@
         </td>
         <td>
           <a href="{$location-initUpdate}" >
+            Edit / Delete
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <th>Categories</th>
+        <td>
+          <a id="addCategoryLink" href="{$category-initAdd}" >
+            Add
+          </a>
+        </td>
+        <td>
+          <a href="{$category-initUpdate}" >
             Edit / Delete
           </a>
         </td>
@@ -1570,6 +1612,120 @@
           </td>
         </tr>
       </table>
+  </xsl:template>
+
+   <!--+++++++++++++++ Categories ++++++++++++++++++++-->
+  <xsl:template name="categoryList">
+    <h2>Edit Categoriess</h2>
+    <p>
+      Select the category you would like to update:
+      <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')"/>
+    </p>
+
+    <table id="commonListTable">
+      <tr>
+        <th>Keyword</th>
+        <th>Description</th>
+      </tr>
+
+      <xsl:for-each select="/bedeworkadmin/categories/category">
+        <xsl:variable name="categoryId" select="id"/>
+        <tr>
+          <td>
+            <a href="{$category-fetchForUpdate}&amp;categoryId={$categoryId}">
+              <xsl:copy-of select="keyword"/>
+            </a>
+          </td>
+          <td>
+            <xsl:value-of select="desc"/>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+
+  <xsl:template name="modCategory">
+    <xsl:choose>
+      <xsl:when test="/bedeworkadmin/creating='true'">
+        <h2>Add Category</h2>
+      </xsl:when>
+      <xsl:otherwise>
+        <h2>Update Category</h2>
+      </xsl:otherwise>
+    </xsl:choose>
+
+    <form action="{$category-update}" method="post">
+      <table id="eventFormTable">
+        <tr>
+          <td class="fieldName">
+            Keyword:
+          </td>
+          <td>
+            <xsl:variable name="keyword" select="/luwakadmin/currentCategory/category/keyword"/>
+            <input type="text" name="category.word" value="{$keyword}"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="optional">
+            Description:
+          </td>
+          <td>
+            <xsl:variable name="desc" select="/luwakadmin/currentCategory/category/desc"/>
+            <input type="text" name="category.description" value="{$desc}"/>
+          </td>
+        </tr>
+      </table>
+
+      <table border="0" id="submitTable">
+        <tr>
+          <xsl:choose>
+            <xsl:when test="/bedeworkadmin/creating='true'">
+              <td>
+                <input type="submit" name="addCategory" value="Add Category"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="reset" value="Clear"/>
+              </td>
+            </xsl:when>
+            <xsl:otherwise>
+              <td>
+                <input type="submit" name="updateCategory" value="Update Category"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="reset" value="Reset"/>
+              </td>
+              <td align="right">
+                <input type="submit" name="delete" value="Delete Category"/>
+              </td>
+            </xsl:otherwise>
+          </xsl:choose>
+        </tr>
+      </table>
+    </form>
+  </xsl:template>
+
+  <xsl:template name="deleteCategoryConfirm">
+    <h2>Ok to delete this category?</h2>
+    <p id="confirmButtons">
+      <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
+    </p>
+
+    <table class="eventFormTable">
+      <tr>
+        <td class="fieldName">
+          Keyword:
+        </td>
+        <td>
+          <xsl:value-of select="/bedeworkadmin/currentCategory/category/keyword"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="optional">
+          Description:
+        </td>
+        <td>
+          <xsl:value-of select="/bedeworkadmin/currentCategory/category/desc"/>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
 <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
