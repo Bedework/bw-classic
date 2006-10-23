@@ -65,6 +65,8 @@
         <usergroupsClass>org.bedework.calcore.hibernate.GroupsDbImpl</usergroupsClass>
 
         <directoryBrowsingDisallowed>@DIRECTORY-BROWSING-DISALLOWED@</directoryBrowsingDisallowed>
+
+        <indexRoot>lucene/indexroot</indexRoot>
       </syspars>
 
       <app>

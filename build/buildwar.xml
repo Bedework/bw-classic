@@ -341,6 +341,7 @@
 
     <!-- Some more standard libs -->
     <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
+    <copy todir="${app.dest.lib}" file="${lucene.jar}"/>
     <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-codec.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-collections.jar}"/>
