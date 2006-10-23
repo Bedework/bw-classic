@@ -451,6 +451,7 @@
     <ul id="sideBarMenu">
       <li><a href="{$manageLocations}">Manage Locations</a></li>
       <li><a href="{$prefs-fetchForUpdate}">Preferences</a></li>
+      <li><a href="{$initUpload}" title="upload event">Upload iCAL</a></li>
     </ul>
   </xsl:template>
 

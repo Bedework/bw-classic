@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-  method="html"
-  indent="yes"
-  media-type="text/html"
-  doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-  doctype-system="http://www.w3.org/TR/html4/strict.dtd"
-  standalone="yes"
-  omit-xml-declaration="yes"/>
+  <xsl:output
+      method="html"
+      indent="yes"
+      media-type="text/html"
+      doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
+      doctype-system="http://www.w3.org/TR/html4/strict.dtd"
+      standalone="yes"
+      omit-xml-declaration="yes"/>
 
   <!-- ======================================== -->
   <!--      BEDEWORK ADMIN CLIENT STYLESHEET     -->
@@ -198,13 +198,12 @@
         <xsl:if test="/bedeworkadmin/page='upload' or /bedeworkadmin/page='selectCalForEvent'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
         </xsl:if>
-        <xsl:if test="/bedeworkadmin/page='calendarDescriptions' or
-                      /bedeworkadmin/page='displayCalendar'">
+        <xsl:if test="/bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar'">
           <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
         <script language="JavaScript" type="text/javascript">
-        <xsl:comment>
+          <xsl:comment>
         <![CDATA[
         // places the cursor in the first available form element when the page is loaded
         // (if a form exists on the page)
@@ -214,7 +213,7 @@
           }
         }]]>
         </xsl:comment>
-      </script>
+        </script>
       </head>
       <body onLoad="focusFirstElement()">
         <xsl:choose>
@@ -231,8 +230,7 @@
                 <xsl:when test="/bedeworkadmin/page='modEvent'">
                   <xsl:call-template name="modEvent"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='displayEvent' or
-                                /bedeworkadmin/page='deleteEventConfirm'">
+                <xsl:when test="/bedeworkadmin/page='displayEvent' or /bedeworkadmin/page='deleteEventConfirm'">
                   <xsl:apply-templates select="/bedeworkadmin/event" mode="displayEvent"/>
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='sponsorList'">
@@ -241,8 +239,7 @@
                 <xsl:when test="/bedeworkadmin/page='modSponsor'">
                   <xsl:call-template name="modSponsor"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='deleteSponsorConfirm' or
-                                /bedeworkadmin/page='sponsorReferenced'">
+                <xsl:when test="/bedeworkadmin/page='deleteSponsorConfirm' or /bedeworkadmin/page='sponsorReferenced'">
                   <xsl:call-template name="deleteSponsorConfirm"/>
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='locationList'">
@@ -263,12 +260,7 @@
                 <xsl:when test="/bedeworkadmin/page='deleteCategoryConfirm'">
                   <xsl:call-template name="deleteCategoryConfirm"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='calendarList' or
-                                /bedeworkadmin/page='calendarDescriptions' or
-                                /bedeworkadmin/page='displayCalendar' or
-                                /bedeworkadmin/page='modCalendar' or
-                                /bedeworkadmin/page='deleteCalendarConfirm' or
-                                /bedeworkadmin/page='calendarReferenced'">
+                <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar' or /bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='deleteCalendarConfirm' or /bedeworkadmin/page='calendarReferenced'">
                   <xsl:apply-templates select="/bedeworkadmin/calendars"/>
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
@@ -343,12 +335,16 @@
                     you should have access and the problem persists, contact your
                     administrator.
                   </p>
-                  <p><a href="{$setup}">continue</a></p>
+                  <p>
+                    <a href="{$setup}">continue</a>
+                  </p>
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='error'">
                   <h2>Application error</h2>
                   <p>An application error occurred.</p>
-                  <p><a href="{$setup}">continue</a></p>
+                  <p>
+                    <a href="{$setup}">continue</a>
+                  </p>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:call-template name="mainMenu"/>
@@ -376,12 +372,12 @@
       <tr>
         <th>Events</th>
         <td>
-          <a id="addEventLink" href="{$event-initAddEvent}" >
+          <a id="addEventLink" href="{$event-initAddEvent}">
             Add
           </a>
         </td>
         <td>
-          <a href="{$event-initUpdateEvent}" >
+          <a href="{$event-initUpdateEvent}">
             Edit / Delete
           </a>
         </td>
@@ -397,12 +393,12 @@
       <tr>
         <th>Contacts</th>
         <td>
-          <a id="addSponsorLink" href="{$sponsor-initAdd}" >
+          <a id="addSponsorLink" href="{$sponsor-initAdd}">
             Add
           </a>
         </td>
         <td>
-          <a href="{$sponsor-initUpdate}" >
+          <a href="{$sponsor-initUpdate}">
             Edit / Delete
           </a>
         </td>
@@ -410,12 +406,12 @@
       <tr>
         <th>Locations</th>
         <td>
-          <a id="addLocationLink" href="{$location-initAdd}" >
+          <a id="addLocationLink" href="{$location-initAdd}">
             Add
           </a>
         </td>
         <td>
-          <a href="{$location-initUpdate}" >
+          <a href="{$location-initUpdate}">
             Edit / Delete
           </a>
         </td>
@@ -423,12 +419,12 @@
       <tr>
         <th>Categories</th>
         <td>
-          <a id="addCategoryLink" href="{$category-initAdd}" >
+          <a id="addCategoryLink" href="{$category-initAdd}">
             Add
           </a>
         </td>
         <td>
-          <a href="{$category-initUpdate}" >
+          <a href="{$category-initUpdate}">
             Edit / Delete
           </a>
         </td>
@@ -438,7 +434,8 @@
     <xsl:if test="/bedeworkadmin/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedeworkadmin/userInfo/superUser='true'">
       <h4 class="menuTitle">
         Manage Calendar Suite:
-        <em><xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/></em>
+        <em><xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/>
+        </em>
       </h4>
       <ul class="adminMenu">
         <li>
@@ -474,7 +471,7 @@
       <ul class="adminMenu">
         <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
           <li>
-            <a href="{$authuser-initUpdate}" >
+            <a href="{$authuser-initUpdate}">
               Manage public event administrators
             </a>
           </li>
@@ -516,7 +513,7 @@
           </a>
         </li>
         <li>
-          <a href="{$timezones-initUpload}" >
+          <a href="{$timezones-initUpload}">
             Upload and replace system timezones
           </a>
         </li>
@@ -604,7 +601,7 @@
     <h2>Event Information</h2>
 
     <xsl:variable name="modEventAction" select="/bedeworkadmin/formElements/form/@action"/>
-    <form  name="peForm" method="post" action="{$modEventAction}">
+    <form name="peForm" method="post" action="{$modEventAction}">
       <table class="eventFormTable">
         <tr>
           <td class="fieldName">
@@ -635,7 +632,9 @@
               <xsl:copy-of select="/bedeworkadmin/formElements/form/calendar/all/select/*"/>
             </select>
             <xsl:text> </xsl:text>
-            <span id="calDescriptionsLink"><a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a></span>
+            <span id="calDescriptionsLink">
+              <a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a>
+            </span>
           </td>
         </tr>
 
@@ -682,7 +681,7 @@
                 </xsl:choose>
               </div>
               <script language="JavaScript" type="text/javascript">
-              <xsl:comment>
+                <xsl:comment>
                 startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', 'startDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
               </xsl:comment>
               </script>
@@ -695,7 +694,9 @@
                     <xsl:copy-of select="/bedeworkadmin/formElements/form/start/ampm/*"/>
                   </xsl:if>
                   <xsl:text> </xsl:text>
-                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                  <a href="javascript:bwClockLaunch('eventStartDate');">
+                    <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/>
+                  </a>
                 </span>
               </div>
             </div>
@@ -730,7 +731,7 @@
                   </xsl:choose>
                 </div>
                 <script language="JavaScript" type="text/javascript">
-                <xsl:comment>
+                  <xsl:comment>
                   endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', 'endDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
                 </xsl:comment>
                 </script>
@@ -743,10 +744,13 @@
                       <xsl:copy-of select="/bedeworkadmin/formElements/form/end/dateTime/ampm/*"/>
                     </xsl:if>
                     <xsl:text> </xsl:text>
-                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                    <a href="javascript:bwClockLaunch('eventEndDate');">
+                      <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/>
+                    </a>
                   </span>
                 </div>
-              </div><br/>
+              </div>
+              <br/>
               <div id="clock" class="invisible">
                 <xsl:call-template name="clock"/>
               </div>
@@ -817,7 +821,8 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </div>
-              </div><br/>
+              </div>
+              <br/>
               <div class="dateFields" id="noDuration">
                 <xsl:choose>
                   <xsl:when test="/bedeworkadmin/formElements/form/end/type='N'">
@@ -937,10 +942,11 @@
           </td>
         </tr>
 
-       <xsl:if test="/bedeworkadmin/formElements/form/location/address">
+        <xsl:if test="/bedeworkadmin/formElements/form/location/address">
           <tr>
             <td class="fieldName" colspan="2">
-              <span class="std-text"><span class="bold">or</span> add</span>
+              <span class="std-text">
+                <span class="bold">or</span> add</span>
             </td>
           </tr>
           <tr>
@@ -950,9 +956,10 @@
             <td>
               <xsl:variable name="addressFieldName" select="/bedeworkadmin/formElements/form/location/address/input/@name"/>
               <xsl:variable name="calLocations">
-                <xsl:for-each select="/bedeworkadmin/formElements/form/location/all/select/option">"<xsl:value-of select="."/>"<xsl:if test="position()!=last()">,</xsl:if></xsl:for-each>
+                <xsl:for-each select="/bedeworkadmin/formElements/form/location/all/select/option">"<xsl:value-of select="."/>"<xsl:if test="position()!=last()">,</xsl:if>
+                </xsl:for-each>
               </xsl:variable>
-              <input type="text" size="30" name="{$addressFieldName}" autocomplete="off" onfocus='autoComplete(this,event,new Array({$calLocations}));'/>
+              <input type="text" size="30" name="{$addressFieldName}" autocomplete="off" onfocus="autoComplete(this,event,new Array({$calLocations}));"/>
               <div class="fieldInfo">
                 Please include room, building, and campus (if not Seattle).
               </div>
@@ -1015,7 +1022,8 @@
         <xsl:if test="/bedeworkadmin/formElements/form/sponsor/name">
           <tr>
             <td class="fieldName" colspan="2">
-              <span class="std-text"><span class="bold">or</span> add</span>
+              <span class="std-text">
+                <span class="bold">or</span> add</span>
             </td>
           </tr>
           <tr>
@@ -1095,8 +1103,7 @@
       </div>
       <div id="bwClockCover">
         <!-- this is a special effect div used simply to cover the pixelated edge
-             where the clock meets the clock box title -->
-      </div>
+             where the clock meets the clock box title --></div>
       <div id="bwClockBox">
         <h2>
           Bedework 24-Hour Clock
@@ -1294,7 +1301,9 @@
         </th>
         <td>
           <xsl:variable name="eventLink" select="link"/>
-          <a href="{$eventLink}"><xsl:value-of select="link"/></a>
+          <a href="{$eventLink}">
+            <xsl:value-of select="link"/>
+          </a>
         </td>
       </tr>
       <!-- Location -->
@@ -1462,19 +1471,27 @@
     <table class="eventFormTable">
       <tr>
         <th>Name</th>
-        <td><xsl:value-of select="/bedeworkadmin/sponsor/name" /></td>
+        <td>
+          <xsl:value-of select="/bedeworkadmin/sponsor/name" />
+        </td>
       </tr>
       <tr>
         <th>Phone</th>
-        <td><xsl:value-of select="/bedeworkadmin/sponsor/phone" /></td>
+        <td>
+          <xsl:value-of select="/bedeworkadmin/sponsor/phone" />
+        </td>
       </tr>
       <tr>
         <th>Email</th>
-        <td><xsl:value-of select="/bedeworkadmin/sponsor/email" /></td>
+        <td>
+          <xsl:value-of select="/bedeworkadmin/sponsor/email" />
+        </td>
       </tr>
       <tr>
         <th>URL</th>
-        <td><xsl:value-of select="/bedeworkadmin/sponsor/link" /></td>
+        <td>
+          <xsl:value-of select="/bedeworkadmin/sponsor/link" />
+        </td>
       </tr>
     </table>
   </xsl:template>
@@ -1586,37 +1603,39 @@
     </p>
 
     <table class="eventFormTable">
-        <tr>
-          <td class="fieldName">
+      <tr>
+        <td class="fieldName">
             Address:
           </td>
-          <td>
-            <xsl:value-of select="/bedeworkadmin/location/address"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="optional">
+        <td>
+          <xsl:value-of select="/bedeworkadmin/location/address"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="optional">
             Subaddress:
           </td>
-          <td>
-            <xsl:value-of select="/bedeworkadmin/location/subaddress"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="optional">
+        <td>
+          <xsl:value-of select="/bedeworkadmin/location/subaddress"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="optional">
             Location's URL:
           </td>
-          <td>
-            <xsl:variable name="link" select="/bedeworkadmin/location/link"/>
-            <a href="{$link}"><xsl:value-of select="/bedeworkadmin/location/link"/></a>
-          </td>
-        </tr>
-      </table>
+        <td>
+          <xsl:variable name="link" select="/bedeworkadmin/location/link"/>
+          <a href="{$link}">
+            <xsl:value-of select="/bedeworkadmin/location/link"/>
+          </a>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
    <!--+++++++++++++++ Categories ++++++++++++++++++++-->
   <xsl:template name="categoryList">
-    <h2>Edit Categoriess</h2>
+    <h2>Edit Categories</h2>
     <p>
       Select the category you would like to update:
       <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')"/>
@@ -1648,45 +1667,64 @@
     <xsl:choose>
       <xsl:when test="/bedeworkadmin/creating='true'">
         <h2>Add Category</h2>
-      </xsl:when>
-      <xsl:otherwise>
-        <h2>Update Category</h2>
-      </xsl:otherwise>
-    </xsl:choose>
-
-    <form action="{$category-update}" method="post">
-      <table id="eventFormTable">
-        <tr>
-          <td class="fieldName">
-            Keyword:
-          </td>
-          <td>
-            <xsl:variable name="keyword" select="/luwakadmin/currentCategory/category/keyword"/>
-            <input type="text" name="category.word" value="{$keyword}"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="optional">
-            Description:
-          </td>
-          <td>
-            <xsl:variable name="desc" select="/luwakadmin/currentCategory/category/desc"/>
-            <input type="text" name="category.description" value="{$desc}"/>
-          </td>
-        </tr>
-      </table>
-
-      <table border="0" id="submitTable">
-        <tr>
-          <xsl:choose>
-            <xsl:when test="/bedeworkadmin/creating='true'">
+        <form action="{$category-update}" method="post">
+          <table id="eventFormTable">
+            <tr>
+              <td class="fieldName">
+                Keyword:
+              </td>
+              <td>
+                <input type="text" name="category.word" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="optional">
+                Description:
+              </td>
+              <td>
+                <textarea name="category.description" rows="3" cols="60">
+                </textarea>
+              </td>
+            </tr>
+          </table>
+          <table border="0" id="submitTable">
+            <tr>
               <td>
                 <input type="submit" name="addCategory" value="Add Category"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Clear"/>
               </td>
-            </xsl:when>
-            <xsl:otherwise>
+            </tr>
+          </table>
+        </form>
+      </xsl:when>
+      <xsl:otherwise>
+        <h2>Update Category</h2>
+        <form action="{$category-update}" method="post">
+          <table id="eventFormTable">
+            <tr>
+              <td class="fieldName">
+            Keyword:
+            </td>
+              <td>
+                <xsl:variable name="keyword" select="normalize-space(/bedeworkadmin/currentCategory/category/keyword)"/>
+                <input type="text" name="category.word" value="{$keyword}" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="optional">
+            Description:
+            </td>
+              <td>
+                <textarea name="category.description" rows="3" cols="60">
+                  <xsl:value-of select="normalize-space(/bedeworkadmin/currentCategory/category/desc)"/>
+                </textarea>
+              </td>
+            </tr>
+          </table>
+
+          <table border="0" id="submitTable">
+            <tr>
               <td>
                 <input type="submit" name="updateCategory" value="Update Category"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
@@ -1695,11 +1733,13 @@
               <td align="right">
                 <input type="submit" name="delete" value="Delete Category"/>
               </td>
-            </xsl:otherwise>
-          </xsl:choose>
-        </tr>
-      </table>
-    </form>
+            </tr>
+          </table>
+        </form>
+      </xsl:otherwise>
+    </xsl:choose>
+
+
   </xsl:template>
 
   <xsl:template name="deleteCategoryConfirm">
@@ -1736,8 +1776,7 @@
           <h3>Public calendars</h3>
           <ul id="calendarTree">
             <xsl:choose>
-              <xsl:when test="/bedeworkadmin/page='calendarDescriptions' or
-                              /bedeworkadmin/page='displayCalendar'">
+              <xsl:when test="/bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar'">
                 <xsl:apply-templates select="calendar" mode="listForDisplay"/>
               </xsl:when>
               <xsl:otherwise>
@@ -1748,8 +1787,7 @@
         </td>
         <td class="calendarContent">
           <xsl:choose>
-            <xsl:when test="/bedeworkadmin/page='calendarList' or
-                            /bedeworkadmin/page='calendarReferenced'">
+            <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='calendarReferenced'">
               <xsl:call-template name="calendarList"/>
             </xsl:when>
             <xsl:when test="/bedeworkadmin/page='calendarDescriptions'">
@@ -1794,8 +1832,7 @@
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="listForUpdate">
-            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
-          </xsl:apply-templates>
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>--></xsl:apply-templates>
         </ul>
       </xsl:if>
     </li>
@@ -1816,8 +1853,7 @@
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="listForDisplay">
-            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
-          </xsl:apply-templates>
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>--></xsl:apply-templates>
         </ul>
       </xsl:if>
     </li>
@@ -1986,14 +2022,14 @@
                   <xsl:choose>
                     <xsl:when test="invert/principal/href">
                       <xsl:value-of select="invert/principal/href"/>
-                    </xsl:when>
-                    <xsl:when test="invert/principal/property">
-                      <xsl:value-of select="name(invert/principal/property/*)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="name(invert/principal/*)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
+                      </xsl:when>
+                      <xsl:when test="invert/principal/property">
+                        <xsl:value-of select="name(invert/principal/property/*)"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="name(invert/principal/*)"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </em>
                 </xsl:when>
                 <xsl:otherwise>
@@ -2028,7 +2064,8 @@
           <tr>
             <td>
               <h5>Who:</h5>
-              <input type="text" name="who" size="20"/><br/>
+              <input type="text" name="who" size="20"/>
+              <br/>
               <input type="radio" value="user" name="whoType" checked="checked"/> user
               <input type="radio" value="group" name="whoType"/> group
               <p>OR</p>
@@ -2084,27 +2121,33 @@
                   <input type="radio" value="N" name="how"/> None
                 </li>-->
 
-                <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
+                <li>
+                  <input type="radio" value="A" name="how"/>
+                  <strong>All</strong> (read, write, delete)</li>
                 <li class="padTop">
-                  <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
+                  <input type="radio" value="R" name="how" checked="checked"/>
+                  <strong>Read</strong> (content, access, freebusy)
                 </li>
                 <li>
                   <input type="radio" value="f" name="how"/> Read freebusy only
                 </li>
                 <li class="padTop">
-                  <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
+                  <input type="radio" value="W" name="how"/>
+                  <strong>Write and delete</strong> (content, access, properties)
                 </li>
                 <li>
                   <input type="radio" value="c" name="how"/> Write content only
                 </li>
                 <li>
-                 <input type="radio" value="u" name="how"/> Delete only
+                  <input type="radio" value="u" name="how"/> Delete only
                 </li>
                 <li class="padTop">
-                  <input type="radio" value="Rc" name="how"/> <strong>Read</strong> and <strong>Write content only</strong>
+                  <input type="radio" value="Rc" name="how"/>
+                  <strong>Read</strong> and <strong>Write content only</strong>
                 </li>
                 <li class="padTop">
-                  <input type="radio" value="N" name="how"/> <strong>None</strong>
+                  <input type="radio" value="N" name="how"/>
+                  <strong>None</strong>
                 </li>
               </ul>
             </td>
@@ -2144,7 +2187,9 @@
       heirarchy.</li>
     </ul>
 
-    <p><strong>All Calendar Descriptions:</strong></p>
+    <p>
+      <strong>All Calendar Descriptions:</strong>
+    </p>
     <table id="flatCalendarDescriptions" cellspacing="0">
       <tr>
         <th>Name</th>
@@ -2286,9 +2331,9 @@
       </form>-->
       <h4>Calendars</h4>
       <ul id="calendarTree">
-         <xsl:apply-templates select="/bedeworkadmin/calendars/calendar" mode="selectCalForEventCalTree"/>
+        <xsl:apply-templates select="/bedeworkadmin/calendars/calendar" mode="selectCalForEventCalTree"/>
       </ul>
-     </div>
+    </div>
   </xsl:template>
 
   <xsl:template match="calendar" mode="selectCalForEventCalTree">
@@ -2305,7 +2350,9 @@
       <xsl:choose>
         <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calendarCollection = 'true')">
           <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
-            <strong><xsl:value-of select="name"/></strong>
+            <strong>
+              <xsl:value-of select="name"/>
+            </strong>
           </a>
         </xsl:when>
         <xsl:otherwise>
@@ -2327,7 +2374,8 @@
         <td class="cals">
           <h3>Public calendars</h3>
           <p class="smaller">
-            Select a calendar below to add a <em><strong>new</strong></em>
+            Select a calendar below to add a <em><strong>new</strong>
+            </em>
             internal subscription. <!-- or
             <a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">
             subscribe to an external calendar</a>.-->
@@ -2368,8 +2416,7 @@
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="subscribe">
-            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
-          </xsl:apply-templates>
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>--></xsl:apply-templates>
         </ul>
       </xsl:if>
     </li>
@@ -2610,7 +2657,9 @@
   <xsl:template name="modView">
     <h2>Update View</h2>
     <xsl:variable name="viewName" select="/bedeworkadmin/views/view/name"/>
-    <h3 class="viewName"><xsl:value-of select="$viewName"/></h3>
+    <h3 class="viewName">
+      <xsl:value-of select="$viewName"/>
+    </h3>
     <table id="viewsTable">
       <tr>
         <td class="subs">
@@ -2628,8 +2677,8 @@
                     <xsl:variable name="subAddName" select="name"/>
                     <a href="{$view-update}&amp;name={$viewName}&amp;add={$subAddName}">
                       <img src="{$resourcesRoot}/resources/arrowRight.gif"
-                        width="13" height="13" border="0"
-                        alt="add subscription"/>
+                          width="13" height="13" border="0"
+                          alt="add subscription"/>
                     </a>
                   </td>
                 </tr>
@@ -2682,7 +2731,9 @@
     <xsl:variable name="viewName" select="/bedeworkadmin/views/view/name"/>
     <p>The following view will be removed. Continue?</p>
 
-    <h3 class="viewName"><xsl:value-of select="$viewName"/></h3>
+    <h3 class="viewName">
+      <xsl:value-of select="$viewName"/>
+    </h3>
     <form name="removeView" action="{$view-remove}">
       <input type="hidden" name="name" value="{$viewName}"/>
       <input type="submit" name="delete" value="Yes: Remove View"/>
@@ -2695,7 +2746,7 @@
   <xsl:template name="upload">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying includes.js -->
-    <form name="eventForm" method="post" action="{$event-upload}" id="standardForm"  enctype="multipart/form-data">
+    <form name="eventForm" method="post" action="{$event-upload}" id="standardForm" enctype="multipart/form-data">
       <h2>Upload iCAL File</h2>
       <table class="common" cellspacing="0">
         <tr>
@@ -2787,8 +2838,7 @@
             <xsl:variable name="httpPerUser" select="/bedeworkadmin/system/httpConnectionsPerUser"/>
             <input value="{$httpPerUser}" name="httpConnectionsPerUser" size="20"/>
           </td>
-          <td>
-          </td>
+          <td></td>
         </tr>
         <tr>
           <th>Http connections per host:</th>
@@ -2796,8 +2846,7 @@
             <xsl:variable name="httpPerHost" select="/bedeworkadmin/system/httpConnectionsPerHost"/>
             <input value="{$httpPerHost}" name="httpConnectionsPerHost" size="20"/>
           </td>
-          <td>
-          </td>
+          <td></td>
         </tr>
         <tr>
           <th>Total http connections:</th>
@@ -2805,8 +2854,7 @@
             <xsl:variable name="httpTotal" select="/bedeworkadmin/system/httpConnections"/>
             <input value="{$httpTotal}" name="httpConnections" size="20"/>
           </td>
-          <td>
-          </td>
+          <td></td>
         </tr>
         <tr>
           <th>Maximum length of public event description:</th>
@@ -2814,8 +2862,7 @@
             <xsl:variable name="maxPublicDescriptionLength" select="/bedeworkadmin/system/maxPublicDescriptionLength"/>
             <input value="{$maxPublicDescriptionLength}" name="maxPublicDescriptionLength" size="20"/>
           </td>
-          <td>
-          </td>
+          <td></td>
         </tr>
         <tr>
           <th>Maximum length of user event description:</th>
@@ -2823,8 +2870,7 @@
             <xsl:variable name="maxUserDescriptionLength" select="/bedeworkadmin/system/maxUserDescriptionLength"/>
             <input value="{$maxUserDescriptionLength}" name="maxUserDescriptionLength" size="20"/>
           </td>
-          <td>
-          </td>
+          <td></td>
         </tr>
         <tr>
           <th>Maximum size of a user entity:</th>
@@ -2832,8 +2878,7 @@
             <xsl:variable name="maxUserEntitySize" select="/bedeworkadmin/system/maxUserEntitySize"/>
             <input value="{$maxUserEntitySize}" name="maxUserEntitySize" size="20"/>
           </td>
-          <td>
-          </td>
+          <td></td>
         </tr>
         <tr>
           <th>Default user quota:</th>
@@ -2841,8 +2886,7 @@
             <xsl:variable name="defaultUserQuota" select="/bedeworkadmin/system/defaultUserQuota"/>
             <input value="{$defaultUserQuota}" name="defaultUserQuota" size="20"/>
           </td>
-          <td>
-          </td>
+          <td></td>
         </tr>
       </table>
       <table border="0" id="submitTable">
@@ -2862,16 +2906,18 @@
     <h2>Manage Calendar Suites</h2>
 
     <h4>Calendar suites:</h4>
-    <p><input type="button" name="return" value="Add calendar suite" onclick="javascript:location.replace('{$calsuite-showAddForm}')"/></p>
+    <p>
+      <input type="button" name="return" value="Add calendar suite" onclick="javascript:location.replace('{$calsuite-showAddForm}')"/>
+    </p>
 
     <ul>
       <xsl:for-each select="calSuite">
-       <li>
-         <xsl:variable name="name" select="name"/>
-         <a href="{$calsuite-fetchForUpdate}&amp;name={$name}">
-           <xsl:value-of select="name"/>
-         </a>
-       </li>
+        <li>
+          <xsl:variable name="name" select="name"/>
+          <a href="{$calsuite-fetchForUpdate}&amp;name={$name}">
+            <xsl:value-of select="name"/>
+          </a>
+        </li>
       </xsl:for-each>
     </ul>
 
@@ -2982,14 +3028,14 @@
                   <xsl:choose>
                     <xsl:when test="invert/principal/href">
                       <xsl:value-of select="invert/principal/href"/>
-                    </xsl:when>
-                    <xsl:when test="invert/principal/property">
-                      <xsl:value-of select="name(invert/principal/property/*)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="name(invert/principal/*)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
+                      </xsl:when>
+                      <xsl:when test="invert/principal/property">
+                        <xsl:value-of select="name(invert/principal/property/*)"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="name(invert/principal/*)"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </em>
                 </xsl:when>
                 <xsl:otherwise>
@@ -3401,7 +3447,9 @@
 
     <p>Click on the group name to modify the group owner or description.<br/>
     Click "add/remove members" to modify group membership.</p>
-    <p><input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initAdd}')" value="Add a new group"/></p>
+    <p>
+      <input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initAdd}')" value="Add a new group"/>
+    </p>
     <table id="commonListTable">
       <tr>
         <th>Name</th>
@@ -3426,7 +3474,7 @@
           <xsl:if test="/bedeworkadmin/groups/showMembers='true'">
             <td>
               <xsl:for-each select="members/member/account">
-                  <xsl:value-of select="."/>&#160;
+                <xsl:value-of select="."/>&#160;
               </xsl:for-each>
             </td>
           </xsl:if>
@@ -3436,7 +3484,9 @@
         </tr>
       </xsl:for-each>
     </table>
-    <p><input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initAdd}')" value="Add a new group"/></p>
+    <p>
+      <input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initAdd}')" value="Add a new group"/>
+    </p>
   </xsl:template>
 
   <xsl:template match="groups" mode="chooseGroup">
@@ -3487,7 +3537,7 @@
                 <xsl:copy-of select="/bedeworkadmin/formElements/form/name/*"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of  select="/bedeworkadmin/formElements/form/name"/>
+                <xsl:value-of select="/bedeworkadmin/formElements/form/name"/>
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -3554,7 +3604,9 @@
         <input type="submit" name="addGroupMember" value="Add"/>
       </p>
     </form>
-    <p><input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initUpdate}')" value="Return to Admin Group listing"/></p>
+    <p>
+      <input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initUpdate}')" value="Return to Admin Group listing"/>
+    </p>
 
     <table id="adminGroupFormTable">
       <tr>
@@ -3583,9 +3635,9 @@
                     </td>
                     <td>
                       <xsl:variable name="acct" select="account"/>
-                        <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
-                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                        </a>
+                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
+                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                      </a>
                     </td>
                   </tr>
                 </xsl:when>
@@ -3595,7 +3647,9 @@
                       <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
                     </td>
                     <td>
-                      <strong><xsl:value-of select="account"/></strong>
+                      <strong>
+                        <xsl:value-of select="account"/>
+                      </strong>
                     </td>
                     <td>
                       <xsl:variable name="acct" select="account"/>
@@ -3613,7 +3667,9 @@
     </table>
     <p>
       <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/> user,
-      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/><xsl:text> </xsl:text><strong>group</strong>
+      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+      <xsl:text> </xsl:text>
+      <strong>group</strong>
     </p>
   </xsl:template>
 
@@ -3621,10 +3677,12 @@
     <h2>Delete Admin Group?</h2>
     <p>The following group will be deleted. Continue?</p>
     <p>
-      <strong><xsl:value-of select="/bedeworkadmin/groups/group/name"/></strong>:
+      <strong>
+        <xsl:value-of select="/bedeworkadmin/groups/group/name"/>
+      </strong>:
       <xsl:value-of select="/bedeworkadmin/groups/group/desc"/>
     </p>
-    <form  name="adminGroupDelete" method="post" action="{$admingroup-delete}">
+    <form name="adminGroupDelete" method="post" action="{$admingroup-delete}">
       <input type="submit" name="removeAdminGroupOK" value="Yes: Delete!"/>
       <input type="submit" name="cancelled" value="No: Cancel"/>
     </form>
@@ -3643,8 +3701,12 @@
         <a href="{$stats-update}&amp;enable=yes">enable</a> |
         <a href="{$stats-update}&amp;disable=yes">disable</a>
       </li>
-      <li><a href="{$stats-update}&amp;fetch=yes">fetch statistics</a></li>
-      <li><a href="{$stats-update}&amp;dump=yes">dump stats to log</a></li>
+      <li>
+        <a href="{$stats-update}&amp;fetch=yes">fetch statistics</a>
+      </li>
+      <li>
+        <a href="{$stats-update}&amp;dump=yes">dump stats to log</a>
+      </li>
     </ul>
     <table id="statsTable" cellpadding="0">
       <xsl:for-each select="*">
@@ -3677,62 +3739,46 @@
     <div id="header">
       <a href="http://www.bedework.org">
         <img id="logo"
-          alt="logo"
-          src="{$resourcesRoot}/resources/bedeworkAdminLogo.gif"
-          width="217"
-          height="40"
-          border="0"/>
+            alt="logo"
+            src="{$resourcesRoot}/resources/bedeworkAdminLogo.gif"
+            width="217"
+            height="40"
+            border="0"/>
       </a>
       <!-- set the page heading: -->
       <h1>
         <xsl:choose>
-          <xsl:when test="/bedeworkadmin/page='modEvent' or
-                          /bedeworkadmin/page='eventList' or
-                          /bedeworkadmin/page='displayEvent'">
+          <xsl:when test="/bedeworkadmin/page='modEvent' or /bedeworkadmin/page='eventList' or /bedeworkadmin/page='displayEvent'">
             Manage Events
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='sponsorList' or
-                          /bedeworkadmin/page='modSponsor' or
-                          /bedeworkadmin/page='deleteSponsorConfirm'">
+          <xsl:when test="/bedeworkadmin/page='sponsorList' or /bedeworkadmin/page='modSponsor' or /bedeworkadmin/page='deleteSponsorConfirm'">
             Manage Contacts
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='locationList' or
-                          /bedeworkadmin/page='modLocation' or
-                          /bedeworkadmin/page='deleteLocationConfirm'">
+          <xsl:when test="/bedeworkadmin/page='locationList' or /bedeworkadmin/page='modLocation' or /bedeworkadmin/page='deleteLocationConfirm'">
             Manage Locations
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='calendarList' or
-                          /bedeworkadmin/page='modCalendar' or
-                          /bedeworkadmin/page='calendarReferenced' or
-                          /bedeworkadmin/page='deleteCalendarConfirm'">
+          <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='calendarReferenced' or /bedeworkadmin/page='deleteCalendarConfirm'">
             Manage Calendars
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='calendarDescriptions' or
-                          /bedeworkadmin/page='displayCalendar'">
+          <xsl:when test="/bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar'">
             Public Calendars
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='subscriptions' or
-                          /bedeworkadmin/page='modSubscription'">
+          <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
             Manage Subscriptions
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='views' or
-                          /bedeworkadmin/page='modView'">
+          <xsl:when test="/bedeworkadmin/page='views' or /bedeworkadmin/page='modView'">
             Manage Views
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='modSyspars'">
             Manage System Preferences
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='authUserList' or
-                          /bedeworkadmin/page='modAuthUser'">
+          <xsl:when test="/bedeworkadmin/page='authUserList' or /bedeworkadmin/page='modAuthUser'">
             Manage Public Events Administrators
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='chooseGroup'">
             Choose Administrative Group
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='adminGroupList' or
-                          /bedeworkadmin/page='modAdminGroup' or
-                          /bedeworkadmin/page='modAdminGroup' or
-                          /bedeworkadmin/page='modAdminGroupMembers'">
+          <xsl:when test="/bedeworkadmin/page='adminGroupList' or /bedeworkadmin/page='modAdminGroup' or /bedeworkadmin/page='modAdminGroup' or /bedeworkadmin/page='modAdminGroupMembers'">
             Manage Administrative Groups
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='noGroup'">
@@ -3755,12 +3801,16 @@
 
       <xsl:if test="/bedeworkadmin/message">
         <div id="messages">
-          <p><xsl:apply-templates select="/bedeworkadmin/message"/></p>
+          <p>
+            <xsl:apply-templates select="/bedeworkadmin/message"/>
+          </p>
         </div>
       </xsl:if>
       <xsl:if test="/bedeworkadmin/error">
         <div id="errors">
-          <p><xsl:apply-templates select="/bedeworkadmin/error"/></p>
+          <p>
+            <xsl:apply-templates select="/bedeworkadmin/error"/>
+          </p>
         </div>
       </xsl:if>
 
