@@ -240,6 +240,9 @@
                     <xsl:when test="/bedework/page='attendeeReply'">
                       <xsl:apply-templates select="/bedework/event" mode="attendeeReply"/>
                     </xsl:when>
+                    <xsl:when test="/bedework/page='searchResult'">
+                      <xsl:call-template name="searchResult"/>
+                    </xsl:when>
                     <xsl:when test="/bedework/page='other'">
                       <!-- show an arbitrary page -->
                       <xsl:call-template name="selectPage"/>
@@ -5163,6 +5166,12 @@
         <xsl:with-param name="currentTime" select="$currentTime + $increment"/>
       </xsl:call-template>
     </xsl:if>
+  </xsl:template>
+
+  <!--==== SEARCH RESULT ====-->
+  <xsl:template name="searchResult">
+    <h2>Search Result</h2>
+    <p><xsl:value-of select="/bedework/resultSize"/> result<xsl:if test="/bedework/resultSize != 1">s</xsl:if> returned</p>
   </xsl:template>
 
   <!--==== SIDE CALENDAR MENU ====-->
