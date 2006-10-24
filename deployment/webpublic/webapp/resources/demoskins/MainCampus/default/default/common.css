@@ -43,11 +43,15 @@ h2.bwStatusTentative {
   width: 100%;
   padding: 0 1em;
 }
-#searchBarTable form {
+#searchBarTable form,
+#searchPageForm {
   display: inline;
   margin: 0px 0px 1px 0px;
   padding: 0em;
   white-space: nowrap;
+}
+#searchPageForm {
+  float: right;
 }
 #searchBarTable form input {
   font-size: 0.7em;

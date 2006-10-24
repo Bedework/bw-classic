@@ -250,7 +250,8 @@ h2 {
 #searchBarTable .calLinks {
   white-space: nowrap;
 }
-#eventTable {
+#eventTable,
+#searchTable {
   width: 100%;
   font-size: 0.9em;
   margin: 0px;

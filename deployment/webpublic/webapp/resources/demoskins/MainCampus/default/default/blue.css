@@ -236,7 +236,8 @@ body {
 #searchBarTable .calLinks {
   white-space: nowrap;
 }
-#eventTable {
+#eventTable,
+#searchTable {
   width: 100%;
   font-size: 0.9em;
   margin: 0px;
@@ -287,6 +288,16 @@ body {
   background-color: #fff;
   color: black;
   width: 100%;
+}
+#searchTable th {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-align: left;
+  background: #e5e5e5;
+  color: #000;
+  font-weight: normal;
 }
 #calPageTable {
   width: 100%;

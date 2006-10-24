@@ -982,25 +982,28 @@
             Categories**:
           </td>
           <td>
-            <xsl:if test="/bedeworkadmin/formElements/form/calendar/preferred/select/option">
-              <select name="category" multiple="multiple" size="4">
-                <option value="-1">
-                  Select preferred:
-                </option>
-                <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category">
-                  <option><xsl:value-of select="keyword"/></option>
-                </xsl:for-each>
-              </select>
-              Category (all):
-            </xsl:if>
-            <select name="categoryId" multiple="multiple" size="4">
-              <option value="-1">
-                Select:
-              </option>option>
-              <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category">
-                <option><xsl:value-of select="keyword"/></option>
-              </xsl:for-each>
-            </select><br/>
+            <table cellspacing="0">
+              <tr>
+                <xsl:if test="/bedeworkadmin/formElements/form/calendar/preferred/select/option">
+                  <td>
+                    Select preferred:
+                    <select name="category" multiple="multiple" size="4">
+                      <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category">
+                        <option><xsl:value-of select="keyword"/></option>
+                      </xsl:for-each>
+                    </select>
+                  </td>
+                </xsl:if>
+                <td>
+                  Select category (all):
+                  <select name="category" multiple="multiple" size="4">
+                    <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category">
+                      <option><xsl:value-of select="keyword"/></option>
+                    </xsl:for-each>
+                  </select>
+                </td>
+              </tr>
+            </table>
             <div class="fieldInfo">
               Use CTRL-click to select multiple categories
             </div>

@@ -136,6 +136,10 @@
             <!-- show a list of all calendars -->
             <xsl:apply-templates select="/bedework/calendars"/>
           </xsl:when>
+          <xsl:when test="/bedework/page='searchResult'">
+            <!-- show a list of all calendars -->
+            <xsl:call-template name="searchResult"/>
+          </xsl:when>
           <xsl:otherwise>
             <!-- otherwise, show the eventsCalendar -->
             <xsl:if test="/bedework/periodname!='Year'">
@@ -1084,6 +1088,31 @@
         </ul>
       </xsl:if>
     </li>
+  </xsl:template>
+
+  <!--==== SEARCH RESULT ====-->
+  <xsl:template name="searchResult">
+    <h2 class="bwStatusConfirmed">Search Result</h2>
+    <table id="searchTable" cellpadding="0" cellspacing="0">
+      <tr>
+        <th>
+          <xsl:value-of select="/bedework/resultSize"/> result<xsl:if test="/bedework/resultSize != 1">s</xsl:if> returned
+        </th>
+        <th>
+          <form name="searchForm" method="post" action="{$search}" id="searchPageForm">
+            Search:
+            <input type="text" name="query" size="10"/>
+            <input type="submit" name="submit" value="go"/>
+          </form>
+        </th>
+      </tr>
+      <tr>
+        <td>
+        </td>
+        <td>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
   <!--+++++++++++++++ System Stats ++++++++++++++++++++-->
