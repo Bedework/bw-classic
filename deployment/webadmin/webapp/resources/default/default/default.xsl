@@ -856,32 +856,6 @@
             </xsl:choose>
           </td>
         </tr>
-        <!--  Category  -->
-        <!-- Hide this field for now: we will probably use it in a very different
-             way now that true calendars are implemented.
-        <tr>
-          <td class="fieldName">
-            Category**:
-          </td>
-          <td>
-            <xsl:if test="/bedeworkadmin/formElements/form/calendar/preferred/select/option">
-              <select name="prefCategoryId">
-                <option value="-1">
-                  Select preferred:
-                </option>
-                <xsl:copy-of select="/bedeworkadmin/formElements/form/category/preferred/select/*"/>
-              </select>
-              Category (all):
-            </xsl:if>
-            <select name="categoryId">
-              <option value="-1">
-                Select:
-              </option>option>
-              <xsl:copy-of select="/bedeworkadmin/formElements/form/category/all/select/*"/>
-            </select>
-          </td>
-        </tr> -->
-
         <!--  Description  -->
         <tr>
           <td class="fieldName">
@@ -1000,6 +974,39 @@
             </select>
           </td>
         </tr>
+
+
+        <!--  Category  -->
+        <tr>
+          <td class="fieldName">
+            Categories**:
+          </td>
+          <td>
+            <xsl:if test="/bedeworkadmin/formElements/form/calendar/preferred/select/option">
+              <select name="category" multiple="multiple" size="4">
+                <option value="-1">
+                  Select preferred:
+                </option>
+                <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category">
+                  <option><xsl:value-of select="keyword"/></option>
+                </xsl:for-each>
+              </select>
+              Category (all):
+            </xsl:if>
+            <select name="categoryId" multiple="multiple" size="4">
+              <option value="-1">
+                Select:
+              </option>option>
+              <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category">
+                <option><xsl:value-of select="keyword"/></option>
+              </xsl:for-each>
+            </select><br/>
+            <div class="fieldInfo">
+              Use CTRL-click to select multiple categories
+            </div>
+          </td>
+        </tr>
+        <!-- note -->
         <tr>
           <td colspan="2" style="padding-top: 1em;">
             <span class="fieldInfo">
@@ -1267,14 +1274,14 @@
       </tr>
 
       <!--  Category  -->
-      <!--<tr>
+      <tr>
         <th>
           Category:
         </th>
         <td>
           <xsl:value-of select="category"/>
         </td>
-      </tr>-->
+      </tr>
 
       <!--  Description  -->
       <tr>

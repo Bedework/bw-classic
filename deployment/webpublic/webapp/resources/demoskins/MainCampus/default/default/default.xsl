@@ -82,6 +82,7 @@
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/eventView"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
   <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
+  <xsl:variable name="search" select="/bedework/urlPrefixes/search"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
   <xsl:variable name="stats" select="/bedework/urlPrefixes/stats"/>
@@ -458,6 +459,11 @@
            </xsl:choose>
          </td>
          <td class="rightCell">
+            <form name="searchForm" method="post" action="{$search}">
+              Search:
+              <input type="text" name="query" size="10"/>
+              <input type="submit" name="submit" value="go"/>
+            </form>
             <xsl:choose>
               <xsl:when test="/bedework/periodname='Day'">
                 <img src="{$resourcesRoot}/images/std-button-listview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>

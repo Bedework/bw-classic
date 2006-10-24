@@ -69,8 +69,8 @@ h2 {
 #curDateRangeTable td {
   padding-top: 5px;
   padding-bottom: 1px;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  padding-left: 13px;
+  padding-right: 13px;
 }
 #curDateRangeTable td.sideBarOpenCloseIcon {
   background: url(../../images/curDateRangeRed-left.gif) no-repeat top left;

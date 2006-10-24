@@ -81,6 +81,7 @@
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/delEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
   <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
+  <xsl:variable name="search" select="/bedework/urlPrefixes/search"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
   <xsl:variable name="manageLocations" select="/bedework/urlPrefixes/manageLocations"/>

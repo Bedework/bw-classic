@@ -60,8 +60,8 @@ body {
 #curDateRangeTable td {
   padding-top: 5px;
   padding-bottom: 1px;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  padding-left: 13px;
+  padding-right: 13px;
 }
 #curDateRangeTable td.sideBarOpenCloseIcon {
   background: url(../../images/curDateRangeBlue-left.gif) no-repeat top left;
@@ -157,11 +157,6 @@ body {
   border-right: 3px solid #aaa;
   padding: 0.1em 0.1em 0em 0em;
   white-space: nowrap;
-}
-#searchBarTable form {
-  display: inline;
-  margin: 0px 0px 1px 0px;
-  padding: 0em;
 }
 #tabsTable {
   margin: 0em;
