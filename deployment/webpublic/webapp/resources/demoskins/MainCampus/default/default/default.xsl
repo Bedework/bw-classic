@@ -123,6 +123,7 @@
         </xsl:if>
         <xsl:call-template name="tabs"/>
         <xsl:call-template name="navigation"/>
+        <xsl:call-template name="searchBar"/>
         <xsl:choose>
           <xsl:when test="/bedework/page='event'">
             <!-- show an event -->
@@ -141,10 +142,10 @@
             <xsl:call-template name="searchResult"/>
           </xsl:when>
           <xsl:otherwise>
-            <!-- otherwise, show the eventsCalendar -->
+            <!-- otherwise, show the eventsCalendar
             <xsl:if test="/bedework/periodname!='Year'">
               <xsl:call-template name="searchBar"/>
-            </xsl:if>
+            </xsl:if>-->
             <!-- main eventCalendar content -->
             <xsl:choose>
               <xsl:when test="/bedework/periodname='Day'">
@@ -465,7 +466,9 @@
          <td class="rightCell">
             <form name="searchForm" method="post" action="{$search}">
               Search:
-              <input type="text" name="query" size="10"/>
+              <input type="text" name="query" size="15">
+                <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
+              </input>
               <input type="submit" name="submit" value="go"/>
             </form>
             <xsl:choose>
@@ -1092,10 +1095,6 @@
 
   <!--==== SEARCH RESULT ====-->
   <xsl:template name="searchResult">
-    <xsl:variable name="subscriptionId" select="subscription/id"/>
-    <xsl:variable name="calPath" select="calendar/encodedPath"/>
-    <xsl:variable name="guid" select="guid"/>
-    <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <h2 class="bwStatusConfirmed">Search Result</h2>
     <table id="searchTable" cellpadding="0" cellspacing="0">
       <tr>
@@ -1113,6 +1112,10 @@
         </th>
       </tr>
       <xsl:for-each select="/bedework/searchResults/searchResult">
+        <xsl:variable name="subscriptionId" select="event/subscription/id"/>
+        <xsl:variable name="calPath" select="event/calendar/encodedPath"/>
+        <xsl:variable name="guid" select="event/guid"/>
+        <xsl:variable name="recurrenceId" select="event/recurrenceId"/>
         <tr>
           <td>
             <xsl:value-of select="ceiling(number(score)*100)"/>%
