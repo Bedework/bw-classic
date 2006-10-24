@@ -301,6 +301,23 @@ h2 {
   vertical-align: middle;
 	padding-left: 1em;
 }
+#searchTable th {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-align: left;
+  background: #e5e5e5;
+  color: #000;
+  font-weight: normal;
+}
+#searchTable td {
+  padding: 4px;
+}
+#searchTable .searchRelevance {
+  background-color: #900;
+  color: black;
+}
 #calPageTable {
   width: 100%;
   font-size: 100%;

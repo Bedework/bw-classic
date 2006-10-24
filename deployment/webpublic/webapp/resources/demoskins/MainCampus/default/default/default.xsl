@@ -1092,26 +1092,65 @@
 
   <!--==== SEARCH RESULT ====-->
   <xsl:template name="searchResult">
+    <xsl:variable name="subscriptionId" select="subscription/id"/>
+    <xsl:variable name="calPath" select="calendar/encodedPath"/>
+    <xsl:variable name="guid" select="guid"/>
+    <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <h2 class="bwStatusConfirmed">Search Result</h2>
     <table id="searchTable" cellpadding="0" cellspacing="0">
       <tr>
-        <th>
-          <xsl:value-of select="/bedework/resultSize"/> result<xsl:if test="/bedework/resultSize != 1">s</xsl:if> returned
-        </th>
-        <th>
+        <th colspan="5">
           <form name="searchForm" method="post" action="{$search}" id="searchPageForm">
             Search:
-            <input type="text" name="query" size="10"/>
+            <input type="text" name="query" size="30">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
+            </input>
             <input type="submit" name="submit" value="go"/>
           </form>
+          <xsl:value-of select="/bedework/searchResults/resultSize"/>
+          result<xsl:if test="/bedework/searchResults/resultSize != 1">s</xsl:if> returned
+          for <em><xsl:value-of select="/bedework/searchResults/query"/></em>
         </th>
       </tr>
-      <tr>
-        <td>
-        </td>
-        <td>
-        </td>
-      </tr>
+      <xsl:for-each select="/bedework/searchResults/searchResult">
+        <tr>
+          <td>
+            <xsl:value-of select="ceiling(number(score)*100)"/>%
+            <img src="{$resourcesRoot}/images/spacer.gif" height="4" class="searchRelevance">
+              <xsl:attribute name="width"><xsl:value-of select="ceiling(number(score)*100)"/></xsl:attribute>
+            </img>
+          </td>
+          <td>
+            <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+              <xsl:value-of select="event/summary"/>
+            </a>
+          </td>
+          <td>
+            <xsl:value-of select="event/start/longdate"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="event/start/time"/>
+            <xsl:choose>
+              <xsl:when test="event/start/longdate != event/end/longdate">
+                - <xsl:value-of select="event/start/longdate"/>
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="event/end/time"/>
+              </xsl:when>
+              <xsl:when test="event/start/time != event/end/time">
+                - <xsl:value-of select="event/end/time"/>
+              </xsl:when>
+            </xsl:choose>
+          </td>
+          <td>
+            <xsl:variable name="calUrl" select="event/calendar/encodedPath"/>
+            <a href="{$setSelection}&amp;calUrl={$calUrl}">
+              <xsl:value-of select="event/calendar/name"/>
+            </a>
+          </td>
+          <td>
+            <xsl:value-of select="event/location/address"/>
+          </td>
+        </tr>
+      </xsl:for-each>
     </table>
   </xsl:template>
 

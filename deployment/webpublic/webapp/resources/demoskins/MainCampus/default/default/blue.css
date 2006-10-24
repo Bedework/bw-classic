@@ -299,6 +299,13 @@ body {
   color: #000;
   font-weight: normal;
 }
+#searchTable td {
+  padding: 4px;
+}
+#searchTable .searchRelevance {
+  background-color: #2c5f89;
+  color: black;
+}
 #calPageTable {
   width: 100%;
   font-size: 100%;
