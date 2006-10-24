@@ -415,6 +415,9 @@
     <copy-special-to-dependent this="${org.bedework.project.calendarapi}"
                        target="${org.bedework.project.dumprestore}"
                        prefix="bw-calcore" />
+    <copy-special-to-dependent this="${org.bedework.project.calendarapi}"
+                       target="${org.bedework.project.dumprestore}"
+                       prefix="bw-calsvc" />
     <copy-to-dependent this="${org.bedework.project.calendarapi}"
                        target="${org.bedework.project.freebusy}" />
     <copy-to-dependent this="${org.bedework.project.calendarapi}"
@@ -531,6 +534,8 @@
                        target="${org.bedework.project.calendarapi}" />
     <copy-to-dependent this="${org.bedework.project.rpiutil}"
                        target="${org.bedework.project.davutil}" />
+    <copy-to-dependent this="${org.bedework.project.rpiutil}"
+                       target="${org.bedework.project.dumprestore}" />
     <copy-to-dependent this="${org.bedework.project.rpiutil}"
                        target="${org.bedework.project.freebusy}" />
     <copy-to-dependent this="${org.bedework.project.rpiutil}"
