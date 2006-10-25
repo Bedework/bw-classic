@@ -987,7 +987,7 @@
                 <xsl:if test="/bedeworkadmin/formElements/form/calendar/preferred/select/option">
                   <td>
                     Select preferred:
-                    <select name="category" multiple="multiple" size="4">
+                    <select name="categoryKey" multiple="multiple" size="4">
                       <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category">
                         <option><xsl:value-of select="keyword"/></option>
                       </xsl:for-each>
@@ -996,7 +996,7 @@
                 </xsl:if>
                 <td>
                   Select category (all):
-                  <select name="category" multiple="multiple" size="4">
+                  <select name="categoryKey" multiple="multiple" size="4">
                     <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category">
                       <option><xsl:value-of select="keyword"/></option>
                     </xsl:for-each>
