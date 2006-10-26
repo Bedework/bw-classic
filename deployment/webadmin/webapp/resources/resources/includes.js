@@ -98,3 +98,15 @@ function updateEventFormCalendar(newCalPath,calDisplay) {
   }
   window.close();
 }
+
+// checkboxes for all categories and preferred categories are on the page
+// simultaneously.  The use can toggle between which is shown and which is
+// hidden.  When a checkbox from one collection is changed, the corresponding
+// checkbox should be changed in the other set if it exists.
+function setCatChBx(thiscat,othercat) {
+  thisCatCheckBox = document.getElementById(thiscat);
+  if (document.getElementById(othercat)) {
+    otherCatCheckBox = document.getElementById(othercat);
+    otherCatCheckBox.checked =  thisCatCheckBox.checked;
+  }
+}

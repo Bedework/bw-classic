@@ -613,7 +613,7 @@
         </tr>
         <tr>
           <td class="fieldName">
-            Calendar**:
+            Calendar:**
           </td>
           <td>
             <xsl:if test="/bedeworkadmin/formElements/form/calendar/preferred/select/option">
@@ -895,7 +895,7 @@
         <!-- Location -->
         <tr>
           <td class="fieldName">
-            Location**:
+            Location:**
           </td>
           <td>
             <xsl:if test="/bedeworkadmin/formElements/form/location/preferred/select/option">
@@ -954,7 +954,7 @@
         <!-- Sponsor -->
         <tr>
           <td class="fieldName">
-            Contact**:
+            Contact:**
           </td>
           <td>
             <xsl:if test="/bedeworkadmin/formElements/form/sponsor/preferred/select/option">
@@ -979,7 +979,7 @@
         <!--  Category  -->
         <tr>
           <td class="fieldName">
-            Categories**:
+            Categories:**
           </td>
           <td>
             <input type="radio" name="categoryCheckboxes" value="preferred" checked="checked" onclick="changeClass('preferredCategoryCheckboxes','shown');changeClass('allCategoryCheckboxes','invisible');"/>show preferred
@@ -993,6 +993,8 @@
                       <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
                         <input type="checkbox" name="categoryKey">
                           <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                          <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
+                          <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="keyword"/>','all-<xsl:value-of select="keyword"/>')</xsl:attribute>
                           <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                           <xsl:value-of select="keyword"/>
                         </input><br/>
@@ -1002,6 +1004,8 @@
                       <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
                         <input type="checkbox" name="categoryKey">
                           <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                          <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
+                          <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="keyword"/>','all-<xsl:value-of select="keyword"/>')</xsl:attribute>
                           <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                           <xsl:value-of select="keyword"/>
                         </input><br/>
@@ -1027,6 +1031,8 @@
                   <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
                     <input type="checkbox" name="categoryKey">
                       <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
                       <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                       <xsl:value-of select="keyword"/>
                     </input><br/>
@@ -1036,6 +1042,8 @@
                   <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
                     <input type="checkbox" name="categoryKey">
                       <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
                       <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                       <xsl:value-of select="keyword"/>
                     </input><br/>
