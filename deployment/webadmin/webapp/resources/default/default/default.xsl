@@ -982,31 +982,29 @@
             Categories**:
           </td>
           <td>
-            <table cellspacing="0">
+            <table cellpadding="0">
               <tr>
-                <xsl:if test="/bedeworkadmin/formElements/form/calendar/preferred/select/option">
-                  <td>
-                    Select preferred:
-                    <select name="categoryKey" multiple="multiple" size="4">
-                      <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category">
-                        <option><xsl:value-of select="keyword"/></option>
-                      </xsl:for-each>
-                    </select>
-                  </td>
-                </xsl:if>
+                <xsl:variable name="catCount" select="count(/bedeworkadmin/formElements/form/categories/all/category)"/>
                 <td>
-                  Select category (all):
-                  <select name="categoryKey" multiple="multiple" size="4">
-                    <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category">
-                      <option><xsl:value-of select="keyword"/></option>
-                    </xsl:for-each>
-                  </select>
+                  <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
+                    <input type="checkbox" name="categoryKey">
+                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                      <xsl:value-of select="keyword"/>
+                    </input><br/>
+                  </xsl:for-each>
+                </td>
+                <td>
+                  <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
+                    <input type="checkbox" name="categoryKey">
+                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                      <xsl:value-of select="keyword"/>
+                    </input><br/>
+                  </xsl:for-each>
                 </td>
               </tr>
             </table>
-            <div class="fieldInfo">
-              Use CTRL-click to select multiple categories
-            </div>
           </td>
         </tr>
         <!-- note -->
@@ -1658,10 +1656,10 @@
       </tr>
 
       <xsl:for-each select="/bedeworkadmin/categories/category">
-        <xsl:variable name="categoryId" select="id"/>
+        <xsl:variable name="categoryKey" select="keyword"/>
         <tr>
           <td>
-            <a href="{$category-fetchForUpdate}&amp;categoryId={$categoryId}">
+            <a href="{$category-fetchForUpdate}&amp;categoryId={$categoryKey}">
               <xsl:copy-of select="keyword"/>
             </a>
           </td>
