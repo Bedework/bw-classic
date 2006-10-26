@@ -706,11 +706,11 @@
         <tr>
           <td class="fieldname">Categories:</td>
           <td class="fieldval">
-            <ul id="eventCategories">
+            <!--<ul id="eventCategories">-->
               <xsl:for-each select="categories/category">
-                <li><xsl:value-of select="word"/></li>
+                <!--<li>--><xsl:value-of select="word"/><br/><!--</li>-->
               </xsl:for-each>
-            </ul>
+            <!--</ul>-->
           </td>
         </tr>
       </xsl:if>
