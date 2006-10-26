@@ -982,7 +982,45 @@
             Categories**:
           </td>
           <td>
-            <table cellpadding="0">
+            <input type="radio" name="categoryCheckboxes" value="preferred" checked="checked" onclick="changeClass('preferredCategoryCheckboxes','shown');changeClass('allCategoryCheckboxes','invisible');"/>show preferred
+            <input type="radio" name="categoryCheckboxes" value="all" onclick="changeClass('preferredCategoryCheckboxes','invisible');changeClass('allCategoryCheckboxes','shown')"/>show all<br/>
+            <xsl:choose>
+              <xsl:when test="/bedeworkadmin/formElements/form/categories/preferred/category">
+                <table cellpadding="0" id="preferredCategoryCheckboxes">
+                  <tr>
+                    <xsl:variable name="catCount" select="count(/bedeworkadmin/formElements/form/categories/preferred/category)"/>
+                    <td>
+                      <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
+                        <input type="checkbox" name="categoryKey">
+                          <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                          <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                          <xsl:value-of select="keyword"/>
+                        </input><br/>
+                      </xsl:for-each>
+                    </td>
+                    <td>
+                      <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
+                        <input type="checkbox" name="categoryKey">
+                          <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                          <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                          <xsl:value-of select="keyword"/>
+                        </input><br/>
+                      </xsl:for-each>
+                    </td>
+                  </tr>
+                </table>
+              </xsl:when>
+              <xsl:otherwise>
+                <table cellpadding="0" id="preferredCategoryCheckboxes">
+                  <tr>
+                    <td>
+                      No preferred categories (yet).
+                    </td>
+                  </tr>
+                </table>
+              </xsl:otherwise>
+            </xsl:choose>
+            <table cellpadding="0" id="allCategoryCheckboxes" class="invisible">
               <tr>
                 <xsl:variable name="catCount" select="count(/bedeworkadmin/formElements/form/categories/all/category)"/>
                 <td>
