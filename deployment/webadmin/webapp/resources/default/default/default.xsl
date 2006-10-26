@@ -1702,10 +1702,10 @@
       </tr>
 
       <xsl:for-each select="/bedeworkadmin/categories/category">
-        <xsl:variable name="categoryKey" select="keyword"/>
+        <xsl:variable name="categoryId" select="id"/>
         <tr>
           <td>
-            <a href="{$category-fetchForUpdate}&amp;categoryId={$categoryKey}">
+            <a href="{$category-fetchForUpdate}&amp;categoryId={$categoryId}">
               <xsl:copy-of select="keyword"/>
             </a>
           </td>

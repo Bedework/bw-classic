@@ -702,6 +702,18 @@
           </a>
         </td>
       </tr>
+      <xsl:if test="categories/category">
+        <tr>
+          <td class="fieldname">Categories:</td>
+          <td class="fieldval">
+            <ul id="eventCategories">
+              <xsl:for-each select="categories/category">
+                <li><xsl:value-of select="word"/></li>
+              </xsl:for-each>
+            </ul>
+          </td>
+        </tr>
+      </xsl:if>
     </table>
   </xsl:template>
 
