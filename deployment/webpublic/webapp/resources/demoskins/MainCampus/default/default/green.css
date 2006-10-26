@@ -314,6 +314,10 @@ h2 {
 #searchTable td {
   padding: 4px;
 }
+#searchTable tr.fieldNames td {
+  background: #eee;
+  border-bottom: 1px solid #ccc;
+}
 #searchTable .searchRelevance {
   background-color: #090;
   color: black;

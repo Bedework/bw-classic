@@ -1107,22 +1107,45 @@
 
   <!--==== SEARCH RESULT ====-->
   <xsl:template name="searchResult">
-    <h2 class="bwStatusConfirmed">Search Result</h2>
+    <h2 class="bwStatusConfirmed">
+      <div id="searchFilter">
+        Limit search to:
+        <input type="radio" name="searchLimit" value="future"/>today forward
+        <input type="radio" name="searchLimit" value="future"/>past dates
+        <input type="radio" name="searchLimit" value="all" checked="checked"/>all dates
+      </div>
+      Search Result
+    </h2>
     <table id="searchTable" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="5">
-          <form name="searchForm" method="post" action="{$search}" id="searchPageForm">
-            Search:
-            <input type="text" name="query" size="30">
-              <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
-            </input>
-            <input type="submit" name="submit" value="go"/>
-          </form>
+          <div id="searchPageForm">
+            <!--page: previous 1 2 3 4 next-->
+          </div>
           <xsl:value-of select="/bedework/searchResults/resultSize"/>
           result<xsl:if test="/bedework/searchResults/resultSize != 1">s</xsl:if> returned
           for <em><xsl:value-of select="/bedework/searchResults/query"/></em>
         </th>
       </tr>
+      <xsl:if test="/bedework/searchResults/searchResult">
+        <tr class="fieldNames">
+          <td>
+            relevance
+          </td>
+          <td>
+            summary
+          </td>
+          <td>
+            date &amp; time
+          </td>
+          <td>
+            calendar
+          </td>
+          <td>
+            location
+          </td>
+        </tr>
+      </xsl:if>
       <xsl:for-each select="/bedework/searchResults/searchResult">
         <xsl:variable name="subscriptionId" select="event/subscription/id"/>
         <xsl:variable name="calPath" select="event/calendar/encodedPath"/>

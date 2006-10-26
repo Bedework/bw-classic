@@ -62,6 +62,12 @@ h2.bwStatusTentative {
 #searchBarTable img {
   vertical-align: middle;
 }
+#searchFilter {
+  float: right;
+  font-size: 10pt;
+  font-weight: normal;
+  margin-top: 5px;
+}
 #stats {
   font-size: 0.9em;
   margin: 0px;
