@@ -2505,11 +2505,20 @@
             <input type="radio" value="false" name="subscription.display" checked="checked"/> no
           </td>
         </tr>
+        <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
+          <tr>
+            <th>Unremovable:</th>
+            <td>
+              <input type="radio" value="true" name="unremoveable" size="60"/> true
+              <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
+            </td>
+          </tr>
+        </xsl:if>
         <tr>
           <th>Style:</th>
           <td>
             <xsl:variable name="subStyle" select="style"/>
-            <input type="text" value="{$subStyle}" name="subscription.style" size="50"/><br/>
+            <input type="text" value="{$subStyle}" name="subscription.style" size="50"/>
             <div style="width: 400px">
               Enter a css class to style events rendered in the list and grid
               views.  Leave blank to render with the default colors, or select from
@@ -2523,18 +2532,12 @@
                   </option>
                 </xsl:for-each>
               </select>
+              <p class="note">Note: This class is added alongside the default class used
+              in the list and grid views.  It does not replace it, so create your
+              style appropriately.</p>
             </div>
           </td>
         </tr>
-        <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
-          <tr>
-            <th>Unremovable:</th>
-            <td>
-              <input type="radio" value="true" name="unremoveable" size="60"/> true
-              <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
-            </td>
-          </tr>
-        </xsl:if>
       </table>
       <table border="0" id="submitTable">
         <tr>
@@ -2594,6 +2597,23 @@
             </xsl:choose>
           </td>
         </tr>
+        <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
+          <tr>
+            <th>Unremovable:</th>
+            <td>
+              <xsl:choose>
+                <xsl:when test="unremoveable='true'">
+                  <input type="radio" value="true" name="unremoveable" size="60" checked="checked"/> true
+                  <input type="radio" value="false" name="unremoveable" size="60"/> false
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="radio" value="true" name="unremoveable" size="60"/> true
+                  <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
+                </xsl:otherwise>
+              </xsl:choose>
+            </td>
+          </tr>
+        </xsl:if>
         <tr>
           <th>Style:</th>
           <td>
@@ -2612,26 +2632,12 @@
                   </option>
                 </xsl:for-each>
               </select>
+              <p class="note">Note: This class is added alongside the default class used
+              in the list and grid views.  It does not replace it, so create your
+              style appropriately.</p>
             </div>
           </td>
         </tr>
-        <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
-          <tr>
-            <th>Unremovable:</th>
-            <td>
-              <xsl:choose>
-                <xsl:when test="unremoveable='true'">
-                  <input type="radio" value="true" name="unremoveable" size="60" checked="checked"/> true
-                  <input type="radio" value="false" name="unremoveable" size="60"/> false
-                </xsl:when>
-                <xsl:otherwise>
-                  <input type="radio" value="true" name="unremoveable" size="60"/> true
-                  <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-          </tr>
-        </xsl:if>
       </table>
       <table border="0" id="submitTable">
         <tr>
