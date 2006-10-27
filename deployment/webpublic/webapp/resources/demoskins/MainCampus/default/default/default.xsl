@@ -1152,7 +1152,10 @@
       <tr>
         <th colspan="5">
           <div id="searchPageForm">
-            <!--page: previous 1 2 3 4 next-->
+            page:
+            <xsl:if test="/bedework/searhResults/curPage != 1">previous</xsl:if>
+            <xsl:call-template name="searchResultPageNav"/>
+            <xsl:if test="/bedework/searhResults/curPage != /bedework/searhResults/numPages">next</xsl:if>
           </div>
           <xsl:value-of select="/bedework/searchResults/resultSize"/>
           result<xsl:if test="/bedework/searchResults/resultSize != 1">s</xsl:if> returned
@@ -1222,6 +1225,26 @@
         </tr>
       </xsl:for-each>
     </table>
+  </xsl:template>
+
+  <xsl:template name="searchResultPageNav">
+    <xsl:param name="page">1</xsl:param>
+    <xsl:choose>
+      <xsl:when test="$page = /bedework/searchResults/curPage">
+        <xsl:value-of select="$page"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <a href="{$search}&amp;pageNum={$page}">
+          <xsl:value-of select="$page"/>
+        </a>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:text> </xsl:text>
+    <!--<xsl:if test="$curPage != /bedework/searchResults/numPages">
+      <xsl:call-template name="searchResultPageNav">
+        <xsl:with-param name="page" select="number($curPage)+1"/>
+      </xsl:call-template>
+    </xsl:if>-->
   </xsl:template>
 
   <!--+++++++++++++++ System Stats ++++++++++++++++++++-->
