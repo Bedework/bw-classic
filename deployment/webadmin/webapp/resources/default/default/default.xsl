@@ -187,6 +187,7 @@
         <title>Calendar Admin: Events Calendar Administration</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
+        <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
         <xsl:if test="/bedeworkadmin/page='modEvent'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
@@ -2508,7 +2509,21 @@
           <th>Style:</th>
           <td>
             <xsl:variable name="subStyle" select="style"/>
-            <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
+            <input type="text" value="{$subStyle}" name="subscription.style" size="50"/><br/>
+            <div style="width: 400px">
+              Enter a css class to style events rendered in the list and grid
+              views.  Leave blank to render with the default colors, or select from
+              one of the system-wide choices:
+              <select name="bwColors" onchange="document.subscribeForm['subscription.style'].value = this.value">
+                <option value="">default</option>
+                <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
+                  <xsl:variable name="subColor" select="."/>
+                  <option value="{$subColor}" class="{$subColor}">
+                    <xsl:value-of select="@name"/>
+                  </option>
+                </xsl:for-each>
+              </select>
+            </div>
           </td>
         </tr>
         <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
@@ -2584,6 +2599,20 @@
           <td>
             <xsl:variable name="subStyle" select="style"/>
             <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
+            <div style="width: 400px">
+              Enter a css class to style events rendered in the list and grid
+              views.  Leave blank to render with the default colors, or select from
+              one of the system-wide choices:
+              <select name="bwColors" onchange="document.subscribeForm['subscription.style'].value = this.value">
+                <option value="">default</option>
+                <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
+                  <xsl:variable name="subColor" select="."/>
+                  <option value="{$subColor}" class="{$subColor}">
+                    <xsl:value-of select="@name"/>
+                  </option>
+                </xsl:for-each>
+              </select>
+            </div>
           </td>
         </tr>
         <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">

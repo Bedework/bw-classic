@@ -112,6 +112,7 @@
             <link rel="stylesheet" href="{$resourcesRoot}/default/default/blue.css"/>
           </xsl:otherwise>
         </xsl:choose>
+        <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
       </head>
       <body>
@@ -943,6 +944,7 @@
     </table>
   </xsl:template>
 
+  <!--== EVENTS IN THE CALENDAR GRID ==-->
   <xsl:template match="event" mode="calendarLayout">
     <xsl:param name="dayPos"/>
     <xsl:variable name="subscriptionId" select="subscription/id"/>
@@ -954,14 +956,22 @@
         <!-- Special styles for the month grid -->
         <xsl:when test="status='CANCELLED'">eventCancelled</xsl:when>
         <xsl:when test="status='TENTATIVE'">eventTentative</xsl:when>
-        <xsl:when test="calendar/name='Holidays'">holiday</xsl:when>
-        <!-- Alternating colors for all standard events -->
+        <!-- Default alternating colors for all standard events -->
         <xsl:when test="position() mod 2 = 1">eventLinkA</xsl:when>
         <xsl:otherwise>eventLinkB</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <!-- Subscription styles.
+         These are set in the add/modify subscription forms in the admin client;
+         if present, these override the background-color set by eventClass. The
+         subscription styles should not be used for cancelled events (tentative is ok). -->
+    <xsl:variable name="subscriptionClass">
+      <xsl:if test="status != 'CANCELLED' and
+                    subscription/subStyle != '' and
+                    subscription/subStyle != 'default'"><xsl:value-of select="subscription/subStyle"/></xsl:if>
+    </xsl:variable>
     <li>
-      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass}">
+      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass} {$subscriptionClass}">
         <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
         <xsl:choose>
           <xsl:when test="start/shortdate != ../shortdate">

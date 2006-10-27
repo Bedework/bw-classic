@@ -875,7 +875,7 @@
                     <xsl:otherwise>description</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
-                <xsl:variable name="subStyle" select="subscription/style"/>
+                <xsl:variable name="subStyle" select="subscription/subStyle"/>
                 <td class="{$descriptionClass} {$subStyle}">
                   <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
                   <xsl:choose>
@@ -1042,6 +1042,7 @@
     </table>
   </xsl:template>
 
+  <!--== EVENTS IN THE CALENDAR GRID ==-->
   <xsl:template match="event" mode="calendarLayout">
     <xsl:param name="dayPos"/>
     <xsl:variable name="subscriptionId" select="subscription/id"/>
@@ -1070,17 +1071,14 @@
          rely (in this stylesheet) on subColors.css; if present, these
          override the background-color set by eventClass. User styles should
          not be used for cancelled events (tentative is ok). -->
-    <xsl:variable name="subColor">
-      <xsl:choose>
-         <xsl:when test="status != 'CANCELLED' and
-                        subscription/style != '' and
-                        subscription/style != 'default'"><xsl:value-of select="subscription/style"/></xsl:when>
-        <xsl:otherwise></xsl:otherwise>
-      </xsl:choose>
+    <xsl:variable name="subscriptionClass">
+      <xsl:if test="status != 'CANCELLED' and
+                    subscription/subStyle != '' and
+                    subscription/subStyle != 'default'"><xsl:value-of select="subscription/subStyle"/></xsl:if>
     </xsl:variable>
     <li>
       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"
-        class="{$eventRootClass} {$eventClass} {$subColor}">
+        class="{$eventRootClass} {$eventClass} {$subscriptionClass}">
         <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
         <xsl:value-of select="summary"/>
         <xsl:variable name="eventTipClass">
