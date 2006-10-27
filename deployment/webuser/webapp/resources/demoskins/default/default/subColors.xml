@@ -2,40 +2,40 @@
 <!-- Bedework Calendar subscription colors -->
 <subscriptionColors>
   <!-- light pastels -->
-  <color name="white">cFFFFFF</color>
-  <color name="lt pink">cFDDEEE</color>
-  <color name="lt purple">cDDD4E8</color>
-  <color name="lt steelblue">cBFD5E8</color>
-  <color name="lt blue">cCCECEF</color>
-  <color name="lt aquamarine">cB3E2DD</color>
-  <color name="lt seagreen">cCFECCF</color>
-  <color name="lt green">cE0F3B0</color>
-  <color name="lt yellow">cFFFFB0</color>
-  <color name="lt salmon">cFEEBC9</color>
+  <color name="white">bwwhite</color>
+  <color name="lt pink">bwltpink</color>
+  <color name="lt purple">bwltpurple</color>
+  <color name="lt steelblue">bwltsteelblue</color>
+  <color name="lt blue">bwltblue</color>
+  <color name="lt aquamarine">bwltaquamarine</color>
+  <color name="lt seagreen">bwltaquamarine</color>
+  <color name="lt green">bwltgreen</color>
+  <color name="lt yellow">bwltyellow</color>
+  <color name="lt salmon">bwltsalmon</color>
 
   <!-- medium pastels -->
-  <color name="gray">cEEEEEE</color>
-  <color name="pink">cFBB6D1</color>
-  <color name="purple">cC1B3D7</color>
-  <color name="steelblue">c94A8D0</color>
-  <color name="blue">c9ACEDF</color>
-  <color name="aquamarine">c86CFBE</color>
-  <color name="seagreen">cB5E1AE</color>
-  <color name="green">cBFE476</color>
+  <color name="gray">bwgray</color>
+  <color name="pink">bwpink</color>
+  <color name="purple">bwpurple</color>
+  <color name="steelblue">bwsteelblue</color>
+  <color name="blue">bwblue</color>
+  <color name="aquamarine">bwaquamarine</color>
+  <color name="seagreen">bwseagreen</color>
+  <color name="green">bwgreen</color>
   <!-- don't allow bright yellow - reserve for a hover color
-  <color name="yellow">cFFFA81</color> -->
-  <color name="salmon">cFDCAA2</color>
+  <color name="yellow">bwyellow</color> -->
+  <color name="salmon">bwsalmon</color>
 
   <!-- dark pastels -->
-  <color name="md gray">cDDDDDD</color>
-  <color name="md pink">cF98CB6</color>
-  <color name="md purple">cA589C1</color>
-  <color name="md steelblue">c7589BF</color>
-  <color name="md blue">c6FB7D6</color>
-  <color name="md aquamarine">c48B5A3</color>
-  <color name="md seagreen">c91D290</color>
-  <color name="md green">c85CA5D</color>
+  <color name="md gray">bwmdgray</color>
+  <color name="md pink">bwmdpink</color>
+  <color name="md purple">bwmdpurple</color>
+  <color name="md steelblue">bwmdsteelblue</color>
+  <color name="md blue">bwmdblue</color>
+  <color name="md aquamarine">bwmdaquamarine</color>
+  <color name="md seagreen">bwmdseagreen</color>
+  <color name="md green">bwmdgreen</color>
   <!-- don't allow bright yellow - reserve for a hover color
-  <color name="md yellow">cFFED62</color> -->
-  <color name="md salmon">cFCA985</color>
+  <color name="md yellow">bwmdyellow</color> -->
+  <color name="md salmon">bwmdsalmon</color>
 </subscriptionColors>

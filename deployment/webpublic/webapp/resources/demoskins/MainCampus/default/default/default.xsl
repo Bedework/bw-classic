@@ -844,6 +844,7 @@
                             Contact: <xsl:value-of select="sponsor/name"/>
                           </xsl:if>
                         </em>
+                        - <xsl:value-of select="calendar/name"/>
                       </a>
                       <xsl:if test="link != ''">
                         <xsl:variable name="link" select="link"/>
@@ -854,6 +855,7 @@
                       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:value-of select="summary"/>
                         <xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
+                         - <em><xsl:value-of select="calendar/name"/></em>
                       </a>
                     </xsl:otherwise>
                   </xsl:choose>
@@ -961,6 +963,14 @@
     <li>
       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass}">
         <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
+        <xsl:choose>
+          <xsl:when test="start/allday = 'false'">
+            <xsl:value-of select="start/time"/>:
+          </xsl:when>
+          <xsl:otherwise>
+            all day:
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:value-of select="summary"/>
         <xsl:variable name="eventTipClass">
           <xsl:choose>

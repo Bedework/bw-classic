@@ -5,131 +5,131 @@
    the default.css stylesheet.  Note - class names must not
    begin with a number, so all color classes are prepended with "c" */
 
-.cFFFFFF {
-  background-color: #FFFFFF !important;
+.bwwhite {
+  background-color: #ffffff !important;
   color: black;
 }
-.cFDDEEE {
-  background-color: #FDDEEE !important;
+.bwltpink {
+  background-color: #fddeee !important;
   color: black;
 }
-.cDDD4E8 {
-  background-color: #DDD4E8 !important;
+.bwltpurple {
+  background-color: #ddd4e8 !important;
   color: black;
 }
-.cBFD5E8 {
-  background-color: #BFD5E8 !important;
+.bwltsteelblue {
+  background-color: #bfd5e8 !important;
   color: black;
 }
-.cCCECEF {
-  background-color: #CCECEF !important;
+.bwltblue {
+  background-color: #ccecef !important;
   color: black;
 }
-.cB3E2DD {
-  background-color: #B3E2DD !important;
+.bwltaquamarine {
+  background-color: #b3e2dd !important;
   color: black;
 }
-.cCFECCF {
-  background-color: #CFECCF !important;
+.bwltaquamarine {
+  background-color: #cfeccf !important;
   color: black;
 }
-.cE0F3B0 {
-  background-color: #E0F3B0 !important;
+.bwltgreen {
+  background-color: #e0f3b0 !important;
   color: black;
 }
-.cFFFFB0 {
-  background-color: #FFFFB0 !important;
+.bwltyellow {
+  background-color: #ffffb0 !important;
   color: black;
 }
-.cFEEBC9 {
-  background-color: #FEEBC9 !important;
+.bwltsalmon {
+  background-color: #feebc9 !important;
   color: black;
 }
 /* medium pastels */
-.cEEEEEE {
-  background-color: #EEEEEE !important;
+.bwgray {
+  background-color: #eeeeee !important;
   color: black;
 }
-.cFBB6D1 {
-  background-color: #FBB6D1 !important;
+.bwpink {
+  background-color: #fbb6d1 !important;
   color: black;
 }
-.cC1B3D7 {
-  background-color: #C1B3D7 !important;
+.bwpurple {
+  background-color: #c1b3d7 !important;
   color: black;
   /* purple swallows up the default border color, so for this one alone,
      override it */
   border-bottom: 1px solid #999 !important;
 }
-.c94A8D0 {
-  background-color: #94A8D0 !important;
+.bwsteelblue {
+  background-color: #94a8d0 !important;
   color: black;
 }
-.c9ACEDF {
-  background-color: #9ACEDF !important;
+.bwblue {
+  background-color: #9acedf !important;
   color: black;
 }
-.c86CFBE {
-  background-color: #86CFBE !important;
+.bwaquamarine {
+  background-color: #86cfbe !important;
   color: black;
 }
-.cB5E1AE {
-  background-color: #B5E1AE !important;
+.bwseagreen {
+  background-color: #b5e1ae !important;
   color: black;
 }
-.cBFE476 {
-  background-color: #BFE476 !important;
+.bwgreen {
+  background-color: #bfe476 !important;
   color: black;
   /* gree swallows up the default border color, so for this one alone,
      override it */
   border-bottom: 1px solid #999 !important;
 }
-.cFFFA81 {
-  background-color: #FFFA81 !important;
+.bwyellow {
+  background-color: #fffa81 !important;
   color: black;
 }
-.cFDCAA2 {
-  background-color: #FDCAA2 !important;
+.bwsalmon {
+  background-color: #fdcaa2 !important;
   color: black;
 }
 /* dark pastels */
-.cDDDDDD {
-  background-color: #DDDDDD !important;
+.bwmdgray {
+  background-color: #dddddd !important;
   color: black;
 }
-.cF98CB6 {
-  background-color: #F98CB6 !important;
+.bwmdpink {
+  background-color: #f98cb6 !important;
   color: black;
 }
-.cA589C1 {
-  background-color: #A589C1 !important;
+.bwmdpurple {
+  background-color: #a589c1 !important;
   color: black;
 }
-.c7589BF {
-  background-color: #7589BF !important;
+.bwmdsteelblue {
+  background-color: #7589bf !important;
   color: black;
 }
-.c6FB7D6 {
-  background-color: #6FB7D6 !important;
+.bwmdblue {
+  background-color: #6fb7d6 !important;
   color: black;
 }
-.c48B5A3 {
-  background-color: #48B5A3 !important;
+.bwmdaquamarine {
+  background-color: #48b5a3 !important;
   color: black;
 }
-.c91D290 {
-  background-color: #91D290 !important;
+.bwmdseagreen {
+  background-color: #91d290 !important;
   color: black;
 }
-.c85CA5D {
-  background-color: #85CA5D !important;
+.bwmdgreen {
+  background-color: #85ca5d !important;
   color: black;
 }
-.cFFED62 {
-  background-color: #FFED62 !important;
+.bwmdyellow {
+  background-color: #ffed62 !important;
   color: black;
 }
-.cFCA985 {
-  background-color: #FCA985 !important;
+.bwmdsalmon {
+  background-color: #fca985 !important;
   color: black;
 }
