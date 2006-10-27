@@ -964,6 +964,9 @@
       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass}">
         <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
         <xsl:choose>
+          <xsl:when test="start/shortdate != ../shortdate">
+            (cont)
+          </xsl:when>
           <xsl:when test="start/allday = 'false'">
             <xsl:value-of select="start/time"/>:
           </xsl:when>
@@ -984,14 +987,23 @@
           <strong><xsl:value-of select="summary"/></strong><br/>
           Time:
           <xsl:choose>
-            <xsl:when test="start/allday = 'false'">
-              <xsl:value-of select="start/time"/>
-              <xsl:if test="start/time != end/time">
-                - <xsl:value-of select="end/time"/>
-              </xsl:if>
+            <xsl:when test="start/allday = 'true'">
+              all day
             </xsl:when>
             <xsl:otherwise>
-              all day
+              <xsl:if test="start/shortdate != ../shortdate">
+                <xsl:value-of select="start/month"/>/<xsl:value-of select="start/day"/>
+                <xsl:text> </xsl:text>
+              </xsl:if>
+              <xsl:value-of select="start/time"/>
+              <xsl:if test="(start/time != end/time) or (start/shortdate != end/shortdate)">
+                -
+                <xsl:if test="end/shortdate != ../shortdate">
+                  <xsl:value-of select="end/month"/>/<xsl:value-of select="end/day"/>
+                  <xsl:text> </xsl:text>
+                </xsl:if>
+                <xsl:value-of select="end/time"/>
+              </xsl:if>
             </xsl:otherwise>
           </xsl:choose><br/>
           <xsl:if test="location/address">
