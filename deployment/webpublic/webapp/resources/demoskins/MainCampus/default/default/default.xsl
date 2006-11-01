@@ -82,7 +82,8 @@
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/eventView"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
   <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
-  <xsl:variable name="search" select="/bedework/urlPrefixes/search"/>
+  <xsl:variable name="search" select="/bedework/urlPrefixes/search/search"/>
+  <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
   <xsl:variable name="stats" select="/bedework/urlPrefixes/stats"/>
@@ -1153,9 +1154,29 @@
         <th colspan="5">
           <div id="searchPageForm">
             page:
-            <xsl:if test="/bedework/searhResults/curPage != 1">previous</xsl:if>
+            <xsl:choose>
+              <xsl:when test="/bedework/searchResults/curPage != 1">
+                <xsl:variable name="prevPage" select="/bedework/searchResults/curPage - 1"/>
+                <a href="{$search-next}&amp;pageNum={$prevPage}">&lt;prev</a>
+              </xsl:when>
+              <xsl:otherwise>
+                &lt;prev
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:text> </xsl:text>
+
             <xsl:call-template name="searchResultPageNav"/>
-            <xsl:if test="/bedework/searhResults/curPage != /bedework/searhResults/numPages">next</xsl:if>
+
+            <xsl:text> </xsl:text>
+            <xsl:choose>
+              <xsl:when test="/bedework/searchResults/curPage != /bedework/searchResults/numPages">
+                <xsl:variable name="nextPage" select="/bedework/searchResults/curPage + 1"/>
+                <a href="{$search-next}&amp;pageNum={$nextPage}">next&gt;</a>
+              </xsl:when>
+              <xsl:otherwise>
+                next&gt;
+              </xsl:otherwise>
+            </xsl:choose>
           </div>
           <xsl:value-of select="/bedework/searchResults/resultSize"/>
           result<xsl:if test="/bedework/searchResults/resultSize != 1">s</xsl:if> returned
@@ -1229,22 +1250,23 @@
 
   <xsl:template name="searchResultPageNav">
     <xsl:param name="page">1</xsl:param>
+    <xsl:variable name="curPage" select="/bedework/searchResults/curPage"/>
     <xsl:choose>
-      <xsl:when test="$page = /bedework/searchResults/curPage">
+      <xsl:when test="$page = $curPage">
         <xsl:value-of select="$page"/>
       </xsl:when>
       <xsl:otherwise>
-        <a href="{$search}&amp;pageNum={$page}">
+        <a href="{$search-next}&amp;pageNum={$page}">
           <xsl:value-of select="$page"/>
         </a>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text> </xsl:text>
-    <!--<xsl:if test="$curPage != /bedework/searchResults/numPages">
-      <xsl:call-template name="searchResultPageNav">
-        <xsl:with-param name="page" select="number($curPage)+1"/>
+    <xsl:if test="$page &lt; /bedework/searchResults/numPages">
+       <xsl:call-template name="searchResultPageNav">
+         <xsl:with-param name="page" select="number($page)+1"/>
       </xsl:call-template>
-    </xsl:if>-->
+    </xsl:if>
   </xsl:template>
 
   <!--+++++++++++++++ System Stats ++++++++++++++++++++-->
