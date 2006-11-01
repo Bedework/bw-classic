@@ -1543,7 +1543,7 @@
           </td>
           <td class="fieldval">
             <xsl:variable name="title" select="/bedework/formElements/form/title/input/@value"/>
-            <input type="text" name="newEvent.summary" size="80" value="{$title}"/>
+            <input type="text" name="summary" size="80" value="{$title}"/>
           </td>
         </tr>
         <tr>
@@ -1800,7 +1800,7 @@
         <tr>
           <td class="fieldname">Description:</td>
           <td class="fieldval">
-            <textarea name="newEvent.description" cols="60" rows="4">
+            <textarea name="description" cols="60" rows="4">
               <xsl:value-of select="/bedework/formElements/form/desc/textarea"/>
             </textarea>
           </td>
@@ -2018,7 +2018,7 @@
           </td>
           <td class="fieldval">
             <xsl:variable name="title" select="form/title/input/@value"/>
-            <input type="text" name="editEvent.summary" size="80" value="{$title}"/>
+            <input type="text" name="summary" size="80" value="{$title}"/>
           </td>
         </tr>
         <tr>
@@ -2276,7 +2276,7 @@
         <tr>
           <td class="fieldname">Description:</td>
           <td class="fieldval">
-            <textarea name="editEvent.description" cols="60" rows="4">
+            <textarea name="description" cols="60" rows="4">
               <xsl:value-of select="/bedework/formElements/form/desc/textarea"/>
             </textarea>
           </td>
