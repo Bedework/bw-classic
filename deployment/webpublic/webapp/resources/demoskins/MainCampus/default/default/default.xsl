@@ -1152,32 +1152,29 @@
     <table id="searchTable" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="5">
-          <div id="searchPageForm">
-            page:
-            <xsl:choose>
-              <xsl:when test="/bedework/searchResults/curPage != 1">
+          <xsl:if test="/bedework/searchResults/numPages &gt; 1">
+            <div id="searchPageForm">
+              page:
+              <xsl:if test="/bedework/searchResults/curPage != 1">
                 <xsl:variable name="prevPage" select="/bedework/searchResults/curPage - 1"/>
-                <a href="{$search-next}&amp;pageNum={$prevPage}">&lt;prev</a>
-              </xsl:when>
-              <xsl:otherwise>
-                &lt;prev
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:text> </xsl:text>
+                &lt;<a href="{$search-next}&amp;pageNum={$prevPage}">prev</a>
+              </xsl:if>
+              <xsl:text> </xsl:text>
 
-            <xsl:call-template name="searchResultPageNav"/>
+              <xsl:call-template name="searchResultPageNav"/>
 
-            <xsl:text> </xsl:text>
-            <xsl:choose>
-              <xsl:when test="/bedework/searchResults/curPage != /bedework/searchResults/numPages">
-                <xsl:variable name="nextPage" select="/bedework/searchResults/curPage + 1"/>
-                <a href="{$search-next}&amp;pageNum={$nextPage}">next&gt;</a>
-              </xsl:when>
-              <xsl:otherwise>
-                next&gt;
-              </xsl:otherwise>
-            </xsl:choose>
-          </div>
+              <xsl:text> </xsl:text>
+              <xsl:choose>
+                <xsl:when test="/bedework/searchResults/curPage != /bedework/searchResults/numPages">
+                  <xsl:variable name="nextPage" select="/bedework/searchResults/curPage + 1"/>
+                  <a href="{$search-next}&amp;pageNum={$nextPage}">next</a>&gt;
+                </xsl:when>
+                <xsl:otherwise>
+                  <span class="hidden">next&gt;</span><!-- occupy the space to keep the navigation from moving around -->
+                </xsl:otherwise>
+              </xsl:choose>
+            </div>
+          </xsl:if>
           <xsl:value-of select="/bedework/searchResults/resultSize"/>
           result<xsl:if test="/bedework/searchResults/resultSize != 1">s</xsl:if> returned
           for <em><xsl:value-of select="/bedework/searchResults/query"/></em>

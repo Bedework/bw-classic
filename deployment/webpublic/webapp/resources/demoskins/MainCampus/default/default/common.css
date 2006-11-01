@@ -89,10 +89,6 @@ h2.bwStatusTentative {
   text-align: right;
   padding-right: 2em;
 }
-/*#eventCategories {
-  margin: 0;
-  padding: 0;
+.hidden {
+  visibility: hidden;
 }
-#eventCategories li {
-  margin-left: 0.5em;
-}*/
