@@ -140,7 +140,7 @@
             <xsl:apply-templates select="/bedework/calendars"/>
           </xsl:when>
           <xsl:when test="/bedework/page='searchResult'">
-            <!-- show a list of all calendars -->
+            <!-- display search results -->
             <xsl:call-template name="searchResult"/>
           </xsl:when>
           <xsl:otherwise>

@@ -81,7 +81,8 @@
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/delEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
   <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
-  <xsl:variable name="search" select="/bedework/urlPrefixes/search"/>
+  <xsl:variable name="search" select="/bedework/urlPrefixes/search/search"/>
+  <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
   <xsl:variable name="manageLocations" select="/bedework/urlPrefixes/manageLocations"/>
@@ -179,6 +180,7 @@
                 <td id="bodyContent">
                   <xsl:call-template name="tabs"/>
                   <xsl:call-template name="navigation"/>
+                  <xsl:call-template name="utilBar"/>
                   <xsl:choose>
                     <xsl:when test="/bedework/page='event'">
                       <!-- show an event -->
@@ -250,7 +252,6 @@
                     </xsl:when>
                     <xsl:otherwise>
                       <!-- otherwise, show the eventsCalendar -->
-                      <xsl:call-template name="utilBar"/>
                       <!-- main eventCalendar content -->
                       <xsl:choose>
                         <xsl:when test="/bedework/periodname='Day'">
@@ -669,6 +670,15 @@
            </a>
          </td>
          <td class="rightCell">
+
+           <!-- search -->
+           <form name="searchForm" method="post" action="{$search}">
+             Search:
+             <input type="text" name="query" size="15">
+               <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
+             </input>
+             <input type="submit" name="submit" value="go"/>
+           </form>
 
            <!-- show free / busy -->
            <xsl:choose>
@@ -5169,8 +5179,130 @@
 
   <!--==== SEARCH RESULT ====-->
   <xsl:template name="searchResult">
-    <h2>Search Result</h2>
-    <p><xsl:value-of select="/bedework/resultSize"/> result<xsl:if test="/bedework/resultSize != 1">s</xsl:if> returned</p>
+    <h2 class="bwStatusConfirmed">
+      <div id="searchFilter">
+        Limit search to:
+        <input type="radio" name="searchLimit" value="future"/>today forward
+        <input type="radio" name="searchLimit" value="future"/>past dates
+        <input type="radio" name="searchLimit" value="all" checked="checked"/>all dates
+      </div>
+      Search Result
+    </h2>
+    <table id="searchTable" cellpadding="0" cellspacing="0">
+      <tr>
+        <th colspan="5">
+          <xsl:if test="/bedework/searchResults/numPages &gt; 1">
+            <div id="searchPageForm">
+              page:
+              <xsl:if test="/bedework/searchResults/curPage != 1">
+                <xsl:variable name="prevPage" select="/bedework/searchResults/curPage - 1"/>
+                &lt;<a href="{$search-next}&amp;pageNum={$prevPage}">prev</a>
+              </xsl:if>
+              <xsl:text> </xsl:text>
+
+              <xsl:call-template name="searchResultPageNav"/>
+
+              <xsl:text> </xsl:text>
+              <xsl:choose>
+                <xsl:when test="/bedework/searchResults/curPage != /bedework/searchResults/numPages">
+                  <xsl:variable name="nextPage" select="/bedework/searchResults/curPage + 1"/>
+                  <a href="{$search-next}&amp;pageNum={$nextPage}">next</a>&gt;
+                </xsl:when>
+                <xsl:otherwise>
+                  <span class="hidden">next&gt;</span><!-- occupy the space to keep the navigation from moving around -->
+                </xsl:otherwise>
+              </xsl:choose>
+            </div>
+          </xsl:if>
+          <xsl:value-of select="/bedework/searchResults/resultSize"/>
+          result<xsl:if test="/bedework/searchResults/resultSize != 1">s</xsl:if> returned
+          for <em><xsl:value-of select="/bedework/searchResults/query"/></em>
+        </th>
+      </tr>
+      <xsl:if test="/bedework/searchResults/searchResult">
+        <tr class="fieldNames">
+          <td>
+            relevance
+          </td>
+          <td>
+            summary
+          </td>
+          <td>
+            date &amp; time
+          </td>
+          <td>
+            calendar
+          </td>
+          <td>
+            location
+          </td>
+        </tr>
+      </xsl:if>
+      <xsl:for-each select="/bedework/searchResults/searchResult">
+        <xsl:variable name="subscriptionId" select="event/subscription/id"/>
+        <xsl:variable name="calPath" select="event/calendar/encodedPath"/>
+        <xsl:variable name="guid" select="event/guid"/>
+        <xsl:variable name="recurrenceId" select="event/recurrenceId"/>
+        <tr>
+          <td>
+            <xsl:value-of select="ceiling(number(score)*100)"/>%
+            <img src="{$resourcesRoot}/resources/spacer.gif" height="4" class="searchRelevance">
+              <xsl:attribute name="width"><xsl:value-of select="ceiling(number(score)*100)"/></xsl:attribute>
+            </img>
+          </td>
+          <td>
+            <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+              <xsl:value-of select="event/summary"/>
+            </a>
+          </td>
+          <td>
+            <xsl:value-of select="event/start/longdate"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="event/start/time"/>
+            <xsl:choose>
+              <xsl:when test="event/start/longdate != event/end/longdate">
+                - <xsl:value-of select="event/start/longdate"/>
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="event/end/time"/>
+              </xsl:when>
+              <xsl:when test="event/start/time != event/end/time">
+                - <xsl:value-of select="event/end/time"/>
+              </xsl:when>
+            </xsl:choose>
+          </td>
+          <td>
+            <xsl:variable name="calUrl" select="event/calendar/encodedPath"/>
+            <a href="{$setSelection}&amp;calUrl={$calUrl}">
+              <xsl:value-of select="event/calendar/name"/>
+            </a>
+          </td>
+          <td>
+            <xsl:value-of select="event/location/address"/>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+
+  <xsl:template name="searchResultPageNav">
+    <xsl:param name="page">1</xsl:param>
+    <xsl:variable name="curPage" select="/bedework/searchResults/curPage"/>
+    <xsl:choose>
+      <xsl:when test="$page = $curPage">
+        <xsl:value-of select="$page"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <a href="{$search-next}&amp;pageNum={$page}">
+          <xsl:value-of select="$page"/>
+        </a>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:text> </xsl:text>
+    <xsl:if test="$page &lt; /bedework/searchResults/numPages">
+       <xsl:call-template name="searchResultPageNav">
+         <xsl:with-param name="page" select="number($page)+1"/>
+      </xsl:call-template>
+    </xsl:if>
   </xsl:template>
 
   <!--==== SIDE CALENDAR MENU ====-->
