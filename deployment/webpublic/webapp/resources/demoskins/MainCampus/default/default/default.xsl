@@ -1153,20 +1153,28 @@
       <tr>
         <th colspan="5">
           <xsl:if test="/bedework/searchResults/numPages &gt; 1">
+            <xsl:variable name="curPage" select="/bedework/searchResults/curPage"/>
             <div id="searchPageForm">
               page:
               <xsl:if test="/bedework/searchResults/curPage != 1">
-                <xsl:variable name="prevPage" select="/bedework/searchResults/curPage - 1"/>
+                <xsl:variable name="prevPage" select="number($curPage) - 1"/>
                 &lt;<a href="{$search-next}&amp;pageNum={$prevPage}">prev</a>
               </xsl:if>
               <xsl:text> </xsl:text>
 
-              <xsl:call-template name="searchResultPageNav"/>
+              <xsl:call-template name="searchResultPageNav">
+                <xsl:with-param name="page">
+                  <xsl:choose>
+                    <xsl:when test="number($curPage) - 10 &lt; 1">1</xsl:when>
+                    <xsl:otherwise><xsl:value-of select="number($curPage) - 6"/></xsl:otherwise>
+                  </xsl:choose>
+                </xsl:with-param>
+              </xsl:call-template>
 
               <xsl:text> </xsl:text>
               <xsl:choose>
-                <xsl:when test="/bedework/searchResults/curPage != /bedework/searchResults/numPages">
-                  <xsl:variable name="nextPage" select="/bedework/searchResults/curPage + 1"/>
+                <xsl:when test="$curPage != /bedework/searchResults/numPages">
+                  <xsl:variable name="nextPage" select="number($curPage) + 1"/>
                   <a href="{$search-next}&amp;pageNum={$nextPage}">next</a>&gt;
                 </xsl:when>
                 <xsl:otherwise>
@@ -1248,6 +1256,13 @@
   <xsl:template name="searchResultPageNav">
     <xsl:param name="page">1</xsl:param>
     <xsl:variable name="curPage" select="/bedework/searchResults/curPage"/>
+    <xsl:variable name="numPages" select="/bedework/searchResults/numPages"/>
+    <xsl:variable name="endPage">
+      <xsl:choose>
+        <xsl:when test="number($curPage) + 6 &gt; number($numPages)"><xsl:value-of select="$numPages"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="number($curPage) + 6"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:choose>
       <xsl:when test="$page = $curPage">
         <xsl:value-of select="$page"/>
@@ -1259,7 +1274,7 @@
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text> </xsl:text>
-    <xsl:if test="$page &lt; /bedework/searchResults/numPages">
+    <xsl:if test="$page &lt; $endPage">
        <xsl:call-template name="searchResultPageNav">
          <xsl:with-param name="page" select="number($page)+1"/>
       </xsl:call-template>
