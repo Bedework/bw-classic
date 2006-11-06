@@ -1205,10 +1205,10 @@
         <xsl:variable name="guid" select="event/guid"/>
         <xsl:variable name="recurrenceId" select="event/recurrenceId"/>
         <tr>
-          <td>
+          <td class="relevance">
             <xsl:value-of select="ceiling(number(score)*100)"/>%
             <img src="{$resourcesRoot}/images/spacer.gif" height="4" class="searchRelevance">
-              <xsl:attribute name="width"><xsl:value-of select="ceiling(number(score)*100)"/></xsl:attribute>
+              <xsl:attribute name="width"><xsl:value-of select="ceiling((number(score)*100) div 1.5)"/></xsl:attribute>
             </img>
           </td>
           <td>

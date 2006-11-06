@@ -313,10 +313,14 @@ h2 {
 }
 #searchTable td {
   padding: 4px;
+  vertical-align: top;
 }
 #searchTable tr.fieldNames td {
   background: #eee;
   border-bottom: 1px solid #ccc;
+}
+#searchTable td.relevance {
+  white-space: nowrap;
 }
 #searchTable .searchRelevance {
   background-color: #090;
