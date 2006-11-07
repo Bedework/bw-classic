@@ -66,6 +66,8 @@
        dynamically in the xslt). -->
   <xsl:variable name="setup" select="/bedeworkadmin/urlPrefixes/setup/a/@href"/>
   <xsl:variable name="logout" select="/bedeworkadmin/urlPrefixes/logout/a/@href"/>
+  <xsl:variable name="search" select="/bedeworkadmin/urlPrefixes/search/search/a/@href"/>
+  <xsl:variable name="search-next" select="/bedeworkadmin/urlPrefixes/search/next/a/@href"/>
   <!-- events -->
   <xsl:variable name="event-showEvent" select="/bedeworkadmin/urlPrefixes/event/showEvent/a/@href"/>
   <xsl:variable name="event-showModForm" select="/bedeworkadmin/urlPrefixes/event/showModForm/a/@href"/>
@@ -315,6 +317,9 @@
                 <xsl:when test="/bedeworkadmin/page='deleteAdminGroupConfirm'">
                   <xsl:call-template name="deleteAdminGroupConfirm"/>
                 </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='searchResult'">
+                  <xsl:call-template name="searchResult"/>
+                </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='noGroup'">
                   <h2>No administrative group</h2>
                   <p>Your userid has not been assigned to an administrative group.
@@ -368,173 +373,193 @@
 
   <!--+++++++++++++++ Main Menu ++++++++++++++++++++-->
   <xsl:template name="mainMenu">
-    <h2 class="menuTitle">Main Menu</h2>
-    <table id="mainMenuTable">
-      <tr>
-        <th>Events</th>
-        <td>
-          <a id="addEventLink" href="{$event-initAddEvent}">
-            Add
-          </a>
-        </td>
-        <td>
-          <a href="{$event-initUpdateEvent}">
-            Edit / Delete
-          </a>
-        </td>
-        <!--
-        Disable direct selection by ID; we'll need to find another way
-        of quickly getting to events: search and grid views should be implemented. -->
-        <!--
-        <td>
-          Event ID:
-          <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
-        </td>-->
-      </tr>
-      <tr>
-        <th>Contacts</th>
-        <td>
-          <a id="addSponsorLink" href="{$sponsor-initAdd}">
-            Add
-          </a>
-        </td>
-        <td>
-          <a href="{$sponsor-initUpdate}">
-            Edit / Delete
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <th>Locations</th>
-        <td>
-          <a id="addLocationLink" href="{$location-initAdd}">
-            Add
-          </a>
-        </td>
-        <td>
-          <a href="{$location-initUpdate}">
-            Edit / Delete
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <th>Categories</th>
-        <td>
-          <a id="addCategoryLink" href="{$category-initAdd}">
-            Add
-          </a>
-        </td>
-        <td>
-          <a href="{$category-initUpdate}">
-            Edit / Delete
-          </a>
-        </td>
-      </tr>
-    </table>
+    <div id="adminLeftColumn">
+      <h2 class="menuTitle">Main Menu</h2>
+      <table id="mainMenuTable">
+        <tr>
+          <th>Events</th>
+          <td>
+            <a id="addEventLink" href="{$event-initAddEvent}">
+              Add
+            </a>
+          </td>
+          <td>
+            <a href="{$event-initUpdateEvent}">
+              Edit / Delete
+            </a>
+          </td>
+          <!--
+          Disable direct selection by ID; we'll need to find another way
+          of quickly getting to events: search and grid views should be implemented. -->
+          <!--
+          <td>
+            Event ID:
+            <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
+          </td>-->
+        </tr>
+        <tr>
+          <th>Contacts</th>
+          <td>
+            <a id="addSponsorLink" href="{$sponsor-initAdd}">
+              Add
+            </a>
+          </td>
+          <td>
+            <a href="{$sponsor-initUpdate}">
+              Edit / Delete
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <th>Locations</th>
+          <td>
+            <a id="addLocationLink" href="{$location-initAdd}">
+              Add
+            </a>
+          </td>
+          <td>
+            <a href="{$location-initUpdate}">
+              Edit / Delete
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <th>Categories</th>
+          <td>
+            <a id="addCategoryLink" href="{$category-initAdd}">
+              Add
+            </a>
+          </td>
+          <td>
+            <a href="{$category-initUpdate}">
+              Edit / Delete
+            </a>
+          </td>
+        </tr>
+      </table>
 
-    <xsl:if test="/bedeworkadmin/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedeworkadmin/userInfo/superUser='true'">
-      <h4 class="menuTitle">
-        Manage Calendar Suite:
-        <em><xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/>
-        </em>
-      </h4>
-      <ul class="adminMenu">
-        <li>
-          <a href="{$calendar-fetch}">
-            Manage calendars
-          </a>
-        </li>
-        <li>
-          <a href="{$subscriptions-fetch}">
-            Manage subscriptions
-          </a>
-        </li>
-        <li>
-          <a href="{$view-fetch}">
-            Manage views
-          </a>
-        </li>
-        <li>
-          <a href="{$calsuite-fetchPrefsForUpdate}">
-            Manage preferences
-          </a>
-        </li>
-        <li>
-          <a href="{$event-initUpload}">
-            Upload iCAL file
-          </a>
-        </li>
-      </ul>
-    </xsl:if>
+      <h4 class="menuTitle">Event search:</h4>
+      <form name="searchForm" method="post" action="{$search}" id="searchForm">
+        <input type="text" name="query" size="30">
+          <xsl:attribute name="value"><xsl:value-of select="/bedeworkadmin/searchResults/query"/></xsl:attribute>
+        </input>
+        <input type="submit" name="submit" value="go"/>
+        <div id="searchFields">
+          Limit to:
+          <input type="radio" name="searchLimit" value="future"/>future
+          <input type="radio" name="searchLimit" value="future"/>past
+          <input type="radio" name="searchLimit" value="all" checked="checked"/>all dates
+        </div>
+      </form>
 
-    <xsl:if test="/bedeworkadmin/userInfo/contentAdminUser='true'">
-      <h4 class="menuTitle">User management</h4>
-      <ul class="adminMenu">
-        <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
+    </div>
+
+    <div id="adminRightColumn">
+      <xsl:if test="/bedeworkadmin/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedeworkadmin/userInfo/superUser='true'">
+        <h4 class="menuTitle">
+          Manage calendar suite:
+          <em><xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/>
+          </em>
+        </h4>
+        <ul class="adminMenu">
           <li>
-            <a href="{$authuser-initUpdate}">
-              Manage public event administrators
+            <a href="{$calendar-fetch}">
+              Manage calendars
             </a>
           </li>
-        </xsl:if>
-        <xsl:if test="/bedeworkadmin/userInfo/adminGroupMaintOk='true'">
           <li>
-            <a href="{$admingroup-initUpdate}">
-              Manage admin groups
+            <a href="{$subscriptions-fetch}">
+              Manage subscriptions
             </a>
           </li>
-        </xsl:if>
-        <li>
-          <a href="{$admingroup-switch}">
-            Choose/change group...
-          </a>
-        </li>
-        <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
           <li>
-            <form action="{$prefs-fetchForUpdate}" method="post">
-              Edit user preferences (enter userid): <input type="text" name="user" size="15"/>
-              <input type="submit" name="getPrefs" value="go"/>
-            </form>
+            <a href="{$view-fetch}">
+              Manage views
+            </a>
           </li>
-        </xsl:if>
-      </ul>
-    </xsl:if>
+          <li>
+            <a href="{$calsuite-fetchPrefsForUpdate}">
+              Manage preferences
+            </a>
+          </li>
+          <li>
+            <a href="{$event-initUpload}">
+              Upload iCAL file
+            </a>
+          </li>
+        </ul>
+      </xsl:if>
 
-    <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
-      <h4 class="menuTitle">Super user features</h4>
-      <ul class="adminMenu">
-        <li>
-          <a href="{$calsuite-fetch}">
-            Manage calendar suites
-          </a>
-        </li>
-        <li>
-          <a href="{$system-fetch}">
-            Manage system preferences
-          </a>
-        </li>
-        <li>
-          <a href="{$timezones-initUpload}">
-            Upload and replace system timezones
-          </a>
-        </li>
-        <li>
-          System statistics:
-          <ul>
+      <xsl:if test="/bedeworkadmin/userInfo/contentAdminUser='true'">
+        <h4 class="menuTitle">Manage users:</h4>
+        <ul class="adminMenu">
+          <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
             <li>
-              <a href="{$stats-update}&amp;fetch=yes">
-                admin web client
+              <a href="{$authuser-initUpdate}">
+                Manage public event administrators
               </a>
             </li>
+          </xsl:if>
+          <xsl:if test="/bedeworkadmin/userInfo/adminGroupMaintOk='true'">
             <li>
-              <a href="{$publicCal}/stats.do" target="pubClient">
-                public web client
+              <a href="{$admingroup-initUpdate}">
+                Manage admin groups
               </a>
             </li>
-          </ul>
-        </li>
-      </ul>
-    </xsl:if>
+          </xsl:if>
+          <li>
+            <a href="{$admingroup-switch}">
+              Choose/change group...
+            </a>
+          </li>
+          <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
+            <li>
+              <form action="{$prefs-fetchForUpdate}" method="post">
+                Edit user preferences (enter userid):<br/>
+                <input type="text" name="user" size="15"/>
+                <input type="submit" name="getPrefs" value="go"/>
+              </form>
+            </li>
+          </xsl:if>
+        </ul>
+      </xsl:if>
+
+      <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
+        <h4 class="menuTitle">Super user features:</h4>
+        <ul class="adminMenu">
+          <li>
+            <a href="{$calsuite-fetch}">
+              Manage calendar suites
+            </a>
+          </li>
+          <li>
+            <a href="{$system-fetch}">
+              Manage system preferences
+            </a>
+          </li>
+          <li>
+            <a href="{$timezones-initUpload}">
+              Upload and replace system timezones
+            </a>
+          </li>
+          <li>
+            System statistics:
+            <ul>
+              <li>
+                <a href="{$stats-update}&amp;fetch=yes">
+                  admin web client
+                </a>
+              </li>
+              <li>
+                <a href="{$publicCal}/stats.do" target="pubClient">
+                  public web client
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </xsl:if>
+    </div>
   </xsl:template>
 
   <!--++++++++++++++++++ Events ++++++++++++++++++++-->
@@ -3822,6 +3847,146 @@
     </table>
   </xsl:template>
 
+  <!--==== SEARCH RESULT ====-->
+  <xsl:template name="searchResult">
+    <h2 class="bwStatusConfirmed">
+      <div id="searchFilter">
+        Limit search to:
+        <input type="radio" name="searchLimit" value="future"/>today forward
+        <input type="radio" name="searchLimit" value="future"/>past dates
+        <input type="radio" name="searchLimit" value="all" checked="checked"/>all dates
+      </div>
+      Search Result
+    </h2>
+    <table id="searchTable" cellpadding="0" cellspacing="0">
+      <tr>
+        <th colspan="5">
+          <xsl:if test="/bedeworkadmin/searchResults/numPages &gt; 1">
+            <xsl:variable name="curPage" select="/bedeworkadmin/searchResults/curPage"/>
+            <div id="searchPageForm">
+              page:
+              <xsl:if test="/bedeworkadmin/searchResults/curPage != 1">
+                <xsl:variable name="prevPage" select="number($curPage) - 1"/>
+                &lt;<a href="{$search-next}&amp;pageNum={$prevPage}">prev</a>
+              </xsl:if>
+              <xsl:text> </xsl:text>
+
+              <xsl:call-template name="searchResultPageNav">
+                <xsl:with-param name="page">
+                  <xsl:choose>
+                    <xsl:when test="number($curPage) - 10 &lt; 1">1</xsl:when>
+                    <xsl:otherwise><xsl:value-of select="number($curPage) - 6"/></xsl:otherwise>
+                  </xsl:choose>
+                </xsl:with-param>
+              </xsl:call-template>
+
+              <xsl:text> </xsl:text>
+              <xsl:choose>
+                <xsl:when test="$curPage != /bedeworkadmin/searchResults/numPages">
+                  <xsl:variable name="nextPage" select="number($curPage) + 1"/>
+                  <a href="{$search-next}&amp;pageNum={$nextPage}">next</a>&gt;
+                </xsl:when>
+                <xsl:otherwise>
+                  <span class="hidden">next&gt;</span><!-- occupy the space to keep the navigation from moving around -->
+                </xsl:otherwise>
+              </xsl:choose>
+            </div>
+          </xsl:if>
+          <xsl:value-of select="/bedeworkadmin/searchResults/resultSize"/>
+          result<xsl:if test="/bedeworkadmin/searchResults/resultSize != 1">s</xsl:if> returned
+          for <em><xsl:value-of select="/bedeworkadmin/searchResults/query"/></em>
+        </th>
+      </tr>
+      <xsl:if test="/bedeworkadmin/searchResults/searchResult">
+        <tr class="fieldNames">
+          <td>
+            relevance
+          </td>
+          <td>
+            summary
+          </td>
+          <td>
+            date &amp; time
+          </td>
+          <td>
+            calendar
+          </td>
+          <td>
+            location
+          </td>
+        </tr>
+      </xsl:if>
+      <xsl:for-each select="/bedeworkadmin/searchResults/searchResult">
+        <xsl:variable name="subscriptionId" select="event/subscription/id"/>
+        <xsl:variable name="calPath" select="event/calendar/encodedPath"/>
+        <xsl:variable name="guid" select="event/guid"/>
+        <xsl:variable name="recurrenceId" select="event/recurrenceId"/>
+        <tr>
+          <td class="relevance">
+            <xsl:value-of select="ceiling(number(score)*100)"/>%
+            <img src="{$resourcesRoot}/images/spacer.gif" height="4" class="searchRelevance">
+              <xsl:attribute name="width"><xsl:value-of select="ceiling((number(score)*100) div 1.5)"/></xsl:attribute>
+            </img>
+          </td>
+          <td>
+            <a href="{$event-showEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+              <xsl:value-of select="event/summary"/>
+            </a>
+          </td>
+          <td>
+            <xsl:value-of select="event/start/longdate"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="event/start/time"/>
+            <xsl:choose>
+              <xsl:when test="event/start/longdate != event/end/longdate">
+                - <xsl:value-of select="event/start/longdate"/>
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="event/end/time"/>
+              </xsl:when>
+              <xsl:when test="event/start/time != event/end/time">
+                - <xsl:value-of select="event/end/time"/>
+              </xsl:when>
+            </xsl:choose>
+          </td>
+          <td>
+            <xsl:value-of select="event/calendar/name"/>
+          </td>
+          <td>
+            <xsl:value-of select="event/location/address"/>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+
+  <xsl:template name="searchResultPageNav">
+    <xsl:param name="page">1</xsl:param>
+    <xsl:variable name="curPage" select="/bedeworkadmin/searchResults/curPage"/>
+    <xsl:variable name="numPages" select="/bedeworkadmin/searchResults/numPages"/>
+    <xsl:variable name="endPage">
+      <xsl:choose>
+        <xsl:when test="number($curPage) + 6 &gt; number($numPages)"><xsl:value-of select="$numPages"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="number($curPage) + 6"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="$page = $curPage">
+        <xsl:value-of select="$page"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <a href="{$search-next}&amp;pageNum={$page}">
+          <xsl:value-of select="$page"/>
+        </a>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:text> </xsl:text>
+    <xsl:if test="$page &lt; $endPage">
+       <xsl:call-template name="searchResultPageNav">
+         <xsl:with-param name="page" select="number($page)+1"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
   <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
 
   <xsl:template name="header">
@@ -3910,9 +4075,6 @@
           <a href="{$setup}">Main Menu</a> |
           <a href="{$publicCal}" target="calendar">Launch Calendar</a> |
           <a href="{$logout}">Log Out</a>
-          <!-- Enable the following two items when debugging skins only -->
-          | <a href="?refreshXslt=yes">Refresh XSL</a> |
-          <a href="?noxslt=yes">Show XML</a> (view source)
         </td>
         <xsl:if test="/bedeworkadmin/userInfo/user">
           <td class="rightCell">
@@ -3946,7 +4108,10 @@
   <!--==== FOOTER ====-->
   <xsl:template name="footer">
     <div id="footer">
-      <a href="http://www.bedework.org/">Bedework website</a>
+      <a href="http://www.bedework.org/">Bedework Calendar</a> |
+      <!-- Enable the following two items when debugging skins only -->
+      <a href="?noxslt=yes">show XML</a> |
+      <a href="?refreshXslt=yes">refresh XSLT</a>
     </div>
   </xsl:template>
 </xsl:stylesheet>

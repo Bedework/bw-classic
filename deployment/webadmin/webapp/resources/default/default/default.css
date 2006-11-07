@@ -4,6 +4,7 @@ body {
   margin: 0em;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 100%;
+  min-width: 680px;
 }
 #header {
   color: #eee;
@@ -36,6 +37,13 @@ body {
 #errors em {
   background-color: inherit;
   color: #ff9;
+}
+#adminLeftColumn {
+  float: left;
+}
+#adminRightColumn {
+  float: right;
+  margin: 1em;
 }
 #statusBarTable {
   margin: 0em;
@@ -143,6 +151,13 @@ th {
 }
 #mainMenuTable form {
   display: inline;
+}
+#searchForm {
+  font-size: 0.8em;
+  margin: 0 0 0 3px;
+}
+#searchForm input {
+  font-size: 0.7em;
 }
 .adminMenu {
   margin-top: 0em;
@@ -543,9 +558,15 @@ p.note {
   padding-top: 1em;
 }
 #footer {
+  clear: both;
   padding: 1em;
   margin-top: 2em;
-  text-align: center;
-  border-top: medium groove #eee;
-  font-size: 0.8em;
+  border-top: 1px solid #999;
+  font-size: 0.7em;
+  background-color: transparent;
+  color: #999;
+}
+#footer a {
+  color: #999;
+  background-color: inherit;
 }
