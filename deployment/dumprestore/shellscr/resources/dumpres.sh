@@ -33,8 +33,8 @@ case "$1" in
     $DUMPCMD -appname $APPNAME -f $TARGET
     ;;
   initdb)
-    echo $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars
-    $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars
+    echo $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars $2 $3 $4 $5 $6 $7 $8 $9
+    $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars $2 $3 $4 $5 $6 $7 $8 $9
     ;;
   schema)
     echo $SCHEMACMD --text --create --config=./classes/hibernate.cfg.xml --output=schema.sql

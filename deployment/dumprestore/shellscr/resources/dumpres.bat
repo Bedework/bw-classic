@@ -104,8 +104,8 @@ ECHO.
 :initdb
   ECHO   Initializing the database:
   ECHO.
-  ECHO   %RESTORECMD% -appname %APPNAME% -f ./data/initbedework.xml -initSyspars
-  %RESTORECMD% -appname %APPNAME% -f ./data/initbedework.xml -initSyspars
+  ECHO   %RESTORECMD% -appname %APPNAME% -f ./data/initbedework.xml -initSyspars %2 %3 %4 %5 %6 %7 %8 %9
+  %RESTORECMD% -appname %APPNAME% -f ./data/initbedework.xml -initSyspars %2 %3 %4 %5 %6 %7 %8 %9
   GOTO end
   ::
 :schema
