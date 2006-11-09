@@ -1845,6 +1845,37 @@
             <input type="text" name="newEvent.link" size="80" value="{$link}"/>
           </td>
         </tr>
+
+        <!--  Category  -->
+        <tr>
+          <td class="fieldName">
+            Categories:
+          </td>
+          <td>
+            <table cellpadding="0" id="allCategoryCheckboxes">
+              <tr>
+                <xsl:variable name="catCount" select="count(/bedework/formElements/form/categories/all/category)"/>
+                <td>
+                  <xsl:for-each select="/bedework/formElements/form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
+                    <input type="checkbox" name="categoryKey">
+                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:value-of select="keyword"/>
+                    </input><br/>
+                  </xsl:for-each>
+                </td>
+                <td>
+                  <xsl:for-each select="/bedework/formElements/form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
+                    <input type="checkbox" name="categoryKey">
+                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:value-of select="keyword"/>
+                    </input><br/>
+                  </xsl:for-each>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
         <tr>
           <td class="fieldname">&#160;</td>
           <td class="fieldval">
@@ -2317,6 +2348,37 @@
           <td class="fieldval">
             <input name="submit" type="submit" value="Submit Event"/>&#160;
             <input name="cancelled" type="submit" value="Cancel"/>
+          </td>
+        </tr>
+        <!--  Category  -->
+        <tr>
+          <td class="fieldName">
+            Categories:
+          </td>
+          <td>
+            <table cellpadding="0" id="allCategoryCheckboxes">
+              <tr>
+                <xsl:variable name="catCount" select="count(/bedework/formElements/form/categories/all/category)"/>
+                <td>
+                  <xsl:for-each select="/bedework/formElements/form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
+                    <input type="checkbox" name="categoryKey">
+                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:if test="keyword = /bedework/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                      <xsl:value-of select="keyword"/>
+                    </input><br/>
+                  </xsl:for-each>
+                </td>
+                <td>
+                  <xsl:for-each select="/bedework/formElements/form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
+                    <input type="checkbox" name="categoryKey">
+                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:if test="keyword = /bedework/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                      <xsl:value-of select="keyword"/>
+                    </input><br/>
+                  </xsl:for-each>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
       </table>
