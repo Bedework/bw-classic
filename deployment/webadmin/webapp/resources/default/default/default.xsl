@@ -1754,7 +1754,7 @@
                 Keyword:
               </td>
               <td>
-                <input type="text" name="category.word" value="" size="40"/>
+                <input type="text" name="categoryWord.value" value="" size="40"/>
               </td>
             </tr>
             <tr>
@@ -1762,7 +1762,7 @@
                 Description:
               </td>
               <td>
-                <textarea name="category.description" rows="3" cols="60">
+                <textarea name="categoryDesc.value" rows="3" cols="60">
                 </textarea>
               </td>
             </tr>
@@ -1788,7 +1788,7 @@
             </td>
               <td>
                 <xsl:variable name="keyword" select="normalize-space(/bedeworkadmin/currentCategory/category/keyword)"/>
-                <input type="text" name="category.word" value="{$keyword}" size="40"/>
+                <input type="text" name="categoryWord.value" value="{$keyword}" size="40"/>
               </td>
             </tr>
             <tr>
@@ -1796,7 +1796,7 @@
             Description:
             </td>
               <td>
-                <textarea name="category.description" rows="3" cols="60">
+                <textarea name="categoryDesc.value" rows="3" cols="60">
                   <xsl:value-of select="normalize-space(/bedeworkadmin/currentCategory/category/desc)"/>
                 </textarea>
               </td>
