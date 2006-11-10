@@ -2091,7 +2091,9 @@
       <h3>Sharing</h3>
       <table class="common">
         <tr>
-          <th class="commonHeader" colspan="2">Current access:</th>
+          <th class="commonHeader">Who:</th>
+          <th class="commonHeader">Current access:</th>
+          <th class="commonHeader">Inherited from:</th>
         </tr>
         <xsl:for-each select="acl/ace">
           <tr>
@@ -2131,6 +2133,12 @@
               <xsl:for-each select="grant/node()">
                 <xsl:value-of select="name(.)"/>&#160;&#160;
               </xsl:for-each>
+              <xsl:for-each select="deny/node()">
+                deny-<xsl:value-of select="name(.)"/>&#160;&#160;
+              </xsl:for-each>
+            </td>
+            <td>
+              <xsl:value-of select="inherited/href"/>
             </td>
           </tr>
         </xsl:for-each>
@@ -2151,7 +2159,8 @@
               <p>OR</p>
               <p>
                 <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
-                <input type="radio" value="other" name="whoType"/> other users
+                <input type="radio" value="other" name="whoType"/> other users<br/>
+                <input type="radio" value="owner" name="whoType"/> owner
               </p>
             </td>
             <td>

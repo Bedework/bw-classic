@@ -42,8 +42,8 @@ body {
   float: left;
 }
 #adminRightColumn {
-  float: right;
-  margin: 1em;
+  float: left;
+  margin: 1em 0 1em 3em;
 }
 #statusBarTable {
   margin: 0em;
