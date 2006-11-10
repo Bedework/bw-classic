@@ -2716,13 +2716,13 @@
 
   <!--+++++++++++++++ Categories ++++++++++++++++++++-->
   <xsl:template name="categoryList">
-    <h2>Edit Categories</h2>
+    <h2>Manage Categories</h2>
     <p>
       Select the category you would like to update:
       <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')"/>
     </p>
 
-    <table id="commonListTable">
+    <table id="common">
       <tr>
         <th>Keyword</th>
         <th>Description</th>
