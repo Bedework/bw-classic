@@ -2722,10 +2722,10 @@
       <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')"/>
     </p>
 
-    <table id="common">
+    <table class="common" cellspacing="0">
       <tr>
-        <th>Keyword</th>
-        <th>Description</th>
+        <th class="commonHeader">Keyword</th>
+        <th class="commonHeader">Description</th>
       </tr>
 
       <xsl:for-each select="/bedework/categories/category">
@@ -2749,9 +2749,9 @@
       <xsl:when test="/bedework/creating='true'">
         <h2>Add Category</h2>
         <form action="{$category-update}" method="post">
-          <table id="eventFormTable">
+          <table class="common" cellspacing="0">
             <tr>
-              <td class="fieldName">
+              <td class="fieldname">
                 Keyword:
               </td>
               <td>
@@ -2782,9 +2782,9 @@
       <xsl:otherwise>
         <h2>Update Category</h2>
         <form action="{$category-update}" method="post">
-          <table id="eventFormTable">
+          <table class="common" cellspacing="0">
             <tr>
-              <td class="fieldName">
+              <td class="fieldname">
             Keyword:
             </td>
               <td>
@@ -2829,9 +2829,9 @@
       <xsl:copy-of select="/bedework/formElements/*"/>
     </p>
 
-    <table class="eventFormTable">
+    <table class="common" cellspacing="0">
       <tr>
-        <td class="fieldName">
+        <td class="fieldname">
           Keyword:
         </td>
         <td>
