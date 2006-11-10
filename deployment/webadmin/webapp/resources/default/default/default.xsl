@@ -1713,7 +1713,7 @@
     </table>
   </xsl:template>
 
-   <!--+++++++++++++++ Categories ++++++++++++++++++++-->
+  <!--+++++++++++++++ Categories ++++++++++++++++++++-->
   <xsl:template name="categoryList">
     <h2>Edit Categories</h2>
     <p>

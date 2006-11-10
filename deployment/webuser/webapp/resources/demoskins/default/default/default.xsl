@@ -94,6 +94,16 @@
   <xsl:variable name="upload" select="/bedework/urlPrefixes/upload"/>
   <xsl:variable name="freeBusy-fetch" select="/bedework/urlPrefixes/freeBusy/fetch/a/@href"/>
   <xsl:variable name="freeBusy-setAccess" select="/bedework/urlPrefixes/freeBusy/setAccess/a/@href"/>
+  <!-- categories -->
+  <xsl:variable name="category-showReferenced" select="/bedework/urlPrefixes/category/showReferenced/a/@href"/>
+  <xsl:variable name="category-showModForm" select="/bedework/urlPrefixes/category/showModForm/a/@href"/>
+  <xsl:variable name="category-showUpdateList" select="/bedework/urlPrefixes/category/showUpdateList/a/@href"/>
+  <xsl:variable name="category-showDeleteConfirm" select="/bedework/urlPrefixes/category/showDeleteConfirm/a/@href"/>
+  <xsl:variable name="category-initAdd" select="/bedework/urlPrefixes/category/initAdd/a/@href"/>
+  <xsl:variable name="category-initUpdate" select="/bedework/urlPrefixes/category/initUpdate/a/@href"/>
+  <xsl:variable name="category-delete" select="/bedework/urlPrefixes/category/delete/a/@href"/>
+  <xsl:variable name="category-fetchForUpdate" select="/bedework/urlPrefixes/category/fetchForUpdate/a/@href"/>
+  <xsl:variable name="category-update" select="/bedework/urlPrefixes/category/update/a/@href"/>
   <!-- calendars -->
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
   <xsl:variable name="calendar-fetch" select="/bedework/urlPrefixes/calendar/fetch/a/@href"/><!-- used -->
@@ -206,6 +216,15 @@
                     </xsl:when>
                     <xsl:when test="/bedework/page='editLocation'">
                       <xsl:apply-templates select="/bedework/formElements" mode="editLocation"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='categoryList'">
+                      <xsl:call-template name="categoryList"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='modCategory'">
+                      <xsl:call-template name="modCategory"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='deleteCategoryConfirm'">
+                      <xsl:call-template name="deleteCategoryConfirm"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='subscriptions' or
                                     /bedework/page='modSubscription' or
@@ -453,6 +472,7 @@
 
     <h3>options</h3>
     <ul id="sideBarMenu">
+      <li><a href="{$category-initUpdate}">Manage Categories</a></li>
       <li><a href="{$manageLocations}">Manage Locations</a></li>
       <li><a href="{$prefs-fetchForUpdate}">Preferences</a></li>
       <li><a href="{$initUpload}" title="upload event">Upload iCAL</a></li>
@@ -1847,10 +1867,10 @@
 
         <!--  Category  -->
         <tr>
-          <td class="fieldName">
+          <td class="fieldname">
             Categories:
           </td>
-          <td>
+          <td class="fieldval" align="left">
             <table cellpadding="0" id="allCategoryCheckboxes">
               <tr>
                 <xsl:variable name="catCount" select="count(/bedework/formElements/form/categories/all/category)"/>
@@ -2692,6 +2712,141 @@
       <xsl:when test="node()=2400">12am</xsl:when>
       <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <!--+++++++++++++++ Categories ++++++++++++++++++++-->
+  <xsl:template name="categoryList">
+    <h2>Edit Categories</h2>
+    <p>
+      Select the category you would like to update:
+      <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')"/>
+    </p>
+
+    <table id="commonListTable">
+      <tr>
+        <th>Keyword</th>
+        <th>Description</th>
+      </tr>
+
+      <xsl:for-each select="/bedework/categories/category">
+        <xsl:variable name="categoryKey" select="normalize-space(keyword)"/>
+        <tr>
+          <td>
+            <a href="{$category-fetchForUpdate}&amp;categoryKey={$categoryKey}">
+              <xsl:value-of select="keyword"/>
+            </a>
+          </td>
+          <td>
+            <xsl:value-of select="desc"/>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+
+  <xsl:template name="modCategory">
+    <xsl:choose>
+      <xsl:when test="/bedework/creating='true'">
+        <h2>Add Category</h2>
+        <form action="{$category-update}" method="post">
+          <table id="eventFormTable">
+            <tr>
+              <td class="fieldName">
+                Keyword:
+              </td>
+              <td>
+                <input type="text" name="categoryWord.value" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="optional">
+                Description:
+              </td>
+              <td>
+                <textarea name="categoryDesc.value" rows="3" cols="60">
+                </textarea>
+              </td>
+            </tr>
+          </table>
+          <table border="0" id="submitTable">
+            <tr>
+              <td>
+                <input type="submit" name="addCategory" value="Add Category"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="reset" value="Clear"/>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </xsl:when>
+      <xsl:otherwise>
+        <h2>Update Category</h2>
+        <form action="{$category-update}" method="post">
+          <table id="eventFormTable">
+            <tr>
+              <td class="fieldName">
+            Keyword:
+            </td>
+              <td>
+                <xsl:variable name="keyword" select="normalize-space(/bedework/currentCategory/category/keyword)"/>
+                <input type="text" name="categoryWord.value" value="{$keyword}" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="optional">
+            Description:
+            </td>
+              <td>
+                <textarea name="categoryDesc.value" rows="3" cols="60">
+                  <xsl:value-of select="normalize-space(/bedework/currentCategory/category/desc)"/>
+                </textarea>
+              </td>
+            </tr>
+          </table>
+
+          <table border="0" id="submitTable">
+            <tr>
+              <td>
+                <input type="submit" name="updateCategory" value="Update Category"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="reset" value="Reset"/>
+              </td>
+              <td align="right">
+                <input type="submit" name="delete" value="Delete Category"/>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </xsl:otherwise>
+    </xsl:choose>
+
+
+  </xsl:template>
+
+  <xsl:template name="deleteCategoryConfirm">
+    <h2>Ok to delete this category?</h2>
+    <p id="confirmButtons">
+      <xsl:copy-of select="/bedework/formElements/*"/>
+    </p>
+
+    <table class="eventFormTable">
+      <tr>
+        <td class="fieldName">
+          Keyword:
+        </td>
+        <td>
+          <xsl:value-of select="/bedework/currentCategory/category/keyword"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="optional">
+          Description:
+        </td>
+        <td>
+          <xsl:value-of select="/bedework/currentCategory/category/desc"/>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
   <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
