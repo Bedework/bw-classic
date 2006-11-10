@@ -227,7 +227,7 @@ public class ForEachAppTask extends Sequential {
   /* Turn a comma separated list into a List
    */
   private List getList(String val) throws BuildException {
-    List l = new LinkedList();
+    List<String> l = new LinkedList<String>();
 
     if ((val == null) || (val.length() == 0)) {
       return l;

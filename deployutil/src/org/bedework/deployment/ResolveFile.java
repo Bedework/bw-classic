@@ -61,7 +61,7 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.util.FileUtils;
 
 /** Ant task to resolve a file name. This is just a wrapper to the ant FileUtils
- * which calls resolveFile. Surely thsi can be done another way?
+ * which calls resolveFile. Surely this can be done another way?
  *
  * <p>Task attributes are <ul>
  * <li>base             base to resolve against - must be an absolute path</li>

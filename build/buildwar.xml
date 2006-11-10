@@ -81,9 +81,6 @@
     <property name="app.war.file"
               location="${dist.home}/${propval.app.war.name}.war" />
 
-    <property name="app.sou.tomcat.context.xml"
-              location="${app.sou.dir}/war/META-INF/context.xml" />
-
     <!-- default web.xml -->
     <property name="propval.app.web.xml"
               value="war/WEB-INF/web.xml" />
