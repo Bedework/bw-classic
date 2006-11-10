@@ -71,7 +71,6 @@
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/eventView"/>
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/initEvent"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/addEvent"/>
-  <xsl:variable name="addEventUsingPage" select="/bedework/urlPrefixes/addEventUsingPage"/>
   <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete/a/@href"/>
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
@@ -1542,7 +1541,7 @@
   <xsl:template name="addEvent">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying includes.js -->
-    <form name="eventForm" method="post" action="{$addEventUsingPage}" id="standardForm">
+    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm">
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
       <h2>Add Event</h2>
