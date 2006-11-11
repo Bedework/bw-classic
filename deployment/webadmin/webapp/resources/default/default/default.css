@@ -404,6 +404,10 @@ table.eventFormTable .durationSpacerText {
   font-size: 0.8em;
   margin: 0 1em;
 }
+#sharingBox table td,
+#sharingBox table th {
+  white-space: nowrap;
+}
 #shareForm {
   margin: 1em 0;
   padding: 0;

@@ -8,6 +8,7 @@
       doctype-system="http://www.w3.org/TR/html4/strict.dtd"
       standalone="yes"
       omit-xml-declaration="yes"/>
+   <xsl:strip-space elements="*"/>
 
   <!-- ======================================== -->
   <!--      BEDEWORK ADMIN CLIENT STYLESHEET     -->
@@ -2094,38 +2095,35 @@
           <th class="commonHeader">Who:</th>
           <th class="commonHeader">Current access:</th>
           <th class="commonHeader">Inherited from:</th>
+          <!--<th class="commonHeader">Reset to default:</th>-->
         </tr>
         <xsl:for-each select="acl/ace">
+          <xsl:variable name="who">
+            <xsl:choose>
+              <xsl:when test="invert">
+                <xsl:choose>
+                  <xsl:when test="invert/principal/href"><xsl:value-of select="invert/principal/href"/></xsl:when>
+                  <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:choose>
+                  <xsl:when test="principal/href"><xsl:value-of select="principal/href"/></xsl:when>
+                  <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
+                </xsl:choose>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
           <tr>
             <th class="thin">
               <xsl:choose>
                 <xsl:when test="invert">
-                  <em>Deny to
-                  <xsl:choose>
-                    <xsl:when test="invert/principal/href">
-                      <xsl:value-of select="invert/principal/href"/>
-                      </xsl:when>
-                      <xsl:when test="invert/principal/property">
-                        <xsl:value-of select="name(invert/principal/property/*)"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="name(invert/principal/*)"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </em>
+                  <em>Deny to <xsl:value-of select="$who"/></em>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="principal/href">
-                      <xsl:value-of select="principal/href"/>
-                    </xsl:when>
-                    <xsl:when test="principal/property">
-                      <xsl:value-of select="name(principal/property/*)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="name(principal/*)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
+                  <xsl:value-of select="$who"/>
                 </xsl:otherwise>
               </xsl:choose>
             </th>
@@ -2134,12 +2132,18 @@
                 <xsl:value-of select="name(.)"/>&#160;&#160;
               </xsl:for-each>
               <xsl:for-each select="deny/node()">
-                deny-<xsl:value-of select="name(.)"/>&#160;&#160;
+                deny-<xsl:value-of select="name(.)"/>
+                &#160;&#160;
               </xsl:for-each>
             </td>
             <td>
               <xsl:value-of select="inherited/href"/>
             </td>
+            <!--<td class="center">
+              <a href="{$calendar-setAccess}&amp;calPath={$calPath}&amp;how=default&amp;who={$who}">
+                reset to default
+              </a>
+            </td>-->
           </tr>
         </xsl:for-each>
       </table>
@@ -2147,7 +2151,7 @@
         <input type="hidden" name="calPath" value="{$calPath}"/>
         <table cellpadding="0" id="shareFormTable" class="common">
           <tr>
-            <th colspan="2" class="commonHeader">Add:</th>
+            <th colspan="2" class="commonHeader">Set access:</th>
           </tr>
           <tr>
             <td>
@@ -2161,6 +2165,9 @@
                 <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
                 <input type="radio" value="other" name="whoType"/> other users<br/>
                 <input type="radio" value="owner" name="whoType"/> owner
+              </p>
+              <p class="padTop">
+                <input type="checkbox" value="yes" name="notWho"/> invert (deny to)
               </p>
             </td>
             <td>
@@ -2237,6 +2244,10 @@
                 <li class="padTop">
                   <input type="radio" value="N" name="how"/>
                   <strong>None</strong>
+                </li>
+                <li class="padTop">
+                  <input type="radio" value="default" name="how"/>
+                  <strong>Restore default access</strong>
                 </li>
               </ul>
             </td>
