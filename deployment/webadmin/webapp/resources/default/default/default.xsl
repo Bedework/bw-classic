@@ -2228,6 +2228,10 @@
                   <input type="radio" value="f" name="how"/> Read freebusy only
                 </li>
                 <li class="padTop">
+                  <input type="radio" value="Rc" name="how"/>
+                  <strong>Read</strong> and <strong>Write content only</strong>
+                </li>
+                <li class="padTop">
                   <input type="radio" value="W" name="how"/>
                   <strong>Write and delete</strong> (content, access, properties)
                 </li>
@@ -2236,10 +2240,6 @@
                 </li>
                 <li>
                   <input type="radio" value="u" name="how"/> Delete only
-                </li>
-                <li class="padTop">
-                  <input type="radio" value="Rc" name="how"/>
-                  <strong>Read</strong> and <strong>Write content only</strong>
                 </li>
                 <li class="padTop">
                   <input type="radio" value="N" name="how"/>
