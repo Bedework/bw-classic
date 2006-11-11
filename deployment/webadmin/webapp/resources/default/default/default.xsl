@@ -2167,7 +2167,7 @@
                 <input type="radio" value="owner" name="whoType"/> owner
               </p>
               <p class="padTop">
-                <input type="checkbox" value="yes" name="notWho"/> invert (deny to)
+                <input type="checkbox" value="yes" name="notWho"/> invert (deny)
               </p>
             </td>
             <td>
