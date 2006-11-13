@@ -934,7 +934,7 @@
               </select>
               or Location (all):
             </xsl:if>
-            <select name="locationId" id="eventFormLocationList">
+            <select name="allLocationId" id="eventFormLocationList">
               <option value="-1">
                 Select:
               </option>
@@ -993,7 +993,7 @@
               </select>
               or Contact (all):
             </xsl:if>
-            <select name="sponsorId" id="eventFormPrefSponsorList">
+            <select name="allSponsorId" id="eventFormPrefSponsorList">
               <option value="-1">
                 Select:
               </option>

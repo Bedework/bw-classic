@@ -77,6 +77,7 @@
   <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent/a/@href"/>
   <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent/a/@href"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/editEvent"/>
+  <xsl:variable name="updateEvent" select="/bedework/urlPrefixes/updateEvent"/>
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/delEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
   <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
@@ -85,8 +86,8 @@
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
   <xsl:variable name="manageLocations" select="/bedework/urlPrefixes/manageLocations"/>
-  <xsl:variable name="addLocation" select="/bedework/urlPrefixes/addLocation"/>
-  <xsl:variable name="editLocation" select="/bedework/urlPrefixes/editLocation"/>
+  <xsl:variable name="fetchLocationForUpdate" select="/bedework/urlPrefixes/fetchLocationForUpdate"/>
+  <xsl:variable name="updateLocation" select="/bedework/urlPrefixes/updateLocation"/>
   <xsl:variable name="delLocation" select="/bedework/urlPrefixes/delLocation"/>
   <xsl:variable name="initEventAlarm" select="/bedework/urlPrefixes/initEventAlarm"/>
   <xsl:variable name="setAlarm" select="/bedework/urlPrefixes/setAlarm"/>
@@ -1848,13 +1849,13 @@
           <td class="fieldval" align="left">
             <span class="std-text">choose: </span>
             <span id="eventFormLocationList">
-              <select name="locationId">
+              <select name="locationUid">
                 <option value="-1">select...</option>
                 <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/select/*"/>
               </select>
             </span>
             <span class="std-text"> or add new: </span>
-            <input type="text" name="newLocation.address" value="" />
+            <input type="text" name="locationAddress.value" value="" />
           </td>
         </tr>
         <tr>
@@ -2048,8 +2049,7 @@
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying includes.js -->
-    <form name="eventForm" method="post" action="{$editEvent}" id="standardForm">
-      <input type="hidden" name="updateEvent" value="true"/>
+    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm">
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
       <h2>Edit Event</h2>
@@ -2303,13 +2303,13 @@
           <td class="fieldval">
             <xsl:choose>
               <xsl:when test="form/status = 'TENTATIVE'">
-                <input type="radio" name="editEvent.status" value="CONFIRMED"/>confirmed <input type="radio" name="editEvent.status" value="TENTATIVE" checked="checked"/>tentative <input type="radio" name="editEvent.status" value="CANCELLED"/>cancelled
+                <input type="radio" name="event.status" value="CONFIRMED"/>confirmed <input type="radio" name="edvent.status" value="TENTATIVE" checked="checked"/>tentative <input type="radio" name="event.status" value="CANCELLED"/>cancelled
               </xsl:when>
               <xsl:when test="form/status = 'CANCELLED'">
-                <input type="radio" name="editEvent.status" value="CONFIRMED"/>confirmed <input type="radio" name="editEvent.status" value="TENTATIVE"/>tentative <input type="radio" name="editEvent.status" value="CANCELLED" checked="checked"/>cancelled
+                <input type="radio" name="event.status" value="CONFIRMED"/>confirmed <input type="radio" name="event.status" value="TENTATIVE"/>tentative <input type="radio" name="event.status" value="CANCELLED" checked="checked"/>cancelled
               </xsl:when>
               <xsl:otherwise>
-                <input type="radio" name="editEvent.status" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="editEvent.status" value="TENTATIVE"/>tentative <input type="radio" name="editEvent.status" value="CANCELLED"/>cancelled
+                <input type="radio" name="event.status" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="event.status" value="TENTATIVE"/>tentative <input type="radio" name="event.status" value="CANCELLED"/>cancelled
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -2322,12 +2322,12 @@
           <td class="fieldval">
             <xsl:choose>
               <xsl:when test="form/transparency = 'TRANSPARENT'">
-                <input type="radio" name="editEvent.transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                <input type="radio" name="editEvent.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+                <input type="radio" name="event.transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+                <input type="radio" name="event.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
               </xsl:when>
               <xsl:otherwise>
-                <input type="radio" name="editEvent.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                <input type="radio" name="editEvent.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+                <input type="radio" name="event.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+                <input type="radio" name="event.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -2346,20 +2346,20 @@
           <td class="fieldval" align="left">
             <span class="std-text">choose: </span>
             <span id="eventFormLocationList">
-              <select name="eventLocationId">
+              <select name="eventLocationUid">
                 <option value="-1">select...</option>
                 <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/select/*"/>
               </select>
             </span>
             <span class="std-text"> or add new: </span>
-            <input type="text" name="laddress" value="" />
+            <input type="text" name="locationAddress.value" value="" />
           </td>
         </tr>
         <tr>
           <td class="fieldname">Event Link:</td>
           <td class="fieldval">
             <xsl:variable name="link" select="form/link/input/@value"/>
-            <input type="text" name="editEvent.link" size="80" value="{$link}"/>
+            <input type="text" name="event.link" size="80" value="{$link}"/>
           </td>
         </tr>
         <tr>
@@ -4114,7 +4114,7 @@
 
   <!--==== MANAGE LOCATIONS ====-->
   <xsl:template name="manageLocations">
-    <form name="addLocationForm" method="post" action="{$addLocation}" id="standardForm">
+    <form name="addLocationForm" method="post" action="{$updateLocation}" id="standardForm">
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <h2>Manage Locations</h2>
       <table class="common" cellspacing="0">
@@ -4126,7 +4126,7 @@
             Main Address:
           </td>
           <td>
-            <input size="60" name="newLocation.address" type="text"/>
+            <input size="60" name="locationAddress.value" type="text"/>
           </td>
         </tr>
         <tr>
@@ -4134,7 +4134,7 @@
             Subaddress:
           </td>
           <td>
-            <input size="60" name="newLocation.subaddress" type="text"/>
+            <input size="60" name="locationSubaddress.value" type="text"/>
           </td>
         </tr>
         <tr>
@@ -4142,7 +4142,7 @@
             Location Link:
           </td>
           <td>
-            <input size="60" name="newLocation.link" type="text"/>
+            <input size="60" name="location.link" type="text"/>
           </td>
         </tr>
       </table>
@@ -4161,7 +4161,7 @@
 
   <!--==== EDIT LOCATION ====-->
   <xsl:template match="formElements" mode="editLocation">
-    <form name="editLocationForm" method="post" action="{$editLocation}" id="standardForm">
+    <form name="editLocationForm" method="post" action="{$updateLocation}" id="standardForm">
       <input type="hidden" name="updateLocation" value="true"/>
       <input type="hidden" name="confirmationid" value="{$confId}"/>
       <h2>Manage Locations</h2>
@@ -4177,7 +4177,7 @@
           </td>
           <td align="left">
             <xsl:variable name="addr" select="form/address/input/@value"/>
-            <input size="60" name="editLocation.address" value="{$addr}" type="text"/>
+            <input size="60" name="locationAddress.value" value="{$addr}" type="text"/>
           </td>
         </tr>
         <tr>
@@ -4186,7 +4186,7 @@
           </td>
           <td align="left">
             <xsl:variable name="subaddr" select="form/subaddress/textarea"/>
-            <input size="60" name="editLocation.subaddress" value="{$subaddr}" type="text"/>
+            <input size="60" name="locationSubaddress.value" value="{$subaddr}" type="text"/>
           </td>
         </tr>
         <tr>
@@ -4195,7 +4195,7 @@
           </td>
           <td>
             <xsl:variable name="link" select="form/link/input/@value"/>
-            <input size="60" name="editLocation.link" value="{$link}" type="text"/>
+            <input size="60" name="location.link" value="{$link}" type="text"/>
           </td>
         </tr>
       </table>
@@ -4207,8 +4207,8 @@
             <input type="reset" value="Reset"/>
           </td>
           <td align="right">
-            <xsl:variable name="locId" select="form/id"/>
-            <a href="{$delLocation}&amp;locationId={$locId}">
+            <xsl:variable name="uid" select="form/uid"/>
+            <a href="{$delLocation}&amp;uid={$uid}">
               <input type="button" name="delete" value="Delete Location"/>
             </a>
           </td>
@@ -4226,11 +4226,11 @@
       </tr>
       <td colspan="2" class="plain">
         <ul>
-          <xsl:for-each select="/bedework/formElements/form/locationmenu/select/option[@value>'3']">
+          <xsl:for-each select="/bedework/formElements/form/locations/location">
             <xsl:sort select="."/>
             <li>
-              <xsl:variable name="locationId" select="@value"/>
-              <a href="{$editLocation}&amp;locationId={$locationId}"><xsl:value-of select="."/></a>
+              <xsl:variable name="uid" select="uid"/>
+              <a href="{$fetchLocationForUpdate}&amp;uid={$uid}"><xsl:value-of select="address"/></a>
             </li>
           </xsl:for-each>
         </ul>
@@ -4609,13 +4609,13 @@
             <div id="scheduleLocationEdit" class="invisible">
               <span class="std-text">choose: </span>
               <span id="eventFormLocationList">
-                <select name="eventLocationId">
+                <select name="eventLocationUid">
                   <option value="-1">select...</option>
                   <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/select/*"/>
                 </select>
               </span>
               <span class="std-text"> or add new: </span>
-              <input type="text" name="laddress" value="" />
+              <input type="text" name="locationAddress.value" value="" />
             </div>
           </td>
         </tr>
