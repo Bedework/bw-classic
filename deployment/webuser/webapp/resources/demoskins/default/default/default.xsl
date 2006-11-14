@@ -2716,18 +2716,14 @@
 
   <!--+++++++++++++++ Categories ++++++++++++++++++++-->
   <xsl:template name="categoryList">
-    <h2>Manage Categories</h2>
-    <p>
-      Select the category you would like to update:
-      <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')"/>
-    </p>
-
-    <table class="common" cellspacing="0">
+    <h2>
+      Manage Categories
+      <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')" class="titleButton"/>
+    </h2>
+    <table class="common" id="categories" cellspacing="0">
       <tr>
-        <th class="commonHeader">Keyword</th>
-        <th class="commonHeader">Description</th>
+        <th class="commonHeader" colspan="2">Edit/Delete Categories</th>
       </tr>
-
       <xsl:for-each select="/bedework/categories/category">
         <xsl:variable name="categoryKey" select="normalize-space(keyword)"/>
         <tr>
@@ -2747,9 +2743,12 @@
   <xsl:template name="modCategory">
     <xsl:choose>
       <xsl:when test="/bedework/creating='true'">
-        <h2>Add Category</h2>
+        <h2>Manage Categories</h2>
         <form action="{$category-update}" method="post">
           <table class="common" cellspacing="0">
+            <tr>
+              <th class="commonHeader" colspan="2">Add Category</th>
+            </tr>
             <tr>
               <td class="fieldname">
                 Keyword:
@@ -2759,7 +2758,7 @@
               </td>
             </tr>
             <tr>
-              <td class="optional">
+              <td class="fieldname optional">
                 Description:
               </td>
               <td>
@@ -2780,9 +2779,12 @@
         </form>
       </xsl:when>
       <xsl:otherwise>
-        <h2>Update Category</h2>
+        <h2>Manage Categories</h2>
         <form action="{$category-update}" method="post">
           <table class="common" cellspacing="0">
+            <tr>
+              <th class="commonHeader" colspan="2">Update Category</th>
+            </tr>
             <tr>
               <td class="fieldname">
             Keyword:
@@ -2793,7 +2795,7 @@
               </td>
             </tr>
             <tr>
-              <td class="optional">
+              <td class="fieldname optional">
             Description:
             </td>
               <td>
@@ -2839,7 +2841,7 @@
         </td>
       </tr>
       <tr>
-        <td class="optional">
+        <td class="fieldname optional">
           Description:
         </td>
         <td>
