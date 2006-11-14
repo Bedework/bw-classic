@@ -83,18 +83,18 @@
   <xsl:variable name="event-selectCalForEvent" select="/bedeworkadmin/urlPrefixes/event/selectCalForEvent/a/@href"/>
   <xsl:variable name="event-initUpload" select="/bedeworkadmin/urlPrefixes/event/initUpload/a/@href"/>
   <xsl:variable name="event-upload" select="/bedeworkadmin/urlPrefixes/event/upload/a/@href"/>
-  <!-- sponsors -->
-  <xsl:variable name="sponsor-showSponsor" select="/bedeworkadmin/urlPrefixes/sponsor/showSponsor/a/@href"/>
-  <xsl:variable name="sponsor-showReferenced" select="/bedeworkadmin/urlPrefixes/sponsor/showReferenced/a/@href"/>
-  <xsl:variable name="sponsor-showModForm" select="/bedeworkadmin/urlPrefixes/sponsor/showModForm/a/@href"/>
-  <xsl:variable name="sponsor-showUpdateList" select="/bedeworkadmin/urlPrefixes/sponsor/showUpdateList/a/@href"/>
-  <xsl:variable name="sponsor-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/sponsor/showDeleteConfirm/a/@href"/>
-  <xsl:variable name="sponsor-initAdd" select="/bedeworkadmin/urlPrefixes/sponsor/initAdd/a/@href"/>
-  <xsl:variable name="sponsor-initUpdate" select="/bedeworkadmin/urlPrefixes/sponsor/initUpdate/a/@href"/>
-  <xsl:variable name="sponsor-delete" select="/bedeworkadmin/urlPrefixes/sponsor/delete/a/@href"/>
-  <xsl:variable name="sponsor-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/sponsor/fetchForDisplay/a/@href"/>
-  <xsl:variable name="sponsor-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/sponsor/fetchForUpdate/a/@href"/>
-  <xsl:variable name="sponsor-update" select="/bedeworkadmin/urlPrefixes/sponsor/update/a/@href"/>
+  <!-- contacts -->
+  <xsl:variable name="contact-showContact" select="/bedeworkadmin/urlPrefixes/contact/showContact/a/@href"/>
+  <xsl:variable name="contact-showReferenced" select="/bedeworkadmin/urlPrefixes/contact/showReferenced/a/@href"/>
+  <xsl:variable name="contact-showModForm" select="/bedeworkadmin/urlPrefixes/contact/showModForm/a/@href"/>
+  <xsl:variable name="contact-showUpdateList" select="/bedeworkadmin/urlPrefixes/contact/showUpdateList/a/@href"/>
+  <xsl:variable name="contact-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/contact/showDeleteConfirm/a/@href"/>
+  <xsl:variable name="contact-initAdd" select="/bedeworkadmin/urlPrefixes/contact/initAdd/a/@href"/>
+  <xsl:variable name="contact-initUpdate" select="/bedeworkadmin/urlPrefixes/contact/initUpdate/a/@href"/>
+  <xsl:variable name="contact-delete" select="/bedeworkadmin/urlPrefixes/contact/delete/a/@href"/>
+  <xsl:variable name="contact-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/contact/fetchForDisplay/a/@href"/>
+  <xsl:variable name="contact-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/contact/fetchForUpdate/a/@href"/>
+  <xsl:variable name="contact-update" select="/bedeworkadmin/urlPrefixes/contact/update/a/@href"/>
   <!-- locations -->
   <xsl:variable name="location-showLocation" select="/bedeworkadmin/urlPrefixes/location/showLocation/a/@href"/>
   <xsl:variable name="location-showReferenced" select="/bedeworkadmin/urlPrefixes/location/showReferenced/a/@href"/>
@@ -237,14 +237,14 @@
                 <xsl:when test="/bedeworkadmin/page='displayEvent' or /bedeworkadmin/page='deleteEventConfirm'">
                   <xsl:apply-templates select="/bedeworkadmin/event" mode="displayEvent"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='sponsorList'">
-                  <xsl:call-template name="sponsorList"/>
+                <xsl:when test="/bedeworkadmin/page='contactList'">
+                  <xsl:call-template name="contactList"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modSponsor'">
-                  <xsl:call-template name="modSponsor"/>
+                <xsl:when test="/bedeworkadmin/page='modContact'">
+                  <xsl:call-template name="modContact"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='deleteSponsorConfirm' or /bedeworkadmin/page='sponsorReferenced'">
-                  <xsl:call-template name="deleteSponsorConfirm"/>
+                <xsl:when test="/bedeworkadmin/page='deleteContactConfirm' or /bedeworkadmin/page='contactReferenced'">
+                  <xsl:call-template name="deleteContactConfirm"/>
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='locationList'">
                   <xsl:call-template name="locationList"/>
@@ -401,12 +401,12 @@
         <tr>
           <th>Contacts</th>
           <td>
-            <a id="addSponsorLink" href="{$sponsor-initAdd}">
+            <a id="addContactLink" href="{$contact-initAdd}">
               Add
             </a>
           </td>
           <td>
-            <a href="{$sponsor-initUpdate}">
+            <a href="{$contact-initUpdate}">
               Edit / Delete
             </a>
           </td>
@@ -978,26 +978,26 @@
           </tr>
         </xsl:if>
 
-        <!-- Sponsor -->
+        <!-- Contact -->
         <tr>
           <td class="fieldName">
             Contact:**
           </td>
           <td>
-            <xsl:if test="/bedeworkadmin/formElements/form/sponsor/preferred/select/option">
-              <select name="prefSponsorId" id="eventFormSponsorList">
+            <xsl:if test="/bedeworkadmin/formElements/form/contact/preferred/select/option">
+              <select name="prefContactId" id="eventFormContactList">
                 <option value="-1">
                   Select preferred:
                 </option>option>
-                <xsl:copy-of select="/bedeworkadmin/formElements/form/sponsor/preferred/select/*"/>
+                <xsl:copy-of select="/bedeworkadmin/formElements/form/contact/preferred/select/*"/>
               </select>
               or Contact (all):
             </xsl:if>
-            <select name="allSponsorId" id="eventFormPrefSponsorList">
+            <select name="allContactId" id="eventFormPrefContactList">
               <option value="-1">
                 Select:
               </option>
-              <xsl:copy-of select="/bedeworkadmin/formElements/form/sponsor/all/select/*"/>
+              <xsl:copy-of select="/bedeworkadmin/formElements/form/contact/all/select/*"/>
             </select>
           </td>
         </tr>
@@ -1100,7 +1100,7 @@
           </td>
         </tr>
 
-        <xsl:if test="/bedeworkadmin/formElements/form/sponsor/name">
+        <xsl:if test="/bedeworkadmin/formElements/form/contact/name">
           <tr>
             <td class="fieldName" colspan="2">
               <span class="std-text">
@@ -1112,7 +1112,7 @@
               Contact (name):
             </td>
             <td>
-              <xsl:copy-of select="/bedeworkadmin/formElements/form/sponsor/name/*"/>
+              <xsl:copy-of select="/bedeworkadmin/formElements/form/contact/name/*"/>
             </td>
           </tr>
           <tr>
@@ -1120,7 +1120,7 @@
               Contact Phone Number:
             </td>
             <td>
-              <xsl:copy-of select="/bedeworkadmin/formElements/form/sponsor/phone/*"/>
+              <xsl:copy-of select="/bedeworkadmin/formElements/form/contact/phone/*"/>
               <xsl:text> </xsl:text>
               <span class="fieldInfo">(optional)</span>
             </td>
@@ -1130,7 +1130,7 @@
               Contact's URL:
             </td>
             <td>
-              <xsl:copy-of select="/bedeworkadmin/formElements/form/sponsor/link/*"/>
+              <xsl:copy-of select="/bedeworkadmin/formElements/form/contact/link/*"/>
               <xsl:text> </xsl:text>
               <span class="fieldInfo">(optional)</span>
             </td>
@@ -1140,10 +1140,10 @@
               Contact Email Address:
             </td>
             <td>
-              <xsl:copy-of select="/bedeworkadmin/formElements/form/sponsor/email/*"/>
+              <xsl:copy-of select="/bedeworkadmin/formElements/form/contact/email/*"/>
               <xsl:text> </xsl:text>
               <span class="fieldInfo">(optional)</span> test
-              <div id="sponsorEmailAlert">&#160;</div> <!-- space for email warning -->
+              <div id="contactEmailAlert">&#160;</div> <!-- space for email warning -->
             </td>
           </tr>
         </xsl:if>
@@ -1397,13 +1397,13 @@
         </td>
       </tr>
 
-      <!-- Sponsor -->
+      <!-- Contact -->
       <tr>
         <th>
           Contact:
         </th>
         <td>
-          <xsl:value-of select="sponsor"/>
+          <xsl:value-of select="contact"/>
         </td>
       </tr>
 
@@ -1433,12 +1433,12 @@
     </xsl:if>-->
   </xsl:template>
 
-  <!--+++++++++++++++ Sponsors (Contacts) ++++++++++++++++++++-->
-  <xsl:template name="sponsorList">
+  <!--+++++++++++++++ Contacts ++++++++++++++++++++-->
+  <xsl:template name="contactList">
     <h2>Edit Contacts</h2>
     <p>
       Select the contact you would like to update:
-      <input type="button" name="return" value="Add new contact" onclick="javascript:location.replace('{$sponsor-initAdd}')"/>
+      <input type="button" name="return" value="Add new contact" onclick="javascript:location.replace('{$contact-initAdd}')"/>
     </p>
 
     <table id="commonListTable">
@@ -1449,7 +1449,7 @@
         <th>URL</th>
       </tr>
 
-      <xsl:for-each select="/bedeworkadmin/sponsors/sponsor">
+      <xsl:for-each select="/bedeworkadmin/contacts/contact">
         <tr>
           <td>
             <xsl:copy-of select="name" />
@@ -1474,8 +1474,8 @@
     </table>
   </xsl:template>
 
-  <xsl:template name="modSponsor">
-    <form action="{$sponsor-update}" method="post">
+  <xsl:template name="modContact">
+    <form action="{$contact-update}" method="post">
       <h2>Contact Information</h2>
 
       <table id="eventFormTable">
@@ -1521,14 +1521,14 @@
           <xsl:choose>
             <xsl:when test="/bedeworkadmin/creating='true'">
               <td>
-                <input type="submit" name="addSponsor" value="Add Contact"/>
+                <input type="submit" name="addContact" value="Add Contact"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Clear"/>
               </td>
             </xsl:when>
             <xsl:otherwise>
               <td>
-                <input type="submit" name="updateSponsor" value="Update Contact"/>
+                <input type="submit" name="updateContact" value="Update Contact"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Reset"/>
               </td>
@@ -1543,7 +1543,7 @@
     </form>
   </xsl:template>
 
-  <xsl:template name="deleteSponsorConfirm">
+  <xsl:template name="deleteContactConfirm">
     <h2>Ok to delete this contact?</h2>
     <p id="confirmButtons">
       <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
@@ -1553,25 +1553,25 @@
       <tr>
         <th>Name</th>
         <td>
-          <xsl:value-of select="/bedeworkadmin/sponsor/name" />
+          <xsl:value-of select="/bedeworkadmin/contact/name" />
         </td>
       </tr>
       <tr>
         <th>Phone</th>
         <td>
-          <xsl:value-of select="/bedeworkadmin/sponsor/phone" />
+          <xsl:value-of select="/bedeworkadmin/contact/phone" />
         </td>
       </tr>
       <tr>
         <th>Email</th>
         <td>
-          <xsl:value-of select="/bedeworkadmin/sponsor/email" />
+          <xsl:value-of select="/bedeworkadmin/contact/email" />
         </td>
       </tr>
       <tr>
         <th>URL</th>
         <td>
-          <xsl:value-of select="/bedeworkadmin/sponsor/link" />
+          <xsl:value-of select="/bedeworkadmin/contact/link" />
         </td>
       </tr>
     </table>
@@ -4025,7 +4025,7 @@
           <xsl:when test="/bedeworkadmin/page='modEvent' or /bedeworkadmin/page='eventList' or /bedeworkadmin/page='displayEvent'">
             Manage Events
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='sponsorList' or /bedeworkadmin/page='modSponsor' or /bedeworkadmin/page='deleteSponsorConfirm'">
+          <xsl:when test="/bedeworkadmin/page='contactList' or /bedeworkadmin/page='modContact' or /bedeworkadmin/page='deleteContactConfirm'">
             Manage Contacts
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='locationList' or /bedeworkadmin/page='modLocation' or /bedeworkadmin/page='deleteLocationConfirm'">

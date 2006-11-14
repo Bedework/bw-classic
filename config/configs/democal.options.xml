@@ -74,13 +74,13 @@
                           Admin web client CalAdmin
              ================================================================== -->
         <CalAdmin classname="org.bedework.calfacade.configs.AdminConfig">
-          <autoCreateSponsors>false</autoCreateSponsors>
-          <autoDeleteSponsors>false</autoDeleteSponsors>
+          <autoCreateContacts>false</autoCreateContacts>
+          <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
           <allowEditAllCategories>false</allowEditAllCategories>
           <allowEditAllLocations>false</allowEditAllLocations>
-          <allowEditAllSponsors>false</allowEditAllSponsors>
+          <allowEditAllContacts>false</allowEditAllContacts>
           <categoryOptional>true</categoryOptional>
 
           <!-- Default value for 24 hour mode -->
@@ -99,8 +99,8 @@
                           Public web client Events
              ================================================================== -->
         <Events classname="org.bedework.calfacade.configs.ClientConfig">
-          <autoCreateSponsors>false</autoCreateSponsors>
-          <autoDeleteSponsors>false</autoDeleteSponsors>
+          <autoCreateContacts>false</autoCreateContacts>
+          <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
 
@@ -127,8 +127,8 @@
                           Demo departmental Public web client SoEDept
              ================================================================== -->
         <SoEDept classname="org.bedework.calfacade.configs.ClientConfig">
-          <autoCreateSponsors>false</autoCreateSponsors>
-          <autoDeleteSponsors>false</autoDeleteSponsors>
+          <autoCreateContacts>false</autoCreateContacts>
+          <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
 
@@ -155,8 +155,8 @@
                           User web client UserCal
              ================================================================== -->
         <UserCal classname="org.bedework.calfacade.configs.ClientConfig">
-          <autoCreateSponsors>false</autoCreateSponsors>
-          <autoDeleteSponsors>false</autoDeleteSponsors>
+          <autoCreateContacts>false</autoCreateContacts>
+          <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
 

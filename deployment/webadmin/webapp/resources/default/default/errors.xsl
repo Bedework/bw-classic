@@ -93,7 +93,7 @@
         <em>Invalid duration</em> - you may not have a zero-length duration
         for an all day event.
       </xsl:when>
-      <xsl:when test="id='org.bedework.validation.error.nosponsorname'">
+      <xsl:when test="id='org.bedework.validation.error.nocontactname'">
         You must enter a contact <em>name</em>.
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.nolocationaddress'">
@@ -120,13 +120,13 @@
       <xsl:when test="id='org.bedework.pubevents.error.badfield'">
         Please correct your data input for <em><xsl:value-of select="param"/></em>
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.error.nosuchsponsor'">
+      <xsl:when test="id='org.bedework.client.error.nosuchcontact'">
         Not found: there is no contact <em><xsl:value-of select="param"/></em>
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.error.sponsor.referenced'">
+      <xsl:when test="id='org.bedework.client.error.contact.referenced'">
         Cannot delete: the contact is referenced by events
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.error.sponsor.alreadyexists'">
+      <xsl:when test="id='org.bedework.client.error.contact.alreadyexists'">
         Cannot add: the contact already exists
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nosuchlocation'">

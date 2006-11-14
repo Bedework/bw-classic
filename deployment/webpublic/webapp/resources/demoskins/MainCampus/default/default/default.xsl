@@ -664,32 +664,32 @@
           </td>
         </tr>
       </xsl:if>
-      <xsl:if test="sponsor/name!='none'">
+      <xsl:if test="contact/name!='none'">
         <tr>
           <td class="fieldname">Contact:</td>
           <td colspan="2" class="fieldval">
             <xsl:choose>
-              <xsl:when test="sponsor/link=''">
-                <xsl:value-of select="sponsor/name"/>
+              <xsl:when test="contact/link=''">
+                <xsl:value-of select="contact/name"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:variable name="sponsorLink" select="sponsor/link"/>
-                <a href="{$sponsorLink}">
-                  <xsl:value-of select="sponsor/name"/>
+                <xsl:variable name="contactLink" select="contact/link"/>
+                <a href="{$contactLink}">
+                  <xsl:value-of select="contact/name"/>
                 </a>
               </xsl:otherwise>
             </xsl:choose>
-            <xsl:if test="sponsor/phone!=''">
-              <br /><xsl:value-of select="sponsor/phone"/>
+            <xsl:if test="contact/phone!=''">
+              <br /><xsl:value-of select="contact/phone"/>
             </xsl:if>
             <!-- If you want to display email addresses, uncomment the
                  following 8 lines. -->
-            <!-- <xsl:if test="sponsor/email!=''">
+            <!-- <xsl:if test="contact/email!=''">
               <br />
-              <xsl:variable name="email" select="sponsor/email"/>
+              <xsl:variable name="email" select="contact/email"/>
               <xsl:variable name="subject" select="summary"/>
               <a href="mailto:{$email}&amp;subject={$subject}">
-                <xsl:value-of select="sponsor/email"/>
+                <xsl:value-of select="contact/email"/>
               </a>
             </xsl:if> -->
           </td>
@@ -842,8 +842,8 @@
                           <xsl:if test="cost!=''">
                             <xsl:value-of select="cost"/>.&#160;
                           </xsl:if>
-                          <xsl:if test="sponsor/name!='none'">
-                            Contact: <xsl:value-of select="sponsor/name"/>
+                          <xsl:if test="contact/name!='none'">
+                            Contact: <xsl:value-of select="contact/name"/>
                           </xsl:if>
                         </em>
                         - <xsl:value-of select="calendar/name"/>

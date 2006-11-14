@@ -376,7 +376,7 @@ table.eventFormTable .durationSpacerText {
 #clock {
   position: relative;
 }
-#sponsorEmailAlert {
+#contactEmailAlert {
   display: none;
   background: transparent url('../../resources/email.gif') no-repeat top left;
   /*position: relative;

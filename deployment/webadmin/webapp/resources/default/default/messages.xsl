@@ -39,19 +39,19 @@
       <xsl:when test="id='org.bedework.client.message.folder.updated'">
         Folder updated
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.message.sponsor.deleted'">
+      <xsl:when test="id='org.bedework.client.message.contact.deleted'">
         Contact deleted
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.message.sponsor.added'">
+      <xsl:when test="id='org.bedework.client.message.contact.added'">
         Contact added
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.message.sponsor.updated'">
+      <xsl:when test="id='org.bedework.client.message.contact.updated'">
         Contact updated
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.message.sponsor.referenced'">
+      <xsl:when test="id='org.bedework.client.message.contact.referenced'">
         Contact is referenced
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.message.sponsor.alreadyexists'">
+      <xsl:when test="id='org.bedework.client.message.contact.alreadyexists'">
         Contact already exists
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.location.updated'">
