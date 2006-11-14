@@ -85,26 +85,24 @@
   <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
-  <xsl:variable name="manageLocations" select="/bedework/urlPrefixes/manageLocations"/>
-  <xsl:variable name="fetchLocationForUpdate" select="/bedework/urlPrefixes/fetchLocationForUpdate"/>
-  <xsl:variable name="updateLocation" select="/bedework/urlPrefixes/updateLocation"/>
-  <xsl:variable name="delLocation" select="/bedework/urlPrefixes/delLocation"/>
   <xsl:variable name="initEventAlarm" select="/bedework/urlPrefixes/initEventAlarm"/>
   <xsl:variable name="setAlarm" select="/bedework/urlPrefixes/setAlarm"/>
   <xsl:variable name="initUpload" select="/bedework/urlPrefixes/initUpload"/>
   <xsl:variable name="upload" select="/bedework/urlPrefixes/upload"/>
   <xsl:variable name="freeBusy-fetch" select="/bedework/urlPrefixes/freeBusy/fetch/a/@href"/>
   <xsl:variable name="freeBusy-setAccess" select="/bedework/urlPrefixes/freeBusy/setAccess/a/@href"/>
+  <!-- locations -->
+  <xsl:variable name="location-initAdd" select="/bedework/urlPrefixes/location/initAdd/a/@href"/>
+  <xsl:variable name="location-initUpdate" select="/bedework/urlPrefixes/location/initUpdate/a/@href"/>
+  <xsl:variable name="location-fetchForUpdate" select="/bedework/urlPrefixes/location/fetchForUpdate/a/@href"/>
+  <xsl:variable name="location-update" select="/bedework/urlPrefixes/location/update/a/@href"/>
+  <xsl:variable name="location-delete" select="/bedework/urlPrefixes/location/delete/a/@href"/>
   <!-- categories -->
-  <xsl:variable name="category-showReferenced" select="/bedework/urlPrefixes/category/showReferenced/a/@href"/>
-  <xsl:variable name="category-showModForm" select="/bedework/urlPrefixes/category/showModForm/a/@href"/>
-  <xsl:variable name="category-showUpdateList" select="/bedework/urlPrefixes/category/showUpdateList/a/@href"/>
-  <xsl:variable name="category-showDeleteConfirm" select="/bedework/urlPrefixes/category/showDeleteConfirm/a/@href"/>
   <xsl:variable name="category-initAdd" select="/bedework/urlPrefixes/category/initAdd/a/@href"/>
   <xsl:variable name="category-initUpdate" select="/bedework/urlPrefixes/category/initUpdate/a/@href"/>
-  <xsl:variable name="category-delete" select="/bedework/urlPrefixes/category/delete/a/@href"/>
   <xsl:variable name="category-fetchForUpdate" select="/bedework/urlPrefixes/category/fetchForUpdate/a/@href"/>
   <xsl:variable name="category-update" select="/bedework/urlPrefixes/category/update/a/@href"/>
+  <xsl:variable name="category-delete" select="/bedework/urlPrefixes/category/delete/a/@href"/>
   <!-- calendars -->
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
   <xsl:variable name="calendar-fetch" select="/bedework/urlPrefixes/calendar/fetch/a/@href"/><!-- used -->
@@ -212,12 +210,6 @@
                     <xsl:when test="/bedework/page='upload'">
                       <xsl:call-template name="upload" />
                     </xsl:when>
-                    <xsl:when test="/bedework/page='manageLocations'">
-                      <xsl:call-template name="manageLocations" />
-                    </xsl:when>
-                    <xsl:when test="/bedework/page='editLocation'">
-                      <xsl:apply-templates select="/bedework/formElements" mode="editLocation"/>
-                    </xsl:when>
                     <xsl:when test="/bedework/page='categoryList'">
                       <xsl:call-template name="categoryList"/>
                     </xsl:when>
@@ -226,6 +218,15 @@
                     </xsl:when>
                     <xsl:when test="/bedework/page='deleteCategoryConfirm'">
                       <xsl:call-template name="deleteCategoryConfirm"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='locationList'">
+                      <xsl:call-template name="locationList" />
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='modLocation'">
+                      <xsl:call-template name="modLocation"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='deleteLocationConfirm'">
+                      <xsl:call-template name="deleteLocationConfirm"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='subscriptions' or
                                     /bedework/page='modSubscription' or
@@ -474,7 +475,7 @@
     <h3>options</h3>
     <ul id="sideBarMenu">
       <li><a href="{$category-initUpdate}">Manage Categories</a></li>
-      <li><a href="{$manageLocations}">Manage Locations</a></li>
+      <li><a href="{$location-initUpdate}">Manage Locations</a></li>
       <li><a href="{$prefs-fetchForUpdate}">Preferences</a></li>
       <li><a href="{$initUpload}" title="upload event">Upload iCAL</a></li>
     </ul>
@@ -2720,23 +2721,34 @@
       Manage Categories
       <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')" class="titleButton"/>
     </h2>
-    <table class="common" id="categories" cellspacing="0">
+    <table class="common" id="manage" cellspacing="0">
       <tr>
         <th class="commonHeader" colspan="2">Edit/Delete Categories</th>
       </tr>
-      <xsl:for-each select="/bedework/categories/category">
-        <xsl:variable name="categoryKey" select="normalize-space(keyword)"/>
-        <tr>
-          <td>
-            <a href="{$category-fetchForUpdate}&amp;categoryKey={$categoryKey}">
-              <xsl:value-of select="keyword"/>
-            </a>
-          </td>
-          <td>
-            <xsl:value-of select="desc"/>
-          </td>
-        </tr>
-      </xsl:for-each>
+      <xsl:choose>
+        <xsl:when test="/bedework/categories/category">
+          <xsl:for-each select="/bedework/categories/category">
+            <xsl:variable name="categoryKey" select="normalize-space(keyword)"/>
+            <tr>
+              <td>
+                <a href="{$category-fetchForUpdate}&amp;categoryKey={$categoryKey}">
+                  <xsl:value-of select="keyword"/>
+                </a>
+              </td>
+              <td>
+                <xsl:value-of select="desc"/>
+              </td>
+            </tr>
+          </xsl:for-each>
+        </xsl:when>
+        <xsl:otherwise>
+          <tr>
+            <td colspan="2">
+              No categories defined
+            </td>
+          </tr>
+        </xsl:otherwise>
+      </xsl:choose>
     </table>
   </xsl:template>
 
@@ -2821,17 +2833,15 @@
         </form>
       </xsl:otherwise>
     </xsl:choose>
-
-
   </xsl:template>
 
   <xsl:template name="deleteCategoryConfirm">
     <h2>Ok to delete this category?</h2>
-    <p id="confirmButtons">
-      <xsl:copy-of select="/bedework/formElements/*"/>
-    </p>
 
     <table class="common" cellspacing="0">
+      <tr>
+        <th class="commonHeader" colspan="2">Delete Category</th>
+      </tr>
       <tr>
         <td class="fieldname">
           Keyword:
@@ -2849,6 +2859,11 @@
         </td>
       </tr>
     </table>
+
+    <form action="{$category-delete}" method="post">
+      <input type="submit" name="updateCategory" value="Yes: Delete Category"/>
+      <input type="submit" name="cancelled" value="No: Cancel"/>
+    </form>
   </xsl:template>
 
   <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
@@ -4115,129 +4130,171 @@
   </xsl:template>
 
   <!--==== MANAGE LOCATIONS ====-->
-  <xsl:template name="manageLocations">
-    <form name="addLocationForm" method="post" action="{$updateLocation}" id="standardForm">
-      <input type="hidden" name="confirmationid" value="{$confId}"/>
-      <h2>Manage Locations</h2>
-      <table class="common" cellspacing="0">
-        <tr>
-          <th class="commonHeader" colspan="2">Add Location</th>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            Main Address:
-          </td>
-          <td>
-            <input size="60" name="locationAddress.value" type="text"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            Subaddress:
-          </td>
-          <td>
-            <input size="60" name="locationSubaddress.value" type="text"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            Location Link:
-          </td>
-          <td>
-            <input size="60" name="location.link" type="text"/>
-          </td>
-        </tr>
-      </table>
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input name="submit" type="submit" value="Submit Location"/>
-            <input name="cancelled" type="submit" value="Cancel"/>
-          </td>
-        </tr>
-      </table>
-    </form>
-    <div style="margin-bottom: 1em;">&#160;</div>
-    <xsl:call-template name="editLocationList"/>
+  <xsl:template name="locationList">
+    <h2>
+      Manage Locations
+      <input type="button" name="return" value="Add new location" onclick="javascript:location.replace('{$location-initAdd}')" class="titleButton"/>
+    </h2>
+    <table class="common" id="manage" cellspacing="0">
+      <tr>
+        <th class="commonHeader">Edit/Delete Locations</th>
+      </tr>
+      <tr>
+        <td>
+          <ul>
+            <xsl:for-each select="/bedework/locations/location">
+              <xsl:sort select="."/>
+              <li>
+                <xsl:variable name="uid" select="uid"/>
+                <a href="{$location-fetchForUpdate}&amp;uid={$uid}"><xsl:value-of select="address"/></a>
+              </li>
+            </xsl:for-each>
+          </ul>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
-  <!--==== EDIT LOCATION ====-->
-  <xsl:template match="formElements" mode="editLocation">
-    <form name="editLocationForm" method="post" action="{$updateLocation}" id="standardForm">
-      <input type="hidden" name="updateLocation" value="true"/>
-      <input type="hidden" name="confirmationid" value="{$confId}"/>
-      <h2>Manage Locations</h2>
-      <table class="common" cellspacing="0">
-        <tr>
-          <th colspan="2" class="commonHeader">
-            Edit Location
-          </th>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            Main Address:
-          </td>
-          <td align="left">
-            <xsl:variable name="addr" select="form/address/input/@value"/>
-            <input size="60" name="locationAddress.value" value="{$addr}" type="text"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            Subaddress:
-          </td>
-          <td align="left">
-            <xsl:variable name="subaddr" select="form/subaddress/textarea"/>
-            <input size="60" name="locationSubaddress.value" value="{$subaddr}" type="text"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            Location Link:
-          </td>
-          <td>
-            <xsl:variable name="link" select="form/link/input/@value"/>
-            <input size="60" name="location.link" value="{$link}" type="text"/>
-          </td>
-        </tr>
-      </table>
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input name="submit" type="submit" value="Submit Location"/>
-            <input name="cancelled" type="submit" value="Cancel"/>
-            <input type="reset" value="Reset"/>
-          </td>
-          <td align="right">
-            <xsl:variable name="uid" select="form/uid"/>
-            <a href="{$delLocation}&amp;uid={$uid}">
-              <input type="button" name="delete" value="Delete Location"/>
-            </a>
-          </td>
-        </tr>
-      </table>
-    </form>
-    <div style="margin-bottom: 1em;">&#160;</div>
-    <xsl:call-template name="editLocationList"/>
+  <xsl:template name="modLocation">
+    <xsl:choose>
+      <xsl:when test="/bedework/creating = 'true'">
+        <form name="addLocationForm" method="post" action="{$location-update}" id="standardForm">
+          <input type="hidden" name="confirmationid" value="{$confId}"/>
+          <h2>Manage Locations</h2>
+          <table class="common" cellspacing="0">
+            <tr>
+              <th class="commonHeader" colspan="2">Add Location</th>
+            </tr>
+            <tr>
+              <td class="fieldname">
+                Main Address:
+              </td>
+              <td>
+                <input size="60" name="locationAddress.value" type="text"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="fieldname">
+                Subaddress:
+              </td>
+              <td>
+                <input size="60" name="locationSubaddress.value" type="text"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="fieldname">
+                Location Link:
+              </td>
+              <td>
+                <input size="60" name="location.link" type="text"/>
+              </td>
+            </tr>
+          </table>
+          <table border="0" id="submitTable">
+            <tr>
+              <td>
+                <input name="submit" type="submit" value="Submit Location"/>
+                <input name="cancelled" type="submit" value="Cancel"/>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </xsl:when>
+      <xsl:otherwise>
+        <form name="editLocationForm" method="post" action="{$location-update}" id="standardForm">
+          <input type="hidden" name="updateLocation" value="true"/>
+          <input type="hidden" name="confirmationid" value="{$confId}"/>
+          <h2>Manage Locations</h2>
+          <table class="common" cellspacing="0">
+            <tr>
+              <th colspan="2" class="commonHeader">
+                Edit Location
+              </th>
+            </tr>
+            <tr>
+              <td class="fieldname">
+                Main Address:
+              </td>
+              <td align="left">
+                <xsl:variable name="addr" select="form/address/input/@value"/>
+                <input size="60" name="locationAddress.value" value="{$addr}" type="text"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="fieldname">
+                Subaddress:
+              </td>
+              <td align="left">
+                <xsl:variable name="subaddr" select="form/subaddress/textarea"/>
+                <input size="60" name="locationSubaddress.value" value="{$subaddr}" type="text"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="fieldname">
+                Location Link:
+              </td>
+              <td>
+                <xsl:variable name="link" select="form/link/input/@value"/>
+                <input size="60" name="location.link" value="{$link}" type="text"/>
+              </td>
+            </tr>
+          </table>
+          <table border="0" id="submitTable">
+            <tr>
+              <td>
+                <input name="submit" type="submit" value="Submit Location"/>
+                <input name="cancelled" type="submit" value="Cancel"/>
+                <input type="reset" value="Reset"/>
+              </td>
+              <td align="right">
+                <xsl:variable name="uid" select="form/uid"/>
+                <input type="button" name="delete" value="Delete Location"/>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
-  <xsl:template name="editLocationList">
+  <xsl:template name="deleteLocationConfirm">
+    <h2>Ok to delete this location?</h2>
+
     <table class="common" cellspacing="0">
       <tr>
-        <th class="commonHeader" colspan="2">Edit/Delete Locations</th>
+        <th class="commonHeader" colspan="2">Delete Location</th>
       </tr>
-      <td colspan="2" class="plain">
-        <ul>
-          <xsl:for-each select="/bedework/formElements/form/locations/location">
-            <xsl:sort select="."/>
-            <li>
-              <xsl:variable name="uid" select="uid"/>
-              <a href="{$fetchLocationForUpdate}&amp;uid={$uid}"><xsl:value-of select="address"/></a>
-            </li>
-          </xsl:for-each>
-        </ul>
-      </td>
+      <tr>
+        <td class="fieldname">
+          Main Address:
+        </td>
+        <td align="left">
+          <xsl:value-of select="/bedework/currentLocation/address"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldname">
+          Subaddress:
+        </td>
+        <td align="left">
+          <xsl:value-of select="/bedework/currentLocation/subaddress"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldname">
+          Location Link:
+        </td>
+        <td>
+          <xsl:variable name="link" select="/bedework/currentLocation/link"/>
+          <a href="{$link}"><xsl:value-of select="$link"/></a>
+        </td>
+      </tr>
     </table>
+
+    <form action="{$location-delete}" method="post">
+      <input type="submit" name="updateCategory" value="Yes: Delete Location"/>
+      <input type="submit" name="cancelled" value="No: Cancel"/>
+    </form>
   </xsl:template>
 
   <!--==== INBOX, OUTBOX, and SCHEDULING ====-->
@@ -5400,9 +5457,10 @@
     <h2 class="bwStatusConfirmed">
       <div id="searchFilter">
         Limit search to:
-        <input type="radio" name="searchLimit" value="future"/>today forward
-        <input type="radio" name="searchLimit" value="future"/>past dates
-        <input type="radio" name="searchLimit" value="all" checked="checked"/>all dates
+        <xsl:variable name="query" select="/bedework/searchResults/query"/>
+        <input type="radio" name="searchLimit" value="future" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=fromToday')"/>today forward
+        <input type="radio" name="searchLimit" value="past" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=beforeToday')"/>past dates
+        <input type="radio" name="searchLimit" value="all" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=none')"/>all dates
       </div>
       Search Result
     </h2>

@@ -1143,9 +1143,10 @@
     <h2 class="bwStatusConfirmed">
       <div id="searchFilter">
         Limit search to:
-        <input type="radio" name="searchLimit" value="future"/>today forward
-        <input type="radio" name="searchLimit" value="future"/>past dates
-        <input type="radio" name="searchLimit" value="all" checked="checked"/>all dates
+        <xsl:variable name="query" select="/bedework/searchResults/query"/>
+        <input type="radio" name="searchLimit" value="future" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=fromToday')"/>today forward
+        <input type="radio" name="searchLimit" value="past" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=beforeToday')"/>past dates
+        <input type="radio" name="searchLimit" value="all" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=none')"/>all dates
       </div>
       Search Result
     </h2>
