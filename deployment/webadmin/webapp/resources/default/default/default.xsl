@@ -446,7 +446,7 @@
         </input>
         <input type="submit" name="submit" value="go"/>
         <div id="searchFields">
-          Limit to:
+          Limit:
           <input type="radio" name="limits" value="fromToday"/>today forward
           <input type="radio" name="limits" value="beforeToday"/>past dates
           <input type="radio" name="limits" value="none" checked="checked"/>all dates
@@ -3875,11 +3875,12 @@
     <h2 class="bwStatusConfirmed">
       <div id="searchFilter">
         <form name="searchForm" method="post" action="{$search}">
+          Search:
           <input type="text" name="query" size="15">
             <xsl:attribute name="value"><xsl:value-of select="/bedeworkadmin/searchResults/query"/></xsl:attribute>
           </input>
           <input type="submit" name="submit" value="go"/>
-          Limit to:
+          Limit:
           <input type="radio" name="limits" value="fromToday"/>today forward
           <input type="radio" name="limits" value="beforeToday"/>past dates
           <input type="radio" name="limits" value="none"/>all dates
