@@ -68,6 +68,9 @@ h2.bwStatusTentative {
   font-weight: normal;
   margin-top: 5px;
 }
+#searchFilter form {
+  display: inline;
+}
 #stats {
   font-size: 0.9em;
   margin: 0px;

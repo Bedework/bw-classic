@@ -447,9 +447,9 @@
         <input type="submit" name="submit" value="go"/>
         <div id="searchFields">
           Limit to:
-          <input type="radio" name="searchLimit" value="future"/>future
-          <input type="radio" name="searchLimit" value="future"/>past
-          <input type="radio" name="searchLimit" value="all" checked="checked"/>all dates
+          <input type="radio" name="limits" value="fromToday"/>today forward
+          <input type="radio" name="limits" value="beforeToday"/>past dates
+          <input type="radio" name="limits" value="none" checked="checked"/>all dates
         </div>
       </form>
 
@@ -1009,58 +1009,54 @@
             Categories:**
           </td>
           <td>
-            <input type="radio" name="categoryCheckboxes" value="preferred" checked="checked" onclick="changeClass('preferredCategoryCheckboxes','shown');changeClass('allCategoryCheckboxes','invisible');"/>show preferred
-            <input type="radio" name="categoryCheckboxes" value="all" onclick="changeClass('preferredCategoryCheckboxes','invisible');changeClass('allCategoryCheckboxes','shown')"/>show all<br/>
-            <xsl:choose>
-              <xsl:when test="/bedeworkadmin/formElements/form/categories/preferred/category">
-                <table cellpadding="0" id="preferredCategoryCheckboxes">
-                  <tr>
-                    <xsl:variable name="catCount" select="count(/bedeworkadmin/formElements/form/categories/preferred/category)"/>
-                    <td>
-                      <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
-                        <input type="checkbox" name="categoryKey">
-                          <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                          <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
-                          <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="keyword"/>','all-<xsl:value-of select="keyword"/>')</xsl:attribute>
-                          <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                          <xsl:value-of select="keyword"/>
-                        </input><br/>
-                      </xsl:for-each>
-                    </td>
-                    <td>
-                      <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
-                        <input type="checkbox" name="categoryKey">
-                          <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                          <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
-                          <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="keyword"/>','all-<xsl:value-of select="keyword"/>')</xsl:attribute>
-                          <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                          <xsl:value-of select="keyword"/>
-                        </input><br/>
-                      </xsl:for-each>
-                    </td>
-                  </tr>
-                </table>
-              </xsl:when>
-              <xsl:otherwise>
-                <table cellpadding="0" id="preferredCategoryCheckboxes">
-                  <tr>
-                    <td>
-                      No preferred categories (yet).
-                    </td>
-                  </tr>
-                </table>
-              </xsl:otherwise>
-            </xsl:choose>
-            <table cellpadding="0" id="allCategoryCheckboxes" class="invisible">
+            <xsl:if test="/bedeworkadmin/formElements/form/categories/preferred/category and /bedeworkadmin/creating='true'">
+              <input type="radio" name="categoryCheckboxes" value="preferred" checked="checked" onclick="changeClass('preferredCategoryCheckboxes','shown');changeClass('allCategoryCheckboxes','invisible');"/>show preferred
+              <input type="radio" name="categoryCheckboxes" value="all" onclick="changeClass('preferredCategoryCheckboxes','invisible');changeClass('allCategoryCheckboxes','shown')"/>show all<br/>
+              <table cellpadding="0" id="preferredCategoryCheckboxes">
+                <tr>
+                  <xsl:variable name="catCount" select="count(/bedeworkadmin/formElements/form/categories/preferred/category)"/>
+                  <td>
+                    <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
+                      <input type="checkbox" name="categoryKey">
+                        <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                        <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
+                        <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="keyword"/>','all-<xsl:value-of select="keyword"/>')</xsl:attribute>
+                        <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        <xsl:value-of select="keyword"/>
+                      </input><br/>
+                    </xsl:for-each>
+                  </td>
+                  <td>
+                    <xsl:for-each select="/bedeworkadmin/formElements/form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
+                      <input type="checkbox" name="categoryKey">
+                        <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                        <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
+                        <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="keyword"/>','all-<xsl:value-of select="keyword"/>')</xsl:attribute>
+                        <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        <xsl:value-of select="keyword"/>
+                      </input><br/>
+                    </xsl:for-each>
+                  </td>
+                </tr>
+              </table>
+            </xsl:if>
+            <table cellpadding="0" id="allCategoryCheckboxes">
+              <xsl:if test="/bedeworkadmin/creating='true'">
+                <xsl:attribute name="class">invisible</xsl:attribute>
+              </xsl:if>
               <tr>
                 <xsl:variable name="catCount" select="count(/bedeworkadmin/formElements/form/categories/all/category)"/>
                 <td>
                   <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
                     <input type="checkbox" name="categoryKey">
                       <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
-                      <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                      <xsl:if test="/bedeworkadmin/creating='true'">
+                        <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
+                        <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
+                      </xsl:if>
+                      <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword">
+                        <xsl:attribute name="checked">checked</xsl:attribute>
+                      </xsl:if>
                       <xsl:value-of select="keyword"/>
                     </input><br/>
                   </xsl:for-each>
@@ -1069,9 +1065,13 @@
                   <xsl:for-each select="/bedeworkadmin/formElements/form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
                     <input type="checkbox" name="categoryKey">
                       <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
-                      <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                      <xsl:if test="/bedeworkadmin/creating='true'">
+                        <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
+                        <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
+                      </xsl:if>
+                      <xsl:if test="keyword = /bedeworkadmin/formElements/form/categories/current//category/keyword">
+                        <xsl:attribute name="checked">checked</xsl:attribute>
+                      </xsl:if>
                       <xsl:value-of select="keyword"/>
                     </input><br/>
                   </xsl:for-each>
@@ -3874,10 +3874,21 @@
   <xsl:template name="searchResult">
     <h2 class="bwStatusConfirmed">
       <div id="searchFilter">
-        Limit search to:
-        <input type="radio" name="searchLimit" value="future"/>today forward
-        <input type="radio" name="searchLimit" value="future"/>past dates
-        <input type="radio" name="searchLimit" value="all" checked="checked"/>all dates
+        <form name="searchForm" method="post" action="{$search}">
+          <input type="text" name="query" size="15">
+            <xsl:attribute name="value"><xsl:value-of select="/bedeworkadmin/searchResults/query"/></xsl:attribute>
+          </input>
+          <input type="submit" name="submit" value="go"/>
+          Limit to:
+          <input type="radio" name="limits" value="fromToday"/>today forward
+          <input type="radio" name="limits" value="beforeToday"/>past dates
+          <input type="radio" name="limits" value="none"/>all dates
+        </form>
+        <!--Limit search to:
+        <xsl:variable name="query" select="/bedework/searchResults/query"/>
+        <input type="radio" name="searchLimit" value="future" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=fromToday')"/>today forward
+        <input type="radio" name="searchLimit" value="past" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=beforeToday')"/>past dates
+        <input type="radio" name="searchLimit" value="all" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=none')"/>all dates-->
       </div>
       Search Result
     </h2>
