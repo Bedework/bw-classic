@@ -96,6 +96,9 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.category.added'">
+        <p>Category added.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.category.deleted'">
         <p>Category deleted.</p>
       </xsl:when>

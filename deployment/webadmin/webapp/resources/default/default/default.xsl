@@ -1825,9 +1825,7 @@
 
   <xsl:template name="deleteCategoryConfirm">
     <h2>Ok to delete this category?</h2>
-    <p id="confirmButtons">
-      <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
-    </p>
+
 
     <table class="eventFormTable">
       <tr>
@@ -1847,6 +1845,11 @@
         </td>
       </tr>
     </table>
+
+    <form action="{$category-delete}" method="post">
+      <input type="submit" name="updateCategory" value="Yes: Delete Category"/>
+      <input type="submit" name="cancelled" value="No: Cancel"/>
+    </form>
   </xsl:template>
 
 <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
