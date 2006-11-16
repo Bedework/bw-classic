@@ -447,9 +447,9 @@
         <input type="submit" name="submit" value="go"/>
         <div id="searchFields">
           Limit:
-          <input type="radio" name="limits" value="fromToday"/>today forward
-          <input type="radio" name="limits" value="beforeToday"/>past dates
-          <input type="radio" name="limits" value="none" checked="checked"/>all dates
+          <input type="radio" name="searchLimits" value="fromToday"/>today forward
+          <input type="radio" name="searchLimits" value="beforeToday"/>past dates
+          <input type="radio" name="searchLimits" value="none" checked="checked"/>all dates
         </div>
       </form>
 
@@ -3881,15 +3881,15 @@
           </input>
           <input type="submit" name="submit" value="go"/>
           Limit:
-          <input type="radio" name="limits" value="fromToday"/>today forward
-          <input type="radio" name="limits" value="beforeToday"/>past dates
-          <input type="radio" name="limits" value="none"/>all dates
+          <input type="radio" name="searchLimits" value="fromToday"/>today forward
+          <input type="radio" name="searchLimits" value="beforeToday"/>past dates
+          <input type="radio" name="searchLimits" value="none"/>all dates
         </form>
         <!--Limit search to:
         <xsl:variable name="query" select="/bedework/searchResults/query"/>
-        <input type="radio" name="searchLimit" value="future" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=fromToday')"/>today forward
-        <input type="radio" name="searchLimit" value="past" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=beforeToday')"/>past dates
-        <input type="radio" name="searchLimit" value="all" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=none')"/>all dates-->
+        <input type="radio" name="searchLimit" value="future" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=fromToday')"/>today forward
+        <input type="radio" name="searchLimit" value="past" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=beforeToday')"/>past dates
+        <input type="radio" name="searchLimit" value="all" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=none')"/>all dates-->
       </div>
       Search Result
     </h2>

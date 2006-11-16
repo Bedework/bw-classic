@@ -1144,9 +1144,9 @@
       <div id="searchFilter">
         Limit search to:
         <xsl:variable name="query" select="/bedework/searchResults/query"/>
-        <input type="radio" name="searchLimit" value="future" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=fromToday')"/>today forward
-        <input type="radio" name="searchLimit" value="past" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=beforeToday')"/>past dates
-        <input type="radio" name="searchLimit" value="all" onchange="window.location.replace('{$search}&amp;query={$query}&amp;limits=none')"/>all dates
+        <input type="radio" name="searchLimit" value="future" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=fromToday')"/>today forward
+        <input type="radio" name="searchLimit" value="past" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=beforeToday')"/>past dates
+        <input type="radio" name="searchLimit" value="all" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=none')"/>all dates
       </div>
       Search Result
     </h2>
