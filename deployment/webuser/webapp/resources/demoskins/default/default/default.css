@@ -679,18 +679,18 @@ form#subscriptions {
   padding: 0;
 }
 table#attendees th {
-  padding: 0 0 0.1em 1em;
+  padding: 0 2em 0.1em 0;
   background: white;
   color: black;
   border-bottom: 1px dotted #333;
   font-size: 0.9em;
 }
 table#attendees td {
-  padding: 0 1em 0.1em 1em;
+  padding: 0 2em 0.1em 0;
+  font-size: 0.8em;
 }
 table#attendees td.role,
 table#attendees td.status {
-  font-size: 0.7em;
   text-transform: lowercase;
 }
 /* this is the recipients and attendees dialog box */
