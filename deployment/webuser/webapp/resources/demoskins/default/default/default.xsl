@@ -693,13 +693,15 @@
          <td class="rightCell">
 
            <!-- search -->
-           <form name="searchForm" method="post" action="{$search}">
-             Search:
-             <input type="text" name="query" size="15">
-               <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
-             </input>
-             <input type="submit" name="submit" value="go"/>
-           </form>
+           <xsl:if test="/bedework/page!='searchResult'">
+             <form name="searchForm" method="post" action="{$search}">
+               Search:
+               <input type="text" name="query" size="15">
+                 <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
+               </input>
+               <input type="submit" name="submit" value="go"/>
+             </form>
+           </xsl:if>
 
            <!-- show free / busy -->
            <xsl:choose>
@@ -5456,25 +5458,31 @@
   <xsl:template name="searchResult">
     <h2 class="bwStatusConfirmed">
       <div id="searchFilter">
-        Limit search to:
-        <xsl:variable name="query" select="/bedework/searchResults/query"/>
-        <xsl:choose>
-          <xsl:when test="/bedework/searchResults/searchLimits = 'beforeToday'">
-            <input type="radio" name="searchLimits" value="fromToday" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=fromToday')"/>today forward
-            <input type="radio" name="searchLimits" value="beforeToday" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=beforeToday')" checked="checked"/>past dates
-            <input type="radio" name="searchLimits" value="none" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=none')"/>all dates
-          </xsl:when>
-          <xsl:when test="/bedework/searchResults/searchLimits = 'none'">
-            <input type="radio" name="searchLimits" value="fromToday" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=fromToday')"/>today forward
-            <input type="radio" name="searchLimits" value="beforeToday" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=beforeToday')"/>past dates
-            <input type="radio" name="searchLimits" value="none" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=none')" checked="checked"/>all dates
-          </xsl:when>
-          <xsl:otherwise>
-            <input type="radio" name="searchLimits" value="fromToday" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=fromToday')" checked="checked"/>today forward
-            <input type="radio" name="searchLimits" value="beforeToday" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=beforeToday')"/>past dates
-            <input type="radio" name="searchLimits" value="none" onchange="window.location.replace('{$search}&amp;query={$query}&amp;searchLimits=none')"/>all dates
-          </xsl:otherwise>
-        </xsl:choose>
+        <form name="searchForm" method="post" action="{$search}">
+          Search:
+          <input type="text" name="query" size="15">
+            <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
+          </input>
+          <input type="submit" name="submit" value="go"/>
+          Limit:
+          <xsl:choose>
+            <xsl:when test="/bedework/searchResults/searchLimits = 'beforeToday'">
+              <input type="radio" name="searchLimits" value="fromToday"/>today forward
+              <input type="radio" name="searchLimits" value="beforeToday" checked="checked"/>past dates
+              <input type="radio" name="searchLimits" value="none"/>all dates
+            </xsl:when>
+            <xsl:when test="/bedework/searchResults/searchLimits = 'none'">
+              <input type="radio" name="searchLimits" value="fromToday"/>today forward
+              <input type="radio" name="searchLimits" value="beforeToday"/>past dates
+              <input type="radio" name="searchLimits" value="none" checked="checked"/>all dates
+            </xsl:when>
+            <xsl:otherwise>
+              <input type="radio" name="searchLimits" value="fromToday" checked="checked"/>today forward
+              <input type="radio" name="searchLimits" value="beforeToday"/>past dates
+              <input type="radio" name="searchLimits" value="none"/>all dates
+            </xsl:otherwise>
+          </xsl:choose>
+        </form>
       </div>
       Search Result
     </h2>

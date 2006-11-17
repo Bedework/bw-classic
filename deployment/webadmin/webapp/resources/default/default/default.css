@@ -28,15 +28,23 @@ body {
   background-color: inherit;
   color: #ff0;
   font-weight: bold;
+  margin: 0.5em 0;
+}
+#messages p {
+  margin: 0;
 }
 #errors {
   background-color: inherit;
   color: #f99;
   font-weight: bold;
+  margin: 0.5em 0;
 }
 #errors em {
   background-color: inherit;
   color: #ff9;
+}
+#errors p {
+  margin: 0;
 }
 #adminLeftColumn {
   float: left;

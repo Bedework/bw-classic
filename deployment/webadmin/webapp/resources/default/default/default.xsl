@@ -1413,24 +1413,22 @@
           Owner:
         </th>
         <td>
-          <xsl:value-of select="creator"/>
+          <strong><xsl:value-of select="creator"/></strong>
         </td>
       </tr>
 
     </table>
 
+    <p>
+      <xsl:if test="/bedeworkadmin/canEdit = 'true' or /bedeworkadmin/userInfo/superUser = 'true'">
+        <xsl:variable name="calPath" select="calendar/encodedPath"/>
+        <xsl:variable name="guid" select="guid"/>
+        <xsl:variable name="recurrenceId" select="recurrenceId"/>
+        <input type="button" name="return" value="Edit event" onclick="javascript:location.replace('{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
+      </xsl:if>
 
-    <!--<xsl:if test="/bedeworkadmin/canEdit = 'true' or /bedeworkadmin/userInfo/superUser = 'true'">
-      <xsl:variable name="subscriptionId" select="subscription/id"/>
-      <xsl:variable name="calPath" select="calendar/encodedPath"/>
-      <xsl:variable name="guid" select="guid"/>
-      <xsl:variable name="recurrenceId" select="recurrenceId"/>
-      <h3>
-        <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-          Edit Event
-        </a>
-      </h3>
-    </xsl:if>-->
+      <input type="button" name="return" value="Back to search results" onclick="javascript:history.back()"/>
+    </p>
   </xsl:template>
 
   <!--+++++++++++++++ Contacts ++++++++++++++++++++-->
@@ -3973,7 +3971,7 @@
             </img>
           </td>
           <td>
-            <a href="{$event-showEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$event-fetchForDisplay}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <xsl:value-of select="event/summary"/>
             </a>
           </td>
