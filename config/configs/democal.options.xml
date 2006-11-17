@@ -26,6 +26,10 @@
         <tzid>America/New_York</tzid>
         <systemid>demobedework@mysite.edu</systemid>
 
+        <principalRoot>/principals</principalRoot>
+        <userPrincipalRoot>/principals/users</userPrincipalRoot>
+        <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
+
         <publicCalendarRoot>public</publicCalendarRoot>
         <userCalendarRoot>user</userCalendarRoot>
         <userDefaultCalendar>calendar</userDefaultCalendar>
