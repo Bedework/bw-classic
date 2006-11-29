@@ -40,25 +40,11 @@
      =================================================================== -->
 
 <project name="bedework.buildwar" default="build" >
-  <target name="init" depends="init.common,init.uportal2,init.j2ee,init.standalone" />
+  <target name="init" depends="init.common,init.j2ee,init.standalone" />
 
   <target name="init.common">
     <!-- Load the location of the libraries -->
     <property file="${org.bedework.project.bedework}/build/libjars.properties" />
-
-    <!--
-    <condition property="org.bedework.build.for.jetspeed2">
-      <equals arg1="jetspeed2" arg2="${propval.app.portal.platform}"/>
-    </condition>
-
-    <condition property="org.bedework.build.for.uportal2">
-      <equals arg1="uportal2" arg2="${propval.app.portal.platform}"/>
-    </condition>
-
-    <condition property="org.bedework.build.for.jboss">
-      <equals arg1="jboss" arg2="${org.bedework.global.j2ee.platform}"/>
-    </condition>
-    -->
 
     <!-- Destinations - where we build an unwrapped war -->
     <property name="app.dest.war"
@@ -97,45 +83,13 @@
               location="${app.sou.dir}/war/WEB-INF/classes/servlet.properties" />
   </target>
 
-  <target name="init.uportal2" if="org.bedework.build.for.uportal2" >
-    <property name="propval.app.servlet.class"
-              value="org.apache.portals.bridges.struts.PortletServlet" />
-
-    <property name="propval.app.ignoreContentType"
-              value="true" />
-
-    <property name="propval.app.genurl.taglib.tld"
-              value="bedework-uportal2.tld" />
-  </target>
-
   <target name="init.standalone" if="org.bedework.global.build.standalone.app">
-    <property name="propval.app.servlet.class"
-              value="org.apache.struts.action.ActionServlet" />
-
-    <property name="propval.app.ignoreContentType"
-              value="false" />
-
-    <property name="propval.app.portlet.mapping" value="" />
-
-    <property name="propval.app.genurl.taglib.tld"
-              value="struts-html.tld" />
 
     <property name="app.dest.lib"
               location="${app.dest.webinf}/lib" />
   </target>
 
   <target name="init.j2ee" if="org.bedework.global.j2ee.platform">
-    <property name="propval.app.servlet.class"
-              value="org.apache.struts.action.ActionServlet" />
-
-    <property name="propval.app.ignoreContentType"
-              value="false" />
-
-    <property name="propval.app.portlet.mapping" value="" />
-
-    <property name="propval.app.genurl.taglib.tld"
-              value="struts-html.tld" />
-
     <property name="app.dest.lib"
               location="${org.bedework.temp.dir}/earlib" />
   </target>
@@ -163,6 +117,7 @@
          =============================================================== -->
 
     <filterset id="property.filters" >
+      <!--      Global settings            -->
       <filter token="BW-APP-NAME"
               value="${org.bedework.deploy.name}"/>
 
@@ -172,26 +127,40 @@
       <filter token="DIRECTORY-BROWSING-DISALLOWED"
               value="${org.bedework.global.directory.browsing.disallowed}" />
 
+      <filter token="PORTAL-PLATFORM"
+              value="${org.bedework.global.portal.platform}"/>
+
+      <filter token="SERVLET-CLASS"
+              value="${org.bedework.global.servlet.class}"/>
+
+      <filter token="PORTLET-SERVLET-CLASS"
+              value="${org.bedework.global.portlet-servlet.class}"/>
+
+      <filter token="PORTAL-SERVLET-CONTEXT-PROVIDER"
+              value="${org.bedework.global.portal-servlet.context.provider}"/>
+
+      <filter token="PORTLET-CLASS"
+              value="${org.bedework.global.portlet.class}"/>
+
       <filter token="IGNORE-CONTENT-TYPE"
-              value="${propval.app.ignoreContentType}" />
+              value="${org.bedework.global.ignoreContentType}" />
+
+      <filter token="GENURL-TAGLIB-TLD"
+              value="${org.bedework.global.genurl.taglib.tld}"/>
+
+      <filter token="LIFERAY-COMPANY-ID"
+              value="${org.bedework.global.liferay.company-id}"/>
+
+      <!--      Application settings            -->
 
       <filter token="APP-DESCRIPTION"
               value="${propval.app.description}" />
-
-      <filter token="PORTAL-PLATFORM"
-              value="${propval.app.portal.platform}"/>
 
       <filter token="PORTLET-NAME"
               value="${propval.app.portlet.name}"/>
 
       <filter token="CAL-SUITE"
               value="${propval.app.cal.suite}"/>
-
-      <filter token="SERVLET-CLASS"
-              value="${propval.app.servlet.class}"/>
-
-      <filter token="GENURL-TAGLIB-TLD"
-              value="${propval.app.genurl.taglib.tld}"/>
 
       <filter token="SECURITY-DOMAIN"
               value="${propval.app.security.domain}"/>
@@ -337,7 +306,14 @@
     </copy>
 
     <!-- Some more standard libs -->
-    <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
+    <if>
+      <not>
+        <isset property="org.bedework.build.for.jboss"/>
+      </not>
+      <then>
+        <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
+      </then>
+    </if>
     <copy todir="${app.dest.lib}" file="${lucene.core.jar}"/>
     <copy todir="${app.dest.lib}" file="${lucene.misc.jar}"/>
     <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
@@ -464,9 +440,63 @@
       </fileset>
     </copy>
 
-    <antcall target="add.xalan" inheritRefs="true" />
+    <if>
+      <not>
+        <isset property="xalan.in.tomcat.common.endorsed" />
+      </not>
+      <then>
+        <copy todir="${app.dest.lib}" file="${xalan.jar}"/>
+      </then>
+    </if>
+
+    <if>
+      <isset property="org.bedework.global.portal.platform" />
+      <then>
+        <!-- Add common portlet files -->
+
+        <copy todir="${app.dest.lib}" >
+          <fileset dir="${portals-bridges.jars.dir}">
+            <include name="*.jar"/>
+          </fileset>
+        </copy>
+
+        <!-- Use generic bedework portlet tld -->
+        <copy todir="${app.dest.webinf}/tlds"
+              overwrite="yes"
+              failonerror="no" >
+          <fileset dir="${app.root.dir}/resources/portlet" >
+            <include name="*.tld"/>
+          </fileset>
+        </copy>
+
+        <copy todir="${app.dest.webinf}"
+              file="${org.bedework.deploy.type.dir}/portlet/struts-portlet-config.xml"
+              overwrite="yes"
+              failonerror="no" />
+
+        <copy todir="${app.dest.webinf}"
+              file="${org.bedework.deploy.type.dir}/portlet/portlet.xml"
+              overwrite="yes"
+              failonerror="no" >
+          <filterset refid="property.filters" />
+        </copy>
+
+        <!-- Add the portal bridge controller def -->
+        <replace file="${app.dest.webinf}/struts-config.xml">
+          <replacetoken><![CDATA[<!-- portlet controller def here -->]]></replacetoken>
+          <replacevalue><![CDATA[<controller pagePattern="$M$P" inputForward="true"
+                  processorClass="org.apache.portals.bridges.struts.PortletRequestProcessor"/>]]>
+          </replacevalue>
+        </replace>
+
+        <replace file="${app.dest.webinf}/web.xml">
+          <replacefilter token="@PORTLET-NAME@" value="${propval.app.portlet.name}"/>
+        </replace>
+      </then>
+    </if>
     <antcall target="add.jetspeed2" inheritRefs="true" />
     <antcall target="add.uportal2" inheritRefs="true" />
+    <antcall target="add.liferay4" inheritRefs="true" />
 
     <copy todir="${app.dest.lib}">
       <fileset dir="${struts.dir}">
@@ -484,67 +514,19 @@
   </target>
 
   <target name="add.jetspeed2" if="org.bedework.build.for.jetspeed2" >
-    <copy todir="${app.dest.webinf}"
-          file="${org.bedework.deploy.type.dir}/jetspeed2/${propval.app.war.name}/portlet.xml"
-          overwrite="yes"
-          failonerror="no" />
-    <copy todir="${app.dest.webinf}"
-          file="${org.bedework.deploy.type.dir}/jetspeed2/struts-portlet-config.xml"
-          overwrite="yes"
-          failonerror="no" />
-
-    <copy todir="${app.dest.lib}" >
-      <fileset dir="${org.bedework.default.lib}/${jetspeed2.jars.dir}/portals-bridges-struts">
-        <include name="*.jar"/>
-      </fileset>
-    </copy>
-
     <copy todir="${app.dest.webinf}/tlds" >
       <fileset dir="${org.bedework.default.lib}/${jetspeed2.jars.dir}/portals-bridges-struts">
         <include name="*.tld"/>
       </fileset>
     </copy>
-
-    <!-- Add the portal bridge controller def -->
-    <replace file="${app.dest.webinf}/struts-config.xml">
-      <replacetoken><![CDATA[<!-- Jetspeed2 controller def here -->]]></replacetoken>
-      <replacevalue><![CDATA[<controller pagePattern="$M$P" inputForward="true"
-              processorClass="org.apache.portals.bridges.struts.PortletRequestProcessor"/>]]>
-      </replacevalue>
-    </replace>
   </target>
 
   <target name="add.uportal2" if="org.bedework.build.for.uportal2" >
-    <copy todir="${app.dest.webinf}"
-          file="${org.bedework.deploy.type.dir}/uportal2/portlet.xml"
-          overwrite="yes"
-          failonerror="no" >
-      <filterset refid="property.filters" />
-    </copy>
-
-    <copy todir="${app.dest.webinf}"
-          file="${org.bedework.deploy.type.dir}/uportal2/struts-portlet-config.xml"
-          overwrite="yes"
-          failonerror="no" />
-
     <copy todir="${app.dest.lib}" >
-      <fileset dir="${portals-bridges.jars.dir}">
-        <include name="*.jar"/>
-      </fileset>
       <fileset dir="${bin.home}">
         <include name="bw-uportal*.jar"/>
       </fileset>
     </copy>
-
-    <copy todir="${app.dest.webinf}/tlds"
-          overwrite="yes"
-          failonerror="no" >
-      <fileset dir="${org.bedework.deploy.type.dir}/uportal2" >
-        <include name="*.tld"/>
-      </fileset>
-    </copy>
-
-    <copy todir="${app.dest.lib}" file="${org.bedework.uportal.jar}" />
 
     <!-- Add the portlet servlet mapping -->
     <replace file="${app.dest.webinf}/web.xml">
@@ -556,21 +538,37 @@
       </replacevalue>
     </replace>
 
-    <replace file="${app.dest.webinf}/web.xml">
-      <replacefilter token="@PORTLET-NAME@" value="${propval.app.portlet.name}"/>
-    </replace>
-
-    <!-- Add the portal bridge controller def -->
-    <replace file="${app.dest.webinf}/struts-config.xml">
-      <replacetoken><![CDATA[<!-- Jetspeed2 controller def here -->]]></replacetoken>
-      <replacevalue><![CDATA[<controller pagePattern="$M$P" inputForward="true"
-              processorClass="org.apache.portals.bridges.struts.PortletRequestProcessor"/>]]>
-      </replacevalue>
-    </replace>
   </target>
 
-  <target name="add.xalan" unless="xalan.in.tomcat.common.endorsed" >
-    <copy todir="${app.dest.lib}" file="${xalan.jar}"/>
+  <target name="add.liferay4" if="org.bedework.build.for.liferay4" >
+   <!-- Add liferay config files -->
+    <copy todir="${app.dest.webinf}" >
+      <fileset dir="${app.sou.dir}/war/WEB-INF" >
+        <include name="liferay*"/>
+      </fileset>
+      <filterset refid="property.filters" />
+    </copy>
+
+    <copy todir="${app.dest.lib}" >
+      <fileset dir="${bin.home}">
+        <include name="bw-liferay*.jar"/>
+      </fileset>
+    </copy>
+
+    <!-- Add the portlet servlet mapping -->
+    <replace file="${app.dest.webinf}/web.xml">
+      <replacetoken><![CDATA[<!-- liferay4 portlet servlet mapping here -->]]></replacetoken>
+      <replacevalue><![CDATA[<listener>
+    <listener-class>
+      com.liferay.portal.servlet.PortletContextListener
+    </listener-class>
+  </listener>
+  <servlet-mapping>
+    <servlet-name>@PORTLET-NAME@</servlet-name>
+    <url-pattern>/@PORTLET-NAME@/*</url-pattern>
+  </servlet-mapping>]]>
+      </replacevalue>
+    </replace>
   </target>
 
   <!-- =================================================================

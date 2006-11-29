@@ -9,10 +9,10 @@
   <portlet id="@CONTEXT-ROOT@.@PORTLET-NAME@">
     <portlet-name>@PORTLET-NAME@</portlet-name>
     <display-name>@DISPLAY-NAME@</display-name>
-    <portlet-class>org.apache.portals.bridges.struts.StrutsPortlet</portlet-class>
+    <portlet-class>@PORTLET-CLASS@</portlet-class>
     <init-param>
       <name>ServletContextProvider</name>
-      <value>ca.mun.portal.strutsbridge.PortalServletContextProvider</value>
+      <value>@PORTAL-SERVLET-CONTEXT-PROVIDER@</value>
     </init-param>
     <init-param>
       <name>ViewPage</name>

@@ -20,8 +20,9 @@
 
     <dirname property="portlet.build.dir" file="${ant.file}"/>
 
+    <!-- Use generic portlet resources -->
     <property name="portlet.resources.dir"
-              location="${portlet.build.dir}/resources" />
+              location="${portlet.build.dir}/../portlet/resources" />
 
     <property name="portlet.skins.dir"
               location="${portlet.resources.dir}/demoskins" />
@@ -41,7 +42,7 @@
 
     <echo message="Copy from ${portlet.skins.dir}" />
     <property name="dest.skins.dir"
-              location="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.portal.platform}" />
+              location="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${org.bedework.global.portal.platform}" />
     <delete dir="${dest.skins.dir}" />
     <copy todir="${dest.skins.dir}">
       <fileset dir="${portlet.skins.dir}" />

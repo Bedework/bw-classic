@@ -67,11 +67,11 @@
     <!-- Delete the quickstart context def -->
     <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
 
-    <antcall target="deploy.uportal2" inheritRefs="true" />
+    <antcall target="deploy.for.portal" inheritRefs="true" />
   </target>
 
-  <target name="deploy.uportal2" if="org.bedework.build.for.uportal2" >
-    <ant antfile="${org.bedework.deploy.type.dir}/${propval.app.portal.platform}/build.xml"
+  <target name="deploy.for.portal" if="org.bedework.global.portal.platform" >
+    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.global.portal.platform}/build.xml"
          inheritrefs="true" target="deploy" />
   </target>
 

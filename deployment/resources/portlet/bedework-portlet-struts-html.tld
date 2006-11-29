@@ -25,7 +25,7 @@ limitations under the License.
 
   <tag>
     <name>form</name>
-    <tagclass>ca.mun.portal.strutsbridge.taglib.CalFormTag</tagclass>
+    <tagclass>org.bedework.webcommon.taglib.portlet.CalFormTag</tagclass>
     <bodycontent>JSP</bodycontent>
     <attribute>
       <name>action</name>
@@ -507,7 +507,7 @@ limitations under the License.
 
   <tag>
     <name>link</name>
-    <tagclass>ca.mun.portal.strutsbridge.taglib.CalLinkTag</tagclass>
+    <tagclass>org.bedework.webcommon.taglib.portlet.CalLinkTag</tagclass>
     <attribute>
     <name>actionURL</name>
     <required>false</required>
@@ -721,7 +721,7 @@ limitations under the License.
   </tag>
   <tag>
     <name>rewrite</name>
-    <tagclass>ca.mun.portal.strutsbridge.taglib.CalRewriteTag</tagclass>
+    <tagclass>org.bedework.webcommon.taglib.portlet.CalRewriteTag</tagclass>
     <bodycontent>empty</bodycontent>
     <attribute>
     <name>actionURL</name>

@@ -11,6 +11,8 @@
 <project name="quickstart-build-file" default="usage" basedir=".">
   <property environment="env"/>
 
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
   <target name="README" depends="init"
           description="Describe targets and their usage">
     <loadfile property="org.bedework.README" srcFile="${org.bedework.calendar.dir}/docs/README"/>

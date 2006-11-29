@@ -55,6 +55,13 @@
 
     <!-- Delete the quickstart context def -->
     <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
+
+    <antcall target="deploy.for.portal" inheritRefs="true" />
+  </target>
+
+  <target name="deploy.for.portal" if="org.bedework.global.portal.platform" >
+    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.global.portal.platform}/build.xml"
+         inheritrefs="true" target="deploy" />
   </target>
 
   <target name="build.configured" depends="init" >

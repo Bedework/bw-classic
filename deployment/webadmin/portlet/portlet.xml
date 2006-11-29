@@ -5,23 +5,21 @@
   Author: Xavier Lawrence @ jahia . com
   Author: Mike Douglass    douglm@rpi.edu
 -->
-<portlet-app id="ucalApp" version="1.0">
-  <portlet id="CalPortlet">
+<portlet-app id="calAdmin" version="1.0">
+  <portlet id="@CONTEXT-ROOT@.@PORTLET-NAME@">
+    <portlet-name>@PORTLET-NAME@</portlet-name>
+    <display-name>@DISPLAY-NAME@</display-name>
+    <portlet-class>@PORTLET-CLASS@</portlet-class>
     <init-param>
       <name>ServletContextProvider</name>
-      <value>org.apache.jetspeed.portlet.ServletContextProviderImpl</value>
+      <value>@PORTAL-SERVLET-CONTEXT-PROVIDER@</value>
     </init-param>
     <init-param>
       <name>ViewPage</name>
       <value>/initialise.rdo</value>
     </init-param>
-    <portlet-name>PersonalEvents</portlet-name>
-    <display-name>Personal Events Calendar</display-name>
-    <description>
-        The UWCal personal calendar application allows a user to manage
-        apersonal events and subscribe to public calendars.
+    <description>@APP-DESCRIPTION@
     </description>
-    <portlet-class>org.apache.portals.bridges.struts.StrutsPortlet</portlet-class>
     <expiration-cache>-1</expiration-cache>
     <supports>
       <mime-type>text/html</mime-type>
@@ -29,9 +27,9 @@
       <!--<portlet-mode>HELP</portlet-mode>-->
     </supports>
     <portlet-info>
-      <title>Personal Calendar</title>
-      <short-title>Calendar</short-title>
-      <keywords>Struts, calendar, Personal, Public, Events, subscribe</keywords>
+      <title>@DISPLAY-NAME@</title>
+      <short-title>@DISPLAY-NAME@</short-title>
+      <keywords>Struts, Bedework, Calendar, Public, Events</keywords>
     </portlet-info>
   </portlet>
 </portlet-app>

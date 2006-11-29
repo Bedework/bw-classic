@@ -1,0 +1,635 @@
+body {
+  background-color: white;
+  color: #000000;
+  margin: 0em;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 100%;
+  min-width: 680px;
+}
+#header {
+  color: #eee;
+  background-color : #333;
+  margin: 0em;
+  padding: 0.5em 1em 0.5em 1em;
+}
+#header a {
+  color: #dde;
+  background-color : transparent;
+}
+#header h1 {
+  font-size: 1.4em;
+  margin: 0.5em 0.5em 0em 0em;
+}
+#header img {
+  float: right;
+  border: 0;
+}
+#messages {
+  background-color: inherit;
+  color: #ff0;
+  font-weight: bold;
+  margin: 0.5em 0;
+}
+#messages p {
+  margin: 0;
+}
+#errors {
+  background-color: inherit;
+  color: #f99;
+  font-weight: bold;
+  margin: 0.5em 0;
+}
+#errors em {
+  background-color: inherit;
+  color: #ff9;
+}
+#errors p {
+  margin: 0;
+}
+#adminLeftColumn {
+  float: left;
+}
+#adminRightColumn {
+  float: left;
+  margin: 1em 0 1em 3em;
+}
+#statusBarTable {
+  margin: 0em;
+  color: black;
+  background-color: #edc;
+  font-size: 0.8em;
+  width: 100%;
+}
+#statusBarTable td.rightCell {
+  text-align: right;
+  padding: 0.2em 1em 0.2em 0em;
+}
+#statusBarTable td.leftCell {
+  color: #666;
+  background-color: #edc;
+  text-align: left;
+  padding: 0.2em 0em 0.2em 1em;
+}
+#statusBarTable span.status {
+  font-weight: bold;
+}
+#statusBarTable a:link,
+#statusBarTable a:active,
+#statusBarTable a:visited {
+  text-decoration : none;
+  color: blue;
+  background-color: transparent;
+}
+#statusBarTable a:hover {
+  text-decoration: none;
+  background-color: #ffe;
+  color: black;
+}
+#titleBar {
+  font-size: 0.7em;
+  font-weight: bold;
+  letter-spacing: 3px;
+  background-color: #ddd;
+  color: #666;
+  border-top: 1px solid black;
+  border-bottom: 2px solid black;
+  text-align: center;
+}
+#content {
+  margin: 0;
+  padding: 0 1em 1em 1em;
+}
+#content h2 {
+  margin: 0em;
+  padding: 1em 0.2em 0em 0.2em;
+  font-size: 1.4em;
+}
+#content h3 {
+  margin: 0em;
+  padding: 1em 0.2em 0em 0.2em;
+  font-size: 1.1em;
+}
+#content h4 {
+  margin: 0em;
+  padding: 1em 0.2em 0em 0.2em;
+  font-size: 1em;
+}
+#content .menuTitle {
+  margin: 0em;
+  padding: 1em 0.5em 0em 0.2em;
+}
+#content ol li {
+  padding-bottom: 1em;
+}
+th {
+  text-align: left;
+}
+#mainMenuTable {
+  margin-top: 0em;
+  margin-bottom: 1em;
+  /*width: 100%;*/
+}
+#mainMenuTable th {
+  padding: 0.2em 0.5em 0.2em 0.5em;
+  color: black;
+  background-color: #ccc;
+  text-align: left;
+}
+#mainMenuTable td {
+  padding: 0em;
+  color: black;
+  background-color: #eee;
+  text-align: center;
+}
+#mainMenuTable a:link,
+#mainMenuTable a:active,
+#mainMenuTable a:visited {
+  display: block;
+  padding: 0.2em 1em 0.2em 1em;
+  text-decoration: none;
+  color: #483D8B;
+  background-color: transparent;
+}
+#mainMenuTable a:hover {
+  display: block;
+  padding: 0.2em 1em 0.2em 1em;
+  text-decoration: none;
+  color: #483D8B;
+  background-color: #ffe;
+}
+#mainMenuTable form {
+  display: inline;
+}
+#searchForm {
+  font-size: 0.8em;
+  margin: 0 0 0 3px;
+}
+#searchForm input {
+  font-size: 0.7em;
+}
+#searchPageForm {
+  display: inline;
+  margin: 0px 0px 1px 0px;
+  padding: 0em;
+  white-space: nowrap;
+  float: right;
+}
+#searchFilter {
+  float: right;
+  font-size: 10pt;
+  font-weight: normal;
+  margin-top: 5px;
+}
+#searchTable {
+  width: 100%;
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 0px;
+  /*border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;*/
+}
+#searchTable th {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-align: left;
+  background: #e5e5e5;
+  color: #000;
+  font-weight: normal;
+}
+#searchTable td {
+  padding: 4px;
+  vertical-align: top;
+}
+#searchTable tr.fieldNames td {
+  background: #eee;
+  border-bottom: 1px solid #ccc;
+}
+#searchTable td.relevance {
+  white-space: nowrap;
+}
+#searchTable .searchRelevance {
+  background-color: #2c5f89;
+  color: black;
+}
+.adminMenu {
+  margin-top: 0em;
+  /*width: 100%;*/
+}
+ul.adminMenu {
+  margin-top: 0;
+}
+ul.adminMenu li {
+  padding: 0.25em 0 0 0;
+}
+ul.adminMenu a:link,
+ul.adminMenu a:active,
+ul.adminMenu a:visited {
+  text-decoration: none;
+  color: #483D8B;
+  background-color: transparent;
+}
+ul.adminMenu a:hover {
+  text-decoration: none;
+  color: #483D8B;
+  background-color: #ff3;
+}
+#commonListTable {
+  margin-bottom: 2em;
+}
+#commonListTable th {
+  padding: 0.2em 1em 0.2em 0.5em;
+  background-color : #ccc;
+  color: black;
+  white-space: nowrap;
+}
+#commonListTable td {
+  vertical-align: top;
+  font-size: 0.9em;
+  padding: 0.2em 1em 0.2em 0.5em;
+  color: black;
+  background-color: #eee;
+}
+table.eventFormTable {
+  margin: 1em 0;
+}
+table.eventFormTable td {
+  vertical-align: top;
+  font-size: 0.9em;
+}
+table.eventFormTable th,
+table.eventFormTable td.fieldName {
+  white-space: nowrap;
+  font-weight: bold;
+  background-color : #eee;
+  color: black;
+  padding: 0.2em;
+  font-size: 0.9em;
+}
+table.eventFormTable tr.validationError td.fieldName {
+  color: black;
+  background-color: #ee0 !important;
+}
+table.eventFormTable td.optional {
+  white-space: nowrap;
+  font-style: italic;
+  background-color : #eee;
+  color: black;
+  padding: 0.2em;
+}
+table.eventFormTable td.allField {
+  white-space: nowrap;
+  text-align: right;
+  font-style: italic;
+  background-color : white;
+  color: black;
+  padding: 0.2em;
+}
+table.eventFormTable .dateFields {
+  display: inline;
+}
+table.eventFormTable .timeFields {
+  display: inline;
+  margin-left: 1em;
+}
+.fieldInfo {
+  font-size: 0.9em;
+  font-style: italic;
+}
+table.eventFormTable div.fieldInfo {
+  width: 400px;
+  margin-bottom: 0.5em;
+}
+table.eventFormTable .dateStartEndBox {
+  border: 1px solid #ccb;
+  margin: 4px;
+  padding: 4px;
+}
+table.eventFormTable .dateStartEndBox strong {
+  display: block;
+}
+table.eventFormTable .startDateLabel {
+  margin-left: 26px;
+}
+table.eventFormTable .shown {
+  display: inline;
+}
+table.eventFormTable .invisible,
+.invisible {
+  display: none;
+}
+.hidden {
+  visibility: hidden;
+}
+table.eventFormTable div.durationBox {
+  border: 1px solid #ccb;
+  display: inline;
+  margin: 4px;
+  padding: 4px;
+}
+table.eventFormTable .durationSpacerText {
+  font-weight: bold;
+  margin: 0 1em;
+}
+#confirmButtons {
+  margin: 1em 0 !important;
+}
+#calDescriptionsLink {
+  font-size: 0.8em;
+}
+#flatCalendarDescriptions {
+  font-size: 0.9em;
+  padding: 0.2em;
+}
+#flatCalendarDescriptions td {
+  padding: 0.2em;
+}
+.autoCompleteMatched {
+  color: black;
+  background-color: white;
+}
+.autoCompleteHover {
+  background-color: #3366cc;
+  color: white;
+}
+.autoCompleteNormal {
+  background-color: white;
+  color: black;
+}
+.autoCompleteCell {
+  color: #3366cc;
+}
+.autoCompleteTable {
+  width: 386px;
+  border-collapse: collapse;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+.autoCompleteTable td {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 0.8em;
+}
+.edit {
+  top: -4px;
+  background: #F8F8F8;
+  border: 1px solid #ccc;
+}
+.highlite {
+  background: #FFF;
+  border: 1px dashed #ccc;
+}
+#clock {
+  position: relative;
+}
+#contactEmailAlert {
+  display: none;
+  background: transparent url('../../resources/email.gif') no-repeat top left;
+  /*position: relative;
+  top: -20px;
+  left: 250px;*/
+  float: left;
+  width: 150px;
+  height: 20px;
+}
+#submitTable {
+  width: 96%; /* less than 100% helps avoid IE weirdness */
+  margin-top: 1em;
+}
+#sharingBox {
+  margin: 2em 0;
+  border-top: 1px solid #333;
+}
+#sharingBox h3 {
+  padding: 1em 0 0.5em 0.5em;
+}
+#sharingBox h5 {
+  padding: 1em 0 0.5em 0;
+}
+#sharingBox ul {
+  font-size: 0.8em;
+  margin: 0 1em;
+}
+#sharingBox table td,
+#sharingBox table th {
+  white-space: nowrap;
+}
+#sharing td,
+#sharing th.thin {
+  font-size: 0.8em;
+}
+#shareForm {
+  margin: 1em 0;
+  padding: 0;
+}
+#shareFormTable {
+  width: 96%; /* less than 100% helps avoid IE weirdness */
+}
+#shareFormTable td {
+  border: 1px solid #666;
+  padding-bottom: 0.5em;
+}
+#shareFormTable h5 {
+  background: #e5e5e5;
+  color: black;
+  margin: 0 -0.5em;
+  padding: 4px;
+}
+#howList {
+  margin: 0;
+  padding: 0 0 1em 0;
+}
+#howList ul {
+  margin: 0 0 0 2em;
+  padding: 0 0 0.5em 0;
+}
+#howList li {
+  list-style-type: none;
+  margin-left: 0;
+  font-size: 11px;
+}
+table.common {
+  width: 100%;
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 0px;
+}
+table.common th {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em;
+  background-color: #ddd;
+  color: black;
+  white-space: nowrap;
+}
+table.common th.thin {
+  width: 80px;
+}
+table.common th.commonHeader {
+  vertical-align: middle;
+  background-color: #666;
+  color: #eee;
+  padding: 0.2em 0.5em;
+  text-align: left;
+  font-weight: normal;
+}
+#deleteListTable {
+  margin: 1em 0em 2em 1em;
+}
+#deleteListTable th {
+  text-align: left;
+  padding: 0.2em 1em 0.2em 0.5em;
+}
+#deleteListTable td {
+  vertical-align: top;
+  font-size: 0.9em;
+  padding: 0.2em 1em 0.2em 0.5em;
+}
+#deleteListTable .summary {
+  font-style: italic;
+}
+#calendarTable {
+}
+#calendarTable td,
+#subsTable td {
+  padding: 0 0.5em;
+  vertical-align: top;
+}
+#calendarTable td.cals,
+#subsTable td.cals {
+  border-right: 1px solid #aaa;
+  font-size: 0.9em;
+}
+#calendarTable td.cals {
+  width: 300px;
+}
+#subsTable td.cals {
+  width: 200px;
+}
+#viewsTable {
+  width: 100%;
+  border: 1px solid #eee;
+}
+#viewsTable td {
+  padding: 0 0.5em;
+  vertical-align: top;
+  font-size: 0.9em;
+}
+#content h3.viewName {
+  color: black;
+  background-color: #eee;
+  font-size: 1.1em;
+  padding: 0.25em;
+  margin: 1em 0 0 0;
+}
+#viewsTable td.subs {
+  border-right: 1px solid #aaa;
+  width: 200px;
+}
+#viewsTable table.subscriptionsListSubs {
+  text-align: right;
+  width: 200px;
+}
+#viewsTable table td.arrows {
+  width: 15px;
+}
+#authUserInputForms {
+  margin: 1em 0;
+}
+#adminGroupFormTable td,
+#adminGroupFormTable th {
+  vertical-align: top;
+}
+#adminGroupFormTable td.fieldName {
+  color: black;
+  background-color: #eee;
+}
+p.note {
+  margin: 0;
+  padding: 0;
+  font-size: 0.8em;
+  font-style: italic;
+}
+#calTreeBlock {
+  font-size: 0.9em;
+  padding: 2em;
+}
+#calendarTree ul {
+  padding-left: 10px;
+  margin-left: 10px;
+}
+#calendarTree li {
+  padding-top: 0.25em;
+  /*font-weight: bold;*/
+}
+/*#calendarTree li ul li ul li {
+  font-weight: normal;
+}*/
+#calendarTree li.folder {
+  list-style-image: url(../../resources/catIcon.gif);
+}
+#calendarTree li.calendar {
+  list-style-image: url(../../resources/calIcon-sm.gif);
+}
+#calendarTree a:link,
+#calendarTree a:active,
+#calendarTree a:visited {
+  text-decoration: none;
+}
+#calendarTree a:hover {
+  color: black;
+  background-color: #ff3;
+}
+#statsTable {
+  margin: 1em 0 0 4em;
+  width: 300px;
+}
+#statsTable th {
+  padding: 0.5em;
+  background-color: #eee;
+  color: black;
+}
+#statsTable td.label {
+  text-align: right;
+  padding-right: 2em;
+}
+#logoutButton  {
+  display: inline;
+}
+#logoutButton form {
+  display: inline;
+  margin-right: 0.5em;
+}
+.center {
+  text-align: center;
+}
+.smaller {
+  font-size: 0.8em;
+}
+/* even and odd -- for coloring table rows and the like */
+.even {
+  background-color: #eee;
+  color: black;
+}
+.odd {
+  background-color: transparent;
+  color: black;
+}
+.padTop {
+  padding-top: 1em;
+}
+#footer {
+  clear: both;
+  padding: 1em;
+  margin-top: 2em;
+  border-top: 1px solid #999;
+  font-size: 0.7em;
+  background-color: transparent;
+  color: #999;
+}
+#footer a {
+  color: #999;
+  background-color: inherit;
+}
