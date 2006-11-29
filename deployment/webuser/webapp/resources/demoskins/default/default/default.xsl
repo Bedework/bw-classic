@@ -135,8 +135,8 @@
   <xsl:variable name="schedule-initAttendeeReply" select="/bedework/urlPrefixes/schedule/initAttendeeReply/a/@href"/>
   <xsl:variable name="schedule-processAttendeeReply" select="/bedework/urlPrefixes/schedule/processAttendeeReply/a/@href"/>
 
-  <!-- URL of the web application - includes web context
-  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/> -->
+  <!-- URL of the web application - includes web context -->
+  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
 
   <!-- Other generally useful global variables -->
   <xsl:variable name="confId" select="/bedework/confirmationid"/>
@@ -159,18 +159,12 @@
         <xsl:when test="/bedework/page='selectCalForEvent'">
           <xsl:call-template name="selectCalForEvent"/>
         </xsl:when>
+        <xsl:when test="/bedework/page='attendees'">
+          <xsl:call-template name="attendees"/>
+        </xsl:when>
         <xsl:otherwise>
             <xsl:call-template name="headBar"/>
-            <xsl:if test="/bedework/message">
-              <div id="messages">
-                <xsl:apply-templates select="/bedework/message"/>
-              </div>
-            </xsl:if>
-            <xsl:if test="/bedework/error">
-              <div id="errors">
-                <xsl:apply-templates select="/bedework/error"/>
-              </div>
-            </xsl:if>
+            <xsl:call-template name="messagesAndErrors"/>
             <table id="bodyBlock" cellspacing="0">
               <tr>
                 <xsl:choose>
@@ -322,12 +316,6 @@
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
     <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
-    <script type="text/javascript" src="{$resourcesRoot}/resources/dojo-0.3.1-ajax/dojo.js"></script>
-    <script type="text/javascript">
-      dojo.require("dojo.event.*");
-      dojo.require("dojo.io.*");
-      dojo.require("dojo.widget.FloatingPane");
-    </script>
     <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
     <xsl:if test="/bedework/page='addEvent' or
                   /bedework/page='addEventRef' or
@@ -365,10 +353,26 @@
 
   <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
 
+  <xsl:template name="messagesAndErrors">
+    <xsl:if test="/bedework/message">
+      <div id="messages">
+        <xsl:apply-templates select="/bedework/message"/>
+      </div>
+    </xsl:if>
+    <xsl:if test="/bedework/error">
+      <div id="errors">
+        <xsl:apply-templates select="/bedework/error"/>
+      </div>
+    </xsl:if>
+  </xsl:template>
+
+
+  <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
+
   <xsl:template name="headBar">
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
       <tr>
-        <td colspan="3" id="logoCell"><a href="http://www.bedework.org/"><img src="{$resourcesRoot}/resources/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
+        <td colspan="3" id="logoCell"><a href="{$urlPrefix}"><img src="{$resourcesRoot}/resources/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
         <td colspan="2" id="schoolLinksCell">
           <h2>Personal Calendar</h2>
           <a href="{$publicCal}">Public Calendar</a> |
@@ -1844,7 +1848,8 @@
             Recipients &amp;<br/> Attendees:
           </td>
           <td class="fieldval posrelative">
-            <input type="button" value="Manage recipients and attendees" onclick="changeClass('recipientsAndAttendees','shown')"/>
+            <!--<input type="button" value="Manage recipients and attendees" onclick="changeClass('recipientsAndAttendees','shown')"/>-->
+            <input type="button" value="Manage recipients and attendees" onclick="launchSizedWindow('{$event-showAttendeesForEvent}','500','400')"/>
           </td>
         </tr>
         <tr>
@@ -1917,9 +1922,9 @@
       <xsl:call-template name="clock"/>
     </div>
 
-    <form name="raForm" id="recipientsAndAttendees" class="invisible">
+    <!--<form name="raForm" id="recipientsAndAttendees" class="invisible">
       <div id="recipientsAndAttendeesBox">
-        <h4 id="dialogTitle"><!--onmousedown="bwDrag('recipientsAndAttendeesBox')" onmouseup="bwDrop('recipientsAndAttendeesBox')"-->
+        <h4 id="dialogTitle">
           Recipients and Attendees
         </h4>
         <div id="raContent">
@@ -1970,7 +1975,7 @@
           <input type="button" value="done" onclick="changeClass('recipientsAndAttendees','invisible');"/>
         </div>
       </div>
-    </form>
+    </form>-->
   </xsl:template>
 
   <xsl:template name="clock">
@@ -2041,6 +2046,64 @@
         <area shape="poly" alt="Midnight, 0000 hour" title="Midnight, 0000 hour" coords="172,96, 169,74, 161,73, 161,65, 168,63, 158,-1, 209,-1, 201,61, 200,62, 206,64, 205,74, 198,75, 196,96, 183,95" href="javascript:bwClockUpdateDateTimeForm('hour','00')" />
       </map>
     </div>
+  </xsl:template>
+
+  <xsl:template name="attendees">
+    <form name="raForm" id="recipientsAndAttendees" action="{$event-attendeesForEvent}" method="post">
+      <div id="recipientsAndAttendeesBox">
+        <h4 id="dialogTitle">
+          Recipients and Attendees
+        </h4>
+        <xsl:call-template name="messagesAndErrors"/>
+        <div id="raContent">
+          <table cellspacing="0">
+            <tr>
+              <td>
+                <input name="uri" width="40"/>
+                <input type="submit" value="add" />
+                <br/>
+                <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
+                <input type="checkbox" name="attendee" value="true" checked="checked"/> attendee
+              </td>
+              <td>
+                Role:
+                <select name="role">
+                  <option value="REQ-PARTICIPANT">required participant</option>
+                  <option value="OPT-PARTICIPANT">optional participant</option>
+                  <option value="CHAIR">chair</option>
+                  <option value="NON-PARTICIPANT">non-participant</option>
+                </select><br/>
+                Status:
+                <select name="partstat">
+                  <option value="NEEDS-ACTION">needs action</option>
+                  <option value="ACCEPTED">accepted</option>
+                  <option value="DECLINED">declined</option>
+                  <option value="TENTATIVE">tentative</option>
+                  <option value="DELEGATED">delegated</option>
+                </select>
+              </td>
+            </tr>
+          </table>
+          <table cellspacing="0">
+            <tr>
+              <th>Recipients</th>
+              <th>Attendees</th>
+            </tr>
+            <tr>
+              <td>
+                <div id="recipientList">
+                </div>
+              </td>
+              <td>
+                <div id="attendeeList">
+                </div>
+              </td>
+            </tr>
+          </table>
+          <input type="button" value="done" onclick="window.close()"/>
+        </div>
+      </div>
+    </form>
   </xsl:template>
 
   <!--==== EDIT EVENT ====-->
@@ -5682,7 +5745,7 @@
     <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td class="leftCell">
-          <a href="http://www.bedework.org/">Bedework Calendar</a> |
+          <a href="http://www.bedework.org/">Bedework Website</a> |
           <a href="?noxslt=yes">show XML</a> |
           <a href="?refreshXslt=yes">refresh XSLT</a>
         </td>

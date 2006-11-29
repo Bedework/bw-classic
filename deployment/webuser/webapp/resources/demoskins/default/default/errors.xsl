@@ -62,6 +62,9 @@
       <xsl:when test="id='org.bedework.client.error.usernotfound'">
           <p>User not found.</p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.invaliduser'">
+          <p>Invalid user.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.location.referenced'">
           <p>Location is in use.  It cannot be deleted while referenced by an event.</p>
       </xsl:when>

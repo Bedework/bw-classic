@@ -177,8 +177,8 @@
   <xsl:variable name="admingroup-updateMembers" select="/bedeworkadmin/urlPrefixes/admingroup/updateMembers/a/@href"/>
   <xsl:variable name="admingroup-switch" select="/bedeworkadmin/urlPrefixes/admingroup/switch/a/@href"/>
 
-  <!-- URL of the web application - includes web context
-  <xsl:variable name="urlPrefix" select="/bedeworkadmin/urlprefix"/> -->
+  <!-- URL of the web application - includes web context -->
+  <xsl:variable name="urlPrefix" select="/bedeworkadmin/urlprefix"/>
 
   <!-- Other generally useful global variables -->
   <xsl:variable name="publicCal">/cal</xsl:variable>
@@ -4050,7 +4050,7 @@
 
   <xsl:template name="header">
     <div id="header">
-      <a href="http://www.bedework.org">
+      <a href="{$urlPrefix}">
         <img id="logo"
             alt="logo"
             src="{$resourcesRoot}/resources/bedeworkAdminLogo.gif"
@@ -4167,7 +4167,7 @@
   <!--==== FOOTER ====-->
   <xsl:template name="footer">
     <div id="footer">
-      <a href="http://www.bedework.org/">Bedework Calendar</a> |
+      <a href="http://www.bedework.org/">Bedework Website</a> |
       <!-- Enable the following two items when debugging skins only -->
       <a href="?noxslt=yes">show XML</a> |
       <a href="?refreshXslt=yes">refresh XSLT</a>

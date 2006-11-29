@@ -98,6 +98,9 @@
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
   <xsl:variable name="stats" select="/bedework/urlPrefixes/stats"/>
 
+  <!-- URL of the web application - includes web context -->
+  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
+
   <!-- Other generally useful global variables -->
   <xsl:variable name="privateCal">/ucal</xsl:variable>
   <xsl:variable name="prevdate" select="/bedework/previousdate"/>
@@ -184,7 +187,7 @@
   <xsl:template name="headBar">
     <div id="headBar">
       <div id="bedeworkLogo">
-        <a href="http://www.bedework.org/">
+        <a href="{$urlPrefix}">
           <img src="{$resourcesRoot}/images/soecal/soeBedeworkLogo.gif" width="296" height="69" border="0" alt="Bedework" align="right"/>
         </a>
       </div>

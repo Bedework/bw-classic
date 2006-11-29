@@ -696,24 +696,32 @@ table#attendees td.status {
 /* this is the recipients and attendees dialog box */
 #recipientsAndAttendees {
   position: relative;
+  margin: 0;
+  padding: 0;
 }
 #recipientsAndAttendeesBox {
-  position: absolute;
+  /*position: absolute;
   top: -300px;
   left: 150px;
   width: 500px;
-  padding: 18px;
-  border: 2px solid #ccc;
+  padding: 18px;*/
+  margin: 0;
+  /*border: 2px solid #ccc;*/
   background: white;
   color: black;
 }
 #recipientsAndAttendeesBox h4 {
   padding: 4px;
-  margin: -20px -20px 10px -20px;
+  /*margin: -20px -20px 10px -20px;*/
+  margin: 0;
   text-align: center;
   color: #eee;
   background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
   border: 2px solid #233979;
+}
+#recipientsAndAttendeesBox #errors,
+#recipientsAndAttendeesBox #messages {
+  margin: 0;
 }
 #recipientsAndAttendeesBox table {
   width: 100%;

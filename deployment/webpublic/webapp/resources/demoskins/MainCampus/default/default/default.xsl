@@ -88,6 +88,9 @@
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
   <xsl:variable name="stats" select="/bedework/urlPrefixes/stats"/>
 
+  <!-- URL of the web application - includes web context -->
+  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
+
   <!-- Other generally useful global variables -->
   <xsl:variable name="privateCal">/ucal</xsl:variable>
   <xsl:variable name="prevdate" select="/bedework/previousdate"/>
@@ -191,7 +194,7 @@
   <xsl:template name="headBar">
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
       <tr>
-        <td colspan="3" id="logoCell"><a href="http://www.bedework.org/"><img src="{$resourcesRoot}/images/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
+        <td colspan="3" id="logoCell"><a href="{$urlPrefix}"><img src="{$resourcesRoot}/images/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
         <td colspan="2" id="schoolLinksCell">
           <h2>Public Calendar</h2>
           <a href="{$privateCal}">Personal Calendar</a> |
@@ -1379,7 +1382,7 @@
     <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td class="leftCell">
-          Based on the <a href="http://www.bedework.org/">Bedework Calendar</a> |
+          Based on the <a href="http://www.bedework.org/">Bedework Website</a> |
           <a href="?noxslt=yes">show XML</a> |
           <a href="?refreshXslt=yes">refresh XSLT</a>
         </td>

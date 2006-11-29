@@ -47,6 +47,13 @@ function launchSimpleWindow(URL) {
   window.simpleWindow.focus();
 }
 
+// launch a size parameterized window for displaying information; no header or status bar
+function launchSizedWindow(URL,width,height) {
+  paramStr = "width=" + width + ",height=" + height + ",scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no";
+  sizedWindow = window.open(URL, "sizedWindow", paramStr);
+  window.sizedWindow.focus();
+}
+
 // launches new browser window with print-friendly version of page when
 // print icon is clicked
 function launchPrintWindow(URL) {
