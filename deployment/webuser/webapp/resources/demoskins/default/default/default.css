@@ -566,6 +566,9 @@ table.common td.eventLinks {
   padding: 6px 0;
   text-align: center;
 }
+table.common td.tzTime {
+  /*font-style: italic;*/
+}
 table.common #eventActions {
   float: right;
   clear: none;
