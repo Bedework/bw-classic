@@ -1021,6 +1021,9 @@
           <xsl:variable name="dayPos" select="position()"/>
           <xsl:if test="filler='false'">
             <td>
+              <xsl:if test="/bedework/now/date = date">
+                <xsl:attribute name="class">today</xsl:attribute>
+              </xsl:if>
               <xsl:variable name="dayDate" select="date"/>
               <a href="{$initEvent}&amp;startdate={$dayDate}" class="gridAdd" title="add event">
                 <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="9" height="10" border="0" alt="add event"/>
@@ -1058,6 +1061,9 @@
               </xsl:when>
               <xsl:otherwise>
                 <td>
+                  <xsl:if test="/bedework/now/date = date">
+                    <xsl:attribute name="class">today</xsl:attribute>
+                  </xsl:if>
                   <xsl:variable name="dayDate" select="date"/>
                   <a href="{$initEvent}&amp;startdate={$dayDate}" class="gridAdd" title="add event">
                     <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event"/>
@@ -1224,6 +1230,9 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <td>
+                    <xsl:if test="/bedework/now/date = date">
+                      <xsl:attribute name="class">today</xsl:attribute>
+                    </xsl:if>
                     <xsl:variable name="dayDate" select="date"/>
                     <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}">
                       <xsl:value-of select="value"/>

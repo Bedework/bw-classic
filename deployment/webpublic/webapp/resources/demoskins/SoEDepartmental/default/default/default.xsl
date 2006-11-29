@@ -871,6 +871,9 @@
           <xsl:variable name="dayPos" select="position()"/>
           <xsl:if test="filler='false'">
             <td>
+              <xsl:if test="/bedework/now/date = date">
+                <xsl:attribute name="class">today</xsl:attribute>
+              </xsl:if>
               <xsl:variable name="dayDate" select="date"/>
               <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink">
                 <xsl:value-of select="value"/>
@@ -905,6 +908,9 @@
               </xsl:when>
               <xsl:otherwise>
                 <td>
+                  <xsl:if test="/bedework/now/date = date">
+                    <xsl:attribute name="class">today</xsl:attribute>
+                  </xsl:if>
                   <xsl:variable name="dayDate" select="date"/>
                   <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink">
                     <xsl:value-of select="value"/>
@@ -1026,6 +1032,9 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <td>
+                    <xsl:if test="/bedework/now/date = date">
+                      <xsl:attribute name="class">today</xsl:attribute>
+                    </xsl:if>
                     <xsl:variable name="dayDate" select="date"/>
                     <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}">
                       <xsl:value-of select="value"/>

@@ -588,6 +588,14 @@ a.gridAdd {
   text-decoration: none;
   margin-right: 2px;
 }
+#monthCalendarTable td.today,
+#yearCalendarTable td.today {
+  background-color: #ffe;
+  color: black;
+}
+#yearCalendarTable td.today {
+  border: 1px solid #666;
+}
 #yearCalendarTable {
   width: 100%;
   font-size: 0.9em;
