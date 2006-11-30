@@ -597,7 +597,7 @@ a.gridAdd {
 }
 #monthCalendarTable td.today,
 #yearCalendarTable td.today {
-  background-color: #ffe;
+  background-color: #ffb;
   color: black;
 }
 #yearCalendarTable td.today {

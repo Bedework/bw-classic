@@ -237,6 +237,11 @@ td {
   background-color: #fee;
   color: black;
 }
+#monthCalendarTable td.today,
+#yearCalendarTable td.today {
+  background-color: #ffb;
+  color: black;
+}
 #yearCalendarTable {
   width: 100%;
   font-size: 0.9em;
