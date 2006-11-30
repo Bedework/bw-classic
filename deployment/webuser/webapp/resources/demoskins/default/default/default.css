@@ -683,7 +683,7 @@ form#subscriptions {
 }
 table#attendees th {
   padding: 0 2em 0.1em 0;
-  background: white;
+  background-color: white;
   color: black;
   border-bottom: 1px dotted #333;
   font-size: 0.9em;
@@ -695,6 +695,17 @@ table#attendees td {
 table#attendees td.role,
 table#attendees td.status {
   text-transform: lowercase;
+}
+table#attendees.widget {
+  border: 1px solid #999;
+}
+table#attendees.widget td,
+table#attendees.widget th {
+  padding: 0.2em 0 0.1em 1em;
+  text-align: left;
+}
+table#attendees.widget td.trash {
+  width: 15px;
 }
 /* this is the recipients and attendees dialog box */
 #recipientsAndAttendees {

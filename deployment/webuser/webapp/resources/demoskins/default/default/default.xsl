@@ -69,6 +69,7 @@
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/setSelection"/>
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/setViewPeriod"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/eventView"/>
+  <!-- events -->
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/initEvent"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/addEvent"/>
   <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete/a/@href"/>
@@ -80,17 +81,6 @@
   <xsl:variable name="updateEvent" select="/bedework/urlPrefixes/updateEvent"/>
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/delEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
-  <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
-  <xsl:variable name="search" select="/bedework/urlPrefixes/search/search"/>
-  <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
-  <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
-  <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
-  <xsl:variable name="initEventAlarm" select="/bedework/urlPrefixes/initEventAlarm"/>
-  <xsl:variable name="setAlarm" select="/bedework/urlPrefixes/setAlarm"/>
-  <xsl:variable name="initUpload" select="/bedework/urlPrefixes/initUpload"/>
-  <xsl:variable name="upload" select="/bedework/urlPrefixes/upload"/>
-  <xsl:variable name="freeBusy-fetch" select="/bedework/urlPrefixes/freeBusy/fetch/a/@href"/>
-  <xsl:variable name="freeBusy-setAccess" select="/bedework/urlPrefixes/freeBusy/setAccess/a/@href"/>
   <!-- locations -->
   <xsl:variable name="location-initAdd" select="/bedework/urlPrefixes/location/initAdd/a/@href"/>
   <xsl:variable name="location-initUpdate" select="/bedework/urlPrefixes/location/initUpdate/a/@href"/>
@@ -134,6 +124,18 @@
   <xsl:variable name="schedule-attendeeRespond" select="/bedework/urlPrefixes/schedule/attendeeRespond/a/@href"/>
   <xsl:variable name="schedule-initAttendeeReply" select="/bedework/urlPrefixes/schedule/initAttendeeReply/a/@href"/>
   <xsl:variable name="schedule-processAttendeeReply" select="/bedework/urlPrefixes/schedule/processAttendeeReply/a/@href"/>
+  <!-- other -->
+  <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
+  <xsl:variable name="search" select="/bedework/urlPrefixes/search/search"/>
+  <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
+  <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
+  <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
+  <xsl:variable name="initEventAlarm" select="/bedework/urlPrefixes/initEventAlarm"/>
+  <xsl:variable name="setAlarm" select="/bedework/urlPrefixes/setAlarm"/>
+  <xsl:variable name="initUpload" select="/bedework/urlPrefixes/initUpload"/>
+  <xsl:variable name="upload" select="/bedework/urlPrefixes/upload"/>
+  <xsl:variable name="freeBusy-fetch" select="/bedework/urlPrefixes/freeBusy/fetch/a/@href"/>
+  <xsl:variable name="freeBusy-setAccess" select="/bedework/urlPrefixes/freeBusy/setAccess/a/@href"/>
 
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
@@ -1611,6 +1613,18 @@
           </td>
         </tr>
       </xsl:if>
+      <xsl:if test="categories/category">
+        <tr>
+          <td class="fieldname">Categories:</td>
+          <td class="fieldval">
+            <!--<ul id="eventCategories">-->
+              <xsl:for-each select="categories/category">
+                <!--<li>--><xsl:value-of select="word"/><br/><!--</li>-->
+              </xsl:for-each>
+            <!--</ul>-->
+          </td>
+        </tr>
+      </xsl:if>
       <tr>
         <td class="fieldname filler">&#160;</td>
         <td class="fieldval">&#160;</td>
@@ -2137,22 +2151,72 @@
               </td>
             </tr>
           </table>
-          <table cellspacing="0">
-            <tr>
-              <th>Recipients</th>
-              <th>Attendees</th>
-            </tr>
-            <tr>
-              <td>
-                <div id="recipientList">
-                </div>
-              </td>
-              <td>
-                <div id="attendeeList">
-                </div>
-              </td>
-            </tr>
-          </table>
+          <xsl:if test="/bedework/attendees/attendee">
+            <table id="attendees" class="widget" cellspacing="0">
+              <tr>
+                <th colspan="4">Attendees</th>
+              </tr>
+              <!--<tr>
+                <td>attendee</td>
+                <td>role</td>
+                <td>status</td>
+              </tr>-->
+              <xsl:for-each select="/bedework/attendees/attendee">
+                <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
+                <xsl:sort select="attendeeUri" order="ascending" case-order="upper-first"/>
+                <xsl:variable name="attendeeUri" select="attendeeUri"/>
+                <tr>
+                  <td class="trash">
+                    <a href="{$event-attendeesForEvent}&amp;uri={$attendeeUri}&amp;attendee=true&amp;delete=true" title="remove">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{$attendeeUri}">
+                      <xsl:choose>
+                        <xsl:when test="cn != ''">
+                          <xsl:value-of select="cn"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="attendeeUri"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </a>
+                  </td>
+                  <td class="role">
+                    <xsl:value-of select="role"/>
+                  </td>
+                  <td class="status">
+                    <xsl:value-of select="partstat"/>
+                  </td>
+                </tr>
+              </xsl:for-each>
+            </table>
+          </xsl:if>
+
+          <xsl:if test="/bedework/recipients/recipient">
+            <table id="attendees" class="widget" cellspacing="0">
+              <tr>
+                <th colspan="2">Recipients</th>
+              </tr>
+              <xsl:for-each select="/bedework/recipients/recipient">
+                <xsl:variable name="recipientUri" select="."/>
+                <tr>
+                  <td class="trash">
+                    <a href="{$event-attendeesForEvent}&amp;uri={$recipientUri}&amp;recipient=true&amp;delete=true" title="remove">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{$recipientUri}">
+                      <xsl:value-of select="."/>
+                    </a>
+                  </td>
+                </tr>
+              </xsl:for-each>
+            </table>
+          </xsl:if>
+
           <input type="button" value="done" onclick="window.close()"/>
         </div>
       </div>
@@ -2460,6 +2524,16 @@
             </textarea>
           </td>
         </tr>
+        <!--  Recipients and Attendees  -->
+        <tr>
+          <td class="fieldname">
+            Recipients &amp;<br/> Attendees:
+          </td>
+          <td class="fieldval posrelative">
+            <!--<input type="button" value="Manage recipients and attendees" onclick="changeClass('recipientsAndAttendees','shown')"/>-->
+            <input type="button" value="Manage recipients and attendees" onclick="launchSizedWindow('{$event-showAttendeesForEvent}','500','400')"/>
+          </td>
+        </tr>
         <tr>
           <td class="fieldname">Location:</td>
           <td class="fieldval" align="left">
@@ -2481,16 +2555,9 @@
             <input type="text" name="event.link" size="80" value="{$link}"/>
           </td>
         </tr>
-        <tr>
-          <td class="fieldname">&#160;</td>
-          <td class="fieldval">
-            <input name="submit" type="submit" value="Submit Event"/>&#160;
-            <input name="cancelled" type="submit" value="Cancel"/>
-          </td>
-        </tr>
         <!--  Category  -->
         <tr>
-          <td class="fieldName">
+          <td class="fieldname">
             Categories:
           </td>
           <td>
@@ -2517,6 +2584,14 @@
                 </td>
               </tr>
             </table>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">&#160;</td>
+          <td class="fieldval">
+            <input name="submit" type="submit" value="Submit Event"/>&#160;
+            <input name="cancelled" type="submit" value="Cancel"/>
+            <input type="button" value="return to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}')"/>
           </td>
         </tr>
       </table>
