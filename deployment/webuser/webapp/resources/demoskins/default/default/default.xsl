@@ -1517,20 +1517,14 @@
           <td class="fieldval">
             <table id="attendees" cellspacing="0">
               <tr>
+                <th>attendee</th>
                 <th>role</th>
                 <th>status</th>
-                <th>attendee</th>
               </tr>
               <xsl:for-each select="attendee">
                 <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
                 <xsl:sort select="attendeeUri" order="ascending" case-order="upper-first"/>
                 <tr>
-                  <td class="role">
-                    <xsl:value-of select="role"/>
-                  </td>
-                  <td class="status">
-                    <xsl:value-of select="partstat"/>
-                  </td>
                   <td>
                     <xsl:variable name="attendeeUri" select="attendeeUri"/>
                     <a href="{$attendeeUri}">
@@ -1542,6 +1536,34 @@
                           <xsl:value-of select="attendeeUri"/>
                         </xsl:otherwise>
                       </xsl:choose>
+                    </a>
+                  </td>
+                  <td class="role">
+                    <xsl:value-of select="role"/>
+                  </td>
+                  <td class="status">
+                    <xsl:value-of select="partstat"/>
+                  </td>
+                </tr>
+              </xsl:for-each>
+            </table>
+          </td>
+        </tr>
+      </xsl:if>
+      <xsl:if test="recipient">
+        <tr>
+          <td class="fieldname">Recipients:</td>
+          <td class="fieldval">
+            <table id="attendees" cellspacing="0">
+              <tr>
+                <th>recipient</th>
+              </tr>
+              <xsl:for-each select="recipient">
+                <tr>
+                  <td>
+                    <xsl:variable name="recipientUri" select="."/>
+                    <a href="{$recipientUri}">
+                      <xsl:value-of select="."/>
                     </a>
                   </td>
                 </tr>

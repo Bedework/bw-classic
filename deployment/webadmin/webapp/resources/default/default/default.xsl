@@ -604,20 +604,22 @@
         <tr>
           <td>
             <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-              <xsl:value-of select="title"/>
+              <xsl:value-of select="summary"/>
             </a>
           </td>
           <td class="date">
-            <xsl:value-of select="start"/>
+            <xsl:value-of select="start/longdate"/>,
+            <xsl:value-of select="start/time"/>
           </td>
           <td class="date">
-            <xsl:value-of select="end"/>
+            <xsl:value-of select="end/longdate"/>,
+            <xsl:value-of select="end/time"/>
           </td>
           <td>
             <xsl:value-of select="calendar/name"/>
           </td>
           <td>
-            <xsl:value-of select="desc"/>
+            <xsl:value-of select="description"/>
           </td>
         </tr>
       </xsl:for-each>
@@ -1041,7 +1043,7 @@
               </table>
             </xsl:if>
             <table cellpadding="0" id="allCategoryCheckboxes">
-              <xsl:if test="/bedeworkadmin/creating='true'">
+              <xsl:if test="/bedeworkadmin/formElements/form/categories/preferred/category and /bedeworkadmin/creating='true'">
                 <xsl:attribute name="class">invisible</xsl:attribute>
               </xsl:if>
               <tr>
@@ -1167,6 +1169,7 @@
               </td>
               <td align="right">
                 <input type="submit" name="delete" value="Delete Event"/>
+                <input type="hidden" name="public" value="true"/>
               </td>
             </xsl:otherwise>
           </xsl:choose>
