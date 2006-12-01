@@ -1296,14 +1296,14 @@
               Download
             </a> |
             <xsl:choose>
-              <xsl:when test="isAnnotation">
+              <xsl:when test="recurring='true'">
                 <xsl:choose>
-                  <xsl:when test="recurring=true">
+                  <xsl:when test="recurrenceId != ''">
                     Remove:
                     <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       all
-                    </a> |
+                    </a>
                     <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       this instance
@@ -1318,13 +1318,13 @@
                 </xsl:choose>
               </xsl:when>
               <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content">
-                 <xsl:choose>
-                  <xsl:when test="recurring=true">
+                <xsl:choose>
+                  <xsl:when test="recurring='true'">
                     Edit:
                     <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
                       <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                       master event
-                    </a> |
+                    </a>
                     <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                       this instance
@@ -1348,7 +1348,7 @@
             <xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind and not(isAnnotation)">
                |
               <xsl:choose>
-                <xsl:when test="recurring=true">
+                <xsl:when test="recurring='true'">
                   <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
                     <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     Delete All (recurring)
@@ -1364,7 +1364,7 @@
             </xsl:if>
           </div>
           <xsl:choose>
-            <xsl:when test="recurring=true">
+            <xsl:when test="recurring='true'">
               Recurring Event
             </xsl:when>
             <xsl:when test="calendar/owner = /bedework/userid">
