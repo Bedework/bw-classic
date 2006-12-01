@@ -1169,7 +1169,6 @@
               </td>
               <td align="right">
                 <input type="submit" name="delete" value="Delete Event"/>
-                <input type="hidden" name="public" value="true"/>
               </td>
             </xsl:otherwise>
           </xsl:choose>
@@ -1248,14 +1247,25 @@
   </xsl:template>
 
   <xsl:template match="event" mode="displayEvent">
+    <xsl:variable name="calPath" select="calendar/path"/>
+    <xsl:variable name="guid" select="guid"/>
+    <xsl:variable name="recurrenceId" select="recurrenceId"/>
+
     <xsl:choose>
       <xsl:when test="/bedeworkadmin/page='deleteEventConfirm'">
+
         <h2>Ok to delete this event?</h2>
         <p style="width: 400px;">Note: we do not encourage deletion of old but correct events; we prefer to keep
            old events for historical reasons.  Please remove only those events
            that are truly erroneous.</p>
         <p id="confirmButtons">
-          <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
+          <form action="{$event-delete}" method="post">
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="submit" name="delete" value="Delete"/>
+            <input type="hidden" name="calPath" value="{$calPath}"/>
+            <input type="hidden" name="guid" value="{$guid}"/>
+            <input type="hidden" name="recurrenceId" value="{$recurrenceId}"/>
+          </form>
         </p>
       </xsl:when>
       <xsl:otherwise>
@@ -1264,21 +1274,41 @@
     </xsl:choose>
 
     <table class="eventFormTable">
-      <tr>
-        <th>
-          ID:
-        </th>
-        <td>
-          <xsl:value-of select="id"/>
-        </td>
-      </tr>
 
       <tr>
         <th>
           Title:
         </th>
         <td>
-          <xsl:value-of select="title"/>
+          <strong><xsl:value-of select="summary"/></strong>
+        </td>
+      </tr>
+
+      <tr>
+        <th>
+          When:
+        </th>
+        <td>
+          <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text>
+          <xsl:if test="start/allday = 'false'">
+            <span class="time"><xsl:value-of select="start/time"/></span>
+          </xsl:if>
+          <xsl:if test="(end/longdate != start/longdate) or
+                        ((end/longdate = start/longdate) and (end/time != start/time))"> - </xsl:if>
+          <xsl:if test="end/longdate != start/longdate">
+            <xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text>
+          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="start/allday = 'true'">
+              <span class="time"><em>(all day)</em></span>
+            </xsl:when>
+            <xsl:when test="end/longdate != start/longdate">
+              <span class="time"><xsl:value-of select="end/time"/></span>
+            </xsl:when>
+            <xsl:when test="end/time != start/time">
+              <span class="time"><xsl:value-of select="end/time"/></span>
+            </xsl:when>
+          </xsl:choose>
         </td>
       </tr>
 
@@ -1287,76 +1317,7 @@
           Calendar:
         </th>
         <td>
-          <xsl:value-of select="calendar"/>
-        </td>
-      </tr>
-
-      <tr>
-        <th>
-          Start:
-        </th>
-        <td>
-          <xsl:value-of select="start/year"/>-<xsl:value-of select="start/month"/>-<xsl:value-of select="start/day"/>
-          <xsl:text> </xsl:text>
-          <xsl:choose>
-            <xsl:when test="start/allDay='true'">
-              <strong>all day event</strong>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="start/hour"/>:<xsl:value-of select="start/minute"/>
-              <xsl:if test="start/ampm">
-                <xsl:value-of select="start/ampm"/>
-              </xsl:if>
-            </xsl:otherwise>
-          </xsl:choose>
-        </td>
-      </tr>
-      <tr>
-        <th>
-          End:
-        </th>
-        <td>
-          <xsl:choose>
-            <xsl:when test="end/endtype = 'none'">
-              <div class="dateFields" id="noDuration">
-                This event has no duration / end date
-              </div>
-            </xsl:when>
-            <xsl:when test="end/endtype = 'duration'">
-              <div class="dateFields">
-                <div class="invisible" id="endDuration">
-                  <div class="durationBox">
-                    <input type="text" name="eventDuration.daysStr" size="2" value="0" onChange="window.document.peForm.durationType[0].checked = true;"/>days
-                    <input type="text" name="eventDuration.hoursStr" size="2" value="1" onChange="window.document.peForm.durationType[0].checked = true;"/>hours
-                    <input type="text" name="eventDuration.minutesStr" size="2" value="0" onChange="window.document.peForm.durationType[0].checked = true;"/>minutes
-                  </div>
-                  <span class="durationSpacerText">or</span>
-                  <div class="durationBox">
-                    <input type="text" name="eventDuration.weeksStr" size="2" value="0" onChange="window.document.peForm.durationType[1].checked = true;"/>weeks
-                  </div>
-                </div>
-              </div>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="end/dateTime/year"/>-<xsl:value-of select="end/dateTime/month"/>-<xsl:value-of select="end/dateTime/day"/>
-              <xsl:text> </xsl:text>
-              <xsl:value-of select="end/dateTime/hour"/>:<xsl:value-of select="end/dateTime/minute"/>
-              <xsl:text> </xsl:text>
-              <xsl:if test="end/dateTime/ampm">
-                <xsl:value-of select="end/dateTime/ampm"/>
-              </xsl:if>
-            </xsl:otherwise>
-          </xsl:choose>
-        </td>
-      </tr>
-
-      <!--  Category  -->
-      <tr>
-        <th>
-          Category:
-        </th>
-        <td>
-          <xsl:value-of select="category"/>
+          <xsl:value-of select="calendar/path"/>
         </td>
       </tr>
 
@@ -1366,7 +1327,7 @@
           Description:
         </th>
         <td>
-          <xsl:value-of select="desc"/>
+          <xsl:value-of select="description"/>
         </td>
       </tr>
       <!-- Cost -->
@@ -1390,13 +1351,15 @@
           </a>
         </td>
       </tr>
+
       <!-- Location -->
       <tr>
         <th>
           Location:
         </th>
         <td>
-          <xsl:value-of select="location"/>
+          <xsl:value-of select="location/address"/><br/>
+          <xsl:value-of select="location/subaddress"/>
         </td>
       </tr>
 
@@ -1406,7 +1369,12 @@
           Contact:
         </th>
         <td>
-          <xsl:value-of select="contact"/>
+          <xsl:value-of select="contact/name"/><br/>
+          <xsl:value-of select="contact/phone"/><br/>
+          <xsl:variable name="mailto" select="email"/>
+          <a href="mailto:{$mailto}"><xsl:value-of select="email"/></a>
+          <xsl:variable name="link" select="link"/>
+          <a href="mailto:{$link}"><xsl:value-of select="link"/></a>
         </td>
       </tr>
 
@@ -1420,17 +1388,26 @@
         </td>
       </tr>
 
+      <!--  Categories  -->
+      <tr>
+        <th>
+          Categories:
+        </th>
+        <td>
+          <xsl:for-each select="categories/category">
+            <xsl:value-of select="word"/><br/>
+          </xsl:for-each>
+        </td>
+      </tr>
+
     </table>
 
     <p>
       <xsl:if test="/bedeworkadmin/canEdit = 'true' or /bedeworkadmin/userInfo/superUser = 'true'">
-        <xsl:variable name="calPath" select="calendar/encodedPath"/>
-        <xsl:variable name="guid" select="guid"/>
-        <xsl:variable name="recurrenceId" select="recurrenceId"/>
         <input type="button" name="return" value="Edit event" onclick="javascript:location.replace('{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
       </xsl:if>
 
-      <input type="button" name="return" value="Back to search results" onclick="javascript:history.back()"/>
+      <input type="button" name="return" value="Back" onclick="javascript:history.back()"/>
     </p>
   </xsl:template>
 

@@ -141,7 +141,6 @@
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
 
   <!-- Other generally useful global variables -->
-  <xsl:variable name="confId" select="/bedework/confirmationid"/>
   <xsl:variable name="prevdate" select="/bedework/previousdate"/>
   <xsl:variable name="nextdate" select="/bedework/nextdate"/>
   <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
@@ -977,17 +976,17 @@
         <xsl:choose>
           <xsl:when test="recurring=true">
             Remove:
-            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
               <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
               all
             </a> |
-            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
               this instance
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Remove</a>
+            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">Remove</a>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -996,11 +995,11 @@
           <xsl:when test="recurring=true">
             Edit: <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">master</a> |
             <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">instance</a> |
-            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Delete All</a>
+            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">Delete All</a>
           </xsl:when>
           <xsl:otherwise>
             <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">Edit</a> |
-            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">Delete</a>
+            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">Delete</a>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -1301,17 +1300,17 @@
                 <xsl:choose>
                   <xsl:when test="recurring=true">
                     Remove:
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       all
                     </a> |
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       this instance
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       Remove
                     </a>
@@ -1322,17 +1321,17 @@
                  <xsl:choose>
                   <xsl:when test="recurring=true">
                     Edit:
-                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
                       <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                       master event
                     </a> |
-                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                       this instance
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
                       <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                       Edit
                     </a>
@@ -1350,13 +1349,13 @@
                |
               <xsl:choose>
                 <xsl:when test="recurring=true">
-                  <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;confirmationid={$confId}">
+                  <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
                     <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     Delete All (recurring)
                   </a>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                  <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                     <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     Delete
                   </a>
@@ -1659,7 +1658,6 @@
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$addEvent}" id="standardForm">
-      <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
       <h2>Add Event</h2>
       <table class="common" cellspacing="0">
@@ -2255,20 +2253,19 @@
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm">
-      <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
       <h2>Edit Event</h2>
       <table class="common" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">
             <div id="eventActions">
-              <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+              <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                 <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
                 View
               </a>
               <xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind">
                 |
-                <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}">
+                <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                   <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                   Delete
                 </a>
@@ -2613,7 +2610,7 @@
           <td class="fieldval">
             <input name="submit" type="submit" value="Submit Event"/>&#160;
             <input name="cancelled" type="submit" value="Cancel"/>
-            <input type="button" value="return to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;confirmationid={$confId}')"/>
+            <input type="button" value="return to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
           </td>
         </tr>
       </table>
@@ -4374,7 +4371,6 @@
     <xsl:choose>
       <xsl:when test="/bedework/creating = 'true'">
         <form name="addLocationForm" method="post" action="{$location-update}" id="standardForm">
-          <input type="hidden" name="confirmationid" value="{$confId}"/>
           <h2>Manage Locations</h2>
           <table class="common" cellspacing="0">
             <tr>
@@ -4418,7 +4414,6 @@
       <xsl:otherwise>
         <form name="editLocationForm" method="post" action="{$location-update}" id="standardForm">
           <input type="hidden" name="updateLocation" value="true"/>
-          <input type="hidden" name="confirmationid" value="{$confId}"/>
           <h2>Manage Locations</h2>
           <table class="common" cellspacing="0">
             <tr>
@@ -4595,7 +4590,6 @@
     change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$schedule-attendeeRespond}" id="standardForm">
       <input type="hidden" name="updateEvent" value="true"/>
-      <input type="hidden" name="confirmationid" value="{$confId}"/>
       <input type="hidden" name="endType" value="date"/>
       <h2>Meeting Request</h2>
       <table class="common" cellspacing="0">
