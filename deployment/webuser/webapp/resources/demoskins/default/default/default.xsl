@@ -1290,68 +1290,44 @@
       <tr>
         <th colspan="2" class="commonHeader">
           <div id="eventActions">
+            <!-- download -->
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
             <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
               <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
               Download
-            </a> |
-            <xsl:choose>
-              <xsl:when test="recurring='true'">
-                <xsl:choose>
-                  <xsl:when test="recurrenceId != ''">
-                    Remove:
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                      all
-                    </a>
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                      this instance
-                    </a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                      Remove
-                    </a>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:when>
-              <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content">
-                <xsl:choose>
-                  <xsl:when test="recurring='true'">
-                    Edit:
-                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-                      <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                      master event
-                    </a>
-                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                      <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                      this instance
-                    </a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-                      <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                      Edit
-                    </a>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:when>
-              <xsl:otherwise>
-                <a href="{$subscriptions-fetch}">
-                  <img src="{$resourcesRoot}/resources/std-ical_iconSubsDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                  Manage Subscriptions
-                </a>
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind and not(isAnnotation)">
-               |
+            </a>
+            <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
               <xsl:choose>
                 <xsl:when test="recurring='true'">
+                  Edit:
+                  <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
+                    master event
+                  </a>
+                  <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit instance"/>
+                    this instance
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                    Edit
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
+            <xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind and not(isAnnotation)">
+              <xsl:choose>
+                <xsl:when test="recurring='true'">
+                  Delete:
                   <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                    Delete All (recurring)
+                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete all"/>
+                    all
+                  </a>
+                  <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete instance"/>
+                    this instance
                   </a>
                 </xsl:when>
                 <xsl:otherwise>
@@ -1362,14 +1338,29 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:if>
+            <xsl:if test="calendar/owner != /bedework/userid and not(isAnnotation)">
+              <xsl:variable name="subname" select="subscription/name"/>
+              <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}">
+                <img src="{$resourcesRoot}/resources/std-ical_iconSubsDkGray.gif" width="12" height="16" border="0" alt="manage subscription"/>
+                Subscription
+              </a>
+            </xsl:if>
           </div>
+          <!-- Display type of event -->
+          <xsl:if test="recurring='true'">
+            Recurring
+          </xsl:if>
           <xsl:choose>
-            <xsl:when test="recurring='true'">
-              Recurring Event
-            </xsl:when>
             <xsl:when test="calendar/owner = /bedework/userid">
               Personal Event
             </xsl:when>
+            <xsl:when test="public = 'true'">
+              Public Event
+            </xsl:when>
+            <xsl:otherwise>
+              Event
+            </xsl:otherwise>
+            <!--
             <xsl:when test="starts-with(calendar/path,'/user/')">
               User Event (<xsl:value-of select="calendar/owner"/>)
             </xsl:when>
@@ -1385,7 +1376,7 @@
                   Event from Subscription
                 </xsl:otherwise>
               </xsl:choose>
-            </xsl:otherwise>
+            </xsl:otherwise>-->
           </xsl:choose>
         </th>
       </tr>
@@ -1416,11 +1407,20 @@
           <xsl:if test="start/timezone/islocal = 'false'">
             <xsl:text> </xsl:text>
             --
-            <strong>Local time</strong>
+            <strong>
+              <xsl:choose>
+                <xsl:when test="start/floating = 'true'">
+                  Floating time
+                </xsl:when>
+                <xsl:otherwise>
+                  Local time
+                </xsl:otherwise>
+              </xsl:choose>
+            </strong>
             <br/>
           </xsl:if>
-          <!-- display in timezone if not local -->
-          <xsl:if test="start/timezone/islocal = 'false'">
+          <!-- display in timezone if not local or floating time) -->
+          <xsl:if test="start/timezone/islocal = 'false' and start/floating = 'false'">
             <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/><xsl:text> </xsl:text>
             <xsl:if test="start/allday = 'false'">
               <span class="time"><xsl:value-of select="start/timezone/time"/></span>

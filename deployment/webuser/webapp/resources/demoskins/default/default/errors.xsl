@@ -53,6 +53,9 @@
       <xsl:when test="id='org.bedework.validation.error.missingfield'">
           <p>You must supply the following field: <em><xsl:value-of select="param"/></em></p>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.missingfield'">
+          <p>You must supply the following field: <em><xsl:value-of select="param"/></em></p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.calendar.referenced'">
           <p>Cannot delete: calendar contains events.</p>
       </xsl:when>
