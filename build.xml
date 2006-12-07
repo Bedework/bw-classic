@@ -314,7 +314,7 @@
   <target name="clean.access" depends="init"
           description="cleans the access project">
     <ant antfile="${org.bedework.project.access}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.access" depends="clean.access,build.access"
@@ -334,7 +334,7 @@
   <target name="clean.bwtools" depends="init"
           description="clean the bwtools project">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.bwtools" depends="clean.bwtools,build.bwtools"
@@ -354,7 +354,7 @@
   <target name="clean.caldav" depends="init"
           description="clean the caldav project">
     <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.caldav" depends="clean.caldav,build.caldav"
@@ -384,7 +384,7 @@
   <target name="clean.caldavTest" depends="init"
           description="clean the caldavTest project">
     <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.caldavTest" depends="clean.caldavTest,build.caldavTest"
@@ -431,7 +431,7 @@
   <target name="clean.calendarapi" depends="init"
           description="clean the calendar project">
     <ant antfile="${org.bedework.project.calendarapi}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.calendarapi" depends="clean.calendarapi,build.calendarapi"
@@ -464,7 +464,7 @@
   <target name="clean.davutil" depends="init"
           description="cleans the davutil project">
     <ant antfile="${org.bedework.project.davutil}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.davutil" depends="clean.davutil,build.davutil"
@@ -484,7 +484,7 @@
   <target name="clean.dumprestore" depends="init"
           description="clean the dumprestore project">
     <ant antfile="${org.bedework.project.dumprestore}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.dumprestore" depends="clean.dumprestore,build.dumprestore"
@@ -504,7 +504,7 @@
   <target name="clean.freebusy" depends="init"
           description="cleans the freebusy project">
     <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.freebusy" depends="clean.freebusy,build.freebusy"
@@ -516,6 +516,7 @@
   </target>
 
   <target name="clean.freebusy.if" depends="init" if="org.bedework.qs.build.freebusy" >
+    <antcall inheritrefs="true" target="clean.freebusy" />
   </target>
 
   <!-- .................................................................
@@ -549,7 +550,7 @@
   <target name="clean.rpiutil" depends="init"
           description="cleans the rpiutil project">
     <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.rpiutil" depends="clean.rpiutil,build.rpiutil"
@@ -569,7 +570,7 @@
   <target name="clean.synchml" depends="init"
           description="clean the synchml project">
     <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.synchml" depends="clean.synchml,clean.synchml"
@@ -599,7 +600,7 @@
   <target name="clean.webapps" depends="init"
           description="clean the webapps project">
     <ant antfile="${org.bedework.project.webapps}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.webapps" depends="clean.webapps,build.webapps"
@@ -622,7 +623,7 @@
   <target name="clean.webdav" depends="init"
           description="cleans the webdav project">
     <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
-           target="clean" />
+           target="deep-clean" />
   </target>
 
   <target name="clean.build.webdav" depends="clean.webdav,build.webdav"
@@ -711,6 +712,10 @@
     <attribute name="fromdir" default="dist"/>
     <attribute name="prefix" />
     <sequential>
+      <delete>
+        <fileset dir="@{target}/lib" includes="@{prefix}*.jar"/>
+      </delete>
+
       <copy todir="@{target}/lib" overwrite="yes">
         <fileset dir="@{this}/@{fromdir}">
           <include name="@{prefix}*.jar" />
