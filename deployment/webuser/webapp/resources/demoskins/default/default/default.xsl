@@ -972,66 +972,66 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
+      <xsl:choose>
+        <xsl:when test="recurring='true'">
+          Edit:
+          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+            master event
+          </a>
+          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            this instance
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+            Edit
+          </a>
+        </xsl:otherwise>
+      </xsl:choose>
+      |
+    </xsl:if>
+    <xsl:if test="owner != /bedework/userid">
+      <xsl:choose>
+        <xsl:when test="recurring='true'">
+          Annotate:
+          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+            master event
+          </a>
+          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            this instance
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+            Annotate
+          </a>
+        </xsl:otherwise>
+      </xsl:choose>
+      |
+    </xsl:if>
+    <xsl:if test="owner != /bedework/userid">
+      <xsl:variable name="subname" select="subscription/name"/>
+      <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}">
+        Subscription
+      </a>
+      |
+    </xsl:if>
     <xsl:choose>
       <xsl:when test="recurring='true'">
-        Edit:
-        <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-          master event
+        Delete:
+        <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+          all
         </a>
-        <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+        <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
           this instance
         </a>
       </xsl:when>
       <xsl:otherwise>
-        <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-          Edit
+        <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+          Delete
         </a>
       </xsl:otherwise>
     </xsl:choose>
-    |
-  </xsl:if>
-  <xsl:if test="owner != /bedework/userid">
-    <xsl:choose>
-      <xsl:when test="recurring='true'">
-        Annotate:
-        <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-          master event
-        </a>
-        <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-          this instance
-        </a>
-      </xsl:when>
-      <xsl:otherwise>
-        <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-          Annotate
-        </a>
-      </xsl:otherwise>
-    </xsl:choose>
-    |
-  </xsl:if>
-  <xsl:if test="owner != /bedework/userid">
-    <xsl:variable name="subname" select="subscription/name"/>
-    <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}">
-      Subscription
-    </a>
-    |
-  </xsl:if>
-  <xsl:choose>
-    <xsl:when test="recurring='true'">
-      Delete:
-      <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-        all
-      </a>
-      <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-        this instance
-      </a>
-    </xsl:when>
-    <xsl:otherwise>
-      <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-        Delete
-      </a>
-    </xsl:otherwise>
-  </xsl:choose>
   </xsl:template>
 
   <!--==== WEEK CALENDAR VIEW ====-->
@@ -1322,15 +1322,15 @@
               Download
             </a>
             <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
+             |
               <xsl:choose>
                 <xsl:when test="recurring='true'">
+                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                   Edit:
                   <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                     master event
                   </a>
                   <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit instance"/>
                     this instance
                   </a>
                 </xsl:when>
@@ -1343,15 +1343,15 @@
               </xsl:choose>
             </xsl:if>
             <xsl:if test="owner != /bedework/userid">
+              |
               <xsl:choose>
                 <xsl:when test="recurring='true'">
+                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                   Annotate:
                   <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                     master event
                   </a>
                   <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit instance"/>
                     this instance
                   </a>
                 </xsl:when>
@@ -1364,21 +1364,22 @@
               </xsl:choose>
             </xsl:if>
             <xsl:if test="owner != /bedework/userid">
+              |
               <xsl:variable name="subname" select="subscription/name"/>
               <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}">
                 <img src="{$resourcesRoot}/resources/std-ical_iconSubsDkGray.gif" width="12" height="16" border="0" alt="manage subscription"/>
                 Subscription
               </a>
             </xsl:if>
+            |
             <xsl:choose>
               <xsl:when test="recurring='true'">
+                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete all"/>
                 Delete:
                 <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-                  <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete all"/>
                   all
                 </a>
                 <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                  <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete instance"/>
                   this instance
                 </a>
               </xsl:when>
@@ -1754,7 +1755,12 @@
                 <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField"/>
               </xsl:otherwise>
             </xsl:choose>
-            all day event<br/>
+            all day event
+            <input type="checkbox" name="floating" onclick="swapFloatingTime(this)" value="off"/>
+            floating
+            <input type="checkbox" name="floating" onclick="swapFloatingTime(this)" value="off"/>
+            store as UTC
+            <br/>
             <div class="dateStartEndBox">
               <strong>Start:</strong>
               <div class="dateFields">

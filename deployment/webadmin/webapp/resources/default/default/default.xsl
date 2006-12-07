@@ -1274,7 +1274,6 @@
     </xsl:choose>
 
     <table class="eventFormTable">
-
       <tr>
         <th>
           Title:
