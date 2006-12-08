@@ -2370,6 +2370,7 @@
                   <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
 
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
+                    <xsl:if test="/bedework/formElements/form/floating/input/@checked='checked'"><xsl:attribute name="disabled">true</xsl:attribute></xsl:if>
                     <xsl:for-each select="/bedework/timezones/timezone">
                       <option>
                         <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
@@ -2428,6 +2429,7 @@
                     <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
 
                     <select name="eventStartDate.tzid" id="endTzid" class="timezones">
+                      <xsl:if test="/bedework/formElements/form/floating/input/@checked='checked'"><xsl:attribute name="disabled">true</xsl:attribute></xsl:if>
                       <xsl:for-each select="/bedework/timezones/timezone">
                         <option>
                           <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
