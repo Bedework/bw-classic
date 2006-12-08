@@ -136,13 +136,43 @@
     <!-- Clean up before we start -->
     <delete dir="${org.bedework.temp.wars.home}" />
 
-    <antcall target="deploy.standalone.apps" inheritrefs="true" />
+    <!--<antcall target="deploy.standalone.apps" inheritrefs="true" />-->
+    <if>
+      <isset property="org.bedework.global.build.standalone.app" />
+      <then>
+        <antcall target="deploy.apps" inheritrefs="true" >
+          <param name="org.bedework.deploy.kind" value="webapp" />
+        </antcall>
+      </then>
+    </if>
 
-    <antcall target="deploy.shellscr.apps" inheritrefs="true" />
+    <!--<antcall target="deploy.shellscr.apps" inheritrefs="true" />-->
+    <!-- Always build the shellscr stuff.-->
+    <antcall target="deploy.apps" inheritrefs="true" >
+      <param name="org.bedework.deploy.kind" value="shellscr" />
+    </antcall>
 
-    <antcall target="deploy.portal.apps" inheritrefs="true" />
+    <!-- <antcall target="deploy.portal.apps" inheritrefs="true" />-->
+    <if>
+      <isset property="org.bedework.global.portal.platform" />
+      <then>
+        <antcall target="deploy.apps" inheritrefs="true" >
+          <param name="org.bedework.deploy.kind"
+                 value="${org.bedework.global.portal.platform}" />
+        </antcall>
+      </then>
+    </if>
 
-    <antcall target="deploy.j2ee.apps" inheritrefs="true" />
+    <!-- <antcall target="deploy.j2ee.apps" inheritrefs="true" />-->
+    <if>
+      <isset property="org.bedework.global.j2ee.platform" />
+      <then>
+        <antcall target="deploy.apps" inheritrefs="true" >
+          <param name="org.bedework.deploy.kind"
+                 value="${org.bedework.global.j2ee.platform}" />
+        </antcall>
+      </then>
+    </if>
 
     <!-- copy startup website that sends you to the applications -->
     <delete dir="${webapp.root.dir}/bedework"/>
@@ -162,6 +192,7 @@
        this component.
        ================================================================= -->
 
+  <!--
   <target name="deploy.standalone.apps" if="org.bedework.global.build.standalone.app" >
     <property name="org.bedework.deploy.kind" value="webapp" />
     <antcall target="deploy.apps" inheritrefs="true" />
@@ -178,12 +209,14 @@
               value="${org.bedework.global.j2ee.platform}" />
     <antcall target="deploy.apps" inheritrefs="true" />
   </target>
+  -->
 
-  <!-- Always build the shellscr stuff. -->
+  <!-- Always build the shellscr stuff.
   <target name="deploy.shellscr.apps" >
     <property name="org.bedework.deploy.kind" value="shellscr" />
     <antcall target="deploy.apps" inheritrefs="true" />
   </target>
+  -->
 
   <!-- The cp.xalan task conditionally copies the xalan.jar file, if
        necessary -->
@@ -246,7 +279,7 @@
                 appPrefix="org.bedework.app"
                 projectPrefix="org.bedework.project">
       <sequential>
-        <antcall target="wrap.deploy.available.app" inheritrefs="true" />
+        <antcall target="deploy.available.app" inheritrefs="true" />
       </sequential>
     </forEachApp>
 
@@ -260,6 +293,23 @@
          inheritrefs="true" target="deploy" />
   </target>
 
+  <target name="deploy.available.app">
+    <if>
+      <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"/>
+      <then>
+        <propertyset id="deploy-app-properties">
+          <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
+          <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
+        </propertyset>
+
+        <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
+             inheritrefs="true" target="deploy" >
+          <propertyset refid="deploy-app-properties" />
+        </ant>
+      </then>
+    </if>
+  </target>
+  <!--
   <target name="wrap.deploy.available.app">
     <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
                property="app.kind.available" />
@@ -278,5 +328,6 @@
       <propertyset refid="deploy-app-properties" />
     </ant>
   </target>
+  -->
 </project>
 
