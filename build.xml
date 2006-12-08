@@ -195,31 +195,39 @@
     <property file="${org.bedework.defaultdefs.properties}" />
   </target>
 
+  <target name="init.build" depends="init">
+    <mkdir dir="${dist.home}" />
+
+    <mkdir dir="${bin.home}" />
+
+    <mkdir dir="${org.bedework.empty.dir}" />
+  </target>
+
   <!-- =================================================================
        "build" and "clean" targets for the project - does not build
        subsidiary projects like rpiutil and access
        ================================================================= -->
 
-  <target name="build" depends="init,build.rpiutil,build.access,build.davutil,
-                                build.calendarapi,build.dumprestore,build.synchml.if,
-                                build.webdav.if,build.caldav.if,build.caldavTest.if,
-                                build.freebusy.if,build.bwtools,build.webapps,
+  <target name="build" depends="init.build,build.rpiutil,build.access,build.davutil,
+                                build.calendarapi,build.dumprestore,build.synchml,
+                                build.webdav,build.caldav,build.caldavTest,
+                                build.freebusy,build.bwtools,build.webapps,
                                 build.deployutil"
           description="builds the project"/>
 
   <target name="clean" depends="init,clean.rpiutil,clean.access,clean.davutil,
-                                clean.calendarapi,clean.dumprestore,clean.synchml.if,
-                                clean.webdav.if,clean.caldav.if,clean.caldavTest.if,
-                                clean.freebusy.if,clean.bwtools,clean.webapps"
+                                clean.calendarapi,clean.dumprestore,clean.synchml,
+                                clean.webdav,clean.caldav,clean.caldavTest,
+                                clean.freebusy,clean.bwtools,clean.webapps"
           description="Remove all generated files.">
     <delete dir="${dist.home}" />
     <delete dir="${bin.home}" />
   </target>
 
   <target name="quickstart-clean" depends="init,clean.rpiutil,clean.access,clean.davutil,
-                                           clean.calendarapi,clean.dumprestore,clean.synchml.if,
-                                           clean.webdav.if,clean.caldav.if,clean.caldavTest.if,
-                                           clean.freebusy.if,clean.bwtools,clean.webapps"
+                                           clean.calendarapi,clean.dumprestore,clean.synchml,
+                                           clean.webdav,clean.caldav,clean.caldavTest,
+                                           clean.freebusy,clean.bwtools,clean.webapps"
           description="partial clean up for quickstart.">
     <delete dir="${bin.home}" />
     <delete dir="${org.bedework.temp.dir}" />
@@ -345,60 +353,60 @@
        .................................................................. -->
   <target name="build.caldav" depends="init"
           description="builds the caldav project">
-    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
-           target="build-all" />
+    <if>
+      <isset property="org.bedework.qs.build.caldav"/>
+      <then>
+        <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
+             target="build-all" />
 
-    <copy-to-bin this="${org.bedework.project.caldav}"/>
+      <copy-to-bin this="${org.bedework.project.caldav}"/>
+      </then>
+    </if>
   </target>
 
   <target name="clean.caldav" depends="init"
           description="clean the caldav project">
-    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
-           target="deep-clean" />
+    <if>
+      <isset property="org.bedework.qs.build.caldav"/>
+      <then>
+        <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
+             target="deep-clean" />
+      </then>
+    </if>
   </target>
 
   <target name="clean.build.caldav" depends="clean.caldav,build.caldav"
           description="clean builds the caldav project"/>
-
-  <target name="build.caldav.if" depends="init"
-          description="builds the jars" if="org.bedework.qs.build.caldav" >
-    <antcall inheritrefs="true" target="build.caldav" />
-  </target>
-
-  <target name="clean.caldav.if" depends="init"
-          description="cleans jars" if="org.bedework.qs.build.caldav" >
-    <antcall inheritrefs="true" target="clean.caldav" />
-  </target>
 
   <!-- .................................................................
                           caldavTest
        .................................................................. -->
   <target name="build.caldavTest" depends="init"
           description="builds the caldavTest project">
-    <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
-           target="build-all" />
+    <if>
+      <isset property="org.bedework.qs.build.caldav"/>
+      <then>
+        <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
+             target="build-all" />
 
-    <copy-to-bin this="${org.bedework.project.caldavTest}"/>
+        <copy-to-bin this="${org.bedework.project.caldavTest}"/>
+      </then>
+    </if>
   </target>
 
   <target name="clean.caldavTest" depends="init"
           description="clean the caldavTest project">
-    <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
-           target="deep-clean" />
+    <if>
+      <isset property="org.bedework.qs.build.caldav"/>
+      <then>
+        <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
+             target="deep-clean" />
+      </then>
+    </if>
   </target>
 
   <target name="clean.build.caldavTest" depends="clean.caldavTest,build.caldavTest"
           description="clean builds the caldavTest project"/>
-
-  <target name="build.caldavTest.if" depends="init"
-          description="builds the jars" if="org.bedework.qs.build.caldav" >
-    <antcall inheritrefs="true" target="build.caldavTest" />
-  </target>
-
-  <target name="clean.caldavTest.if" depends="init"
-          description="cleans jars" if="org.bedework.qs.build.caldav" >
-    <antcall inheritrefs="true" target="clean.caldavTest" />
-  </target>
 
   <!-- .................................................................
                           calendarapi
@@ -495,29 +503,30 @@
        .................................................................. -->
   <target name="build.freebusy" depends="init"
           description="builds the freebusy project">
-    <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
-           target="build-all" />
+    <if>
+      <isset property="org.bedework.qs.build.freebusy"/>
+      <then>
+        <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
+             target="build-all" />
 
-    <copy-to-bin this="${org.bedework.project.freebusy}"/>
+        <copy-to-bin this="${org.bedework.project.freebusy}"/>
+      </then>
+    </if>
   </target>
 
   <target name="clean.freebusy" depends="init"
           description="cleans the freebusy project">
-    <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
-           target="deep-clean" />
+    <if>
+      <isset property="org.bedework.qs.build.freebusy"/>
+      <then>
+        <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
+             target="deep-clean" />
+      </then>
+    </if>
   </target>
 
   <target name="clean.build.freebusy" depends="clean.freebusy,build.freebusy"
           description="builds the freebusy project"/>
-
-  <target name="build.freebusy.if" depends="init"
-          description="builds the jars" if="org.bedework.qs.build.freebusy" >
-    <antcall inheritrefs="true" target="build.freebusy" />
-  </target>
-
-  <target name="clean.freebusy.if" depends="init" if="org.bedework.qs.build.freebusy" >
-    <antcall inheritrefs="true" target="clean.freebusy" />
-  </target>
 
   <!-- .................................................................
                           rpiutil
@@ -561,30 +570,30 @@
        .................................................................. -->
   <target name="build.synchml" depends="init"
           description="builds the synchml project">
-    <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
-           target="build-all" />
+    <if>
+      <isset property="org.bedework.qs.build.synchml"/>
+      <then>
+        <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
+             target="build-all" />
 
-    <copy-to-bin this="${org.bedework.project.synchml}"/>
+        <copy-to-bin this="${org.bedework.project.synchml}"/>
+      </then>
+    </if>
   </target>
 
   <target name="clean.synchml" depends="init"
           description="clean the synchml project">
-    <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
-           target="deep-clean" />
+    <if>
+      <isset property="org.bedework.qs.build.synchml"/>
+      <then>
+        <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
+             target="deep-clean" />
+      </then>
+    </if>
   </target>
 
   <target name="clean.build.synchml" depends="clean.synchml,clean.synchml"
           description="builds the synchml project"/>
-
-  <target name="build.synchml.if" depends="init"
-          description="builds the jars" if="org.bedework.qs.build.synchml" >
-    <antcall inheritrefs="true" target="build.synchml" />
-  </target>
-
-  <target name="clean.synchml.if" depends="init"
-          description="cleans jars" if="org.bedework.qs.build.synchml" >
-    <antcall inheritrefs="true" target="clean.synchml" />
-  </target>
 
   <!-- .................................................................
                           webapps
@@ -611,33 +620,33 @@
        .................................................................. -->
   <target name="build.webdav" depends="init"
           description="builds the webdav project">
-    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
-           target="build-all" />
+    <if>
+      <isset property="org.bedework.qs.build.caldav"/>
+      <then>
+        <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
+             target="build-all" />
 
-    <copy-to-dependent this="${org.bedework.project.webdav}"
-                       target="${org.bedework.project.caldav}" />
+        <copy-to-dependent this="${org.bedework.project.webdav}"
+                           target="${org.bedework.project.caldav}" />
 
-    <copy-to-bin this="${org.bedework.project.webdav}"/>
+        <copy-to-bin this="${org.bedework.project.webdav}"/>
+      </then>
+    </if>
   </target>
 
   <target name="clean.webdav" depends="init"
           description="cleans the webdav project">
-    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
-           target="deep-clean" />
+    <if>
+      <isset property="org.bedework.qs.build.caldav"/>
+      <then>
+        <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
+             target="deep-clean" />
+      </then>
+    </if>
   </target>
 
   <target name="clean.build.webdav" depends="clean.webdav,build.webdav"
           description="builds the webdav project"/>
-
-  <target name="build.webdav.if" depends="init"
-          description="builds the jars" if="org.bedework.qs.build.caldav" >
-    <antcall inheritrefs="true" target="build.webdav" />
-  </target>
-
-  <target name="clean.webdav.if" depends="init"
-          description="cleans jars" if="org.bedework.qs.build.caldav" >
-    <antcall inheritrefs="true" target="clean.webdav" />
-  </target>
 
   <!-- =================================================================
        Targets to build sub-components of this project.
