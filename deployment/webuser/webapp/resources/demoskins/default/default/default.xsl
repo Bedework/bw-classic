@@ -2365,7 +2365,7 @@
             </xsl:choose>
             floating
             <xsl:choose>
-              <xsl:when test="/bedework/formElements/form/floating/input/@checked='checked'">
+              <xsl:when test="/bedework/formElements/form/storeUTC/input/@checked='checked'">
                 <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="on" checked="checked"/>
                 <input type="hidden" name="eventStartDate.storeUTC" value="on" id="startStoreUTC"/>
                 <input type="hidden" name="eventEndDate.storeUTC" value="on" id="endStoreUTC"/>
