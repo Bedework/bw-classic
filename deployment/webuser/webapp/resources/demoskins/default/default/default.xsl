@@ -2372,7 +2372,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="off"/>
-                <input type="hidden" name="eventStartDate.storeUTCFlag" value="off" id="startStoreUTC"/>
+                <input type="hidden" name="eventStartDate.storeUTC" value="off" id="startStoreUTC"/>
                 <input type="hidden" name="eventEndDate.storeUTC" value="off" id="endStoreUTC"/>
               </xsl:otherwise>
             </xsl:choose>
