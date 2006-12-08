@@ -1792,7 +1792,7 @@
                   <xsl:text> </xsl:text>
                   <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
 
-                  <select name="startTzid" id="startTzid" class="timezones">
+                  <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                     <xsl:for-each select="/bedework/timezones/timezone">
                       <option>
                         <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
@@ -1850,7 +1850,7 @@
                     <xsl:text> </xsl:text>
                     <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
 
-                    <select name="endTzid" id="endTzid" class="timezones">
+                    <select name="eventStartDate.tzid" id="endTzid" class="timezones">
                       <xsl:for-each select="/bedework/timezones/timezone">
                         <option>
                           <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
