@@ -20,6 +20,29 @@ function swapAllDayEvent(obj) {
     allDayEndDateField.value = "off";
   }
 }
+function swapFloatingTime(obj) {
+  startTimezone = document.getElementById("startTzid");
+  endTimezone = document.getElementById("endTzid");
+  if (obj.checked) {
+    storeUtcField = document.getElementById("storeUTC");
+    storeUtcField.checked = false;
+    startTimezone.disabled = true;
+    endTimezone.disabled = true;
+  } else {
+    startTimezone.disabled = false;
+    endTimezone.disabled = false;
+  }
+}
+function swapStoreUTC(obj) {
+  startTimezone = document.getElementById("startTzid");
+  endTimezone = document.getElementById("endTzid");
+  if (obj.checked) {
+    floatingTimeField = document.getElementById("floating");
+    floatingTimeField.checked = false;
+    startTimezone.disabled = false;
+    endTimezone.disabled = false;
+  }
+}
 function swapDurationType(type) {
   // get the components we need to manipulate
   daysDurationElement = document.getElementById("durationDays");
@@ -164,53 +187,3 @@ function swapScheduleDisplay(val) {
   }
 }
 
-/****************************************/
-/* AJAX-style asynchronous interactions */
-/****************************************/
-
-var req;
-
-function postRecipientsAndAttendees(formId,urlActionPrefix,urlRenderPrefix) {
-  formObj = document.getElementById(formId);
-
-  var val = escape(formObj.raHolder.value);
-  var isRecipient = formObj.recipient.checked;
-  var isAttendee = formObj.attendee.checked;
-  var role = formObj.role.value;
-  var status = formObj.partstat.value;
-
-  var postUrl = urlActionPrefix;
-  postUrl += "&uri=" + val;
-  if (isRecipient) {
-    postUrl += "&recipient=yes";
-  }
-  if (isAttendee) {
-    postUrl += "&attendee=yes&role=" + role + "&status=" + status;
-  }
-
-  try {
-    if (window.XMLHttpRequest) {
-      req = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-      req = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    req.open("POST", postUrl, false);
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    req.send(postUrl);
-    //req.onreadystatechange = callback();
-  } catch(e) {
-    alert("There was an error posting the data:\n\n" + e);
-  }
-}
-function callback() {
-  if (req.readyState == 4) {
-    if (req.status == 200) {
-      /*var recipients = req.responseXML.getElementsByTagName("recipients")[0];
-      var attendees = req.responseXML.getElementsByTagName("attendees")[0];
-      recipientList = document.getElementById("recipientList");
-      attendeeList = document.getElementById("attendeeList");
-      recipientList.innerHTML = recipients;
-      attendeeList.innerHTML = attendeeList;*/
-    }
-  }
-}

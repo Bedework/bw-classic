@@ -1756,9 +1756,9 @@
               </xsl:otherwise>
             </xsl:choose>
             all day event
-            <input type="checkbox" name="floating" onclick="swapFloatingTime(this)" value="off"/>
+            <input type="checkbox" name="floating" id="floating" onclick="swapFloatingTime(this)" value="on"/>
             floating
-            <input type="checkbox" name="floating" onclick="swapFloatingTime(this)" value="off"/>
+            <input type="checkbox" name="storeUTC" id="storeUTC" onclick="swapStoreUTC(this)" value="on"/>
             store as UTC
             <br/>
             <div class="dateStartEndBox">
@@ -1791,6 +1791,16 @@
                   </xsl:if>
                   <xsl:text> </xsl:text>
                   <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+
+                  <select name="startTzid" id="startTzid" class="timezones">
+                    <xsl:for-each select="/bedework/timezones/timezone">
+                      <option>
+                        <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
+                        <xsl:if test="/bedework/formElements/form/start/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                        <xsl:value-of select="name"/>
+                      </option>
+                    </xsl:for-each>
+                  </select>
                 </span>
               </div>
             </div>
@@ -1839,6 +1849,16 @@
                     </xsl:if>
                     <xsl:text> </xsl:text>
                     <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+
+                    <select name="endTzid" id="endTzid" class="timezones">
+                      <xsl:for-each select="/bedework/timezones/timezone">
+                        <option>
+                          <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
+                          <xsl:if test="/bedework/formElements/form/end/dateTime/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                          <xsl:value-of select="name"/>
+                        </option>
+                      </xsl:for-each>
+                    </select>
                   </span>
                 </div>
               </div><br/>
@@ -4348,7 +4368,6 @@
         </tr>
         <tr>
           <td>
-
             Email Address:
           </td>
           <td align="left">

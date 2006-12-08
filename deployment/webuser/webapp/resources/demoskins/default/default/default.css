@@ -597,12 +597,17 @@ table.common .dateStartEndBox {
   border: 1px solid #ccb;
   margin: 4px;
   padding: 4px;
+  white-space: nowrap;
 }
 table.common .dateStartEndBox strong {
   display: block;
 }
 table.common .startDateLabel {
   margin-left: 26px;
+}
+table.common select.timezones {
+  margin-left: 1em;
+  width: 160px;
 }
 table.common div.durationBox {
   border: 1px solid #ccb;
