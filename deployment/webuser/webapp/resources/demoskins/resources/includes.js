@@ -23,24 +23,35 @@ function swapAllDayEvent(obj) {
 function swapFloatingTime(obj) {
   startTimezone = document.getElementById("startTzid");
   endTimezone = document.getElementById("endTzid");
+  startFloating = document.getElementById("startFloating");
+  endFloating = document.getElementById("endFloating");
   if (obj.checked) {
-    storeUtcField = document.getElementById("storeUTC");
-    storeUtcField.checked = false;
+    document.getElementById("storeUTCFlag").checked = false;
     startTimezone.disabled = true;
     endTimezone.disabled = true;
+    startFloating.value = "on";
+    endFloating.value = "on";
   } else {
     startTimezone.disabled = false;
     endTimezone.disabled = false;
+    startFloating.value = "off";
+    endFloating.value = "off";
   }
 }
 function swapStoreUTC(obj) {
   startTimezone = document.getElementById("startTzid");
   endTimezone = document.getElementById("endTzid");
+  startStoreUTC = document.getElementById("startStoreUTC");
+  endStoreUTC = document.getElementById("endStoreUTC");
   if (obj.checked) {
-    floatingTimeField = document.getElementById("floating");
-    floatingTimeField.checked = false;
+    document.getElementById("floatingFlag").checked = false;
     startTimezone.disabled = false;
     endTimezone.disabled = false;
+    startStoreUTC.value = "on";
+    endStoreUTC.value = "on";
+  } else {
+    startStoreUTC.value = "off";
+    endStoreUTC.value = "off";
   }
 }
 function swapDurationType(type) {

@@ -1756,11 +1756,31 @@
               </xsl:otherwise>
             </xsl:choose>
             all day event
-            <input type="checkbox" name="floating" id="floating" onclick="swapFloatingTime(this)" value="on"/>
-            <xsl:if test="/bedework/formElements/form/floating/input/@checked='checked'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            <xsl:choose>
+              <xsl:when test="/bedework/formElements/form/floating/input/@checked='checked'">
+                <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="on" checked="checked"/>
+                <input type="hidden" name="eventStartDate.floating" value="on" id="startFloating"/>
+                <input type="hidden" name="eventEndDate.floating" value="on" id="endFloating"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="off"/>
+                <input type="hidden" name="eventStartDate.floating" value="off" id="startFloating"/>
+                <input type="hidden" name="eventEndDate.floating" value="off" id="endFloating"/>
+              </xsl:otherwise>
+            </xsl:choose>
             floating
-            <input type="checkbox" name="storeUTC" id="storeUTC" onclick="swapStoreUTC(this)" value="on"/>
-            <xsl:if test="/bedework/formElements/form/storeUTC/input/@checked='checked'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            <xsl:choose>
+              <xsl:when test="/bedework/formElements/form/floating/input/@checked='checked'">
+                <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="on" checked="checked"/>
+                <input type="hidden" name="eventStartDate.storeUTC" value="on" id="startStoreUTC"/>
+                <input type="hidden" name="eventEndDate.storeUTC" value="on" id="endStoreUTC"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="off"/>
+                <input type="hidden" name="eventStartDate.storeUTC" value="off" id="startStoreUTC"/>
+                <input type="hidden" name="eventEndDate.storeUTC" value="off" id="endStoreUTC"/>
+              </xsl:otherwise>
+            </xsl:choose>
             store as UTC
             <br/>
             <div class="dateStartEndBox">
@@ -1852,7 +1872,7 @@
                     <xsl:text> </xsl:text>
                     <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
 
-                    <select name="eventStartDate.tzid" id="endTzid" class="timezones">
+                    <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:for-each select="/bedework/timezones/timezone">
                         <option>
                           <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
@@ -2331,11 +2351,31 @@
               </xsl:otherwise>
             </xsl:choose>
             all day event
-            <input type="checkbox" name="floating" id="floating" onclick="swapFloatingTime(this)" value="on"/>
-            <xsl:if test="/bedework/formElements/form/floating/input/@checked='checked'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            <xsl:choose>
+              <xsl:when test="/bedework/formElements/form/floating/input/@checked='checked'">
+                <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="on" checked="checked"/>
+                <input type="hidden" name="eventStartDate.floating" value="on" id="startFloating"/>
+                <input type="hidden" name="eventEndDate.floating" value="on" id="endFloating"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="off"/>
+                <input type="hidden" name="eventStartDate.floating" value="off" id="startFloating"/>
+                <input type="hidden" name="eventEndDate.floating" value="off" id="endFloating"/>
+              </xsl:otherwise>
+            </xsl:choose>
             floating
-            <input type="checkbox" name="storeUTC" id="storeUTC" onclick="swapStoreUTC(this)" value="on"/>
-            <xsl:if test="/bedework/formElements/form/storeUTC/input/@checked='checked'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            <xsl:choose>
+              <xsl:when test="/bedework/formElements/form/floating/input/@checked='checked'">
+                <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="on" checked="checked"/>
+                <input type="hidden" name="eventStartDate.storeUTC" value="on" id="startStoreUTC"/>
+                <input type="hidden" name="eventEndDate.storeUTC" value="on" id="endStoreUTC"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="checkbox" name="storeUTCFlag" id="storeUTC" onclick="swapStoreUTC(this)" value="off"/>
+                <input type="hidden" name="eventStartDate.storeUTCFlag" value="off" id="startStoreUTC"/>
+                <input type="hidden" name="eventEndDate.storeUTC" value="off" id="endStoreUTC"/>
+              </xsl:otherwise>
+            </xsl:choose>
             store as UTC
             <br/>
             <div class="dateStartEndBox">
@@ -2428,7 +2468,7 @@
                     <xsl:text> </xsl:text>
                     <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
 
-                    <select name="eventStartDate.tzid" id="endTzid" class="timezones">
+                    <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:if test="/bedework/formElements/form/floating/input/@checked='checked'"><xsl:attribute name="disabled">true</xsl:attribute></xsl:if>
                       <xsl:for-each select="/bedework/timezones/timezone">
                         <option>
