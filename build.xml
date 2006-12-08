@@ -289,6 +289,36 @@
 
   <target name="clean.build.configured.debug" depends="clean,build.configured.debug"/>
 
+  <!-- ======================== javadoc target =======================
+       ================================================================= -->
+
+  <target name="javadoc" depends="init" description="Generate javadoc">
+    <ant antfile="${org.bedework.project.access}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.calendarapi}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.davutil}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.dumprestore}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.webapps}/build.xml" inheritall="false"
+         target="javadoc" />
+    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
+         target="javadoc" />
+  </target>
+
   <!-- =================================================================
        Targets to build sub-projects and copy the results into dependent
        libraries. Each sub-project generates a libapi directory which
@@ -700,15 +730,6 @@
 
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="run.httptest" />
-  </target>
-
-  <!-- ======================== javadoc target =======================
-       ================================================================= -->
-
-  <target name="javadoc" depends="init"
-          description="Generate javadoc">
-    <echo message="*************** Needs to do javadoc for all sub-projects and" />
-    <echo message="*************** link them in some way." />
   </target>
 
   <!-- =============================================================================

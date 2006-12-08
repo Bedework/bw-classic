@@ -181,6 +181,16 @@
   </target>
 
   <!-- =================================================================
+       The "javadoc" target builds javadocs for all projects
+       ================================================================= -->
+
+  <target name="javadoc" depends="init"
+          description="Build javadocs" >
+    <ant antfile="${bedework.build.file}" inheritrefs="true"
+         target="javadoc" />
+  </target>
+
+  <!-- =================================================================
        The "hsqldb" target starts the hsqldb server
        ================================================================= -->
 
