@@ -425,17 +425,21 @@ table.eventFormTable .durationSpacerText {
   padding: 0;
 }
 #shareFormTable {
-  width: 96%; /* less than 100% helps avoid IE weirdness */
+  /* width: 96%; less than 100% helps avoid IE weirdness */
+  border-right: 1px solid #666;
 }
-#shareFormTable td {
-  border: 1px solid #666;
-  padding-bottom: 0.5em;
-}
-#shareFormTable h5 {
+#shareFormTable tr.subhead th {
+  border-left: 1px solid #666;
   background: #e5e5e5;
   color: black;
-  margin: 0 -0.5em;
+  margin: 0;
   padding: 4px;
+}
+#shareFormTable td {
+  border-bottom: 1px solid #666;
+  border-left: 1px solid #666;
+  padding: 1em;
+  vertical-align: top;
 }
 #howList {
   margin: 0;

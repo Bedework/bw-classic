@@ -2185,13 +2185,16 @@
       <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-acl or /bedeworkadmin/userInfo/superUser='true'">
         <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" method="post">
           <input type="hidden" name="calPath" value="{$calPath}"/>
-          <table cellpadding="0" id="shareFormTable" class="common">
+          <table cellspacing="0" id="shareFormTable" class="common">
             <tr>
               <th colspan="2" class="commonHeader">Set access:</th>
             </tr>
+            <tr class="subhead">
+              <th>Who:</th>
+              <th>Rights:</th>
+            </tr>
             <tr>
               <td>
-                <h5>Who:</h5>
                 <input type="text" name="who" size="20"/>
                 <br/>
                 <input type="radio" value="user" name="whoType" checked="checked"/> user
@@ -2210,7 +2213,6 @@
                 </p>-->
               </td>
               <td>
-                <h5>Rights:</h5>
                 <ul id="howList">
                   <li>
                     <input type="radio" value="A" name="how"/>
@@ -3143,7 +3145,7 @@
         </tr>
       </table>
     </form>
-    <div id="sharingBox">
+    <!--<div id="sharingBox">
       <h3>Manage suite administrators</h3>
       <table class="common">
         <tr>
@@ -3203,6 +3205,188 @@
         </p>
         <input type="submit" name="submit" value="Submit"/>
       </form>
+    </div>-->
+
+    <div id="sharingBox">
+      <xsl:variable name="calPath" select="path"/>
+      <xsl:variable name="encodedCalPath" select="encodedPath"/>
+      <xsl:if test="currentAccess/current-user-privilege-set/privilege/read-acl or /bedeworkadmin/userInfo/superUser='true'">
+        <h3>Manage suite administrators</h3>
+        <table class="common" id="sharing">
+          <tr>
+            <th class="commonHeader">Who:</th>
+            <th class="commonHeader">Current access:</th>
+            <th class="commonHeader">Source:</th>
+          </tr>
+          <xsl:for-each select="acl/ace">
+            <xsl:variable name="who">
+              <xsl:choose>
+                <xsl:when test="invert">
+                  <xsl:choose>
+                    <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
+                    <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:choose>
+                    <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
+                    <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
+                  </xsl:choose>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <tr>
+            <th class="thin">
+                <xsl:if test="invert">
+                  Not
+                </xsl:if>
+                <xsl:choose>
+                  <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">
+                    <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/>
+                  </xsl:when>
+                  <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">
+                    <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/>
+                  </xsl:when>
+                  <xsl:when test="invert and $who='owner'">
+                    <xsl:value-of select="$who"/> (other)
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="$who"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </th>
+              <td>
+                <xsl:for-each select="grant/node()">
+                  <xsl:value-of select="name(.)"/>&#160;&#160;
+                </xsl:for-each>
+                <xsl:for-each select="deny/node()">
+                  <xsl:choose>
+                    <xsl:when test="name(.)='all'">
+                      none
+                    </xsl:when>
+                    <xsl:otherwise>
+                      deny-<xsl:value-of select="name(.)"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  &#160;&#160;
+                </xsl:for-each>
+              </td>
+              <td>
+                <xsl:choose>
+                  <xsl:when test="inherited">
+                    inherited from:
+                    <a>
+                      <xsl:attribute name="href"><xsl:value-of select="$calendar-fetchForUpdate"/>&amp;calPath=<xsl:value-of select="inherited/href"/></xsl:attribute>
+                      <xsl:value-of select="inherited/href"/>
+                    </a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    local:
+                    <xsl:variable name="whoType">
+                      <xsl:choose>
+                        <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">user</xsl:when>
+                        <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">group</xsl:when>
+                        <xsl:otherwise></xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:variable>
+                    <xsl:variable name="shortWho">
+                      <xsl:choose>
+                        <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
+                        <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
+                        <xsl:otherwise><xsl:value-of select="$who"/></xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:variable>
+                    <xsl:choose>
+                      <xsl:when test="invert">
+                        <a href="{$calsuite-setAccess}&amp;calSuiteName={$calSuiteName}&amp;how=default&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes">
+                          reset to default
+                        </a>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <a href="{$calsuite-setAccess}&amp;calSuiteName={$calSuiteName}&amp;how=default&amp;who={$shortWho}&amp;whoType={$whoType}">
+                          reset to default
+                        </a>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </td>
+            </tr>
+          </xsl:for-each>
+        </table>
+      </xsl:if>
+
+      <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-acl or /bedeworkadmin/userInfo/superUser='true'">
+        <form name="calsuiteShareForm" action="{$calsuite-setAccess}" id="shareForm" method="post">
+          <input type="hidden" name="calSuiteName" value="{$calSuiteName}"/>
+          <table cellspacing="0" id="shareFormTable" class="common">
+            <tr>
+              <th colspan="2" class="commonHeader">Set access:</th>
+            </tr>
+            <tr class="subhead">
+              <th>Who:</th>
+              <th>Rights:</th>
+            </tr>
+            <tr>
+              <td>
+                <input type="text" name="who" size="20"/>
+                <br/>
+                <input type="radio" value="user" name="whoType" checked="checked"/> user
+                <input type="radio" value="group" name="whoType"/> group
+                <p>OR</p>
+                <p>
+                  <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
+                  <input type="radio" value="other" name="whoType"/> other users<br/>
+                  <input type="radio" value="owner" name="whoType"/> owner
+                </p>
+                <!-- we may never use the invert action ...it is probably
+                     too confusing, and can be achieved in other ways -->
+                <!--
+                <p class="padTop">
+                  <input type="checkbox" value="yes" name="notWho"/> invert (deny)
+                </p>-->
+              </td>
+              <td>
+                <ul id="howList">
+                  <li>
+                    <input type="radio" value="A" name="how"/>
+                    <strong>All</strong> (read, write, delete)</li>
+                  <li class="padTop">
+                    <input type="radio" value="R" name="how"/>
+                    <strong>Read</strong> (content, access, freebusy)
+                  </li>
+                  <li>
+                    <input type="radio" value="f" name="how"/> Read freebusy only
+                  </li>
+                  <li class="padTop">
+                    <input type="radio" value="Rc" name="how" checked="checked"/>
+                    <strong>Read</strong> and <strong>Write content only</strong>
+                  </li>
+                  <li class="padTop">
+                    <input type="radio" value="W" name="how"/>
+                    <strong>Write and delete</strong> (content, access, properties)
+                  </li>
+                  <li>
+                    <input type="radio" value="c" name="how"/> Write content only
+                  </li>
+                  <li>
+                    <input type="radio" value="u" name="how"/> Delete only
+                  </li>
+                  <li class="padTop">
+                    <input type="radio" value="N" name="how"/>
+                    <strong>None</strong>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+          <input type="submit" name="submit" value="Submit"/>
+        </form>
+      </xsl:if>
     </div>
   </xsl:template>
 
