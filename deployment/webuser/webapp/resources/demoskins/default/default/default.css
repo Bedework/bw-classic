@@ -637,6 +637,12 @@ table#manage td {
   top: 460px;
   left: 320px;
 }
+#tztable {
+  margin-top: 1em;
+}
+#tztable td {
+  padding: 2px 4px;
+}
 .shown {
   display: inline;
 }

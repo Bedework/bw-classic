@@ -1432,7 +1432,8 @@
               <span class="time"><xsl:value-of select="end/time"/></span>
             </xsl:when>
           </xsl:choose>
-          <xsl:if test="start/timezone/islocal = 'false'">
+          <!-- if timezones are not local, or if floating add labels: -->
+          <xsl:if test="start/timezone/islocal = 'false' or end/timezone/islocal = 'false'">
             <xsl:text> </xsl:text>
             --
             <strong>
@@ -1448,30 +1449,90 @@
             <br/>
           </xsl:if>
           <!-- display in timezone if not local or floating time) -->
-          <xsl:if test="start/timezone/islocal = 'false' and start/floating = 'false'">
-            <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/><xsl:text> </xsl:text>
-            <xsl:if test="start/allday = 'false'">
-              <span class="time"><xsl:value-of select="start/timezone/time"/></span>
-            </xsl:if>
-            <xsl:if test="(end/timezone/longdate != start/timezone/longdate) or
-                          ((end/timezone/longdate = start/timezone/longdate) and (end/timezone/time != start/timezone/time))"> - </xsl:if>
-            <xsl:if test="end/timezone/longdate != start/timezone/longdate">
-              <xsl:value-of select="substring(end/timezone/dayname,1,3)"/>, <xsl:value-of select="end/timezone/longdate"/><xsl:text> </xsl:text>
-            </xsl:if>
+          <xsl:if test="(start/timezone/islocal = 'false' or end/timezone/islocal = 'false') and start/floating = 'false'">
             <xsl:choose>
-              <xsl:when test="start/allday = 'true'">
-                <span class="time"><em>(all day)</em></span>
+              <xsl:when test="start/timezone/id != end/timezone/id">
+                <!-- need to display both timezones if they differ from start to end -->
+                <table border="0" cellspacing="0" id="tztable">
+                  <tr>
+                    <td>
+                      <strong>Start:</strong>
+                    </td>
+                    <td>
+                      <xsl:choose>
+                        <xsl:when test="start/timezone/islocal='true'">
+                          <xsl:value-of select="start/dayname"/>,
+                          <xsl:value-of select="start/longdate"/>
+                          <xsl:text> </xsl:text>
+                          <span class="time"><xsl:value-of select="start/time"/></span>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="start/timezone/dayname"/>,
+                          <xsl:value-of select="start/timezone/longdate"/>
+                          <xsl:text> </xsl:text>
+                          <span class="time"><xsl:value-of select="start/timezone/time"/></span>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </td>
+                    <td>
+                      --
+                      <strong><xsl:value-of select="start/timezone/id"/></strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>End:</strong>
+                    </td>
+                    <td>
+                      <xsl:choose>
+                        <xsl:when test="end/timezone/islocal='true'">
+                          <xsl:value-of select="end/dayname"/>,
+                          <xsl:value-of select="end/longdate"/>
+                          <xsl:text> </xsl:text>
+                          <span class="time"><xsl:value-of select="end/time"/></span>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="end/timezone/dayname"/>,
+                          <xsl:value-of select="end/timezone/longdate"/>
+                          <xsl:text> </xsl:text>
+                          <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </td>
+                    <td>
+                      --
+                      <strong><xsl:value-of select="end/timezone/id"/></strong>
+                    </td>
+                  </tr>
+                </table>
               </xsl:when>
-              <xsl:when test="end/timezone/longdate != start/timezone/longdate">
-                <span class="time"><xsl:value-of select="end/timezone/time"/></span>
-              </xsl:when>
-              <xsl:when test="end/timezone/time != start/timezone/time">
-                <span class="time"><xsl:value-of select="end/timezone/time"/></span>
-              </xsl:when>
+              <xsl:otherwise>
+                <!-- otherwise, timezones are the same: display as a single line  -->
+                <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/><xsl:text> </xsl:text>
+                <xsl:if test="start/allday = 'false'">
+                  <span class="time"><xsl:value-of select="start/timezone/time"/></span>
+                </xsl:if>
+                <xsl:if test="(end/timezone/longdate != start/timezone/longdate) or
+                              ((end/timezone/longdate = start/timezone/longdate) and (end/timezone/time != start/timezone/time))"> - </xsl:if>
+                <xsl:if test="end/timezone/longdate != start/timezone/longdate">
+                  <xsl:value-of select="substring(end/timezone/dayname,1,3)"/>, <xsl:value-of select="end/timezone/longdate"/><xsl:text> </xsl:text>
+                </xsl:if>
+                <xsl:choose>
+                  <xsl:when test="start/allday = 'true'">
+                    <span class="time"><em>(all day)</em></span>
+                  </xsl:when>
+                  <xsl:when test="end/timezone/longdate != start/timezone/longdate">
+                    <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                  </xsl:when>
+                  <xsl:when test="end/timezone/time != start/timezone/time">
+                    <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                  </xsl:when>
+                </xsl:choose>
+                <xsl:text> </xsl:text>
+                --
+                <strong><xsl:value-of select="start/timezone/id"/></strong>
+              </xsl:otherwise>
             </xsl:choose>
-            <xsl:text> </xsl:text>
-            --
-            <strong><xsl:value-of select="start/timezone/id"/></strong>
           </xsl:if>
         </td>
         <!--<th class="icon" rowspan="2">
