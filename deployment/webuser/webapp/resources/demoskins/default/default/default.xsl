@@ -1745,8 +1745,12 @@
   <xsl:template match="formElements" mode="addEvent">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying includes.js -->
-    <h2>Add Event</h2>
     <form name="eventForm" method="post" action="{$addEvent}" id="standardForm">
+      <h2>
+        Add Event
+        <input name="submit" type="submit" value="Submit Event"/>&#160;
+        <input name="cancelled" type="submit" value="Cancel"/>
+      </h2>
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>
@@ -1760,8 +1764,14 @@
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying includes.js -->
-    <h2>Edit Event</h2>
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm">
+      <h2>
+        Edit Event
+        <input name="submit" type="submit" value="Submit Event"/>&#160;
+        <input name="cancelled" type="submit" value="Cancel"/>
+        <input type="button" value="return to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
+      </h2>
+
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
 
