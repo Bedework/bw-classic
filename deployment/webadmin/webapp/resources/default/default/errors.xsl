@@ -130,6 +130,8 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.contact.alreadyexists'">
         <p>Cannot add: the contact already exists.</p>
+      <xsl:when test="id='org.bedework.client.error.duplicate.contact'">
+        <p>Cannot add: the contact already exists.</p>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nosuchlocation'">
         <p>Not found: there is no location identified by the id <em><xsl:value-of select="param"/></em>.</p>
