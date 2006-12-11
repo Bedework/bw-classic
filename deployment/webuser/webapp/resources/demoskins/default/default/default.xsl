@@ -2243,14 +2243,14 @@
                       every <input type="text" name="weeklyInterval" size="2" value="1"/> week(s) on:<br/>
                     </p>
                     <p>
-                      <input type="radio" name="rrule" value="byday"/>
+                      <input type="radio" name="weekrrule" value="byday" checked="checked"/>
                       <xsl:call-template name="byDayChkBoxList"/>
                     </p>
                     <p>
-                      <input type="radio" name="rrule" value="weekdays"/>weekdays
+                      <input type="radio" name="weekrrule" value="weekdays"/>weekdays
                     </p>
                     <p>
-                      <input type="radio" name="rrule" value="weekends"/>weekends
+                      <input type="radio" name="weekrrule" value="weekends"/>weekends
                     </p>
                   </div>
                   <div id="monthlyRecurrenceRules" class="invisible">
@@ -2259,7 +2259,7 @@
                       every <input type="text" name="monthlyInterval" size="2" value="1"/> month(s) on
                     </p>
                     <p>
-                      <input type="radio" name="rrule" value="bymonthpos"/>
+                      <input type="radio" name="monthrrule" value="bymonthpos" checked="checked"/>
                       the
                       <select name="bymonthposPos" width="7em">
                         <option value="first">first</option>
@@ -2271,7 +2271,7 @@
                       <xsl:call-template name="byDayChkBoxList"/>
                     </p>
                     <p>
-                      <input type="radio" name="rrule" value="bymonthday"/>day(s):<br/>
+                      <input type="radio" name="monthrrule" value="bymonthday"/>day(s):<br/>
                       <xsl:call-template name="buildCheckboxList">
                         <xsl:with-param name="current">1</xsl:with-param>
                         <xsl:with-param name="end">31</xsl:with-param>
