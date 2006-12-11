@@ -2203,13 +2203,57 @@
             <table id="recurrenceTable" cellspacing="0">
               <tr>
                 <td class="recurrenceFrequency">
-                  <input type="radio" name="freq" value="HOURLY"/>hourly<br/>
-                  <input type="radio" name="freq" value="DAILY"/>daily<br/>
-                  <input type="radio" name="freq" value="WEEKLY" checked="checked"/>weekly<br/>
-                  <input type="radio" name="freq" value="MONTHLY"/>monthly<br/>
-                  <input type="radio" name="freq" value="YEARLY"/>yearly
+                  <input type="radio" name="freq" value="HOURLY" onclick="showRecurrence(this.value)"/>hourly<br/>
+                  <input type="radio" name="freq" value="DAILY" onclick="showRecurrence(this.value)"/>daily<br/>
+                  <input type="radio" name="freq" value="WEEKLY" onclick="showRecurrence(this.value)" checked="checked"/>weekly<br/>
+                  <input type="radio" name="freq" value="MONTHLY" onclick="showRecurrence(this.value)"/>monthly<br/>
+                  <input type="radio" name="freq" value="YEARLY" onclick="showRecurrence(this.value)"/>yearly
                 </td>
                 <td class="recurrenceRules">
+                  <div id="hourlyRecurrenceRules" class="invisible">
+                    every <input type="text" name="hourlyInterval" size="2" value="1"/> hours
+                  </div>
+                  <div id="dailyRecurrenceRules" class="invisible">
+                    every <input type="text" name="dailyInterval" size="2" value="1"/> days
+                  </div>
+                  <div id="weeklyRecurrenceRules">
+                    every <input type="text" name="weeklyInterval" size="2" value="1"/> week(s) on:<br/>
+                    <input type="radio" name="rrule" value="byday"/>
+                    <div class="rruleBlock">
+                      <input type="checkbox" name="byday" value="SU"/>Sunday<br/>
+                      <input type="checkbox" name="byday" value="MO"/>Monday<br/>
+                      <input type="checkbox" name="byday" value="TU"/>Tuesday<br/>
+                      <input type="checkbox" name="byday" value="WE"/>Wednesday<br/>
+                      <input type="checkbox" name="byday" value="TH"/>Thursday<br/>
+                      <input type="checkbox" name="byday" value="FR"/>Friday<br/>
+                      <input type="checkbox" name="byday" value="SA"/>Saturday
+                    </div>
+
+                    <input type="radio" name="rrule" value="weekdays"/>weekdays<br/>
+                    <input type="radio" name="rrule" value="weekends"/>weekends
+                  </div>
+                  <div id="monthlyRecurrenceRules" class="invisible">
+                    every <input type="text" name="monthlyInterval" size="2" value="1"/> month(s) on<br/>
+                    <input type="radio" name="rrule" value="bymonthday"/>day(s):
+                    <input type="text" name="bymonthday"/>
+                    <div class="rruleBlock">
+                      (comma separated list of days, 1-31)
+                    </div>
+                  </div>
+                  <div id="yearlyRecurrenceRules" class="invisible">
+                    every <input type="text" name="monthlyInterval" size="2" value="1"/> years(s) on<br/>
+                    <input type="radio" name="rrule" value="byyearday"/>days of the year:
+                    <input type="text" name="byyearday"/>
+                    <div class="rruleBlock">
+                      (comma separated list of days, 1-366)
+                    </div>
+                  </div>
+                </td>
+                <td class="recurrenceUntil">
+                   <input type="radio" name="rCountUntil" value="count"/>
+                   Repeat <input type="text" value="1" size="2" name="count"/> times<br/>
+                   <input type="radio" name="rCountUntil" value="count"/>
+                   Repeat until <input type="text" value="04/23/2008" size="10" name="until"/>
                 </td>
               </tr>
             </table>

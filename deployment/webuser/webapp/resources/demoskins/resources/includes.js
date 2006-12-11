@@ -26,6 +26,33 @@ function swapAllDayEvent(obj) {
     changeClass('recurrenceFields','invisible');
   }
 }
+function showRecurrence(freq) {
+  if (freq == 'HOURLY') {
+    changeClass('hourlyRecurrenceRules','shown');
+  } else {
+    changeClass('hourlyRecurrenceRules','invisible');
+  }
+  if (freq == 'DAILY') {
+    changeClass('dailyRecurrenceRules','shown');
+  } else {
+    changeClass('dailyRecurrenceRules','invisible');
+  }
+  if (freq == 'WEEKLY') {
+    changeClass('weeklyRecurrenceRules','shown');
+  } else {
+    changeClass('weeklyRecurrenceRules','invisible');
+  }
+  if (freq == 'MONTHLY') {
+    changeClass('monthlyRecurrenceRules','shown');
+  } else {
+    changeClass('monthlyRecurrenceRules','invisible');
+  }
+  if (freq == 'YEARLY') {
+    changeClass('yearlyRecurrenceRules','shown');
+  } else {
+    changeClass('yearlyRecurrenceRules','invisible');
+  }
+}
 function swapFloatingTime(obj) {
   startTimezone = document.getElementById("startTzid");
   endTimezone = document.getElementById("endTzid");

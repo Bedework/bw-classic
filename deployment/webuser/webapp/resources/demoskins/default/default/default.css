@@ -643,6 +643,13 @@ table#manage td {
 #tztable td {
   padding: 2px 4px;
 }
+#recurrenceFields #recurrenceTable td.recurrenceRules {
+  padding-left: 1em;
+  border-left: 1px solid #eee !important;
+}
+#recurrenceFields #recurrenceTable td.recurrenceRules .rruleBlock {
+  margin: 0 0 0.5em 2em;
+}
 .shown {
   display: inline;
 }
