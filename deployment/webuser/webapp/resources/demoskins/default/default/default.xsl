@@ -2268,14 +2268,7 @@
                         <option value="fourth">fourth</option>
                         <option value="last">last</option>
                       </select>
-                      <select name="bymonthposDay" width="7em">
-                        <xsl:for-each select="/bedework/daynames/val">
-                          <option>
-                            <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
-                            <xsl:value-of select="."/>
-                          </option>
-                        </xsl:for-each>
-                      </select>
+                      <xsl:call-template name="byDayChkBoxList"/>
                     </p>
                     <p>
                       <input type="radio" name="rrule" value="bymonthday"/>day(s):<br/>
@@ -2283,8 +2276,7 @@
                         <xsl:with-param name="current">1</xsl:with-param>
                         <xsl:with-param name="end">31</xsl:with-param>
                         <xsl:with-param name="name">bymonthday</xsl:with-param>
-                      </xsl:call-template><br/>
-                      <xsl:call-template name="byDayChkBoxList"/>
+                      </xsl:call-template>
                     </p>
                   </div>
                   <div id="yearlyRecurrenceRules" class="invisible">

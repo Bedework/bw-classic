@@ -650,7 +650,7 @@ table#manage td {
   display: inline;
 }
 #recurrenceFields #recurrenceTable td.recurrenceFrequency {
-  padding-right: 1em;
+  padding: 0.5em 1em 0 0;
 }
 #recurrenceFields #recurrenceTable td.recurrenceRules {
   padding: 0.5em 0 0.5em 1em;
