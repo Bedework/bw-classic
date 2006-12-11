@@ -2199,61 +2199,85 @@
           </div>
           <!-- Recurrence fields -->
           <div id="recurrenceFields" class="invisible">
-            <strong>Recurs:</strong>
             <table id="recurrenceTable" cellspacing="0">
               <tr>
-                <td class="recurrenceFrequency">
-                  <input type="radio" name="freq" value="HOURLY" onclick="showRecurrence(this.value)"/>hourly<br/>
-                  <input type="radio" name="freq" value="DAILY" onclick="showRecurrence(this.value)"/>daily<br/>
-                  <input type="radio" name="freq" value="WEEKLY" onclick="showRecurrence(this.value)" checked="checked"/>weekly<br/>
-                  <input type="radio" name="freq" value="MONTHLY" onclick="showRecurrence(this.value)"/>monthly<br/>
-                  <input type="radio" name="freq" value="YEARLY" onclick="showRecurrence(this.value)"/>yearly
+                <td class="recurrenceFrequency" rowspan="2">
+                  <strong>Recurs:</strong><br/>
+                  <input type="radio" name="freqFlag" value="NEVER" onclick="showRecurrence(this.value)" checked="checked"/>never<br/>
+                  <!--<input type="radio" name="freqFlag" value="HOURLY" onclick="showRecurrence(this.value)"/>hourly<br/>-->
+                  <input type="radio" name="freqFlag" value="DAILY" onclick="showRecurrence(this.value)"/>daily<br/>
+                  <input type="radio" name="freqFlag" value="WEEKLY" onclick="showRecurrence(this.value)"/>weekly<br/>
+                  <input type="radio" name="freqFlag" value="MONTHLY" onclick="showRecurrence(this.value)"/>monthly<br/>
+                  <input type="radio" name="freqFlag" value="YEARLY" onclick="showRecurrence(this.value)"/>yearly
                 </td>
                 <td class="recurrenceRules">
-                  <div id="hourlyRecurrenceRules" class="invisible">
-                    every <input type="text" name="hourlyInterval" size="2" value="1"/> hours
+                  <div id="neverRecurrenceRules">
+                    does not recur
                   </div>
+                  <!--<div id="hourlyRecurrenceRules" class="invisible">
+                    every <input type="text" name="hourlyInterval" size="2" value="1"/> hours
+                  </div>-->
                   <div id="dailyRecurrenceRules" class="invisible">
+                    <strong>Interval:</strong>
                     every <input type="text" name="dailyInterval" size="2" value="1"/> days
                   </div>
-                  <div id="weeklyRecurrenceRules">
+                  <div id="weeklyRecurrenceRules" class="invisible">
+                    <strong>Interval:</strong>
                     every <input type="text" name="weeklyInterval" size="2" value="1"/> week(s) on:<br/>
                     <input type="radio" name="rrule" value="byday"/>
-                    <div class="rruleBlock">
-                      <input type="checkbox" name="byday" value="SU"/>Sunday<br/>
-                      <input type="checkbox" name="byday" value="MO"/>Monday<br/>
-                      <input type="checkbox" name="byday" value="TU"/>Tuesday<br/>
-                      <input type="checkbox" name="byday" value="WE"/>Wednesday<br/>
-                      <input type="checkbox" name="byday" value="TH"/>Thursday<br/>
-                      <input type="checkbox" name="byday" value="FR"/>Friday<br/>
-                      <input type="checkbox" name="byday" value="SA"/>Saturday
-                    </div>
+                    <xsl:call-template name="byDayChkBoxList"/><br/>
 
                     <input type="radio" name="rrule" value="weekdays"/>weekdays<br/>
                     <input type="radio" name="rrule" value="weekends"/>weekends
                   </div>
                   <div id="monthlyRecurrenceRules" class="invisible">
+                    <strong>Interval:</strong>
                     every <input type="text" name="monthlyInterval" size="2" value="1"/> month(s) on<br/>
-                    <input type="radio" name="rrule" value="bymonthday"/>day(s):
-                    <input type="text" name="bymonthday"/>
-                    <div class="rruleBlock">
-                      (comma separated list of days, 1-31)
-                    </div>
+                    <input type="radio" name="rrule" value="bymonthpos"/>
+                    the
+                    <select name="bymonthposPos" width="7em">
+                      <option value="first">first</option>
+                      <option value="second">second</option>
+                      <option value="third">third</option>
+                      <option value="fourth">fourth</option>
+                      <option value="last">last</option>
+                    </select>
+                    <select name="bymonthposDay" width="7em">
+                      <xsl:for-each select="/bedework/daynames/val">
+                        <option>
+                          <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
+                          <xsl:value-of select="."/>
+                        </option>
+                      </xsl:for-each>
+                    </select><br/>
+                    <input type="radio" name="rrule" value="bymonthday"/>day(s):<br/>
+                    <xsl:call-template name="buildCheckboxList">
+                      <xsl:with-param name="current">1</xsl:with-param>
+                      <xsl:with-param name="end">31</xsl:with-param>
+                      <xsl:with-param name="name">bymonthday</xsl:with-param>
+                    </xsl:call-template><br/>
+                    <xsl:call-template name="byDayChkBoxList"/>
                   </div>
                   <div id="yearlyRecurrenceRules" class="invisible">
+                    <strong>Interval:</strong>
                     every <input type="text" name="monthlyInterval" size="2" value="1"/> years(s) on<br/>
                     <input type="radio" name="rrule" value="byyearday"/>days of the year:
                     <input type="text" name="byyearday"/>
-                    <div class="rruleBlock">
                       (comma separated list of days, 1-366)
-                    </div>
                   </div>
                 </td>
+              </tr>
+              <tr>
                 <td class="recurrenceUntil">
-                   <input type="radio" name="rCountUntil" value="count"/>
-                   Repeat <input type="text" value="1" size="2" name="count"/> times<br/>
-                   <input type="radio" name="rCountUntil" value="count"/>
-                   Repeat until <input type="text" value="04/23/2008" size="10" name="until"/>
+                   <div id="recurrenceUntilRules" class="invisible">
+                     <strong>Repeat:</strong>
+                     &#160;
+                     <input type="radio" name="rCountUntil" value="count" checked="checked"/>
+                     <input type="text" value="1" size="2" name="count"/> times
+                     &#160;
+                     <input type="radio" name="rCountUntil" value="count"/>
+                     until <input type="text" value="04/23/2008" size="10" name="until"/>
+                   </div>
                 </td>
               </tr>
             </table>
@@ -2411,6 +2435,51 @@
         </td>
       </tr>
     </table>
+  </xsl:template>
+
+  <xsl:template name="byDayChkBoxList">
+    <input type="checkbox" name="byday"/>
+    <xsl:attribute name="value"><xsl:value-of select="/bedework/shortdaynames/val[position()=1]"/></xsl:attribute>
+    <xsl:value-of select="/bedework/shortdaynames/val[position()=1]"/>
+    <input type="checkbox" name="byday"/>
+    <xsl:attribute name="value"><xsl:value-of select="/bedework/shortdaynames/val[position()=2]"/></xsl:attribute>
+    <xsl:value-of select="/bedework/shortdaynames/val[position()=2]"/>
+    <input type="checkbox" name="byday"/>
+    <xsl:attribute name="value"><xsl:value-of select="/bedework/shortdaynames/val[position()=3]"/></xsl:attribute>
+    <xsl:value-of select="/bedework/shortdaynames/val[position()=3]"/>
+    <input type="checkbox" name="byday"/>
+    <xsl:attribute name="value"><xsl:value-of select="/bedework/shortdaynames/val[position()=4]"/></xsl:attribute>
+    <xsl:value-of select="/bedework/shortdaynames/val[position()=4]"/>
+    <input type="checkbox" name="byday"/>
+    <xsl:attribute name="value"><xsl:value-of select="/bedework/shortdaynames/val[position()=5]"/></xsl:attribute>
+    <xsl:value-of select="/bedework/shortdaynames/val[position()=5]"/>
+    <input type="checkbox" name="byday"/>
+    <xsl:attribute name="value"><xsl:value-of select="/bedework/shortdaynames/val[position()=6]"/></xsl:attribute>
+    <xsl:value-of select="/bedework/shortdaynames/val[position()=6]"/>
+    <input type="checkbox" name="byday"/>
+    <xsl:attribute name="value"><xsl:value-of select="/bedework/shortdaynames/val[position()=7]"/></xsl:attribute>
+    <xsl:value-of select="/bedework/shortdaynames/val[position()=7]"/>
+  </xsl:template>
+
+  <xsl:template name="buildCheckboxList">
+    <xsl:param name="current"/>
+    <xsl:param name="end"/>
+    <xsl:param name="name"/>
+    <xsl:param name="splitter">8</xsl:param>
+    <span class="chkBoxListItem">
+      <input type="checkbox"/>
+      <xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
+      <xsl:attribute name="value"><xsl:value-of select="$current"/></xsl:attribute>
+      <xsl:value-of select="$current"/>
+    </span>
+    <xsl:if test="$current mod $splitter = 0"><br/></xsl:if>
+    <xsl:if test="$current &lt; $end">
+      <xsl:call-template name="buildCheckboxList">
+        <xsl:with-param name="current"><xsl:value-of select="$current + 1"/></xsl:with-param>
+        <xsl:with-param name="end"><xsl:value-of select="$end"/></xsl:with-param>
+        <xsl:with-param name="name"><xsl:value-of select="$name"/></xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="clock">

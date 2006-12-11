@@ -19,7 +19,8 @@ function swapAllDayEvent(obj) {
     allDayStartDateField.value = "off";
     allDayEndDateField.value = "off";
   }
-}function swapRecurrence(obj) {
+}
+function swapRecurrence(obj) {
   if (obj.checked) {
     changeClass('recurrenceFields','dateStartEndBox');
   } else {
@@ -27,11 +28,14 @@ function swapAllDayEvent(obj) {
   }
 }
 function showRecurrence(freq) {
-  if (freq == 'HOURLY') {
+
+  changeClass('recurrenceUntilRules','shown');
+
+  /*if (freq == 'HOURLY') {
     changeClass('hourlyRecurrenceRules','shown');
   } else {
     changeClass('hourlyRecurrenceRules','invisible');
-  }
+  }*/
   if (freq == 'DAILY') {
     changeClass('dailyRecurrenceRules','shown');
   } else {
@@ -51,6 +55,12 @@ function showRecurrence(freq) {
     changeClass('yearlyRecurrenceRules','shown');
   } else {
     changeClass('yearlyRecurrenceRules','invisible');
+  }
+  if (freq == 'NEVER') {
+    changeClass('neverRecurrenceRules','shown');
+    changeClass('recurrenceUntilRules','invisible');
+  } else {
+    changeClass('neverRecurrenceRules','invisible');
   }
 }
 function swapFloatingTime(obj) {
