@@ -653,7 +653,7 @@ table#manage td {
   padding-right: 1em;
 }
 #recurrenceFields #recurrenceTable td.recurrenceRules {
-  padding: 0 0 0.5em 1em;
+  padding: 0.5em 0 0.5em 1em;
   border-left: 1px solid #ddd;
 }
 #recurrenceFields #recurrenceTable td.recurrenceUntil {
@@ -672,6 +672,9 @@ table#manage td {
 }
 #recurrenceFields #recurrenceTable br {
   clear: both;
+}
+#recurrenceFields #recurrenceTable p {
+  margin: 0 0 0.5em 0;
 }
 .shown {
   display: inline;
