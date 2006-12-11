@@ -38,6 +38,9 @@ h2.bwStatusTentative {
   background: #eee url('../../resources/tentativeLines.gif') top;
   color: black;
 }
+h2 .formButtons {
+  float: right;
+}
 h3 {
   margin: 0em;
   padding: 1em 0.2em 0em 0.2em;

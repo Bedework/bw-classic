@@ -1747,9 +1747,11 @@
     change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$addEvent}" id="standardForm">
       <h2>
+        <span class="formButtons">
+          <input name="submit" type="submit" value="Submit Event"/>&#160;
+          <input name="cancelled" type="submit" value="Cancel"/>
+        </span>
         Add Event
-        <input name="submit" type="submit" value="Submit Event"/>&#160;
-        <input name="cancelled" type="submit" value="Cancel"/>
       </h2>
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
@@ -1766,10 +1768,12 @@
     change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm">
       <h2>
+        <span class="formButtons">
+          <input name="submit" type="submit" value="Submit Event"/>&#160;
+          <input name="cancelled" type="submit" value="Cancel"/>
+          <input type="button" value="return to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
+        </span>
         Edit Event
-        <input name="submit" type="submit" value="Submit Event"/>&#160;
-        <input name="cancelled" type="submit" value="Cancel"/>
-        <input type="button" value="return to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
       </h2>
 
       <xsl:apply-templates select="." mode="eventForm"/>
@@ -1982,11 +1986,6 @@
             </xsl:otherwise>
           </xsl:choose>
           all day event
-
-          <!-- recurring event -->
-          <input type="checkbox" name="recurrenceFlag" onclick="swapRecurrence(this)" value="on"/>
-          <xsl:if test="form/recurring='true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-          recurring
 
           <!-- floating event: no timezone (and not UTC) -->
           <xsl:choose>
@@ -2207,7 +2206,12 @@
               This event has no duration / end date
             </div>
           </div>
+
           <!-- Recurrence fields -->
+          <!-- ================= -->
+          <input type="checkbox" name="recurrenceFlag" onclick="swapRecurrence(this)" value="on"/>
+          <xsl:if test="form/recurring='true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+          recurring
           <div id="recurrenceFields" class="invisible">
             <table id="recurrenceTable" cellspacing="0">
               <tr>
@@ -2222,51 +2226,66 @@
                 </td>
                 <td class="recurrenceRules">
                   <div id="neverRecurrenceRules">
-                    does not recur
+                    <p>does not recur</p>
                   </div>
                   <!--<div id="hourlyRecurrenceRules" class="invisible">
                     every <input type="text" name="hourlyInterval" size="2" value="1"/> hours
                   </div>-->
                   <div id="dailyRecurrenceRules" class="invisible">
-                    <strong>Interval:</strong>
-                    every <input type="text" name="dailyInterval" size="2" value="1"/> days
+                    <p>
+                      <strong>Interval:</strong>
+                      every <input type="text" name="dailyInterval" size="2" value="1"/> days
+                    </p>
                   </div>
                   <div id="weeklyRecurrenceRules" class="invisible">
-                    <strong>Interval:</strong>
-                    every <input type="text" name="weeklyInterval" size="2" value="1"/> week(s) on:<br/>
-                    <input type="radio" name="rrule" value="byday"/>
-                    <xsl:call-template name="byDayChkBoxList"/><br/>
-
-                    <input type="radio" name="rrule" value="weekdays"/>weekdays<br/>
-                    <input type="radio" name="rrule" value="weekends"/>weekends
+                    <p>
+                      <strong>Interval:</strong>
+                      every <input type="text" name="weeklyInterval" size="2" value="1"/> week(s) on:<br/>
+                    </p>
+                    <p>
+                      <input type="radio" name="rrule" value="byday"/>
+                      <xsl:call-template name="byDayChkBoxList"/>
+                    </p>
+                    <p>
+                      <input type="radio" name="rrule" value="weekdays"/>weekdays
+                    </p>
+                    <p>
+                      <input type="radio" name="rrule" value="weekends"/>weekends
+                    </p>
                   </div>
                   <div id="monthlyRecurrenceRules" class="invisible">
-                    <strong>Interval:</strong>
-                    every <input type="text" name="monthlyInterval" size="2" value="1"/> month(s) on<br/>
-                    <input type="radio" name="rrule" value="bymonthpos"/>
-                    the
-                    <select name="bymonthposPos" width="7em">
-                      <option value="first">first</option>
-                      <option value="second">second</option>
-                      <option value="third">third</option>
-                      <option value="fourth">fourth</option>
-                      <option value="last">last</option>
-                    </select>
-                    <select name="bymonthposDay" width="7em">
-                      <xsl:for-each select="/bedework/daynames/val">
-                        <option>
-                          <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
-                          <xsl:value-of select="."/>
-                        </option>
-                      </xsl:for-each>
-                    </select><br/>
-                    <input type="radio" name="rrule" value="bymonthday"/>day(s):<br/>
-                    <xsl:call-template name="buildCheckboxList">
-                      <xsl:with-param name="current">1</xsl:with-param>
-                      <xsl:with-param name="end">31</xsl:with-param>
-                      <xsl:with-param name="name">bymonthday</xsl:with-param>
-                    </xsl:call-template><br/>
-                    <xsl:call-template name="byDayChkBoxList"/>
+                    <p>
+                      <strong>Interval:</strong>
+                      every <input type="text" name="monthlyInterval" size="2" value="1"/> month(s) on
+                    </p>
+                    <p>
+                      <input type="radio" name="rrule" value="bymonthpos"/>
+                      the
+                      <select name="bymonthposPos" width="7em">
+                        <option value="first">first</option>
+                        <option value="second">second</option>
+                        <option value="third">third</option>
+                        <option value="fourth">fourth</option>
+                        <option value="last">last</option>
+                      </select>
+                      <select name="bymonthposDay" width="7em">
+                        <xsl:for-each select="/bedework/daynames/val">
+                          <option>
+                            <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
+                            <xsl:value-of select="."/>
+                          </option>
+                        </xsl:for-each>
+                      </select>
+                    </p>
+                    <p>
+                      <input type="radio" name="rrule" value="bymonthday"/>day(s):<br/>
+                      <xsl:call-template name="buildCheckboxList">
+                        <xsl:with-param name="current">1</xsl:with-param>
+                        <xsl:with-param name="end">31</xsl:with-param>
+                        <xsl:with-param name="name">bymonthday</xsl:with-param>
+                      </xsl:call-template><br/>
+                      <xsl:call-template name="byDayChkBoxList"/>
+                    </p>
                   </div>
                   <div id="yearlyRecurrenceRules" class="invisible">
                     <strong>Interval:</strong>
