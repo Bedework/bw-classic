@@ -1896,6 +1896,7 @@
           </th>
         </tr>
       </xsl:if>
+      <!--  Summary (title) of event  -->
       <tr>
         <td class="fieldname">
           Title:
@@ -1905,6 +1906,7 @@
           <input type="text" name="summary" size="80" value="{$title}"/>
         </td>
       </tr>
+      <!--  Scheduling type  -->
       <tr>
         <td class="fieldname">
           Type:
@@ -1916,6 +1918,7 @@
           <input type="radio" name="schedule" size="80" value="publish"/>published event
         </td>
       </tr>
+      <!--  Calendar in which to place event  -->
       <tr>
         <td class="fieldname">
           Calendar:
@@ -1937,6 +1940,9 @@
           <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
         </td>
       </tr>
+
+      <!--  Date, Time, and Recurrence  -->
+      <!--  ==========================  -->
       <tr>
         <td class="fieldname">
           Date &amp; Time:
@@ -1951,6 +1957,8 @@
               <xsl:otherwise>timeFields</xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
+
+          <!-- date only event: anniversary event - often interpreted as "all day event" -->
           <xsl:choose>
             <xsl:when test="form/allDay/input/@checked='checked'">
               <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="on" checked="checked"/>
@@ -1964,6 +1972,13 @@
             </xsl:otherwise>
           </xsl:choose>
           all day event
+
+          <!-- recurring event -->
+          <input type="checkbox" name="recurrenceFlag" onclick="swapRecurrence(this)" value="on"/>
+          <xsl:if test="form/recurring='true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+          recurring
+
+          <!-- floating event: no timezone (and not UTC) -->
           <xsl:choose>
             <xsl:when test="form/floating/input/@checked='checked'">
               <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="on" checked="checked"/>
@@ -1977,6 +1992,8 @@
             </xsl:otherwise>
           </xsl:choose>
           floating
+
+          <!-- store time as coordinated universal time (UTC) -->
           <xsl:choose>
             <xsl:when test="form/storeUTC/input/@checked='checked'">
               <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="on" checked="checked"/>
@@ -1990,6 +2007,7 @@
             </xsl:otherwise>
           </xsl:choose>
           store as UTC
+
           <br/>
           <div class="dateStartEndBox">
             <strong>Start:</strong>
@@ -2028,7 +2046,7 @@
                   <xsl:for-each select="/bedework/timezones/timezone">
                     <option>
                       <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                      <xsl:if test="form/start/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                      <xsl:if test="/bedework/formElements/form/start/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
                       <xsl:value-of select="name"/>
                     </option>
                   </xsl:for-each>
@@ -2088,7 +2106,7 @@
                     <xsl:for-each select="/bedework/timezones/timezone">
                       <option>
                         <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                        <xsl:if test="form/end/dateTime/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                        <xsl:if test="/bedework/formElements/form/end/dateTime/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
                         <xsl:value-of select="name"/>
                       </option>
                     </xsl:for-each>
@@ -2179,6 +2197,82 @@
               This event has no duration / end date
             </div>
           </div>
+          <!-- Recurrence fields -->
+          <div id="recurrenceFields" class="invisible">
+            <strong>Recurs:</strong>
+            <table id="recurrenceTable" cellspacing="0">
+              <tr>
+                <td class="recurrenceFrequency">
+                  <input type="radio" name="freq" value="HOURLY"/>hourly<br/>
+                  <input type="radio" name="freq" value="DAILY"/>daily<br/>
+                  <input type="radio" name="freq" value="WEEKLY" checked="checked"/>weekly<br/>
+                  <input type="radio" name="freq" value="MONTHLY"/>monthly<br/>
+                  <input type="radio" name="freq" value="YEARLY"/>yearly
+                </td>
+                <td class="recurrenceRules">
+                </td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <!--  Location  -->
+      <tr>
+        <td class="fieldname">Location:</td>
+        <td class="fieldval" align="left">
+          <span class="std-text">choose: </span>
+          <span id="eventFormLocationList">
+            <xsl:choose>
+              <xsl:when test="/bedework/page='addEvent'">
+                <select name="locationUid">
+                  <option value="-1">select...</option>
+                  <xsl:copy-of select="form/location/locationmenu/select/*"/>
+                </select>
+              </xsl:when>
+              <xsl:otherwise>
+                <select name="eventLocationUid">
+                  <option value="-1">select...</option>
+                  <xsl:copy-of select="form/location/locationmenu/select/*"/>
+                </select>
+              </xsl:otherwise>
+            </xsl:choose>
+          </span>
+          <span class="std-text"> or add new: </span>
+          <input type="text" name="locationAddress.value" value="" />
+        </td>
+      </tr>
+      <!--  Link (url associated with event)  -->
+      <tr>
+        <td class="fieldname">Event Link:</td>
+        <td class="fieldval">
+          <xsl:variable name="link" select="form/link/input/@value"/>
+          <xsl:choose>
+            <xsl:when test="/bedework/page='addEvent'">
+              <input type="text" name="newEvent.link" size="80" value="{$link}"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <input type="text" name="event.link" size="80" value="{$link}"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </td>
+      </tr>
+      <!--  Description  -->
+      <tr>
+        <td class="fieldname">Description:</td>
+        <td class="fieldval">
+          <textarea name="description" cols="60" rows="4">
+            <xsl:value-of select="form/desc/textarea"/>
+          </textarea>
+        </td>
+      </tr>
+      <!--  Recipients and Attendees  -->
+      <tr>
+        <td class="fieldname">
+          Recipients &amp;<br/> Attendees:
+        </td>
+        <td class="fieldval posrelative">
+          <!--<input type="button" value="Manage recipients and attendees" onclick="changeClass('recipientsAndAttendees','shown')"/>-->
+          <input type="button" value="Manage recipients and attendees" onclick="launchSizedWindow('{$event-showAttendeesForEvent}','500','400')"/>
         </td>
       </tr>
       <!--  Status  -->
@@ -2227,63 +2321,6 @@
                   <input type="radio" name="event.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
                 </xsl:otherwise>
               </xsl:choose>
-            </xsl:otherwise>
-          </xsl:choose>
-        </td>
-      </tr>
-      <!--  Description  -->
-      <tr>
-        <td class="fieldname">Description:</td>
-        <td class="fieldval">
-          <textarea name="description" cols="60" rows="4">
-            <xsl:value-of select="form/desc/textarea"/>
-          </textarea>
-        </td>
-      </tr>
-      <!--  Recipients and Attendees  -->
-      <tr>
-        <td class="fieldname">
-          Recipients &amp;<br/> Attendees:
-        </td>
-        <td class="fieldval posrelative">
-          <!--<input type="button" value="Manage recipients and attendees" onclick="changeClass('recipientsAndAttendees','shown')"/>-->
-          <input type="button" value="Manage recipients and attendees" onclick="launchSizedWindow('{$event-showAttendeesForEvent}','500','400')"/>
-        </td>
-      </tr>
-      <tr>
-        <td class="fieldname">Location:</td>
-        <td class="fieldval" align="left">
-          <span class="std-text">choose: </span>
-          <span id="eventFormLocationList">
-            <xsl:choose>
-              <xsl:when test="/bedework/page='addEvent'">
-                <select name="locationUid">
-                  <option value="-1">select...</option>
-                  <xsl:copy-of select="form/location/locationmenu/select/*"/>
-                </select>
-              </xsl:when>
-              <xsl:otherwise>
-                <select name="eventLocationUid">
-                  <option value="-1">select...</option>
-                  <xsl:copy-of select="form/location/locationmenu/select/*"/>
-                </select>
-              </xsl:otherwise>
-            </xsl:choose>
-          </span>
-          <span class="std-text"> or add new: </span>
-          <input type="text" name="locationAddress.value" value="" />
-        </td>
-      </tr>
-      <tr>
-        <td class="fieldname">Event Link:</td>
-        <td class="fieldval">
-          <xsl:variable name="link" select="form/link/input/@value"/>
-          <xsl:choose>
-            <xsl:when test="/bedework/page='addEvent'">
-              <input type="text" name="newEvent.link" size="80" value="{$link}"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <input type="text" name="event.link" size="80" value="{$link}"/>
             </xsl:otherwise>
           </xsl:choose>
         </td>

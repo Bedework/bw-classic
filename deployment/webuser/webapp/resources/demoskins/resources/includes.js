@@ -19,6 +19,12 @@ function swapAllDayEvent(obj) {
     allDayStartDateField.value = "off";
     allDayEndDateField.value = "off";
   }
+}function swapRecurrence(obj) {
+  if (obj.checked) {
+    changeClass('recurrenceFields','dateStartEndBox');
+  } else {
+    changeClass('recurrenceFields','invisible');
+  }
 }
 function swapFloatingTime(obj) {
   startTimezone = document.getElementById("startTzid");

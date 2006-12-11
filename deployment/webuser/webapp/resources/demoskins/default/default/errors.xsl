@@ -2,12 +2,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:template match="error">
     <xsl:choose>
-      <xsl:when test="id='edu.rpi.sss.util.error.exc'">
-          <p>An exception occurred: <em><xsl:value-of select="param"/></em></p>
-      </xsl:when>
-      <xsl:when test="id='org.bedework.client.error.exc'">
-          <p>An exception occurred: <em><xsl:value-of select="param"/></em></p>
-      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nosuchevent'">
           <p>Event <xsl:value-of select="param"/> does not exist.</p>
       </xsl:when>
@@ -22,6 +16,16 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.event.startafterend'">
           <p>Please correct your dates: the end date/time is before the start date/time.</p>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.unknown.timezone'">
+        <xsl:choose>
+          <xsl:when test="param='-1'">
+            <p>Please select a timezone</p>
+          </xsl:when>
+          <xsl:otherwise>
+            <p>Unknown timezone: <em><xsl:value-of select="param"/></em></p>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.noaccess'">
           <p>You have insufficient access <xsl:value-of select="param"/>.</p>
@@ -91,6 +95,12 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unimplemented'">
           <p>The feature you requested is currently unimplemented.</p>
+      </xsl:when>
+      <xsl:when test="id='edu.rpi.sss.util.error.exc'">
+          <p>An exception occurred: <em><xsl:value-of select="param"/></em></p>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.exc'">
+          <p>An exception occurred: <em><xsl:value-of select="param"/></em></p>
       </xsl:when>
       <xsl:otherwise>
         <p><xsl:value-of select="id"/> = <xsl:value-of select="param"/></p>
