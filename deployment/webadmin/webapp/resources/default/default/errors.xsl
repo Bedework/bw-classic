@@ -130,6 +130,7 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.contact.alreadyexists'">
         <p>Cannot add: the contact already exists.</p>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.duplicate.contact'">
         <p>Cannot add: the contact already exists.</p>
       </xsl:when>
