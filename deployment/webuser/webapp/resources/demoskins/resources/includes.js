@@ -85,11 +85,11 @@ function showRecurrence(freq) {
 
   changeClass('recurrenceUntilRules','shown');
 
-  if (freq == 'ONCE') {
-    changeClass('onceRecurrenceRules','shown');
+  if (freq == 'NONE') {
+    changeClass('noneRecurrenceRules','shown');
     changeClass('recurrenceUntilRules','invisible');
   } else {
-    changeClass('onceRecurrenceRules','invisible');
+    changeClass('noneRecurrenceRules','invisible');
   }
   if (freq == 'HOURLY') {
     changeClass('hourlyRecurrenceRules','shown');

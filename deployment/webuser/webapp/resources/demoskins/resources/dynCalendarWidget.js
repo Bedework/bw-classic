@@ -27,6 +27,7 @@
 * @param int    mth          Month value (0-11)
 * @param int    dy           Day (date) value (1-31)
 * @param string callbackFunc Name of the callback function
+* @param boolean hideBwFields Hide Bedework time fields when widget appears (true/false)
 * @param string OPTIONAL     Optional images root path
 * @param string OPTIONAL     Optional layer name
 */
@@ -49,8 +50,10 @@
 
 		this.objName        = objName;
 		this.callbackFunc   = callbackFunc;
-    if (arguments[5]) {
-			this.imagesPath = arguments[5];
+    this.hideBwFields   = hideBwFields;
+
+    if (arguments[6]) {
+			this.imagesPath = arguments[6];
 		} else {
 			this.imagesPath = '/ucalrsrc/resources/';
 		}
@@ -375,7 +378,7 @@
 		this._getLayer().style.visibility = 'hidden';
 
     // for Bedework event editing; reveal time fields when cal widget is hidden
-    if (hideBwFields) {
+    if (this.hideBwFields) {
       changeClass('calWidgetStartTimeHider','shown');
       changeClass('calWidgetEndTimeHider','shown');
     }
@@ -393,7 +396,7 @@
     // for Bedework event editing; hide time fields when cal widget is visible
     // to avoid IE rendering oddities (IE always displays the "windowed" layer
     // above everything else -- that includes select boxes.
-    if (hideBwFields) {
+    if (this.hideBwFields) {
       changeClass('calWidgetStartTimeHider','invisible');
       changeClass('calWidgetEndTimeHider','invisible');
     }

@@ -2035,7 +2035,7 @@
             </div>
             <script language="JavaScript" type="text/javascript">
             <xsl:comment>
-              startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/','true');
+              startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback',true,'<xsl:value-of select="$resourcesRoot"/>/resources/');
             </xsl:comment>
             </script>
             <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
@@ -2095,7 +2095,7 @@
               </div>
               <script language="JavaScript" type="text/javascript">
               <xsl:comment>
-                endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/', 'true');
+                endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback',true,'<xsl:value-of select="$resourcesRoot"/>/resources/');
               </xsl:comment>
               </script>
               <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
@@ -2225,7 +2225,7 @@
                   <input type="radio" name="freq" value="YEARLY" onclick="showRecurrence(this.value)"/>yearly
                 </td>
                 <td class="recurrenceRules">
-                  <div id="onceRecurrenceRules">
+                  <div id="noneRecurrenceRules">
                     <p>does not recur</p>
                   </div>
                   <div id="hourlyRecurrenceRules" class="invisible">
@@ -2479,9 +2479,6 @@
                      <strong>Repeat:</strong>
                      &#160;
                      <input type="radio" name="rCountUntil" value="count" checked="checked"/>
-                     <input type="text" value="1" size="2" name="count"/> times
-                     &#160;
-                     <input type="radio" name="rCountUntil" value="count"/>
                      until
                      <div class="dateFields">
                        <select name="untilMonth">
@@ -2510,9 +2507,12 @@
                      </div>
                      <script language="JavaScript" type="text/javascript">
                      <xsl:comment>
-                       untilDateDynCalWidget = new dynCalendar('untilDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'untilDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/','false');
+                       untilDateDynCalWidget = new dynCalendar('untilDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'untilDateCalWidgetCallback',false,'<xsl:value-of select="$resourcesRoot"/>/resources/');
                      </xsl:comment>
                      </script>
+                     &#160;
+                     <input type="radio" name="rCountUntil" value="count"/>
+                     <input type="text" value="1" size="2" name="count"/> times
                    </div>
                 </td>
               </tr>
