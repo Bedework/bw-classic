@@ -2,6 +2,14 @@ function changeClass(id, newClass) {
   identity = document.getElementById(id);
   identity.className=newClass;
 }
+// show hide items using a checkbox
+function swapVisible(obj,id) {
+  if (obj.checked) {
+    changeClass(id,'shown');
+  } else {
+    changeClass(id,'invisible');
+  }
+}
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
   allDayEndDateField = document.getElementById("allDayEndDateField");
@@ -81,8 +89,8 @@ function swapRecurrence(obj) {
     changeClass('recurrenceFields','invisible');
   }
 }
+// reveal and hide recurrence fields
 function showRecurrence(freq) {
-
   changeClass('recurrenceUntilRules','shown');
 
   if (freq == 'NONE') {
@@ -117,11 +125,38 @@ function showRecurrence(freq) {
     changeClass('yearlyRecurrenceRules','invisible');
   }
 }
-function swapYearCheckBoxList(obj) {
-  if (obj.value == "byyearday") {
-    changeClass('yearCheckBoxList','shown');
-  } else {
-    changeClass('yearCheckBoxList','invisible');
+function recurSelectWeekends(id) {
+  chkBoxCollection = document.getElementById(id).getElementsByTagName('input');
+  if (chkBoxCollection) {
+    if (typeof chkBoxCollection.length != 'undefined') {
+      for (i = 0; i < chkBoxCollection.length; i++) {
+        if (chkBoxCollection[i].value == 'SU' || chkBoxCollection[i].value == 'SA') {
+           chkBoxCollection[i].checked = true;
+        } else {
+          chkBoxCollection[i].checked = false;
+        }
+      }
+    }
+  }
+}
+function recurSelectWeekdays(id) {
+  chkBoxCollection = document.getElementById(id).getElementsByTagName('input');
+  if (chkBoxCollection) {
+    if (typeof chkBoxCollection.length != 'undefined') {
+      for (i = 0; i < chkBoxCollection.length; i++) {
+        if (chkBoxCollection[i].value == 'SU' || chkBoxCollection[i].value == 'SA') {
+           chkBoxCollection[i].checked = false;
+        } else {
+          chkBoxCollection[i].checked = true;
+        }
+      }
+    }
+  }
+}
+// assemble the recurrence rules if recurrence is specified
+function setRecurrence(form) {
+  if (form.recurrenceFlag.checked) {
+
   }
 }
 // launch a simple window for displaying information; no header or status bar
