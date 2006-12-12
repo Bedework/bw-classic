@@ -555,7 +555,7 @@ table.common td.fieldval {
   padding: 0.5em 0.5em 0.2em 1em;
 }
 table.common td.fieldname {
-  width: 80px;
+  width: 100px;
   margin: 0em;
   vertical-align: top;
   padding: 0.5em 0.5em 0.2em 0.5em;
@@ -632,7 +632,7 @@ table#manage td {
   padding: 0.2em 0 0 0.5em;
 }
 #bwEventCalDisplay {
-  font-weight: bold;
+  /*font-weight: bold;*/
   margin-right: 1em;
 }
 #clock {
@@ -675,6 +675,10 @@ table#manage td {
 }
 #recurrenceFields #recurrenceTable p {
   margin: 0 0 0.5em 0;
+}
+#recurrenceFields #recurrenceTable .extraByMonthPosFields {
+  margin: 0 0 1em 2em;
+  padding: 0;
 }
 .shown {
   display: inline;

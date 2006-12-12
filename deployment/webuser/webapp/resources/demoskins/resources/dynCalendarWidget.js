@@ -30,7 +30,7 @@
 * @param string OPTIONAL     Optional images root path
 * @param string OPTIONAL     Optional layer name
 */
-	function dynCalendar(objName, yr, mth, dy, callbackFunc)
+	function dynCalendar(objName, yr, mth, dy, callbackFunc, hideBwFields)
 	{
     /**
       * Properties
@@ -375,8 +375,10 @@
 		this._getLayer().style.visibility = 'hidden';
 
     // for Bedework event editing; reveal time fields when cal widget is hidden
-    changeClass('calWidgetStartTimeHider','shown');
-    changeClass('calWidgetEndTimeHider','shown');
+    if (hideBwFields) {
+      changeClass('calWidgetStartTimeHider','shown');
+      changeClass('calWidgetEndTimeHider','shown');
+    }
 	}
 
 /**
@@ -391,8 +393,10 @@
     // for Bedework event editing; hide time fields when cal widget is visible
     // to avoid IE rendering oddities (IE always displays the "windowed" layer
     // above everything else -- that includes select boxes.
-    changeClass('calWidgetStartTimeHider','invisible');
-    changeClass('calWidgetEndTimeHider','invisible');
+    if (hideBwFields) {
+      changeClass('calWidgetStartTimeHider','invisible');
+      changeClass('calWidgetEndTimeHider','invisible');
+    }
 	}
 
 /**

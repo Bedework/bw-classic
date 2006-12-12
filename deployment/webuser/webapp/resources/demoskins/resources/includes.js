@@ -20,49 +20,6 @@ function swapAllDayEvent(obj) {
     allDayEndDateField.value = "off";
   }
 }
-function swapRecurrence(obj) {
-  if (obj.checked) {
-    changeClass('recurrenceFields','dateStartEndBox');
-  } else {
-    changeClass('recurrenceFields','invisible');
-  }
-}
-function showRecurrence(freq) {
-
-  changeClass('recurrenceUntilRules','shown');
-
-  /*if (freq == 'HOURLY') {
-    changeClass('hourlyRecurrenceRules','shown');
-  } else {
-    changeClass('hourlyRecurrenceRules','invisible');
-  }*/
-  if (freq == 'DAILY') {
-    changeClass('dailyRecurrenceRules','shown');
-  } else {
-    changeClass('dailyRecurrenceRules','invisible');
-  }
-  if (freq == 'WEEKLY') {
-    changeClass('weeklyRecurrenceRules','shown');
-  } else {
-    changeClass('weeklyRecurrenceRules','invisible');
-  }
-  if (freq == 'MONTHLY') {
-    changeClass('monthlyRecurrenceRules','shown');
-  } else {
-    changeClass('monthlyRecurrenceRules','invisible');
-  }
-  if (freq == 'YEARLY') {
-    changeClass('yearlyRecurrenceRules','shown');
-  } else {
-    changeClass('yearlyRecurrenceRules','invisible');
-  }
-  if (freq == 'NEVER') {
-    changeClass('neverRecurrenceRules','shown');
-    changeClass('recurrenceUntilRules','invisible');
-  } else {
-    changeClass('neverRecurrenceRules','invisible');
-  }
-}
 function swapFloatingTime(obj) {
   startTimezone = document.getElementById("startTzid");
   endTimezone = document.getElementById("endTzid");
@@ -117,7 +74,56 @@ function swapDurationType(type) {
     weeksDurationElement.disabled = true;
   }
 }
+function swapRecurrence(obj) {
+  if (obj.checked) {
+    changeClass('recurrenceFields','dateStartEndBox');
+  } else {
+    changeClass('recurrenceFields','invisible');
+  }
+}
+function showRecurrence(freq) {
 
+  changeClass('recurrenceUntilRules','shown');
+
+  if (freq == 'ONCE') {
+    changeClass('onceRecurrenceRules','shown');
+    changeClass('recurrenceUntilRules','invisible');
+  } else {
+    changeClass('onceRecurrenceRules','invisible');
+  }
+  if (freq == 'HOURLY') {
+    changeClass('hourlyRecurrenceRules','shown');
+  } else {
+    changeClass('hourlyRecurrenceRules','invisible');
+  }
+  if (freq == 'DAILY') {
+    changeClass('dailyRecurrenceRules','shown');
+  } else {
+    changeClass('dailyRecurrenceRules','invisible');
+  }
+  if (freq == 'WEEKLY') {
+    changeClass('weeklyRecurrenceRules','shown');
+  } else {
+    changeClass('weeklyRecurrenceRules','invisible');
+  }
+  if (freq == 'MONTHLY') {
+    changeClass('monthlyRecurrenceRules','shown');
+  } else {
+    changeClass('monthlyRecurrenceRules','invisible');
+  }
+  if (freq == 'YEARLY') {
+    changeClass('yearlyRecurrenceRules','shown');
+  } else {
+    changeClass('yearlyRecurrenceRules','invisible');
+  }
+}
+function swapYearCheckBoxList(obj) {
+  if (obj.value == "byyearday") {
+    changeClass('yearCheckBoxList','shown');
+  } else {
+    changeClass('yearCheckBoxList','invisible');
+  }
+}
 // launch a simple window for displaying information; no header or status bar
 function launchSimpleWindow(URL) {
   simpleWindow = window.open(URL, "simpleWindow", "width=800,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
@@ -160,6 +166,18 @@ function endDateCalWidgetCallback(date, month, year) {
   document.eventForm['eventEndDate.month'].value = month;
   document.eventForm['eventEndDate.day'].value = date;
   document.eventForm['eventEndDate.year'].value = year;
+}
+function untilDateCalWidgetCallback(date, month, year) {
+  if (String(month).length == 1) {
+      month = '0' + month;
+  }
+  if (String(date).length == 1) {
+      date = '0' + date;
+  }
+
+  document.eventForm['untilMonth'].value = month;
+  document.eventForm['untilDay'].value = date;
+  document.eventForm['untilYear'].value = year;
 }
 
 
