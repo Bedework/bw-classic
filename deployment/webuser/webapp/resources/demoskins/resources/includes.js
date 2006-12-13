@@ -153,11 +153,80 @@ function recurSelectWeekdays(id) {
     }
   }
 }
-// assemble the recurrence rules if recurrence is specified
-function setRecurrence(form) {
-  if (form.recurrenceFlag.checked) {
-
+// reveal the next recurrence field set if the selected value isn't 0 ('none')
+function revealNextRecurField(obj,id) {
+  if (obj.value != '0') {
+    changeClass(id,'shown');
   }
+}
+function selectRecurCountUntil(id) {
+  document.getElementById(id).checked = true;
+}
+// Assemble the recurrence rules if recurrence is specified.
+// Request params to set ('freq' is always set):
+// interval, count, until (count OR until, not both)
+// possibly: byday, bymonthday, bymonth, byyearday
+function setRecurrence(formObj) {
+  if (formObj.recurrenceFlag.checked) {
+    var freq = getSelectedRadioButtonVal(formObj.freq);
+    if (freq != 'NONE') {
+      // build up recurrence rules
+      switch (freq) {
+        case "DAILY":
+          formObj.interval.value = formObj.dailyInterval.value;
+          break;
+        case "WEEKLY":
+          formObj.interval.value = formObj.weeklyInterval.value;
+          weekByDayChkBoxes = document.getElementById('weekRecurFields').getElementsByTagName('input');
+          formObj.byday.value = collectRecurChkBoxVals(weekByDayChkBoxes);
+          break;
+        case "MONTHLY":
+          formObj.interval.value = formObj.monthlyInterval.value;
+          break;
+        case "YEARLY":
+          formObj.interval.value = formObj.yearlyInterval.value;
+          break;
+      }
+      // build up count or until values
+      var recur = getSelectedRadioButtonVal(formObj.recurCountUntil);
+      switch (recur) {
+        case "forever":
+          // do nothing
+          break;
+        case "count":
+          formObj.count.value = formObj.countHolder.value;
+          break;
+        case "until":
+          // pad the month and day with zeros if only a single digit
+          var paddedMonth = (formObj.untilMonth.value < 10) ? '0'+formObj.untilMonth.value : formObj.untilMonth.value;
+          var paddedDay = (formObj.untilDay.value < 10) ? '0'+formObj.untilDay.value : formObj.untilDay.value;
+          formObj.until.value = formObj.untilYear.value + paddedMonth + paddedDay;
+          break;
+      }
+    }
+  }
+  alert("frequency: " + freq + "\ninterval: " + formObj.interval.value + "\ncount: " + formObj.count.value + "\nuntil: " + formObj.until.value + "\nbyday: " + formObj.byday.value + "\nbymonthday" + formObj.bymonthday.value + "\nbymonth" + formObj.bymonth.value + "\nbyyearday" + formObj.byyearday.value + "\n");
+  return true;
+}
+function getSelectedRadioButtonVal(radioCollection) {
+  for(var i = 0; i < radioCollection.length; i++) {
+    if(radioCollection[i].checked == true) {
+       return radioCollection[i].value;
+    }
+  }
+}
+function collectRecurChkBoxVals(chkBoxes) {
+  var collectedVals = "";
+  if (chkBoxes) {
+    if (typeof chkBoxes.length != 'undefined') {
+      for (i = 0; i < chkBoxes.length; i++) {
+        if (chkBoxes[i].checked == true) {
+           collectedVals += chkBoxes[i].value + ',';
+        }
+      }
+    }
+  }
+  return collectedVals;
 }
 // launch a simple window for displaying information; no header or status bar
 function launchSimpleWindow(URL) {
@@ -180,39 +249,40 @@ function launchPrintWindow(URL) {
 }
 
 function startDateCalWidgetCallback(date, month, year) {
-  if (String(month).length == 1) {
+  /*if (String(month).length == 1) {
       month = '0' + month;
   }
   if (String(date).length == 1) {
       date = '0' + date;
-  }
+  }*/
   document.eventForm['eventStartDate.month'].value = month;
   document.eventForm['eventStartDate.day'].value = date;
   document.eventForm['eventStartDate.year'].value = year;
 }
 function endDateCalWidgetCallback(date, month, year) {
-  if (String(month).length == 1) {
+  /*if (String(month).length == 1) {
       month = '0' + month;
   }
   if (String(date).length == 1) {
       date = '0' + date;
-  }
+  }*/
 
   document.eventForm['eventEndDate.month'].value = month;
   document.eventForm['eventEndDate.day'].value = date;
   document.eventForm['eventEndDate.year'].value = year;
 }
 function untilDateCalWidgetCallback(date, month, year) {
-  if (String(month).length == 1) {
+  /*if (String(month).length == 1) {
       month = '0' + month;
   }
   if (String(date).length == 1) {
       date = '0' + date;
-  }
+  }*/
 
   document.eventForm['untilMonth'].value = month;
   document.eventForm['untilDay'].value = date;
   document.eventForm['untilYear'].value = year;
+  selectRecurCountUntil('recurUntil');
 }
 
 

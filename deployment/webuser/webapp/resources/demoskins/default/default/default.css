@@ -680,11 +680,23 @@ table#manage td {
   margin: 0 0 1em 2em;
   padding: 0;
 }
+#recurrenceFields #monthRecurFields div,
+#recurrenceFields #yearRecurFields div {
+  display: block;
+  margin: 0 0 0.5em 0;
+}
+#recurrenceFields #yearMonthCheckBoxList,
+#recurrenceFields #yearMonthDaysCheckBoxList,
+#recurrenceFields #yearDaysCheckBoxList {
+  margin: 0.5em 0 0.5em 2em;
+  display: block;
+  clear: both;
+}
 .shown {
   display: inline;
 }
 .invisible {
-  display: none;
+  display: none !important;
 }
 .hidden {
   visibility: hidden;
