@@ -53,6 +53,9 @@
         <!-- Max number of instances per recurring event -->
         <maxInstances>1000</maxInstances>
 
+        <!-- Max number of years per recurring event -->
+        <maxYears>50</maxYears>
+
         <userauthClass>org.bedework.calcore.hibernate.UserAuthUWDbImpl</userauthClass>
         <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
         <admingroupsClass>org.bedework.calcore.hibernate.AdminGroupsDbImpl</admingroupsClass>
