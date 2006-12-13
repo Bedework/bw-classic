@@ -676,6 +676,9 @@ table#manage td {
 #recurrenceFields #recurrenceTable p {
   margin: 0 0 0.5em 0;
 }
+#recurrenceFields #recurrenceTable p.weekRecurLinks {
+  margin: 1em 0 0.5em 0;
+}
 #recurrenceFields #recurrenceTable .extraByMonthPosFields {
   margin: 0 0 1em 2em;
   padding: 0;

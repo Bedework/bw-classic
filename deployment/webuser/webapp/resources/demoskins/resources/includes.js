@@ -181,26 +181,54 @@ function setRecurrence(formObj) {
           var i = 1;
           var monthByDayId = 'monthRecurFields' + i;
           var byday = new Array();
-          var bymonthday = new Array;
+          var bymonthday = new Array();
+          var byyearday = new Array();
           // get the byday values
           while (document.getElementById(monthByDayId)) {
             var monthFields = document.getElementById(monthByDayId);
-            var monthPosSelect = monthFields.getElementsByTagName('select');
-            var monthPos = monthPosSelect[0][monthPosSelect[0].selectedIndex].value;
-            if (monthPos) {
-              byday = collectRecurChkBoxVals(byday,monthFields.getElementsByTagName('input'),monthPos);
+            var dayPosSelect = monthFields.getElementsByTagName('select');
+            var dayPos = dayPosSelect[0][dayPosSelect[0].selectedIndex].value;
+            if (dayPos) {
+              byday = collectRecurChkBoxVals(byday,monthFields.getElementsByTagName('input'),dayPos);
             }
             monthByDayId = monthByDayId.substring(0,monthByDayId.length-1) + ++i;
           }
-          // get the bymonthdayvalues
+          // get the bymonthday values
           bymonthday = collectRecurChkBoxVals(bymonthday,document.getElementById('monthDaysCheckBoxList').getElementsByTagName('input'),false);
           // set the form values
-          formObj.bymonthday.value = bymonthday.join(',');
           formObj.byday.value = byday.join(',');
-          alert(formObj.monthlyInterval);
+          formObj.bymonthday.value = bymonthday.join(',');
           formObj.interval.value = formObj.monthlyInterval.value;
           break;
         case "YEARLY":
+          var i = 1;
+          var yearByDayId = 'yearRecurFields' + i;
+          var byday = new Array();
+          var bymonthday = new Array();
+          var bymonth = new Array();
+          var byyearday = new Array();
+          // get the byday values
+          while (document.getElementById(yearByDayId)) {
+            var yearFields = document.getElementById(yearByDayId);
+            var dayPosSelect = yearFields.getElementsByTagName('select');
+            var dayPos = dayPosSelect[0][dayPosSelect[0].selectedIndex].value;
+            if (dayPos) {
+              byday = collectRecurChkBoxVals(byday,yearFields.getElementsByTagName('input'),dayPos);
+            }
+            yearByDayId = yearByDayId.substring(0,yearByDayId.length-1) + ++i;
+          }
+          // get the bymonth values
+          bymonth = collectRecurChkBoxVals(bymonth,document.getElementById('yearMonthCheckBoxList').getElementsByTagName('input'),false);
+          // get the bymonthday values
+          bymonthday = collectRecurChkBoxVals(bymonthday,document.getElementById('yearMonthDaysCheckBoxList').getElementsByTagName('input'),false);
+          // get the byyearday values
+          byyearday = collectRecurChkBoxVals(byyearday,document.getElementById('yearDaysCheckBoxList').getElementsByTagName('input'),false);
+
+          // set the form values
+          formObj.byday.value = byday.join(',');
+          formObj.bymonth.value = bymonth.join(',');
+          formObj.bymonthday.value = bymonthday.join(',');
+          formObj.byyearday.value = byyearday.join(',');
           formObj.interval.value = formObj.yearlyInterval.value;
           break;
       }
@@ -222,7 +250,7 @@ function setRecurrence(formObj) {
       }
     }
   }
-  alert("frequency: " + freq + "\ninterval: " + formObj.interval.value + "\ncount: " + formObj.count.value + "\nuntil: " + formObj.until.value + "\nbyday: " + formObj.byday.value + "\nbymonthday" + formObj.bymonthday.value + "\nbymonth" + formObj.bymonth.value + "\nbyyearday" + formObj.byyearday.value + "\n");
+  //alert("frequency: " + freq + "\ninterval: " + formObj.interval.value + "\ncount: " + formObj.count.value + "\nuntil: " + formObj.until.value + "\nbyday: " + formObj.byday.value + "\nbymonthday: " + formObj.bymonthday.value + "\nbymonth: " + formObj.bymonth.value + "\nbyyearday: " + formObj.byyearday.value + "\n");
   return true;
 }
 function getSelectedRadioButtonVal(radioCollection) {
@@ -233,13 +261,13 @@ function getSelectedRadioButtonVal(radioCollection) {
   }
 }
 // returns an array of collected checkbox values
-function collectRecurChkBoxVals(valArray,chkBoxes,monthPos) {
+function collectRecurChkBoxVals(valArray,chkBoxes,dayPos) {
   if (chkBoxes) {
     if (typeof chkBoxes.length != 'undefined') {
       for (i = 0; i < chkBoxes.length; i++) {
         if (chkBoxes[i].checked == true) {
-          if (monthPos) {
-            valArray.push(monthPos + chkBoxes[i].value);
+          if (dayPos) {
+            valArray.push(dayPos + chkBoxes[i].value);
           } else {
             valArray.push(chkBoxes[i].value);
           }
