@@ -2259,7 +2259,7 @@
                     <div id="monthRecurFields">
                       <div id="monthRecurFields1">
                         on
-                        <select name="bymonthposPos1" width="7em" onchange="revealNextRecurField(this,'monthRecurFields2')">
+                        <select name="bymonthposPos1" width="7em" onchange="changeClass('monthRecurFields2','shown')">
                           <xsl:call-template name="recurrenceDayPosOptions"/>
                         </select>
                         <xsl:call-template name="byDayChkBoxList"/>
@@ -2289,7 +2289,7 @@
                     <div id="yearRecurFields">
                       <div id="yearRecurFields1">
                         on
-                        <select name="byyearposPos1" width="7em" onchange="revealNextRecurField(this,'yearRecurFields2')">
+                        <select name="byyearposPos1" width="7em" onchange="changeClass('yearRecurFields2','shown')">
                           <xsl:call-template name="recurrenceDayPosOptions"/>
                         </select>
                         <xsl:call-template name="byDayChkBoxList"/>
@@ -2602,7 +2602,7 @@
       <select width="12em">
         <xsl:attribute name="name">by<xsl:value-of select="$name"/>posPos<xsl:value-of select="$current"/></xsl:attribute>
         <xsl:if test="$current != $total">
-          <xsl:attribute name="onchange">revealNextRecurField(this,'<xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current+1"/>')</xsl:attribute>
+          <xsl:attribute name="onchange">changeClass('<xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current+1"/>','shown')</xsl:attribute>
         </xsl:if>
         <xsl:call-template name="recurrenceDayPosOptions"/>
       </select>

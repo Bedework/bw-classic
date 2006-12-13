@@ -153,12 +153,6 @@ function recurSelectWeekdays(id) {
     }
   }
 }
-// reveal the next recurrence field set if the selected value isn't 0 ('none')
-function revealNextRecurField(obj,id) {
-  if (obj.value != '0') {
-    changeClass(id,'shown');
-  }
-}
 function selectRecurCountUntil(id) {
   document.getElementById(id).checked = true;
 }
