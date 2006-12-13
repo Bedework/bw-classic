@@ -2191,6 +2191,13 @@
           <!-- Recurrence fields -->
           <!-- ================= -->
           <input type="checkbox" name="recurrenceFlag" onclick="swapRecurrence(this)" value="on"/>
+          <xsl:if test="form/recurring='true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+          recurring
+          <span id="recurrenceUiSwitch" class="invisible">
+            <input type="radio" name="recurrenceUiSwitch" value="simple"/>simple
+            <input type="radio" name="recurrenceUiSwitch" value="advanced" checked="checked"/>advanced
+          </span>
+
           <!-- set these dynamically when form is submitted -->
           <input type="hidden" name="interval" value=""/>
           <input type="hidden" name="count" value=""/>
@@ -2200,8 +2207,6 @@
           <input type="hidden" name="bymonth" value=""/>
           <input type="hidden" name="byyearday" value=""/>
 
-          <xsl:if test="form/recurring='true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-          recurring
           <div id="recurrenceFields" class="invisible">
             <table id="recurrenceTable" cellspacing="0">
               <tr>
@@ -2285,7 +2290,7 @@
                   <!-- yearly -->
                   <div id="yearlyRecurrenceRules" class="invisible">
                     <strong>Interval:</strong>
-                    every <input type="text" name="monthlyInterval" size="2" value="1"/> years(s)<br/>
+                    every <input type="text" name="yearlyInterval" size="2" value="1"/> years(s)<br/>
                     <div id="yearRecurFields">
                       <div id="yearRecurFields1">
                         on
@@ -2565,9 +2570,10 @@
     <xsl:param name="name"/>
     <xsl:param name="splitter">10</xsl:param>
     <span class="chkBoxListItem">
-      <input type="checkbox"/>
-      <xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
-      <xsl:attribute name="value"><xsl:value-of select="$current"/></xsl:attribute>
+      <input type="checkbox">
+        <xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
+        <xsl:attribute name="value"><xsl:value-of select="$current"/></xsl:attribute>
+      </input>
       <xsl:value-of select="$current"/>
     </span>
     <xsl:if test="$current mod $splitter = 0"><br/></xsl:if>

@@ -85,8 +85,10 @@ function swapDurationType(type) {
 function swapRecurrence(obj) {
   if (obj.checked) {
     changeClass('recurrenceFields','dateStartEndBox');
+    changeClass('recurrenceUiSwitch','shown');
   } else {
     changeClass('recurrenceFields','invisible');
+    changeClass('recurrenceUiSwitch','invisible');
   }
 }
 // reveal and hide recurrence fields
@@ -170,11 +172,32 @@ function setRecurrence(formObj) {
           formObj.interval.value = formObj.dailyInterval.value;
           break;
         case "WEEKLY":
+          var byday = new Array();
+          byday = collectRecurChkBoxVals(byday, document.getElementById('weekRecurFields').getElementsByTagName('input'),false);
+          formObj.byday.value = byday.join(',');
           formObj.interval.value = formObj.weeklyInterval.value;
-          weekByDayChkBoxes = document.getElementById('weekRecurFields').getElementsByTagName('input');
-          formObj.byday.value = collectRecurChkBoxVals(weekByDayChkBoxes);
           break;
         case "MONTHLY":
+          var i = 1;
+          var monthByDayId = 'monthRecurFields' + i;
+          var byday = new Array();
+          var bymonthday = new Array;
+          // get the byday values
+          while (document.getElementById(monthByDayId)) {
+            var monthFields = document.getElementById(monthByDayId);
+            var monthPosSelect = monthFields.getElementsByTagName('select');
+            var monthPos = monthPosSelect[0][monthPosSelect[0].selectedIndex].value;
+            if (monthPos) {
+              byday = collectRecurChkBoxVals(byday,monthFields.getElementsByTagName('input'),monthPos);
+            }
+            monthByDayId = monthByDayId.substring(0,monthByDayId.length-1) + ++i;
+          }
+          // get the bymonthdayvalues
+          bymonthday = collectRecurChkBoxVals(bymonthday,document.getElementById('monthDaysCheckBoxList').getElementsByTagName('input'),false);
+          // set the form values
+          formObj.bymonthday.value = bymonthday.join(',');
+          formObj.byday.value = byday.join(',');
+          alert(formObj.monthlyInterval);
           formObj.interval.value = formObj.monthlyInterval.value;
           break;
         case "YEARLY":
@@ -209,18 +232,22 @@ function getSelectedRadioButtonVal(radioCollection) {
     }
   }
 }
-function collectRecurChkBoxVals(chkBoxes) {
-  var collectedVals = "";
+// returns an array of collected checkbox values
+function collectRecurChkBoxVals(valArray,chkBoxes,monthPos) {
   if (chkBoxes) {
     if (typeof chkBoxes.length != 'undefined') {
       for (i = 0; i < chkBoxes.length; i++) {
         if (chkBoxes[i].checked == true) {
-           collectedVals += chkBoxes[i].value + ',';
+          if (monthPos) {
+            valArray.push(monthPos + chkBoxes[i].value);
+          } else {
+            valArray.push(chkBoxes[i].value);
+          }
         }
       }
     }
   }
-  return collectedVals;
+  return valArray;
 }
 // launch a simple window for displaying information; no header or status bar
 function launchSimpleWindow(URL) {
