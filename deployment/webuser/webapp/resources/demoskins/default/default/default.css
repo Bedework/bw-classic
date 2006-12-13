@@ -677,7 +677,7 @@ table#manage td {
   margin: 0 0 0.5em 0;
 }
 #recurrenceFields #recurrenceTable p.weekRecurLinks {
-  margin: 1em 0 0.5em 0;
+  margin: 1em 0 1em 0;
 }
 #recurrenceFields #recurrenceTable .extraByMonthPosFields {
   margin: 0 0 1em 2em;
@@ -688,6 +688,9 @@ table#manage td {
   display: block;
   margin: 0 0 0.5em 0;
 }
+#recurrenceFields #dayMonthCheckBoxList,
+#recurrenceFields #monthDaysCheckBoxList,
+#recurrenceFields #yearWeeksCheckBoxList,
 #recurrenceFields #yearMonthCheckBoxList,
 #recurrenceFields #yearMonthDaysCheckBoxList,
 #recurrenceFields #yearDaysCheckBoxList {

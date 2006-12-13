@@ -169,12 +169,18 @@ function setRecurrence(formObj) {
       // build up recurrence rules
       switch (freq) {
         case "DAILY":
+          var bymonth = new Array();
+          // get the bymonth values
+          bymonth = collectRecurChkBoxVals(bymonth,document.getElementById('dayMonthCheckBoxList').getElementsByTagName('input'),false);
+          // set the form values
+          formObj.bymonth.value = bymonth.join(',');
           formObj.interval.value = formObj.dailyInterval.value;
           break;
         case "WEEKLY":
           var byday = new Array();
           byday = collectRecurChkBoxVals(byday, document.getElementById('weekRecurFields').getElementsByTagName('input'),false);
           formObj.byday.value = byday.join(',');
+          formObj.wkst.value = formObj.weekWkst[formObj.weekWkst.selectedIndex].value;
           formObj.interval.value = formObj.weeklyInterval.value;
           break;
         case "MONTHLY":
@@ -206,6 +212,7 @@ function setRecurrence(formObj) {
           var byday = new Array();
           var bymonthday = new Array();
           var bymonth = new Array();
+          var byweekno = new Array();
           var byyearday = new Array();
           // get the byday values
           while (document.getElementById(yearByDayId)) {
@@ -221,6 +228,8 @@ function setRecurrence(formObj) {
           bymonth = collectRecurChkBoxVals(bymonth,document.getElementById('yearMonthCheckBoxList').getElementsByTagName('input'),false);
           // get the bymonthday values
           bymonthday = collectRecurChkBoxVals(bymonthday,document.getElementById('yearMonthDaysCheckBoxList').getElementsByTagName('input'),false);
+          // get the byweekno values
+          byweekno = collectRecurChkBoxVals(byweekno,document.getElementById('yearWeeksCheckBoxList').getElementsByTagName('input'),false);
           // get the byyearday values
           byyearday = collectRecurChkBoxVals(byyearday,document.getElementById('yearDaysCheckBoxList').getElementsByTagName('input'),false);
 
@@ -228,7 +237,9 @@ function setRecurrence(formObj) {
           formObj.byday.value = byday.join(',');
           formObj.bymonth.value = bymonth.join(',');
           formObj.bymonthday.value = bymonthday.join(',');
+          formObj.byweekno.value = byweekno.join(',');
           formObj.byyearday.value = byyearday.join(',');
+          formObj.wkst.value = formObj.yearWkst[formObj.yearWkst.selectedIndex].value;
           formObj.interval.value = formObj.yearlyInterval.value;
           break;
       }
@@ -250,7 +261,7 @@ function setRecurrence(formObj) {
       }
     }
   }
-  //alert("frequency: " + freq + "\ninterval: " + formObj.interval.value + "\ncount: " + formObj.count.value + "\nuntil: " + formObj.until.value + "\nbyday: " + formObj.byday.value + "\nbymonthday: " + formObj.bymonthday.value + "\nbymonth: " + formObj.bymonth.value + "\nbyyearday: " + formObj.byyearday.value + "\n");
+  //alert("frequency: " + freq + "\ninterval: " + formObj.interval.value + "\ncount: " + formObj.count.value + "\nuntil: " + formObj.until.value + "\nbyday: " + formObj.byday.value + "\nbymonthday: " + formObj.bymonthday.value + "\nbymonth: " + formObj.bymonth.value + "\nbyyearday: " + formObj.byyearday.value + "\nwkst: " + formObj.wkst.value);
   return true;
 }
 function getSelectedRadioButtonVal(radioCollection) {
