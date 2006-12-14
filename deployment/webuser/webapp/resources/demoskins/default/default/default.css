@@ -632,7 +632,7 @@ table#manage td {
   padding: 0.2em 0 0 0.5em;
 }
 #bwEventCalDisplay {
-  /*font-weight: bold;*/
+  font-weight: bold;
   margin-right: 1em;
 }
 #clock {

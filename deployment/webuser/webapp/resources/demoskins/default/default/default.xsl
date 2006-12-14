@@ -1891,6 +1891,30 @@
           </th>
         </tr>
       </xsl:if>
+      <!--  Calendar in which to place event  -->
+      <tr>
+        <td class="fieldname">
+          Calendar:
+        </td>
+        <td class="fieldval">
+          <xsl:variable name="newCalPath" select="form/calendar/path"/>
+          <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
+          <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+
+          <span id="bwEventCalDisplay">
+            <xsl:choose>
+              <xsl:when test="contains(form/calendar/path,$userPath)">
+                <xsl:value-of select="substring-after(form/calendar/path,$userPath)"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="form/calendar/path"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </span>
+          <input type="button" onclick="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" value="select calendar" class="small"/>
+
+        </td>
+      </tr>
       <!--  Summary (title) of event  -->
       <tr>
         <td class="fieldname">
@@ -1911,28 +1935,6 @@
           <input type="radio" name="schedule" size="80" value="" checked="checked"/>my event
           <input type="radio" name="schedule" size="80" value="request"/>meeting request
           <input type="radio" name="schedule" size="80" value="publish"/>published event
-        </td>
-      </tr>
-      <!--  Calendar in which to place event  -->
-      <tr>
-        <td class="fieldname">
-          Calendar:
-        </td>
-        <td class="fieldval">
-          <xsl:variable name="newCalPath" select="form/calendar/path"/>
-          <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
-          <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-          <span id="bwEventCalDisplay">
-            <xsl:choose>
-              <xsl:when test="contains(form/calendar/path,$userPath)">
-                <xsl:value-of select="substring-after(form/calendar/path,$userPath)"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="form/calendar/path"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </span>
-          <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">[change]</a>
         </td>
       </tr>
 
@@ -2522,7 +2524,7 @@
         </td>
         <td class="fieldval posrelative">
           <!--<input type="button" value="Manage recipients and attendees" onclick="changeClass('recipientsAndAttendees','shown')"/>-->
-          <input type="button" value="Manage recipients and attendees" onclick="launchSizedWindow('{$event-showAttendeesForEvent}','500','400')"/>
+          <input type="button" value="Manage recipients and attendees" onclick="launchSizedWindow('{$event-showAttendeesForEvent}','500','400')" class="small"/>
         </td>
       </tr>
       <!--  Status  -->
