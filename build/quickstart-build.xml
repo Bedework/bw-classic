@@ -79,6 +79,10 @@
     <property file="${org.bedework.user.build.properties}" />
 
     <property file="${basedir}/bedework/deployment/deploy.properties" />
+
+    <!-- Unfortuanately it sits on top of everything
+    <splash imageurl="file://${org.bedework.project.bedework}/docs/icons/bedeworkLogo.gif"/>
+    -->
   </target>
 
   <target name="run.init" depends="init" >
