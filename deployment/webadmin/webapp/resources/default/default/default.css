@@ -259,6 +259,9 @@ table.eventFormTable td {
   vertical-align: top;
   font-size: 0.9em;
 }
+table.eventFormTable td.fieldName {
+  width: 7em;
+}
 table.eventFormTable th,
 table.eventFormTable td.fieldName {
   white-space: nowrap;
@@ -306,6 +309,7 @@ table.eventFormTable .dateStartEndBox {
   border: 1px solid #ccb;
   margin: 4px;
   padding: 4px;
+  white-space: nowrap;
 }
 table.eventFormTable .dateStartEndBox strong {
   display: block;
@@ -313,12 +317,16 @@ table.eventFormTable .dateStartEndBox strong {
 table.eventFormTable .startDateLabel {
   margin-left: 26px;
 }
+table.eventFormTable select.timezones {
+  margin-left: 1em;
+  width: 160px;
+}
 table.eventFormTable .shown {
   display: inline;
 }
 table.eventFormTable .invisible,
 .invisible {
-  display: none;
+  display: none !important;
 }
 .hidden {
   visibility: hidden;
@@ -383,6 +391,65 @@ table.eventFormTable .durationSpacerText {
 }
 #clock {
   position: relative;
+}
+
+#tztable {
+  margin-top: 1em;
+}
+#tztable td {
+  padding: 2px 4px;
+}
+#recurrenceFields #recurrenceTable strong {
+  display: inline;
+}
+#recurrenceFields #recurrenceTable td.recurrenceFrequency {
+  padding: 0.5em 1em 0 0;
+}
+#recurrenceFields #recurrenceTable td.recurrenceRules {
+  padding: 0.5em 0 0.5em 1em;
+  border-left: 1px solid #ddd;
+}
+#recurrenceFields #recurrenceTable td.recurrenceUntil {
+  width: 100%;
+  padding: 0.5em 0 0 1em;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+#recurrenceFields #recurrenceTable td.recurrenceRules .rruleBlock {
+  margin: 0 0 0.5em 2em;
+}
+.chkBoxListItem {
+  display: block;
+  float: left;
+  width: 3em;
+}
+#recurrenceFields #recurrenceTable br {
+  clear: both;
+}
+#recurrenceFields #recurrenceTable p {
+  margin: 0 0 0.5em 0;
+}
+#recurrenceFields #recurrenceTable p.weekRecurLinks {
+  margin: 1em 0 1em 0;
+}
+#recurrenceFields #recurrenceTable .extraByMonthPosFields {
+  margin: 0 0 1em 2em;
+  padding: 0;
+}
+#recurrenceFields #monthRecurFields div,
+#recurrenceFields #yearRecurFields div {
+  display: block;
+  margin: 0 0 0.5em 0;
+}
+#recurrenceFields #dayMonthCheckBoxList,
+#recurrenceFields #monthDaysCheckBoxList,
+#recurrenceFields #yearWeeksCheckBoxList,
+#recurrenceFields #yearMonthCheckBoxList,
+#recurrenceFields #yearMonthDaysCheckBoxList,
+#recurrenceFields #yearDaysCheckBoxList {
+  margin: 0.5em 0 0.5em 2em;
+  display: block;
+  clear: both;
 }
 #contactEmailAlert {
   display: none;

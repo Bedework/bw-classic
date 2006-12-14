@@ -1,3 +1,5 @@
+var debug = false; // very basic debugging for now
+
 function changeClass(id, newClass) {
   identity = document.getElementById(id);
   identity.className=newClass;
@@ -180,7 +182,9 @@ function setRecurrence(formObj) {
           var byday = new Array();
           byday = collectRecurChkBoxVals(byday, document.getElementById('weekRecurFields').getElementsByTagName('input'),false);
           formObj.byday.value = byday.join(',');
-          formObj.wkst.value = formObj.weekWkst[formObj.weekWkst.selectedIndex].value;
+          if (formObj.weekWkst.selectedIndex != -1) {
+            formObj.wkst.value = formObj.weekWkst[formObj.weekWkst.selectedIndex].value;
+          }
           formObj.interval.value = formObj.weeklyInterval.value;
           break;
         case "MONTHLY":
@@ -239,7 +243,9 @@ function setRecurrence(formObj) {
           formObj.bymonthday.value = bymonthday.join(',');
           formObj.byweekno.value = byweekno.join(',');
           formObj.byyearday.value = byyearday.join(',');
-          formObj.wkst.value = formObj.yearWkst[formObj.yearWkst.selectedIndex].value;
+          if (formObj.yearWkst.selectedIndex != -1) {
+            formObj.wkst.value = formObj.yearWkst[formObj.yearWkst.selectedIndex].value;
+          }
           formObj.interval.value = formObj.yearlyInterval.value;
           break;
       }
@@ -261,7 +267,10 @@ function setRecurrence(formObj) {
       }
     }
   }
-  //alert("frequency: " + freq + "\ninterval: " + formObj.interval.value + "\ncount: " + formObj.count.value + "\nuntil: " + formObj.until.value + "\nbyday: " + formObj.byday.value + "\nbymonthday: " + formObj.bymonthday.value + "\nbymonth: " + formObj.bymonth.value + "\nbyyearday: " + formObj.byyearday.value + "\nwkst: " + formObj.wkst.value);
+
+  if (debug) {
+    alert("frequency: " + freq + "\ninterval: " + formObj.interval.value + "\ncount: " + formObj.count.value + "\nuntil: " + formObj.until.value + "\nbyday: " + formObj.byday.value + "\nbymonthday: " + formObj.bymonthday.value + "\nbymonth: " + formObj.bymonth.value + "\nbyyearday: " + formObj.byyearday.value + "\nwkst: " + formObj.wkst.value);
+  }
   return true;
 }
 function getSelectedRadioButtonVal(radioCollection) {
@@ -309,40 +318,35 @@ function launchPrintWindow(URL) {
 }
 
 function startDateCalWidgetCallback(date, month, year) {
-  /*if (String(month).length == 1) {
-      month = '0' + month;
+  today = new Date();
+  if (year < today.getFullYear()) {
+    alert("You may not use this widget to \n create an event in a previous year.");
+  } else {
+    document.eventForm['eventStartDate.month'].value = month;
+    document.eventForm['eventStartDate.day'].value = date;
+    document.eventForm['eventStartDate.year'].value = year;
   }
-  if (String(date).length == 1) {
-      date = '0' + date;
-  }*/
-  document.eventForm['eventStartDate.month'].value = month;
-  document.eventForm['eventStartDate.day'].value = date;
-  document.eventForm['eventStartDate.year'].value = year;
 }
 function endDateCalWidgetCallback(date, month, year) {
-  /*if (String(month).length == 1) {
-      month = '0' + month;
+  today = new Date();
+  if (year < today.getFullYear()) {
+    alert("You may not use this widget to \n create an event in a previous year.");
+  } else {
+    document.eventForm['eventEndDate.month'].value = month;
+    document.eventForm['eventEndDate.day'].value = date;
+    document.eventForm['eventEndDate.year'].value = year;
   }
-  if (String(date).length == 1) {
-      date = '0' + date;
-  }*/
-
-  document.eventForm['eventEndDate.month'].value = month;
-  document.eventForm['eventEndDate.day'].value = date;
-  document.eventForm['eventEndDate.year'].value = year;
 }
 function untilDateCalWidgetCallback(date, month, year) {
-  /*if (String(month).length == 1) {
-      month = '0' + month;
+  today = new Date();
+  if (year < today.getFullYear()) {
+    alert("You may not use this widget to \n create an event in a previous year.");
+  } else {
+    document.eventForm['untilMonth'].value = month;
+    document.eventForm['untilDay'].value = date;
+    document.eventForm['untilYear'].value = year;
+    selectRecurCountUntil('recurUntil');
   }
-  if (String(date).length == 1) {
-      date = '0' + date;
-  }*/
-
-  document.eventForm['untilMonth'].value = month;
-  document.eventForm['untilDay'].value = date;
-  document.eventForm['untilYear'].value = year;
-  selectRecurCountUntil('recurUntil');
 }
 
 

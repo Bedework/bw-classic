@@ -2289,7 +2289,7 @@
                             <xsl:for-each select="/bedework/shortdaynames/val">
                               <xsl:variable name="pos" select="position()"/>
                               <option>
-                                <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdaynames/val[position() = $pos]"/></xsl:attribute>
+                                <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
                                 <xsl:value-of select="."/>
                               </option>
                             </xsl:for-each>
@@ -2401,7 +2401,7 @@
                             <xsl:for-each select="/bedework/shortdaynames/val">
                               <xsl:variable name="pos" select="position()"/>
                               <option>
-                                <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdaynames/val[position() = $pos]"/></xsl:attribute>
+                                <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
                                 <xsl:value-of select="."/>
                               </option>
                             </xsl:for-each>
@@ -2431,17 +2431,18 @@
                              </xsl:for-each>
                            </select>
                            <xsl:choose>
-                            <xsl:when test="/bedework/creating = 'true'">
+                             <xsl:when test="/bedework/creating = 'true'">
                                <select name="untilYear" onfocus="selectRecurCountUntil('recurUntil')">
                                  <xsl:for-each select="form/start/year/select/option">
                                    <xsl:copy-of select="."/>
                                  </xsl:for-each>
                                </select>
-                            </xsl:when>
-                            <xsl:otherwise>
-                              <input type="text" name="untilYear" size="4"  onfocus="selectRecurCountUntil('recurUntil')"/>
-                              <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
-                            </xsl:otherwise>
+                             </xsl:when>
+                             <xsl:otherwise>
+                               <input type="text" name="untilYear" size="4"  onfocus="selectRecurCountUntil('recurUntil')">
+                                 <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
+                               </input>
+                             </xsl:otherwise>
                            </xsl:choose>
                          </div>
                          <script language="JavaScript" type="text/javascript">
@@ -2630,7 +2631,7 @@
     <xsl:for-each select="/bedework/shortdaynames/val">
       <xsl:variable name="pos" select="position()"/>
       <input type="checkbox">
-        <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdaynames/val[position() = $pos]"/></xsl:attribute>
+        <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
         <xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
       </input>
       <xsl:value-of select="."/>
