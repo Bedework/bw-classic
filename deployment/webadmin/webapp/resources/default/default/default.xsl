@@ -3345,25 +3345,25 @@
       Changes to these parameters have wide impact on the system.
     </p>
     <form name="systemParamsForm" action="{$system-update}" method="post">
-      <table class="eventFormTable">
+      <table class="eventFormTable params">
         <tr>
           <th>System name:</th>
           <td>
             <xsl:variable name="sysname" select="/bedeworkadmin/system/name"/>
             <xsl:value-of select="$sysname"/>
-          </td>
-          <td>
-            Name for this system. Cannot be changed.
+            <div class="desc">
+              Name for this system. Cannot be changed.
+            </div>
           </td>
         </tr>
         <tr>
           <th>Default timezone:</th>
           <td>
             <xsl:variable name="tzid" select="/bedeworkadmin/system/tzid"/>
-            <input value="{$tzid}" name="tzid" size="20"/>
-          </td>
-          <td>
-            Default timezone id for date/time values. This should normally be your local timezone
+            <input value="{$tzid}" name="tzid" />
+            <div class="desc">
+              Default timezone id for date/time values. This should normally be your local timezone
+            </div>
           </td>
         </tr>
         <tr>
@@ -3371,9 +3371,9 @@
           <td>
             <xsl:variable name="systemid" select="/bedeworkadmin/system/systemid"/>
             <xsl:value-of select="$systemid"/>
-          </td>
-          <td>
-            System id used when building uids and identifying users. Should not be changed.
+            <div class="desc">
+              System id used when building uids and identifying users. Should not be changed.
+            </div>
           </td>
         </tr>
         <tr>
@@ -3381,9 +3381,9 @@
           <td>
             <xsl:variable name="proot" select="/bedeworkadmin/system/principalRoot"/>
             <input value="{$proot}" name="principalRoot" size="0"/>
-          </td>
-          <td>
-            Used in WebDAV and CalDAV access to define root of user and group principal trees.
+            <div class="desc">
+              Used in WebDAV and CalDAV access to define root of user and group principal trees.
+            </div>
           </td>
         </tr>
         <tr>
@@ -3391,9 +3391,9 @@
           <td>
             <xsl:variable name="uproot" select="/bedeworkadmin/system/userPrincipalRoot"/>
             <input value="{$uproot}" name="userPrincipalRoot" size="0"/>
-          </td>
-          <td>
-            Used in WebDAV and CalDAV access to define root of user principal subtree.
+            <div class="desc">
+              Used in WebDAV and CalDAV access to define root of user principal subtree.
+            </div>
           </td>
         </tr>
         <tr>
@@ -3401,9 +3401,9 @@
           <td>
             <xsl:variable name="gproot" select="/bedeworkadmin/system/groupPrincipalRoot"/>
             <input value="{$gproot}" name="groupPrincipalRoot" size="0"/>
-          </td>
-          <td>
-            Used in WebDAV and CalDAV access to define root of group principal subtree.
+            <div class="desc">
+              Used in WebDAV and CalDAV access to define root of group principal subtree.
+            </div>
           </td>
         </tr>
         <tr>
@@ -3411,9 +3411,9 @@
           <td>
             <xsl:variable name="publicCalendarRoot" select="/bedeworkadmin/system/publicCalendarRoot"/>
             <xsl:value-of select="$publicCalendarRoot"/>
-          </td>
-          <td>
-            Name for public calendars root directory. Should not be changed.
+            <div class="desc">
+              Name for public calendars root directory. Should not be changed.
+            </div>
           </td>
         </tr>
         <tr>
@@ -3421,207 +3421,226 @@
           <td>
             <xsl:variable name="userCalendarRoot" select="/bedeworkadmin/system/userCalendarRoot"/>
             <xsl:value-of select="$userCalendarRoot"/>
-          </td>
-          <td>
-            Name for user calendars root directory. Should not be changed.
+            <div class="desc">
+              Name for user calendars root directory. Should not be changed.
+            </div>
           </td>
         </tr>
         <tr>
           <th>User Calendar Default name:</th>
           <td>
             <xsl:variable name="userDefaultCalendar" select="/bedeworkadmin/system/userDefaultCalendar"/>
-            <input value="{$userDefaultCalendar}" name="userDefaultCalendar" size="20"/>
-          </td>
-          <td>
-            Default name for user calendar. Used when initialising user. Possibly can be changed.
+            <input value="{$userDefaultCalendar}" name="userDefaultCalendar" />
+            <div class="desc">
+              Default name for user calendar. Used when initialising user. Possibly can be changed.
+            </div>
           </td>
         </tr>
         <tr>
           <th>Trash Calendar Default name:</th>
           <td>
             <xsl:variable name="defaultTrashCalendar" select="/bedeworkadmin/system/defaultTrashCalendar"/>
-            <input value="{$defaultTrashCalendar}" name="defaultTrashCalendar" size="20"/>
-          </td>
-          <td>
-            Default name for user trash calendar. Used when initialising user. Possibly can be changed.
+            <input value="{$defaultTrashCalendar}" name="defaultTrashCalendar" />
+            <div class="desc">
+              Default name for user trash calendar. Used when initialising user. Possibly can be changed.
+            </div>
           </td>
         </tr>
         <tr>
           <th>User Inbox Default name:</th>
           <td>
             <xsl:variable name="userInbox" select="/bedeworkadmin/system/userInbox"/>
-            <input value="{$userInbox}" name="userInbox" size="20"/>
-          </td>
-          <td>
-            Default name for user inbox. Used when initialising user. Possibly can be changed.
+            <input value="{$userInbox}" name="userInbox" />
+            <div class="desc">
+              Default name for user inbox. Used when initialising user. Possibly can be changed.
+            </div>
           </td>
         </tr>
         <tr>
           <th>User Outbox Default name:</th>
           <td>
             <xsl:variable name="userOutbox" select="/bedeworkadmin/system/userOutbox"/>
-            <input value="{$userOutbox}" name="userOutbox" size="20"/>
-          </td>
-          <td>
-            Default name for user outbox. Used when initialising user. Possibly can be changed.
+            <input value="{$userOutbox}" name="userOutbox" />
+            <div class="desc">
+              Default name for user outbox. Used when initialising user. Possibly can be changed.
+            </div>
           </td>
         </tr>
         <tr>
           <th>User Deleted Calendar Default name:</th>
           <td>
             <xsl:variable name="deletedCalendar" select="/bedeworkadmin/system/deletedCalendar"/>
-            <input value="{$deletedCalendar}" name="deletedCalendar" size="20"/>
-          </td>
-          <td>
-            Default name for user calendar used to hold deleted items. Used when initialising user. Possibly can be changed.
+            <input value="{$deletedCalendar}" name="deletedCalendar" />
+            <div class="desc">
+              Default name for user calendar used to hold deleted items. Used when initialising user. Possibly can be changed.
+            </div>
           </td>
         </tr>
         <tr>
           <th>User Busy Calendar Default name:</th>
           <td>
             <xsl:variable name="busyCalendar" select="/bedeworkadmin/system/busyCalendar"/>
-            <input value="{$busyCalendar}" name="busyCalendar" size="20"/>
-          </td>
-          <td>
-            Default name for user busy time calendar. Used when initialising user. Possibly can be changed.
+            <input value="{$busyCalendar}" name="busyCalendar" />
+            <div class="desc">
+              Default name for user busy time calendar. Used when initialising user. Possibly can be changed.
+            </div>
           </td>
         </tr>
         <tr>
           <th>Default user view name:</th>
           <td>
             <xsl:variable name="defaultViewName" select="/bedeworkadmin/system/defaultUserViewName"/>
-            <input value="{$defaultViewName}" name="defaultUserViewName" size="20"/>
-          </td>
-          <td>
-            Name used for default view created when a new user is added
+            <input value="{$defaultViewName}" name="defaultUserViewName" />
+            <div class="desc">
+              Name used for default view created when a new user is added
+            </div>
           </td>
         </tr>
         <tr>
           <th>Http connections per user:</th>
           <td>
             <xsl:variable name="httpPerUser" select="/bedeworkadmin/system/httpConnectionsPerUser"/>
-            <input value="{$httpPerUser}" name="httpConnectionsPerUser" size="20"/>
+            <input value="{$httpPerUser}" name="httpConnectionsPerUser" />
+            <div class="desc">
+            </div>
           </td>
-          <td></td>
         </tr>
         <tr>
           <th>Http connections per host:</th>
           <td>
             <xsl:variable name="httpPerHost" select="/bedeworkadmin/system/httpConnectionsPerHost"/>
-            <input value="{$httpPerHost}" name="httpConnectionsPerHost" size="20"/>
+            <input value="{$httpPerHost}" name="httpConnectionsPerHost" />
+            <div class="desc">
+            </div>
           </td>
-          <td></td>
         </tr>
         <tr>
           <th>Total http connections:</th>
           <td>
             <xsl:variable name="httpTotal" select="/bedeworkadmin/system/httpConnections"/>
-            <input value="{$httpTotal}" name="httpConnections" size="20"/>
+            <input value="{$httpTotal}" name="httpConnections" />
+            <div class="desc">
+            </div>
           </td>
-          <td></td>
         </tr>
         <tr>
           <th>Maximum length of public event description:</th>
           <td>
             <xsl:variable name="maxPublicDescriptionLength" select="/bedeworkadmin/system/maxPublicDescriptionLength"/>
-            <input value="{$maxPublicDescriptionLength}" name="maxPublicDescriptionLength" size="20"/>
+            <input value="{$maxPublicDescriptionLength}" name="maxPublicDescriptionLength" />
+            <div class="desc">
+            </div>
           </td>
-          <td></td>
         </tr>
         <tr>
           <th>Maximum length of user event description:</th>
           <td>
             <xsl:variable name="maxUserDescriptionLength" select="/bedeworkadmin/system/maxUserDescriptionLength"/>
-            <input value="{$maxUserDescriptionLength}" name="maxUserDescriptionLength" size="20"/>
+            <input value="{$maxUserDescriptionLength}" name="maxUserDescriptionLength" />
+            <div class="desc">
+            </div>
           </td>
-          <td></td>
         </tr>
         <tr>
           <th>Maximum size of a user entity:</th>
           <td>
             <xsl:variable name="maxUserEntitySize" select="/bedeworkadmin/system/maxUserEntitySize"/>
-            <input value="{$maxUserEntitySize}" name="maxUserEntitySize" size="20"/>
+            <input value="{$maxUserEntitySize}" name="maxUserEntitySize" />
+            <div class="desc">
+            </div>
           </td>
-          <td></td>
         </tr>
         <tr>
           <th>Default user quota:</th>
           <td>
             <xsl:variable name="defaultUserQuota" select="/bedeworkadmin/system/defaultUserQuota"/>
-            <input value="{$defaultUserQuota}" name="defaultUserQuota" size="20"/>
+            <input value="{$defaultUserQuota}" name="defaultUserQuota" />
+            <div class="desc">
+            </div>
           </td>
-          <td></td>
         </tr>
         <tr>
           <th>Max recurring instances:</th>
           <td>
             <xsl:variable name="maxInstances" select="/bedeworkadmin/system/maxInstances"/>
-            <input value="{$maxInstances}" name="maxInstances" size="20"/>
+            <input value="{$maxInstances}" name="maxInstances" />
+            <div class="desc">
+              Used to limit recurring events to reasonable numbers of instances.
+            </div>
           </td>
-          <td>Used to limit recurring events to reasonable numbers of instances.</td>
         </tr>
         <tr>
           <th>Max recurring years:</th>
           <td>
             <xsl:variable name="maxYears" select="/bedeworkadmin/system/maxYears"/>
-            <input value="{$maxYears}" name="maxYears" size="20"/>
+            <input value="{$maxYears}" name="maxYears" />
+            <div class="desc">
+              Used to limit recurring events to reasonable period of time.
+            </div>
           </td>
-          <td>Used to limit recurring events to reasonable period of time.</td>
         </tr>
         <tr>
           <th>User authorisation class:</th>
           <td>
             <xsl:variable name="userauthClass" select="/bedeworkadmin/system/userauthClass"/>
-            <input value="{$userauthClass}" name="userauthClass" size="20"/>
-          </td>
-          <td>Class used to determine authorisation (not authentication for
-             .administrative users. Should probably only be changed on rebuild.
+            <input value="{$userauthClass}" name="userauthClass" class="wide"/>
+            <div class="desc">
+              Class used to determine authorisation (not authentication) for
+              administrative users. Should probably only be changed on rebuild.
+            </div>
           </td>
         </tr>
         <tr>
           <th>Mailer class:</th>
           <td>
             <xsl:variable name="mailerClass" select="/bedeworkadmin/system/mailerClass"/>
-            <input value="{$mailerClass}" name="mailerClass" size="20"/>
-          </td>
-          <td>Class used to mail events. Should probably only be changed on rebuild.
+            <input value="{$mailerClass}" name="mailerClass" class="wide"/>
+            <div class="desc">
+              Class used to mail events. Should probably only be changed on rebuild.
+            </div>
           </td>
         </tr>
         <tr>
           <th>Admin groups class:</th>
           <td>
             <xsl:variable name="admingroupsClass" select="/bedeworkadmin/system/admingroupsClass"/>
-            <input value="{$admingroupsClass}" name="admingroupsClass" size="20"/>
-          </td>
-          <td>Class used to query and maintain groups for
-             .administrative users. Should probably only be changed on rebuild.
+            <input value="{$admingroupsClass}" name="admingroupsClass" class="wide"/>
+            <div class="desc">
+              Class used to query and maintain groups for
+              administrative users. Should probably only be changed on rebuild.
+            </div>
           </td>
         </tr>
         <tr>
           <th>User groups class:</th>
           <td>
             <xsl:variable name="usergroupsClass" select="/bedeworkadmin/system/usergroupsClass"/>
-            <input value="{$usergroupsClass}" name="usergroupsClass" size="20"/>
-          </td>
-          <td>Class used to query and maintain groups for
-             .non-administrative users. Should probably only be changed on rebuild.
+            <input value="{$usergroupsClass}" name="usergroupsClass" class="wide"/>
+            <div class="desc">
+              Class used to query and maintain groups for
+              non-administrative users. Should probably only be changed on rebuild.
+            </div>
           </td>
         </tr>
         <tr>
           <th>Directory browsing disallowed:</th>
           <td>
             <xsl:variable name="directoryBrowsingDisallowed" select="/bedeworkadmin/system/directoryBrowsingDisallowed"/>
-            <input value="{$directoryBrowsingDisallowed}" name="directoryBrowsingDisallowed" size="20"/>
+            <input value="{$directoryBrowsingDisallowed}" name="directoryBrowsingDisallowed" />
+            <div class="desc">
+              True if the server hosting the xsl disallows directory browsing.
+            </div>
           </td>
-          <td>True if the server hosting the xsl disallows directory browsing.</td>
         </tr>
         <tr>
           <th>Index root:</th>
           <td>
             <xsl:variable name="indexRoot" select="/bedeworkadmin/system/indexRoot"/>
-            <input value="{$indexRoot}" name="indexRoot" size="50"/>
+            <input value="{$indexRoot}" name="indexRoot" class="wide"/>
+            <div class="desc">
+              Root for the event indexes. Should only be changed if the indexes are moved/copied
+            </div>
           </td>
-          <td>Root for the event indexes. Should only be changed if the indexes are moved/copied</td>
         </tr>
       </table>
       <table border="0" id="submitTable">
