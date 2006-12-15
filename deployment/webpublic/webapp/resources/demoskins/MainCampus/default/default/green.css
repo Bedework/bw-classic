@@ -291,15 +291,15 @@ h2 {
   text-align: right;
   padding: 0.5em 1em 0.2em 0.5em;
   white-space: nowrap;
-	font-size: 0.9em;
-	font-weight: normal;
+  font-size: 0.9em;
+  font-weight: normal;
 }
 #eventTable th.icalIcon a {
   text-decoration: none;
 }
 #eventTable th.icalIcon img {
   vertical-align: middle;
-	padding-left: 1em;
+  padding-left: 1em;
 }
 #searchTable th {
   padding-left: 0.5em;
@@ -356,6 +356,24 @@ h2 {
   background-color: #eee;
   color: black;
   text-align: center;
+}
+#calPageTable .exportCalLink {
+  font-size: 0.6em;
+  padding-left: 1em;
+  color: #aaa;
+  background-color: transparent;
+}
+#calPageTable .exportCalLink a:link,
+#calPageTable .exportCalLink a:active,
+#calPageTable .exportCalLink a:visited {
+  color: #aaa;
+  background-color: transparent;
+  text-decoration: none;
+}
+#calPageTable .exportCalLink a:hover {
+  color: #333;
+  background-color: transparent;
+  text-decoration: none;
 }
 #dayCalendarTable {
   width: 100%;

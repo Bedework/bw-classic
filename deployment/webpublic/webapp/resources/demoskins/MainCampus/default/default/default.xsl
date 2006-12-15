@@ -116,6 +116,7 @@
         </xsl:choose>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
+        <script type="text/javascript" src="{$resourcesRoot}/default/default/includes.js"/>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
       </head>
       <body>
@@ -1177,6 +1178,16 @@
     <xsl:variable name="url" select="encodedPath"/>
     <li class="{$itemClass}">
       <a href="{$setSelection}&amp;calUrl={$url}"><xsl:value-of select="name"/></a>
+      <xsl:if test="calendarCollection='true'">
+        <xsl:variable name="name" select="name"/>
+        <xsl:variable name="calPath" select="encodedPath"/>
+        <span class="exportCalLink">
+          <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">export</a>
+          <!--export
+          <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">current</a> |
+          <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=none&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">all</a>-->
+        </span>
+      </xsl:if>
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="calTree"/>
