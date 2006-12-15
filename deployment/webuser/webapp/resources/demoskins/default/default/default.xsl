@@ -105,6 +105,7 @@
   <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess/a/@href"/>
   <xsl:variable name="calendar-trash" select="/bedework/urlPrefixes/calendar/trash/a/@href"/>
   <xsl:variable name="calendar-emptyTrash" select="/bedework/urlPrefixes/calendar/emptyTrash/a/@href"/>
+  <xsl:variable name="calendar-listForExport" select="/bedework/urlPrefixes/calendar/listForExport/a/@href"/>
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
@@ -233,7 +234,10 @@
                                     /bedework/page='modCalendar' or
                                     /bedework/page='deleteCalendarConfirm' or
                                     /bedework/page='calendarReferenced'">
-                      <xsl:apply-templates select="/bedework/calendars"/>
+                      <xsl:apply-templates select="/bedework/calendars" mode="manageCalendars"/>
+                    </xsl:when>
+                     <xsl:when test="/bedework/page='calendarListForExport'">
+                      <xsl:apply-templates select="/bedework/calendars" mode="exportCalendars"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='freeBusy'">
                       <xsl:call-template name="utilBar"/>
@@ -324,6 +328,7 @@
                   /bedework/page='upload' or
                   /bedework/page='addSubByUri' or
                   /bedework/page='modPrefs' or
+                  /bedework/page='calendarListForExport' or
                   /bedework/page='attendeeRespond'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
     </xsl:if>
@@ -482,6 +487,7 @@
       <li><a href="{$location-initUpdate}">Manage Locations</a></li>
       <li><a href="{$prefs-fetchForUpdate}">Preferences</a></li>
       <li><a href="{$initUpload}" title="upload event">Upload iCAL</a></li>
+      <li><a href="{$calendar-listForExport}" title="upload event">Export Calendars</a></li>
     </ul>
   </xsl:template>
 
@@ -3225,7 +3231,7 @@
   </xsl:template>
 
   <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
-  <xsl:template match="calendars">
+  <xsl:template match="calendars" mode="manageCalendars">
     <h2>Manage Calendars</h2>
     <table id="calendarTable">
       <tr>
@@ -3893,6 +3899,96 @@
       </table>
     </form>
 
+  </xsl:template>
+
+  <xsl:template match="calendars" mode="exportCalendars">
+    <h2>Export Calendars as iCal</h2>
+    <form name="exportCalendarForm" id="exportCalendarForm" action="{$export}" method="post">
+      <input type="hidden" name="calPath" value=""/>
+      <input type="hidden" name="nocache" value="no"/>
+      <input type="hidden" name="skinName" value="ical"/>
+      <input type="hidden" name="contentType" value="text/calendar"/>
+      <input type="hidden" name="contentName" value="calendar.ics"/>
+
+      <table class="common" cellspacing="0">
+        <tr>
+          <th class="commonHeader" colspan="3">
+              Date limits:
+              <input type="radio" name="dateLimits" value="active" checked="checked"/> active
+              <input type="radio" name="dateLimits" value="none"/> all (includes past events)
+              <!--<input type="radio" name="dateLimits" value="limited"/> limited to:-->
+          </th>
+        </tr>
+        <tr>
+          <th class="borderRight">
+            My Calendars
+          </th>
+          <th class="borderRight">
+            Subscriptions
+          </th>
+          <th>
+            Public Calendars
+          </th>
+        </tr>
+        <tr>
+          <td class="borderRight">
+            <!-- My Calendars -->
+            <ul>
+              <!-- list normal calendars first -->
+              <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calendarCollection='true' and calType &lt; 2]">
+                <li>
+                  <xsl:variable name="calPath" select="path"/>
+                  <xsl:variable name="name" select="name"/>
+                  <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
+                    <xsl:value-of select="name"/>
+                  </a>
+                </li>
+              </xsl:for-each>
+            </ul>
+            <ul>
+              <!-- list special calendars next -->
+              <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calendarCollection='true' and calType &gt; 1]">
+                <li>
+                  <xsl:variable name="calPath" select="path"/>
+                  <xsl:variable name="name" select="name"/>
+                  <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
+                    <xsl:value-of select="name"/>
+                  </a>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </td>
+          <td class="borderRight">
+            <!-- My Subscriptions (underlying calendars) -->
+            <ul>
+              <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
+              <xsl:for-each select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars//calendar[calendarCollection='true']">
+                <li>
+                  <xsl:variable name="calPath" select="path"/>
+                  <xsl:variable name="name" select="name"/>
+                  <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
+                    <xsl:value-of select="name"/>
+                  </a>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <xsl:for-each select=".//calendar[calendarCollection='true']">
+                <li>
+                  <xsl:variable name="calPath" select="path"/>
+                  <xsl:variable name="name" select="name"/>
+                  <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
+                    <xsl:value-of select="name"/>
+                  </a>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </form>
   </xsl:template>
 
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->

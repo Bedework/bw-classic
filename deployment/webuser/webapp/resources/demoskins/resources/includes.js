@@ -428,3 +428,9 @@ function swapScheduleDisplay(val) {
   }
 }
 
+function exportCalendar(formId,name,calPath) {
+  var formObj = document.getElementById(formId);
+  formObj.calPath.value = calPath;
+  formObj.contentName.value = name + '.ics';
+  formObj.submit();
+}

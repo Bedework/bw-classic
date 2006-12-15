@@ -589,6 +589,9 @@ table.common td.allField {
   color: black;
   padding: 0.2em;
 }
+table.common .borderRight {
+  border-right: 1px solid #999;
+}
 table.common .dateFields {
   display: inline;
 }
