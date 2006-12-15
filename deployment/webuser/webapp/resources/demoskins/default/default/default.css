@@ -547,6 +547,7 @@ table.common td.fill {
 table.common th.leftBorder,
 table.common td.leftBorder {
   border-left: 1px solid #999;
+  border-top: 1px solid #999;
   padding-left: 1em;
 }
 table.common td.fieldval {
@@ -591,6 +592,10 @@ table.common td.allField {
 }
 table.common .borderRight {
   border-right: 1px solid #999;
+}
+table.common tr#exportDateRange td.dates {
+  border-bottom: 1px solid #999;
+  padding: 0.5em;
 }
 table.common .dateFields {
   display: inline;
@@ -703,6 +708,9 @@ table#manage td {
 }
 .shown {
   display: inline;
+}
+.visible {
+  /* like shown, but apply no styles to this class */
 }
 .invisible {
   display: none !important;
@@ -1248,6 +1256,9 @@ a.calendarAdd img {
 }
 .calendarTree li.trash {
   list-style-image: url(../../resources/trashIcon.gif);
+}
+.calendarTree li.deleted {
+  list-style-image: url(../../resources/calIconDeleted-sm.gif);
 }
 .calendarTree li.selected {
   list-style-image: url(../../resources/glassFill-icon-view.gif);

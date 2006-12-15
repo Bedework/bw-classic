@@ -1182,7 +1182,9 @@
         <xsl:variable name="name" select="name"/>
         <xsl:variable name="calPath" select="encodedPath"/>
         <span class="exportCalLink">
-          <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">export</a>
+          <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">
+            <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
+          </a>
           <!--export
           <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">current</a> |
           <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=none&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">all</a>-->
