@@ -1232,13 +1232,13 @@
     </xsl:variable>
     <xsl:variable name="url" select="encodedPath"/>
     <li class="{$itemClass}">
-      <a href="{$setSelection}&amp;calUrl={$url}"><xsl:value-of select="name"/></a>
+      <a href="{$setSelection}&amp;calUrl={$url}" title="view calendar"><xsl:value-of select="name"/></a>
       <xsl:if test="calendarCollection='true'">
         <xsl:variable name="name" select="name"/>
         <xsl:variable name="calPath" select="encodedPath"/>
         <span class="exportCalLink">
           <!--<a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">-->
-          <a href="javascript:launchExportWidget('exportCalendarForm','{$name}','{$calPath}')" id="{$calPath}">
+          <a href="javascript:launchExportWidget('exportCalendarForm','{$name}','{$calPath}')" id="{$calPath}" title="export calendar as iCal">
             <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
           </a>
           <!--</a>-->
