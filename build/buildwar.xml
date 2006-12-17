@@ -99,7 +99,7 @@
 
     <!-- Add modifed login pages -->
     <copy todir="${app.dest.docs}/login" failonerror="false" >
-      <fileset dir="${app.root.dir}/resources/login" />
+      <fileset dir="${org.bedework.common.resources}/login" />
       <filterset>
         <filter token="DISPLAY-NAME" value="${propval.app.display.name}"/>
       </filterset>

@@ -16,6 +16,8 @@
 
     <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
 
+    <property name="org.bedework.use.dojo" value="true" />
+
     <!-- Flag as struts -->
     <property name="org.bedework.strutsapp" value="true" />
 
@@ -52,6 +54,13 @@
       <fileset dir="${app.resources.dir}/demoskins/${propval.app.cal.suite}" />
     </copy>
 
+    <!-- Deploy common resources -->
+    <ant antfile="${org.bedework.common.resources}/build.xml"
+         inheritrefs="true" target="deploy" >
+      <property name="common.resources.dest.dir"
+                location="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.cal.suite}/resources" />
+    </ant>
+
     <echo message="***************************************************************" />
     <echo message="Deploying standalone app ${app.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />
     <echo message="***************************************************************" />
@@ -67,12 +76,13 @@
     <!-- Delete the quickstart context def -->
     <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
 
-    <antcall target="deploy.for.portal" inheritRefs="true" />
-  </target>
-
-  <target name="deploy.for.portal" if="org.bedework.global.portal.platform" >
-    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.global.portal.platform}/build.xml"
-         inheritrefs="true" target="deploy" />
+    <if>
+      <isset property="org.bedework.global.portal.platform" />
+      <then>
+        <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.global.portal.platform}/build.xml"
+             inheritrefs="true" target="deploy" />
+      </then>
+    </if>
   </target>
 
   <target name="build.configured" depends="init" >

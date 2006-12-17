@@ -27,6 +27,8 @@
 
 <project name="deploy.bedework" default="init">
   <property name="base.name" value="deployment"/>
+    <!-- Load the location of the libraries -->
+    <property file="${org.bedework.project.bedework}/build/libjars.properties" />
 
   <target name="init" >
     <dirname property="this.build.dir" file="${ant.file}"/>
@@ -57,6 +59,11 @@
 
     <!-- set this for the war builds -->
     <dirname property="app.root.dir" file="${ant.file}"/>
+
+    <!-- Common resources directory -->
+    <property name="org.bedework.common.resources"
+              location="${app.root.dir}/resources" />
+
 
     <!-- ==================== config properties =========================
     <property name="org.bedework.config.properties"

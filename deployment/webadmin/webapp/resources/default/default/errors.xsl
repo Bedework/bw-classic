@@ -172,7 +172,7 @@
         <p>Error: group may not be added to itself.</p>
       </xsl:when>
       <xsl:when test="id='edu.rpi.sss.util.error.exc'">
-        <p>Utility package error: <em><xsl:value-of select="param"/></em></p>
+        <p>An exception occurred: <em><xsl:value-of select="param"/></em></p>
       </xsl:when>
       <xsl:otherwise>
         <p><xsl:value-of select="id"/> = <xsl:value-of select="param"/></p>

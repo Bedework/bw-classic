@@ -2,10 +2,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:template match="error">
     <xsl:choose>
-      <xsl:when test="id='edu.rpi.sss.util.error.exc'">
-          An exception occurred:<br/>
-          <em><xsl:value-of select="param"/></em>
-      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nosuchevent'">
           Event does not exist:<br/><em><xsl:value-of select="param"/></em>
       </xsl:when>
@@ -18,7 +14,7 @@
       <xsl:when test="id='org.bedework.client.error.missingsubscriptionid'">
           The request cannot be processed: missing subscription ID.
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.error.unknowncalendar'">
+      <xsl:when test="id='org.bedework.client.error.nosuchcalendar'">
           Unknown calendar
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unknownview'">
@@ -32,6 +28,9 @@
         <xsl:if test="param">
             = <xsl:value-of select="param"/>
         </xsl:if>
+      <xsl:when test="id='edu.rpi.sss.util.error.exc'">
+        An exception occurred: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
