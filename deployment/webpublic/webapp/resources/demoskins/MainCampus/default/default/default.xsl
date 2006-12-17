@@ -103,6 +103,7 @@
     <html lang="en">
       <head>
         <title>Bedework Events Calendar</title>
+        <!-- load css -->
         <xsl:choose>
           <xsl:when test="/bedework/appvar[key='style']/value='red'">
             <link rel="stylesheet" href="{$resourcesRoot}/default/default/red.css"/>
@@ -116,7 +117,12 @@
         </xsl:choose>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
-        <script type="text/javascript" src="{$resourcesRoot}/default/default/includes.js"/>
+        <!-- load javascript -->
+        <xsl:if test="/bedework/page='calendarList'">
+          <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/dojo/dojo.js"/>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js"/>
+        </xsl:if>
+        <!-- address bar icon -->
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
       </head>
       <body>
@@ -1151,6 +1157,55 @@
       <tr>
         <td colspan="2" class="infoCell">
           Select a calendar from the list below to see only that calendar's events.
+          <div dojoType="FloatingPane" id="bwCalendarExportWidget"
+               title="Export Calendar as iCal" toggle="fade" toggleDuration="150"
+               windowState="minimized" hasShadow="true" displayMinimizeAction="true">
+            <form name="exportCalendarForm" id="exportCalendarForm" action="{$export}" method="post">
+              <input type="hidden" name="calPath" value=""/>
+              <input type="hidden" name="nocache" value="no"/>
+              <input type="hidden" name="skinName" value="ical"/>
+              <input type="hidden" name="contentType" value="text/calendar"/>
+              <input type="hidden" name="contentName" value="calendar.ics"/>
+
+
+              <p>
+                <strong>Calendar to export:</strong>
+                <span id="bwCalendarExportWidgetCalName"></span>
+              </p>
+              <strong>Event date limits:</strong><br/>
+              <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> today forward
+              <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
+              <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> date range
+              <div id="exportDateRange" class="invisible">
+                to be implemented
+              <!--  <strong>Start:</strong>
+                <div class="dateFields">
+                  <xsl:copy-of select="/bedework/formElements/form/start/month/*"/>
+                  <xsl:copy-of select="/bedework/formElements/form/start/day/*"/>
+                  <xsl:copy-of select="/bedework/formElements/form/start/yearText/*"/>
+                </div>
+                <script language="JavaScript" type="text/javascript">
+                <xsl:comment>
+                  startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback',false,'<xsl:value-of select="$resourcesRoot"/>/resources/');
+                </xsl:comment>
+                </script>
+                &#160;&#160;
+                <strong>End:</strong>
+                <div class="dateFields">
+                  <xsl:copy-of select="/bedework/formElements/form/end/month/*"/>
+                  <xsl:copy-of select="/bedework/formElements/form/end/day/*"/>
+                   <xsl:copy-of select="/bedework/formElements/form/end/yearText/*"/>
+                </div>
+                <script language="JavaScript" type="text/javascript">
+                <xsl:comment>
+                  endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback',false,'<xsl:value-of select="$resourcesRoot"/>/resources/');
+                </xsl:comment>
+                </script>
+                -->
+              </div>
+              <p><input type="submit" value="export" class="bwWidgetSubmit" onclick="hideWidget('bwCalendarExportWidget')"/></p>
+            </form>
+          </div>
         </td>
       </tr>
       <tr>
@@ -1182,9 +1237,11 @@
         <xsl:variable name="name" select="name"/>
         <xsl:variable name="calPath" select="encodedPath"/>
         <span class="exportCalLink">
-          <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">
+          <!--<a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">-->
+          <a href="javascript:launchExportWidget('exportCalendarForm','{$name}','{$calPath}')" id="{$calPath}">
             <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
           </a>
+          <!--</a>-->
           <!--export
           <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">current</a> |
           <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=none&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">all</a>-->

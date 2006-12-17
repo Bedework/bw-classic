@@ -132,7 +132,7 @@ body {
 #searchBarTable .leftCell {
   margin: 0px;
   padding: 0em;
-  border-left: 3px solid #aaa;
+  border-left: 2px solid #aaa;
   padding: 0.1em 0 0 0.5em;
   white-space: nowrap;
 }
@@ -154,7 +154,7 @@ body {
   margin: 0px;
   padding: 0em;
   text-align: right;
-  border-right: 3px solid #aaa;
+  border-right: 2px solid #aaa;
   padding: 0.1em 0.1em 0em 0em;
   white-space: nowrap;
 }
@@ -987,4 +987,37 @@ h2.bwStatusTentative {
 }
 .hidden {
   visibility: hidden;
+}
+.invisible {
+  display: none;
+}
+/* dojo widget overrides */
+html .dojoFloatingPane {
+  width: 400px;
+  height: 200px;
+  text-align: left;
+}
+html .dojoFloatingPaneTitleBar {
+  color: white;
+  background: #2c5f89 url(../../images/curDateRangeBlue.gif) repeat-x bottom;
+}
+html .dojoFloatingPaneTitleText {
+  padding: 0.25em 1em;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+html .dojoFloatingPaneClient {
+  padding: 1em;
+}
+html .dojoFloatingPaneClient input.bwWidgetSubmit {
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+}
+html .dojoFloatingPaneClient #exportDateRange {
+  margin: 1em 0;
+  text-align: center;
+}
+html .dojoFloatingPaneClient #bwCalendarExportWidgetCalName {
+  padding-left: 1em;
 }
