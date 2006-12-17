@@ -357,6 +357,10 @@ h2 {
   color: black;
   text-align: center;
 }
+#calPageTable td.infoCell p.info {
+  margin: 0;
+  padding: 0;
+}
 #calPageTable .exportCalLink {
   font-size: 0.6em;
   padding-left: 1em;
@@ -1011,13 +1015,11 @@ html .dojoFloatingPaneTitleText {
   font-weight: bold;
   font-size: 0.8em;
 }
-html .dojoFloatingPaneClient {
-  padding: 1em;
-}
 html .dojoFloatingPaneClient input.bwWidgetSubmit {
   position: absolute;
   bottom: 1em;
   right: 1em;
+  width: 80px;
 }
 html .dojoFloatingPaneClient #exportDateRange {
   margin: 1em 0;

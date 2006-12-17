@@ -8,7 +8,6 @@
   doctype-system="http://www.w3.org/TR/html4/loose.dtd"
   standalone="yes"
 />
-
 <!-- =========================================================
 
               DEMONSTRATION CALENDAR STYLESHEET
@@ -100,7 +99,7 @@
 
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
-    <html lang="en">
+    <html>
       <head>
         <title>Bedework Events Calendar</title>
         <!-- load css -->
@@ -1156,10 +1155,18 @@
       </tr>
       <tr>
         <td colspan="2" class="infoCell">
-          Select a calendar from the list below to see only that calendar's events.
+          <p class="info">
+            Select a calendar from the list below to see only that calendar's events.
+          </p>
           <div dojoType="FloatingPane" id="bwCalendarExportWidget"
                title="Export Calendar as iCal" toggle="fade" toggleDuration="150"
-               windowState="minimized" hasShadow="true" displayMinimizeAction="true">
+               windowState="minimized" hasShadow="true" displayMinimizeAction="true"
+               resizable="false">
+             <p>
+              <strong>Calendar to export:</strong>
+              <span id="bwCalendarExportWidgetCalName"></span>
+            </p>
+            <strong>Event date limits:</strong>
             <form name="exportCalendarForm" id="exportCalendarForm" action="{$export}" method="post">
               <input type="hidden" name="calPath" value=""/>
               <input type="hidden" name="nocache" value="no"/>
@@ -1168,11 +1175,6 @@
               <input type="hidden" name="contentName" value="calendar.ics"/>
 
 
-              <p>
-                <strong>Calendar to export:</strong>
-                <span id="bwCalendarExportWidgetCalName"></span>
-              </p>
-              <strong>Event date limits:</strong><br/>
               <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> today forward
               <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
               <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> date range
