@@ -993,7 +993,7 @@ h2.bwStatusTentative {
 }
 /* dojo widget overrides */
 html .dojoFloatingPane {
-  width: 400px;
+  width: 370px;
   height: 200px;
   text-align: left;
 }

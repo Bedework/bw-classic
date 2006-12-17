@@ -1003,13 +1003,13 @@ h2.bwStatusTentative {
 }
 /* dojo widget overrides */
 html .dojoFloatingPane {
-  width: 400px;
+  width: 370px;
   height: 200px;
   text-align: left;
 }
 html .dojoFloatingPaneTitleBar {
   color: white;
-  background-color: #7E0000;
+  background: #7E0000 url(../../images/curDateRangeRed.gif) repeat-x bottom;
 }
 html .dojoFloatingPaneTitleText {
   padding: 0.25em 1em;
@@ -1024,8 +1024,10 @@ html .dojoFloatingPaneClient input.bwWidgetSubmit {
   bottom: 1em;
   right: 1em;
 }
-html .dojoFloatingPaneClient #exportDateRange,
-html .dojoFloatingPaneClient #bwCalendarExportWidgetCalName {
+html .dojoFloatingPaneClient #exportDateRange {
   margin: 1em 0;
   text-align: center;
+}
+html .dojoFloatingPaneClient #bwCalendarExportWidgetCalName {
+  padding-left: 1em;
 }
