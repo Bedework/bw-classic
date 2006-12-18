@@ -1168,44 +1168,25 @@
             </p>
             <strong>Event date limits:</strong>
             <form name="exportCalendarForm" id="exportCalendarForm" action="{$export}" method="post">
+              <!-- this value is passed into the form when the widget is requested -->
               <input type="hidden" name="calPath" value=""/>
+              <!-- fill these on submit -->
+              <input type="hidden" name="eventStartDate" value=""/>
+              <input type="hidden" name="eventEndDate" value=""/>
+              <!-- static fields -->
               <input type="hidden" name="nocache" value="no"/>
               <input type="hidden" name="skinName" value="ical"/>
               <input type="hidden" name="contentType" value="text/calendar"/>
               <input type="hidden" name="contentName" value="calendar.ics"/>
-
-
+              <!-- visible fields -->
               <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> today forward
               <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
               <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> date range
               <div id="exportDateRange" class="invisible">
-                to be implemented
-              <!--  <strong>Start:</strong>
-                <div class="dateFields">
-                  <xsl:copy-of select="/bedework/formElements/form/start/month/*"/>
-                  <xsl:copy-of select="/bedework/formElements/form/start/day/*"/>
-                  <xsl:copy-of select="/bedework/formElements/form/start/yearText/*"/>
-                </div>
-                <script language="JavaScript" type="text/javascript">
-                <xsl:comment>
-                  startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback',false,'<xsl:value-of select="$resourcesRoot"/>/resources/');
-                </xsl:comment>
-                </script>
-                &#160;&#160;
-                <strong>End:</strong>
-                <div class="dateFields">
-                  <xsl:copy-of select="/bedework/formElements/form/end/month/*"/>
-                  <xsl:copy-of select="/bedework/formElements/form/end/day/*"/>
-                   <xsl:copy-of select="/bedework/formElements/form/end/yearText/*"/>
-                </div>
-                <script language="JavaScript" type="text/javascript">
-                <xsl:comment>
-                  endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback',false,'<xsl:value-of select="$resourcesRoot"/>/resources/');
-                </xsl:comment>
-                </script>
-                -->
+                Start: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetStartDate"></div>
+                End: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetEndDate"></div>
               </div>
-              <p><input type="submit" value="export" class="bwWidgetSubmit" onclick="hideWidget('bwCalendarExportWidget')"/></p>
+              <p><input type="submit" value="export" class="bwWidgetSubmit" onclick="fillExportFields('exportCalendarForm');hideWidget('bwCalendarExportWidget')"/></p>
             </form>
           </div>
         </td>
