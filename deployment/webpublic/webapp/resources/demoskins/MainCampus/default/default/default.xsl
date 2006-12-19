@@ -51,7 +51,7 @@
   <!-- ================================= -->
 
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="errors.xsl"/>
+  <xsl:include href="/bedework-common/default/default/errors.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
 
@@ -118,7 +118,7 @@
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <!-- load javascript -->
         <xsl:if test="/bedework/page='calendarList'">
-          <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/dojo/dojo.js"/>
+          <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js"/>
           <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js"/>
         </xsl:if>
         <!-- address bar icon -->

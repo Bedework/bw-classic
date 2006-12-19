@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <!-- Apart from the exception - trapped first, these are in alphabetic order of
+       error code. -->
+  <xsl:template match="error">
+    <xsl:choose>
+      <xsl:when test="id='org.bedework.client.error.exc'"><!-- trap exceptions first -->
+        An exception occurred: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='edu.rpi.sss.util.error.exc'">
+        An exception occurred: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+
+      <!-- client.error messages generally do not quite constitute validation errors
+           which mostly involve changing a field content.
+           Usually when we flag a data error here, it is due to a bug in the xsl -->
+      <xsl:when test="id='org.bedework.client.error.alreadymember'">
+        Error: already a member: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.badinterval'">
+        Error: bad interval.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.badintervalunit'">
+        Error: bad interval unit.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.badrequest'">
+        Error: Bad request.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.badschedulewhat'">
+        Error: Bad scheduling what parameter.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.calsuitenotadded'">
+        Error: calendar suite not added.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.cannotchangecalmode'">
+        Forbidden: you are not allowed to change the mode of the non-empty
+        collection <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.choosegroupsuppressed'">
+        Error: choose group is suppressed.  You cannot perform that action at this time.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.duplicatecontact'">
+        Cannot add: the contact already exists.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.duplicategroup'">
+        Error: duplicate group.  <em><xsl:value-of select="param"/></em> already exists.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.duplicatelocation'">
+        Cannot add: the location already exists.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.duplicateuid'">
+          Duplicate uid: this event already exists in this calendar.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.failed.overrides'">
+          Error: there were <xsl:value-of select="param"/> failed overrides.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.mail.norecipient'">
+        Error: the email has no recipient.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.missingcalendarpath'">
+        Error: missing calendar path.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.missingeventkeyfields'">
+        Error: missing event key fields
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.missingfilename'">
+          You must supply a file name (required).
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.missingrequestpar'">
+          Missing request parameter: <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.missingschedulewhat'">
+        Error: Missing scheduling what parameter.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.multipleevents'">
+        System Error: Multiple events when one expected.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.noaccess'">
+        Error: no access.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.nodefaultview'">
+          No default view defined
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.noschedulingaccess'">
+          You cannot schedule events with user <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.ongrouppath'">
+        Error: group may not be added to itself.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.onlyfrominbox'">
+        You can only respond from your inbox.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.onlytoinbox'">
+        You can only reply to an inbox.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.referenced.calendar'">
+        Cannot delete: the calendar is not empty.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.referenced.category'">
+        Cannot delete: the category is referenced by events.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.referenced.contact'">
+        Cannot delete: the contact is referenced by events.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.referenced.location'">
+        Cannot delete: the location is referenced by events.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.referenced.subscription'">
+        Cannot delete: the subscription is included in view <em><xsl:value-of select="param"/></em>.<br/>
+        You must remove the subscription from this view before deleting.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.error.timezones.readerror'">
+        Timzone error: could not read file.
+      </xsl:when>
+
+      <!-- things we cannot find -->
+      <xsl:when test="id='org.bedework.client.error.unknown.attendee'">
+          Unknown attendee <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.calendar'">
+        Not found: there is no calendar with the path <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.calendarsuite'">
+        There is no calendar suite with the name <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.calendartype'">
+        System error: there is no calendar with the type <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.category'">
+        Not found: there is no category with the keyword <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.contact'">
+        Not found: there is no contact <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.event'">
+          Event <xsl:value-of select="param"/> does not exist.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.group'">
+        Error: unknown group:  <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.location'">
+        Not found: there is no location identified by the id <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.subscription'">
+        Not found: there is no user identified by the name <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.user'">
+        Not found: the user <em><xsl:value-of select="param"/></em> was not found.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.userid'">
+        Not found: there is no user identified by the id <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.view'">
+        Not found: there is no view identified by the name <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.client.error.viewnotadded'">
+        Error: the view was not added.
+      </xsl:when>
+
+      <!-- Validation errors mostly dealing with incorrect or missing field values
+           that are explicitly under user control -->
+
+      <xsl:when test="id='org.bedework.validation.error.expectoneattendee'">
+        You must supply exactly one attendee.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.how'">
+        Error: bad ACL request (bad how setting).
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.whotype'">
+        Error: bad who type (user or group).
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.attendee'">
+          The attendee uri is invalid
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.date'">
+          Bad or out-of-range date.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.duration'">
+        <em>Invalid duration</em> - you may not have a zero-length duration
+        for an all day event.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.endtype'">
+        The endtype <em><xsl:value-of select="param"/></em> is invalid.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.organizer'">
+          The organizer uri is invalid
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.prefendtype'">
+        The preferred endtype <em><xsl:value-of select="param"/></em> is invalid.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.prefusermode'">
+        The preferred user mode <em><xsl:value-of select="param"/></em> is invalid.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.prefworkdayend'">
+        Error: invalid working days end: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.prefworkdays'">
+        Error: invalid working days: start after end
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.prefworkdaystart'">
+        Error: invalid working days start: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.recipient'">
+          The recipient uri is invalid
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.recurcount'">
+        Error: bad value for recurrence count: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.recurcountanduntil'">
+        Error: Cannot specify count and until for recurrence
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.recurinterval'">
+        Error: bad value for recurrence interval: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.recurrule'">
+        Error: bad recurrence rule: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.recuruntil'">
+        Error: bad value for recurrence until: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.invalid.schedmethod'">
+        Error: bad value for recurrence until: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.schedmethod'">
+        Error: bad scheduling method (should be request or publish).
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.schedpartstatus'">
+        Error: bad scheduling part status
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.schedreplymethod'">
+        Error: bad scheduling method (should be reply).
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.schedrequestmethod'">
+        Error: bad scheduling method (should be request).
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.schedrespondmethod'">
+        Error: bad scheduling method (should be COUNTER, REFRESH, REPLY).
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.invalid.status'">
+        Error: Invalid status: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.transparency'">
+        Error: Invalid transparency: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.user'">
+        Error: Invalid user: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missinghow'">
+        Error: missing how.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingwho'">
+        Error: missing who (principal name).
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingaddress'">
+        Your information is incomplete: please supply an address.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingcalendar'">
+        Your information is incomplete: please supply a calendar.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingcalendarpath'">
+        Your information is incomplete: please supply a calendar path.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingcalsuitecalendar'">
+        Your information is incomplete: please supply a root calendar path.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingcategorykeyword'">
+        Your information is incomplete: please supply a category keyword.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingcontact'">
+        Your information is incomplete: please supply a contact.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingcontactname'">
+        You must enter a contact <em>name</em>.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingdescription'">
+        Your information is incomplete: please supply a description.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingeventowner'">
+        Your information is incomplete: please supply an event owner.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missinggroupname'">
+        Your information is incomplete: please supply a group name.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missinggroupowner'">
+        Your information is incomplete: please supply a group owner.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missinglocation'">
+        Your information is incomplete: please supply a location.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingname'">
+        Your information is incomplete: please supply a name.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingoriginator'">
+        You event is missing the originator
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingrecipients'">
+        You must supply a recipient.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingsubscriptionid'">
+        Your information is incomplete: please supply a subscription id.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingtitle'">
+        Your information is incomplete: please supply a title.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingsuburi'">
+        Your information is incomplete: please supply a uri for the subscription.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.startafterend'">
+        The <em>end date</em> occurs before the <em>start date</em>.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.toolong.description'">
+        Your description is too long.  Please limit your entry to
+          characters.  You may also wish to
+          point the event entry at a supplemental web page by entering a <em>URL</em>.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.toolong.name'">
+        Your name is too long.  Please limit your entry to
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.toolong.summary'">
+        Your summary is too long.  Please limit your entry to
+          characters.  You may also wish to
+          point the event entry at a supplemental web page by entering a <em>URL</em>.
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="id"/> = <xsl:value-of select="param"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+</xsl:stylesheet>
+

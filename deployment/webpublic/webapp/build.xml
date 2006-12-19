@@ -57,7 +57,7 @@
     <!-- Deploy common resources -->
     <ant antfile="${org.bedework.common.resources}/build.xml"
          inheritrefs="true" target="deploy" >
-      <property name="common.resources.dest.dir"
+      <property name="app.common.resources.dest.dir"
                 location="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.cal.suite}/resources" />
     </ant>
 

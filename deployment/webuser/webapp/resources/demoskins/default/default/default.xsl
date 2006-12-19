@@ -38,7 +38,7 @@
     to the maximum extent the law permits. -->
 
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="errors.xsl"/>
+  <xsl:include href="/bedework-common/default/default/errors.xsl"/>
   <xsl:include href="messages.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
