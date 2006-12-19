@@ -64,7 +64,7 @@
   <!-- ================================= -->
 
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="errors.xsl"/>
+  <xsl:include href="/bedework-common/default/default/errors.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
 

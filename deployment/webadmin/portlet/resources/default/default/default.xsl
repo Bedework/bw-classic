@@ -41,7 +41,7 @@
 
   <!-- DEFINE INCLUDES -->
   <xsl:include href="/bedework-common/default/default/errors.xsl"/>
-  <xsl:include href="messages.xsl"/>
+  <xsl:include href="/bedework-common/default/default/messages.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
   <!-- URL of html resources (images, css, other html); by default this is
