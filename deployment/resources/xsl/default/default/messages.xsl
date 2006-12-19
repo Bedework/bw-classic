@@ -39,7 +39,7 @@
         </xsl:choose>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.added.folder'">
-        <p>Folder added.</p>
+        Folder added.
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.added.locations'">
         <xsl:choose>
@@ -53,7 +53,7 @@
       </xsl:when>
 
       <xsl:when test="id='org.bedework.client.message.cancelled'">
-          <p>Action cancelled.</p>
+          Action cancelled.
       </xsl:when>
 
       <xsl:when test="id='org.bedework.client.message.deleted.authuser'">
@@ -160,7 +160,7 @@
         User information updated
       </xsl:when>
       <xsl:otherwise>
-        <p><xsl:value-of select="id"/> = <xsl:value-of select="param"/></p>
+        <xsl:value-of select="id"/> = <xsl:value-of select="param"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
