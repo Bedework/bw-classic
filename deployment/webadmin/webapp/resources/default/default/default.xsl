@@ -3339,7 +3339,7 @@
 
   <!--+++++++++++++++ System Parameters (preferences) ++++++++++++++++++++-->
   <xsl:template name="modSyspars">
-    <h2>Modify System Parameters</h2>
+    <h2>Modify System Preferences/Parameters</h2>
     <p>
       Do not change unless you know what you're doing.<br/>
       Changes to these parameters have wide impact on the system.
@@ -3360,9 +3360,20 @@
           <th>Default timezone:</th>
           <td>
             <xsl:variable name="tzid" select="/bedeworkadmin/system/tzid"/>
-            <input value="{$tzid}" name="tzid" />
+
+            <select name="tzid">
+              <option value="-1">select timezone...</option>
+              <xsl:for-each select="/bedeworkadmin/timezones/timezone">
+                <option>
+                  <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
+                  <xsl:if test="/bedeworkadmin/system/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                  <xsl:value-of select="name"/>
+                </option>
+              </xsl:for-each>
+            </select>
+
             <div class="desc">
-              Default timezone id for date/time values. This should normally be your local timezone
+              Default timezone id for date/time values. This should normally be your local timezone.
             </div>
           </td>
         </tr>

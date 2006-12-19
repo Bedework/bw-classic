@@ -75,17 +75,17 @@
        string) so that all links constructed in this stylesheet may begin the
        query string with an ampersand. -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
-  <xsl:variable name="setSelection" select="/bedework/urlPrefixes/setSelection"/>
-  <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
-  <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/setViewPeriod"/>
-  <xsl:variable name="eventView" select="/bedework/urlPrefixes/eventView"/>
-  <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
-  <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
+  <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection"/>
+  <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars"/>
+  <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod"/>
+  <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
+  <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
+  <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export/a/@href"/>
   <xsl:variable name="search" select="/bedework/urlPrefixes/search/search"/>
   <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
-  <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
-  <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
-  <xsl:variable name="stats" select="/bedework/urlPrefixes/stats"/>
+  <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
+  <xsl:variable name="showPage" select="/bedework/urlPrefixes/main/showPage"/>
+  <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
 
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
