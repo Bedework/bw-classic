@@ -117,10 +117,10 @@
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <!-- load javascript -->
-        <!--<xsl:if test="/bedework/page='calendarList'">-->
+        <xsl:if test="/bedework/page='calendarList'">
           <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js"/>
           <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js"/>
-        <!--</xsl:if>-->
+        </xsl:if>
         <!-- address bar icon -->
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
       </head>

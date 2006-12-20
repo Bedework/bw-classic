@@ -345,6 +345,7 @@
       <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
       <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
       <script type="text/javascript" src="{$resourcesRoot}/resources/browserSniffer.js"></script>
+      <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js"/>
     </xsl:if>
     <script type="text/javascript">
       <xsl:comment>
@@ -2203,6 +2204,13 @@
               This event has no duration / end date
             </div>
           </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldname">
+          Recurrence:
+        </td>
+        <td class="fieldval">
 
           <!-- Recurrence fields -->
           <!-- ================= -->
@@ -2214,7 +2222,7 @@
             <xsl:if test="form/recurring='true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             <xsl:choose>
               <xsl:when test="/bedework/creating = 'true'">
-                recurring
+                set recurrence rules
               </xsl:when>
               <xsl:otherwise>
                 change recurrence
@@ -2234,6 +2242,7 @@
             <input type="hidden" name="byweekno" value=""/>
             <input type="hidden" name="byyearday" value=""/>
             <input type="hidden" name="wkst" value=""/>
+            <input type="hidden" name="setpos" value=""/>
 
             <div id="recurrenceFields" class="invisible">
               <table id="recurrenceTable" cellspacing="0">
@@ -2279,6 +2288,12 @@
                               </span>
                               <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
                             </xsl:for-each>
+                          </div>
+                        </p>
+                        <p>
+                          <input type="checkbox" name="swapDaySetPos" value="" onclick="swapVisible(this,'daySetPos')"/>
+                          limit to:
+                          <div id="daySetPos" class="invisible">
                           </div>
                         </p>
                       </div>
@@ -2480,6 +2495,11 @@
               </table>
             </div>
           </xsl:if>
+
+          <!-- recurrence dates (rdates) -->
+          <div dojoType="DateTimePicker" id="rdates">
+          </div>
+
         </td>
       </tr>
       <!--  Location  -->
@@ -2709,6 +2729,18 @@
         <xsl:with-param name="current"><xsl:value-of select="$current+1"/></xsl:with-param>
         <xsl:with-param name="total"><xsl:value-of select="$total"/></xsl:with-param>
         <xsl:with-param name="name"><xsl:value-of select="$name"/></xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="buildNumberOptions">
+    <xsl:param name="current"/>
+    <xsl:param name="total"/>
+    <option value="{$current}"><xsl:value-of select="$current"/></option>
+    <xsl:if test="$current &lt; $total">
+      <xsl:call-template name="buildNumberOptions">
+        <xsl:with-param name="current"><xsl:value-of select="$current+1"/></xsl:with-param>
+        <xsl:with-param name="total"><xsl:value-of select="$total"/></xsl:with-param>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
