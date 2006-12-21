@@ -334,7 +334,8 @@
                   /bedework/page='addSubByUri' or
                   /bedework/page='modPrefs' or
                   /bedework/page='calendarListForExport' or
-                  /bedework/page='attendeeRespond'">
+                  /bedework/page='attendeeRespond' or
+                  /bedework/page='modSchedulingPrefs'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
     </xsl:if>
     <xsl:if test="/bedework/page='addEvent' or
@@ -984,41 +985,37 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
-      <xsl:variable name="editTitle">
-        <xsl:choose>
-          <xsl:when test="isAnnotation">Annotate</xsl:when>
-          <xsl:otherwise>Edit</xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
       <xsl:choose>
         <xsl:when test="recurring='true'">
-          <xsl:value-of select="$editTitle"/>:
-          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$editTitle} master (recurring event)">master</a>,
-          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$editTitle} instance (recurring event)">instance</a>
+          Edit:
+          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">master</a>,
+          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)">instance</a>
           <br/>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$editTitle} event">
-            <xsl:value-of select="$editTitle"/>
+          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
+            Edit
           </a>
           |
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
-    <xsl:choose>
-      <xsl:when test="recurring='true'">
-        Link:
-        <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,
-        <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
-        <br/>
-      </xsl:when>
-      <xsl:otherwise>
-        <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
-          Link
-        </a>
-        |
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content)">
+      <xsl:choose>
+        <xsl:when test="recurring='true'">
+          Link:
+          <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,
+          <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
+          <br/>
+        </xsl:when>
+        <xsl:otherwise>
+          <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
+            Link
+          </a>
+          |
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
     <xsl:if test="subscription and owner != /bedework/userid">
       <xsl:variable name="subname" select="subscription/name"/>
       <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
@@ -1328,41 +1325,37 @@
               Download
             </a>
             <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
-              <xsl:variable name="editTitle">
-                <xsl:choose>
-                  <xsl:when test="isAnnotation">Annotate</xsl:when>
-                  <xsl:otherwise>Edit</xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-             |
+              |
               <xsl:choose>
                 <xsl:when test="recurring='true'">
                   <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
-                  <xsl:value-of select="$editTitle"/>:
-                  <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$editTitle} master (recurring event)">master</a>,<a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$editTitle} instance (recurring event)">instance</a>
+                  Edit:
+                  <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">master</a>,<a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)">instance</a>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$editTitle} event">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="{$editTitle}"/>
-                    <xsl:value-of select="$editTitle"/>
+                  <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
+                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                    Edit
                   </a>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:if>
+            <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content)">
               |
-            <xsl:choose>
-              <xsl:when test="recurring='true'">
-                <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
-                Link:
-                <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,<a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
-              </xsl:when>
-              <xsl:otherwise>
-                <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
+              <xsl:choose>
+                <xsl:when test="recurring='true'">
                   <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
-                  Link
-                </a>
-              </xsl:otherwise>
-            </xsl:choose>
+                  Link:
+                  <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,<a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
+                    <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
+                    Link
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
             <xsl:if test="subscription and owner != /bedework/userid">
               |
               <xsl:variable name="subname" select="subscription/name"/>
@@ -5886,12 +5879,12 @@
 
       <table class="common" cellspacing="0">
         <tr>
-          <th>Can send me scheduling requests:</th>
+          <th class="leftBorder">Can send me scheduling requests:</th>
           <th class="leftBorder">Can schedule on my behalf:</th>
         </tr>
         <tr>
-          <td class="padMe">
-            <form name="eventForm" method="post" action="{$prefs-setAccess}">
+          <td class="leftBorder padMe">
+            <form name="prefsSetAccess1" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
               <input type="hidden" name="what" value="in"/>
               <p>
                 <input type="text" name="who" width="40"/>
@@ -5910,7 +5903,7 @@
               <input type="hidden" name="how" value="S"/>
               <dl>
                 <dt>
-                  <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="setScheduleHow(this)"/>all scheduling
+                  <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="toggleScheduleHow(this.form,this)"/>all scheduling
                 </dt>
                 <dd>
                   <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>scheduling requests<br/>
@@ -5929,7 +5922,7 @@
             </xsl:for-each>
           </td>
           <td class="leftBorder padMe">
-            <form name="eventForm" method="post" action="{$prefs-setAccess}">
+            <form name="prefsSetAccess2" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
               <input type="hidden" name="what" value="out"/>
               <p>
                 <input type="text" name="who" width="40"/>
@@ -5948,7 +5941,7 @@
               <input type="hidden" name="how" value="S"/>
               <dl>
                 <dt>
-                  <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="setScheduleHow(this)"/>all scheduling
+                  <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="toggleScheduleHow(this.form,this)"/>all scheduling
                 </dt>
                 <dd>
                   <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>scheduling requests<br/>

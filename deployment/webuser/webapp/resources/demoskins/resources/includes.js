@@ -1,4 +1,4 @@
-var debug = false; // very basic debugging for now
+var debug = true; // very basic debugging for now
 
 function changeClass(id, newClass) {
   identity = document.getElementById(id);
@@ -348,8 +348,6 @@ function untilDateCalWidgetCallback(date, month, year) {
     selectRecurCountUntil('recurUntil');
   }
 }
-
-
 // launch the calSelect pop-up window for selecting a calendar when creating,
 // editing, and importing events
 function launchCalSelectWindow(URL) {
@@ -407,13 +405,28 @@ function setSubscriptionUri(formObj) {
   }
 }
 
-function setScheduleHow(multibox) {
-  var accessString = "";
-  for (i=0; i<multibox.length; i++) {
-    alert(mulitbox[i].value);
+function setScheduleHow(formObj) {
+  var access = new Array();
+  // gather up the access characters
+  access = collectRecurChkBoxVals(access, formObj.howSetter);
+  formObj.how.value = access.join('');
+  if (debug) {
+    alert(formObj.how.value);
   }
 }
-
+function toggleScheduleHow(formObj,chkBox) {
+  if (chkBox.checked == false) {
+    // we start on the second checkbox element
+    for (i = 1; i < formObj.howSetter.length; i++) {
+      formObj.howSetter[i].disabled = false;
+    }
+  } else {
+    for (i = 1; i < formObj.howSetter.length; i++) {
+      formObj.howSetter[i].checked = true;
+      formObj.howSetter[i].disabled = true;
+    }
+  }
+}
 function swapScheduleDisplay(val) {
   if (val == "show") {
     changeClass('scheduleLocationDisplay','invisible');

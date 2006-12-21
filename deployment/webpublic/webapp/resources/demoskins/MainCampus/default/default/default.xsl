@@ -645,7 +645,7 @@
             <xsl:variable name="calPath" select="calendar/encodedPath"/>
             <xsl:variable name="guid" select="guid"/>
             <xsl:variable name="recurrenceId" select="recurrenceId"/>
-            <a href="{$privateCal}/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+            <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
               <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
             add to my calendar</a>
             <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
@@ -907,7 +907,7 @@
                 </td>
                 <td class="icons">
                   <variable name="confId" select="/bedework/confirmationid"/>
-                  <a href="{$privateCal}/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+                  <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
                     <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
                   </a>
                   <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
