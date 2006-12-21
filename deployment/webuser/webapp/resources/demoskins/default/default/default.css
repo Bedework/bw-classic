@@ -1494,6 +1494,9 @@ span.time {
 .padTop {
   padding-top: 1em;
 }
+.nowrap {
+  white-space: nowrap;
+}
 #featureHighlight {
   color: #dd0;
   font-style: italic;

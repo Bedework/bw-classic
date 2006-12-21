@@ -406,10 +406,19 @@ function setSubscriptionUri(formObj) {
 }
 
 function setScheduleHow(formObj) {
-  var access = new Array();
-  // gather up the access characters
-  access = collectRecurChkBoxVals(access, formObj.howSetter);
-  formObj.how.value = access.join('');
+  if (formObj.howSetter[0].checked == true) {
+    formObj.how.value = formObj.howSetter[0].value;
+  } else {
+    var access = new Array();
+    // gather up the access characters - begin on the second element
+    for (i = 1; i < formObj.howSetter.length; i++) {
+      if (formObj.howSetter[i].checked == true) {
+        access.push(formObj.howSetter[i].value);
+      }
+    }
+    formObj.how.value = access.join('');
+  }
+
   if (debug) {
     alert(formObj.how.value);
   }

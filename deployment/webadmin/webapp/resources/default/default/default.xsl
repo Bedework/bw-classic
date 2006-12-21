@@ -2571,6 +2571,10 @@
                       <xsl:choose>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">user</xsl:when>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">group</xsl:when>
+                        <xsl:when test="$who='authenticated'">auth</xsl:when>
+                        <xsl:when test="invert/principal/property/owner">other</xsl:when>
+                        <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+                        <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
                         <xsl:otherwise></xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
@@ -2578,7 +2582,7 @@
                       <xsl:choose>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:otherwise><xsl:value-of select="$who"/></xsl:otherwise>
+                        <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
                       </xsl:choose>
                     </xsl:variable>
                     <xsl:choose>
@@ -3940,6 +3944,10 @@
                       <xsl:choose>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">user</xsl:when>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">group</xsl:when>
+                        <xsl:when test="$who='authenticated'">auth</xsl:when>
+                        <xsl:when test="invert/principal/property/owner">other</xsl:when>
+                        <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+                        <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
                         <xsl:otherwise></xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
@@ -3947,7 +3955,7 @@
                       <xsl:choose>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:otherwise><xsl:value-of select="$who"/></xsl:otherwise>
+                        <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
                       </xsl:choose>
                     </xsl:variable>
                     <xsl:choose>
