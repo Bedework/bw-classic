@@ -320,6 +320,7 @@
     <copy todir="${app.dest.lib}" file="${commons-codec.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-collections.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-httpclient.jar}"/>
+    <copy todir="${app.dest.lib}" file="${commons-lang.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-ssl.jar}"/>
 
 
