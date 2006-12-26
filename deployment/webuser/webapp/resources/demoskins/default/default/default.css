@@ -654,6 +654,11 @@ table#manage td {
 #tztable td {
   padding: 2px 4px;
 }
+#recurrenceInfo {
+  font-size: 0.9em;
+  font-style: italic;
+  margin-bottom: 0.5em;
+}
 #recurrenceFields #recurrenceTable strong {
   display: inline;
 }
@@ -667,8 +672,11 @@ table#manage td {
 #recurrenceFields #recurrenceTable td.recurrenceUntil {
   width: 100%;
   padding: 0.5em 0 0 1em;
-  border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
+}
+#recurrenceFields #recurrenceTable td.recurrenceRules #advancedRecurrenceRules {
+  display: block;
+  border-bottom: 1px solid #ddd;
 }
 #recurrenceFields #recurrenceTable td.recurrenceRules .rruleBlock {
   margin: 0 0 0.5em 2em;

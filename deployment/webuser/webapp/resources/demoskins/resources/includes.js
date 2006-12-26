@@ -1,4 +1,4 @@
-var debug = true; // very basic debugging for now
+var debug = false; // very basic debugging for now
 
 function changeClass(id, newClass) {
   identity = document.getElementById(id);
@@ -270,6 +270,11 @@ function setRecurrence(formObj) {
 
   if (debug) {
     alert("frequency: " + freq + "\ninterval: " + formObj.interval.value + "\ncount: " + formObj.count.value + "\nuntil: " + formObj.until.value + "\nbyday: " + formObj.byday.value + "\nbymonthday: " + formObj.bymonthday.value + "\nbymonth: " + formObj.bymonth.value + "\nbyyearday: " + formObj.byyearday.value + "\nwkst: " + formObj.wkst.value);
+    var formFields = '';
+    for (i = 0; i < formObj.length; i++) {
+      formFields += formObj[i].name + ": " + formObj[i].value + "\n";
+    }
+    alert(formFields);
   }
   return true;
 }

@@ -252,6 +252,11 @@ ul.adminMenu a:hover {
   color: black;
   background-color: #eee;
 }
+.recurrenceEditLinks {
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 0.5em;
+}
 table.eventFormTable {
   margin: 1em 0;
 }
@@ -424,12 +429,16 @@ table.params .desc {
 #clock {
   position: relative;
 }
-
 #tztable {
   margin-top: 1em;
 }
 #tztable td {
   padding: 2px 4px;
+}
+#recurrenceInfo {
+  font-size: 0.9em;
+  font-style: italic;
+  margin-bottom: 0.5em;
 }
 #recurrenceFields #recurrenceTable strong {
   display: inline;
@@ -444,8 +453,11 @@ table.params .desc {
 #recurrenceFields #recurrenceTable td.recurrenceUntil {
   width: 100%;
   padding: 0.5em 0 0 1em;
-  border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
+}
+#recurrenceFields #recurrenceTable td.recurrenceRules #advancedRecurrenceRules {
+  display: block;
+  border-bottom: 1px solid #ddd;
 }
 #recurrenceFields #recurrenceTable td.recurrenceRules .rruleBlock {
   margin: 0 0 0.5em 2em;
