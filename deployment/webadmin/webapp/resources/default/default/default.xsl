@@ -1017,55 +1017,19 @@
 
               <xsl:if test="form/recurrence/bymonthday">
                 on the
-                <xsl:for-each select="form/recurrence/bymonthday/val">
-                  <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
-                  <xsl:value-of select="."/><xsl:choose>
-                    <xsl:when test="substring(., string-length(.)-1, 2) = '11' or
-                                    substring(., string-length(.)-1, 2) = '12' or
-                                    substring(., string-length(.)-1, 2) = '13'">th</xsl:when>
-                    <xsl:when test="substring(., string-length(.), 1) = '1'">st</xsl:when>
-                    <xsl:when test="substring(., string-length(.), 1) = '2'">nd</xsl:when>
-                    <xsl:when test="substring(., string-length(.), 1) = '3'">rd</xsl:when>
-                    <xsl:otherwise>th</xsl:otherwise>
-                  </xsl:choose>
-                  <xsl:if test="position() != last()">, </xsl:if>
-                </xsl:for-each>
+                <xsl:apply-templates select="form/recurrence/bymonthday/val" mode="weekMonthYearNumbers"/>
                 day<xsl:if test="form/recurrence/bymonthday/val[position()=2]">s</xsl:if> of the month
               </xsl:if>
 
               <xsl:if test="form/recurrence/byyearday">
                 on the
-                <xsl:for-each select="form/recurrence/byyearday/val">
-                  <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
-                  <xsl:value-of select="."/><xsl:choose>
-                    <xsl:when test="substring(., string-length(.)-1, 2) = '11' or
-                                    substring(., string-length(.)-1, 2) = '12' or
-                                    substring(., string-length(.)-1, 2) = '13'">th</xsl:when>
-                    <xsl:when test="substring(., string-length(.), 1) = '1'">st</xsl:when>
-                    <xsl:when test="substring(., string-length(.), 1) = '2'">nd</xsl:when>
-                    <xsl:when test="substring(., string-length(.), 1) = '3'">rd</xsl:when>
-                    <xsl:otherwise>th</xsl:otherwise>
-                  </xsl:choose>
-                  <xsl:if test="position() != last()">, </xsl:if>
-                </xsl:for-each>
+                <xsl:apply-templates select="form/recurrence/byyearday/val" mode="weekMonthYearNumbers"/>
                 day<xsl:if test="form/recurrence/byyearday/val[position()=2]">s</xsl:if> of the year
               </xsl:if>
 
               <xsl:if test="form/recurrence/byweekno">
                 in the
-                <xsl:for-each select="form/recurrence/byweekno/val">
-                  <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
-                  <xsl:value-of select="."/><xsl:choose>
-                    <xsl:when test="substring(., string-length(.)-1, 2) = '11' or
-                                    substring(., string-length(.)-1, 2) = '12' or
-                                    substring(., string-length(.)-1, 2) = '13'">th</xsl:when>
-                    <xsl:when test="substring(., string-length(.), 1) = '1'">st</xsl:when>
-                    <xsl:when test="substring(., string-length(.), 1) = '2'">nd</xsl:when>
-                    <xsl:when test="substring(., string-length(.), 1) = '3'">rd</xsl:when>
-                    <xsl:otherwise>th</xsl:otherwise>
-                  </xsl:choose>
-                  <xsl:if test="position() != last()">, </xsl:if>
-                </xsl:for-each>
+                <xsl:apply-templates select="form/recurrence/byweekno/val" mode="weekMonthYearNumbers"/>
                 week<xsl:if test="form/recurrence/byweekno/val[position()=2]">s</xsl:if> of the year
               </xsl:if>
 
@@ -1728,6 +1692,20 @@
         </tr>
       </table>
     </form>
+  </xsl:template>
+
+  <xsl:template match="val" mode="weekMonthYearNumbers">
+    <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
+    <xsl:value-of select="."/><xsl:choose>
+      <xsl:when test="substring(., string-length(.)-1, 2) = '11' or
+                      substring(., string-length(.)-1, 2) = '12' or
+                      substring(., string-length(.)-1, 2) = '13'">th</xsl:when>
+      <xsl:when test="substring(., string-length(.), 1) = '1'">st</xsl:when>
+      <xsl:when test="substring(., string-length(.), 1) = '2'">nd</xsl:when>
+      <xsl:when test="substring(., string-length(.), 1) = '3'">rd</xsl:when>
+      <xsl:otherwise>th</xsl:otherwise>
+    </xsl:choose>
+    <xsl:if test="position() != last()">, </xsl:if>
   </xsl:template>
 
   <xsl:template name="byDayChkBoxList">
