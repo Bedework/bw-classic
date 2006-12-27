@@ -1020,7 +1020,9 @@
                 <xsl:for-each select="form/recurrence/bymonthday/val">
                   <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
                   <xsl:value-of select="."/><xsl:choose>
-                    <xsl:when test=". = '11' or . = '12' or . = '13'">th</xsl:when>
+                    <xsl:when test="substring(., string-length(.)-1, 2) = '11' or
+                                    substring(., string-length(.)-1, 2) = '12' or
+                                    substring(., string-length(.)-1, 2) = '13'">th</xsl:when>
                     <xsl:when test="substring(., string-length(.), 1) = '1'">st</xsl:when>
                     <xsl:when test="substring(., string-length(.), 1) = '2'">nd</xsl:when>
                     <xsl:when test="substring(., string-length(.), 1) = '3'">rd</xsl:when>
@@ -1036,7 +1038,9 @@
                 <xsl:for-each select="form/recurrence/byyearday/val">
                   <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
                   <xsl:value-of select="."/><xsl:choose>
-                    <xsl:when test=". = '11' or . = '12' or . = '13'">th</xsl:when>
+                    <xsl:when test="substring(., string-length(.)-1, 2) = '11' or
+                                    substring(., string-length(.)-1, 2) = '12' or
+                                    substring(., string-length(.)-1, 2) = '13'">th</xsl:when>
                     <xsl:when test="substring(., string-length(.), 1) = '1'">st</xsl:when>
                     <xsl:when test="substring(., string-length(.), 1) = '2'">nd</xsl:when>
                     <xsl:when test="substring(., string-length(.), 1) = '3'">rd</xsl:when>
@@ -1052,7 +1056,9 @@
                 <xsl:for-each select="form/recurrence/byweekno/val">
                   <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
                   <xsl:value-of select="."/><xsl:choose>
-                    <xsl:when test=". = '11' or . = '12' or . = '13'">th</xsl:when>
+                    <xsl:when test="substring(., string-length(.)-1, 2) = '11' or
+                                    substring(., string-length(.)-1, 2) = '12' or
+                                    substring(., string-length(.)-1, 2) = '13'">th</xsl:when>
                     <xsl:when test="substring(., string-length(.), 1) = '1'">st</xsl:when>
                     <xsl:when test="substring(., string-length(.), 1) = '2'">nd</xsl:when>
                     <xsl:when test="substring(., string-length(.), 1) = '3'">rd</xsl:when>
