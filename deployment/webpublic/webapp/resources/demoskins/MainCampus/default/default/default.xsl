@@ -564,6 +564,10 @@
 
   <!--==== SINGLE EVENT ====-->
   <xsl:template match="event">
+    <xsl:variable name="subscriptionId" select="subscription/id"/>
+    <xsl:variable name="calPath" select="calendar/encodedPath"/>
+    <xsl:variable name="guid" select="guid"/>
+    <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <xsl:variable name="statusClass">
       <xsl:choose>
         <xsl:when test="status='CANCELLED'">bwStatusCancelled</xsl:when>
@@ -610,50 +614,115 @@
               <span class="time"><xsl:value-of select="end/time"/></span>
             </xsl:when>
           </xsl:choose>
-          <xsl:if test="start/timezone/islocal = 'false'">
+          <!-- if timezones are not local, or if floating add labels: -->
+          <xsl:if test="start/timezone/islocal = 'false' or end/timezone/islocal = 'false'">
             <xsl:text> </xsl:text>
             --
-            <strong>Local time</strong>
+            <strong>
+              <xsl:choose>
+                <xsl:when test="start/floating = 'true'">
+                  Floating time
+                </xsl:when>
+                <xsl:otherwise>
+                  Local time
+                </xsl:otherwise>
+              </xsl:choose>
+            </strong>
             <br/>
           </xsl:if>
-          <!-- display in timezone if not local -->
-          <xsl:if test="start/timezone/islocal = 'false'">
-            <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/><xsl:text> </xsl:text>
-            <xsl:if test="start/allday = 'false'">
-              <span class="time"><xsl:value-of select="start/timezone/time"/></span>
-            </xsl:if>
-            <xsl:if test="(end/timezone/longdate != start/timezone/longdate) or
-                          ((end/timezone/longdate = start/timezone/longdate) and (end/timezone/time != start/timezone/time))"> - </xsl:if>
-            <xsl:if test="end/timezone/longdate != start/timezone/longdate">
-              <xsl:value-of select="substring(end/timezone/dayname,1,3)"/>, <xsl:value-of select="end/timezone/longdate"/><xsl:text> </xsl:text>
-            </xsl:if>
+          <!-- display in timezone if not local or floating time) -->
+          <xsl:if test="(start/timezone/islocal = 'false' or end/timezone/islocal = 'false') and start/floating = 'false'">
             <xsl:choose>
-              <xsl:when test="start/allday = 'true'">
-                <span class="time"><em>(all day)</em></span>
+              <xsl:when test="start/timezone/id != end/timezone/id">
+                <!-- need to display both timezones if they differ from start to end -->
+                <table border="0" cellspacing="0" id="tztable">
+                  <tr>
+                    <td>
+                      <strong>Start:</strong>
+                    </td>
+                    <td>
+                      <xsl:choose>
+                        <xsl:when test="start/timezone/islocal='true'">
+                          <xsl:value-of select="start/dayname"/>,
+                          <xsl:value-of select="start/longdate"/>
+                          <xsl:text> </xsl:text>
+                          <span class="time"><xsl:value-of select="start/time"/></span>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="start/timezone/dayname"/>,
+                          <xsl:value-of select="start/timezone/longdate"/>
+                          <xsl:text> </xsl:text>
+                          <span class="time"><xsl:value-of select="start/timezone/time"/></span>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </td>
+                    <td>
+                      --
+                      <strong><xsl:value-of select="start/timezone/id"/></strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>End:</strong>
+                    </td>
+                    <td>
+                      <xsl:choose>
+                        <xsl:when test="end/timezone/islocal='true'">
+                          <xsl:value-of select="end/dayname"/>,
+                          <xsl:value-of select="end/longdate"/>
+                          <xsl:text> </xsl:text>
+                          <span class="time"><xsl:value-of select="end/time"/></span>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="end/timezone/dayname"/>,
+                          <xsl:value-of select="end/timezone/longdate"/>
+                          <xsl:text> </xsl:text>
+                          <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </td>
+                    <td>
+                      --
+                      <strong><xsl:value-of select="end/timezone/id"/></strong>
+                    </td>
+                  </tr>
+                </table>
               </xsl:when>
-              <xsl:when test="end/timezone/longdate != start/timezone/longdate">
-                <span class="time"><xsl:value-of select="end/timezone/time"/></span>
-              </xsl:when>
-              <xsl:when test="end/timezone/time != start/timezone/time">
-                <span class="time"><xsl:value-of select="end/timezone/time"/></span>
-              </xsl:when>
+              <xsl:otherwise>
+                <!-- otherwise, timezones are the same: display as a single line  -->
+                <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/><xsl:text> </xsl:text>
+                <xsl:if test="start/allday = 'false'">
+                  <span class="time"><xsl:value-of select="start/timezone/time"/></span>
+                </xsl:if>
+                <xsl:if test="(end/timezone/longdate != start/timezone/longdate) or
+                              ((end/timezone/longdate = start/timezone/longdate) and (end/timezone/time != start/timezone/time))"> - </xsl:if>
+                <xsl:if test="end/timezone/longdate != start/timezone/longdate">
+                  <xsl:value-of select="substring(end/timezone/dayname,1,3)"/>, <xsl:value-of select="end/timezone/longdate"/><xsl:text> </xsl:text>
+                </xsl:if>
+                <xsl:choose>
+                  <xsl:when test="start/allday = 'true'">
+                    <span class="time"><em>(all day)</em></span>
+                  </xsl:when>
+                  <xsl:when test="end/timezone/longdate != start/timezone/longdate">
+                    <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                  </xsl:when>
+                  <xsl:when test="end/timezone/time != start/timezone/time">
+                    <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                  </xsl:when>
+                </xsl:choose>
+                <xsl:text> </xsl:text>
+                --
+                <strong><xsl:value-of select="start/timezone/id"/></strong>
+              </xsl:otherwise>
             </xsl:choose>
-            <xsl:text> </xsl:text>
-            --
-            <strong><xsl:value-of select="start/timezone/id"/></strong>
           </xsl:if>
         </td>
         <th class="icalIcon" rowspan="2">
           <div id="eventIcons">
-            <xsl:variable name="id" select="id"/>
-            <xsl:variable name="subscriptionId" select="subscription/id"/>
-            <xsl:variable name="calPath" select="calendar/encodedPath"/>
-            <xsl:variable name="guid" select="guid"/>
-            <xsl:variable name="recurrenceId" select="recurrenceId"/>
             <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
               <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
             add to my calendar</a>
-            <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
+            <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
             <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
               <img src="{$resourcesRoot}/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
              download</a>
@@ -721,8 +790,8 @@
                 <xsl:value-of select="contact/name"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:variable name="contactLink" select="contact/link"/>
-                <a href="{$contactLink}">
+                <xsl:variable name="sponsorLink" select="contact/link"/>
+                <a href="{$sponsorLink}">
                   <xsl:value-of select="contact/name"/>
                 </a>
               </xsl:otherwise>
@@ -743,15 +812,17 @@
           </td>
         </tr>
       </xsl:if>
-      <tr>
-        <td class="fieldname">Calendar:</td>
-        <td class="fieldval">
-          <xsl:variable name="calUrl" select="calendar/encodedPath"/>
-          <a href="{$setSelection}&amp;calUrl={$calUrl}">
-            <xsl:value-of select="calendar/name"/>
-          </a>
-        </td>
-      </tr>
+      <xsl:if test="calendar/path!=''">
+        <tr>
+          <td class="fieldname">Calendar:</td>
+          <td class="fieldval">
+            <xsl:variable name="calUrl" select="calendar/encodedPath"/>
+            <a href="{$setSelection}&amp;calUrl={$calUrl}">
+              <xsl:value-of select="calendar/name"/>
+            </a>
+          </td>
+        </tr>
+      </xsl:if>
       <xsl:if test="categories/category">
         <tr>
           <td class="fieldname">Categories:</td>
