@@ -921,17 +921,14 @@ h2 a:hover {
 h2.bwStatusConfirmed {
   background-color: #eee;
   color: black;
-  border-top: 1px solid #333;
 }
 h2.bwStatusCancelled {
   background-color: #eee;
   color: black;
-  border-top: 1px solid #333;
 }
 h2.bwStatusTentative {
   background: #eee url('../../images/tentativeLines.gif') top;
   color: black;
-  border-top: 1px solid #333;
 }
 /* Header IDs and classes */
 #errors {

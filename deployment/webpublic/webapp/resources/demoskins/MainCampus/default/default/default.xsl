@@ -50,8 +50,13 @@
   <!--  DEMO PUBLIC CALENDAR STYLESHEET  -->
   <!-- ================================= -->
 
+  <!-- URL of resources common to all bedework apps (javascript, images) -->
+  <xsl:variable name="resourceCommons">../../../bedework-common</xsl:variable>
+
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="/bedework-common/default/default/errors.xsl"/>
+  <!-- cannot use the resourceCommons variable in xsl:include paths -->
+  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
 
@@ -118,7 +123,7 @@
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <!-- load javascript -->
         <xsl:if test="/bedework/page='calendarList'">
-          <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js"/>
+          <script type="text/javascript" src="{$resourceCommons}/javascript/dojo/dojo.js"/>
           <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js"/>
         </xsl:if>
         <!-- address bar icon -->
@@ -906,7 +911,6 @@
                   </xsl:choose>
                 </td>
                 <td class="icons">
-                  <variable name="confId" select="/bedework/confirmationid"/>
                   <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
                     <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
                   </a>
@@ -1218,7 +1222,7 @@
       <a href="{$setSelection}&amp;calUrl={$url}" title="view calendar"><xsl:value-of select="name"/></a>
       <xsl:if test="calendarCollection='true'">
         <xsl:variable name="name" select="name"/>
-        <xsl:variable name="calPath" select="encodedPath"/>
+        <xsl:variable name="calPath" select="path"/>
         <span class="exportCalLink">
           <!--<a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">-->
           <a href="javascript:launchExportWidget('exportCalendarForm','{$name}','{$calPath}')" id="{$calPath}" title="export calendar as iCal">

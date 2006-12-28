@@ -778,10 +778,11 @@
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">true</xsl:attribute></xsl:if>
                     <option value="-1">select timezone...</option>
+                    <xsl:variable name="startTzId" select="form/start/tzid"/>
                     <xsl:for-each select="/bedeworkadmin/timezones/timezone">
                       <option>
                         <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                        <xsl:if test="form/start/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                        <xsl:if test="$startTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
                         <xsl:value-of select="name"/>
                       </option>
                     </xsl:for-each>
@@ -838,10 +839,11 @@
                     <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">true</xsl:attribute></xsl:if>
                       <option value="-1">select timezone...</option>
+                      <xsl:variable name="endTzId" select="form/end/dateTime/tzid"/>
                       <xsl:for-each select="/bedeworkadmin/timezones/timezone">
                         <option>
                           <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                          <xsl:if test="form/end/dateTime/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                          <xsl:if test="$endTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
                           <xsl:value-of select="name"/>
                         </option>
                       </xsl:for-each>
