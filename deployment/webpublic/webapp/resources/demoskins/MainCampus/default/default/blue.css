@@ -218,11 +218,11 @@ body {
 }
 #navigationBarTable td.leftCell .prevImg {
   margin: 0 0.2em 0 0;
-  vertical-align: top;
+  vertical-align: middle;
 }
 #navigationBarTable td.leftCell .nextImg {
   margin: 0 0.75em 0 0;
-  vertical-align: top;
+  vertical-align: middle;
 }
 #navigationBarTable td.rightCell {
   text-align: right;
@@ -732,12 +732,6 @@ a.gridAdd {
 #listTable td.description {
   text-align: left;
   background-color: #fff;
-  color: black;
-  width: 100%;
-}
-#listTable td.description {
-  text-align: left;
-  background-color: white;
   color: black;
   width: 100%;
 }

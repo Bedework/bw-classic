@@ -231,16 +231,12 @@ h2 {
   vertical-align: middle;
 }
 #navigationBarTable td.leftCell .prevImg {
-  margin: 0;
-  vertical-align: top;
-}
-#navigationBarTable td.leftCell .prevImg {
   margin: 0 0.2em 0 0;
-  vertical-align: top;
+  vertical-align: middle;
 }
 #navigationBarTable td.leftCell .nextImg {
   margin: 0 0.75em 0 0;
-  vertical-align: top;
+  vertical-align: middle;
 }
 #navigationBarTable td.rightCell select {
   padding-right: 0em;
