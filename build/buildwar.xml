@@ -124,6 +124,12 @@
       <filter token="HIBERNATE-DIALECT"
               value="${org.bedework.global.hibernate.dialect}" />
 
+      <filter token="SECOND-LEVEL-CACHING"
+              value="${org.bedework.global.hibernate.cache.use_second_level_cache}" />
+
+      <filter token="CACHE-PROVIDER"
+              value="${org.bedework.global.hibernate.cache.provider_class}" />
+
       <filter token="DIRECTORY-BROWSING-DISALLOWED"
               value="${org.bedework.global.directory.browsing.disallowed}" />
 
