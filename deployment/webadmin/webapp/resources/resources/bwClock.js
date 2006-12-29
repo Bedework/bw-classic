@@ -19,8 +19,8 @@ function bwClockLaunch(type) {
     // browser window doesn't shift around)
    changeClass("eventFormPrefLocationList","hidden");
    changeClass("eventFormLocationList","hidden");
-   changeClass("eventFormSponsorList","hidden");
-   changeClass("eventFormPrefSponsorList","hidden");
+   changeClass("eventFormContactList","hidden");
+   changeClass("eventFormPrefContactList","hidden");
     bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
     if (type == 'eventStartDate') {
       bwClockIndicator.innerHTML = "Start Time"
@@ -34,8 +34,8 @@ function bwClockClose() {
   changeClass("clock","invisible");
   changeClass("eventFormPrefLocationList","shown");
   changeClass("eventFormLocationList","shown");
-  changeClass("eventFormSponsorList","shown");
-  changeClass("eventFormPrefSponsorList","shown");
+  changeClass("eventFormContactList","shown");
+  changeClass("eventFormPrefContactList","shown");
 }
 
 function bwClockUpdateDateTimeForm(type,val) {
