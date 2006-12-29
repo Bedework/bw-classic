@@ -1542,7 +1542,7 @@
                         <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="keyword"/>','all-<xsl:value-of select="keyword"/>')</xsl:attribute>
-                        <xsl:if test="keyword = form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                         <xsl:value-of select="keyword"/>
                       </input><br/>
                     </xsl:for-each>
@@ -1590,7 +1590,7 @@
                         <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
                       </xsl:if>
-                      <xsl:if test="keyword = form/categories/current//category/keyword">
+                      <xsl:if test="keyword = ../../current//category/keyword">
                         <xsl:attribute name="checked">checked</xsl:attribute>
                       </xsl:if>
                       <xsl:value-of select="keyword"/>
