@@ -13,7 +13,7 @@
   <target name="deploy" depends="init,build.configured" >
     <!-- Deploy common resources -->
     <ant antfile="${org.bedework.common.resources}/build.xml"
-         inheritrefs="true" target="deploy.common" />
+         inheritrefs="true" target="deploy" />
   </target>
 
   <target name="build.configured" depends="init" >
