@@ -45,11 +45,13 @@
     </copy>
 
     <!-- Deploy common resources -->
+    <!--
     <ant antfile="${org.bedework.common.resources}/build.xml"
          inheritrefs="true" target="deploy" >
       <property name="app.common.resources.dest.dir"
                 location="${org.bedework.appserver.dir}/${propval.app.resources.dir}/resources" />
     </ant>
+    -->
 
     <echo message="***************************************************************" />
     <echo message="Deploying standalone app ${app.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />
