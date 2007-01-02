@@ -5,6 +5,16 @@
      =================================================================== -->
 
 <project name="bwcommonresources.deploy" default="deploy" >
+  <property name="propval.app.context.root"
+            value="${org.bedework.global.build.common.context.root}" />
+  <property name="propval.app.deploy.dir"
+            value="${org.bedework.global.build.common.context.deploy.dir}" />
+  <property name="propval.app.display.name"
+            value="${org.bedework.global.build.common.context.name}" />
+    <property name="propval.app.war.name"
+              value="${org.bedework.global.build.common.context.war.name}" />
+
+  <import file="${build.dir}/buildfilters.xml" />
 
   <target name="init" >
     <dirname property="common.resources.dir" file="${ant.file}"/>
@@ -17,6 +27,14 @@
     <!-- This should be in the config stuff -->
     <property name="propval.directory.browsing.disallowed"
               value="${app.directory.browsing.disallowed}" />
+
+    <property name="common.war.name"
+              value="${org.bedework.global.build.common.context.war.name}" />
+    <property name="common.dest.war"
+              location="${org.bedework.temp.wars.home}/${common.war.name}.war" />
+
+    <property name="common.war.file"
+              location="${dist.home}/${common.war.name}.war" />
   </target>
 
   <!-- =================================================================
@@ -25,6 +43,35 @@
        ================================================================= -->
 
   <target name="deploy" depends="init" >
+    <if>
+      <isset property="org.bedework.global.build.common.context" />
+      <then>
+        <echo message="***************************************************************" />
+        <echo message="Deploying common context ${common.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />
+        <echo message="***************************************************************" />
+
+        <!-- Delete expanded version -->
+        <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.war.name}" />
+
+        <!-- copy the war file. -->
+        <copy todir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}"
+              file="${common.war.file}"
+              overwrite="yes" />
+
+        <!-- Delete the quickstart context def -->
+        <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
+
+        <!--
+        <if>
+          <isset property="org.bedework.global.portal.platform" />
+          <then>
+            <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.global.portal.platform}/build.xml"
+                 inheritrefs="true" target="deploy" />
+          </then>
+        </if>
+        -->
+      </then>
+    </if>
   </target>
 
   <!-- =================================================================
@@ -33,21 +80,60 @@
        ================================================================= -->
 
   <target name="deploy.common" depends="init" >
-    <property name="cmn.destdir"
-              location="${org.bedework.appserver.dir}/${org.bedework.global.common.deploydir}"/>
     <if>
-      <isset property="org.bedework.use.dojo" />
+      <isset property="org.bedework.global.build.common.context" />
       <then>
-        <!-- Add dojo -->
-        <copy todir="${cmn.destdir}/javascript/dojo">
-          <fileset dir="${common.resources.dir}/javascript/${dojo.dir}" />
-        </copy>
-      </then>
-    </if>
+        <!-- Build a deployable war file with common files -->
 
-    <copy todir="${cmn.destdir}">
-      <fileset dir="${common.resources.dir}/xsl" />
-    </copy>
+        <delete dir="${common.dest.war}" />
+
+        <copy todir="${common.dest.war}" failonerror="false" >
+          <fileset dir="${org.bedework.common.resources}/common-context" />
+          <filterset refid="property.filters" />
+        </copy>
+
+        <if>
+          <isset property="org.bedework.use.dojo" />
+          <then>
+            <!-- Add dojo -->
+            <copy todir="${common.dest.war}/javascript/dojo">
+              <fileset dir="${common.resources.dir}/javascript/${dojo.dir}" />
+            </copy>
+          </then>
+        </if>
+
+        <copy todir="${common.dest.war}">
+          <fileset dir="${common.resources.dir}/xsl" />
+        </copy>
+
+        <!-- build the war file -->
+        <mkdir dir="${dist.home}" />
+        <delete file="${common.war.file}" />
+
+        <war warfile="${common.war.file}"
+             webxml="${common.dest.war}/WEB-INF/web.xml"
+             basedir="${common.dest.war}"
+             excludes="WEB-INF/web.xml" />
+      </then>
+      <else>
+        <!-- Just copy into a common location -->
+        <property name="cmn.destdir"
+                  location="${org.bedework.appserver.dir}/${org.bedework.global.common.deploydir}"/>
+        <if>
+          <isset property="org.bedework.use.dojo" />
+          <then>
+            <!-- Add dojo -->
+            <copy todir="${cmn.destdir}/javascript/dojo">
+              <fileset dir="${common.resources.dir}/javascript/${dojo.dir}" />
+            </copy>
+          </then>
+        </if>
+
+        <copy todir="${cmn.destdir}">
+          <fileset dir="${common.resources.dir}/xsl" />
+        </copy>
+      </else>
+    </if>
   </target>
 </project>
 
