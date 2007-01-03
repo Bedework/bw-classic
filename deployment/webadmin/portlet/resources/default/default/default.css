@@ -252,12 +252,20 @@ ul.adminMenu a:hover {
   color: black;
   background-color: #eee;
 }
+.recurrenceEditLinks {
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 0.5em;
+}
 table.eventFormTable {
   margin: 1em 0;
 }
 table.eventFormTable td {
   vertical-align: top;
   font-size: 0.9em;
+}
+table.eventFormTable td.fieldName {
+  width: 7em;
 }
 table.eventFormTable th,
 table.eventFormTable td.fieldName {
@@ -267,6 +275,7 @@ table.eventFormTable td.fieldName {
   color: black;
   padding: 0.2em;
   font-size: 0.9em;
+  vertical-align: top;
 }
 table.eventFormTable tr.validationError td.fieldName {
   color: black;
@@ -306,6 +315,7 @@ table.eventFormTable .dateStartEndBox {
   border: 1px solid #ccb;
   margin: 4px;
   padding: 4px;
+  white-space: nowrap;
 }
 table.eventFormTable .dateStartEndBox strong {
   display: block;
@@ -313,12 +323,16 @@ table.eventFormTable .dateStartEndBox strong {
 table.eventFormTable .startDateLabel {
   margin-left: 26px;
 }
+table.eventFormTable select.timezones {
+  margin-left: 1em;
+  width: 160px;
+}
 table.eventFormTable .shown {
   display: inline;
 }
 table.eventFormTable .invisible,
 .invisible {
-  display: none;
+  display: none !important;
 }
 .hidden {
   visibility: hidden;
@@ -332,6 +346,37 @@ table.eventFormTable div.durationBox {
 table.eventFormTable .durationSpacerText {
   font-weight: bold;
   margin: 0 1em;
+}
+table.params {
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+table.params th {
+  white-space: normal !important;
+  width: 150px;
+  font-weight: normal;
+  padding: 0.5em;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+table.params td {
+  font-weight: bold;
+  padding: 0.5em;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+table.params td input {
+  width: 200px;
+}
+table.params td input.wide {
+  width: 400px;
+}
+table.params .desc {
+  font-weight: normal;
+  font-size: 0.8em;
+  font-style: italic;
+  color: #666;
+  background-color: transparent;
 }
 #confirmButtons {
   margin: 1em 0 !important;
@@ -384,6 +429,72 @@ table.eventFormTable .durationSpacerText {
 #clock {
   position: relative;
 }
+#tztable {
+  margin-top: 1em;
+}
+#tztable td {
+  padding: 2px 4px;
+}
+#recurrenceInfo {
+  font-size: 0.9em;
+  font-style: italic;
+  margin-bottom: 0.5em;
+}
+#recurrenceFields #recurrenceTable strong {
+  display: inline;
+}
+#recurrenceFields #recurrenceTable td.recurrenceFrequency {
+  padding: 0.5em 1em 0 0;
+}
+#recurrenceFields #recurrenceTable td.recurrenceRules {
+  padding: 0.5em 0 0.5em 1em;
+  border-left: 1px solid #ddd;
+}
+#recurrenceFields #recurrenceTable td.recurrenceUntil {
+  width: 100%;
+  padding: 0.5em 0 0 1em;
+  border-left: 1px solid #ddd;
+}
+#recurrenceFields #recurrenceTable td.recurrenceRules #advancedRecurrenceRules {
+  display: block;
+  border-bottom: 1px solid #ddd;
+}
+#recurrenceFields #recurrenceTable td.recurrenceRules .rruleBlock {
+  margin: 0 0 0.5em 2em;
+}
+.chkBoxListItem {
+  display: block;
+  float: left;
+  width: 3em;
+}
+#recurrenceFields #recurrenceTable br {
+  clear: both;
+}
+#recurrenceFields #recurrenceTable p {
+  margin: 0 0 0.5em 0;
+}
+#recurrenceFields #recurrenceTable p.weekRecurLinks {
+  margin: 1em 0 1em 0;
+}
+#recurrenceFields #recurrenceTable .extraByMonthPosFields {
+  margin: 0 0 1em 2em;
+  padding: 0;
+}
+#recurrenceFields #monthRecurFields div,
+#recurrenceFields #yearRecurFields div {
+  display: block;
+  margin: 0 0 0.5em 0;
+}
+#recurrenceFields #dayMonthCheckBoxList,
+#recurrenceFields #monthDaysCheckBoxList,
+#recurrenceFields #yearWeeksCheckBoxList,
+#recurrenceFields #yearMonthCheckBoxList,
+#recurrenceFields #yearMonthDaysCheckBoxList,
+#recurrenceFields #yearDaysCheckBoxList {
+  margin: 0.5em 0 0.5em 2em;
+  display: block;
+  clear: both;
+}
 #contactEmailAlert {
   display: none;
   background: transparent url('../../resources/email.gif') no-repeat top left;
@@ -425,17 +536,21 @@ table.eventFormTable .durationSpacerText {
   padding: 0;
 }
 #shareFormTable {
-  width: 96%; /* less than 100% helps avoid IE weirdness */
+  /* width: 96%; less than 100% helps avoid IE weirdness */
+  border-right: 1px solid #666;
 }
-#shareFormTable td {
-  border: 1px solid #666;
-  padding-bottom: 0.5em;
-}
-#shareFormTable h5 {
+#shareFormTable tr.subhead th {
+  border-left: 1px solid #666;
   background: #e5e5e5;
   color: black;
-  margin: 0 -0.5em;
+  margin: 0;
   padding: 4px;
+}
+#shareFormTable td {
+  border-bottom: 1px solid #666;
+  border-left: 1px solid #666;
+  padding: 1em;
+  vertical-align: top;
 }
 #howList {
   margin: 0;

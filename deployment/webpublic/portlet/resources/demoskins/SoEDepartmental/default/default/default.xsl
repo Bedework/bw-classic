@@ -17,10 +17,9 @@
      calendar suite; it is an example of a departmental skin.
 
      This skin, along with the preferences for the Calendar
-     Suite owner differ from the main public skin (default.xsl) in the
+     Suite owner, differs from the main public skin (default.xsl) in the
      following ways:
        - different header, title, and footer
-       - default view = Month
        - default layout = list view (rather than calendar grid)
        - different color scheme
 
@@ -82,7 +81,11 @@
   <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
 
   <!-- Properly encoded prefixes to the application actions; use these to build
-       urls; allows the application to be used without cookies or within a portal. -->
+       urls; allows the application to be used without cookies or within a portal.
+       These urls are rewritten in header.jsp and simply passed through for use
+       here. Every url includes a query string (either ?b=de or a real query
+       string) so that all links constructed in this stylesheet may begin the
+       query string with an ampersand. -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/setSelection"/>
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/fetchPublicCalendars"/>
@@ -90,9 +93,13 @@
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/eventView"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/addEventRef"/>
   <xsl:variable name="export" select="/bedework/urlPrefixes/export/a/@href"/>
+  <xsl:variable name="search" select="/bedework/urlPrefixes/search"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/showPage"/>
   <xsl:variable name="stats" select="/bedework/urlPrefixes/stats"/>
+
+  <!-- URL of the web application - includes web context -->
+  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
 
   <!-- Other generally useful global variables -->
   <xsl:variable name="privateCal">/ucal</xsl:variable>
@@ -180,7 +187,7 @@
   <xsl:template name="headBar">
     <div id="headBar">
       <div id="bedeworkLogo">
-        <a href="http://www.bedework.org/">
+        <a href="{$urlPrefix}">
           <img src="{$resourcesRoot}/images/soecal/soeBedeworkLogo.gif" width="296" height="69" border="0" alt="Bedework" align="right"/>
         </a>
       </div>
@@ -292,7 +299,7 @@
               <a href="javascript:window.print()" title="print this view">
                 <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
               </a>
-              <a class="rss" href="{$setSelection}&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
+              <a class="rss" href="{$setup}&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
             </td>
           </tr>
         </table>
@@ -559,6 +566,7 @@
       <tr>
         <td class="fieldname">When:</td>
         <td class="fieldval">
+          <!-- always display local time -->
           <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text>
           <xsl:if test="start/allday = 'false'">
             <span class="time"><xsl:value-of select="start/time"/></span>
@@ -579,6 +587,38 @@
               <span class="time"><xsl:value-of select="end/time"/></span>
             </xsl:when>
           </xsl:choose>
+          <xsl:if test="start/timezone/islocal = 'false'">
+            <xsl:text> </xsl:text>
+            --
+            <strong>Local time</strong>
+            <br/>
+          </xsl:if>
+          <!-- display in timezone if not local -->
+          <xsl:if test="start/timezone/islocal = 'false'">
+            <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/><xsl:text> </xsl:text>
+            <xsl:if test="start/allday = 'false'">
+              <span class="time"><xsl:value-of select="start/timezone/time"/></span>
+            </xsl:if>
+            <xsl:if test="(end/timezone/longdate != start/timezone/longdate) or
+                          ((end/timezone/longdate = start/timezone/longdate) and (end/timezone/time != start/timezone/time))"> - </xsl:if>
+            <xsl:if test="end/timezone/longdate != start/timezone/longdate">
+              <xsl:value-of select="substring(end/timezone/dayname,1,3)"/>, <xsl:value-of select="end/timezone/longdate"/><xsl:text> </xsl:text>
+            </xsl:if>
+            <xsl:choose>
+              <xsl:when test="start/allday = 'true'">
+                <span class="time"><em>(all day)</em></span>
+              </xsl:when>
+              <xsl:when test="end/timezone/longdate != start/timezone/longdate">
+                <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+              </xsl:when>
+              <xsl:when test="end/timezone/time != start/timezone/time">
+                <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+              </xsl:when>
+            </xsl:choose>
+            <xsl:text> </xsl:text>
+            --
+            <strong><xsl:value-of select="start/timezone/id"/></strong>
+          </xsl:if>
         </td>
         <th class="icalIcon" rowspan="2">
           <div id="eventIcons">
@@ -689,6 +729,18 @@
           </a>
         </td>
       </tr>
+      <xsl:if test="categories/category">
+        <tr>
+          <td class="fieldname">Categories:</td>
+          <td class="fieldval">
+            <!--<ul id="eventCategories">-->
+              <xsl:for-each select="categories/category">
+                <!--<li>--><xsl:value-of select="word"/><br/><!--</li>-->
+              </xsl:for-each>
+            <!--</ul>-->
+          </td>
+        </tr>
+      </xsl:if>
     </table>
   </xsl:template>
 
@@ -864,6 +916,9 @@
           <xsl:variable name="dayPos" select="position()"/>
           <xsl:if test="filler='false'">
             <td>
+              <xsl:if test="/bedework/now/date = date">
+                <xsl:attribute name="class">today</xsl:attribute>
+              </xsl:if>
               <xsl:variable name="dayDate" select="date"/>
               <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink">
                 <xsl:value-of select="value"/>
@@ -898,6 +953,9 @@
               </xsl:when>
               <xsl:otherwise>
                 <td>
+                  <xsl:if test="/bedework/now/date = date">
+                    <xsl:attribute name="class">today</xsl:attribute>
+                  </xsl:if>
                   <xsl:variable name="dayDate" select="date"/>
                   <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink">
                     <xsl:value-of select="value"/>
@@ -916,6 +974,7 @@
     </table>
   </xsl:template>
 
+  <!--== EVENTS IN THE CALENDAR GRID ==-->
   <xsl:template match="event" mode="calendarLayout">
     <xsl:param name="dayPos"/>
     <xsl:variable name="subscriptionId" select="subscription/id"/>
@@ -936,6 +995,17 @@
     <li>
       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass}">
         <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
+        <xsl:choose>
+          <xsl:when test="start/shortdate != ../shortdate">
+            (cont)
+          </xsl:when>
+          <xsl:when test="start/allday = 'false'">
+            <xsl:value-of select="start/time"/>:
+          </xsl:when>
+          <xsl:otherwise>
+            all day:
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:value-of select="summary"/>
         <xsl:variable name="eventTipClass">
           <xsl:choose>
@@ -1019,6 +1089,9 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <td>
+                    <xsl:if test="/bedework/now/date = date">
+                      <xsl:attribute name="class">today</xsl:attribute>
+                    </xsl:if>
                     <xsl:variable name="dayDate" select="date"/>
                     <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}">
                       <xsl:value-of select="value"/>

@@ -17,7 +17,7 @@
         <language>en-US</language>
         <copyright>Copyright <xsl:value-of select="substring(/bedework/currentdate,1,4)"/>, Your Institution Here</copyright>
         <managingEditor>editor@mysite.edu, Editor Name</managingEditor>
-        <xsl:apply-templates select="/bedework//event"/>
+        <xsl:apply-templates select="/bedework/eventscalendar//event"/>
       </channel>
     </rss>
   </xsl:template>

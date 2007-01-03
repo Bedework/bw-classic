@@ -251,6 +251,8 @@ body {
   border-bottom: 2px solid #aaa;
   border-left: 2px solid #333;
   border-right: 2px solid #333;
+  background-color: white;
+  color: black;
 }
 #eventTable td.fieldname {
   margin: 0em;
@@ -278,15 +280,15 @@ body {
   text-align: right;
   padding: 0.5em 1em 0.2em 0.5em;
   white-space: nowrap;
-	font-size: 0.9em;
-	font-weight: normal;
+  font-size: 0.9em;
+  font-weight: normal;
 }
 #eventTable th.icalIcon a {
   text-decoration: none;
 }
 #eventTable th.icalIcon img {
   vertical-align: middle;
-	padding-left: 1em;
+  padding-left: 1em;
 }
 #eventTable th.fieldname {
   text-align: left;
@@ -543,12 +545,21 @@ body {
   padding: 4px;
   border: 1px solid #333;
 }
-#monthCalendarTable a:hover span.eventTipStatus {
+#monthCalendarTable a:hover span.eventTipStatusCancelled {
   display: block;
   color: white;
   background-color: #333;
   padding: 2px;
   margin-bottom: 6px;
+  text-align: center;
+}
+#monthCalendarTable a:hover span.eventTipStatusTentative {
+  display: block;
+  color: black;
+  background: #eee url('../../images/tentativeLines.gif') top;
+  padding: 2px;
+  margin-bottom: 6px;
+  border: 1px solid #ccc;
   text-align: center;
 }
 a.gridAdd {
@@ -557,6 +568,14 @@ a.gridAdd {
   font-size: 0.8em;
   text-decoration: none;
   margin-right: 2px;
+}
+#monthCalendarTable td.today,
+#yearCalendarTable td.today {
+  background-color: #ffb;
+  color: black;
+}
+#yearCalendarTable td.today {
+  border: 1px solid #666;
 }
 #yearCalendarTable {
   width: 100%;
@@ -832,8 +851,8 @@ h2 {
   padding: 0.2em 0.2em 0.2em 0.5em;
   font-size: 1.3em;
   border-bottom: 1px solid #ccc;
-  border-left: 2px solid #aaa;
-  border-right: 2px solid #aaa;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
 }
 h2 a:link,
 h2 a:active,
