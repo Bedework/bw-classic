@@ -6,80 +6,139 @@
     <attribute name="message"/>
   </render-context>
   <portlet-url-type>
-    <render path="/initialise"/>
-    <render path="/showMain"/>
-    <render path="/showMsgErr"/>
-    <render path="/showPage"/>
-    <render path="/showEventMore"/>
-    <render path="/showAddEvent"/>
-    <render path="/showEditEvent"/>
+    <render path="/main/initialise"/>
+    <render path="/main/showMain"/>
+    <render path="/main/showMsgErr"/>
+    <render path="/main/showPage"/>
+
+    <render path="/event/showEventMore"/>
+    <render path="/event/showAddEvent"/>
+    <render path="/event/showEditEvent"/>
     <render path="/event/showCalsForEvent"/>
     <render path="/event/showAddEventRef"/>
-    <render path="/showExportData"/>
-    <render path="/initUpload"/>
-    <render path="/showManageLocations"/>
-    <render path="/showEditLocation"/>
+    <render path="/event/showAttendeesForEvent"/>
+    <render path="/event/showCalsForEvent"/>
+    <render path="/event/showAddEventRef"/>
+
+    <render path="/schedule/showInbox"/>
+    <render path="/schedule/showOutbox"/>
+    <render path="/schedule/showAttendeeRespond"/>
+    <render path="/schedule/showAttendeeReply"/>
+
+    <render path="/misc/showExportData"/>
+    <render path="/misc/initUpload"/>
+
+    <render path="/category/showReferenced"/>
+    <render path="/category/showModForm"/>
+    <render path="/category/showUpdateList"/>
+    <render path="/category/showDeleteConfirm"/>
+
+    <render path="/location/showModForm"/>
+    <render path="/location/showUpdateList"/>
+    <render path="/location/showDeleteConfirm"/>
+
     <render path="/freeBusy/showFreeBusy"/>
-    <render path="/showPublicCals"/>
-    <render path="/showCals"/>
+
+    <render path="/calendar/showPublicCals"/>
+    <render path="/calendar/showCals"/>
     <render path="/calendar/showCalendar"/>
+    <render path="/calendar/showAddForm"/>
     <render path="/calendar/showModForm"/>
     <render path="/calendar/showUpdateList"/>
     <render path="/calendar/showDeleteConfirm"/>
     <render path="/calendar/showReferenced"/>
+    <render path="/calendar/listForExport"/>
     <render path="/calendar/showDescriptionList"/>
+
     <render path="/subs/showSubs"/>
     <render path="/subs/showModForm"/>
     <render path="/subs/showAddByUriForm"/>
+
     <render path="/prefs/showModForm"/>
-    <render path="/showEmailOptions"/>
-    <render path="/showAlarmOptions"/>
-    <render path="/showStats"/>
+    <render path="/prefs/showSchedulingModForm"/>
+
+    <render path="/mail/showEmailOptions"/>
+
+    <render path="/alarm/showAlarmOptions"/>
+
+    <render path="/search/showResult"/>
+
+    <render path="/stats/showStats"/>
 
     <action path="/setup"/>
-    <action path="/setSelection"/>
-    <action path="/setViewPeriod"/>
-    <action path="/eventView"/>
-    <action path="/initEvent"/>
-    <action path="/addEventUsingPage"/>
-    <action path="/addEvent"/>
-    <action path="/editEvent"/>
+    <action path="/main/setSelection"/>
+    <action path="/main/setViewPeriod"/>
+    <action path="/event/eventView"/>
+    <action path="/event/initEvent"/>
+    <action path="/event/addEvent"/>
+    <action path="/event/editEvent"/>
+    <action path="/event/updateEvent"/>
     <action path="/event/setAccess"/>
     <action path="/event/selectCalForEvent"/>
-    <action path="/addEventRef"/>
+    <action path="/event/attendeesForEvent"/>
+    <action path="/event/categoriesForEvent"/>
+    <action path="/event/selectCalForEvent"/>
+    <action path="/event/addEventRef"/>
     <action path="/event/addEventRefComplete"/>
-    <action path="/delEvent"/>
-    <action path="/export"/>
-    <action path="/upload"/>
-    <action path="/manageLocations"/>
-    <action path="/addLocation"/>
-    <action path="/editLoc"/>
-    <action path="/delLocation"/>
+    <action path="/event/delEvent"/>
+
+    <action path="/schedule/initAttendeeRespond"/>
+    <action path="/schedule/attendeeRespond"/>
+    <action path="/schedule/initAttendeeReply"/>
+    <action path="/schedule/processAttendeeReply"/>
+
+    <action path="/misc/export"/>
+    <action path="/misc/upload"/>
+
+    <action path="/category/initAdd"/>
+    <action path="/category/initUpdate"/>
+    <action path="/category/delete"/>
+    <action path="/category/fetchForUpdate"/>
+    <action path="/category/update"/>
+
+    <action path="/location/initAdd"/>
+    <action path="/location/initUpdate"/>
+    <action path="/location/delete"/>
+    <action path="/location/fetchForUpdate"/>
+    <action path="/location/update"/>
+
     <action path="/freeBusy/getFreeBusy"/>
     <action path="/freeBusy/setAccess"/>
-    <action path="/fetchPublicCalendars"/>
-    <action path="/fetchCalendars"/>
+
+    <action path="/calendar/fetchPublicCalendars"/>
+    <action path="/calendar/fetchCalendars"/>
     <action path="/calendar/fetchForDisplay"/>
     <action path="/calendar/initAdd"/>
     <action path="/calendar/fetchForUpdate"/>
     <action path="/calendar/update"/>
     <action path="/calendar/setAccess"/>
     <action path="/calendar/delete"/>
+
     <action path="/subs/fetch"/>
-    <action path="/subs/initAdd"/>
     <action path="/subs/fetchForUpdate"/>
+    <action path="/subs/initAdd"/>
     <action path="/subs/subscribe"/>
     <action path="/subs/subscribeByUri"/>
     <action path="/subs/unsubscribe"/>
+
     <action path="/addView"/>
     <action path="/removeView"/>
+
     <action path="/prefs/fetchForUpdate"/>
     <action path="/prefs/update"/>
-    <action path="/initMailEvent"/>
-    <action path="/mailEvent"/>
-    <action path="/initEventAlarm"/>
-    <action path="/setAlarm"/>
-    <action path="/stats"/>
+    <action path="/prefs/fetchSchedulingForUpdate"/>
+    <action path="/prefs/setAccess"/>
+
+    <action path="/mail/initMailEvent"/>
+    <action path="/mail/mailEvent"/>
+
+    <action path="/alarm/initEventAlarm"/>
+    <action path="/alarm/setAlarm"/>
+
+    <action path="/search/search"/>
+    <action path="/search/next"/>
+
+    <action path="/stats/stats"/>
   </portlet-url-type>
 </config>
 
