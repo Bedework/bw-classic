@@ -6158,13 +6158,13 @@
                     </xsl:variable>
                     <xsl:choose>
                       <xsl:when test="invert">
-                        <a href="{$prefs-setAccess}&amp;how=default&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes" title="reset to default">
+                        <a href="{$prefs-setAccess}&amp;how=default&amp;what=in&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes" title="reset to default">
 
                           <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
                         </a>
                       </xsl:when>
                       <xsl:otherwise>
-                        <a href="{$prefs-setAccess}&amp;how=default&amp;who={$shortWho}&amp;whoType={$whoType}" title="reset to default">
+                        <a href="{$prefs-setAccess}&amp;how=default&amp;what=in&amp;who={$shortWho}&amp;whoType={$whoType}" title="reset to default">
 
                           <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
                         </a>
@@ -6275,12 +6275,12 @@
                     </xsl:variable>
                     <xsl:choose>
                       <xsl:when test="invert">
-                        <a href="{$prefs-setAccess}&amp;how=default&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes" title="reset to default">
+                        <a href="{$prefs-setAccess}&amp;how=default&amp;what=out&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes" title="reset to default">
                           <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
                         </a>
                       </xsl:when>
                       <xsl:otherwise>
-                        <a href="{$prefs-setAccess}&amp;how=default&amp;who={$shortWho}&amp;whoType={$whoType}" title="reset to default">
+                        <a href="{$prefs-setAccess}&amp;how=default&amp;what=out&amp;who={$shortWho}&amp;whoType={$whoType}" title="reset to default">
                           <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
                         </a>
                       </xsl:otherwise>
