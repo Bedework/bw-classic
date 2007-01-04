@@ -245,7 +245,6 @@
                       <xsl:apply-templates select="/bedework/calendars" mode="exportCalendars"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='freeBusy'">
-                      <xsl:call-template name="utilBar"/>
                       <xsl:apply-templates select="/bedework/freebusy"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='modPrefs'">
@@ -1737,8 +1736,8 @@
     <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setRecurrence(this)">
       <h2>
         <span class="formButtons">
-          <input name="submit" type="submit" value="Submit Event"/>&#160;
-          <input name="cancelled" type="submit" value="Cancel"/>
+          <input name="submit" type="submit" value="save event"/>&#160;
+          <input name="cancelled" type="submit" value="cancel"/>
         </span>
         Add Event
       </h2>
@@ -1763,9 +1762,9 @@
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setRecurrence(this)">
       <h2>
         <span class="formButtons">
-          <input name="submit" type="submit" value="Submit Event"/>&#160;
-          <input name="cancelled" type="submit" value="Cancel"/>
-          <input type="button" value="return to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
+          <input name="submit" type="submit" value="save event"/>&#160;
+          <input name="cancelled" type="submit" value="cancel"/>
+          <input type="button" value="go to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
         </span>
         Edit Event
       </h2>
@@ -2726,10 +2725,10 @@
       </tr>
       <tr>
         <td class="submit" colspan="2">
-          <input name="submit" type="submit" value="Submit Event"/>&#160;
-          <input name="cancelled" type="submit" value="Cancel"/>
+          <input name="submit" type="submit" value="save event"/>&#160;
+          <input name="cancelled" type="submit" value="cancel"/>
           <xsl:if test="/bedework/creating != 'true'">
-            <input type="button" value="return to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
+            <input type="button" value="go to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
           </xsl:if>
         </td>
       </tr>
@@ -3062,7 +3061,7 @@
         <tr>
           <td>
             <input name="submit" type="submit" value="Continue"/>
-            <input name="cancelled" type="submit" value="Cancel"/>
+            <input name="cancelled" type="submit" value="cancel"/>
           </td>
         </tr>
       </table>
@@ -3275,7 +3274,7 @@
             <tr>
               <td>
                 <input type="submit" name="addCategory" value="Add Category"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="submit" name="cancelled" value="cancel"/>
                 <input type="reset" value="Clear"/>
               </td>
             </tr>
@@ -3314,7 +3313,7 @@
             <tr>
               <td>
                 <input type="submit" name="updateCategory" value="Update Category"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="submit" name="cancelled" value="cancel"/>
                 <input type="reset" value="Reset"/>
               </td>
               <td align="right">
@@ -3561,10 +3560,10 @@
     <ul class="calendarTree">
       <xsl:choose>
         <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
-          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType &lt; 2]" mode="selectCalForEventCalTree"/>
+          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="selectCalForEventCalTree"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content and calType &lt; 2]" mode="selectCalForEventCalTree"/>
+          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
         </xsl:otherwise>
       </xsl:choose>
     </ul>
@@ -3573,10 +3572,10 @@
       <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
       <xsl:choose>
         <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
-          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[calType &lt; 2]" mode="selectCalForEventCalTree"/>
+          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar" mode="selectCalForEventCalTree"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content and calType &lt; 2]" mode="selectCalForEventCalTree"/>
+          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
         </xsl:otherwise>
       </xsl:choose>
     </ul>
@@ -3618,7 +3617,7 @@
       </xsl:choose>
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar" mode="selectCalForEventCalTree"/>
+          <xsl:apply-templates select="calendar[calType &lt; 2]" mode="selectCalForEventCalTree"/>
         </ul>
       </xsl:if>
     </li>
@@ -3663,7 +3662,7 @@
         <tr>
           <td>
             <input type="submit" name="addCalendar" value="Add Calendar/Folder"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="submit" name="cancelled" value="cancel"/>
             <input type="reset" value="Clear"/>
           </td>
         </tr>
@@ -3750,7 +3749,7 @@
                 <input type="submit" name="updateCalendar" value="Update Folder"/>
               </xsl:otherwise>
             </xsl:choose>
-            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="submit" name="cancelled" value="cancel"/>
             <input type="reset" value="Reset"/>
           </td>
           <td align="right">
@@ -3910,7 +3909,7 @@
       <table border="0" id="submitTable">
         <tr>
           <td>
-            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="submit" name="cancelled" value="cancel"/>
           </td>
           <td align="right">
             <xsl:choose>
@@ -4214,7 +4213,7 @@
         <tr>
           <td>
             <input type="submit" name="addSubscription" value="Add Subscription"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="submit" name="cancelled" value="cancel"/>
             <input type="reset" value="Clear"/>
           </td>
         </tr>
@@ -4284,7 +4283,7 @@
         <tr>
           <td>
             <input type="submit" name="addSubscription" value="Add Subscription"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="submit" name="cancelled" value="cancel"/>
             <input type="reset" value="Clear"/>
           </td>
         </tr>
@@ -4397,7 +4396,7 @@
         <tr>
           <td>
             <input type="submit" name="updateSubscription" value="Update Subscription"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="submit" name="cancelled" value="cancel"/>
             <input type="reset" value="Reset"/>
           </td>
           <td align="right">
@@ -4565,7 +4564,7 @@
           <td>&#160;</td>
           <td>
             <input name="submit" type="submit" value="Continue"/>&#160;
-            <input name="cancelled" type="submit" value="Cancel"/>
+            <input name="cancelled" type="submit" value="cancel"/>
           </td>
         </tr>
       </table>
@@ -4625,7 +4624,7 @@
         <tr>
           <td>
             <input name="submit" type="submit" value="Continue"/>
-            <input name="cancelled" type="submit" value="Cancel"/>
+            <input name="cancelled" type="submit" value="cancel"/>
           </td>
         </tr>
       </table>
@@ -4660,7 +4659,7 @@
           <td>&#160;</td>
           <td>
             <input name="submit" type="submit" value="Continue"/>&#160;
-            <input name="cancelled" type="submit" value="Cancel"/>
+            <input name="cancelled" type="submit" value="cancel"/>
           </td>
         </tr>
       </table>
@@ -4731,7 +4730,7 @@
             <tr>
               <td>
                 <input name="submit" type="submit" value="Submit Location"/>
-                <input name="cancelled" type="submit" value="Cancel"/>
+                <input name="cancelled" type="submit" value="cancel"/>
               </td>
             </tr>
           </table>
@@ -4779,7 +4778,7 @@
             <tr>
               <td>
                 <input name="submit" type="submit" value="Submit Location"/>
-                <input name="cancelled" type="submit" value="Cancel"/>
+                <input name="cancelled" type="submit" value="cancel"/>
                 <input type="reset" value="Reset"/>
               </td>
               <td align="right">
@@ -4961,7 +4960,7 @@
           <td class="fieldname">&#160;</td>
           <td class="fieldval scheduleActions">
             <input name="submit" type="submit" value="Submit"/>&#160;
-            <input name="cancelled" type="submit" value="Cancel"/>
+            <input name="cancelled" type="submit" value="cancel"/>
           </td>
         </tr>
         <tr>
@@ -5388,7 +5387,7 @@
         <td class="fieldval scheduleActions">
           <form name="processReply" action="{$schedule-processAttendeeReply}">
             <input type="submit" value="Accept" name="update"/>
-            <input type="submit" value="Cancel" name="cancelled"/>
+            <input type="submit" value="cancel" name="cancelled"/>
           </form>
         </td>
       </tr>
@@ -5536,7 +5535,7 @@
         <tr>
           <td>
             <input name="submit" type="submit" value="Continue"/>
-            <input name="cancelled" type="submit" value="Cancel"/>
+            <input name="cancelled" type="submit" value="cancel"/>
           </td>
         </tr>
       </table>
@@ -5860,7 +5859,7 @@
 
       <input type="submit" name="modPrefs" value="Update"/>
       <input type="reset" value="Reset"/>
-      <input type="submit" name="cancelled" value="Cancel"/>
+      <input type="submit" name="cancelled" value="cancel"/>
     </form>
   </xsl:template>
 
@@ -5962,7 +5961,7 @@
 
     <input type="submit" name="modPrefs" value="Update"/>
     <input type="reset" value="Reset"/>
-    <input type="submit" name="cancelled" value="Cancel"/>
+    <input type="submit" name="cancelled" value="cancel"/>
   </xsl:template>
 
   <xsl:template name="entityAccessForm">
