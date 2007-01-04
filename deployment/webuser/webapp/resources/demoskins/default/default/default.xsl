@@ -1744,6 +1744,11 @@
       </h2>
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
+
+    <div id="sharingBox">
+      <h3>Current Access:</h3>
+      Sharing may be added once an event is created
+    </div>
   </xsl:template>
 
   <!--==== EDIT EVENT ====-->
@@ -1764,108 +1769,21 @@
         </span>
         Edit Event
       </h2>
-
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
 
     <div id="sharingBox">
-      <h3>Sharing</h3>
-      <table class="common">
-        <tr>
-          <th class="commonHeader" colspan="2">Current access:</th>
-        </tr>
-        <xsl:for-each select="acl/ace">
-          <tr>
-            <th class="thin">
-              <xsl:choose>
-                <xsl:when test="invert">
-                  <em>Deny to
-                  <xsl:choose>
-                    <xsl:when test="invert/principal/href">
-                      <xsl:value-of select="invert/principal/href"/>
-                    </xsl:when>
-                    <xsl:when test="invert/principal/property">
-                      <xsl:value-of select="name(invert/principal/property/*)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="name(invert/principal/*)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                  </em>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="principal/href">
-                      <xsl:value-of select="principal/href"/>
-                    </xsl:when>
-                    <xsl:when test="principal/property">
-                      <xsl:value-of select="name(principal/property/*)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="name(principal/*)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </th>
-            <td>
-              <xsl:for-each select="grant/node()">
-                <xsl:value-of select="name(.)"/>&#160;&#160;
-              </xsl:for-each>
-            </td>
-          </tr>
-        </xsl:for-each>
-      </table>
+      <xsl:apply-templates select="/bedework/access/acl" mode="currentAccess">
+        <xsl:with-param name="action" select="$event-setAccess"/>
+        <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
+        <xsl:with-param name="guid" select="$guid"/>
+        <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
+      </xsl:apply-templates>
       <form name="eventShareForm" action="{$event-setAccess}" id="shareForm">
         <input type="hidden" name="calPath" value="{$calPath}"/>
         <input type="hidden" name="guid" value="{$guid}"/>
         <input type="hidden" name="recurid" value="{$recurrenceId}"/>
-        <table cellpadding="0" id="shareFormTable" class="common">
-          <tr>
-            <th colspan="2" class="commonHeader">Add:</th>
-          </tr>
-          <tr>
-            <td>
-              <h5 class="margOk">Who:</h5>
-              <input type="text" name="who" size="20"/><br/>
-              <input type="radio" value="user" name="whoType" checked="checked"/> user
-              <input type="radio" value="group" name="whoType"/> group
-              <p>OR</p>
-              <p>
-                <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
-                <input type="radio" value="other" name="whoType"/> other users
-              </p>
-            </td>
-            <td>
-              <h5 class="margOk">Rights:</h5>
-              <ul id="howList">
-                <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
-                <li class="padTop">
-                  <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
-                </li>
-                <li>
-                  <input type="radio" value="f" name="how"/> Read freebusy only
-                </li>
-                <li class="padTop">
-                  <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
-                </li>
-                <li>
-                  <input type="radio" value="c" name="how"/> Write content only
-                </li>
-                <li>
-                 <input type="radio" value="u" name="how"/> Delete only
-                </li>
-                <li class="padTop">
-                  <input type="radio" value="Rc" name="how"/> <strong>Read</strong> and <strong>Write content only</strong>
-                </li>
-                <li class="padTop">
-                  <input type="radio" value="N" name="how"/> <strong>None</strong>
-                </li>
-              </ul>
-            </td>
-          </tr>
-        </table>
-        <input type="submit" name="submit" value="Submit"/>
+        <xsl:call-template name="entityAccessForm"/>
       </form>
     </div>
   </xsl:template>
@@ -2325,7 +2243,7 @@
               <!-- has recurrenceId, so is master -->
                 <input type="checkbox" name="recurrenceFlag" onclick="swapRecurrence(this)" value="on"/>
                 <xsl:choose>
-                  <xsl:when test="/bedeworkadmin/creating = 'true'">
+                  <xsl:when test="/bedework/creating = 'true'">
                     set recurrence rules
                   </xsl:when>
                   <xsl:otherwise>
@@ -2650,8 +2568,11 @@
                     </tr>
                   </table>
                 </div>
+
                 <!-- recurrence dates (rdates) -->
-                <input type="button" value="add/remove recurrence dates" action="" class="small"/>
+                <div id="recurrenceDatesButton">
+                  <input type="button" value="add/remove recurrence dates" action="" class="small"/>
+                </div>
               </xsl:otherwise>
             </xsl:choose>
         </td>
@@ -2773,7 +2694,7 @@
         <td class="fieldval" align="left">
           <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
           <xsl:choose>
-            <xsl:when test="catCount = 0">
+            <xsl:when test="not(form/categories/all/category)">
               no categories defined
             </xsl:when>
             <xsl:otherwise>
@@ -2804,8 +2725,7 @@
         </td>
       </tr>
       <tr>
-        <td class="fieldname">&#160;</td>
-        <td class="fieldval">
+        <td class="submit" colspan="2">
           <input name="submit" type="submit" value="Submit Event"/>&#160;
           <input name="cancelled" type="submit" value="Cancel"/>
           <xsl:if test="/bedework/creating != 'true'">
@@ -3751,13 +3671,15 @@
     </form>
 
     <div id="sharingBox">
-      <h3>Sharing</h3>
+      <h3>Current Access:</h3>
       Sharing may be added to a calendar once created.
     </div>
 
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="modCalendar">
+    <xsl:variable name="calPath" select="path"/>
+    <xsl:variable name="calPathEncoded" select="encodedPath"/>
     <xsl:choose>
       <xsl:when test="calendarCollection='true'">
         <h3>Modify Calendar</h3>
@@ -3766,7 +3688,6 @@
         <h3>Modify Folder</h3>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:variable name="calPath" select="path"/>
     <form name="modCalForm" action="{$calendar-update}">
       <table class="common">
         <tr>
@@ -3846,115 +3767,13 @@
       </table>
     </form>
     <div id="sharingBox">
-      <h3>Sharing</h3>
-      <table class="common">
-        <tr>
-          <th class="commonHeader" colspan="2">Current access:</th>
-        </tr>
-
-        <xsl:for-each select="acl/ace">
-          <tr>
-            <th class="thin">
-              <xsl:choose>
-                <xsl:when test="invert">
-                  <em>Deny to
-                  <xsl:choose>
-                    <xsl:when test="invert/principal/href">
-                      <xsl:value-of select="invert/principal/href"/>
-                    </xsl:when>
-                    <xsl:when test="invert/principal/property">
-                      <xsl:value-of select="name(invert/principal/property/*)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="name(invert/principal/*)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                  </em>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="principal/href">
-                      <xsl:value-of select="principal/href"/>
-                    </xsl:when>
-                    <xsl:when test="principal/property">
-                      <xsl:value-of select="name(principal/property/*)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="name(principal/*)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </th>
-            <td>
-              <xsl:for-each select="grant/node()">
-                <xsl:value-of select="name(.)"/>&#160;&#160;
-              </xsl:for-each>
-            </td>
-          </tr>
-        </xsl:for-each>
-      </table>
+      <xsl:apply-templates select="acl" mode="currentAccess">
+        <xsl:with-param name="action" select="$calendar-setAccess"/>
+        <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
+      </xsl:apply-templates>
       <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm">
         <input type="hidden" name="calPath" value="{$calPath}"/>
-        <table cellpadding="0" id="shareFormTable" class="common">
-          <tr>
-            <th colspan="2" class="commonHeader">Add:</th>
-          </tr>
-          <tr>
-            <td>
-              <h5>Who:</h5>
-              <input type="text" name="who" size="20"/><br/>
-              <input type="radio" value="user" name="whoType" checked="checked"/> user
-              <input type="radio" value="group" name="whoType"/> group
-              <p>OR</p>
-              <p>
-                <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
-                <input type="radio" value="other" name="whoType"/> other users
-              </p>
-            </td>
-            <td>
-              <h5>Rights:</h5>
-              <ul id="howList">
-                <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
-                <li class="padTop">
-                  <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
-                </li>
-                <li>
-                  <input type="radio" value="f" name="how"/> Read freebusy only
-                </li>
-                <li class="padTop">
-                  <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
-                </li>
-                <li>
-                  <input type="radio" value="c" name="how"/> Write content only
-                </li>
-                <li>
-                 <input type="radio" value="u" name="how"/> Delete only
-                </li>
-                <li class="padTop">
-                  <input type="radio" value="Rc" name="how"/> <strong>Read</strong> and <strong>Write content only</strong>
-                </li>
-                <li class="padTop">
-                  <input type="radio" value="N" name="how"/> <strong>None</strong>
-                </li>
-              </ul>
-            </td>
-          </tr>
-        </table>
-        <!--<p>
-          Share with:<br/>
-          <input type="text" name="who" size="20"/>
-          <input type="radio" value="user" name="whoType" checked="checked"/> user
-          <input type="radio" value="group" name="whoType"/> group
-        </p>
-        <p>
-          Access rights:<br/>
-          <input type="radio" value="R" name="how" checked="checked"/> read<br/>
-          <input type="radio" value="Rc" name="how"/> read/write content<br/>
-          <input type="radio" value="f" name="how"/> read free/busy only<br/>
-          <input type="radio" value="d" name="how"/> default (reset access)
-        </p>-->
-        <input type="submit" name="submit" value="Submit"/>
+        <xsl:call-template name="entityAccessForm"/>
       </form>
     </div>
   </xsl:template>
@@ -6060,191 +5879,24 @@
         <tr>
           <td class="leftBorder padMe">
             <form name="prefsSetAccess1" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
-              <input type="hidden" name="what" value="in"/>
-              <p>
-                <input type="text" name="who" width="40"/>
-                <span class="nowrap"><input type="radio" name="whoType" value="user" checked="checked"/>user</span>
-                <span class="nowrap"><input type="radio" name="whoType" value="group"/>group</span>
-              </p>
-              <p>
-                <strong>or</strong>
-                <span class="nowrap"><input type="radio" name="whoType" value="owner"/>owner</span>
-                <span class="nowrap"><input type="radio" name="whoType" value="auth"/>authenticated users</span>
-                <span class="nowrap"><input type="radio" name="whoType" value="other"/>anyone</span>
-              </p>
-
-              <p><strong>may send the following to me:</strong></p>
-
-              <input type="hidden" name="how" value="S"/>
-              <dl>
-                <dt>
-                  <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="toggleScheduleHow(this.form,this)"/>all scheduling
-                </dt>
-                <dd>
-                  <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>scheduling requests<br/>
-                  <input type="checkbox" name="howSetter" value="y" checked="checked" disabled="disabled"/>scheduling replies<br/>
-                  <input type="checkbox" name="howSetter" value="s" checked="checked" disabled="disabled"/>free-busy requests
-                </dd>
-              </dl>
-
-              <input type="submit" name="modPrefs" value="Update"/>
-              <input type="reset" value="Reset"/>
-              <input type="submit" name="cancelled" value="Cancel"/>
+              <xsl:call-template name="schedulingAccessForm"/>
             </form>
-            <h3>Current Access:</h3>
-            <table class="common scheduling">
-              <tr>
-                <th>Entry</th>
-                <th>Access</th>
-                <th>Inherited from</th>
-                <td></td>
-              </tr>
-              <xsl:apply-templates select="inbox/acl/ace" mode="scheduling">
-                <xsl:with-param name="what">in</xsl:with-param>
-              </xsl:apply-templates>
-            </table>
+            <xsl:apply-templates select="inbox/acl" mode="currentAccess">
+              <xsl:with-param name="action" select="$prefs-setAccess"/>
+              <xsl:with-param name="what">in</xsl:with-param>
+            </xsl:apply-templates>
           </td>
           <td class="leftBorder padMe">
             <form name="prefsSetAccess2" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
-              <input type="hidden" name="what" value="out"/>
-              <p>
-                <input type="text" name="who" width="40"/>
-                <span class="nowrap"><input type="radio" name="whoType" value="user" checked="checked"/>user</span>
-                <span class="nowrap"><input type="radio" name="whoType" value="group"/>group</span>
-              </p>
-              <p>
-                <strong>or</strong>
-                <span class="nowrap"><input type="radio" name="whoType" value="owner"/>owner</span>
-                <span class="nowrap"><input type="radio" name="whoType" value="auth"/>authenticated users</span>
-                <span class="nowrap"><input type="radio" name="whoType" value="other"/>anyone</span>
-              </p>
-
-              <p><strong>may send the following on my behalf:</strong></p>
-
-              <input type="hidden" name="how" value="S"/>
-              <dl>
-                <dt>
-                  <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="toggleScheduleHow(this.form,this)"/>all scheduling
-                </dt>
-                <dd>
-                  <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>scheduling requests<br/>
-                  <input type="checkbox" name="howSetter" value="y" checked="checked" disabled="disabled"/>scheduling replies<br/>
-                  <input type="checkbox" name="howSetter" value="s" checked="checked" disabled="disabled"/>free-busy requests
-                </dd>
-              </dl>
-
-              <input type="submit" name="modPrefs" value="Update"/>
-              <input type="reset" value="Reset"/>
-              <input type="submit" name="cancelled" value="Cancel"/>
+              <xsl:call-template name="schedulingAccessForm"/>
             </form>
-            <h3>Current Access:</h3>
-            <table class="common scheduling">
-              <tr>
-                <th>Entry</th>
-                <th>Access</th>
-                <th>Inherited from</th>
-                <td></td>
-              </tr>
-              <xsl:apply-templates select="outbox/acl/ace" mode="scheduling">
-                <xsl:with-param name="what">out</xsl:with-param>
-              </xsl:apply-templates>
-            </table>
+            <xsl:apply-templates select="outbox/acl" mode="currentAccess">
+              <xsl:with-param name="action" select="$prefs-setAccess"/>
+              <xsl:with-param name="what">out</xsl:with-param>
+            </xsl:apply-templates>
           </td>
         </tr>
       </table>
-  </xsl:template>
-
-  <xsl:template match="ace" mode="scheduling">
-    <xsl:param name="what"/>
-    <xsl:variable name="who">
-      <xsl:choose>
-        <xsl:when test="invert">
-          <xsl:choose>
-            <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
-            <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
-          </xsl:choose>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:choose>
-            <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
-            <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
-          </xsl:choose>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="whoType">
-      <xsl:choose>
-        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
-        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
-        <xsl:when test="$who='authenticated'">auth</xsl:when>
-        <xsl:when test="invert/principal/property/owner">other</xsl:when>
-        <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-        <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-        <xsl:otherwise></xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="shortWho">
-      <xsl:choose>
-        <xsl:when test="$whoType='user'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
-        <xsl:when test="$whoType='group'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-        <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
-      </xsl:choose>
-    </xsl:variable>
-    <tr>
-      <td>
-        <xsl:choose>
-          <xsl:when test="$whoType = 'user' or ($who = 'owner' and $whoType != 'other')">
-            <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
-          </xsl:otherwise>
-        </xsl:choose>
-        <xsl:text> </xsl:text>
-        <xsl:choose>
-          <xsl:when test="$whoType = 'other'">
-            anyone (other)
-          </xsl:when>
-          <xsl:when test="$shortWho != ''">
-            <xsl:value-of select="$shortWho"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$who"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </td>
-      <td>
-        <xsl:value-of select="name(grant/*)"/>
-      </td>
-      <td>
-        <xsl:choose>
-          <xsl:when test="inherited">
-            <xsl:value-of select="inherited/href"/>
-          </xsl:when>
-          <xsl:otherwise>
-            local
-          </xsl:otherwise>
-        </xsl:choose>
-      </td>
-      <td>
-        <xsl:if test="not(inherited)">
-          <xsl:choose>
-            <xsl:when test="invert">
-              <a href="{$prefs-setAccess}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes" title="reset to default">
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
-              </a>
-            </xsl:when>
-            <xsl:otherwise>
-              <a href="{$prefs-setAccess}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}" title="reset to default">
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
-              </a>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:if>
-      </td>
-    </tr>
   </xsl:template>
 
   <!-- construct the workDay times options listings from minute 0 to less than
@@ -6275,6 +5927,192 @@
         <xsl:with-param name="currentTime" select="$currentTime + $increment"/>
       </xsl:call-template>
     </xsl:if>
+  </xsl:template>
+
+
+  <!--==== ACCESS CONTROL TEMPLATES ====-->
+
+  <xsl:template name="schedulingAccessForm">
+    <input type="hidden" name="what" value="out"/>
+    <p>
+      <input type="text" name="who" width="40"/>
+      <span class="nowrap"><input type="radio" name="whoType" value="user" checked="checked"/>user</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="group"/>group</span>
+    </p>
+    <p>
+      <strong>or</strong>
+      <span class="nowrap"><input type="radio" name="whoType" value="owner"/>owner</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="auth"/>authenticated users</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="other"/>anyone</span>
+    </p>
+
+    <p><strong>may send the following on my behalf:</strong></p>
+
+    <input type="hidden" name="how" value="S"/>
+    <dl>
+      <dt>
+        <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="toggleScheduleHow(this.form,this)"/>all scheduling
+      </dt>
+      <dd>
+        <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>scheduling requests<br/>
+        <input type="checkbox" name="howSetter" value="y" checked="checked" disabled="disabled"/>scheduling replies<br/>
+        <input type="checkbox" name="howSetter" value="s" checked="checked" disabled="disabled"/>free-busy requests
+      </dd>
+    </dl>
+
+    <input type="submit" name="modPrefs" value="Update"/>
+    <input type="reset" value="Reset"/>
+    <input type="submit" name="cancelled" value="Cancel"/>
+  </xsl:template>
+
+  <xsl:template name="entityAccessForm">
+    <table cellpadding="0" id="shareFormTable" class="common">
+      <tr>
+        <th colspan="2" class="commonHeader">Add:</th>
+      </tr>
+      <tr>
+        <td>
+          <h5>Who:</h5>
+          <div class="whoTypes">
+            <input type="text" name="who" size="20"/><br/>
+            <input type="radio" value="user" name="whoType" checked="checked"/> user
+            <input type="radio" value="group" name="whoType"/> group
+            <p>OR</p>
+            <p>
+              <input type="radio" value="auth" name="whoType"/> authenticated<br/>
+              <input type="radio" value="other" name="whoType"/> other users
+            </p>
+          </div>
+        </td>
+        <td>
+          <h5>Rights:</h5>
+          <ul id="howList">
+            <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
+            <li class="padTop">
+              <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
+            </li>
+            <li>
+              <input type="radio" value="f" name="how"/> Read freebusy only
+            </li>
+            <li class="padTop">
+              <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
+            </li>
+            <li>
+              <input type="radio" value="c" name="how"/> Write content only
+            </li>
+            <li>
+             <input type="radio" value="u" name="how"/> Delete only
+            </li>
+            <li class="padTop">
+              <input type="radio" value="Rc" name="how"/> <strong>Read</strong> and <strong>Write content only</strong>
+            </li>
+            <li class="padTop">
+              <input type="radio" value="N" name="how"/> <strong>None</strong>
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+    <input type="submit" name="submit" value="Submit"/>
+  </xsl:template>
+
+  <xsl:template match="acl" mode="currentAccess">
+    <xsl:param name="action"/> <!-- required -->
+    <xsl:param name="calPathEncoded"/> <!-- optional (for entities) -->
+    <xsl:param name="guid"/> <!-- optional (for entities) -->
+    <xsl:param name="recurrenceId"/> <!-- optional (for entities) -->
+    <xsl:param name="what"/> <!-- optional (for scheduling only) -->
+    <h3>Current Access:</h3>
+      <table class="common scheduling">
+        <tr>
+          <th>Entry</th>
+          <th>Access</th>
+          <th>Inherited from</th>
+          <td></td>
+        </tr>
+        <xsl:for-each select="ace">
+        <xsl:variable name="who">
+          <xsl:choose>
+            <xsl:when test="invert">
+              <xsl:choose>
+                <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
+                <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:choose>
+                <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
+                <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="whoType">
+          <xsl:choose>
+            <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
+            <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
+            <xsl:when test="$who='authenticated'">auth</xsl:when>
+            <xsl:when test="invert/principal/property/owner">other</xsl:when>
+            <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+            <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+            <xsl:otherwise></xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="shortWho">
+          <xsl:choose>
+            <xsl:when test="$whoType='user'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
+            <xsl:when test="$whoType='group'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
+            <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
+          </xsl:choose>
+        </xsl:variable>
+        <tr>
+          <td>
+            <xsl:choose>
+              <xsl:when test="$whoType = 'user' or ($who = 'owner' and $whoType != 'other')">
+                <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:text> </xsl:text>
+            <xsl:choose>
+              <xsl:when test="$whoType = 'other'">
+                anyone (other)
+              </xsl:when>
+              <xsl:when test="$shortWho != ''">
+                <xsl:value-of select="$shortWho"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="$who"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+          <td>
+            <xsl:value-of select="name(grant/*)"/>
+          </td>
+          <td>
+            <xsl:choose>
+              <xsl:when test="inherited">
+                <xsl:value-of select="inherited/href"/>
+              </xsl:when>
+              <xsl:otherwise>
+                local
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+          <td>
+            <xsl:if test="not(inherited)">
+              <a href="{$action}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="reset to default">
+                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
+              </a>
+            </xsl:if>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
   </xsl:template>
 
   <!--==== SEARCH RESULT ====-->

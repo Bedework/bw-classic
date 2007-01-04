@@ -564,6 +564,13 @@ table.common td.fieldname {
   background-color: #eee;
   white-space: nowrap;
 }
+table.common td.submit {
+  padding: 0.5em 0.5em 0.2em 0.5em;
+  color: black;
+  background: #f5f5f5;
+  text-align: right;
+  border-top: 1px solid #ccc;
+}
 table.common td.eventLinks {
   background-color: #ddd;
   color: #eee;
@@ -716,6 +723,9 @@ table#manage td {
   margin: 0.5em 0 0.5em 2em;
   display: block;
   clear: both;
+}
+#recurrenceDatesButton {
+  margin-top: 0.5em;
 }
 .shown {
   display: inline;
@@ -1244,7 +1254,6 @@ a.calendarAdd img {
 #subsTable td.cals {
   border-right: 1px solid #aaa;
   font-size: 0.9em;
-  width: 200px;
 }
 #calendarTable td.cals {
   width: 300px;
@@ -1296,7 +1305,7 @@ img.subStyle {
 }
 #submitTable {
   width: 98%; /* less than 100% helps avoid IE weirdness */
-  margin-top: 1em;
+  margin: 1em 0;
 }
 .note {
   margin: 0;
@@ -1388,46 +1397,46 @@ img.subStyle {
   text-decoration: none;
 }
 #sharingBox {
-  margin: 2em 0;
+  margin: 0;
   border-top: 1px solid #333;
+  padding: 1em 1em 2em 1em;
 }
-#sharingBox h3 {
-  padding: 1em 0 0.5em 0.5em;
-}
+#sharingBox h3,
 #sharingBox h5 {
-  padding: 1em 0 0.5em 0;
+  padding: 0 0 0.5em 0;
 }
 #sharingBox ul {
   font-size: 0.8em;
   margin: 0 1em;
 }
+#sharingBox p {
+  font-size: 0.9em;
+}
 #shareForm {
   margin: 1em 0;
   padding: 0;
 }
-#shareFormTable {
-  width: 96%; /* less than 100% helps avoid IE weirdness */
-}
 #shareFormTable td {
   border: 1px solid #666;
-  padding-bottom: 0.5em;
+  padding: 0 0 0.5em 0;
 }
 #shareFormTable h5 {
   background: #e5e5e5;
   color: black;
-  margin: 0 -0.5em;
-  padding: 4px;
-}#shareFormTable h5.margOk {
   margin: 0;
+  padding: 4px;
+}
+#shareFormTable .whoTypes {
+  margin: 1em;
 }
 #howList {
   margin: 0;
-  padding: 0 0 1em 0;
+  padding: 1em 0;
 }
-#howList ul {
+/*#howList ul {
   margin: 0 0 0 2em;
   padding: 0 0 0.5em 0;
-}
+}*/
 #howList li {
   list-style-type: none;
   margin-left: 0;
