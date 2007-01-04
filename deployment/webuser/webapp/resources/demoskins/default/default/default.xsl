@@ -6092,87 +6092,16 @@
               <input type="submit" name="cancelled" value="Cancel"/>
             </form>
             <h3>Current Access:</h3>
-            <table class="common">
+            <table class="common scheduling">
               <tr>
                 <th>Entry</th>
                 <th>Access</th>
+                <th>Inherited from</th>
                 <td></td>
               </tr>
-              <xsl:for-each select="inbox/acl/ace">
-                <tr>
-                  <td>
-                    <xsl:choose>
-                      <xsl:when test="principal/href">
-                        <xsl:value-of select="principal/href"/>
-                      </xsl:when>
-                      <xsl:when test="principal/property">
-                        <xsl:value-of select="name(principal/property/*)"/>
-                      </xsl:when>
-                      <xsl:when test="invert/principal/property/owner">
-                        anyone (other)
-                      </xsl:when>
-                      <xsl:otherwise>
-                         <xsl:value-of select="name(principal/*)"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </td>
-                  <td>
-                    <xsl:value-of select="name(grant/*)"/>
-                  </td>
-                  <td>
-                    <xsl:variable name="who">
-                      <xsl:choose>
-                        <xsl:when test="invert">
-                          <xsl:choose>
-                            <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
-                            <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-                            <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
-                          </xsl:choose>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:choose>
-                            <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
-                            <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-                            <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
-                          </xsl:choose>
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:variable name="whoType">
-                      <xsl:choose>
-                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
-                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
-                        <xsl:when test="$who='authenticated'">auth</xsl:when>
-                        <xsl:when test="invert/principal/property/owner">other</xsl:when>
-                        <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-                        <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:variable name="shortWho">
-                      <xsl:choose>
-                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:choose>
-                      <xsl:when test="invert">
-                        <a href="{$prefs-setAccess}&amp;how=default&amp;what=in&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes" title="reset to default">
-
-                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
-                        </a>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <a href="{$prefs-setAccess}&amp;how=default&amp;what=in&amp;who={$shortWho}&amp;whoType={$whoType}" title="reset to default">
-
-                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
-                        </a>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </td>
-                </tr>
-              </xsl:for-each>
+              <xsl:apply-templates select="inbox/acl/ace" mode="scheduling">
+                <xsl:with-param name="what">in</xsl:with-param>
+              </xsl:apply-templates>
             </table>
           </td>
           <td class="leftBorder padMe">
@@ -6209,89 +6138,111 @@
               <input type="submit" name="cancelled" value="Cancel"/>
             </form>
             <h3>Current Access:</h3>
-            <table class="common">
+            <table class="common scheduling">
               <tr>
                 <th>Entry</th>
                 <th>Access</th>
+                <th>Inherited from</th>
                 <td></td>
               </tr>
-              <xsl:for-each select="outbox/acl/ace">
-                <tr>
-                  <td>
-                    <xsl:choose>
-                      <xsl:when test="principal/href">
-                        <xsl:value-of select="principal/href"/>
-                      </xsl:when>
-                      <xsl:when test="principal/property">
-                        <xsl:value-of select="name(principal/property/*)"/>
-                      </xsl:when>
-                      <xsl:when test="invert/principal/property/owner">
-                        anyone (other)
-                      </xsl:when>
-                      <xsl:otherwise>
-                         <xsl:value-of select="name(principal/*)"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </td>
-                  <td>
-                    <xsl:value-of select="name(grant/*)"/>
-                  </td>
-                  <td>
-                    <xsl:variable name="who">
-                      <xsl:choose>
-                        <xsl:when test="invert">
-                          <xsl:choose>
-                            <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
-                            <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-                            <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
-                          </xsl:choose>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:choose>
-                            <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
-                            <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-                            <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
-                          </xsl:choose>
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:variable name="whoType">
-                      <xsl:choose>
-                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
-                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
-                        <xsl:when test="$who='authenticated'">auth</xsl:when>
-                        <xsl:when test="invert/principal/property/owner">other</xsl:when>
-                        <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-                        <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:variable name="shortWho">
-                      <xsl:choose>
-                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:choose>
-                      <xsl:when test="invert">
-                        <a href="{$prefs-setAccess}&amp;how=default&amp;what=out&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes" title="reset to default">
-                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
-                        </a>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <a href="{$prefs-setAccess}&amp;how=default&amp;what=out&amp;who={$shortWho}&amp;whoType={$whoType}" title="reset to default">
-                          <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
-                        </a>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </td>
-                </tr>
-              </xsl:for-each>
+              <xsl:apply-templates select="outbox/acl/ace" mode="scheduling">
+                <xsl:with-param name="what">out</xsl:with-param>
+              </xsl:apply-templates>
             </table>
           </td>
         </tr>
       </table>
+  </xsl:template>
+
+  <xsl:template match="ace" mode="scheduling">
+    <xsl:param name="what"/>
+    <xsl:variable name="who">
+      <xsl:choose>
+        <xsl:when test="invert">
+          <xsl:choose>
+            <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
+            <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
+            <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="whoType">
+      <xsl:choose>
+        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
+        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
+        <xsl:when test="$who='authenticated'">auth</xsl:when>
+        <xsl:when test="invert/principal/property/owner">other</xsl:when>
+        <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+        <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+        <xsl:otherwise></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="shortWho">
+      <xsl:choose>
+        <xsl:when test="$whoType='user'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
+        <xsl:when test="$whoType='group'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
+        <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
+      </xsl:choose>
+    </xsl:variable>
+    <tr>
+      <td>
+        <xsl:choose>
+          <xsl:when test="$whoType = 'user' or ($who = 'owner' and $whoType != 'other')">
+            <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:text> </xsl:text>
+        <xsl:choose>
+          <xsl:when test="$whoType = 'other'">
+            anyone (other)
+          </xsl:when>
+          <xsl:when test="$shortWho != ''">
+            <xsl:value-of select="$shortWho"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$who"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </td>
+      <td>
+        <xsl:value-of select="name(grant/*)"/>
+      </td>
+      <td>
+        <xsl:choose>
+          <xsl:when test="inherited">
+            <xsl:value-of select="inherited/href"/>
+          </xsl:when>
+          <xsl:otherwise>
+            local
+          </xsl:otherwise>
+        </xsl:choose>
+      </td>
+      <td>
+        <xsl:choose>
+          <xsl:when test="invert">
+            <a href="{$prefs-setAccess}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes" title="reset to default">
+              <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{$prefs-setAccess}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}" title="reset to default">
+              <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </td>
+    </tr>
   </xsl:template>
 
   <!-- construct the workDay times options listings from minute 0 to less than
