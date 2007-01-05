@@ -81,6 +81,9 @@
       <xsl:when test="id='org.bedework.client.error.nodefaultview'">
           No default view defined
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.norecurrenceinstances'">
+          There are no instances for this recurring event.
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.noschedulingaccess'">
           You cannot schedule events with user <em><xsl:value-of select="param"/></em>.
       </xsl:when>
