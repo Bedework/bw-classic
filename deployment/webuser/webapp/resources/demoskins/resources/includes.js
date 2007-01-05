@@ -12,6 +12,40 @@ function swapVisible(obj,id) {
     changeClass(id,'invisible');
   }
 }
+// hide a group of items
+// send IDs as parameters
+function hide() {
+  if (arguments.length != 0) {
+    for (i = 0; i < arguments.length; i++) {
+      changeClass(arguments[i],'invisible');
+    }
+  }
+}
+// show a group of items
+// send IDs as parameters
+function show() {
+  if (arguments.length != 0) {
+    for (i = 0; i < arguments.length; i++) {
+      changeClass(arguments[i],'visible');
+    }
+  }
+}
+function setTab(listId,listIndex) {
+  /*var list = document.getElementById(listId);
+  var elementArray = new Array();
+  for (i = 0; i < list.childNodes.length; i++) {
+    if (list.childNodes[i].nodeName == "li") {
+      elementArray.push(list.childNodes[i]);
+    }
+  }
+  for (i = 0; i < elementArray.length; i++) {
+    if (i == listIndex) {
+      elementArray[i].className = 'selected';
+    } else {
+      elementArray[i].className = '';
+    }
+  }*/
+}
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
   allDayEndDateField = document.getElementById("allDayEndDateField");

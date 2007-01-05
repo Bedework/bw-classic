@@ -235,7 +235,7 @@
 */
   function dynCalendar_writeHTML()
   {
-    if (is_ie5up || is_nav6up || is_gecko) {
+    if (is_ie5up || is_ie6up || is_nav6up || is_gecko) {
       document.write('<a href="javascript: ' + this.objName + '.show()"><img src="' + this.imagesPath + 'calIcon.gif" border="0" width="16" height="15" /></a>');
       document.write('<div class="dynCalendar" id="' + this.layerID + '" onmouseover="' + this.objName + '._mouseover(true)" onmouseout="' + this.objName + '._mouseover(false)"></div>');
     }
