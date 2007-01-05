@@ -16,7 +16,7 @@
     </init-param>
     <init-param>
       <name>ViewPage</name>
-      <value>/initialise.rdo</value>
+      <value>/main/initialise.rdo</value>
     </init-param>
     <description>@APP-DESCRIPTION@
     </description>
