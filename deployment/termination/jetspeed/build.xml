@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     Standalone apps terminations tasks.
+     =================================================================== -->
+
+<project name="bwdeploy.termination" default="deploy" >
+  <import file="${org.bedework.deployment.base}/deployprops.xml" />
+
+  <target name="init">
+  </target>
+
+  <target name="deploy" depends="init,build.configured" >
+  </target>
+
+  <target name="build.configured" depends="init" >
+  </target>
+</project>
