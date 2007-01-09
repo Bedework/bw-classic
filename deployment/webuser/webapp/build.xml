@@ -94,13 +94,13 @@
     <!-- from  the bin directory -->
     <fileset id="app.bin.files" dir="${bin.home}" >
       <include name="bw-webcommon*.jar" />
-      <include name="bw-webclient*.jar" />
     </fileset>
 
-    <!-- from  the temp jars directory -->
+    <!-- from  the temp jars directory
     <fileset id="app.temp.lib.files" dir="${org.bedework.temp.jars}" >
       <include name="${org.bedework.webclient.jar.name}" />
     </fileset>
+    -->
 
     <!-- ===============================================================
          Build the war

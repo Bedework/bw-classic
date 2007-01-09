@@ -199,32 +199,6 @@
        this component.
        ================================================================= -->
 
-  <!--
-  <target name="deploy.standalone.apps" if="org.bedework.global.build.standalone.app" >
-    <property name="org.bedework.deploy.kind" value="webapp" />
-    <antcall target="deploy.apps" inheritrefs="true" />
-  </target>
-
-  <target name="deploy.portal.apps" if="org.bedework.global.portal.platform" >
-    <property name="org.bedework.deploy.kind"
-              value="${org.bedework.global.portal.platform}" />
-    <antcall target="deploy.apps" inheritrefs="true" />
-  </target>
-
-  <target name="deploy.j2ee.apps" if="org.bedework.global.j2ee.platform" >
-    <property name="org.bedework.deploy.kind"
-              value="${org.bedework.global.j2ee.platform}" />
-    <antcall target="deploy.apps" inheritrefs="true" />
-  </target>
-  -->
-
-  <!-- Always build the shellscr stuff.
-  <target name="deploy.shellscr.apps" >
-    <property name="org.bedework.deploy.kind" value="shellscr" />
-    <antcall target="deploy.apps" inheritrefs="true" />
-  </target>
-  -->
-
   <!-- The cp.xalan task conditionally copies the xalan.jar file, if
        necessary -->
   <target name="cp.xalan" if="xalan.in.tomcat.common.endorsed">
@@ -291,10 +265,6 @@
     </forEachApp>
 
     <!-- ======================= termination tasks ================= -->
-    <!--
-    <property name="org.bedework.deploy.type.dir"
-              location="${org.bedework.deployment.base}/termination" />
-              -->
 
     <ant antfile="${org.bedework.deployment.base}/termination/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="deploy" />
@@ -316,25 +286,5 @@
       </then>
     </if>
   </target>
-  <!--
-  <target name="wrap.deploy.available.app">
-    <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
-               property="app.kind.available" />
-
-    <antcall target="deploy.available.app" inheritrefs="true" />
-  </target>
-
-  <target name="deploy.available.app" if="app.kind.available">
-    <propertyset id="deploy-app-properties">
-      <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
-      <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
-    </propertyset>
-
-    <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
-         inheritrefs="true" target="deploy" >
-      <propertyset refid="deploy-app-properties" />
-    </ant>
-  </target>
-  -->
 </project>
 
