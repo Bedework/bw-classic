@@ -54,6 +54,12 @@
   margin: 0.5em 0 3em 0;
   padding: 0;
 }
+#bwClockSwitch {
+  position: absolute;
+  bottom: 5px;
+  left: 15px;
+  margin: 0;
+}
 #bwClockCloseText {
   position: absolute;
   bottom: 5px;

@@ -4,12 +4,12 @@ var bwClockRequestedType = null;
 var bwClockCurrentType = null;
 
 function bwClockLaunch(type) {
-  if ((document.getElementById("clock").className == "shown") && (bwClockCurrentType == type)) {
+  if ((document.getElementById("clock").className == "visible") && (bwClockCurrentType == type)) {
     changeClass("clock","invisible"); // if the clock with the same type is showing, toggle it off
   } else { // otherwise, turn it on and display the correct type
     bwClockRequestedType = type;
     bwClockCurrentType = type;
-    changeClass("clock","shown");
+    changeClass("clock","visible");
     // the following is for Internet Explorer.  IE draws "windowed" objects
     // and unwindowed objects on seperate "planes"; windowed objects are always
     // drawn obove unwindowed objects and select boxes are "windowed";
@@ -18,14 +18,17 @@ function bwClockLaunch(type) {
     // to display:hidden (not none) so their space is still occupied (and the
     // browser window doesn't shift around)
    //changeClass("eventFormPrefLocationList","hidden");
-   changeClass("eventFormLocationList","hidden");
+   //changeClass("eventFormLocationList","hidden");
    //changeClass("eventFormSponsorList","hidden");
    //changeClass("eventFormPrefSponsorList","hidden");
     bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
+    bwClockSwitch = document.getElementById("bwClockSwitch");
     if (type == 'eventStartDate') {
-      bwClockIndicator.innerHTML = "Start Time"
+      bwClockIndicator.innerHTML = "Start Time";
+      bwClockSwitch.innerHTML = '<a href="javascript:bwClockLaunch(\'eventEndDate\');">switch to end</a>';
     } else {
-      bwClockIndicator.innerHTML = "End Time"
+      bwClockIndicator.innerHTML = "End Time";
+      bwClockSwitch.innerHTML = '<a href="javascript:bwClockLaunch(\'eventStartDate\');">switch to start</a>';
     }
   }
 }
@@ -33,7 +36,7 @@ function bwClockLaunch(type) {
 function bwClockClose() {
   changeClass("clock","invisible");
   //changeClass("eventFormPrefLocationList","shown");
-  changeClass("eventFormLocationList","shown");
+  //changeClass("eventFormLocationList","shown");
   //changeClass("eventFormSponsorList","shown");
   //changeClass("eventFormPrefSponsorList","shown");
 }
