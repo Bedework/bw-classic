@@ -397,14 +397,17 @@
           </replacevalue>
         </replace>
 
+        <antcall target="add.jetspeed2" inheritRefs="true" />
+        <antcall target="add.uportal2" inheritRefs="true" />
+        <antcall target="add.liferay4" inheritRefs="true" />
+
         <replace file="${app.dest.webinf}/web.xml">
           <replacefilter token="@PORTLET-NAME@" value="${propval.app.portlet.name}"/>
+          <replacefilter token="@PORTAL-SERVLET-CONTEXT-LISTENER@"
+                         value="${org.bedework.global.portal-servlet.context.listener}"/>
         </replace>
       </then>
     </if>
-    <antcall target="add.jetspeed2" inheritRefs="true" />
-    <antcall target="add.uportal2" inheritRefs="true" />
-    <antcall target="add.liferay4" inheritRefs="true" />
 
     <copy todir="${app.dest.lib}">
       <fileset dir="${struts.dir}">
@@ -421,6 +424,10 @@
     <copy todir="${app.dest.lib}" file="${jakarta-oro.jar}"/>
   </target>
 
+  <!-- =================================================================
+       Jetspeed 2 modifications
+       ================================================================= -->
+
   <target name="add.jetspeed2" if="org.bedework.build.for.jetspeed2" >
     <copy todir="${app.dest.webinf}/tlds" >
       <fileset dir="${org.bedework.default.lib}/${jetspeed2.jars.dir}/portals-bridges-struts">
@@ -428,6 +435,10 @@
       </fileset>
     </copy>
   </target>
+
+  <!-- =================================================================
+       Uportal 2 modifications
+       ================================================================= -->
 
   <target name="add.uportal2" if="org.bedework.build.for.uportal2" >
     <copy todir="${app.dest.lib}" >
@@ -438,7 +449,7 @@
 
     <!-- Add the portlet servlet mapping -->
     <replace file="${app.dest.webinf}/web.xml">
-      <replacetoken><![CDATA[<!-- uPortal2 portlet servlet mapping here -->]]></replacetoken>
+      <replacetoken><![CDATA[<!-- portlet servlet mapping here -->]]></replacetoken>
       <replacevalue><![CDATA[<servlet-mapping>
     <servlet-name>@PORTLET-NAME@</servlet-name>
     <url-pattern>/@PORTLET-NAME@/*</url-pattern>
@@ -447,6 +458,10 @@
     </replace>
 
   </target>
+
+  <!-- =================================================================
+       Liferay 4 modifications
+       ================================================================= -->
 
   <target name="add.liferay4" if="org.bedework.build.for.liferay4" >
    <!-- Add liferay config files -->
@@ -461,14 +476,17 @@
       <fileset dir="${bin.home}">
         <include name="bw-liferay*.jar"/>
       </fileset>
+      <fileset dir="${liferay4.lib}">
+        <include name="*.jar"/>
+      </fileset>
     </copy>
 
     <!-- Add the portlet servlet mapping -->
     <replace file="${app.dest.webinf}/web.xml">
-      <replacetoken><![CDATA[<!-- liferay4 portlet servlet mapping here -->]]></replacetoken>
+      <replacetoken><![CDATA[<!-- portlet servlet mapping here -->]]></replacetoken>
       <replacevalue><![CDATA[<listener>
     <listener-class>
-      com.liferay.portal.servlet.PortletContextListener
+      @PORTAL-SERVLET-CONTEXT-LISTENER@
     </listener-class>
   </listener>
   <servlet-mapping>

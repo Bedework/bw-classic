@@ -35,6 +35,9 @@
     <filter token="PORTAL-SERVLET-CONTEXT-PROVIDER"
             value="${org.bedework.global.portal-servlet.context.provider}"/>
 
+    <filter token="PORTAL-SERVLET-CONTEXT-LISTENER"
+            value="${org.bedework.global.portal-servlet.context.listener}"/>
+
     <filter token="PORTLET-CLASS"
             value="${org.bedework.global.portlet.class}"/>
 
