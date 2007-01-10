@@ -266,10 +266,7 @@ function setRecurrence(formObj) {
         formObj.count.value = formObj.countHolder.value;
         break;
       case "until":
-        // pad the month and day with zeros if only a single digit
-        var paddedMonth = (formObj.untilMonth.value < 10) ? '0'+formObj.untilMonth.value : formObj.untilMonth.value;
-        var paddedDay = (formObj.untilDay.value < 10) ? '0'+formObj.untilDay.value : formObj.untilDay.value;
-        formObj.until.value = formObj.untilYear.value + paddedMonth + paddedDay;
+        formObj.until.value = dojo.widget.byId("bwEventWidgetUntilDate").getVal();;
         break;
     }
   }
@@ -284,3 +281,4 @@ function setRecurrence(formObj) {
   }
   return true;
 }
+

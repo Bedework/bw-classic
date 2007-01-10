@@ -1968,7 +1968,7 @@
               <strong>Start:</strong>
               <div class="dateFields">
                 <span class="startDateLabel">Date </span>
-                <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif" onChange="setDate(this.form,'start')">
+                <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
                   <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
                   <xsl:text> </xsl:text>
                 </span>
@@ -2042,7 +2042,7 @@
               </xsl:variable>
               <div class="{$endDateTimeClass}" id="endDateTime">
                 <div class="dateFields">
-                  <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetEndDate" iconURL="{$resourcesRoot}/resources/calIcon.gif" onChange="setDate(this.form,'end')">
+                  <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetEndDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
                     <xsl:attribute name="value"><xsl:value-of select="form/end/rfc3339DateTime"/></xsl:attribute>
                     <xsl:text> </xsl:text>
                   </span>
@@ -2538,30 +2538,12 @@
                   <div id="recurrenceUntilRules" class="invisible">
                     <strong>Repeat:</strong>
                     <p>
-                      <div class="dateFields">
-                        <input type="radio" name="recurCountUntil" value="until" id="recurUntil">
-                          <xsl:if test="form/recurring/until">
-                            <xsl:attribute name="checked">checked</xsl:attribute>
-                          </xsl:if>
-                        </input>
-                        until
-                        bwEventWidgetUntilDate
-                      </div>
-                      <!--
-                      <script language="JavaScript" type="text/javascript">
-                      <xsl:comment>
-                        untilDateDynCalWidget = new dynCalendar('untilDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'untilDateCalWidgetCallback',false,'<xsl:value-of select="$resourcesRoot"/>/resources/');
-                      </xsl:comment>
-                      </script>-->
-                    </p>
-                    <p>
                       <input type="radio" name="recurCountUntil" value="forever">
                         <xsl:if test="not(form/recurring) or form/recurring/count = '-1'">
                           <xsl:attribute name="checked">checked</xsl:attribute>
                         </xsl:if>
                       </input>
                       forever
-                      &#160;
                       <input type="radio" name="recurCountUntil" value="count" id="recurCount">
                         <xsl:if test="form/recurring/count != '-1'">
                           <xsl:attribute name="checked">checked</xsl:attribute>
@@ -2572,7 +2554,17 @@
                           <xsl:attribute name="value"><xsl:value-of select="form/recurring/count"/></xsl:attribute>
                         </xsl:if>
                       </input>
-                      times
+                      time(s)
+                      <input type="radio" name="recurCountUntil" value="until" id="recurUntil">
+                        <xsl:if test="form/recurring/until">
+                          <xsl:attribute name="checked">checked</xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      until
+                      <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/resources/calIcon.gif" onClick="selectRecurCountUntil('recurUntil');">
+                        <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
+                        <xsl:text> </xsl:text>
+                      </span>
                     </p>
                   </div>
                 </td>
