@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output
-  method="html"
+  method="xhtml"
+  indent="no"
+  media-type="text/html"
+  doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+  doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+  standalone="yes"
+  omit-xml-declaration="yes"/>
+<!--<xsl:output
+  method="xhtml"
   indent="yes"
   media-type="text/html"
   doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
   doctype-system="http://www.w3.org/TR/html4/loose.dtd"
   standalone="yes"
-/>
+/>-->
   <!-- ========================================= -->
   <!--       PERSONAL CALENDAR STYLESHEET        -->
   <!-- ========================================= -->
@@ -75,6 +83,7 @@
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/event/initEvent"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/event/addEvent"/>
   <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete/a/@href"/>
+  <xsl:variable name="event-initAccess" select="/bedework/urlPrefixes/event/initAccess/a/@href"/>
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
   <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent/a/@href"/>
@@ -321,10 +330,13 @@
   <xsl:template name="headSection">
     <title>Bedework: Personal Calendar Client</title>
     <meta name="robots" content="noindex,nofollow"/>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
     <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
     <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
+    <!-- note: the non-breaking spaces in the script bodies below are to avoid
+         losing the script closing tags (which avoids browser problems) -->
     <xsl:if test="/bedework/page='addEvent' or
                   /bedework/page='addEventRef' or
                   /bedework/page='editEvent' or
@@ -335,17 +347,18 @@
                   /bedework/page='calendarListForExport' or
                   /bedework/page='attendeeRespond' or
                   /bedework/page='modSchedulingPrefs'">
-      <script type="text/javascript" src="{$resourcesRoot}/resources/includes.js"></script>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
+    </xsl:if>
+    <xsl:if test="/bedework/page='modSchedulingPrefs'">
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
     </xsl:if>
     <xsl:if test="/bedework/page='addEvent' or
                   /bedework/page='editEvent' or
                   /bedework/page='calendarListForExport'">
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js"></script>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
       <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
-      <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js"></script>
-      <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
-      <script type="text/javascript" src="{$resourcesRoot}/resources/browserSniffer.js"></script>
-      <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js"/>
+      <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
     </xsl:if>
     <script type="text/javascript">
       <xsl:comment>
@@ -507,7 +520,7 @@
             <xsl:otherwise><xsl:value-of select="$setViewPeriod"/></xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
-        <table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
+        <table cellspacing="0" id="tabsTable">
           <tr>
             <td>
               <xsl:choose>
@@ -561,7 +574,7 @@
         </table>
       </xsl:when>
       <xsl:otherwise>
-        <table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
+        <table cellspacing="0" id="tabsTable">
           <tr>
             <td>
               <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
@@ -1059,11 +1072,13 @@
               <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
                 <xsl:value-of select="value"/>
               </a>
-              <ul>
-                <xsl:apply-templates select="event" mode="calendarLayout">
-                  <xsl:with-param name="dayPos" select="$dayPos"/>
-                </xsl:apply-templates>
-              </ul>
+              <xsl:if test="event">
+                <ul>
+                  <xsl:apply-templates select="event" mode="calendarLayout">
+                    <xsl:with-param name="dayPos" select="$dayPos"/>
+                  </xsl:apply-templates>
+                </ul>
+              </xsl:if>
             </td>
           </xsl:if>
         </xsl:for-each>
@@ -1099,11 +1114,13 @@
                   <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
                     <xsl:value-of select="value"/>
                   </a>
-                  <ul>
-                    <xsl:apply-templates select="event" mode="calendarLayout">
-                      <xsl:with-param name="dayPos" select="$dayPos"/>
-                    </xsl:apply-templates>
-                  </ul>
+                  <xsl:if test="event">
+                    <ul>
+                      <xsl:apply-templates select="event" mode="calendarLayout">
+                        <xsl:with-param name="dayPos" select="$dayPos"/>
+                      </xsl:apply-templates>
+                    </ul>
+                  </xsl:if>
                 </td>
               </xsl:otherwise>
             </xsl:choose>
@@ -1732,26 +1749,17 @@
   <!--==== ADD EVENT ====-->
   <xsl:template match="formElements" mode="addEvent">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
-    change it without modifying includes.js -->
-    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setRecurrence(this)">
+    change it without modifying bedework.js -->
+    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this)">
       <h2>
         <span class="formButtons">
-          <input name="submit" type="submit" value="save event"/>&#160;
+          <input name="submit" type="submit" value="save event"/>
           <input name="cancelled" type="submit" value="cancel"/>
         </span>
         Add Event
       </h2>
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
-
-    <!-- Access tab (must exist outside of event form -->
-    <!-- =============================================== -->
-    <div id="bwEventTab-Access" class="invisible">
-      <div id="sharingBox">
-        <h3>Current Access:</h3>
-        Sharing may be added once an event is created
-      </div>
-    </div>
   </xsl:template>
 
   <!--==== EDIT EVENT ====-->
@@ -1762,38 +1770,19 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
-    change it without modifying includes.js -->
-    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setRecurrence(this)">
+    change it without modifying bedework.js -->
+    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this)">
       <h2>
         <span class="formButtons">
-          <input name="submit" type="submit" value="save event"/>&#160;
+          <input name="submit" type="submit" value="save event"/>
           <input name="cancelled" type="submit" value="cancel"/>
-          <input type="button" value="go to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
         </span>
         Edit Event
       </h2>
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
-
-    <!-- Access tab (must exist outside of event form) -->
-    <!-- ============================================= -->
-    <div id="bwEventTab-Access" class="invisible">
-      <div id="sharingBox">
-        <xsl:apply-templates select="/bedework/access/acl" mode="currentAccess">
-          <xsl:with-param name="action" select="$event-setAccess"/>
-          <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
-          <xsl:with-param name="guid" select="$guid"/>
-          <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
-        </xsl:apply-templates>
-        <form name="eventShareForm" action="{$event-setAccess}" id="shareForm">
-          <input type="hidden" name="calPath" value="{$calPath}"/>
-          <input type="hidden" name="guid" value="{$guid}"/>
-          <input type="hidden" name="recurid" value="{$recurrenceId}"/>
-          <xsl:call-template name="entityAccessForm"/>
-        </form>
-      </div>
-    </div>
   </xsl:template>
+
 
   <!--==== ADD and EDIT EVENT FORM ====-->
   <xsl:template match="formElements" mode="eventForm">
@@ -1803,72 +1792,66 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <input type="hidden" name="endType" value="date"/>
-    <table class="common" cellspacing="0">
+
       <!-- event info for edit event -->
       <xsl:if test="/bedework/creating != 'true'">
-        <tr>
-          <th colspan="2" class="commonHeader">
-            <div id="eventActions">
-              <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
-                View
-              </a>
-                |
-                <xsl:choose>
-                  <xsl:when test="recurring='true'">
-                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                    Delete:
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+        <table class="common" cellspacing="0">
+          <tr>
+            <th colspan="2" class="commonHeader">
+              <div id="eventActions">
+                <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                  <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
+                  View
+                </a>
+                  |
+                  <xsl:choose>
+                    <xsl:when test="recurring='true'">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                      Delete
-                    </a>
-                  </xsl:otherwise>
-                </xsl:choose>
-            </div>
-            Personal Event
-          </th>
-        </tr>
+                      Delete:
+                      <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                        Delete
+                      </a>
+                    </xsl:otherwise>
+                  </xsl:choose>
+              </div>
+              Personal Event
+            </th>
+          </tr>
+        </table>
       </xsl:if>
 
       <!-- event form submenu -->
-      <tr>
-        <td colspan="2">
-          <ul id="eventFormTabs" class="submenu">
-            <li class="selected">
-              <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Basic'); hide('bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Access');">
-                basic
-              </a>
-            </li>
-            <li>
-              <a href="javascript:setTab('eventFormTabs',1); show('bwEventTab-Details'); hide('bwEventTab-Basic','bwEventTab-Recurrence','bwEventTab-Access');">
-                details
-              </a>
-            </li>
-            <li>
-              <a href="javascript:setTab('eventFormTabs',2); show('bwEventTab-Recurrence'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Access');">
-                recurrence
-              </a>
-            </li>
-            <li>
-              <a href="javascript:setTab('eventFormTabs',3); show('bwEventTab-Access'); hide('bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Basic');">
-                access
-              </a>
-              <!-- note, the access tab is outside of the events form -->
-            </li>
-          </ul>
-        </td>
-      </tr>
-    </table>
+      <xsl:if test="/bedework/creating = 'false'">
+        <a href="{$event-initAccess}" id="eventAccessLink">set event access</a>
+      </xsl:if>
+      <ul id="eventFormTabs" class="submenu">
+        <li class="selected">
+          <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Basic'); hide('bwEventTab-Details','bwEventTab-Recurrence');">
+            basic
+          </a>
+        </li>
+        <li>
+          <a href="javascript:setTab('eventFormTabs',1); show('bwEventTab-Details'); hide('bwEventTab-Basic','bwEventTab-Recurrence');">
+            details
+          </a>
+        </li>
+        <li>
+          <a href="javascript:setTab('eventFormTabs',2); show('bwEventTab-Recurrence'); hide('bwEventTab-Details','bwEventTab-Basic');">
+            recurrence
+          </a>
+        </li>
+      </ul>
 
     <!-- Basic tab -->
     <!-- ============== -->
     <!-- this tab is visible by default -->
     <div id="bwEventTab-Basic">
     <!--<h3>Basic Event Recurrence:</h3>-->
-      <table cellspacing="0" class="common">
+      <table cellspacing="0" class="common dottedBorder">
         <!--  Calendar in which to place event  -->
         <tr>
           <td class="fieldname">
@@ -1925,13 +1908,13 @@
             <xsl:choose>
               <xsl:when test="form/allDay/input/@checked='checked'">
                 <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="on" checked="checked"/>
-                <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayStartDateField"/>
-                <input type="hidden" name="eventEndDate.dateOnly" value="on" id="allDayEndDateField"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="true" id="allDayStartDateField"/>
+                <input type="hidden" name="eventEndDate.dateOnly" value="true" id="allDayEndDateField"/>
               </xsl:when>
               <xsl:otherwise>
                 <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="off"/>
-                <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayStartDateField"/>
-                <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="false" id="allDayStartDateField"/>
+                <input type="hidden" name="eventEndDate.dateOnly" value="false" id="allDayEndDateField"/>
               </xsl:otherwise>
             </xsl:choose>
             all day (anniversary)
@@ -1940,13 +1923,13 @@
             <xsl:choose>
               <xsl:when test="form/floating/input/@checked='checked'">
                 <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="on" checked="checked"/>
-                <input type="hidden" name="eventStartDate.floating" value="on" id="startFloating"/>
-                <input type="hidden" name="eventEndDate.floating" value="on" id="endFloating"/>
+                <input type="hidden" name="eventStartDate.floating" value="true" id="startFloating"/>
+                <input type="hidden" name="eventEndDate.floating" value="true" id="endFloating"/>
               </xsl:when>
               <xsl:otherwise>
                 <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="off"/>
-                <input type="hidden" name="eventStartDate.floating" value="off" id="startFloating"/>
-                <input type="hidden" name="eventEndDate.floating" value="off" id="endFloating"/>
+                <input type="hidden" name="eventStartDate.floating" value="false" id="startFloating"/>
+                <input type="hidden" name="eventEndDate.floating" value="false" id="endFloating"/>
               </xsl:otherwise>
             </xsl:choose>
             floating
@@ -1955,13 +1938,13 @@
             <xsl:choose>
               <xsl:when test="form/storeUTC/input/@checked='checked'">
                 <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="on" checked="checked"/>
-                <input type="hidden" name="eventStartDate.storeUTC" value="on" id="startStoreUTC"/>
-                <input type="hidden" name="eventEndDate.storeUTC" value="on" id="endStoreUTC"/>
+                <input type="hidden" name="eventStartDate.storeUTC" value="true" id="startStoreUTC"/>
+                <input type="hidden" name="eventEndDate.storeUTC" value="true" id="endStoreUTC"/>
               </xsl:when>
               <xsl:otherwise>
                 <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="off"/>
-                <input type="hidden" name="eventStartDate.storeUTC" value="off" id="startStoreUTC"/>
-                <input type="hidden" name="eventEndDate.storeUTC" value="off" id="endStoreUTC"/>
+                <input type="hidden" name="eventStartDate.storeUTC" value="false" id="startStoreUTC"/>
+                <input type="hidden" name="eventEndDate.storeUTC" value="false" id="endStoreUTC"/>
               </xsl:otherwise>
             </xsl:choose>
             store as UTC
@@ -1971,6 +1954,20 @@
               <strong>Start:</strong>
               <div class="dateFields">
                 <span class="startDateLabel">Date </span>
+                <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif" onChange="setDate(this.form,'start')">
+                  <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
+                  <xsl:text> </xsl:text>
+                </span>
+                <input type="hidden" name="eventStartDate.year">
+                  <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
+                </input>
+                <input type="hidden" name="eventStartDate.month">
+                  <xsl:attribute name="value"><xsl:value-of select="form/start/month/select/option[@selected = 'selected']/@value"/></xsl:attribute>
+                </input>
+                <input type="hidden" name="eventStartDate.day">
+                  <xsl:attribute name="value"><xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/></xsl:attribute>
+                </input>
+                <!--
                 <xsl:copy-of select="form/start/month/*"/>
                 <xsl:copy-of select="form/start/day/*"/>
                 <xsl:choose>
@@ -1980,14 +1977,13 @@
                   <xsl:otherwise>
                     <xsl:copy-of select="form/start/yearText/*"/>
                   </xsl:otherwise>
-                </xsl:choose>
-              </div>
+                </xsl:choose>-->
+              </div><!--
               <script language="JavaScript" type="text/javascript">
               <xsl:comment>
                 startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback',true,'<xsl:value-of select="$resourcesRoot"/>/resources/');
               </xsl:comment>
-              </script>
-              <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
+              </script>-->
               <div class="{$timeFieldsClass}" id="startTimeFields">
                 <span id="calWidgetStartTimeHider" class="show">
                   <xsl:copy-of select="form/start/hour/*"/>
@@ -1996,10 +1992,10 @@
                     <xsl:copy-of select="form/start/ampm/*"/>
                   </xsl:if>
                   <xsl:text> </xsl:text>
-                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
 
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
-                    <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">true</xsl:attribute></xsl:if>
+                    <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                     <option value="-1">select timezone...</option>
                     <xsl:variable name="startTzId" select="form/start/tzid"/>
                     <xsl:for-each select="/bedework/timezones/timezone">
@@ -2017,10 +2013,10 @@
               <strong>End:</strong>
               <xsl:choose>
                 <xsl:when test="form/end/type='E'">
-                  <input type="radio" name="eventEndType" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                  <input type="radio" name="eventEndType" value="E" checked="checked" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="radio" name="eventEndType" value="E" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                  <input type="radio" name="eventEndType" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:otherwise>
               </xsl:choose>
               Date
@@ -2032,7 +2028,20 @@
               </xsl:variable>
               <div class="{$endDateTimeClass}" id="endDateTime">
                 <div class="dateFields">
-                  <xsl:copy-of select="form/end/dateTime/month/*"/>
+                  <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetEndDate" iconURL="{$resourcesRoot}/resources/calIcon.gif" onChange="setDate(this.form,'end')">
+                    <xsl:attribute name="value"><xsl:value-of select="form/end/rfc3339DateTime"/></xsl:attribute>
+                    <xsl:text> </xsl:text>
+                  </span>
+                  <input type="hidden" name="eventEndDate.year">
+                    <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/yearText/input/@value"/></xsl:attribute>
+                  </input>
+                  <input type="hidden" name="eventEndDate.month">
+                    <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/month/select/option[@selected = 'selected']/@value"/></xsl:attribute>
+                  </input>
+                  <input type="hidden" name="eventEndDate.day">
+                    <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/day/select/option[@selected = 'selected']/@value"/></xsl:attribute>
+                  </input>
+                  <!--<xsl:copy-of select="form/end/dateTime/month/*"/>
                   <xsl:copy-of select="form/end/dateTime/day/*"/>
                   <xsl:choose>
                     <xsl:when test="/bedework/creating = 'true'">
@@ -2041,14 +2050,13 @@
                     <xsl:otherwise>
                       <xsl:copy-of select="form/end/dateTime/yearText/*"/>
                     </xsl:otherwise>
-                  </xsl:choose>
+                  </xsl:choose>-->
                 </div>
-                <script language="JavaScript" type="text/javascript">
+                <!--<script language="JavaScript" type="text/javascript">
                 <xsl:comment>
                   endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback',true,'<xsl:value-of select="$resourcesRoot"/>/resources/');
                 </xsl:comment>
-                </script>
-                <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
+                </script>-->
                 <div class="{$timeFieldsClass}" id="endTimeFields">
                   <span id="calWidgetEndTimeHider" class="show">
                     <xsl:copy-of select="form/end/dateTime/hour/*"/>
@@ -2057,10 +2065,10 @@
                       <xsl:copy-of select="form/end/dateTime/ampm/*"/>
                     </xsl:if>
                     <xsl:text> </xsl:text>
-                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
 
                     <select name="eventEndDate.tzid" id="endTzid" class="timezones">
-                      <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">true</xsl:attribute></xsl:if>
+                      <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                       <option value="-1">select timezone...</option>
                       <xsl:variable name="endTzId" select="form/end/dateTime/tzid"/>
                       <xsl:for-each select="/bedework/timezones/timezone">
@@ -2080,10 +2088,10 @@
               <div class="dateFields">
                 <xsl:choose>
                   <xsl:when test="form/end/type='D'">
-                    <input type="radio" name="eventEndType" value="D" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" value="D" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="D" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 Duration
@@ -2119,7 +2127,7 @@
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')"/>
                         <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
-                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="true"/>weeks
+                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="disabled"/>weeks
                       </div>
                     </xsl:when>
                     <xsl:otherwise>
@@ -2127,12 +2135,12 @@
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')"/>
                         <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
-                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="true"/>days
+                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="disabled"/>days
                         <span id="durationHrMin" class="{$durationHrMinClass}">
                           <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
-                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="true"/>hours
+                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="disabled"/>hours
                           <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
-                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="true"/>minutes
+                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="disabled"/>minutes
                         </span>
                       </div>
                       <span class="durationSpacerText">or</span>
@@ -2148,10 +2156,10 @@
               <div class="dateFields" id="noDuration">
                 <xsl:choose>
                   <xsl:when test="form/end/type='N'">
-                    <input type="radio" name="eventEndType" value="N" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" value="N" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="N" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 This event has no duration / end date
@@ -2198,15 +2206,6 @@
             </xsl:choose>
           </td>
         </tr>
-        <tr>
-          <td class="submit" colspan="2">
-            <input name="submit" type="submit" value="save event"/>&#160;
-            <input name="cancelled" type="submit" value="cancel"/>
-            <xsl:if test="/bedework/creating != 'true'">
-              <input type="button" value="go to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
-            </xsl:if>
-          </td>
-        </tr>
       </table>
     </div>
 
@@ -2215,7 +2214,7 @@
     <!-- ============== -->
     <div id="bwEventTab-Details" class="invisible">
       <!--<h3>Extra Information:</h3>-->
-      <table cellspacing="0" class="common">
+      <table cellspacing="0" class="common dottedBorder">
         <!--  Location  -->
         <tr>
           <td class="fieldname">Location:</td>
@@ -2260,9 +2259,20 @@
         <tr>
           <td class="fieldname">Description:</td>
           <td class="fieldval">
-            <textarea name="description" cols="60" rows="4">
-              <xsl:value-of select="form/desc/textarea"/>
-            </textarea>
+            <xsl:choose>
+              <xsl:when test="normalize-space(form/desc/textarea) = ''">
+                <textarea name="description" cols="60" rows="4">
+                  <xsl:text> </xsl:text>
+                </textarea>
+                <!-- keep this space to avoid browser
+                rendering errors when the text area is empty -->
+              </xsl:when>
+              <xsl:otherwise>
+                <textarea name="description" cols="60" rows="4">
+                  <xsl:value-of select="form/desc/textarea"/>
+                </textarea>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
         <!--  Scheduling type  -->
@@ -2337,15 +2347,6 @@
             </xsl:choose>
           </td>
         </tr>
-        <tr>
-          <td class="submit" colspan="2">
-            <input name="submit" type="submit" value="save event"/>&#160;
-            <input name="cancelled" type="submit" value="cancel"/>
-            <xsl:if test="/bedework/creating != 'true'">
-              <input type="button" value="go to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
-            </xsl:if>
-          </td>
-        </tr>
       </table>
     </div>
 
@@ -2353,474 +2354,459 @@
     <!-- Recurrence tab -->
     <!-- ============== -->
     <div id="bwEventTab-Recurrence" class="invisible">
-      <!--<h3>Event Recurrence:</h3>-->
-      <table cellspacing="0" class="common">
-        <tr>
-          <td class="fieldname">
-            Recurrence:
-          </td>
-          <td class="fieldval">
-            <!-- Output descriptive recurrence information.  Probably not
-                 complete yet. Replace all strings so can be
-                 more easily internationalized. -->
-            <xsl:if test="form/recurrence">
-              <div id="recurrenceInfo">
-                Every
-                <xsl:choose>
-                  <xsl:when test="form/recurrence/interval &gt; 1">
-                    <xsl:value-of select="form/recurrence/interval"/>
-                  </xsl:when>
-                </xsl:choose>
-                <xsl:text> </xsl:text>
-                <xsl:choose>
-                  <xsl:when test="form/recurrence/freq = 'HOURLY'">hour</xsl:when>
-                  <xsl:when test="form/recurrence/freq = 'DAILY'">day</xsl:when>
-                  <xsl:when test="form/recurrence/freq = 'WEEKLY'">week</xsl:when>
-                  <xsl:when test="form/recurrence/freq = 'MONTHLY'">month</xsl:when>
-                  <xsl:when test="form/recurrence/freq = 'YEARLY'">year</xsl:when>
-                </xsl:choose><xsl:if test="form/recurrence/interval &gt; 1">s</xsl:if>
-                <xsl:text> </xsl:text>
+      <!-- Output descriptive recurrence information.  Probably not
+           complete yet. Replace all strings so can be
+           more easily internationalized. -->
+      <xsl:if test="form/recurrence">
+        <div id="recurrenceInfo">
+          Every
+          <xsl:choose>
+            <xsl:when test="form/recurrence/interval &gt; 1">
+              <xsl:value-of select="form/recurrence/interval"/>
+            </xsl:when>
+          </xsl:choose>
+          <xsl:text> </xsl:text>
+          <xsl:choose>
+            <xsl:when test="form/recurrence/freq = 'HOURLY'">hour</xsl:when>
+            <xsl:when test="form/recurrence/freq = 'DAILY'">day</xsl:when>
+            <xsl:when test="form/recurrence/freq = 'WEEKLY'">week</xsl:when>
+            <xsl:when test="form/recurrence/freq = 'MONTHLY'">month</xsl:when>
+            <xsl:when test="form/recurrence/freq = 'YEARLY'">year</xsl:when>
+          </xsl:choose><xsl:if test="form/recurrence/interval &gt; 1">s</xsl:if>
+          <xsl:text> </xsl:text>
 
-                <xsl:if test="form/recurrence/byday">
-                  <xsl:for-each select="form/recurrence/byday/pos">
-                    <xsl:if test="position() != 1"> and </xsl:if>
-                    on
-                    <xsl:choose>
-                      <xsl:when test="@val='1'">
-                        the first
-                      </xsl:when>
-                      <xsl:when test="@val='2'">
-                        the second
-                      </xsl:when>
-                      <xsl:when test="@val='3'">
-                        the third
-                      </xsl:when>
-                      <xsl:when test="@val='4'">
-                        the fourth
-                      </xsl:when>
-                      <xsl:when test="@val='5'">
-                        the fifth
-                      </xsl:when>
-                      <xsl:when test="@val='-1'">
-                        the last
-                      </xsl:when>
-                      <!-- don't output "every" -->
-                      <!--<xsl:otherwise>
-                        every
-                      </xsl:otherwise>-->
-                    </xsl:choose>
-                    <xsl:for-each select="day">
-                      <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
-                      <xsl:variable name="dayVal" select="."/>
-                      <xsl:variable name="dayPos">
-                        <xsl:for-each select="/bedework/recurdayvals/val">
-                          <xsl:if test="node() = $dayVal"><xsl:value-of select="position()"/></xsl:if>
-                        </xsl:for-each>
-                      </xsl:variable>
-                      <xsl:value-of select="/bedework/shortdaynames/val[position() = $dayPos]"/>
-                      <xsl:if test="position() != last()">, </xsl:if>
-                    </xsl:for-each>
-                  </xsl:for-each>
-                </xsl:if>
-
-                <xsl:if test="form/recurrence/bymonth">
-                  in
-                  <xsl:for-each select="form/recurrence/bymonth/val">
-                    <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
-                    <xsl:variable name="monthNum" select="number(.)"/>
-                    <xsl:value-of select="/bedework/monthlabels/val[position() = $monthNum]"/>
-                    <xsl:if test="position() != last()">, </xsl:if>
-                  </xsl:for-each>
-                </xsl:if>
-
-                <xsl:if test="form/recurrence/bymonthday">
-                  on the
-                  <xsl:apply-templates select="form/recurrence/bymonthday/val" mode="weekMonthYearNumbers"/>
-                  day<xsl:if test="form/recurrence/bymonthday/val[position()=2]">s</xsl:if> of the month
-                </xsl:if>
-
-                <xsl:if test="form/recurrence/byyearday">
-                  on the
-                  <xsl:apply-templates select="form/recurrence/byyearday/val" mode="weekMonthYearNumbers"/>
-                  day<xsl:if test="form/recurrence/byyearday/val[position()=2]">s</xsl:if> of the year
-                </xsl:if>
-
-                <xsl:if test="form/recurrence/byweekno">
-                  in the
-                  <xsl:apply-templates select="form/recurrence/byweekno/val" mode="weekMonthYearNumbers"/>
-                  week<xsl:if test="form/recurrence/byweekno/val[position()=2]">s</xsl:if> of the year
-                </xsl:if>
-
-                repeating
-                <xsl:choose>
-                  <xsl:when test="form/recurrence/count = '-1'">forever</xsl:when>
-                  <xsl:when test="form/recurrence/until">
-                    <xsl:value-of select="form/recurrence/until"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="form/recurrence/count"/>
-                    time<xsl:if test="form/recurrence/count &gt; 1">s</xsl:if>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </div>
-            </xsl:if>
-
-            <!-- recurrence rules -->
-            <xsl:choose>
-              <xsl:when test="recurrenceId != ''">
-                <!-- recurrence instances can not themselves recur,
-                     so provide access to master event -->
-                <em>This event is a recurrence instance.</em><br/>
-                <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">edit master event</a>
-              </xsl:when>
-              <xsl:otherwise>
-                <!-- has recurrenceId, so is master -->
-                  <input type="checkbox" name="recurrenceFlag" onclick="swapRecurrence(this)" value="on"/>
-                  <xsl:choose>
-                    <xsl:when test="/bedework/creating = 'true'">
-                      set recurrence rules
-                    </xsl:when>
-                    <xsl:otherwise>
-                      change recurrence
-                    </xsl:otherwise>
-                  </xsl:choose>
-                  <span id="recurrenceUiSwitch" class="invisible">
-                    <input type="checkbox" name="recurrenceUiSwitch" value="simple" onchange="swapVisible(this,'advancedRecurrenceRules')"/>
-                    show advanced recurrence rules
-                  </span>
-
-                  <!-- set these dynamically when form is submitted -->
-                  <input type="hidden" name="interval" value=""/>
-                  <input type="hidden" name="count" value=""/>
-                  <input type="hidden" name="until" value=""/>
-                  <input type="hidden" name="byday" value=""/>
-                  <input type="hidden" name="bymonthday" value=""/>
-                  <input type="hidden" name="bymonth" value=""/>
-                  <input type="hidden" name="byweekno" value=""/>
-                  <input type="hidden" name="byyearday" value=""/>
-                  <input type="hidden" name="wkst" value=""/>
-                  <input type="hidden" name="setpos" value=""/>
-
-                  <div id="recurrenceFields" class="invisible">
-                    <table id="recurrenceTable" cellspacing="0">
-                      <tr>
-                        <td class="recurrenceFrequency" rowspan="2">
-                          <strong>Frequency:</strong><br/>
-                          <!-- "freq" is used to determine if a recurrence should be created; test for "NONE" -->
-                          <input type="radio" name="freq" value="NONE" onclick="showRecurrence(this.value)" checked="checked"/>none<br/>
-                          <!--<input type="radio" name="freq" value="HOURLY" onclick="showRecurrence(this.value)"/>hourly<br/>-->
-                          <input type="radio" name="freq" value="DAILY" onclick="showRecurrence(this.value)"/>daily<br/>
-                          <input type="radio" name="freq" value="WEEKLY" onclick="showRecurrence(this.value)"/>weekly<br/>
-                          <input type="radio" name="freq" value="MONTHLY" onclick="showRecurrence(this.value)"/>monthly<br/>
-                          <input type="radio" name="freq" value="YEARLY" onclick="showRecurrence(this.value)"/>yearly
-                        </td>
-                        <td class="recurrenceRules">
-                          <!-- none -->
-                          <div id="noneRecurrenceRules">
-                            <p>does not recur</p>
-                          </div>
-                          <span id="advancedRecurrenceRules" class="invisible">
-                            <!-- hourly -->
-                            <div id="hourlyRecurrenceRules" class="invisible">
-                              <p>
-                                <strong>Interval:</strong>
-                                every
-                                <input type="text" name="hourlyInterval" size="2" value="1">
-                                  <xsl:if test="form/recurrence/interval">
-                                    <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
-                                  </xsl:if>
-                                </input>
-                                hour(s)
-                              </p>
-                            </div>
-                            <!-- daily -->
-                            <div id="dailyRecurrenceRules" class="invisible">
-                              <p>
-                                <strong>Interval:</strong>
-                                every
-                                <input type="text" name="dailyInterval" size="2" value="1">
-                                  <xsl:if test="form/recurrence/interval">
-                                    <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
-                                  </xsl:if>
-                                </input>
-                                day(s)
-                              </p>
-                              <p>
-                                <input type="checkbox" name="swapDayMonthCheckBoxList" value="" onclick="swapVisible(this,'dayMonthCheckBoxList')"/>
-                                in these months:
-                                <div id="dayMonthCheckBoxList" class="invisible">
-                                  <xsl:for-each select="/bedework/monthlabels/val">
-                                    <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
-                                    <span class="chkBoxListItem">
-                                      <input type="checkbox" name="dayMonths">
-                                        <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position() = $pos]"/></xsl:attribute>
-                                      </input>
-                                      <xsl:value-of select="."/>
-                                    </span>
-                                    <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
-                                  </xsl:for-each>
-                                </div>
-                              </p>
-                              <!--<p>
-                                <input type="checkbox" name="swapDaySetPos" value="" onclick="swapVisible(this,'daySetPos')"/>
-                                limit to:
-                                <div id="daySetPos" class="invisible">
-                                </div>
-                              </p>-->
-                            </div>
-                            <!-- weekly -->
-                            <div id="weeklyRecurrenceRules" class="invisible">
-                              <p>
-                                <strong>Interval:</strong>
-                                every
-                                <input type="text" name="weeklyInterval" size="2" value="1">
-                                  <xsl:if test="form/recurrence/interval">
-                                    <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
-                                  </xsl:if>
-                                </input>
-                                week(s) on:
-                              </p>
-                              <p>
-                                <div id="weekRecurFields">
-                                  <xsl:call-template name="byDayChkBoxList">
-                                    <xsl:with-param name="name">byDayWeek</xsl:with-param>
-                                  </xsl:call-template>
-                                </div>
-                              </p>
-                              <p class="weekRecurLinks">
-                                <a href="javascript:recurSelectWeekdays('weekRecurFields')">select weekdays</a> |
-                                <a href="javascript:recurSelectWeekends('weekRecurFields')">select weekends</a>
-                              </p>
-                              <p>
-                                Week start:
-                                <select name="weekWkst">
-                                  <xsl:for-each select="/bedework/shortdaynames/val">
-                                    <xsl:variable name="pos" select="position()"/>
-                                    <option>
-                                      <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
-                                      <xsl:value-of select="."/>
-                                    </option>
-                                  </xsl:for-each>
-                                </select>
-                              </p>
-                            </div>
-                            <!-- monthly -->
-                            <div id="monthlyRecurrenceRules" class="invisible">
-                              <p>
-                                <strong>Interval:</strong>
-                                every
-                                <input type="text" name="monthlyInterval" size="2" value="1">
-                                  <xsl:if test="form/recurrence/interval">
-                                    <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
-                                  </xsl:if>
-                                </input>
-                                month(s)
-                              </p>
-                              <div id="monthRecurFields">
-                                <div id="monthRecurFields1">
-                                  on
-                                  <select name="bymonthposPos1" width="7em" onchange="changeClass('monthRecurFields2','shown')">
-                                    <xsl:call-template name="recurrenceDayPosOptions"/>
-                                  </select>
-                                  <xsl:call-template name="byDayChkBoxList"/>
-                                </div>
-                                <xsl:call-template name="buildRecurFields">
-                                  <xsl:with-param name="current">2</xsl:with-param>
-                                  <xsl:with-param name="total">10</xsl:with-param>
-                                  <xsl:with-param name="name">month</xsl:with-param>
-                                </xsl:call-template>
-                              </div>
-                              <p>
-                                <input type="checkbox" name="swapMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'monthDaysCheckBoxList')"/>
-                                on these days:<br/>
-                                <div id="monthDaysCheckBoxList" class="invisible">
-                                  <xsl:call-template name="buildCheckboxList">
-                                    <xsl:with-param name="current">1</xsl:with-param>
-                                    <xsl:with-param name="end">31</xsl:with-param>
-                                    <xsl:with-param name="name">monthDayBoxes</xsl:with-param>
-                                  </xsl:call-template>
-                                </div>
-                              </p>
-                            </div>
-                            <!-- yearly -->
-                            <div id="yearlyRecurrenceRules" class="invisible">
-                              <p>
-                                <strong>Interval:</strong>
-                                every
-                                <input type="text" name="yearlyInterval" size="2" value="1">
-                                  <xsl:if test="form/recurrence/interval">
-                                    <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
-                                  </xsl:if>
-                                </input>
-                                years(s)
-                              </p>
-                              <div id="yearRecurFields">
-                                <div id="yearRecurFields1">
-                                  on
-                                  <select name="byyearposPos1" width="7em" onchange="changeClass('yearRecurFields2','shown')">
-                                    <xsl:call-template name="recurrenceDayPosOptions"/>
-                                  </select>
-                                  <xsl:call-template name="byDayChkBoxList"/>
-                                </div>
-                                <xsl:call-template name="buildRecurFields">
-                                  <xsl:with-param name="current">2</xsl:with-param>
-                                  <xsl:with-param name="total">10</xsl:with-param>
-                                  <xsl:with-param name="name">year</xsl:with-param>
-                                </xsl:call-template>
-                              </div>
-                              <p>
-                                <input type="checkbox" name="swapYearMonthCheckBoxList" value="" onclick="swapVisible(this,'yearMonthCheckBoxList')"/>
-                                in these months:
-                                <div id="yearMonthCheckBoxList" class="invisible">
-                                  <xsl:for-each select="/bedework/monthlabels/val">
-                                    <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
-                                    <span class="chkBoxListItem">
-                                      <input type="checkbox" name="yearMonths">
-                                        <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position() = $pos]"/></xsl:attribute>
-                                      </input>
-                                      <xsl:value-of select="."/>
-                                    </span>
-                                    <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
-                                  </xsl:for-each>
-                                </div>
-                              </p>
-                              <p>
-                                <input type="checkbox" name="swapYearMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'yearMonthDaysCheckBoxList')"/>
-                                on these days of the month:<br/>
-                                <div id="yearMonthDaysCheckBoxList" class="invisible">
-                                  <xsl:call-template name="buildCheckboxList">
-                                    <xsl:with-param name="current">1</xsl:with-param>
-                                    <xsl:with-param name="end">31</xsl:with-param>
-                                    <xsl:with-param name="name">yearMonthDayBoxes</xsl:with-param>
-                                  </xsl:call-template>
-                                </div>
-                              </p>
-                              <p>
-                                <input type="checkbox" name="swapYearWeeksCheckBoxList" value="" onclick="swapVisible(this,'yearWeeksCheckBoxList')"/>
-                                in these weeks of the year:<br/>
-                                <div id="yearWeeksCheckBoxList" class="invisible">
-                                  <xsl:call-template name="buildCheckboxList">
-                                    <xsl:with-param name="current">1</xsl:with-param>
-                                    <xsl:with-param name="end">53</xsl:with-param>
-                                    <xsl:with-param name="name">yearWeekBoxes</xsl:with-param>
-                                  </xsl:call-template>
-                                </div>
-                              </p>
-                              <p>
-                                <input type="checkbox" name="swapYearDaysCheckBoxList" value="" onclick="swapVisible(this,'yearDaysCheckBoxList')"/>
-                                on these days of the year:<br/>
-                                <div id="yearDaysCheckBoxList" class="invisible">
-                                  <xsl:call-template name="buildCheckboxList">
-                                    <xsl:with-param name="current">1</xsl:with-param>
-                                    <xsl:with-param name="end">366</xsl:with-param>
-                                    <xsl:with-param name="name">yearDayBoxes</xsl:with-param>
-                                  </xsl:call-template>
-                                </div>
-                              </p>
-                              <p>
-                                Week start:
-                                <select name="yearWkst">
-                                  <xsl:for-each select="/bedework/shortdaynames/val">
-                                    <xsl:variable name="pos" select="position()"/>
-                                    <option>
-                                      <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
-                                      <xsl:value-of select="."/>
-                                    </option>
-                                  </xsl:for-each>
-                                </select>
-                              </p>
-                            </div>
-                          </span>
-                        </td>
-                      </tr>
-                      <!-- recurrence count, until, forever -->
-                      <tr>
-                        <td class="recurrenceUntil">
-                           <div id="recurrenceUntilRules" class="invisible">
-                             <strong>Repeat:</strong>
-                             <p>
-                               <div class="dateFields">
-                                 <input type="radio" name="recurCountUntil" value="until" id="recurUntil">
-                                   <xsl:if test="form/recurring/until">
-                                     <xsl:attribute name="checked">checked</xsl:attribute>
-                                   </xsl:if>
-                                 </input>
-                                 until
-                                 <select name="untilMonth" onfocus="selectRecurCountUntil('recurUntil')">
-                                   <xsl:for-each select="form/start/month/select/option">
-                                     <xsl:copy-of select="."/>
-                                   </xsl:for-each>
-                                 </select>
-                                 <select name="untilDay" onfocus="selectRecurCountUntil('recurUntil')">
-                                   <xsl:for-each select="form/start/day/select/option">
-                                     <xsl:copy-of select="."/>
-                                   </xsl:for-each>
-                                 </select>
-                                 <xsl:choose>
-                                   <xsl:when test="/bedework/creating = 'true'">
-                                     <select name="untilYear" onfocus="selectRecurCountUntil('recurUntil')">
-                                       <xsl:for-each select="form/start/year/select/option">
-                                         <xsl:copy-of select="."/>
-                                       </xsl:for-each>
-                                     </select>
-                                   </xsl:when>
-                                   <xsl:otherwise>
-                                     <input type="text" name="untilYear" size="4"  onfocus="selectRecurCountUntil('recurUntil')">
-                                       <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
-                                     </input>
-                                   </xsl:otherwise>
-                                 </xsl:choose>
-                               </div>
-                               <script language="JavaScript" type="text/javascript">
-                               <xsl:comment>
-                                 untilDateDynCalWidget = new dynCalendar('untilDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'untilDateCalWidgetCallback',false,'<xsl:value-of select="$resourcesRoot"/>/resources/');
-                               </xsl:comment>
-                               </script>
-                             </p>
-                             <p>
-                               <input type="radio" name="recurCountUntil" value="forever">
-                                 <xsl:if test="not(form/recurring) or form/recurring/count = '-1'">
-                                   <xsl:attribute name="checked">checked</xsl:attribute>
-                                 </xsl:if>
-                               </input>
-                               forever
-                               &#160;
-                               <input type="radio" name="recurCountUntil" value="count" id="recurCount">
-                                 <xsl:if test="form/recurring/count != '-1'">
-                                   <xsl:attribute name="checked">checked</xsl:attribute>
-                                 </xsl:if>
-                               </input>
-                               <input type="text" value="1" size="2" name="countHolder"  onfocus="selectRecurCountUntil('recurCount')">
-                                 <xsl:if test="form/recurring/count and form/recurring/count != '-1'">
-                                   <xsl:attribute name="value"><xsl:value-of select="form/recurring/count"/></xsl:attribute>
-                                 </xsl:if>
-                               </input>
-                               times
-                             </p>
-                           </div>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-
-                  <!-- recurrence dates (rdates) -->
-                  <div id="recurrenceDatesButton">
-                    <input type="button" value="add/remove recurrence dates" action="" class="small"/>
-                  </div>
-                </xsl:otherwise>
+          <xsl:if test="form/recurrence/byday">
+            <xsl:for-each select="form/recurrence/byday/pos">
+              <xsl:if test="position() != 1"> and </xsl:if>
+              on
+              <xsl:choose>
+                <xsl:when test="@val='1'">
+                  the first
+                </xsl:when>
+                <xsl:when test="@val='2'">
+                  the second
+                </xsl:when>
+                <xsl:when test="@val='3'">
+                  the third
+                </xsl:when>
+                <xsl:when test="@val='4'">
+                  the fourth
+                </xsl:when>
+                <xsl:when test="@val='5'">
+                  the fifth
+                </xsl:when>
+                <xsl:when test="@val='-1'">
+                  the last
+                </xsl:when>
+                <!-- don't output "every" -->
+                <!--<xsl:otherwise>
+                  every
+                </xsl:otherwise>-->
               </xsl:choose>
-          </td>
-        </tr>
-        <tr>
-          <td class="submit" colspan="2">
-            <input name="submit" type="submit" value="save event"/>&#160;
-            <input name="cancelled" type="submit" value="cancel"/>
-            <xsl:if test="/bedework/creating != 'true'">
-              <input type="button" value="go to view" onclick="location.replace('{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
-            </xsl:if>
-          </td>
-        </tr>
-      </table>
+              <xsl:for-each select="day">
+                <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
+                <xsl:variable name="dayVal" select="."/>
+                <xsl:variable name="dayPos">
+                  <xsl:for-each select="/bedework/recurdayvals/val">
+                    <xsl:if test="node() = $dayVal"><xsl:value-of select="position()"/></xsl:if>
+                  </xsl:for-each>
+                </xsl:variable>
+                <xsl:value-of select="/bedework/shortdaynames/val[position() = $dayPos]"/>
+                <xsl:if test="position() != last()">, </xsl:if>
+              </xsl:for-each>
+            </xsl:for-each>
+          </xsl:if>
+
+          <xsl:if test="form/recurrence/bymonth">
+            in
+            <xsl:for-each select="form/recurrence/bymonth/val">
+              <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
+              <xsl:variable name="monthNum" select="number(.)"/>
+              <xsl:value-of select="/bedework/monthlabels/val[position() = $monthNum]"/>
+              <xsl:if test="position() != last()">, </xsl:if>
+            </xsl:for-each>
+          </xsl:if>
+
+          <xsl:if test="form/recurrence/bymonthday">
+            on the
+            <xsl:apply-templates select="form/recurrence/bymonthday/val" mode="weekMonthYearNumbers"/>
+            day<xsl:if test="form/recurrence/bymonthday/val[position()=2]">s</xsl:if> of the month
+          </xsl:if>
+
+          <xsl:if test="form/recurrence/byyearday">
+            on the
+            <xsl:apply-templates select="form/recurrence/byyearday/val" mode="weekMonthYearNumbers"/>
+            day<xsl:if test="form/recurrence/byyearday/val[position()=2]">s</xsl:if> of the year
+          </xsl:if>
+
+          <xsl:if test="form/recurrence/byweekno">
+            in the
+            <xsl:apply-templates select="form/recurrence/byweekno/val" mode="weekMonthYearNumbers"/>
+            week<xsl:if test="form/recurrence/byweekno/val[position()=2]">s</xsl:if> of the year
+          </xsl:if>
+
+          repeating
+          <xsl:choose>
+            <xsl:when test="form/recurrence/count = '-1'">forever</xsl:when>
+            <xsl:when test="form/recurrence/until">
+              <xsl:value-of select="form/recurrence/until"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="form/recurrence/count"/>
+              time<xsl:if test="form/recurrence/count &gt; 1">s</xsl:if>
+            </xsl:otherwise>
+          </xsl:choose>
+        </div>
+      </xsl:if>
+
+      <!-- recurrence rules -->
+      <xsl:choose>
+        <xsl:when test="recurrenceId != ''">
+          <!-- recurrence instances can not themselves recur,
+               so provide access to master event -->
+          <em>This event is a recurrence instance.</em><br/>
+          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">edit master event</a>
+        </xsl:when>
+        <xsl:otherwise>
+          <!-- has recurrenceId, so is master -->
+          <!--<input type="checkbox" name="recurrenceFlag" onclick="swapRecurrence(this)" value="on"/>
+          <xsl:choose>
+            <xsl:when test="/bedework/creating = 'true'">
+              set recurrence rules
+            </xsl:when>
+            <xsl:otherwise>
+              change recurrence
+            </xsl:otherwise>
+          </xsl:choose>-->
+
+          <!-- set these dynamically when form is submitted -->
+          <input type="hidden" name="interval" value=""/>
+          <input type="hidden" name="count" value=""/>
+          <input type="hidden" name="until" value=""/>
+          <input type="hidden" name="byday" value=""/>
+          <input type="hidden" name="bymonthday" value=""/>
+          <input type="hidden" name="bymonth" value=""/>
+          <input type="hidden" name="byweekno" value=""/>
+          <input type="hidden" name="byyearday" value=""/>
+          <input type="hidden" name="wkst" value=""/>
+          <input type="hidden" name="setpos" value=""/>
+
+          <div id="recurrenceFields">
+            <table id="recurrenceTable" cellspacing="0">
+              <tr>
+                <td class="recurrenceFrequency" rowspan="2">
+                  <strong>Frequency:</strong><br/>
+                  <!-- "freq" is used to determine if a recurrence should be created; test for "NONE" -->
+                  <input type="radio" name="freq" value="NONE" onclick="showRecurrence(this.value)" checked="checked"/>none<br/>
+                  <!--<input type="radio" name="freq" value="HOURLY" onclick="showRecurrence(this.value)"/>hourly<br/>-->
+                  <input type="radio" name="freq" value="DAILY" onclick="showRecurrence(this.value)"/>daily<br/>
+                  <input type="radio" name="freq" value="WEEKLY" onclick="showRecurrence(this.value)"/>weekly<br/>
+                  <input type="radio" name="freq" value="MONTHLY" onclick="showRecurrence(this.value)"/>monthly<br/>
+                  <input type="radio" name="freq" value="YEARLY" onclick="showRecurrence(this.value)"/>yearly
+                </td>
+                <!-- recurrence count, until, forever -->
+                <td class="recurrenceUntil">
+                  <!-- none -->
+                  <div id="noneRecurrenceRules">
+                    <p>does not recur</p>
+                  </div>
+                  <div id="recurrenceUntilRules" class="invisible">
+                    <strong>Repeat:</strong>
+                    <p>
+                      <div class="dateFields">
+                        <input type="radio" name="recurCountUntil" value="until" id="recurUntil">
+                          <xsl:if test="form/recurring/until">
+                            <xsl:attribute name="checked">checked</xsl:attribute>
+                          </xsl:if>
+                        </input>
+                        until
+                        <select name="untilMonth" onfocus="selectRecurCountUntil('recurUntil')">
+                          <xsl:for-each select="form/start/month/select/option">
+                            <xsl:copy-of select="."/>
+                          </xsl:for-each>
+                        </select>
+                        <select name="untilDay" onfocus="selectRecurCountUntil('recurUntil')">
+                          <xsl:for-each select="form/start/day/select/option">
+                            <xsl:copy-of select="."/>
+                          </xsl:for-each>
+                        </select>
+                        <xsl:choose>
+                          <xsl:when test="/bedework/creating = 'true'">
+                            <select name="untilYear" onfocus="selectRecurCountUntil('recurUntil')">
+                              <xsl:for-each select="form/start/year/select/option">
+                                <xsl:copy-of select="."/>
+                              </xsl:for-each>
+                            </select>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <input type="text" name="untilYear" size="4"  onfocus="selectRecurCountUntil('recurUntil')">
+                              <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
+                            </input>
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </div>
+                      <!--
+                      <script language="JavaScript" type="text/javascript">
+                      <xsl:comment>
+                        untilDateDynCalWidget = new dynCalendar('untilDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'untilDateCalWidgetCallback',false,'<xsl:value-of select="$resourcesRoot"/>/resources/');
+                      </xsl:comment>
+                      </script>-->
+                    </p>
+                    <p>
+                      <input type="radio" name="recurCountUntil" value="forever">
+                        <xsl:if test="not(form/recurring) or form/recurring/count = '-1'">
+                          <xsl:attribute name="checked">checked</xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      forever
+                      &#160;
+                      <input type="radio" name="recurCountUntil" value="count" id="recurCount">
+                        <xsl:if test="form/recurring/count != '-1'">
+                          <xsl:attribute name="checked">checked</xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      <input type="text" value="1" size="2" name="countHolder"  onfocus="selectRecurCountUntil('recurCount')">
+                        <xsl:if test="form/recurring/count and form/recurring/count != '-1'">
+                          <xsl:attribute name="value"><xsl:value-of select="form/recurring/count"/></xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      times
+                    </p>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="recurrenceRules">
+                  <span id="advancedRecurrenceRules" class="invisible">
+                    <!-- hourly -->
+                    <div id="hourlyRecurrenceRules" class="invisible">
+                      <p>
+                        <strong>Interval:</strong>
+                        every
+                        <input type="text" name="hourlyInterval" size="2" value="1">
+                          <xsl:if test="form/recurrence/interval">
+                            <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
+                          </xsl:if>
+                        </input>
+                        hour(s)
+                      </p>
+                    </div>
+                    <!-- daily -->
+                    <div id="dailyRecurrenceRules" class="invisible">
+                      <p>
+                        <strong>Interval:</strong>
+                        every
+                        <input type="text" name="dailyInterval" size="2" value="1">
+                          <xsl:if test="form/recurrence/interval">
+                            <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
+                          </xsl:if>
+                        </input>
+                        day(s)
+                      </p>
+                      <p>
+                        <input type="checkbox" name="swapDayMonthCheckBoxList" value="" onclick="swapVisible(this,'dayMonthCheckBoxList')"/>
+                        in these months:
+                        <div id="dayMonthCheckBoxList" class="invisible">
+                          <xsl:for-each select="/bedework/monthlabels/val">
+                            <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
+                            <span class="chkBoxListItem">
+                              <input type="checkbox" name="dayMonths">
+                                <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position() = $pos]"/></xsl:attribute>
+                              </input>
+                              <xsl:value-of select="."/>
+                            </span>
+                            <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
+                          </xsl:for-each>
+                        </div>
+                      </p>
+                      <!--<p>
+                        <input type="checkbox" name="swapDaySetPos" value="" onclick="swapVisible(this,'daySetPos')"/>
+                        limit to:
+                        <div id="daySetPos" class="invisible">
+                        </div>
+                      </p>-->
+                    </div>
+                    <!-- weekly -->
+                    <div id="weeklyRecurrenceRules" class="invisible">
+                      <p>
+                        <strong>Interval:</strong>
+                        every
+                        <input type="text" name="weeklyInterval" size="2" value="1">
+                          <xsl:if test="form/recurrence/interval">
+                            <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
+                          </xsl:if>
+                        </input>
+                        week(s) on:
+                      </p>
+                      <p>
+                        <div id="weekRecurFields">
+                          <xsl:call-template name="byDayChkBoxList">
+                            <xsl:with-param name="name">byDayWeek</xsl:with-param>
+                          </xsl:call-template>
+                        </div>
+                      </p>
+                      <p class="weekRecurLinks">
+                        <a href="javascript:recurSelectWeekdays('weekRecurFields')">select weekdays</a> |
+                        <a href="javascript:recurSelectWeekends('weekRecurFields')">select weekends</a>
+                      </p>
+                      <p>
+                        Week start:
+                        <select name="weekWkst">
+                          <xsl:for-each select="/bedework/shortdaynames/val">
+                            <xsl:variable name="pos" select="position()"/>
+                            <option>
+                              <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
+                              <xsl:value-of select="."/>
+                            </option>
+                          </xsl:for-each>
+                        </select>
+                      </p>
+                    </div>
+                    <!-- monthly -->
+                    <div id="monthlyRecurrenceRules" class="invisible">
+                      <p>
+                        <strong>Interval:</strong>
+                        every
+                        <input type="text" name="monthlyInterval" size="2" value="1">
+                          <xsl:if test="form/recurrence/interval">
+                            <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
+                          </xsl:if>
+                        </input>
+                        month(s)
+                      </p>
+                      <div id="monthRecurFields">
+                        <div id="monthRecurFields1">
+                          on
+                          <select name="bymonthposPos1" width="7em" onchange="changeClass('monthRecurFields2','shown')">
+                            <xsl:call-template name="recurrenceDayPosOptions"/>
+                          </select>
+                          <xsl:call-template name="byDayChkBoxList"/>
+                        </div>
+                        <xsl:call-template name="buildRecurFields">
+                          <xsl:with-param name="current">2</xsl:with-param>
+                          <xsl:with-param name="total">10</xsl:with-param>
+                          <xsl:with-param name="name">month</xsl:with-param>
+                        </xsl:call-template>
+                      </div>
+                      <p>
+                        <input type="checkbox" name="swapMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'monthDaysCheckBoxList')"/>
+                        on these days:<br/>
+                        <div id="monthDaysCheckBoxList" class="invisible">
+                          <xsl:call-template name="buildCheckboxList">
+                            <xsl:with-param name="current">1</xsl:with-param>
+                            <xsl:with-param name="end">31</xsl:with-param>
+                            <xsl:with-param name="name">monthDayBoxes</xsl:with-param>
+                          </xsl:call-template>
+                        </div>
+                      </p>
+                    </div>
+                    <!-- yearly -->
+                    <div id="yearlyRecurrenceRules" class="invisible">
+                      <p>
+                        <strong>Interval:</strong>
+                        every
+                        <input type="text" name="yearlyInterval" size="2" value="1">
+                          <xsl:if test="form/recurrence/interval">
+                            <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
+                          </xsl:if>
+                        </input>
+                        years(s)
+                      </p>
+                      <div id="yearRecurFields">
+                        <div id="yearRecurFields1">
+                          on
+                          <select name="byyearposPos1" width="7em" onchange="changeClass('yearRecurFields2','shown')">
+                            <xsl:call-template name="recurrenceDayPosOptions"/>
+                          </select>
+                          <xsl:call-template name="byDayChkBoxList"/>
+                        </div>
+                        <xsl:call-template name="buildRecurFields">
+                          <xsl:with-param name="current">2</xsl:with-param>
+                          <xsl:with-param name="total">10</xsl:with-param>
+                          <xsl:with-param name="name">year</xsl:with-param>
+                        </xsl:call-template>
+                      </div>
+                      <p>
+                        <input type="checkbox" name="swapYearMonthCheckBoxList" value="" onclick="swapVisible(this,'yearMonthCheckBoxList')"/>
+                        in these months:
+                        <div id="yearMonthCheckBoxList" class="invisible">
+                          <xsl:for-each select="/bedework/monthlabels/val">
+                            <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
+                            <span class="chkBoxListItem">
+                              <input type="checkbox" name="yearMonths">
+                                <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position() = $pos]"/></xsl:attribute>
+                              </input>
+                              <xsl:value-of select="."/>
+                            </span>
+                            <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
+                          </xsl:for-each>
+                        </div>
+                      </p>
+                      <p>
+                        <input type="checkbox" name="swapYearMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'yearMonthDaysCheckBoxList')"/>
+                        on these days of the month:<br/>
+                        <div id="yearMonthDaysCheckBoxList" class="invisible">
+                          <xsl:call-template name="buildCheckboxList">
+                            <xsl:with-param name="current">1</xsl:with-param>
+                            <xsl:with-param name="end">31</xsl:with-param>
+                            <xsl:with-param name="name">yearMonthDayBoxes</xsl:with-param>
+                          </xsl:call-template>
+                        </div>
+                      </p>
+                      <p>
+                        <input type="checkbox" name="swapYearWeeksCheckBoxList" value="" onclick="swapVisible(this,'yearWeeksCheckBoxList')"/>
+                        in these weeks of the year:<br/>
+                        <div id="yearWeeksCheckBoxList" class="invisible">
+                          <xsl:call-template name="buildCheckboxList">
+                            <xsl:with-param name="current">1</xsl:with-param>
+                            <xsl:with-param name="end">53</xsl:with-param>
+                            <xsl:with-param name="name">yearWeekBoxes</xsl:with-param>
+                          </xsl:call-template>
+                        </div>
+                      </p>
+                      <p>
+                        <input type="checkbox" name="swapYearDaysCheckBoxList" value="" onclick="swapVisible(this,'yearDaysCheckBoxList')"/>
+                        on these days of the year:<br/>
+                        <div id="yearDaysCheckBoxList" class="invisible">
+                          <xsl:call-template name="buildCheckboxList">
+                            <xsl:with-param name="current">1</xsl:with-param>
+                            <xsl:with-param name="end">366</xsl:with-param>
+                            <xsl:with-param name="name">yearDayBoxes</xsl:with-param>
+                          </xsl:call-template>
+                        </div>
+                      </p>
+                      <p>
+                        Week start:
+                        <select name="yearWkst">
+                          <xsl:for-each select="/bedework/shortdaynames/val">
+                            <xsl:variable name="pos" select="position()"/>
+                            <option>
+                              <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
+                              <xsl:value-of select="."/>
+                            </option>
+                          </xsl:for-each>
+                        </select>
+                      </p>
+                    </div>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </xsl:otherwise>
+      </xsl:choose>
+      <div id="recurrenceUiSwitch">
+        <input type="checkbox" name="recurrenceUiSwitch" value="simple" onchange="swapVisible(this,'advancedRecurrenceRules')"/>
+        show advanced recurrence rules
+      </div>
+      <!-- recurrence dates (rdates) -->
+      <div id="recurrenceDatesButton">
+        <input type="button" value="add/remove recurrence dates" class="small"/>
+      </div>
+    </div>
+    <div class="eventSubmitButtons">
+      <input name="submit" type="submit" value="save event"/>
+      <input name="cancelled" type="submit" value="cancel"/>
     </div>
   </xsl:template>
 
@@ -2926,9 +2912,10 @@
       <!-- Bedework 24-Hour Clock time selection widget
            used with resources/bwClock.js and resources/bwClock.css -->
       <div id="bwClockClock">
-        <img id="clockMap" src="{$resourcesRoot}/resources/clockMap.gif" width="368" height="368" border="0" alt="" usemap="#bwClockMap" />
+        <img id="clockMap" src="{$resourcesRoot}/resources/clockMap.gif" width="368" height="368" border="0" alt="bwClock" usemap="#bwClockMap" />
       </div>
       <div id="bwClockCover">
+        &#160;
         <!-- this is a special effect div used simply to cover the pixelated edge
              where the clock meets the clock box title -->
       </div>
@@ -2941,6 +2928,9 @@
         </div>
         <div id="bwClockTime">
           select time
+        </div>
+        <div id="bwClockSwitch">
+          switch
         </div>
         <div id="bwClockCloseText">
           close
@@ -3101,7 +3091,7 @@
 
   <xsl:template match="event" mode="addEventRef">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
-    change it without modifying includes.js -->
+    change it without modifying bedework.js -->
     <form name="eventForm" method="post" action="{$event-addEventRefComplete}" id="standardForm"  enctype="multipart/form-data">
       <xsl:variable name="subscriptionId" select="subscription/id"/>
       <xsl:variable name="calPath" select="calendar/path"/>
@@ -3355,6 +3345,7 @@
               </td>
               <td>
                 <textarea name="categoryDesc.value" rows="3" cols="60">
+                  <xsl:text> </xsl:text>
                 </textarea>
               </td>
             </tr>
@@ -3393,6 +3384,11 @@
               <td>
                 <textarea name="categoryDesc.value" rows="3" cols="60">
                   <xsl:value-of select="normalize-space(/bedework/currentCategory/category/desc)"/>
+                  <xsl:if test="normalize-space(/bedework/currentCategory/category/desc/textarea) = ''">
+                    <xsl:text> </xsl:text>
+                    <!-- keep this space to avoid browser
+                    rendering errors when the text area is empty -->
+                  </xsl:if>
                 </textarea>
               </td>
             </tr>
@@ -3735,6 +3731,11 @@
           <td>
             <textarea name="calendar.description" cols="40" rows="4">
               <xsl:value-of select="desc"/>
+              <xsl:if test="normalize-space(desc) = ''">
+                <xsl:text> </xsl:text>
+                <!-- keep this non-breaking space to avoid browser
+                rendering errors when the text area is empty -->
+              </xsl:if>
             </textarea>
           </td>
         </tr>
@@ -3807,6 +3808,11 @@
           <td>
             <textarea name="calendar.description" cols="40" rows="4">
               <xsl:value-of select="desc"/>
+              <xsl:if test="normalize-space(desc) = ''">
+                <xsl:text> </xsl:text>
+                <!-- keep this non-breaking space to avoid browser
+                rendering errors when the text area is empty -->
+              </xsl:if>
             </textarea>
           </td>
         </tr>
@@ -4126,17 +4132,19 @@
                   <xsl:otherwise>
                     <li class="folder">
                       <xsl:value-of select="name"/>:
-                      <ul>
-                        <xsl:for-each select="calendars//calendar[calendarCollection='true']">
-                          <li class="calendar">
-                            <xsl:variable name="calPath" select="path"/>
-                            <xsl:variable name="name" select="name"/>
-                            <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
-                              <xsl:value-of select="name"/>
-                            </a>
-                          </li>
-                        </xsl:for-each>
-                      </ul>
+                      <xsl:if test="calendars//calendar[calendarCollection='true']">
+                        <ul>
+                          <xsl:for-each select="calendars//calendar[calendarCollection='true']">
+                            <li class="calendar">
+                              <xsl:variable name="calPath" select="path"/>
+                              <xsl:variable name="name" select="name"/>
+                              <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
+                                <xsl:value-of select="name"/>
+                              </a>
+                            </li>
+                          </xsl:for-each>
+                        </ul>
+                      </xsl:if>
                     </li>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -4229,7 +4237,7 @@
   <xsl:template name="addSubByUri">
     <h3>Add Subscription to User Calendar</h3>
     <p class="note">*the subsciption name must be unique</p>
-    <form name="subscribeForm" action="{$subscriptions-initAdd}" onsubmit="return setSubscriptionUri(this)" method="post">
+    <form name="subscribeForm" action="{$subscriptions-initAdd}" onsubmit="return setSubscriptionUri(this,'bwcal:///user/')" method="post">
       <table class="common" cellspacing="0">
         <tr>
           <td class="fieldname">Name:</td>
@@ -4663,7 +4671,7 @@
   <!--==== UPLOAD ====-->
   <xsl:template name="upload">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
-    change it without modifying includes.js -->
+    change it without modifying bedework.js -->
     <form name="eventForm" method="post" action="{$upload}" id="standardForm"  enctype="multipart/form-data">
       <h2>Upload iCAL File</h2>
       <table class="common" cellspacing="0">
@@ -4767,15 +4775,17 @@
       </tr>
       <tr>
         <td>
-          <ul>
-            <xsl:for-each select="/bedework/locations/location">
-              <xsl:sort select="."/>
-              <li>
-                <xsl:variable name="uid" select="uid"/>
-                <a href="{$location-fetchForUpdate}&amp;uid={$uid}"><xsl:value-of select="address"/></a>
-              </li>
-            </xsl:for-each>
-          </ul>
+          <xsl:if test="/bedework/locations/location">
+            <ul>
+              <xsl:for-each select="/bedework/locations/location">
+                <xsl:sort select="."/>
+                <li>
+                  <xsl:variable name="uid" select="uid"/>
+                  <a href="{$location-fetchForUpdate}&amp;uid={$uid}"><xsl:value-of select="address"/></a>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </xsl:if>
         </td>
       </tr>
     </table>
@@ -5001,7 +5011,7 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
-    change it without modifying includes.js -->
+    change it without modifying bedework.js -->
     <form name="eventForm" method="post" action="{$schedule-attendeeRespond}" id="standardForm">
       <input type="hidden" name="updateEvent" value="true"/>
       <input type="hidden" name="endType" value="date"/>
@@ -5042,6 +5052,7 @@
           <td class="fieldname">Comment:</td>
           <td class="fieldval scheduleActions">
             <textarea name="comment" cols="60" rows="2">
+              <xsl:text> </xsl:text>
             </textarea>
           </td>
         </tr>
@@ -5150,10 +5161,10 @@
                 <strong>End:</strong>
                 <xsl:choose>
                   <xsl:when test="form/end/type='E'">
-                    <input type="radio" name="eventEndType" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" value="E" checked="checked" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="E" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 Date
@@ -5199,10 +5210,10 @@
                 <div class="dateFields">
                   <xsl:choose>
                     <xsl:when test="form/end/type='D'">
-                      <input type="radio" name="eventEndType" value="D" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                      <input type="radio" name="eventEndType" value="D" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                     </xsl:when>
                     <xsl:otherwise>
-                      <input type="radio" name="eventEndType" value="D" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                      <input type="radio" name="eventEndType" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                     </xsl:otherwise>
                   </xsl:choose>
                   Duration
@@ -5238,7 +5249,7 @@
                         <div class="durationBox">
                           <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')"/>
                           <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
-                          <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="true"/>weeks
+                          <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="disabled"/>weeks
                         </div>
                       </xsl:when>
                       <xsl:otherwise>
@@ -5246,12 +5257,12 @@
                         <div class="durationBox">
                           <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')"/>
                           <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
-                          <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="true"/>days
+                          <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="disabled"/>days
                           <span id="durationHrMin" class="{$durationHrMinClass}">
                             <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
-                            <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="true"/>hours
+                            <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="disabled"/>hours
                             <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
-                            <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="true"/>minutes
+                            <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="disabled"/>minutes
                           </span>
                         </div>
                         <span class="durationSpacerText">or</span>
@@ -5267,10 +5278,10 @@
                 <div class="dateFields" id="noDuration">
                   <xsl:choose>
                     <xsl:when test="form/end/type='N'">
-                      <input type="radio" name="eventEndType" value="N" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                      <input type="radio" name="eventEndType" value="N" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                     </xsl:when>
                     <xsl:otherwise>
-                      <input type="radio" name="eventEndType" value="N" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                      <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                     </xsl:otherwise>
                   </xsl:choose>
                   This event has no duration / end date
@@ -5575,7 +5586,7 @@
 
   <xsl:template match="event" mode="addEventRef">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
-    change it without modifying includes.js -->
+    change it without modifying bedework.js -->
     <form name="eventForm" method="post" action="{$event-addEventRefComplete}" id="standardForm"  enctype="multipart/form-data">
       <xsl:variable name="subscriptionId" select="subscription/id"/>
       <xsl:variable name="calPath" select="calendar/path"/>
@@ -5635,12 +5646,12 @@
   <xsl:template match="prefs">
     <h2>Manage Preferences</h2>
     <ul class="submenu">
-      <li class="selected">General</li>
-      <li><a href="{$prefs-fetchSchedulingForUpdate}">Scheduling/Meetings</a></li>
+      <li class="selected">general</li>
+      <li><a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a></li>
     </ul>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
-    change it without modifying includes.js -->
-    <form name="eventForm" method="post" action="{$prefs-update}" onSubmit="setWorkDays(this)">
+    change it without modifying bedework.js -->
+    <form name="eventForm" method="post" action="{$prefs-update}" onsubmit="setWorkDays(this)">
       <table class="common">
         <tr><td colspan="2" class="fill">User settings:</td></tr>
         <tr>
@@ -5955,8 +5966,8 @@
   <xsl:template match="schPrefs">
     <h2>Manage Preferences</h2>
     <ul class="submenu">
-      <li><a href="{$prefs-fetchForUpdate}">General</a></li>
-      <li class="selected"><a href="">Scheduling/Meetings</a></li>
+      <li><a href="{$prefs-fetchForUpdate}">general</a></li>
+      <li class="selected">scheduling/meetings</li>
     </ul>
 
       <table class="common" cellspacing="0">
@@ -5968,6 +5979,7 @@
           <td class="leftBorder padMe">
             <form name="prefsSetAccess1" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
               <xsl:call-template name="schedulingAccessForm"/>
+              <input type="hidden" name="what" value="in"/>
             </form>
             <xsl:apply-templates select="inbox/acl" mode="currentAccess">
               <xsl:with-param name="action" select="$prefs-setAccess"/>
@@ -5977,6 +5989,7 @@
           <td class="leftBorder padMe">
             <form name="prefsSetAccess2" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
               <xsl:call-template name="schedulingAccessForm"/>
+              <input type="hidden" name="what" value="out"/>
             </form>
             <xsl:apply-templates select="outbox/acl" mode="currentAccess">
               <xsl:with-param name="action" select="$prefs-setAccess"/>
@@ -6020,8 +6033,30 @@
 
   <!--==== ACCESS CONTROL TEMPLATES ====-->
 
+  <xsl:template name="eventAccessForm">
+    <xsl:variable name="calPathEncoded" select="form/calendar/encodedPath"/>
+    <xsl:variable name="calPath" select="form/calendar/path"/>
+    <xsl:variable name="guid" select="guid"/>
+    <xsl:variable name="recurrenceId" select="recurrenceId"/>
+    <div id="bwEventTab-Access" class="invisible">
+      <div id="sharingBox">
+        <xsl:apply-templates select="/bedework/access/acl" mode="currentAccess">
+          <xsl:with-param name="action" select="$event-setAccess"/>
+          <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
+          <xsl:with-param name="guid" select="$guid"/>
+          <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
+        </xsl:apply-templates>
+        <form name="eventShareForm" action="{$event-setAccess}" id="shareForm">
+          <input type="hidden" name="calPath" value="{$calPath}"/>
+          <input type="hidden" name="guid" value="{$guid}"/>
+          <input type="hidden" name="recurid" value="{$recurrenceId}"/>
+          <xsl:call-template name="entityAccessForm"/>
+        </form>
+      </div>
+    </div>
+  </xsl:template>
+
   <xsl:template name="schedulingAccessForm">
-    <input type="hidden" name="what" value="out"/>
     <p>
       <input type="text" name="who" width="40"/>
       <span class="nowrap"><input type="radio" name="whoType" value="user" checked="checked"/>user</span>
@@ -6438,7 +6473,7 @@
         <td class="rightCell">
           <!--<form name="skinSelectForm" method="post" action="{$setup}">
             skin selector:
-            <select name="skinNameSticky" onChange="submit()">
+            <select name="skinNameSticky" onchange="submit()">
               <option>select a skin</option>
               <option value="default">Demo Calendar</option>
               <option value="rensselaer">Rensselaer</option>

@@ -1246,8 +1246,12 @@
               <!-- this value is passed into the form when the widget is requested -->
               <input type="hidden" name="calPath" value=""/>
               <!-- fill these on submit -->
-              <input type="hidden" name="eventStartDate" value=""/>
-              <input type="hidden" name="eventEndDate" value=""/>
+              <input type="hidden" name="eventStartDate.year" value=""/>
+              <input type="hidden" name="eventStartDate.month" value=""/>
+              <input type="hidden" name="eventStartDate.day" value=""/>
+              <input type="hidden" name="eventEndDate.year" value=""/>
+              <input type="hidden" name="eventEndDate.month" value=""/>
+              <input type="hidden" name="eventEndDate.day" value=""/>
               <!-- static fields -->
               <input type="hidden" name="nocache" value="no"/>
               <input type="hidden" name="skinName" value="ical"/>

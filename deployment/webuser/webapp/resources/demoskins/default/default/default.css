@@ -40,6 +40,16 @@ h2.bwStatusTentative {
 }
 h2 .formButtons {
   float: right;
+  font-size: 0.8em;
+}
+div.eventSubmitButtons {
+  text-align: right;
+  margin: 1em 0.5em;
+}
+.eventSubmitButtons input,
+.formButtons input {
+  margin: 0;
+  font-size: 0.8em;
 }
 h3 {
   margin: 0em;
@@ -71,8 +81,8 @@ td {
   font-size: 2em;
 }
 #logoTable img {
-  display: inline;
   padding: 0 0 2px 5px;
+  margin: 0;
 }
 #logoTable #schoolLinksCell {
   vertical-align: bottom;
@@ -109,7 +119,6 @@ td {
   margin: 0em;
   font-weight : bold;
   text-align : center;
-  vertical-align: middle;
   white-space: nowrap;
 }
 #curDateRangeTable td {
@@ -117,6 +126,7 @@ td {
   padding-bottom: 1px;
   padding-left: 0.5em;
   padding-right: 0.5em;
+  vertical-align: middle;
 }
 #curDateRangeTable td.sideBarOpenCloseIcon {
   background: url(../../resources/glassFill-02-leftBorder.gif) no-repeat top left;
@@ -135,6 +145,7 @@ td {
   font-weight : bold;
   text-align : right;
   white-space: nowrap;
+  vertical-align: middle;
 }
 #curDateRangeTable td.rssPrint img {
   position: relative;
@@ -301,6 +312,8 @@ td {
 }
 #utilBarTable img {
   vertical-align: middle;
+  margin: 0;
+  padding: 0;
 }
 #searchTable {
   width: 100%;
@@ -343,7 +356,8 @@ td {
   margin-top: 5px;
 }
 #tabsTable {
-  margin: 0em;
+  margin: 0;
+  padding: 0;
   text-align: center;
   vertical-align: bottom;
   background-color: #333;
@@ -351,14 +365,17 @@ td {
   font-size: 0.8em;
 }
 #tabsTable td {
-  padding-top: 4px;
+  padding: 4px 0 0 0;
   white-space: nowrap;
+}
+#tabsTable img {
+  display: inline;
 }
 #tabsTable a {
   background-color: inherit;
   color: #ccc;
 }
-#tabsTable .rightCell {
+#tabsTable td.rightCell {
   width: 100%;
   background : url(../../resources/std-tab-space.gif);
   padding-right: 0.5em;
@@ -408,11 +425,12 @@ td {
 }
 #navigationBarTable td.leftCell .prevImg {
   margin: 0;
+  padding: 0;
   vertical-align: middle;
 }
 #navigationBarTable td.leftCell .nextImg {
-  margin-left: 0.2em;
-  margin-right: 0.5em;
+  margin: 0 0.5em 0 0.2em;
+  padding: 0;
   vertical-align: middle;
 }
 #navigationBarTable td.rightCell {
@@ -457,7 +475,7 @@ messages.
 ul.submenu {
   margin: 0 0 1em 0;
   padding: 0;
-  font-size: 0.9em;
+  font-size: 0.8em;
   color: black;
   background-color: #eee;
   border-bottom: 1px solid #666;
@@ -474,7 +492,6 @@ ul.submenu li {
 ul.submenu li.selected {
   color: black;
   background-color: white;
-  font-weight: bold;
   border-bottom: 1px solid white;
 }
 ul.submenu li a:link,
@@ -498,12 +515,20 @@ ul.submenu li.selected:hover {
   margin: 0;
   padding: 0;
 }
+#eventAccessLink {
+  float: right;
+  font-size: 0.8em;
+  margin: 0 1em;
+}
 /* table below is used for almost all forms  */
 table.common {
   width: 100%;
   font-size: 0.9em;
   margin: 0px;
   padding: 0px;
+}
+table.dottedBorder {
+  border: 1px dotted #ccc;
 }
 table.common th {
   text-align: left;
@@ -578,10 +603,13 @@ table.common td.fieldname {
   background-color: #eee;
   white-space: nowrap;
 }
+table.dottedBorder td.fieldname {
+  text-align: right;
+}
 table.common td.submit {
   padding: 0.5em 0.5em 0.2em 0.5em;
   color: black;
-  background: #f5f5f5;
+  background: white;
   text-align: right;
   border-top: 1px solid #ccc;
 }
@@ -590,9 +618,6 @@ table.common td.eventLinks {
   color: #eee;
   padding: 6px 0;
   text-align: center;
-}
-table.common td.tzTime {
-  /*font-style: italic;*/
 }
 table.common #eventActions {
   float: right;
@@ -618,44 +643,44 @@ table.common tr#exportDateRange td.dates {
   border-bottom: 1px solid #999;
   padding: 0.5em;
 }
-table.common .dateFields {
-  display: inline;
-}
-table.common .timeFields {
-  display: inline;
-  margin-left: 1em;
-}
-table.common .dateStartEndBox {
-  border: 1px solid #ccb;
-  margin: 4px;
-  padding: 4px;
-  white-space: nowrap;
-}
-table.common .dateStartEndBox strong {
-  display: block;
-}
-table.common .startDateLabel {
-  margin-left: 26px;
-}
-table.common select.timezones {
-  margin-left: 1em;
-  width: 160px;
-}
-table.common div.durationBox {
-  border: 1px solid #ccb;
-  display: inline;
-  margin: 4px;
-  padding: 4px;
-}
-table.common .durationSpacerText {
-  font-weight: bold;
-  margin: 0 1em;
-}
 table.common .padMeTop {
   padding-top: 1em !important;
 }
 table.common .padMe {
   padding: 1em !important;
+}
+.dateFields {
+  display: inline;
+}
+.timeFields {
+  display: inline;
+  margin-left: 1em;
+}
+.dateStartEndBox {
+  border: 1px solid #ccb;
+  margin: 4px;
+  padding: 4px;
+  white-space: nowrap;
+}
+.dateStartEndBox strong {
+  display: block;
+}
+.startDateLabel {
+  margin-left: 26px;
+}
+select.timezones {
+  margin-left: 1em;
+  width: 160px;
+}
+div.durationBox {
+  border: 1px solid #ccb;
+  display: inline;
+  margin: 4px;
+  padding: 4px;
+}
+.durationSpacerText {
+  font-weight: bold;
+  margin: 0 1em;
 }
 table.scheduling td {
   white-space: nowrap;
@@ -663,14 +688,22 @@ table.scheduling td {
 table#manage td {
   padding: 0.2em 0 0 0.5em;
 }
+#bwEventTab-Recurrence {
+  margin: 0 1em;
+  font-size: 0.9em;
+}
 #bwEventCalDisplay {
   font-weight: bold;
   margin-right: 1em;
 }
 #clock {
   position: absolute;
-  top: 460px;
-  left: 320px;
+  top: 160px;
+  margin: auto;
+}
+#startTimeFields img,
+#endTimeFields img {
+  vertical-align: middle;
 }
 #tztable {
   margin-top: 1em;
@@ -683,14 +716,22 @@ table#manage td {
   font-style: italic;
   margin-bottom: 0.5em;
 }
+#recurrenceUiSwitch {
+  margin: 0.2em 0 2em 0;
+  font-size: 0.8em;
+}
+#recurrenceFields {
+  margin: 0;
+  border: 1px solid #ddd;
+}
 #recurrenceFields #recurrenceTable strong {
   display: inline;
 }
 #recurrenceFields #recurrenceTable td.recurrenceFrequency {
-  padding: 0.5em 1em 0 0;
+  padding: 0.5em 1em;
 }
 #recurrenceFields #recurrenceTable td.recurrenceRules {
-  padding: 0.5em 0 0.5em 1em;
+  padding: 0.5em 1em 0.5em 1em;
   border-left: 1px solid #ddd;
 }
 #recurrenceFields #recurrenceTable td.recurrenceUntil {
@@ -700,10 +741,8 @@ table#manage td {
 }
 #recurrenceFields #recurrenceTable td.recurrenceRules #advancedRecurrenceRules {
   display: block;
-  border-bottom: 1px solid #ddd;
-}
-#recurrenceFields #recurrenceTable td.recurrenceRules .rruleBlock {
-  margin: 0 0 0.5em 2em;
+  border-top: 1px solid #ddd;
+  padding: 1em 0;
 }
 .chkBoxListItem {
   display: block;
@@ -737,9 +776,10 @@ table#manage td {
   margin: 0.5em 0 0.5em 2em;
   display: block;
   clear: both;
+  white-space: nowrap !important;
 }
 #recurrenceDatesButton {
-  margin-top: 0.5em;
+  margin: 0 0 1em 0;
 }
 .shown {
   display: inline;
@@ -858,10 +898,6 @@ table#attendees.widget td.trash {
   text-align: center;
   color: black;
   background: #eee;
-}
-/* default title of movable dialog boxes */
-#dialogTitle {
-  cursor: move;
 }
 #weekCalendarTable {
   width: 100%;

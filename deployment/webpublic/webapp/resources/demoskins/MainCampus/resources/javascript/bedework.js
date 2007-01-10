@@ -16,9 +16,18 @@ function launchExportWidget(formId,name,calPath) {
   document.getElementById('bwCalendarExportWidgetCalName').innerHTML = name;
 }
 function fillExportFields(formId) {
-   var formObj = document.getElementById(formId);
-   formObj.eventStartDate.value = dojo.widget.byId('bwExportCalendarWidgetStartDate').getValue();
-   formObj.eventEndDate.value = dojo.widget.byId('bwExportCalendarWidgetEndDate').getValue();
+  var formObj = document.getElementById(formId);
+  var startDate = new Date();
+  startDate = dojo.widget.byId("bwExportCalendarWidgetStartDate").getDate();
+  formObj["eventStartDate.year"].value = startDate.getFullYear();
+  formObj["eventStartDate.month"].value = startDate.getMonth() + 1;
+  formObj["eventStartDate.day"].value = startDate.getDate();
+
+  var endDate = new Date();
+  endDate = dojo.widget.byId("bwExportCalendarWidgetEndDate").getDate();
+  formObj["eventEndDate.year"].value = endDate.getFullYear();
+  formObj["eventEndDate.month"].value = endDate.getMonth() + 1;
+  formObj["eventEndDate.day"].value = endDate.getDate();
 }
 function hideWidget(id) {
   var widget = dojo.widget.byId(id);
