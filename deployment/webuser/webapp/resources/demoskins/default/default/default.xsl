@@ -83,7 +83,7 @@
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/event/initEvent"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/event/addEvent"/>
   <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete/a/@href"/>
-  <xsl:variable name="event-initAccess" select="/bedework/urlPrefixes/event/initAccess/a/@href"/>
+  <xsl:variable name="event-showAccess" select="/bedework/urlPrefixes/event/showAccess/a/@href"/>
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
   <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent/a/@href"/>
@@ -176,7 +176,12 @@
           <xsl:call-template name="selectCalForEvent"/>
         </xsl:when>
         <xsl:when test="/bedework/page='attendees'">
+          <xsl:call-template name="messagesAndErrors"/>
           <xsl:call-template name="attendees"/>
+        </xsl:when>
+        <xsl:when test="/bedework/page='eventAccess'">
+          <xsl:call-template name="messagesAndErrors"/>
+          <xsl:apply-templates select="/bedework/eventAccess"/>
         </xsl:when>
         <xsl:otherwise>
             <xsl:call-template name="headBar"/>
@@ -1829,9 +1834,14 @@
       </xsl:if>
 
       <!-- event form submenu -->
-      <xsl:if test="/bedework/creating = 'false'">
-        <a href="{$event-initAccess}" id="eventAccessLink">set event access</a>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="/bedework/creating = 'false'">
+          <a href="javascript:launchSizedWindow('{$event-showAccess}',600,600)" id="eventAccessLink">set event access</a>
+        </xsl:when>
+        <xsl:otherwise>
+          <a href="javascript:alert('Access/sharing may be set once an event is created.\n')" id="eventAccessLink">set event access</a>
+        </xsl:otherwise>
+      </xsl:choose>
       <ul id="eventFormTabs" class="submenu">
         <li class="selected">
           <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Basic'); hide('bwEventTab-Details','bwEventTab-Recurrence');">
@@ -2358,110 +2368,6 @@
     <!-- Recurrence tab -->
     <!-- ============== -->
     <div id="bwEventTab-Recurrence" class="invisible">
-      <!-- Output descriptive recurrence information.  Probably not
-           complete yet. Replace all strings so can be
-           more easily internationalized. -->
-      <xsl:if test="form/recurrence">
-        <div id="recurrenceInfo">
-          Every
-          <xsl:choose>
-            <xsl:when test="form/recurrence/interval &gt; 1">
-              <xsl:value-of select="form/recurrence/interval"/>
-            </xsl:when>
-          </xsl:choose>
-          <xsl:text> </xsl:text>
-          <xsl:choose>
-            <xsl:when test="form/recurrence/freq = 'HOURLY'">hour</xsl:when>
-            <xsl:when test="form/recurrence/freq = 'DAILY'">day</xsl:when>
-            <xsl:when test="form/recurrence/freq = 'WEEKLY'">week</xsl:when>
-            <xsl:when test="form/recurrence/freq = 'MONTHLY'">month</xsl:when>
-            <xsl:when test="form/recurrence/freq = 'YEARLY'">year</xsl:when>
-          </xsl:choose><xsl:if test="form/recurrence/interval &gt; 1">s</xsl:if>
-          <xsl:text> </xsl:text>
-
-          <xsl:if test="form/recurrence/byday">
-            <xsl:for-each select="form/recurrence/byday/pos">
-              <xsl:if test="position() != 1"> and </xsl:if>
-              on
-              <xsl:choose>
-                <xsl:when test="@val='1'">
-                  the first
-                </xsl:when>
-                <xsl:when test="@val='2'">
-                  the second
-                </xsl:when>
-                <xsl:when test="@val='3'">
-                  the third
-                </xsl:when>
-                <xsl:when test="@val='4'">
-                  the fourth
-                </xsl:when>
-                <xsl:when test="@val='5'">
-                  the fifth
-                </xsl:when>
-                <xsl:when test="@val='-1'">
-                  the last
-                </xsl:when>
-                <!-- don't output "every" -->
-                <!--<xsl:otherwise>
-                  every
-                </xsl:otherwise>-->
-              </xsl:choose>
-              <xsl:for-each select="day">
-                <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
-                <xsl:variable name="dayVal" select="."/>
-                <xsl:variable name="dayPos">
-                  <xsl:for-each select="/bedework/recurdayvals/val">
-                    <xsl:if test="node() = $dayVal"><xsl:value-of select="position()"/></xsl:if>
-                  </xsl:for-each>
-                </xsl:variable>
-                <xsl:value-of select="/bedework/shortdaynames/val[position() = $dayPos]"/>
-                <xsl:if test="position() != last()">, </xsl:if>
-              </xsl:for-each>
-            </xsl:for-each>
-          </xsl:if>
-
-          <xsl:if test="form/recurrence/bymonth">
-            in
-            <xsl:for-each select="form/recurrence/bymonth/val">
-              <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
-              <xsl:variable name="monthNum" select="number(.)"/>
-              <xsl:value-of select="/bedework/monthlabels/val[position() = $monthNum]"/>
-              <xsl:if test="position() != last()">, </xsl:if>
-            </xsl:for-each>
-          </xsl:if>
-
-          <xsl:if test="form/recurrence/bymonthday">
-            on the
-            <xsl:apply-templates select="form/recurrence/bymonthday/val" mode="weekMonthYearNumbers"/>
-            day<xsl:if test="form/recurrence/bymonthday/val[position()=2]">s</xsl:if> of the month
-          </xsl:if>
-
-          <xsl:if test="form/recurrence/byyearday">
-            on the
-            <xsl:apply-templates select="form/recurrence/byyearday/val" mode="weekMonthYearNumbers"/>
-            day<xsl:if test="form/recurrence/byyearday/val[position()=2]">s</xsl:if> of the year
-          </xsl:if>
-
-          <xsl:if test="form/recurrence/byweekno">
-            in the
-            <xsl:apply-templates select="form/recurrence/byweekno/val" mode="weekMonthYearNumbers"/>
-            week<xsl:if test="form/recurrence/byweekno/val[position()=2]">s</xsl:if> of the year
-          </xsl:if>
-
-          repeating
-          <xsl:choose>
-            <xsl:when test="form/recurrence/count = '-1'">forever</xsl:when>
-            <xsl:when test="form/recurrence/until">
-              <xsl:value-of select="form/recurrence/until"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="form/recurrence/count"/>
-              time<xsl:if test="form/recurrence/count &gt; 1">s</xsl:if>
-            </xsl:otherwise>
-          </xsl:choose>
-        </div>
-      </xsl:if>
 
       <!-- recurrence rules -->
       <xsl:choose>
@@ -2501,7 +2407,10 @@
                 <td class="recurrenceFrequency" rowspan="2">
                   <strong>Frequency:</strong><br/>
                   <!-- "freq" is used to determine if a recurrence should be created; test for "NONE" -->
-                  <input type="radio" name="freq" value="NONE" onclick="showRecurrence(this.value)" checked="checked"/>none<br/>
+                  <span class="freqNoneHider">
+                    <xsl:if test="form/recurrence"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
+                    <input type="radio" name="freq" value="NONE" onclick="showRecurrence(this.value)" checked="checked"/>none<br/>
+                  </span>
                   <!--<input type="radio" name="freq" value="HOURLY" onclick="showRecurrence(this.value)"/>hourly<br/>-->
                   <input type="radio" name="freq" value="DAILY" onclick="showRecurrence(this.value)"/>daily<br/>
                   <input type="radio" name="freq" value="WEEKLY" onclick="showRecurrence(this.value)"/>weekly<br/>
@@ -2512,7 +2421,119 @@
                 <td class="recurrenceUntil">
                   <!-- none -->
                   <div id="noneRecurrenceRules">
-                    <p>does not recur</p>
+                    <!-- Output descriptive recurrence information.  Probably not
+                         complete yet. Replace all strings so can be
+                         more easily internationalized. -->
+                    <xsl:choose>
+                      <xsl:when test="form/recurrence">
+                        <strong>Recurrence:</strong>
+                        <div id="recurrenceInfo">
+                          Every
+                          <xsl:choose>
+                            <xsl:when test="form/recurrence/interval &gt; 1">
+                              <xsl:value-of select="form/recurrence/interval"/>
+                            </xsl:when>
+                          </xsl:choose>
+                          <xsl:text> </xsl:text>
+                          <xsl:choose>
+                            <xsl:when test="form/recurrence/freq = 'HOURLY'">hour</xsl:when>
+                            <xsl:when test="form/recurrence/freq = 'DAILY'">day</xsl:when>
+                            <xsl:when test="form/recurrence/freq = 'WEEKLY'">week</xsl:when>
+                            <xsl:when test="form/recurrence/freq = 'MONTHLY'">month</xsl:when>
+                            <xsl:when test="form/recurrence/freq = 'YEARLY'">year</xsl:when>
+                          </xsl:choose><xsl:if test="form/recurrence/interval &gt; 1">s</xsl:if>
+                          <xsl:text> </xsl:text>
+
+                          <xsl:if test="form/recurrence/byday">
+                            <xsl:for-each select="form/recurrence/byday/pos">
+                              <xsl:if test="position() != 1"> and </xsl:if>
+                              on
+                              <xsl:choose>
+                                <xsl:when test="@val='1'">
+                                  the first
+                                </xsl:when>
+                                <xsl:when test="@val='2'">
+                                  the second
+                                </xsl:when>
+                                <xsl:when test="@val='3'">
+                                  the third
+                                </xsl:when>
+                                <xsl:when test="@val='4'">
+                                  the fourth
+                                </xsl:when>
+                                <xsl:when test="@val='5'">
+                                  the fifth
+                                </xsl:when>
+                                <xsl:when test="@val='-1'">
+                                  the last
+                                </xsl:when>
+                                <!-- don't output "every" -->
+                                <!--<xsl:otherwise>
+                                  every
+                                </xsl:otherwise>-->
+                              </xsl:choose>
+                              <xsl:for-each select="day">
+                                <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
+                                <xsl:variable name="dayVal" select="."/>
+                                <xsl:variable name="dayPos">
+                                  <xsl:for-each select="/bedework/recurdayvals/val">
+                                    <xsl:if test="node() = $dayVal"><xsl:value-of select="position()"/></xsl:if>
+                                  </xsl:for-each>
+                                </xsl:variable>
+                                <xsl:value-of select="/bedework/shortdaynames/val[position() = $dayPos]"/>
+                                <xsl:if test="position() != last()">, </xsl:if>
+                              </xsl:for-each>
+                            </xsl:for-each>
+                          </xsl:if>
+
+                          <xsl:if test="form/recurrence/bymonth">
+                            in
+                            <xsl:for-each select="form/recurrence/bymonth/val">
+                              <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
+                              <xsl:variable name="monthNum" select="number(.)"/>
+                              <xsl:value-of select="/bedework/monthlabels/val[position() = $monthNum]"/>
+                              <xsl:if test="position() != last()">, </xsl:if>
+                            </xsl:for-each>
+                          </xsl:if>
+
+                          <xsl:if test="form/recurrence/bymonthday">
+                            on the
+                            <xsl:apply-templates select="form/recurrence/bymonthday/val" mode="weekMonthYearNumbers"/>
+                            day<xsl:if test="form/recurrence/bymonthday/val[position()=2]">s</xsl:if> of the month
+                          </xsl:if>
+
+                          <xsl:if test="form/recurrence/byyearday">
+                            on the
+                            <xsl:apply-templates select="form/recurrence/byyearday/val" mode="weekMonthYearNumbers"/>
+                            day<xsl:if test="form/recurrence/byyearday/val[position()=2]">s</xsl:if> of the year
+                          </xsl:if>
+
+                          <xsl:if test="form/recurrence/byweekno">
+                            in the
+                            <xsl:apply-templates select="form/recurrence/byweekno/val" mode="weekMonthYearNumbers"/>
+                            week<xsl:if test="form/recurrence/byweekno/val[position()=2]">s</xsl:if> of the year
+                          </xsl:if>
+
+                          repeating
+                          <xsl:choose>
+                            <xsl:when test="form/recurrence/count = '-1'">forever</xsl:when>
+                            <xsl:when test="form/recurrence/until">
+                              <xsl:value-of select="form/recurrence/until"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <xsl:value-of select="form/recurrence/count"/>
+                              time<xsl:if test="form/recurrence/count &gt; 1">s</xsl:if>
+                            </xsl:otherwise>
+                          </xsl:choose>
+                        </div>
+                        <div id="recurrenceNote">
+                          Change the recurrence fields to alter the recurrence.
+                        </div>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <p>does not recur</p>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </div>
                   <div id="recurrenceUntilRules" class="invisible">
                     <strong>Repeat:</strong>
@@ -2524,30 +2545,7 @@
                           </xsl:if>
                         </input>
                         until
-                        <select name="untilMonth" onfocus="selectRecurCountUntil('recurUntil')">
-                          <xsl:for-each select="form/start/month/select/option">
-                            <xsl:copy-of select="."/>
-                          </xsl:for-each>
-                        </select>
-                        <select name="untilDay" onfocus="selectRecurCountUntil('recurUntil')">
-                          <xsl:for-each select="form/start/day/select/option">
-                            <xsl:copy-of select="."/>
-                          </xsl:for-each>
-                        </select>
-                        <xsl:choose>
-                          <xsl:when test="/bedework/creating = 'true'">
-                            <select name="untilYear" onfocus="selectRecurCountUntil('recurUntil')">
-                              <xsl:for-each select="form/start/year/select/option">
-                                <xsl:copy-of select="."/>
-                              </xsl:for-each>
-                            </select>
-                          </xsl:when>
-                          <xsl:otherwise>
-                            <input type="text" name="untilYear" size="4"  onfocus="selectRecurCountUntil('recurUntil')">
-                              <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
-                            </input>
-                          </xsl:otherwise>
-                        </xsl:choose>
+                        bwEventWidgetUntilDate
                       </div>
                       <!--
                       <script language="JavaScript" type="text/javascript">
@@ -6037,14 +6035,14 @@
 
   <!--==== ACCESS CONTROL TEMPLATES ====-->
 
-  <xsl:template name="eventAccessForm">
-    <xsl:variable name="calPathEncoded" select="form/calendar/encodedPath"/>
-    <xsl:variable name="calPath" select="form/calendar/path"/>
+  <xsl:template match="eventAccess">
+    <xsl:variable name="calPathEncoded" select="calendar/encodedPath"/>
+    <xsl:variable name="calPath" select="calendar/path"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
-    <div id="bwEventTab-Access" class="invisible">
+    <div id="bwEventTab-Access">
       <div id="sharingBox">
-        <xsl:apply-templates select="/bedework/access/acl" mode="currentAccess">
+        <xsl:apply-templates select="access/acl" mode="currentAccess">
           <xsl:with-param name="action" select="$event-setAccess"/>
           <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
           <xsl:with-param name="guid" select="$guid"/>

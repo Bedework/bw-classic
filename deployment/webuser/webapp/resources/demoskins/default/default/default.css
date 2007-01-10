@@ -717,9 +717,13 @@ table#manage td {
   padding: 2px 4px;
 }
 #recurrenceInfo {
+  margin-top: 1em;
+  font-weight: bold;
+}
+#recurrenceNote {
   font-size: 0.9em;
   font-style: italic;
-  margin-bottom: 0.5em;
+  margin: 1em 0;
 }
 #recurrenceUiSwitch {
   margin: 0.2em 0 2em 0;
