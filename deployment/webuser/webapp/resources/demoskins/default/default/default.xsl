@@ -2259,14 +2259,7 @@
           <td class="fieldname">Event Link:</td>
           <td class="fieldval">
             <xsl:variable name="link" select="form/link/input/@value"/>
-            <xsl:choose>
-              <xsl:when test="/bedework/creating = 'true'">
-                <input type="text" name="newEvent.link" size="80" value="{$link}"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="text" name="event.link" size="80" value="{$link}"/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <input type="text" name="event.link" size="80" value="{$link}"/>
           </td>
         </tr>
         <!--  Description  -->
@@ -2317,22 +2310,18 @@
             Status:
           </td>
           <td class="fieldval">
-            <xsl:choose>
-              <xsl:when test="/bedework/creating = 'true'">
-                <input type="radio" name="newEvent.status" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="newEvent.status" value="TENTATIVE"/>tentative <input type="radio" name="newEvent.status" value="CANCELLED"/>cancelled
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="radio" name="event.status" value="CONFIRMED"/>
-                <xsl:if test="form/status = 'CONFIRMED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                confirmed
-                <input type="radio" name="event.status" value="TENTATIVE"/>
-                <xsl:if test="form/status = 'TENTATIVE'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                tentative
-                <input type="radio" name="event.status" value="CANCELLED"/>
-                <xsl:if test="form/status = 'CANCELLED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                cancelled
-              </xsl:otherwise>
-            </xsl:choose>
+            <input type="radio" name="event.status" value="CONFIRMED">
+              <xsl:if test="form/status = 'CONFIRMED' or /bedework/creating = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            </input>
+            confirmed
+            <input type="radio" name="event.status" value="TENTATIVE">
+              <xsl:if test="form/status = 'TENTATIVE'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            </input>
+            tentative
+            <input type="radio" name="event.status" value="CANCELLED">
+              <xsl:if test="form/status = 'CANCELLED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            </input>
+            cancelled
           </td>
         </tr>
         <!--  Transparency  -->
@@ -2342,21 +2331,13 @@
           </td>
           <td class="fieldval">
             <xsl:choose>
-              <xsl:when test="/bedework/creating = 'true'">
-                <input type="radio" name="newEvent.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                <input type="radio" name="newEvent.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+              <xsl:when test="form/transparency = 'TRANSPARENT'">
+                <input type="radio" name="event.transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+                <input type="radio" name="event.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:choose>
-                  <xsl:when test="form/transparency = 'TRANSPARENT'">
-                    <input type="radio" name="event.transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                    <input type="radio" name="event.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <input type="radio" name="event.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                    <input type="radio" name="event.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
-                  </xsl:otherwise>
-                </xsl:choose>
+                <input type="radio" name="event.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+                <input type="radio" name="event.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
               </xsl:otherwise>
             </xsl:choose>
           </td>
