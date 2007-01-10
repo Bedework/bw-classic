@@ -456,6 +456,11 @@ td {
   color: black;
   background: #d8e118 url(../../resources/glassFill-message.gif) repeat-x bottom;
 }
+
+#errors li,
+#messages li {
+  list-style: none;
+}
 #messages p,
 #errors p {
   margin: 0;

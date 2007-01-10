@@ -380,14 +380,18 @@
 
   <xsl:template name="messagesAndErrors">
     <xsl:if test="/bedework/message">
-      <div id="messages">
-        <xsl:apply-templates select="/bedework/message"/>
-      </div>
+      <ul id="messages">
+        <xsl:for-each select="/bedework/message">
+          <li><xsl:apply-templates select="."/></li>
+        </xsl:for-each>
+      </ul>
     </xsl:if>
     <xsl:if test="/bedework/error">
-      <div id="errors">
-        <xsl:apply-templates select="/bedework/error"/>
-      </div>
+      <ul id="errors">
+        <xsl:for-each select="/bedework/error">
+          <li><xsl:apply-templates select="."/></li>
+        </xsl:for-each>
+      </ul>
     </xsl:if>
   </xsl:template>
 
