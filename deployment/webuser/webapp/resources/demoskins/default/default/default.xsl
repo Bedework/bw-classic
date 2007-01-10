@@ -2561,9 +2561,11 @@
                         </xsl:if>
                       </input>
                       until
-                      <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/resources/calIcon.gif" onClick="selectRecurCountUntil('recurUntil');">
-                        <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
-                        <xsl:text> </xsl:text>
+                      <span id="untilHolder">
+                        <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
+                          <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
+                          <xsl:text> </xsl:text>
+                        </span>
                       </span>
                     </p>
                   </div>

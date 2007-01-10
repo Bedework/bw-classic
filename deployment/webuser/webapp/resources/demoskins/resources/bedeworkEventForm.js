@@ -282,3 +282,15 @@ function setRecurrence(formObj) {
   return true;
 }
 
+function untilClickHandler(evt) {
+   selectRecurCountUntil('recurUntil');
+}
+
+function init() {
+  var untilHolder = dojo.byId("untilHolder");
+  dojo.event.connect(untilHolder, "onclick", untilClickHandler);
+}
+
+dojo.addOnLoad(init);
+
+
