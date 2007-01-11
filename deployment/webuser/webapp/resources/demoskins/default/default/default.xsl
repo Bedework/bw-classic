@@ -6192,6 +6192,7 @@
           </td>
           <td>
             <xsl:value-of select="name(grant/*)"/>
+            <xsl:if test="deny/all">none</xsl:if>
           </td>
           <td>
             <xsl:choose>
