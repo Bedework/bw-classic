@@ -6092,7 +6092,7 @@
               <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
             </li>
             <li>
-              <input type="radio" value="f" name="how"/> Read freebusy only
+              <input type="radio" value="F" name="how"/> Read freebusy only
             </li>
             <li class="padTop">
               <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
