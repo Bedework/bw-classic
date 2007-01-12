@@ -733,11 +733,9 @@
         <tr>
           <td class="fieldname">Categories:</td>
           <td class="fieldval">
-            <!--<ul id="eventCategories">-->
-              <xsl:for-each select="categories/category">
-                <!--<li>--><xsl:value-of select="word"/><br/><!--</li>-->
-              </xsl:for-each>
-            <!--</ul>-->
+            <xsl:for-each select="categories/category">
+              <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
+            </xsl:for-each>
           </td>
         </tr>
       </xsl:if>

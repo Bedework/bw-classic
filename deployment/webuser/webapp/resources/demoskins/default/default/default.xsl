@@ -138,8 +138,8 @@
   <xsl:variable name="schedule-processAttendeeReply" select="/bedework/urlPrefixes/schedule/processAttendeeReply/a/@href"/>
   <!-- misc (mostly import and export) -->
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export/a/@href"/>
-  <xsl:variable name="initUpload" select="/bedework/urlPrefixes/misc/initUpload"/>
-  <xsl:variable name="upload" select="/bedework/urlPrefixes/misc/upload"/>
+  <xsl:variable name="initUpload" select="/bedework/urlPrefixes/misc/initUpload/a/@href"/>
+  <xsl:variable name="upload" select="/bedework/urlPrefixes/misc/upload/a/@href"/>
   <!-- search -->
   <xsl:variable name="search" select="/bedework/urlPrefixes/search/search"/>
   <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
@@ -1740,11 +1740,9 @@
         <tr>
           <td class="fieldname">Categories:</td>
           <td class="fieldval">
-            <!--<ul id="eventCategories">-->
-              <xsl:for-each select="categories/category">
-                <!--<li>--><xsl:value-of select="word"/><br/><!--</li>-->
-              </xsl:for-each>
-            <!--</ul>-->
+            <xsl:for-each select="categories/category">
+              <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
+            </xsl:for-each>
           </td>
         </tr>
       </xsl:if>
