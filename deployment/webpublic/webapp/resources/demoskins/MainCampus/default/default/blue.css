@@ -125,6 +125,7 @@ body {
 #searchBarTable {
   margin: 0px;
   padding: 0em;
+  vertical-align: middle;
   background-color : #eee;
   color: black;
   font-size: 0.9em;
@@ -138,7 +139,7 @@ body {
 }
 #searchBarTable .leftCell .link {
   font-size: 0.8em;
-  padding-left: 1em;
+  padding-left: 0.5em;
   color: #999;
   background-color: transparent;
 }
@@ -157,6 +158,34 @@ body {
   border-right: 2px solid #aaa;
   padding: 0.1em 0.1em 0em 0em;
   white-space: nowrap;
+}
+#searchBarTable form,
+#searchPageForm {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+#searchBarTable #searchForm {
+  margin-right: 0.5em;
+}
+#searchPageForm {
+  float: right;
+}
+#searchBarTable form input {
+  font-size: 0.7em;
+}
+#searchBarTable img {
+  vertical-align: middle;
+}
+#searchFilter {
+  float: right;
+  font-size: 10pt;
+  font-weight: normal;
+  margin-top: 5px;
+}
+#searchFilter form {
+  display: inline;
 }
 #tabsTable {
   margin: 0em;
@@ -232,9 +261,6 @@ body {
   padding-right: 0em;
   margin: 0em;
   width: 10em;
-}
-#searchBarTable .calLinks {
-  white-space: nowrap;
 }
 #eventTable,
 #searchTable {
@@ -907,14 +933,17 @@ h2 a:hover {
   text-decoration: none;
 }
 h2.bwStatusConfirmed {
+  border-top: 1px solid #ccc;
   background-color: #eee;
   color: black;
 }
 h2.bwStatusCancelled {
+  border-top: 1px solid #ccc;
   background-color: #eee;
   color: black;
 }
 h2.bwStatusTentative {
+  border-top: 1px solid #ccc;
   background: #eee url('../../images/tentativeLines.gif') top;
   color: black;
 }
@@ -933,31 +962,6 @@ h2.bwStatusTentative {
   white-space: nowrap;
   width: 100%;
   padding: 0 1em;
-}
-#searchBarTable form,
-#searchPageForm {
-  display: inline;
-  margin: 0px 0px 1px 0px;
-  padding: 0em;
-  white-space: nowrap;
-}
-#searchPageForm {
-  float: right;
-}
-#searchBarTable form input {
-  font-size: 0.7em;
-}
-#searchBarTable img {
-  vertical-align: middle;
-}
-#searchFilter {
-  float: right;
-  font-size: 10pt;
-  font-weight: normal;
-  margin-top: 5px;
-}
-#searchFilter form {
-  display: inline;
 }
 #stats {
   font-size: 0.9em;

@@ -8,14 +8,7 @@
   doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
   standalone="yes"
   omit-xml-declaration="yes"/>
-<!--<xsl:output
-  method="xhtml"
-  indent="yes"
-  media-type="text/html"
-  doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-  doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-  standalone="yes"
-/>-->
+
   <!-- ========================================= -->
   <!--       PERSONAL CALENDAR STYLESHEET        -->
   <!-- ========================================= -->

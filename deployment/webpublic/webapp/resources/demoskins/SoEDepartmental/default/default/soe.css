@@ -119,10 +119,33 @@ body {
   padding: 0.1em 0.1em 0em 0em;
   white-space: nowrap;
 }
-#searchBarTable form {
+#searchBarTable form,
+#searchPageForm {
   display: inline;
-  margin: 0px 0px 1px 0px;
-  padding: 0em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+#searchBarTable #searchForm {
+  margin-right: 0.5em;
+}
+#searchPageForm {
+  float: right;
+}
+#searchBarTable form input {
+  font-size: 0.7em;
+}
+#searchBarTable img {
+  vertical-align: middle;
+}
+#searchFilter {
+  float: right;
+  font-size: 10pt;
+  font-weight: normal;
+  margin-top: 5px;
+}
+#searchFilter form {
+  display: inline;
 }
 #tabsTable {
   margin: 0em;
@@ -225,11 +248,11 @@ body {
 }
 #navigationBarTable td.leftCell .prevImg {
   margin: 0 0.2em 0 0;
-  vertical-align: top;
+  vertical-align: middle;
 }
 #navigationBarTable td.leftCell .nextImg {
   margin: 0 0.75em 0 0;
-  vertical-align: top;
+  vertical-align: middle;
 }
 #navigationBarTable td.rightCell {
   text-align: right;
@@ -240,10 +263,8 @@ body {
   margin: 0em;
   width: 10em;
 }
-#searchBarTable .calLinks {
-  white-space: nowrap;
-}
-#eventTable {
+#eventTable,
+#searchTable {
   width: 100%;
   font-size: 0.9em;
   margin: 0px;
@@ -304,6 +325,31 @@ body {
   color: black;
   width: 100%;
 }
+#searchTable th {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-align: left;
+  background: #e5e5e5;
+  color: #000;
+  font-weight: normal;
+}
+#searchTable td {
+  padding: 4px;
+  vertical-align: top;
+}
+#searchTable tr.fieldNames td {
+  background: #eee;
+  border-bottom: 1px solid #ccc;
+}
+#searchTable td.relevance {
+  white-space: nowrap;
+}
+#searchTable .searchRelevance {
+  background-color: #2c5f89;
+  color: black;
+}
 #calPageTable {
   width: 100%;
   font-size: 100%;
@@ -334,6 +380,10 @@ body {
   background-color: #ddd;
   color: black;
   text-align: center;
+}
+#calPageTable td.infoCell p.info {
+  margin: 0;
+  padding: 0;
 }
 #dayCalendarTable {
   width: 100%;
@@ -782,6 +832,24 @@ a.gridAdd {
 #calPageTable ul.calendarTree li.calendar {
   list-style-image: url(../../images/calIcon-sm.gif);
 }
+#calPageTable .exportCalLink {
+  font-size: 0.6em;
+  padding-left: 1em;
+  color: #aaa;
+  background-color: transparent;
+}
+#calPageTable .exportCalLink a:link,
+#calPageTable .exportCalLink a:active,
+#calPageTable .exportCalLink a:visited {
+  color: #aaa;
+  background-color: transparent;
+  text-decoration: none;
+}
+#calPageTable .exportCalLink a:hover {
+  color: #333;
+  background-color: transparent;
+  text-decoration: none;
+}
 .noEventsCell {
   padding: 1em;
 }
@@ -863,15 +931,19 @@ h2 a:hover {
   text-decoration: none;
 }
 h2.bwStatusConfirmed {
+  border-top: 1px solid #ccc;
   background-color: #eee;
   color: black;
 }
 h2.bwStatusCancelled {
+  border-top: 1px solid #ccc;
   background-color: #eee;
   color: black;
 }
 h2.bwStatusTentative {
+  border-top: 1px solid #ccc;
   background: #eee url('../../images/tentativeLines.gif') top;
+  color: black;
 }
 /* Header IDs and classes */
 #errors {
@@ -909,4 +981,42 @@ h2.bwStatusTentative {
 #statsTable td.label {
   text-align: right;
   padding-right: 2em;
+}
+.hidden {
+  visibility: hidden;
+}
+.invisible {
+  display: none;
+}
+/* dojo widget overrides */
+html .dojoFloatingPane {
+  width: 370px;
+  height: 200px;
+  text-align: left;
+}
+html .dojoFloatingPaneTitleBar {
+  color: white;
+  background: #2c5f89 url(../../images/curDateRangeBlue.gif) repeat-x bottom;
+}
+html .dojoFloatingPaneTitleText {
+  padding: 0.25em 1em;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+html .dojoFloatingPaneClient input.bwWidgetSubmit {
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  width: 80px;
+}
+html .dojoFloatingPaneClient #exportDateRange {
+  margin: 1em 0;
+  text-align: center;
+}
+html .dojoFloatingPaneClient #bwCalendarExportWidgetCalName {
+  padding-left: 1em;
+}
+html .dojoFloatingPaneClient form#exportCalendarForm {
+  margin: 0;
+  padding: 0;
 }

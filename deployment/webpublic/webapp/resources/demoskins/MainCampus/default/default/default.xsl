@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output
-  method="html"
-  indent="yes"
+  method="xhtml"
+  indent="no"
   media-type="text/html"
-  doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-  doctype-system="http://www.w3.org/TR/html4/loose.dtd"
+  doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+  doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
   standalone="yes"
-/>
+  omit-xml-declaration="yes"/>
+
 <!-- =========================================================
 
               DEMONSTRATION CALENDAR STYLESHEET
@@ -107,6 +108,7 @@
     <html>
       <head>
         <title>Bedework Events Calendar</title>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
         <!-- load css -->
         <xsl:choose>
           <xsl:when test="/bedework/appvar[key='style']/value='red'">
@@ -123,8 +125,8 @@
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <!-- load javascript -->
         <xsl:if test="/bedework/page='calendarList'">
-          <script type="text/javascript" src="{$resourceCommons}/javascript/dojo/dojo.js"/>
-          <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js"/>
+          <script type="text/javascript" src="{$resourceCommons}/javascript/dojo/dojo.js">&#160;</script>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js">&#160;</script>
         </xsl:if>
         <!-- address bar icon -->
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
@@ -157,10 +159,7 @@
             <xsl:call-template name="searchResult"/>
           </xsl:when>
           <xsl:otherwise>
-            <!-- otherwise, show the eventsCalendar
-            <xsl:if test="/bedework/periodname!='Year'">
-              <xsl:call-template name="searchBar"/>
-            </xsl:if>-->
+            <!-- otherwise, show the eventsCalendar -->
             <!-- main eventCalendar content -->
             <xsl:choose>
               <xsl:when test="/bedework/periodname='Day'">
@@ -460,7 +459,7 @@
              <xsl:otherwise><!-- view -->
                View:
                <form name="selectViewForm" method="post" action="{$setSelection}">
-                <select name="viewName" onChange="submit()" >
+                <select name="viewName" onchange="submit()" >
                   <xsl:for-each select="/bedework/views/view">
                     <xsl:variable name="name" select="name"/>
                     <xsl:choose>
@@ -474,19 +473,20 @@
                   </xsl:for-each>
                 </select>
               </form>
-              <span class="calLinks"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">available calendars</a></span>
+              <span class="link"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">available calendars</a></span>
              </xsl:otherwise>
            </xsl:choose>
          </td>
          <td class="rightCell">
             <xsl:if test="/bedework/page!='searchResult'">
-              <form name="searchForm" method="post" action="{$search}">
+              <form name="searchForm" id="searchForm" method="post" action="{$search}">
                 Search:
                 <input type="text" name="query" size="15">
                   <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
                 </input>
                 <input type="submit" name="submit" value="go"/>
               </form>
+              <xsl:text> </xsl:text>
             </xsl:if>
             <xsl:choose>
               <xsl:when test="/bedework/periodname='Day'">
@@ -556,7 +556,7 @@
                 </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
-            <a href="setup.do"><img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
+            <a href="{$setup}"><img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
           </td>
        </tr>
     </table>
@@ -1016,11 +1016,13 @@
               <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink">
                 <xsl:value-of select="value"/>
               </a>
-              <ul>
-                <xsl:apply-templates select="event" mode="calendarLayout">
-                  <xsl:with-param name="dayPos" select="$dayPos"/>
-                </xsl:apply-templates>
-              </ul>
+              <xsl:if test="event">
+                <ul>
+                  <xsl:apply-templates select="event" mode="calendarLayout">
+                    <xsl:with-param name="dayPos" select="$dayPos"/>
+                  </xsl:apply-templates>
+                </ul>
+              </xsl:if>
             </td>
           </xsl:if>
         </xsl:for-each>
@@ -1053,11 +1055,13 @@
                   <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink">
                     <xsl:value-of select="value"/>
                   </a>
-                  <ul>
-                    <xsl:apply-templates select="event" mode="calendarLayout">
-                      <xsl:with-param name="dayPos" select="$dayPos"/>
-                    </xsl:apply-templates>
-                  </ul>
+                  <xsl:if test="event">
+                    <ul>
+                      <xsl:apply-templates select="event" mode="calendarLayout">
+                        <xsl:with-param name="dayPos" select="$dayPos"/>
+                      </xsl:apply-templates>
+                    </ul>
+                  </xsl:if>
                 </td>
               </xsl:otherwise>
             </xsl:choose>
@@ -1260,8 +1264,8 @@
               <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
               <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> date range
               <div id="exportDateRange" class="invisible">
-                Start: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetStartDate"></div>
-                End: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetEndDate"></div>
+                Start: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetStartDate"><xsl:text> </xsl:text></div>
+                End: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetEndDate"><xsl:text> </xsl:text></div>
               </div>
               <p><input type="submit" value="export" class="bwWidgetSubmit" onclick="fillExportFields('exportCalendarForm');hideWidget('bwCalendarExportWidget')"/></p>
             </form>
@@ -1296,15 +1300,11 @@
       <xsl:if test="calendarCollection='true'">
         <xsl:variable name="name" select="name"/>
         <xsl:variable name="calPath" select="path"/>
+        <xsl:variable name="idForCal" select="translate(translate(path,'/','S'),' ','s')"/>
         <span class="exportCalLink">
-          <!--<a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">-->
-          <a href="javascript:launchExportWidget('exportCalendarForm','{$name}','{$calPath}')" id="{$calPath}" title="export calendar as iCal">
+          <a href="javascript:launchExportWidget('exportCalendarForm','{$export}','{$name}','{$calPath}')" id="{$idForCal}" title="export calendar as iCal">
             <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
           </a>
-          <!--</a>-->
-          <!--export
-          <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=active&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">current</a> |
-          <a href="{$export}&amp;calPath={$calPath}&amp;dateLimits=none&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$name}.ics" title="export calendar as iCal (excluding past events)">all</a>-->
         </span>
       </xsl:if>
       <xsl:if test="calendar">
@@ -1560,7 +1560,7 @@
         </td>
         <td class="rightCell">
           <form name="styleSelectForm" method="post" action="{$setup}">
-            <select name="setappvar" onChange="submit()">
+            <select name="setappvar" onchange="submit()">
               <option>example styles:</option>
               <option value="style(green)">green</option>
               <option value="style(red)">red</option>
