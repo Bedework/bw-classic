@@ -342,6 +342,8 @@
       </classpath>
       <sysproperty key="catalina.home" value="${org.bedework.appserver.dir}"/>
       <!--jvmarg value="-Dcatalina.home=${tomcat.dir}"/-->
+      <jvmarg value="-Xms128m" />
+      <jvmarg value="-Xmx630m" />
       <jvmarg value="-Djava.net.preferIPv4Stack=true"/>
       <arg value="start"/>
     </java>
