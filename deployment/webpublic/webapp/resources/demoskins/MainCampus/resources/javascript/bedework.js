@@ -35,8 +35,7 @@ function hideWidget(id) {
 }
 
 /*function init() {
-  var exportWidget = dojo.widget.byId('bwCalendarExportWidget');
-  exportWidget.hide();
+  var widget = dojo.widget.byId("bwCalendarExportWidget");
 }
 
 dojo.addOnLoad(init);

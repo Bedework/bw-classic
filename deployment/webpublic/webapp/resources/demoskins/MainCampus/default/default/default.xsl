@@ -1236,9 +1236,9 @@
             Select a calendar from the list below to see only that calendar's events.
           </p>
           <div dojoType="FloatingPane" id="bwCalendarExportWidget"
-               title="Export Calendar as iCal" toggle="fade" toggleDuration="150"
-               windowState="minimized" hasShadow="true" displayMinimizeAction="true"
-               resizable="false">
+               title="Export Calendar as iCal" toggle="plain"
+               windowState="minimized" hasShadow="true"
+               displayMinimizeAction="true" resizable="false">
              <p>
               <strong>Calendar to export:</strong>
               <span id="bwCalendarExportWidgetCalName"></span>
