@@ -79,6 +79,8 @@
   <xsl:variable name="event-showAccess" select="/bedework/urlPrefixes/event/showAccess/a/@href"/>
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
+  <xsl:variable name="event-showRdates" select="/bedework/urlPrefixes/event/showRdates"/>
+  <xsl:variable name="event-setRdate" select="/bedework/urlPrefixes/event/setRdate"/>
   <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent/a/@href"/>
   <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent/a/@href"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/event/editEvent"/>
@@ -167,6 +169,10 @@
       <xsl:choose>
         <xsl:when test="/bedework/page='selectCalForEvent'">
           <xsl:call-template name="selectCalForEvent"/>
+        </xsl:when>
+        <xsl:when test="/bedework/page='rdates'">
+          <xsl:call-template name="messagesAndErrors"/>
+          <xsl:call-template name="rdates"/>
         </xsl:when>
         <xsl:when test="/bedework/page='attendees'">
           <xsl:call-template name="messagesAndErrors"/>
@@ -339,6 +345,7 @@
                   /bedework/page='addEventRef' or
                   /bedework/page='editEvent' or
                   /bedework/page='selectCalForEvent' or
+                  /bedework/page='rdates' or
                   /bedework/page='upload' or
                   /bedework/page='addSubByUri' or
                   /bedework/page='modPrefs' or
@@ -352,6 +359,7 @@
     </xsl:if>
     <xsl:if test="/bedework/page='addEvent' or
                   /bedework/page='editEvent' or
+                  /bedework/page='rdates' or
                   /bedework/page='calendarListForExport'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
       <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
@@ -2738,7 +2746,7 @@
       </div>
       <!-- recurrence dates (rdates) -->
       <div id="recurrenceDatesButton">
-        <input type="button" value="add/remove recurrence dates" class="small"/>
+        <input type="button" value="add/remove recurrence dates" onclick="launchSizedWindow('{$event-showRdates}','500','400')"  class="small"/>
       </div>
     </div>
     <div class="eventSubmitButtons">
@@ -2918,13 +2926,100 @@
     </div>
   </xsl:template>
 
+  <xsl:template name="rdates">
+    <div id="bwDialogBox">
+      <form name="rdatesForm" id="rdates" action="{$event-setRdate}" method="post">
+        <h4 id="dialogTitle">
+          Recurrence Dates
+        </h4>
+        <div id="raContent">
+
+            <div class="dateStartEndBox">
+              <strong>Add Rdate:</strong>
+              <div class="dateFields">
+                <input name="datetime" dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgeRdate" iconURL="{$resourcesRoot}/resources/calIcon.gif"/>
+              </div>
+              <div id="rdateTimeFields">
+                <xsl:attribute name="class">
+                  <xsl:choose>
+                    <xsl:when test="form/allDay/input/@checked='checked'">invisible</xsl:when>
+                    <xsl:otherwise>timeFields</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:attribute>
+                <select name="eventRdate.hour">
+                  <option value="0">00</option>
+                  <option value="1">01</option>
+                  <option value="2">02</option>
+                  <option value="3">03</option>
+                  <option value="4">04</option>
+                  <option value="5">05</option>
+                  <option value="6">06</option>
+                  <option value="7">07</option>
+                  <option value="8">08</option>
+
+                  <option value="9">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12" selected="selected">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                </select>
+                <select name="eventRdate.minute">
+                  <option value="0" selected="selected">00</option>
+                  <option value="5">05</option>
+                  <option value="10">10</option>
+
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
+                  <option value="35">35</option>
+                  <option value="40">40</option>
+                  <option value="45">45</option>
+                  <option value="50">50</option>
+                  <option value="55">55</option>
+                </select>
+                <xsl:text> </xsl:text><!--
+                <a href="javascript:bwClockLaunch('eventRdate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
+-->
+                <select name="eventRdate.tzid" id="startTzid" class="timezones">
+                  <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+                  <option value="-1">select timezone...</option>
+                  <xsl:variable name="rdateTzId" select="/bedework/rdates/tzid"/>
+                  <xsl:for-each select="/bedework/timezones/timezone">
+                    <option>
+                      <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
+                      <xsl:if test="$rdateTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                      <xsl:value-of select="name"/>
+                    </option>
+                  </xsl:for-each>
+                </select>
+              </div>
+              <input type="submit" value="add"/>
+            </div>
+
+          <input type="button" value="done" onclick="window.close()"/>
+        </div>
+      </form>
+    </div>
+  </xsl:template>
+
   <xsl:template name="attendees">
-    <form name="raForm" id="recipientsAndAttendees" action="{$event-attendeesForEvent}" method="post">
-      <div id="recipientsAndAttendeesBox">
+    <div id="bwDialogBox">
+      <form name="raForm" id="recipientsAndAttendees" action="{$event-attendeesForEvent}" method="post">
         <h4 id="dialogTitle">
           Recipients and Attendees
         </h4>
-        <xsl:call-template name="messagesAndErrors"/>
         <div id="raContent">
           <table cellspacing="0">
             <tr>
@@ -3022,8 +3117,8 @@
 
           <input type="button" value="done" onclick="window.close()"/>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </xsl:template>
 
   <xsl:template match="event" mode="addEventRef">

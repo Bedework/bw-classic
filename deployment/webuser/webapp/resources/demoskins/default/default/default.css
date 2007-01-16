@@ -874,35 +874,28 @@ table#attendees.widget td.trash {
   margin: 0;
   padding: 0;
 }
-#recipientsAndAttendeesBox {
-  /*position: absolute;
-  top: -300px;
-  left: 150px;
-  width: 500px;
-  padding: 18px;*/
+#bwDialogBox {
   margin: 0;
-  /*border: 2px solid #ccc;*/
   background: white;
   color: black;
 }
-#recipientsAndAttendeesBox h4 {
+#bwDialogBox h4 {
   padding: 4px;
-  /*margin: -20px -20px 10px -20px;*/
   margin: 0;
   text-align: center;
   color: #eee;
   background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
   border: 2px solid #233979;
 }
-#recipientsAndAttendeesBox #errors,
-#recipientsAndAttendeesBox #messages {
+#bwDialogBox #errors,
+#bwDialogBox #messages {
   margin: 0;
 }
-#recipientsAndAttendeesBox table {
+#bwDialogBox table {
   width: 100%;
   margin: 1em 0;
 }
-#recipientsAndAttendeesBox table th {
+#bwDialogBox table th {
   padding: 2px;
   text-align: center;
   color: black;
