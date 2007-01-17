@@ -27,14 +27,12 @@ function swapAllDayEvent(obj) {
     //lets keep it simple for now: just show or hide time fields
     changeClass('startTimeFields','invisible');
     changeClass('endTimeFields','invisible');
-    changeClass('rdateTimeFields','invisible');
     changeClass('durationHrMin','invisible');
     allDayStartDateField.value = "true";
     allDayEndDateField.value = "true";
   } else {
     changeClass('startTimeFields','timeFields');
     changeClass('endTimeFields','timeFields');
-    changeClass('rdateTimeFields','timeFields');
     changeClass('durationHrMin','shown');
     allDayStartDateField.value = "false";
     allDayEndDateField.value = "false";

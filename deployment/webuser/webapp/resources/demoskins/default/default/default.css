@@ -725,13 +725,18 @@ table#manage td {
   font-style: italic;
   margin: 1em 0;
 }
+#recurrenceSwitch,
 #recurrenceUiSwitch {
-  margin: 0.2em 0 2em 0;
   font-size: 0.8em;
 }
 #recurrenceFields {
   margin: 0;
+  padding: 0;
+}
+#recurrenceFields #recurrenceTable {
   border: 1px solid #ddd;
+  margin: 0;
+  padding: 0;
 }
 #recurrenceFields #recurrenceTable strong {
   display: inline;
@@ -788,7 +793,7 @@ table#manage td {
   white-space: nowrap !important;
 }
 #recurrenceDatesButton {
-  margin: 0 0 1em 0;
+  margin: 1em 0 0 0;
 }
 .shown {
   display: inline;
