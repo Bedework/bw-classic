@@ -366,6 +366,125 @@
     </html>
   </xsl:template>
 
+
+  <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
+
+  <xsl:template name="header">
+    <div id="header">
+      <a href="/bedework/">
+        <img id="logo"
+            alt="logo"
+            src="{$resourcesRoot}/resources/bedeworkAdminLogo.gif"
+            width="217"
+            height="40"
+            border="0"/>
+      </a>
+      <!-- set the page heading: -->
+      <h1>
+        <xsl:choose>
+          <xsl:when test="/bedeworkadmin/page='modEvent' or /bedeworkadmin/page='eventList' or /bedeworkadmin/page='displayEvent'">
+            Manage Events
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='contactList' or /bedeworkadmin/page='modContact' or /bedeworkadmin/page='deleteContactConfirm'">
+            Manage Contacts
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='locationList' or /bedeworkadmin/page='modLocation' or /bedeworkadmin/page='deleteLocationConfirm'">
+            Manage Locations
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='calendarReferenced' or /bedeworkadmin/page='deleteCalendarConfirm'">
+            Manage Calendars
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar'">
+            Public Calendars
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
+            Manage Subscriptions
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='views' or /bedeworkadmin/page='modView'">
+            Manage Views
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='modSyspars'">
+            Manage System Preferences
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='authUserList' or /bedeworkadmin/page='modAuthUser'">
+            Manage Public Events Administrators
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='chooseGroup'">
+            Choose Administrative Group
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='adminGroupList' or /bedeworkadmin/page='modAdminGroup' or /bedeworkadmin/page='modAdminGroup' or /bedeworkadmin/page='modAdminGroupMembers'">
+            Manage Administrative Groups
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='noGroup'">
+            No Administrative Group
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='uploadTimezones'">
+            Manage Time Zones
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='noAccess'">
+            Access Denied
+          </xsl:when>
+          <xsl:when test="/bedeworkadmin/page='error'">
+            Error
+          </xsl:when>
+          <xsl:otherwise>
+            Bedework Calendar Administration
+          </xsl:otherwise>
+        </xsl:choose>
+      </h1>
+
+      <xsl:if test="/bedeworkadmin/message">
+        <div id="messages">
+          <p>
+            <xsl:apply-templates select="/bedeworkadmin/message"/>
+          </p>
+        </div>
+      </xsl:if>
+      <xsl:if test="/bedeworkadmin/error">
+        <div id="errors">
+          <p>
+            <xsl:apply-templates select="/bedeworkadmin/error"/>
+          </p>
+        </div>
+      </xsl:if>
+
+    </div>
+    <table id="statusBarTable">
+      <tr>
+        <td class="leftCell">
+          <a href="{$setup}">Main Menu</a> |
+          <a href="{$publicCal}" target="calendar">Launch Calendar</a> |
+          <a href="{$logout}">Log Out</a>
+        </td>
+        <xsl:if test="/bedeworkadmin/userInfo/user">
+          <td class="rightCell">
+            <xsl:if test="/bedeworkadmin/currentCalSuite/name">
+              Calendar Suite:
+              <span class="status">
+                <xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/>
+              </span>
+              &#160;
+            </xsl:if>
+            Logged in as:
+            <span class="status">
+              <xsl:value-of select="/bedeworkadmin/userInfo/user"/>
+            </span>
+            &#160;
+            <xsl:if test="/bedeworkadmin/userInfo/group">
+              Group:
+              <span class="status">
+                <xsl:value-of select="/bedeworkadmin/userInfo/group"/>
+              </span>
+            </xsl:if>
+          </td>
+        </xsl:if>
+      </tr>
+    </table>
+    <div id="titleBar">
+      CALENDAR of EVENTS
+    </div>
+  </xsl:template>
+
   <!--==============================================-->
   <!--==============================================-->
   <!--============= PAGE TEMPLATES =================-->
@@ -3165,8 +3284,8 @@
         <tr>
           <th>Display:</th>
           <td>
-            <input type="radio" value="true" name="subscription.display"/> yes
-            <input type="radio" value="false" name="subscription.display" checked="checked"/> no
+            <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
+            <input type="radio" value="false" name="subscription.display"/> no
           </td>
         </tr>
         <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
@@ -5062,124 +5181,6 @@
          <xsl:with-param name="page" select="number($page)+1"/>
       </xsl:call-template>
     </xsl:if>
-  </xsl:template>
-
-  <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
-
-  <xsl:template name="header">
-    <div id="header">
-      <a href="{$urlPrefix}">
-        <img id="logo"
-            alt="logo"
-            src="{$resourcesRoot}/resources/bedeworkAdminLogo.gif"
-            width="217"
-            height="40"
-            border="0"/>
-      </a>
-      <!-- set the page heading: -->
-      <h1>
-        <xsl:choose>
-          <xsl:when test="/bedeworkadmin/page='modEvent' or /bedeworkadmin/page='eventList' or /bedeworkadmin/page='displayEvent'">
-            Manage Events
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='contactList' or /bedeworkadmin/page='modContact' or /bedeworkadmin/page='deleteContactConfirm'">
-            Manage Contacts
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='locationList' or /bedeworkadmin/page='modLocation' or /bedeworkadmin/page='deleteLocationConfirm'">
-            Manage Locations
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='calendarReferenced' or /bedeworkadmin/page='deleteCalendarConfirm'">
-            Manage Calendars
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar'">
-            Public Calendars
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
-            Manage Subscriptions
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='views' or /bedeworkadmin/page='modView'">
-            Manage Views
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='modSyspars'">
-            Manage System Preferences
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='authUserList' or /bedeworkadmin/page='modAuthUser'">
-            Manage Public Events Administrators
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='chooseGroup'">
-            Choose Administrative Group
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='adminGroupList' or /bedeworkadmin/page='modAdminGroup' or /bedeworkadmin/page='modAdminGroup' or /bedeworkadmin/page='modAdminGroupMembers'">
-            Manage Administrative Groups
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='noGroup'">
-            No Administrative Group
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='uploadTimezones'">
-            Manage Time Zones
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='noAccess'">
-            Access Denied
-          </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='error'">
-            Error
-          </xsl:when>
-          <xsl:otherwise>
-            Bedework Calendar Administration
-          </xsl:otherwise>
-        </xsl:choose>
-      </h1>
-
-      <xsl:if test="/bedeworkadmin/message">
-        <div id="messages">
-          <p>
-            <xsl:apply-templates select="/bedeworkadmin/message"/>
-          </p>
-        </div>
-      </xsl:if>
-      <xsl:if test="/bedeworkadmin/error">
-        <div id="errors">
-          <p>
-            <xsl:apply-templates select="/bedeworkadmin/error"/>
-          </p>
-        </div>
-      </xsl:if>
-
-    </div>
-    <table id="statusBarTable">
-      <tr>
-        <td class="leftCell">
-          <a href="{$setup}">Main Menu</a> |
-          <a href="{$publicCal}" target="calendar">Launch Calendar</a> |
-          <a href="{$logout}">Log Out</a>
-        </td>
-        <xsl:if test="/bedeworkadmin/userInfo/user">
-          <td class="rightCell">
-            <xsl:if test="/bedeworkadmin/currentCalSuite/name">
-              Calendar Suite:
-              <span class="status">
-                <xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/>
-              </span>
-              &#160;
-            </xsl:if>
-            Logged in as:
-            <span class="status">
-              <xsl:value-of select="/bedeworkadmin/userInfo/user"/>
-            </span>
-            &#160;
-            <xsl:if test="/bedeworkadmin/userInfo/group">
-              Group:
-              <span class="status">
-                <xsl:value-of select="/bedeworkadmin/userInfo/group"/>
-              </span>
-            </xsl:if>
-          </td>
-        </xsl:if>
-      </tr>
-    </table>
-    <div id="titleBar">
-      CALENDAR of EVENTS
-    </div>
   </xsl:template>
 
   <!--==== FOOTER ====-->

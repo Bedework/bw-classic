@@ -4,28 +4,30 @@ var bwClockRequestedType = null;
 var bwClockCurrentType = null;
 
 function bwClockLaunch(type) {
-  if ((document.getElementById("clock").className == "shown") && (bwClockCurrentType == type)) {
-    changeClass("clock","invisible"); // if the clock with the same type is showing, toggle it off
+  // type: type of clock "eventStartDate" or "eventEndDate"
+  if ((document.getElementById("clock").className == "visible") && (bwClockCurrentType == type)) {
+    // if the clock with the same type is visible, toggle it off
+    changeClass("clock","invisible");
   } else { // otherwise, turn it on and display the correct type
     bwClockRequestedType = type;
     bwClockCurrentType = type;
     changeClass("clock","shown");
-    // the following is for Internet Explorer.  IE draws "windowed" objects
-    // and unwindowed objects on seperate "planes"; windowed objects are always
-    // drawn obove unwindowed objects and select boxes are "windowed";
-    // this is required to make IE not overwrite the clock div with
-    // the select boxes that fall below it on the page.  Note: we set them
-    // to display:hidden (not none) so their space is still occupied (and the
-    // browser window doesn't shift around)
+    // reset hours and minutes to null
+    bwClockHour = null;
+    bwClockMinute = null;
    changeClass("eventFormPrefLocationList","hidden");
    changeClass("eventFormLocationList","hidden");
    changeClass("eventFormContactList","hidden");
    changeClass("eventFormPrefContactList","hidden");
     bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
+    bwClockSwitch = document.getElementById("bwClockSwitch");
+    document.getElementById("bwClockTime").innerHTML = "select time";
     if (type == 'eventStartDate') {
-      bwClockIndicator.innerHTML = "Start Time"
+      bwClockIndicator.innerHTML = "Start Time";
+      bwClockSwitch.innerHTML = '<a href="javascript:bwClockLaunch(\'eventEndDate\');">switch to end</a>';
     } else {
-      bwClockIndicator.innerHTML = "End Time"
+      bwClockIndicator.innerHTML = "End Time";
+      bwClockSwitch.innerHTML = '<a href="javascript:bwClockLaunch(\'eventStartDate\');">switch to start</a>';
     }
   }
 }
@@ -38,16 +40,24 @@ function bwClockClose() {
   changeClass("eventFormPrefContactList","shown");
 }
 
-function bwClockUpdateDateTimeForm(type,val) {
+function bwClockUpdateDateTimeForm(valType,val) {
+  // valType: "hour" or "minute"
+  // val: hour or minute value as integer
   if (bwClockRequestedType) {
     try {
-      if (type == 'minute') {
+      if (valType == 'minute') {
         var fieldName = bwClockRequestedType + ".minute"
-        window.document.peForm[fieldName].value = val;
+        window.document.eventForm[fieldName].value = val;
+        if (val < 10) {
+          val = "0" + val; // pad the value for display
+        }
         bwClockMinute = val;
       } else {
         var fieldName = bwClockRequestedType + ".hour"
-        window.document.peForm[fieldName].value = val;
+        window.document.eventForm[fieldName].value = val;
+        if (val < 10) {
+          val = "0" + val; // pad the value for display
+        }
         bwClockHour = val;
       }
       if (bwClockHour && bwClockMinute) {

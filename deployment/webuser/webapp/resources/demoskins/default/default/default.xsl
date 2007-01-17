@@ -407,7 +407,7 @@
   <xsl:template name="headBar">
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
       <tr>
-        <td colspan="3" id="logoCell"><a href="{$urlPrefix}"><img src="{$resourcesRoot}/resources/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
+        <td colspan="3" id="logoCell"><a href="/bedework/"><img src="{$resourcesRoot}/resources/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
         <td colspan="2" id="schoolLinksCell">
           <h2>Personal Calendar</h2>
           <a href="{$publicCal}">Public Calendar</a> |
@@ -2746,7 +2746,7 @@
       </div>
       <!-- recurrence dates (rdates) -->
       <div id="recurrenceDatesButton">
-        <input type="button" value="add/remove recurrence dates" onclick="launchSizedWindow('{$event-showRdates}','500','400')"  class="small"/>
+        <input type="button" value="add/remove recurrence dates" onclick="launchSizedWindow('{$event-showRdates}','560','400')"  class="small"/>
       </div>
     </div>
     <div class="eventSubmitButtons">
@@ -2989,10 +2989,9 @@
                   <option value="50">50</option>
                   <option value="55">55</option>
                 </select>
-                <xsl:text> </xsl:text><!--
-                <a href="javascript:bwClockLaunch('eventRdate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
--->
-                <select name="eventRdate.tzid" id="startTzid" class="timezones">
+                <xsl:text> </xsl:text>
+
+                <select name="tzid" id="startTzid" class="timezones">
                   <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                   <option value="-1">select timezone...</option>
                   <xsl:variable name="rdateTzId" select="/bedework/rdates/tzid"/>

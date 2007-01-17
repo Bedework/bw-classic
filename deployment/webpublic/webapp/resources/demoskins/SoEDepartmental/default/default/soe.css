@@ -385,6 +385,14 @@ body {
   margin: 0;
   padding: 0;
 }
+#calPageTable a:link,
+#calPageTable a:active,
+#calPageTable a:visited {
+  text-decoration: none;
+}
+#calPageTable a:hover {
+  text-decoration: underline;
+}
 #dayCalendarTable {
   width: 100%;
   font-size: 0.9em;

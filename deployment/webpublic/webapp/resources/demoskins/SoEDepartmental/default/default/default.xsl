@@ -202,7 +202,7 @@
   <xsl:template name="headBar">
     <div id="headBar">
       <div id="bedeworkLogo">
-        <a href="{$urlPrefix}">
+        <a href="/bedework/">
           <img src="{$resourcesRoot}/images/soecal/soeBedeworkLogo.gif" width="296" height="69" border="0" alt="Bedework" align="right"/>
         </a>
       </div>

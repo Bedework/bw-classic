@@ -4,12 +4,18 @@ var bwClockRequestedType = null;
 var bwClockCurrentType = null;
 
 function bwClockLaunch(type) {
+  // type: type of clock "eventStartDate" or "eventEndDate"
   if ((document.getElementById("clock").className == "visible") && (bwClockCurrentType == type)) {
-    changeClass("clock","invisible"); // if the clock with the same type is showing, toggle it off
-  } else { // otherwise, turn it on and display the correct type
+    // if the clock with the same type is visible, toggle it off
+    changeClass("clock","invisible");
+  } else {
+    // otherwise, turn it on and display the correct type
+    changeClass("clock","visible");
     bwClockRequestedType = type;
     bwClockCurrentType = type;
-    changeClass("clock","visible");
+    // reset hours and minutes to null
+    bwClockHour = null;
+    bwClockMinute = null;
     bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
     bwClockSwitch = document.getElementById("bwClockSwitch");
     document.getElementById("bwClockTime").innerHTML = "select time";
@@ -27,10 +33,12 @@ function bwClockClose() {
   changeClass("clock","invisible");
 }
 
-function bwClockUpdateDateTimeForm(type,val) {
+function bwClockUpdateDateTimeForm(valType,val) {
+  // valType: "hour" or "minute"
+  // val: hour or minute value as integer
   if (bwClockRequestedType) {
     try {
-      if (type == 'minute') {
+      if (valType == 'minute') {
         var fieldName = bwClockRequestedType + ".minute"
         window.document.eventForm[fieldName].value = val;
         if (val < 10) {
