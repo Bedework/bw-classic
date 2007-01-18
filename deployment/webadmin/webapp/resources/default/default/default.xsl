@@ -2086,8 +2086,9 @@
                   <td class="trash">
                     <xsl:variable name="datetime"><xsl:value-of select="fourdigityear"/><xsl:value-of select="twodigitmonth"/><xsl:value-of select="twodigitday"/>T<xsl:value-of select="twodigithour"/><xsl:value-of select="twodigitminute"/>00</xsl:variable>
                     <xsl:variable name="tzid" select="timezone/id"/>
-                    <xsl:variable name="floating" select="floating"/>
-                    <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;floating={$floating}&amp;tzid={$tzid}&amp;delete=true" title="remove">
+                    <xsl:variable name="floating"><xsl:if test="floating = 'true'">&amp;floating=true</xsl:if></xsl:variable>
+                    <xsl:variable name="storeUTC"><xsl:if test="utc = 'true'">&amp;storeUTC=true</xsl:if></xsl:variable>
+                    <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}{$floating}{$storeUTC}&amp;delete=true" title="remove">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
                     </a>
                   </td>
