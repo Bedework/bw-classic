@@ -2317,8 +2317,6 @@
     <!-- Recurrence tab -->
     <!-- ============== -->
     <div id="bwEventTab-Recurrence" class="invisible">
-
-      <!-- recurrence rules -->
       <xsl:choose>
         <xsl:when test="recurrenceId != ''">
           <!-- recurrence instances can not themselves recur,
@@ -2329,7 +2327,20 @@
         <xsl:otherwise>
           <!-- has recurrenceId, so is master -->
 
+          <div id="recurringSwitch">
+            <!-- set or remove "recurring" and show or hide all recurrence fields: -->
+            <input type="radio" name="recurring" value="true" onclick="swapRecurrence(this)">
+              <xsl:if test="form/recurrence"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            </input> event recurs
+            <input type="radio" name="recurring" value="false" onclick="swapRecurrence(this)">
+              <xsl:if test="not(form/recurrence)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            </input> event does not recur
+          </div>
+
           <xsl:if test="form/recurrence">
+            <!-- Output descriptive recurrence information.  Probably not
+                 complete yet. Replace all strings so can be
+                 more easily internationalized. -->
             <strong>Recurrence:</strong>
             <div id="recurrenceInfo">
               Every
@@ -2430,25 +2441,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </div>
-            <div id="recurrenceNote">
-              Change the recurrence fields to alter the recurrence.
-            </div>
           </xsl:if>
-          <input type="checkbox" name="recurrenceFlag" onclick="swapRecurrence(this)" value="on"/>
-          <span id="recurrenceSwitch">
-            <xsl:choose>
-              <xsl:when test="/bedework/creating = 'true'">
-                create recurrence rules
-              </xsl:when>
-              <xsl:otherwise>
-                change recurrence rules
-              </xsl:otherwise>
-            </xsl:choose>
-          </span>
-          <span id="recurrenceUiSwitch" class="invisible">
-            <input type="checkbox" name="recurrenceUiSwitch" value="simple" onchange="swapVisible(this,'advancedRecurrenceRules')"/>
-            show advanced recurrence rules
-          </span>
 
           <!-- set these dynamically when form is submitted -->
           <input type="hidden" name="interval" value=""/>
@@ -2462,292 +2455,301 @@
           <input type="hidden" name="wkst" value=""/>
           <input type="hidden" name="setpos" value=""/>
 
+          <!-- wrapper for all recurrence fields (rrules and rdates): -->
           <div id="recurrenceFields" class="invisible">
-            <div id="recurrenceRulesFields" class="invisible">
-              <table id="recurrenceTable" cellspacing="0">
-                <tr>
-                  <td class="recurrenceFrequency" rowspan="2">
-                    <strong>Frequency:</strong><br/>
-                    <!-- "freq" is used to determine if a recurrence should be created; test for "NONE" -->
-                    <span class="freqNoneHider">
-                      <xsl:if test="form/recurrence"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
-                      <input type="radio" name="freq" value="NONE" onclick="showRecurrence(this.value)" checked="checked"/>none<br/>
-                    </span>
-                    <!--<input type="radio" name="freq" value="HOURLY" onclick="showRecurrence(this.value)"/>hourly<br/>-->
-                    <input type="radio" name="freq" value="DAILY" onclick="showRecurrence(this.value)"/>daily<br/>
-                    <input type="radio" name="freq" value="WEEKLY" onclick="showRecurrence(this.value)"/>weekly<br/>
-                    <input type="radio" name="freq" value="MONTHLY" onclick="showRecurrence(this.value)"/>monthly<br/>
-                    <input type="radio" name="freq" value="YEARLY" onclick="showRecurrence(this.value)"/>yearly
-                  </td>
-                  <!-- recurrence count, until, forever -->
-                  <td class="recurrenceUntil">
-                    <div id="recurrenceUntilRules" class="invisible">
-                      <strong>Repeat:</strong>
-                      <p>
-                        <input type="radio" name="recurCountUntil" value="forever">
-                          <xsl:if test="not(form/recurring) or form/recurring/count = '-1'">
-                            <xsl:attribute name="checked">checked</xsl:attribute>
-                          </xsl:if>
-                        </input>
-                        forever
-                        <input type="radio" name="recurCountUntil" value="count" id="recurCount">
-                          <xsl:if test="form/recurring/count != '-1'">
-                            <xsl:attribute name="checked">checked</xsl:attribute>
-                          </xsl:if>
-                        </input>
-                        <input type="text" value="1" size="2" name="countHolder"  onfocus="selectRecurCountUntil('recurCount')">
-                          <xsl:if test="form/recurring/count and form/recurring/count != '-1'">
-                            <xsl:attribute name="value"><xsl:value-of select="form/recurring/count"/></xsl:attribute>
-                          </xsl:if>
-                        </input>
-                        time(s)
-                        <input type="radio" name="recurCountUntil" value="until" id="recurUntil">
-                          <xsl:if test="form/recurring/until">
-                            <xsl:attribute name="checked">checked</xsl:attribute>
-                          </xsl:if>
-                        </input>
-                        until
-                        <span id="untilHolder">
-                          <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
-                            <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
-                            <xsl:text> </xsl:text>
-                          </span>
+
+            <!-- show or hide rrules fields: -->
+            <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on"/>
+            <span id="rrulesSwitch">
+              <xsl:choose>
+                <xsl:when test="/bedework/creating = 'true'">
+                  create recurrence rules
+                </xsl:when>
+                <xsl:otherwise>
+                  change recurrence rules
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+            <span id="rrulesUiSwitch" class="invisible">
+              <input type="checkbox" name="rrulesUiSwitch" value="advanced" onchange="swapVisible(this,'advancedRrules')"/>
+              show advanced recurrence rules
+            </span>
+
+            <!-- wrapper for rrules: -->
+            <table id="rrulesTable" cellspacing="0" class="invisible">
+              <tr>
+                <td id="recurrenceFrequency" rowspan="2">
+                  <strong>Frequency:</strong><br/>
+                  <input type="radio" name="freq" value="NONE" onclick="showRrules(this.value)" checked="checked"/>none<br/>
+                  <!--<input type="radio" name="freq" value="HOURLY" onclick="showRrules(this.value)"/>hourly<br/>-->
+                  <input type="radio" name="freq" value="DAILY" onclick="showRrules(this.value)"/>daily<br/>
+                  <input type="radio" name="freq" value="WEEKLY" onclick="showRrules(this.value)"/>weekly<br/>
+                  <input type="radio" name="freq" value="MONTHLY" onclick="showRrules(this.value)"/>monthly<br/>
+                  <input type="radio" name="freq" value="YEARLY" onclick="showRrules(this.value)"/>yearly
+                </td>
+                <!-- recurrence count, until, forever -->
+                <td id="recurrenceUntil">
+                  <div id="noneRecurrenceRules">
+                    no recurrence rules
+                  </div>
+                  <div id="recurrenceUntilRules" class="invisible">
+                    <strong>Repeat:</strong>
+                    <p>
+                      <input type="radio" name="recurCountUntil" value="forever">
+                        <xsl:if test="not(form/recurring) or form/recurring/count = '-1'">
+                          <xsl:attribute name="checked">checked</xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      forever
+                      <input type="radio" name="recurCountUntil" value="count" id="recurCount">
+                        <xsl:if test="form/recurring/count != '-1'">
+                          <xsl:attribute name="checked">checked</xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      <input type="text" value="1" size="2" name="countHolder"  onfocus="selectRecurCountUntil('recurCount')">
+                        <xsl:if test="form/recurring/count and form/recurring/count != '-1'">
+                          <xsl:attribute name="value"><xsl:value-of select="form/recurring/count"/></xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      time(s)
+                      <input type="radio" name="recurCountUntil" value="until" id="recurUntil">
+                        <xsl:if test="form/recurring/until">
+                          <xsl:attribute name="checked">checked</xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      until
+                      <span id="untilHolder">
+                        <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
+                          <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
+                          <xsl:text> </xsl:text>
                         </span>
-                      </p>
+                      </span>
+                    </p>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td id="advancedRrules" class="invisible">
+                  <!-- hourly -->
+                  <div id="hourlyRecurrenceRules" class="invisible">
+                    <p>
+                      <strong>Interval:</strong>
+                      every
+                      <input type="text" name="hourlyInterval" size="2" value="1">
+                        <xsl:if test="form/recurrence/interval">
+                          <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      hour(s)
+                    </p>
+                  </div>
+                  <!-- daily -->
+                  <div id="dailyRecurrenceRules" class="invisible">
+                    <p>
+                      <strong>Interval:</strong>
+                      every
+                      <input type="text" name="dailyInterval" size="2" value="1">
+                        <xsl:if test="form/recurrence/interval">
+                          <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      day(s)
+                    </p>
+                    <p>
+                      <input type="checkbox" name="swapDayMonthCheckBoxList" value="" onclick="swapVisible(this,'dayMonthCheckBoxList')"/>
+                      in these months:
+                      <div id="dayMonthCheckBoxList" class="invisible">
+                        <xsl:for-each select="/bedework/monthlabels/val">
+                          <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
+                          <span class="chkBoxListItem">
+                            <input type="checkbox" name="dayMonths">
+                              <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position() = $pos]"/></xsl:attribute>
+                            </input>
+                            <xsl:value-of select="."/>
+                          </span>
+                          <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
+                        </xsl:for-each>
+                      </div>
+                    </p>
+                    <!--<p>
+                      <input type="checkbox" name="swapDaySetPos" value="" onclick="swapVisible(this,'daySetPos')"/>
+                      limit to:
+                      <div id="daySetPos" class="invisible">
+                      </div>
+                    </p>-->
+                  </div>
+                  <!-- weekly -->
+                  <div id="weeklyRecurrenceRules" class="invisible">
+                    <p>
+                      <strong>Interval:</strong>
+                      every
+                      <input type="text" name="weeklyInterval" size="2" value="1">
+                        <xsl:if test="form/recurrence/interval">
+                          <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      week(s) on:
+                    </p>
+                    <p>
+                      <div id="weekRecurFields">
+                        <xsl:call-template name="byDayChkBoxList">
+                          <xsl:with-param name="name">byDayWeek</xsl:with-param>
+                        </xsl:call-template>
+                      </div>
+                    </p>
+                    <p class="weekRecurLinks">
+                      <a href="javascript:recurSelectWeekdays('weekRecurFields')">select weekdays</a> |
+                      <a href="javascript:recurSelectWeekends('weekRecurFields')">select weekends</a>
+                    </p>
+                    <p>
+                      Week start:
+                      <select name="weekWkst">
+                        <xsl:for-each select="/bedework/shortdaynames/val">
+                          <xsl:variable name="pos" select="position()"/>
+                          <option>
+                            <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
+                            <xsl:value-of select="."/>
+                          </option>
+                        </xsl:for-each>
+                      </select>
+                    </p>
+                  </div>
+                  <!-- monthly -->
+                  <div id="monthlyRecurrenceRules" class="invisible">
+                    <p>
+                      <strong>Interval:</strong>
+                      every
+                      <input type="text" name="monthlyInterval" size="2" value="1">
+                        <xsl:if test="form/recurrence/interval">
+                          <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      month(s)
+                    </p>
+                    <div id="monthRecurFields">
+                      <div id="monthRecurFields1">
+                        on
+                        <select name="bymonthposPos1" width="7em" onchange="changeClass('monthRecurFields2','shown')">
+                          <xsl:call-template name="recurrenceDayPosOptions"/>
+                        </select>
+                        <xsl:call-template name="byDayChkBoxList"/>
+                      </div>
+                      <xsl:call-template name="buildRecurFields">
+                        <xsl:with-param name="current">2</xsl:with-param>
+                        <xsl:with-param name="total">10</xsl:with-param>
+                        <xsl:with-param name="name">month</xsl:with-param>
+                      </xsl:call-template>
                     </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="recurrenceRules">
-                    <span id="advancedRecurrenceRules" class="invisible">
-                      <!-- none -->
-                    <div id="noneRecurrenceRules">
-                      <!-- Output descriptive recurrence information.  Probably not
-                           complete yet. Replace all strings so can be
-                           more easily internationalized. -->
+                    <p>
+                      <input type="checkbox" name="swapMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'monthDaysCheckBoxList')"/>
+                      on these days:<br/>
+                      <div id="monthDaysCheckBoxList" class="invisible">
+                        <xsl:call-template name="buildCheckboxList">
+                          <xsl:with-param name="current">1</xsl:with-param>
+                          <xsl:with-param name="end">31</xsl:with-param>
+                          <xsl:with-param name="name">monthDayBoxes</xsl:with-param>
+                        </xsl:call-template>
+                      </div>
+                    </p>
+                  </div>
+                  <!-- yearly -->
+                  <div id="yearlyRecurrenceRules" class="invisible">
+                    <p>
+                      <strong>Interval:</strong>
+                      every
+                      <input type="text" name="yearlyInterval" size="2" value="1">
+                        <xsl:if test="form/recurrence/interval">
+                          <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
+                        </xsl:if>
+                      </input>
+                      years(s)
+                    </p>
+                    <div id="yearRecurFields">
+                      <div id="yearRecurFields1">
+                        on
+                        <select name="byyearposPos1" width="7em" onchange="changeClass('yearRecurFields2','shown')">
+                          <xsl:call-template name="recurrenceDayPosOptions"/>
+                        </select>
+                        <xsl:call-template name="byDayChkBoxList"/>
+                      </div>
+                      <xsl:call-template name="buildRecurFields">
+                        <xsl:with-param name="current">2</xsl:with-param>
+                        <xsl:with-param name="total">10</xsl:with-param>
+                        <xsl:with-param name="name">year</xsl:with-param>
+                      </xsl:call-template>
                     </div>
-                      <!-- hourly -->
-                      <div id="hourlyRecurrenceRules" class="invisible">
-                        <p>
-                          <strong>Interval:</strong>
-                          every
-                          <input type="text" name="hourlyInterval" size="2" value="1">
-                            <xsl:if test="form/recurrence/interval">
-                              <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
-                            </xsl:if>
-                          </input>
-                          hour(s)
-                        </p>
+                    <p>
+                      <input type="checkbox" name="swapYearMonthCheckBoxList" value="" onclick="swapVisible(this,'yearMonthCheckBoxList')"/>
+                      in these months:
+                      <div id="yearMonthCheckBoxList" class="invisible">
+                        <xsl:for-each select="/bedework/monthlabels/val">
+                          <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
+                          <span class="chkBoxListItem">
+                            <input type="checkbox" name="yearMonths">
+                              <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position() = $pos]"/></xsl:attribute>
+                            </input>
+                            <xsl:value-of select="."/>
+                          </span>
+                          <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
+                        </xsl:for-each>
                       </div>
-                      <!-- daily -->
-                      <div id="dailyRecurrenceRules" class="invisible">
-                        <p>
-                          <strong>Interval:</strong>
-                          every
-                          <input type="text" name="dailyInterval" size="2" value="1">
-                            <xsl:if test="form/recurrence/interval">
-                              <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
-                            </xsl:if>
-                          </input>
-                          day(s)
-                        </p>
-                        <p>
-                          <input type="checkbox" name="swapDayMonthCheckBoxList" value="" onclick="swapVisible(this,'dayMonthCheckBoxList')"/>
-                          in these months:
-                          <div id="dayMonthCheckBoxList" class="invisible">
-                            <xsl:for-each select="/bedework/monthlabels/val">
-                              <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
-                              <span class="chkBoxListItem">
-                                <input type="checkbox" name="dayMonths">
-                                  <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position() = $pos]"/></xsl:attribute>
-                                </input>
-                                <xsl:value-of select="."/>
-                              </span>
-                              <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
-                            </xsl:for-each>
-                          </div>
-                        </p>
-                        <!--<p>
-                          <input type="checkbox" name="swapDaySetPos" value="" onclick="swapVisible(this,'daySetPos')"/>
-                          limit to:
-                          <div id="daySetPos" class="invisible">
-                          </div>
-                        </p>-->
+                    </p>
+                    <p>
+                      <input type="checkbox" name="swapYearMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'yearMonthDaysCheckBoxList')"/>
+                      on these days of the month:<br/>
+                      <div id="yearMonthDaysCheckBoxList" class="invisible">
+                        <xsl:call-template name="buildCheckboxList">
+                          <xsl:with-param name="current">1</xsl:with-param>
+                          <xsl:with-param name="end">31</xsl:with-param>
+                          <xsl:with-param name="name">yearMonthDayBoxes</xsl:with-param>
+                        </xsl:call-template>
                       </div>
-                      <!-- weekly -->
-                      <div id="weeklyRecurrenceRules" class="invisible">
-                        <p>
-                          <strong>Interval:</strong>
-                          every
-                          <input type="text" name="weeklyInterval" size="2" value="1">
-                            <xsl:if test="form/recurrence/interval">
-                              <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
-                            </xsl:if>
-                          </input>
-                          week(s) on:
-                        </p>
-                        <p>
-                          <div id="weekRecurFields">
-                            <xsl:call-template name="byDayChkBoxList">
-                              <xsl:with-param name="name">byDayWeek</xsl:with-param>
-                            </xsl:call-template>
-                          </div>
-                        </p>
-                        <p class="weekRecurLinks">
-                          <a href="javascript:recurSelectWeekdays('weekRecurFields')">select weekdays</a> |
-                          <a href="javascript:recurSelectWeekends('weekRecurFields')">select weekends</a>
-                        </p>
-                        <p>
-                          Week start:
-                          <select name="weekWkst">
-                            <xsl:for-each select="/bedework/shortdaynames/val">
-                              <xsl:variable name="pos" select="position()"/>
-                              <option>
-                                <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
-                                <xsl:value-of select="."/>
-                              </option>
-                            </xsl:for-each>
-                          </select>
-                        </p>
+                    </p>
+                    <p>
+                      <input type="checkbox" name="swapYearWeeksCheckBoxList" value="" onclick="swapVisible(this,'yearWeeksCheckBoxList')"/>
+                      in these weeks of the year:<br/>
+                      <div id="yearWeeksCheckBoxList" class="invisible">
+                        <xsl:call-template name="buildCheckboxList">
+                          <xsl:with-param name="current">1</xsl:with-param>
+                          <xsl:with-param name="end">53</xsl:with-param>
+                          <xsl:with-param name="name">yearWeekBoxes</xsl:with-param>
+                        </xsl:call-template>
                       </div>
-                      <!-- monthly -->
-                      <div id="monthlyRecurrenceRules" class="invisible">
-                        <p>
-                          <strong>Interval:</strong>
-                          every
-                          <input type="text" name="monthlyInterval" size="2" value="1">
-                            <xsl:if test="form/recurrence/interval">
-                              <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
-                            </xsl:if>
-                          </input>
-                          month(s)
-                        </p>
-                        <div id="monthRecurFields">
-                          <div id="monthRecurFields1">
-                            on
-                            <select name="bymonthposPos1" width="7em" onchange="changeClass('monthRecurFields2','shown')">
-                              <xsl:call-template name="recurrenceDayPosOptions"/>
-                            </select>
-                            <xsl:call-template name="byDayChkBoxList"/>
-                          </div>
-                          <xsl:call-template name="buildRecurFields">
-                            <xsl:with-param name="current">2</xsl:with-param>
-                            <xsl:with-param name="total">10</xsl:with-param>
-                            <xsl:with-param name="name">month</xsl:with-param>
-                          </xsl:call-template>
-                        </div>
-                        <p>
-                          <input type="checkbox" name="swapMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'monthDaysCheckBoxList')"/>
-                          on these days:<br/>
-                          <div id="monthDaysCheckBoxList" class="invisible">
-                            <xsl:call-template name="buildCheckboxList">
-                              <xsl:with-param name="current">1</xsl:with-param>
-                              <xsl:with-param name="end">31</xsl:with-param>
-                              <xsl:with-param name="name">monthDayBoxes</xsl:with-param>
-                            </xsl:call-template>
-                          </div>
-                        </p>
+                    </p>
+                    <p>
+                      <input type="checkbox" name="swapYearDaysCheckBoxList" value="" onclick="swapVisible(this,'yearDaysCheckBoxList')"/>
+                      on these days of the year:<br/>
+                      <div id="yearDaysCheckBoxList" class="invisible">
+                        <xsl:call-template name="buildCheckboxList">
+                          <xsl:with-param name="current">1</xsl:with-param>
+                          <xsl:with-param name="end">366</xsl:with-param>
+                          <xsl:with-param name="name">yearDayBoxes</xsl:with-param>
+                        </xsl:call-template>
                       </div>
-                      <!-- yearly -->
-                      <div id="yearlyRecurrenceRules" class="invisible">
-                        <p>
-                          <strong>Interval:</strong>
-                          every
-                          <input type="text" name="yearlyInterval" size="2" value="1">
-                            <xsl:if test="form/recurrence/interval">
-                              <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
-                            </xsl:if>
-                          </input>
-                          years(s)
-                        </p>
-                        <div id="yearRecurFields">
-                          <div id="yearRecurFields1">
-                            on
-                            <select name="byyearposPos1" width="7em" onchange="changeClass('yearRecurFields2','shown')">
-                              <xsl:call-template name="recurrenceDayPosOptions"/>
-                            </select>
-                            <xsl:call-template name="byDayChkBoxList"/>
-                          </div>
-                          <xsl:call-template name="buildRecurFields">
-                            <xsl:with-param name="current">2</xsl:with-param>
-                            <xsl:with-param name="total">10</xsl:with-param>
-                            <xsl:with-param name="name">year</xsl:with-param>
-                          </xsl:call-template>
-                        </div>
-                        <p>
-                          <input type="checkbox" name="swapYearMonthCheckBoxList" value="" onclick="swapVisible(this,'yearMonthCheckBoxList')"/>
-                          in these months:
-                          <div id="yearMonthCheckBoxList" class="invisible">
-                            <xsl:for-each select="/bedework/monthlabels/val">
-                              <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
-                              <span class="chkBoxListItem">
-                                <input type="checkbox" name="yearMonths">
-                                  <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position() = $pos]"/></xsl:attribute>
-                                </input>
-                                <xsl:value-of select="."/>
-                              </span>
-                              <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
-                            </xsl:for-each>
-                          </div>
-                        </p>
-                        <p>
-                          <input type="checkbox" name="swapYearMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'yearMonthDaysCheckBoxList')"/>
-                          on these days of the month:<br/>
-                          <div id="yearMonthDaysCheckBoxList" class="invisible">
-                            <xsl:call-template name="buildCheckboxList">
-                              <xsl:with-param name="current">1</xsl:with-param>
-                              <xsl:with-param name="end">31</xsl:with-param>
-                              <xsl:with-param name="name">yearMonthDayBoxes</xsl:with-param>
-                            </xsl:call-template>
-                          </div>
-                        </p>
-                        <p>
-                          <input type="checkbox" name="swapYearWeeksCheckBoxList" value="" onclick="swapVisible(this,'yearWeeksCheckBoxList')"/>
-                          in these weeks of the year:<br/>
-                          <div id="yearWeeksCheckBoxList" class="invisible">
-                            <xsl:call-template name="buildCheckboxList">
-                              <xsl:with-param name="current">1</xsl:with-param>
-                              <xsl:with-param name="end">53</xsl:with-param>
-                              <xsl:with-param name="name">yearWeekBoxes</xsl:with-param>
-                            </xsl:call-template>
-                          </div>
-                        </p>
-                        <p>
-                          <input type="checkbox" name="swapYearDaysCheckBoxList" value="" onclick="swapVisible(this,'yearDaysCheckBoxList')"/>
-                          on these days of the year:<br/>
-                          <div id="yearDaysCheckBoxList" class="invisible">
-                            <xsl:call-template name="buildCheckboxList">
-                              <xsl:with-param name="current">1</xsl:with-param>
-                              <xsl:with-param name="end">366</xsl:with-param>
-                              <xsl:with-param name="name">yearDayBoxes</xsl:with-param>
-                            </xsl:call-template>
-                          </div>
-                        </p>
-                        <p>
-                          Week start:
-                          <select name="yearWkst">
-                            <xsl:for-each select="/bedework/shortdaynames/val">
-                              <xsl:variable name="pos" select="position()"/>
-                              <option>
-                                <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
-                                <xsl:value-of select="."/>
-                              </option>
-                            </xsl:for-each>
-                          </select>
-                        </p>
-                      </div>
-                    </span>
-                  </td>
-                </tr>
-              </table>
+                    </p>
+                    <p>
+                      Week start:
+                      <select name="yearWkst">
+                        <xsl:for-each select="/bedework/shortdaynames/val">
+                          <xsl:variable name="pos" select="position()"/>
+                          <option>
+                            <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
+                            <xsl:value-of select="."/>
+                          </option>
+                        </xsl:for-each>
+                      </select>
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </table>
+            <!-- recurrence dates (rdates) -->
+            <div id="recurrenceDatesButton">
+              <input type="button" value="add/remove recurrence dates" onclick="launchSizedWindow('{$event-showRdates}','560','400')"/>
             </div>
-          </xsl:otherwise>
-        </xsl:choose>
-      </div>
-      <!-- recurrence dates (rdates) -->
-      <div id="recurrenceDatesButton">
-        <input type="button" value="add/remove recurrence dates" onclick="launchSizedWindow('{$event-showRdates}','560','400')"/>
-      </div>
+          </div>
+        </xsl:otherwise>
+      </xsl:choose>
     </div>
     <div class="eventSubmitButtons">
       <input name="submit" type="submit" value="save event"/>

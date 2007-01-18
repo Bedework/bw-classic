@@ -716,84 +716,78 @@ table#manage td {
 #tztable td {
   padding: 2px 4px;
 }
+#recurringSwitch {
+  margin: 0 0 1em 0;
+}
 #recurrenceInfo {
   margin-top: 1em;
   font-weight: bold;
 }
-#recurrenceNote {
-  font-size: 0.9em;
-  font-style: italic;
-  margin: 1em 0;
-}
-#recurrenceSwitch,
-#recurrenceUiSwitch {
+#rrulesSwitch,
+#rrulesUiSwitch {
   font-size: 0.8em;
 }
-#recurrenceFields {
+#rrulesFields {
   margin: 0;
   padding: 0;
 }
-#recurrenceFields #recurrenceTable {
+#rrulesTable {
   border: 1px solid #ddd;
   margin: 0;
   padding: 0;
 }
-#recurrenceFields #recurrenceTable strong {
+#rrulesTable strong {
   display: inline;
 }
-#recurrenceFields #recurrenceTable td.recurrenceFrequency {
+#rrulesTable td#recurrenceFrequency {
   padding: 0.5em 1em;
+  border-right: 1px solid #ddd;
 }
-#recurrenceFields #recurrenceTable td.recurrenceRules {
+#rrulesTable td#advancedRrules {
   padding: 0.5em 1em 0.5em 1em;
-  border-left: 1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
-#recurrenceFields #recurrenceTable td.recurrenceUntil {
+#rrulesTable td#recurrenceUntil {
   width: 100%;
   padding: 0.5em 0 0 1em;
-  border-left: 1px solid #ddd;
-}
-#recurrenceFields #recurrenceTable td.recurrenceRules #advancedRecurrenceRules {
-  display: block;
-  border-top: 1px solid #ddd;
-  padding: 1em 0;
 }
 .chkBoxListItem {
   display: block;
   float: left;
   width: 3em;
 }
-#recurrenceFields #recurrenceTable br {
+#rrulesTable br {
   clear: both;
 }
-#recurrenceFields #recurrenceTable p {
+#rrulesTable p {
   margin: 0 0 0.5em 0;
 }
-#recurrenceFields #recurrenceTable p.weekRecurLinks {
+#rrulesTable p.weekRecurLinks {
   margin: 1em 0 1em 0;
 }
-#recurrenceFields #recurrenceTable .extraByMonthPosFields {
+#rrulesTable .extraByMonthPosFields {
   margin: 0 0 1em 2em;
   padding: 0;
 }
-#recurrenceFields #monthRecurFields div,
-#recurrenceFields #yearRecurFields div {
+#rrulesTable #monthRecurFields div,
+#rrulesTable #yearRecurFields div {
   display: block;
   margin: 0 0 0.5em 0;
 }
-#recurrenceFields #dayMonthCheckBoxList,
-#recurrenceFields #monthDaysCheckBoxList,
-#recurrenceFields #yearWeeksCheckBoxList,
-#recurrenceFields #yearMonthCheckBoxList,
-#recurrenceFields #yearMonthDaysCheckBoxList,
-#recurrenceFields #yearDaysCheckBoxList {
+#rrulesTable #dayMonthCheckBoxList,
+#rrulesTable #monthDaysCheckBoxList,
+#rrulesTable #yearWeeksCheckBoxList,
+#rrulesTable #yearMonthCheckBoxList,
+#rrulesTable #yearMonthDaysCheckBoxList,
+#rrulesTable #yearDaysCheckBoxList {
   margin: 0.5em 0 0.5em 2em;
   display: block;
   clear: both;
   white-space: nowrap !important;
 }
-#recurrenceDatesButton {
-  margin: 1em 0 0 0;
+#recurrenceDatesButton input {
+  margin: 2em 0 0 0;
+  font-size: 0.8em;
 }
 .shown {
   display: inline;

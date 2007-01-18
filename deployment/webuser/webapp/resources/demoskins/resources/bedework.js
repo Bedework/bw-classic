@@ -9,7 +9,7 @@ function changeClass(id, newClass) {
 // show hide items using a checkbox
 function swapVisible(obj,id) {
   if (obj.checked) {
-    changeClass(id,'shown');
+    changeClass(id,'visible');
   } else {
     changeClass(id,'invisible');
   }

@@ -93,16 +93,25 @@ function swapDurationType(type) {
   }
 }
 function swapRecurrence(obj) {
-  if (obj.checked) {
-    changeClass('recurrenceFields','dateStartEndBox');
-    changeClass('recurrenceUiSwitch','visible');
+  if (obj.value == 'true') {
+    changeClass('recurrenceFields','visible');
+    changeClass('rrulesSwitch','visible');
   } else {
     changeClass('recurrenceFields','invisible');
-    changeClass('recurrenceUiSwitch','invisible');
+    changeClass('rrulesSwitch','invisible');
   }
 }
-// reveal and hide recurrence fields
-function showRecurrence(freq) {
+function swapRrules(obj) {
+  if (obj.checked) {
+    changeClass('rrulesTable','visible');
+    changeClass('rrulesUiSwitch','visible');
+  } else {
+    changeClass('rrulesTable','invisible');
+    changeClass('rrulesUiSwitch','invisible');
+  }
+}
+function showRrules(freq) {
+  // reveal and hide rrules fields
   changeClass('recurrenceUntilRules','visible');
 
   if (freq == 'NONE') {
