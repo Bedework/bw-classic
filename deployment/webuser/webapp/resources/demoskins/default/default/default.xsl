@@ -2946,20 +2946,48 @@
                        id="bwEventWidgeRdate"
                        iconURL="{$resourcesRoot}/resources/calIcon.gif"/>
               </div>
-              <div id="rdateTimeFields">
-                <xsl:attribute name="class">
-                  <xsl:choose>
-                    <xsl:when test="form/allDay/input/@checked='checked'">invisible</xsl:when>
-                    <xsl:otherwise>timeFields</xsl:otherwise>
-                  </xsl:choose>
-                </xsl:attribute>
-                <input name="rdateTime"
-                       dojoType="dropdowntimepicker"
-                       formatLength="short"
-                       saveFormat="hhmmss"
-                       id="bwEventWidgeRdateTime"
-                       iconURL="{$resourcesRoot}/resources/clockIcon.gif"/>
-                <xsl:text> </xsl:text>
+              <div id="rdateTimeFields" class="timeFields">
+               <select name="eventRdate.hour">
+                  <option value="0">00</option>
+                  <option value="1">01</option>
+                  <option value="2">02</option>
+                  <option value="3">03</option>
+                  <option value="4">04</option>
+                  <option value="5">05</option>
+                  <option value="6">06</option>
+                  <option value="7">07</option>
+                  <option value="8">08</option>
+                  <option value="9">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12" selected="selected">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                </select>
+                <select name="eventRdate.minute">
+                  <option value="0" selected="selected">00</option>
+                  <option value="5">05</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
+                  <option value="35">35</option>
+                  <option value="40">40</option>
+                  <option value="45">45</option>
+                  <option value="50">50</option>
+                  <option value="55">55</option>
+                </select>
+               <xsl:text> </xsl:text>
 
                 <select name="tzid" id="rdateTzid" class="timezones">
                   <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
