@@ -8,17 +8,14 @@ function bwClockLaunch(type) {
   if ((document.getElementById("clock").className == "visible") && (bwClockCurrentType == type)) {
     // if the clock with the same type is visible, toggle it off
     changeClass("clock","invisible");
-  } else { // otherwise, turn it on and display the correct type
+  } else {
+    // otherwise, turn it on and display the correct type
+    changeClass("clock","visible");
     bwClockRequestedType = type;
     bwClockCurrentType = type;
-    changeClass("clock","shown");
     // reset hours and minutes to null
     bwClockHour = null;
     bwClockMinute = null;
-   changeClass("eventFormPrefLocationList","hidden");
-   changeClass("eventFormLocationList","hidden");
-   changeClass("eventFormContactList","hidden");
-   changeClass("eventFormPrefContactList","hidden");
     bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
     bwClockSwitch = document.getElementById("bwClockSwitch");
     document.getElementById("bwClockTime").innerHTML = "select time";
@@ -34,10 +31,6 @@ function bwClockLaunch(type) {
 
 function bwClockClose() {
   changeClass("clock","invisible");
-  changeClass("eventFormPrefLocationList","shown");
-  changeClass("eventFormLocationList","shown");
-  changeClass("eventFormContactList","shown");
-  changeClass("eventFormPrefContactList","shown");
 }
 
 function bwClockUpdateDateTimeForm(valType,val) {

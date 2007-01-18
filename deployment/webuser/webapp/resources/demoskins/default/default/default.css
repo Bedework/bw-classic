@@ -720,8 +720,10 @@ table#manage td {
   margin: 0 0 1em 0;
 }
 #recurrenceInfo {
-  margin-top: 1em;
-  font-weight: bold;
+  margin: 0;
+  padding: 1em;
+  border: 1px solid #ddd;
+  font-size: 0.9em;
 }
 #rrulesSwitch,
 #rrulesUiSwitch {
@@ -788,6 +790,20 @@ table#manage td {
 #recurrenceDatesButton input {
   margin: 2em 0 0 0;
   font-size: 0.8em;
+}
+#rdatesFormFields {
+  font-size: 0.9em;
+  text-align: center;
+}
+#rdatesTable {
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+}
+#rdatesTable td {
+  padding: 0.5em 1em;
+}
+#rdatesTable td.trash {
+  text-align: right;
 }
 .shown {
   display: inline;

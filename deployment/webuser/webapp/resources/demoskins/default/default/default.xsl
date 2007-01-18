@@ -2337,126 +2337,9 @@
             </input> event does not recur
           </div>
 
-          <xsl:if test="form/recurrence">
-            <!-- Output descriptive recurrence information.  Probably not
-                 complete yet. Replace all strings so can be
-                 more easily internationalized. -->
-            <strong>Recurrence:</strong>
-            <div id="recurrenceInfo">
-              Every
-              <xsl:choose>
-                <xsl:when test="form/recurrence/interval &gt; 1">
-                  <xsl:value-of select="form/recurrence/interval"/>
-                </xsl:when>
-              </xsl:choose>
-              <xsl:text> </xsl:text>
-              <xsl:choose>
-                <xsl:when test="form/recurrence/freq = 'HOURLY'">hour</xsl:when>
-                <xsl:when test="form/recurrence/freq = 'DAILY'">day</xsl:when>
-                <xsl:when test="form/recurrence/freq = 'WEEKLY'">week</xsl:when>
-                <xsl:when test="form/recurrence/freq = 'MONTHLY'">month</xsl:when>
-                <xsl:when test="form/recurrence/freq = 'YEARLY'">year</xsl:when>
-              </xsl:choose><xsl:if test="form/recurrence/interval &gt; 1">s</xsl:if>
-              <xsl:text> </xsl:text>
-
-              <xsl:if test="form/recurrence/byday">
-                <xsl:for-each select="form/recurrence/byday/pos">
-                  <xsl:if test="position() != 1"> and </xsl:if>
-                  on
-                  <xsl:choose>
-                    <xsl:when test="@val='1'">
-                      the first
-                    </xsl:when>
-                    <xsl:when test="@val='2'">
-                      the second
-                    </xsl:when>
-                    <xsl:when test="@val='3'">
-                      the third
-                    </xsl:when>
-                    <xsl:when test="@val='4'">
-                      the fourth
-                    </xsl:when>
-                    <xsl:when test="@val='5'">
-                      the fifth
-                    </xsl:when>
-                    <xsl:when test="@val='-1'">
-                      the last
-                    </xsl:when>
-                    <!-- don't output "every" -->
-                    <!--<xsl:otherwise>
-                      every
-                    </xsl:otherwise>-->
-                  </xsl:choose>
-                  <xsl:for-each select="day">
-                    <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
-                    <xsl:variable name="dayVal" select="."/>
-                    <xsl:variable name="dayPos">
-                      <xsl:for-each select="/bedework/recurdayvals/val">
-                        <xsl:if test="node() = $dayVal"><xsl:value-of select="position()"/></xsl:if>
-                      </xsl:for-each>
-                    </xsl:variable>
-                    <xsl:value-of select="/bedework/shortdaynames/val[position() = $dayPos]"/>
-                    <xsl:if test="position() != last()">, </xsl:if>
-                  </xsl:for-each>
-                </xsl:for-each>
-              </xsl:if>
-
-              <xsl:if test="form/recurrence/bymonth">
-                in
-                <xsl:for-each select="form/recurrence/bymonth/val">
-                  <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
-                  <xsl:variable name="monthNum" select="number(.)"/>
-                  <xsl:value-of select="/bedework/monthlabels/val[position() = $monthNum]"/>
-                  <xsl:if test="position() != last()">, </xsl:if>
-                </xsl:for-each>
-              </xsl:if>
-
-              <xsl:if test="form/recurrence/bymonthday">
-                on the
-                <xsl:apply-templates select="form/recurrence/bymonthday/val" mode="weekMonthYearNumbers"/>
-                day<xsl:if test="form/recurrence/bymonthday/val[position()=2]">s</xsl:if> of the month
-              </xsl:if>
-
-              <xsl:if test="form/recurrence/byyearday">
-                on the
-                <xsl:apply-templates select="form/recurrence/byyearday/val" mode="weekMonthYearNumbers"/>
-                day<xsl:if test="form/recurrence/byyearday/val[position()=2]">s</xsl:if> of the year
-              </xsl:if>
-
-              <xsl:if test="form/recurrence/byweekno">
-                in the
-                <xsl:apply-templates select="form/recurrence/byweekno/val" mode="weekMonthYearNumbers"/>
-                week<xsl:if test="form/recurrence/byweekno/val[position()=2]">s</xsl:if> of the year
-              </xsl:if>
-
-              repeating
-              <xsl:choose>
-                <xsl:when test="form/recurrence/count = '-1'">forever</xsl:when>
-                <xsl:when test="form/recurrence/until">
-                  <xsl:value-of select="form/recurrence/until"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="form/recurrence/count"/>
-                  time<xsl:if test="form/recurrence/count &gt; 1">s</xsl:if>
-                </xsl:otherwise>
-              </xsl:choose>
-            </div>
-          </xsl:if>
-
-          <!-- set these dynamically when form is submitted -->
-          <input type="hidden" name="interval" value=""/>
-          <input type="hidden" name="count" value=""/>
-          <input type="hidden" name="until" value=""/>
-          <input type="hidden" name="byday" value=""/>
-          <input type="hidden" name="bymonthday" value=""/>
-          <input type="hidden" name="bymonth" value=""/>
-          <input type="hidden" name="byweekno" value=""/>
-          <input type="hidden" name="byyearday" value=""/>
-          <input type="hidden" name="wkst" value=""/>
-          <input type="hidden" name="setpos" value=""/>
-
           <!-- wrapper for all recurrence fields (rrules and rdates): -->
           <div id="recurrenceFields" class="invisible">
+            <xsl:if test="form/recurrence"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
 
             <!-- show or hide rrules fields: -->
             <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on"/>
@@ -2474,6 +2357,123 @@
               <input type="checkbox" name="rrulesUiSwitch" value="advanced" onchange="swapVisible(this,'advancedRrules')"/>
               show advanced recurrence rules
             </span>
+
+            <xsl:if test="form/recurrence">
+              <!-- Output descriptive recurrence information.  Probably not
+                   complete yet. Replace all strings so can be
+                   more easily internationalized. -->
+              <div id="recurrenceInfo">
+                Every
+                <xsl:choose>
+                  <xsl:when test="form/recurrence/interval &gt; 1">
+                    <xsl:value-of select="form/recurrence/interval"/>
+                  </xsl:when>
+                </xsl:choose>
+                <xsl:text> </xsl:text>
+                <xsl:choose>
+                  <xsl:when test="form/recurrence/freq = 'HOURLY'">hour</xsl:when>
+                  <xsl:when test="form/recurrence/freq = 'DAILY'">day</xsl:when>
+                  <xsl:when test="form/recurrence/freq = 'WEEKLY'">week</xsl:when>
+                  <xsl:when test="form/recurrence/freq = 'MONTHLY'">month</xsl:when>
+                  <xsl:when test="form/recurrence/freq = 'YEARLY'">year</xsl:when>
+                </xsl:choose><xsl:if test="form/recurrence/interval &gt; 1">s</xsl:if>
+                <xsl:text> </xsl:text>
+
+                <xsl:if test="form/recurrence/byday">
+                  <xsl:for-each select="form/recurrence/byday/pos">
+                    <xsl:if test="position() != 1"> and </xsl:if>
+                    on
+                    <xsl:choose>
+                      <xsl:when test="@val='1'">
+                        the first
+                      </xsl:when>
+                      <xsl:when test="@val='2'">
+                        the second
+                      </xsl:when>
+                      <xsl:when test="@val='3'">
+                        the third
+                      </xsl:when>
+                      <xsl:when test="@val='4'">
+                        the fourth
+                      </xsl:when>
+                      <xsl:when test="@val='5'">
+                        the fifth
+                      </xsl:when>
+                      <xsl:when test="@val='-1'">
+                        the last
+                      </xsl:when>
+                      <!-- don't output "every" -->
+                      <!--<xsl:otherwise>
+                        every
+                      </xsl:otherwise>-->
+                    </xsl:choose>
+                    <xsl:for-each select="day">
+                      <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
+                      <xsl:variable name="dayVal" select="."/>
+                      <xsl:variable name="dayPos">
+                        <xsl:for-each select="/bedework/recurdayvals/val">
+                          <xsl:if test="node() = $dayVal"><xsl:value-of select="position()"/></xsl:if>
+                        </xsl:for-each>
+                      </xsl:variable>
+                      <xsl:value-of select="/bedework/shortdaynames/val[position() = $dayPos]"/>
+                      <xsl:if test="position() != last()">, </xsl:if>
+                    </xsl:for-each>
+                  </xsl:for-each>
+                </xsl:if>
+
+                <xsl:if test="form/recurrence/bymonth">
+                  in
+                  <xsl:for-each select="form/recurrence/bymonth/val">
+                    <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
+                    <xsl:variable name="monthNum" select="number(.)"/>
+                    <xsl:value-of select="/bedework/monthlabels/val[position() = $monthNum]"/>
+                    <xsl:if test="position() != last()">, </xsl:if>
+                  </xsl:for-each>
+                </xsl:if>
+
+                <xsl:if test="form/recurrence/bymonthday">
+                  on the
+                  <xsl:apply-templates select="form/recurrence/bymonthday/val" mode="weekMonthYearNumbers"/>
+                  day<xsl:if test="form/recurrence/bymonthday/val[position()=2]">s</xsl:if> of the month
+                </xsl:if>
+
+                <xsl:if test="form/recurrence/byyearday">
+                  on the
+                  <xsl:apply-templates select="form/recurrence/byyearday/val" mode="weekMonthYearNumbers"/>
+                  day<xsl:if test="form/recurrence/byyearday/val[position()=2]">s</xsl:if> of the year
+                </xsl:if>
+
+                <xsl:if test="form/recurrence/byweekno">
+                  in the
+                  <xsl:apply-templates select="form/recurrence/byweekno/val" mode="weekMonthYearNumbers"/>
+                  week<xsl:if test="form/recurrence/byweekno/val[position()=2]">s</xsl:if> of the year
+                </xsl:if>
+
+                repeating
+                <xsl:choose>
+                  <xsl:when test="form/recurrence/count = '-1'">forever</xsl:when>
+                  <xsl:when test="form/recurrence/until">
+                    <xsl:value-of select="form/recurrence/until"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="form/recurrence/count"/>
+                    time<xsl:if test="form/recurrence/count &gt; 1">s</xsl:if>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </div>
+            </xsl:if>
+
+            <!-- set these dynamically when form is submitted -->
+            <input type="hidden" name="interval" value=""/>
+            <input type="hidden" name="count" value=""/>
+            <input type="hidden" name="until" value=""/>
+            <input type="hidden" name="byday" value=""/>
+            <input type="hidden" name="bymonthday" value=""/>
+            <input type="hidden" name="bymonth" value=""/>
+            <input type="hidden" name="byweekno" value=""/>
+            <input type="hidden" name="byyearday" value=""/>
+            <input type="hidden" name="wkst" value=""/>
+            <input type="hidden" name="setpos" value=""/>
 
             <!-- wrapper for rrules: -->
             <table id="rrulesTable" cellspacing="0" class="invisible">
@@ -2930,16 +2930,21 @@
 
   <xsl:template name="rdates">
     <div id="bwDialogBox">
-      <form name="rdatesForm" id="rdates" action="{$event-setRdate}" method="post">
+      <form name="rdatesForm" id="rdates" action="{$event-setRdate}" method="post" onsubmit="setRdateDatetime(this)">
         <h4 id="dialogTitle">
-          Recurrence Dates
+          Add / Remove Recurrence Dates
         </h4>
         <div id="raContent">
 
-            <div class="dateStartEndBox">
-              <strong>Add Rdate:</strong>
+            <div class="dateStartEndBox" id="rdatesFormFields">
               <div class="dateFields">
-                <input name="datetime" dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgeRdate" iconURL="{$resourcesRoot}/resources/calIcon.gif"/>
+                <input name="datetime"
+                       dojoType="dropdowndatepicker"
+                       formatLength="medium"
+                       value="today"
+                       saveFormat="yyyyMMdd"
+                       id="bwEventWidgeRdate"
+                       iconURL="{$resourcesRoot}/resources/calIcon.gif"/>
               </div>
               <div id="rdateTimeFields">
                 <xsl:attribute name="class">
@@ -2948,52 +2953,15 @@
                     <xsl:otherwise>timeFields</xsl:otherwise>
                   </xsl:choose>
                 </xsl:attribute>
-                <select name="eventRdate.hour">
-                  <option value="0">00</option>
-                  <option value="1">01</option>
-                  <option value="2">02</option>
-                  <option value="3">03</option>
-                  <option value="4">04</option>
-                  <option value="5">05</option>
-                  <option value="6">06</option>
-                  <option value="7">07</option>
-                  <option value="8">08</option>
-
-                  <option value="9">09</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12" selected="selected">12</option>
-                  <option value="13">13</option>
-                  <option value="14">14</option>
-                  <option value="15">15</option>
-                  <option value="16">16</option>
-                  <option value="17">17</option>
-
-                  <option value="18">18</option>
-                  <option value="19">19</option>
-                  <option value="20">20</option>
-                  <option value="21">21</option>
-                  <option value="22">22</option>
-                  <option value="23">23</option>
-                </select>
-                <select name="eventRdate.minute">
-                  <option value="0" selected="selected">00</option>
-                  <option value="5">05</option>
-                  <option value="10">10</option>
-
-                  <option value="15">15</option>
-                  <option value="20">20</option>
-                  <option value="25">25</option>
-                  <option value="30">30</option>
-                  <option value="35">35</option>
-                  <option value="40">40</option>
-                  <option value="45">45</option>
-                  <option value="50">50</option>
-                  <option value="55">55</option>
-                </select>
+                <input name="rdateTime"
+                       dojoType="dropdowntimepicker"
+                       formatLength="short"
+                       saveFormat="hhmmss"
+                       id="bwEventWidgeRdateTime"
+                       iconURL="{$resourcesRoot}/resources/clockIcon.gif"/>
                 <xsl:text> </xsl:text>
 
-                <select name="tzid" id="startTzid" class="timezones">
+                <select name="tzid" id="rdateTzid" class="timezones">
                   <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                   <option value="-1">select timezone...</option>
                   <xsl:variable name="rdateTzId" select="/bedework/rdates/tzid"/>
@@ -3006,8 +2974,43 @@
                   </xsl:for-each>
                 </select>
               </div>
+              <xsl:text> </xsl:text>
               <input type="submit" value="add"/>
+              <br/>
+              <!-- floating event: no timezone (and not UTC) -->
+              <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="off"/>
+              floating
+              <!-- store time as coordinated universal time (UTC) -->
+              <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="off"/>
+              store as UTC
             </div>
+
+            <table cellspacing="0" id="rdatesTable">
+              <tr>
+                <th colspan="2">Recurrence Dates</th>
+              </tr>
+              <xsl:for-each select="/bedework/rdates/rdate">
+                <tr>
+                  <td>
+                    <xsl:value-of select="longdate"/>
+                    <xsl:if test="allday='false'">
+                      <xsl:value-of select="time"/>
+                      <xsl:if test="floating='false'">
+                        <xsl:value-of select="timezone/id"/>
+                      </xsl:if>
+                    </xsl:if>
+                  </td>
+                  <td class="trash">
+                    <xsl:variable name="datetime"><xsl:value-of select="fourdigityear"/><xsl:value-of select="twodigitmonth"/><xsl:value-of select="twodigitday"/>T<xsl:value-of select="twodigithour"/><xsl:value-of select="twodigitminute"/>00</xsl:variable>
+                    <xsl:variable name="tzid" select="timezone/id"/>
+                    <xsl:variable name="floating" select="floating"/>
+                    <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;floating={$floating}&amp;tzid={$tzid}&amp;delete=true" title="remove">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                    </a>
+                  </td>
+                </tr>
+              </xsl:for-each>
+            </table>
 
           <input type="button" value="done" onclick="window.close()"/>
         </div>
