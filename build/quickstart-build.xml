@@ -230,6 +230,24 @@
     </java>
   </target>
 
+  <target name="hsqldb-trace-9887" depends="run.init"
+          description="starts the hsqldb server">
+    <echo message="Starting hsqldb"/>
+    <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
+      <classpath>
+        <pathelement path="${org.bedework.hsqldb.dir}/lib/hsqldb.jar"/>
+      </classpath>
+      <arg value="-trace"/>
+      <arg value="true"/>
+      <arg value="-silent"/>
+      <arg value="false"/>
+      <arg value="-database"/>
+      <arg value="${org.bedework.hsqldb.dir}/${org.bedework.hsqldb.dbname}"/>
+      <arg value="-port"/>
+      <arg value="9887"/>
+    </java>
+  </target>
+
   <target name="uportaldb" depends="run.init"
           description="starts the hsqldb server">
     <echo message="Starting hsqldb"/>
