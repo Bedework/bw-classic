@@ -2330,26 +2330,26 @@
           <div id="recurringSwitch">
             <!-- set or remove "recurring" and show or hide all recurrence fields: -->
             <input type="radio" name="recurring" value="true" onclick="swapRecurrence(this)">
-              <xsl:if test="form/recurrence"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+              <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input> event recurs
             <input type="radio" name="recurring" value="false" onclick="swapRecurrence(this)">
-              <xsl:if test="not(form/recurrence)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+              <xsl:if test="form/recurringEntity = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input> event does not recur
           </div>
 
           <!-- wrapper for all recurrence fields (rrules and rdates): -->
           <div id="recurrenceFields" class="invisible">
-            <xsl:if test="form/recurrence"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
+            <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
 
             <!-- show or hide rrules fields: -->
             <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on"/>
             <span id="rrulesSwitch">
               <xsl:choose>
-                <xsl:when test="/bedework/creating = 'true'">
-                  create recurrence rules
+                <xsl:when test="form/recurrence">
+                  change recurrence rules
                 </xsl:when>
                 <xsl:otherwise>
-                  change recurrence rules
+                  create recurrence rules
                 </xsl:otherwise>
               </xsl:choose>
             </span>
@@ -2359,7 +2359,7 @@
             </span>
 
             <xsl:if test="form/recurrence">
-              <!-- Output descriptive recurrence information.  Probably not
+              <!-- Output descriptive recurrence rules information.  Probably not
                    complete yet. Replace all strings so can be
                    more easily internationalized. -->
               <div id="recurrenceInfo">
