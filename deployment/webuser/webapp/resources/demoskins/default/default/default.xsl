@@ -3003,9 +3003,10 @@
                   <td class="trash">
                     <xsl:variable name="datetime"><xsl:value-of select="fourdigityear"/><xsl:value-of select="twodigitmonth"/><xsl:value-of select="twodigitday"/>T<xsl:value-of select="twodigithour"/><xsl:value-of select="twodigitminute"/>00</xsl:variable>
                     <xsl:variable name="tzid" select="timezone/id"/>
+                    <xsl:variable name="dateOnly" select="allday"/>
                     <xsl:variable name="floating"><xsl:if test="floating = 'true'">&amp;floating=true</xsl:if></xsl:variable>
                     <xsl:variable name="storeUTC"><xsl:if test="utc = 'true'">&amp;storeUTC=true</xsl:if></xsl:variable>
-                    <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}{$floating}{$storeUTC}&amp;delete=true" title="remove">
+                    <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}&amp;dateOnly={$dateOnly}{$floating}{$storeUTC}&amp;delete=true" title="remove">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
                     </a>
                   </td>
@@ -4887,8 +4888,9 @@
                 Main Address:
               </td>
               <td align="left">
-                <xsl:variable name="addr" select="form/address/input/@value"/>
-                <input size="60" name="locationAddress.value" value="{$addr}" type="text"/>
+                <input size="60" name="locationAddress.value" type="text">
+                  <xsl:attribute name="value"><xsl:value-of select="/bedework/currentLocation/address"/></xsl:attribute>
+                </input>
               </td>
             </tr>
             <tr>
@@ -4896,8 +4898,9 @@
                 Subaddress:
               </td>
               <td align="left">
-                <xsl:variable name="subaddr" select="form/subaddress/textarea"/>
-                <input size="60" name="locationSubaddress.value" value="{$subaddr}" type="text"/>
+                <input size="60" name="locationSubaddress.value" type="text">
+                  <xsl:attribute name="value"><xsl:value-of select="/bedework/currentLocation/subaddress"/></xsl:attribute>
+                </input>
               </td>
             </tr>
             <tr>
@@ -4905,8 +4908,9 @@
                 Location Link:
               </td>
               <td>
-                <xsl:variable name="link" select="form/link/input/@value"/>
-                <input size="60" name="location.link" value="{$link}" type="text"/>
+                <input size="60" name="location.link" type="text">
+                  <xsl:attribute name="value"><xsl:value-of select="/bedework/currentLocation/link"/></xsl:attribute>
+                </input>
               </td>
             </tr>
           </table>
