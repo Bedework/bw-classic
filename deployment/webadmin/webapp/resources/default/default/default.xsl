@@ -1526,7 +1526,7 @@
                   </table>
                   <!-- recurrence dates (rdates) -->
                   <div id="recurrenceDatesButton">
-                    <input type="button" value="manage recurrence &amp; exception dates" onclick="launchSizedWindow('{$event-showRdates}','560','400')"/>
+                    <input type="button" value="manage recurrence &amp; exception dates" onclick="launchSizedWindow('{$event-showRdates}','700','500')"/>
                   </div>
                 </div>
               </xsl:otherwise>
