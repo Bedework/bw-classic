@@ -80,6 +80,7 @@
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
   <xsl:variable name="event-showRdates" select="/bedework/urlPrefixes/event/showRdates"/>
+  <xsl:variable name="event-showExdates" select="/bedework/urlPrefixes/event/showExdates"/>
   <xsl:variable name="event-setRdate" select="/bedework/urlPrefixes/event/setRdate"/>
   <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent/a/@href"/>
   <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent/a/@href"/>
@@ -171,11 +172,9 @@
           <xsl:call-template name="selectCalForEvent"/>
         </xsl:when>
         <xsl:when test="/bedework/page='rdates'">
-          <xsl:call-template name="messagesAndErrors"/>
           <xsl:call-template name="rdates"/>
         </xsl:when>
         <xsl:when test="/bedework/page='attendees'">
-          <xsl:call-template name="messagesAndErrors"/>
           <xsl:call-template name="attendees"/>
         </xsl:when>
         <xsl:when test="/bedework/page='eventAccess'">
@@ -490,7 +489,10 @@
     </ul>
     <!-- special calendars: inbox, outbox, and trash -->
     <ul class="calendarTree">
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType &gt; 1]" mode="mySpecialCalendars"/>
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 5]" mode="mySpecialCalendars"/> <!-- inbox -->
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 6]" mode="mySpecialCalendars"/> <!-- outbox -->
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 2]" mode="mySpecialCalendars"/> <!-- trash -->
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 3]" mode="mySpecialCalendars"/> <!-- deleted -->
     </ul>
 
     <h3>
@@ -2746,6 +2748,7 @@
             <!-- recurrence dates (rdates) -->
             <div id="recurrenceDatesButton">
               <input type="button" value="add/remove recurrence dates" onclick="launchSizedWindow('{$event-showRdates}','560','400')"/>
+               <input type="button" value="view/remove exception dates" onclick="launchSizedWindow('{$event-showExdates}','560','400')"/>
             </div>
           </div>
         </xsl:otherwise>
@@ -3016,6 +3019,8 @@
               store as UTC
             </div>
 
+            <xsl:call-template name="messagesAndErrors"/>
+
             <table cellspacing="0" id="rdatesTable">
               <tr>
                 <th colspan="2">Recurrence Dates</th>
@@ -3034,7 +3039,7 @@
                   <td class="trash">
                     <xsl:variable name="datetime"><xsl:value-of select="unformatted"/></xsl:variable>
                     <xsl:variable name="tzid" select="timezone/id"/>
-                    <xsl:variable name="dateOnly"><xsl:if test="dateOnly = 'true'">&amp;dateOnly=true</xsl:if></xsl:variable>
+                    <xsl:variable name="dateOnly"><xsl:if test="allday = 'true'">&amp;dateOnly=true</xsl:if></xsl:variable>
                     <xsl:variable name="floating"><xsl:if test="floating = 'true'">&amp;floating=true</xsl:if></xsl:variable>
                     <xsl:variable name="storeUTC"><xsl:if test="utc = 'true'">&amp;storeUTC=true</xsl:if></xsl:variable>
                     <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}{$dateOnly}{$floating}{$storeUTC}&amp;delete=true" title="remove">
@@ -3086,6 +3091,9 @@
               </td>
             </tr>
           </table>
+
+          <xsl:call-template name="messagesAndErrors"/>
+
           <xsl:if test="/bedework/attendees/attendee">
             <table id="attendees" class="widget" cellspacing="0">
               <tr>
@@ -3283,40 +3291,23 @@
     </table>
 
     <div id="sharingBox">
-      <h3>Sharing</h3>
-      <table class="common">
-        <tr>
-          <th class="commonHeader" colspan="2">Current access:</th>
-        </tr>
-        <tr>
-          <th>Users:</th>
-          <td>
-            <xsl:choose>
-              <xsl:when test="/bedework/myCalendars/calendars/calendar/acl/ace/principal/href">
-                <xsl:for-each select="/bedework/myCalendars/calendars/calendar/acl/ace[principal/href]">
-                  <xsl:value-of select="principal/href"/> (<xsl:value-of select="name(grant/*)"/>)<br/>
-                </xsl:for-each>
-              </xsl:when>
-              <xsl:otherwise>
-                free/busy not shared
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
-      </table>
+      <xsl:variable name="calPathEncoded" select="/bedework/myCalendars/calendars/calendar/encodedPath"/>
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/acl" mode="currentAccess">
+        <xsl:with-param name="action" select="$freeBusy-setAccess"/>
+        <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
+      </xsl:apply-templates>
       <form name="calendarShareForm" action="{$freeBusy-setAccess}" id="shareForm">
         <xsl:variable name="calPath" select="/bedework/myCalendars/calendars/calendar/path"/>
         <input type="hidden" name="calPath" value="{$calPath}"/>
+        <input type="hidden" value="F" name="how"/>
         <p>
           Share my free/busy with:<br/>
           <input type="text" name="who" size="20"/>
           <input type="radio" value="user" name="whoType" checked="checked"/> user
-          <input type="radio" value="group" name="whoType"/> group
-        </p>
-        <p>
-          Access rights:<br/>
-          <input type="radio" value="F" name="how" checked="checked"/> view my free/busy<br/>
-          <input type="radio" value="d" name="how"/> default (reset access)
+          <input type="radio" value="group" name="whoType"/> group<br/>
+          <em>note: this will set a user or group's access to
+              "read-free-busy" and any
+              existing access control will be replaced.</em>
         </p>
         <input type="submit" name="submit" value="Submit"/>
       </form>
@@ -3592,52 +3583,56 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="mySpecialCalendars">
-    <!-- Inbox, Outbox, Trash, etc. -->
-    <xsl:if test="name != 'Deleted'">
-      <xsl:variable name="id" select="id"/>
-      <li>
-        <xsl:attribute name="class">
-          <xsl:choose>
-            <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
-                            and path = /bedework/selectionState/subscriptions/subscription/calendar/path">selected</xsl:when>
-            <xsl:when test="name='Trash'">trash</xsl:when>
-            <xsl:when test="calendarCollection='false'">folder</xsl:when>
-            <xsl:otherwise>calendar</xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-        <xsl:variable name="calPath" select="path"/>
-          <xsl:choose>
-            <xsl:when test="name='Inbox' and /bedework/inboxState/numActive != '0'">
-              <strong>
-                <a href="{$showInbox}">
-                  <xsl:value-of select="name"/>
-                </a>
-                <xsl:text> </xsl:text>
-                (<xsl:value-of select="/bedework/inboxState/numActive"/>)
-              </strong>
-            </xsl:when>
-            <xsl:when test="name='Outbox' and /bedework/outbox/numActive != '0'">
-              <strong>
-                <a href="{$showOutbox}">
-                  <xsl:value-of select="name"/>
-                </a>
-                <xsl:text> </xsl:text>
-                (<xsl:value-of select="/bedework/outboxState/numActive"/>)
-              </strong>
-            </xsl:when>
-            <xsl:otherwise>
-              <a href="{$setSelection}&amp;calUrl={$calPath}">
+    <!-- Trash = 2, Deleted = 3, Busy = 4, Inbox = 5, Outbox = 6  -->
+    <xsl:variable name="id" select="id"/>
+    <li>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
+                          and path = /bedework/selectionState/subscriptions/subscription/calendar/path">selected</xsl:when>
+          <xsl:when test="calType='2' or calType='3'">trash</xsl:when>
+          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:variable name="calPath" select="path"/>
+        <xsl:choose>
+          <xsl:when test="calType='5' and /bedework/inboxState/numActive != '0'">
+            <strong>
+              <a href="{$showInbox}">
                 <xsl:value-of select="name"/>
               </a>
-            </xsl:otherwise>
-          </xsl:choose>
-        <xsl:if test="calendar">
-          <ul>
-            <xsl:apply-templates select="calendar" mode="myCalendars"/>
-          </ul>
-        </xsl:if>
-      </li>
-    </xsl:if>
+              <xsl:text> </xsl:text>
+              (<xsl:value-of select="/bedework/inboxState/numActive"/>)
+            </strong>
+          </xsl:when>
+          <xsl:when test="calType='6' and /bedework/outbox/numActive != '0'">
+            <strong>
+              <a href="{$showOutbox}">
+                <xsl:value-of select="name"/>
+              </a>
+              <xsl:text> </xsl:text>
+              (<xsl:value-of select="/bedework/outboxState/numActive"/>)
+            </strong>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{$setSelection}&amp;calUrl={$calPath}">
+              <xsl:attribute name="title">
+                <xsl:choose>
+                  <xsl:when test="calType = 2">Contains items you have access to delete.</xsl:when>
+                  <xsl:when test="calType = 3">Used to mask items you do not have access to truly delete, such as many subscribed events.</xsl:when>
+                </xsl:choose>
+              </xsl:attribute>
+              <xsl:value-of select="name"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="myCalendars"/>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <xsl:template match="calendar" mode="listForUpdate">

@@ -1410,13 +1410,13 @@ img.subStyle {
 }
 #freeBusy td.free,
 #freeBusyKey td.free {
-  color: #A3BAEA;
-  background-color: #A3BAEA;
+  color: #ddd;
+  background-color: #ddd;
 }
 #freeBusy td.busy,
 #freeBusyKey td.busy {
-  color: #ddd;
-  background-color: #ddd;
+  color: #A3BAEA;
+  background-color: #A3BAEA;
 }
 #freeBusy td.tentative,
 #freeBusyKey td.tentative {
@@ -1430,7 +1430,7 @@ img.subStyle {
   padding: 5px;
 }
 #freeBusy td.free a {
-  color: #A3BAEA;
+  color: #ddd;
   background-color: transparent;
   display: block;
   padding: 6px 10px;
@@ -1448,7 +1448,7 @@ img.subStyle {
   text-decoration: none;
 }
 #freeBusy td.busy a {
-  color: #ddd;
+  color: #A3BAEA;
   background-color: transparent;
   display: block;
   padding: 6px 10px;

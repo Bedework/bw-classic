@@ -227,7 +227,6 @@
             <xsl:call-template name="selectCalForEvent"/>
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='rdates'">
-            <xsl:call-template name="messagesAndErrors"/>
             <xsl:call-template name="rdates"/>
           </xsl:when>
           <xsl:otherwise>
@@ -2102,6 +2101,8 @@
               <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="on"/>
               store as UTC
             </div>
+
+            <xsl:call-template name="messagesAndErrors"/>
 
             <table cellspacing="0" id="rdatesTable">
               <tr>
