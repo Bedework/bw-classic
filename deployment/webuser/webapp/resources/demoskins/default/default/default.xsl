@@ -3005,6 +3005,9 @@
               <xsl:text> </xsl:text>
               <input type="submit" value="add"/>
               <br/>
+              <!-- dateonly (anniversary) event: this is temporary - should be determined by the main event -->
+              <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="off"/>
+              all day
               <!-- floating event: no timezone (and not UTC) -->
               <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="off"/>
               floating

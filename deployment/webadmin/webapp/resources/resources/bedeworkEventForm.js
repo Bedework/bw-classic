@@ -72,6 +72,13 @@ function swapStoreUTC(obj) {
     endStoreUTC.value = "false";
   }
 }
+function swapRdateAllDay(obj) {
+  if (obj.checked) {
+    changeClass('rdateTimeFields','invisible');
+  } else {
+    changeClass('rdateTimeFields','timeFields');
+  }
+}
 function swapRdateFloatingTime(obj) {
   rdateTimezone = document.getElementById("rdateTzid");
   rdateFloating = document.getElementById("rdateFloating");
