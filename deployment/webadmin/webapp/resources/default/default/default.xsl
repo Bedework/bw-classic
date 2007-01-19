@@ -1950,6 +1950,7 @@
         <img id="clockMap" src="{$resourcesRoot}/resources/clockMap.gif" width="368" height="368" border="0" alt="" usemap="#bwClockMap" />
       </div>
       <div id="bwClockCover">
+        &#160;
         <!-- this is a special effect div used simply to cover the pixelated edge
              where the clock meets the clock box title --></div>
       <div id="bwClockBox">
@@ -1961,6 +1962,9 @@
         </div>
         <div id="bwClockTime">
           select time
+        </div>
+        <div id="bwClockSwitch">
+          switch
         </div>
         <div id="bwClockCloseText">
           close
@@ -2021,7 +2025,7 @@
 
             <div class="dateStartEndBox" id="rdatesFormFields">
               <div class="dateFields">
-                <input name="datetime"
+                <input name="eventRdate.date"
                        dojoType="dropdowndatepicker"
                        formatLength="medium"
                        value="today"
@@ -2089,13 +2093,13 @@
               <input type="submit" value="add"/>
               <br/>
               <!-- dateonly (anniversary) event: this is temporary - should be determined by the main event -->
-              <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="off"/>
+              <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="on"/>
               all day
               <!-- floating event: no timezone (and not UTC) -->
-              <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="off"/>
+              <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="on"/>
               floating
               <!-- store time as coordinated universal time (UTC) -->
-              <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="off"/>
+              <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="on"/>
               store as UTC
             </div>
 
@@ -2115,12 +2119,12 @@
                     </xsl:if>
                   </td>
                   <td class="trash">
-                    <xsl:variable name="datetime"><xsl:value-of select="fourdigityear"/><xsl:value-of select="twodigitmonth"/><xsl:value-of select="twodigitday"/>T<xsl:value-of select="twodigithour"/><xsl:value-of select="twodigitminute"/>00</xsl:variable>
+                    <xsl:variable name="datetime"><xsl:value-of select="unformatted"/></xsl:variable>
                     <xsl:variable name="tzid" select="timezone/id"/>
-                    <xsl:variable name="dateOnly" select="allday"/>
+                    <xsl:variable name="dateOnly"><xsl:if test="dateOnly = 'true'">&amp;dateOnly=true</xsl:if></xsl:variable>
                     <xsl:variable name="floating"><xsl:if test="floating = 'true'">&amp;floating=true</xsl:if></xsl:variable>
                     <xsl:variable name="storeUTC"><xsl:if test="utc = 'true'">&amp;storeUTC=true</xsl:if></xsl:variable>
-                    <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}{$floating}{$storeUTC}&amp;delete=true" title="remove">
+                    <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}{$dateOnly}{$floating}{$storeUTC}&amp;delete=true" title="remove">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
                     </a>
                   </td>

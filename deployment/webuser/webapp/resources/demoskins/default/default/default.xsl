@@ -3034,10 +3034,10 @@
                   <td class="trash">
                     <xsl:variable name="datetime"><xsl:value-of select="unformatted"/></xsl:variable>
                     <xsl:variable name="tzid" select="timezone/id"/>
-                    <xsl:variable name="dateOnly" select="allday"/>
+                    <xsl:variable name="dateOnly"><xsl:if test="dateOnly = 'true'">&amp;dateOnly=true</xsl:if></xsl:variable>
                     <xsl:variable name="floating"><xsl:if test="floating = 'true'">&amp;floating=true</xsl:if></xsl:variable>
                     <xsl:variable name="storeUTC"><xsl:if test="utc = 'true'">&amp;storeUTC=true</xsl:if></xsl:variable>
-                    <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}&amp;dateOnly={$dateOnly}{$floating}{$storeUTC}&amp;delete=true" title="remove">
+                    <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}{$dateOnly}{$floating}{$storeUTC}&amp;delete=true" title="remove">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
                     </a>
                   </td>
