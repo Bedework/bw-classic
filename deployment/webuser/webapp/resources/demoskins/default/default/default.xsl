@@ -2938,7 +2938,7 @@
 
             <div class="dateStartEndBox" id="rdatesFormFields">
               <div class="dateFields">
-                <input name="datetime"
+                <input name="eventRdate.date"
                        dojoType="dropdowndatepicker"
                        formatLength="medium"
                        value="today"
@@ -3006,13 +3006,13 @@
               <input type="submit" value="add"/>
               <br/>
               <!-- dateonly (anniversary) event: this is temporary - should be determined by the main event -->
-              <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="off"/>
+              <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="on"/>
               all day
               <!-- floating event: no timezone (and not UTC) -->
-              <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="off"/>
+              <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="on"/>
               floating
               <!-- store time as coordinated universal time (UTC) -->
-              <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="off"/>
+              <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="on"/>
               store as UTC
             </div>
 
@@ -3032,7 +3032,7 @@
                     </xsl:if>
                   </td>
                   <td class="trash">
-                    <xsl:variable name="datetime"><xsl:value-of select="fourdigityear"/><xsl:value-of select="twodigitmonth"/><xsl:value-of select="twodigitday"/>T<xsl:value-of select="twodigithour"/><xsl:value-of select="twodigitminute"/>00</xsl:variable>
+                    <xsl:variable name="datetime"><xsl:value-of select="unformatted"/></xsl:variable>
                     <xsl:variable name="tzid" select="timezone/id"/>
                     <xsl:variable name="dateOnly" select="allday"/>
                     <xsl:variable name="floating"><xsl:if test="floating = 'true'">&amp;floating=true</xsl:if></xsl:variable>
