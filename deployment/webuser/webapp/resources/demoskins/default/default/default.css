@@ -895,7 +895,6 @@ table#attendees.widget td.trash {
 }
 #bwDialogBox {
   margin: 0;
-  padding: 1em;
   background: white;
   color: black;
 }

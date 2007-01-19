@@ -777,6 +777,31 @@
 
     <xsl:variable name="modEventAction" select="form/@action"/>
     <form name="eventForm" method="post" action="{$modEventAction}" onsubmit="setEventFields(this)">
+
+      <table border="0" id="submitTable">
+        <tr>
+          <xsl:choose>
+            <xsl:when test="/bedeworkadmin/creating='true'">
+              <td>
+                <input type="submit" name="addEvent" value="Add Event"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="reset" value="Clear"/>
+              </td>
+            </xsl:when>
+            <xsl:otherwise>
+              <td>
+                <input type="submit" name="updateEvent" value="Update Event"/>
+                <input type="submit" name="cancelled" value="Cancel"/>
+                <input type="submit" name="copy" value="Duplicate Event"/>
+              </td>
+              <td align="right">
+                <input type="submit" name="delete" value="Delete Event"/>
+              </td>
+            </xsl:otherwise>
+          </xsl:choose>
+        </tr>
+      </table>
+
       <table class="eventFormTable">
         <tr>
           <td class="fieldName">
