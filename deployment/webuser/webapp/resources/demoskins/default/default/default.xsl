@@ -4394,7 +4394,7 @@
           <td class="fieldname">Name:</td>
           <td>
             <xsl:variable name="subName" select="name"/>
-            <input type="text" value="{$subName}" name="name" size="60"/>
+            <input type="text" value="{$subName}" name="subscription.name" size="60"/>
           </td>
         </tr>
         <xsl:if test="internal='false'">
