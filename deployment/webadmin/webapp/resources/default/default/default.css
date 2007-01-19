@@ -519,15 +519,19 @@ table.params .desc {
   font-size: 0.9em;
   text-align: center;
 }
-#rdatesTable {
+.rdatesTable {
   font-size: 0.9em;
   border: 1px solid #ddd;
 }
-#rdatesTable td {
+.rdatesTable td {
   padding: 0.5em 1em;
 }
-#rdatesTable td.trash {
+.rdatesTable td.trash {
   text-align: right;
+}
+.rdatesTable td.note {
+  text-align: center;
+  font-size: 0.9em;
 }
 #bwDialogBox {
   margin: 0;
