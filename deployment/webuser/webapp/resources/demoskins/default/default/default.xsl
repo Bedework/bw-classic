@@ -1865,7 +1865,6 @@
     <!-- ============== -->
     <!-- this tab is visible by default -->
     <div id="bwEventTab-Basic">
-    <!--<h3>Basic Event Recurrence:</h3>-->
       <table cellspacing="0" class="common dottedBorder">
         <!--  Calendar in which to place event  -->
         <tr>
@@ -1873,22 +1872,58 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <xsl:variable name="newCalPath" select="form/calendar/path"/>
-            <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
-            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+            <!-- the string "user/" should not be hard coded; fix in 3.3.1 -->
+            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
+            <xsl:variable name="writableCalendars">
+              <xsl:value-of select="
+                count(/bedework/myCalendars//calendar[calType = '1' and
+                       currentAccess/current-user-privilege-set/privilege/write-content]) +
+                count(/bedework/mySubscriptions//calendar[calType = '1' and
+                       currentAccess/current-user-privilege-set/privilege/write-content and
+                       (not(contains(path,$userPath)))])"/>
+            </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="/bedework/creating = 'true' and $writableCalendars = 1">
+                <!-- there is only 1 writable calendar, so find it by looking down both trees at once -->
+                <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[calType = '1' and
+                         currentAccess/current-user-privilege-set/privilege/write-content]/path"/><xsl:value-of select="/bedework/mySubscriptions//calendar[calType = '1' and
+                       currentAccess/current-user-privilege-set/privilege/write-content and
+                       (not(contains(path,$userPath)))]/path"/></xsl:variable>
 
-            <span id="bwEventCalDisplay">
-              <xsl:choose>
-                <xsl:when test="contains(form/calendar/path,$userPath)">
-                  <xsl:value-of select="substring-after(form/calendar/path,$userPath)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="form/calendar/path"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </span>
-            <input type="button" onclick="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" value="select calendar" class="small"/>
+                <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
 
+                <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
+                <span id="bwEventCalDisplay">
+                  <xsl:choose>
+                    <xsl:when test="contains($newCalPath,$userFullPath)">
+                      <xsl:value-of select="substring-after($newCalPath,$userFullPath)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="$newCalPath"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </span>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="hidden" name="newCalPath">
+                  <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
+                </input>
+
+                <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
+                <span id="bwEventCalDisplay">
+                  <xsl:choose>
+                    <xsl:when test="contains(form/calendar/path,$userFullPath)">
+                      <xsl:value-of select="substring-after(form/calendar/path,$userFullPath)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="form/calendar/path"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </span>
+
+                <input type="button" onclick="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" value="select calendar" class="small"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
         <!--  Summary (title) of event  -->
