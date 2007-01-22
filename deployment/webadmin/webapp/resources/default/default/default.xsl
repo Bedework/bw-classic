@@ -748,7 +748,7 @@
           </td>
           <td>
             <xsl:value-of select="description"/>
-            <xsl:if test="recurring = 'true'">
+            <xsl:if test="recurring = 'true' or recurrenceId != ''">
               <div class="recurrenceEditLinks">
                 Recurring event.
                 Edit:

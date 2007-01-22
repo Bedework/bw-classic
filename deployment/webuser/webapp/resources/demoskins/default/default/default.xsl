@@ -1010,7 +1010,7 @@
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
       <xsl:choose>
-        <xsl:when test="recurring='true'">
+        <xsl:when test="recurring='true' or recurrenceId != ''">
           Edit:
           <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">master</a>,
           <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)">instance</a>
@@ -1026,7 +1026,7 @@
     </xsl:if>
     <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content)">
       <xsl:choose>
-        <xsl:when test="recurring='true'">
+        <xsl:when test="recurring='true' or recurrenceId != ''">
           Link:
           <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,
           <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
@@ -1048,7 +1048,7 @@
       |
     </xsl:if>
     <xsl:choose>
-      <xsl:when test="recurring='true'">
+      <xsl:when test="recurring='true' or recurrenceId != ''">
         Delete:
         <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
         <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
@@ -1228,7 +1228,7 @@
               </xsl:otherwise>
             </xsl:choose><br/>
           Type:
-          <xsl:if test="recurring='true'">
+          <xsl:if test="recurring='true' or recurrenceId != ''">
             recurring
           </xsl:if>
           <xsl:choose>
@@ -1355,7 +1355,7 @@
             <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
               |
               <xsl:choose>
-                <xsl:when test="recurring='true'">
+                <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                   Edit:
                   <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">master</a>,<a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)">instance</a>
@@ -1371,7 +1371,7 @@
             <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content)">
               |
               <xsl:choose>
-                <xsl:when test="recurring='true'">
+                <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
                   Link:
                   <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,<a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
@@ -1394,7 +1394,7 @@
             </xsl:if>
             |
             <xsl:choose>
-              <xsl:when test="recurring='true'">
+              <xsl:when test="recurring='true' or recurrenceId != ''">
                 <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                 Delete:
                 <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
@@ -1408,7 +1408,7 @@
             </xsl:choose>
           </div>
           <!-- Display type of event -->
-          <xsl:if test="recurring='true'">
+          <xsl:if test="recurring='true' or recurrenceId != ''">
             Recurring
           </xsl:if>
           <xsl:choose>
@@ -1809,24 +1809,27 @@
           <tr>
             <th colspan="2" class="commonHeader">
               <div id="eventActions">
-                <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                  <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
-                  View
-                </a>
-                  |
-                  <xsl:choose>
-                    <xsl:when test="recurring='true'">
+                <xsl:if test="not(recurringEntity = 'true' and recurrenceId = '')">
+                  <!-- don't display if a master recurring event (because the master can't be viewed) -->
+                  <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                    <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
+                    View
+                  </a>
+                    |
+                </xsl:if>
+                <xsl:choose>
+                  <xsl:when test="recurringEntity='true' or recurrenceId != ''">
+                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                    Delete:
+                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                      Delete:
-                      <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
-                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                        Delete
-                      </a>
-                    </xsl:otherwise>
-                  </xsl:choose>
+                      Delete
+                    </a>
+                  </xsl:otherwise>
+                </xsl:choose>
               </div>
               Personal Event
             </th>
