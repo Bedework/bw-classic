@@ -956,9 +956,16 @@
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        <strong>
-                          <xsl:value-of select="summary"/>:
-                        </strong>
+                        <xsl:choose>
+                          <xsl:when test="summary = ''">
+                            <em>no title</em>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <strong>
+                              <xsl:value-of select="summary"/>:
+                            </strong>
+                          </xsl:otherwise>
+                        </xsl:choose>
                         <xsl:value-of select="description"/>&#160;
                         <em>
                           <xsl:value-of select="location/address"/>
@@ -980,7 +987,14 @@
                     </xsl:when>
                     <xsl:otherwise>
                       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        <xsl:value-of select="summary"/>
+                        <xsl:choose>
+                          <xsl:when test="summary = ''">
+                            <em>no title</em>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:value-of select="summary"/>
+                          </xsl:otherwise>
+                        </xsl:choose>
                         <xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
                       </a>
                     </xsl:otherwise>
@@ -1191,7 +1205,14 @@
             all day:
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:value-of select="summary"/>
+        <xsl:choose>
+          <xsl:when test="summary = ''">
+            <em>no title</em>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="summary"/>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:variable name="eventTipClass">
           <xsl:choose>
             <xsl:when test="$dayPos &gt; 5">eventTipReverse</xsl:when>
@@ -1201,7 +1222,14 @@
         <span class="{$eventTipClass}">
           <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELLED</span></xsl:if>
           <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative">TENTATIVE</span></xsl:if>
-          <strong><xsl:value-of select="summary"/></strong><br/>
+          <xsl:choose>
+            <xsl:when test="summary = ''">
+              <em>no title</em>
+            </xsl:when>
+            <xsl:otherwise>
+              <strong><xsl:value-of select="summary"/></strong><br/>
+            </xsl:otherwise>
+          </xsl:choose>
           Time:
           <xsl:choose>
             <xsl:when test="start/allday = 'false'">
@@ -1218,15 +1246,15 @@
             Location: <xsl:value-of select="location/address"/><br/>
           </xsl:if>
           Calendar:
-            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-            <xsl:choose>
-              <xsl:when test="contains(calendar/path,$userPath)">
-                <xsl:value-of select="substring-after(calendar/path,$userPath)"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="calendar/path"/>
-              </xsl:otherwise>
-            </xsl:choose><br/>
+          <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+          <xsl:choose>
+            <xsl:when test="contains(calendar/path,$userPath)">
+              <xsl:value-of select="substring-after(calendar/path,$userPath)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="calendar/path"/>
+            </xsl:otherwise>
+          </xsl:choose><br/>
           Type:
           <xsl:if test="recurring='true' or recurrenceId != ''">
             recurring
@@ -1337,6 +1365,9 @@
             <xsl:value-of select="summary"/>
           </a>
         </xsl:when>
+        <xsl:when test="summary = ''">
+          Event <em>(no title)</em>
+        </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="summary"/>
         </xsl:otherwise>
@@ -1422,6 +1453,9 @@
               Event (<xsl:value-of select="calendar/owner"/>)
             </xsl:otherwise>
           </xsl:choose>
+          <xsl:if test="recurring='true' and recurrenceId = ''">
+            <em>(recurrence master)</em>
+          </xsl:if>
         </th>
       </tr>
       <tr>
@@ -1809,7 +1843,7 @@
           <tr>
             <th colspan="2" class="commonHeader">
               <div id="eventActions">
-                <xsl:if test="not(recurringEntity = 'true' and recurrenceId = '')">
+                <xsl:if test="not(form/recurringEntity = 'true' and recurrenceId = '')">
                   <!-- don't display if a master recurring event (because the master can't be viewed) -->
                   <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                     <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
@@ -1818,20 +1852,42 @@
                     |
                 </xsl:if>
                 <xsl:choose>
-                  <xsl:when test="recurringEntity='true' or recurrenceId != ''">
+                  <xsl:when test="recurrenceId != ''">
                     <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     Delete:
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
+                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       Delete
+                      <xsl:if test="form/recurringEntity='true'">
+                        all
+                      </xsl:if>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
               </div>
-              Personal Event
+              <!-- Display type of event -->
+              <xsl:if test="form/recurringEntity='true' or recurrenceId != ''">
+                Recurring
+              </xsl:if>
+              <xsl:choose>
+                <xsl:when test="form">
+                  <!-- just a placeholder: need to add owner to the jsp -->
+                  Personal Event
+                </xsl:when>
+                <xsl:when test="public = 'true'">
+                  Public Event
+                </xsl:when>
+                <xsl:otherwise>
+                  Event (<xsl:value-of select="calendar/owner"/>)
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:if test="form/recurringEntity='true' and recurrenceId = ''">
+                <em>(recurrence master)</em>
+              </xsl:if>
             </th>
           </tr>
         </table>
@@ -3283,7 +3339,14 @@
             Event:
           </td>
           <td>
-            <xsl:value-of select="summary"/>
+            <xsl:choose>
+              <xsl:when test="summary = ''">
+                <em>no title</em>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="summary"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
         <tr>
@@ -3803,10 +3866,24 @@
     <ul class="calendarTree">
       <xsl:choose>
         <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
-          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="selectCalForEventCalTree"/>
+          <xsl:choose>
+            <xsl:when test="/bedework/myCalendars/calendars/calendar">
+              <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="selectCalForEventCalTree"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <em>no writable calendars</em>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+          <xsl:choose>
+            <xsl:when test="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]">
+              <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <em>no writable calendars</em>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </ul>
@@ -3815,10 +3892,24 @@
       <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
       <xsl:choose>
         <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
-          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar" mode="selectCalForEventCalTree"/>
+          <xsl:choose>
+            <xsl:when test="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar">
+              <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar" mode="selectCalForEventCalTree"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <em>no writable calendars</em>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+          <xsl:choose>
+            <xsl:when test="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]">
+              <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <em>no writable calendars</em>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </ul>
@@ -3853,6 +3944,9 @@
           <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
             <strong><xsl:value-of select="name"/></strong>
           </a>
+          <xsl:if test="name != $calDisplay">
+            <span class="small">(<xsl:value-of select="$calDisplay"/>)</span>
+          </xsl:if>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="name"/>
@@ -5657,6 +5751,9 @@
         <td class="fieldval">
           <strong>
             <xsl:choose>
+              <xsl:when test="summary = ''">
+                <em>no title</em>
+              </xsl:when>
               <xsl:when test="link != ''">
                 <xsl:variable name="link" select="link"/>
                 <a href="{$link}">
@@ -5768,7 +5865,14 @@
             Event:
           </td>
           <td>
-            <xsl:value-of select="summary"/>
+            <xsl:choose>
+              <xsl:when test="summary = ''">
+                <em>no title</em>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="summary"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
         <tr>
@@ -6504,7 +6608,14 @@
           </td>
           <td>
             <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-              <xsl:value-of select="event/summary"/>
+              <xsl:choose>
+                <xsl:when test="event/summary = ''">
+                  <em>no title</em>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="event/summary"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </a>
           </td>
           <td>
