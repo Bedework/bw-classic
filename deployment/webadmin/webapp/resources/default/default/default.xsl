@@ -1259,7 +1259,7 @@
                       <xsl:choose>
                         <xsl:when test="form/recurrence/count = '-1'">forever</xsl:when>
                         <xsl:when test="form/recurrence/until">
-                          <xsl:value-of select="form/recurrence/until"/>
+                          until <xsl:value-of select="substring(form/recurrence/until,1,4)"/>-<xsl:value-of select="substring(form/recurrence/until,5,2)"/>-<xsl:value-of select="substring(form/recurrence/until,7,2)"/>
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:value-of select="form/recurrence/count"/>

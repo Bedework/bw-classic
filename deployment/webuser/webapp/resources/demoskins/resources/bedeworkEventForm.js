@@ -310,7 +310,9 @@ function setRecurrence(formObj) {
         formObj.count.value = formObj.countHolder.value;
         break;
       case "until":
-        formObj.until.value = dojo.widget.byId("bwEventWidgetUntilDate").getVal();;
+        // the following will not be adequate for recurrences smaller than a day
+        // we will need to set the time properly at that point.
+        formObj.until.value = dojo.widget.byId("bwEventWidgetUntilDate").getValue() + "T000000";
         break;
     }
   }
