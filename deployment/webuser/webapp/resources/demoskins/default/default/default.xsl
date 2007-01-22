@@ -1922,6 +1922,9 @@
                       <xsl:value-of select="form/calendar/path"/>
                     </xsl:otherwise>
                   </xsl:choose>
+                  <xsl:text> </xsl:text>
+                  <!-- this final text element is required to avoid an empty
+                       span element which is improperly rendered in the browser -->
                 </span>
 
                 <input type="button" onclick="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" value="select calendar" class="small"/>
