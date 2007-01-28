@@ -20,10 +20,6 @@ function setupAccessForm(chkBoxObj,formObj) {
       } else {
         for (i = 0; i < formObj.howItem.length; i++) {
           formObj.howItem[i].disabled = false;
-          // now iterate over corresponding radio buttons for each howItem
-          for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-            formObj[formObj.howItem[i].value][j].disabled = false;
-          }
         }
       }
       break;
@@ -47,10 +43,6 @@ function setupAccessForm(chkBoxObj,formObj) {
               formObj.howItem[i].value == "P" ||
               formObj.howItem[i].value == "F") {
             formObj.howItem[i].disabled = false;
-            // now iterate over corresponding radio buttons for each howItem
-            for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-              formObj[formObj.howItem[i].value][j].disabled = false;
-            }
           }
         }
       }
@@ -87,10 +79,6 @@ function setupAccessForm(chkBoxObj,formObj) {
               formObj.howItem[i].value == "s" ||
               formObj.howItem[i].value == "u") {
             formObj.howItem[i].disabled = false;
-            // now iterate over corresponding radio buttons for each howItem
-            for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-              formObj[formObj.howItem[i].value][j].disabled = false;
-            }
           }
         }
       }
@@ -117,10 +105,6 @@ function setupAccessForm(chkBoxObj,formObj) {
               formObj.howItem[i].value == "y" ||
               formObj.howItem[i].value == "s") {
             formObj.howItem[i].disabled = false;
-            // now iterate over corresponding radio buttons for each howItem
-            for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-              formObj[formObj.howItem[i].value][j].disabled = false;
-            }
           }
         }
       }
@@ -145,10 +129,6 @@ function setupAccessForm(chkBoxObj,formObj) {
               formObj.howItem[i].value == "y" ||
               formObj.howItem[i].value == "s") {
             formObj.howItem[i].disabled = false;
-            // now iterate over corresponding radio buttons for each howItem
-            for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-              formObj[formObj.howItem[i].value][j].disabled = false;
-            }
           }
         }
       }
@@ -168,13 +148,24 @@ function setupAccessForm(chkBoxObj,formObj) {
       } else {
         for (i = 0; i < formObj.howItem.length; i++) {
           formObj.howItem[i].disabled = false;
-          // now iterate over corresponding radio buttons for each howItem
-          for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-            formObj[formObj.howItem[i].value][j].disabled = false;
-          }
         }
       }
       break;
+  }
+}
+// enable and disable corresponding allow/deny flags when a howItem checkbox is
+// clicked
+function toggleAllowDenyFlag(chkBoxObj,formObj) {
+  if (chkBoxObj.checked == true) {
+    activateAllowDenyFlag(chkBoxObj.value, formObj, false);
+  } else {
+    activateAllowDenyFlag(chkBoxObj.value, formObj, true);
+  }
+}
+// iterate over the allow/deny radio buttons and set them to true or false
+function activateAllowDenyFlag(val,formObj,disabledFlag) {
+  for (i = 0; i < formObj[val].length; i++) {
+    formObj[val][i].disabled = disabledFlag;
   }
 }
 // Gather up the how values on access form submission and set the how field.

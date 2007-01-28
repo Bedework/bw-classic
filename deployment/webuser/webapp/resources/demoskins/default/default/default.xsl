@@ -6399,18 +6399,18 @@
             </tr>
             <tr>
               <td class="level1">
-                <input type="checkbox" value="A" name="howItem" onclick="setupAccessForm(this, this.form)"/>All
+                <input type="checkbox" value="A" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/>All
               </td>
               <td>
-                <input type="radio" value="A" name="A" checked="checked"/>
+                <input type="radio" value="A" name="A" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-A" name="A"/>
+                <input type="radio" value="-A" name="A" disabled="disabled"/>
               </td>
             </tr>
             <tr>
               <td class="level2">
-                <input type="checkbox" value="R" name="howItem" onclick="setupAccessForm(this, this.form)" checked="checked"/> Read
+                <input type="checkbox" value="R" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> Read
               </td>
               <td>
                 <input type="radio" value="R" name="R" checked="checked"/>
@@ -6421,7 +6421,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="r" name="howItem" disabled="disabled"/> read ACL
+                <input type="checkbox" value="r" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read ACL
               </td>
               <td>
                 <input type="radio" value="r" name="r" checked="checked" disabled="disabled"/>
@@ -6432,7 +6432,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="P" name="howItem" disabled="disabled"/> read current user privilege set
+                <input type="checkbox" value="P" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read current user privilege set
               </td>
               <td>
                 <input type="radio" value="P" name="P" checked="checked" disabled="disabled"/>
@@ -6443,7 +6443,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="F" name="howItem" disabled="disabled"/> read freebusy
+                <input type="checkbox" value="F" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read freebusy
               </td>
               <td>
                 <input type="radio" value="F" name="F" checked="checked" disabled="disabled"/>
@@ -6454,114 +6454,114 @@
             </tr>
             <tr>
               <td class="level2">
-                <input type="checkbox" value="W" name="howItem" onclick="setupAccessForm(this, this.form)"/> Write
+                <input type="checkbox" value="W" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> Write
               </td>
               <td>
-                <input type="radio" value="W" name="W" checked="checked"/>
+                <input type="radio" value="W" name="W" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-W" name="W"/>
+                <input type="radio" value="-W" name="W" disabled="disabled"/>
               </td>
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="a" name="howItem"/> write ACL
+                <input type="checkbox" value="a" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write ACL
               </td>
               <td>
-                <input type="radio" value="a" name="a" checked="checked"/>
+                <input type="radio" value="a" name="a" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-a" name="a"/>
+                <input type="radio" value="-a" name="a" disabled="disabled"/>
               </td>
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="p" name="howItem"/> write properties
+                <input type="checkbox" value="p" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write properties
               </td>
               <td>
-                <input type="radio" value="p" name="p" checked="checked"/>
+                <input type="radio" value="p" name="p" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-p" name="p"/>
+                <input type="radio" value="-p" name="p" disabled="disabled"/>
               </td>
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="c" name="howItem"/> write content
+                <input type="checkbox" value="c" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write content
               </td>
               <td>
-                <input type="radio" value="c" name="c" checked="checked"/>
+                <input type="radio" value="c" name="c" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-c" name="c"/>
+                <input type="radio" value="-c" name="c" disabled="disabled"/>
               </td>
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="b" name="howItem" onclick="setupAccessForm(this, this.form)"/> create (bind)
+                <input type="checkbox" value="b" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> create (bind)
               </td>
               <td>
-                <input type="radio" value="b" name="b" checked="checked"/>
+                <input type="radio" value="b" name="b" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-b" name="b"/>
+                <input type="radio" value="-b" name="b" disabled="disabled"/>
               </td>
             </tr>
             <!--<xsl:if test="$type = 'inbox' or $type = 'outbox'">-->
               <tr>
                 <td class="level4">
-                  <input type="checkbox" value="S" name="howItem" onclick="setupAccessForm(this, this.form)"/> schedule
+                  <input type="checkbox" value="S" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> schedule
                 </td>
               <td>
-                <input type="radio" value="S" name="S" checked="checked"/>
+                <input type="radio" value="S" name="S" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-S" name="S"/>
+                <input type="radio" value="-S" name="S" disabled="disabled"/>
               </td>
               </tr>
               <tr>
                 <td class="level5">
-                  <input type="checkbox" value="t" name="howItem"/> schedule request
+                  <input type="checkbox" value="t" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule request
                 </td>
               <td>
-                <input type="radio" value="t" name="t" checked="checked"/>
+                <input type="radio" value="t" name="t" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-t" name="t"/>
+                <input type="radio" value="-t" name="t" disabled="disabled"/>
               </td>
               </tr>
               <tr>
                 <td class="level5">
-                  <input type="checkbox" value="y" name="howItem"/> schedule reply
+                  <input type="checkbox" value="y" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule reply
                 </td>
               <td>
-                <input type="radio" value="y" name="y" checked="checked"/>
+                <input type="radio" value="y" name="y" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-y" name="y"/>
+                <input type="radio" value="-y" name="y" disabled="disabled"/>
               </td>
               </tr>
               <tr>
                 <td class="level5">
-                  <input type="checkbox" value="s" name="howItem"/> schedule free-busy
+                  <input type="checkbox" value="s" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule free-busy
                 </td>
               <td>
-                <input type="radio" value="s" name="s" checked="checked"/>
+                <input type="radio" value="s" name="s" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-s" name="s"/>
+                <input type="radio" value="-s" name="s" disabled="disabled"/>
               </td>
               </tr>
             <!--</xsl:if>-->
             <tr>
               <td class="level3">
-                 <input type="checkbox" value="u" name="howItem"/> delete (unbind)
+                 <input type="checkbox" value="u" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> delete (unbind)
               </td>
               <td>
-                <input type="radio" value="u" name="u" checked="checked"/>
+                <input type="radio" value="u" name="u" checked="checked" disabled="disabled"/>
               </td>
               <td>
-                <input type="radio" value="-u" name="u"/>
+                <input type="radio" value="-u" name="u" disabled="disabled"/>
               </td>
             </tr>
             <!--<tr>
