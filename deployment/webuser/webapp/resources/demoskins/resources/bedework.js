@@ -134,3 +134,24 @@ function exportCalendar(formId,name,calPath) {
   formObj.contentName.value = name + '.ics';
   formObj.submit();
 }
+// this toggles various elements in the access control form when
+// a checkbox for All, Read, Write, Schedule, or None is clicked
+function setupAccessForm(val,formObj) {
+  switch (val) {
+    case "A":
+      alert("A");
+      break;
+    case "R":
+      alert("R");
+      break;
+    case "W":
+      alert("W");
+      break;
+    case "S":
+      alert("S");
+      break;
+    case "N":
+      alert("N");
+      break;
+  }
+}

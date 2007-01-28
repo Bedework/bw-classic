@@ -356,6 +356,10 @@
     <xsl:if test="/bedework/page='modSchedulingPrefs'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
     </xsl:if>
+    <xsl:if test="/bedework/page='modCalendar' or
+                  /bedework/page='eventAccess'">
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
+    </xsl:if>
     <xsl:if test="/bedework/page='addEvent' or
                   /bedework/page='editEvent' or
                   /bedework/page='rdates' or
@@ -1896,7 +1900,7 @@
       <!-- event form submenu -->
       <xsl:choose>
         <xsl:when test="/bedework/creating = 'false'">
-          <a href="javascript:launchSizedWindow('{$event-showAccess}',600,600)" id="eventAccessLink">set event access</a>
+          <a href="javascript:launchSizedWindow('{$event-showAccess}',600,700)" id="eventAccessLink">set event access</a>
         </xsl:when>
         <xsl:otherwise>
           <a href="javascript:alert('Access/sharing may be set once an event is created.\n')" id="eventAccessLink">set event access</a>
@@ -4117,9 +4121,17 @@
         <xsl:with-param name="action" select="$calendar-setAccess"/>
         <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
       </xsl:apply-templates>
-      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm">
+      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
         <input type="hidden" name="calPath" value="{$calPath}"/>
-        <xsl:call-template name="entityAccessForm"/>
+        <xsl:call-template name="entityAccessForm">
+          <xsl:with-param name="type">
+            <xsl:choose>
+              <xsl:when test="calType = '5'">inbox</xsl:when>
+              <xsl:when test="calType = '6'">outbox</xsl:when>
+              <xsl:otherwise>normal</xsl:otherwise>
+            </xsl:choose>
+          </xsl:with-param>
+        </xsl:call-template>
       </form>
     </div>
   </xsl:template>
@@ -6311,7 +6323,7 @@
           <xsl:with-param name="guid" select="$guid"/>
           <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
         </xsl:apply-templates>
-        <form name="eventShareForm" action="{$event-setAccess}" id="shareForm">
+        <form name="eventShareForm" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
           <input type="hidden" name="calPath" value="{$calPath}"/>
           <input type="hidden" name="guid" value="{$guid}"/>
           <input type="hidden" name="recurid" value="{$recurrenceId}"/>
@@ -6354,6 +6366,9 @@
   </xsl:template>
 
   <xsl:template name="entityAccessForm">
+    <xsl:param name="type"/><!-- optional:
+    currently used for inbox and outbox to conditionally
+    display scheduling access -->
     <table cellpadding="0" id="shareFormTable" class="common">
       <tr>
         <th colspan="2" class="commonHeader">Add:</th>
@@ -6374,6 +6389,197 @@
         </td>
         <td>
           <h5>Rights:</h5>
+          <input type="hidden" name="how" value=""/>
+          <!-- the "how" field is set by iterating over the howItems below -->
+          <table id="howTable" cellspacing="0">
+            <tr>
+              <th>access type</th>
+              <th>allow</th>
+              <th>deny</th>
+            </tr>
+            <tr>
+              <td class="level1">
+                <input type="checkbox" value="A" name="howItem" onclick="setupAccessForm(this, this.form)"/>All
+              </td>
+              <td>
+                <input type="radio" value="A" name="A" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-A" name="A"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level2">
+                <input type="checkbox" value="R" name="howItem" onclick="setupAccessForm(this, this.form)" checked="checked"/> Read
+              </td>
+              <td>
+                <input type="radio" value="R" name="R" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-R" name="R"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="r" name="howItem" disabled="disabled"/> read ACL
+              </td>
+              <td>
+                <input type="radio" value="r" name="r" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-r" name="r" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="P" name="howItem" disabled="disabled"/> read current user privilege set
+              </td>
+              <td>
+                <input type="radio" value="P" name="P" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-P" name="P" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="F" name="howItem" disabled="disabled"/> read freebusy
+              </td>
+              <td>
+                <input type="radio" value="F" name="F" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-F" name="F" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level2">
+                <input type="checkbox" value="W" name="howItem" onclick="setupAccessForm(this, this.form)"/> Write
+              </td>
+              <td>
+                <input type="radio" value="W" name="W" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-W" name="W"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="a" name="howItem"/> write ACL
+              </td>
+              <td>
+                <input type="radio" value="a" name="a" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-a" name="a"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="p" name="howItem"/> write properties
+              </td>
+              <td>
+                <input type="radio" value="p" name="p" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-p" name="p"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="c" name="howItem"/> write content
+              </td>
+              <td>
+                <input type="radio" value="c" name="c" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-c" name="c"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="b" name="howItem" onclick="setupAccessForm(this, this.form)"/> create (bind)
+              </td>
+              <td>
+                <input type="radio" value="b" name="b" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-b" name="b"/>
+              </td>
+            </tr>
+            <!--<xsl:if test="$type = 'inbox' or $type = 'outbox'">-->
+              <tr>
+                <td class="level4">
+                  <input type="checkbox" value="S" name="howItem" onclick="setupAccessForm(this, this.form)"/> schedule
+                </td>
+              <td>
+                <input type="radio" value="S" name="S" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-S" name="S"/>
+              </td>
+              </tr>
+              <tr>
+                <td class="level5">
+                  <input type="checkbox" value="t" name="howItem"/> schedule request
+                </td>
+              <td>
+                <input type="radio" value="t" name="t" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-t" name="t"/>
+              </td>
+              </tr>
+              <tr>
+                <td class="level5">
+                  <input type="checkbox" value="y" name="howItem"/> schedule reply
+                </td>
+              <td>
+                <input type="radio" value="y" name="y" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-y" name="y"/>
+              </td>
+              </tr>
+              <tr>
+                <td class="level5">
+                  <input type="checkbox" value="s" name="howItem"/> schedule free-busy
+                </td>
+              <td>
+                <input type="radio" value="s" name="s" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-s" name="s"/>
+              </td>
+              </tr>
+            <!--</xsl:if>-->
+            <tr>
+              <td class="level3">
+                 <input type="checkbox" value="u" name="howItem"/> delete (unbind)
+              </td>
+              <td>
+                <input type="radio" value="u" name="u" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-u" name="u"/>
+              </td>
+            </tr>
+            <!--<tr>
+              <td class="level1">
+                <input type="checkbox" value="N" name="howItem" onclick="setupAccessForm(this, this.form)"/> None
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>
+            </tr>-->
+          </table>
+
+          <!-- below is a simplified listing using radio buttons only; keep for
+               those who would like a simpler interface (though
+               it is currently less functional; e.g. there is no "deny" setting
+               in the following list) -->
+          <!--
           <ul id="howList">
             <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
             <li class="padTop">
@@ -6397,7 +6603,7 @@
             <li class="padTop">
               <input type="radio" value="N" name="how"/> <strong>None</strong>
             </li>
-          </ul>
+          </ul> -->
         </td>
       </tr>
     </table>
@@ -6479,8 +6685,12 @@
             </xsl:choose>
           </td>
           <td>
-            <xsl:value-of select="name(grant/*)"/>
-            <xsl:if test="deny/all">none</xsl:if>
+            <xsl:if test="grant">
+              grant: <xsl:value-of select="name(grant/*)"/><br/>
+            </xsl:if>
+            <xsl:if test="deny">
+              deny: <xsl:value-of select="name(deny/*)"/>
+            </xsl:if>
           </td>
           <td>
             <xsl:choose>
