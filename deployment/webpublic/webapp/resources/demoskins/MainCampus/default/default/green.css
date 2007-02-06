@@ -139,6 +139,9 @@ h2 {
   color: black;
   font-size: 0.9em;
 }
+#searchBarTable td {
+  border-bottom: 1px solid #ccc;
+}
 #searchBarTable .leftCell {
   margin: 0px;
   padding: 0em;
@@ -944,17 +947,14 @@ h2 a:hover {
   text-decoration: none;
 }
 h2.bwStatusConfirmed {
-  border-top: 1px solid #ccc;
   background-color: #eee;
   color: black;
 }
 h2.bwStatusCancelled {
-  border-top: 1px solid #ccc;
   background-color: #eee;
   color: black;
 }
 h2.bwStatusTentative {
-  border-top: 1px solid #ccc;
   background: #eee url('../../images/tentativeLines.gif') top;
   color: black;
 }
