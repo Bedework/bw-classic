@@ -36,20 +36,51 @@ case "$1" in
     echo $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars $2 $3 $4 $5 $6 $7 $8 $9
     $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars $2 $3 $4 $5 $6 $7 $8 $9
     ;;
+  drop)
+    echo $SCHEMACMD --text --drop --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+    $SCHEMACMD --text --drop --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+    ;;
+  export-drop)
+    echo $SCHEMACMD --drop --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
+    $SCHEMACMD --drop --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
+    ;;
   schema)
-    echo $SCHEMACMD --text --create --config=./classes/hibernate.cfg.xml --output=schema.sql
-    $SCHEMACMD --text --create --config=./classes/hibernate.cfg.xml --output=schema.sql
+    echo $SCHEMACMD --text --create --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+    $SCHEMACMD --text --create --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
     ;;
   schema-export)
-    echo $SCHEMACMD --create --config=./classes/hibernate.cfg.xml --output=schema.sql
-    $SCHEMACMD --create --config=./classes/hibernate.cfg.xml --output=schema.sql
+    echo $SCHEMACMD --create --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
+    $SCHEMACMD --create --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
     ;;
   *)
-    echo $"Usage: $0 {dump <filename> |"
-    echo $"           restore <filename> |"
-    echo $"           backup <directory> <prefix>} |"
-    echo $"           initdb |"
-    echo $"           schema |"
-    echo $"           schema-export"
+    echo $" "
+    echo $"Usage: "
+    echo $"  $0 dump <filename> "
+    echo $"     Dump the database in xml format suitable for restore."
+    echo $" "
+    echo $"  $0 restore <filename> "
+    echo $"     Restore the database from an xml formatted dump."
+    echo $" "
+    echo $"  $0 backup <directory> <prefix>} "
+    echo $"     Dump the database in xml format suitable for restore."
+    echo $"     Files will have a name built from the prefix and the current date/time."
+    echo $" "
+    echo $"  $0 initdb [--indexroot=<lucene-index-root>"
+    echo $"     Populate the database using the provided initial data."
+    echo $" "
+    echo $"  $0 drop [--haltonerror] "
+    echo $"     Create a file in the current directory with sql drop statements"
+    echo $" "
+    echo $"  $0 export-drop [--haltonerror]"
+    echo $"     Drop tables in the database. Note this may not work if the schema"
+    echo $"     was changed."
+    echo $" "
+    echo $"  $0 schema [--haltonerror] "
+    echo $"     Create a schema from the xml schema. Placed in a file in the current directory"
+    echo $" "
+    echo $"  $0 schema-export [--haltonerror]"
+    echo $"     Create a schema from the xml schema."
+    echo $"     Also create the database tables, indexes etc."
+    echo $" "
 esac
 

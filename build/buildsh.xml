@@ -15,6 +15,8 @@
      =================================================================== -->
 
 <project name="uwcal.buildsh" default="build">
+  <import file="${build.dir}/buildfilters.xml" />
+
   <target name="init">
     <!-- Load the location of the libraries -->
     <property file="${org.bedework.project.bedework}/build/libjars.properties" />
@@ -42,39 +44,6 @@
        ================================================================ -->
 
   <target name="build" depends="init">
-    <filterset id="property.filters" >
-      <filter token="BW-APP-NAME"
-              value="${org.bedework.deploy.name}"/>
-
-      <filter token="HIBERNATE-DIALECT"
-              value="${org.bedework.global.hibernate.dialect}" />
-
-      <filter token="SECOND-LEVEL-CACHING"
-              value="${org.bedework.global.hibernate.cache.use_second_level_cache}" />
-
-      <filter token="CACHE-PROVIDER"
-              value="${org.bedework.global.hibernate.cache.provider_class}" />
-
-      <filter token="DIRECTORY-BROWSING-DISALLOWED"
-              value="${org.bedework.global.directory.browsing.disallowed}" />
-
-      <filter token="APP-DESCRIPTION"
-              value="${propval.app.description}" />
-
-      <filter token="CALDAVTEST-CLASS"
-              value="org.bedework.caldav.test.TestCalDav"/>
-
-      <filter token="DUMP-CLASS"
-              value="org.bedework.dumprestore.dump.Dump"/>
-      <filter token="RESTORE-CLASS"
-              value="org.bedework.dumprestore.restore.Restore"/>
-
-      <filter token="APP-NAME"
-              value="${propval.app.name}"/>
-      <filter token="APP-VERSION"
-              value="${propval.app.version}"/>
-    </filterset>
-
     <delete dir="${app.dest.home}" />
 
     <!-- Library stuff -->

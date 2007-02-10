@@ -75,7 +75,7 @@
     <filter token="APP-NAME"
             value="${propval.app.name}"/>
     <filter token="APP-VERSION"
-            value="${propval.app.version}"/>
+            value="${org.bedework.global.version}"/>
     <filter token="WAR-NAME"
             value="${propval.app.war.name}"/>
     <filter token="TOMCAT-DOC-BASE"
@@ -104,6 +104,19 @@
             value="${org.bedework.global.public.calendar.uri}" />
     <filter token="PERSONAL-URI"
             value="${org.bedework.global.personal.calendar.uri}" />
+
+    <!--      Shell script settings            -->
+
+    <filter token="SCHEMA-DELIMITER"
+            value="${propval.app.schema.delimiter}" />
+
+      <filter token="CALDAVTEST-CLASS"
+              value="org.bedework.caldav.test.TestCalDav"/>
+
+      <filter token="DUMP-CLASS"
+              value="org.bedework.dumprestore.dump.Dump"/>
+      <filter token="RESTORE-CLASS"
+              value="org.bedework.dumprestore.restore.Restore"/>
   </filterset>
 </project>
 
