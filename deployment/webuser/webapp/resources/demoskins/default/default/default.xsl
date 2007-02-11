@@ -6255,8 +6255,9 @@
         <tr>
           <td class="leftBorder padMe">
             <form name="prefsSetAccess1" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
-              <xsl:call-template name="schedulingAccessForm"/>
-              <input type="hidden" name="what" value="in"/>
+              <xsl:call-template name="schedulingAccessForm">
+                <xsl:with-param name="what">in</xsl:with-param>
+              </xsl:call-template>
             </form>
             <xsl:apply-templates select="inbox/acl" mode="currentAccess">
               <xsl:with-param name="action" select="$prefs-setAccess"/>
@@ -6265,8 +6266,9 @@
           </td>
           <td class="leftBorder padMe">
             <form name="prefsSetAccess2" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
-              <xsl:call-template name="schedulingAccessForm"/>
-              <input type="hidden" name="what" value="out"/>
+              <xsl:call-template name="schedulingAccessForm">
+                <xsl:with-param name="what">out</xsl:with-param>
+              </xsl:call-template>
             </form>
             <xsl:apply-templates select="outbox/acl" mode="currentAccess">
               <xsl:with-param name="action" select="$prefs-setAccess"/>
@@ -6334,6 +6336,10 @@
   </xsl:template>
 
   <xsl:template name="schedulingAccessForm">
+    <xsl:param name="what"/>
+    <input type="hidden" name="what">
+      <xsl:attribute name="value"><xsl:value-of select="$what"/></xsl:attribute>
+    </input>
     <p>
       <input type="text" name="who" width="40"/>
       <span class="nowrap"><input type="radio" name="whoType" value="user" checked="checked"/>user</span>
@@ -6345,8 +6351,6 @@
       <span class="nowrap"><input type="radio" name="whoType" value="auth"/>authenticated users</span>
       <span class="nowrap"><input type="radio" name="whoType" value="other"/>anyone</span>
     </p>
-
-    <p><strong>may send the following on my behalf:</strong></p>
 
     <input type="hidden" name="how" value="S"/>
     <dl>
