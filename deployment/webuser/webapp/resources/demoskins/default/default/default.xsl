@@ -3467,14 +3467,10 @@
           Share my free/busy with:<br/>
           <input type="text" name="who" size="20"/>
           <input type="radio" value="user" name="whoType" checked="checked"/> user
-          <input type="radio" value="group" name="whoType"/> group
-        </p>
-        <p>OR</p>
-        <p>
-          <input type="radio" value="auth" name="whoType"/> authenticated<br/>
-          <input type="radio" value="other" name="whoType"/> other users
-        </p>
-        <p>
+          <input type="radio" value="group" name="whoType"/> group<br/>
+          OR
+          <input type="radio" value="auth" name="whoType"/> authenticated
+          <input type="radio" value="other" name="whoType"/> other users<br/>
           <em>note: this will set a user or group's access to
               "read-free-busy" and any
               existing access control will be replaced.</em>
@@ -6711,20 +6707,24 @@
               </xsl:otherwise>
             </xsl:choose>
           </td>
-          <td>
+          <td class="acls">
             <xsl:if test="grant">
               grant:
-              <xsl:for-each select="grant/*">
-                <xsl:value-of select="name(.)"/>
-                <xsl:if test="position() != last()">, </xsl:if>
-              </xsl:for-each><br/>
+              <span class="grant">
+                <xsl:for-each select="grant/*">
+                  <xsl:value-of select="name(.)"/>
+                  <xsl:if test="position() != last()">, </xsl:if>
+                </xsl:for-each>
+              </span><br/>
             </xsl:if>
             <xsl:if test="deny">
               deny:
-              <xsl:for-each select="deny/*">
-                <xsl:value-of select="name(.)"/>
-                <xsl:if test="position() != last()">, </xsl:if>
-              </xsl:for-each>
+              <span class="deny">
+                <xsl:for-each select="deny/*">
+                  <xsl:value-of select="name(.)"/>
+                  <xsl:if test="position() != last()">, </xsl:if>
+                </xsl:for-each>
+              </span>
             </xsl:if>
           </td>
           <td>

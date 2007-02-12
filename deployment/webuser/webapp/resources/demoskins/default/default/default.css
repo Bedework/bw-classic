@@ -690,6 +690,17 @@ div.durationBox {
 table.scheduling td {
   white-space: nowrap;
 }
+table.scheduling td.acls {
+  white-space: normal;
+}
+table.scheduling .grant {
+  color: #080;
+  background-color: inherit;
+}
+table.scheduling .deny {
+  color: #800;
+  background-color: inherit;
+}
 table#manage td {
   padding: 0.2em 0 0 0.5em;
 }
