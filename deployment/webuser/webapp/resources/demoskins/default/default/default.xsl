@@ -5978,26 +5978,43 @@
         </xsl:if>
         <tr>
           <td class="fieldname">
+            Preferred time type:
+          </td>
+          <td>
+            <select name="preferredTimeType">
+              <option value="12hr">
+                <xsl:if test="preferredTimeType = '12hr'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                12 hour + AM/PM
+              </option>
+              <option value="24hr">
+                <xsl:if test="preferredTimeType = '24hr'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                24 hour
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
             Preferred end date/time type:
           </td>
           <td>
             <select name="preferredEndType">
-              <xsl:choose>
-                <xsl:when test="preferredEndType = 'duration'">
-                  <option value="duration" selected="selected">duration</option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="duration">duration</option>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:choose>
-                <xsl:when test="preferredEndType = 'date'">
-                  <option value="date" selected="selected">date/time</option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="date">date/time</option>
-                </xsl:otherwise>
-              </xsl:choose>
+              <option value="duration">
+                <xsl:if test="preferredEndType = 'duration'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                duration
+              </option>
+              <option value="date">
+                <xsl:if test="preferredEndType = 'date'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                date/time
+              </option>
             </select>
           </td>
         </tr>
@@ -6010,62 +6027,48 @@
           <td>
             <xsl:variable name="workDays" select="workDays"/>
             <input type="hidden" name="workDays" value="{$workDays}"/>
-            <xsl:choose>
-              <xsl:when test="substring(workDays,1,1) = 'W'">
-                <input type="checkbox" name="workDayIndex" value="0" checked="checked"/>Sun
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="checkbox" name="workDayIndex" value="0"/>Sun
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:choose>
-              <xsl:when test="substring(workDays,2,1) = 'W'">
-                <input type="checkbox" name="workDayIndex" value="1" checked="checked"/>Mon
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="checkbox" name="workDayIndex" value="1"/>Mon
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:choose>
-              <xsl:when test="substring(workDays,3,1) = 'W'">
-                <input type="checkbox" name="workDayIndex" value="2" checked="checked"/>Tue
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="checkbox" name="workDayIndex" value="2"/>Tue
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:choose>
-              <xsl:when test="substring(workDays,4,1) = 'W'">
-                <input type="checkbox" name="workDayIndex" value="3" checked="checked"/>Wed
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="checkbox" name="workDayIndex" value="3"/>Wed
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:choose>
-              <xsl:when test="substring(workDays,5,1) = 'W'">
-                <input type="checkbox" name="workDayIndex" value="4" checked="checked"/>Thu
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="checkbox" name="workDayIndex" value="4"/>Thu
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:choose>
-              <xsl:when test="substring(workDays,6,1) = 'W'">
-                <input type="checkbox" name="workDayIndex" value="5" checked="checked"/>Fri
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="checkbox" name="workDayIndex" value="5"/>Fri
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:choose>
-              <xsl:when test="substring(workDays,7,1) = 'W'">
-                <input type="checkbox" name="workDayIndex" value="6" checked="checked"/>Sat
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="checkbox" name="workDayIndex" value="6"/>Sat
-              </xsl:otherwise>
-            </xsl:choose>
+            <input type="checkbox" name="workDayIndex" value="0">
+              <xsl:if test="substring(workDays,1,1) = 'W'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              Sun
+            </input>
+            <input type="checkbox" name="workDayIndex" value="1">
+              <xsl:if test="substring(workDays,2,1) = 'W'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              Mon
+            </input>
+            <input type="checkbox" name="workDayIndex" value="2">
+              <xsl:if test="substring(workDays,3,1) = 'W'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              Tue
+            </input>
+            <input type="checkbox" name="workDayIndex" value="3">
+              <xsl:if test="substring(workDays,4,1) = 'W'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              Wed
+            </input>
+            <input type="checkbox" name="workDayIndex" value="4">
+              <xsl:if test="substring(workDays,5,1) = 'W'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              Thu
+            </input>
+            <input type="checkbox" name="workDayIndex" value="5">
+              <xsl:if test="substring(workDays,6,1) = 'W'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              Fri
+            </input>
+            <input type="checkbox" name="workDayIndex" value="6">
+              <xsl:if test="substring(workDays,7,1) = 'W'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              Sat
+            </input>
           </td>
         </tr>
         <tr>
@@ -6125,48 +6128,36 @@
           </td>
           <td>
             <select name="viewPeriod">
-              <!-- picking the selected item could be done with javascript. for
-                   now, this will do.  -->
-              <xsl:choose>
-                <xsl:when test="preferredViewPeriod = 'dayView'">
-                  <option value="dayView" selected="selected">day</option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="dayView">day</option>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:choose>
-                <xsl:when test="preferredViewPeriod = 'todayView'">
-                  <option value="todayView" selected="selected">today</option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="todayView">today</option>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:choose>
-                <xsl:when test="preferredViewPeriod = 'weekView'">
-                  <option value="weekView" selected="selected">week</option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="weekView">week</option>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:choose>
-                <xsl:when test="preferredViewPeriod = 'monthView'">
-                  <option value="monthView" selected="selected">month</option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="monthView">month</option>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:choose>
-                <xsl:when test="preferredViewPeriod = 'yearView'">
-                  <option value="yearView" selected="selected">year</option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="yearView">year</option>
-                </xsl:otherwise>
-              </xsl:choose>
+              <option value="dayView">
+                <xsl:if test="preferredViewPeriod = 'dayView'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                day
+              </option>
+              <option value="todayView">
+                <xsl:if test="preferredViewPeriod = 'todayView'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                today
+              </option>
+              <option value="weekView">
+                <xsl:if test="preferredViewPeriod = 'weekView'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                week
+              </option>
+              <option value="monthView">
+                <xsl:if test="preferredViewPeriod = 'monthView'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                month
+              </option>
+              <option value="yearView">
+                <xsl:if test="preferredViewPeriod = 'yearView'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                year
+              </option>
             </select>
           </td>
         </tr><!-- as you add skins, update this list and set the selected flag
@@ -6202,32 +6193,25 @@
             Interface mode:
           </td>
           <td>
-            <xsl:variable name="userMode" select="userMode"/>
             <select name="userMode">
-              <xsl:choose>
-                <xsl:when test="userMode = 0">
-                  <option value="0" selected="selected">basic</option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="0">basic</option>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:choose>
-                <xsl:when test="userMode = 1">
-                  <option value="1" selected="selected">simple</option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="1">simple</option>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:choose>
-                <xsl:when test="userMode = 3">
-                  <option value="3" selected="selected">advanced</option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="3">advanced</option>
-                </xsl:otherwise>
-              </xsl:choose>
+              <option value="0">
+                <xsl:if test="userMode = 0">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                basic
+              </option>
+              <option value="1">
+                <xsl:if test="userMode = 1">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                simple
+              </option>
+              <option value="3">
+                <xsl:if test="userMode = 3">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                advanced
+              </option>
             </select>
           </td>
         </tr>-->
