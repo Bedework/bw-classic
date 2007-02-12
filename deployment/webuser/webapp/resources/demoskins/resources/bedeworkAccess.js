@@ -169,18 +169,29 @@ function activateAllowDenyFlag(val,formObj,disabledFlag) {
   }
 }
 // Gather up the how values on access form submission and set the how field.
-// Each howItem (checkbox) has a corresponding allow/deny flag (radio button)
-// named after the howItem's value (e.g. "A","R","F","N", etc).
-// The allow/deny flag contains the final values to be returned with
-// the "-" switch if we set the value to deny (e.g. "A" or "-A", "R" or "-R").
+// If in "basic" mode:
+//   Set the value of how to the value of the basicHowItem radio button.
+// If in "advanced" mode:
+//   Each howItem (checkbox) has a corresponding allow/deny flag (radio button)
+//   named after the howItem's value (e.g. "A","R","F","N", etc).
+//   The allow/deny flag contains the final values to be returned with
+//   the "-" switch if we set the value to deny (e.g. "A" or "-A", "R" or "-R").
 function setAccessHow(formObj) {
   var howString = "";
-  for (i = 0; i < formObj.howItem.length; i++) {
-    if (formObj.howItem[i].checked == true) {
-      var howItemVal = formObj.howItem[i].value; // get the howItem value and
-      for (j = 0; j < formObj[howItemVal].length; j++) { // look up the value from the corresponding allow/deny flag
-        if (formObj[howItemVal][j].checked == true) {
-          howString += formObj[howItemVal][j].value;
+  if (formObj.setappvar[0].checked == true) { // "basic" mode is selected
+    for (i = 0; i < formObj.basicHowItem.length; i++) {
+      if (formObj.basicHowItem[i].checked == true) {
+        howString = formObj.basicHowItem[i].value;
+      }
+    }
+  } else { // "advanced" mode is selected
+    for (i = 0; i < formObj.howItem.length; i++) {
+      if (formObj.howItem[i].checked == true) {
+        var howItemVal = formObj.howItem[i].value; // get the howItem value and
+        for (j = 0; j < formObj[howItemVal].length; j++) { // look up the value from the corresponding allow/deny flag
+          if (formObj[howItemVal][j].checked == true) {
+            howString += formObj[howItemVal][j].value;
+          }
         }
       }
     }

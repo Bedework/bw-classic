@@ -350,7 +350,9 @@
                   /bedework/page='modPrefs' or
                   /bedework/page='calendarListForExport' or
                   /bedework/page='attendeeRespond' or
-                  /bedework/page='modSchedulingPrefs'">
+                  /bedework/page='modSchedulingPrefs' or
+                  /bedework/page='modCalendar' or
+                  /bedework/page='eventAccess'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
     </xsl:if>
     <xsl:if test="/bedework/page='modSchedulingPrefs'">
@@ -3465,7 +3467,14 @@
           Share my free/busy with:<br/>
           <input type="text" name="who" size="20"/>
           <input type="radio" value="user" name="whoType" checked="checked"/> user
-          <input type="radio" value="group" name="whoType"/> group<br/>
+          <input type="radio" value="group" name="whoType"/> group
+        </p>
+        <p>OR</p>
+        <p>
+          <input type="radio" value="auth" name="whoType"/> authenticated<br/>
+          <input type="radio" value="other" name="whoType"/> other users
+        </p>
+        <p>
           <em>note: this will set a user or group's access to
               "read-free-busy" and any
               existing access control will be replaced.</em>
@@ -6376,10 +6385,28 @@
           </div>
         </td>
         <td>
-          <h5>Rights:</h5>
+          <h5>
+            <span id="accessRightsToggle">
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='accessRightsToggle']/value='advanced'">
+                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
+                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" checked="checked" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" checked="checked" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
+                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+            Rights:
+          </h5>
           <input type="hidden" name="how" value=""/>
+          <!-- Advanced Access Rights: -->
           <!-- the "how" field is set by iterating over the howItems below -->
-          <table id="howTable" cellspacing="0">
+          <table id="howTable" class="invisible" cellspacing="0">
+            <xsl:if test="/bedework/appvar[key='accessRightsToggle']/value='advanced'">
+              <xsl:attribute name="class">visible</xsl:attribute>
+            </xsl:if>
             <tr>
               <th>access type</th>
               <th>allow</th>
@@ -6495,7 +6522,7 @@
                 <input type="radio" value="-b" name="b" disabled="disabled"/>
               </td>
             </tr>
-            <!--<xsl:if test="$type = 'inbox' or $type = 'outbox'">-->
+            <xsl:if test="$type = 'inbox' or $type = 'outbox'">
               <tr>
                 <td class="level4">
                   <input type="checkbox" value="S" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> schedule
@@ -6540,7 +6567,7 @@
                 <input type="radio" value="-s" name="s" disabled="disabled"/>
               </td>
               </tr>
-            <!--</xsl:if>-->
+            </xsl:if>
             <tr>
               <td class="level3">
                  <input type="checkbox" value="u" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> delete (unbind)
@@ -6562,11 +6589,23 @@
               </td>
             </tr>-->
           </table>
+          <!-- Simple Access Rights: -->
+          <!-- the "how" field is set by getting the selected basicHowItem -->
+          <ul id="howList">
+            <xsl:if test="/bedework/appvar[key='accessRightsToggle']/value='advanced'">
+              <xsl:attribute name="class">invisible</xsl:attribute>
+            </xsl:if>
+            <li>
+              <input type="radio" value="A" name="basicHowItem"/>All
+            </li>
+            <li>
+              <input type="radio" value="R" name="basicHowItem" checked="checked"/>Read only
+            </li>
+          </ul>
 
           <!-- below is a simplified listing using radio buttons only; keep for
-               those who would like a simpler interface (though
-               it is currently less functional; e.g. there is no "deny" setting
-               in the following list) -->
+               those who would like something inbetween the advanced and simple
+               interfaces -->
           <!--
           <ul id="howList">
             <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
@@ -6674,10 +6713,18 @@
           </td>
           <td>
             <xsl:if test="grant">
-              grant: <xsl:value-of select="name(grant/*)"/><br/>
+              grant:
+              <xsl:for-each select="grant/*">
+                <xsl:value-of select="name(.)"/>
+                <xsl:if test="position() != last()">, </xsl:if>
+              </xsl:for-each><br/>
             </xsl:if>
             <xsl:if test="deny">
-              deny: <xsl:value-of select="name(deny/*)"/>
+              deny:
+              <xsl:for-each select="deny/*">
+                <xsl:value-of select="name(.)"/>
+                <xsl:if test="position() != last()">, </xsl:if>
+              </xsl:for-each>
             </xsl:if>
           </td>
           <td>

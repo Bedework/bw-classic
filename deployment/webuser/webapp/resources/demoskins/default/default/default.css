@@ -1500,6 +1500,11 @@ img.subStyle {
   margin: 0;
   padding: 4px;
 }
+#shareFormTable #accessRightsToggle {
+  float: right;
+  font-weight: normal;
+  font-size: 0.8em;
+}
 #shareFormTable .whoTypes {
   margin: 1em;
 }
@@ -1544,7 +1549,6 @@ img.subStyle {
   padding-left: 8em;
   text-align: left;
 }
-/* keep the howList items for optional use */
 #howList {
   margin: 0;
   padding: 1em 0;
