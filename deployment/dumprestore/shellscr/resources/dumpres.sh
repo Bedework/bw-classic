@@ -37,20 +37,20 @@ case "$1" in
     $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars $2 $3 $4 $5 $6 $7 $8 $9
     ;;
   drop)
-    echo $SCHEMACMD --text --drop --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
-    $SCHEMACMD --text --drop --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+    echo $SCHEMACMD --text --drop --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+    $SCHEMACMD --text --drop --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
     ;;
-  export-drop)
-    echo $SCHEMACMD --drop --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
-    $SCHEMACMD --drop --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
+  drop-export)
+    echo $SCHEMACMD --drop --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
+    $SCHEMACMD --drop --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
     ;;
   schema)
-    echo $SCHEMACMD --text --create --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
-    $SCHEMACMD --text --create --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+    echo $SCHEMACMD --text --create --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+    $SCHEMACMD --text --create --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
     ;;
   schema-export)
-    echo $SCHEMACMD --create --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
-    $SCHEMACMD --create --formatted --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
+    echo $SCHEMACMD --create --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
+    $SCHEMACMD --create --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql $2 $3 $4 $5 $6 $7 $8 $9
     ;;
   *)
     echo $" "
@@ -71,7 +71,7 @@ case "$1" in
     echo $"  $0 drop [--haltonerror] "
     echo $"     Create a file in the current directory with sql drop statements"
     echo $" "
-    echo $"  $0 export-drop [--haltonerror]"
+    echo $"  $0 drop-export [--haltonerror]"
     echo $"     Drop tables in the database. Note this may not work if the schema"
     echo $"     was changed."
     echo $" "

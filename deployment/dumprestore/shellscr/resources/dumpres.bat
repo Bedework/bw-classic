@@ -37,16 +37,40 @@ ECHO.
   if "%1" == "restore-for-quickstart" GOTO restore-for-quickstart
   if "%1" == "backup" GOTO backup
   if "%1" == "initdb" GOTO initdb
+  if "%1" == "drop" GOTO drop
+  if "%1" == "drop-export" GOTO drop-export
   if "%1" == "schema" GOTO schema
   if "%1" == "schema-export" GOTO schema-export
 
 :usage
-  ECHO   Usage: %0 dump {filename}
-  ECHO              restore {filename}
-  ECHO              backup {directory} {prefix}
-  ECHO              initdb
-  ECHO              schema
-  ECHO              schema-export
+  ECHO Usage:
+  ECHO  dump <filename>
+  ECHO     Dump the database in xml format suitable for restore.
+  ECHO
+  ECHO  restore <filename>
+  ECHO     Restore the database from an xml formatted dump.
+  ECHO
+  ECHO  backup <directory> <prefix>}
+  ECHO     Dump the database in xml format suitable for restore.
+  ECHO     Files will have a name built from the prefix and the current date/time.
+  ECHO
+  ECHO  initdb [--indexroot=<lucene-index-root>
+  ECHO     Populate the database using the provided initial data.
+  ECHO
+  ECHO  drop [--haltonerror]
+  ECHO     Create a file in the current directory with sql drop statements
+  ECHO
+  ECHO  drop-export [--haltonerror]
+  ECHO     Drop tables in the database. Note this may not work if the schema
+  ECHO     was changed.
+  ECHO
+  ECHO  schema [--haltonerror]
+  ECHO     Create a schema from the xml schema. Placed in a file in the current directory
+  ECHO
+  ECHO  schema-export [--haltonerror]
+  ECHO     Create a schema from the xml schema.
+  ECHO     Also create the database tables, indexes etc.
+  ECHO
   GOTO end
 
 
@@ -108,18 +132,32 @@ ECHO.
   %RESTORECMD% -appname %APPNAME% -f ./data/initbedework.xml -initSyspars %2 %3 %4 %5 %6 %7 %8 %9
   GOTO end
   ::
+:drop
+  ECHO   Creating drop sql
+  ECHO.
+  ECHO   %SCHEMACMD% --text --drop --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+  %SCHEMACMD% --text --drop --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+  GOTO end
+  ::
+:drop-export
+  ECHO   Exporting drop sql:
+  ECHO.
+  ECHO   %SCHEMACMD% --drop --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+  %SCHEMACMD% --drop --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+  GOTO end
+  ::
 :schema
   ECHO   Creating the schema:
   ECHO.
-  ECHO   %SCHEMACMD% --text --create --config=./classes/hibernate.cfg.xml --output=schema.sql
-  %SCHEMACMD% --text --create --config=./classes/hibernate.cfg.xml --output=schema.sql
+  ECHO   %SCHEMACMD% --text --create --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+  %SCHEMACMD% --text --create --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
   GOTO end
   ::
 :schema-export
   ECHO   Exporting the schema:
   ECHO.
-  ECHO   %SCHEMACMD% --create --config=./classes/hibernate.cfg.xml --output=schema.sql
-  %SCHEMACMD% --create --config=./classes/hibernate.cfg.xml --output=schema.sql
+  ECHO   %SCHEMACMD% --create --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
+  %SCHEMACMD% --create --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
   GOTO end
   ::
 

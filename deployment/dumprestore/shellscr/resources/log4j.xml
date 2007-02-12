@@ -196,6 +196,10 @@
       <priority value="INFO"/>
    </category>
 
+   <category name="org.hibernate.tool">
+      <priority value="INFO"/>
+   </category>
+
    <!-- Set bedework categories -->
    <category name="org.bedework">
      <priority value="DEBUG"/>
