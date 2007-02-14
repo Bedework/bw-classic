@@ -5986,15 +5986,15 @@
             Preferred time type:
           </td>
           <td>
-            <select name="preferredTimeType">
-              <option value="12hr">
-                <xsl:if test="preferredTimeType = '12hr'">
+            <select name="hour24">
+              <option value="false">
+                <xsl:if test="hour24 = 'false'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
                 12 hour + AM/PM
               </option>
-              <option value="24hr">
-                <xsl:if test="preferredTimeType = '24hr'">
+              <option value="true">
+                <xsl:if test="hour24 = 'true'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
                 24 hour
@@ -6081,9 +6081,9 @@
             Workday start:
           </td>
           <td>
-            <select name="workDayStart">
+            <select name="workdayStart">
               <xsl:call-template name="buildWorkdayOptionsList">
-                <xsl:with-param name="selectedVal" select="workDayStart"/>
+                <xsl:with-param name="selectedVal" select="workdayStart"/>
               </xsl:call-template>
             </select>
           </td>
@@ -6093,10 +6093,10 @@
             Workday end:
           </td>
           <td>
-            <xsl:variable name="workDayEnd" select="workDayEnd"/>
-            <select name="workDayEnd">
+            <xsl:variable name="workdayEnd" select="workdayEnd"/>
+            <select name="workdayEnd">
               <xsl:call-template name="buildWorkdayOptionsList">
-                <xsl:with-param name="selectedVal" select="workDayEnd"/>
+                <xsl:with-param name="selectedVal" select="workdayEnd"/>
               </xsl:call-template>
             </select>
           </td>

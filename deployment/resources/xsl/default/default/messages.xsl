@@ -21,10 +21,10 @@
       <xsl:when test="id='org.bedework.client.message.added.eventrefs'">
         <xsl:choose>
           <xsl:when test="param='1'">
-            1 public event reference added.
+            1 event reference added.
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="param"/> public event references added.
+            <xsl:value-of select="param"/> event references added.
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>

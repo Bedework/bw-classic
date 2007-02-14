@@ -19,7 +19,6 @@
         </module>
       </global>
 
-      <!-- Only used for system initialisation or conversion from 2.3 - ignored thereafter -->
       <syspars classname="org.bedework.calfacade.BwSystem">
         <!-- name must match the global system name -->
         <name>bedework</name>
