@@ -5208,7 +5208,7 @@
     <h2 class="common">Inbox</h2>
     <table id="inbox" class="common" cellspacing="0">
       <tr>
-        <th class="commonHeader">from</th>
+        <th class="commonHeader">organizer</th>
         <th class="commonHeader">title</th>
         <th class="commonHeader">start</th>
         <th class="commonHeader">end</th>
@@ -5230,7 +5230,21 @@
             </xsl:choose>
           </xsl:attribute>
           <td>
-            <xsl:value-of select="from"/>
+            <xsl:if test="organizer">
+              <xsl:variable name="organizerUri" select="organizer/organizerUri"/>
+              <strong>
+                <a href="{$organizerUri}">
+                  <xsl:choose>
+                    <xsl:when test="organizer/cn != ''">
+                      <xsl:value-of select="organizer/cn"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="organizer/organizerUri"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </a>
+              </strong>
+            </xsl:if>
           </td>
           <td>
             <xsl:variable name="inboxItemAction">
