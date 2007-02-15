@@ -101,6 +101,9 @@
       <xsl:when test="id='org.bedework.client.message.imported.timezones'">
         Timezones successfully imported
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.fixed.timezones'">
+        Timezones successfully fixed
+      </xsl:when>
 
       <xsl:when test="id='org.bedework.client.message.mailed.event'">
         Event has been mailed

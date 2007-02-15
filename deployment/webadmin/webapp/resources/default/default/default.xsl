@@ -154,6 +154,7 @@
   <!-- timezones and stats -->
   <xsl:variable name="timezones-initUpload" select="/bedeworkadmin/urlPrefixes/timezones/initUpload/a/@href"/>
   <xsl:variable name="timezones-upload" select="/bedeworkadmin/urlPrefixes/timezones/upload/a/@href"/>
+  <xsl:variable name="timezones-fix" select="/bedeworkadmin/urlPrefixes/timezones/fix/a/@href"/>
   <xsl:variable name="stats-update" select="/bedeworkadmin/urlPrefixes/stats/update/a/@href"/>
   <!-- authuser and prefs -->
   <xsl:variable name="authuser-showModForm" select="/bedeworkadmin/urlPrefixes/authuser/showModForm/a/@href"/>
@@ -668,7 +669,7 @@
           </li>
           <li>
             <a href="{$timezones-initUpload}">
-              Upload and replace system timezones
+              Manage system timezones
             </a>
           </li>
           <li>
@@ -4703,12 +4704,20 @@
 
   <!--+++++++++++++++ Timezones ++++++++++++++++++++-->
   <xsl:template name="uploadTimezones">
-    <h2>Upload Timezones</h2>
+    <h2>Manage Timezones</h2>
+
     <form name="peForm" method="post" action="{$timezones-upload}" enctype="multipart/form-data">
       <input type="file" name="uploadFile" size="40" value=""/>
       <input type="submit" name="doUpload" value="Upload Timezones"/>
       <input type="submit" name="cancelled" value="Cancel"/>
     </form>
+
+    <p>
+      <a href="{$timezones-fix}">Fix Timezones</a> (recalculate UTC values)<br/>
+      <span class="note">Run this to make sure no UTC values have changed due
+      to this upload (e.g. DST changes).</span>
+    </p>
+
   </xsl:template>
 
   <!--+++++++++++++++ Authuser ++++++++++++++++++++-->
