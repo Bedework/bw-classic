@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     testsuite deployer
+     =================================================================== -->
+
+<project name="testsuite.deploy" default="deploy" >
+  <import file="${org.bedework.deployment.base}/deployprops.xml" />
+
+  <target name="init" >
+    <dirname property="this.dir" file="${ant.file}"/>
+
+    <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
+
+    <property name="app.resources.dir"
+              location="${this.dir}/resources" />
+
+    <property name="app.run.shellscr"
+              location="${app.resources.dir}/bwruntest.sh" />
+
+    <property name="app.run.batscr"
+              location="${app.resources.dir}/bwruntest.bat" />
+
+    <property name="org.bedework.runsh.log4j.xml"
+              location="${app.resources.dir}/log4j.xml" />
+  </target>
+
+  <!-- =================================================================
+       The "deploy" target first builds a configured component then copies
+       all required files to the appropriate servlet container directories.
+
+       Currently this only works for the quickstart distribution.
+       For example, it does not handle deploying into jboss and copying
+       resource files (images, stylesheets) to external locations.
+       ================================================================= -->
+
+  <target name="deploy" depends="init,build.configured" >
+  </target>
+
+  <target name="build.configured" depends="init" >
+    <!-- ===============================================================
+         Libraries for this application
+         =============================================================== -->
+
+    <!-- from the dist directory -->
+    <fileset id="org.bedework.run.jars" dir="${org.bedework.empty.dir}" >
+    </fileset>
+
+    <fileset id="org.bedework.run.lib.jars" dir="${org.bedework.default.lib}" >
+      <include name="${junit4.jar.name}" />
+    </fileset>
+
+    <!-- from  the bin directory -->
+    <fileset id="app.bin.files" dir="${bin.home}" >
+      <include name="bw-testsuite*.jar" />
+    </fileset>
+
+    <!-- Extra resources -->
+    <property name="app.temp.home"
+              location="${org.bedework.temp.shellscr.home}/bldtemp/${propval.app.zip.name}" />
+    <mkdir dir="${app.temp.home}"/>
+    <mkdir dir="${app.temp.home}/resources"/>
+    <echo file="${app.temp.home}/resources/hibernate.properties">
+hibernate.query.substitutions true 'T', false 'F', yes 'Y', no 'N'
+hibernate.dialect=${propval.app.hibernate.dialect}
+hibernate.connection.driver_class=${propval.app.jdbcdriver}
+hibernate.connection.username=${propval.app.jdbcid}
+hibernate.connection.password=${propval.app.jdbcpw}
+hibernate.connection.url=${propval.app.jdbcurl}
+hibernate.cglib.use_reflection_optimizer=false
+#
+# Here for better debugging
+#
+hibernate.jdbc.batch_size=0
+    </echo>
+
+    <fileset id="org.bedework.extra.resources" dir="${app.temp.home}/resources" />
+
+    <fileset id="org.bedework.shellscr.data" dir="${org.bedework.empty.dir}" >
+    </fileset>
+
+    <!-- ===============================================================
+         Build the shell script
+         =============================================================== -->
+
+    <ant antfile="${buildsh}" inheritRefs="true" target="build" />
+  </target>
+</project>
+

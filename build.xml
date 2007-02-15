@@ -46,6 +46,9 @@
   <property name="org.bedework.project.synchml"
             location="${org.bedework.projects}/synchml" />
 
+  <property name="org.bedework.project.testsuite"
+            location="${org.bedework.projects}/testsuite" />
+
   <property name="org.bedework.project.webapps"
             location="${org.bedework.projects}/webapps" />
 
@@ -212,13 +215,14 @@
                                 build.calendarapi,build.dumprestore,build.synchml,
                                 build.webdav,build.caldav,build.caldavTest,
                                 build.freebusy,build.bwtools,build.webapps,
-                                build.deployutil"
+                                build.testsuite,build.deployutil"
           description="builds the project"/>
 
   <target name="clean" depends="init,clean.rpiutil,clean.access,clean.davutil,
                                 clean.calendarapi,clean.dumprestore,clean.synchml,
                                 clean.webdav,clean.caldav,clean.caldavTest,
-                                clean.freebusy,clean.bwtools,clean.webapps"
+                                clean.freebusy,clean.bwtools,clean.webapps,
+                                clean.testsuite"
           description="Remove all generated files.">
     <delete dir="${dist.home}" />
     <delete dir="${bin.home}" />
@@ -227,7 +231,8 @@
   <target name="quickstart-clean" depends="init,clean.rpiutil,clean.access,clean.davutil,
                                            clean.calendarapi,clean.dumprestore,clean.synchml,
                                            clean.webdav,clean.caldav,clean.caldavTest,
-                                           clean.freebusy,clean.bwtools,clean.webapps"
+                                           clean.freebusy,clean.bwtools,clean.webapps,
+                                           clean.testsuite"
           description="partial clean up for quickstart.">
     <delete dir="${bin.home}" />
     <delete dir="${org.bedework.temp.dir}" />
@@ -375,6 +380,12 @@
       <property name="destdir"
                 location="${org.bedework.projectdocs.home}/webapps/api" />
     </ant>
+
+    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
+         target="javadoc" >
+      <property name="destdir"
+                location="${org.bedework.projectdocs.home}/testsuite/api" />
+    </ant>
   </target>
 
   <!-- =================================================================
@@ -403,6 +414,8 @@
                        target="${org.bedework.project.webapps}" />
     <copy-to-dependent this="${org.bedework.project.access}"
                        target="${org.bedework.project.webdav}" />
+    <copy-to-dependent this="${org.bedework.project.access}"
+                       target="${org.bedework.project.testsuite}" />
 
     <copy-to-bin this="${org.bedework.project.access}"/>
   </target>
@@ -520,6 +533,8 @@
                        target="${org.bedework.project.synchml}" />
     <copy-to-dependent this="${org.bedework.project.calendarapi}"
                        target="${org.bedework.project.webapps}" />
+    <copy-to-dependent this="${org.bedework.project.calendarapi}"
+                       target="${org.bedework.project.testsuite}" />
 
     <copy-to-bin this="${org.bedework.project.calendarapi}"/>
   </target>
@@ -640,6 +655,8 @@
                        target="${org.bedework.project.webapps}" />
     <copy-to-dependent this="${org.bedework.project.rpiutil}"
                        target="${org.bedework.project.webdav}" />
+    <copy-to-dependent this="${org.bedework.project.rpiutil}"
+                       target="${org.bedework.project.testsuite}" />
 
     <copy-to-bin this="${org.bedework.project.rpiutil}"/>
   </target>
@@ -682,6 +699,26 @@
 
   <target name="clean.build.synchml" depends="clean.synchml,clean.synchml"
           description="builds the synchml project"/>
+
+  <!-- .................................................................
+                          testsuite
+       .................................................................. -->
+  <target name="build.testsuite" depends="init"
+          description="builds the testsuite project">
+    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
+         target="build-all" />
+
+    <copy-to-bin this="${org.bedework.project.testsuite}"/>
+  </target>
+
+  <target name="clean.testsuite" depends="init"
+          description="clean the testsuite project">
+    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
+         target="deep-clean" />
+  </target>
+
+  <target name="clean.build.testsuite" depends="clean.testsuite,clean.testsuite"
+          description="builds the testsuite project"/>
 
   <!-- .................................................................
                           webapps
