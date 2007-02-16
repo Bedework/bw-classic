@@ -217,6 +217,8 @@ td {
 #bodyBlock td#sideBar h3 a:link,
 #bodyBlock td#sideBar h3 a:active,
 #bodyBlock td#sideBar h3 a:visited {
+  float: right;
+  font-size: 0.8em;
   color: #eee;
   background: transparent;
   text-decoration: none;

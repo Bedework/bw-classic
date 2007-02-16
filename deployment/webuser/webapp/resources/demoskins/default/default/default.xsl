@@ -485,9 +485,10 @@
     </ul>
 
     <h3>
-      <a href="{$calendar-fetch}">
-        <img alt="manage calendars" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/> calendars
+      <a href="{$calendar-fetch}" title="manage calendars">
+        manage
       </a>
+      calendars
     </h3>
     <!-- normal calendars -->
     <ul class="calendarTree">
@@ -503,9 +504,9 @@
 
     <h3>
       <a href="{$subscriptions-fetch}" title="manage subscriptions">
-        <img alt="manage subscriptions" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/>
-        subscriptions
+        manage
       </a>
+      subscriptions
     </h3>
     <ul class="calendarTree">
       <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
@@ -1044,7 +1045,8 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
-    <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content)">
+    <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content) and not(recurring='true' or recurrenceId != '')">
+      <!-- temporarily hide from Recurring events -->
       <xsl:choose>
         <xsl:when test="recurring='true' or recurrenceId != ''">
           Link:
@@ -1405,7 +1407,22 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:if>
-            <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content)">
+            |
+            <xsl:choose>
+              <xsl:when test="recurring='true' or recurrenceId != ''">
+                <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
+                Copy:
+                <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy master (recurring event)">master</a>,<a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="copy instance (recurring event)">instance</a>
+              </xsl:when>
+              <xsl:otherwise>
+                <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy event">
+                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                  Copy
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content) and not(recurring='true' or recurrenceId != '')">
+              <!-- temporarily hide from Recurring events -->
               |
               <xsl:choose>
                 <xsl:when test="recurring='true' or recurrenceId != ''">
