@@ -39,6 +39,7 @@
         <busyCalendar>Busy</busyCalendar>
 
         <defaultUserViewName>All</defaultUserViewName>
+        <defaultUserHour24>true</defaultUserHour24>
 
         <publicUser>public-user</publicUser>
 
