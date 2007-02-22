@@ -3780,7 +3780,7 @@
       </xsl:attribute>
       <xsl:variable name="calPath" select="path"/>
         <xsl:choose>
-          <xsl:when test="calType='5' and /bedework/inboxState/numActive != '0'">
+          <xsl:when test="calType='5'">
             <strong>
               <a href="{$showInbox}">
                 <xsl:value-of select="name"/>
@@ -3789,7 +3789,7 @@
               (<xsl:value-of select="/bedework/inboxState/numActive"/>)
             </strong>
           </xsl:when>
-          <xsl:when test="calType='6' and /bedework/outbox/numActive != '0'">
+          <xsl:when test="calType='6'">
             <strong>
               <a href="{$showOutbox}">
                 <xsl:value-of select="name"/>
