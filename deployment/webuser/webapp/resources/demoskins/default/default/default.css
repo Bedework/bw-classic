@@ -629,6 +629,7 @@ table.common td.eventLinks {
 table.common #eventActions {
   float: right;
   clear: none;
+  font-size: 0.8em;
 }
 table.common #eventActions img {
   display: inline;
