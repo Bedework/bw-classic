@@ -5234,6 +5234,7 @@
     <h2 class="common">Inbox</h2>
     <table id="inbox" class="common" cellspacing="0">
       <tr>
+        <th class="commonHeader">sent</th>
         <th class="commonHeader">organizer</th>
         <th class="commonHeader">title</th>
         <th class="commonHeader">start</th>
@@ -5246,6 +5247,13 @@
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
         <xsl:variable name="eventName" select="name"/>
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
+        <xsl:variable name="inboxItemAction">
+          <xsl:choose>
+            <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:when>
+            <xsl:when test="scheduleMethod=3"><xsl:value-of select="$schedule-initAttendeeReply"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
         <tr>
           <xsl:attribute name="class">
             <xsl:choose>
@@ -5256,30 +5264,26 @@
             </xsl:choose>
           </xsl:attribute>
           <td>
+            &#160;
+          </td>
+          <td>
             <xsl:if test="organizer">
               <xsl:variable name="organizerUri" select="organizer/organizerUri"/>
-              <strong>
-                <a href="{$organizerUri}">
-                  <xsl:choose>
-                    <xsl:when test="organizer/cn != ''">
-                      <xsl:value-of select="organizer/cn"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="organizer/organizerUri"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </a>
-              </strong>
+              <xsl:choose>
+                <xsl:when test="organizer/cn != ''">
+                  <xsl:value-of select="organizer/cn"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="substring-after(organizer/organizerUri,'mailto:')"/>
+                </xsl:otherwise>
+              </xsl:choose>
+
+              <a href="{$organizerUri}" class="emailIcon" title="email">
+                <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0"/>
+              </a>
             </xsl:if>
           </td>
           <td>
-            <xsl:variable name="inboxItemAction">
-              <xsl:choose>
-                <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:when>
-                <xsl:when test="scheduleMethod=3"><xsl:value-of select="$schedule-initAttendeeReply"/></xsl:when>
-                <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
             <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
               <xsl:value-of select="title"/>
             </a>
@@ -5288,10 +5292,12 @@
           <td><xsl:value-of select="end/shortdate"/> <xsl:value-of select="end/time"/></td>
           <td><xsl:apply-templates select="scheduleMethod"/></td>
           <td>
-            <xsl:choose>
-              <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
-              <xsl:otherwise>processed</xsl:otherwise>
-            </xsl:choose>
+            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
+              <xsl:choose>
+                <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
+                <xsl:otherwise>processed</xsl:otherwise>
+              </xsl:choose>
+            </a>
           </td>
         </tr>
       </xsl:for-each>

@@ -871,6 +871,9 @@ table#inbox tr.counter {
   background: #fcc;
   color: black;
 }
+a.emailIcon {
+  margin-left: 0.5em;
+}
 form#subscriptions {
   margin: 0;
   padding: 0;
