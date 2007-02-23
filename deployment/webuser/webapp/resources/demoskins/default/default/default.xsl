@@ -2282,6 +2282,7 @@
             <xsl:choose>
               <xsl:when test="not(form/categories/all/category)">
                 no categories defined
+                <span class="note">(<a href="{$category-initAdd}">add category</a>)</span>
               </xsl:when>
               <xsl:otherwise>
                 <table cellpadding="0" id="allCategoryCheckboxes">
@@ -2317,7 +2318,6 @@
     <!-- Details tab -->
     <!-- ============== -->
     <div id="bwEventTab-Details" class="invisible">
-      <!--<h3>Extra Information:</h3>-->
       <table cellspacing="0" class="common dottedBorder">
         <!--  Location  -->
         <tr>
@@ -2372,16 +2372,25 @@
             </xsl:choose>
           </td>
         </tr>
-        <!--  Scheduling type  -->
+        <!--  Scheduling type -->
         <tr>
           <td class="fieldname">
             Type:
           </td>
           <td class="fieldval">
             <!-- need data for Edit Event! -->
-            <input type="radio" name="schedule" size="80" value="" checked="checked"/>my event
-            <input type="radio" name="schedule" size="80" value="request"/>meeting request
-            <input type="radio" name="schedule" size="80" value="publish"/>published event
+            <input type="radio" name="schedule" size="80" value="none" checked="checked">
+              <xsl:if test="form/scheduleMethod = '0'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+              my event
+            </input>
+            <input type="radio" name="schedule" size="80" value="request">
+              <xsl:if test="form/scheduleMethod = '2'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+              meeting request
+            </input>
+            <input type="radio" name="schedule" size="80" value="publish">
+              <xsl:if test="form/scheduleMethod = '1'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+              published event
+            </input>
           </td>
         </tr>
         <!--  Recipients and Attendees  -->

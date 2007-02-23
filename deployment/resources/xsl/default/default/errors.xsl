@@ -222,6 +222,9 @@
       <xsl:when test="id='org.bedework.validation.error.invalid.recuruntil'">
         Error: bad value for recurrence until: <em><xsl:value-of select="param"/></em>
       </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.cannot.change.method'">
+        Error: you cannot change scheduling method
+      </xsl:when>
 
       <xsl:when test="id='org.bedework.validation.error.invalid.schedmethod'">
         Error: bad value for recurrence until: <em><xsl:value-of select="param"/></em>
