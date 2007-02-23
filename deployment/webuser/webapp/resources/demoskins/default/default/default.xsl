@@ -1657,18 +1657,19 @@
           <td class="fieldname">Organizer:</td>
           <xsl:variable name="organizerUri" select="organizer/organizerUri"/>
           <td class="fieldval">
-            <strong>
-              <a href="{$organizerUri}">
-                <xsl:choose>
-                  <xsl:when test="organizer/cn != ''">
-                    <xsl:value-of select="organizer/cn"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="organizer/organizerUri"/>
-                  </xsl:otherwise>
-                </xsl:choose>
+            <xsl:choose>
+              <xsl:when test="organizer/cn != ''">
+                <xsl:value-of select="organizer/cn"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="substring-after(organizer/organizerUri,'mailto:')"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="organizer/organizerUri != ''">
+              <a href="{$organizerUri}" class="emailIcon" title="email">
+                <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
               </a>
-            </strong>
+            </xsl:if>
           </td>
         </tr>
       </xsl:if>
@@ -1688,15 +1689,16 @@
                 <tr>
                   <td>
                     <xsl:variable name="attendeeUri" select="attendeeUri"/>
-                    <a href="{$attendeeUri}">
-                      <xsl:choose>
-                        <xsl:when test="cn != ''">
-                          <xsl:value-of select="cn"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="attendeeUri"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
+                    <xsl:choose>
+                      <xsl:when test="cn != ''">
+                        <xsl:value-of select="cn"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="substring-after(attendeeUri,'mailto:')"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                    <a href="{$attendeeUri}" class="emailIcon" title="email">
+                      <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
                     </a>
                   </td>
                   <td class="role">
@@ -1722,9 +1724,17 @@
               <xsl:for-each select="recipient">
                 <tr>
                   <td>
+                    <xsl:choose>
+                      <xsl:when test="contains(.,'mailto:')">
+                        <xsl:value-of select="substring-after(.,'mailto:')"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="."/>
+                      </xsl:otherwise>
+                    </xsl:choose>
                     <xsl:variable name="recipientUri" select="."/>
-                    <a href="{$recipientUri}">
-                      <xsl:value-of select="."/>
+                    <a href="{$recipientUri}" class="emailIcon" title="email">
+                      <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
                     </a>
                   </td>
                 </tr>
@@ -5277,10 +5287,11 @@
                   <xsl:value-of select="substring-after(organizer/organizerUri,'mailto:')"/>
                 </xsl:otherwise>
               </xsl:choose>
-
-              <a href="{$organizerUri}" class="emailIcon" title="email">
-                <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0"/>
-              </a>
+              <xsl:if test="organizer/organizerUri != ''">
+                <a href="{$organizerUri}" class="emailIcon" title="email">
+                  <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
+                </a>
+              </xsl:if>
             </xsl:if>
           </td>
           <td>
@@ -5677,7 +5688,7 @@
             <xsl:variable name="newCalPath" select="/bedework/formElements/form/calendar/path"/>
             <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-            <!--<span id="bwEventCalDisplay">
+            <span id="bwEventCalDisplay">
               <xsl:choose>
                 <xsl:when test="contains(/bedework/formElements/form/calendar/path,$userPath)">
                   <xsl:value-of select="substring-after(/bedework/formElements/form/calendar/path,$userPath)"/>
@@ -5686,7 +5697,7 @@
                   <xsl:value-of select="/bedework/formElements/form/calendar/path"/>
                 </xsl:otherwise>
               </xsl:choose>
-            </span>-->
+            </span>
             <a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">copy this event to a calendar</a>
           </td>
         </tr>
