@@ -1819,7 +1819,7 @@
       <xsl:if test="comments/comment">
         <tr>
           <td class="fieldname">Comments:</td>
-          <td class="fieldval">
+          <td class="fieldval comments">
             <xsl:for-each select="comments/comment">
               <p><xsl:value-of select="comment"/></p>
             </xsl:for-each>
