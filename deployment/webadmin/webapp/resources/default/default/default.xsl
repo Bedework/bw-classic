@@ -3956,6 +3956,25 @@
           </td>
         </tr>
         <tr>
+          <th>12 or 24 hour clock/time:</th>
+          <td>
+            <select name="defaultUserHour24">
+              <option value="-1">select preference...</option>
+              <option value="true">
+                <xsl:if test="/bedeworkadmin/system/defaultUserHour24 = 'true'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                Use 24 hour clock/time
+              </option>
+              <option value="false">
+                <xsl:if test="/bedeworkadmin/system/defaultUserHour24 = 'false'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                Use 12 Hour clock/time + am/pm
+              </option>
+            </select>
+            <div class="desc">
+              Affects the time fields when adding and editing events
+            </div>
+          </td>
+        </tr>
+        <tr>
           <th>System id:</th>
           <td>
             <xsl:variable name="systemid" select="/bedeworkadmin/system/systemid"/>
