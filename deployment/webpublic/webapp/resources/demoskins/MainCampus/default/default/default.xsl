@@ -838,7 +838,7 @@
           <td class="fieldname">Comments:</td>
           <td class="fieldval comments">
             <xsl:for-each select="comments/comment">
-              <p><xsl:value-of select="comment"/></p>
+              <p><xsl:value-of select="value"/></p>
             </xsl:for-each>
           </td>
         </tr>

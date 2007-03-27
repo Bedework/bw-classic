@@ -613,6 +613,14 @@ table.common td.fieldname {
 table.dottedBorder td.fieldname {
   text-align: right;
 }
+/*table.common td.comments {
+  border-top: 1px solid #ccc;
+}*/
+table.common td.comments p {
+  margin: 0;
+  padding: 0.5em 0 1em 0;
+  border-top: 1px dashed #ddd;
+}
 table.common td.submit {
   padding: 0.5em 0.5em 0.2em 0.5em;
   color: black;
@@ -850,6 +858,7 @@ table#manage td {
 table#inbox td {
   padding: 0.2em 0.5em;
   border-bottom: 1px solid #ccc;
+  font-size: 0.8em;
 }
 table.common td.scheduleActions {
   color: black;
