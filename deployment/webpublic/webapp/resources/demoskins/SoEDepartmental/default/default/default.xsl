@@ -835,6 +835,16 @@
           </td>
         </tr>
       </xsl:if>
+      <xsl:if test="comments/comment">
+        <tr>
+          <td class="fieldname">Comments:</td>
+          <td class="fieldval">
+            <xsl:for-each select="comments/comment">
+              <p><xsl:value-of select="comment"/></p>
+            </xsl:for-each>
+          </td>
+        </tr>
+      </xsl:if>
     </table>
   </xsl:template>
 
