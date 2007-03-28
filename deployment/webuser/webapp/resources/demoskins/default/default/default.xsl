@@ -3796,7 +3796,7 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="mySpecialCalendars">
-    <!-- Trash = 2, Deleted = 3, Busy = 4, Inbox = 5, Outbox = 6  -->
+    <!-- calTypes: Trash = 2, Deleted = 3, Busy = 4, Inbox = 5, Outbox = 6  -->
     <xsl:variable name="id" select="id"/>
     <li>
       <xsl:attribute name="class">
@@ -3804,6 +3804,8 @@
           <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
                           and path = /bedework/selectionState/subscriptions/subscription/calendar/path">selected</xsl:when>
           <xsl:when test="calType='2' or calType='3'">trash</xsl:when>
+          <xsl:when test="calType='5'">inbox</xsl:when>
+          <xsl:when test="calType='6'">outbox</xsl:when>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
@@ -3811,22 +3813,22 @@
       <xsl:variable name="calPath" select="path"/>
         <xsl:choose>
           <xsl:when test="calType='5'">
-            <strong>
-              <a href="{$showInbox}">
-                <xsl:value-of select="name"/>
-              </a>
-              <xsl:text> </xsl:text>
-              (<xsl:value-of select="/bedework/inboxState/numActive"/>)
-            </strong>
+            <a href="{$showInbox}" title="incoming scheduling requests">
+              <xsl:value-of select="name"/>
+            </a>
+            <xsl:text> </xsl:text>
+            <xsl:if test="/bedework/inboxState/numActive != '0'">
+              <span class="inoutboxActive">(<xsl:value-of select="/bedework/inboxState/numActive"/>)</span>
+            </xsl:if>
           </xsl:when>
           <xsl:when test="calType='6'">
-            <strong>
-              <a href="{$showOutbox}">
-                <xsl:value-of select="name"/>
-              </a>
-              <xsl:text> </xsl:text>
-              (<xsl:value-of select="/bedework/outboxState/numActive"/>)
-            </strong>
+            <a href="{$showOutbox}" title="outgoing scheduling requests">
+              <xsl:value-of select="name"/>
+            </a>
+            <xsl:text> </xsl:text>
+            <xsl:if test="/bedework/outboxState/numActive != '0'">
+              <span class="inoutboxActive">(<xsl:value-of select="/bedework/outboxState/numActive"/>)</span>
+            </xsl:if>
           </xsl:when>
           <xsl:otherwise>
             <a href="{$setSelection}&amp;calUrl={$calPath}">
