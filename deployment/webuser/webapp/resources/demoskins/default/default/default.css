@@ -855,28 +855,28 @@ table#manage td {
      contain an absolutely positioned div. */
   position: relative;
 }
-table#inbox td {
+table#inoutbox td {
   padding: 0.2em 0.5em;
   border-bottom: 1px solid #ccc;
-  font-size: 0.8em;
+  font-size: 0.75em;
 }
 table.common td.scheduleActions {
   color: black;
   background: #ddc;
 }
-table#inbox tr.publish {
+table#inoutbox tr.publish {
   background: #ddf;
   color: black;
 }
-table#inbox tr.request {
+table#inoutbox tr.request {
   background: #ffd;
   color: black;
 }
-table#inbox tr.cancel {
+table#inoutbox tr.cancel {
   background: #ddd;
   color: black;
 }
-table#inbox tr.counter {
+table#inoutbox tr.counter {
   background: #fcc;
   color: black;
 }

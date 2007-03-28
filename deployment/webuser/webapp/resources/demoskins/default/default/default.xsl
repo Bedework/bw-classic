@@ -5255,7 +5255,7 @@
   <!--==== INBOX, OUTBOX, and SCHEDULING ====-->
   <xsl:template match="inbox">
     <h2 class="common">Inbox</h2>
-    <table id="inbox" class="common" cellspacing="0">
+    <table id="inoutbox" class="common" cellspacing="0">
       <tr>
         <th class="commonHeader">sent</th>
         <th class="commonHeader">organizer</th>
@@ -5287,7 +5287,7 @@
             </xsl:choose>
           </xsl:attribute>
           <td>
-            &#160;
+            <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>
           </td>
           <td>
             <xsl:if test="organizer">
@@ -5312,8 +5312,8 @@
               <xsl:value-of select="title"/>
             </a>
           </td>
-          <td><xsl:value-of select="start/shortdate"/> <xsl:value-of select="start/time"/></td>
-          <td><xsl:value-of select="end/shortdate"/> <xsl:value-of select="end/time"/></td>
+          <td><xsl:value-of select="start/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="start/time"/></td>
+          <td><xsl:value-of select="end/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="end/time"/></td>
           <td><xsl:apply-templates select="scheduleMethod"/></td>
           <td>
             <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
@@ -5328,8 +5328,79 @@
     </table>
   </xsl:template>
 
-  <xsl:template match="Outbox">
-    <h2>Outbox</h2>
+  <xsl:template match="outbox">
+    <h2 class="common">Outbox</h2>
+    <table id="inoutbox" class="common" cellspacing="0">
+      <tr>
+        <th class="commonHeader">sent</th>
+        <th class="commonHeader">organizer</th>
+        <th class="commonHeader">title</th>
+        <th class="commonHeader">start</th>
+        <th class="commonHeader">end</th>
+        <th class="commonHeader">method</th>
+        <th class="commonHeader">status</th>
+      </tr>
+      <xsl:for-each select="events/event">
+        <xsl:variable name="subscriptionId" select="subscription/id"/>
+        <xsl:variable name="calPath" select="calendar/encodedPath"/>
+        <xsl:variable name="eventName" select="name"/>
+        <xsl:variable name="recurrenceId" select="recurrenceId"/>
+        <xsl:variable name="inboxItemAction">
+          <xsl:choose>
+            <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:when>
+            <xsl:when test="scheduleMethod=3"><xsl:value-of select="$schedule-initAttendeeReply"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <tr>
+          <xsl:attribute name="class">
+            <xsl:choose>
+              <xsl:when test="scheduleMethod=1">publish</xsl:when>
+              <xsl:when test="scheduleMethod=2">request</xsl:when>
+              <xsl:when test="scheduleMethod=5">cancel</xsl:when>
+              <xsl:when test="scheduleMethod=7 or scheduleMethod=8">counter</xsl:when>
+            </xsl:choose>
+          </xsl:attribute>
+          <td>
+            <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>
+          </td>
+          <td>
+            <xsl:if test="organizer">
+              <xsl:variable name="organizerUri" select="organizer/organizerUri"/>
+              <xsl:choose>
+                <xsl:when test="organizer/cn != ''">
+                  <xsl:value-of select="organizer/cn"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="substring-after(organizer/organizerUri,'mailto:')"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:if test="organizer/organizerUri != ''">
+                <a href="{$organizerUri}" class="emailIcon" title="email">
+                  <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
+                </a>
+              </xsl:if>
+            </xsl:if>
+          </td>
+          <td>
+            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
+              <xsl:value-of select="title"/>
+            </a>
+          </td>
+          <td><xsl:value-of select="start/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="start/time"/></td>
+          <td><xsl:value-of select="end/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="end/time"/></td>
+          <td><xsl:apply-templates select="scheduleMethod"/></td>
+          <td>
+            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
+              <xsl:choose>
+                <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
+                <xsl:otherwise>processed</xsl:otherwise>
+              </xsl:choose>
+            </a>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
   </xsl:template>
 
   <xsl:template match="scheduleMethod">
@@ -5828,7 +5899,7 @@
         </td>
         <td class="fieldval scheduleActions">
           <form name="processReply" action="{$schedule-processAttendeeReply}">
-            <input type="submit" value="Accept" name="update"/>
+            <input type="submit" value="ok" name="update"/>
             <input type="submit" value="cancel" name="cancelled"/>
           </form>
         </td>
