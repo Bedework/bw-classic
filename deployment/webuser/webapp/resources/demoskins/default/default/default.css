@@ -864,6 +864,9 @@ table.common td.scheduleActions {
   color: black;
   background: #ddc;
 }
+#comments p {
+  margin: 0 0 1em 2em;
+}
 table#inoutbox tr.publish {
   background: #ddf;
   color: black;

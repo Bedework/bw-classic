@@ -5887,9 +5887,11 @@
           <xsl:value-of select="attendee/partstat"/>
           <xsl:if test="comments/comment">
             <p><strong>Comments:</strong></p>
-            <xsl:for-each select="comment">
-              <p><xsl:value-of select="."/></p>
-            </xsl:for-each>
+            <div id="comments">
+              <xsl:for-each select="comments/comment/value">
+                <p><xsl:value-of select="."/></p>
+              </xsl:for-each>
+            </div>
           </xsl:if>
         </td>
       </tr>
