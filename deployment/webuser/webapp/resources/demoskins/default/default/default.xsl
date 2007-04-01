@@ -378,8 +378,9 @@
       // Just take care of inbox for now.
       function checkStatus(inboxCount,changed,url) {
         if (inboxCount && changed) {
-        alert("You have " + inboxCount + " pending meeting requests.");
-        window.location.replace(url);
+          if (confirm("You have " + inboxCount + " pending meeting requests.\nGo to inbox?")) {
+            window.location.replace(url);
+          }
         }
       }
       ]]>
