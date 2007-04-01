@@ -575,47 +575,86 @@ table.params .desc {
   margin-top: 1em;
 }
 #sharingBox {
-  margin: 2em 0;
+  margin: 0;
   border-top: 1px solid #333;
+  padding: 1em 1em 2em 1em;
 }
-#sharingBox h3 {
-  padding: 1em 0 0.5em 0.5em;
+#bwEventTab-Access #sharingBox {
+  border-top: none;
 }
+#sharingBox h3,
 #sharingBox h5 {
-  padding: 1em 0 0.5em 0;
+  padding: 0 0 0.5em 0;
 }
 #sharingBox ul {
   font-size: 0.8em;
   margin: 0 1em;
 }
-#sharingBox table td,
-#sharingBox table th {
-  white-space: nowrap;
-}
-#sharing td,
-#sharing th.thin {
-  font-size: 0.8em;
+#sharingBox p {
+  font-size: 0.9em;
 }
 #shareForm {
   margin: 1em 0;
   padding: 0;
 }
-#shareFormTable {
-  /* width: 96%; less than 100% helps avoid IE weirdness */
-  border-right: 1px solid #666;
+#calendarTable #shareFormTable td {
+  border: 1px solid #666;
+  padding: 0 0 0.5em 0;
 }
-#shareFormTable tr.subhead th {
-  border-left: 1px solid #666;
+#shareFormTable h5 {
   background: #e5e5e5;
   color: black;
   margin: 0;
   padding: 4px;
 }
-#shareFormTable td {
-  border-bottom: 1px solid #666;
-  border-left: 1px solid #666;
-  padding: 1em;
-  vertical-align: top;
+#shareFormTable #accessRightsToggle {
+  float: right;
+  font-weight: normal;
+  font-size: 0.8em;
+}
+#shareFormTable .whoTypes {
+  margin: 1em;
+}
+#howTable {
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8em;
+  width: 100%;
+}
+#calendarTable #howTable th {
+  color: white;
+  background-color: #999;
+  font-weight: normal;
+}
+#calendarTable #howTable td {
+  white-space: nowrap;
+  border-top: 1px dotted #ccc;
+  border-right: none;
+  border-left: none;
+  border-bottom: none;
+  text-align: center;
+}
+#calendarTable #howTable td.level1 {
+  text-align: left;
+  font-weight: bold;
+}
+#calendarTable #howTable td.level2 {
+  padding-left: 2em;
+  text-align: left;
+  font-weight: bold;
+}
+#calendarTable #howTable td.level3 {
+  padding-left: 4em;
+  text-align: left;
+}
+#calendarTable #howTable td.level4 {
+  padding-left: 6em;
+  text-align: left;
+}
+#calendarTable #howTable td.level5 {
+  padding-left: 8em;
+  text-align: left;
 }
 #howList {
   margin: 0;

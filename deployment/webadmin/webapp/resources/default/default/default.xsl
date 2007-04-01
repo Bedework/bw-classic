@@ -202,6 +202,10 @@
           <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
         </xsl:if>
+        <xsl:if test="/bedeworkadmin/page='modCalendar'">
+          <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
+        </xsl:if>
         <xsl:if test="/bedeworkadmin/page='upload' or /bedeworkadmin/page='selectCalForEvent'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
         </xsl:if>
@@ -3043,8 +3047,29 @@
       </table>
     </form>
 
-
+    
     <div id="sharingBox">
+      <xsl:apply-templates select="acl" mode="currentAccess">
+        <xsl:with-param name="action" select="$calendar-setAccess"/>
+        <xsl:with-param name="calPathEncoded" select="encodedPath"/>
+      </xsl:apply-templates>
+      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
+        <input type="hidden" name="calPath">
+          <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
+        </input>
+        <xsl:call-template name="entityAccessForm">
+          <xsl:with-param name="type">
+            <xsl:choose>
+              <xsl:when test="calType = '5'">inbox</xsl:when>
+              <xsl:when test="calType = '6'">outbox</xsl:when>
+              <xsl:otherwise>normal</xsl:otherwise>
+            </xsl:choose>
+          </xsl:with-param>
+        </xsl:call-template>
+      </form>
+    </div>
+
+    <!--<div id="sharingBox">
       <xsl:variable name="calPath" select="path"/>
       <xsl:variable name="encodedCalPath" select="encodedPath"/>
       <xsl:if test="currentAccess/current-user-privilege-set/privilege/read-acl or /bedeworkadmin/userInfo/superUser='true'">
@@ -3138,8 +3163,8 @@
                       <xsl:choose>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
-                      </xsl:choose>
+                        <xsl:otherwise></xsl:otherwise>--> <!-- if not user or group, send no who -->
+        <!--              </xsl:choose>
                     </xsl:variable>
                     <xsl:choose>
                       <xsl:when test="invert">
@@ -3183,14 +3208,14 @@
                   <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
                   <input type="radio" value="other" name="whoType"/> other users<br/>
                   <input type="radio" value="owner" name="whoType"/> owner
-                </p>
+                </p>-->
                 <!-- we may never use the invert action ...it is probably
                      too confusing, and can be achieved in other ways -->
                 <!--
                 <p class="padTop">
                   <input type="checkbox" value="yes" name="notWho"/> invert (deny)
                 </p>-->
-              </td>
+              <!--</td>
               <td>
                 <ul id="howList">
                   <li>
@@ -3220,22 +3245,23 @@
                   <li class="padTop">
                     <input type="radio" value="N" name="how"/>
                     <strong>None</strong>
-                  </li>
+                  </li>-->
                   <!--
                   <li class="padTop">
                     <input type="radio" value="default" name="how"/>
                     <strong>Restore default access</strong>
                   </li>-->
-                </ul>
+                <!--</ul>
               </td>
             </tr>
           </table>
           <input type="submit" name="submit" value="Submit"/>
         </form>
       </xsl:if>
-    </div>
+    </div>-->
   </xsl:template>
-
+  
+  
   <xsl:template name="calendarList">
     <h3>Manage Calendars</h3>
     <ul>
@@ -3445,6 +3471,456 @@
     </li>
   </xsl:template>
 
+  <!--==== ACCESS CONTROL TEMPLATES ====-->
+
+  <!--<xsl:template match="eventAccess">
+    <xsl:variable name="calPathEncoded" select="calendar/encodedPath"/>
+    <xsl:variable name="calPath" select="calendar/path"/>
+    <xsl:variable name="guid" select="guid"/>
+    <xsl:variable name="recurrenceId" select="recurrenceId"/>
+    <div id="bwEventTab-Access">
+      <div id="sharingBox">
+        <xsl:apply-templates select="access/acl" mode="currentAccess">
+          <xsl:with-param name="action" select="$event-setAccess"/>
+          <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
+          <xsl:with-param name="guid" select="$guid"/>
+          <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
+        </xsl:apply-templates>
+        <form name="eventShareForm" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
+          <input type="hidden" name="calPath" value="{$calPath}"/>
+          <input type="hidden" name="guid" value="{$guid}"/>
+          <input type="hidden" name="recurid" value="{$recurrenceId}"/>
+          <xsl:call-template name="entityAccessForm"/>
+        </form>
+      </div>
+    </div>
+  </xsl:template>-->
+
+  <xsl:template name="schedulingAccessForm">
+    <xsl:param name="what"/>
+    <input type="hidden" name="what">
+      <xsl:attribute name="value"><xsl:value-of select="$what"/></xsl:attribute>
+    </input>
+    <p>
+      <input type="text" name="who" width="40"/>
+      <span class="nowrap"><input type="radio" name="whoType" value="user" checked="checked"/>user</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="group"/>group</span>
+    </p>
+    <p>
+      <strong>or</strong>
+      <span class="nowrap"><input type="radio" name="whoType" value="owner"/>owner</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="auth"/>authenticated users</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="other"/>anyone</span>
+    </p>
+
+    <input type="hidden" name="how" value="S"/>
+    <dl>
+      <dt>
+        <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="toggleScheduleHow(this.form,this)"/>all scheduling
+      </dt>
+      <dd>
+        <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>scheduling requests<br/>
+        <input type="checkbox" name="howSetter" value="y" checked="checked" disabled="disabled"/>scheduling replies<br/>
+        <input type="checkbox" name="howSetter" value="s" checked="checked" disabled="disabled"/>free-busy requests
+      </dd>
+    </dl>
+
+    <input type="submit" name="modPrefs" value="Update"/>
+    <input type="reset" value="Reset"/>
+    <input type="submit" name="cancelled" value="cancel"/>
+  </xsl:template>
+
+  <xsl:template name="entityAccessForm">
+    <xsl:param name="type"/><!-- optional:
+    currently used for inbox and outbox to conditionally
+    display scheduling access -->
+    <table cellpadding="0" id="shareFormTable" class="common">
+      <tr>
+        <th colspan="2" class="commonHeader">Add:</th>
+      </tr>
+      <tr>
+        <td>
+          <h5>Who:</h5>
+          <div class="whoTypes">
+            <input type="text" name="who" size="20"/><br/>
+            <input type="radio" value="user" name="whoType" checked="checked"/> user
+            <input type="radio" value="group" name="whoType"/> group
+            <p>OR</p>
+            <p>
+              <input type="radio" value="auth" name="whoType"/> authenticated<br/>
+              <input type="radio" value="other" name="whoType"/> other users
+            </p>
+          </div>
+        </td>
+        <td>
+          <h5>
+            <span id="accessRightsToggle">
+              <xsl:choose>
+                <xsl:when test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='advanced'">
+                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
+                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" checked="checked" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" checked="checked" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
+                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+            Rights:
+          </h5>
+          <input type="hidden" name="how" value=""/>
+          <!-- Advanced Access Rights: -->
+          <!-- the "how" field is set by iterating over the howItems below -->
+          <table id="howTable" class="invisible" cellspacing="0">
+            <xsl:if test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='advanced'">
+              <xsl:attribute name="class">visible</xsl:attribute>
+            </xsl:if>
+            <tr>
+              <th>access type</th>
+              <th>allow</th>
+              <th>deny</th>
+            </tr>
+            <tr>
+              <td class="level1">
+                <input type="checkbox" value="A" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/>All
+              </td>
+              <td>
+                <input type="radio" value="A" name="A" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-A" name="A" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level2">
+                <input type="checkbox" value="R" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> Read
+              </td>
+              <td>
+                <input type="radio" value="R" name="R" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-R" name="R"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="r" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read ACL
+              </td>
+              <td>
+                <input type="radio" value="r" name="r" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-r" name="r" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="P" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read current user privilege set
+              </td>
+              <td>
+                <input type="radio" value="P" name="P" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-P" name="P" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="F" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read freebusy
+              </td>
+              <td>
+                <input type="radio" value="F" name="F" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-F" name="F" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level2">
+                <input type="checkbox" value="W" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> Write
+              </td>
+              <td>
+                <input type="radio" value="W" name="W" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-W" name="W" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="a" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write ACL
+              </td>
+              <td>
+                <input type="radio" value="a" name="a" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-a" name="a" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="p" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write properties
+              </td>
+              <td>
+                <input type="radio" value="p" name="p" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-p" name="p" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="c" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write content
+              </td>
+              <td>
+                <input type="radio" value="c" name="c" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-c" name="c" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="b" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> create (bind)
+              </td>
+              <td>
+                <input type="radio" value="b" name="b" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-b" name="b" disabled="disabled"/>
+              </td>
+            </tr>
+            <xsl:if test="$type = 'inbox' or $type = 'outbox'">
+              <tr>
+                <td class="level4">
+                  <input type="checkbox" value="S" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> schedule
+                </td>
+              <td>
+                <input type="radio" value="S" name="S" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-S" name="S" disabled="disabled"/>
+              </td>
+              </tr>
+              <tr>
+                <td class="level5">
+                  <input type="checkbox" value="t" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule request
+                </td>
+              <td>
+                <input type="radio" value="t" name="t" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-t" name="t" disabled="disabled"/>
+              </td>
+              </tr>
+              <tr>
+                <td class="level5">
+                  <input type="checkbox" value="y" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule reply
+                </td>
+              <td>
+                <input type="radio" value="y" name="y" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-y" name="y" disabled="disabled"/>
+              </td>
+              </tr>
+              <tr>
+                <td class="level5">
+                  <input type="checkbox" value="s" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule free-busy
+                </td>
+              <td>
+                <input type="radio" value="s" name="s" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-s" name="s" disabled="disabled"/>
+              </td>
+              </tr>
+            </xsl:if>
+            <tr>
+              <td class="level3">
+                 <input type="checkbox" value="u" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> delete (unbind)
+              </td>
+              <td>
+                <input type="radio" value="u" name="u" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-u" name="u" disabled="disabled"/>
+              </td>
+            </tr>
+            <!--<tr>
+              <td class="level1">
+                <input type="checkbox" value="N" name="howItem" onclick="setupAccessForm(this, this.form)"/> None
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>
+            </tr>-->
+          </table>
+          <!-- Simple Access Rights: -->
+          <!-- the "how" field is set by getting the selected basicHowItem -->
+          <ul id="howList">
+            <xsl:if test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='advanced'">
+              <xsl:attribute name="class">invisible</xsl:attribute>
+            </xsl:if>
+            <li>
+              <input type="radio" value="A" name="basicHowItem"/>All
+            </li>
+            <li>
+              <input type="radio" value="R" name="basicHowItem" checked="checked"/>Read only
+            </li>
+          </ul>
+
+          <!-- below is a simplified listing using radio buttons only; keep for
+               those who would like something inbetween the advanced and simple
+               interfaces -->
+          <!--
+          <ul id="howList">
+            <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
+            <li class="padTop">
+              <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
+            </li>
+            <li>
+              <input type="radio" value="F" name="how"/> Read freebusy only
+            </li>
+            <li class="padTop">
+              <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
+            </li>
+            <li>
+              <input type="radio" value="c" name="how"/> Write content only
+            </li>
+            <li>
+             <input type="radio" value="u" name="how"/> Delete only
+            </li>
+            <li class="padTop">
+              <input type="radio" value="Rc" name="how"/> <strong>Read</strong> and <strong>Write content only</strong>
+            </li>
+            <li class="padTop">
+              <input type="radio" value="N" name="how"/> <strong>None</strong>
+            </li>
+          </ul> -->
+        </td>
+      </tr>
+    </table>
+    <input type="submit" name="submit" value="Submit"/>
+  </xsl:template>
+
+  <xsl:template match="acl" mode="currentAccess">
+    <xsl:param name="action"/> <!-- required -->
+    <xsl:param name="calPathEncoded"/> <!-- optional (for entities) -->
+    <xsl:param name="guid"/> <!-- optional (for entities) -->
+    <xsl:param name="recurrenceId"/> <!-- optional (for entities) -->
+    <xsl:param name="what"/> <!-- optional (for scheduling only) -->
+    <h3>Current Access:</h3>
+      <table class="common scheduling">
+        <tr>
+          <th>Entry</th>
+          <th>Access</th>
+          <th>Inherited from</th>
+          <td></td>
+        </tr>
+        <xsl:for-each select="ace">
+        <xsl:variable name="who">
+          <xsl:choose>
+            <xsl:when test="invert">
+              <xsl:choose>
+                <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
+                <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:choose>
+                <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
+                <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="whoType">
+          <xsl:choose>
+            <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">user</xsl:when>
+            <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">group</xsl:when>
+            <xsl:when test="$who='authenticated'">auth</xsl:when>
+            <xsl:when test="invert/principal/property/owner">other</xsl:when>
+            <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+            <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+            <xsl:otherwise></xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="shortWho">
+          <xsl:choose>
+            <xsl:when test="$whoType='user'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
+            <xsl:when test="$whoType='group'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
+            <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
+          </xsl:choose>
+        </xsl:variable>
+        <tr>
+          <td>
+            <xsl:choose>
+              <xsl:when test="$whoType = 'user' or ($who = 'owner' and $whoType != 'other')">
+                <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:text> </xsl:text>
+            <xsl:choose>
+              <xsl:when test="$whoType = 'other'">
+                anyone (other)
+              </xsl:when>
+              <xsl:when test="$shortWho != ''">
+                <xsl:value-of select="$shortWho"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="$who"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+          <td class="acls">
+            <xsl:if test="grant">
+              grant:
+              <span class="grant">
+                <xsl:for-each select="grant/*">
+                  <xsl:value-of select="name(.)"/>
+                  <xsl:if test="position() != last()">, </xsl:if>
+                </xsl:for-each>
+              </span><br/>
+            </xsl:if>
+            <xsl:if test="deny">
+              deny:
+              <span class="deny">
+                <xsl:for-each select="deny/*">
+                  <xsl:value-of select="name(.)"/>
+                  <xsl:if test="position() != last()">, </xsl:if>
+                </xsl:for-each>
+              </span>
+            </xsl:if>
+          </td>
+          <td>
+            <xsl:choose>
+              <xsl:when test="inherited">
+                <xsl:value-of select="inherited/href"/>
+              </xsl:when>
+              <xsl:otherwise>
+                local
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+          <td>
+            <xsl:if test="not(inherited)">
+              <a href="{$action}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="reset to default">
+                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
+              </a>
+            </xsl:if>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+  
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->
   <xsl:template match="subscriptions">
     <table id="subsTable">
