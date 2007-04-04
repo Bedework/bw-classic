@@ -355,7 +355,8 @@
                   /bedework/page='eventAccess'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
     </xsl:if>
-    <xsl:if test="/bedework/page='modSchedulingPrefs'">
+    <xsl:if test="/bedework/page='modSchedulingPrefs' or
+                  /bedework/page='modPrefs'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
     </xsl:if>
     <xsl:if test="/bedework/page='modCalendar' or
@@ -6423,18 +6424,10 @@
     <xsl:variable name="minTime" select="number(0)"/>
     <xsl:variable name="maxTime" select="number(1440)"/>
     <xsl:if test="$currentTime &lt; $maxTime">
-      <xsl:choose>
-        <xsl:when test="$currentTime = $selectedVal">
-          <option value="{$currentTime}" selected="selected">
-            <xsl:if test="floor($currentTime div 60) &lt; 10">0</xsl:if><xsl:value-of select="floor($currentTime div 60)"/>:<xsl:if test="string-length($currentTime mod 60)=1">0</xsl:if><xsl:value-of select="$currentTime mod 60"/>
-          </option>
-        </xsl:when>
-        <xsl:otherwise>
-          <option value="{$currentTime}">
-            <xsl:if test="floor($currentTime div 60) &lt; 10">0</xsl:if><xsl:value-of select="floor($currentTime div 60)"/>:<xsl:if test="string-length($currentTime mod 60)=1">0</xsl:if><xsl:value-of select="$currentTime mod 60"/>
-          </option>
-        </xsl:otherwise>
-      </xsl:choose>
+      <option value="{$currentTime}">
+        <xsl:if test="$currentTime = $selectedVal"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+        <xsl:if test="floor($currentTime div 60) &lt; 10">0</xsl:if><xsl:value-of select="floor($currentTime div 60)"/>:<xsl:if test="string-length($currentTime mod 60)=1">0</xsl:if><xsl:value-of select="$currentTime mod 60"/>
+      </option>
       <xsl:call-template name="buildWorkdayOptionsList">
         <xsl:with-param name="selectedVal" select="$selectedVal"/>
         <xsl:with-param name="currentTime" select="$currentTime + $increment"/>
