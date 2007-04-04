@@ -2413,6 +2413,9 @@
               <xsl:if test="form/scheduleMethod = '1'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
               published event
             </input>
+            <xsl:if test="/bedework/creating = 'false' and form/scheduleMethod = '2'">
+              <br/><input type="checkbox" name="schedule" value="reconfirm "/> ask attendees to reconfirm
+            </xsl:if>
           </td>
         </tr>
         <!--  Recipients and Attendees  -->
@@ -5282,6 +5285,7 @@
         <tr>
           <xsl:attribute name="class">
             <xsl:choose>
+              <xsl:when test="scheduleState=0">unprocessed</xsl:when>
               <xsl:when test="scheduleMethod=1">publish</xsl:when>
               <xsl:when test="scheduleMethod=2">request</xsl:when>
               <xsl:when test="scheduleMethod=5">cancel</xsl:when>
