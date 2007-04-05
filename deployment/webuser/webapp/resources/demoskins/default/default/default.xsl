@@ -120,6 +120,7 @@
   <xsl:variable name="subscriptions-subscribeByUri" select="/bedework/urlPrefixes/subscriptions/subscribeByUri/a/@href"/>
   <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd/a/@href"/>
   <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/subscriptions/subscribe/a/@href"/>
+  <xsl:variable name="subscriptions-inaccessible" select="/bedework/urlPrefixes/subscriptions/inaccessible/a/@href"/>
   <!-- preferences -->
   <xsl:variable name="prefs-fetchForUpdate" select="/bedework/urlPrefixes/prefs/fetchForUpdate/a/@href"/>
   <xsl:variable name="prefs-update" select="/bedework/urlPrefixes/prefs/update/a/@href"/>
@@ -244,6 +245,9 @@
                                     /bedework/page='modSubscription' or
                                     /bedework/page='addSubByUri'">
                       <xsl:apply-templates select="/bedework/subscriptions"/>
+                    </xsl:when>
+                    <xsl:when test="/bedework/page='subInaccessible'">
+                      <xsl:call-template name="subInaccessible"/>
                     </xsl:when>
                     <xsl:when test="/bedework/page='calendarList' or
                                     /bedework/page='calendarDescriptions' or
@@ -4887,23 +4891,33 @@
   </xsl:template>
 
   <xsl:template match="subscription" mode="mySubscriptions">
-    <xsl:variable name="itemClass">
-      <xsl:choose>
-        <xsl:when test="/bedework/selectionState/selectionType = 'subscription'
-                        and /bedework/selectionState/subscriptions/subscription/name = name">selected</xsl:when>
-        <xsl:otherwise>calendar</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <li class="{$itemClass}">
+    <li>
+      <xsl:attribute name="class"> 
+        <xsl:choose>
+          <xsl:when test="/bedework/selectionState/selectionType = 'subscription'
+                          and /bedework/selectionState/subscriptions/subscription/name = name">selected</xsl:when>
+          <xsl:when test="calendarDeleted = 'true'">deleted</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
       <xsl:variable name="subName" select="name"/>
       <xsl:if test="style != '' and style != 'default'">
         <!-- the spacer gif approach allows us to avoid some IE misbehavior -->
         <xsl:variable name="subStyle" select="style"/>
         <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="subscription style" class="subStyle {$subStyle}"/>
       </xsl:if>
-      <a href="{$setSelection}&amp;subname={$subName}">
-        <xsl:value-of select="name"/>
-      </a>
+      <xsl:choose>
+        <xsl:when test="calendarDeleted = 'true'">
+          <a href="{$subscriptions-inaccessible}" title="underlying calendar is inaccessible">
+            <xsl:value-of select="name"/>
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <a href="{$setSelection}&amp;subname={$subName}">
+            <xsl:value-of select="name"/>
+          </a>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:if test="calendars/calendar/calendarCollection='true' and
                     calendars/calendar/currentAccess/current-user-privilege-set/privilege/write-content">
         <!-- set the start date for adding an event to the first day of the
@@ -4915,6 +4929,20 @@
         </a>
       </xsl:if>
     </li>
+  </xsl:template>
+  
+  <xsl:template name="subInaccessible">
+    <h2 class="bwStatusConfirmed">Inaccessible</h2>
+    <p>
+      <strong>The underlying calendar is inaccessible.</strong><br/>
+    </p>
+    <p>
+      Possible causes:
+    </p>
+    <ol>
+      <li>Access control was changed such that you may no longer access the underlying calendar</li>
+      <li>The underlying calendar was deleted</li>
+    </ol>    
   </xsl:template>
 
   <!--==== ALARM OPTIONS ====-->
