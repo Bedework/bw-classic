@@ -165,24 +165,25 @@
       <head>
         <xsl:call-template name="headSection"/>
       </head>
-      <xsl:variable name="inboxNumActive" select="/bedework/inboxState/numActive"/>
-      <xsl:variable name="inboxChanged" select="/bedework/inboxState/changed"/>
-      <body onload="checkStatus({$inboxNumActive},{$inboxChanged},'{$showInbox}')">
-      <xsl:choose>
-        <xsl:when test="/bedework/page='selectCalForEvent'">
-          <xsl:call-template name="selectCalForEvent"/>
-        </xsl:when>
-        <xsl:when test="/bedework/page='rdates'">
-          <xsl:call-template name="rdates"/>
-        </xsl:when>
-        <xsl:when test="/bedework/page='attendees'">
-          <xsl:call-template name="attendees"/>
-        </xsl:when>
-        <xsl:when test="/bedework/page='eventAccess'">
-          <xsl:call-template name="messagesAndErrors"/>
-          <xsl:apply-templates select="/bedework/eventAccess"/>
-        </xsl:when>
-        <xsl:otherwise>
+      <body>
+        <xsl:if test="/bedework/page!='inbox'"> 
+          <xsl:attribute name="onload">checkStatus(<xsl:value-of select="/bedework/inboxState/numActive"/>,<xsl:value-of select="/bedework/inboxState/changed"/>,'<xsl:value-of select="$showInbox"/>')</xsl:attribute>
+        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="/bedework/page='selectCalForEvent'">
+            <xsl:call-template name="selectCalForEvent"/>
+          </xsl:when>
+          <xsl:when test="/bedework/page='rdates'">
+            <xsl:call-template name="rdates"/>
+          </xsl:when>
+          <xsl:when test="/bedework/page='attendees'">
+            <xsl:call-template name="attendees"/>
+          </xsl:when>
+          <xsl:when test="/bedework/page='eventAccess'">
+            <xsl:call-template name="messagesAndErrors"/>
+            <xsl:apply-templates select="/bedework/eventAccess"/>
+          </xsl:when>
+          <xsl:otherwise>
             <xsl:call-template name="headBar"/>
             <xsl:call-template name="messagesAndErrors"/>
             <table id="bodyBlock" cellspacing="0">
@@ -4933,16 +4934,20 @@
   
   <xsl:template name="subInaccessible">
     <h2 class="bwStatusConfirmed">Inaccessible</h2>
-    <p>
-      <strong>The underlying calendar is inaccessible.</strong><br/>
-    </p>
-    <p>
-      Possible causes:
-    </p>
-    <ol>
-      <li>Access control was changed such that you may no longer access the underlying calendar</li>
-      <li>The underlying calendar was deleted</li>
-    </ol>    
+    <div class="noEventsCell">
+      <p>
+        <strong>This subscription cannot be displayed.</strong><br/>
+        The underlying calendar 
+        is inaccessible.
+      </p>
+      <p>
+        Possible causes:
+      </p>
+      <ol>
+        <li>Access control was changed, and you may no longer access the underlying calendar.</li>
+        <li>The underlying calendar was deleted.</li>
+      </ol>    
+    </div>
   </xsl:template>
 
   <!--==== ALARM OPTIONS ====-->
@@ -5290,6 +5295,7 @@
     <h2 class="common">Inbox</h2>
     <table id="inoutbox" class="common" cellspacing="0">
       <tr>
+        <th class="commonHeader">&#160;</th>
         <th class="commonHeader">sent</th>
         <th class="commonHeader">organizer</th>
         <th class="commonHeader">title</th>
@@ -5299,6 +5305,7 @@
         <th class="commonHeader">status</th>
       </tr>
       <xsl:for-each select="events/event">
+        <xsl:sort select="dtstamp/unformatted" order="descending"/>
         <xsl:variable name="subscriptionId" select="subscription/id"/>
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
         <xsl:variable name="eventName" select="name"/>
@@ -5321,7 +5328,14 @@
             </xsl:choose>
           </xsl:attribute>
           <td>
-            <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>
+            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+              <img src="{$resourcesRoot}/resources/calIconSchedule-sm.gif" width="13" height="13" border="0" alt="check message"/>
+            </a>
+          </td>
+          <td>
+            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+              <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>
+            </a>
           </td>
           <td>
             <xsl:if test="organizer">
@@ -5366,6 +5380,7 @@
     <h2 class="common">Outbox</h2>
     <table id="inoutbox" class="common" cellspacing="0">
       <tr>
+        <th class="commonHeader">&#160;</th>
         <th class="commonHeader">sent</th>
         <th class="commonHeader">organizer</th>
         <th class="commonHeader">title</th>
@@ -5375,6 +5390,7 @@
         <th class="commonHeader">status</th>
       </tr>
       <xsl:for-each select="events/event">
+        <xsl:sort select="dtstamp/unformatted" order="descending"/>
         <xsl:variable name="subscriptionId" select="subscription/id"/>
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
         <xsl:variable name="eventName" select="name"/>
@@ -5395,6 +5411,11 @@
               <xsl:when test="scheduleMethod=7 or scheduleMethod=8">counter</xsl:when>
             </xsl:choose>
           </xsl:attribute>
+          <td>
+            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+              <img src="{$resourcesRoot}/resources/calIconSchedule-sm.gif" width="13" height="13" border="0" alt="check message"/>
+            </a>
+          </td>
           <td>
             <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>
           </td>
