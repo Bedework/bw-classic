@@ -215,6 +215,7 @@
         <include name="bw-icalendar*.jar"/>
         <include name="bw-locale*.jar"/>
         <include name="bw-logging*.jar"/>
+        <include name="bw-mail*.jar"/>
 
         <!-- Common jars for web apps -->
         <include name="bw-appcommon*.jar"/>
@@ -244,6 +245,11 @@
     <copy todir="${app.dest.lib}" file="${commons-lang.jar}"/>
     <copy todir="${app.dest.lib}" file="${commons-ssl.jar}"/>
 
+    <copy todir="${app.dest.lib}" overwrite="yes">
+      <fileset dir="${javamail.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
 
     <!-- add the jdbcdriver if defined -->
     <antcall target="add.jdbcdriver" inheritRefs="true" />

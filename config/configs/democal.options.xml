@@ -16,6 +16,14 @@
             <groupDnSuffix>,ou=groups, dc=bedework, dc=org</groupDnSuffix>
             <debug>true</debug>
           </user-ldap-group>
+
+          <testmail classname="org.bedework.mail.MailConfigProperties">
+            <protocol>smtp</protocol>
+            <protocolClass>com.sun.mail.smtp.SMTPTransport</protocolClass>
+            <serverIp>localhost</serverIp>
+            <from>calendar.myplace.edu</from>
+            <subject>Message from demo calendar server</subject>
+          </testmail>
         </module>
       </global>
 
