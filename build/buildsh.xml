@@ -80,6 +80,7 @@
         <include name="bw-icalendar*.jar"/>
         <include name="bw-locale*.jar"/>
         <include name="bw-logging*.jar"/>
+        <include name="bw-mail*.jar"/>
       </fileset>
     </copy>
 
