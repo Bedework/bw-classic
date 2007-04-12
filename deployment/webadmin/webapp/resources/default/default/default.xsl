@@ -2350,8 +2350,8 @@
           <xsl:value-of select="contact/phone"/><br/>
           <xsl:variable name="mailto" select="email"/>
           <a href="mailto:{$mailto}"><xsl:value-of select="email"/></a>
-          <xsl:variable name="contact/link" select="link"/>
-          <a href="mailto:{$link}"><xsl:value-of select="contact/link"/></a>
+          <xsl:variable name="contactLink" select="link"/>
+          <a href="mailto:{$contactLink}"><xsl:value-of select="contact/link"/></a>
         </td>
       </tr>
 
