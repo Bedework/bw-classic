@@ -2232,7 +2232,6 @@
 
     <xsl:choose>
       <xsl:when test="/bedeworkadmin/page='deleteEventConfirm'">
-
         <h2>Ok to delete this event?</h2>
         <p style="width: 400px;">Note: we do not encourage deletion of old but correct events; we prefer to keep
            old events for historical reasons.  Please remove only those events
@@ -2351,8 +2350,8 @@
           <xsl:value-of select="contact/phone"/><br/>
           <xsl:variable name="mailto" select="email"/>
           <a href="mailto:{$mailto}"><xsl:value-of select="email"/></a>
-          <xsl:variable name="link" select="link"/>
-          <a href="mailto:{$link}"><xsl:value-of select="link"/></a>
+          <xsl:variable name="contact/link" select="link"/>
+          <a href="mailto:{$link}"><xsl:value-of select="contact/link"/></a>
         </td>
       </tr>
 
