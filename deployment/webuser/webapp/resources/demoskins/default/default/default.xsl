@@ -3482,7 +3482,7 @@
               </xsl:choose>
             </xsl:variable>
             <td class="{$fbClass}">
-              <a href="{$initEvent}&amp;startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime}">*</a>
+              <a href="{$initEvent}&amp;startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime} - add event">*</a>
             </td>
           </xsl:for-each>
         </tr>
