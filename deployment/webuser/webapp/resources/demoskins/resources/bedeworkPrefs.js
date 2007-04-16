@@ -7,7 +7,7 @@ function setWorkDays(formObj) {
       if (formObj.workDayIndex[i].checked) {
         workDays += "W";
       } else {
-        workDays += " ";
+        workDays += "n";
       }
     }
     formObj.workDays.value = workDays;
