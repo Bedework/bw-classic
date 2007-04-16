@@ -345,21 +345,7 @@
     <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
-    <xsl:if test="/bedework/page='addEvent' or
-                  /bedework/page='addEventRef' or
-                  /bedework/page='editEvent' or
-                  /bedework/page='selectCalForEvent' or
-                  /bedework/page='rdates' or
-                  /bedework/page='upload' or
-                  /bedework/page='addSubByUri' or
-                  /bedework/page='modPrefs' or
-                  /bedework/page='calendarListForExport' or
-                  /bedework/page='attendeeRespond' or
-                  /bedework/page='modSchedulingPrefs' or
-                  /bedework/page='modCalendar' or
-                  /bedework/page='eventAccess'">
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
-    </xsl:if>
+    <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
                   /bedework/page='modPrefs'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
@@ -3446,7 +3432,18 @@
 
   <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->
   <xsl:template match="freebusy">
-    <h2>Free / Busy</h2>
+    <span id="freeBusyShareLink">
+      <a href="{$calendar-fetch}">share my free-busy</a>
+      <span class="contextHelp">
+        <img src="{$resourcesRoot}/resources/std-button-help.gif" width="13" height="13" alt="help" onmouseover="changeClass('helpShareFreeBusy','visible helpBox');" onmouseout="changeClass('helpShareFreeBusy','invisible');"/>
+        <div id="helpShareFreeBusy" class="helpBox invisible">
+          some text
+        </div>
+      </span>
+    </span>
+    <h2>
+      Free / Busy
+    </h2>
     <div id="freeBusyWho">for <xsl:value-of select="day/who"/></div>
     <table id="freeBusy">
       <tr>
@@ -3509,7 +3506,7 @@
         </td>
       </tr>
     </table>
-
+    <!--
     <div id="sharingBox">
       <xsl:variable name="calPathEncoded" select="/bedework/myCalendars/calendars/calendar/encodedPath"/>
       <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/acl" mode="currentAccess">
@@ -3528,13 +3525,18 @@
           OR
           <input type="radio" value="auth" name="whoType"/> authenticated
           <input type="radio" value="other" name="whoType"/> other users<br/>
-          <em>note: this will set a user or group's access to
-              "read-free-busy" and any
-              existing access control will be replaced.</em>
         </p>
-        <input type="submit" name="submit" value="Submit"/>
+        <p>
+          <input type="submit" name="submit" value="Submit"/>
+        </p>
+        <p>
+          <em>
+            Note: this will set a user or group's access to
+            "read-free-busy" and any existing access control will be replaced.
+          </em>
+        </p>
       </form>
-    </div>
+    </div>-->
   </xsl:template>
 
   <xsl:template match="start" mode="timeDisplay">

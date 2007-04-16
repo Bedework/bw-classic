@@ -1510,6 +1510,25 @@ img.subStyle {
   background-color: yellow;
   text-decoration: none;
 }
+#freeBusyShareLink {
+  float: right;
+  font-size: 0.8em;
+  margin: 0.5em 0.5em 0 0;
+}
+.contextHelp {
+  position: relative;
+  margin-left: 0.5em;
+}
+.helpBox {
+  margin: 1em;
+  padding: 0.5em;
+  border: 1px solid #333;
+  color: black;
+  background-color: #fee;
+}
+#helpShareFreeBusy {
+  postion: absolute;
+}
 #sharingBox {
   margin: 0;
   border-top: 1px solid #333;
