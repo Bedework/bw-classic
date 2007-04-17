@@ -4316,7 +4316,13 @@
     <h2>Remove View?</h2>
 
     <xsl:variable name="viewName" select="/bedeworkadmin/views/view/name"/>
-    <p>The following view will be removed. Continue?</p>
+    <p>The following view will be removed. <em>Be forewarned: removing views from a
+    production system can cause the public interface to throw errors while the
+    cache is updated.  To avoid this, plan on restarting the server when removing
+    views from a production system.</em>
+    </p> 
+    
+    <p>Continue?</p>
 
     <h3 class="viewName">
       <xsl:value-of select="$viewName"/>
@@ -5594,7 +5600,14 @@
             Events owner:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/eventsOwner/*"/>
+           <xsl:choose>
+              <xsl:when test="/bedeworkadmin/creating = 'true'">
+                <xsl:copy-of select="/bedeworkadmin/formElements/form/eventsOwner/*"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="/bedeworkadmin/formElements/form/eventsOwner/input/@value"/>
+              </xsl:otherwise>
+            </xsl:choose>            
           </td>
         </tr>
       </table>
