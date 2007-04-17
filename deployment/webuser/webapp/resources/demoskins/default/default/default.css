@@ -1527,7 +1527,9 @@ img.subStyle {
   background-color: #fee;
 }
 #helpShareFreeBusy {
-  postion: absolute;
+  position: absolute;
+  right: 20px;
+  width: 300px;
 }
 #sharingBox {
   margin: 0;

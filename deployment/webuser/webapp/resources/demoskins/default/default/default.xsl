@@ -1459,11 +1459,11 @@
             Recurring
           </xsl:if>
           <xsl:choose>
-            <xsl:when test="owner = /bedework/userid">
-              Personal Event
-            </xsl:when>
             <xsl:when test="public = 'true'">
               Public Event
+            </xsl:when>
+            <xsl:when test="owner = /bedework/userid">
+              Personal Event
             </xsl:when>
             <xsl:otherwise>
               Event (<xsl:value-of select="calendar/owner"/>)
@@ -3434,12 +3434,31 @@
   <xsl:template match="freebusy">
     <span id="freeBusyShareLink">
       <a href="{$calendar-fetch}">share my free-busy</a>
+      <!--<div dojoType="FloatingPane" id="bwHelpWidget-shareFreeBusy"
+               title="Bedework Help" toggle="plain"
+               windowState="minimized" hasShadow="true"
+               displayMinimizeAction="true" resizable="false"
+               constrainToContainer="true">
+        You may share your free busy with a user or group 
+        by <a href="{$calendar-fetch}">setting 
+        access to "read freebusy" on calendars</a> you wish to share.  
+        To share all your free busy, grant 
+        "read freebusy" access on your root folder.
+      </div>
+      <span class="contextHelp">
+        <a href="javascript:launchHelpWidget('bwHelpWidget-shareFreeBusy')">
+          <img src="{$resourcesRoot}/resources/std-button-help.gif" width="13" height="13" border="0" alt="help"/>
+        </a>
+      </span>-->
       <span class="contextHelp">
         <img src="{$resourcesRoot}/resources/std-button-help.gif" width="13" height="13" alt="help" onmouseover="changeClass('helpShareFreeBusy','visible helpBox');" onmouseout="changeClass('helpShareFreeBusy','invisible');"/>
-        <div id="helpShareFreeBusy" class="helpBox invisible">
-          some text
-        </div>
       </span>
+      <div id="helpShareFreeBusy" class="helpBox invisible">
+          You may share your free busy with a user or group 
+          by setting access to "read freebusy" on calendars you wish to share.  
+          To share all your free busy, grant 
+          "read freebusy" access on your root folder.
+      </div>
     </span>
     <h2>
       Free / Busy
@@ -4378,23 +4397,13 @@
               <xsl:copy-of select="/bedework/formElements/form/start/day/*"/>
               <xsl:copy-of select="/bedework/formElements/form/start/yearText/*"/>
             </div>
-            <script language="JavaScript" type="text/javascript">
-            <xsl:comment>
-              startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback',false,'<xsl:value-of select="$resourcesRoot"/>/resources/');
-            </xsl:comment>
-            </script>
             &#160;&#160;
             <strong>End:</strong>
             <div class="dateFields">
               <xsl:copy-of select="/bedework/formElements/form/end/month/*"/>
               <xsl:copy-of select="/bedework/formElements/form/end/day/*"/>
-               <xsl:copy-of select="/bedework/formElements/form/end/yearText/*"/>
+              <xsl:copy-of select="/bedework/formElements/form/end/yearText/*"/>
             </div>
-            <script language="JavaScript" type="text/javascript">
-            <xsl:comment>
-              endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback',false,'<xsl:value-of select="$resourcesRoot"/>/resources/');
-            </xsl:comment>
-            </script>
           </td>
         </tr>
         <tr>

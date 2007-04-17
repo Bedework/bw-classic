@@ -97,6 +97,11 @@ function launchCalSelectWindow(URL) {
   calSelect = window.open(URL, "calSelect", "width=500,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
   window.calSelect.focus();
 }
+// launch a dojo widget used for contextual help
+function launchHelpWidget(id) {
+  var helpWidget = dojo.widget.byId(id);
+  helpWidget.show();
+}
 // used to update the calendar in various forms from
 // the calSelect pop-up window.  We must do two things: update the hidden calendar
 // input field and update the displayed text.
