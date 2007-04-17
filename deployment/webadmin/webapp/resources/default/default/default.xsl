@@ -5628,7 +5628,9 @@
             </xsl:choose>
           </td>
           <td align="right">
-            <input type="submit" name="delete" value="Delete"/>
+            <xsl:if test="/bedeworkadmin/creating = 'false'">
+              <input type="submit" name="delete" value="Delete"/>
+            </xsl:if>
           </td>
         </tr>
       </table>
