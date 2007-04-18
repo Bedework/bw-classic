@@ -4316,10 +4316,10 @@
     <h2>Remove View?</h2>
 
     <xsl:variable name="viewName" select="/bedeworkadmin/views/view/name"/>
-    <p>The following view will be removed. <em>Be forewarned: removing views from a
-    production system can cause the public interface to throw errors while the
-    cache is updated.  To avoid this, plan on restarting the server when removing
-    views from a production system.</em>
+    <p>The following view will be removed. <em>Be forewarned: if caching is 
+    enabled, removing views from a
+    production system can cause the public interface to throw errors until the
+    cache is flushed (a few minutes).</em>
     </p> 
     
     <p>Continue?</p>

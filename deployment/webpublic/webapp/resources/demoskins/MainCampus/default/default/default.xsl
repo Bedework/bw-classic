@@ -12,6 +12,8 @@
 <!-- =========================================================
 
               DEMONSTRATION CALENDAR STYLESHEET
+              
+                  MainCampus Calendar Suite
 
      This stylesheet is devoid of school branding.  It is a good
      starting point for development of a customized calendar.
@@ -719,9 +721,12 @@
         </td>
         <th class="icalIcon" rowspan="2">
           <div id="eventIcons">
-            <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
-              <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
-            add to my calendar</a>
+            <xsl:if test="recurrenceId = ''">
+              <!-- hide this for a 3.3.1 bug: can't add a reference to a recurring event at this time -->
+              <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+                <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
+              add to my calendar</a>
+            </xsl:if>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
             <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
               <img src="{$resourcesRoot}/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
@@ -952,7 +957,16 @@
                     <xsl:otherwise>description</xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
-                <td class="{$descriptionClass}">
+                <!-- Subscription styles.
+                     These are set in the add/modify subscription forms in the admin client;
+                     if present, these override the background-color set by eventClass. The
+                     subscription styles should not be used for cancelled events (tentative is ok). -->
+                <xsl:variable name="subscriptionClass">
+                  <xsl:if test="status != 'CANCELLED' and
+                                subscription/subStyle != '' and
+                                subscription/subStyle != 'default'"><xsl:value-of select="subscription/subStyle"/></xsl:if>
+                </xsl:variable>
+                <td class="{$descriptionClass} {$subscriptionClass}">
                   <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
@@ -990,9 +1004,12 @@
                   </xsl:choose>
                 </td>
                 <td class="icons">
-                  <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
-                    <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
-                  </a>
+                  <xsl:if test="recurrenceId = ''">
+                    <!-- hide this for a 3.3.1 bug: can't add a reference to a recurring event at this time -->
+                    <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+                      <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
+                    </a>
+                  </xsl:if>
                   <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
                   <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
                     <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
