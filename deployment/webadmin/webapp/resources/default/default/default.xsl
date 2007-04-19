@@ -226,7 +226,7 @@
         </xsl:comment>
         </script>
       </head>
-      <body onLoad="focusFirstElement()">
+      <body onload="focusFirstElement()">
         <xsl:choose>
           <xsl:when test="/bedeworkadmin/page='selectCalForEvent'">
             <xsl:call-template name="selectCalForEvent"/>
@@ -826,15 +826,29 @@
                 <option value="-1">
                   Select preferred:
                 </option>
-                <xsl:copy-of select="form/calendar/preferred/select/*"/>
-              </select>
+                <xsl:for-each select="form/calendar/preferred/select/option">
+                  <xsl:sort select="." order="ascending"/>
+                  <option>
+                    <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
+                    <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                    <xsl:value-of select="substring-after(node(),'/public/')"/>
+                  </option>
+                </xsl:for-each>
+              </select><br/>
               or Calendar (all):
             </xsl:if>
             <select name="calendarId">
               <option value="-1">
                 Select:
               </option>
-              <xsl:copy-of select="form/calendar/all/select/*"/>
+              <xsl:for-each select="form/calendar/all/select/option">
+                <xsl:sort select="." order="ascending"/>
+                <option>
+                  <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
+                    <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                  <xsl:value-of select="substring-after(node(),'/public/')"/>
+                </option>
+              </xsl:for-each>
             </select>
             <xsl:text> </xsl:text>
             <span id="calDescriptionsLink">
