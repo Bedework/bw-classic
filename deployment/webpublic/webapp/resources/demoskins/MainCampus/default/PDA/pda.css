@@ -1,0 +1,49 @@
+body {
+  font-family: Arial, Helvetica, Verdana, sans-serif;
+  background: #f0eee5;
+  color: #000;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
+#titleBar {
+  background: #e2decc;
+  color: #000;
+  margin: 0;
+  padding: 3px 0;
+  text-align: center;
+  font-weight: bold;
+}
+#homeLink {
+  padding-left: 1em;
+  font-size: 0.8em;
+}
+#dateInfo,
+#mainNav {
+  text-align: center;
+  white-space: nowrap;
+}
+h1 {
+  font-size: 12px;
+  margin: 0; /* must wrap h1s with <p> tags for blackberry */
+  padding: 0;
+}
+h2,h3,h4,h5 {
+  font-size: 12px;
+  text-align: left;
+}
+dl {
+  margin: 0.5em 1em;
+}
+#eventTable td {
+  text-align: left;
+}
+#eventTable td.fieldname {
+  padding-right: 1em;
+}
+#footer {
+  font-size: 0.8em;
+  text-align: center;
+  margin: 1em 0;
+  padding: 2em 1em 1em 1em;
+}
