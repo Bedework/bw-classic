@@ -226,6 +226,9 @@
         Error: you cannot change scheduling method
       </xsl:when>
 
+      <xsl:when test="id='org.bedework.validation.error.invalid.scheddata'">
+        Error: bad scheduling data (0 or more than one object?
+      </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.invalid.schedmethod'">
         Error: bad value for recurrence until: <em><xsl:value-of select="param"/></em>
       </xsl:when>
