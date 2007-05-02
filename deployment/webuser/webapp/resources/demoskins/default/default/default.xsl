@@ -39,8 +39,8 @@
     to the maximum extent the law permits. -->
 
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="/bedework-common/default/default/errors.xsl"/>
-  <xsl:include href="/bedework-common/default/default/messages.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
   <!-- URL of html resources (images, css, other html); by default this is
@@ -166,7 +166,7 @@
         <xsl:call-template name="headSection"/>
       </head>
       <body>
-        <xsl:if test="/bedework/page!='inbox'"> 
+        <xsl:if test="/bedework/page!='inbox'">
           <xsl:attribute name="onload">checkStatus(<xsl:value-of select="/bedework/inboxState/numActive"/>,<xsl:value-of select="/bedework/inboxState/changed"/>,'<xsl:value-of select="$showInbox"/>')</xsl:attribute>
         </xsl:if>
         <xsl:choose>
@@ -3349,7 +3349,7 @@
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
                     </a>
                   </td>
-                  <td>                                                                                                                                                                  
+                  <td>
                     <a href="{$recipientUri}">
                       <xsl:value-of select="."/>
                     </a>
@@ -3439,10 +3439,10 @@
                windowState="minimized" hasShadow="true"
                displayMinimizeAction="true" resizable="false"
                constrainToContainer="true">
-        You may share your free busy with a user or group 
-        by <a href="{$calendar-fetch}">setting 
-        access to "read freebusy" on calendars</a> you wish to share.  
-        To share all your free busy, grant 
+        You may share your free busy with a user or group
+        by <a href="{$calendar-fetch}">setting
+        access to "read freebusy" on calendars</a> you wish to share.
+        To share all your free busy, grant
         "read freebusy" access on your root folder.
       </div>
       <span class="contextHelp">
@@ -3454,9 +3454,9 @@
         <img src="{$resourcesRoot}/resources/std-button-help.gif" width="13" height="13" alt="help" onmouseover="changeClass('helpShareFreeBusy','visible helpBox');" onmouseout="changeClass('helpShareFreeBusy','invisible');"/>
       </span>
       <div id="helpShareFreeBusy" class="helpBox invisible">
-          You may share your free busy with a user or group 
-          by setting access to "read freebusy" on calendars you wish to share.  
-          To share all your free busy, grant 
+          You may share your free busy with a user or group
+          by setting access to "read freebusy" on calendars you wish to share.
+          To share all your free busy, grant
           "read freebusy" access on your root folder.
       </div>
     </span>
@@ -4904,7 +4904,7 @@
 
   <xsl:template match="subscription" mode="mySubscriptions">
     <li>
-      <xsl:attribute name="class"> 
+      <xsl:attribute name="class">
         <xsl:choose>
           <xsl:when test="/bedework/selectionState/selectionType = 'subscription'
                           and /bedework/selectionState/subscriptions/subscription/name = name">selected</xsl:when>
@@ -4942,13 +4942,13 @@
       </xsl:if>
     </li>
   </xsl:template>
-  
+
   <xsl:template name="subInaccessible">
     <h2 class="bwStatusConfirmed">Inaccessible</h2>
     <div class="noEventsCell">
       <p>
         <strong>This subscription cannot be displayed.</strong><br/>
-        The underlying calendar 
+        The underlying calendar
         is inaccessible.
       </p>
       <p>
@@ -4957,7 +4957,7 @@
       <ol>
         <li>Access control was changed, and you may no longer access the underlying calendar.</li>
         <li>The underlying calendar was deleted.</li>
-      </ol>    
+      </ol>
     </div>
   </xsl:template>
 
@@ -5388,12 +5388,12 @@
           </td>
           <td>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="download">
+            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="download">
               <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="download"/>
             </a>
           </td>
           <td>
-            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete">
+            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="delete">
               <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
             </a>
           </td>
