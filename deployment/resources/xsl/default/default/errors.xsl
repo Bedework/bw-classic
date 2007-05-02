@@ -318,8 +318,12 @@
         Your information is incomplete: please supply a name.
       </xsl:when>
 
+      <xsl:when test="id='org.bedework.validation.error.missingorganizor'">
+        Your event is missing the organizor
+      </xsl:when>
+
       <xsl:when test="id='org.bedework.validation.error.missingoriginator'">
-        You event is missing the originator
+        Your event is missing the originator
       </xsl:when>
 
       <xsl:when test="id='org.bedework.validation.error.missingrecipients'">
