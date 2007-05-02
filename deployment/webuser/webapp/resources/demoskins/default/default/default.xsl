@@ -5314,9 +5314,12 @@
         <th class="commonHeader">end</th>
         <th class="commonHeader">method</th>
         <th class="commonHeader">status</th>
+        <th class="commonHeader">&#160;</th>
+        <th class="commonHeader">&#160;</th>
       </tr>
       <xsl:for-each select="events/event">
-        <xsl:sort select="dtstamp/unformatted" order="descending"/>
+        <xsl:sort select="lastmod" order="descending"/>
+        <xsl:variable name="guid" select="guid"/>
         <xsl:variable name="subscriptionId" select="subscription/id"/>
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
         <xsl:variable name="eventName" select="name"/>
@@ -5345,7 +5348,8 @@
           </td>
           <td>
             <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
-              <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>
+              <!--<xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>-->
+              <xsl:value-of select="lastmod"/>
             </a>
           </td>
           <td>
@@ -5367,7 +5371,7 @@
             </xsl:if>
           </td>
           <td>
-            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <xsl:value-of select="title"/>
             </a>
           </td>
@@ -5375,11 +5379,22 @@
           <td><xsl:value-of select="end/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="end/time"/></td>
           <td><xsl:apply-templates select="scheduleMethod"/></td>
           <td>
-            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <xsl:choose>
                 <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
                 <xsl:otherwise>processed</xsl:otherwise>
               </xsl:choose>
+            </a>
+          </td>
+          <td>
+            <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
+            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="download">
+              <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="download"/>
+            </a>
+          </td>
+          <td>
+            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete">
+              <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
             </a>
           </td>
         </tr>
@@ -5399,9 +5414,12 @@
         <th class="commonHeader">end</th>
         <th class="commonHeader">method</th>
         <th class="commonHeader">status</th>
+        <th class="commonHeader">&#160;</th>
+        <th class="commonHeader">&#160;</th>
       </tr>
       <xsl:for-each select="events/event">
-        <xsl:sort select="dtstamp/unformatted" order="descending"/>
+        <xsl:sort select="lastmod" order="descending"/>
+        <xsl:variable name="guid" select="guid"/>
         <xsl:variable name="subscriptionId" select="subscription/id"/>
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
         <xsl:variable name="eventName" select="name"/>
@@ -5428,7 +5446,10 @@
             </a>
           </td>
           <td>
-            <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>
+            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+              <!-- <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>-->
+              <xsl:value-of select="lastmod"/>
+            </a>
           </td>
           <td>
             <xsl:if test="organizer">
@@ -5462,6 +5483,17 @@
                 <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
                 <xsl:otherwise>processed</xsl:otherwise>
               </xsl:choose>
+            </a>
+          </td>
+          <td>
+            <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
+            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="download">
+              <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="download"/>
+            </a>
+          </td>
+          <td>
+            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete">
+              <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
             </a>
           </td>
         </tr>
