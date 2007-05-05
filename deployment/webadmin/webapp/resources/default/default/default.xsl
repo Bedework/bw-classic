@@ -40,8 +40,8 @@
     to the maximum extent the law permits. -->
 
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="/bedework-common/default/default/errors.xsl"/>
-  <xsl:include href="/bedework-common/default/default/messages.xsl"/>
+  <xsl:include href="../../bedework-common/default/default/errors.xsl"/>
+  <xsl:include href="../../bedework-common/default/default/messages.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
   <!-- URL of html resources (images, css, other html); by default this is
@@ -3060,7 +3060,7 @@
       </table>
     </form>
 
-    
+
     <div id="sharingBox">
       <xsl:apply-templates select="acl" mode="currentAccess">
         <xsl:with-param name="action" select="$calendar-setAccess"/>
@@ -3273,8 +3273,8 @@
       </xsl:if>
     </div>-->
   </xsl:template>
-  
-  
+
+
   <xsl:template name="calendarList">
     <h3>Manage Calendars</h3>
     <ul>
@@ -3933,7 +3933,7 @@
       </xsl:for-each>
     </table>
   </xsl:template>
-  
+
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->
   <xsl:template match="subscriptions">
     <table id="subsTable">
@@ -4330,12 +4330,12 @@
     <h2>Remove View?</h2>
 
     <xsl:variable name="viewName" select="/bedeworkadmin/views/view/name"/>
-    <p>The following view will be removed. <em>Be forewarned: if caching is 
+    <p>The following view will be removed. <em>Be forewarned: if caching is
     enabled, removing views from a
     production system can cause the public interface to throw errors until the
     cache is flushed (a few minutes).</em>
-    </p> 
-    
+    </p>
+
     <p>Continue?</p>
 
     <h3 class="viewName">
@@ -5621,7 +5621,7 @@
               <xsl:otherwise>
                 <xsl:value-of select="/bedeworkadmin/formElements/form/eventsOwner/input/@value"/>
               </xsl:otherwise>
-            </xsl:choose>            
+            </xsl:choose>
           </td>
         </tr>
       </table>
