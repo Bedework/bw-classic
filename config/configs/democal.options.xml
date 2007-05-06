@@ -23,7 +23,12 @@
             <serverIp>localhost</serverIp>
             <from>calendar.myplace.edu</from>
             <subject>Message from demo calendar server</subject>
+            <disabled>false</disabled>
           </testmail>
+
+          <dummymail classname="org.bedework.mail.MailConfigProperties">
+            <disabled>true</disabled>
+          </dummymail>
         </module>
       </global>
 
