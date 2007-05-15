@@ -4480,36 +4480,6 @@
           </td>
         </tr>
         <tr>
-          <th>Principal Root:</th>
-          <td>
-            <xsl:variable name="proot" select="/bedeworkadmin/system/principalRoot"/>
-            <input value="{$proot}" name="principalRoot" size="0"/>
-            <div class="desc">
-              Used in WebDAV and CalDAV access to define root of user and group principal trees.
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <th>User Principal Root:</th>
-          <td>
-            <xsl:variable name="uproot" select="/bedeworkadmin/system/userPrincipalRoot"/>
-            <input value="{$uproot}" name="userPrincipalRoot" size="0"/>
-            <div class="desc">
-              Used in WebDAV and CalDAV access to define root of user principal subtree.
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <th>Group Principal Root:</th>
-          <td>
-            <xsl:variable name="gproot" select="/bedeworkadmin/system/groupPrincipalRoot"/>
-            <input value="{$gproot}" name="groupPrincipalRoot" size="0"/>
-            <div class="desc">
-              Used in WebDAV and CalDAV access to define root of group principal subtree.
-            </div>
-          </td>
-        </tr>
-        <tr>
           <th>Public Calendar Root:</th>
           <td>
             <xsl:variable name="publicCalendarRoot" select="/bedeworkadmin/system/publicCalendarRoot"/>
