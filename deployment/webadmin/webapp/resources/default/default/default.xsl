@@ -3561,6 +3561,7 @@
             <p>OR</p>
             <p>
               <input type="radio" value="auth" name="whoType"/> authenticated<br/>
+              <input type="radio" value="unauth" name="whoType"/> unauthenticated<br/>
               <input type="radio" value="other" name="whoType"/> other users
             </p>
           </div>
