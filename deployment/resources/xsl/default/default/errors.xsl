@@ -226,27 +226,65 @@
         Error: you cannot change scheduling method
       </xsl:when>
 
-      <xsl:when test="id='org.bedework.validation.error.invalid.scheddata'">
-        Error: bad scheduling data (0 or more than one object?
+      <!-- Scheduling error codes are defined in CalfacadeException -->
+
+      <xsl:when test="id='org.bedework.error.scheduling.attendeeaccessdisallowed'">
+         Error: Access is disallowed to any attendee.
       </xsl:when>
-      <xsl:when test="id='org.bedework.validation.error.invalid.schedmethod'">
-        Error: bad value for recurrence until: <em><xsl:value-of select="param"/></em>
+
+      <xsl:when test="id='org.bedework.error.scheduling.badttendees'">
+         Error: Attendee bad
       </xsl:when>
-      <xsl:when test="id='org.bedework.validation.error.invalid.schedmethod'">
+
+      <xsl:when test="id='org.bedework.error.scheduling.badmethod'">
         Error: bad scheduling method (should be request or publish).
       </xsl:when>
-      <xsl:when test="id='org.bedework.validation.error.invalid.schedpartstatus'">
-        Error: bad scheduling part status
+
+      <xsl:when test="id='org.bedework.error.scheduling.badresponsemethod'">
+        Error: bad scheduling method for response (should be request or publish).
       </xsl:when>
-      <xsl:when test="id='org.bedework.validation.error.invalid.schedreplymethod'">
-        Error: bad scheduling method (should be reply).
+
+      <xsl:when test="id='org.bedework.error.scheduling.badsourcecalendar'">
+         Error: event is not in inbox
       </xsl:when>
-      <xsl:when test="id='org.bedework.validation.error.invalid.schedrequestmethod'">
-        Error: bad scheduling method (should be request).
+
+      <xsl:when test="id='org.bedework.error.scheduling.duplicateuid'">
+         Error: Duplicate uid found in the target calendar
       </xsl:when>
-      <xsl:when test="id='org.bedework.validation.error.invalid.schedrespondmethod'">
-        Error: bad scheduling method (should be COUNTER, REFRESH, REPLY).
+
+      <xsl:when test="id='org.bedework.error.scheduling.expectoneattendee'">
+         Error: Expected exactly one attendee for reply
       </xsl:when>
+
+      <xsl:when test="id='org.bedework.error.scheduling.invalidpartstatus'">
+        Error: bad scheduling participation status
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.error.scheduling.multipleevents'">
+         Error: Multiple events were found in the target calendar
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.error.scheduling.noattendees'">
+         Error: Entity required attendees but had none.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.error.scheduling.noOriginator'">
+         Error: Entity required originator but had none.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.error.scheduling.norecipients'">
+         Error: Entity required recipients but had none.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.error.scheduling.unknownattendee'">
+         Error: Attendee for reply not in event.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.error.scheduling.unknownevent'">
+        Error: Unknown event - organizer possibly deleted it?
+      </xsl:when>
+
+      <!--         End of scheduling            -->
 
       <xsl:when test="id='org.bedework.validation.error.invalid.status'">
         Error: Invalid status: <em><xsl:value-of select="param"/></em>
