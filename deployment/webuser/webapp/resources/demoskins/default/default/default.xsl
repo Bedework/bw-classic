@@ -134,7 +134,7 @@
   <xsl:variable name="schedule-initAttendeeReply" select="/bedework/urlPrefixes/schedule/initAttendeeReply/a/@href"/>
   <xsl:variable name="schedule-processAttendeeReply" select="/bedework/urlPrefixes/schedule/processAttendeeReply/a/@href"/>
   <!-- misc (mostly import and export) -->
-  <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export/a/@href"/>
+  <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
   <xsl:variable name="initUpload" select="/bedework/urlPrefixes/misc/initUpload/a/@href"/>
   <xsl:variable name="upload" select="/bedework/urlPrefixes/misc/upload/a/@href"/>
   <!-- search -->
@@ -1005,7 +1005,7 @@
                 </td>
                 <td class="smallIcon">
                   <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-                  <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                  <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
                     <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
                   </a>
                 </td>
@@ -1380,7 +1380,7 @@
           <div id="eventActions">
             <!-- download -->
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
               <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
               Download
             </a>
@@ -1603,7 +1603,7 @@
         </td>
         <!--<th class="icon" rowspan="2">
           <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-          <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+          <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
             <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
           </a>
         </th>-->
@@ -3517,7 +3517,7 @@
         <td>tentative</td>
         <td>&#160;</td>
         <td>
-          <form name="calendarShareForm" action="{$freeBusy-fetch}">
+          <form name="calendarShareForm" method="post" action="{$freeBusy-fetch}">
             View user's free/busy:<br/>
             <input type="text" name="userid" size="20"/>
             <input type="submit" name="submit" value="Submit"/>
@@ -3935,7 +3935,7 @@
        from myCalendars and mySubscriptions -->
   <xsl:template name="selectCalForEvent">
     <h2>Select a calendar</h2>
-    <form name="toggleCals" action="{$event-selectCalForEvent}">
+    <form name="toggleCals" method="post" action="{$event-selectCalForEvent}">
       <xsl:choose>
         <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
           <input type="radio" name="setappvar" value="showAllCalsForEvent(false)" onclick="submit()"/>
@@ -4051,7 +4051,7 @@
 
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3>Add Calendar / Folder</h3>
-    <form name="addCalForm" action="{$calendar-update}">
+    <form name="addCalForm" method="post" action="{$calendar-update}">
       <table class="common">
         <tr>
           <th>Name:</th>
@@ -4118,7 +4118,7 @@
         <h3>Modify Folder</h3>
       </xsl:otherwise>
     </xsl:choose>
-    <form name="modCalForm" action="{$calendar-update}">
+    <form name="modCalForm" method="post" action="{$calendar-update}">
       <table class="common">
         <tr>
           <th class="commonHeader" colspan="2">
@@ -4206,7 +4206,7 @@
         <xsl:with-param name="action" select="$calendar-setAccess"/>
         <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
       </xsl:apply-templates>
-      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
+      <form name="calendarShareForm" method="post" action="{$calendar-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
         <input type="hidden" name="calPath" value="{$calPath}"/>
         <xsl:call-template name="entityAccessForm">
           <xsl:with-param name="type">
@@ -4322,7 +4322,7 @@
       </xsl:otherwise>
     </xsl:choose>
 
-    <form name="delCalForm" action="{$calendar-delete}">
+    <form name="delCalForm" method="post" action="{$calendar-delete}">
       <table class="common">
         <tr>
           <th>Path:</th>
@@ -4376,8 +4376,6 @@
     <form name="eventForm" id="exportCalendarForm" action="{$export}" method="post">
       <input type="hidden" name="calPath" value=""/>
       <input type="hidden" name="nocache" value="no"/>
-      <input type="hidden" name="skinName" value="ical"/>
-      <input type="hidden" name="contentType" value="text/calendar"/>
       <input type="hidden" name="contentName" value="calendar.ics"/>
 
       <table class="common" cellspacing="0">
@@ -5388,7 +5386,7 @@
           </td>
           <td>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="download">
+            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download">
               <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="download"/>
             </a>
           </td>
@@ -5487,7 +5485,7 @@
           </td>
           <td>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="download">
+            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download">
               <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="download"/>
             </a>
           </td>
@@ -5998,7 +5996,7 @@
           Action:
         </td>
         <td class="fieldval scheduleActions">
-          <form name="processReply" action="{$schedule-processAttendeeReply}">
+          <form name="processReply" method="post" action="{$schedule-processAttendeeReply}">
             <input type="submit" value="ok" name="update"/>
             <input type="submit" value="cancel" name="cancelled"/>
           </form>
@@ -6051,7 +6049,7 @@
         </td>
         <!--<th class="icon" rowspan="2">
           <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-          <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;skinName=ical&amp;contentType=text/calendar&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+          <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
             <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
           </a>
         </th>-->
@@ -6547,7 +6545,7 @@
           <xsl:with-param name="guid" select="$guid"/>
           <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
         </xsl:apply-templates>
-        <form name="eventShareForm" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
+        <form name="eventShareForm" method="post" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
           <input type="hidden" name="calPath" value="{$calPath}"/>
           <input type="hidden" name="guid" value="{$guid}"/>
           <input type="hidden" name="recurid" value="{$recurrenceId}"/>
