@@ -103,17 +103,14 @@ function launchHelpWidget(id) {
   helpWidget.show();
 }
 // used to update the calendar in various forms from
-// the calSelect pop-up window.  We must do two things: update the hidden calendar
-// input field and update the displayed text.
+// the calSelect pop-up widget.  We must do three things: update the hidden 
+// calendar input field, update the displayed text, and close widget
 function updateEventFormCalendar(newCalPath,calDisplay) {
-  if (window.opener.document.eventForm) {
-    window.opener.document.eventForm.newCalPath.value = newCalPath;
-    bwCalDisplay = window.opener.document.getElementById("bwEventCalDisplay");
-    bwCalDisplay.innerHTML = calDisplay;
-  } else {
-    alert("The event form is not available.");
-  }
-  window.close();
+  newCalPathField = document.getElementById("bwNewCalPathField");
+  newCalPathField.value = newCalPath;
+  bwCalDisplay = document.getElementById("bwEventCalDisplay");
+  bwCalDisplay.innerHTML = calDisplay;
+  changeClass("calSelectWidget","invisible");
 }
 // build a uri based on user and path in the subscription form
 function setSubscriptionUri(formObj,prefix) {
