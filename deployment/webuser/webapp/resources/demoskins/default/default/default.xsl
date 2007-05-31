@@ -3532,7 +3532,7 @@
         <xsl:with-param name="action" select="$freeBusy-setAccess"/>
         <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
       </xsl:apply-templates>
-      <form name="calendarShareForm" action="{$freeBusy-setAccess}" id="shareForm">
+      <form name="calendarShareForm" action="{$freeBusy-setAccess}" id="shareForm" method="post">
         <xsl:variable name="calPath" select="/bedework/myCalendars/calendars/calendar/path"/>
         <input type="hidden" name="calPath" value="{$calPath}"/>
         <input type="hidden" value="F" name="how"/>

@@ -2980,7 +2980,7 @@
         <h3>Modify Folder</h3>
       </xsl:otherwise>
     </xsl:choose>
-    <form name="modCalForm" action="{$calendar-update}">
+    <form name="modCalForm" action="{$calendar-update}" method="post">
       <table class="eventFormTable">
         <tr>
           <th>Path:</th>
@@ -3066,7 +3066,7 @@
         <xsl:with-param name="action" select="$calendar-setAccess"/>
         <xsl:with-param name="calPathEncoded" select="encodedPath"/>
       </xsl:apply-templates>
-      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
+      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" onsubmit="setAccessHow(this)" method="post">
         <input type="hidden" name="calPath">
           <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
         </input>
@@ -3378,7 +3378,7 @@
       </xsl:otherwise>
     </xsl:choose>
 
-    <form name="delCalForm" action="{$calendar-delete}">
+    <form name="delCalForm" action="{$calendar-delete}" method="post">
       <table class="eventFormTable">
         <tr>
           <th>Path:</th>
@@ -3430,7 +3430,7 @@
   <xsl:template name="selectCalForEvent">
     <div id="calTreeBlock">
       <h2>Select a calendar</h2>
-      <!--<form name="toggleCals" action="{$event-selectCalForEvent}">
+      <!--<form name="toggleCals" action="{$event-selectCalForEvent}" method="post">
         <xsl:choose>
           <xsl:when test="/bedeworkadmin/appvar[key='showAllCalsForEvent']/value = 'true'">
             <input type="radio" name="setappvar" value="showAllCalsForEvent(false)" onclick="submit()"/>
@@ -3499,7 +3499,7 @@
           <xsl:with-param name="guid" select="$guid"/>
           <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
         </xsl:apply-templates>
-        <form name="eventShareForm" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
+        <form name="eventShareForm" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)" method="post">
           <input type="hidden" name="calPath" value="{$calPath}"/>
           <input type="hidden" name="guid" value="{$guid}"/>
           <input type="hidden" name="recurid" value="{$recurrenceId}"/>
@@ -4342,7 +4342,7 @@
     <h3 class="viewName">
       <xsl:value-of select="$viewName"/>
     </h3>
-    <form name="removeView" action="{$view-remove}">
+    <form name="removeView" action="{$view-remove}" method="post">
       <input type="hidden" name="name" value="{$viewName}"/>
       <input type="submit" name="delete" value="Yes: Remove View"/>
       <input type="submit" name="cancelled" value="No: Cancel"/>
