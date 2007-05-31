@@ -171,7 +171,8 @@
         </xsl:if>
         <div id="bedework"><!-- main wrapper div to keep styles encapsulated within portals -->
           <xsl:choose>
-            <!--deprecated: <xsl:when test="/bedework/page='selectCalForEvent'">
+            <!--deprecated: 
+            <xsl:when test="/bedework/page='selectCalForEvent'">
               <xsl:call-template name="selectCalForEvent"/>
             </xsl:when>-->
             <xsl:when test="/bedework/page='rdates'">
@@ -180,10 +181,11 @@
             <xsl:when test="/bedework/page='attendees'">
               <xsl:call-template name="attendees"/>
             </xsl:when>
+            <!--deprecated:
             <xsl:when test="/bedework/page='eventAccess'">
               <xsl:call-template name="messagesAndErrors"/>
               <xsl:apply-templates select="/bedework/eventAccess"/>
-            </xsl:when>
+            </xsl:when>-->
             <xsl:otherwise>
               <xsl:call-template name="headBar"/>
               <xsl:call-template name="messagesAndErrors"/>
@@ -1929,28 +1931,33 @@
       </xsl:if>
 
       <!-- event form submenu -->
-      <xsl:choose>
+      <!--<xsl:choose>
         <xsl:when test="/bedework/creating = 'false'">
           <a href="javascript:launchSizedWindow('{$event-showAccess}',600,700)" id="eventAccessLink">set event access</a>
         </xsl:when>
         <xsl:otherwise>
           <a href="javascript:alert('Access/sharing may be set once an event is created.\n')" id="eventAccessLink">set event access</a>
         </xsl:otherwise>
-      </xsl:choose>
+      </xsl:choose>-->
       <ul id="eventFormTabs" class="submenu">
         <li class="selected">
-          <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Basic'); hide('bwEventTab-Details','bwEventTab-Recurrence');">
+          <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Basic'); hide('bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Access');">
             basic
           </a>
         </li>
         <li>
-          <a href="javascript:setTab('eventFormTabs',1); show('bwEventTab-Details'); hide('bwEventTab-Basic','bwEventTab-Recurrence');">
+          <a href="javascript:setTab('eventFormTabs',1); show('bwEventTab-Details'); hide('bwEventTab-Basic','bwEventTab-Recurrence','bwEventTab-Access');">
             details
           </a>
         </li>
         <li>
-          <a href="javascript:setTab('eventFormTabs',2); show('bwEventTab-Recurrence'); hide('bwEventTab-Details','bwEventTab-Basic');">
+          <a href="javascript:setTab('eventFormTabs',2); show('bwEventTab-Recurrence'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Access');">
             recurrence
+          </a>
+        </li>
+        <li>
+          <a href="javascript:setTab('eventFormTabs',3); show('bwEventTab-Access'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Recurrence');">
+            access
           </a>
         </li>
       </ul>
@@ -2898,6 +2905,29 @@
         </xsl:otherwise>
       </xsl:choose>
     </div>
+    
+    <!-- Access Control tab -->
+    <!-- ================== -->
+    <div id="bwEventTab-Access" class="invisible">
+      <div id="sharingBox">
+        <xsl:apply-templates select="/bedework/eventAccess/access/acl" mode="currentAccess">
+          <xsl:with-param name="action" select="$event-setAccess"/>
+          <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
+          <xsl:with-param name="guid" select="$guid"/>
+          <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
+        </xsl:apply-templates>
+        <form name="eventShareForm" method="post" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
+          <input type="hidden" name="calPath" value="{$calPath}"/>
+          <input type="hidden" name="guid" value="{$guid}"/>
+          <input type="hidden" name="recurid" value="{$recurrenceId}"/>
+          <xsl:call-template name="entityAccessForm">
+            <xsl:with-param name="hideSubmitButton">true</xsl:with-param>
+          </xsl:call-template>
+        </form>
+      </div>
+    </div>
+    
+    
     <div class="eventSubmitButtons">
       <input name="submit" type="submit" value="save event"/>
       <input name="cancelled" type="submit" value="cancel"/>
@@ -6504,29 +6534,6 @@
 
   <!--==== ACCESS CONTROL TEMPLATES ====-->
 
-  <xsl:template match="eventAccess">
-    <xsl:variable name="calPathEncoded" select="calendar/encodedPath"/>
-    <xsl:variable name="calPath" select="calendar/path"/>
-    <xsl:variable name="guid" select="guid"/>
-    <xsl:variable name="recurrenceId" select="recurrenceId"/>
-    <div id="bwEventTab-Access">
-      <div id="sharingBox">
-        <xsl:apply-templates select="access/acl" mode="currentAccess">
-          <xsl:with-param name="action" select="$event-setAccess"/>
-          <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
-          <xsl:with-param name="guid" select="$guid"/>
-          <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
-        </xsl:apply-templates>
-        <form name="eventShareForm" method="post" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
-          <input type="hidden" name="calPath" value="{$calPath}"/>
-          <input type="hidden" name="guid" value="{$guid}"/>
-          <input type="hidden" name="recurid" value="{$recurrenceId}"/>
-          <xsl:call-template name="entityAccessForm"/>
-        </form>
-      </div>
-    </div>
-  </xsl:template>
-
   <xsl:template name="schedulingAccessForm">
     <xsl:param name="what"/>
     <input type="hidden" name="what">
@@ -6562,9 +6569,8 @@
   </xsl:template>
 
   <xsl:template name="entityAccessForm">
-    <xsl:param name="type"/><!-- optional:
-    currently used for inbox and outbox to conditionally
-    display scheduling access -->
+    <xsl:param name="type"/><!-- optional: currently used for inbox and outbox to conditionally display scheduling access -->
+    <xsl:param name="hideSubmitButton">false</xsl:param>
     <table cellpadding="0" id="shareFormTable" class="common">
       <tr>
         <th colspan="2" class="commonHeader">Add:</th>
@@ -6833,7 +6839,9 @@
         </td>
       </tr>
     </table>
-    <input type="submit" name="submit" value="Submit"/>
+    <xsl:if test="$hideSubmitButton = 'false'"> 
+      <input type="submit" name="submit" value="Submit"/>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="acl" mode="currentAccess">

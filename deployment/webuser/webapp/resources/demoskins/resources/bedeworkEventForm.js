@@ -6,6 +6,7 @@ dojo.require("dojo.widget.DropdownTimePicker");
 function setEventFields(formObj) {
   setDates(formObj);
   setRecurrence(formObj);
+  setAccessHow(formObj);
 }
 function setDates(formObj) {
   var startDate = new Date();
