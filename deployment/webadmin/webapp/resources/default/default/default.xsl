@@ -2914,7 +2914,7 @@
 
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3>Add Calendar / Folder</h3>
-    <form name="addCalForm" action="{$calendar-update}">
+    <form name="addCalForm" method="post" action="{$calendar-update}">
       <table class="eventFormTable">
         <tr>
           <th>Name:</th>
