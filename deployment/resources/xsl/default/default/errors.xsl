@@ -286,6 +286,12 @@
 
       <!--         End of scheduling            -->
 
+      <!-- Other error codes defined in CalfacadeException -->
+
+      <xsl:when test="id='org.bedework.exception.duplicatecalendar'">
+         Error: Duplicate calendar: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+
       <xsl:when test="id='org.bedework.validation.error.invalid.status'">
         Error: Invalid status: <em><xsl:value-of select="param"/></em>
       </xsl:when>

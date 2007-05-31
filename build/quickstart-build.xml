@@ -363,6 +363,7 @@
       <jvmarg value="-Xms128m" />
       <jvmarg value="-Xmx630m" />
       <jvmarg value="-Djava.net.preferIPv4Stack=true"/>
+      <jvmarg value="-Dfile.encoding=UTF-8"/>
       <arg value="start"/>
     </java>
   </target>
