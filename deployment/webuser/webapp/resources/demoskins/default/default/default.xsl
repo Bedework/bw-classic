@@ -3949,6 +3949,7 @@
     <input type="button" onclick="javascript:changeClass('calSelectWidget','visible')" value="select calendar" class="small"/>
     <div id="calSelectWidget" class="invisible">
       <h2>select a calendar</h2>
+      <a href="javascript:changeClass('calSelectWidget','invisible')" id="calSelectWidgetCloser" title="close">x</a>
       <h4>My Calendars</h4>
       <ul class="calendarTree">
         <xsl:choose>
