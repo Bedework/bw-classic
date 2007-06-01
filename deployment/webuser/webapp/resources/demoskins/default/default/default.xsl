@@ -366,6 +366,7 @@
       <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
       <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
     </xsl:if>
     <script type="text/javascript">
       <xsl:comment>
