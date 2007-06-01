@@ -75,6 +75,9 @@
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/event/initEvent"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/event/addEvent"/>
+  <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent/a/@href"/>
+  <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent/a/@href"/>
+  <xsl:variable name="event-initMeeting" select="/bedework/urlPrefixes/event/initMeeting"/>
   <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete/a/@href"/>
   <xsl:variable name="event-showAccess" select="/bedework/urlPrefixes/event/showAccess/a/@href"/>
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
@@ -82,8 +85,6 @@
   <xsl:variable name="event-showRdates" select="/bedework/urlPrefixes/event/showRdates"/>
   <xsl:variable name="event-showExdates" select="/bedework/urlPrefixes/event/showExdates"/>
   <xsl:variable name="event-setRdate" select="/bedework/urlPrefixes/event/setRdate"/>
-  <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent/a/@href"/>
-  <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent/a/@href"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/event/editEvent"/>
   <xsl:variable name="updateEvent" select="/bedework/urlPrefixes/event/updateEvent"/>
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/event/delEvent"/>
@@ -178,9 +179,6 @@
             <xsl:when test="/bedework/page='rdates'">
               <xsl:call-template name="rdates"/>
             </xsl:when>
-            <xsl:when test="/bedework/page='attendees'">
-              <xsl:call-template name="attendees"/>
-            </xsl:when>
             <!--deprecated:
             <xsl:when test="/bedework/page='eventAccess'">
               <xsl:call-template name="messagesAndErrors"/>
@@ -214,6 +212,9 @@
                       </xsl:when>
                       <xsl:when test="/bedework/page='addEvent'">
                         <xsl:apply-templates select="/bedework/formElements" mode="addEvent"/>
+                      </xsl:when>
+                      <xsl:when test="/bedework/page='attendees'">
+                        <xsl:call-template name="attendees"/>
                       </xsl:when>
                       <xsl:when test="/bedework/page='editEvent'">
                         <xsl:apply-templates select="/bedework/formElements" mode="editEvent"/>
@@ -729,6 +730,10 @@
                </a>
              </xsl:otherwise>
            </xsl:choose>
+           <a href="{$event-initMeeting}&amp;schedule=request" title="schedule a meeting">
+              <img src="{$resourcesRoot}/resources/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="add meeting"/>
+              add meeting
+           </a>
            <a href="{$initUpload}" title="upload event">
               <img src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif" width="12" height="16" border="0" alt="upload event"/>
               upload
@@ -2394,12 +2399,12 @@
           </td>
         </tr>
         <!--  Scheduling type -->
-        <tr>
+        <input type="hidden" name="schedule" value="none"/>
+        <!--<tr>
           <td class="fieldname">
             Type:
           </td>
           <td class="fieldval">
-            <!-- need data for Edit Event! -->
             <input type="radio" name="schedule" size="80" value="none" checked="checked">
               <xsl:if test="form/scheduleMethod = '0'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
               my event
@@ -2416,17 +2421,17 @@
               <br/><input type="checkbox" name="schedule" value="reconfirm "/> ask attendees to reconfirm
             </xsl:if>
           </td>
-        </tr>
+        </tr>-->
         <!--  Recipients and Attendees  -->
+        <!--
         <tr>
           <td class="fieldname">
             Recipients &amp;<br/> Attendees:
           </td>
           <td class="fieldval posrelative">
-            <!--<input type="button" value="Manage recipients and attendees" onclick="changeClass('recipientsAndAttendees','shown')"/>-->
             <input type="button" value="Manage recipients and attendees" onclick="launchSizedWindow('{$event-showAttendeesForEvent}','500','400')" class="small"/>
           </td>
-        </tr>
+        </tr>-->
         <!--  Status  -->
         <tr>
           <td class="fieldname">
@@ -3287,11 +3292,15 @@
   </xsl:template>
 
   <xsl:template name="attendees">
-    <div id="bwDialogBox">
+    <h2>
+      Schedule Meeting
+    </h2>
+    
+    <!-- event form submenu -->
+    <div id="recipientsAndAttendees">
+      <h4> Add recipients and attendees</h4>
+      
       <form name="raForm" id="recipientsAndAttendees" action="{$event-attendeesForEvent}" method="post">
-        <h4 id="dialogTitle">
-          Recipients and Attendees
-        </h4>
         <div id="raContent">
           <table cellspacing="0">
             <tr>
@@ -3321,9 +3330,7 @@
               </td>
             </tr>
           </table>
-
-          <xsl:call-template name="messagesAndErrors"/>
-
+  
           <xsl:if test="/bedework/attendees/attendee">
             <table id="attendees" class="widget" cellspacing="0">
               <tr>
@@ -3366,7 +3373,7 @@
               </xsl:for-each>
             </table>
           </xsl:if>
-
+  
           <xsl:if test="/bedework/recipients/recipient">
             <table id="attendees" class="widget" cellspacing="0">
               <tr>
@@ -3389,8 +3396,8 @@
               </xsl:for-each>
             </table>
           </xsl:if>
-
-          <input type="button" value="done" onclick="window.close()"/>
+  
+          <p><input type="button" value="continue" onclick="window.location='{$editEvent}'"/></p>
         </div>
       </form>
     </div>

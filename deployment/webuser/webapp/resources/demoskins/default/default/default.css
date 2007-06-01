@@ -959,12 +959,11 @@ table#attendees.widget th {
 #bedework table#attendees.widget td.trash {
   width: 15px;
 }
-/* this is the recipients and attendees dialog box */
 #bedework #recipientsAndAttendees {
-  position: relative;
   margin: 0;
-  padding: 0;
+  padding: 1em;
 }
+/* dialog box - popup, most likely deprectaed */
 #bedework #bwDialogBox {
   margin: 0;
   background: white;
