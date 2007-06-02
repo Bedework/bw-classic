@@ -86,6 +86,7 @@
   <xsl:variable name="event-showExdates" select="/bedework/urlPrefixes/event/showExdates"/>
   <xsl:variable name="event-setRdate" select="/bedework/urlPrefixes/event/setRdate"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/event/editEvent"/>
+  <xsl:variable name="gotoEditEvent" select="/bedework/urlPrefixes/event/gotoEditEvent"/>
   <xsl:variable name="updateEvent" select="/bedework/urlPrefixes/event/updateEvent"/>
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/event/delEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
@@ -172,7 +173,7 @@
         </xsl:if>
         <div id="bedework"><!-- main wrapper div to keep styles encapsulated within portals -->
           <xsl:choose>
-            <!--deprecated: 
+            <!--deprecated:
             <xsl:when test="/bedework/page='selectCalForEvent'">
               <xsl:call-template name="selectCalForEvent"/>
             </xsl:when>-->
@@ -2032,7 +2033,7 @@
                 </span>
 
                 <xsl:call-template name="selectCalForEvent"/>
-                
+
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -2911,7 +2912,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </div>
-    
+
     <!-- Access Control tab -->
     <!-- ================== -->
     <div id="bwEventTab-Access" class="invisible">
@@ -2932,8 +2933,8 @@
         </form>
       </div>
     </div>
-    
-    
+
+
     <div class="eventSubmitButtons">
       <input name="submit" type="submit" value="save event"/>
       <input name="cancelled" type="submit" value="cancel"/>
@@ -3295,11 +3296,11 @@
     <h2>
       Schedule Meeting
     </h2>
-    
+
     <!-- event form submenu -->
     <div id="recipientsAndAttendees">
       <h4> Add recipients and attendees</h4>
-      
+
       <form name="raForm" id="recipientsAndAttendees" action="{$event-attendeesForEvent}" method="post">
         <div id="raContent">
           <table cellspacing="0">
@@ -3330,7 +3331,7 @@
               </td>
             </tr>
           </table>
-  
+
           <xsl:if test="/bedework/attendees/attendee">
             <table id="attendees" class="widget" cellspacing="0">
               <tr>
@@ -3373,7 +3374,7 @@
               </xsl:for-each>
             </table>
           </xsl:if>
-  
+
           <xsl:if test="/bedework/recipients/recipient">
             <table id="attendees" class="widget" cellspacing="0">
               <tr>
@@ -3396,8 +3397,8 @@
               </xsl:for-each>
             </table>
           </xsl:if>
-  
-          <p><input type="button" value="continue" onclick="window.location='{$editEvent}'"/></p>
+
+          <p><input type="button" value="continue" onclick="window.location='{$gotoEditEvent}'"/></p>
         </div>
       </form>
     </div>
@@ -3981,7 +3982,7 @@
 
       The intention is to load the calendar listing in a "pop-up" widget as a
       tree of myCalendars and writable calendars associated with subscriptions.
-      The xml for the tree is already in header.jsp in myCalendars and 
+      The xml for the tree is already in header.jsp in myCalendars and
       mySubscriptions.
        -->
     <input type="button" onclick="javascript:changeClass('calSelectWidget','visible')" value="select calendar" class="small"/>
@@ -6847,7 +6848,7 @@
         </td>
       </tr>
     </table>
-    <xsl:if test="$hideSubmitButton = 'false'"> 
+    <xsl:if test="$hideSubmitButton = 'false'">
       <input type="submit" name="submit" value="Submit"/>
     </xsl:if>
   </xsl:template>
