@@ -2399,8 +2399,6 @@
             </xsl:choose>
           </td>
         </tr>
-        <!--  Scheduling type -->
-        <input type="hidden" name="schedule" value="none"/>
         <!--<tr>
           <td class="fieldname">
             Type:
