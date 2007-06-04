@@ -1,17 +1,14 @@
-body {
+#bedework {
+  /* this is the main wrapper div used to encapsulate all Bedework CSS; we 
+     will prepend each selector below with this ID - this helps encapsulate 
+     the css for use in portal environments (though it does imply that only 
+     one instance should be running on a portal page) */
   font-family : Arial, Helvetica, sans-serif;
   font-size: 100%; /* to make IE behave */
   background-color : white;
   color : black;
   padding: 0.75em 1em 0em 1em;
-  margin: 0;  
-}
-#bedework {
-  /* this is the main wrapper div used to encapsulate all Bedework CSS; we 
-     will prepend each selector below with this ID */
-  margin: 0;
-  padding: 0;
-  display: inline;
+  margin: 0; 
 }
 /* Generic selectors*/
 #bedework h2 {
