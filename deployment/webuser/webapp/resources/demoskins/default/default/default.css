@@ -930,35 +930,40 @@ messages.
   margin: 0;
   padding: 0;
 }
-#bedework table#attendees th {
+#bedework table.widget {
+  margin: 1em 1em 0 0;
+  float: right;
+  clear: right;
+}
+#bedework table.widget th {
   padding: 0 2em 0.1em 0;
-  background-color: white;
+  background-color: #ddd;
   color: black;
   border-bottom: 1px dotted #333;
   font-size: 0.9em;
 }
-#bedework table#attendees td {
-  padding: 0 2em 0.1em 0;
+#bedework table.widget td {
+  padding: 0.1em 1em;
   font-size: 0.8em;
 }
-#bedework table#attendees td.role,
-table#attendees td.status {
+#bedework table.widget td.role,
+#bedework table.widget td.status {
   text-transform: lowercase;
 }
-#bedework table#attendees.widget {
+#bedework table.widget {
   border: 1px solid #999;
 }
-#bedework table#attendees.widget td,
-table#attendees.widget th {
-  padding: 0.2em 0 0.1em 1em;
+#bedework table.widget td,
+#bedework table.widget th {
   text-align: left;
 }
-#bedework table#attendees.widget td.trash {
+#bedework table.widget td.trash {
   width: 15px;
+  padding: 4px 6px 4px 4px;
 }
 #bedework #recipientsAndAttendees {
   margin: 0;
-  padding: 1em;
+  padding:  0 1em;
 }
 /* dialog box - popup, most likely deprectaed */
 #bedework #bwDialogBox {
@@ -1565,6 +1570,121 @@ table#attendees.widget th {
   position: absolute;
   right: 20px;
   width: 300px;
+}
+#freeBusyAgg {
+  clear: both;
+  margin: 1em;
+}
+#freeBusyAgg td {
+  vertical-align: middle;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+#freeBusyAgg th.left {
+  text-align: left;
+}
+#freeBusyAgg td.morning {
+  color: black;
+  background: #ddf;
+}
+#freeBusyAgg td.evening {
+  color: black;
+  background: #dde;
+}
+#freeBusyAgg td.timeLabels {
+  vertical-align: middle;
+  text-align: center;
+  font-size: 0.8em;
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
+}
+#freeBusyAgg td.dayDate {
+  white-space: nowrap;
+}
+#freeBusyAgg td.free,
+#freeBusyAggKey td.free {
+  color: #A3BAEA;
+  background-color: #A3BAEA;
+}
+#freeBusyAgg td.busy,
+#freeBusyAggKey td.busy {
+  color: #fbb;
+  background-color: #fbb;
+}
+#freeBusyAgg td.tentative,
+#freeBusyAggKey td.tentative {
+  color: #ddd;
+  background: #ddd url('../../resources/tentativeLines.gif') top;
+}
+#freeBusyAggKey {
+  margin: 0.5em auto 0 auto;
+}
+#freeBusyAggKey td {
+  padding: 5px;
+}
+#freeBusyAgg td.free a {
+  color: #A3BAEA;
+  background-color: transparent;
+  display: block;
+  padding: 3px 3px;
+  width: 10px;
+  height: 10px;
+  text-decoration: none;
+}
+#freeBusyAgg td.tentative a  {
+  color: #333;
+  background-color: transparent;
+  display: block;
+  padding: 3px 3px;
+  width: 10px;
+  height: 10px;
+  text-decoration: none;
+}
+#freeBusyAgg td.busy a {
+  color: #333;
+  background-color: transparent;
+  display: block;
+  padding: 3px 3px;
+  width: 10px;
+  height: 10px;
+  text-decoration: none;
+}
+#freeBusyAgg td.busy a:hover,
+#freeBusyAgg td.free a:hover,
+#freeBusyAgg td.tentative a:hover  {
+  color: black;
+  background-color: yellow;
+  text-decoration: none;
+}
+#freeBusyAgg a:hover {
+  /* required for eventTip to hover correctly;
+     apply only to the hover pseudo class, or
+     the other anchors nearby will cover the eventTip in IE */
+  position: relative;
+}
+#freeBusyAgg a span.eventTip {
+  display: none;
+}
+#freeBusyAgg a:hover span.eventTip {
+  display: block;
+  position: absolute;
+  width: 8em;
+  top: 3em;
+  left: -4em;
+  background-color: #ffe;
+  color: black;
+  padding: 4px;
+  border: 1px solid #333;
+}
+#freeBusyAgg #timezonesDropDown {
+  width: 14em;
+  font-size: 8pt;
+  margin: 0 0 0 2em;
+}
+#freeBusyAgg #timezonesButton {
+  font-size: 8pt;
 }
 #bedework #sharingBox {
   margin: 0;
