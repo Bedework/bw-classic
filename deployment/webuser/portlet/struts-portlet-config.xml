@@ -70,7 +70,9 @@
     <action path="/main/setViewPeriod"/>
     <action path="/event/eventView"/>
     <action path="/event/initEvent"/>
+    <action path="/event/initMeeting"/>
     <action path="/event/addEvent"/>
+    <action path="/event/gotoEditEvent"/>
     <action path="/event/editEvent"/>
     <action path="/event/updateEvent"/>
     <action path="/event/setAccess"/>
