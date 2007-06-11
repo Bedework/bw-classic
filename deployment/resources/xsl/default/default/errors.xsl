@@ -161,6 +161,11 @@
         Error: the view was not added.
       </xsl:when>
 
+      <!-- icalendar translation errors -->
+      <xsl:when test="id='org.bedework.exception.ical.noguid'">
+        An event must have a UID property.
+      </xsl:when>
+
       <!-- Validation errors mostly dealing with incorrect or missing field values
            that are explicitly under user control -->
 
