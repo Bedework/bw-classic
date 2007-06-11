@@ -3558,9 +3558,9 @@
             <input type="text" name="who" size="20"/><br/>
             <input type="radio" value="user" name="whoType" checked="checked"/> user
             <input type="radio" value="group" name="whoType"/> group
-            <input type="radio" value="owner" name="whoType"/> owner
             <p>OR</p>
             <p>
+              <input type="radio" value="owner" name="whoType"/> owner<br/>
               <input type="radio" value="auth" name="whoType"/> authenticated<br/>
               <input type="radio" value="unauth" name="whoType"/> unauthenticated<br/>
               <input type="radio" value="other" name="whoType"/> other users
