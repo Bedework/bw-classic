@@ -3299,82 +3299,16 @@
       Schedule Meeting
     </h2>
 
-    <xsl:if test="/bedework/attendees/attendee">
-      <table id="attendees" class="widget" cellspacing="0">
-        <tr>
-          <th colspan="4">Attendees</th>
-        </tr>
-        <!--<tr>
-          <td>attendee</td>
-          <td>role</td>
-          <td>status</td>
-        </tr>-->
-        <xsl:for-each select="/bedework/attendees/attendee">
-          <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
-          <xsl:sort select="attendeeUri" order="ascending" case-order="upper-first"/>
-          <xsl:variable name="attendeeUri" select="attendeeUri"/>
-          <tr>
-            <td class="trash">
-              <a href="{$event-attendeesForEvent}&amp;uri={$attendeeUri}&amp;attendee=true&amp;delete=true" title="remove">
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-              </a>
-            </td>
-            <td>
-              <a href="{$attendeeUri}">
-                <xsl:choose>
-                  <xsl:when test="cn != ''">
-                    <xsl:value-of select="cn"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="attendeeUri"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </a>
-            </td>
-            <td class="role">
-              <xsl:value-of select="role"/>
-            </td>
-            <td class="status">
-              <xsl:value-of select="partstat"/>
-            </td>
-          </tr>
-        </xsl:for-each>
-      </table>
-    </xsl:if>
-
-    <xsl:if test="/bedework/recipients/recipient">
-      <table id="recipients" class="widget" cellspacing="0">
-        <tr>
-          <th colspan="2">Recipients</th>
-        </tr>
-        <xsl:for-each select="/bedework/recipients/recipient">
-          <xsl:variable name="recipientUri" select="."/>
-          <tr>
-            <td class="trash">
-              <a href="{$event-attendeesForEvent}&amp;uri={$recipientUri}&amp;recipient=true&amp;delete=true" title="remove">
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-              </a>
-            </td>
-            <td>
-              <a href="{$recipientUri}">
-                <xsl:value-of select="."/>
-              </a>
-            </td>
-          </tr>
-        </xsl:for-each>
-      </table>
-    </xsl:if>
-    
     <div id="recipientsAndAttendees">
       <h4> Add recipients and attendees</h4>      
       <form name="raForm" id="recipientsAndAttendeesForm" action="{$event-attendeesForEvent}" method="post">
         <div id="raContent">
           <input name="uri" width="40"/>
           <input type="submit" value="add" />
-          <br/>
+          &#160;
           <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
           <input type="checkbox" name="attendee" value="true" checked="checked"/> attendee
-          <br/>
+          &#160;
           Role:
           <select name="role">
             <option value="REQ-PARTICIPANT">required participant</option>
@@ -3382,7 +3316,7 @@
             <option value="CHAIR">chair</option>
             <option value="NON-PARTICIPANT">non-participant</option>
           </select>
-          <br/>
+          &#160;
           Status:
           <select name="partstat">
             <option value="NEEDS-ACTION">needs action</option>
@@ -3391,6 +3325,73 @@
             <option value="TENTATIVE">tentative</option>
             <option value="DELEGATED">delegated</option>
           </select>
+          
+          <xsl:if test="/bedework/attendees/attendee">
+            <table id="attendees" class="widget" cellspacing="0">
+              <tr>
+                <th colspan="4">Attendees</th>
+              </tr>
+              <tr class="subHead">
+                <td></td>
+                <td>attendee</td>
+                <td>role</td>
+                <td>status</td>
+              </tr>
+              <xsl:for-each select="/bedework/attendees/attendee">
+                <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
+                <xsl:sort select="attendeeUri" order="ascending" case-order="upper-first"/>
+                <xsl:variable name="attendeeUri" select="attendeeUri"/>
+                <tr>
+                  <td class="trash">
+                    <a href="{$event-attendeesForEvent}&amp;uri={$attendeeUri}&amp;attendee=true&amp;delete=true" title="remove">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{$attendeeUri}">
+                      <xsl:choose>
+                        <xsl:when test="cn != ''">
+                          <xsl:value-of select="cn"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="attendeeUri"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </a>
+                  </td>
+                  <td class="role">
+                    <xsl:value-of select="role"/>
+                  </td>
+                  <td class="status">
+                    <xsl:value-of select="partstat"/>
+                  </td>
+                </tr>
+              </xsl:for-each>
+            </table>
+          </xsl:if>
+      
+          <xsl:if test="/bedework/recipients/recipient">
+            <table id="recipients" class="widget" cellspacing="0">
+              <tr>
+                <th colspan="2">Recipients</th>
+              </tr>
+              <xsl:for-each select="/bedework/recipients/recipient">
+                <xsl:variable name="recipientUri" select="."/>
+                <tr>
+                  <td class="trash">
+                    <a href="{$event-attendeesForEvent}&amp;uri={$recipientUri}&amp;recipient=true&amp;delete=true" title="remove">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{$recipientUri}">
+                      <xsl:value-of select="."/>
+                    </a>
+                  </td>
+                </tr>
+              </xsl:for-each>
+            </table>
+          </xsl:if>
 
           <xsl:for-each select="/bedework/freebusy">
           <!-- there's only one collection of freebusy; this for-each is
@@ -3478,7 +3479,7 @@
                           <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
                             <xsl:value-of select="number(numBusy) + number(numTentative)"/>
                           </xsl:when>
-                          <xsl:otherwise>*</xsl:otherwise>
+                          <xsl:otherwise><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></xsl:otherwise>
                         </xsl:choose>
                         <span class="eventTip">
                           <xsl:value-of select="$formattedStartDate"/><br/>
@@ -3504,7 +3505,7 @@
               </xsl:for-each>
             </table>
 
-            <table id="freeBusyKey">
+            <table id="freeBusyAggKey">
               <tr>
                 <td class="free">*</td>
                 <td>free</td>

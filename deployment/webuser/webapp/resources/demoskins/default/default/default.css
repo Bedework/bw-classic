@@ -932,15 +932,19 @@ messages.
 }
 #bedework table.widget {
   margin: 1em 1em 0 0;
-  float: right;
-  clear: right;
+  float: left;
+  clear: none;
 }
 #bedework table.widget th {
-  padding: 0 2em 0.1em 0;
+  padding: 2px 0 2px 4px;
   background-color: #ddd;
   color: black;
-  border-bottom: 1px dotted #333;
+  border-bottom: 1px solid #ccc;
   font-size: 0.9em;
+}
+#bedework table.widget tr.subHead td {
+  background-color: #eee;
+  color: black;  
 }
 #bedework table.widget td {
   padding: 0.1em 1em;
@@ -1571,15 +1575,25 @@ messages.
   right: 20px;
   width: 300px;
 }
+#recipientsAndAttendeesForm {
+  white-space: nowrap;
+}
 #freeBusyAgg {
   clear: both;
-  margin: 1em;
+  /*width: 100%;*/
+  margin: 1em 0 0 0;
+  padding: 1em 1em 1em 0;
+  border: 1px solid #ccc;
+  /*background-color: #eee;*/
 }
 #freeBusyAgg td {
   vertical-align: middle;
   text-align: center;
+  font-size: 0.8em;
   padding: 0;
   margin: 0;
+  width: 2em;
+  height: 10px;
 }
 #freeBusyAgg th.left {
   text-align: left;
@@ -1595,13 +1609,14 @@ messages.
 #freeBusyAgg td.timeLabels {
   vertical-align: middle;
   text-align: center;
-  font-size: 0.8em;
   font-weight: normal;
   padding: 0;
   margin: 0;
 }
 #freeBusyAgg td.dayDate {
   white-space: nowrap;
+  text-align: right;
+  padding: 0;
 }
 #freeBusyAgg td.free,
 #freeBusyAggKey td.free {
@@ -1619,37 +1634,27 @@ messages.
   background: #ddd url('../../resources/tentativeLines.gif') top;
 }
 #freeBusyAggKey {
-  margin: 0.5em auto 0 auto;
+  margin: 0.5em 0 0 0;
 }
 #freeBusyAggKey td {
-  padding: 5px;
+  padding: 2px 4px;
+}
+#freeBusyAgg a {
+  display: block;
+  text-decoration: none;
+  width: 100%;
 }
 #freeBusyAgg td.free a {
   color: #A3BAEA;
   background-color: transparent;
-  display: block;
-  padding: 3px 3px;
-  width: 10px;
-  height: 10px;
-  text-decoration: none;
 }
 #freeBusyAgg td.tentative a  {
   color: #333;
   background-color: transparent;
-  display: block;
-  padding: 3px 3px;
-  width: 10px;
-  height: 10px;
-  text-decoration: none;
 }
 #freeBusyAgg td.busy a {
   color: #333;
   background-color: transparent;
-  display: block;
-  padding: 3px 3px;
-  width: 10px;
-  height: 10px;
-  text-decoration: none;
 }
 #freeBusyAgg td.busy a:hover,
 #freeBusyAgg td.free a:hover,
