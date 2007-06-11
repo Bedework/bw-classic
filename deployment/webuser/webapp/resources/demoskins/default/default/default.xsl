@@ -3658,7 +3658,9 @@
               </xsl:choose>
             </xsl:variable>
             <td class="{$fbClass}">
-              <a href="{$initEvent}&amp;startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime} - add event">*</a>
+              <a href="{$initEvent}&amp;startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime} - add event">
+                <img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/>
+              </a>
             </td>
           </xsl:for-each>
         </tr>
@@ -3667,55 +3669,22 @@
 
     <table id="freeBusyKey">
       <tr>
-        <td class="free">*</td>
+        <td class="free"><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></td>
         <td>free</td>
         <td>&#160;</td>
-        <td class="busy">*</td>
+        <td class="busy"><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></td>
         <td>busy</td>
         <td>&#160;</td>
-        <td class="tentative">*</td>
+        <td class="tentative"><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></td>
         <td>tentative</td>
-        <td>&#160;</td>
-        <td>
-          <form name="calendarShareForm" method="post" action="{$freeBusy-fetch}">
-            View user's free/busy:<br/>
-            <input type="text" name="userid" size="20"/>
-            <input type="submit" name="submit" value="Submit"/>
-          </form>
-        </td>
       </tr>
     </table>
-    <!--
-    <div id="sharingBox">
-      <xsl:variable name="calPathEncoded" select="/bedework/myCalendars/calendars/calendar/encodedPath"/>
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/acl" mode="currentAccess">
-        <xsl:with-param name="action" select="$freeBusy-setAccess"/>
-        <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
-      </xsl:apply-templates>
-      <form name="calendarShareForm" action="{$freeBusy-setAccess}" id="shareForm" method="post">
-        <xsl:variable name="calPath" select="/bedework/myCalendars/calendars/calendar/path"/>
-        <input type="hidden" name="calPath" value="{$calPath}"/>
-        <input type="hidden" value="F" name="how"/>
-        <p>
-          Share my free/busy with:<br/>
-          <input type="text" name="who" size="20"/>
-          <input type="radio" value="user" name="whoType" checked="checked"/> user
-          <input type="radio" value="group" name="whoType"/> group<br/>
-          OR
-          <input type="radio" value="auth" name="whoType"/> authenticated
-          <input type="radio" value="other" name="whoType"/> other users<br/>
-        </p>
-        <p>
-          <input type="submit" name="submit" value="Submit"/>
-        </p>
-        <p>
-          <em>
-            Note: this will set a user or group's access to
-            "read-free-busy" and any existing access control will be replaced.
-          </em>
-        </p>
-      </form>
-    </div>-->
+    
+    <form name="viewFreeBusyForm" id="viewFreeBusyForm" method="post" action="{$freeBusy-fetch}">
+      View user's free/busy:<br/>
+      <input type="text" name="userid" size="20"/>
+      <input type="submit" name="submit" value="Submit"/>
+    </form>
   </xsl:template>
 
   <xsl:template match="start" mode="timeDisplay">

@@ -1480,17 +1480,19 @@ messages.
 }
 #bedework #freeBusy {
   margin: 1em;
+  font-size: 0.8em;
 }
 #bedework #freeBusy td {
   vertical-align: middle;
   text-align: center;
   padding: 0;
   margin: 0;
+  width: 2em;
+  height: 10px;
 }
 #bedework #freeBusy th {
   vertical-align: middle;
   text-align: center;
-  font-size: 0.8em;
   font-weight: normal;
   padding: 0;
   margin: 0;
@@ -1501,21 +1503,27 @@ messages.
 }
 #bedework #freeBusy td.free,
 #bedework #freeBusyKey td.free {
-  color: #ddd;
-  background-color: #ddd;
+  /*color: #A3BAEA;
+  background-color: #A3BAEA;*/
+  color: white;
+  background-color: white;
+  border: 1px solid #ddd;
 }
 #bedework #freeBusy td.busy,
 #bedework #freeBusyKey td.busy {
   color: #A3BAEA;
   background-color: #A3BAEA;
+  border: 1px solid #ddd;
 }
 #bedework #freeBusy td.tentative,
 #bedework #freeBusyKey td.tentative {
   color: #DFE7FB;
   background: #DFE7FB url('../../resources/tentativeLines.gif') top;
+  border: 1px solid #ddd;
 }
 #bedework #freeBusyKey {
-  margin: 0.5em auto 1em auto;
+  margin: 0.5em 1em 1em 1em;
+  float: left;
 }
 #bedework #freeBusyKey td {
   padding: 5px;
@@ -1524,27 +1532,18 @@ messages.
   color: #ddd;
   background-color: transparent;
   display: block;
-  padding: 6px 10px;
-  width: 10px;
-  height: 10px;
   text-decoration: none;
 }
 #bedework #freeBusy td.tentative a  {
   color: #DFE7FB;
   background-color: transparent;
   display: block;
-  padding: 6px 10px;
-  width: 10px;
-  height: 10px;
   text-decoration: none;
 }
 #bedework #freeBusy td.busy a {
   color: #A3BAEA;
   background-color: transparent;
   display: block;
-  padding: 6px 10px;
-  width: 10px;
-  height: 10px;
   text-decoration: none;
 }
 #bedework #freeBusy td.busy a:hover,
@@ -1575,16 +1574,14 @@ messages.
   right: 20px;
   width: 300px;
 }
-#recipientsAndAttendeesForm {
+#bedework #recipientsAndAttendeesForm {
   white-space: nowrap;
 }
 #freeBusyAgg {
   clear: both;
-  /*width: 100%;*/
   margin: 1em 0 0 0;
   padding: 1em 1em 1em 0;
   border: 1px solid #ccc;
-  /*background-color: #eee;*/
 }
 #freeBusyAgg td {
   vertical-align: middle;
@@ -1604,7 +1601,7 @@ messages.
 }
 #freeBusyAgg td.evening {
   color: black;
-  background: #dde;
+  background: #ccc;
 }
 #freeBusyAgg td.timeLabels {
   vertical-align: middle;
@@ -1617,21 +1614,27 @@ messages.
   white-space: nowrap;
   text-align: right;
   padding: 0;
+  width: 4em;
 }
 #freeBusyAgg td.free,
 #freeBusyAggKey td.free {
-  color: #A3BAEA;
-  background-color: #A3BAEA;
+  /*color: #A3BAEA;
+  background-color: #A3BAEA;*/
+  color: white;
+  background-color: white;
+  border: 1px solid #ddd;
 }
 #freeBusyAgg td.busy,
 #freeBusyAggKey td.busy {
-  color: #fbb;
-  background-color: #fbb;
+  color: #A3BAEA;
+  background-color: #A3BAEA;
+  border: 1px solid #ddd;
 }
 #freeBusyAgg td.tentative,
 #freeBusyAggKey td.tentative {
-  color: #ddd;
-  background: #ddd url('../../resources/tentativeLines.gif') top;
+  color: #DFE7FB;
+  background: #DFE7FB url('../../resources/tentativeLines.gif') top;
+  border: 1px solid #ddd;
 }
 #freeBusyAggKey {
   margin: 0.5em 0 0 0;
