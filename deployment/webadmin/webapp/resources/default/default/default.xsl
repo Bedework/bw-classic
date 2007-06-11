@@ -3571,13 +3571,13 @@
           <h5>
             <span id="accessRightsToggle">
               <xsl:choose>
-                <xsl:when test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='advanced'">
-                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
-                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" checked="checked" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
-                </xsl:when>
-                <xsl:otherwise>
+                <xsl:when test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='basic'">
                   <input type="radio" name="setappvar" value="accessRightsToggle(basic)" checked="checked" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
                   <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
+                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" checked="checked" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
                 </xsl:otherwise>
               </xsl:choose>
             </span>
