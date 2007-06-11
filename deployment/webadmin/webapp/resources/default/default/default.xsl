@@ -3585,9 +3585,9 @@
           <input type="hidden" name="how" value=""/>
           <!-- Advanced Access Rights: -->
           <!-- the "how" field is set by iterating over the howItems below -->
-          <table id="howTable" class="invisible" cellspacing="0">
-            <xsl:if test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='advanced'">
-              <xsl:attribute name="class">visible</xsl:attribute>
+          <table id="howTable" class="visible" cellspacing="0">
+            <xsl:if test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='basic'">
+              <xsl:attribute name="class">invisible</xsl:attribute>
             </xsl:if>
             <tr>
               <th>access type</th>
@@ -3704,11 +3704,10 @@
                 <input type="radio" value="-b" name="b" disabled="disabled"/>
               </td>
             </tr>
-            <xsl:if test="$type = 'inbox' or $type = 'outbox'">
-              <tr>
-                <td class="level4">
-                  <input type="checkbox" value="S" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> schedule
-                </td>
+            <tr>
+              <td class="level4">
+                <input type="checkbox" value="S" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> schedule
+              </td>
               <td>
                 <input type="radio" value="S" name="S" checked="checked" disabled="disabled"/>
               </td>
@@ -3748,8 +3747,7 @@
               <td>
                 <input type="radio" value="-s" name="s" disabled="disabled"/>
               </td>
-              </tr>
-            </xsl:if>
+            </tr>
             <tr>
               <td class="level3">
                  <input type="checkbox" value="u" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> delete (unbind)
@@ -3773,9 +3771,9 @@
           </table>
           <!-- Simple Access Rights: -->
           <!-- the "how" field is set by getting the selected basicHowItem -->
-          <ul id="howList">
-            <xsl:if test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='advanced'">
-              <xsl:attribute name="class">invisible</xsl:attribute>
+          <ul id="howList" class="invisible">
+            <xsl:if test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='basic'">
+              <xsl:attribute name="class">visible</xsl:attribute>
             </xsl:if>
             <li>
               <input type="radio" value="A" name="basicHowItem"/>All
