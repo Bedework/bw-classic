@@ -1812,9 +1812,9 @@
               to your preferred list from that point on.  <strong>Note: if you don't
               find a location or contact at all, you can add a new one from the
               <a href="{$setup}">main menu</a>.</strong>
-              Only administrators can create categories, however.
+              Only administrators can create calendars, however.
               To make sure you've used the
-              correct category, please see the
+              correct calendar, please see the
               <a href="" target="_blank">Calendar Definitions</a>
             </span>
           </td>
