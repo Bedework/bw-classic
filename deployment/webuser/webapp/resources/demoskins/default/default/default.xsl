@@ -1852,11 +1852,6 @@
 
   <!--==== EDIT EVENT ====-->
   <xsl:template match="formElements" mode="editEvent">
-    <xsl:variable name="subscriptionId" select="subscriptionId"/>
-    <xsl:variable name="calPathEncoded" select="form/calendar/encodedPath"/>
-    <xsl:variable name="calPath" select="form/calendar/path"/>
-    <xsl:variable name="guid" select="guid"/>
-    <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this)">
@@ -1867,7 +1862,9 @@
         </span>
         Edit 
         <xsl:choose>  
-          <xsl:when test="form/scheduleMethod = 2">Meeting</xsl:when>
+          <xsl:when test="form/scheduleMethod = 2">
+            Meeting <input type="button" value="edit attendees" onclick="window.location='{$event-attendeesForEvent}'"/>
+          </xsl:when>
           <xsl:otherwise>Event</xsl:otherwise>
         </xsl:choose>
       </h2>
@@ -1984,7 +1981,7 @@
             Calendar:
           </td>
           <td class="fieldval">
-            <!-- the string "user/" should not be hard coded; fix in 3.3.1 -->
+            <!-- the string "user/" should not be hard coded; fix this -->
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
             <xsl:variable name="writableCalendars">
               <xsl:value-of select="
@@ -1995,7 +1992,7 @@
                        (not(contains(path,$userPath)))])"/>
             </xsl:variable>
             <xsl:choose>
-              <xsl:when test="/bedework/creating = 'true' and $writableCalendars = 1">
+              <xsl:when test="$writableCalendars = 1">
                 <!-- there is only 1 writable calendar, so find it by looking down both trees at once -->
                 <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[calType = '1' and
                          currentAccess/current-user-privilege-set/privilege/write-content]/path"/><xsl:value-of select="/bedework/mySubscriptions//calendar[calType = '1' and
@@ -2915,8 +2912,8 @@
       </xsl:choose>
     </div>
 
-    <!-- Access Control tab -->
-    <!-- ================== -->
+    <!-- Access tab -->
+    <!-- ========== -->
     <div id="bwEventTab-Access" class="invisible">
       <div id="sharingBox">
         <xsl:apply-templates select="/bedework/eventAccess/access/acl" mode="currentAccess">
@@ -2925,17 +2922,16 @@
           <xsl:with-param name="guid" select="$guid"/>
           <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
         </xsl:apply-templates>
-        <form name="eventShareForm" method="post" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
+        <!--<form name="eventShareForm" method="post" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
           <input type="hidden" name="calPath" value="{$calPath}"/>
           <input type="hidden" name="guid" value="{$guid}"/>
-          <input type="hidden" name="recurid" value="{$recurrenceId}"/>
+          <input type="hidden" name="recurid" value="{$recurrenceId}"/>-->
           <xsl:call-template name="entityAccessForm">
             <xsl:with-param name="hideSubmitButton">true</xsl:with-param>
           </xsl:call-template>
-        </form>
+        <!--</form>-->
       </div>
     </div>
-
 
     <div class="eventSubmitButtons">
       <input name="submit" type="submit" value="save event"/>
@@ -3296,6 +3292,7 @@
 
   <xsl:template name="attendees">
     <h2>
+      <span class="formButtons"><input type="button" value="continue" onclick="window.location='{$gotoEditEvent}'"/></span>
       Schedule Meeting
     </h2>
 
@@ -3375,6 +3372,10 @@
               <tr>
                 <th colspan="2">Recipients</th>
               </tr>
+              <tr class="subHead">
+                <td></td>
+                <td>recipient</td>
+              </tr>
               <xsl:for-each select="/bedework/recipients/recipient">
                 <xsl:variable name="recipientUri" select="."/>
                 <tr>
@@ -3397,7 +3398,6 @@
           <!-- there's only one collection of freebusy; this for-each is
                being used to pick out just the freebusy node and
                shorten the select statements below. -->
-            <xsl:variable name="currentTimezone">America/Los_Angeles</xsl:variable>
             <xsl:variable name="formattedStartDate">
               <xsl:value-of select="substring(start,1,4)"/>-<xsl:value-of select="number(substring(start,5,2))"/>-<xsl:value-of select="number(substring(start,7,2))"/>
             </xsl:variable>
@@ -3421,7 +3421,9 @@
                     </xsl:choose>
                   </span>
                 </th>
-                <!--<th colspan="32" class="right">
+                <!-- at some point allow switching of timezones:
+                <th colspan="32" class="right">
+                  <xsl:variable name="currentTimezone">America/Los_Angeles</xsl:variable>
                   <xsl:value-of select="$formattedStartDate"/> to <xsl:value-of select="$formattedEndDate"/>
                   <select name="timezone" id="timezonesDropDown" onchange="submit()">
                     <xsl:for-each select="/bedework-fbaggregator/timezones/tzid">
@@ -3474,7 +3476,7 @@
                           <xsl:otherwise>free</xsl:otherwise>
                         </xsl:choose>
                       </xsl:attribute>
-                      <a href="{$initEvent}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}">
+                      <a href="{$gotoEditEvent}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}">
                         <xsl:choose>
                           <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
                             <xsl:value-of select="number(numBusy) + number(numTentative)"/>
@@ -3519,7 +3521,9 @@
             </table>
           </xsl:for-each>
 
-          <p><input type="button" value="continue" onclick="window.location='{$gotoEditEvent}'"/></p>
+          <div class="eventSubmitButtons">
+            <input type="button" value="continue" onclick="window.location='{$gotoEditEvent}'"/>
+          </div>
         </div>
       </form>
     </div>

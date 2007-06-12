@@ -43,7 +43,7 @@
   background: #eee url('../../resources/tentativeLines.gif') top;
   color: black;
 }
-#bedework h2 .formButtons {
+#bedework .formButtons {
   float: right;
   font-size: 0.8em;
 }
