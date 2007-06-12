@@ -5633,9 +5633,6 @@
       <table class="common" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">
-            <div id="eventActions">
-
-            </div>
             Organizer:
             <xsl:choose>
               <xsl:when test="organizer/cn != ''">
