@@ -737,7 +737,14 @@
         <tr>
           <td>
             <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-              <xsl:value-of select="summary"/>
+              <xsl:choose>
+                <xsl:when test="summary != ''">
+                  <xsl:value-of select="summary"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <em>no title</em>
+                </xsl:otherwise>
+              </xsl:choose>
             </a>
           </td>
           <td class="date">
