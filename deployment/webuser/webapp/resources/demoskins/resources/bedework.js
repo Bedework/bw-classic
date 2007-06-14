@@ -32,6 +32,16 @@ function show() {
     }
   }
 }
+// show and hide an item based on its current 
+// visibility; if visible, hide it; if invisible
+// show it.
+function toggleVisibility(id,cl) {
+  if(document.getElementById(id).className == 'invisible') {
+    changeClass(id,cl);
+  } else {
+    changeClass(id,'invisible');
+  }
+}
 function setTab(listId,listIndex) {
   var list = document.getElementById(listId);
   var elementArray = new Array();
@@ -93,6 +103,8 @@ function launchPrintWindow(URL) {
 }
 // launch the calSelect pop-up window for selecting a calendar when creating,
 // editing, and importing events
+// DEPRECATED - can't use pop-ups in current portal environments in a 
+// portal-agnostic way
 function launchCalSelectWindow(URL) {
   calSelect = window.open(URL, "calSelect", "width=500,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
   window.calSelect.focus();

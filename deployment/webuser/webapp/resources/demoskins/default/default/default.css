@@ -283,15 +283,8 @@
 #bedework #utilBarTable .leftCell {
   margin: 0;
   padding: 0;
-  padding: 0.2em 0 0.2em 1em;
+  padding: 0.2em 0 0.2em 0.2em;
   white-space: nowrap;
-}
-#bedework #utilBarTable .leftCell a {
-  color: #666;
-  background-color: transparent;
-  font-size: 0.75em;
-  text-decoration: none;
-  margin-right: 6px;
 }
 #bedework #utilBarTable .leftCell img {
   display: inline;
@@ -314,13 +307,45 @@
 #bedework #searchPageForm {
   float: right;
 }
-#bedework #utilBarTable form input {
+#bedework #utilBarTable input {
   font-size: 0.7em;
 }
 #bedework #utilBarTable img {
   vertical-align: middle;
   margin: 0;
   padding: 0;
+}
+#bedework .bwActionIcons, 
+#bedework .bwActionIconsInGrid {
+  position: absolute;
+  white-space: nowrap;
+  border: 1px solid #333;
+  background-color: #eee;
+  color: black;
+  padding: 0.5em;
+  margin: 0;
+}
+#bedework .bwActionIconsInGrid {
+  margin-top: 10px;
+  margin-left: -100px;
+}
+#bedework .bwActionIcons a:link,
+#bedework .bwActionIcons a:active, 
+#bedework .bwActionIcons a:visited,
+#bedework .bwActionIconsInGrid a:link,
+#bedework .bwActionIconsInGrid a:active, 
+#bedework .bwActionIconsInGrid a:visited {
+  display: block;
+  margin: 0 0 2px 0;
+  color: #666;
+  background-color: transparent;
+  font-size: 0.75em;
+  text-decoration: none;
+}
+#bedework .bwActionIcons a:hover,
+#bedework .bwActionIconsInGrid a:hover {
+  color: black;
+  background-color: transparent;
 }
 #bedework #searchTable {
   width: 100%;
@@ -1164,7 +1189,8 @@ messages.
   border: 1px solid #ccc;
   text-align: center;
 }
-#bedework a.gridAdd {
+#bedework div.gridAdd {
+  position: relative; /* required so that the bwActionIcons position correctly */
   display: block;
   float: right;
   margin: 0;

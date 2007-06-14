@@ -716,29 +716,16 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="utilBarTable">
        <tr>
          <td class="leftCell">
-           <xsl:choose>
-             <xsl:when test="/bedework/periodname = 'day'">
-               <xsl:variable name="date" select="/bedework/firstday/date"/>
-               <a href="{$initEvent}&amp;startdate={$date}" title="add event">
-                  <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
-                  add event
-               </a>
-             </xsl:when>
-             <xsl:otherwise>
-               <a href="{$initEvent}" title="add event">
-                  <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
-                  add event
-               </a>
-             </xsl:otherwise>
-           </xsl:choose>
-           <a href="{$event-initMeeting}&amp;schedule=request" title="schedule a meeting">
-              <img src="{$resourcesRoot}/resources/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="add meeting"/>
-              add meeting
-           </a>
-           <a href="{$initUpload}" title="upload event">
-              <img src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif" width="12" height="16" border="0" alt="upload event"/>
-              upload
-           </a>
+           <input type="button" value="add..." onmouseover="changeClass('bwActionIcons-0','bwActionIcons')" onclick="toggleVisibility('bwActionIcons-0','bwActionIcons')"/>
+           <xsl:call-template name="actionIcons">
+             <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param> 
+             <xsl:with-param name="startDate">
+               <xsl:choose>
+                 <xsl:when test="/bedework/periodname = 'day'"><xsl:value-of select="/bedework/firstday/date"/></xsl:when>
+                 <xsl:otherwise><xsl:value-of select="/bedework/now/date"/></xsl:otherwise>
+               </xsl:choose>
+             </xsl:with-param>             
+           </xsl:call-template>
          </td>
          <td class="rightCell">
 
@@ -847,6 +834,33 @@
          </td>
        </tr>
     </table>
+  </xsl:template>
+  
+  <xsl:template name="actionIcons">
+    <xsl:param name="startDate"/>
+    <xsl:param name="actionIconsId"/>
+    <div id="{$actionIconsId}" class="invisible">
+       <a href="{$initEvent}&amp;entityType=event&amp;startdate={$startDate}" title="add event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+          <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
+          add event
+       </a>
+       <a href="{$event-initMeeting}&amp;entityType=event&amp;schedule=request&amp;startdate={$startDate}" title="schedule a meeting" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+          <img src="{$resourcesRoot}/resources/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="schedule meeting"/>
+          schedule meeting
+       </a>
+       <a href="{$initEvent}&amp;entityType=task&amp;startdate={$startDate}" title="add task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+          <img src="{$resourcesRoot}/resources/std-icalTask-icon-small.gif" width="12" height="16" border="0" alt="add task"/>
+          add task
+       </a>
+       <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$startDate}" title="schedule a task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+          <img src="{$resourcesRoot}/resources/std-icalSchTask-icon-small.gif" width="12" height="16" border="0" alt="schedule task"/>
+          schedule task
+       </a>
+       <a href="{$initUpload}" title="upload event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+          <img src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif" width="12" height="16" border="0" alt="upload event"/>
+          upload
+       </a>
+     </div>
   </xsl:template>
 
   <!--==== LIST VIEW  (for day, week, and month) ====-->
@@ -1101,9 +1115,16 @@
                 <xsl:attribute name="class">today</xsl:attribute>
               </xsl:if>
               <xsl:variable name="dayDate" select="date"/>
-              <a href="{$initEvent}&amp;startdate={$dayDate}" class="gridAdd" title="add event">
-                <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="9" height="10" border="0" alt="add event"/>
-              </a>
+              <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
+              <div class="gridAdd">
+                <a href="javascript:toggleVisibility('{$actionIconsId}','bwActionIconsInGrid')" title="add...">
+                  <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
+                </a>
+                <xsl:call-template name="actionIcons">
+                  <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param> 
+                  <xsl:with-param name="startDate"><xsl:value-of select="$dayDate"/></xsl:with-param>
+                </xsl:call-template>
+              </div>
               <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
                 <xsl:value-of select="value"/>
               </a>
@@ -1143,9 +1164,16 @@
                     <xsl:attribute name="class">today</xsl:attribute>
                   </xsl:if>
                   <xsl:variable name="dayDate" select="date"/>
-                  <a href="{$initEvent}&amp;startdate={$dayDate}" class="gridAdd" title="add event">
-                    <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add event"/>
-                  </a>
+                  <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
+                  <div class="gridAdd">
+                    <a href="javascript:toggleVisibility('{$actionIconsId}','bwActionIconsInGrid')" title="add...">
+                      <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
+                    </a>
+                   <xsl:call-template name="actionIcons">
+                     <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>  
+                     <xsl:with-param name="startDate"><xsl:value-of select="$dayDate"/></xsl:with-param>
+                   </xsl:call-template>
+                  </div>
                   <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
                     <xsl:value-of select="value"/>
                   </a>
