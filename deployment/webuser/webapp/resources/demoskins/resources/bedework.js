@@ -42,6 +42,25 @@ function toggleVisibility(id,cl) {
     changeClass(id,'invisible');
   }
 }
+// Toggle action icons box visibility at the selected position and
+// set any open action icon boxes to invisible.
+// Action icon boxes are used in the calendar grid - their ids are 
+// built from a prefix plus the day number; the box identified by zero is the topmost box
+// associated with the "add..." button.  Id's will therefore be prefix-0 through
+// prefix-31
+function toggleActionIcons(id,cl) {
+  var dash = id.indexOf("-");
+  var boxNum = id.substring(dash+1);
+  var prefix = id.substring(0,dash);
+  var currentBox;
+  for (i = 0; i < 32; i++) {
+    currentBox = prefix + "-" + i;
+    if (i != boxNum && document.getElementById(currentBox)) {
+      changeClass(currentBox,"invisible");
+    }
+  }
+  toggleVisibility(id,cl);
+}
 function setTab(listId,listIndex) {
   var list = document.getElementById(listId);
   var elementArray = new Array();

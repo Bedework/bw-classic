@@ -716,7 +716,7 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="utilBarTable">
        <tr>
          <td class="leftCell">
-           <input type="button" value="add..." onmouseover="changeClass('bwActionIcons-0','bwActionIcons')" onclick="toggleVisibility('bwActionIcons-0','bwActionIcons')"/>
+           <input type="button" value="add..." onmouseover="toggleActionIcons('bwActionIcons-0','bwActionIcons')" onclick="toggleActionIcons('bwActionIcons-0','bwActionIcons')"/>
            <xsl:call-template name="actionIcons">
              <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param> 
              <xsl:with-param name="startDate">
@@ -839,6 +839,7 @@
   <xsl:template name="actionIcons">
     <xsl:param name="startDate"/>
     <xsl:param name="actionIconsId"/>
+    <br/>
     <div id="{$actionIconsId}" class="invisible">
        <a href="{$initEvent}&amp;entityType=event&amp;startdate={$startDate}" title="add event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
@@ -1117,7 +1118,7 @@
               <xsl:variable name="dayDate" select="date"/>
               <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
               <div class="gridAdd">
-                <a href="javascript:toggleVisibility('{$actionIconsId}','bwActionIconsInGrid')" title="add...">
+                <a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIconsInGrid')" title="add...">
                   <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
                 </a>
                 <xsl:call-template name="actionIcons">
@@ -1166,7 +1167,7 @@
                   <xsl:variable name="dayDate" select="date"/>
                   <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
                   <div class="gridAdd">
-                    <a href="javascript:toggleVisibility('{$actionIconsId}','bwActionIconsInGrid')" title="add...">
+                    <a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIconsInGrid')" title="add...">
                       <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
                     </a>
                    <xsl:call-template name="actionIcons">
