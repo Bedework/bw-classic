@@ -7011,6 +7011,7 @@
             <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
             <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
             <xsl:when test="$who='authenticated'">auth</xsl:when>
+            <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
             <xsl:when test="invert/principal/property/owner">other</xsl:when>
             <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
             <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
