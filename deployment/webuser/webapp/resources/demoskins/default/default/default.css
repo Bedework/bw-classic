@@ -48,6 +48,7 @@
   font-size: 0.8em;
 }
 #bedework div.eventSubmitButtons {
+  clear: both;
   text-align: right;
   margin: 1em 0.5em;
 }
@@ -569,8 +570,8 @@ messages.
   font-weight: normal;
   margin: -1em -1em 0 -1em;
   padding: 4px 0;
-  background-color: #666;
-  color: #eee;
+  background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
+  color : #eee;
   text-align: center;
 }
 #bedework #calSelectWidget #calSelectWidgetCloser {
@@ -799,6 +800,14 @@ messages.
 }
 #bedework #tztable td {
   padding: 2px 4px;
+}
+#bedework #scheduling {
+  margin: 1em;
+  font-size: 0.9em;
+}
+#bedework #scheduling p.editAttendees {
+  padding-top: 1em;
+  clear: both;
 }
 #bedework #recurringSwitch {
   margin: 0 0 1em 0;

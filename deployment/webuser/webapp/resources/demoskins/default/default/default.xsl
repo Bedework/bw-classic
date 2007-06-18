@@ -1891,9 +1891,7 @@
         </span>
         Edit 
         <xsl:choose>  
-          <xsl:when test="form/scheduleMethod = 2">
-            Meeting <input type="button" value="edit attendees" onclick="window.location='{$event-attendeesForEvent}'"/>
-          </xsl:when>
+          <xsl:when test="form/scheduleMethod = 2">Meeting</xsl:when>
           <xsl:otherwise>Event</xsl:otherwise>
         </xsl:choose>
       </h2>
@@ -1968,37 +1966,36 @@
       </xsl:if>
 
       <!-- event form submenu -->
-      <!--<xsl:choose>
-        <xsl:when test="/bedework/creating = 'false'">
-          <a href="javascript:launchSizedWindow('{$event-showAccess}',600,700)" id="eventAccessLink">set event access</a>
-        </xsl:when>
-        <xsl:otherwise>
-          <a href="javascript:alert('Access/sharing may be set once an event is created.\n')" id="eventAccessLink">set event access</a>
-        </xsl:otherwise>
-      </xsl:choose>-->
       <ul id="eventFormTabs" class="submenu">
         <li class="selected">
-          <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Basic'); hide('bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Access');">
+          <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Basic'); hide('bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Access','bwEventTab-Scheduling');">
             basic
           </a>
         </li>
         <li>
-          <a href="javascript:setTab('eventFormTabs',1); show('bwEventTab-Details'); hide('bwEventTab-Basic','bwEventTab-Recurrence','bwEventTab-Access');">
+          <a href="javascript:setTab('eventFormTabs',1); show('bwEventTab-Details'); hide('bwEventTab-Basic','bwEventTab-Recurrence','bwEventTab-Access','bwEventTab-Scheduling');">
             details
           </a>
         </li>
         <li>
-          <a href="javascript:setTab('eventFormTabs',2); show('bwEventTab-Recurrence'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Access');">
+          <a href="javascript:setTab('eventFormTabs',2); show('bwEventTab-Recurrence'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Access','bwEventTab-Scheduling');">
             recurrence
           </a>
         </li>
-        <li>
-          <a href="javascript:setTab('eventFormTabs',3); show('bwEventTab-Access'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Recurrence');">
-            access
-          </a>
-        </li>
+        <!--<xsl:if test="/bedework/creating = 'false'">-->
+          <li>
+            <a href="javascript:setTab('eventFormTabs',3); show('bwEventTab-Access'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Recurrence','bwEventTab-Scheduling');">
+              access
+            </a>
+          </li>
+          <li>
+            <a href="javascript:setTab('eventFormTabs',4); show('bwEventTab-Scheduling'); hide('bwEventTab-Basic','bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Access');">
+              scheduling
+            </a>
+          </li>
+        <!--</xsl:if>-->
       </ul>
-
+      
     <!-- Basic tab -->
     <!-- ============== -->
     <!-- this tab is visible by default -->
@@ -2951,14 +2948,40 @@
           <xsl:with-param name="guid" select="$guid"/>
           <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
         </xsl:apply-templates>
-        <!--<form name="eventShareForm" method="post" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
-          <input type="hidden" name="calPath" value="{$calPath}"/>
-          <input type="hidden" name="guid" value="{$guid}"/>
-          <input type="hidden" name="recurid" value="{$recurrenceId}"/>-->
-          <xsl:call-template name="entityAccessForm">
-            <xsl:with-param name="hideSubmitButton">true</xsl:with-param>
-          </xsl:call-template>
-        <!--</form>-->
+        <xsl:call-template name="entityAccessForm">
+          <xsl:with-param name="hideSubmitButton">true</xsl:with-param>
+        </xsl:call-template>
+        <p>
+          <input name="updateEventAccess" type="submit" value="update access"/>
+        </p>
+      </div>
+    </div>
+    
+    <!-- Scheduling tab -->
+    <!-- ============== -->
+    <div id="bwEventTab-Scheduling" class="invisible">
+      <div id="scheduling">
+        <xsl:if test="form/attendees/attendee">
+          <xsl:apply-templates select="form/attendees">
+            <xsl:with-param name="trash">no</xsl:with-param>
+          </xsl:apply-templates>
+        </xsl:if>
+    
+        <xsl:if test="form/recipients/recipient">
+          <xsl:apply-templates select="form/recipients">
+            <xsl:with-param name="trash">no</xsl:with-param>
+          </xsl:apply-templates>
+        </xsl:if>
+        <p class="editAttendees">
+          <xsl:choose>
+            <xsl:when test="form/scheduleMethod = 2">
+              <input name="editEventAttendees" type="submit" value="edit attendees and recipients"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <input name="editEventAttendees" type="submit" value="make this event a meeting"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </p>
       </div>
     </div>
 
@@ -3353,74 +3376,11 @@
           </select>
           
           <xsl:if test="/bedework/attendees/attendee">
-            <table id="attendees" class="widget" cellspacing="0">
-              <tr>
-                <th colspan="4">Attendees</th>
-              </tr>
-              <tr class="subHead">
-                <td></td>
-                <td>attendee</td>
-                <td>role</td>
-                <td>status</td>
-              </tr>
-              <xsl:for-each select="/bedework/attendees/attendee">
-                <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
-                <xsl:sort select="attendeeUri" order="ascending" case-order="upper-first"/>
-                <xsl:variable name="attendeeUri" select="attendeeUri"/>
-                <tr>
-                  <td class="trash">
-                    <a href="{$event-attendeesForEvent}&amp;uri={$attendeeUri}&amp;attendee=true&amp;delete=true" title="remove">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                    </a>
-                  </td>
-                  <td>
-                    <a href="{$attendeeUri}">
-                      <xsl:choose>
-                        <xsl:when test="cn != ''">
-                          <xsl:value-of select="cn"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="attendeeUri"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </a>
-                  </td>
-                  <td class="role">
-                    <xsl:value-of select="role"/>
-                  </td>
-                  <td class="status">
-                    <xsl:value-of select="partstat"/>
-                  </td>
-                </tr>
-              </xsl:for-each>
-            </table>
+            <xsl:apply-templates select="/bedework/attendees"/>
           </xsl:if>
       
           <xsl:if test="/bedework/recipients/recipient">
-            <table id="recipients" class="widget" cellspacing="0">
-              <tr>
-                <th colspan="2">Recipients</th>
-              </tr>
-              <tr class="subHead">
-                <td></td>
-                <td>recipient</td>
-              </tr>
-              <xsl:for-each select="/bedework/recipients/recipient">
-                <xsl:variable name="recipientUri" select="."/>
-                <tr>
-                  <td class="trash">
-                    <a href="{$event-attendeesForEvent}&amp;uri={$recipientUri}&amp;recipient=true&amp;delete=true" title="remove">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                    </a>
-                  </td>
-                  <td>
-                    <a href="{$recipientUri}">
-                      <xsl:value-of select="."/>
-                    </a>
-                  </td>
-                </tr>
-              </xsl:for-each>
-            </table>
+            <xsl:apply-templates select="/bedework/recipients"/>
           </xsl:if>
 
           <xsl:for-each select="/bedework/freebusy">
@@ -3557,7 +3517,84 @@
       </form>
     </div>
   </xsl:template>
+  
+  <xsl:template match="attendees">
+    <xsl:param name="trash">yes</xsl:param> 
+    <table id="attendees" class="widget" cellspacing="0">
+      <tr>
+        <th colspan="4">Attendees</th>
+      </tr>
+      <tr class="subHead">
+        <xsl:if test="$trash = 'yes'"><td></td></xsl:if>
+        <td>attendee</td>
+        <td>role</td>
+        <td>status</td>
+      </tr>
+      <xsl:for-each select="attendee">
+        <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
+        <xsl:sort select="attendeeUri" order="ascending" case-order="upper-first"/>
+        <xsl:variable name="attendeeUri" select="attendeeUri"/>
+        <tr>
+          <xsl:if test="$trash = 'yes'">
+            <td class="trash">
+              <a href="{$event-attendeesForEvent}&amp;uri={$attendeeUri}&amp;attendee=true&amp;delete=true" title="remove">
+                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+              </a>
+            </td>
+          </xsl:if>
+          <td>
+            <a href="{$attendeeUri}">
+              <xsl:choose>
+                <xsl:when test="cn != ''">
+                  <xsl:value-of select="cn"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="attendeeUri"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </a>
+          </td>
+          <td class="role">
+            <xsl:value-of select="role"/>
+          </td>
+          <td class="status">
+            <xsl:value-of select="partstat"/>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
 
+  <xsl:template match="recipients">
+    <xsl:param name="trash">yes</xsl:param>
+    <table id="recipients" class="widget" cellspacing="0">
+      <tr>
+        <th colspan="2">Recipients</th>
+      </tr>
+      <tr class="subHead">
+        <xsl:if test="$trash = 'yes'"><td></td></xsl:if>
+        <td>recipient</td>
+      </tr>
+      <xsl:for-each select="recipient">
+        <xsl:variable name="recipientUri" select="."/>
+        <tr>
+          <xsl:if test="$trash = 'yes'">
+            <td class="trash">
+              <a href="{$event-attendeesForEvent}&amp;uri={$recipientUri}&amp;recipient=true&amp;delete=true" title="remove">
+                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+              </a>
+            </td>
+          </xsl:if>
+          <td>
+            <a href="{$recipientUri}">
+              <xsl:value-of select="."/>
+            </a>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+  
   <xsl:template match="event" mode="addEventRef">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
@@ -6713,7 +6750,9 @@
             <input type="radio" value="group" name="whoType"/> group
             <p>OR</p>
             <p>
+              <input type="radio" value="owner" name="whoType"/> owner<br/>
               <input type="radio" value="auth" name="whoType"/> authenticated<br/>
+              <input type="radio" value="unauth" name="whoType"/> unauthenticated<br/>
               <input type="radio" value="other" name="whoType"/> other users
             </p>
           </div>
