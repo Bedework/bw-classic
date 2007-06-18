@@ -201,7 +201,6 @@
         <!-- jars from sub-projects needed by all -->
         <include name="rpiaccess*.jar"/>
         <include name="rpiutil*.jar"/>
-        <include name="bw-davdefs*.jar"/>
         <include name="bw-davio*.jar"/>
 
         <!-- Calendar api jars -->
