@@ -1294,18 +1294,25 @@
             </xsl:otherwise>
           </xsl:choose><br/>
           Type:
+          <xsl:variable name="entityType">
+            <xsl:choose>
+              <xsl:when test="entityType = '2'">task</xsl:when>
+              <xsl:when test="scheduleMethod = '2'">meeting</xsl:when>
+              <xsl:otherwise>event</xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
           <xsl:if test="recurring='true' or recurrenceId != ''">
             recurring
           </xsl:if>
           <xsl:choose>
             <xsl:when test="owner = /bedework/userid">
-              personal event
+              personal <xsl:value-of select="$entityType"/>
             </xsl:when>
             <xsl:when test="public = 'true'">
-              public event
+              public <xsl:value-of select="$entityType"/>
             </xsl:when>
             <xsl:otherwise>
-              event (<xsl:value-of select="calendar/owner"/>)
+              <xsl:value-of select="$entityType"/> (<xsl:value-of select="calendar/owner"/>)
             </xsl:otherwise>
           </xsl:choose>
         </span>
@@ -1492,18 +1499,25 @@
             </xsl:choose>
           </div>
           <!-- Display type of event -->
+          <xsl:variable name="entityType">
+            <xsl:choose>
+              <xsl:when test="entityType = '2'">Task</xsl:when>
+              <xsl:when test="scheduleMethod = '2'">Meeting</xsl:when>
+              <xsl:otherwise>Event</xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
           <xsl:if test="recurring='true' or recurrenceId != ''">
             Recurring
           </xsl:if>
           <xsl:choose>
             <xsl:when test="public = 'true'">
-              Public Event
+              Public <xsl:value-of select="$entityType"/>
             </xsl:when>
             <xsl:when test="owner = /bedework/userid">
-              Personal Event
+              Personal <xsl:value-of select="$entityType"/>
             </xsl:when>
             <xsl:otherwise>
-              Event (<xsl:value-of select="calendar/owner"/>)
+              <xsl:value-of select="$entityType"/> (<xsl:value-of select="calendar/owner"/>)
             </xsl:otherwise>
           </xsl:choose>
           <xsl:if test="recurring='true' and recurrenceId = ''">
@@ -1645,25 +1659,38 @@
           </a>
         </th>-->
       </tr>
-      <tr>
-        <td class="fieldname">Where:</td>
-        <td class="fieldval">
-          <xsl:choose>
-            <xsl:when test="location/link=''">
-              <xsl:value-of select="location/address"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:variable name="locationLink" select="location/link"/>
-              <a href="{$locationLink}">
+      <xsl:if test="location/address != ''">
+        <tr>
+          <td class="fieldname">Where:</td>
+          <td class="fieldval">
+            <xsl:choose>
+              <xsl:when test="location/link=''">
                 <xsl:value-of select="location/address"/>
-              </a>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:if test="location/subaddress!=''">
-            <br/><xsl:value-of select="location/subaddress"/>
-          </xsl:if>
-        </td>
-      </tr>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:variable name="locationLink" select="location/link"/>
+                <a href="{$locationLink}">
+                  <xsl:value-of select="location/address"/>
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="location/subaddress!=''">
+              <br/><xsl:value-of select="location/subaddress"/>
+            </xsl:if>
+          </td>
+        </tr>
+      </xsl:if>
+      <!--  Percent Complete (only for Tasks)  -->
+      <xsl:if test="percentComplete != ''">
+        <tr>
+          <td class="fieldname">
+            % Complete:
+          </td>
+          <td class="fieldval">
+            <xsl:value-of select="percentComplete"/>%
+          </td>
+        </tr>
+      </xsl:if>
       <tr>
         <td class="fieldname">Description:</td>
         <td class="fieldval">
@@ -1946,19 +1973,26 @@
                 </xsl:choose>
               </div>
               <!-- Display type of event -->
+              <xsl:variable name="entityType">
+                <xsl:choose>
+                  <xsl:when test="entityType = '2'">Task</xsl:when>
+                  <xsl:when test="scheduleMethod = '2'">Meeting</xsl:when>
+                  <xsl:otherwise>Event</xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
               <xsl:if test="form/recurringEntity='true' or recurrenceId != ''">
                 Recurring
               </xsl:if>
               <xsl:choose>
                 <xsl:when test="form">
                   <!-- just a placeholder: need to add owner to the jsp -->
-                  Personal Event
+                  Personal <xsl:value-of select="$entityType"/>
                 </xsl:when>
                 <xsl:when test="public = 'true'">
-                  Public Event
+                  Public <xsl:value-of select="$entityType"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  Event (<xsl:value-of select="calendar/owner"/>)
+                  <xsl:value-of select="$entityType"/> (<xsl:value-of select="calendar/owner"/>)
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:if test="form/recurringEntity='true' and recurrenceId = ''">
@@ -2185,7 +2219,12 @@
               </div>
             </div>
             <div class="dateStartEndBox">
-              <strong>End:</strong>
+              <strong>
+                <xsl:choose>
+                  <xsl:when test="form/entityType = '2'">Due:</xsl:when>
+                  <xsl:otherwise>End:</xsl:otherwise>
+                </xsl:choose>
+              </strong>
               <xsl:choose>
                 <xsl:when test="form/end/type='E'">
                   <input type="radio" name="eventEndType" value="E" checked="checked" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
@@ -2322,12 +2361,31 @@
                     <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
-                This event has no duration / end date
+                This 
+                <xsl:choose>
+                  <xsl:when test="form/entityType = '2'">task</xsl:when>
+                  <xsl:otherwise>event</xsl:otherwise>
+                </xsl:choose>
+                has no duration / end date
               </div>
             </div>
           </td>
         </tr>
 
+        <!--  Percent Complete (only for Tasks)  -->
+        <xsl:if test="form/entityType = '2'">
+          <tr>
+            <td class="fieldname">
+              % Complete:
+            </td>
+            <td class="fieldval" align="left">
+              <input type="text" name="event.percentComplete" size="3" maxlength="3">
+                <xsl:attribute name="value"><xsl:value-of select="form/percentComplete"/></xsl:attribute>
+              </input>%
+            </td>
+          </tr>
+        </xsl:if>
+        
         <!--  Category  -->
         <tr>
           <td class="fieldname">
@@ -2481,23 +2539,25 @@
           </td>
         </tr>
         <!--  Transparency  -->
-        <tr>
-          <td class="fieldname">
-            Effects free/busy:
-          </td>
-          <td class="fieldval">
-            <xsl:choose>
-              <xsl:when test="form/transparency = 'TRANSPARENT'">
-                <input type="radio" name="event.transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                <input type="radio" name="event.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="radio" name="event.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                <input type="radio" name="event.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
+        <xsl:if test="entityType != '2'"><!-- no transparency for Tasks -->
+          <tr>
+            <td class="fieldname">
+              Effects free/busy:
+            </td>
+            <td class="fieldval">
+              <xsl:choose>
+                <xsl:when test="form/transparency = 'TRANSPARENT'">
+                  <input type="radio" name="event.transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+                  <input type="radio" name="event.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="radio" name="event.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+                  <input type="radio" name="event.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+                </xsl:otherwise>
+              </xsl:choose>
+            </td>
+          </tr>
+        </xsl:if>
       </table>
     </div>
 
