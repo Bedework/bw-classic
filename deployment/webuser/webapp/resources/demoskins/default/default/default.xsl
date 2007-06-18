@@ -1873,7 +1873,11 @@
           <input name="submit" type="submit" value="save event"/>
           <input name="cancelled" type="submit" value="cancel"/>
         </span>
-        Add Event
+        <xsl:choose>
+          <xsl:when test="form/entityType = '2'">Add Task</xsl:when>
+          <xsl:when test="form/scheduleMethod = '2'">Add Meeting</xsl:when>
+          <xsl:otherwise>Add Event</xsl:otherwise>
+        </xsl:choose>
       </h2>
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
@@ -1889,10 +1893,10 @@
           <input name="submit" type="submit" value="save event"/>
           <input name="cancelled" type="submit" value="cancel"/>
         </span>
-        Edit 
-        <xsl:choose>  
-          <xsl:when test="form/scheduleMethod = 2">Meeting</xsl:when>
-          <xsl:otherwise>Event</xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="form/entityType = '2'">Edit Task</xsl:when>
+          <xsl:when test="form/scheduleMethod = '2'">Edit Meeting</xsl:when>
+          <xsl:otherwise>Edit Event</xsl:otherwise>
         </xsl:choose>
       </h2>
       <xsl:apply-templates select="." mode="eventForm"/>
@@ -1982,18 +1986,16 @@
             recurrence
           </a>
         </li>
-        <!--<xsl:if test="/bedework/creating = 'false'">-->
-          <li>
-            <a href="javascript:setTab('eventFormTabs',3); show('bwEventTab-Access'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Recurrence','bwEventTab-Scheduling');">
-              access
-            </a>
-          </li>
-          <li>
-            <a href="javascript:setTab('eventFormTabs',4); show('bwEventTab-Scheduling'); hide('bwEventTab-Basic','bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Access');">
-              scheduling
-            </a>
-          </li>
-        <!--</xsl:if>-->
+        <li>
+          <a href="javascript:setTab('eventFormTabs',3); show('bwEventTab-Scheduling'); hide('bwEventTab-Basic','bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Access');">
+            scheduling
+          </a>
+        </li>
+        <li>
+          <a href="javascript:setTab('eventFormTabs',4); show('bwEventTab-Access'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Recurrence','bwEventTab-Scheduling');">
+            access
+          </a>
+        </li>
       </ul>
       
     <!-- Basic tab -->
@@ -2974,11 +2976,18 @@
         </xsl:if>
         <p class="editAttendees">
           <xsl:choose>
-            <xsl:when test="form/scheduleMethod = 2">
+            <xsl:when test="form/scheduleMethod = '2'">
               <input name="editEventAttendees" type="submit" value="edit attendees and recipients"/>
             </xsl:when>
             <xsl:otherwise>
-              <input name="editEventAttendees" type="submit" value="make this event a meeting"/>
+              <xsl:choose>
+                <xsl:when test="form/entityType = '2'">
+                  <input name="editEventAttendees" type="submit" value="schedule this task with other users"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input name="editEventAttendees" type="submit" value="invite attendees and recipients"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:otherwise>
           </xsl:choose>
         </p>
@@ -3345,7 +3354,7 @@
   <xsl:template name="attendees">
     <h2>
       <span class="formButtons"><input type="button" value="continue" onclick="window.location='{$gotoEditEvent}'"/></span>
-      Schedule Meeting
+        Schedule Meeting or Task
     </h2>
 
     <div id="recipientsAndAttendees">
