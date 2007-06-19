@@ -1521,6 +1521,7 @@
             </xsl:otherwise>
           </xsl:choose>
           <xsl:if test="recurring='true' and recurrenceId = ''">
+            <xsl:text> </xsl:text>
             <em>(recurrence master)</em>
           </xsl:if>
         </th>
@@ -1996,6 +1997,7 @@
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:if test="form/recurringEntity='true' and recurrenceId = ''">
+                <xsl:text> </xsl:text>
                 <em>(recurrence master)</em>
               </xsl:if>
             </th>
@@ -3045,7 +3047,7 @@
                   <input name="makeEventIntoMeeting" type="submit" value="schedule this task with other users"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input name="makeEventIntoMeeting" type="submit" value="invite attendees and recipients"/>
+                  <input name="makeEventIntoMeeting" type="submit" value="make into meeting - invite attendees and recipients"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:otherwise>

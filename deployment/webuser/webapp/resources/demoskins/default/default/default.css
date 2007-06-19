@@ -319,7 +319,6 @@
 #bedework .bwActionIcons, 
 #bedework .bwActionIconsInGrid {
   position: absolute;
-  z-index: 1;
   white-space: nowrap;
   border: 1px solid #333;
   background-color: #eee;
@@ -1200,7 +1199,6 @@ messages.
   text-align: center;
 }
 #bedework div.gridAdd {
-  position: relative; /* required so that the bwActionIcons position correctly */
   display: block;
   float: right;
   margin: 0;
