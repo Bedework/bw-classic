@@ -52,6 +52,17 @@
         </xsl:choose>
       </xsl:when>
 
+      <xsl:when test="id='org.bedework.client.message.added.tasks'">
+        <xsl:choose>
+          <xsl:when test="param='1'">
+            1 task added.
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="param"/> tasks added.
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+
       <xsl:when test="id='org.bedework.client.message.cancelled'">
           Action cancelled.
       </xsl:when>
@@ -158,6 +169,9 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.updated.syspars'">
         System preferences updated
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.updated.task'">
+        Task updated
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.updated.userinfo'">
         User information updated
