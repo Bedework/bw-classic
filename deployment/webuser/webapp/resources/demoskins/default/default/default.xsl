@@ -1897,7 +1897,7 @@
     <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this)">
       <h2>
         <span class="formButtons">
-          <input name="submit" type="submit" value="save event"/>
+          <input name="submit" type="submit" value="save"/>
           <input name="cancelled" type="submit" value="cancel"/>
         </span>
         <xsl:choose>
@@ -1917,7 +1917,7 @@
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this)">
       <h2>
         <span class="formButtons">
-          <input name="submit" type="submit" value="save event"/>
+          <input name="submit" type="submit" value="save"/>
           <input name="cancelled" type="submit" value="cancel"/>
         </span>
         <xsl:choose>
@@ -3042,10 +3042,10 @@
             <xsl:otherwise>
               <xsl:choose>
                 <xsl:when test="form/entityType = '2'">
-                  <input name="editEventAttendees" type="submit" value="schedule this task with other users"/>
+                  <input name="makeEventIntoMeeting" type="submit" value="schedule this task with other users"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input name="editEventAttendees" type="submit" value="invite attendees and recipients"/>
+                  <input name="makeEventIntoMeeting" type="submit" value="invite attendees and recipients"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:otherwise>
@@ -3055,7 +3055,7 @@
     </div>
 
     <div class="eventSubmitButtons">
-      <input name="submit" type="submit" value="save event"/>
+      <input name="submit" type="submit" value="save"/>
       <input name="cancelled" type="submit" value="cancel"/>
     </div>
   </xsl:template>
