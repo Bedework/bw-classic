@@ -316,8 +316,7 @@
   margin: 0;
   padding: 0;
 }
-#bedework .bwActionIcons, 
-#bedework .bwActionIconsInGrid {
+#bedework .bwActionIcons {
   position: absolute;
   white-space: nowrap;
   border: 1px solid #333;
@@ -327,25 +326,23 @@
   margin: 0;
 }
 #bedework .bwActionIconsInGrid {
-  /*margin-top: 10px;*/
   margin-left: -100px;
+}
+#bedework .bwActionIconsInList {
+  right: 2em;
 }
 #bedework .bwActionIcons a:link,
 #bedework .bwActionIcons a:active, 
-#bedework .bwActionIcons a:visited,
-#bedework .bwActionIconsInGrid a:link,
-#bedework .bwActionIconsInGrid a:active, 
-#bedework .bwActionIconsInGrid a:visited {
+#bedework .bwActionIcons a:visited {
   display: block;
   margin: 0 0 2px 0;
-  color: #666;
+  color: #666 !important; /* set important to override other more specific selectors */
   background-color: transparent;
   font-size: 0.75em;
   text-decoration: none;
 }
-#bedework .bwActionIcons a:hover,
-#bedework .bwActionIconsInGrid a:hover {
-  color: black;
+#bedework .bwActionIcons a:hover {
+  color: black !important; /* set important to override other more specific selectors */
   background-color: transparent;
 }
 #bedework #searchTable {
@@ -1388,20 +1385,19 @@ messages.
   font-weight: bold;
   text-decoration : none;
 }
-#bedework #listTable td.dateRow a.listAdd {
+#bedework #listTable td.dateRow .listAdd {
   float:right;
   text-decoration : none;
-  font-size: 0.9em;
   font-weight: normal;
   padding-left: 1em;
 }
-#bedework #listTable td.dateRow a.listAdd:link,
-#bedework #listTable td.dateRow a.listAdd:active,
-#bedework #listTable td.dateRow a.listAdd:visited {
+#bedework #listTable td.dateRow .listAdd a:link,
+#bedework #listTable td.dateRow .listAdd a:active,
+#bedework #listTable td.dateRow .listAdd a:visited {
   color: #eee;
   background-color: transparent;
 }
-#bedework #listTable td.dateRow a.listAdd:hover {
+#bedework #listTable td.dateRow .listAdd a:hover {
   color: #ffa;
   background-color: transparent;
 }

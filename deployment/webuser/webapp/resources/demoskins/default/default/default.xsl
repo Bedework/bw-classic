@@ -881,9 +881,16 @@
               <tr>
                 <td colspan="6" class="dateRow">
                    <xsl:variable name="date" select="date"/>
-                   <a href="{$initEvent}&amp;startdate={$date}" class="listAdd">
-                     add event
-                   </a>
+                   <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
+                   <div class="listAdd">
+                     <a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIcons bwActionIconsInList')" title="add...">
+                       add...
+                     </a>
+                     <xsl:call-template name="actionIcons">
+                       <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param> 
+                       <xsl:with-param name="startDate"><xsl:value-of select="$date"/></xsl:with-param>
+                     </xsl:call-template>
+                   </div>
                    <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$date}">
                      <xsl:value-of select="name"/>, <xsl:value-of select="longdate"/>
                    </a>
@@ -1118,7 +1125,7 @@
               <xsl:variable name="dayDate" select="date"/>
               <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
               <div class="gridAdd">
-                <a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIconsInGrid')" title="add...">
+                <a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIcons bwActionIconsInGrid')" title="add...">
                   <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
                 </a>
                 <xsl:call-template name="actionIcons">
@@ -1167,7 +1174,7 @@
                   <xsl:variable name="dayDate" select="date"/>
                   <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
                   <div class="gridAdd">
-                    <a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIconsInGrid')" title="add...">
+                    <a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIcons bwActionIconsInGrid')" title="add...">
                       <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
                     </a>
                    <xsl:call-template name="actionIcons">
