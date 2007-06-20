@@ -126,6 +126,7 @@
   <!-- preferences -->
   <xsl:variable name="prefs-fetchForUpdate" select="/bedework/urlPrefixes/prefs/fetchForUpdate/a/@href"/>
   <xsl:variable name="prefs-update" select="/bedework/urlPrefixes/prefs/update/a/@href"/>
+  <xsl:variable name="prefs-updateSchedulingOptions" select="/bedework/urlPrefixes/prefs/updateSchedulingOptions/a/@href"/>
   <xsl:variable name="prefs-fetchSchedulingForUpdate" select="/bedework/urlPrefixes/prefs/fetchSchedulingForUpdate/a/@href"/>
   <xsl:variable name="prefs-setAccess" select="/bedework/urlPrefixes/prefs/setAccess/a/@href"/>
   <!-- scheduling -->
@@ -6721,36 +6722,83 @@
       <li class="selected">scheduling/meetings</li>
     </ul>
 
-      <table class="common" cellspacing="0">
+    <table class="common" cellspacing="0">
+      <tr>
+        <th class="leftBorder">Can send me scheduling requests:</th>
+        <th class="leftBorder">Can schedule on my behalf:</th>
+      </tr>
+      <tr>
+        <td class="leftBorder padMe">
+          <form name="prefsSetAccess1" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
+            <xsl:call-template name="schedulingAccessForm">
+              <xsl:with-param name="what">in</xsl:with-param>
+            </xsl:call-template>
+          </form>
+          <xsl:apply-templates select="inbox/acl" mode="currentAccess">
+            <xsl:with-param name="action" select="$prefs-setAccess"/>
+            <xsl:with-param name="what">in</xsl:with-param>
+          </xsl:apply-templates>
+        </td>
+        <td class="leftBorder padMe">
+          <form name="prefsSetAccess2" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
+            <xsl:call-template name="schedulingAccessForm">
+              <xsl:with-param name="what">out</xsl:with-param>
+            </xsl:call-template>
+          </form>
+          <xsl:apply-templates select="outbox/acl" mode="currentAccess">
+            <xsl:with-param name="action" select="$prefs-setAccess"/>
+            <xsl:with-param name="what">out</xsl:with-param>
+          </xsl:apply-templates>
+        </td>
+      </tr>
+    </table>
+    
+    <form name="eventForm" method="post" action="{$prefs-updateSchedulingOptions}">
+      <table class="common">
+        <tr><td colspan="2" class="fill">Scheduling auto-respond options:</td></tr>
         <tr>
-          <th class="leftBorder">Can send me scheduling requests:</th>
-          <th class="leftBorder">Can schedule on my behalf:</th>
+          <td class="fieldname">
+            Auto-respond to scheduling requests:
+          </td>
+          <td>
+            <input type="radio" name="scheduleAutoRespond" value="true" checked="checked"/> true
+            <input type="radio" name="scheduleAutoRespond" value="false"/> false
+          </td>
         </tr>
         <tr>
-          <td class="leftBorder padMe">
-            <form name="prefsSetAccess1" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
-              <xsl:call-template name="schedulingAccessForm">
-                <xsl:with-param name="what">in</xsl:with-param>
-              </xsl:call-template>
-            </form>
-            <xsl:apply-templates select="inbox/acl" mode="currentAccess">
-              <xsl:with-param name="action" select="$prefs-setAccess"/>
-              <xsl:with-param name="what">in</xsl:with-param>
-            </xsl:apply-templates>
+          <td class="fieldname">
+            Auto-cancel action:
           </td>
-          <td class="leftBorder padMe">
-            <form name="prefsSetAccess2" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
-              <xsl:call-template name="schedulingAccessForm">
-                <xsl:with-param name="what">out</xsl:with-param>
-              </xsl:call-template>
-            </form>
-            <xsl:apply-templates select="outbox/acl" mode="currentAccess">
-              <xsl:with-param name="action" select="$prefs-setAccess"/>
-              <xsl:with-param name="what">out</xsl:with-param>
-            </xsl:apply-templates>
+          <td>
+            <select name="scheduleAutoCancelAction">
+              <option value=""></option>
+              <option value="delete">delete event</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Auto-decline double-bookings:
+          </td>
+          <td>
+            <input type="radio" name="scheduleDoubleBook" value="true"/> true
+            <input type="radio" name="scheduleDoubleBook" value="false" checked="checked"/> false
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldname">
+            Auto-response processing:
+          </td>
+          <td>
+            <select name="scheduleAutoProcessResponses">
+              <option value="0">leave in Inbox for manual processing</option>
+              <option value="1">process "Accept" responses - leave the rest in Inbox</option>
+              <option value="2">try to process all responses</option>
+            </select>
           </td>
         </tr>
       </table>
+    </form>
   </xsl:template>
 
   <!-- construct the workDay times options listings from minute 0 to less than
