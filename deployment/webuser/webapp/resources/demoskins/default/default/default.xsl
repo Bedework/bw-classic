@@ -126,9 +126,9 @@
   <!-- preferences -->
   <xsl:variable name="prefs-fetchForUpdate" select="/bedework/urlPrefixes/prefs/fetchForUpdate/a/@href"/>
   <xsl:variable name="prefs-update" select="/bedework/urlPrefixes/prefs/update/a/@href"/>
-  <xsl:variable name="prefs-updateSchedulingOptions" select="/bedework/urlPrefixes/prefs/updateSchedulingOptions/a/@href"/>
   <xsl:variable name="prefs-fetchSchedulingForUpdate" select="/bedework/urlPrefixes/prefs/fetchSchedulingForUpdate/a/@href"/>
   <xsl:variable name="prefs-setAccess" select="/bedework/urlPrefixes/prefs/setAccess/a/@href"/>
+  <xsl:variable name="prefs-updateSchedulingPrefs" select="/bedework/urlPrefixes/prefs/updateSchedulingPrefs/a/@href"/>
   <!-- scheduling -->
   <xsl:variable name="showInbox" select="/bedework/urlPrefixes/schedule/showInbox/a/@href"/>
   <xsl:variable name="showOutbox" select="/bedework/urlPrefixes/schedule/showOutbox/a/@href"/>
@@ -6753,26 +6753,52 @@
       </tr>
     </table>
     
-    <form name="eventForm" method="post" action="{$prefs-updateSchedulingOptions}">
+    <form name="eventForm" method="post" action="{$prefs-updateSchedulingPrefs}">
       <table class="common">
-        <tr><td colspan="2" class="fill">Scheduling auto-respond options:</td></tr>
+        <tr><td colspan="2" class="fill">Scheduling auto-respond preferences:</td></tr>
         <tr>
           <td class="fieldname">
             Auto-respond to scheduling requests:
           </td>
           <td>
-            <input type="radio" name="scheduleAutoRespond" value="true" checked="checked"/> true
-            <input type="radio" name="scheduleAutoRespond" value="false"/> false
+            <input type="radio" name="scheduleAutoRespond" value="true">
+              <xsl:if test="scheduleAutoRespond = 'true'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              true
+            </input>
+            <input type="radio" name="scheduleAutoRespond" value="false">
+              <xsl:if test="scheduleAutoRespond = 'false'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              false
+            </input>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Auto-cancel action:
+            Auto-cancel processing:
           </td>
           <td>
             <select name="scheduleAutoCancelAction">
-              <option value=""></option>
-              <option value="delete">delete event</option>
+              <option value="0">
+                <xsl:if test="scheduleAutoCancelAction = '0'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                do not process auto-cancels
+              </option>
+              <option value="1">
+                <xsl:if test="scheduleAutoCancelAction = '1'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                set event status to CANCELLED
+              </option>
+              <option value="2">
+                <xsl:if test="scheduleAutoCancelAction = '2'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                delete the event
+              </option>
             </select>
           </td>
         </tr>
@@ -6781,8 +6807,18 @@
             Auto-decline double-bookings:
           </td>
           <td>
-            <input type="radio" name="scheduleDoubleBook" value="true"/> true
-            <input type="radio" name="scheduleDoubleBook" value="false" checked="checked"/> false
+            <input type="radio" name="scheduleDoubleBook" value="true">
+              <xsl:if test="scheduleDoubleBook = 'true'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if> 
+              true
+            </input>
+            <input type="radio" name="scheduleDoubleBook" value="false">
+              <xsl:if test="scheduleDoubleBook = 'false'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if> 
+              false
+            </input>
           </td>
         </tr>
         <tr>
@@ -6791,13 +6827,31 @@
           </td>
           <td>
             <select name="scheduleAutoProcessResponses">
-              <option value="0">leave in Inbox for manual processing</option>
-              <option value="1">process "Accept" responses - leave the rest in Inbox</option>
-              <option value="2">try to process all responses</option>
+              <option value="0">
+                <xsl:if test="scheduleAutoProcessResponses = '0'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                leave in Inbox for manual processing
+              </option>
+              <option value="1">
+                <xsl:if test="scheduleAutoProcessResponses = '1'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                process "Accept" responses - leave the rest in Inbox
+              </option>
+              <option value="2">
+                <xsl:if test="scheduleAutoProcessResponses = '2'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                try to process all responses
+              </option>
             </select>
           </td>
         </tr>
       </table>
+      <input type="submit" name="modPrefs" value="Update auto-respond preferences"/>
+      <input type="reset" value="Reset"/>
+      <input type="submit" name="cancelled" value="cancel"/>
     </form>
   </xsl:template>
 
