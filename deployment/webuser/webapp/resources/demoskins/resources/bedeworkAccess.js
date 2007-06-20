@@ -1,4 +1,40 @@
-// this toggles various elements in the access control form when
+/* Bedework Access control form functions
+
+   Bedework uses to methods to set access control.  The first and older method 
+   is to send a single access control string per principal in one 
+   request/response cycle.  The second and more current method (which is 
+   required in the event form) is to build a javascript object representing 
+   the acls on an item (e.g. an event), manipulate the object with the GUI, and send
+   all the acls in a single request parameter.  Both methods are currently used.
+   Method one is used for calendar access, method two for event access.  In time
+   we will probably move all access control to use method two.
+
+/* **********************************************************************
+    Copyright 2007 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+
+    Redistribution and use of this distribution in source and binary forms,
+    with or without modification, are permitted provided that:
+       The above copyright notice and this permission notice appear in all
+        copies and supporting documentation;
+
+        The name, identifiers, and trademarks of Rensselaer Polytechnic
+        Institute are not used in advertising or publicity without the
+        express prior written permission of Rensselaer Polytechnic Institute;
+
+    DISCLAIMER: The software is distributed" AS IS" without any express or
+    implied warranty, including but not limited to, any implied warranties
+    of merchantability or fitness for a particular purpose or any warrant)'
+    of non-infringement of any current or pending patent rights. The authors
+    of the software make no representations about the suitability of this
+    software for any particular purpose. The entire risk as to the quality
+    and performance of the software is with the user. Should the software
+    prove defective, the user assumes the cost of all necessary servicing,
+    repair or correction. In particular, neither Rensselaer Polytechnic
+    Institute, nor the authors of the software are liable for any indirect,
+    special, consequential, or incidental damages related to the software,
+    to the maximum extent the law permits. */
+
+// This toggles various elements in the access control form when
 // a checkbox for All, Read, Write, Bind, Schedule, or None is clicked.
 // Each howItem (checkbox) has a corresponding allow/deny flag (radio button)
 // named after the howItem's value (e.g. "A","R","F","N", etc). We enable
@@ -169,6 +205,7 @@ function activateAllowDenyFlag(val,formObj,disabledFlag) {
   }
 }
 // Gather up the how values on access form submission and set the how field.
+// This is used for the non-javasscript widget approach to setting access.
 // If in "basic" mode:
 //   Set the value of how to the value of the basicHowItem radio button.
 // If in "advanced" mode:
@@ -198,4 +235,26 @@ function setAccessHow(formObj) {
   }
   // alert("Setting how to: " + howString);
   formObj.how.value = howString;
+}
+
+
+/* METHOD TWO FUNCTIONS*/
+// An array of bwAcl objects are initialized at the point of the XSLT transform.
+// This is defined in the XSLT file as "bwAclArray" and is used here. 
+
+// ACL Object
+function bwAcl() {
+  this.who;
+  this.whoType;
+  this.how;
+}
+// Update the bwACL object
+function updateAccessAcl(formObj) {
+  
+}
+function displayAccessAcl() {
+  
+}
+function setAccessHowMethodTwo() {
+  
 }

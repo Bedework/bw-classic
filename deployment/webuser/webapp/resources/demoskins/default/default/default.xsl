@@ -14,7 +14,7 @@
   <!-- ========================================= -->
 
   <!-- **********************************************************************
-    Copyright 2006 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+    Copyright 2007 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
     Redistribution and use of this distribution in source and binary forms,
     with or without modification, are permitted provided that:
@@ -3013,7 +3013,7 @@
     <!-- Access tab -->
     <!-- ========== -->
     <div id="bwEventTab-Access" class="invisible">
-      <div id="sharingBox">
+      <div id="sharingBox">        
         <xsl:apply-templates select="/bedework/eventAccess/access/acl" mode="currentAccess">
           <xsl:with-param name="action" select="$event-setAccess"/>
           <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
@@ -3021,11 +3021,8 @@
           <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
         </xsl:apply-templates>
         <xsl:call-template name="entityAccessForm">
-          <xsl:with-param name="hideSubmitButton">true</xsl:with-param>
+          <xsl:with-param name="method">2</xsl:with-param>
         </xsl:call-template>
-        <p>
-          <input name="updateEventAccess" type="submit" value="update access"/>
-        </p>
       </div>
     </div>
 
@@ -3466,13 +3463,6 @@
           <!-- there's only one collection of freebusy; this for-each is
                being used to pick out just the freebusy node and
                shorten the select statements below. -->
-            <xsl:variable name="formattedStartDate">
-              <xsl:value-of select="substring(start,1,4)"/>-<xsl:value-of select="number(substring(start,5,2))"/>-<xsl:value-of select="number(substring(start,7,2))"/>
-            </xsl:variable>
-            <xsl:variable name="formattedEndDate">
-              <xsl:value-of select="substring(end,1,4)"/>-<xsl:value-of select="number(substring(end,5,2))"/>-<xsl:value-of select="number(substring(end,7,2))"/>
-            </xsl:variable>
-
             <table id="freeBusyAgg">
               <tr>
                 <td></td>
@@ -3552,7 +3542,8 @@
                           <xsl:otherwise><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></xsl:otherwise>
                         </xsl:choose>
                         <span class="eventTip">
-                          <xsl:value-of select="$formattedStartDate"/><br/>
+                          <xsl:value-of select="substring(../dateString,1,4)"/>-<xsl:value-of select="number(substring(../dateString,5,2))"/>-<xsl:value-of select="number(substring(../dateString,7,2))"/>
+                          <br/>
                           <strong>
                             <xsl:call-template name="timeFormatter">
                               <xsl:with-param name="timeString" select="$startTime"/>
@@ -3792,7 +3783,7 @@
       <xsl:for-each select="day">
         <tr>
           <th>
-            <xsl:value-of select="substring(start,1,4)"/>-<xsl:value-of select="substring(start,5,2)"/>-<xsl:value-of select="substring(start,7,2)"/>
+            <xsl:value-of select="number(substring(dateString,5,2))"/>-<xsl:value-of select="number(substring(dateString,7,2))"/>
           </th>
           <xsl:for-each select="period">
             <xsl:variable name="startTime"><xsl:apply-templates  select="start" mode="timeDisplay"/></xsl:variable>
@@ -6916,7 +6907,20 @@
 
   <xsl:template name="entityAccessForm">
     <xsl:param name="type"/><!-- optional: currently used for inbox and outbox to conditionally display scheduling access -->
-    <xsl:param name="hideSubmitButton">false</xsl:param>
+    <xsl:param name="method">1</xsl:param><!-- optional:
+      there are two methods of setting access
+      - method 1, the older method, uses a single request/response per principal
+      - method 2 constructs a javascript object that commits the entire ACL 
+        structure in a single request
+      Both methods are currently supported.  Method one is used for calendars,
+      method two for setting event access.  At some point we may move all access
+      control setting to method two. -->
+    <xsl:param name="acl"/><!-- nodeset of entity acls used to initialize 
+      javascript object. Required for method two. -->
+      
+    <xsl:if test="$method = '2' and $acl != ''">
+      <!-- do some initialization here -->
+    </xsl:if>
     <table cellpadding="0" id="shareFormTable" class="common">
       <tr>
         <th colspan="2" class="commonHeader">Add:</th>
@@ -7187,9 +7191,14 @@
         </td>
       </tr>
     </table>
-    <xsl:if test="$hideSubmitButton = 'false'">
-      <input type="submit" name="submit" value="Submit"/>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="$method = '2'">
+        <input type="button" name="updateACLs" value="update access" onclick="updateAccessAcl(this.form)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <input type="submit" name="submit" value="Submit"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="acl" mode="currentAccess">
