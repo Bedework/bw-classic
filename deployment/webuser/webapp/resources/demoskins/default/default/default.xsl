@@ -719,13 +719,13 @@
          <td class="leftCell">
            <input type="button" value="add..." onmouseover="toggleActionIcons('bwActionIcons-0','bwActionIcons')" onclick="toggleActionIcons('bwActionIcons-0','bwActionIcons')"/>
            <xsl:call-template name="actionIcons">
-             <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param> 
+             <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param>
              <xsl:with-param name="startDate">
                <xsl:choose>
                  <xsl:when test="/bedework/periodname = 'day'"><xsl:value-of select="/bedework/firstday/date"/></xsl:when>
                  <xsl:otherwise><xsl:value-of select="/bedework/now/date"/></xsl:otherwise>
                </xsl:choose>
-             </xsl:with-param>             
+             </xsl:with-param>
            </xsl:call-template>
          </td>
          <td class="rightCell">
@@ -836,7 +836,7 @@
        </tr>
     </table>
   </xsl:template>
-  
+
   <xsl:template name="actionIcons">
     <xsl:param name="startDate"/>
     <xsl:param name="actionIconsId"/>
@@ -1130,7 +1130,7 @@
                   <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
                 </a>
                 <xsl:call-template name="actionIcons">
-                  <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param> 
+                  <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
                   <xsl:with-param name="startDate"><xsl:value-of select="$dayDate"/></xsl:with-param>
                 </xsl:call-template>
               </div>
@@ -1179,7 +1179,7 @@
                       <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
                     </a>
                    <xsl:call-template name="actionIcons">
-                     <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>  
+                     <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
                      <xsl:with-param name="startDate"><xsl:value-of select="$dayDate"/></xsl:with-param>
                    </xsl:call-template>
                   </div>
@@ -2041,7 +2041,7 @@
           </a>
         </li>
       </ul>
-      
+
     <!-- Basic tab -->
     <!-- ============== -->
     <!-- this tab is visible by default -->
@@ -2371,7 +2371,7 @@
                     <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
-                This 
+                This
                 <xsl:choose>
                   <xsl:when test="form/entityType = '2'">task</xsl:when>
                   <xsl:otherwise>event</xsl:otherwise>
@@ -2395,7 +2395,7 @@
             </td>
           </tr>
         </xsl:if>
-        
+
         <!--  Category  -->
         <tr>
           <td class="fieldname">
@@ -3028,7 +3028,7 @@
         </p>
       </div>
     </div>
-    
+
     <!-- Scheduling tab -->
     <!-- ============== -->
     <div id="bwEventTab-Scheduling" class="invisible">
@@ -3038,7 +3038,7 @@
             <xsl:with-param name="trash">no</xsl:with-param>
           </xsl:apply-templates>
         </xsl:if>
-    
+
         <xsl:if test="form/recipients/recipient">
           <xsl:apply-templates select="form/recipients">
             <xsl:with-param name="trash">no</xsl:with-param>
@@ -3428,7 +3428,7 @@
     </h2>
 
     <div id="recipientsAndAttendees">
-      <h4> Add recipients and attendees</h4>      
+      <h4> Add recipients and attendees</h4>
       <form name="raForm" id="recipientsAndAttendeesForm" action="{$event-attendeesForEvent}" method="post">
         <div id="raContent">
           <input name="uri" width="40"/>
@@ -3453,11 +3453,11 @@
             <option value="TENTATIVE">tentative</option>
             <option value="DELEGATED">delegated</option>
           </select>
-          
+
           <xsl:if test="/bedework/attendees/attendee">
             <xsl:apply-templates select="/bedework/attendees"/>
           </xsl:if>
-      
+
           <xsl:if test="/bedework/recipients/recipient">
             <xsl:apply-templates select="/bedework/recipients"/>
           </xsl:if>
@@ -3472,7 +3472,7 @@
             <xsl:variable name="formattedEndDate">
               <xsl:value-of select="substring(end,1,4)"/>-<xsl:value-of select="number(substring(end,5,2))"/>-<xsl:value-of select="number(substring(end,7,2))"/>
             </xsl:variable>
-    
+
             <table id="freeBusyAgg">
               <tr>
                 <td></td>
@@ -3544,7 +3544,7 @@
                           <xsl:otherwise>free</xsl:otherwise>
                         </xsl:choose>
                       </xsl:attribute>
-                      <a href="{$gotoEditEvent}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}">
+                      <a href="{$updateEvent}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}&amp;initDates=yes">
                         <xsl:choose>
                           <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
                             <xsl:value-of select="number(numBusy) + number(numTentative)"/>
@@ -3596,9 +3596,9 @@
       </form>
     </div>
   </xsl:template>
-  
+
   <xsl:template match="attendees">
-    <xsl:param name="trash">yes</xsl:param> 
+    <xsl:param name="trash">yes</xsl:param>
     <table id="attendees" class="widget" cellspacing="0">
       <tr>
         <th colspan="4">Attendees</th>
@@ -3673,7 +3673,7 @@
       </xsl:for-each>
     </table>
   </xsl:template>
-  
+
   <xsl:template match="event" mode="addEventRef">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
@@ -3828,7 +3828,7 @@
         <td>tentative</td>
       </tr>
     </table>
-    
+
     <form name="viewFreeBusyForm" id="viewFreeBusyForm" method="post" action="{$freeBusy-fetch}">
       View user's free/busy:<br/>
       <input type="text" name="userid" size="20"/>
@@ -7493,7 +7493,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
   <!-- search and replace template taken from
        http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
   <xsl:template name="replace">
