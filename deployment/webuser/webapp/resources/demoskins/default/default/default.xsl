@@ -268,7 +268,7 @@
                         <xsl:apply-templates select="/bedework/calendars" mode="exportCalendars"/>
                       </xsl:when>
                       <xsl:when test="/bedework/page='freeBusy'">
-                        <xsl:apply-templates select="/bedework/freebusy"/>
+                        <xsl:apply-templates select="/bedework/freebusy" mode="freeBusyPage"/>
                       </xsl:when>
                       <xsl:when test="/bedework/page='modPrefs'">
                         <xsl:apply-templates select="/bedework/prefs"/>
@@ -3459,133 +3459,141 @@
             <xsl:apply-templates select="/bedework/recipients"/>
           </xsl:if>
 
-          <xsl:for-each select="/bedework/freebusy">
-          <!-- there's only one collection of freebusy; this for-each is
-               being used to pick out just the freebusy node and
-               shorten the select statements below. -->
-            <table id="freeBusyAgg">
-              <tr>
-                <td></td>
-                <th colspan="24" class="left">
-                  Freebusy for
-                  <span class="who">
-                    <xsl:choose>
-                      <xsl:when test="who != ''">
-                        <xsl:value-of select="who"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        all attendees
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </span>
-                </th>
-                <!-- at some point allow switching of timezones:
-                <th colspan="32" class="right">
-                  <xsl:variable name="currentTimezone">America/Los_Angeles</xsl:variable>
-                  <xsl:value-of select="$formattedStartDate"/> to <xsl:value-of select="$formattedEndDate"/>
-                  <select name="timezone" id="timezonesDropDown" onchange="submit()">
-                    <xsl:for-each select="/bedework-fbaggregator/timezones/tzid">
-                      <option>
-                        <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
-                        <xsl:if test="node() = $currentTimezone"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                        <xsl:value-of select="."/>
-                      </option>
-                    </xsl:for-each>
-                  </select>
-                </th>-->
-              </tr>
-              <tr>
-                <td>&#160;</td>
-                <td colspan="12" class="morning">AM</td>
-                <td colspan="12" class="evening">PM</td>
-              </tr>
-              <tr>
-                <td>&#160;</td>
-                <xsl:for-each select="day[position()=1]/period">
-                  <td class="timeLabels">
-                    <xsl:choose>
-                      <xsl:when test="number(start) mod 200 = 0">
-                        <xsl:call-template name="timeFormatter">
-                          <xsl:with-param name="timeString" select="start"/>
-                          <xsl:with-param name="showMinutes">no</xsl:with-param>
-                          <xsl:with-param name="showAmPm">no</xsl:with-param>
-                        </xsl:call-template>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        &#160;
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </td>
-                </xsl:for-each>
-              </tr>
-              <xsl:for-each select="day">
-                <tr>
-                  <td class="dayDate"><xsl:value-of select="number(substring(dateString,5,2))"/>-<xsl:value-of select="number(substring(dateString,7,2))"/></td>
-                  <xsl:for-each select="period">
-                    <xsl:variable name="startTime" select="start"/>
-                    <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
-                    <xsl:variable name="startDate"><xsl:value-of select="../dateString"/>T<xsl:value-of select="start"/>00</xsl:variable>
-                    <xsl:variable name="meetingDuration" select="length"/>
-                    <td>
-                      <xsl:attribute name="class">
-                        <xsl:choose>
-                          <xsl:when test="fbtype = '0'">busy</xsl:when>
-                          <xsl:when test="fbtype = '3'">tentative</xsl:when>
-                          <xsl:otherwise>free</xsl:otherwise>
-                        </xsl:choose>
-                      </xsl:attribute>
-                      <a href="{$updateEvent}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}&amp;initDates=yes">
-                        <xsl:choose>
-                          <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
-                            <xsl:value-of select="number(numBusy) + number(numTentative)"/>
-                          </xsl:when>
-                          <xsl:otherwise><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></xsl:otherwise>
-                        </xsl:choose>
-                        <span class="eventTip">
-                          <xsl:value-of select="substring(../dateString,1,4)"/>-<xsl:value-of select="number(substring(../dateString,5,2))"/>-<xsl:value-of select="number(substring(../dateString,7,2))"/>
-                          <br/>
-                          <strong>
-                            <xsl:call-template name="timeFormatter">
-                              <xsl:with-param name="timeString" select="$startTime"/>
-                            </xsl:call-template>
-                          </strong>
-                          <xsl:if test="numBusy &gt; 0">
-                            <br/><xsl:value-of select="numBusy"/> busy
-                          </xsl:if>
-                          <xsl:if test="numTentative &gt; 0">
-                            <br/><xsl:value-of select="numTentative"/> tentative
-                          </xsl:if>
-                          <xsl:if test="numBusy = 0 and numTentative = 0">
-                            <br/><em>all free</em>
-                          </xsl:if>
-                        </span>
-                      </a>
-                    </td>
-                  </xsl:for-each>
-                </tr>
-              </xsl:for-each>
-            </table>
-
-            <table id="freeBusyAggKey">
-              <tr>
-                <td class="free">*</td>
-                <td>free</td>
-                <td>&#160;</td>
-                <td class="busy">*</td>
-                <td>busy</td>
-                <td>&#160;</td>
-                <td class="tentative">*</td>
-                <td>tentative</td>
-              </tr>
-            </table>
-          </xsl:for-each>
-
+          <xsl:apply-templates select="/bedework/freebusy" mode="freeBusyGrid">
+            <xsl:with-param name="aggregation">true</xsl:with-param>
+          </xsl:apply-templates>
+            
           <div class="eventSubmitButtons">
             <input type="button" value="continue" onclick="window.location='{$gotoEditEvent}'"/>
           </div>
         </div>
       </form>
     </div>
+  </xsl:template>
+  
+  <xsl:template match="freebusy" mode="freeBusyGrid">
+    <xsl:param name="aggregation">false</xsl:param> 
+    <!-- there's only one collection of freebusy; this for-each is
+         being used to pick out just the freebusy node and
+         shorten the select statements below. -->
+      <table id="freeBusy">
+        <tr>
+          <td></td>
+          <th colspan="24" class="left">
+            Freebusy for
+            <span class="who">
+              <xsl:choose>
+                <xsl:when test="$aggregation = 'true'">
+                  all attendees
+                </xsl:when>
+                <xsl:when test="starts-with(fbattendee/recipient,'mailto:')">
+                  <xsl:value-of select="substring-after(fbattendee/recipient,'mailto:')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="fbattendee/recipient"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+          </th>
+          <!-- at some point allow switching of timezones:
+          <th colspan="32" class="right">
+            <xsl:variable name="currentTimezone">America/Los_Angeles</xsl:variable>
+            <xsl:value-of select="$formattedStartDate"/> to <xsl:value-of select="$formattedEndDate"/>
+            <select name="timezone" id="timezonesDropDown" onchange="submit()">
+              <xsl:for-each select="/bedework-fbaggregator/timezones/tzid">
+                <option>
+                  <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
+                  <xsl:if test="node() = $currentTimezone"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                  <xsl:value-of select="."/>
+                </option>
+              </xsl:for-each>
+            </select>
+          </th>-->
+        </tr>
+        <tr>
+          <td>&#160;</td>
+          <td colspan="12" class="morning">AM</td>
+          <td colspan="12" class="evening">PM</td>
+        </tr>
+        <tr>
+          <td>&#160;</td>
+          <xsl:for-each select="day[position()=1]/period">
+            <td class="timeLabels">
+              <xsl:choose>
+                <xsl:when test="number(start) mod 200 = 0">
+                  <xsl:call-template name="timeFormatter">
+                    <xsl:with-param name="timeString" select="start"/>
+                    <xsl:with-param name="showMinutes">no</xsl:with-param>
+                    <xsl:with-param name="showAmPm">no</xsl:with-param>
+                  </xsl:call-template>
+                </xsl:when>
+                <xsl:otherwise>
+                  &#160;
+                </xsl:otherwise>
+              </xsl:choose>
+            </td>
+          </xsl:for-each>
+        </tr>
+        <xsl:for-each select="day">
+          <tr>
+            <td class="dayDate"><xsl:value-of select="number(substring(dateString,5,2))"/>-<xsl:value-of select="number(substring(dateString,7,2))"/></td>
+            <xsl:for-each select="period">
+              <xsl:variable name="startTime" select="start"/>
+              <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
+              <xsl:variable name="startDate"><xsl:value-of select="../dateString"/>T<xsl:value-of select="start"/>00</xsl:variable>
+              <xsl:variable name="meetingDuration" select="length"/>
+              <td>
+                <xsl:attribute name="class">
+                  <xsl:choose>
+                    <xsl:when test="fbtype = '0'">busy</xsl:when>
+                    <xsl:when test="fbtype = '3'">tentative</xsl:when>
+                    <xsl:otherwise>free</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:attribute>
+                <a href="{$updateEvent}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}&amp;initDates=yes">
+                  <xsl:choose>
+                    <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
+                      <xsl:value-of select="number(numBusy) + number(numTentative)"/>
+                    </xsl:when>
+                    <xsl:otherwise><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></xsl:otherwise>
+                  </xsl:choose>
+                  <span class="eventTip">
+                    <xsl:value-of select="substring(../dateString,1,4)"/>-<xsl:value-of select="number(substring(../dateString,5,2))"/>-<xsl:value-of select="number(substring(../dateString,7,2))"/>
+                    <br/>
+                    <strong>
+                      <xsl:call-template name="timeFormatter">
+                        <xsl:with-param name="timeString" select="$startTime"/>
+                      </xsl:call-template>
+                    </strong>
+                    <xsl:if test="numBusy &gt; 0">
+                      <br/><xsl:value-of select="numBusy"/> busy
+                    </xsl:if>
+                    <xsl:if test="numTentative &gt; 0">
+                      <br/><xsl:value-of select="numTentative"/> tentative
+                    </xsl:if>
+                    <xsl:if test="numBusy = 0 and numTentative = 0">
+                      <br/><em>all free</em>
+                    </xsl:if>
+                  </span>
+                </a>
+              </td>
+            </xsl:for-each>
+          </tr>
+        </xsl:for-each>
+      </table>
+
+      <table id="freeBusyKey">
+        <tr>
+          <td class="free">*</td>
+          <td>free</td>
+          <td>&#160;</td>
+          <td class="busy">*</td>
+          <td>busy</td>
+          <td>&#160;</td>
+          <td class="tentative">*</td>
+          <td>tentative</td>
+        </tr>
+      </table>
   </xsl:template>
 
   <xsl:template match="attendees">
@@ -3731,7 +3739,7 @@
   </xsl:template>
 
   <!--+++++++++++++++ Free / Busy ++++++++++++++++++++-->
-  <xsl:template match="freebusy">
+  <xsl:template match="freebusy" mode="freeBusyPage">
     <span id="freeBusyShareLink">
       <a href="{$calendar-fetch}">share my free-busy</a>
       <!--<div dojoType="FloatingPane" id="bwHelpWidget-shareFreeBusy"
@@ -3763,99 +3771,15 @@
     <h2>
       Free / Busy
     </h2>
-    <div id="freeBusyWho">for <xsl:value-of select="day/who"/></div>
-    <table id="freeBusy">
-      <tr>
-        <td>&#160;</td>
-        <xsl:for-each select="day[position()=1]/period">
-          <th>
-            <xsl:choose>
-              <xsl:when test="number(start) mod 200 = 0">
-                <xsl:apply-templates select="start" mode="timeDisplay"/>
-              </xsl:when>
-              <xsl:otherwise>
-                &#160;
-              </xsl:otherwise>
-            </xsl:choose>
-          </th>
-        </xsl:for-each>
-      </tr>
-      <xsl:for-each select="day">
-        <tr>
-          <th>
-            <xsl:value-of select="number(substring(dateString,5,2))"/>-<xsl:value-of select="number(substring(dateString,7,2))"/>
-          </th>
-          <xsl:for-each select="period">
-            <xsl:variable name="startTime"><xsl:apply-templates  select="start" mode="timeDisplay"/></xsl:variable>
-            <!-- the start date for the add event link is a concat of the day's date plus the period's time (+ seconds)-->
-            <xsl:variable name="startDate"><xsl:value-of select="substring(../start,1,8)"/>T<xsl:value-of select="start"/>00</xsl:variable>
-            <xsl:variable name="minutes" select="length"/>
-            <xsl:variable name="fbClass">
-              <xsl:choose>
-                <xsl:when test="fbtype = '0'">busy</xsl:when>
-                <xsl:when test="fbtype = '3'">tentative</xsl:when>
-                <xsl:otherwise>free</xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <td class="{$fbClass}">
-              <a href="{$initEvent}&amp;startdate={$startDate}&amp;minutes={$minutes}" title="{$startTime} - add event">
-                <img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/>
-              </a>
-            </td>
-          </xsl:for-each>
-        </tr>
-      </xsl:for-each>
-    </table>
-
-    <table id="freeBusyKey">
-      <tr>
-        <td class="free"><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></td>
-        <td>free</td>
-        <td>&#160;</td>
-        <td class="busy"><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></td>
-        <td>busy</td>
-        <td>&#160;</td>
-        <td class="tentative"><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></td>
-        <td>tentative</td>
-      </tr>
-    </table>
-
-    <form name="viewFreeBusyForm" id="viewFreeBusyForm" method="post" action="{$freeBusy-fetch}">
-      View user's free/busy:<br/>
-      <input type="text" name="userid" size="20"/>
-      <input type="submit" name="submit" value="Submit"/>
-    </form>
-  </xsl:template>
-
-  <xsl:template match="start" mode="timeDisplay">
-    <xsl:choose>
-      <xsl:when test="node()=0000">12am</xsl:when>
-      <xsl:when test="node()=0100">1am</xsl:when>
-      <xsl:when test="node()=0200">2am</xsl:when>
-      <xsl:when test="node()=0300">3am</xsl:when>
-      <xsl:when test="node()=0400">4am</xsl:when>
-      <xsl:when test="node()=0500">5am</xsl:when>
-      <xsl:when test="node()=0600">6am</xsl:when>
-      <xsl:when test="node()=0700">7am</xsl:when>
-      <xsl:when test="node()=0800">8am</xsl:when>
-      <xsl:when test="node()=0900">9am</xsl:when>
-      <xsl:when test="node()=1000">10am</xsl:when>
-      <xsl:when test="node()=1100">11am</xsl:when>
-      <xsl:when test="node()=1200">NOON</xsl:when>
-      <xsl:when test="node()=1300">1pm</xsl:when>
-      <xsl:when test="node()=1400">2pm</xsl:when>
-      <xsl:when test="node()=1500">3pm</xsl:when>
-      <xsl:when test="node()=1600">4pm</xsl:when>
-      <xsl:when test="node()=1700">5pm</xsl:when>
-      <xsl:when test="node()=1800">6pm</xsl:when>
-      <xsl:when test="node()=1900">7pm</xsl:when>
-      <xsl:when test="node()=2000">8pm</xsl:when>
-      <xsl:when test="node()=2100">9pm</xsl:when>
-      <xsl:when test="node()=2200">10pm</xsl:when>
-      <xsl:when test="node()=2300">11pm</xsl:when>
-      <xsl:when test="node()=2400">12am</xsl:when>
-      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
-    </xsl:choose>
+    
+    <div id="freeBusyPage">
+      <form name="viewFreeBusyForm" id="viewFreeBusyForm" method="post" action="{$freeBusy-fetch}">
+        View user's free/busy:
+        <input type="text" name="userid" size="20"/>
+        <input type="submit" name="submit" value="Submit"/>
+      </form>
+      <xsl:apply-templates select="." mode="freeBusyGrid"/>
+    </div>
   </xsl:template>
 
   <!--+++++++++++++++ Categories ++++++++++++++++++++-->

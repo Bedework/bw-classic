@@ -1501,88 +1501,6 @@ messages.
   font-size: 0.8em;
   font-style: italic;
 }
-#bedework #freeBusyWho {
-  background-color: #666;
-  color: #eee;
-  padding: 0.2em 0.5em;
-  text-align: left;
-  font-weight: normal;
-}
-#bedework #freeBusy {
-  margin: 1em;
-  font-size: 0.8em;
-}
-#bedework #freeBusy td {
-  vertical-align: middle;
-  text-align: center;
-  padding: 0;
-  margin: 0;
-  width: 2em;
-  height: 10px;
-}
-#bedework #freeBusy th {
-  vertical-align: middle;
-  text-align: center;
-  font-weight: normal;
-  padding: 0;
-  margin: 0;
-}
-#bedework #freeBusy th.date,
-#bedework #freeBusy th.time {
-  font-weight: bold;
-}
-#bedework #freeBusy td.free,
-#bedework #freeBusyKey td.free {
-  /*color: #A3BAEA;
-  background-color: #A3BAEA;*/
-  color: white;
-  background-color: white;
-  border: 1px solid #ddd;
-}
-#bedework #freeBusy td.busy,
-#bedework #freeBusyKey td.busy {
-  color: #A3BAEA;
-  background-color: #A3BAEA;
-  border: 1px solid #ddd;
-}
-#bedework #freeBusy td.tentative,
-#bedework #freeBusyKey td.tentative {
-  color: #DFE7FB;
-  background: #DFE7FB url('../../resources/tentativeLines.gif') top;
-  border: 1px solid #ddd;
-}
-#bedework #freeBusyKey {
-  margin: 0.5em 1em 1em 1em;
-  float: left;
-}
-#bedework #freeBusyKey td {
-  padding: 5px;
-}
-#bedework #freeBusy td.free a {
-  color: #ddd;
-  background-color: transparent;
-  display: block;
-  text-decoration: none;
-}
-#bedework #freeBusy td.tentative a  {
-  color: #DFE7FB;
-  background-color: transparent;
-  display: block;
-  text-decoration: none;
-}
-#bedework #freeBusy td.busy a {
-  color: #A3BAEA;
-  background-color: transparent;
-  display: block;
-  text-decoration: none;
-}
-#bedework #freeBusy td.busy a:hover,
-#bedework #freeBusy td.free a:hover,
-#bedework #freeBusy td.tentative a:hover  {
-  color: black;
-  background-color: yellow;
-  text-decoration: none;
-}
 #bedework #freeBusyShareLink {
   float: right;
   font-size: 0.8em;
@@ -1607,13 +1525,23 @@ messages.
 #bedework #recipientsAndAttendeesForm {
   white-space: nowrap;
 }
-#freeBusyAgg {
+#freeBusy {
   clear: both;
   margin: 1em 0 0 0;
   padding: 1em 1em 1em 0;
   border: 1px solid #ccc;
 }
-#freeBusyAgg td {
+#freeBusyPage #freeBusy {
+  border: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+#freeBusyPage #viewFreeBusyForm {
+  float: right;
+  font-size: 0.9em;
+  margin: 1em 1em 0 0;
+}
+#freeBusy td {
   vertical-align: middle;
   text-align: center;
   font-size: 0.8em;
@@ -1622,90 +1550,94 @@ messages.
   width: 2em;
   height: 10px;
 }
-#freeBusyAgg th.left {
+#freeBusy th.left {
   text-align: left;
 }
-#freeBusyAgg td.morning {
+#freeBusy td.morning {
   color: black;
   background: #ddf;
 }
-#freeBusyAgg td.evening {
+#freeBusy td.evening {
   color: black;
   background: #ccc;
 }
-#freeBusyAgg td.timeLabels {
+#freeBusy td.timeLabels {
   vertical-align: middle;
   text-align: center;
   font-weight: normal;
   padding: 0;
   margin: 0;
 }
-#freeBusyAgg td.dayDate {
+#freeBusy td.dayDate {
   white-space: nowrap;
   text-align: right;
   padding: 0;
   width: 4em;
 }
-#freeBusyAgg td.free,
-#freeBusyAggKey td.free {
+#freeBusy td.free,
+#freeBusyKey td.free {
   /*color: #A3BAEA;
   background-color: #A3BAEA;*/
   color: white;
   background-color: white;
   border: 1px solid #ddd;
 }
-#freeBusyAgg td.busy,
-#freeBusyAggKey td.busy {
+#freeBusy td.busy,
+#freeBusyKey td.busy {
   color: #A3BAEA;
   background-color: #A3BAEA;
   border: 1px solid #ddd;
 }
-#freeBusyAgg td.tentative,
-#freeBusyAggKey td.tentative {
+#freeBusy td.tentative,
+#freeBusyKey td.tentative {
   color: #DFE7FB;
   background: #DFE7FB url('../../resources/tentativeLines.gif') top;
   border: 1px solid #ddd;
 }
-#freeBusyAggKey {
-  margin: 0.5em 0 0 0;
+#freeBusyKey {
+  float: left;
+  margin: 0.5em 1em 0 0;
 }
-#freeBusyAggKey td {
+#freeBusyPage #freeBusyKey {
+  margin-left: 2em; 
+}
+#freeBusyKey td {
   padding: 2px 4px;
 }
-#freeBusyAgg a {
+#freeBusy a {
   display: block;
   text-decoration: none;
   width: 100%;
 }
-#freeBusyAgg td.free a {
+#freeBusy td.free a {
   color: #A3BAEA;
   background-color: transparent;
 }
-#freeBusyAgg td.tentative a  {
+#freeBusy td.tentative a  {
   color: #333;
   background-color: transparent;
 }
-#freeBusyAgg td.busy a {
+#freeBusy td.busy a {
   color: #333;
   background-color: transparent;
 }
-#freeBusyAgg td.busy a:hover,
-#freeBusyAgg td.free a:hover,
-#freeBusyAgg td.tentative a:hover  {
+#freeBusy td.busy a:hover,
+#freeBusy td.free a:hover,
+#freeBusy td.tentative a:hover  {
   color: black;
   background-color: yellow;
   text-decoration: none;
 }
-#freeBusyAgg a:hover {
+#freeBusy a:hover {
   /* required for eventTip to hover correctly;
      apply only to the hover pseudo class, or
      the other anchors nearby will cover the eventTip in IE */
   position: relative;
 }
-#freeBusyAgg a span.eventTip {
+#freeBusy a span.eventTip {
   display: none;
 }
-#freeBusyAgg a:hover span.eventTip {
+#freeBusy a:hover span.eventTip {
   display: block;
   position: absolute;
   width: 8em;
@@ -1716,12 +1648,12 @@ messages.
   padding: 4px;
   border: 1px solid #333;
 }
-#freeBusyAgg #timezonesDropDown {
+#freeBusy #timezonesDropDown {
   width: 14em;
   font-size: 8pt;
   margin: 0 0 0 2em;
 }
-#freeBusyAgg #timezonesButton {
+#freeBusy #timezonesButton {
   font-size: 8pt;
 }
 #bedework #sharingBox {
