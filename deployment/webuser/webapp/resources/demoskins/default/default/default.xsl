@@ -5547,7 +5547,7 @@
       <tr>
         <th class="commonHeader">&#160;</th>
         <th class="commonHeader">sent</th>
-        <th class="commonHeader">organizer</th>
+        <th class="commonHeader">from</th>
         <th class="commonHeader">title</th>
         <th class="commonHeader">start</th>
         <th class="commonHeader">end</th>
@@ -5592,22 +5592,49 @@
             </a>
           </td>
           <td>
-            <xsl:if test="organizer">
-              <xsl:variable name="organizerUri" select="organizer/organizerUri"/>
-              <xsl:choose>
-                <xsl:when test="organizer/cn != ''">
-                  <xsl:value-of select="organizer/cn"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="substring-after(organizer/organizerUri,'mailto:')"/>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:if test="organizer/organizerUri != ''">
-                <a href="{$organizerUri}" class="emailIcon" title="email">
-                  <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
-                </a>
-              </xsl:if>
-            </xsl:if>
+            <xsl:choose>
+              <xsl:when test="scheduleMethod = '1' or 
+                              scheduleMethod = '2' or
+                              scheduleMethod = '4' or
+                              scheduleMethod = '5' or
+                              scheduleMethod = '8'">
+                <xsl:if test="organizer">
+                  <xsl:variable name="organizerUri" select="organizer/organizerUri"/>
+                  <xsl:choose>
+                    <xsl:when test="organizer/cn != ''">
+                      <xsl:value-of select="organizer/cn"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="substring-after(organizer/organizerUri,'mailto:')"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  <xsl:if test="organizer/organizerUri != ''">
+                    <a href="{$organizerUri}" class="emailIcon" title="email">
+                      <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
+                    </a>
+                  </xsl:if>
+                </xsl:if>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:if test="attendees/attendee">
+                  <!-- there will only be one attendee at this point -->
+                  <xsl:variable name="attendeeUri" select="attendees/attendee/attendeeUri"/>
+                  <xsl:choose>
+                    <xsl:when test="attendees/attendee/cn != ''">
+                      <xsl:value-of select="attendees/attendee/cn"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="substring-after(attendees/attendee/attendeeUri,'mailto:')"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  <xsl:if test="$attendeeUri != ''">
+                    <a href="{$attendeeUri}" class="emailIcon" title="email">
+                      <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
+                    </a>
+                  </xsl:if>
+                </xsl:if>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
           <td>
             <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
@@ -5779,6 +5806,73 @@
               </xsl:otherwise>
             </xsl:choose>
           </th>
+        </tr>
+        
+        <tr>
+          <td class="fieldname">
+            Calendar:
+          </td>
+          <td class="fieldval scheduleActions">
+            <!-- the string "user/" should not be hard coded; fix this -->
+            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
+            <xsl:variable name="writableCalendars">
+              <xsl:value-of select="
+                count(/bedework/myCalendars//calendar[calType = '1' and
+                       currentAccess/current-user-privilege-set/privilege/write-content]) +
+                count(/bedework/mySubscriptions//calendar[calType = '1' and
+                       currentAccess/current-user-privilege-set/privilege/write-content and
+                       (not(contains(path,$userPath)))])"/>
+            </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="$writableCalendars = 1">
+                <!-- there is only 1 writable calendar, so find it by looking down both trees at once -->
+                <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[calType = '1' and
+                         currentAccess/current-user-privilege-set/privilege/write-content]/path"/><xsl:value-of select="/bedework/mySubscriptions//calendar[calType = '1' and
+                       currentAccess/current-user-privilege-set/privilege/write-content and
+                       (not(contains(path,$userPath)))]/path"/></xsl:variable>
+
+                <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
+
+                <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
+                <span id="bwEventCalDisplay">
+                  <xsl:choose>
+                    <xsl:when test="contains($newCalPath,$userFullPath)">
+                      <xsl:value-of select="substring-after($newCalPath,$userFullPath)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="$newCalPath"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </span>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="hidden" name="newCalPath" id="bwNewCalPathField" value="">
+                  <xsl:if test="form/calendar/calType = '1'"><xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute></xsl:if>
+                </input>
+
+                <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
+                
+                <span id="bwEventCalDisplay">
+                  <xsl:if test="form/calendar/calType = '1'">
+                    <xsl:choose>
+                      <xsl:when test="contains(form/calendar/path,$userFullPath)">
+                        <xsl:value-of select="substring-after(form/calendar/path,$userFullPath)"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="form/calendar/path"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:if>
+                  <xsl:text> </xsl:text>
+                  <!-- this final text element is required to avoid an empty
+                       span element which is improperly rendered in the browser -->
+                </span>
+
+                <xsl:call-template name="selectCalForEvent"/>
+
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
         </tr>
         <tr>
           <td class="fieldname">Action:</td>
@@ -6098,27 +6192,6 @@
             </td>
           </tr>
         </xsl:if>
-        <tr>
-          <td class="fieldname">
-            Calendar:
-          </td>
-          <td class="fieldval">
-            <xsl:variable name="newCalPath" select="/bedework/formElements/form/calendar/path"/>
-            <input type="hidden" name="newCalPath" value="{$newCalPath}" id="bwNewCalPathField"/>
-            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-            <span id="bwEventCalDisplay">
-              <xsl:choose>
-                <xsl:when test="contains(/bedework/formElements/form/calendar/path,$userPath)">
-                  <xsl:value-of select="substring-after(/bedework/formElements/form/calendar/path,$userPath)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="/bedework/formElements/form/calendar/path"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </span>
-            copy this event to a calendar: <xsl:call-template name="selectCalForEvent"/>
-          </td>
-        </tr>
         <!--  Transparency  -->
         <!--
         <tr>
@@ -6200,13 +6273,13 @@
         <td class="fieldval scheduleActions">
           <strong>
             <a>
-              <xsl:attribute name="href"><xsl:value-of select="attendee/attendeeUri"/></xsl:attribute>
+              <xsl:attribute name="href"><xsl:value-of select="attendees/attendee/attendeeUri"/></xsl:attribute>
               <xsl:choose>
                 <xsl:when test="cn != ''">
                   <xsl:value-of select="cn"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="substring-after(attendee/attendeeUri,'mailto:')"/>
+                  <xsl:value-of select="substring-after(attendees/attendee/attendeeUri,'mailto:')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </a>
@@ -6218,11 +6291,11 @@
           Status:
         </td>
         <td class="fieldval scheduleActions">
-          <xsl:value-of select="attendee/partstat"/>
-          <xsl:if test="comments/comment">
+          <xsl:value-of select="attendees/attendee/partstat"/>
+          <xsl:if test="comments/value">
             <p><strong>Comments:</strong></p>
             <div id="comments">
-              <xsl:for-each select="comments/comment/value">
+              <xsl:for-each select="comments/value">
                 <p><xsl:value-of select="."/></p>
               </xsl:for-each>
             </div>

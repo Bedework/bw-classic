@@ -10,7 +10,7 @@
       <xsl:when test="id='edu.rpi.sss.util.error.exc'">
         An exception occurred: <em><xsl:value-of select="param"/></em>
       </xsl:when>
-
+      
       <!-- client.error messages generally do not quite constitute validation errors
            which mostly involve changing a field content.
            Usually when we flag a data error here, it is due to a bug in the xsl -->
@@ -28,6 +28,9 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.badschedulewhat'">
         Error: Bad scheduling what parameter.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.error.scheduling.baddestinationcalendar'">
+        Error: You must set a destination calendar
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.calsuitenotadded'">
         Error: calendar suite not added.
