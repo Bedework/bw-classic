@@ -191,11 +191,6 @@
 
     <property name="org.bedework.deployutil.jar"
               location="${bin.home}/${org.bedework.deployutil.jar.name}-${project.version}.jar" />
-
-    <!-- ===============================================================
-              Default properties.
-         =============================================================== -->
-    <property file="${org.bedework.defaultdefs.properties}" />
   </target>
 
   <target name="init.build" depends="init">
