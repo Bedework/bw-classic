@@ -88,12 +88,6 @@
     <!-- from  the bin directory -->
     <fileset id="app.bin.files" dir="${bin.home}" >
       <include name="bw-webcommon*.jar" />
-      <include name="bw-webadmin*.jar" />
-    </fileset>
-
-    <!-- from  the temp jars directory -->
-    <fileset id="app.temp.lib.files" dir="${org.bedework.temp.jars}" >
-      <include name="${org.bedework.webadmin.jar.name}" />
     </fileset>
 
     <!-- ===============================================================

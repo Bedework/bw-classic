@@ -96,12 +96,6 @@
       <include name="bw-webcommon*.jar" />
     </fileset>
 
-    <!-- from  the temp jars directory
-    <fileset id="app.temp.lib.files" dir="${org.bedework.temp.jars}" >
-      <include name="${org.bedework.webclient.jar.name}" />
-    </fileset>
-    -->
-
     <!-- ===============================================================
          Build the war
          =============================================================== -->
