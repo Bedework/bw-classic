@@ -888,7 +888,7 @@
                        add...
                      </a>
                      <xsl:call-template name="actionIcons">
-                       <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param> 
+                       <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
                        <xsl:with-param name="startDate"><xsl:value-of select="$date"/></xsl:with-param>
                      </xsl:call-template>
                    </div>
@@ -2534,15 +2534,15 @@
             Status:
           </td>
           <td class="fieldval">
-            <input type="radio" name="event.status" value="CONFIRMED">
+            <input type="radio" name="eventStatus" value="CONFIRMED">
               <xsl:if test="form/status = 'CONFIRMED' or /bedework/creating = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input>
             confirmed
-            <input type="radio" name="event.status" value="TENTATIVE">
+            <input type="radio" name="eventStatus" value="TENTATIVE">
               <xsl:if test="form/status = 'TENTATIVE'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input>
             tentative
-            <input type="radio" name="event.status" value="CANCELLED">
+            <input type="radio" name="eventStatus" value="CANCELLED">
               <xsl:if test="form/status = 'CANCELLED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input>
             cancelled
@@ -3013,7 +3013,7 @@
     <!-- Access tab -->
     <!-- ========== -->
     <div id="bwEventTab-Access" class="invisible">
-      <div id="sharingBox">        
+      <div id="sharingBox">
         <xsl:apply-templates select="/bedework/eventAccess/access/acl" mode="currentAccess">
           <xsl:with-param name="action" select="$event-setAccess"/>
           <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
@@ -3462,7 +3462,7 @@
           <xsl:apply-templates select="/bedework/freebusy" mode="freeBusyGrid">
             <xsl:with-param name="aggregation">true</xsl:with-param>
           </xsl:apply-templates>
-            
+
           <div class="eventSubmitButtons">
             <input type="button" value="continue" onclick="window.location='{$gotoEditEvent}'"/>
           </div>
@@ -3470,9 +3470,9 @@
       </form>
     </div>
   </xsl:template>
-  
+
   <xsl:template match="freebusy" mode="freeBusyGrid">
-    <xsl:param name="aggregation">false</xsl:param> 
+    <xsl:param name="aggregation">false</xsl:param>
     <!-- there's only one collection of freebusy; this for-each is
          being used to pick out just the freebusy node and
          shorten the select statements below. -->
@@ -3771,7 +3771,7 @@
     <h2>
       Free / Busy
     </h2>
-    
+
     <div id="freeBusyPage">
       <form name="viewFreeBusyForm" id="viewFreeBusyForm" method="post" action="{$freeBusy-fetch}">
         View user's free/busy:
@@ -5517,7 +5517,7 @@
           </td>
           <td>
             <xsl:choose>
-              <xsl:when test="scheduleMethod = '1' or 
+              <xsl:when test="scheduleMethod = '1' or
                               scheduleMethod = '2' or
                               scheduleMethod = '4' or
                               scheduleMethod = '5' or
@@ -5731,7 +5731,7 @@
             </xsl:choose>
           </th>
         </tr>
-        
+
         <tr>
           <td class="fieldname">
             Calendar:
@@ -5775,7 +5775,7 @@
                 </input>
 
                 <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
-                
+
                 <span id="bwEventCalDisplay">
                   <xsl:if test="form/calendar/calType = '1'">
                     <xsl:choose>
@@ -6740,7 +6740,7 @@
         </td>
       </tr>
     </table>
-    
+
     <form name="eventForm" method="post" action="{$prefs-updateSchedulingPrefs}">
       <table class="common">
         <tr><td colspan="2" class="fill">Scheduling auto-respond preferences:</td></tr>
@@ -6798,13 +6798,13 @@
             <input type="radio" name="scheduleDoubleBook" value="true">
               <xsl:if test="scheduleDoubleBook = 'true'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if> 
+              </xsl:if>
               true
             </input>
             <input type="radio" name="scheduleDoubleBook" value="false">
               <xsl:if test="scheduleDoubleBook = 'false'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if> 
+              </xsl:if>
               false
             </input>
           </td>
@@ -6907,14 +6907,14 @@
     <xsl:param name="method">1</xsl:param><!-- optional:
       there are two methods of setting access
       - method 1, the older method, uses a single request/response per principal
-      - method 2 constructs a javascript object that commits the entire ACL 
+      - method 2 constructs a javascript object that commits the entire ACL
         structure in a single request
       Both methods are currently supported.  Method one is used for calendars,
       method two for setting event access.  At some point we may move all access
       control setting to method two. -->
-    <xsl:param name="acl"/><!-- nodeset of entity acls used to initialize 
+    <xsl:param name="acl"/><!-- nodeset of entity acls used to initialize
       javascript object. Required for method two. -->
-      
+
     <xsl:if test="$method = '2' and $acl != ''">
       <!-- do some initialization here -->
     </xsl:if>
