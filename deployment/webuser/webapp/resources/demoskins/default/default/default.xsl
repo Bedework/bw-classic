@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output
   method="xhtml"
-  indent="no"
+  indent="yes"
   media-type="text/html"
   doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
   doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
@@ -169,9 +169,11 @@
         <xsl:call-template name="headSection"/>
       </head>
       <body>
-        <xsl:if test="/bedework/page!='inbox'">
-          <xsl:attribute name="onload">checkStatus(<xsl:value-of select="/bedework/inboxState/numActive"/>,<xsl:value-of select="/bedework/inboxState/changed"/>,'<xsl:value-of select="$showInbox"/>')</xsl:attribute>
-        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="/bedework/page != 'inbox'">
+            <xsl:attribute name="onload">checkStatus(<xsl:value-of select="/bedework/inboxState/numActive"/>,<xsl:value-of select="/bedework/inboxState/changed"/>,'<xsl:value-of select="$showInbox"/>')</xsl:attribute>
+          </xsl:when>
+        </xsl:choose>
         <div id="bedework"><!-- main wrapper div to keep styles encapsulated within portals -->
           <xsl:choose>
             <!--deprecated:
@@ -341,7 +343,6 @@
   </xsl:template>
 
   <!--==== HEAD SECTION  ====-->
-
   <xsl:template name="headSection">
     <title>Bedework: Personal Calendar Client</title>
     <meta name="robots" content="noindex,nofollow"/>
@@ -354,7 +355,8 @@
          losing the script closing tags (which avoids browser problems) -->
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
-                  /bedework/page='modPrefs'">
+                  /bedework/page='modPrefs' or 
+                  /bedework/page='attendeeRespond'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
     </xsl:if>
     <xsl:if test="/bedework/page='modCalendar' or
@@ -370,6 +372,11 @@
       <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
+    </xsl:if>
+    <xsl:if test="/bedework/editableAccess/access/acl/ace">
+      <script type="text/javascript">
+        <xsl:apply-templates select="/bedework/editableAccess/access/acl/ace" mode="initJS"/>
+      </script>
     </xsl:if>
     <script type="text/javascript">
       <xsl:comment>
@@ -717,7 +724,7 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="utilBarTable">
        <tr>
          <td class="leftCell">
-           <input type="button" value="add..." onmouseover="toggleActionIcons('bwActionIcons-0','bwActionIcons')" onclick="toggleActionIcons('bwActionIcons-0','bwActionIcons')"/>
+           <input type="button" value="add..." onclick="toggleActionIcons('bwActionIcons-0','bwActionIcons')"/>
            <xsl:call-template name="actionIcons">
              <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param>
              <xsl:with-param name="startDate">
@@ -3014,12 +3021,35 @@
     <!-- ========== -->
     <div id="bwEventTab-Access" class="invisible">
       <div id="sharingBox">
-        <xsl:apply-templates select="/bedework/eventAccess/access/acl" mode="currentAccess">
-          <xsl:with-param name="action" select="$event-setAccess"/>
-          <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
-          <xsl:with-param name="guid" select="$guid"/>
-          <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
-        </xsl:apply-templates>
+        <xsl:choose>
+          <xsl:when test="/bedework/editableAccess/access/acl"> 
+            <xsl:apply-templates select="/bedework/editableAccess/access/acl" mode="currentAccess">
+              <xsl:with-param name="action" select="$event-setAccess"/>
+              <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
+              <xsl:with-param name="guid" select="$guid"/>
+              <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
+              <xsl:with-param name="method">2</xsl:with-param> 
+            </xsl:apply-templates>
+          </xsl:when>
+          <xsl:otherwise>
+            <h3>Current Access:</h3>
+            <table class="common scheduling" id="bwCurrentAccess">
+              <thead>
+                <tr>
+                  <th>Entry</th>
+                  <th>Access</th>
+                  <th>Inherited from</th>
+                  <td></td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="bwEventNoAcl">
+                  <td colspan="4">no access defined</td>
+                </tr>
+              </tbody>
+            </table>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:call-template name="entityAccessForm">
           <xsl:with-param name="method">2</xsl:with-param>
         </xsl:call-template>
@@ -3425,7 +3455,7 @@
     </h2>
 
     <div id="recipientsAndAttendees">
-      <h4> Add recipients and attendees</h4>
+      <h4> Add attendees and recipients</h4>
       <form name="raForm" id="recipientsAndAttendeesForm" action="{$event-attendeesForEvent}" method="post">
         <div id="raContent">
           <input name="uri" width="40"/>
@@ -3550,7 +3580,13 @@
                     <xsl:otherwise>free</xsl:otherwise>
                   </xsl:choose>
                 </xsl:attribute>
-                <a href="{$updateEvent}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}&amp;initDates=yes">
+                <xsl:variable name="action">
+                  <xsl:choose>
+                    <xsl:when test="$aggregation = 'true'"><xsl:value-of select="$updateEvent"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="$initEvent"/></xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <a href="{$action}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}&amp;initDates=yes">
                   <xsl:choose>
                     <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
                       <xsl:value-of select="number(numBusy) + number(numTentative)"/>
@@ -5716,7 +5752,16 @@
     <form name="eventForm" method="post" action="{$schedule-attendeeRespond}" id="standardForm">
       <input type="hidden" name="updateEvent" value="true"/>
       <input type="hidden" name="endType" value="date"/>
-      <h2>Meeting Request</h2>
+      <h2>
+        <xsl:choose>
+          <xsl:when test="form/status = 'CANCELLED'">
+            Meeting Cancelled
+          </xsl:when>
+          <xsl:otherwise>
+            Meeting Request
+          </xsl:otherwise>
+        </xsl:choose>
+      </h2>
       <table class="common" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">
@@ -5801,16 +5846,233 @@
         <tr>
           <td class="fieldname">Action:</td>
           <td class="fieldval scheduleActions">
-            <input type="radio" name="method" value="REPLY" checked="checked" onclick="swapScheduleDisplay('hide');"/>reply as
-            <select name="partstat">
-              <option value="ACCEPTED">accepted</option>
-              <option value="DECLINED">declined</option>
-              <option value="TENTATIVE">tentative</option>
-            </select><br/>
-            <input type="radio" name="method" value="REFRESH" onclick="swapScheduleDisplay('hide');"/>refresh this event<br/>
-            <input type="radio" name="method" value="DELEGATE" onclick="swapScheduleDisplay('hide');"/>delegate to
-            <input type="test" name="delegate" value=""/> (uri or account)<br/>
-            <input type="radio" name="method" value="COUNTER" onclick="swapScheduleDisplay('show');"/>counter (suggest a different date, time, and/or location)
+            <xsl:choose>
+              <xsl:when test="form/status = 'CANCELLED' or form/scheduleMethod = '8'">
+              <!-- respond to a cancel -->
+                <input type="hidden" name="method" value="REPLY"/>
+                <select name="cancelAction">
+                  <option value="mark">mark event as deleted</option>
+                  <option value="delete">delete event</option>
+                </select>
+              </xsl:when>
+              <xsl:otherwise>
+              <!-- respond to a request -->
+                <input type="radio" name="method" value="REPLY" checked="checked" onclick="swapScheduleDisplay('hide');"/>reply as
+                <select name="partstat">
+                  <option value="ACCEPTED">accepted</option>
+                  <option value="DECLINED">declined</option>
+                  <option value="TENTATIVE">tentative</option>
+                </select><br/>
+                <input type="radio" name="method" value="REFRESH" onclick="swapScheduleDisplay('hide');"/>refresh this event<br/>
+                <input type="radio" name="method" value="DELEGATE" onclick="swapScheduleDisplay('hide');"/>delegate to
+                <input type="test" name="delegate" value=""/> (uri or account)<br/>
+                <input type="radio" name="method" value="COUNTER" onclick="swapScheduleDisplay('show');"/>counter (suggest a different date, time, and/or location)
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+        <tr id="scheduleDateEdit" class="invisible">
+          <td class="fieldname">New Date/Time:</td>
+          <td class="fieldval scheduleActions">
+            <!-- Set the timefields class for the first load of the page;
+                 subsequent changes will take place using javascript without a
+                 page reload. -->
+            <xsl:variable name="timeFieldsClass">
+              <xsl:choose>
+                <xsl:when test="form/allDay/input/@checked='checked'">invisible</xsl:when>
+                <xsl:otherwise>timeFields</xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="form/allDay/input/@checked='checked'">
+                <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="on" checked="checked"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayStartDateField"/>
+                <input type="hidden" name="eventEndDate.dateOnly" value="on" id="allDayEndDateField"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="off"/>
+                <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayStartDateField"/>
+                <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            all day event<br/>
+            <div class="dateStartEndBox">
+              <strong>Start:</strong>
+              <div class="dateFields">
+                <span class="startDateLabel">Date </span>
+                <xsl:copy-of select="form/start/month/*"/>
+                <xsl:copy-of select="form/start/day/*"/>
+                <xsl:choose>
+                  <xsl:when test="/bedework/creating = 'true'">
+                    <xsl:copy-of select="form/start/year/*"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:copy-of select="form/start/yearText/*"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </div>
+              <!--<script language="JavaScript" type="text/javascript">
+              <xsl:comment>
+                startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback');
+              </xsl:comment>
+              </script>-->
+              <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
+              <div class="{$timeFieldsClass}" id="startTimeFields">
+                <span id="calWidgetStartTimeHider" class="show">
+                  <xsl:copy-of select="form/start/hour/*"/>
+                  <xsl:copy-of select="form/start/minute/*"/>
+                  <xsl:if test="form/start/ampm">
+                    <xsl:copy-of select="form/start/ampm/*"/>
+                  </xsl:if>
+                  <xsl:text> </xsl:text>
+                  <!--<a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>-->
+                </span>
+              </div>
+            </div>
+            <div class="dateStartEndBox">
+              <strong>End:</strong>
+              <xsl:choose>
+                <xsl:when test="form/end/type='E'">
+                  <input type="radio" name="eventEndType" value="E" checked="checked" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="radio" name="eventEndType" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              Date
+              <xsl:variable name="endDateTimeClass">
+                <xsl:choose>
+                  <xsl:when test="form/end/type='E'">shown</xsl:when>
+                  <xsl:otherwise>invisible</xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <div class="{$endDateTimeClass}" id="endDateTime">
+                <div class="dateFields">
+                  <xsl:copy-of select="form/end/dateTime/month/*"/>
+                  <xsl:copy-of select="form/end/dateTime/day/*"/>
+                  <xsl:choose>
+                    <xsl:when test="/bedework/creating = 'true'">
+                      <xsl:copy-of select="form/end/dateTime/year/*"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:copy-of select="form/end/dateTime/yearText/*"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </div>
+                <!--<script language="JavaScript" type="text/javascript">
+                <xsl:comment>
+                  endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback');
+                </xsl:comment>
+                </script>-->
+                <div class="{$timeFieldsClass}" id="endTimeFields">
+                  <span id="calWidgetEndTimeHider" class="show">
+                    <xsl:copy-of select="form/end/dateTime/hour/*"/>
+                    <xsl:copy-of select="form/end/dateTime/minute/*"/>
+                    <xsl:if test="form/end/dateTime/ampm">
+                      <xsl:copy-of select="form/end/dateTime/ampm/*"/>
+                    </xsl:if>
+                    <xsl:text> </xsl:text>
+                    <!--<a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>-->
+                  </span>
+                </div>
+              </div><br/>
+              <div id="clock" class="invisible">
+                <xsl:call-template name="clock"/>
+              </div>
+              <div class="dateFields">
+                <xsl:choose>
+                  <xsl:when test="form/end/type='D'">
+                    <input type="radio" name="eventEndType" value="D" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <input type="radio" name="eventEndType" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+                Duration
+                <xsl:variable name="endDurationClass">
+                  <xsl:choose>
+                    <xsl:when test="form/end/type='D'">shown</xsl:when>
+                    <xsl:otherwise>invisible</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="durationHrMinClass">
+                  <xsl:choose>
+                    <xsl:when test="form/allDay/input/@checked='checked'">invisible</xsl:when>
+                    <xsl:otherwise>shown</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <div class="{$endDurationClass}" id="endDuration">
+                  <xsl:choose>
+                    <xsl:when test="form/end/duration/weeks/input/@value = '0'">
+                    <!-- we are using day, hour, minute format -->
+                    <!-- must send either no week value or week value of 0 (zero) -->
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')" checked="checked"/>
+                        <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
+                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays"/>days
+                        <span id="durationHrMin" class="{$durationHrMinClass}">
+                          <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
+                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours"/>hours
+                          <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
+                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes"/>minutes
+                        </span>
+                      </div>
+                      <span class="durationSpacerText">or</span>
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')"/>
+                        <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
+                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="disabled"/>weeks
+                      </div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <!-- we are using week format -->
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')"/>
+                        <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
+                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="disabled"/>days
+                        <span id="durationHrMin" class="{$durationHrMinClass}">
+                          <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
+                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="disabled"/>hours
+                          <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
+                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="disabled"/>minutes
+                        </span>
+                      </div>
+                      <span class="durationSpacerText">or</span>
+                      <div class="durationBox">
+                        <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')" checked="checked"/>
+                        <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
+                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks"/>weeks
+                      </div>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </div>
+              </div><br/>
+              <div class="dateFields" id="noDuration">
+                <xsl:choose>
+                  <xsl:when test="form/end/type='N'">
+                    <input type="radio" name="eventEndType" value="N" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+                This event has no duration / end date
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr id="scheduleLocationEdit" class="invisible">
+          <td class="fieldname">New Location:</td>
+          <td class="fieldval scheduleActions">
+            <span class="std-text">choose: </span>
+            <span id="eventFormLocationList">
+              <select name="eventLocationUid">
+                <option value="-1">select...</option>
+                <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/select/*"/>
+              </select>
+            </span>
+            <span class="std-text"> or add new: </span>
+            <input type="text" name="locationAddress.value" value="" />
           </td>
         </tr>
         <tr>
@@ -5847,234 +6109,32 @@
             Date &amp; Time:
           </td>
           <td class="fieldval">
-            <div id="scheduleDateDisplay">
-              <xsl:value-of select="form/start/month/select/option[@selected='selected']"/>
+            <xsl:value-of select="form/start/month/select/option[@selected='selected']"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="form/start/day/select/option[@selected='selected']"/>,
+            <xsl:value-of select="form/start/yearText/input/@value"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="form/start/hour/select/option[@selected='selected']"/>:<xsl:value-of select="form/start/minute/select/option[@selected='selected']"/>
+            -
+            <xsl:value-of select="form/end/dateTime/month/select/option[@selected='selected']"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="form/end/dateTime/day/select/option[@selected='selected']"/>,
+            <xsl:value-of select="form/end/dateTime/yearText/input/@value"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="form/end/dateTime/hour/select/option[@selected='selected']"/>:<xsl:value-of select="form/end/dateTime/minute/select/option[@selected='selected']"/>
+            <xsl:if test="form/allDay/input/@checked='checked'">
               <xsl:text> </xsl:text>
-              <xsl:value-of select="form/start/day/select/option[@selected='selected']"/>,
-              <xsl:value-of select="form/start/yearText/input/@value"/>
-              <xsl:text> </xsl:text>
-              <xsl:value-of select="form/start/hour/select/option[@selected='selected']"/>:<xsl:value-of select="form/start/minute/select/option[@selected='selected']"/>
-              -
-              <xsl:value-of select="form/end/dateTime/month/select/option[@selected='selected']"/>
-              <xsl:text> </xsl:text>
-              <xsl:value-of select="form/end/dateTime/day/select/option[@selected='selected']"/>,
-              <xsl:value-of select="form/end/dateTime/yearText/input/@value"/>
-              <xsl:text> </xsl:text>
-              <xsl:value-of select="form/end/dateTime/hour/select/option[@selected='selected']"/>:<xsl:value-of select="form/end/dateTime/minute/select/option[@selected='selected']"/>
-              <xsl:if test="form/allDay/input/@checked='checked'">
-                <xsl:text> </xsl:text>
-                (all day)
-              </xsl:if>
-            </div>
-            <div id="scheduleDateEdit" class="invisible">
-              <!-- Set the timefields class for the first load of the page;
-                   subsequent changes will take place using javascript without a
-                   page reload. -->
-              <xsl:variable name="timeFieldsClass">
-                <xsl:choose>
-                  <xsl:when test="form/allDay/input/@checked='checked'">invisible</xsl:when>
-                  <xsl:otherwise>timeFields</xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-              <xsl:choose>
-                <xsl:when test="form/allDay/input/@checked='checked'">
-                  <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="on" checked="checked"/>
-                  <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayStartDateField"/>
-                  <input type="hidden" name="eventEndDate.dateOnly" value="on" id="allDayEndDateField"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="off"/>
-                  <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayStartDateField"/>
-                  <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField"/>
-                </xsl:otherwise>
-              </xsl:choose>
-              all day event<br/>
-              <div class="dateStartEndBox">
-                <strong>Start:</strong>
-                <div class="dateFields">
-                  <span class="startDateLabel">Date </span>
-                  <xsl:copy-of select="form/start/month/*"/>
-                  <xsl:copy-of select="form/start/day/*"/>
-                  <xsl:choose>
-                    <xsl:when test="/bedework/creating = 'true'">
-                      <xsl:copy-of select="form/start/year/*"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:copy-of select="form/start/yearText/*"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </div>
-                <!--<script language="JavaScript" type="text/javascript">
-                <xsl:comment>
-                  startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback');
-                </xsl:comment>
-                </script>-->
-                <!--<img src="{$resourcesRoot}/resources/calIcon.gif" width="16" height="15" border="0"/>-->
-                <div class="{$timeFieldsClass}" id="startTimeFields">
-                  <span id="calWidgetStartTimeHider" class="show">
-                    <xsl:copy-of select="form/start/hour/*"/>
-                    <xsl:copy-of select="form/start/minute/*"/>
-                    <xsl:if test="form/start/ampm">
-                      <xsl:copy-of select="form/start/ampm/*"/>
-                    </xsl:if>
-                    <xsl:text> </xsl:text>
-                    <!--<a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>-->
-                  </span>
-                </div>
-              </div>
-              <div class="dateStartEndBox">
-                <strong>End:</strong>
-                <xsl:choose>
-                  <xsl:when test="form/end/type='E'">
-                    <input type="radio" name="eventEndType" value="E" checked="checked" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-                Date
-                <xsl:variable name="endDateTimeClass">
-                  <xsl:choose>
-                    <xsl:when test="form/end/type='E'">shown</xsl:when>
-                    <xsl:otherwise>invisible</xsl:otherwise>
-                  </xsl:choose>
-                </xsl:variable>
-                <div class="{$endDateTimeClass}" id="endDateTime">
-                  <div class="dateFields">
-                    <xsl:copy-of select="form/end/dateTime/month/*"/>
-                    <xsl:copy-of select="form/end/dateTime/day/*"/>
-                    <xsl:choose>
-                      <xsl:when test="/bedework/creating = 'true'">
-                        <xsl:copy-of select="form/end/dateTime/year/*"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:copy-of select="form/end/dateTime/yearText/*"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </div>
-                  <!--<script language="JavaScript" type="text/javascript">
-                  <xsl:comment>
-                    endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback');
-                  </xsl:comment>
-                  </script>-->
-                  <div class="{$timeFieldsClass}" id="endTimeFields">
-                    <span id="calWidgetEndTimeHider" class="show">
-                      <xsl:copy-of select="form/end/dateTime/hour/*"/>
-                      <xsl:copy-of select="form/end/dateTime/minute/*"/>
-                      <xsl:if test="form/end/dateTime/ampm">
-                        <xsl:copy-of select="form/end/dateTime/ampm/*"/>
-                      </xsl:if>
-                      <xsl:text> </xsl:text>
-                      <!--<a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>-->
-                    </span>
-                  </div>
-                </div><br/>
-                <div id="clock" class="invisible">
-                  <xsl:call-template name="clock"/>
-                </div>
-                <div class="dateFields">
-                  <xsl:choose>
-                    <xsl:when test="form/end/type='D'">
-                      <input type="radio" name="eventEndType" value="D" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <input type="radio" name="eventEndType" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                  Duration
-                  <xsl:variable name="endDurationClass">
-                    <xsl:choose>
-                      <xsl:when test="form/end/type='D'">shown</xsl:when>
-                      <xsl:otherwise>invisible</xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:variable>
-                  <xsl:variable name="durationHrMinClass">
-                    <xsl:choose>
-                      <xsl:when test="form/allDay/input/@checked='checked'">invisible</xsl:when>
-                      <xsl:otherwise>shown</xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:variable>
-                  <div class="{$endDurationClass}" id="endDuration">
-                    <xsl:choose>
-                      <xsl:when test="form/end/duration/weeks/input/@value = '0'">
-                      <!-- we are using day, hour, minute format -->
-                      <!-- must send either no week value or week value of 0 (zero) -->
-                        <div class="durationBox">
-                          <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')" checked="checked"/>
-                          <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
-                          <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays"/>days
-                          <span id="durationHrMin" class="{$durationHrMinClass}">
-                            <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
-                            <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours"/>hours
-                            <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
-                            <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes"/>minutes
-                          </span>
-                        </div>
-                        <span class="durationSpacerText">or</span>
-                        <div class="durationBox">
-                          <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')"/>
-                          <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
-                          <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="disabled"/>weeks
-                        </div>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <!-- we are using week format -->
-                        <div class="durationBox">
-                          <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')"/>
-                          <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
-                          <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="disabled"/>days
-                          <span id="durationHrMin" class="{$durationHrMinClass}">
-                            <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
-                            <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="disabled"/>hours
-                            <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
-                            <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="disabled"/>minutes
-                          </span>
-                        </div>
-                        <span class="durationSpacerText">or</span>
-                        <div class="durationBox">
-                          <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')" checked="checked"/>
-                          <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
-                          <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks"/>weeks
-                        </div>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </div>
-                </div><br/>
-                <div class="dateFields" id="noDuration">
-                  <xsl:choose>
-                    <xsl:when test="form/end/type='N'">
-                      <input type="radio" name="eventEndType" value="N" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                  This event has no duration / end date
-                </div>
-              </div>
-            </div>
+              (all day)
+            </xsl:if>
           </td>
         </tr>
         <tr>
           <td class="fieldname">Location:</td>
           <td class="fieldval" align="left">
-            <div id="scheduleLocationDisplay">
-              <xsl:if test="location/address = ''">
-               <em>not specified</em>
-              </xsl:if>
-              <xsl:value-of select="location/address"/>
-            </div>
-            <div id="scheduleLocationEdit" class="invisible">
-              <span class="std-text">choose: </span>
-              <span id="eventFormLocationList">
-                <select name="eventLocationUid">
-                  <option value="-1">select...</option>
-                  <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/select/*"/>
-                </select>
-              </span>
-              <span class="std-text"> or add new: </span>
-              <input type="text" name="locationAddress.value" value="" />
-            </div>
+            <xsl:if test="location/address = ''">
+             <em>not specified</em>
+            </xsl:if>
+            <xsl:value-of select="location/address"/>
           </td>
         </tr>
         <xsl:if test="attendee">
@@ -6915,9 +6975,6 @@
     <xsl:param name="acl"/><!-- nodeset of entity acls used to initialize
       javascript object. Required for method two. -->
 
-    <xsl:if test="$method = '2' and $acl != ''">
-      <!-- do some initialization here -->
-    </xsl:if>
     <table cellpadding="0" id="shareFormTable" class="common">
       <tr>
         <th colspan="2" class="commonHeader">Add:</th>
@@ -6955,6 +7012,8 @@
             Rights:
           </h5>
           <input type="hidden" name="how" value=""/>
+          <!-- field 'acl' will receive xml for method 2 -->
+          <input type="hidden" name="acl" value=""/> 
           <!-- Advanced Access Rights: -->
           <!-- the "how" field is set by iterating over the howItems below -->
           <table id="howTable" class="invisible" cellspacing="0">
@@ -7190,7 +7249,7 @@
     </table>
     <xsl:choose>
       <xsl:when test="$method = '2'">
-        <input type="button" name="updateACLs" value="update access" onclick="updateAccessAcl(this.form)"/>
+        <input type="button" name="updateACLs" value="update access" onclick="bwAcl.update(this.form)"/>
       </xsl:when>
       <xsl:otherwise>
         <input type="submit" name="submit" value="Submit"/>
@@ -7204,117 +7263,135 @@
     <xsl:param name="guid"/> <!-- optional (for entities) -->
     <xsl:param name="recurrenceId"/> <!-- optional (for entities) -->
     <xsl:param name="what"/> <!-- optional (for scheduling only) -->
+    <xsl:param name="method">1</xsl:param> <!-- which method of access control 
+      are we using: 1 (one request per pricipal) or 2 (set all with 
+      javascript and send entire ACL to server) -->  
     <h3>Current Access:</h3>
-      <table class="common scheduling">
+    <table class="common scheduling" id="bwCurrentAccess">
+      <thead>
         <tr>
           <th>Entry</th>
           <th>Access</th>
           <th>Inherited from</th>
           <td></td>
         </tr>
+      </thead>
+      <tbody>
         <xsl:for-each select="ace">
-        <xsl:variable name="who">
-          <xsl:choose>
-            <xsl:when test="invert">
+          <xsl:variable name="who">
+            <xsl:choose>
+              <xsl:when test="invert">
+                <xsl:choose>
+                  <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
+                  <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:choose>
+                  <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
+                  <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
+                </xsl:choose>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <xsl:variable name="whoType">
+            <xsl:choose>
+              <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
+              <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
+              <xsl:when test="$who='authenticated'">auth</xsl:when>
+              <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
+              <xsl:when test="invert/principal/property/owner">other</xsl:when>
+              <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+              <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+              <xsl:otherwise></xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <xsl:variable name="shortWho">
+            <xsl:choose>
+              <xsl:when test="$whoType='user'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
+              <xsl:when test="$whoType='group'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
+              <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
+            </xsl:choose>
+          </xsl:variable>
+          <tr>
+            <td>
               <xsl:choose>
-                <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
-                <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-                <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
+                <xsl:when test="$whoType = 'user' or ($who = 'owner' and $whoType != 'other')">
+                  <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+                </xsl:otherwise>
               </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
+              <xsl:text> </xsl:text>
               <xsl:choose>
-                <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
-                <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-                <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
+                <xsl:when test="$whoType = 'other'">
+                  anyone (other)
+                </xsl:when>
+                <xsl:when test="$shortWho != ''">
+                  <xsl:value-of select="$shortWho"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="$who"/>
+                </xsl:otherwise>
               </xsl:choose>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="whoType">
-          <xsl:choose>
-            <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
-            <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
-            <xsl:when test="$who='authenticated'">auth</xsl:when>
-            <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
-            <xsl:when test="invert/principal/property/owner">other</xsl:when>
-            <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-            <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-            <xsl:otherwise></xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="shortWho">
-          <xsl:choose>
-            <xsl:when test="$whoType='user'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
-            <xsl:when test="$whoType='group'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-            <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
-          </xsl:choose>
-        </xsl:variable>
-        <tr>
-          <td>
-            <xsl:choose>
-              <xsl:when test="$whoType = 'user' or ($who = 'owner' and $whoType != 'other')">
-                <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:text> </xsl:text>
-            <xsl:choose>
-              <xsl:when test="$whoType = 'other'">
-                anyone (other)
-              </xsl:when>
-              <xsl:when test="$shortWho != ''">
-                <xsl:value-of select="$shortWho"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="$who"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-          <td class="acls">
-            <xsl:if test="grant">
-              grant:
-              <span class="grant">
-                <xsl:for-each select="grant/*">
-                  <xsl:value-of select="name(.)"/>
-                  <xsl:if test="position() != last()">, </xsl:if>
-                </xsl:for-each>
-              </span><br/>
-            </xsl:if>
-            <xsl:if test="deny">
-              deny:
-              <span class="deny">
-                <xsl:for-each select="deny/*">
-                  <xsl:value-of select="name(.)"/>
-                  <xsl:if test="position() != last()">, </xsl:if>
-                </xsl:for-each>
-              </span>
-            </xsl:if>
-          </td>
-          <td>
-            <xsl:choose>
-              <xsl:when test="inherited">
-                <xsl:value-of select="inherited/href"/>
-              </xsl:when>
-              <xsl:otherwise>
-                local
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-          <td>
-            <xsl:if test="not(inherited)">
-              <a href="{$action}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="reset to default">
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
-              </a>
-            </xsl:if>
-          </td>
-        </tr>
-      </xsl:for-each>
+            </td>
+            <td class="acls">
+              <xsl:if test="grant">
+                grant:
+                <span class="grant">
+                  <xsl:for-each select="grant/*">
+                    <xsl:value-of select="name(.)"/>
+                    <xsl:if test="position() != last()">, </xsl:if>
+                  </xsl:for-each>
+                </span><br/>
+              </xsl:if>
+              <xsl:if test="deny">
+                deny:
+                <span class="deny">
+                  <xsl:for-each select="deny/*">
+                    <xsl:value-of select="name(.)"/>
+                    <xsl:if test="position() != last()">, </xsl:if>
+                  </xsl:for-each>
+                </span>
+              </xsl:if>
+            </td>
+            <td>
+              <xsl:choose>
+                <xsl:when test="inherited">
+                  <xsl:value-of select="inherited/href"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  local
+                </xsl:otherwise>
+              </xsl:choose>
+            </td>
+            <td>
+              <xsl:if test="not(inherited)">
+                <xsl:choose>
+                  <xsl:when test="$method = '2'">
+                    <!-- we are using javascript to update the form -->
+                    <xsl:variable name="rowPos" select="position()-1"/>
+                    <a href="javascript:bwAcl.deleteAce({$rowPos})" title="reset to default">
+                      remove
+                    </a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <a href="{$action}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="reset to default">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
+                    </a>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:if>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </tbody>
     </table>
   </xsl:template>
-
+  
   <!--==== SEARCH RESULT ====-->
   <xsl:template name="searchResult">
     <h2 class="bwStatusConfirmed">
@@ -7554,6 +7631,86 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- return string values to be loaded into javascript for access control
+       forms, method 2 -->
+  <xsl:template match="ace" mode="initJS"><!--
+  --><xsl:variable name="who"><!--
+   --><xsl:choose>
+        <xsl:when test="invert">
+          <xsl:choose>
+            <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
+            <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
+            <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose><!--
+  --></xsl:variable><!--
+  --><xsl:variable name="whoType"><!--
+   --><xsl:choose>
+        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
+        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
+        <xsl:when test="$who='authenticated'">auth</xsl:when>
+        <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
+        <xsl:when test="invert/principal/property/owner">other</xsl:when>
+        <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+        <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+        <xsl:otherwise></xsl:otherwise>
+      </xsl:choose><!--
+ --></xsl:variable><!--
+ --><xsl:variable name="aclString"><!--
+   --><xsl:if test="grant"><!--
+     --><xsl:for-each select="grant/*"><xsl:call-template name="grantDenyToInternal"><xsl:with-param name="name"><xsl:value-of select="name(.)"/></xsl:with-param></xsl:call-template></xsl:for-each><!--
+   --></xsl:if><!--
+   --><xsl:if test="deny"><!--
+     --><xsl:for-each select="deny/*">-<xsl:call-template name="grantDenyToInternal"><xsl:with-param name="name"><xsl:value-of select="name(.)"/></xsl:with-param></xsl:call-template></xsl:for-each><!--
+   --></xsl:if><!--
+ --></xsl:variable><!--
+ --><xsl:variable name="inherited"><!--
+   --><xsl:choose>
+       <xsl:when test="inherited"><xsl:value-of select="inherited/href"/></xsl:when>
+       <xsl:otherwise>local</xsl:otherwise>
+     </xsl:choose><!--
+  --></xsl:variable><!--
+  --><xsl:variable name="invert"><!--
+    --><xsl:choose>
+         <xsl:when test="invert">true</xsl:when>
+         <xsl:otherwise>false</xsl:otherwise>
+       </xsl:choose><!--
+  --></xsl:variable>
+  <!-- now initialize the object:-->
+    bwAcl.init('<xsl:value-of select="$who"/>','<xsl:value-of select="$whoType"/>','<xsl:value-of select="$aclString"/>','<xsl:value-of select="$inherited"/>','<xsl:value-of select="$invert"/>');
+  </xsl:template>
+
+  <xsl:template name="grantDenyToInternal"><!-- 
+  --><xsl:param name="name"/><!-- 
+  --><xsl:choose>
+       <xsl:when test="$name = 'all'">A</xsl:when>
+       <xsl:when test="$name = 'read'">R</xsl:when>
+       <xsl:when test="$name = 'read-acl'">r</xsl:when>
+       <xsl:when test="$name = 'read-cuurrent-user-privilege-set'">P</xsl:when>
+       <xsl:when test="$name = 'read-free-busy'">F</xsl:when>
+       <xsl:when test="$name = 'write'">W</xsl:when>
+       <xsl:when test="$name = 'write-acl'">a</xsl:when>
+       <xsl:when test="$name = 'write-properties'">p</xsl:when>
+       <xsl:when test="$name = 'write-content'">c</xsl:when>
+       <xsl:when test="$name = 'bind'">b</xsl:when>
+       <xsl:when test="$name = 'schedule'">S</xsl:when>
+       <xsl:when test="$name = 'schedule-request'">t</xsl:when>
+       <xsl:when test="$name = 'schedule-reply'">y</xsl:when>
+       <xsl:when test="$name = 'schedule-free-busy'">s</xsl:when>       
+       <xsl:when test="$name = 'unbind'">u</xsl:when>
+       <xsl:when test="$name = 'unlock'">U</xsl:when>
+       <xsl:when test="$name = 'none'">N</xsl:when>
+     </xsl:choose><!--
+--></xsl:template>
+
   <!-- search and replace template taken from
        http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
   <xsl:template name="replace">
@@ -7575,7 +7732,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-
+  
   <!--==== FOOTER ====-->
   <xsl:template name="footer">
     <div id="footer">

@@ -16,8 +16,8 @@ function bwClockLaunch(type) {
     // reset hours and minutes to null
     bwClockHour = null;
     bwClockMinute = null;
-    bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
-    bwClockSwitch = document.getElementById("bwClockSwitch");
+    var bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
+    var bwClockSwitch = document.getElementById("bwClockSwitch");
     document.getElementById("bwClockTime").innerHTML = "select time";
     if (type == 'eventStartDate') {
       bwClockIndicator.innerHTML = "Start Time";

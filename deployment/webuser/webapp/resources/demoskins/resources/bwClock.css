@@ -23,9 +23,9 @@
 #bwClockBox {
   position: absolute;
   top: 130px;
-  left: 350px;
+  left: 340px;
   z-index: -1;
-  width: 180px;
+  width: 220px;
   text-align: center;
   color: black;
   background-color: #ffe;
@@ -57,7 +57,7 @@
 #bwClockSwitch {
   position: absolute;
   bottom: 5px;
-  left: 15px;
+  left: 25px;
   margin: 0;
 }
 #bwClockCloseText {

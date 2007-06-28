@@ -48,14 +48,10 @@ function toggleScheduleHow(formObj,chkBox) {
 }
 function swapScheduleDisplay(val) {
   if (val == "show") {
-    changeClass('scheduleLocationDisplay','invisible');
     changeClass('scheduleLocationEdit','shown');
-    changeClass('scheduleDateDisplay','invisible');
     changeClass('scheduleDateEdit','shown');
   } else {
-    changeClass('scheduleLocationDisplay','shown');
     changeClass('scheduleLocationEdit','invisible');
-    changeClass('scheduleDateDisplay','shown');
     changeClass('scheduleDateEdit','invisible');
   }
 }
