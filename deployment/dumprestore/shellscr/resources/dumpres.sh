@@ -13,11 +13,16 @@ for i in lib/*
     cp=$cp:$i
 done
 
-DUMPCMD="$JAVA_HOME/bin/java -cp $cp @DUMP-CLASS@"
-RESTORECMD="$JAVA_HOME/bin/java -cp $cp @RESTORE-CLASS@"
-SCHEMACMD="$JAVA_HOME/bin/java -cp $cp org.hibernate.tool.hbm2ddl.SchemaExport"
+# Need a temp dir for hibernate cache
+TEMPDIR="./temp"
+mkdir $TEMPDIR
+
+DUMPCMD="$JAVA_HOME/bin/java -Djava.io.tmpdir="$TEMPDIR" -cp $cp @DUMP-CLASS@"
+RESTORECMD="$JAVA_HOME/bin/java -Djava.io.tmpdir="$TEMPDIR" -cp $cp @RESTORE-CLASS@"
+SCHEMACMD="$JAVA_HOME/bin/java -Djava.io.tmpdir="$TEMPDIR" -cp $cp org.hibernate.tool.hbm2ddl.SchemaExport"
 
 APPNAME=@BW-APP-NAME@
+
 
 case "$1" in
   dump)
