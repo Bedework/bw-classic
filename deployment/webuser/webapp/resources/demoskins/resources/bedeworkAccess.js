@@ -1,9 +1,9 @@
 /* Bedework Access control form functions
 
-   Bedework uses to methods to set access control.  The first and older method 
-   is to send a single access control string per principal in one 
-   request/response cycle.  The second and more current method (which is 
-   required in the event form) is to build a javascript object representing 
+   Bedework uses to methods to set access control.  The first and older method
+   is to send a single access control string per principal in one
+   request/response cycle.  The second and more current method (which is
+   required in the event form) is to build a javascript object representing
    the acls on an item (e.g. an event), manipulate the object with the GUI, and send
    all the acls in a single request parameter.  Both methods are currently used.
    Method one is used for calendar access, method two for event access.  In time
@@ -51,162 +51,118 @@ var otherStr = "other";
 var deleteStr = "remove";
 var grantStr = "grant";
 
+var howAllVal = "all";
+
+var howReadVal = "read";
+var howReadAclVal = "read-acl";
+var howReadCurPrivSetVal = "read-curprivset";
+var howReadFreebusyVal = "read-freebusy ";
+
+var howWriteVal = "write";
+var howWriteAclVal = "write-acl";
+var howWritePropertiesVal = "write-properties";
+var howWriteContentVal = "write-content";
+
+var howBindVal = "create";
+var howScheduleVal = "schedule";
+var howScheduleRequestVal = "schedule-request";
+var howScheduleReplyVal = "schedule-reply";
+var howScheduleFreebusyVal = "schedule-freebusy";
+
+var howUnbindVal = "delete";
+
+var howUnlockVal = "unlock";
+
+var howNoneVal = "none";
+
 // ========================================================================
 // ========================================================================
 
+/* Define how values, first par is the how,
+   second the contained hows
+   third the display name */
+function howVals(h, cont, dv) {
+  var how;
+  var contains;
+  var dispVal;
 
+  this.how = h;
+  this.contains = cont;
+  this.dispVal = dv;
 
-
-function setupAccessForm(chkBoxObj,formObj) {
-  switch (chkBoxObj.value) {
-    case "A": // All
-      if (chkBoxObj.checked) {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          if (formObj.howItem[i].value != "A") {
-            formObj.howItem[i].checked = false;
-            formObj.howItem[i].disabled = true;
-            // now iterate over corresponding radio buttons for each howItem
-            for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-              formObj[formObj.howItem[i].value][j].disabled = true;
-            }
-          }
-        }
-      } else {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          formObj.howItem[i].disabled = false;
-        }
-      }
-      break;
-    case "R": // Read
-      if (chkBoxObj.checked) {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          if (formObj.howItem[i].value == "r" ||
-              formObj.howItem[i].value == "P" ||
-              formObj.howItem[i].value == "F") {
-            formObj.howItem[i].checked = false;
-            formObj.howItem[i].disabled = true;
-            // now iterate over corresponding radio buttons for each howItem
-            for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-              formObj[formObj.howItem[i].value][j].disabled = true;
-            }
-          }
-        }
-      } else {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          if (formObj.howItem[i].value == "r" ||
-              formObj.howItem[i].value == "P" ||
-              formObj.howItem[i].value == "F") {
-            formObj.howItem[i].disabled = false;
-          }
-        }
-      }
-      break;
-    case "W": // Write
-      if (chkBoxObj.checked == true) {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          if (formObj.howItem[i].value == "a" ||
-              formObj.howItem[i].value == "p" ||
-              formObj.howItem[i].value == "c" ||
-              formObj.howItem[i].value == "b" ||
-              formObj.howItem[i].value == "S" ||
-              formObj.howItem[i].value == "t" ||
-              formObj.howItem[i].value == "y" ||
-              formObj.howItem[i].value == "s" ||
-              formObj.howItem[i].value == "u") {
-            formObj.howItem[i].checked = false;
-            formObj.howItem[i].disabled = true;
-            // now iterate over corresponding radio buttons for each howItem
-            for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-              formObj[formObj.howItem[i].value][j].disabled = true;
-            }
-          }
-        }
-      } else {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          if (formObj.howItem[i].value == "a" ||
-              formObj.howItem[i].value == "p" ||
-              formObj.howItem[i].value == "c" ||
-              formObj.howItem[i].value == "b" ||
-              formObj.howItem[i].value == "S" ||
-              formObj.howItem[i].value == "t" ||
-              formObj.howItem[i].value == "y" ||
-              formObj.howItem[i].value == "s" ||
-              formObj.howItem[i].value == "u") {
-            formObj.howItem[i].disabled = false;
-          }
-        }
-      }
-      break;
-    case "b": // Bind (create)
-      if (chkBoxObj.checked == true) {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          if (formObj.howItem[i].value == "S" ||
-              formObj.howItem[i].value == "t" ||
-              formObj.howItem[i].value == "y" ||
-              formObj.howItem[i].value == "s") {
-            formObj.howItem[i].checked = false;
-            formObj.howItem[i].disabled = true;
-            // now iterate over corresponding radio buttons for each howItem
-            for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-              formObj[formObj.howItem[i].value][j].disabled = true;
-            }
-          }
-        }
-      } else {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          if (formObj.howItem[i].value == "S" ||
-              formObj.howItem[i].value == "t" ||
-              formObj.howItem[i].value == "y" ||
-              formObj.howItem[i].value == "s") {
-            formObj.howItem[i].disabled = false;
-          }
-        }
-      }
-      break;
-    case "S": // Schedule
-      if (chkBoxObj.checked == true) {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          if (formObj.howItem[i].value == "t" ||
-              formObj.howItem[i].value == "y" ||
-              formObj.howItem[i].value == "s") {
-            formObj.howItem[i].checked = false;
-            formObj.howItem[i].disabled = true;
-            // now iterate over corresponding radio buttons for each howItem
-            for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-              formObj[formObj.howItem[i].value][j].disabled = true;
-            }
-          }
-        }
-      } else {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          if (formObj.howItem[i].value == "t" ||
-              formObj.howItem[i].value == "y" ||
-              formObj.howItem[i].value == "s") {
-            formObj.howItem[i].disabled = false;
-          }
-        }
-      }
-      break;
-    case "N": // None
-      if (chkBoxObj.checked == true) {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          if (formObj.howItem[i].value != "N") {
-            formObj.howItem[i].checked = false;
-            formObj.howItem[i].disabled = true;
-            // now iterate over corresponding radio buttons for each howItem
-            for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-              formObj[formObj.howItem[i].value][j].disabled = true;
-            }
-          }
-        }
-      } else {
-        for (i = 0; i < formObj.howItem.length; i++) {
-          formObj.howItem[i].disabled = false;
-        }
-      }
-      break;
+  /* return true if ch is contained in this access */
+  this.doesContain = function(ch) {
+    return this.contains.match(ch) != null;
   }
 }
+
+var hows = new function() {
+  var hv = new Array();
+
+  hv.push(new howVals("A", "RrPFWapcbStysuN", howAllVal));
+
+  hv.push(new howVals("R", "rPF", howReadVal));
+  hv.push(new howVals("r", "", howReadAclVal));
+  hv.push(new howVals("P", "", howReadCurPrivSetVal));
+  hv.push(new howVals("F", "", howReadFreebusyVal));
+
+  hv.push(new howVals("W", "apcbStysuN", howWriteVal));
+  hv.push(new howVals("a", "", howWriteAclVal));
+  hv.push(new howVals("p", "", howWritePropertiesVal));
+  hv.push(new howVals("c", "", howWriteContentVal));
+
+  hv.push(new howVals("b", "Stys", howBindVal));
+  hv.push(new howVals("S", "tys", howScheduleVal));
+  hv.push(new howVals("t", "", howScheduleRequestVal));
+  hv.push(new howVals("y", "", howScheduleReplyVal));
+  hv.push(new howVals("s", "", howScheduleFreebusyVal));
+
+  hv.push(new howVals("u", "", howUnbindVal));
+
+  hv.push(new howVals("U", "", howUnlockVal));
+
+  hv.push(new howVals("N", "rPFapcbStysu", howNoneVal));
+
+  this. getHows = function(ch) {
+    for (var i = 0; i < hv.length; i++) {
+      if (hv[i].how == ch) {
+        return hv[i];
+      }
+    }
+
+    return null;
+  }
+}
+
+function setupAccessForm(chkBoxObj, formObj) {
+  var hvs;  // howVals
+
+  /* If we checked/unchecked a value that contains other values we need
+     to uncheck and disable the contained boxes. */
+
+  hvs = hows.getHows(chkBoxObj.value);
+
+  if (hvs.contains == "") {
+    // Doesn't contain anything
+    return;
+  }
+
+  for (i = 0; i < formObj.howItem.length; i++) {
+    if (hvs.doesContain(formObj.howItem[i].value)) {
+      if (chkBoxObj.checked == true) {
+        formObj.howItem[i].checked = false;
+        formObj.howItem[i].disabled = true;
+        // now iterate over corresponding radio buttons for each howItem
+        for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
+          formObj[formObj.howItem[i].value][j].disabled = true;
+        }
+      } else {
+        formObj.howItem[i].disabled = false;
+      }
+    }
+  }
+}
+
 // enable and disable corresponding allow/deny flags when a howItem checkbox is
 // clicked
 function toggleAllowDenyFlag(chkBoxObj,formObj) {
@@ -216,13 +172,14 @@ function toggleAllowDenyFlag(chkBoxObj,formObj) {
     activateAllowDenyFlag(chkBoxObj.value, formObj, true);
   }
 }
+
 // iterate over the allow/deny radio buttons and set them to true or false
 function activateAllowDenyFlag(val,formObj,disabledFlag) {
   for (i = 0; i < formObj[val].length; i++) {
     formObj[val][i].disabled = disabledFlag;
   }
 }
-// Gather up the how values on access form submission and set the how field 
+// Gather up the how values on access form submission and set the how field
 // (method 1) or return the value (method 2).
 // If in "basic" mode:
 //   Set the value of how to the value of the basicHowItem radio button.
@@ -231,8 +188,8 @@ function activateAllowDenyFlag(val,formObj,disabledFlag) {
 //   named after the howItem's value (e.g. "A","R","F","N", etc).
 //   The allow/deny flag contains the final values to be returned with
 //   the "-" switch if we set the value to deny (e.g. "A" or "-A", "R" or "-R").
-// Method: there are two methods used with this function; method one sets 
-//   the "how" field in the form used to update a single principal.  Method 
+// Method: there are two methods used with this function; method one sets
+//   the "how" field in the form used to update a single principal.  Method
 //   two returns the assembled how string to the calling function.
 function setAccessHow(formObj,method) {
   var howString = "";
@@ -272,43 +229,43 @@ function bwAce(who,whoType,how,inherited,invert) {
   this.how = how;
   this.inherited = inherited;
   this.invert = invert; // boolean
-  
+
   this.equals = function(ace) {
     if (this.whoType != ace.whoType) {
       return false;
     }
-    
+
     return (this.formatWho() == ace.formatWho());
   }
-  
+
   // format the who string for on-screen display
   this.formatWho = function() {
     if (whoType == "user" || whoType == "group") {
       return who;
     }
-    
+
     if (whoType == "auth") {
       return authenticatedStr;
     }
-    
+
     if (whoType == "unauth") {
       return unauthenticatedStr;
     }
-    
+
     if (whoType == "owner") {
       return ownerStr;
     }
-    
+
     if (whoType == "other") {
       return otherStr;
     }
-    
+
     return "***************" + whoType;
   }
-  
+
   this.toXml = function() {
     var res = "<ace><principal>\n";
-    
+
     if (whoType == "user" || whoType == "group") {
       res += "<href>" + who + "</href>";
     } else if (whoType == "auth") {
@@ -324,12 +281,30 @@ function bwAce(who,whoType,how,inherited,invert) {
     res += "<grant>";
     res += "<read/>";
     res += "</grant>";
-    
+
     if (this.inherited != '') {
       res += "<inherited><href>" + this.inherited + "</href></inherited>";
     }
-    
+
     return res + "</ace>";
+  }
+
+  // format the how string for on-screen display
+  this.formatHow = function() {
+    var formattedHow = "";
+
+    for (i = 0; i < how.length; i++) {
+      var h = how[i];
+      if (h == "-") {
+        formattedHow += "not-";
+      } else {
+        var hvs = hows.getHows(h);
+
+        formattedHow += hvs.dispVal + " ";
+      }
+    }
+
+    return formattedHow;
   }
 }
 
@@ -337,14 +312,14 @@ function bwAce(who,whoType,how,inherited,invert) {
 // The bwAcl object is initialized during the XSLT transform.
 var bwAcl = new function() {
   var aces = new Array();
-  
+
   // Initialize the list.
-  // The function expects a comma-separated list of arguments grouped 
+  // The function expects a comma-separated list of arguments grouped
   // into the five ACE properties.
   this.init = function(who,whoType,how,inherited,invert) {
     aces.push(new bwAce(who,whoType,how,inherited,invert));
   }
-  
+
   // Add or update an ace
   this.addAce = function(newAce) {
     // expects a bwAce object as parameter
@@ -353,12 +328,12 @@ var bwAcl = new function() {
         // replace an existing ace
         aces[i] = newAce;
         return;
-      } 
+      }
     }
     // not found: add ace to end of array
     aces.push(newAce);
   }
-  
+
   // Update the list - expects the browser form object
   this.update = function(formObj) {
     // get the type of ace being set
@@ -376,152 +351,60 @@ var bwAcl = new function() {
     }
     // return the how string from the form
     var how = setAccessHow(formObj,2);
-    // update the bwAcl 
+    // update the bwAcl
     bwAcl.addAce(new bwAce(formObj.who.value,type,how,"local",false));
-    
+
     // update the acl form field
     formObj.acl = this.toXml();
-    
+
     // redraw the display
     this.display();
   }
-  
+
   this.deleteAce = function(index) {
     bwAcl.aces.splice(index, 1);
-    
+
     // redraw the display
     this.display();
   }
-  
+
   // update the ACL table displayed on screen
   this.display = function() {
     try {
       // get the table body
       var aclTableBody = document.getElementById("bwCurrentAccess").tBodies[0];
-      
+
       // remove existing rows
       for (i = aclTableBody.rows.length - 1; i >= 0; i--) {
         aclTableBody.deleteRow(i);
-      }  
-      
+      }
+
       // recreate the table rows
       for (var j = 0; j < aces.length; j++) {
         var formattedWho = aces[j].formatWho();
-        var formattedHow = this.formatHow(aces[j].how);
+        var formattedHow = aces[j].formatHow();
         var tr = aclTableBody.insertRow(j);
+
         tr.insertCell(0).appendChild(document.createTextNode(formattedWho));
-        var td_1 = tr.insertCell(1);
-        td_1.appendChild(document.createTextNode(formattedHow));
-        var td_2 = tr.insertCell(2);
-        td_2.appendChild(document.createTextNode(aces[j].inherited));
+        tr.insertCell(1).appendChild(document.createTextNode(formattedHow));
+        tr.insertCell(2).appendChild(document.createTextNode(aces[j].inherited));
         var td_3 = tr.insertCell(3);
         td_3.appendChild(document.createTextNode(''));
         //<a href="javascript:bwAcl.delete(' + j +')">' + deleteStr + '</a>
-      }        
+      }
     } catch (e) {
       alert(e);
     }
   }
-  
-  // format the how string for on-screen display
-  this.formatHow = function(how) {
-    var formattedHow = "";
-    
-    for (i = 0; i < how.length; i++) {
-      switch (how[i]) {
-        case "-": 
-          formattedHow += "not-";
-          break;          
-        case "A":
-          formattedHow += "all ";
-          break;          
-        case "R":
-          formattedHow += "read ";
-          break;         
-        case "r":
-          formattedHow += "read-acl ";
-          break;         
-        case "P":
-          formattedHow += "read-privSet ";
-          break;         
-        case "F":
-          formattedHow += "read-freebusy ";
-          break;         
-        case "W":
-          formattedHow += "write ";
-          break;         
-        case "a":
-          formattedHow += "write-acl ";
-          break;         
-        case "p":
-          formattedHow += "write-properties ";
-          break;         
-        case "c":
-          formattedHow += "write-content ";
-          break;        
-        case "b":
-          formattedHow += "create ";
-          break;        
-        case "S":
-          formattedHow += "schedule ";
-          break;        
-        case "t":
-          formattedHow += "schedule-request ";
-          break;        
-        case "y":
-          formattedHow += "schedule-reply ";
-          break;        
-        case "s":
-          formattedHow += "schedule-freebusy ";
-          break;        
-        case "u":
-          formattedHow += "delete ";
-          break;        
-        case "U":
-          formattedHow += "unlock ";
-          break;        
-        case "N":
-          formattedHow += "none ";
-          break;
-      } 
-    }
-    return formattedHow;
-  }
-  
- /*   'A',     // privAll
 
-    'R',     // privRead
-    'r',     // privReadAcl
-    'P',     // privReadCurrentUserPrivilegeSet
-    'F',     // privReadFreeBusy
-
-    'W',     // privWrite
-    'a',     // privWriteAcl
-    'p',     // privWriteProperties
-    'c',     // privWriteContent
-    'b',     // privBind
-
-    'S',     // privSchedule
-    't',     // privScheduleRequest
-    'y',     // privScheduleReply
-    's',     // privScheduleFreeBusy
-
-    'u',     // privUnbind
-             // unbind and bind usually correspond to create and destroy
-
-    'U',     // privUnlock
-             // not implemented
-
-    'N',     // privNone
-  */
   // generate webDAV ACl XML output
   this.toXml = function() {
     var res = "<acl>\n";
-    
+
     for (var j = 0; j < aces.length; j++) {
       res += aces[j].toXml();
     }
-    
+
     return res + "</acl>";
   }
 }
