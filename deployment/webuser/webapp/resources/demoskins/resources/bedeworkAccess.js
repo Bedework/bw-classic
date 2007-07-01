@@ -43,6 +43,8 @@
 // ========================================================================
 // ========================================================================
 //   Language and customization
+//   These should come from values in the header or included as a separate cutomization
+//   file.
 
 var authenticatedStr = "authenticated";
 var unauthenticatedStr = "unauthenticated";
@@ -51,6 +53,7 @@ var otherStr = "other";
 var deleteStr = "remove";
 var grantStr = "grant";
 
+// How granted accesses appear
 var howAllVal = "all";
 
 var howReadVal = "read";
@@ -73,55 +76,117 @@ var howUnbindVal = "delete";
 
 var howUnlockVal = "unlock";
 
-var howNoneVal = "none";
+// How denied accesses appear
+var howDenyAllVal = "none";
+
+var howDenyReadVal = "not-read";
+var howDenyReadAclVal = "not-read-acl";
+var howDenyReadCurPrivSetVal = "not-read-curprivset";
+var howDenyReadFreebusyVal = "not-read-freebusy ";
+
+var howDenyWriteVal = "not-write";
+var howDenyWriteAclVal = "not-write-acl";
+var howDenyWritePropertiesVal = "not-write-properties";
+var howDenyWriteContentVal = "not-write-content";
+
+var howDenyBindVal = "not-create";
+var howDenyScheduleVal = "not-schedule";
+var howDenyScheduleRequestVal = "not-schedule-request";
+var howDenyScheduleReplyVal = "not-schedule-reply";
+var howDenyScheduleFreebusyVal = "not-schedule-freebusy";
+
+var howDenyUnbindVal = "not-delete";
+
+var howDenyUnlockVal = "not-unlock";
+
+//var howNoneVal = "none";
+
+/* We shouldn't use the word local - it probably doesn't mean too much and it might actually be
+   inherited from something called /local for example */
+var inheritedStr = "Not inherited";
+
+// **************************
+// The prefixes come from the directory code so should be emitted by the jsp.
+// We may have problems here as convertng from a user id to a principal might be
+// awkward
+
+var principalPrefix = "/principals/";
+var userPrincipalPrefix = "/principals/users/";
+var groupPrincipalPrefix = "/principals/groups/";
+var resourcePrincipalPrefix = "/principals/resources/";
 
 // ========================================================================
 // ========================================================================
 
-/* Define how values, first par is the how,
-   second the contained hows
-   third the display name */
-function howVals(h, cont, dv) {
+// .......................................................
+// Some constants
+// .......................................................
+
+var xmlHeader = "<?xml version='1.0' encoding='utf-8'  ?>";
+var nameSpaces = "xmlns:D='DAV:' " +
+                 "xmlns:C='urn:ietf:params:xml:ns:caldav'";
+
+var davNS = "D:";
+var caldavNS = "C:";
+
+/* Define how values,
+    par: how,
+    par: the contained hows
+    par: dav element name
+    par: display name */
+function howVals(h, cont, davEl, dv, ddv) {
   var how;
   var contains;
+  var davEl;
   var dispVal;
+  var denyDispVal;
 
   this.how = h;
   this.contains = cont;
+  this.davEl = davEl;
   this.dispVal = dv;
+  this.denyDispVal = ddv;
 
   /* return true if ch is contained in this access */
   this.doesContain = function(ch) {
     return this.contains.match(ch) != null;
+  }
+
+  this.getDispVal = function(negated) {
+    if (negated) {
+      return this.denyDispVal;
+    }
+
+    return this.dispVal;
   }
 }
 
 var hows = new function() {
   var hv = new Array();
 
-  hv.push(new howVals("A", "RrPFWapcbStysuN", howAllVal));
+  hv.push(new howVals("A", "RrPFWapcbStysuN", "<D:all/>", howAllVal, howDenyAllVal));
 
-  hv.push(new howVals("R", "rPF", howReadVal));
-  hv.push(new howVals("r", "", howReadAclVal));
-  hv.push(new howVals("P", "", howReadCurPrivSetVal));
-  hv.push(new howVals("F", "", howReadFreebusyVal));
+  hv.push(new howVals("R", "rPF", "<D:read/>", howReadVal, howDenyReadVal));
+  hv.push(new howVals("r", "", "<D:read-acl/>", howReadAclVal, howDenyReadAclVal));
+  hv.push(new howVals("P", "", "<D:read-current-user-privilege-set/>", howReadCurPrivSetVal, howDenyReadCurPrivSetVal));
+  hv.push(new howVals("F", "", "<C:read-free-busy/>", howReadFreebusyVal, howDenyReadFreebusyVal));
 
-  hv.push(new howVals("W", "apcbStysuN", howWriteVal));
-  hv.push(new howVals("a", "", howWriteAclVal));
-  hv.push(new howVals("p", "", howWritePropertiesVal));
-  hv.push(new howVals("c", "", howWriteContentVal));
+  hv.push(new howVals("W", "apcbStysuN", "<D:write/>", howWriteVal, howDenyWriteVal));
+  hv.push(new howVals("a", "", "<D:write-acl/>", howWriteAclVal, howDenyWriteAclVal));
+  hv.push(new howVals("p", "", "<D: write-properties/>", howWritePropertiesVal, howDenyWritePropertiesVal));
+  hv.push(new howVals("c", "", "<D:write-content/>", howWriteContentVal, howDenyWriteContentVal));
 
-  hv.push(new howVals("b", "Stys", howBindVal));
-  hv.push(new howVals("S", "tys", howScheduleVal));
-  hv.push(new howVals("t", "", howScheduleRequestVal));
-  hv.push(new howVals("y", "", howScheduleReplyVal));
-  hv.push(new howVals("s", "", howScheduleFreebusyVal));
+  hv.push(new howVals("b", "Stys", "<D:bind/>", howBindVal, howDenyBindVal));
+  hv.push(new howVals("S", "tys", "<C:schedule/>", howScheduleVal, howDenyScheduleVal));
+  hv.push(new howVals("t", "", "<C:schedule-request/>", howScheduleRequestVal, howDenyScheduleRequestVal));
+  hv.push(new howVals("y", "", "<C:schedule-reply/>", howScheduleReplyVal, howDenyScheduleReplyVal));
+  hv.push(new howVals("s", "", "<C:schedule-free-busy/>", howScheduleFreebusyVal, howDenyScheduleFreebusyVal));
 
-  hv.push(new howVals("u", "", howUnbindVal));
+  hv.push(new howVals("u", "", "<D:unbind/>", howUnbindVal, howDenyUnbindVal));
 
-  hv.push(new howVals("U", "", howUnlockVal));
+  hv.push(new howVals("U", "", "<D:unlock/>", howUnlockVal, howDenyUnlockVal));
 
-  hv.push(new howVals("N", "rPFapcbStysu", howNoneVal));
+  //hv.push(new howVals("N", "rPFapcbStysu", "", howNoneVal)); // None is -A
 
   this. getHows = function(ch) {
     for (var i = 0; i < hv.length; i++) {
@@ -129,6 +194,8 @@ var hows = new function() {
         return hv[i];
       }
     }
+
+    alert("No how values for how=" + ch);
 
     return null;
   }
@@ -179,6 +246,7 @@ function activateAllowDenyFlag(val,formObj,disabledFlag) {
     formObj[val][i].disabled = disabledFlag;
   }
 }
+
 // Gather up the how values on access form submission and set the how field
 // (method 1) or return the value (method 2).
 // If in "basic" mode:
@@ -218,29 +286,41 @@ function setAccessHow(formObj,method) {
   }
 }
 
-
-/* METHOD TWO FUNCTIONS*/
-// Acces Control Entry (ACE) object
-
-
-function bwAce(who,whoType,how,inherited,invert) {
+/* Information about a principal
+ */
+function bwPrincipal(who, whoType) {
   this.who = who;
   this.whoType = whoType;
-  this.how = how;
-  this.inherited = inherited;
-  this.invert = invert; // boolean
 
-  this.equals = function(ace) {
-    if (this.whoType != ace.whoType) {
-      return false;
+  // Don't touch email like addresses
+  if (who.indexOf("@") < 0) {
+    // Normalize the who
+    if (whoType == "user") {
+      if (who.indexOf(principalPrefix) != "0") {
+        who = userPrincipalPrefix + who;
+      }
+    } else if (whoType == "group") {
+      if (who.indexOf(principalPrefix) != "0") {
+        who = groupPrincipalPrefix + who;
+      }
+    } else if (whoType == "resource") {
+      if (who.indexOf(principalPrefix) != "0") {
+        who = resourcePrincipalPrefix + who;
+      }
     }
-
-    return (this.formatWho() == ace.formatWho());
   }
 
   // format the who string for on-screen display
-  this.formatWho = function() {
-    if (whoType == "user" || whoType == "group") {
+  this.format = function() {
+    if (whoType == "user") {
+      return who;
+    }
+
+    if (whoType == "group") {
+      return who;
+    }
+
+    if (whoType == "resource") {
       return who;
     }
 
@@ -264,47 +344,148 @@ function bwAce(who,whoType,how,inherited,invert) {
   }
 
   this.toXml = function() {
-    var res = "<ace><principal>\n";
+    var w = this.format();
 
-    if (whoType == "user" || whoType == "group") {
-      res += "<href>" + who + "</href>";
+    if (whoType == "other") {
+      return "    <D:invert>\n        <D:principal><D:owner/></D:principal>\n      </D:invert>";
+    }
+
+    var res = "    <D:principal>\n";
+
+    if (w.indexOf(principalPrefix) == "0") {
+      res += "      <D:href>" + w + "</D:href>\n";
     } else if (whoType == "auth") {
-      res += "<property>" + who + "</property>";
-    }else if (whoType == "unauth") {
-      res += "<property>" + who + "</property>";
-    } if (whoType == "owner") {
-      res += "<property>" + who + "</property>";
-    } if (whoType == "other") {
-      res += "<invert><principal>" + who + "</principal></invert>";
-    }
-    res += "</principal>";
-    res += "<grant>";
-    res += "<read/>";
-    res += "</grant>";
-
-    if (this.inherited != '') {
-      res += "<inherited><href>" + this.inherited + "</href></inherited>";
+      res += "      <D:authenticated/>\n";
+    } else if (whoType == "unauth") {
+      res += "      <D:unauthenticated/>\n";
+    } else if (whoType == "owner") {
+      res += "    <D:property><D:owner/></D:property>\n";
+    } else {
+      res += "************??????" + whoType;
     }
 
-    return res + "</ace>";
+    return res + "    </D:principal>\n";
+  }
+
+  this.equals = function(pr) {
+    if (this.whoType != pr.whoType) {
+      return false;
+    }
+
+    return this.who == pr.who;
+  }
+}
+
+/* METHOD TWO FUNCTIONS*/
+// Access Control Entry (ACE) object
+
+function bwAce(who, whoType, how, inherited, invert) {
+  this.principal = new bwPrincipal(who, whoType);
+  this.how = how;
+  this.inherited = inherited;
+  this.invert = invert; // boolean
+
+  this.equals = function(ace) {
+    return this.principal.equals(ace.principal);
+  }
+
+  // format the who string for on-screen display
+  this.formatWho = function() {
+    return this.principal.format();
   }
 
   // format the how string for on-screen display
   this.formatHow = function() {
     var formattedHow = "";
 
-    for (i = 0; i < how.length; i++) {
+    for (var i = 0; i < how.length; i++) {
       var h = how[i];
+      var negated = false;
       if (h == "-") {
-        formattedHow += "not-";
-      } else {
-        var hvs = hows.getHows(h);
-
-        formattedHow += hvs.dispVal + " ";
+        negated = true;
+        i++;
+        h = how[i];
       }
+
+      formattedHow += hows.getHows(h).getDispVal(negated) + " ";
     }
 
     return formattedHow;
+  }
+
+  this.formatInherited = function() {
+    if (inherited != "") {
+      return inherited;
+    }
+
+    return inheritedStr;
+  }
+
+  this.howsToXml = function(doGrants) {
+    var open = false;
+
+    for (var hi = 0; hi < how.length; hi++) {
+      var h = how[hi];
+      var res = "";
+
+      if (doGrants && (h == "-")) {
+        // skip
+        hi++;
+      } else if (!doGrants && (h != "-")) {
+        // skip
+      } else {
+        if (h == "-") {
+          hi++;
+          h = how[hi];
+        }
+
+        var hvs = hows.getHows(h);
+
+        if (!open) {
+          if (doGrants) {
+            res += "    <D:grant>\n";
+          } else {
+            res += "    <D:deny>\n";
+          }
+
+          open = true;
+        }
+
+        res += "      <D:privilege>" + hvs.davEl + "</D:privilege>\n";
+      }
+    }
+
+    if (open) {
+      if (doGrants) {
+        res += "    </D:grant>\n";
+      } else {
+        res += "    </D:deny>\n";
+      }
+    }
+
+    return res;
+  }
+
+  this.toXml = function() {
+    var res = "  <D:ace>\n" + this.principal.toXml();
+
+    res += this.howsToXml(true);
+    res += this.howsToXml(false);
+
+    if (this.inherited != "") {
+      res += "    <D:inherited><D:href>" + this.inherited + "</D:href></D:inherited>";
+    }
+
+    return res + "  </D:ace>\n";
+  }
+
+  this.toFormRow = function(row) {
+    row.insertCell(0).appendChild(document.createTextNode(this.principal.format()));
+    row.insertCell(1).appendChild(document.createTextNode(this.formatHow()));
+    row.insertCell(2).appendChild(document.createTextNode(this.formatInherited()));
+    var td_3 = row.insertCell(3);
+    td_3.appendChild(document.createTextNode(''));
+    //<a href="javascript:bwAcl.delete(' + j +')">' + deleteStr + '</a>
   }
 }
 
@@ -316,8 +497,8 @@ var bwAcl = new function() {
   // Initialize the list.
   // The function expects a comma-separated list of arguments grouped
   // into the five ACE properties.
-  this.init = function(who,whoType,how,inherited,invert) {
-    aces.push(new bwAce(who,whoType,how,inherited,invert));
+  this.init = function(who, whoType, how, inherited, invert) {
+    aces.push(new bwAce(who, whoType, how, inherited, invert));
   }
 
   // Add or update an ace
@@ -343,19 +524,25 @@ var bwAcl = new function() {
         type = formObj.whoType[i].value;
       }
     }
+
     // validate for user or group
     if ((type == 'user' || type == 'group') && formObj.who.value == '') {
       alert("you must enter a user or group name");
       formObj.who.focus();
       return;
     }
-    // return the how string from the form
-    var how = setAccessHow(formObj,2);
-    // update the bwAcl
-    bwAcl.addAce(new bwAce(formObj.who.value,type,how,"local",false));
+
+    // get the how string from the form
+    var how = setAccessHow(formObj, 2);
+
+    //alert("About to update who=" + formObj.who.value +
+    //       "\ntype= " + type + "\nhow=" + how);
+
+    bwAcl.addAce(new bwAce(formObj.who.value, type, how, "" , false));
+    formObj.who.value = "";
 
     // update the acl form field
-    formObj.acl = this.toXml();
+    formObj.acl.value = this.toXml();
 
     // redraw the display
     this.display();
@@ -363,6 +550,9 @@ var bwAcl = new function() {
 
   this.deleteAce = function(index) {
     bwAcl.aces.splice(index, 1);
+
+    // update the acl form field
+    formObj.acl = this.toXml();
 
     // redraw the display
     this.display();
@@ -381,16 +571,10 @@ var bwAcl = new function() {
 
       // recreate the table rows
       for (var j = 0; j < aces.length; j++) {
-        var formattedWho = aces[j].formatWho();
-        var formattedHow = aces[j].formatHow();
+        var curAce = aces[j];
         var tr = aclTableBody.insertRow(j);
 
-        tr.insertCell(0).appendChild(document.createTextNode(formattedWho));
-        tr.insertCell(1).appendChild(document.createTextNode(formattedHow));
-        tr.insertCell(2).appendChild(document.createTextNode(aces[j].inherited));
-        var td_3 = tr.insertCell(3);
-        td_3.appendChild(document.createTextNode(''));
-        //<a href="javascript:bwAcl.delete(' + j +')">' + deleteStr + '</a>
+        curAce.toFormRow(tr);
       }
     } catch (e) {
       alert(e);
@@ -399,16 +583,13 @@ var bwAcl = new function() {
 
   // generate webDAV ACl XML output
   this.toXml = function() {
-    var res = "<acl>\n";
+    var res = xmlHeader + "\n<D:acl " + nameSpaces + " >\n";
 
     for (var j = 0; j < aces.length; j++) {
       res += aces[j].toXml();
     }
 
-    return res + "</acl>";
+    return res + "</D:acl>";
   }
 }
-
-
-
 

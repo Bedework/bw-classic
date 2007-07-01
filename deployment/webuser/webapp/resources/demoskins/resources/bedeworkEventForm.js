@@ -34,7 +34,7 @@ function setEventFields(formObj) {
   setDates(formObj);
   setRecurrence(formObj);
   setAccessHow(formObj,1);
-  setAccessAcl(formObj);
+  //setAccessAcl(formObj);
 }
 function setDates(formObj) {
   var startDate = new Date();
