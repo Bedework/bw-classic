@@ -355,7 +355,7 @@
          losing the script closing tags (which avoids browser problems) -->
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
-                  /bedework/page='modPrefs' or 
+                  /bedework/page='modPrefs' or
                   /bedework/page='attendeeRespond'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
     </xsl:if>
@@ -3022,13 +3022,13 @@
     <div id="bwEventTab-Access" class="invisible">
       <div id="sharingBox">
         <xsl:choose>
-          <xsl:when test="/bedework/editableAccess/access/acl"> 
+          <xsl:when test="/bedework/editableAccess/access/acl">
             <xsl:apply-templates select="/bedework/editableAccess/access/acl" mode="currentAccess">
               <xsl:with-param name="action" select="$event-setAccess"/>
               <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
               <xsl:with-param name="guid" select="$guid"/>
               <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
-              <xsl:with-param name="method">2</xsl:with-param> 
+              <xsl:with-param name="method">2</xsl:with-param>
             </xsl:apply-templates>
           </xsl:when>
           <xsl:otherwise>
@@ -7011,9 +7011,9 @@
             </span>
             Rights:
           </h5>
-          <input type="hidden" name="how" value=""/>
+          <input type="hidden" name="how" value="" id="bwCurrentHow"/>
           <!-- field 'acl' will receive xml for method 2 -->
-          <input type="hidden" name="acl" value=""/> 
+          <input type="hidden" name="acl" value="" id="bwCurrentAcl" />
           <!-- Advanced Access Rights: -->
           <!-- the "how" field is set by iterating over the howItems below -->
           <table id="howTable" class="invisible" cellspacing="0">
@@ -7263,9 +7263,9 @@
     <xsl:param name="guid"/> <!-- optional (for entities) -->
     <xsl:param name="recurrenceId"/> <!-- optional (for entities) -->
     <xsl:param name="what"/> <!-- optional (for scheduling only) -->
-    <xsl:param name="method">1</xsl:param> <!-- which method of access control 
-      are we using: 1 (one request per pricipal) or 2 (set all with 
-      javascript and send entire ACL to server) -->  
+    <xsl:param name="method">1</xsl:param> <!-- which method of access control
+      are we using: 1 (one request per pricipal) or 2 (set all with
+      javascript and send entire ACL to server) -->
     <h3>Current Access:</h3>
     <table class="common scheduling" id="bwCurrentAccess">
       <thead>
@@ -7391,7 +7391,7 @@
       </tbody>
     </table>
   </xsl:template>
-  
+
   <!--==== SEARCH RESULT ====-->
   <xsl:template name="searchResult">
     <h2 class="bwStatusConfirmed">
@@ -7688,8 +7688,8 @@
     bwAcl.init('<xsl:value-of select="$who"/>','<xsl:value-of select="$whoType"/>','<xsl:value-of select="$aclString"/>','<xsl:value-of select="$inherited"/>','<xsl:value-of select="$invert"/>');
   </xsl:template>
 
-  <xsl:template name="grantDenyToInternal"><!-- 
-  --><xsl:param name="name"/><!-- 
+  <xsl:template name="grantDenyToInternal"><!--
+  --><xsl:param name="name"/><!--
   --><xsl:choose>
        <xsl:when test="$name = 'all'">A</xsl:when>
        <xsl:when test="$name = 'read'">R</xsl:when>
@@ -7704,7 +7704,7 @@
        <xsl:when test="$name = 'schedule'">S</xsl:when>
        <xsl:when test="$name = 'schedule-request'">t</xsl:when>
        <xsl:when test="$name = 'schedule-reply'">y</xsl:when>
-       <xsl:when test="$name = 'schedule-free-busy'">s</xsl:when>       
+       <xsl:when test="$name = 'schedule-free-busy'">s</xsl:when>
        <xsl:when test="$name = 'unbind'">u</xsl:when>
        <xsl:when test="$name = 'unlock'">U</xsl:when>
        <xsl:when test="$name = 'none'">N</xsl:when>
@@ -7732,7 +7732,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
   <!--==== FOOTER ====-->
   <xsl:template name="footer">
     <div id="footer">

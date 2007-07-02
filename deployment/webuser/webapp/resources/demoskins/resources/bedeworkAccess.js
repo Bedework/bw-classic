@@ -50,8 +50,9 @@ var authenticatedStr = "authenticated";
 var unauthenticatedStr = "unauthenticated";
 var ownerStr = "owner";
 var otherStr = "other";
-var deleteStr = "remove";
 var grantStr = "grant";
+
+var deleteStr = "default";
 
 // How granted accesses appear
 var howAllVal = "all";
@@ -289,23 +290,31 @@ function setAccessHow(formObj,method) {
 /* Information about a principal
  */
 function bwPrincipal(who, whoType) {
-  this.who = who;
   this.whoType = whoType;
 
-  // Don't touch email like addresses
-  if (who.indexOf("@") < 0) {
-    // Normalize the who
-    if (whoType == "user") {
-      if (who.indexOf(principalPrefix) != "0") {
-        who = userPrincipalPrefix + who;
-      }
-    } else if (whoType == "group") {
-      if (who.indexOf(principalPrefix) != "0") {
-        who = groupPrincipalPrefix + who;
-      }
-    } else if (whoType == "resource") {
-      if (who.indexOf(principalPrefix) != "0") {
-        who = resourcePrincipalPrefix + who;
+  if ((whoType == "auth") ||
+      (whoType == "unauth") ||
+      (whoType == "owner") ||
+      (whoType == "other")) {
+    // Don't set who
+  } else {
+    this.who = who;
+
+    // Don't touch email like addresses
+    if (who.indexOf("@") < 0) {
+      // Normalize the who
+      if (whoType == "user") {
+        if (who.indexOf(principalPrefix) != "0") {
+          who = userPrincipalPrefix + who;
+        }
+      } else if (whoType == "group") {
+        if (who.indexOf(principalPrefix) != "0") {
+          who = groupPrincipalPrefix + who;
+        }
+      } else if (whoType == "resource") {
+        if (who.indexOf(principalPrefix) != "0") {
+          who = resourcePrincipalPrefix + who;
+        }
       }
     }
   }
@@ -367,7 +376,13 @@ function bwPrincipal(who, whoType) {
     return res + "    </D:principal>\n";
   }
 
+  this.toString = function() {
+    return "bwPrincipal[who=" + this.who + ", whoType=" + this.whoType + "]";
+  }
+
   this.equals = function(pr) {
+    //alert("this=" + this.toString() + " pr=" + pr.toString());
+
     if (this.whoType != pr.whoType) {
       return false;
     }
@@ -479,13 +494,14 @@ function bwAce(who, whoType, how, inherited, invert) {
     return res + "  </D:ace>\n";
   }
 
-  this.toFormRow = function(row) {
+  this.toFormRow = function(row, aceI) {
     row.insertCell(0).appendChild(document.createTextNode(this.principal.format()));
     row.insertCell(1).appendChild(document.createTextNode(this.formatHow()));
     row.insertCell(2).appendChild(document.createTextNode(this.formatInherited()));
     var td_3 = row.insertCell(3);
-    td_3.appendChild(document.createTextNode(''));
-    //<a href="javascript:bwAcl.delete(' + j +')">' + deleteStr + '</a>
+    if (this.inherited == "") {
+      td_3.innerHTML = "<a href=\"javascript:bwAcl.deleteAce('" + aceI + "')\">" + deleteStr + "</a>";
+    }
   }
 }
 
@@ -494,17 +510,25 @@ function bwAce(who, whoType, how, inherited, invert) {
 var bwAcl = new function() {
   var aces = new Array();
 
+  /* If we delete an ace we need to reinstate any inherited access for the same principal
+   */
+  var savedInherited = new Array();
+
   // Initialize the list.
   // The function expects a comma-separated list of arguments grouped
   // into the five ACE properties.
   this.init = function(who, whoType, how, inherited, invert) {
-    aces.push(new bwAce(who, whoType, how, inherited, invert));
+    var newAce = new bwAce(who, whoType, how, inherited, invert);
+    aces.push(newAce);
+    if (inherited != "") {
+      savedInherited.push(newAce);
+    }
   }
 
   // Add or update an ace
   this.addAce = function(newAce) {
     // expects a bwAce object as parameter
-    for (i = 0; i < aces.length; i++) {
+    for (var i = 0; i < aces.length; i++) {
       if (aces[i].equals(newAce)) {
         // replace an existing ace
         aces[i] = newAce;
@@ -538,21 +562,38 @@ var bwAcl = new function() {
     //alert("About to update who=" + formObj.who.value +
     //       "\ntype= " + type + "\nhow=" + how);
 
-    bwAcl.addAce(new bwAce(formObj.who.value, type, how, "" , false));
+    this.addAce(new bwAce(formObj.who.value, type, how, "" , false));
     formObj.who.value = "";
 
     // update the acl form field
-    formObj.acl.value = this.toXml();
+    var formAcl = document.getElementById("bwCurrentAcl");
+    formAcl.value = this.toXml();
 
     // redraw the display
     this.display();
   }
 
   this.deleteAce = function(index) {
-    bwAcl.aces.splice(index, 1);
+    var ace = aces[index];
+    var replace = false;
+
+    for (var si = 0; si < savedInherited.length; si++) {
+      if (savedInherited[si].equals(ace)) {
+        ace = savedInherited[si];
+        replace = true;
+        break;
+      }
+    }
+
+    if (replace) {
+      aces[index] = ace;
+    } else {
+      aces.splice(index, 1);
+    }
 
     // update the acl form field
-    formObj.acl = this.toXml();
+    var formAcl = document.getElementById("bwCurrentAcl");
+    formAcl.value = this.toXml();
 
     // redraw the display
     this.display();
@@ -574,7 +615,7 @@ var bwAcl = new function() {
         var curAce = aces[j];
         var tr = aclTableBody.insertRow(j);
 
-        curAce.toFormRow(tr);
+        curAce.toFormRow(tr, j);
       }
     } catch (e) {
       alert(e);
