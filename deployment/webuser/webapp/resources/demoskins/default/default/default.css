@@ -996,6 +996,15 @@ messages.
   width: 15px;
   padding: 4px 6px 4px 4px;
 }
+#bedework table.common table#attendees {
+  font-size: 0.9em;
+}
+#bedework table.common #attendees th {
+  padding: 0 0.5em 0 0;
+}
+#bedework table.common #attendees td {
+  padding: 0 0.5em 0 0;
+}
 #bedework #recipientsAndAttendees {
   margin: 0;
   padding:  0 1em;

@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output
   method="xhtml"
-  indent="yes"
+  indent="no"
   media-type="text/html"
   doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
   doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
@@ -1746,7 +1746,7 @@
           </td>
         </tr>
       </xsl:if>
-      <xsl:if test="attendee">
+      <xsl:if test="attendees/attendee">
         <tr>
           <td class="fieldname">Attendees:</td>
           <td class="fieldval">
@@ -1756,12 +1756,15 @@
                 <th>role</th>
                 <th>status</th>
               </tr>
-              <xsl:for-each select="attendee">
+              <xsl:for-each select="attendees/attendee">
                 <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
                 <xsl:sort select="attendeeUri" order="ascending" case-order="upper-first"/>
                 <tr>
                   <td>
                     <xsl:variable name="attendeeUri" select="attendeeUri"/>
+                    <a href="{$attendeeUri}" class="emailIcon" title="email">
+                      <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
+                    </a>
                     <xsl:choose>
                       <xsl:when test="cn != ''">
                         <xsl:value-of select="cn"/>
@@ -1770,9 +1773,6 @@
                         <xsl:value-of select="substring-after(attendeeUri,'mailto:')"/>
                       </xsl:otherwise>
                     </xsl:choose>
-                    <a href="{$attendeeUri}" class="emailIcon" title="email">
-                      <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
-                    </a>
                   </td>
                   <td class="role">
                     <xsl:value-of select="role"/>
