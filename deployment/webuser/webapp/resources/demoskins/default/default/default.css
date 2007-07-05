@@ -931,6 +931,10 @@ messages.
   color: black;
   background: #ddc;
 }
+#bedework table.common td.scheduleActions ul {
+  margin: 0;
+  padding: 0 0 0 20px;
+}
 #bedework #comments p {
   margin: 0 0 1em 2em;
 }
@@ -1455,25 +1459,25 @@ messages.
 #bedework .calendarTree li {
   padding-top: 0.25em;
 }
-#bedework .calendarTree li.folder {
+#bedework li.folder {
   list-style-image: url(../../resources/catIcon.gif);
 }
-#bedework .calendarTree li.calendar {
+#bedework  li.calendar {
   list-style-image: url(../../resources/calIcon-sm.gif);
 }
-#bedework .calendarTree li.trash {
+#bedework  li.trash {
   list-style-image: url(../../resources/trashIcon.gif);
 }
-#bedework .calendarTree li.inbox {
+#bedework  li.inbox {
   list-style-image: url(../../resources/inboxIcon.gif);
 }
-#bedework .calendarTree li.outbox {
+#bedework  li.outbox {
   list-style-image: url(../../resources/outboxIcon.gif);
 }
-#bedework .calendarTree li.deleted {
+#bedework  li.deleted {
   list-style-image: url(../../resources/calIconDeleted-sm.gif);
 }
-#bedework .calendarTree li.selected {
+#bedework  li.selected {
   list-style-image: url(../../resources/glassFill-icon-view.gif);
   font-weight: bold;
 }

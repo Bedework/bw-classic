@@ -3458,28 +3458,30 @@
       <h4> Add attendees and recipients</h4>
       <form name="raForm" id="recipientsAndAttendeesForm" action="{$event-attendeesForEvent}" method="post">
         <div id="raContent">
-          <input name="uri" width="40"/>
-          <input type="submit" value="add" />
-          &#160;
-          <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
-          <input type="checkbox" name="attendee" value="true" checked="checked"/> attendee
-          &#160;
-          Role:
-          <select name="role">
-            <option value="REQ-PARTICIPANT">required participant</option>
-            <option value="OPT-PARTICIPANT">optional participant</option>
-            <option value="CHAIR">chair</option>
-            <option value="NON-PARTICIPANT">non-participant</option>
-          </select>
-          &#160;
-          Status:
-          <select name="partstat">
-            <option value="NEEDS-ACTION">needs action</option>
-            <option value="ACCEPTED">accepted</option>
-            <option value="DECLINED">declined</option>
-            <option value="TENTATIVE">tentative</option>
-            <option value="DELEGATED">delegated</option>
-          </select>
+          <div id="raFields">
+            <input name="uri" width="40"/>
+            <input type="submit" value="add" />
+            &#160;
+            <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
+            <input type="checkbox" name="attendee" value="true" checked="checked"/> attendee
+            &#160;
+            Role:
+            <select name="role">
+              <option value="REQ-PARTICIPANT">required participant</option>
+              <option value="OPT-PARTICIPANT">optional participant</option>
+              <option value="CHAIR">chair</option>
+              <option value="NON-PARTICIPANT">non-participant</option>
+            </select>
+            &#160;
+            Status:
+            <select name="partstat">
+              <option value="NEEDS-ACTION">needs action</option>
+              <option value="ACCEPTED">accepted</option>
+              <option value="DECLINED">declined</option>
+              <option value="TENTATIVE">tentative</option>
+              <option value="DELEGATED">delegated</option>
+            </select>
+          </div>  
 
           <xsl:if test="/bedework/attendees/attendee">
             <xsl:apply-templates select="/bedework/attendees"/>
@@ -5857,10 +5859,10 @@
                 <ul>
                   <xsl:for-each select="guidcals/calendar">
                     <li class="calendar">
+                      <xsl:value-of select="name"/>
                       <input type="hidden" name="calPath">
                         <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
-                      </input>                      
-                      <xsl:value-of select="title"/>
+                      </input> 
                     </li>
                   </xsl:for-each>
                 </ul>
