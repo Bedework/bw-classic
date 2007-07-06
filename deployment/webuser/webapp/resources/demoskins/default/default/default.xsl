@@ -5872,7 +5872,7 @@
                   <option value="DECLINED">declined</option>
                   <option value="TENTATIVE">tentative</option>
                 </select><br/>
-                <input type="radio" name="method" value="REFRESH" onclick="swapScheduleDisplay('hide');"/>refresh this event<br/>
+                <!--<input type="radio" name="method" value="REFRESH" onclick="swapScheduleDisplay('hide');"/>refresh this event<br/>-->
                 <input type="radio" name="method" value="DELEGATE" onclick="swapScheduleDisplay('hide');"/>delegate to
                 <input type="test" name="delegate" value=""/> (uri or account)<br/>
                 <input type="radio" name="method" value="COUNTER" onclick="swapScheduleDisplay('show');"/>counter (suggest a different date, time, and/or location)
