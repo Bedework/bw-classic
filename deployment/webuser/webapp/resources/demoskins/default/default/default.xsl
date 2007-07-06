@@ -537,94 +537,72 @@
   </xsl:template>
 
   <xsl:template name="tabs">
-    <xsl:choose>
-      <xsl:when test="/bedework/page='eventscalendar' or /bedework/page='freeBusy'">
-        <xsl:variable name="navAction">
+    <xsl:variable name="navAction">
+      <xsl:choose>
+        <xsl:when test="/bedework/page='attendees'"><xsl:value-of select="$event-attendeesForEvent"/></xsl:when>
+        <xsl:when test="/bedework/page='freeBusy'"><xsl:value-of select="$freeBusy-fetch"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="$setViewPeriod"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <table cellspacing="0" id="tabsTable">
+      <tr>
+        <td>
           <xsl:choose>
-            <xsl:when test="/bedework/page='attendees'"><xsl:value-of select="$event-attendeesForEvent"/></xsl:when>
-            <xsl:when test="/bedework/page='freeBusy'"><xsl:value-of select="$freeBusy-fetch"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="$setViewPeriod"/></xsl:otherwise>
+            <xsl:when test="/bedework/periodname='Day'">
+              <a href="{$navAction}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-on.gif" width="90" height="20" border="0" alt="DAY"/></a>
+            </xsl:when>
+            <xsl:otherwise>
+              <a href="{$navAction}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-off.gif" width="90" height="20" border="0" alt="DAY"/></a>
+            </xsl:otherwise>
           </xsl:choose>
-        </xsl:variable>
-        <table cellspacing="0" id="tabsTable">
-          <tr>
-            <td>
+        </td>
+        <td>
+          <xsl:choose>
+            <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
+              <a href="{$navAction}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-on.gif" width="92" height="20" border="0" alt="WEEK"/></a>
+             </xsl:when>
+            <xsl:otherwise>
+              <a href="{$navAction}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
+             </xsl:otherwise>
+          </xsl:choose>
+        </td>
+        <td>
+          <xsl:choose>
+            <xsl:when test="/bedework/periodname='Month'">
+              <a href="{$navAction}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-on.gif" width="90" height="20" border="0" alt="MONTH"/></a>
+            </xsl:when>
+            <xsl:otherwise>
+              <a href="{$navAction}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
+            </xsl:otherwise>
+          </xsl:choose>
+        </td>
+        <td>
+          <xsl:choose>
+            <!-- don't allow switching to year for free busy view, so only use setViewPeriod action -->
+            <xsl:when test="/bedework/periodname='Year'">
+              <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
+            </xsl:when>
+            <xsl:otherwise>
               <xsl:choose>
-                <xsl:when test="/bedework/periodname='Day'">
-                  <a href="{$navAction}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-on.gif" width="90" height="20" border="0" alt="DAY"/></a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$navAction}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-off.gif" width="90" height="20" border="0" alt="DAY"/></a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
-                  <a href="{$navAction}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-on.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-                 </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$navAction}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-                 </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Month'">
-                  <a href="{$navAction}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-on.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$navAction}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td>
-              <xsl:choose>
-                <!-- don't allow switching to year for free busy view, so only use setViewPeriod action -->
-                <xsl:when test="/bedework/periodname='Year'">
-                  <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
+                <xsl:when test="/bedework/page='attendees' or /bedework/page='freeBusy'">
+                  <img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
                 </xsl:otherwise>
               </xsl:choose>
-            </td>
-            <td class="rightCell">
-              logged in as
-              <xsl:text> </xsl:text>
-              <strong><xsl:value-of select="/bedework/userid"/></strong>
-              <xsl:text> </xsl:text>
-              <span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
-            </td>
-          </tr>
-        </table>
-      </xsl:when>
-      <xsl:otherwise>
-        <table cellspacing="0" id="tabsTable">
-          <tr>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
-            </td>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-            </td>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-            </td>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
-            </td>
-            <td class="rightCell">
-              logged in as
-              <xsl:text> </xsl:text>
-              <strong><xsl:value-of select="/bedework/userid"/></strong>
-              <xsl:text> </xsl:text>
-              <span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
-            </td>
-          </tr>
-        </table>
-      </xsl:otherwise>
-    </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
+        </td>
+        <td class="rightCell">
+          logged in as
+          <xsl:text> </xsl:text>
+          <strong><xsl:value-of select="/bedework/userid"/></strong>
+          <xsl:text> </xsl:text>
+          <span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
   <xsl:template name="navigation">
