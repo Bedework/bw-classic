@@ -5786,7 +5786,7 @@
           </td>
           <td class="fieldval scheduleActions">
             <xsl:choose>
-              <xsl:when test="normalize-space(guidcals) = ''">
+              <xsl:when test="not(guidcals/calendar)">
               <!-- the event has not been added to a calendar, so this is the 
                    first request -->
               
@@ -6277,6 +6277,34 @@
             </xsl:otherwise>
           </xsl:choose>
         </th>
+      </tr>
+      <tr>
+        <td class="fieldname">
+          Calendar:
+        </td>
+        <td class="fieldval scheduleActions">
+          <xsl:choose>
+            <xsl:when test="not(/bedework/guidcals/calendar)">
+            <!-- the event has been deleted by the organizer -->
+              Event no longer exists.
+            </xsl:when>
+            <xsl:otherwise>
+              <!-- the event exists.  Let the user choose which copies 
+                   of the event to update.  For now, we'll just list them
+                   and add calPath request parameters -->
+              <ul>
+                <xsl:for-each select="/bedework/guidcals/calendar">
+                  <li class="calendar">
+                    <xsl:value-of select="name"/>
+                    <input type="hidden" name="calPath">
+                      <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
+                    </input> 
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </xsl:otherwise>
+          </xsl:choose>              
+        </td>
       </tr>
       <tr>
         <td class="fieldname">
