@@ -89,6 +89,7 @@
   <xsl:variable name="gotoEditEvent" select="/bedework/urlPrefixes/event/gotoEditEvent"/>
   <xsl:variable name="updateEvent" select="/bedework/urlPrefixes/event/updateEvent"/>
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/event/delEvent"/>
+  <xsl:variable name="delInboxEvent" select="/bedework/urlPrefixes/event/delInboxEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
   <!-- locations -->
   <xsl:variable name="location-initAdd" select="/bedework/urlPrefixes/location/initAdd/a/@href"/>
@@ -5514,7 +5515,7 @@
         <th class="commonHeader">start</th>
         <th class="commonHeader">end</th>
         <th class="commonHeader">method</th>
-        <th class="commonHeader">status</th>
+        <!--<th class="commonHeader">status</th>-->
         <th class="commonHeader">&#160;</th>
         <th class="commonHeader">&#160;</th>
       </tr>
@@ -5606,14 +5607,14 @@
           <td><xsl:value-of select="start/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="start/time"/></td>
           <td><xsl:value-of select="end/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="end/time"/></td>
           <td><xsl:apply-templates select="scheduleMethod"/></td>
-          <td>
+          <!--<td>
             <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <xsl:choose>
                 <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
                 <xsl:otherwise>processed</xsl:otherwise>
               </xsl:choose>
             </a>
-          </td>
+          </td>-->
           <td>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
             <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download">
@@ -5621,7 +5622,7 @@
             </a>
           </td>
           <td>
-            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="delete">
+            <a href="{$delInboxEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="delete">
               <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
             </a>
           </td>
