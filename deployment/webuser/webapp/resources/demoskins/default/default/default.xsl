@@ -2542,7 +2542,7 @@
           </td>
           <td class="fieldval">
             <input type="radio" name="eventStatus" value="CONFIRMED">
-              <xsl:if test="form/status = 'CONFIRMED' or /bedework/creating = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+              <xsl:if test="form/status = 'CONFIRMED' or /bedework/creating = 'true' or form/status = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input>
             confirmed
             <input type="radio" name="eventStatus" value="TENTATIVE">
@@ -5761,6 +5761,7 @@
           </xsl:when>
           <xsl:otherwise>
             Meeting Request
+            <xsl:if test="guidcals/calendar"> (update)</xsl:if>
           </xsl:otherwise>
         </xsl:choose>
       </h2>
@@ -5878,7 +5879,7 @@
               <!-- respond to a cancel -->
                 <input type="hidden" name="method" value="REPLY"/>
                 <select name="cancelAction">
-                  <option value="mark">mark event as deleted</option>
+                  <option value="mark">mark event as cancelled</option>
                   <option value="delete">delete event</option>
                 </select>
               </xsl:when>

@@ -52,7 +52,7 @@ var ownerStr = "owner";
 var otherStr = "other";
 var grantStr = "grant";
 
-var deleteStr = "default";
+var deleteStr = "remove";
 
 // How granted accesses appear
 var howAllVal = "all";
