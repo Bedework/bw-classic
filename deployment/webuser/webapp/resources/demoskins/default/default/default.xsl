@@ -541,6 +541,7 @@
       <xsl:when test="/bedework/page='eventscalendar' or /bedework/page='freeBusy'">
         <xsl:variable name="navAction">
           <xsl:choose>
+            <xsl:when test="/bedework/page='attendees'"><xsl:value-of select="$event-attendeesForEvent"/></xsl:when>
             <xsl:when test="/bedework/page='freeBusy'"><xsl:value-of select="$freeBusy-fetch"/></xsl:when>
             <xsl:otherwise><xsl:value-of select="$setViewPeriod"/></xsl:otherwise>
           </xsl:choose>
@@ -629,6 +630,7 @@
   <xsl:template name="navigation">
     <xsl:variable name="navAction">
       <xsl:choose>
+        <xsl:when test="/bedework/page='attendees'"><xsl:value-of select="$event-attendeesForEvent"/></xsl:when>
         <xsl:when test="/bedework/page='freeBusy'"><xsl:value-of select="$freeBusy-fetch"/></xsl:when>
         <xsl:otherwise><xsl:value-of select="$setViewPeriod"/></xsl:otherwise>
       </xsl:choose>
