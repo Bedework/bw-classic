@@ -173,7 +173,10 @@
       </head>
       <body>
         <xsl:choose>
-          <xsl:when test="/bedework/page != 'inbox'">
+          <xsl:when test="/bedework/page != 'inbox' and
+                          /bedework/page != 'outbox' and
+                          /bedework/page != 'attendeeRespond' and
+                          /bedework/page != 'attendeeReply'">
             <xsl:attribute name="onload">checkStatus(<xsl:value-of select="/bedework/inboxState/numActive"/>,<xsl:value-of select="/bedework/inboxState/changed"/>,'<xsl:value-of select="$showInbox"/>')</xsl:attribute>
           </xsl:when>
         </xsl:choose>
