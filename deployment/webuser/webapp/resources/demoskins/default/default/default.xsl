@@ -136,7 +136,9 @@
   <xsl:variable name="schedule-initAttendeeRespond" select="/bedework/urlPrefixes/schedule/initAttendeeRespond/a/@href"/>
   <xsl:variable name="schedule-attendeeRespond" select="/bedework/urlPrefixes/schedule/attendeeRespond/a/@href"/>
   <xsl:variable name="schedule-initAttendeeReply" select="/bedework/urlPrefixes/schedule/initAttendeeReply/a/@href"/>
+  <xsl:variable name="schedule-initAttendeeUpdate" select="/bedework/urlPrefixes/schedule/initAttendeeUpdate/a/@href"/>
   <xsl:variable name="schedule-processAttendeeReply" select="/bedework/urlPrefixes/schedule/processAttendeeReply/a/@href"/>
+  <xsl:variable name="schedule-refresh" select="/bedework/urlPrefixes/schedule/refresh/a/@href"/>
   <!-- misc (mostly import and export) -->
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
   <xsl:variable name="initUpload" select="/bedework/urlPrefixes/misc/initUpload/a/@href"/>
@@ -1520,6 +1522,13 @@
             <xsl:text> </xsl:text>
             <em>(recurrence master)</em>
           </xsl:if>
+          <xsl:if test="scheduleMethod = '2'">
+            <!-- this is a scheduled event (meeting or task) - allow a direct refresh -->
+            <a href="{$schedule-refresh}&amp;method=REFRESH" id="refreshEventAction">
+              <img src="{$resourcesRoot}/resources/std-icalRefresh-icon-small.gif" width="12" height="16" border="0" alt="send a request to refresh this scheduled event"/>
+              Refresh
+            </a>
+          </xsl:if>
         </th>
       </tr>
       <tr>
@@ -1764,6 +1773,13 @@
                 </tr>
               </xsl:for-each>
             </table>
+            <p>
+              <em>
+                <a href="{$schedule-initAttendeeUpdate}&amp;initUpdate=yes">
+                  change my status
+                </a>
+              </em>
+            </p>
           </td>
         </tr>
       </xsl:if>

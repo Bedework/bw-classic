@@ -698,10 +698,14 @@ messages.
   clear: none;
   font-size: 0.8em;
 }
-#bedework table.common #eventActions img {
-  display: inline;
+#bedework table.common #eventActions img,
+#bedework #refreshEventAction img {
+display: inline;
   margin-right: 2px;
   vertical-align: middle;
+}
+#bedework #refreshEventAction {
+  padding-left: 1em;  
 }
 #bedework table.common td.allField {
   white-space: nowrap;
