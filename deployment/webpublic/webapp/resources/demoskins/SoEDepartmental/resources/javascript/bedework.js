@@ -16,7 +16,6 @@ function launchExportWidget(formId,action,name,calPath) {
   document.getElementById('bwCalendarExportWidgetCalName').innerHTML = name;
 }
 function fillExportFields(formId) {
-  var formObj = document.getElementById(formId);
   var startDate = new Date();
   startDate = dojo.widget.byId("bwExportCalendarWidgetStartDate").getDate();
   formObj["eventStartDate.year"].value = startDate.getFullYear();

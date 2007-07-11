@@ -102,6 +102,7 @@
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export/a/@href"/>
   <xsl:variable name="search" select="/bedework/urlPrefixes/search/search"/>
   <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
+  <xsl:variable name="calendar-fetchForExport" select="/bedework/urlPrefixes/calendar/fetchForExport"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/main/showPage"/>
   <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
@@ -125,7 +126,7 @@
         <link rel="stylesheet" type="text/css" href="{$resourcesRoot}/default/default/soe.css" />
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
         <!-- load javascript -->
-        <xsl:if test="/bedework/page='calendarList'">
+        <xsl:if test="/bedework/page='calendarList' or /bedework/page='displayCalendarForExport'">
           <script type="text/javascript" src="{$resourceCommons}/javascript/dojo/dojo.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js">&#160;</script>
         </xsl:if>
@@ -154,6 +155,11 @@
           <xsl:when test="/bedework/page='calendarList'">
             <!-- show a list of all calendars -->
             <xsl:apply-templates select="/bedework/calendars"/>
+          </xsl:when>
+          <xsl:when test="/bedework/page='displayCalendarForExport'">
+            <!-- page for calendar export (can optionally be replaced by 
+                 a pop-up widget; see the calendars template) -->
+            <xsl:apply-templates select="/bedework/currentCalendar" mode="export"/>
           </xsl:when>
           <xsl:when test="/bedework/page='searchResult'">
             <!-- display search results -->
@@ -1250,7 +1256,9 @@
     </td>
   </xsl:template>
 
-  <!--==== CALENDARS PAGE ====-->
+  <!--==== CALENDARS ====-->
+  
+  <!-- list of available calendars -->
   <xsl:template match="calendars">
     <xsl:variable name="topLevelCalCount" select="count(calendar/calendar)"/>
     <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
@@ -1264,6 +1272,12 @@
           <p class="info">
             Select a calendar from the list below to see only that calendar's events.
           </p>
+          <!-- Uncomment this block, and change the links on the download calendar
+               icon (in the following template) to use a dojo floating 
+               widget instead of a separate page
+               for downloading whole calendars (this method does not work 
+               portal-agnostically: it is not intended for use in portals). 
+               
           <div dojoType="FloatingPane" id="bwCalendarExportWidget"
                title="Export Calendar as iCal" toggle="plain"
                windowState="minimized" hasShadow="true"
@@ -1274,21 +1288,17 @@
             </p>
             <strong>Event date limits:</strong>
             <form name="exportCalendarForm" id="exportCalendarForm" action="{$export}" method="post">
-              <!-- this value is passed into the form when the widget is requested -->
               <input type="hidden" name="calPath" value=""/>
-              <!-- fill these on submit -->
               <input type="hidden" name="eventStartDate.year" value=""/>
               <input type="hidden" name="eventStartDate.month" value=""/>
               <input type="hidden" name="eventStartDate.day" value=""/>
               <input type="hidden" name="eventEndDate.year" value=""/>
               <input type="hidden" name="eventEndDate.month" value=""/>
               <input type="hidden" name="eventEndDate.day" value=""/>
-              <!-- static fields -->
               <input type="hidden" name="nocache" value="no"/>
               <input type="hidden" name="skinName" value="ical"/>
               <input type="hidden" name="contentType" value="text/calendar"/>
               <input type="hidden" name="contentName" value="calendar.ics"/>
-              <!-- visible fields -->
               <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> today forward
               <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
               <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> date range
@@ -1296,9 +1306,9 @@
                 Start: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetStartDate"><xsl:text> </xsl:text></div>
                 End: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetEndDate"><xsl:text> </xsl:text></div>
               </div>
-              <p><input type="submit" value="export" class="bwWidgetSubmit" onclick="fillExportFields('exportCalendarForm');hideWidget('bwCalendarExportWidget')"/></p>
+              <p><input type="submit" value="export" class="bwWidgetSubmit" onclick="fillExportFields(this.form);hideWidget('bwCalendarExportWidget')"/></p>
             </form>
-          </div>
+          </div>-->
         </td>
       </tr>
       <tr>
@@ -1327,11 +1337,16 @@
     <li class="{$itemClass}">
       <a href="{$setSelection}&amp;calUrl={$url}" title="view calendar"><xsl:value-of select="name"/></a>
       <xsl:if test="calendarCollection='true'">
-        <xsl:variable name="name" select="name"/>
         <xsl:variable name="calPath" select="path"/>
-        <xsl:variable name="idForCal" select="translate(translate(path,'/','S'),' ','s')"/>
         <span class="exportCalLink">
+          <!-- To use the dojo floating widget from the template above, uncomment 
+               this block:
+          <xsl:variable name="name" select="name"/>
+          <xsl:variable name="idForCal" select="translate(translate(path,'/','S'),' ','s')"/>
           <a href="javascript:launchExportWidget('exportCalendarForm','{$export}','{$name}','{$calPath}')" id="{$idForCal}" title="export calendar as iCal">
+            <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
+          </a> -->
+          <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}" title="export calendar as iCal">
             <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
           </a>
         </span>
@@ -1342,6 +1357,51 @@
         </ul>
       </xsl:if>
     </li>
+  </xsl:template>
+  
+  <!-- calendar export page -->
+  <xsl:template match="currentCalendar" mode="export">
+    <h2 class="bwStatusConfirmed">Export Calendar</h2>
+    <div id="export">
+      <p>
+        <strong>Calendar to export:</strong>
+      </p>
+      <div class="indent">
+        Name: <strong><em><xsl:value-of select="name"/></em></strong><br/>
+        Path: <xsl:value-of select="path"/>
+      </div>
+      <p>
+        <strong>Event date limits:</strong>
+      </p>
+      <form name="exportCalendarForm" id="exportCalendarForm" action="{$export}" method="post">
+        <input type="hidden" name="calPath">
+          <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
+        </input>
+        <!-- fill these on submit -->
+        <input type="hidden" name="eventStartDate.year" value=""/>
+        <input type="hidden" name="eventStartDate.month" value=""/>
+        <input type="hidden" name="eventStartDate.day" value=""/>
+        <input type="hidden" name="eventEndDate.year" value=""/>
+        <input type="hidden" name="eventEndDate.month" value=""/>
+        <input type="hidden" name="eventEndDate.day" value=""/>
+        <!-- static fields -->
+        <input type="hidden" name="nocache" value="no"/>
+        <input type="hidden" name="skinName" value="ical"/>
+        <input type="hidden" name="contentType" value="text/calendar"/>
+        <input type="hidden" name="contentName">
+          <xsl:attribute name="value"><xsl:value-of select="name"/>.ics</xsl:attribute>
+        </input>
+        <!-- visible fields -->
+        <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> today forward
+        <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
+        <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> date range
+        <div id="exportDateRange" class="invisible">
+          Start: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetStartDate"><xsl:text> </xsl:text></div>
+          End: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetEndDate"><xsl:text> </xsl:text></div>
+        </div>
+        <p><input type="submit" value="export" class="bwWidgetSubmit" onclick="fillExportFields(this.form)"/></p>
+      </form>
+    </div>
   </xsl:template>
 
   <!--==== SEARCH RESULT ====-->

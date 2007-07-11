@@ -975,7 +975,8 @@ h2.bwStatusTentative {
   width: 100%;
   padding: 0 1em;
 }
-#stats {
+#stats,
+#export {
   font-size: 0.9em;
   margin: 0px;
   padding: 1em;
@@ -995,6 +996,9 @@ h2.bwStatusTentative {
 #statsTable td.label {
   text-align: right;
   padding-right: 2em;
+}
+.indent {
+  margin-left: 1em;
 }
 .hidden {
   visibility: hidden;
