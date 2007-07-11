@@ -1530,7 +1530,7 @@
             <!-- this is a scheduled event (meeting or task) - allow a direct refresh -->
             <a href="{$schedule-refresh}&amp;method=REFRESH" id="refreshEventAction">
               <img src="{$resourcesRoot}/resources/std-icalRefresh-icon-small.gif" width="12" height="16" border="0" alt="send a request to refresh this scheduled event"/>
-              Refresh
+              Request refresh
             </a>
           </xsl:if>
         </th>
@@ -3093,7 +3093,14 @@
     </div>
 
     <div class="eventSubmitButtons">
-      <input name="submit" type="submit" value="save"/>
+      <input name="submit" type="submit">
+        <xsl:attribute name="value">
+          <xsl:choose>
+            <xsl:when test="form/scheduleMethod = '2'">save &amp; send invitations</xsl:when>
+            <xsl:otherwise>save</xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+      </input>
       <input name="cancelled" type="submit" value="cancel"/>
     </div>
   </xsl:template>
