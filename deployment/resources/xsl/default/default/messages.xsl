@@ -132,6 +132,9 @@
       <xsl:when test="id='org.bedework.client.message.schedule.rescheduled'">
         Schedule rescheduled
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.schedule.sent'">
+        Scheduling message sent to <xsl:value-of select="param"/>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.schedule.updated'">
         Schedule updated
       </xsl:when>

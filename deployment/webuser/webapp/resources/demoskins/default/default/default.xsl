@@ -138,6 +138,7 @@
   <xsl:variable name="schedule-initAttendeeReply" select="/bedework/urlPrefixes/schedule/initAttendeeReply/a/@href"/>
   <xsl:variable name="schedule-initAttendeeUpdate" select="/bedework/urlPrefixes/schedule/initAttendeeUpdate/a/@href"/>
   <xsl:variable name="schedule-processAttendeeReply" select="/bedework/urlPrefixes/schedule/processAttendeeReply/a/@href"/>
+  <xsl:variable name="schedule-processRefresh" select="/bedework/urlPrefixes/schedule/processRefresh/a/@href"/>
   <xsl:variable name="schedule-refresh" select="/bedework/urlPrefixes/schedule/refresh/a/@href"/>
   <!-- misc (mostly import and export) -->
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
@@ -3481,7 +3482,7 @@
               <option value="TENTATIVE">tentative</option>
               <option value="DELEGATED">delegated</option>
             </select>
-          </div>  
+          </div>
 
           <xsl:if test="/bedework/attendees/attendee">
             <xsl:apply-templates select="/bedework/attendees"/>
@@ -5529,6 +5530,7 @@
           <xsl:choose>
             <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:when>
             <xsl:when test="scheduleMethod=3"><xsl:value-of select="$schedule-initAttendeeReply"/></xsl:when>
+            <xsl:when test="scheduleMethod=6"><xsl:value-of select="$schedule-processRefresh"/></xsl:when>
             <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
@@ -5787,9 +5789,9 @@
           <td class="fieldval scheduleActions">
             <xsl:choose>
               <xsl:when test="not(guidcals/calendar)">
-              <!-- the event has not been added to a calendar, so this is the 
+              <!-- the event has not been added to a calendar, so this is the
                    first request -->
-              
+
                 <!-- the string "user/" should not be hard coded; fix this -->
                 <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
                 <xsl:variable name="writableCalendars">
@@ -5807,9 +5809,9 @@
                              currentAccess/current-user-privilege-set/privilege/write-content]/path"/><xsl:value-of select="/bedework/mySubscriptions//calendar[calType = '1' and
                            currentAccess/current-user-privilege-set/privilege/write-content and
                            (not(contains(path,$userPath)))]/path"/></xsl:variable>
-    
+
                     <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
-    
+
                     <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
                     <span id="bwEventCalDisplay">
                       <xsl:choose>
@@ -5827,9 +5829,9 @@
                     <!--
                       <xsl:if test="form/calendar/calType = '1'"><xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute></xsl:if>
                     </input>-->
-    
+
                     <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
-    
+
                     <span id="bwEventCalDisplay">
                       <xsl:if test="form/calendar/calType = '1'">
                         <xsl:choose>
@@ -5845,16 +5847,16 @@
                       <!-- this final text element is required to avoid an empty
                            span element which is improperly rendered in the browser -->
                     </span>
-    
+
                     <xsl:call-template name="selectCalForEvent"/>
-    
+
                   </xsl:otherwise>
                 </xsl:choose>
-              
+
               </xsl:when>
               <xsl:otherwise>
-                <!-- the event exists in calendars already, so this is a 
-                     subsequent follow-up.  Let the user choose which copies 
+                <!-- the event exists in calendars already, so this is a
+                     subsequent follow-up.  Let the user choose which copies
                      of the event to update.  For now, we'll just list them
                      and add calPath request parameters -->
                 <ul>
@@ -5863,12 +5865,12 @@
                       <xsl:value-of select="name"/>
                       <input type="hidden" name="calPath">
                         <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
-                      </input> 
+                      </input>
                     </li>
                   </xsl:for-each>
                 </ul>
               </xsl:otherwise>
-            </xsl:choose>              
+            </xsl:choose>
           </td>
         </tr>
         <tr>
@@ -6290,7 +6292,7 @@
                 Event no longer exists.
               </xsl:when>
               <xsl:otherwise>
-                <!-- the event exists.  Let the user choose which copies 
+                <!-- the event exists.  Let the user choose which copies
                      of the event to update.  For now, we'll just list them
                      and add calPath request parameters -->
                 <ul>
@@ -6299,12 +6301,12 @@
                       <xsl:value-of select="name"/>
                       <input type="hidden" name="calPath">
                         <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
-                      </input> 
+                      </input>
                     </li>
                   </xsl:for-each>
                 </ul>
               </xsl:otherwise>
-            </xsl:choose>              
+            </xsl:choose>
           </td>
         </tr>
         <tr>
