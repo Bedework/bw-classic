@@ -5539,6 +5539,7 @@
             <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:when>
             <xsl:when test="scheduleMethod=3"><xsl:value-of select="$schedule-initAttendeeReply"/></xsl:when>
             <xsl:when test="scheduleMethod=6"><xsl:value-of select="$schedule-processRefresh"/></xsl:when>
+            <xsl:when test="scheduleMethod=7"><xsl:value-of select="$schedule-initAttendeeReply"/></xsl:when>
             <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
