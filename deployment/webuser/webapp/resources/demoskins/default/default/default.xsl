@@ -142,6 +142,7 @@
   <xsl:variable name="schedule-refresh" select="/bedework/urlPrefixes/schedule/refresh/a/@href"/>
   <!-- misc (mostly import and export) -->
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
+  <xsl:variable name="calendar-export" select="/bedework/urlPrefixes/calendar/export"/>
   <xsl:variable name="initUpload" select="/bedework/urlPrefixes/misc/initUpload/a/@href"/>
   <xsl:variable name="upload" select="/bedework/urlPrefixes/misc/upload/a/@href"/>
   <!-- search -->
