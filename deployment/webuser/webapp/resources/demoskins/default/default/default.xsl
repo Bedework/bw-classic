@@ -182,6 +182,17 @@
             <xsl:attribute name="onload">checkStatus(<xsl:value-of select="/bedework/inboxState/numActive"/>,<xsl:value-of select="/bedework/inboxState/changed"/>,'<xsl:value-of select="$showInbox"/>')</xsl:attribute>
           </xsl:when>
         </xsl:choose>
+        <xsl:choose>
+          <xsl:when test="/bedework/page = 'addEvent'">
+            <xsl:attribute name="onload">focusElement('bwEventTitle');</xsl:attribute>
+          </xsl:when>
+          <xsl:when test="/bedework/page = 'attendees'">
+            <xsl:attribute name="onload">focusElement('bwRaUri');</xsl:attribute>
+          </xsl:when>
+          <xsl:when test="/bedework/page = 'modLocation'">
+            <xsl:attribute name="onload">focusElement('bwLocMainAddress');</xsl:attribute>
+          </xsl:when>
+        </xsl:choose>
         <div id="bedework"><!-- main wrapper div to keep styles encapsulated within portals -->
           <xsl:choose>
             <!--deprecated:
@@ -389,14 +400,18 @@
     <script type="text/javascript">
       <xsl:comment>
       <![CDATA[
+      function checkStatus(inboxCount,changed,url) {
       // Check status of inbox and outbox and alert user appropriately.
       // Just take care of inbox for now.
-      function checkStatus(inboxCount,changed,url) {
         if (inboxCount && changed) {
           if (confirm("You have " + inboxCount + " pending meeting requests.\nGo to inbox?")) {
             window.location.replace(url);
           }
         }
+      }
+      function focusElement(id) {
+      // focuses element by id
+        document.getElementById(id).focus();
       }
       ]]>
       </xsl:comment>
@@ -2127,7 +2142,7 @@
           </td>
           <td class="fieldval">
             <xsl:variable name="title" select="form/title/input/@value"/>
-            <input type="text" name="summary" size="80" value="{$title}"/>
+            <input type="text" name="summary" size="80" value="{$title}" id="bwEventTitle"/>
           </td>
         </tr>
 
@@ -3468,7 +3483,7 @@
       <form name="raForm" id="recipientsAndAttendeesForm" action="{$event-attendeesForEvent}" method="post">
         <div id="raContent">
           <div id="raFields">
-            <input name="uri" width="40"/>
+            <input name="uri" width="40" id="bwRaUri"/>
             <input type="submit" value="add" />
             &#160;
             <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
@@ -5382,7 +5397,7 @@
                 Main Address:
               </td>
               <td>
-                <input size="60" name="locationAddress.value" type="text"/>
+                <input size="60" name="locationAddress.value" type="text" id="bwLocMainAddress"/>
               </td>
             </tr>
             <tr>
@@ -5427,7 +5442,7 @@
                 Main Address:
               </td>
               <td align="left">
-                <input size="60" name="locationAddress.value" type="text">
+                <input size="60" name="locationAddress.value" type="text" id="bwLocMainAddress">
                   <xsl:attribute name="value"><xsl:value-of select="/bedework/currentLocation/address"/></xsl:attribute>
                 </input>
               </td>
