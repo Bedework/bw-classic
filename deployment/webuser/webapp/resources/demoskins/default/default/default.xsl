@@ -6286,7 +6286,14 @@
       </xsl:choose>
     </xsl:variable>
     <h2>
-      Meeting Reply
+      <xsl:choose>
+        <xsl:when test="scheduleMethod='7'">
+          Meeting Change Request (Counter)
+        </xsl:when>
+        <xsl:otherwise>
+          Meeting Reply
+        </xsl:otherwise>
+      </xsl:choose>
     </h2>
     <form name="processReply" method="post" action="{$schedule-processAttendeeReply}">
       <table class="common" cellspacing="0">
@@ -6374,8 +6381,17 @@
             Action:
           </td>
           <td class="fieldval scheduleActions">
-            <input type="submit" value="ok" name="update"/>
-            <input type="submit" value="cancel" name="cancelled"/>
+            <xsl:choose>
+              <xsl:when test="scheduleMethod='7'"><!-- counter -->
+                <input type="submit" value="accept / modify" name="accept"/>
+                <input type="submit" value="decline" name="decline"/>
+                <input type="submit" value="cancel" name="cancelled"/>
+              </xsl:when>
+              <xsl:otherwise><!-- normal reply -->
+                <input type="submit" value="ok" name="update"/>
+                <input type="submit" value="cancel" name="cancelled"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
         <tr>
