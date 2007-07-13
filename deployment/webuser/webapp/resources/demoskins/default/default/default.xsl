@@ -404,7 +404,11 @@
       // Check status of inbox and outbox and alert user appropriately.
       // Just take care of inbox for now.
         if (inboxCount && changed) {
-          if (confirm("You have " + inboxCount + " pending meeting requests.\nGo to inbox?")) {
+          var itemStr = "item";
+          if (inboxCount > 1) {
+            itemStr = "items";
+          }
+          if (confirm("You have " + inboxCount + " pending " + itemStr + " in your inbox.\nGo to inbox?")) {
             window.location.replace(url);
           }
         }
@@ -5576,7 +5580,12 @@
           <td>
             <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <!--<xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>-->
-              <xsl:value-of select="lastmod"/>
+              <!--<xsl:value-of select="lastmod"/>-->
+              <xsl:variable name="dt" select="substring-before(lastmod,'T')"/>
+              <xsl:variable name="tm" select="substring-after(lastmod,'T')"/>
+              <xsl:value-of select="substring($dt,1,4)"/>-<xsl:value-of select="substring($dt,5,2)"/>-<xsl:value-of select="substring($dt,7,2)"/>
+              <xsl:text> </xsl:text>
+              <xsl:value-of select="substring($tm,1,2)"/>:<xsl:value-of select="substring($tm,3,2)"/>
             </a>
           </td>
           <td>
@@ -5702,7 +5711,12 @@
           <td>
             <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <!-- <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>-->
-              <xsl:value-of select="lastmod"/>
+              <!--<xsl:value-of select="lastmod"/>-->
+              <xsl:variable name="dt" select="substring-before(lastmod,'T')"/>
+              <xsl:variable name="tm" select="substring-after(lastmod,'T')"/>
+              <xsl:value-of select="substring($dt,1,4)"/>-<xsl:value-of select="substring($dt,5,2)"/>-<xsl:value-of select="substring($dt,7,2)"/>
+              <xsl:text> </xsl:text>
+              <xsl:value-of select="substring($tm,1,2)"/>:<xsl:value-of select="substring($tm,3,2)"/>
             </a>
           </td>
           <td>
