@@ -57,7 +57,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -143,10 +142,7 @@ public class ApplicationXmlTask extends MatchingTask {
         writeLine("  <display-name>" + displayName + "</display-name>");
       }
 
-      Iterator it = wars.iterator();
-      while (it.hasNext()) {
-        String nm = (String)it.next();
-
+      for (String nm: wars) {
         writeLine("");
         writeLine("  <module>");
         writeLine("    <web>");
@@ -158,10 +154,7 @@ public class ApplicationXmlTask extends MatchingTask {
         writeLine("  </module>");
       }
 
-      it = jars.iterator();
-      while (it.hasNext()) {
-        String nm = (String)it.next();
-
+      for (String nm: jars) {
         writeLine("");
         writeLine("  <module>");
         writeLine("    <java>" + nm + "</java>");
@@ -198,11 +191,7 @@ public class ApplicationXmlTask extends MatchingTask {
       wars.add(warnames[wi]);
     }
 
-    Iterator it = filesets.iterator();
-
-    while (it.hasNext()) {
-      FileSet fs = (FileSet)it.next();
-
+    for (FileSet fs: filesets) {
       DirectoryScanner ds = fs.getDirectoryScanner(getProject());
 
       String[] dsFiles = ds.getIncludedFiles();
