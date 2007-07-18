@@ -2477,6 +2477,7 @@
           <td class="fieldval" align="left">
             <span class="std-text">choose: </span>
             <span id="eventFormLocationList">
+              <!--
               <xsl:choose>
                 <xsl:when test="/bedework/creating = 'true'">
                   <select name="locationUid">
@@ -2491,6 +2492,11 @@
                   </select>
                 </xsl:otherwise>
               </xsl:choose>
+              -->
+              <select name="locationUid">
+                <option value="">select...</option>
+                <xsl:copy-of select="form/location/locationmenu/select/*"/>
+              </select>
             </span>
             <span class="std-text"> or add new: </span>
             <input type="text" name="locationAddress.value" value="" />
