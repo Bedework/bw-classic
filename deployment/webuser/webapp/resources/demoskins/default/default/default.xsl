@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output
   method="xhtml"
-  indent="no"
+  indent="yes"
   media-type="text/html"
   doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
   doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
@@ -166,6 +166,11 @@
   <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
   <xsl:variable name="skin">default</xsl:variable>
   <xsl:variable name="publicCal">/cal</xsl:variable>
+  
+  <!-- the following variable can be set to "true" or "false";
+       to use dojo widgets and fancier UI features, set to false - these are
+       not guaranteed to work in portals -->
+  <xsl:variable name="portalFriendly">false</xsl:variable> 
 
  <!-- BEGIN MAIN TEMPLATE -->
   <xsl:template match="/">
@@ -391,6 +396,10 @@
       <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
+      <xsl:if test="$portalFriendly = 'true'">
+        <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
+        <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
+      </xsl:if>
     </xsl:if>
     <xsl:if test="/bedework/editableAccess/access/acl/ace">
       <script type="text/javascript">
@@ -2217,19 +2226,40 @@
               <strong>Start:</strong>
               <div class="dateFields">
                 <span class="startDateLabel">Date </span>
-                <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
-                  <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
-                  <xsl:text> </xsl:text>
-                </span>
-                <input type="hidden" name="eventStartDate.year">
-                  <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
-                </input>
-                <input type="hidden" name="eventStartDate.month">
-                  <xsl:attribute name="value"><xsl:value-of select="form/start/month/select/option[@selected = 'selected']/@value"/></xsl:attribute>
-                </input>
-                <input type="hidden" name="eventStartDate.day">
-                  <xsl:attribute name="value"><xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/></xsl:attribute>
-                </input>
+                <xsl:choose>
+                  <xsl:when test="$portalFriendly = 'true'">
+                    <xsl:copy-of select="/bedework/formElements/form/start/month/*"/>
+                    <xsl:copy-of select="/bedework/formElements/form/start/day/*"/>
+                    <xsl:choose>
+                      <xsl:when test="/bedework/creating = 'true'">
+                        <xsl:copy-of select="/bedework/formElements/form/start/year/*"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:copy-of select="/bedework/formElements/form/start/yearText/*"/>
+                      </xsl:otherwise>
+  	                </xsl:choose>
+                    <script language="JavaScript" type="text/javascript">
+                      <xsl:comment>
+                      startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
+                      </xsl:comment>
+                    </script>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
+                      <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
+                      <xsl:text> </xsl:text>
+                    </span>
+                    <input type="hidden" name="eventStartDate.year">
+                      <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
+                    </input>
+                    <input type="hidden" name="eventStartDate.month">
+                      <xsl:attribute name="value"><xsl:value-of select="form/start/month/select/option[@selected = 'selected']/@value"/></xsl:attribute>
+                    </input>
+                    <input type="hidden" name="eventStartDate.day">
+                      <xsl:attribute name="value"><xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/></xsl:attribute>
+                    </input>
+                  </xsl:otherwise>
+                </xsl:choose>
               </div>
               <div class="{$timeFieldsClass}" id="startTimeFields">
                 <span id="calWidgetStartTimeHider" class="show">
@@ -2280,19 +2310,40 @@
               </xsl:variable>
               <div class="{$endDateTimeClass}" id="endDateTime">
                 <div class="dateFields">
-                  <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetEndDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
-                    <xsl:attribute name="value"><xsl:value-of select="form/end/rfc3339DateTime"/></xsl:attribute>
-                    <xsl:text> </xsl:text>
-                  </span>
-                  <input type="hidden" name="eventEndDate.year">
-                    <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/yearText/input/@value"/></xsl:attribute>
-                  </input>
-                  <input type="hidden" name="eventEndDate.month">
-                    <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/month/select/option[@selected = 'selected']/@value"/></xsl:attribute>
-                  </input>
-                  <input type="hidden" name="eventEndDate.day">
-                    <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/day/select/option[@selected = 'selected']/@value"/></xsl:attribute>
-                  </input>
+                  <xsl:choose>
+                    <xsl:when test="$portalFriendly = 'true'">
+                      <xsl:copy-of select="/bedework/formElements/form/end/dateTime/month/*"/>
+                      <xsl:copy-of select="/bedework/formElements/form/end/dateTime/day/*"/>
+                      <xsl:choose>
+                        <xsl:when test="/bedework/creating = 'true'">
+                          <xsl:copy-of select="/bedework/formElements/form/end/dateTime/year/*"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:copy-of select="/bedework/formElements/form/end/dateTime/yearText/*"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                      <script language="JavaScript" type="text/javascript">
+                      <xsl:comment>
+                        endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
+                      </xsl:comment>
+                      </script>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetEndDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
+                        <xsl:attribute name="value"><xsl:value-of select="form/end/rfc3339DateTime"/></xsl:attribute>
+                        <xsl:text> </xsl:text>
+                      </span>
+                      <input type="hidden" name="eventEndDate.year">
+                        <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/yearText/input/@value"/></xsl:attribute>
+                      </input>
+                      <input type="hidden" name="eventEndDate.month">
+                        <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/month/select/option[@selected = 'selected']/@value"/></xsl:attribute>
+                      </input>
+                      <input type="hidden" name="eventEndDate.day">
+                        <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/day/select/option[@selected = 'selected']/@value"/></xsl:attribute>
+                      </input>
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </div>
                 <div class="{$timeFieldsClass}" id="endTimeFields">
                   <span id="calWidgetEndTimeHider" class="show">

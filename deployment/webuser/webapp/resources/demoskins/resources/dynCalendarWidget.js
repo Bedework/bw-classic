@@ -235,10 +235,10 @@
 */
   function dynCalendar_writeHTML()
   {
-    if (is_ie5up || is_ie6up || is_nav6up || is_gecko) {
+    //if (is_ie5up || is_ie6up || is_nav6up || is_gecko) {
       document.write('<a href="javascript: ' + this.objName + '.show()"><img src="' + this.imagesPath + 'calIcon.gif" border="0" width="16" height="15" /></a>');
       document.write('<div class="dynCalendar" id="' + this.layerID + '" onmouseover="' + this.objName + '._mouseover(true)" onmouseout="' + this.objName + '._mouseover(false)"></div>');
-    }
+    //}
   }
 
 /**
@@ -460,7 +460,7 @@
 
   document.onmousemove = function ()
   {
-    if (is_ie5up || is_nav6up || is_gecko) {
+    //if (is_ie5up || is_nav6up || is_gecko) {
       if (arguments[0]) {
         dynCalendar_mouseX = arguments[0].pageX;
         dynCalendar_mouseY = arguments[0].pageY;
@@ -471,7 +471,7 @@
       }
 
       dynCalendar_oldOnmousemove();
-    }
+    //}
   }
 
 /**
@@ -481,7 +481,7 @@
 
   document.onclick = function ()
   {
-    if (is_ie5up || is_nav6up || is_gecko) {
+    //if (is_ie5up || is_nav6up || is_gecko) {
       if(!dynCalendar_mouseoverStatus){
         for(i=0; i<dynCalendar_layers.length; ++i){
           dynCalendar_layers[i]._hideLayer();
@@ -489,5 +489,31 @@
       }
 
       dynCalendar_oldOnclick(arguments[0] ? arguments[0] : null);
-    }
+    //}
   }
+  
+/**
+* Bedework specific callbacks
+*/
+function startDateCalWidgetCallback(date, month, year) {
+  if (String(month).length == 1) {
+      month = '0' + month;
+  }
+  if (String(date).length == 1) {
+      date = '0' + date;
+  }
+  document.eventForm['eventStartDate.month'].value = month;
+  document.eventForm['eventStartDate.day'].value = date;
+  document.eventForm['eventStartDate.year'].value = year;
+}
+function endDateCalWidgetCallback(date, month, year) {
+  if (String(month).length == 1) {
+      month = '0' + month;
+  }
+  if (String(date).length == 1) {
+      date = '0' + date;
+  }
+  document.eventForm['eventEndDate.month'].value = month;
+  document.eventForm['eventEndDate.day'].value = date;
+  document.eventForm['eventEndDate.year'].value = year;
+}
