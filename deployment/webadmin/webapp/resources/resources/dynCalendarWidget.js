@@ -235,10 +235,8 @@
 */
   function dynCalendar_writeHTML()
   {
-    if (is_ie5up || is_nav6up || is_gecko) {
-      document.write('<a href="javascript: ' + this.objName + '.show()"><img src="' + this.imagesPath + 'calIcon.gif" border="0" width="16" height="15" /></a>');
-      document.write('<div class="dynCalendar" id="' + this.layerID + '" onmouseover="' + this.objName + '._mouseover(true)" onmouseout="' + this.objName + '._mouseover(false)"></div>');
-    }
+    document.write('<a href="javascript: ' + this.objName + '.show()"><img src="' + this.imagesPath + 'calIcon.gif" border="0" width="16" height="15" /></a>');
+    document.write('<div class="dynCalendar" id="' + this.layerID + '" onmouseover="' + this.objName + '._mouseover(true)" onmouseout="' + this.objName + '._mouseover(false)"></div>');
   }
 
 /**
@@ -460,18 +458,16 @@
 
   document.onmousemove = function ()
   {
-    if (is_ie5up || is_nav6up || is_gecko) {
-      if (arguments[0]) {
-        dynCalendar_mouseX = arguments[0].pageX;
-        dynCalendar_mouseY = arguments[0].pageY;
-      } else {
-        dynCalendar_mouseX = event.clientX + document.body.scrollLeft;
-        dynCalendar_mouseY = event.clientY + document.body.scrollTop;
-        arguments[0] = null;
-      }
-
-      dynCalendar_oldOnmousemove();
+    if (arguments[0]) {
+      dynCalendar_mouseX = arguments[0].pageX;
+      dynCalendar_mouseY = arguments[0].pageY;
+    } else {
+      dynCalendar_mouseX = event.clientX + document.body.scrollLeft;
+      dynCalendar_mouseY = event.clientY + document.body.scrollTop;
+      arguments[0] = null;
     }
+
+    dynCalendar_oldOnmousemove();
   }
 
 /**
@@ -481,13 +477,25 @@
 
   document.onclick = function ()
   {
-    if (is_ie5up || is_nav6up || is_gecko) {
-      if(!dynCalendar_mouseoverStatus){
-        for(i=0; i<dynCalendar_layers.length; ++i){
-          dynCalendar_layers[i]._hideLayer();
-        }
+    if(!dynCalendar_mouseoverStatus){
+      for(i=0; i<dynCalendar_layers.length; ++i){
+        dynCalendar_layers[i]._hideLayer();
       }
-
-      dynCalendar_oldOnclick(arguments[0] ? arguments[0] : null);
     }
+
+    dynCalendar_oldOnclick(arguments[0] ? arguments[0] : null);
   }
+  
+  /**
+* Bedework specific callbacks
+*/
+function startDateCalWidgetCallback(date, month, year) {
+  document.eventForm['eventStartDate.month'].value = month;
+  document.eventForm['eventStartDate.day'].value = date;
+  document.eventForm['eventStartDate.year'].value = year;
+}
+function endDateCalWidgetCallback(date, month, year) {
+  document.eventForm['eventEndDate.month'].value = month;
+  document.eventForm['eventEndDate.day'].value = date;
+  document.eventForm['eventEndDate.year'].value = year;
+}

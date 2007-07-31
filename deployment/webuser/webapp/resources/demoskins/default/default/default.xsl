@@ -170,7 +170,7 @@
   <!-- the following variable can be set to "true" or "false";
        to use dojo widgets and fancier UI features, set to false - these are
        not guaranteed to work in portals -->
-  <xsl:variable name="portalFriendly">false</xsl:variable> 
+  <xsl:variable name="portalFriendly">true</xsl:variable> 
 
  <!-- BEGIN MAIN TEMPLATE -->
   <xsl:template match="/">

@@ -20,13 +20,13 @@
 	font-weight: bold;
   height: 15px;
 }
-.dynCalendar_header a {
+.dynCalendar_header a:link,
+.dynCalendar_header a:active,
+.dynCalendar_header a:visited,
+.dynCalendar_header a:hover {
   background-color: #00a;
-  color: white;  
-}
-.dynCalendar_header a {
-  background-color: #00a;
-  color: white;
+  color: white !important;
+  text-decoration: none !important;  
 }
 .dynCalendar_dayname {
 	background-color: #eee;
