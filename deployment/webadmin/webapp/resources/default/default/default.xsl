@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output
       method="html"
-      indent="yes"
+      indent="no"
       media-type="text/html"
       doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
       doctype-system="http://www.w3.org/TR/html4/strict.dtd"
@@ -189,7 +189,7 @@
   <!-- the following variable can be set to "true" or "false";
        to use dojo widgets and fancier UI features, set to false - these are
        not guaranteed to work in portals -->
-  <xsl:variable name="portalFriendly">true</xsl:variable>
+  <xsl:variable name="portalFriendly">false</xsl:variable>
 
   <!--==== MAIN TEMPLATE  ====-->
   <xsl:template match="/">
