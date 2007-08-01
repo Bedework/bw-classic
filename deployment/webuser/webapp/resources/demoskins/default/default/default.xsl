@@ -166,11 +166,11 @@
   <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
   <xsl:variable name="skin">default</xsl:variable>
   <xsl:variable name="publicCal">/cal</xsl:variable>
-  
+
   <!-- the following variable can be set to "true" or "false";
        to use dojo widgets and fancier UI features, set to false - these are
        not guaranteed to work in portals -->
-  <xsl:variable name="portalFriendly">false</xsl:variable> 
+  <xsl:variable name="portalFriendly">false</xsl:variable>
 
  <!-- BEGIN MAIN TEMPLATE -->
   <xsl:template match="/">
@@ -2237,7 +2237,7 @@
                       <xsl:otherwise>
                         <xsl:copy-of select="/bedework/formElements/form/start/yearText/*"/>
                       </xsl:otherwise>
-  	                </xsl:choose>
+                    </xsl:choose>
                     <script language="JavaScript" type="text/javascript">
                       <xsl:comment>
                       startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
@@ -3173,7 +3173,7 @@
       <xsl:choose>
         <xsl:when test="form/scheduleMethod = '2'">
           <input name="submit" type="submit" value="save"/>
-          <input name="submitAndSave" type="submit" value="save &amp; send invitations"/>
+          <input name="submitAndSend" type="submit" value="save &amp; send invitations"/>
         </xsl:when>
         <xsl:otherwise>
           <input name="submit" type="submit" value="save"/>
