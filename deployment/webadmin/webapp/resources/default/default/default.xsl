@@ -4830,7 +4830,7 @@
         <tr>
           <th>Name:</th>
           <td>
-            <input name="name" value="{$calSuiteName}" size="20"/>
+            <input name="calSuite.name" value="{$calSuiteName}" size="20"/>
           </td>
           <td>
             Name of your calendar suite
@@ -4840,7 +4840,7 @@
           <th>Group:</th>
           <td>
             <xsl:variable name="group" select="group"/>
-            <input name="groupName" value="{$group}" size="20"/>
+            <input name="calSuite.groupName" value="{$group}" size="20"/>
           </td>
           <td>
             Name of admin group which contains event administrators and event owner to which preferences for the suite are attached
@@ -4850,7 +4850,7 @@
           <th>Root calendar:</th>
           <td>
             <xsl:variable name="calPath" select="calPath"/>
-            <input name="calPath" value="{$calPath}" size="20"/>
+            <input name="calSuite.calPath" value="{$calPath}" size="20"/>
           </td>
           <td>
             Path of root calendar (not required if suite only consists of subscriptions and views)
@@ -4863,6 +4863,9 @@
             <input type="submit" name="updateCalSuite" value="Update"/>
             <input type="submit" name="cancelled" value="Cancel"/>
             <input type="reset" value="Reset"/>
+          </td>
+          <td align="right">
+            <input type="submit" name="delete" value="Delete Calendar Suite"/>
           </td>
         </tr>
       </table>
