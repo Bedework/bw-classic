@@ -1612,13 +1612,13 @@
           <td>
             <xsl:choose>
               <xsl:when test="form/status = 'TENTATIVE'">
-                <input type="radio" name="event.status" value="CONFIRMED"/>confirmed <input type="radio" name="event.status" value="TENTATIVE" checked="checked"/>tentative <input type="radio" name="event.status" value="CANCELLED"/>cancelled
+                <input type="radio" name="eventStatus" value="CONFIRMED"/>confirmed <input type="radio" name="eventStatus" value="TENTATIVE" checked="checked"/>tentative <input type="radio" name="eventStatus" value="CANCELLED"/>cancelled
               </xsl:when>
               <xsl:when test="form/status = 'CANCELLED'">
-                <input type="radio" name="event.status" value="CONFIRMED"/>confirmed <input type="radio" name="event.status" value="TENTATIVE"/>tentative <input type="radio" name="event.status" value="CANCELLED" checked="checked"/>cancelled
+                <input type="radio" name="eventStatus" value="CONFIRMED"/>confirmed <input type="radio" name="eventStatus" value="TENTATIVE"/>tentative <input type="radio" name="eventStatus" value="CANCELLED" checked="checked"/>cancelled
               </xsl:when>
               <xsl:otherwise>
-                <input type="radio" name="event.status" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="event.status" value="TENTATIVE"/>tentative <input type="radio" name="event.status" value="CANCELLED"/>cancelled
+                <input type="radio" name="eventStatus" value="CONFIRMED" checked="checked"/>confirmed <input type="radio" name="eventStatus" value="TENTATIVE"/>tentative <input type="radio" name="eventStatus" value="CANCELLED"/>cancelled
               </xsl:otherwise>
             </xsl:choose>
           </td>
