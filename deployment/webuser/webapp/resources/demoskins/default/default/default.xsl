@@ -3170,14 +3170,15 @@
     </div>
 
     <div class="eventSubmitButtons">
-      <input name="submit" type="submit">
-        <xsl:attribute name="value">
-          <xsl:choose>
-            <xsl:when test="form/scheduleMethod = '2'">save &amp; send invitations</xsl:when>
-            <xsl:otherwise>save</xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-      </input>
+      <xsl:choose>
+        <xsl:when test="form/scheduleMethod = '2'">
+          <input name="submit" type="submit" value="save"/>
+          <input name="submitAndSave" type="submit" value="save &amp; send invitations"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <input name="submit" type="submit" value="save"/>
+        </xsl:otherwise>
+      </xsl:choose>
       <input name="cancelled" type="submit" value="cancel"/>
     </div>
   </xsl:template>
