@@ -185,7 +185,7 @@
 
   <!-- Other generally useful global variables -->
   <xsl:variable name="publicCal">/cal</xsl:variable>
-  
+
   <!-- the following variable can be set to "true" or "false";
        to use dojo widgets and fancier UI features, set to false - these are
        not guaranteed to work in portals -->
@@ -4830,7 +4830,7 @@
         <tr>
           <th>Name:</th>
           <td>
-            <input name="calSuite.name" value="{$calSuiteName}" size="20"/>
+            <input name="name" value="{$calSuiteName}" size="20"/>
           </td>
           <td>
             Name of your calendar suite
@@ -4840,7 +4840,7 @@
           <th>Group:</th>
           <td>
             <xsl:variable name="group" select="group"/>
-            <input name="calSuite.groupName" value="{$group}" size="20"/>
+            <input name="groupName" value="{$group}" size="20"/>
           </td>
           <td>
             Name of admin group which contains event administrators and event owner to which preferences for the suite are attached
@@ -4850,7 +4850,7 @@
           <th>Root calendar:</th>
           <td>
             <xsl:variable name="calPath" select="calPath"/>
-            <input name="calSuite.calPath" value="{$calPath}" size="20"/>
+            <input name="calPath" value="{$calPath}" size="20"/>
           </td>
           <td>
             Path of root calendar (not required if suite only consists of subscriptions and views)
