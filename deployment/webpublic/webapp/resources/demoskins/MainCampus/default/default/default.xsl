@@ -1648,7 +1648,7 @@
         <td class="rightCell">
           <form name="styleSelectForm" method="post" action="{$setup}">
             <select name="setappvar" onchange="submit()">
-              <option>example styles:</option>
+              <option value="">example styles:</option>
               <option value="style(green)">green</option>
               <option value="style(red)">red</option>
               <option value="style(blue)">blue</option>
@@ -1657,11 +1657,11 @@
           <form name="skinSelectForm" method="post" action="{$setup}">
             <input type="hidden" name="setappvar" value="summaryMode(details)"/>
             <select name="skinPicker" onchange="window.location = this.value">
-              <option>example skins:</option>
+              <option value="{$setup}&amp;skinNameSticky=default">example skins:</option>
               <option value="{$setViewPeriod}&amp;viewType=weekView&amp;skinName=rss&amp;setappvar=summaryMode(details)">rss feed</option>
               <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedework.js">javascript feed</option>
               <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=videocal">video feed</option>
-              <option value="{$setup}&amp;skinName=default">reset to calendar default</option>
+              <option value="{$setup}&amp;skinNameSticky=default">reset to calendar default</option>
             </select>
           </form>
           <form name="skinSelectForm" method="post" action="">
