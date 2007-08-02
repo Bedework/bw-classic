@@ -16,7 +16,7 @@
            Usually when we flag a data error here, it is due to a bug in the xsl -->
 
       <xsl:when test="id='org.bedework.client.error.admingroupassignedcs'">
-        Error: admin group is already assigned to: <em><xsl:value-of select="param"/></em>
+        Error: admin group is assigned to: <em><xsl:value-of select="param"/></em>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.alreadymember'">
         Error: already a member: <em><xsl:value-of select="param"/></em>
