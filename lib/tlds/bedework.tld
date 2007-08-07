@@ -17,6 +17,12 @@
     <info>Get children of a calendar</info>
 
     <attribute>
+      <name>form</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
       <name>name</name>
       <required>true</required>
       <rtexprvalue>false</rtexprvalue>
