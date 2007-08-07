@@ -128,11 +128,13 @@
   <xsl:variable name="calendar-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calendar/fetchForUpdate/a/@href"/>
   <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/>
   <xsl:variable name="calendar-setAccess" select="/bedeworkadmin/urlPrefixes/calendar/setAccess/a/@href"/>
+  <xsl:variable name="calendar-openCloseMod" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMod/a/@href"/>  
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-fetch" select="/bedeworkadmin/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
   <xsl:variable name="subscriptions-initAdd" select="/bedeworkadmin/urlPrefixes/subscriptions/initAdd/a/@href"/>
   <xsl:variable name="subscriptions-subscribe" select="/bedeworkadmin/urlPrefixes/subscriptions/subscribe/a/@href"/>
+  <xsl:variable name="subscriptions-openCloseMod" select="/bedeworkadmin/urlPrefixes/subscriptions/subOpenCloseMod/a/@href"/>
   <!-- views -->
   <xsl:variable name="view-fetch" select="/bedeworkadmin/urlPrefixes/view/fetch/a/@href"/>
   <xsl:variable name="view-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/view/fetchForUpdate/a/@href"/>
@@ -2906,6 +2908,22 @@
       </xsl:choose>
     </xsl:variable>
     <li class="{$itemClass}">
+      <xsl:if test="calendarCollection='false'">
+        <!-- test the open state of the folder; if it's open, 
+             build a URL to close it and vice versa -->
+        <xsl:choose>
+          <xsl:when test="open = 'true'">
+            <a href="{$calendar-openCloseMod}&amp;calPath={$calPath}&amp;open=false">
+              <img src="{$resourcesRoot}/resources/minus.gif" width="9" height="9" alt="close" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{$calendar-openCloseMod}&amp;calPath={$calPath}&amp;open=true">
+              <img src="{$resourcesRoot}/resources/plus.gif" width="9" height="9" alt="open" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
       <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="update">
         <xsl:value-of select="name"/>
       </a>

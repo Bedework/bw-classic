@@ -801,6 +801,13 @@ p.note {
   color: black;
   background-color: #ff3;
 }
+#calendarTree img.bwPlusMinusIcon {
+  /* the arrangement below is required for cross-browser compatibility;
+     be cautious changing it (works IE7, FF2, Safari 3) */
+  position: relative;
+  top: -2px;
+  margin: 0 25px 0 -35px;
+}
 #statsTable {
   margin: 1em 0 0 4em;
   width: 300px;
