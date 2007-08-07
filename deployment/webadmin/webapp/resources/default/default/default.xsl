@@ -4029,6 +4029,22 @@
       </xsl:choose>
     </xsl:variable>
     <li class="{$itemClass}">
+      <xsl:if test="calendarCollection='false'">
+        <!-- test the open state of the folder; if it's open, 
+             build a URL to close it and vice versa -->
+        <xsl:choose>
+          <xsl:when test="open = 'true'">
+            <a href="{$subscriptions-openCloseMod}&amp;calPath={$calPath}&amp;open=false">
+              <img src="{$resourcesRoot}/resources/minus.gif" width="9" height="9" alt="close" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{$subscriptions-openCloseMod}&amp;calPath={$calPath}&amp;open=true">
+              <img src="{$resourcesRoot}/resources/plus.gif" width="9" height="9" alt="open" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
       <a href="{$subscriptions-initAdd}&amp;calPath={$calPath}">
         <xsl:value-of select="name"/>
       </a>
