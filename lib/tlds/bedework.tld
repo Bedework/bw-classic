@@ -18,7 +18,7 @@
 
     <attribute>
       <name>form</name>
-      <required>true</required>
+      <required>false</required>
       <rtexprvalue>false</rtexprvalue>
     </attribute>
 
