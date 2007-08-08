@@ -128,7 +128,9 @@
   <xsl:variable name="calendar-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calendar/fetchForUpdate/a/@href"/>
   <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/>
   <xsl:variable name="calendar-setAccess" select="/bedeworkadmin/urlPrefixes/calendar/setAccess/a/@href"/>
-  <xsl:variable name="calendar-openCloseMod" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMod/a/@href"/>  
+  <xsl:variable name="calendar-openCloseMod" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMod/a/@href"/> 
+  <xsl:variable name="calendar-openCloseMove" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMove/a/@href"/> 
+  <xsl:variable name="calendar-move" select="/bedeworkadmin/urlPrefixes/calendar/move/a/@href"/>
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-fetch" select="/bedeworkadmin/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
@@ -286,7 +288,10 @@
                   <xsl:call-template name="deleteCategoryConfirm"/>
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar' or /bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='deleteCalendarConfirm' or /bedeworkadmin/page='calendarReferenced'">
-                  <xsl:apply-templates select="/bedeworkadmin/calendars"/>
+                  <xsl:apply-templates select="/bedeworkadmin/calendars" mode="calendarCommon"/>
+                </xsl:when>
+                <xsl:when test="/bedeworkadmin/page='moveCalendar'">
+                  <xsl:apply-templates select="/bedeworkadmin/calendars" mode="calendarMove"/>
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
                   <xsl:apply-templates select="/bedeworkadmin/subscriptions"/>
@@ -2857,7 +2862,7 @@
   </xsl:template>
 
 <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
-  <xsl:template match="calendars">
+  <xsl:template match="calendars" mode="calendarCommon">
     <table id="calendarTable">
       <tr>
         <td class="cals">
@@ -2962,6 +2967,36 @@
       </xsl:if>
     </li>
   </xsl:template>
+  
+  <xsl:template match="calendar" mode="listForMove">
+    <xsl:variable name="calPath" select="encodedPath"/>
+    <xsl:if test="calendarCollection='false'">
+      <li class="folder">
+        <!-- test the open state of the folder; if it's open, 
+             build a URL to close it and vice versa -->
+        <xsl:choose>
+          <xsl:when test="open = 'true'">
+            <a href="{$calendar-openCloseMove}&amp;newCalPath={$calPath}&amp;open=false">
+              <img src="{$resourcesRoot}/resources/minus.gif" width="9" height="9" alt="close" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{$calendar-openCloseMove}&amp;newCalPath={$calPath}&amp;open=true">
+              <img src="{$resourcesRoot}/resources/plus.gif" width="9" height="9" alt="open" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+        <a href="{$calendar-update}&amp;newCalPath={$calPath}" title="update">
+          <xsl:value-of select="name"/>
+        </a>
+        <xsl:if test="calendar">
+          <ul>
+            <xsl:apply-templates select="calendar" mode="listForMove"/>
+          </ul>
+        </xsl:if>
+      </li>
+    </xsl:if>
+  </xsl:template>
 
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3>Add Calendar / Folder</h3>
@@ -3037,6 +3072,8 @@
           <th>Path:</th>
           <td>
             <xsl:value-of select="path"/>
+            <xsl:text> </xsl:text>
+            <a href="{$calendar-move}">move</a>
           </td>
         </tr>
         <tr>
@@ -3533,6 +3570,55 @@
         </ul>
       </xsl:if>
     </li>
+  </xsl:template>
+  
+  <xsl:template match="calendars" mode="calendarMove">
+    <table id="calendarTable">
+      <tr>
+        <td class="calendarContent">
+          <h3>Move Calendar/Folder</h3>
+          
+          <p>Select a new parent folder to the right.</p>
+          
+          <table class="eventFormTable">
+            <tr>
+              <th>Current Path:</th>
+              <td>
+                <xsl:value-of select="path"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Name:</th>
+              <td>
+                <xsl:value-of select="name"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Mailing List ID:</th>
+              <td>
+                <xsl:value-of select="mailListId"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Summary:</th>
+              <td>
+                <xsl:value-of select="summary"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Description:</th>
+              <td>
+                <xsl:value-of select="desc"/>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td class="calsRight">
+          <h3>Public calendars</h3>
+          <xsl:apply-templates select="calendar" mode="listForMove"/>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
   <!--==== ACCESS CONTROL TEMPLATES ====-->
