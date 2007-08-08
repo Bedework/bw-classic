@@ -291,7 +291,7 @@
                   <xsl:apply-templates select="/bedeworkadmin/calendars" mode="calendarCommon"/>
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='moveCalendar'">
-                  <xsl:apply-templates select="/bedeworkadmin/calendars" mode="calendarMove"/>
+                  <xsl:call-template name="calendarMove"/>
                 </xsl:when>
                 <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
                   <xsl:apply-templates select="/bedeworkadmin/subscriptions"/>
@@ -3572,50 +3572,50 @@
     </li>
   </xsl:template>
   
-  <xsl:template match="calendars" mode="calendarMove">
+  <xsl:template name="calendarMove">
     <table id="calendarTable">
       <tr>
         <td class="calendarContent">
           <h3>Move Calendar/Folder</h3>
           
-          <p>Select a new parent folder to the right.</p>
-          
           <table class="eventFormTable">
             <tr>
               <th>Current Path:</th>
               <td>
-                <xsl:value-of select="path"/>
+                <xsl:value-of select="/bedeworkadmin/currentCalendar/path"/>
               </td>
             </tr>
             <tr>
               <th>Name:</th>
               <td>
-                <xsl:value-of select="name"/>
+                <xsl:value-of select="/bedeworkadmin/currentCalendar/name"/>
               </td>
             </tr>
             <tr>
               <th>Mailing List ID:</th>
               <td>
-                <xsl:value-of select="mailListId"/>
+                <xsl:value-of select="/bedeworkadmin/currentCalendar/mailListId"/>
               </td>
             </tr>
             <tr>
               <th>Summary:</th>
               <td>
-                <xsl:value-of select="summary"/>
+                <xsl:value-of select="/bedeworkadmin/currentCalendar/summary"/>
               </td>
             </tr>
             <tr>
               <th>Description:</th>
               <td>
-                <xsl:value-of select="desc"/>
+                <xsl:value-of select="/bedeworkadmin/currentCalendar/desc"/>
               </td>
             </tr>
           </table>
         </td>
-        <td class="calsRight">
-          <h3>Public calendars</h3>
-          <xsl:apply-templates select="calendar" mode="listForMove"/>
+        <td class="bwCalsForMove">
+          <p>Select a new parent folder:</p>
+          <ul id="calendarTree">
+            <xsl:apply-templates select="/bedeworkadmin/calendars/calendar" mode="listForMove"/>
+          </ul>
         </td>
       </tr>
     </table>

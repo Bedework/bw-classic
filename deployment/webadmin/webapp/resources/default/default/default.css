@@ -724,6 +724,11 @@ table.common th.commonHeader {
 #calendarTable td.cals {
   width: 300px;
 }
+
+#calendarTable td.bwCalsForMove {
+  padding-top: 1em;
+  font-size: 0.8em;
+}
 #subsTable td.cals {
   width: 200px;
 }
@@ -783,9 +788,6 @@ p.note {
   padding-top: 0.25em;
   /*font-weight: bold;*/
 }
-/*#calendarTree li ul li ul li {
-  font-weight: normal;
-}*/
 #calendarTree li.folder {
   list-style-image: url(../../resources/catIcon.gif);
 }
