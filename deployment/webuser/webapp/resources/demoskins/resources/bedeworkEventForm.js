@@ -36,34 +36,23 @@ dojo.require("dojo.widget.DropdownTimePicker");
 //   These should come from values in the header or included as a separate cutomization
 //   file.
 
-var deleteStr = "remove";
+var rdateDeleteStr = "remove";
 
 // ========================================================================
 // rdate functions
 // ========================================================================
 
-/* val: String: internal date
- * dateOnly: boolean
- */
-function bwDate(val, dateOnly) {
-  this.val = val;
-  this.dateOnly = dateOnly;
-
-  this.toString = function() {
-    return val;
-  }
-
-  this.format = function() {
-    return val;
-  }
-}
-
 /* An rdate
- * val: date or datetime value
+/* date: String: internal date
+ * time: String
  * tzid timezone id or null
  */
-function bwRdate(val, tzid) {
-  this.val = val;
+function BwREXdate(date, time, allDay, floating, utc, tzid) {
+  this.date = date;
+  this.time = time;
+  this.allDay = allDay;
+  this.floating = floating;
+  this.utc = utc;
   this.tzid = tzid;
 
   this.toString = function() {
@@ -72,11 +61,24 @@ function bwRdate(val, tzid) {
   /* row: current table row
    * rdi: index of rdate fro delete
    */
-  this.toFormRow = function(row, rdi) {
-    row.insertCell(0).appendChild(document.createTextNode(this.val.format()));
-    row.insertCell(1).appendChild(document.createTextNode(this.tzid));
-    row.insertCell(2).innerHTML = "<a href=\"javascript:bwRdates.deleteRdate('" +
-                                   rdi + "')\">" + rdateDeleteStr + "</a>";
+  this.toFormRow = function(reqPar, row, rdi) {
+    row.insertCell(0).appendChild(document.createTextNode(this.date));
+    row.insertCell(1).appendChild(document.createTextNode(this.time));
+    row.insertCell(2).appendChild(document.createTextNode(this.tzid));
+    row.insertCell(3).innerHTML = "<a href=\"javascript:bwRdates.deleteRdate('" +
+                                   rdi + "')\">" + rdateDeleteStr + "</a>" +
+                                   "<input type='hidden' name='" + reqPar + 
+                                   "' value='" + this.format() + "'/>";
+  }
+  
+  this.format= function() {
+    var res = this.date + "\t" + this.time + "\t";
+    
+    if (this.tzid != null) {
+      res += "\t" + this.tzid;
+    }
+    
+    return res;
   }
 
   this.equals = function(that) {
@@ -84,22 +86,28 @@ function bwRdate(val, tzid) {
   }
 }
 
-var bwRdates = new function() {
+var bwRdates = new BwREXdates("rdate", "bwCurrentRdates");
+var bwExdates = new BwREXdates("exdate", "bwCurrentExdates");
+
+function BwREXdates(reqPar, tableId) {
   var rdates = new Array();
+
+  this.reqPar = reqPar;
+  this.tableId = tableId;
 
   /* val: String: internal date
    * dateOnly: boolean
    * tzid: String or null
    */
-  this.addRdate(val, dateOnly, tzid) {
-    var newRdate = new bwRdate(new bwDate(val, dateOnly), tzid);
+  this.addRdate = function(date, time, allDay, floating, utc, tzid) {
+    var newRdate = new BwREXdate(date, time, allDay, floating, utc, tzid);
 
     if (!this.contains(newRdate)) {
       rdates.push(newRdate);
     }
   }
 
-  this.contains(rdate) {
+  this.contains = function(rdate) {
     for (var j = 0; j < rdates.length; j++) {
       var curRdate = rdates[j];
       if (curRdate.equals(rdate)) {
@@ -111,16 +119,8 @@ var bwRdates = new function() {
   }
 
   // Update the list - expects the browser form object
-  this.update = function(formObj) {
-    var dateVal = formObj.rddateVal.value;
-    var dateOnly = false; // hidden field?
-    var tzid = formObj.rdtzid.value;
-
-    this.addRdate(dateVal, dateOnly, tzid);
-
-    // set a bunch of hidden rdate reqeust parameters?
-    // ...
-    // this.toRequest();
+  this.update = function(date, time, allDay, floating, utc, tzid) {
+    this.addRdate(date, time, allDay, floating, utc, tzid);
 
     // redraw the display
     this.display();
@@ -137,7 +137,7 @@ var bwRdates = new function() {
   this.display = function() {
     try {
       // get the table body
-      var rdTableBody = document.getElementById("bwCurrentRdates").tBodies[0];
+      var rdTableBody = document.getElementById(this.tableId).tBodies[0];
 
       // remove existing rows
       for (i = rdTableBody.rows.length - 1; i >= 0; i--) {
@@ -149,16 +149,10 @@ var bwRdates = new function() {
         var curRdate = rdates[j];
         var tr = rdTableBody.insertRow(j);
 
-        curRdate.toFormRow(tr, j);
+        curRdate.toFormRow(this.reqPar, tr, j);
       }
     } catch (e) {
       alert(e);
-    }
-  }
-
-  // generate request parameters
-  this.toRequest = function() {
-    for (var j = 0; j < rdates.length; j++) {
     }
   }
 }
@@ -292,10 +286,14 @@ function swapDurationType(type) {
 function swapRecurrence(obj) {
   if (obj.value == 'true') {
     changeClass('recurrenceFields','visible');
-    changeClass('rrulesSwitch','visible');
+    if (document.getElementById('rrulesSwitch')) {
+      changeClass('rrulesSwitch','visible');
+    }
   } else {
     changeClass('recurrenceFields','invisible');
-    changeClass('rrulesSwitch','invisible');
+    if (document.getElementById('rrulesSwitch')) {
+      changeClass('rrulesSwitch','invisible');
+    }
   }
 }
 function swapRrules(obj) {
