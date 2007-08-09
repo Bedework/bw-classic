@@ -494,6 +494,8 @@ function bwAce(who, whoType, how, inherited, invert) {
     return res + "  </D:ace>\n";
   }
 
+  // row: current row in table
+  // aceI: index of the ace
   this.toFormRow = function(row, aceI) {
     row.insertCell(0).appendChild(document.createTextNode(this.principal.format()));
     row.insertCell(1).appendChild(document.createTextNode(this.formatHow()));

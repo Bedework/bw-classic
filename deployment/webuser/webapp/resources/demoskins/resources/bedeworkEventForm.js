@@ -30,12 +30,138 @@ dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.DropdownDatePicker");
 dojo.require("dojo.widget.DropdownTimePicker");
 
+// ========================================================================
+// ========================================================================
+//   Language and customization
+//   These should come from values in the header or included as a separate cutomization
+//   file.
+
+var deleteStr = "remove";
+
+// ========================================================================
+// rdate functions
+// ========================================================================
+
+/* val: String: internal date
+ * dateOnly: boolean
+ */
+function bwDate(val, dateOnly) {
+  this.val = val;
+  this.dateOnly = dateOnly;
+
+  this.toString = function() {
+    return val;
+  }
+
+  this.format = function() {
+    return val;
+  }
+}
+
+/* An rdate
+ * val: date or datetime value
+ * tzid timezone id or null
+ */
+function bwRdate(val, tzid) {
+  this.val = val;
+  this.tzid = tzid;
+
+  this.toString = function() {
+  }
+
+  /* row: current table row
+   * rdi: index of rdate fro delete
+   */
+  this.toFormRow = function(row, rdi) {
+    row.insertCell(0).appendChild(document.createTextNode(this.val.format()));
+    row.insertCell(1).appendChild(document.createTextNode(this.tzid));
+    row.insertCell(2).innerHTML = "<a href=\"javascript:bwRdates.deleteRdate('" +
+                                   rdi + "')\">" + rdateDeleteStr + "</a>";
+  }
+
+  this.equals = function(that) {
+    return (that.val = this.val) && (that.tzid = this.tzid);
+  }
+}
+
+var bwRdates = new function() {
+  var rdates = new Array();
+
+  /* val: String: internal date
+   * dateOnly: boolean
+   * tzid: String or null
+   */
+  this.addRdate(val, dateOnly, tzid) {
+    var newRdate = new bwRdate(new bwDate(val, dateOnly), tzid);
+
+    if (!this.contains(newRdate)) {
+      rdates.push(newRdate);
+    }
+  }
+
+  this.contains(rdate) {
+    for (var j = 0; j < rdates.length; j++) {
+      var curRdate = rdates[j];
+      if (curRdate.equals(rdate)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  this.deleteRdate = function(index) {
+    rdates.splice(index, 1);
+
+    // redraw the display
+    this.display();
+  }
+
+  // update the rdates table displayed on screen
+  this.display = function() {
+    try {
+      // get the table body
+      var rdTableBody = document.getElementById("bwCurrentRdates").tBodies[0];
+
+      // remove existing rows
+      for (i = rdTableBody.rows.length - 1; i >= 0; i--) {
+        rdTableBody.deleteRow(i);
+      }
+
+      // recreate the table rows
+      for (var j = 0; j < rdates.length; j++) {
+        var curRdate = rdates[j];
+        var tr = rdTableBody.insertRow(j);
+
+        curRdate.toFormRow(tr, j);
+      }
+    } catch (e) {
+      alert(e);
+    }
+  }
+
+  // generate request parameters
+  this.toRequest = function() {
+    var res = xmlHeader + "\n<D:acl " + nameSpaces + " >\n";
+
+    for (var j = 0; j < aces.length; j++) {
+      res += aces[j].toXml();
+    }
+
+    return res + "</D:acl>";
+  }
+}
+
+// ========================================================================
+// ========================================================================
+
 function setEventFields(formObj) {
   setDates(formObj);
   setRecurrence(formObj);
   setAccessHow(formObj,1);
   //setAccessAcl(formObj);
 }
+
 function setDates(formObj) {
   var startDate = new Date();
   startDate = dojo.widget.byId("bwEventWidgetStartDate").getDate();
@@ -49,6 +175,7 @@ function setDates(formObj) {
   formObj["eventEndDate.month"].value = endDate.getMonth() + 1;
   formObj["eventEndDate.day"].value = endDate.getDate();
 }
+
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
   allDayEndDateField = document.getElementById("allDayEndDateField");
@@ -101,6 +228,7 @@ function swapStoreUTC(obj) {
     endStoreUTC.value = "false";
   }
 }
+
 function swapRdateAllDay(obj) {
   if (obj.checked) {
     changeClass('rdateTimeFields','invisible');
@@ -210,6 +338,7 @@ function showRrules(freq) {
     changeClass('yearlyRecurrenceRules','invisible');
   }
 }
+
 function recurSelectWeekends(id) {
   chkBoxCollection = document.getElementById(id).getElementsByTagName('input');
   if (chkBoxCollection) {
@@ -224,6 +353,7 @@ function recurSelectWeekends(id) {
     }
   }
 }
+
 function recurSelectWeekdays(id) {
   chkBoxCollection = document.getElementById(id).getElementsByTagName('input');
   if (chkBoxCollection) {
@@ -238,9 +368,11 @@ function recurSelectWeekdays(id) {
     }
   }
 }
+
 function selectRecurCountUntil(id) {
   document.getElementById(id).checked = true;
 }
+
 // Assemble the recurrence rules if recurrence is specified.
 // Request params to set ('freq' is always set):
 // interval, count, until (count OR until, not both)
