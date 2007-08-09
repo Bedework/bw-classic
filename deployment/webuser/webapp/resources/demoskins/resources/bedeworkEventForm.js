@@ -110,6 +110,22 @@ var bwRdates = new function() {
     return false;
   }
 
+  // Update the list - expects the browser form object
+  this.update = function(formObj) {
+    var dateVal = formObj.rddateVal.value;
+    var dateOnly = false; // hidden field?
+    var tzid = formObj.rdtzid.value;
+
+    this.addRdate(dateVal, dateOnly, tzid);
+
+    // set a bunch of hidden rdate reqeust parameters?
+    // ...
+    // this.toRequest();
+
+    // redraw the display
+    this.display();
+  }
+
   this.deleteRdate = function(index) {
     rdates.splice(index, 1);
 
@@ -142,13 +158,8 @@ var bwRdates = new function() {
 
   // generate request parameters
   this.toRequest = function() {
-    var res = xmlHeader + "\n<D:acl " + nameSpaces + " >\n";
-
-    for (var j = 0; j < aces.length; j++) {
-      res += aces[j].toXml();
+    for (var j = 0; j < rdates.length; j++) {
     }
-
-    return res + "</D:acl>";
   }
 }
 
