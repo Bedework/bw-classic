@@ -3186,7 +3186,7 @@
               <!-- if there are no recurence dates, the following table will show -->
               <table cellspacing="0" id="bwCurrentRdates">
                 <tr>
-                  <th colspan="3">Recurrence Dates</th>
+                  <th colspan="4">Recurrence Dates</th>
                 </tr>
                 <tr>
                   <td>Date</td>
@@ -3198,14 +3198,14 @@
               
               <!-- if there are no recurence dates, the following table will show -->
               <table cellspacing="0" id="bwCurrentExdatesNone">
-                <tr><th>Recurrence Dates</th></tr>
-                <tr><td>No recurrence dates</td></tr>
+                <tr><th>Exception Dates</th></tr>
+                <tr><td>No exception dates</td></tr>
               </table>
               
               <!-- if there are no recurence dates, the following table will show -->
               <table cellspacing="0" id="bwCurrentExdates">
                 <tr>
-                  <th colspan="3">Exception Dates</th>
+                  <th colspan="4">Exception Dates</th>
                 </tr>
                 <tr>
                   <td>Date</td>

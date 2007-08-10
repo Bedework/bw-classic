@@ -1,7 +1,164 @@
+// Bedework event form functions
+
+/* **********************************************************************
+    Copyright 2007 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+
+    Redistribution and use of this distribution in source and binary forms,
+    with or without modification, are permitted provided that:
+       The above copyright notice and this permission notice appear in all
+        copies and supporting documentation;
+
+        The name, identifiers, and trademarks of Rensselaer Polytechnic
+        Institute are not used in advertising or publicity without the
+        express prior written permission of Rensselaer Polytechnic Institute;
+
+    DISCLAIMER: The software is distributed" AS IS" without any express or
+    implied warranty, including but not limited to, any implied warranties
+    of merchantability or fitness for a particular purpose or any warrant)'
+    of non-infringement of any current or pending patent rights. The authors
+    of the software make no representations about the suitability of this
+    software for any particular purpose. The entire risk as to the quality
+    and performance of the software is with the user. Should the software
+    prove defective, the user assumes the cost of all necessary servicing,
+    repair or correction. In particular, neither Rensselaer Polytechnic
+    Institute, nor the authors of the software are liable for any indirect,
+    special, consequential, or incidental damages related to the software,
+    to the maximum extent the law permits. */
+
 dojo.require("dojo.event.*");
 dojo.require("dojo.widget.*");
 dojo.require("dojo.widget.DropdownDatePicker");
 dojo.require("dojo.widget.DropdownTimePicker");
+
+// ========================================================================
+// ========================================================================
+//   Language and customization
+//   These should come from values in the header or included as a separate cutomization
+//   file.
+
+var rdateDeleteStr = "remove";
+
+// ========================================================================
+// rdate functions
+// ========================================================================
+
+/* An rdate
+/* date: String: internal date
+ * time: String
+ * tzid timezone id or null
+ */
+function BwREXdate(date, time, allDay, floating, utc, tzid) {
+  this.date = date;
+  this.time = time;
+  this.allDay = allDay;
+  this.floating = floating;
+  this.utc = utc;
+  this.tzid = tzid;
+
+  this.toString = function() {
+  }
+
+  /* row: current table row
+   * rdi: index of rdate fro delete
+   */
+  this.toFormRow = function(reqPar, row, rdi) {
+    row.insertCell(0).appendChild(document.createTextNode(this.date));
+    row.insertCell(1).appendChild(document.createTextNode(this.time));
+    row.insertCell(2).appendChild(document.createTextNode(this.tzid));
+    row.insertCell(3).innerHTML = "<a href=\"javascript:bwRdates.deleteRdate('" +
+                                   rdi + "')\">" + rdateDeleteStr + "</a>" +
+                                   "<input type='hidden' name='" + reqPar + 
+                                   "' value='" + this.format() + "'/>";
+  }
+  
+  this.format= function() {
+    var res = this.date + "\t" + this.time + "\t";
+    
+    if (this.tzid != null) {
+      res += "\t" + this.tzid;
+    }
+    
+    return res;
+  }
+
+  this.equals = function(that) {
+    return (that.val = this.val) && (that.tzid = this.tzid);
+  }
+}
+
+var bwRdates = new BwREXdates("rdate", "bwCurrentRdates", "bwCurrentRdatesNone", "visible", "invisible", 2);
+var bwExdates = new BwREXdates("exdate", "bwCurrentExdates", "bwCurrentExdatesNone", "visible", "invisible", 2);
+
+function BwREXdates(reqPar, tableId, noDatesId, visibleClass, invisibleClass, numHeaderRows) {
+  var rdates = new Array();
+
+  this.reqPar = reqPar;
+  this.tableId = tableId;
+
+  /* val: String: internal date
+   * dateOnly: boolean
+   * tzid: String or null
+   */
+  this.addRdate = function(date, time, allDay, floating, utc, tzid) {
+    var newRdate = new BwREXdate(date, time, allDay, floating, utc, tzid);
+
+    if (!this.contains(newRdate)) {
+      rdates.push(newRdate);
+    }
+  }
+
+  this.contains = function(rdate) {
+    for (var j = 0; j < rdates.length; j++) {
+      var curRdate = rdates[j];
+      if (curRdate.equals(rdate)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  // Update the list - expects the browser form object
+  this.update = function(date, time, allDay, floating, utc, tzid) {
+    this.addRdate(date, time, allDay, floating, utc, tzid);
+
+    // redraw the display
+    this.display();
+  }
+
+  this.deleteRdate = function(index) {
+    rdates.splice(index, 1);
+
+    // redraw the display
+    this.display();
+  }
+
+  // update the rdates table displayed on screen
+  this.display = function() {
+    try {
+      // get the table body
+      var rdTableBody = document.getElementById(this.tableId).tBodies[0];
+
+      // remove existing rows
+      for (i = rdTableBody.rows.length - 1; i >= 0; i--) {
+        rdTableBody.deleteRow(i);
+      }
+
+      // recreate the table rows
+      for (var j = 0; j < rdates.length; j++) {
+        var curRdate = rdates[j];
+        var tr = rdTableBody.insertRow(j);
+
+        curRdate.toFormRow(this.reqPar, tr, j);
+      }
+    } catch (e) {
+      alert(e);
+    }
+  }
+}
+
+// ========================================================================
+// ========================================================================
 
 function setEventFields(formObj) {
   setDates(formObj);
@@ -124,10 +281,14 @@ function swapDurationType(type) {
 function swapRecurrence(obj) {
   if (obj.value == 'true') {
     changeClass('recurrenceFields','visible');
-    changeClass('rrulesSwitch','visible');
+    if (document.getElementById('rrulesSwitch')) {
+      changeClass('rrulesSwitch','visible');
+    }
   } else {
     changeClass('recurrenceFields','invisible');
-    changeClass('rrulesSwitch','invisible');
+    if (document.getElementById('rrulesSwitch')) {
+      changeClass('rrulesSwitch','invisible');
+    }
   }
 }
 function swapRrules(obj) {

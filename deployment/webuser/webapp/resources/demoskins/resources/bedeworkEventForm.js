@@ -166,7 +166,6 @@ function setEventFields(formObj) {
   setAccessHow(formObj,1);
   //setAccessAcl(formObj);
 }
-
 function setDates(formObj) {
   var startDate = new Date();
   startDate = dojo.widget.byId("bwEventWidgetStartDate").getDate();
@@ -180,7 +179,6 @@ function setDates(formObj) {
   formObj["eventEndDate.month"].value = endDate.getMonth() + 1;
   formObj["eventEndDate.day"].value = endDate.getDate();
 }
-
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
   allDayEndDateField = document.getElementById("allDayEndDateField");
@@ -233,7 +231,6 @@ function swapStoreUTC(obj) {
     endStoreUTC.value = "false";
   }
 }
-
 function swapRdateAllDay(obj) {
   if (obj.checked) {
     changeClass('rdateTimeFields','invisible');
@@ -347,7 +344,6 @@ function showRrules(freq) {
     changeClass('yearlyRecurrenceRules','invisible');
   }
 }
-
 function recurSelectWeekends(id) {
   chkBoxCollection = document.getElementById(id).getElementsByTagName('input');
   if (chkBoxCollection) {
@@ -362,7 +358,6 @@ function recurSelectWeekends(id) {
     }
   }
 }
-
 function recurSelectWeekdays(id) {
   chkBoxCollection = document.getElementById(id).getElementsByTagName('input');
   if (chkBoxCollection) {
@@ -377,11 +372,9 @@ function recurSelectWeekdays(id) {
     }
   }
 }
-
 function selectRecurCountUntil(id) {
   document.getElementById(id).checked = true;
 }
-
 // Assemble the recurrence rules if recurrence is specified.
 // Request params to set ('freq' is always set):
 // interval, count, until (count OR until, not both)
@@ -480,7 +473,7 @@ function setRecurrence(formObj) {
         formObj.count.value = formObj.countHolder.value;
         break;
       case "until":
-        // the following will not be adequate for recurrences smaller than a day
+        // the following will not be adequate for recurrences smaller than a day;
         // we will need to set the time properly at that point.
         formObj.until.value = dojo.widget.byId("bwEventWidgetUntilDate").getValue() + "T000000";
         break;
@@ -518,6 +511,5 @@ function init() {
 }
 
 dojo.addOnLoad(init);
-
 
 

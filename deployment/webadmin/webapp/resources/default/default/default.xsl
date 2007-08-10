@@ -1203,19 +1203,17 @@
                 <div id="recurrenceFields" class="invisible">
                   <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
 
-                  <!-- show or hide rrules fields: -->
-                  <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on"/>
-                  <span id="rrulesSwitch">
-                    <xsl:choose>
-                      <xsl:when test="form/recurrence">
-                        change recurrence rules
-                      </xsl:when>
-                      <xsl:otherwise>
-                        create recurrence rules
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </span>
-                  <span id="rrulesUiSwitch" class="invisible">
+                  <!-- show or hide rrules fields when editing: -->
+                  <xsl:if test="form/recurrence">
+                    <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on"/>
+                    <span id="rrulesSwitch">
+                      change recurrence rules
+                    </span>
+                  </xsl:if>
+                  <span id="rrulesUiSwitch">
+                    <xsl:if test="form/recurrence">
+                      <xsl:attribute name="class">invisible</xsl:attribute>
+                    </xsl:if>
                     <input type="checkbox" name="rrulesUiSwitch" value="advanced" onchange="swapVisible(this,'advancedRrules')"/>
                     show advanced recurrence rules
                   </span>
@@ -1338,7 +1336,10 @@
                   <input type="hidden" name="setpos" value=""/>
 
                   <!-- wrapper for rrules: -->
-                  <table id="rrulesTable" cellspacing="0" class="invisible">
+                  <table id="rrulesTable" cellspacing="0">
+                  <xsl:if test="form/recurrence">
+                    <xsl:attribute name="class">invisible</xsl:attribute>
+                  </xsl:if>
                     <tr>
                       <td id="recurrenceFrequency" rowspan="2">
                         <strong>Frequency:</strong><br/>
@@ -1606,8 +1607,136 @@
                     </tr>
                   </table>
                   <!-- recurrence dates (rdates) -->
-                  <div id="recurrenceDatesButton">
-                    <input type="button" value="manage recurrence &amp; exception dates" onclick="launchSizedWindow('{$event-showRdates}','700','500')"/>
+                  <!--<div id="recurrenceDatesButton">
+                    <input type="button" value="manage recurrence &amp; exception dates" onclick="launchSizedWindow('{$event-showRdates}','560','400')"/>
+                  </div>-->
+                  <h4 id="dialogTitle">
+                    Recurrence and Exception Dates
+                  </h4>
+                  <div id="raContent">
+                    <div class="dateStartEndBox" id="rdatesFormFields">
+                      <div class="dateFields">
+                        <input name="eventRdate.date"
+                               dojoType="dropdowndatepicker"
+                               formatLength="medium"
+                               value="today"
+                               saveFormat="yyyyMMdd"
+                               id="bwEventWidgeRdate"
+                               iconURL="{$resourcesRoot}/resources/calIcon.gif"/>
+                      </div>
+                      <div id="rdateTimeFields" class="timeFields">
+                       <select name="eventRdate.hour">
+                          <option value="00">00</option>
+                          <option value="01">01</option>
+                          <option value="02">02</option>
+                          <option value="03">03</option>
+                          <option value="04">04</option>
+                          <option value="05">05</option>
+                          <option value="06">06</option>
+                          <option value="07">07</option>
+                          <option value="08">08</option>
+                          <option value="09">09</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12" selected="selected">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                          <option value="21">21</option>
+                          <option value="22">22</option>
+                          <option value="23">23</option>
+                        </select>
+                        <select name="eventRdate.minute">
+                          <option value="00" selected="selected">00</option>
+                          <option value="05">05</option>
+                          <option value="10">10</option>
+                          <option value="15">15</option>
+                          <option value="20">20</option>
+                          <option value="25">25</option>
+                          <option value="30">30</option>
+                          <option value="35">35</option>
+                          <option value="40">40</option>
+                          <option value="45">45</option>
+                          <option value="50">50</option>
+                          <option value="55">55</option>
+                        </select>
+                       <xsl:text> </xsl:text>
+          
+                        <select name="tzid" id="rdateTzid" class="timezones">
+                          <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+                          <option value="-1">select timezone...</option>
+                          <xsl:variable name="rdateTzId" select="/bedework/rdates/tzid"/>
+                          <xsl:for-each select="/bedework/timezones/timezone">
+                            <option>
+                              <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
+                              <xsl:if test="$rdateTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                              <xsl:value-of select="name"/>
+                            </option>
+                          </xsl:for-each>
+                        </select>
+                      </div>
+                      <xsl:text> </xsl:text>
+                      <!--bwRdates.update() accepts: date, time, allDay, floating, utc, tzid-->
+                      <input type="button" name="rdate" value="add recurrence" onclick="bwRdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
+                      <input type="button" name="exdate" value="add exception" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
+                      <br/>
+                      <!-- dateonly (anniversary) event: this is temporary - should be determined by the main event -->
+                      <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="true"/>
+                      all day
+                      <!-- floating event: no timezone (and not UTC) -->
+                      <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="true"/>
+                      floating
+                      <!-- store time as coordinated universal time (UTC) -->
+                      <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
+                      store as UTC
+                    </div>
+          
+                    <!-- if there are no recurence dates, the following table will show -->
+                    <table cellspacing="0" id="bwCurrentRdates">
+                      <tr><th>Recurrence Dates</th></tr>
+                      <tr><td>No recurrence dates</td></tr>
+                    </table>
+                    
+                    <!-- if there are no recurence dates, the following table will show -->
+                    <table cellspacing="0" id="bwCurrentRdates">
+                      <tr>
+                        <th colspan="4">Recurrence Dates</th>
+                      </tr>
+                      <tr>
+                        <td>Date</td>
+                        <td>Time</td>
+                        <td>TZid</td>
+                        <td></td>
+                      </tr>
+                    </table>
+                    
+                    <!-- if there are no recurence dates, the following table will show -->
+                    <table cellspacing="0" id="bwCurrentExdatesNone">
+                      <tr><th>Exception Dates</th></tr>
+                      <tr><td>No exception dates</td></tr>
+                    </table>
+                    
+                    <!-- if there are no recurence dates, the following table will show -->
+                    <table cellspacing="0" id="bwCurrentExdates">
+                      <tr>
+                        <th colspan="4">Exception Dates</th>
+                      </tr>
+                      <tr>
+                        <td>Date</td>
+                        <td>Time</td>
+                        <td>TZid</td>
+                        <td></td>
+                      </tr>
+                    </table>
+                    <p>
+                      Exception dates may also be created by deleting an instance
+                      of a recurring event.
+                    </p>
                   </div>
                 </div>
               </xsl:otherwise>
