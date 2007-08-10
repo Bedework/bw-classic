@@ -86,10 +86,10 @@ function BwREXdate(date, time, allDay, floating, utc, tzid) {
   }
 }
 
-var bwRdates = new BwREXdates("rdate", "bwCurrentRdates");
-var bwExdates = new BwREXdates("exdate", "bwCurrentExdates");
+var bwRdates = new BwREXdates("rdate", "bwCurrentRdates", "bwCurrentRdatesNone", "visible", "invisible", 2);
+var bwExdates = new BwREXdates("exdate", "bwCurrentExdates", "bwCurrentExdatesNone", "visible", "invisible", 2);
 
-function BwREXdates(reqPar, tableId) {
+function BwREXdates(reqPar, tableId, noDatesId, visibleClass, invisibleClass, numHeaderRows) {
   var rdates = new Array();
 
   this.reqPar = reqPar;

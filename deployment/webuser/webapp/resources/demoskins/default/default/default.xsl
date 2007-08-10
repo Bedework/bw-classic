@@ -3177,98 +3177,47 @@
                 store as UTC
               </div>
     
-    
-              <h3>Recurrence Dates</h3>
-              <table cellspacing="0" class="rdatesTable" id="bwCurrentRdates">
-                <xsl:choose>
-                  <xsl:when test="/bedework/rdates/rdate">
-                    <xsl:for-each select="/bedework/rdates/rdate">
-                      <tr>
-                        <td>
-                          <xsl:value-of select="longdate"/>
-                          <xsl:if test="allday='false'">
-                            <xsl:text> </xsl:text>
-                            <xsl:value-of select="time"/>
-                            <xsl:if test="floating='false'">
-                              <xsl:text> </xsl:text>
-                              <xsl:value-of select="timezone/id"/>
-                            </xsl:if>
-                          </xsl:if>
-                          <script type="text/javascript">
-                            <xsl:comment>
-                              bwRdates.update('<xsl:value-of select="longdate"/>', 
-                                              '<xsl:value-of select="time"/>', 
-                                              <xsl:value-of select="allDay"/>, 
-                                              <xsl:value-of select="floating"/>, 
-                                              false, 
-                                              '<xsl:value-of select="timezone/id"/>');
-                            </xsl:comment>
-                          </script>
-                        </td>
-                        <td class="trash">
-                          <xsl:variable name="datetime"><xsl:value-of select="unformatted"/></xsl:variable>
-                          <xsl:variable name="tzid" select="timezone/id"/>
-                          <xsl:variable name="dateOnly"><xsl:if test="allday = 'true'">&amp;dateOnly=true</xsl:if></xsl:variable>
-                          <xsl:variable name="floating"><xsl:if test="floating = 'true'">&amp;floating=true</xsl:if></xsl:variable>
-                          <xsl:variable name="storeUTC"><xsl:if test="utc = 'true'">&amp;storeUTC=true</xsl:if></xsl:variable>
-                          <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}{$dateOnly}{$floating}{$storeUTC}&amp;delete=true" title="remove">
-                            <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                          </a>
-                        </td>
-                      </tr>
-                    </xsl:for-each>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <tr>
-                      <td colspan="2">No recurrence dates</td>
-                    </tr>
-                  </xsl:otherwise>
-                </xsl:choose>
+              <!-- if there are no recurence dates, the following table will show -->
+              <table cellspacing="0" id="bwCurrentRdates">
+                <tr><th>Recurrence Dates</th></tr>
+                <tr><td>No recurrence dates</td></tr>
               </table>
-    
-              <table cellspacing="0" class="rdatesTable" id="bwCurrentExdates">
+              
+              <!-- if there are no recurence dates, the following table will show -->
+              <table cellspacing="0" id="bwCurrentRdates">
                 <tr>
-                  <th colspan="2">Exception Dates</th>
+                  <th colspan="3">Recurrence Dates</th>
                 </tr>
                 <tr>
-                  <td colspan="2" class="note">
-                    exception dates are created by deleting an instance of a
-                    recurring event
-                  </td>
+                  <td>Date</td>
+                  <td>Time</td>
+                  <td>TZid</td>
+                  <td></td>
                 </tr>
-                <xsl:choose>
-                  <xsl:when test="/bedework/exdates/exdate">
-                    <xsl:for-each select="/bedework/exdates/exdate">
-                      <tr>
-                        <td>
-                          <xsl:value-of select="longdate"/>
-                          <xsl:if test="allday='false'">
-                            <xsl:value-of select="time"/>
-                            <xsl:if test="floating='false'">
-                              <xsl:value-of select="timezone/id"/>
-                            </xsl:if>
-                          </xsl:if>
-                        </td>
-                        <td class="trash">
-                          <xsl:variable name="datetime"><xsl:value-of select="unformatted"/></xsl:variable>
-                          <xsl:variable name="tzid" select="timezone/id"/>
-                          <xsl:variable name="dateOnly"><xsl:if test="allday = 'true'">&amp;dateOnly=true</xsl:if></xsl:variable>
-                          <xsl:variable name="floating"><xsl:if test="floating = 'true'">&amp;floating=true</xsl:if></xsl:variable>
-                          <xsl:variable name="storeUTC"><xsl:if test="utc = 'true'">&amp;storeUTC=true</xsl:if></xsl:variable>
-                          <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}{$dateOnly}{$floating}{$storeUTC}&amp;exdelete=true" title="remove">
-                            <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                          </a>
-                        </td>
-                      </tr>
-                    </xsl:for-each>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <tr>
-                      <td colspan="2">No exception dates</td>
-                    </tr>
-                  </xsl:otherwise>
-                </xsl:choose>
               </table>
+              
+              <!-- if there are no recurence dates, the following table will show -->
+              <table cellspacing="0" id="bwCurrentExdatesNone">
+                <tr><th>Recurrence Dates</th></tr>
+                <tr><td>No recurrence dates</td></tr>
+              </table>
+              
+              <!-- if there are no recurence dates, the following table will show -->
+              <table cellspacing="0" id="bwCurrentExdates">
+                <tr>
+                  <th colspan="3">Exception Dates</th>
+                </tr>
+                <tr>
+                  <td>Date</td>
+                  <td>Time</td>
+                  <td>TZid</td>
+                  <td></td>
+                </tr>
+              </table>
+              <p>
+                Exception dates may also be created by deleting an instance
+                of a recurring event.
+              </p>
             </div>
           </div>
         </xsl:otherwise>
