@@ -128,8 +128,8 @@
   <xsl:variable name="calendar-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calendar/fetchForUpdate/a/@href"/>
   <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/>
   <xsl:variable name="calendar-setAccess" select="/bedeworkadmin/urlPrefixes/calendar/setAccess/a/@href"/>
-  <xsl:variable name="calendar-openCloseMod" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMod/a/@href"/> 
-  <xsl:variable name="calendar-openCloseMove" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMove/a/@href"/> 
+  <xsl:variable name="calendar-openCloseMod" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMod/a/@href"/>
+  <xsl:variable name="calendar-openCloseMove" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMove/a/@href"/>
   <xsl:variable name="calendar-move" select="/bedeworkadmin/urlPrefixes/calendar/move/a/@href"/>
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-fetch" select="/bedeworkadmin/urlPrefixes/subscriptions/fetch/a/@href"/>
@@ -2914,7 +2914,7 @@
     </xsl:variable>
     <li class="{$itemClass}">
       <xsl:if test="calendarCollection='false'">
-        <!-- test the open state of the folder; if it's open, 
+        <!-- test the open state of the folder; if it's open,
              build a URL to close it and vice versa -->
         <xsl:choose>
           <xsl:when test="open = 'true'">
@@ -2967,12 +2967,12 @@
       </xsl:if>
     </li>
   </xsl:template>
-  
+
   <xsl:template match="calendar" mode="listForMove">
     <xsl:variable name="calPath" select="encodedPath"/>
     <xsl:if test="calendarCollection='false'">
       <li class="folder">
-        <!-- test the open state of the folder; if it's open, 
+        <!-- test the open state of the folder; if it's open,
              build a URL to close it and vice versa -->
         <xsl:choose>
           <xsl:when test="open = 'true'">
@@ -3254,6 +3254,7 @@
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">user</xsl:when>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">group</xsl:when>
                         <xsl:when test="$who='authenticated'">auth</xsl:when>
+                        <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
                         <xsl:when test="invert/principal/property/owner">other</xsl:when>
                         <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
                         <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
@@ -3571,13 +3572,13 @@
       </xsl:if>
     </li>
   </xsl:template>
-  
+
   <xsl:template name="calendarMove">
     <table id="calendarTable">
       <tr>
         <td class="calendarContent">
           <h3>Move Calendar/Folder</h3>
-          
+
           <table class="eventFormTable">
             <tr>
               <th>Current Path:</th>
@@ -4116,7 +4117,7 @@
     </xsl:variable>
     <li class="{$itemClass}">
       <xsl:if test="calendarCollection='false'">
-        <!-- test the open state of the folder; if it's open, 
+        <!-- test the open state of the folder; if it's open,
              build a URL to close it and vice versa -->
         <xsl:choose>
           <xsl:when test="open = 'true'">
@@ -5142,6 +5143,7 @@
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">user</xsl:when>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">group</xsl:when>
                         <xsl:when test="$who='authenticated'">auth</xsl:when>
+                        <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
                         <xsl:when test="invert/principal/property/owner">other</xsl:when>
                         <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
                         <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
