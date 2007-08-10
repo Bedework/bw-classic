@@ -597,9 +597,10 @@ table.params .desc {
   margin: 1em 0;
   padding: 0;
 }
-#calendarTable #shareFormTable td {
+#shareFormTable td {
   border: 1px solid #666;
   padding: 0 0 0.5em 0;
+  vertical-align: top;
 }
 #shareFormTable h5 {
   background: #e5e5e5;
@@ -622,12 +623,12 @@ table.params .desc {
   font-size: 0.8em;
   width: 100%;
 }
-#calendarTable #howTable th {
+#howTable th {
   color: white;
   background-color: #999;
   font-weight: normal;
 }
-#calendarTable #howTable td {
+#howTable td {
   white-space: nowrap;
   border-top: 1px dotted #ccc;
   border-right: none;
@@ -635,24 +636,24 @@ table.params .desc {
   border-bottom: none;
   text-align: center;
 }
-#calendarTable #howTable td.level1 {
+#howTable td.level1 {
   text-align: left;
   font-weight: bold;
 }
-#calendarTable #howTable td.level2 {
+#howTable td.level2 {
   padding-left: 2em;
   text-align: left;
   font-weight: bold;
 }
-#calendarTable #howTable td.level3 {
+#howTable td.level3 {
   padding-left: 4em;
   text-align: left;
 }
-#calendarTable #howTable td.level4 {
+#howTable td.level4 {
   padding-left: 6em;
   text-align: left;
 }
-#calendarTable #howTable td.level5 {
+#howTable td.level5 {
   padding-left: 8em;
   text-align: left;
 }

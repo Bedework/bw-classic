@@ -215,7 +215,7 @@
             <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
           </xsl:if>
         </xsl:if>
-        <xsl:if test="/bedeworkadmin/page='modCalendar'">
+        <xsl:if test="/bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='modCalSuite'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
         </xsl:if>
@@ -3962,6 +3962,7 @@
     <xsl:param name="guid"/> <!-- optional (for entities) -->
     <xsl:param name="recurrenceId"/> <!-- optional (for entities) -->
     <xsl:param name="what"/> <!-- optional (for scheduling only) -->
+    <xsl:param name="calSuiteName"/> <!-- optional (for calendar suites only) -->
     <h3>Current Access:</h3>
       <table class="common scheduling">
         <tr>
@@ -4063,7 +4064,7 @@
           </td>
           <td>
             <xsl:if test="not(inherited)">
-              <a href="{$action}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="reset to default">
+              <a href="{$action}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}&amp;calPath={$calPathEncoded}&amp;calSuiteName={$calSuiteName}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="reset to default">
                 <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
               </a>
             </xsl:if>
@@ -4997,69 +4998,27 @@
         </tr>
       </table>
     </form>
-    <!--<div id="sharingBox">
-      <h3>Manage suite administrators</h3>
-      <table class="common">
-        <tr>
-          <th class="commonHeader" colspan="2">Current access:</th>
-        </tr>
-
-        <xsl:for-each select="acl/ace">
-          <tr>
-            <th class="thin">
-              <xsl:choose>
-                <xsl:when test="invert">
-                  <em>Deny to
-                  <xsl:choose>
-                    <xsl:when test="invert/principal/href">
-                      <xsl:value-of select="invert/principal/href"/>
-                      </xsl:when>
-                      <xsl:when test="invert/principal/property">
-                        <xsl:value-of select="name(invert/principal/property/*)"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="name(invert/principal/*)"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </em>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="principal/href">
-                      <xsl:value-of select="principal/href"/>
-                    </xsl:when>
-                    <xsl:when test="principal/property">
-                      <xsl:value-of select="name(principal/property/*)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="name(principal/*)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </th>
-            <td>
-              <xsl:for-each select="grant/node()">
-                <xsl:value-of select="name(.)"/>&#160;&#160;
-              </xsl:for-each>
-            </td>
-          </tr>
-        </xsl:for-each>
-      </table>
-      <form name="calsuiteShareForm" action="{$calsuite-setAccess}" id="shareForm" method="post">
-        <input type="hidden" name="calSuiteName" value="{$calSuiteName}"/>
-        <input type="hidden" name="how" value="RW" />
-        <p>
-          Add administrator:<br/>
-          <input type="text" name="who" size="20"/>
-          <input type="radio" value="user" name="whoType" checked="checked"/> user
-          <input type="radio" value="group" name="whoType"/> group
-        </p>
-        <input type="submit" name="submit" value="Submit"/>
-      </form>
-    </div>-->
-
+    
     <div id="sharingBox">
+      <xsl:apply-templates select="acl" mode="currentAccess">
+        <xsl:with-param name="action" select="$calsuite-setAccess"/>
+        <xsl:with-param name="calSuiteName" select="$calSuiteName"/>
+      </xsl:apply-templates>
+      <form name="calendarShareForm" action="{$calsuite-setAccess}" id="shareForm" onsubmit="setAccessHow(this)" method="post">
+        <input type="hidden" name="calSuiteName" value="{$calSuiteName}"/>
+        <xsl:call-template name="entityAccessForm">
+          <xsl:with-param name="type">
+            <xsl:choose>
+              <xsl:when test="calType = '5'">inbox</xsl:when>
+              <xsl:when test="calType = '6'">outbox</xsl:when>
+              <xsl:otherwise>normal</xsl:otherwise>
+            </xsl:choose>
+          </xsl:with-param>
+        </xsl:call-template>
+      </form>
+    </div>
+
+    <!--<div id="sharingBox">
       <xsl:variable name="calPath" select="path"/>
       <xsl:variable name="encodedCalPath" select="encodedPath"/>
       <xsl:if test="currentAccess/current-user-privilege-set/privilege/read-acl or /bedeworkadmin/userInfo/superUser='true'">
@@ -5154,7 +5113,7 @@
                       <xsl:choose>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
+                        <xsl:otherwise></xsl:otherwise> 
                       </xsl:choose>
                     </xsl:variable>
                     <xsl:choose>
@@ -5200,12 +5159,9 @@
                   <input type="radio" value="other" name="whoType"/> other users<br/>
                   <input type="radio" value="owner" name="whoType"/> owner
                 </p>
-                <!-- we may never use the invert action ...it is probably
-                     too confusing, and can be achieved in other ways -->
-                <!--
                 <p class="padTop">
                   <input type="checkbox" value="yes" name="notWho"/> invert (deny)
-                </p>-->
+                </p>
               </td>
               <td>
                 <ul id="howList">
@@ -5244,7 +5200,7 @@
           <input type="submit" name="submit" value="Submit"/>
         </form>
       </xsl:if>
-    </div>
+    </div>-->
   </xsl:template>
 
   <xsl:template name="calSuitePrefs">
