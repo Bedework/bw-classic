@@ -58,42 +58,92 @@ function BwREXdate(date, time, allDay, floating, utc, tzid) {
   this.toString = function() {
   }
 
-  /* row: current table row
+  /* varName: NOT GOOD - name of object
+   * reqPar: request par for hidden field
+   * row: current table row
    * rdi: index of rdate fro delete
    */
-  this.toFormRow = function(reqPar, row, rdi) {
+  this.toFormRow = function(varName, reqPar, row, rdi) {
     row.insertCell(0).appendChild(document.createTextNode(this.date));
     row.insertCell(1).appendChild(document.createTextNode(this.time));
     row.insertCell(2).appendChild(document.createTextNode(this.tzid));
-    row.insertCell(3).innerHTML = "<a href=\"javascript:bwRdates.deleteRdate('" +
+    row.insertCell(3).innerHTML = "<a href=\"javascript:" + varName + ".deleteDate('" +
                                    rdi + "')\">" + rdateDeleteStr + "</a>" +
-                                   "<input type='hidden' name='" + reqPar + 
+                                   "<input type='hidden' name='" + reqPar +
                                    "' value='" + this.format() + "'/>";
   }
-  
+
   this.format= function() {
     var res = this.date + "\t" + this.time + "\t";
-    
+
     if (this.tzid != null) {
       res += "\t" + this.tzid;
     }
-    
+
     return res;
   }
 
   this.equals = function(that) {
-    return (that.val = this.val) && (that.tzid = this.tzid);
+    return this.compareTo(that) == 0;
+  }
+
+  this.compareTo = function(that) {
+    var res = compareTo(that.date, this.date);
+    if (res != 0) {
+      return res;
+    }
+
+    res = compareTo(that.time, this.time);
+    if (res != 0) {
+      return res;
+    }
+
+    return compareTo(that.tzid, this.tzid);
   }
 }
 
-var bwRdates = new BwREXdates("rdate", "bwCurrentRdates", "bwCurrentRdatesNone", "visible", "invisible", 2);
-var bwExdates = new BwREXdates("exdate", "bwCurrentExdates", "bwCurrentExdatesNone", "visible", "invisible", 2);
+function compareTo(thys, that) {
+  if (that < thys) {
+    return -1;
+  }
 
-function BwREXdates(reqPar, tableId, noDatesId, visibleClass, invisibleClass, numHeaderRows) {
-  var rdates = new Array();
+  if (that > thys) {
+    return 1;
+  }
 
+  return 0;
+}
+
+function sortCompare(thys, that) {
+  return thys.compareTo(that);
+}
+
+var bwRdates = new BwREXdates("bwRdates", "rdate", "bwCurrentRdates", "bwCurrentRdatesNone",
+                              "visible", "invisible", 2);
+var bwExdates = new BwREXdates("bwExdates", "exdate", "bwCurrentExdates", "bwCurrentExdatesNone",
+                               "visible", "invisible", 2);
+
+/** Manipulate table of exception or recurrence dates.
+ *
+ * @param varName: NOT GOOD - name of object
+ * @param reqPar:    request parameter we gernate (multi-valued)
+ * @param tableId:   id of table we are manipulating
+ * @param noDatesId: some info to display when we have nothing
+ * @param visibleClass: class to set to make something visible
+ * @param invisibleClass: class to set to make something invisible
+ * @param numHeaderRows: Number of header rows in the table.
+ */
+function BwREXdates(varName, reqPar, tableId, noDatesId,
+                    visibleClass, invisibleClass, numHeaderRows) {
+  var dates = new Array();
+
+  this.varName = varName;
   this.reqPar = reqPar;
   this.tableId = tableId;
+  this.noDatesId = noDatesId;
+  this.visibleClass = visibleClass;
+  this.invisibleClass = invisibleClass;
+  this.numHeaderRows = numHeaderRows;
 
   /* val: String: internal date
    * dateOnly: boolean
@@ -103,13 +153,13 @@ function BwREXdates(reqPar, tableId, noDatesId, visibleClass, invisibleClass, nu
     var newRdate = new BwREXdate(date, time, allDay, floating, utc, tzid);
 
     if (!this.contains(newRdate)) {
-      rdates.push(newRdate);
+      dates.push(newRdate);
     }
   }
 
   this.contains = function(rdate) {
-    for (var j = 0; j < rdates.length; j++) {
-      var curRdate = rdates[j];
+    for (var j = 0; j < dates.length; j++) {
+      var curRdate = dates[j];
       if (curRdate.equals(rdate)) {
         return true;
       }
@@ -118,7 +168,7 @@ function BwREXdates(reqPar, tableId, noDatesId, visibleClass, invisibleClass, nu
     return false;
   }
 
-  // Update the list - expects the browser form object
+  // Update the list -
   this.update = function(date, time, allDay, floating, utc, tzid) {
     this.addRdate(date, time, allDay, floating, utc, tzid);
 
@@ -126,8 +176,8 @@ function BwREXdates(reqPar, tableId, noDatesId, visibleClass, invisibleClass, nu
     this.display();
   }
 
-  this.deleteRdate = function(index) {
-    rdates.splice(index, 1);
+  this.deleteDate = function(index) {
+    dates.splice(index, 1);
 
     // redraw the display
     this.display();
@@ -137,19 +187,29 @@ function BwREXdates(reqPar, tableId, noDatesId, visibleClass, invisibleClass, nu
   this.display = function() {
     try {
       // get the table body
-      var rdTableBody = document.getElementById(this.tableId).tBodies[0];
+      var rdTableBody = document.getElementById(tableId).tBodies[0];
 
       // remove existing rows
-      for (i = rdTableBody.rows.length - 1; i >= 0; i--) {
+      for (i = rdTableBody.rows.length - 1; i >= numHeaderRows; i--) {
         rdTableBody.deleteRow(i);
       }
 
-      // recreate the table rows
-      for (var j = 0; j < rdates.length; j++) {
-        var curRdate = rdates[j];
-        var tr = rdTableBody.insertRow(j);
+      dates.sort(sortCompare);
 
-        curRdate.toFormRow(this.reqPar, tr, j);
+      // recreate the table rows
+      for (var j = 0; j < dates.length; j++) {
+        var curRdate = dates[j];
+        var tr = rdTableBody.insertRow(j + numHeaderRows);
+
+        curRdate.toFormRow(varName, reqPar, tr, j);
+      }
+
+      if (dates.length == 0) {
+        changeClass(tableId, invisibleClass);
+        changeClass(noDatesId, visibleClass);
+      } else {
+        changeClass(tableId, visibleClass);
+        changeClass(noDatesId, invisibleClass);
       }
     } catch (e) {
       alert(e);

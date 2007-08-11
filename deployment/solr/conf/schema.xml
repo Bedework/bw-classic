@@ -249,14 +249,18 @@
    <field name="calendar" type="textTight" indexed="true" stored="true" omitNorms="true"
           required="false" />
 
+   <field name="summary" type="text" indexed="true" stored="true"/>
+   <field name="description" type="text" indexed="true" stored="true"/>
    <field name="location" type="text" indexed="true" stored="true"/>
 
    <!-- These are really date fields and should be formatted as above -->
-   <field name="creator" type="text" indexed="true" stored="true"/>
+   <field name="created" type="text" indexed="true" stored="true"/>
    <field name="lastmod" type="text" indexed="true" stored="true"/>
    <field name="startDate" type="text" indexed="true" stored="true"/>
    <field name="endDate" type="text" indexed="true" stored="true"/>
    <field name="dueDate" type="text" indexed="true" stored="true"/>
+
+   <field name="creator" type="text" indexed="true" stored="true"/>
 
    <field name="category" type="text" indexed="true" stored="true" multiValued="true"/>
 
@@ -303,13 +307,13 @@
         or to add multiple fields to the same field for easier/faster searching.  -->
 
    <copyField source="created" dest="text"/>
+   <copyField source="summary" dest="text"/>
    <copyField source="description" dest="text"/>
-   <copyField source="lastmod" dest="nameSort"/>
-   <copyField source="summary" dest="alphaNameSort"/>
+   <copyField source="lastmod" dest="text"/>
    <copyField source="startDate" dest="text"/>
    <copyField source="endDate" dest="text"/>
    <copyField source="dueDate" dest="text"/>
-   <copyField source="category" dest="category"/>
+   <copyField source="category" dest="text"/>
 
    <!-- <copyField source="manu" dest="manu_exact"/> -->
 

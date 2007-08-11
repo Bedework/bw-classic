@@ -28,9 +28,13 @@ var debug = false; // very basic debugging for now
 /* COMMON and GENERAL FUNCTIONS */
 
 function changeClass(id, newClass) {
-  identity = document.getElementById(id);
+  var identity = document.getElementById(id);
+  if (identity == null) {
+    alert("No element with id: " + id + " to set to class: " + newClass);
+  }
   identity.className=newClass;
 }
+
 // show hide items using a checkbox
 function swapVisible(obj,id) {
   if (obj.checked) {
@@ -57,7 +61,7 @@ function show() {
     }
   }
 }
-// show and hide an item based on its current 
+// show and hide an item based on its current
 // visibility; if visible, hide it; if invisible
 // show it.
 function toggleVisibility(id,cl) {
@@ -69,7 +73,7 @@ function toggleVisibility(id,cl) {
 }
 // Toggle action icons box visibility at the selected position and
 // set any open action icon boxes to invisible.
-// Action icon boxes are used in the calendar grid - their ids are 
+// Action icon boxes are used in the calendar grid - their ids are
 // built from a prefix plus the day number; the box identified by zero is the topmost box
 // associated with the "add..." button.  Id's will therefore be prefix-0 through
 // prefix-31
@@ -147,7 +151,7 @@ function launchPrintWindow(URL) {
 }
 // launch the calSelect pop-up window for selecting a calendar when creating,
 // editing, and importing events
-// DEPRECATED - can't use pop-ups in current portal environments in a 
+// DEPRECATED - can't use pop-ups in current portal environments in a
 // portal-agnostic way
 function launchCalSelectWindow(URL) {
   calSelect = window.open(URL, "calSelect", "width=500,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
@@ -159,7 +163,7 @@ function launchHelpWidget(id) {
   helpWidget.show();
 }
 // used to update the calendar in various forms from
-// the calSelect pop-up widget.  We must do three things: update the hidden 
+// the calSelect pop-up widget.  We must do three things: update the hidden
 // calendar input field, update the displayed text, and close widget
 function updateEventFormCalendar(newCalPath,calDisplay) {
   newCalPathField = document.getElementById("bwNewCalPathField");

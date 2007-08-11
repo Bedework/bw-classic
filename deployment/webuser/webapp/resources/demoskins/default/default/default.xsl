@@ -3147,7 +3147,7 @@
                     <option value="55">55</option>
                   </select>
                  <xsl:text> </xsl:text>
-    
+
                   <select name="tzid" id="rdateTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                     <option value="-1">select timezone...</option>
@@ -3176,15 +3176,15 @@
                 <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
                 store as UTC
               </div>
-    
-              <!-- if there are no recurence dates, the following table will show -->
-              <table cellspacing="0" id="bwCurrentRdates">
+
+              <!-- if there are no recurrence dates, the following table will show -->
+              <table cellspacing="0" class="invisible" id="bwCurrentRdatesNone">
                 <tr><th>Recurrence Dates</th></tr>
                 <tr><td>No recurrence dates</td></tr>
               </table>
-              
+
               <!-- if there are no recurence dates, the following table will show -->
-              <table cellspacing="0" id="bwCurrentRdates">
+              <table cellspacing="0" class="invisible" id="bwCurrentRdates">
                 <tr>
                   <th colspan="4">Recurrence Dates</th>
                 </tr>
@@ -3195,15 +3195,15 @@
                   <td></td>
                 </tr>
               </table>
-              
+
               <!-- if there are no recurence dates, the following table will show -->
-              <table cellspacing="0" id="bwCurrentExdatesNone">
+              <table cellspacing="0" class="invisible" id="bwCurrentExdatesNone">
                 <tr><th>Exception Dates</th></tr>
                 <tr><td>No exception dates</td></tr>
               </table>
-              
+
               <!-- if there are no recurence dates, the following table will show -->
-              <table cellspacing="0" id="bwCurrentExdates">
+              <table cellspacing="0" class="invisible" id="bwCurrentExdates">
                 <tr>
                   <th colspan="4">Exception Dates</th>
                 </tr>
