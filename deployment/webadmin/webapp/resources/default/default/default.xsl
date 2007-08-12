@@ -1696,13 +1696,14 @@
                       store as UTC
                     </div>
 
+                    <input type="hidden" name="rdates" value="" id="bwRdatesField" />
                     <!-- if there are no recurence dates, the following table will show -->
                     <table cellspacing="0" id="bwCurrentRdatesNone">
                       <tr><th>Recurrence Dates</th></tr>
                       <tr><td>No recurrence dates</td></tr>
                     </table>
 
-                    <!-- if there are no recurence dates, the following table will show -->
+                    <!-- if there are recurrence dates, the following table will show -->
                     <table cellspacing="0" id="bwCurrentRdates">
                       <tr>
                         <th colspan="4">Recurrence Dates</th>
@@ -1715,13 +1716,14 @@
                       </tr>
                     </table>
 
-                    <!-- if there are no recurence dates, the following table will show -->
+                    <input type="hidden" name="exdates" value="" id="bwExdatesField" />
+                    <!-- if there are no exception dates, the following table will show -->
                     <table cellspacing="0" id="bwCurrentExdatesNone">
                       <tr><th>Exception Dates</th></tr>
                       <tr><td>No exception dates</td></tr>
                     </table>
 
-                    <!-- if there are no recurence dates, the following table will show -->
+                    <!-- if there are exception dates, the following table will show -->
                     <table cellspacing="0" id="bwCurrentExdates">
                       <tr>
                         <th colspan="4">Exception Dates</th>
