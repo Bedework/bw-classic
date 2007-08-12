@@ -1666,7 +1666,7 @@
                           <option value="55">55</option>
                         </select>
                        <xsl:text> </xsl:text>
-          
+
                         <select name="tzid" id="rdateTzid" class="timezones">
                           <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                           <option value="-1">select timezone...</option>
@@ -1695,13 +1695,13 @@
                       <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
                       store as UTC
                     </div>
-          
+
                     <!-- if there are no recurence dates, the following table will show -->
-                    <table cellspacing="0" id="bwCurrentRdates">
+                    <table cellspacing="0" id="bwCurrentRdatesNone">
                       <tr><th>Recurrence Dates</th></tr>
                       <tr><td>No recurrence dates</td></tr>
                     </table>
-                    
+
                     <!-- if there are no recurence dates, the following table will show -->
                     <table cellspacing="0" id="bwCurrentRdates">
                       <tr>
@@ -1714,13 +1714,13 @@
                         <td></td>
                       </tr>
                     </table>
-                    
+
                     <!-- if there are no recurence dates, the following table will show -->
                     <table cellspacing="0" id="bwCurrentExdatesNone">
                       <tr><th>Exception Dates</th></tr>
                       <tr><td>No exception dates</td></tr>
                     </table>
-                    
+
                     <!-- if there are no recurence dates, the following table will show -->
                     <table cellspacing="0" id="bwCurrentExdates">
                       <tr>
@@ -5127,7 +5127,7 @@
         </tr>
       </table>
     </form>
-    
+
     <div id="sharingBox">
       <xsl:apply-templates select="acl" mode="currentAccess">
         <xsl:with-param name="action" select="$calsuite-setAccess"/>
@@ -5242,7 +5242,7 @@
                       <xsl:choose>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
                         <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise> 
+                        <xsl:otherwise></xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
                     <xsl:choose>
