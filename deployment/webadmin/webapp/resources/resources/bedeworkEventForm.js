@@ -77,7 +77,7 @@ function BwREXdate(date, time, allDay, floating, utc, tzid) {
     var res = this.date + "\t" + this.time + "\t";
 
     if (this.tzid != null) {
-      res += "\t" + this.tzid;
+      res += this.tzid;
     }
 
     return res;

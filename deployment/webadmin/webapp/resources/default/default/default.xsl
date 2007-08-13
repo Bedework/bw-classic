@@ -1669,8 +1669,8 @@
 
                         <select name="tzid" id="rdateTzid" class="timezones">
                           <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-                          <option value="-1">select timezone...</option>
-                          <xsl:variable name="rdateTzId" select="/bedework/rdates/tzid"/>
+                          <option value="">select timezone...</option>
+                          <xsl:variable name="rdateTzId" select="/bedeworkadmin/now/defaultTzid"/>
                           <xsl:for-each select="/bedework/timezones/timezone">
                             <option>
                               <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
