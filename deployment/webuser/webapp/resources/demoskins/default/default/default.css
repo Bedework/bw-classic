@@ -837,6 +837,7 @@ display: inline;
 #bedework #rrulesTable td#recurrenceFrequency {
   padding: 0.5em 1em;
   border-right: 1px solid #ddd;
+  white-space: nowrap;
 }
 #bedework #rrulesTable td#advancedRrules {
   padding: 0.5em 1em 0.5em 1em;
@@ -907,7 +908,9 @@ display: inline;
   font-size: 0.9em;
 }
 #bedework #bwCurrentRdates,
-#bedework #bwCurrentExdates {
+#bedework #bwCurrentExdates,
+#bedework #bwCurrentRdatesNone,
+#bedework #bwCurrentExdatesNone {
   float: left;
   margin: 1em 2em 1em 0;
 }

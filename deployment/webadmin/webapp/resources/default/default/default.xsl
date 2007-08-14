@@ -1202,7 +1202,8 @@
                 <!-- wrapper for all recurrence fields (rrules and rdates): -->
                 <div id="recurrenceFields" class="invisible">
                   <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
-
+                  
+                  <h4>Recurrence Rules</h4>
                   <!-- show or hide rrules fields when editing: -->
                   <xsl:if test="form/recurrence">
                     <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on"/>
@@ -1342,7 +1343,7 @@
                   </xsl:if>
                     <tr>
                       <td id="recurrenceFrequency" rowspan="2">
-                        <strong>Frequency:</strong><br/>
+                        <em>Frequency:</em><br/>
                         <input type="radio" name="freq" value="NONE" onclick="showRrules(this.value)" checked="checked"/>none<br/>
                         <!--<input type="radio" name="freq" value="HOURLY" onclick="showRrules(this.value)"/>hourly<br/>-->
                         <input type="radio" name="freq" value="DAILY" onclick="showRrules(this.value)"/>daily<br/>
@@ -1356,7 +1357,7 @@
                           no recurrence rules
                         </div>
                         <div id="recurrenceUntilRules" class="invisible">
-                          <strong>Repeat:</strong>
+                          <em>Repeat:</em>
                           <p>
                             <input type="radio" name="recurCountUntil" value="forever">
                               <xsl:if test="not(form/recurring) or form/recurring/count = '-1'">
@@ -1680,7 +1681,7 @@
                           <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                           <option value="">select timezone...</option>
                           <xsl:variable name="rdateTzId" select="/bedeworkadmin/now/defaultTzid"/>
-                          <xsl:for-each select="/bedework/timezones/timezone">
+                          <xsl:for-each select="/bedeworkadmin/timezones/timezone">
                             <option>
                               <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
                               <xsl:if test="$rdateTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
@@ -1695,18 +1696,18 @@
                       <input type="button" name="exdate" value="add exception" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
 
                       <input type="hidden" name="rdates" value="" id="bwRdatesField" />
-                      <!-- if there are no recurence dates, the following table will show -->
-                      <table cellspacing="0" id="bwCurrentRdatesNone">
+                      <!-- if there are no recurrence dates, the following table will show -->
+                      <table cellspacing="0" class="invisible" id="bwCurrentRdatesNone">
                         <tr><th>Recurrence Dates</th></tr>
                         <tr><td>No recurrence dates</td></tr>
                       </table>
   
                       <!-- if there are recurrence dates, the following table will show -->
-                      <table cellspacing="0" id="bwCurrentRdates">
+                      <table cellspacing="0" class="invisible" id="bwCurrentRdates">
                         <tr>
                           <th colspan="4">Recurrence Dates</th>
                         </tr>
-                        <tr>
+                        <tr class="colNames">
                           <td>Date</td>
                           <td>Time</td>
                           <td>TZid</td>
@@ -1716,17 +1717,17 @@
   
                       <input type="hidden" name="exdates" value="" id="bwExdatesField" />
                       <!-- if there are no exception dates, the following table will show -->
-                      <table cellspacing="0" id="bwCurrentExdatesNone">
+                      <table cellspacing="0" class="invisible" id="bwCurrentExdatesNone">
                         <tr><th>Exception Dates</th></tr>
                         <tr><td>No exception dates</td></tr>
                       </table>
   
                       <!-- if there are exception dates, the following table will show -->
-                      <table cellspacing="0" id="bwCurrentExdates">
+                      <table cellspacing="0" class="invisible" id="bwCurrentExdates">
                         <tr>
                           <th colspan="4">Exception Dates</th>
                         </tr>
-                        <tr>
+                        <tr class="colNames">
                           <td>Date</td>
                           <td>Time</td>
                           <td>TZid</td>

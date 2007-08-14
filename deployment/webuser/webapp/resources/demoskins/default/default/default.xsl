@@ -3183,12 +3183,12 @@
                   <tr><td>No recurrence dates</td></tr>
                 </table>
   
-                <!-- if there are no recurence dates, the following table will show -->
+                <!-- if there are recurrence dates, the following table will show -->
                 <table cellspacing="0" class="invisible" id="bwCurrentRdates">
                   <tr>
                     <th colspan="4">Recurrence Dates</th>
                   </tr>
-                  <tr>
+                  <tr class="colNames">
                     <td>Date</td>
                     <td>Time</td>
                     <td>TZid</td>
@@ -3208,7 +3208,7 @@
                   <tr>
                     <th colspan="4">Exception Dates</th>
                   </tr>
-                  <tr>
+                  <tr class="colNames">
                     <td>Date</td>
                     <td>Time</td>
                     <td>TZid</td>

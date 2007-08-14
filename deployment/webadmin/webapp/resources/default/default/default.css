@@ -468,6 +468,7 @@ table.params .desc {
 #rrulesTable td#recurrenceFrequency {
   padding: 0.5em 1em;
   border-right: 1px solid #ddd;
+  white-space: nowrap;
 }
 #rrulesTable td#advancedRrules {
   padding: 0.5em 1em 0.5em 1em;
@@ -519,7 +520,7 @@ table.params .desc {
   font-size: 0.9em;
   padding: 0.5em;
 }
-#bedework #rdatesFormFields p {
+#rdatesFormFields p {
   clear: both;
   margin-top: 1em;
 }
@@ -537,15 +538,17 @@ table.params .desc {
   text-align: center;
   font-size: 0.9em;
 }
-#bedework #bwCurrentRdates,
-#bedework #bwCurrentExdates {
+#bwCurrentRdates,
+#bwCurrentExdates,
+#bwCurrentRdatesNone,
+#bwCurrentExdatesNone {
   float: left;
   margin: 1em 2em 1em 0;
 }
-#bedework #bwCurrentRdates th,
-#bedework #bwCurrentRdates td,
-#bedework #bwCurrentExdates th,
-#bedework #bwCurrentExdates td {
+#bwCurrentRdates th,
+#bwCurrentRdates td,
+#bwCurrentExdates th,
+#bwCurrentExdates td {
   text-align: left;
   padding: 0 0.5em 0 0;
 }
