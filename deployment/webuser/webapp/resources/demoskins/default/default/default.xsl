@@ -1114,20 +1114,22 @@
       <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
         Subscription
       </a>
-      |
     </xsl:if>
-    <xsl:choose>
-      <xsl:when test="recurring='true' or recurrenceId != ''">
-        Delete:
-        <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
-        <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
-      </xsl:when>
-      <xsl:otherwise>
-        <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
-          Delete
-        </a>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:if test="subscription/unremoveable != 'true'">
+      |
+      <xsl:choose>
+        <xsl:when test="recurring='true' or recurrenceId != ''">
+          Delete:
+          <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
+          <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+        </xsl:when>
+        <xsl:otherwise>
+          <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+            Delete
+          </a>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
   </xsl:template>
 
   <!--==== WEEK CALENDAR VIEW ====-->
@@ -1514,20 +1516,22 @@
                 Subscription
               </a>
             </xsl:if>
-            |
-            <xsl:choose>
-              <xsl:when test="recurring='true' or recurrenceId != ''">
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                Delete:
-                <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
-              </xsl:when>
-              <xsl:otherwise>
-                <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+            <xsl:if test="subscription/removeable != 'true'">
+              |
+              <xsl:choose>
+                <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                  Delete
-                </a>
-              </xsl:otherwise>
-            </xsl:choose>
+                  Delete:
+                  <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                    Delete
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
           </div>
           <!-- Display type of event -->
           <xsl:variable name="entityType">
@@ -5254,7 +5258,14 @@
             <input type="reset" value="Reset"/>
           </td>
           <td align="right">
-            <input type="submit" name="delete" value="Delete Subscription"/>
+            <xsl:choose>
+              <xsl:when test="unremoveable='true'">
+                Subscription unremoveable
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="delete" value="Delete Subscription"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
       </table>

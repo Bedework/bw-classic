@@ -1531,6 +1531,9 @@ display: inline;
   width: 98%; /* less than 100% helps avoid IE weirdness */
   margin: 1em 0;
 }
+#bedework #submitTable td {
+  white-space: nowrap;
+}
 #bedework .note {
   margin: 0;
   padding: 0 0 1em 0;
