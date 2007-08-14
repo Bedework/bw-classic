@@ -740,16 +740,18 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="utilBarTable">
        <tr>
          <td class="leftCell">
-           <input type="button" value="add..." onclick="toggleActionIcons('bwActionIcons-0','bwActionIcons')"/>
-           <xsl:call-template name="actionIcons">
-             <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param>
-             <xsl:with-param name="startDate">
-               <xsl:choose>
-                 <xsl:when test="/bedework/periodname = 'day'"><xsl:value-of select="/bedework/firstday/date"/></xsl:when>
-                 <xsl:otherwise><xsl:value-of select="/bedework/now/date"/></xsl:otherwise>
-               </xsl:choose>
-             </xsl:with-param>
-           </xsl:call-template>
+           <xsl:if test="/bedework/page != 'addEvent' or /bedework/page='editEvent'">
+             <input type="button" value="add..." onclick="toggleActionIcons('bwActionIcons-0','bwActionIcons')"/>
+             <xsl:call-template name="actionIcons">
+               <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param>
+               <xsl:with-param name="startDate">
+                 <xsl:choose>
+                   <xsl:when test="/bedework/periodname = 'day'"><xsl:value-of select="/bedework/firstday/date"/></xsl:when>
+                   <xsl:otherwise><xsl:value-of select="/bedework/now/date"/></xsl:otherwise>
+                 </xsl:choose>
+               </xsl:with-param>
+             </xsl:call-template>
+           </xsl:if>
          </td>
          <td class="rightCell">
 
