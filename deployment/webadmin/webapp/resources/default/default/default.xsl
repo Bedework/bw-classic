@@ -1396,7 +1396,7 @@
                         <!-- hourly -->
                         <div id="hourlyRecurrenceRules" class="invisible">
                           <p>
-                            <strong>Interval:</strong>
+                            <em>Interval:</em>
                             every
                             <input type="text" name="hourlyInterval" size="2" value="1">
                               <xsl:if test="form/recurrence/interval">
@@ -1409,7 +1409,7 @@
                         <!-- daily -->
                         <div id="dailyRecurrenceRules" class="invisible">
                           <p>
-                            <strong>Interval:</strong>
+                            <em>Interval:</em>
                             every
                             <input type="text" name="dailyInterval" size="2" value="1">
                               <xsl:if test="form/recurrence/interval">
@@ -1444,7 +1444,7 @@
                         <!-- weekly -->
                         <div id="weeklyRecurrenceRules" class="invisible">
                           <p>
-                            <strong>Interval:</strong>
+                            <em>Interval:</em>
                             every
                             <input type="text" name="weeklyInterval" size="2" value="1">
                               <xsl:if test="form/recurrence/interval">
@@ -1480,7 +1480,7 @@
                         <!-- monthly -->
                         <div id="monthlyRecurrenceRules" class="invisible">
                           <p>
-                            <strong>Interval:</strong>
+                            <em>Interval:</em>
                             every
                             <input type="text" name="monthlyInterval" size="2" value="1">
                               <xsl:if test="form/recurrence/interval">
@@ -1518,7 +1518,7 @@
                         <!-- yearly -->
                         <div id="yearlyRecurrenceRules" class="invisible">
                           <p>
-                            <strong>Interval:</strong>
+                            <em>Interval:</em>
                             every
                             <input type="text" name="yearlyInterval" size="2" value="1">
                               <xsl:if test="form/recurrence/interval">
@@ -1610,11 +1610,20 @@
                   <!--<div id="recurrenceDatesButton">
                     <input type="button" value="manage recurrence &amp; exception dates" onclick="launchSizedWindow('{$event-showRdates}','560','400')"/>
                   </div>-->
-                  <h4 id="dialogTitle">
+                  <h4>
                     Recurrence and Exception Dates
                   </h4>
                   <div id="raContent">
                     <div class="dateStartEndBox" id="rdatesFormFields">
+                      <!-- dateonly (anniversary) event: this is temporary - should be determined by the main event -->
+                      <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="true"/>
+                      all day
+                      <!-- floating event: no timezone (and not UTC) -->
+                      <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="true"/>
+                      floating
+                      <!-- store time as coordinated universal time (UTC) -->
+                      <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
+                      store as UTC<br/>                      
                       <div class="dateFields">
                         <input name="eventRdate.date"
                                dojoType="dropdowndatepicker"
@@ -1684,61 +1693,51 @@
                       <!--bwRdates.update() accepts: date, time, allDay, floating, utc, tzid-->
                       <input type="button" name="rdate" value="add recurrence" onclick="bwRdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
                       <input type="button" name="exdate" value="add exception" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
-                      <br/>
-                      <!-- dateonly (anniversary) event: this is temporary - should be determined by the main event -->
-                      <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="true"/>
-                      all day
-                      <!-- floating event: no timezone (and not UTC) -->
-                      <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="true"/>
-                      floating
-                      <!-- store time as coordinated universal time (UTC) -->
-                      <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
-                      store as UTC
+
+                      <input type="hidden" name="rdates" value="" id="bwRdatesField" />
+                      <!-- if there are no recurence dates, the following table will show -->
+                      <table cellspacing="0" id="bwCurrentRdatesNone">
+                        <tr><th>Recurrence Dates</th></tr>
+                        <tr><td>No recurrence dates</td></tr>
+                      </table>
+  
+                      <!-- if there are recurrence dates, the following table will show -->
+                      <table cellspacing="0" id="bwCurrentRdates">
+                        <tr>
+                          <th colspan="4">Recurrence Dates</th>
+                        </tr>
+                        <tr>
+                          <td>Date</td>
+                          <td>Time</td>
+                          <td>TZid</td>
+                          <td></td>
+                        </tr>
+                      </table>
+  
+                      <input type="hidden" name="exdates" value="" id="bwExdatesField" />
+                      <!-- if there are no exception dates, the following table will show -->
+                      <table cellspacing="0" id="bwCurrentExdatesNone">
+                        <tr><th>Exception Dates</th></tr>
+                        <tr><td>No exception dates</td></tr>
+                      </table>
+  
+                      <!-- if there are exception dates, the following table will show -->
+                      <table cellspacing="0" id="bwCurrentExdates">
+                        <tr>
+                          <th colspan="4">Exception Dates</th>
+                        </tr>
+                        <tr>
+                          <td>Date</td>
+                          <td>Time</td>
+                          <td>TZid</td>
+                          <td></td>
+                        </tr>
+                      </table>
+                      <p>
+                        Exception dates may also be created by deleting an instance
+                        of a recurring event.
+                      </p>
                     </div>
-
-                    <input type="hidden" name="rdates" value="" id="bwRdatesField" />
-                    <!-- if there are no recurence dates, the following table will show -->
-                    <table cellspacing="0" id="bwCurrentRdatesNone">
-                      <tr><th>Recurrence Dates</th></tr>
-                      <tr><td>No recurrence dates</td></tr>
-                    </table>
-
-                    <!-- if there are recurrence dates, the following table will show -->
-                    <table cellspacing="0" id="bwCurrentRdates">
-                      <tr>
-                        <th colspan="4">Recurrence Dates</th>
-                      </tr>
-                      <tr>
-                        <td>Date</td>
-                        <td>Time</td>
-                        <td>TZid</td>
-                        <td></td>
-                      </tr>
-                    </table>
-
-                    <input type="hidden" name="exdates" value="" id="bwExdatesField" />
-                    <!-- if there are no exception dates, the following table will show -->
-                    <table cellspacing="0" id="bwCurrentExdatesNone">
-                      <tr><th>Exception Dates</th></tr>
-                      <tr><td>No exception dates</td></tr>
-                    </table>
-
-                    <!-- if there are exception dates, the following table will show -->
-                    <table cellspacing="0" id="bwCurrentExdates">
-                      <tr>
-                        <th colspan="4">Exception Dates</th>
-                      </tr>
-                      <tr>
-                        <td>Date</td>
-                        <td>Time</td>
-                        <td>TZid</td>
-                        <td></td>
-                      </tr>
-                    </table>
-                    <p>
-                      Exception dates may also be created by deleting an instance
-                      of a recurring event.
-                    </p>
                   </div>
                 </div>
               </xsl:otherwise>

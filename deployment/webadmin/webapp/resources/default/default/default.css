@@ -517,7 +517,11 @@ table.params .desc {
 }
 #rdatesFormFields {
   font-size: 0.9em;
-  text-align: center;
+  padding: 0.5em;
+}
+#bedework #rdatesFormFields p {
+  clear: both;
+  margin-top: 1em;
 }
 .rdatesTable {
   font-size: 0.9em;
@@ -532,6 +536,18 @@ table.params .desc {
 .rdatesTable td.note {
   text-align: center;
   font-size: 0.9em;
+}
+#bedework #bwCurrentRdates,
+#bedework #bwCurrentExdates {
+  float: left;
+  margin: 1em 2em 1em 0;
+}
+#bedework #bwCurrentRdates th,
+#bedework #bwCurrentRdates td,
+#bedework #bwCurrentExdates th,
+#bedework #bwCurrentExdates td {
+  text-align: left;
+  padding: 0 0.5em 0 0;
 }
 #bwDialogBox {
   margin: 1em;
