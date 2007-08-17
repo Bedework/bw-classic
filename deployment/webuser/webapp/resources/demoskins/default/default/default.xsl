@@ -7305,7 +7305,7 @@
               <input type="radio" value="owner" name="whoType"/> owner<br/>
               <input type="radio" value="auth" name="whoType"/> authenticated<br/>
               <input type="radio" value="unauth" name="whoType"/> unauthenticated<br/>
-              <input type="radio" value="other" name="whoType"/> other users
+              <input type="radio" value="all" name="whoType"/> all users
             </p>
           </div>
         </td>
@@ -7616,6 +7616,7 @@
               <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
               <xsl:when test="$who='authenticated'">auth</xsl:when>
               <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
+              <xsl:when test="$who='all'">all</xsl:when>
               <xsl:when test="invert/principal/property/owner">other</xsl:when>
               <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
               <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
@@ -7678,7 +7679,7 @@
                   <xsl:value-of select="inherited/href"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  local
+                  Not inherited
                 </xsl:otherwise>
               </xsl:choose>
             </td>
@@ -7972,6 +7973,7 @@
         <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
         <xsl:when test="$who='authenticated'">auth</xsl:when>
         <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
+        <xsl:when test="$who='all'">all</xsl:when>
         <xsl:when test="invert/principal/property/owner">other</xsl:when>
         <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
         <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
@@ -7989,7 +7991,7 @@
  --><xsl:variable name="inherited"><!--
    --><xsl:choose>
        <xsl:when test="inherited"><xsl:value-of select="inherited/href"/></xsl:when>
-       <xsl:otherwise>local</xsl:otherwise>
+       <xsl:otherwise></xsl:otherwise>
      </xsl:choose><!--
   --></xsl:variable><!--
   --><xsl:variable name="invert"><!--

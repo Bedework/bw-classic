@@ -51,6 +51,7 @@ var unauthenticatedStr = "unauthenticated";
 var ownerStr = "owner";
 var otherStr = "other";
 var grantStr = "grant";
+var allStr = "all";
 
 var deleteStr = "remove";
 
@@ -295,6 +296,7 @@ function bwPrincipal(who, whoType) {
   if ((whoType == "auth") ||
       (whoType == "unauth") ||
       (whoType == "owner") ||
+      (whoType == "all") ||
       (whoType == "other")) {
     // Don't set who
   } else {
@@ -349,6 +351,10 @@ function bwPrincipal(who, whoType) {
       return otherStr;
     }
 
+    if (whoType == "all") {
+      return allStr;
+    }
+
     return "***************" + whoType;
   }
 
@@ -367,6 +373,8 @@ function bwPrincipal(who, whoType) {
       res += "      <D:authenticated/>\n";
     } else if (whoType == "unauth") {
       res += "      <D:unauthenticated/>\n";
+    } else if (whoType == "all") {
+      res += "      <D:all/>\n";
     } else if (whoType == "owner") {
       res += "    <D:property><D:owner/></D:property>\n";
     } else {

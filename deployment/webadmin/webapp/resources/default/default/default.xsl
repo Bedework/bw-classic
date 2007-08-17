@@ -3832,7 +3832,7 @@
               <input type="radio" value="owner" name="whoType"/> owner<br/>
               <input type="radio" value="auth" name="whoType"/> authenticated<br/>
               <input type="radio" value="unauth" name="whoType"/> unauthenticated<br/>
-              <input type="radio" value="other" name="whoType"/> other users
+              <input type="radio" value="all" name="whoType"/> all users
             </p>
           </div>
         </td>
@@ -4127,6 +4127,7 @@
             <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">group</xsl:when>
             <xsl:when test="$who='authenticated'">auth</xsl:when>
             <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
+            <xsl:when test="$who='all'">all</xsl:when>
             <xsl:when test="invert/principal/property/owner">other</xsl:when>
             <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
             <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
