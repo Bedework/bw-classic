@@ -820,7 +820,7 @@
               <td>
                 <input type="submit" name="updateEvent" value="Update Event"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <xsl:if test="recurring != 'true' and recurrenceId = ''">
+                <xsl:if test="recurringEntity != 'true' and recurrenceId = ''">
                   <!-- cannot duplicate recurring events for now -->
                   <input type="submit" name="copy" value="Duplicate Event"/>
                 </xsl:if>
@@ -2044,7 +2044,7 @@
               <td>
                 <input type="submit" name="updateEvent" value="Update Event"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <xsl:if test="recurring != 'true' and recurrenceId = ''">
+                <xsl:if test="recurringEntity != 'true' and recurrenceId = ''">
                   <!-- cannot duplicate recurring events for now -->
                   <input type="submit" name="copy" value="Duplicate Event"/>
                 </xsl:if>
