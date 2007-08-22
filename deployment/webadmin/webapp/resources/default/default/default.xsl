@@ -433,7 +433,7 @@
             Manage System Preferences
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='authUserList' or /bedeworkadmin/page='modAuthUser'">
-            Manage Public Events Administrators
+            Manage Administrative Roles
           </xsl:when>
           <xsl:when test="/bedeworkadmin/page='chooseGroup'">
             Choose Administrative Group
@@ -646,7 +646,7 @@
           <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
             <li>
               <a href="{$authuser-initUpdate}">
-                Manage public event administrators
+                Manage admin roles
               </a>
             </li>
           </xsl:if>
