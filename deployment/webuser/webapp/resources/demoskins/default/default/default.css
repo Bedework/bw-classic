@@ -27,7 +27,7 @@
 #bedework h2 a:visited,
 #bedework h2 a:hover {
   color: black;
-  background-color: inherit;
+  background-color: transparent;
   text-decoration: none;
 }
 #bedework h2.bwStatusConfirmed,
@@ -40,7 +40,7 @@
   color: black;
 }
 #bedework h2.bwStatusTentative {
-  background: #eee url('../../resources/tentativeLines.gif') top;
+  background: #eee url('../../resources/tentativeLines.gif') top !important;
   color: black;
 }
 #bedework .formButtons {
