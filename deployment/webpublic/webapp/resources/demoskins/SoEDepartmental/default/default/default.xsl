@@ -119,7 +119,7 @@
 
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <html lang="en">
       <head>
         <title>School of Engineering: Example Bedework Departmental Calendar Suite</title>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
