@@ -1111,7 +1111,10 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
-    <xsl:if test="subscription and owner != /bedework/userid">
+    <xsl:if test="owner != /bedework/userid and public='true'">
+            <!-- provide this link for public subscriptions; subscriptions to user calendars are
+                 currently too confusing since the current user may be able to add events to the 
+                 other calendar, making the ownership test a bad test -->
       <xsl:variable name="subname" select="subscription/name"/>
       <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
         Subscription
@@ -1510,7 +1513,10 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:if>
-            <xsl:if test="subscription and owner != /bedework/userid">
+            <xsl:if test="owner != /bedework/userid and public='true'">
+            <!-- provide this link for public subscriptions; subscriptions to user calendars are
+                 currently too confusing since the current user may be able to add events to the 
+                 other calendar, making the ownership test a bad test -->
               |
               <xsl:variable name="subname" select="subscription/name"/>
               <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
