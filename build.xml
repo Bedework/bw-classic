@@ -723,6 +723,10 @@
     <ant antfile="${org.bedework.project.webapps}/build.xml" inheritall="false"
            target="build-all" />
 
+    <copy-special-to-dependent this="${org.bedework.project.webapps}"
+                       target="${org.bedework.project.testsuite}"
+                       prefix="bw-appcommon" />
+
     <copy-to-bin this="${org.bedework.project.webapps}"/>
   </target>
 

@@ -52,6 +52,7 @@
 
     <!-- from  the bin directory -->
     <fileset id="app.bin.files" dir="${bin.home}" >
+      <include name="bw-appcommon*.jar"/>
       <include name="bw-testsuite*.jar" />
     </fileset>
 

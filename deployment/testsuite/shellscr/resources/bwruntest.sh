@@ -4,7 +4,12 @@
 
 # JAVA_HOME needs to be defined
 
-cp=@CP@
+cp=.:./classes:./resources
+
+for i in lib/*
+  do
+    cp=$cp:$i
+done
 
 RUNCMDPREFIX="$JAVA_HOME/bin/java -cp $cp "
 
