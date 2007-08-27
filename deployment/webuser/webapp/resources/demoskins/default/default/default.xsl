@@ -3722,6 +3722,7 @@
 
           <xsl:apply-templates select="/bedework/freebusy" mode="freeBusyGrid">
             <xsl:with-param name="aggregation">true</xsl:with-param>
+            <xsl:with-param name="type">meeting</xsl:with-param>
           </xsl:apply-templates>
 
           <div class="eventSubmitButtons">
@@ -3734,9 +3735,7 @@
 
   <xsl:template match="freebusy" mode="freeBusyGrid">
     <xsl:param name="aggregation">false</xsl:param>
-    <!-- there's only one collection of freebusy; this for-each is
-         being used to pick out just the freebusy node and
-         shorten the select statements below. -->
+    <xsl:param name="type">normal</xsl:param>
       <table id="freeBusy">
         <tr>
           <td></td>
@@ -3817,7 +3816,13 @@
                     <xsl:otherwise><xsl:value-of select="$initEvent"/></xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
-                <a href="{$action}&amp;meetingStartdt={$startDate}&amp;meetingDuration={$meetingDuration}&amp;initDates=yes">
+                <xsl:variable name="urlString">
+                  <xsl:choose>
+                   <xsl:when test="$type='meeting'"><xsl:value-of select="$action"/>&amp;meetingStartdt=<xsl:value-of select="$startDate"/>&amp;meetingDuration=<xsl:value-of select="$meetingDuration"/>&amp;initDates=yes</xsl:when>
+                   <xsl:otherwise><xsl:value-of select="$action"/>&amp;startdate=<xsl:value-of select="$startDate"/>&amp;minutes=<xsl:value-of select="$meetingDuration"/></xsl:otherwise>
+                 </xsl:choose>
+                </xsl:variable>
+                <a href="{$urlString}">
                   <xsl:choose>
                     <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
                       <xsl:value-of select="number(numBusy) + number(numTentative)"/>
@@ -4045,7 +4050,9 @@
         <input type="text" name="userid" size="20"/>
         <input type="submit" name="submit" value="Submit"/>
       </form>
-      <xsl:apply-templates select="." mode="freeBusyGrid"/>
+      <xsl:apply-templates select="." mode="freeBusyGrid">
+        <xsl:with-param name="type">normal</xsl:with-param> 
+      </xsl:apply-templates>
     </div>
   </xsl:template>
 
