@@ -6,7 +6,7 @@
       <global>
         <module>
           <!-- A dummy module with no directory. -->
-          <dir-config classname="org.bedework.calcore.DirConfigProperties">
+          <dir-config classname="org.bedework.calfacade.configs.DirConfigProperties">
             <principalRoot>/principals</principalRoot>
             <userPrincipalRoot>/principals/users</userPrincipalRoot>
             <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
@@ -32,7 +32,7 @@
           </dir-config>
 
           <!-- An example of how we might configure an ldap directory module. -->
-          <user-ldap-group classname="org.bedework.calcore.ldap.LdapConfigProperties">
+          <user-ldap-group classname="org.bedework.calfacade.configs.LdapConfigProperties">
             <principalRoot>/principals</principalRoot>
             <userPrincipalRoot>/principals/users</userPrincipalRoot>
             <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
@@ -107,11 +107,11 @@
         <!-- Max number of years per recurring event -->
         <maxYears>50</maxYears>
 
-        <userauthClass>org.bedework.calcore.hibernate.UserAuthUWDbImpl</userauthClass>
+        <userauthClass>org.bedework.calsvc.directory.UserAuthUWDbImpl</userauthClass>
         <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
-        <admingroupsClass>org.bedework.calcore.hibernate.AdminGroupsDbImpl</admingroupsClass>
+        <admingroupsClass>org.bedework.calsvc.directory.AdminGroupsDbImpl</admingroupsClass>
         <!--
-        <usergroupsClass>org.bedework.calcore.ldap.UserGroupsLdapImpl</usergroupsClass>
+        <usergroupsClass>org.bedework.calsvc.directory.UserGroupsLdapImpl</usergroupsClass>
         -->
         <usergroupsClass>org.bedework.calcore.hibernate.GroupsDbImpl</usergroupsClass>
 
