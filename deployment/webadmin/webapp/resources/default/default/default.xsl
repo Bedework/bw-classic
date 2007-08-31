@@ -129,6 +129,8 @@
   <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/>
   <xsl:variable name="calendar-setAccess" select="/bedeworkadmin/urlPrefixes/calendar/setAccess/a/@href"/>
   <xsl:variable name="calendar-openCloseMod" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMod/a/@href"/>
+  <xsl:variable name="calendar-openCloseSelect" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseSelect/a/@href"/>
+  <xsl:variable name="calendar-openCloseDisplay" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseDisplay/a/@href"/>
   <xsl:variable name="calendar-openCloseMove" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMove/a/@href"/>
   <xsl:variable name="calendar-move" select="/bedeworkadmin/urlPrefixes/calendar/move/a/@href"/>
   <!-- subscriptions -->
@@ -3087,6 +3089,22 @@
       </xsl:choose>
     </xsl:variable>
     <li class="{$itemClass}">
+      <xsl:if test="calendarCollection='false'">
+        <!-- test the open state of the folder; if it's open,
+             build a URL to close it and vice versa -->
+        <xsl:choose>
+          <xsl:when test="open = 'true'">
+            <a href="{$calendar-openCloseDisplay}&amp;calPath={$calPath}&amp;open=false">
+              <img src="{$resourcesRoot}/resources/minus.gif" width="9" height="9" alt="close" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{$calendar-openCloseDisplay}&amp;calPath={$calPath}&amp;open=true">
+              <img src="{$resourcesRoot}/resources/plus.gif" width="9" height="9" alt="open" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
       <a href="{$calendar-fetchForDisplay}&amp;calPath={$calPath}" title="display">
         <xsl:value-of select="name"/>
       </a>
@@ -3523,32 +3541,6 @@
       about that calendar or folder.  The tree on the left represents the calendar
       heirarchy.</li>
     </ul>
-
-    <p>
-      <strong>All Calendar Descriptions:</strong>
-    </p>
-    <table id="flatCalendarDescriptions" cellspacing="0">
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-      <xsl:for-each select="//calendar">
-        <xsl:variable name="descClass">
-          <xsl:choose>
-            <xsl:when test="position() mod 2 = 0">even</xsl:when>
-            <xsl:otherwise>odd</xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <tr class="{$descClass}">
-          <td>
-            <xsl:value-of select="name"/>
-          </td>
-          <td>
-            <xsl:value-of select="desc"/>
-          </td>
-        </tr>
-      </xsl:for-each>
-    </table>
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="displayCalendar">
@@ -3673,17 +3665,32 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="calendar" mode="selectCalForEventCalTree">
-    <xsl:variable name="id" select="id"/>
-    <li>
-      <xsl:attribute name="class">
-        <xsl:choose>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
-          <xsl:otherwise>calendar</xsl:otherwise>
-        </xsl:choose>
-      </xsl:attribute>
-      <xsl:variable name="calPath" select="path"/><!-- not the encodedPath when put in a form - otherwise it gets double encoded -->
+  <xsl:template match="calendar" mode="selectCalForEventCalTree"> 
+    <xsl:variable name="calPath" select="path"/><!-- not the encodedPath when put in a form - otherwise it gets double encoded -->
       <xsl:variable name="calDisplay" select="path"/>
+    <xsl:variable name="itemClass">
+      <xsl:choose>
+        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:otherwise>calendar</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <li class="{$itemClass}">
+      <xsl:if test="calendarCollection='false'">
+        <!-- test the open state of the folder; if it's open,
+             build a URL to close it and vice versa -->
+        <xsl:choose>
+          <xsl:when test="open = 'true'">
+            <a href="{$calendar-openCloseSelect}&amp;calPath={$calPath}&amp;open=false">
+              <img src="{$resourcesRoot}/resources/minus.gif" width="9" height="9" alt="close" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{$calendar-openCloseSelect}&amp;calPath={$calPath}&amp;open=true">
+              <img src="{$resourcesRoot}/resources/plus.gif" width="9" height="9" alt="open" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
       <xsl:choose>
         <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calendarCollection = 'true')">
           <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
@@ -3701,7 +3708,7 @@
           <xsl:apply-templates select="calendar" mode="selectCalForEventCalTree"/>
         </ul>
       </xsl:if>
-    </li>
+    </li>  
   </xsl:template>
 
   <xsl:template name="calendarMove">

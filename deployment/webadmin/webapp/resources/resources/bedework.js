@@ -94,7 +94,7 @@ function launchPrintWindow(URL) {
 // launch the calSelect pop-up window for selecting a calendar when creating,
 // editing, and importing events
 function launchCalSelectWindow(URL) {
-  calSelect = window.open(URL, "calSelect", "width=500,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
+  calSelect = window.open(URL, "calSelect", "width=700,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
   window.calSelect.focus();
 }
 // used to update the calendar in various forms from
