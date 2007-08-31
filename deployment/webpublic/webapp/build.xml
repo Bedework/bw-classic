@@ -49,10 +49,17 @@
   <target name="deploy" depends="init,build.configured" >
     <!-- First copy the resources into the server -->
 
-    <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.cal.suite}" />
-    <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.cal.suite}">
-      <fileset dir="${app.resources.dir}/demoskins/${propval.app.cal.suite}" />
-    </copy>
+    <if>
+      <not>
+        <isset property="org.bedework.global.noskins" />
+      </not>
+      <then>
+        <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.cal.suite}" />
+        <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.cal.suite}">
+          <fileset dir="${app.resources.dir}/demoskins/${propval.app.cal.suite}" />
+        </copy>
+      </then>
+    </if>
 
     <!-- Deploy common resources -->
     <!--

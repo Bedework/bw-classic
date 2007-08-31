@@ -113,7 +113,7 @@
         <!--
         <usergroupsClass>org.bedework.calsvc.directory.UserGroupsLdapImpl</usergroupsClass>
         -->
-        <usergroupsClass>org.bedework.calcore.hibernate.GroupsDbImpl</usergroupsClass>
+        <usergroupsClass>org.bedework.calsvc.directory.GroupsDbImpl</usergroupsClass>
 
         <directoryBrowsingDisallowed>@DIRECTORY-BROWSING-DISALLOWED@</directoryBrowsingDisallowed>
 
