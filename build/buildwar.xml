@@ -211,6 +211,7 @@
         <include name="bw-calfacade*.jar"/>
         <include name="bw-calsvc*.jar"/>
         <include name="bw-calsvci*.jar"/>
+        <include name="bw-client*.jar"/>
         <include name="bw-icalendar*.jar"/>
         <include name="bw-locale*.jar"/>
         <include name="bw-logging*.jar"/>
