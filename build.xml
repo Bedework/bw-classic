@@ -877,4 +877,20 @@
       </copy>
     </sequential>
   </macrodef>
+
+  <!-- =============================================================================
+       Update a project library from the bedework lib directory.
+       ============================================================================= -->
+  <macrodef name="copy-lib-to-lib">
+    <attribute name="this"/>
+    <sequential>
+      <delete file="@{target}/lib/@{jarprefix}*.jar" />
+
+      <copy todir="@{target}/lib" >
+        <fileset dir="${org.bedework.project.bedework}/lib" >
+          <include name="@{jarprefix}*.jar" />
+        </fileset>
+      </copy>
+    </sequential>
+  </macrodef>
 </project>
