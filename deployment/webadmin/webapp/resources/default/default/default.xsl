@@ -50,7 +50,7 @@
        web server over https to avoid mixed content errors, e.g.,
   <xsl:variable name="resourcesRoot" select="'https://mywebserver.edu/myresourcesdir'"/>
     -->
-  <xsl:variable name="resourcesRoot" select="/bedeworkadmin/approot"/>
+  <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
 
   <!-- URL of the XSL template directory -->
   <!-- The approot is an appropriate place to put
@@ -59,135 +59,135 @@
        this variable is here for your convenience if you choose to
        reference it explicitly.  It is not used in this stylesheet, however,
        and can be safely removed if you so choose. -->
-  <xsl:variable name="appRoot" select="/bedeworkadmin/approot"/>
+  <xsl:variable name="appRoot" select="/bedework/approot"/>
 
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal.
        we will probably change the way we create these before long (e.g. build them
        dynamically in the xslt). -->
-  <xsl:variable name="setup" select="/bedeworkadmin/urlPrefixes/setup/a/@href"/>
-  <xsl:variable name="logout" select="/bedeworkadmin/urlPrefixes/logout/a/@href"/>
-  <xsl:variable name="search" select="/bedeworkadmin/urlPrefixes/search/search/a/@href"/>
-  <xsl:variable name="search-next" select="/bedeworkadmin/urlPrefixes/search/next/a/@href"/>
+  <xsl:variable name="setup" select="/bedework/urlPrefixes/setup/a/@href"/>
+  <xsl:variable name="logout" select="/bedework/urlPrefixes/logout/a/@href"/>
+  <xsl:variable name="search" select="/bedework/urlPrefixes/search/search/a/@href"/>
+  <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next/a/@href"/>
   <!-- events -->
-  <xsl:variable name="event-showEvent" select="/bedeworkadmin/urlPrefixes/event/showEvent/a/@href"/>
-  <xsl:variable name="event-showModForm" select="/bedeworkadmin/urlPrefixes/event/showModForm/a/@href"/>
-  <xsl:variable name="event-showUpdateList" select="/bedeworkadmin/urlPrefixes/event/showUpdateList/a/@href"/>
-  <xsl:variable name="event-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/event/showDeleteConfirm/a/@href"/>
-  <xsl:variable name="event-initAddEvent" select="/bedeworkadmin/urlPrefixes/event/initAddEvent/a/@href"/>
-  <xsl:variable name="event-initUpdateEvent" select="/bedeworkadmin/urlPrefixes/event/initUpdateEvent/a/@href"/>
-  <xsl:variable name="event-delete" select="/bedeworkadmin/urlPrefixes/event/delete/a/@href"/>
-  <xsl:variable name="event-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/event/fetchForDisplay/a/@href"/>
-  <xsl:variable name="event-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/event/fetchForUpdate/a/@href"/>
-  <xsl:variable name="event-update" select="/bedeworkadmin/urlPrefixes/event/update/a/@href"/>
-  <xsl:variable name="event-selectCalForEvent" select="/bedeworkadmin/urlPrefixes/event/selectCalForEvent/a/@href"/>
-  <xsl:variable name="event-showRdates" select="/bedeworkadmin/urlPrefixes/event/showRdates"/>
-  <xsl:variable name="event-setRdate" select="/bedeworkadmin/urlPrefixes/event/setRdate"/>
-  <xsl:variable name="event-initUpload" select="/bedeworkadmin/urlPrefixes/event/initUpload/a/@href"/>
-  <xsl:variable name="event-upload" select="/bedeworkadmin/urlPrefixes/event/upload/a/@href"/>
+  <xsl:variable name="event-showEvent" select="/bedework/urlPrefixes/event/showEvent/a/@href"/>
+  <xsl:variable name="event-showModForm" select="/bedework/urlPrefixes/event/showModForm/a/@href"/>
+  <xsl:variable name="event-showUpdateList" select="/bedework/urlPrefixes/event/showUpdateList/a/@href"/>
+  <xsl:variable name="event-showDeleteConfirm" select="/bedework/urlPrefixes/event/showDeleteConfirm/a/@href"/>
+  <xsl:variable name="event-initAddEvent" select="/bedework/urlPrefixes/event/initAddEvent/a/@href"/>
+  <xsl:variable name="event-initUpdateEvent" select="/bedework/urlPrefixes/event/initUpdateEvent/a/@href"/>
+  <xsl:variable name="event-delete" select="/bedework/urlPrefixes/event/delete/a/@href"/>
+  <xsl:variable name="event-fetchForDisplay" select="/bedework/urlPrefixes/event/fetchForDisplay/a/@href"/>
+  <xsl:variable name="event-fetchForUpdate" select="/bedework/urlPrefixes/event/fetchForUpdate/a/@href"/>
+  <xsl:variable name="event-update" select="/bedework/urlPrefixes/event/update/a/@href"/>
+  <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
+  <xsl:variable name="event-showRdates" select="/bedework/urlPrefixes/event/showRdates"/>
+  <xsl:variable name="event-setRdate" select="/bedework/urlPrefixes/event/setRdate"/>
+  <xsl:variable name="event-initUpload" select="/bedework/urlPrefixes/event/initUpload/a/@href"/>
+  <xsl:variable name="event-upload" select="/bedework/urlPrefixes/event/upload/a/@href"/>
   <!-- contacts -->
-  <xsl:variable name="contact-showContact" select="/bedeworkadmin/urlPrefixes/contact/showContact/a/@href"/>
-  <xsl:variable name="contact-showReferenced" select="/bedeworkadmin/urlPrefixes/contact/showReferenced/a/@href"/>
-  <xsl:variable name="contact-showModForm" select="/bedeworkadmin/urlPrefixes/contact/showModForm/a/@href"/>
-  <xsl:variable name="contact-showUpdateList" select="/bedeworkadmin/urlPrefixes/contact/showUpdateList/a/@href"/>
-  <xsl:variable name="contact-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/contact/showDeleteConfirm/a/@href"/>
-  <xsl:variable name="contact-initAdd" select="/bedeworkadmin/urlPrefixes/contact/initAdd/a/@href"/>
-  <xsl:variable name="contact-initUpdate" select="/bedeworkadmin/urlPrefixes/contact/initUpdate/a/@href"/>
-  <xsl:variable name="contact-delete" select="/bedeworkadmin/urlPrefixes/contact/delete/a/@href"/>
-  <xsl:variable name="contact-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/contact/fetchForDisplay/a/@href"/>
-  <xsl:variable name="contact-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/contact/fetchForUpdate/a/@href"/>
-  <xsl:variable name="contact-update" select="/bedeworkadmin/urlPrefixes/contact/update/a/@href"/>
+  <xsl:variable name="contact-showContact" select="/bedework/urlPrefixes/contact/showContact/a/@href"/>
+  <xsl:variable name="contact-showReferenced" select="/bedework/urlPrefixes/contact/showReferenced/a/@href"/>
+  <xsl:variable name="contact-showModForm" select="/bedework/urlPrefixes/contact/showModForm/a/@href"/>
+  <xsl:variable name="contact-showUpdateList" select="/bedework/urlPrefixes/contact/showUpdateList/a/@href"/>
+  <xsl:variable name="contact-showDeleteConfirm" select="/bedework/urlPrefixes/contact/showDeleteConfirm/a/@href"/>
+  <xsl:variable name="contact-initAdd" select="/bedework/urlPrefixes/contact/initAdd/a/@href"/>
+  <xsl:variable name="contact-initUpdate" select="/bedework/urlPrefixes/contact/initUpdate/a/@href"/>
+  <xsl:variable name="contact-delete" select="/bedework/urlPrefixes/contact/delete/a/@href"/>
+  <xsl:variable name="contact-fetchForDisplay" select="/bedework/urlPrefixes/contact/fetchForDisplay/a/@href"/>
+  <xsl:variable name="contact-fetchForUpdate" select="/bedework/urlPrefixes/contact/fetchForUpdate/a/@href"/>
+  <xsl:variable name="contact-update" select="/bedework/urlPrefixes/contact/update/a/@href"/>
   <!-- locations -->
-  <xsl:variable name="location-showLocation" select="/bedeworkadmin/urlPrefixes/location/showLocation/a/@href"/>
-  <xsl:variable name="location-showReferenced" select="/bedeworkadmin/urlPrefixes/location/showReferenced/a/@href"/>
-  <xsl:variable name="location-showModForm" select="/bedeworkadmin/urlPrefixes/location/showModForm/a/@href"/>
-  <xsl:variable name="location-showUpdateList" select="/bedeworkadmin/urlPrefixes/location/showUpdateList/a/@href"/>
-  <xsl:variable name="location-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/location/showDeleteConfirm/a/@href"/>
-  <xsl:variable name="location-initAdd" select="/bedeworkadmin/urlPrefixes/location/initAdd/a/@href"/>
-  <xsl:variable name="location-initUpdate" select="/bedeworkadmin/urlPrefixes/location/initUpdate/a/@href"/>
-  <xsl:variable name="location-delete" select="/bedeworkadmin/urlPrefixes/location/delete/a/@href"/>
-  <xsl:variable name="location-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/location/fetchForDisplay/a/@href"/>
-  <xsl:variable name="location-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/location/fetchForUpdate/a/@href"/>
-  <xsl:variable name="location-update" select="/bedeworkadmin/urlPrefixes/location/update/a/@href"/>
+  <xsl:variable name="location-showLocation" select="/bedework/urlPrefixes/location/showLocation/a/@href"/>
+  <xsl:variable name="location-showReferenced" select="/bedework/urlPrefixes/location/showReferenced/a/@href"/>
+  <xsl:variable name="location-showModForm" select="/bedework/urlPrefixes/location/showModForm/a/@href"/>
+  <xsl:variable name="location-showUpdateList" select="/bedework/urlPrefixes/location/showUpdateList/a/@href"/>
+  <xsl:variable name="location-showDeleteConfirm" select="/bedework/urlPrefixes/location/showDeleteConfirm/a/@href"/>
+  <xsl:variable name="location-initAdd" select="/bedework/urlPrefixes/location/initAdd/a/@href"/>
+  <xsl:variable name="location-initUpdate" select="/bedework/urlPrefixes/location/initUpdate/a/@href"/>
+  <xsl:variable name="location-delete" select="/bedework/urlPrefixes/location/delete/a/@href"/>
+  <xsl:variable name="location-fetchForDisplay" select="/bedework/urlPrefixes/location/fetchForDisplay/a/@href"/>
+  <xsl:variable name="location-fetchForUpdate" select="/bedework/urlPrefixes/location/fetchForUpdate/a/@href"/>
+  <xsl:variable name="location-update" select="/bedework/urlPrefixes/location/update/a/@href"/>
   <!-- categories -->
-  <xsl:variable name="category-showReferenced" select="/bedeworkadmin/urlPrefixes/category/showReferenced/a/@href"/>
-  <xsl:variable name="category-showModForm" select="/bedeworkadmin/urlPrefixes/category/showModForm/a/@href"/>
-  <xsl:variable name="category-showUpdateList" select="/bedeworkadmin/urlPrefixes/category/showUpdateList/a/@href"/>
-  <xsl:variable name="category-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/category/showDeleteConfirm/a/@href"/>
-  <xsl:variable name="category-initAdd" select="/bedeworkadmin/urlPrefixes/category/initAdd/a/@href"/>
-  <xsl:variable name="category-initUpdate" select="/bedeworkadmin/urlPrefixes/category/initUpdate/a/@href"/>
-  <xsl:variable name="category-delete" select="/bedeworkadmin/urlPrefixes/category/delete/a/@href"/>
-  <xsl:variable name="category-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/category/fetchForUpdate/a/@href"/>
-  <xsl:variable name="category-update" select="/bedeworkadmin/urlPrefixes/category/update/a/@href"/>
+  <xsl:variable name="category-showReferenced" select="/bedework/urlPrefixes/category/showReferenced/a/@href"/>
+  <xsl:variable name="category-showModForm" select="/bedework/urlPrefixes/category/showModForm/a/@href"/>
+  <xsl:variable name="category-showUpdateList" select="/bedework/urlPrefixes/category/showUpdateList/a/@href"/>
+  <xsl:variable name="category-showDeleteConfirm" select="/bedework/urlPrefixes/category/showDeleteConfirm/a/@href"/>
+  <xsl:variable name="category-initAdd" select="/bedework/urlPrefixes/category/initAdd/a/@href"/>
+  <xsl:variable name="category-initUpdate" select="/bedework/urlPrefixes/category/initUpdate/a/@href"/>
+  <xsl:variable name="category-delete" select="/bedework/urlPrefixes/category/delete/a/@href"/>
+  <xsl:variable name="category-fetchForUpdate" select="/bedework/urlPrefixes/category/fetchForUpdate/a/@href"/>
+  <xsl:variable name="category-update" select="/bedework/urlPrefixes/category/update/a/@href"/>
   <!-- calendars -->
-  <xsl:variable name="calendar-fetch" select="/bedeworkadmin/urlPrefixes/calendar/fetch/a/@href"/>
-  <xsl:variable name="calendar-fetchDescriptions" select="/bedeworkadmin/urlPrefixes/calendar/fetchDescriptions/a/@href"/>
-  <xsl:variable name="calendar-initAdd" select="/bedeworkadmin/urlPrefixes/calendar/initAdd/a/@href"/>
-  <xsl:variable name="calendar-delete" select="/bedeworkadmin/urlPrefixes/calendar/delete/a/@href"/>
-  <xsl:variable name="calendar-fetchForDisplay" select="/bedeworkadmin/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
-  <xsl:variable name="calendar-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calendar/fetchForUpdate/a/@href"/>
-  <xsl:variable name="calendar-update" select="/bedeworkadmin/urlPrefixes/calendar/update/a/@href"/>
-  <xsl:variable name="calendar-setAccess" select="/bedeworkadmin/urlPrefixes/calendar/setAccess/a/@href"/>
-  <xsl:variable name="calendar-openCloseMod" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMod/a/@href"/>
-  <xsl:variable name="calendar-openCloseSelect" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseSelect/a/@href"/>
-  <xsl:variable name="calendar-openCloseDisplay" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseDisplay/a/@href"/>
-  <xsl:variable name="calendar-openCloseMove" select="/bedeworkadmin/urlPrefixes/calendar/calOpenCloseMove/a/@href"/>
-  <xsl:variable name="calendar-move" select="/bedeworkadmin/urlPrefixes/calendar/move/a/@href"/>
+  <xsl:variable name="calendar-fetch" select="/bedework/urlPrefixes/calendar/fetch/a/@href"/>
+  <xsl:variable name="calendar-fetchDescriptions" select="/bedework/urlPrefixes/calendar/fetchDescriptions/a/@href"/>
+  <xsl:variable name="calendar-initAdd" select="/bedework/urlPrefixes/calendar/initAdd/a/@href"/>
+  <xsl:variable name="calendar-delete" select="/bedework/urlPrefixes/calendar/delete/a/@href"/>
+  <xsl:variable name="calendar-fetchForDisplay" select="/bedework/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
+  <xsl:variable name="calendar-fetchForUpdate" select="/bedework/urlPrefixes/calendar/fetchForUpdate/a/@href"/>
+  <xsl:variable name="calendar-update" select="/bedework/urlPrefixes/calendar/update/a/@href"/>
+  <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess/a/@href"/>
+  <xsl:variable name="calendar-openCloseMod" select="/bedework/urlPrefixes/calendar/calOpenCloseMod/a/@href"/>
+  <xsl:variable name="calendar-openCloseSelect" select="/bedework/urlPrefixes/calendar/calOpenCloseSelect/a/@href"/>
+  <xsl:variable name="calendar-openCloseDisplay" select="/bedework/urlPrefixes/calendar/calOpenCloseDisplay/a/@href"/>
+  <xsl:variable name="calendar-openCloseMove" select="/bedework/urlPrefixes/calendar/calOpenCloseMove/a/@href"/>
+  <xsl:variable name="calendar-move" select="/bedework/urlPrefixes/calendar/move/a/@href"/>
   <!-- subscriptions -->
-  <xsl:variable name="subscriptions-fetch" select="/bedeworkadmin/urlPrefixes/subscriptions/fetch/a/@href"/>
-  <xsl:variable name="subscriptions-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
-  <xsl:variable name="subscriptions-initAdd" select="/bedeworkadmin/urlPrefixes/subscriptions/initAdd/a/@href"/>
-  <xsl:variable name="subscriptions-subscribe" select="/bedeworkadmin/urlPrefixes/subscriptions/subscribe/a/@href"/>
-  <xsl:variable name="subscriptions-openCloseMod" select="/bedeworkadmin/urlPrefixes/subscriptions/subOpenCloseMod/a/@href"/>
+  <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch/a/@href"/>
+  <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
+  <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd/a/@href"/>
+  <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/subscriptions/subscribe/a/@href"/>
+  <xsl:variable name="subscriptions-openCloseMod" select="/bedework/urlPrefixes/subscriptions/subOpenCloseMod/a/@href"/>
   <!-- views -->
-  <xsl:variable name="view-fetch" select="/bedeworkadmin/urlPrefixes/view/fetch/a/@href"/>
-  <xsl:variable name="view-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/view/fetchForUpdate/a/@href"/>
-  <xsl:variable name="view-addView" select="/bedeworkadmin/urlPrefixes/view/addView/a/@href"/>
-  <xsl:variable name="view-update" select="/bedeworkadmin/urlPrefixes/view/update/a/@href"/>
-  <xsl:variable name="view-remove" select="/bedeworkadmin/urlPrefixes/view/remove/a/@href"/>
+  <xsl:variable name="view-fetch" select="/bedework/urlPrefixes/view/fetch/a/@href"/>
+  <xsl:variable name="view-fetchForUpdate" select="/bedework/urlPrefixes/view/fetchForUpdate/a/@href"/>
+  <xsl:variable name="view-addView" select="/bedework/urlPrefixes/view/addView/a/@href"/>
+  <xsl:variable name="view-update" select="/bedework/urlPrefixes/view/update/a/@href"/>
+  <xsl:variable name="view-remove" select="/bedework/urlPrefixes/view/remove/a/@href"/>
   <!-- system -->
-  <xsl:variable name="system-fetch" select="/bedeworkadmin/urlPrefixes/system/fetch/a/@href"/>
-  <xsl:variable name="system-update" select="/bedeworkadmin/urlPrefixes/system/update/a/@href"/>
+  <xsl:variable name="system-fetch" select="/bedework/urlPrefixes/system/fetch/a/@href"/>
+  <xsl:variable name="system-update" select="/bedework/urlPrefixes/system/update/a/@href"/>
   <!-- calsuites -->
-  <xsl:variable name="calsuite-fetch" select="/bedeworkadmin/urlPrefixes/calsuite/fetch/a/@href"/>
-  <xsl:variable name="calsuite-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/calsuite/fetchForUpdate/a/@href"/>
-  <xsl:variable name="calsuite-add" select="/bedeworkadmin/urlPrefixes/calsuite/add/a/@href"/>
-  <xsl:variable name="calsuite-update" select="/bedeworkadmin/urlPrefixes/calsuite/update/a/@href"/>
-  <xsl:variable name="calsuite-showAddForm" select="/bedeworkadmin/urlPrefixes/calsuite/showAddForm/a/@href"/>
-  <xsl:variable name="calsuite-setAccess" select="/bedeworkadmin/urlPrefixes/calsuite/setAccess/a/@href"/>
-  <xsl:variable name="calsuite-fetchPrefsForUpdate" select="/bedeworkadmin/urlPrefixes/calsuite/fetchPrefsForUpdate/a/@href"/>
-  <xsl:variable name="calsuite-updatePrefs" select="/bedeworkadmin/urlPrefixes/calsuite/updatePrefs/a/@href"/>
+  <xsl:variable name="calsuite-fetch" select="/bedework/urlPrefixes/calsuite/fetch/a/@href"/>
+  <xsl:variable name="calsuite-fetchForUpdate" select="/bedework/urlPrefixes/calsuite/fetchForUpdate/a/@href"/>
+  <xsl:variable name="calsuite-add" select="/bedework/urlPrefixes/calsuite/add/a/@href"/>
+  <xsl:variable name="calsuite-update" select="/bedework/urlPrefixes/calsuite/update/a/@href"/>
+  <xsl:variable name="calsuite-showAddForm" select="/bedework/urlPrefixes/calsuite/showAddForm/a/@href"/>
+  <xsl:variable name="calsuite-setAccess" select="/bedework/urlPrefixes/calsuite/setAccess/a/@href"/>
+  <xsl:variable name="calsuite-fetchPrefsForUpdate" select="/bedework/urlPrefixes/calsuite/fetchPrefsForUpdate/a/@href"/>
+  <xsl:variable name="calsuite-updatePrefs" select="/bedework/urlPrefixes/calsuite/updatePrefs/a/@href"/>
   <!-- timezones and stats -->
-  <xsl:variable name="timezones-initUpload" select="/bedeworkadmin/urlPrefixes/timezones/initUpload/a/@href"/>
-  <xsl:variable name="timezones-upload" select="/bedeworkadmin/urlPrefixes/timezones/upload/a/@href"/>
-  <xsl:variable name="timezones-fix" select="/bedeworkadmin/urlPrefixes/timezones/fix/a/@href"/>
-  <xsl:variable name="stats-update" select="/bedeworkadmin/urlPrefixes/stats/update/a/@href"/>
+  <xsl:variable name="timezones-initUpload" select="/bedework/urlPrefixes/timezones/initUpload/a/@href"/>
+  <xsl:variable name="timezones-upload" select="/bedework/urlPrefixes/timezones/upload/a/@href"/>
+  <xsl:variable name="timezones-fix" select="/bedework/urlPrefixes/timezones/fix/a/@href"/>
+  <xsl:variable name="stats-update" select="/bedework/urlPrefixes/stats/update/a/@href"/>
   <!-- authuser and prefs -->
-  <xsl:variable name="authuser-showModForm" select="/bedeworkadmin/urlPrefixes/authuser/showModForm/a/@href"/>
-  <xsl:variable name="authuser-showUpdateList" select="/bedeworkadmin/urlPrefixes/authuser/showUpdateList/a/@href"/>
-  <xsl:variable name="authuser-initUpdate" select="/bedeworkadmin/urlPrefixes/authuser/initUpdate/a/@href"/>
-  <xsl:variable name="authuser-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/authuser/fetchForUpdate/a/@href"/>
-  <xsl:variable name="authuser-update" select="/bedeworkadmin/urlPrefixes/authuser/update/a/@href"/>
-  <xsl:variable name="prefs-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/prefs/fetchForUpdate/a/@href"/>
-  <xsl:variable name="prefs-update" select="/bedeworkadmin/urlPrefixes/prefs/update/a/@href"/>
+  <xsl:variable name="authuser-showModForm" select="/bedework/urlPrefixes/authuser/showModForm/a/@href"/>
+  <xsl:variable name="authuser-showUpdateList" select="/bedework/urlPrefixes/authuser/showUpdateList/a/@href"/>
+  <xsl:variable name="authuser-initUpdate" select="/bedework/urlPrefixes/authuser/initUpdate/a/@href"/>
+  <xsl:variable name="authuser-fetchForUpdate" select="/bedework/urlPrefixes/authuser/fetchForUpdate/a/@href"/>
+  <xsl:variable name="authuser-update" select="/bedework/urlPrefixes/authuser/update/a/@href"/>
+  <xsl:variable name="prefs-fetchForUpdate" select="/bedework/urlPrefixes/prefs/fetchForUpdate/a/@href"/>
+  <xsl:variable name="prefs-update" select="/bedework/urlPrefixes/prefs/update/a/@href"/>
   <!-- admin groups -->
-  <xsl:variable name="admingroup-showModForm" select="/bedeworkadmin/urlPrefixes/admingroup/showModForm/a/@href"/>
-  <xsl:variable name="admingroup-showModMembersForm" select="/bedeworkadmin/urlPrefixes/admingroup/showModMembersForm/a/@href"/>
-  <xsl:variable name="admingroup-showUpdateList" select="/bedeworkadmin/urlPrefixes/admingroup/showUpdateList/a/@href"/>
-  <xsl:variable name="admingroup-showChooseGroup" select="/bedeworkadmin/urlPrefixes/admingroup/showChooseGroup/a/@href"/>
-  <xsl:variable name="admingroup-showDeleteConfirm" select="/bedeworkadmin/urlPrefixes/admingroup/showDeleteConfirm/a/@href"/>
-  <xsl:variable name="admingroup-initAdd" select="/bedeworkadmin/urlPrefixes/admingroup/initAdd/a/@href"/>
-  <xsl:variable name="admingroup-initUpdate" select="/bedeworkadmin/urlPrefixes/admingroup/initUpdate/a/@href"/>
-  <xsl:variable name="admingroup-delete" select="/bedeworkadmin/urlPrefixes/admingroup/delete/a/@href"/>
-  <xsl:variable name="admingroup-fetchUpdateList" select="/bedeworkadmin/urlPrefixes/admingroup/fetchUpdateList/a/@href"/>
-  <xsl:variable name="admingroup-fetchForUpdate" select="/bedeworkadmin/urlPrefixes/admingroup/fetchForUpdate/a/@href"/>
-  <xsl:variable name="admingroup-fetchForUpdateMembers" select="/bedeworkadmin/urlPrefixes/admingroup/fetchForUpdateMembers/a/@href"/>
-  <xsl:variable name="admingroup-update" select="/bedeworkadmin/urlPrefixes/admingroup/update/a/@href"/>
-  <xsl:variable name="admingroup-updateMembers" select="/bedeworkadmin/urlPrefixes/admingroup/updateMembers/a/@href"/>
-  <xsl:variable name="admingroup-switch" select="/bedeworkadmin/urlPrefixes/admingroup/switch/a/@href"/>
+  <xsl:variable name="admingroup-showModForm" select="/bedework/urlPrefixes/admingroup/showModForm/a/@href"/>
+  <xsl:variable name="admingroup-showModMembersForm" select="/bedework/urlPrefixes/admingroup/showModMembersForm/a/@href"/>
+  <xsl:variable name="admingroup-showUpdateList" select="/bedework/urlPrefixes/admingroup/showUpdateList/a/@href"/>
+  <xsl:variable name="admingroup-showChooseGroup" select="/bedework/urlPrefixes/admingroup/showChooseGroup/a/@href"/>
+  <xsl:variable name="admingroup-showDeleteConfirm" select="/bedework/urlPrefixes/admingroup/showDeleteConfirm/a/@href"/>
+  <xsl:variable name="admingroup-initAdd" select="/bedework/urlPrefixes/admingroup/initAdd/a/@href"/>
+  <xsl:variable name="admingroup-initUpdate" select="/bedework/urlPrefixes/admingroup/initUpdate/a/@href"/>
+  <xsl:variable name="admingroup-delete" select="/bedework/urlPrefixes/admingroup/delete/a/@href"/>
+  <xsl:variable name="admingroup-fetchUpdateList" select="/bedework/urlPrefixes/admingroup/fetchUpdateList/a/@href"/>
+  <xsl:variable name="admingroup-fetchForUpdate" select="/bedework/urlPrefixes/admingroup/fetchForUpdate/a/@href"/>
+  <xsl:variable name="admingroup-fetchForUpdateMembers" select="/bedework/urlPrefixes/admingroup/fetchForUpdateMembers/a/@href"/>
+  <xsl:variable name="admingroup-update" select="/bedework/urlPrefixes/admingroup/update/a/@href"/>
+  <xsl:variable name="admingroup-updateMembers" select="/bedework/urlPrefixes/admingroup/updateMembers/a/@href"/>
+  <xsl:variable name="admingroup-switch" select="/bedework/urlPrefixes/admingroup/switch/a/@href"/>
 
   <!-- URL of the web application - includes web context -->
-  <xsl:variable name="urlPrefix" select="/bedeworkadmin/urlprefix"/>
+  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
 
   <!-- Other generally useful global variables -->
   <xsl:variable name="publicCal">/cal</xsl:variable>
@@ -205,8 +205,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
-        <xsl:if test="/bedeworkadmin/page='modEvent' or
-                      /bedeworkadmin/page='rdates'">
+        <xsl:if test="/bedework/page='modEvent' or
+                      /bedework/page='rdates'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
           <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
@@ -217,14 +217,14 @@
             <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
           </xsl:if>
         </xsl:if>
-        <xsl:if test="/bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='modCalSuite'">
+        <xsl:if test="/bedework/page='modCalendar' or /bedework/page='modCalSuite'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
         </xsl:if>
-        <xsl:if test="/bedeworkadmin/page='upload' or /bedeworkadmin/page='selectCalForEvent'">
+        <xsl:if test="/bedework/page='upload' or /bedework/page='selectCalForEvent'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
         </xsl:if>
-        <xsl:if test="/bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar'">
+        <xsl:if test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
           <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
@@ -243,127 +243,127 @@
       </head>
       <body onload="focusFirstElement()">
         <xsl:choose>
-          <xsl:when test="/bedeworkadmin/page='selectCalForEvent'">
+          <xsl:when test="/bedework/page='selectCalForEvent'">
             <xsl:call-template name="selectCalForEvent"/>
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='rdates'">
+          <xsl:when test="/bedework/page='rdates'">
             <xsl:call-template name="rdates"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:call-template name="header"/>
             <div id="content">
               <xsl:choose>
-                <xsl:when test="/bedeworkadmin/page='eventList'">
+                <xsl:when test="/bedework/page='eventList'">
                   <xsl:call-template name="eventList"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modEvent'">
-                  <xsl:apply-templates select="/bedeworkadmin/formElements" mode="modEvent"/>
+                <xsl:when test="/bedework/page='modEvent'">
+                  <xsl:apply-templates select="/bedework/formElements" mode="modEvent"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='displayEvent' or /bedeworkadmin/page='deleteEventConfirm'">
-                  <xsl:apply-templates select="/bedeworkadmin/event" mode="displayEvent"/>
+                <xsl:when test="/bedework/page='displayEvent' or /bedework/page='deleteEventConfirm'">
+                  <xsl:apply-templates select="/bedework/event" mode="displayEvent"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='contactList'">
+                <xsl:when test="/bedework/page='contactList'">
                   <xsl:call-template name="contactList"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modContact'">
+                <xsl:when test="/bedework/page='modContact'">
                   <xsl:call-template name="modContact"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='deleteContactConfirm' or /bedeworkadmin/page='contactReferenced'">
+                <xsl:when test="/bedework/page='deleteContactConfirm' or /bedework/page='contactReferenced'">
                   <xsl:call-template name="deleteContactConfirm"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='locationList'">
+                <xsl:when test="/bedework/page='locationList'">
                   <xsl:call-template name="locationList"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modLocation'">
+                <xsl:when test="/bedework/page='modLocation'">
                   <xsl:call-template name="modLocation"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='deleteLocationConfirm'">
+                <xsl:when test="/bedework/page='deleteLocationConfirm'">
                   <xsl:call-template name="deleteLocationConfirm"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='categoryList'">
+                <xsl:when test="/bedework/page='categoryList'">
                   <xsl:call-template name="categoryList"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modCategory'">
+                <xsl:when test="/bedework/page='modCategory'">
                   <xsl:call-template name="modCategory"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='deleteCategoryConfirm'">
+                <xsl:when test="/bedework/page='deleteCategoryConfirm'">
                   <xsl:call-template name="deleteCategoryConfirm"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar' or /bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='deleteCalendarConfirm' or /bedeworkadmin/page='calendarReferenced'">
-                  <xsl:apply-templates select="/bedeworkadmin/calendars" mode="calendarCommon"/>
+                <xsl:when test="/bedework/page='calendarList' or /bedework/page='calendarDescriptions' or /bedework/page='displayCalendar' or /bedework/page='modCalendar' or /bedework/page='deleteCalendarConfirm' or /bedework/page='calendarReferenced'">
+                  <xsl:apply-templates select="/bedework/calendars" mode="calendarCommon"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='moveCalendar'">
+                <xsl:when test="/bedework/page='moveCalendar'">
                   <xsl:call-template name="calendarMove"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
-                  <xsl:apply-templates select="/bedeworkadmin/subscriptions"/>
+                <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
+                  <xsl:apply-templates select="/bedework/subscriptions"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='views'">
-                  <xsl:apply-templates select="/bedeworkadmin/views" mode="viewList"/>
+                <xsl:when test="/bedework/page='views'">
+                  <xsl:apply-templates select="/bedework/views" mode="viewList"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modView'">
+                <xsl:when test="/bedework/page='modView'">
                   <xsl:call-template name="modView"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='deleteViewConfirm'">
+                <xsl:when test="/bedework/page='deleteViewConfirm'">
                   <xsl:call-template name="deleteViewConfirm"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modSyspars'">
+                <xsl:when test="/bedework/page='modSyspars'">
                   <xsl:call-template name="modSyspars"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='calSuiteList'">
-                  <xsl:apply-templates select="/bedeworkadmin/calSuites" mode="calSuiteList"/>
+                <xsl:when test="/bedework/page='calSuiteList'">
+                  <xsl:apply-templates select="/bedework/calSuites" mode="calSuiteList"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='addCalSuite'">
+                <xsl:when test="/bedework/page='addCalSuite'">
                   <xsl:call-template name="addCalSuite"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modCalSuite'">
-                  <xsl:apply-templates select="/bedeworkadmin/calSuite"/>
+                <xsl:when test="/bedework/page='modCalSuite'">
+                  <xsl:apply-templates select="/bedework/calSuite"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='calSuitePrefs'">
+                <xsl:when test="/bedework/page='calSuitePrefs'">
                   <xsl:call-template name="calSuitePrefs"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='authUserList'">
+                <xsl:when test="/bedework/page='authUserList'">
                   <xsl:call-template name="authUserList"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modAuthUser'">
+                <xsl:when test="/bedework/page='modAuthUser'">
                   <xsl:call-template name="modAuthUser"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modPrefs'">
+                <xsl:when test="/bedework/page='modPrefs'">
                   <xsl:call-template name="modPrefs"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='chooseGroup'">
-                  <xsl:apply-templates select="/bedeworkadmin/groups" mode="chooseGroup"/>
+                <xsl:when test="/bedework/page='chooseGroup'">
+                  <xsl:apply-templates select="/bedework/groups" mode="chooseGroup"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='adminGroupList'">
+                <xsl:when test="/bedework/page='adminGroupList'">
                   <xsl:call-template name="listAdminGroups"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modAdminGroup'">
+                <xsl:when test="/bedework/page='modAdminGroup'">
                   <xsl:call-template name="modAdminGroup"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='modAdminGroupMembers'">
+                <xsl:when test="/bedework/page='modAdminGroupMembers'">
                   <xsl:call-template name="modAdminGroupMembers"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='deleteAdminGroupConfirm'">
+                <xsl:when test="/bedework/page='deleteAdminGroupConfirm'">
                   <xsl:call-template name="deleteAdminGroupConfirm"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='searchResult'">
+                <xsl:when test="/bedework/page='searchResult'">
                   <xsl:call-template name="searchResult"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='noGroup'">
+                <xsl:when test="/bedework/page='noGroup'">
                   <h2>No administrative group</h2>
                   <p>Your userid has not been assigned to an administrative group.
                     Please inform your administrator.</p>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='upload'">
+                <xsl:when test="/bedework/page='upload'">
                   <xsl:call-template name="upload"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='uploadTimezones'">
+                <xsl:when test="/bedework/page='uploadTimezones'">
                   <xsl:call-template name="uploadTimezones"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='showSysStats'">
-                  <xsl:apply-templates select="/bedeworkadmin/sysStats" mode="showSysStats"/>
+                <xsl:when test="/bedework/page='showSysStats'">
+                  <xsl:apply-templates select="/bedework/sysStats" mode="showSysStats"/>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='noAccess'">
+                <xsl:when test="/bedework/page='noAccess'">
                   <h2>No Access</h2>
                   <p>
                     You have no access to the action you just attempted. If you believe
@@ -374,7 +374,7 @@
                     <a href="{$setup}">continue</a>
                   </p>
                 </xsl:when>
-                <xsl:when test="/bedeworkadmin/page='error'">
+                <xsl:when test="/bedework/page='error'">
                   <h2>Application error</h2>
                   <p>An application error occurred.</p>
                   <p>
@@ -402,7 +402,7 @@
       <a href="/bedework/">
         <img id="logo"
             alt="logo"
-            src="{$resourcesRoot}/resources/bedeworkAdminLogo.gif"
+            src="{$resourcesRoot}/resources/bedeworkLogo.gif"
             width="217"
             height="40"
             border="0"/>
@@ -410,49 +410,49 @@
       <!-- set the page heading: -->
       <h1>
         <xsl:choose>
-          <xsl:when test="/bedeworkadmin/page='modEvent' or /bedeworkadmin/page='eventList' or /bedeworkadmin/page='displayEvent'">
+          <xsl:when test="/bedework/page='modEvent' or /bedework/page='eventList' or /bedework/page='displayEvent'">
             Manage Events
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='contactList' or /bedeworkadmin/page='modContact' or /bedeworkadmin/page='deleteContactConfirm'">
+          <xsl:when test="/bedework/page='contactList' or /bedework/page='modContact' or /bedework/page='deleteContactConfirm'">
             Manage Contacts
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='locationList' or /bedeworkadmin/page='modLocation' or /bedeworkadmin/page='deleteLocationConfirm'">
+          <xsl:when test="/bedework/page='locationList' or /bedework/page='modLocation' or /bedework/page='deleteLocationConfirm'">
             Manage Locations
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='modCalendar' or /bedeworkadmin/page='calendarReferenced' or /bedeworkadmin/page='deleteCalendarConfirm'">
+          <xsl:when test="/bedework/page='calendarList' or /bedework/page='modCalendar' or /bedework/page='calendarReferenced' or /bedework/page='deleteCalendarConfirm'">
             Manage Calendars
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar'">
+          <xsl:when test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
             Public Calendars
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='subscriptions' or /bedeworkadmin/page='modSubscription'">
+          <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
             Manage Subscriptions
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='views' or /bedeworkadmin/page='modView'">
+          <xsl:when test="/bedework/page='views' or /bedework/page='modView'">
             Manage Views
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='modSyspars'">
+          <xsl:when test="/bedework/page='modSyspars'">
             Manage System Preferences
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='authUserList' or /bedeworkadmin/page='modAuthUser'">
+          <xsl:when test="/bedework/page='authUserList' or /bedework/page='modAuthUser'">
             Manage Administrative Roles
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='chooseGroup'">
+          <xsl:when test="/bedework/page='chooseGroup'">
             Choose Administrative Group
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='adminGroupList' or /bedeworkadmin/page='modAdminGroup' or /bedeworkadmin/page='modAdminGroup' or /bedeworkadmin/page='modAdminGroupMembers'">
+          <xsl:when test="/bedework/page='adminGroupList' or /bedework/page='modAdminGroup' or /bedework/page='modAdminGroup' or /bedework/page='modAdminGroupMembers'">
             Manage Administrative Groups
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='noGroup'">
+          <xsl:when test="/bedework/page='noGroup'">
             No Administrative Group
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='uploadTimezones'">
+          <xsl:when test="/bedework/page='uploadTimezones'">
             Manage Time Zones
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='noAccess'">
+          <xsl:when test="/bedework/page='noAccess'">
             Access Denied
           </xsl:when>
-          <xsl:when test="/bedeworkadmin/page='error'">
+          <xsl:when test="/bedework/page='error'">
             Error
           </xsl:when>
           <xsl:otherwise>
@@ -471,24 +471,24 @@
           <a href="{$publicCal}" target="calendar">Launch Calendar</a> |
           <a href="{$logout}">Log Out</a>
         </td>
-        <xsl:if test="/bedeworkadmin/userInfo/user">
+        <xsl:if test="/bedework/userInfo/user">
           <td class="rightCell">
-            <xsl:if test="/bedeworkadmin/currentCalSuite/name">
+            <xsl:if test="/bedework/currentCalSuite/name">
               Calendar Suite:
               <span class="status">
-                <xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/>
+                <xsl:value-of select="/bedework/currentCalSuite/name"/>
               </span>
               &#160;
             </xsl:if>
             Logged in as:
             <span class="status">
-              <xsl:value-of select="/bedeworkadmin/userInfo/user"/>
+              <xsl:value-of select="/bedework/userInfo/user"/>
             </span>
             &#160;
-            <xsl:if test="/bedeworkadmin/userInfo/group">
+            <xsl:if test="/bedework/userInfo/group">
               Group:
               <span class="status">
-                <xsl:value-of select="/bedeworkadmin/userInfo/group"/>
+                <xsl:value-of select="/bedework/userInfo/group"/>
               </span>
             </xsl:if>
           </td>
@@ -501,16 +501,16 @@
   </xsl:template>
 
   <xsl:template name="messagesAndErrors">
-    <xsl:if test="/bedeworkadmin/message">
+    <xsl:if test="/bedework/message">
       <ul id="messages">
-        <xsl:for-each select="/bedeworkadmin/message">
+        <xsl:for-each select="/bedework/message">
           <li><xsl:apply-templates select="."/></li>
         </xsl:for-each>
       </ul>
     </xsl:if>
-    <xsl:if test="/bedeworkadmin/error">
+    <xsl:if test="/bedework/error">
       <ul id="errors">
-        <xsl:for-each select="/bedeworkadmin/error">
+        <xsl:for-each select="/bedework/error">
           <li><xsl:apply-templates select="."/></li>
         </xsl:for-each>
       </ul>
@@ -546,7 +546,7 @@
           <!--
           <td>
             Event ID:
-            <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
+            <xsl:copy-of select="/bedework/formElements/*"/>
           </td>-->
         </tr>
         <tr>
@@ -593,7 +593,7 @@
       <h4 class="menuTitle">Event search:</h4>
       <form name="searchForm" method="post" action="{$search}" id="searchForm">
         <input type="text" name="query" size="30">
-          <xsl:attribute name="value"><xsl:value-of select="/bedeworkadmin/searchResults/query"/></xsl:attribute>
+          <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
         </input>
         <input type="submit" name="submit" value="go"/>
         <div id="searchFields">
@@ -607,10 +607,10 @@
     </div>
 
     <div id="adminRightColumn">
-      <xsl:if test="/bedeworkadmin/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedeworkadmin/userInfo/superUser='true'">
+      <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
         <h4 class="menuTitle">
           Manage calendar suite:
-          <em><xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/>
+          <em><xsl:value-of select="/bedework/currentCalSuite/name"/>
           </em>
         </h4>
         <ul class="adminMenu">
@@ -642,17 +642,17 @@
         </ul>
       </xsl:if>
 
-      <xsl:if test="/bedeworkadmin/userInfo/contentAdminUser='true'">
+      <xsl:if test="/bedework/userInfo/contentAdminUser='true'">
         <h4 class="menuTitle">Manage users:</h4>
         <ul class="adminMenu">
-          <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
+          <xsl:if test="/bedework/userInfo/userMaintOK='true'">
             <li>
               <a href="{$authuser-initUpdate}">
                 Manage admin roles
               </a>
             </li>
           </xsl:if>
-          <xsl:if test="/bedeworkadmin/userInfo/adminGroupMaintOk='true'">
+          <xsl:if test="/bedework/userInfo/adminGroupMaintOk='true'">
             <li>
               <a href="{$admingroup-initUpdate}">
                 Manage admin groups
@@ -664,7 +664,7 @@
               Choose/change group...
             </a>
           </li>
-          <xsl:if test="/bedeworkadmin/userInfo/userMaintOK='true'">
+          <xsl:if test="/bedework/userInfo/userMaintOK='true'">
             <li>
               <form action="{$prefs-fetchForUpdate}" method="post">
                 Edit user preferences (enter userid):<br/>
@@ -676,7 +676,7 @@
         </ul>
       </xsl:if>
 
-      <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
+      <xsl:if test="/bedework/userInfo/superUser='true'">
         <h4 class="menuTitle">Super user features:</h4>
         <ul class="adminMenu">
           <li>
@@ -727,11 +727,11 @@
         <tr>
           <td style="padding-right: 1em;">Show:</td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/listAllSwitchFalse/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/listAllSwitchFalse/*"/>
             Active
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/listAllSwitchTrue/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/listAllSwitchTrue/*"/>
             All
           </td>
         </tr>
@@ -747,7 +747,7 @@
         <th>Description</th>
       </tr>
 
-      <xsl:for-each select="/bedeworkadmin/events/event">
+      <xsl:for-each select="/bedework/events/event">
         <xsl:variable name="subscriptionId" select="subscription/id"/>
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
         <xsl:variable name="guid" select="guid"/>
@@ -811,7 +811,7 @@
       <table border="0" id="submitTable">
         <tr>
           <xsl:choose>
-            <xsl:when test="/bedeworkadmin/creating='true'">
+            <xsl:when test="/bedework/creating='true'">
               <td>
                 <input type="submit" name="addEvent" value="Add Event"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
@@ -953,7 +953,7 @@
                     <xsl:copy-of select="form/start/month/*"/>
                     <xsl:copy-of select="form/start/day/*"/>
                     <xsl:choose>
-                      <xsl:when test="/bedeworkadmin/creating = 'true'">
+                      <xsl:when test="/bedework/creating = 'true'">
                         <xsl:copy-of select="form/start/year/*"/>
                       </xsl:when>
                       <xsl:otherwise>
@@ -997,7 +997,7 @@
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">true</xsl:attribute></xsl:if>
                     <option value="-1">select timezone...</option>
                     <xsl:variable name="startTzId" select="form/start/tzid"/>
-                    <xsl:for-each select="/bedeworkadmin/timezones/timezone">
+                    <xsl:for-each select="/bedework/timezones/timezone">
                       <option>
                         <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
                         <xsl:if test="$startTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
@@ -1032,7 +1032,7 @@
                       <xsl:copy-of select="form/end/dateTime/month/*"/>
                       <xsl:copy-of select="form/end/dateTime/day/*"/>
                       <xsl:choose>
-                        <xsl:when test="/bedeworkadmin/creating = 'true'">
+                        <xsl:when test="/bedework/creating = 'true'">
                           <xsl:copy-of select="form/end/dateTime/year/*"/>
                         </xsl:when>
                         <xsl:otherwise>
@@ -1076,7 +1076,7 @@
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">true</xsl:attribute></xsl:if>
                       <option value="-1">select timezone...</option>
                       <xsl:variable name="endTzId" select="form/end/dateTime/tzid"/>
-                      <xsl:for-each select="/bedeworkadmin/timezones/timezone">
+                      <xsl:for-each select="/bedework/timezones/timezone">
                         <option>
                           <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
                           <xsl:if test="$endTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
@@ -1204,7 +1204,7 @@
                 <!-- wrapper for all recurrence fields (rrules and rdates): -->
                 <div id="recurrenceFields" class="invisible">
                   <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
-                  
+
                   <h4>Recurrence Rules</h4>
                   <!-- show or hide rrules fields when editing: -->
                   <xsl:if test="form/recurrence">
@@ -1274,11 +1274,11 @@
                             <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
                             <xsl:variable name="dayVal" select="."/>
                             <xsl:variable name="dayPos">
-                              <xsl:for-each select="/bedeworkadmin/recurdayvals/val">
+                              <xsl:for-each select="/bedework/recurdayvals/val">
                                 <xsl:if test="node() = $dayVal"><xsl:value-of select="position()"/></xsl:if>
                               </xsl:for-each>
                             </xsl:variable>
-                            <xsl:value-of select="/bedeworkadmin/shortdaynames/val[position() = $dayPos]"/>
+                            <xsl:value-of select="/bedework/shortdaynames/val[position() = $dayPos]"/>
                             <xsl:if test="position() != last()">, </xsl:if>
                           </xsl:for-each>
                         </xsl:for-each>
@@ -1289,7 +1289,7 @@
                         <xsl:for-each select="form/recurrence/bymonth/val">
                           <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
                           <xsl:variable name="monthNum" select="number(.)"/>
-                          <xsl:value-of select="/bedeworkadmin/monthlabels/val[position() = $monthNum]"/>
+                          <xsl:value-of select="/bedework/monthlabels/val[position() = $monthNum]"/>
                           <xsl:if test="position() != last()">, </xsl:if>
                         </xsl:for-each>
                       </xsl:if>
@@ -1425,11 +1425,11 @@
                             <input type="checkbox" name="swapDayMonthCheckBoxList" value="" onclick="swapVisible(this,'dayMonthCheckBoxList')"/>
                             in these months:
                             <div id="dayMonthCheckBoxList" class="invisible">
-                              <xsl:for-each select="/bedeworkadmin/monthlabels/val">
+                              <xsl:for-each select="/bedework/monthlabels/val">
                                 <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
                                 <span class="chkBoxListItem">
                                   <input type="checkbox" name="dayMonths">
-                                    <xsl:attribute name="value"><xsl:value-of select="/bedeworkadmin/monthvalues/val[position() = $pos]"/></xsl:attribute>
+                                    <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position() = $pos]"/></xsl:attribute>
                                   </input>
                                   <xsl:value-of select="."/>
                                 </span>
@@ -1470,10 +1470,10 @@
                           <p>
                             Week start:
                             <select name="weekWkst">
-                              <xsl:for-each select="/bedeworkadmin/shortdaynames/val">
+                              <xsl:for-each select="/bedework/shortdaynames/val">
                                 <xsl:variable name="pos" select="position()"/>
                                 <option>
-                                  <xsl:attribute name="value"><xsl:value-of select="/bedeworkadmin/recurdayvals/val[position() = $pos]"/></xsl:attribute>
+                                  <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
                                   <xsl:value-of select="."/>
                                 </option>
                               </xsl:for-each>
@@ -1548,11 +1548,11 @@
                             <input type="checkbox" name="swapYearMonthCheckBoxList" value="" onclick="swapVisible(this,'yearMonthCheckBoxList')"/>
                             in these months:
                             <div id="yearMonthCheckBoxList" class="invisible">
-                              <xsl:for-each select="/bedeworkadmin/monthlabels/val">
+                              <xsl:for-each select="/bedework/monthlabels/val">
                                 <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
                                 <span class="chkBoxListItem">
                                   <input type="checkbox" name="yearMonths">
-                                    <xsl:attribute name="value"><xsl:value-of select="/bedeworkadmin/monthvalues/val[position() = $pos]"/></xsl:attribute>
+                                    <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position() = $pos]"/></xsl:attribute>
                                   </input>
                                   <xsl:value-of select="."/>
                                 </span>
@@ -1596,10 +1596,10 @@
                           <p>
                             Week start:
                             <select name="yearWkst">
-                              <xsl:for-each select="/bedeworkadmin/shortdaynames/val">
+                              <xsl:for-each select="/bedework/shortdaynames/val">
                                 <xsl:variable name="pos" select="position()"/>
                                 <option>
-                                  <xsl:attribute name="value"><xsl:value-of select="/bedeworkadmin/recurdayvals/val[position() = $pos]"/></xsl:attribute>
+                                  <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
                                   <xsl:value-of select="."/>
                                 </option>
                               </xsl:for-each>
@@ -1626,7 +1626,7 @@
                       floating
                       <!-- store time as coordinated universal time (UTC) -->
                       <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
-                      store as UTC<br/>                      
+                      store as UTC<br/>
                       <div class="dateFields">
                         <input name="eventRdate.date"
                                dojoType="dropdowndatepicker"
@@ -1682,8 +1682,8 @@
                         <select name="tzid" id="rdateTzid" class="timezones">
                           <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                           <option value="">select timezone...</option>
-                          <xsl:variable name="rdateTzId" select="/bedeworkadmin/now/defaultTzid"/>
-                          <xsl:for-each select="/bedeworkadmin/timezones/timezone">
+                          <xsl:variable name="rdateTzId" select="/bedework/now/defaultTzid"/>
+                          <xsl:for-each select="/bedework/timezones/timezone">
                             <option>
                               <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
                               <xsl:if test="$rdateTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
@@ -1703,7 +1703,7 @@
                         <tr><th>Recurrence Dates</th></tr>
                         <tr><td>No recurrence dates</td></tr>
                       </table>
-  
+
                       <!-- if there are recurrence dates, the following table will show -->
                       <table cellspacing="0" class="invisible" id="bwCurrentRdates">
                         <tr>
@@ -1716,14 +1716,14 @@
                           <td></td>
                         </tr>
                       </table>
-  
+
                       <input type="hidden" name="exdates" value="" id="bwExdatesField" />
                       <!-- if there are no exception dates, the following table will show -->
                       <table cellspacing="0" class="invisible" id="bwCurrentExdatesNone">
                         <tr><th>Exception Dates</th></tr>
                         <tr><td>No exception dates</td></tr>
                       </table>
-  
+
                       <!-- if there are exception dates, the following table will show -->
                       <table cellspacing="0" class="invisible" id="bwCurrentExdates">
                         <tr>
@@ -1892,7 +1892,7 @@
             Categories:**
           </td>
           <td>
-            <xsl:if test="form/categories/preferred/category and /bedeworkadmin/creating='true'">
+            <xsl:if test="form/categories/preferred/category and /bedework/creating='true'">
               <input type="radio" name="categoryCheckboxes" value="preferred" checked="checked" onclick="changeClass('preferredCategoryCheckboxes','shown');changeClass('allCategoryCheckboxes','invisible');"/>show preferred
               <input type="radio" name="categoryCheckboxes" value="all" onclick="changeClass('preferredCategoryCheckboxes','invisible');changeClass('allCategoryCheckboxes','shown')"/>show all<br/>
               <table cellpadding="0" id="preferredCategoryCheckboxes">
@@ -1924,7 +1924,7 @@
               </table>
             </xsl:if>
             <table cellpadding="0" id="allCategoryCheckboxes">
-              <xsl:if test="form/categories/preferred/category and /bedeworkadmin/creating='true'">
+              <xsl:if test="form/categories/preferred/category and /bedework/creating='true'">
                 <xsl:attribute name="class">invisible</xsl:attribute>
               </xsl:if>
               <tr>
@@ -1933,7 +1933,7 @@
                   <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
                     <input type="checkbox" name="categoryKey">
                       <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="/bedeworkadmin/creating='true'">
+                      <xsl:if test="/bedework/creating='true'">
                         <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
                       </xsl:if>
@@ -1948,7 +1948,7 @@
                   <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
                     <input type="checkbox" name="categoryKey">
                       <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="/bedeworkadmin/creating='true'">
+                      <xsl:if test="/bedework/creating='true'">
                         <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
                       </xsl:if>
@@ -2035,7 +2035,7 @@
       <table border="0" id="submitTable">
         <tr>
           <xsl:choose>
-            <xsl:when test="/bedeworkadmin/creating='true'">
+            <xsl:when test="/bedework/creating='true'">
               <td>
                 <input type="submit" name="addEvent" value="Add Event"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
@@ -2077,10 +2077,10 @@
 
   <xsl:template name="byDayChkBoxList">
     <xsl:param name="name"/>
-    <xsl:for-each select="/bedeworkadmin/shortdaynames/val">
+    <xsl:for-each select="/bedework/shortdaynames/val">
       <xsl:variable name="pos" select="position()"/>
       <input type="checkbox">
-        <xsl:attribute name="value"><xsl:value-of select="/bedeworkadmin/recurdayvals/val[position() = $pos]"/></xsl:attribute>
+        <xsl:attribute name="value"><xsl:value-of select="/bedework/recurdayvals/val[position() = $pos]"/></xsl:attribute>
         <xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
       </input>
       <xsl:value-of select="."/>
@@ -2162,7 +2162,7 @@
     <div id="bwClock">
       <!-- Bedework 24-Hour Clock time selection widget
            used with resources/bwClock.js and resources/bwClock.css -->
-      <xsl:variable name="hour24" select="/bedeworkadmin/hour24"/><!-- true or false -->
+      <xsl:variable name="hour24" select="/bedework/hour24"/><!-- true or false -->
       <div id="bwClockClock">
         <img id="clockMap" src="{$resourcesRoot}/resources/clockMap.gif" width="368" height="368" border="0" alt="bwClock" usemap="#bwClockMap" />
       </div>
@@ -2296,8 +2296,8 @@
               <select name="tzid" id="rdateTzid" class="timezones">
                 <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                 <option value="-1">select timezone...</option>
-                <xsl:variable name="rdateTzId" select="/bedeworkadmin/rdates/tzid"/>
-                <xsl:for-each select="/bedeworkadmin/timezones/timezone">
+                <xsl:variable name="rdateTzId" select="/bedework/rdates/tzid"/>
+                <xsl:for-each select="/bedework/timezones/timezone">
                   <option>
                     <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
                     <xsl:if test="$rdateTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
@@ -2327,8 +2327,8 @@
               <th colspan="2">Recurrence Dates</th>
             </tr>
             <xsl:choose>
-              <xsl:when test="/bedeworkadmin/rdates/rdate">
-                <xsl:for-each select="/bedeworkadmin/rdates/rdate">
+              <xsl:when test="/bedework/rdates/rdate">
+                <xsl:for-each select="/bedework/rdates/rdate">
                   <tr>
                     <td>
                       <xsl:value-of select="longdate"/>
@@ -2373,8 +2373,8 @@
               </td>
             </tr>
             <xsl:choose>
-              <xsl:when test="/bedeworkadmin/exdates/exdate">
-                <xsl:for-each select="/bedeworkadmin/exdates/exdate">
+              <xsl:when test="/bedework/exdates/exdate">
+                <xsl:for-each select="/bedework/exdates/exdate">
                   <tr>
                     <td>
                       <xsl:value-of select="longdate"/>
@@ -2418,7 +2418,7 @@
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
 
     <xsl:choose>
-      <xsl:when test="/bedeworkadmin/page='deleteEventConfirm'">
+      <xsl:when test="/bedework/page='deleteEventConfirm'">
         <h2>Ok to delete this event?</h2>
         <p style="width: 400px;">Note: we do not encourage deletion of old but correct events; we prefer to keep
            old events for historical reasons.  Please remove only those events
@@ -2567,7 +2567,7 @@
     </table>
 
     <p>
-      <xsl:if test="/bedeworkadmin/canEdit = 'true' or /bedeworkadmin/userInfo/superUser = 'true'">
+      <xsl:if test="/bedework/canEdit = 'true' or /bedework/userInfo/superUser = 'true'">
         <input type="button" name="return" value="Edit event" onclick="javascript:location.replace('{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
       </xsl:if>
 
@@ -2591,7 +2591,7 @@
         <th>URL</th>
       </tr>
 
-      <xsl:for-each select="/bedeworkadmin/contacts/contact">
+      <xsl:for-each select="/bedework/contacts/contact">
         <tr>
           <td>
             <xsl:copy-of select="name" />
@@ -2626,7 +2626,7 @@
             Contact:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/name/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/name/*"/>
           </td>
         </tr>
         <tr>
@@ -2634,7 +2634,7 @@
             Contact Phone Number:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/phone/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/phone/*"/>
             <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
@@ -2643,7 +2643,7 @@
             Contact's URL:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/link/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/link/*"/>
             <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
@@ -2652,7 +2652,7 @@
             Contact Email Address:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/email/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/email/*"/>
             <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
@@ -2661,7 +2661,7 @@
       <table border="0" id="submitTable">
         <tr>
           <xsl:choose>
-            <xsl:when test="/bedeworkadmin/creating='true'">
+            <xsl:when test="/bedework/creating='true'">
               <td>
                 <input type="submit" name="addContact" value="Add Contact"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
@@ -2688,32 +2688,32 @@
   <xsl:template name="deleteContactConfirm">
     <h2>Ok to delete this contact?</h2>
     <p id="confirmButtons">
-      <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
+      <xsl:copy-of select="/bedework/formElements/*"/>
     </p>
 
     <table class="eventFormTable">
       <tr>
         <th>Name</th>
         <td>
-          <xsl:value-of select="/bedeworkadmin/contact/name" />
+          <xsl:value-of select="/bedework/contact/name" />
         </td>
       </tr>
       <tr>
         <th>Phone</th>
         <td>
-          <xsl:value-of select="/bedeworkadmin/contact/phone" />
+          <xsl:value-of select="/bedework/contact/phone" />
         </td>
       </tr>
       <tr>
         <th>Email</th>
         <td>
-          <xsl:value-of select="/bedeworkadmin/contact/email" />
+          <xsl:value-of select="/bedework/contact/email" />
         </td>
       </tr>
       <tr>
         <th>URL</th>
         <td>
-          <xsl:value-of select="/bedeworkadmin/contact/link" />
+          <xsl:value-of select="/bedework/contact/link" />
         </td>
       </tr>
     </table>
@@ -2734,7 +2734,7 @@
         <th>URL</th>
       </tr>
 
-      <xsl:for-each select="/bedeworkadmin/locations/location">
+      <xsl:for-each select="/bedework/locations/location">
         <tr>
           <td>
             <xsl:copy-of select="address/*"/>
@@ -2755,7 +2755,7 @@
 
   <xsl:template name="modLocation">
     <xsl:choose>
-      <xsl:when test="/bedeworkadmin/creating='true'">
+      <xsl:when test="/bedework/creating='true'">
         <h2>Add Location</h2>
       </xsl:when>
       <xsl:otherwise>
@@ -2770,7 +2770,7 @@
             Address:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/address/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/address/*"/>
           </td>
         </tr>
         <tr>
@@ -2778,7 +2778,7 @@
             Subaddress:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/subaddress/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/subaddress/*"/>
             <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
@@ -2787,7 +2787,7 @@
             Location's URL:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/link/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/link/*"/>
             <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
@@ -2796,7 +2796,7 @@
       <table border="0" id="submitTable">
         <tr>
           <xsl:choose>
-            <xsl:when test="/bedeworkadmin/creating='true'">
+            <xsl:when test="/bedework/creating='true'">
               <td>
                 <input type="submit" name="addLocation" value="Add Location"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
@@ -2822,7 +2822,7 @@
   <xsl:template name="deleteLocationConfirm">
     <h2>Ok to delete this location?</h2>
     <p id="confirmButtons">
-      <xsl:copy-of select="/bedeworkadmin/formElements/*"/>
+      <xsl:copy-of select="/bedework/formElements/*"/>
     </p>
 
     <table class="eventFormTable">
@@ -2831,7 +2831,7 @@
             Address:
           </td>
         <td>
-          <xsl:value-of select="/bedeworkadmin/location/address"/>
+          <xsl:value-of select="/bedework/location/address"/>
         </td>
       </tr>
       <tr>
@@ -2839,7 +2839,7 @@
             Subaddress:
           </td>
         <td>
-          <xsl:value-of select="/bedeworkadmin/location/subaddress"/>
+          <xsl:value-of select="/bedework/location/subaddress"/>
         </td>
       </tr>
       <tr>
@@ -2847,9 +2847,9 @@
             Location's URL:
           </td>
         <td>
-          <xsl:variable name="link" select="/bedeworkadmin/location/link"/>
+          <xsl:variable name="link" select="/bedework/location/link"/>
           <a href="{$link}">
-            <xsl:value-of select="/bedeworkadmin/location/link"/>
+            <xsl:value-of select="/bedework/location/link"/>
           </a>
         </td>
       </tr>
@@ -2870,7 +2870,7 @@
         <th>Description</th>
       </tr>
 
-      <xsl:for-each select="/bedeworkadmin/categories/category">
+      <xsl:for-each select="/bedework/categories/category">
         <xsl:variable name="categoryKey" select="normalize-space(keyword)"/>
         <tr>
           <td>
@@ -2888,7 +2888,7 @@
 
   <xsl:template name="modCategory">
     <xsl:choose>
-      <xsl:when test="/bedeworkadmin/creating='true'">
+      <xsl:when test="/bedework/creating='true'">
         <h2>Add Category</h2>
         <form action="{$category-update}" method="post">
           <table id="eventFormTable">
@@ -2930,7 +2930,7 @@
             Keyword:
             </td>
               <td>
-                <xsl:variable name="keyword" select="normalize-space(/bedeworkadmin/currentCategory/category/keyword)"/>
+                <xsl:variable name="keyword" select="normalize-space(/bedework/currentCategory/category/keyword)"/>
                 <input type="text" name="categoryWord.value" value="{$keyword}" size="40"/>
               </td>
             </tr>
@@ -2940,7 +2940,7 @@
             </td>
               <td>
                 <textarea name="categoryDesc.value" rows="3" cols="60">
-                  <xsl:value-of select="normalize-space(/bedeworkadmin/currentCategory/category/desc)"/>
+                  <xsl:value-of select="normalize-space(/bedework/currentCategory/category/desc)"/>
                 </textarea>
               </td>
             </tr>
@@ -2975,7 +2975,7 @@
           Keyword:
         </td>
         <td>
-          <xsl:value-of select="/bedeworkadmin/currentCategory/category/keyword"/>
+          <xsl:value-of select="/bedework/currentCategory/category/keyword"/>
         </td>
       </tr>
       <tr>
@@ -2983,7 +2983,7 @@
           Description:
         </td>
         <td>
-          <xsl:value-of select="/bedeworkadmin/currentCategory/category/desc"/>
+          <xsl:value-of select="/bedework/currentCategory/category/desc"/>
         </td>
       </tr>
     </table>
@@ -3002,7 +3002,7 @@
           <h3>Public calendars</h3>
           <ul id="calendarTree">
             <xsl:choose>
-              <xsl:when test="/bedeworkadmin/page='calendarDescriptions' or /bedeworkadmin/page='displayCalendar'">
+              <xsl:when test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
                 <xsl:apply-templates select="calendar" mode="listForDisplay"/>
               </xsl:when>
               <xsl:otherwise>
@@ -3013,23 +3013,23 @@
         </td>
         <td class="calendarContent">
           <xsl:choose>
-            <xsl:when test="/bedeworkadmin/page='calendarList' or /bedeworkadmin/page='calendarReferenced'">
+            <xsl:when test="/bedework/page='calendarList' or /bedework/page='calendarReferenced'">
               <xsl:call-template name="calendarList"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='calendarDescriptions'">
+            <xsl:when test="/bedework/page='calendarDescriptions'">
               <xsl:call-template name="calendarDescriptions"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='displayCalendar'">
-              <xsl:apply-templates select="/bedeworkadmin/currentCalendar" mode="displayCalendar"/>
+            <xsl:when test="/bedework/page='displayCalendar'">
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="displayCalendar"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/page='deleteCalendarConfirm'">
-              <xsl:apply-templates select="/bedeworkadmin/currentCalendar" mode="deleteCalendarConfirm"/>
+            <xsl:when test="/bedework/page='deleteCalendarConfirm'">
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="deleteCalendarConfirm"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/creating='true'">
-              <xsl:apply-templates select="/bedeworkadmin/currentCalendar" mode="addCalendar"/>
+            <xsl:when test="/bedework/creating='true'">
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="addCalendar"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:apply-templates select="/bedeworkadmin/currentCalendar" mode="modCalendar"/>
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="modCalendar"/>
             </xsl:otherwise>
           </xsl:choose>
         </td>
@@ -3322,7 +3322,7 @@
     <!--<div id="sharingBox">
       <xsl:variable name="calPath" select="path"/>
       <xsl:variable name="encodedCalPath" select="encodedPath"/>
-      <xsl:if test="currentAccess/current-user-privilege-set/privilege/read-acl or /bedeworkadmin/userInfo/superUser='true'">
+      <xsl:if test="currentAccess/current-user-privilege-set/privilege/read-acl or /bedework/userInfo/superUser='true'">
         <h3>Sharing</h3>
         <table class="common" id="sharing">
           <tr>
@@ -3355,13 +3355,13 @@
                   Not
                 </xsl:if>
                 <xsl:choose>
-                  <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">
+                  <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">
                     <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/>
+                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/>
                   </xsl:when>
-                  <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">
+                  <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">
                     <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
-                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/>
+                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/>
                   </xsl:when>
                   <xsl:when test="invert and $who='owner'">
                     <xsl:value-of select="$who"/> (other)
@@ -3400,8 +3400,8 @@
                     local:
                     <xsl:variable name="whoType">
                       <xsl:choose>
-                        <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">user</xsl:when>
-                        <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">group</xsl:when>
+                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
+                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
                         <xsl:when test="$who='authenticated'">auth</xsl:when>
                         <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
                         <xsl:when test="invert/principal/property/owner">other</xsl:when>
@@ -3412,8 +3412,8 @@
                     </xsl:variable>
                     <xsl:variable name="shortWho">
                       <xsl:choose>
-                        <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
+                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
+                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
                         <xsl:otherwise></xsl:otherwise>--> <!-- if not user or group, send no who -->
         <!--              </xsl:choose>
                     </xsl:variable>
@@ -3437,7 +3437,7 @@
         </table>
       </xsl:if>
 
-      <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-acl or /bedeworkadmin/userInfo/superUser='true'">
+      <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-acl or /bedework/userInfo/superUser='true'">
         <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" method="post">
           <input type="hidden" name="calPath" value="{$calPath}"/>
           <table cellspacing="0" id="shareFormTable" class="common">
@@ -3644,7 +3644,7 @@
       <h2>Select a calendar</h2>
       <!--<form name="toggleCals" action="{$event-selectCalForEvent}" method="post">
         <xsl:choose>
-          <xsl:when test="/bedeworkadmin/appvar[key='showAllCalsForEvent']/value = 'true'">
+          <xsl:when test="/bedework/appvar[key='showAllCalsForEvent']/value = 'true'">
             <input type="radio" name="setappvar" value="showAllCalsForEvent(false)" onclick="submit()"/>
             show only writable calendars
             <input type="radio" name="setappvar" value="showAllCalsForEvent(true)" checked="checked" onclick="submit()"/>
@@ -3660,12 +3660,12 @@
       </form>-->
       <h4>Calendars</h4>
       <ul id="calendarTree">
-        <xsl:apply-templates select="/bedeworkadmin/calendars/calendar" mode="selectCalForEventCalTree"/>
+        <xsl:apply-templates select="/bedework/calendars/calendar" mode="selectCalForEventCalTree"/>
       </ul>
     </div>
   </xsl:template>
 
-  <xsl:template match="calendar" mode="selectCalForEventCalTree"> 
+  <xsl:template match="calendar" mode="selectCalForEventCalTree">
     <xsl:variable name="calPath" select="path"/><!-- not the encodedPath when put in a form - otherwise it gets double encoded -->
       <xsl:variable name="calDisplay" select="path"/>
     <xsl:variable name="itemClass">
@@ -3708,7 +3708,7 @@
           <xsl:apply-templates select="calendar" mode="selectCalForEventCalTree"/>
         </ul>
       </xsl:if>
-    </li>  
+    </li>
   </xsl:template>
 
   <xsl:template name="calendarMove">
@@ -3721,31 +3721,31 @@
             <tr>
               <th>Current Path:</th>
               <td>
-                <xsl:value-of select="/bedeworkadmin/currentCalendar/path"/>
+                <xsl:value-of select="/bedework/currentCalendar/path"/>
               </td>
             </tr>
             <tr>
               <th>Name:</th>
               <td>
-                <xsl:value-of select="/bedeworkadmin/currentCalendar/name"/>
+                <xsl:value-of select="/bedework/currentCalendar/name"/>
               </td>
             </tr>
             <tr>
               <th>Mailing List ID:</th>
               <td>
-                <xsl:value-of select="/bedeworkadmin/currentCalendar/mailListId"/>
+                <xsl:value-of select="/bedework/currentCalendar/mailListId"/>
               </td>
             </tr>
             <tr>
               <th>Summary:</th>
               <td>
-                <xsl:value-of select="/bedeworkadmin/currentCalendar/summary"/>
+                <xsl:value-of select="/bedework/currentCalendar/summary"/>
               </td>
             </tr>
             <tr>
               <th>Description:</th>
               <td>
-                <xsl:value-of select="/bedeworkadmin/currentCalendar/desc"/>
+                <xsl:value-of select="/bedework/currentCalendar/desc"/>
               </td>
             </tr>
           </table>
@@ -3753,7 +3753,7 @@
         <td class="bwCalsForMove">
           <p>Select a new parent folder:</p>
           <ul id="calendarTree">
-            <xsl:apply-templates select="/bedeworkadmin/calendars/calendar" mode="listForMove"/>
+            <xsl:apply-templates select="/bedework/calendars/calendar" mode="listForMove"/>
           </ul>
         </td>
       </tr>
@@ -3847,7 +3847,7 @@
           <h5>
             <span id="accessRightsToggle">
               <xsl:choose>
-                <xsl:when test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='basic'">
+                <xsl:when test="/bedework/appvar[key='accessRightsToggle']/value='basic'">
                   <input type="radio" name="setappvar" value="accessRightsToggle(basic)" checked="checked" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
                   <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
                 </xsl:when>
@@ -3863,7 +3863,7 @@
           <!-- Advanced Access Rights: -->
           <!-- the "how" field is set by iterating over the howItems below -->
           <table id="howTable" class="visible" cellspacing="0">
-            <xsl:if test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='basic'">
+            <xsl:if test="/bedework/appvar[key='accessRightsToggle']/value='basic'">
               <xsl:attribute name="class">invisible</xsl:attribute>
             </xsl:if>
             <tr>
@@ -4049,7 +4049,7 @@
           <!-- Simple Access Rights: -->
           <!-- the "how" field is set by getting the selected basicHowItem -->
           <ul id="howList" class="invisible">
-            <xsl:if test="/bedeworkadmin/appvar[key='accessRightsToggle']/value='basic'">
+            <xsl:if test="/bedework/appvar[key='accessRightsToggle']/value='basic'">
               <xsl:attribute name="class">visible</xsl:attribute>
             </xsl:if>
             <li>
@@ -4130,8 +4130,8 @@
         </xsl:variable>
         <xsl:variable name="whoType">
           <xsl:choose>
-            <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">user</xsl:when>
-            <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">group</xsl:when>
+            <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
+            <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
             <xsl:when test="$who='authenticated'">auth</xsl:when>
             <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
             <xsl:when test="$who='all'">all</xsl:when>
@@ -4143,8 +4143,8 @@
         </xsl:variable>
         <xsl:variable name="shortWho">
           <xsl:choose>
-            <xsl:when test="$whoType='user'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
-            <xsl:when test="$whoType='group'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
+            <xsl:when test="$whoType='user'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
+            <xsl:when test="$whoType='group'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
             <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
           </xsl:choose>
         </xsl:variable>
@@ -4227,15 +4227,15 @@
             subscribe to an external calendar</a>.-->
           </p>
           <ul id="calendarTree">
-            <xsl:apply-templates select="/bedeworkadmin/subscriptions/subscribe/calendars/calendar" mode="subscribe"/>
+            <xsl:apply-templates select="/bedework/subscriptions/subscribe/calendars/calendar" mode="subscribe"/>
           </ul>
         </td>
         <td class="subs">
           <xsl:choose>
-            <xsl:when test="/bedeworkadmin/page='subscriptions'">
+            <xsl:when test="/bedework/page='subscriptions'">
               <xsl:call-template name="subscriptionList"/>
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/creating='true'">
+            <xsl:when test="/bedework/creating='true'">
               <xsl:apply-templates select="subscription" mode="addSubscription"/>
             </xsl:when>
             <xsl:otherwise>
@@ -4312,7 +4312,7 @@
             <input type="radio" value="false" name="subscription.display"/> no
           </td>
         </tr>
-        <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
+        <xsl:if test="/bedework/userInfo/superUser='true'">
           <tr>
             <th>Unremovable:</th>
             <td>
@@ -4404,7 +4404,7 @@
             </xsl:choose>
           </td>
         </tr>
-        <xsl:if test="/bedeworkadmin/userInfo/superUser='true'">
+        <xsl:if test="/bedework/userInfo/superUser='true'">
           <tr>
             <th>Unremovable:</th>
             <td>
@@ -4552,7 +4552,7 @@
 
   <xsl:template name="modView">
     <h2>Update View</h2>
-    <xsl:variable name="viewName" select="/bedeworkadmin/views/view/name"/>
+    <xsl:variable name="viewName" select="/bedework/views/view/name"/>
     <h3 class="viewName">
       <xsl:value-of select="$viewName"/>
     </h3>
@@ -4562,9 +4562,9 @@
           <h3>Available Subscriptions:</h3>
 
           <table class="subscriptionsListSubs">
-            <xsl:for-each select="/bedeworkadmin/subscriptions/subscription">
+            <xsl:for-each select="/bedework/subscriptions/subscription">
               <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
-              <xsl:if test="not(/bedeworkadmin/views/view/subscriptions/subscription/name=name)">
+              <xsl:if test="not(/bedework/views/view/subscriptions/subscription/name=name)">
                 <tr>
                   <td>
                     <xsl:value-of select="name"/>
@@ -4585,7 +4585,7 @@
         <td class="view">
           <h3>Active Subscriptions:</h3>
           <table class="subscriptionsListView">
-            <xsl:for-each select="/bedeworkadmin/views/view/subscriptions/subscription">
+            <xsl:for-each select="/bedework/views/view/subscriptions/subscription">
               <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
               <tr>
                 <td class="arrows">
@@ -4624,7 +4624,7 @@
   <xsl:template name="deleteViewConfirm">
     <h2>Remove View?</h2>
 
-    <xsl:variable name="viewName" select="/bedeworkadmin/views/view/name"/>
+    <xsl:variable name="viewName" select="/bedework/views/view/name"/>
     <p>The following view will be removed. <em>Be forewarned: if caching is
     enabled, removing views from a
     production system can cause the public interface to throw errors until the
@@ -4717,7 +4717,7 @@
         <tr>
           <th>System name:</th>
           <td>
-            <xsl:variable name="sysname" select="/bedeworkadmin/system/name"/>
+            <xsl:variable name="sysname" select="/bedework/system/name"/>
             <xsl:value-of select="$sysname"/>
             <div class="desc">
               Name for this system. Cannot be changed.
@@ -4727,14 +4727,14 @@
         <tr>
           <th>Default timezone:</th>
           <td>
-            <xsl:variable name="tzid" select="/bedeworkadmin/system/tzid"/>
+            <xsl:variable name="tzid" select="/bedework/system/tzid"/>
 
             <select name="tzid">
               <option value="-1">select timezone...</option>
-              <xsl:for-each select="/bedeworkadmin/timezones/timezone">
+              <xsl:for-each select="/bedework/timezones/timezone">
                 <option>
                   <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                  <xsl:if test="/bedeworkadmin/system/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                  <xsl:if test="/bedework/system/tzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
                   <xsl:value-of select="name"/>
                 </option>
               </xsl:for-each>
@@ -4751,11 +4751,11 @@
             <select name="">
               <option value="-1">select preference...</option>
               <option value="true">
-                <xsl:if test="/bedeworkadmin/system/NEEDPARAM = 'true'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                <xsl:if test="/bedework/system/NEEDPARAM = 'true'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
                 Use 24 hour clock/time
               </option>
               <option value="false">
-                <xsl:if test="/bedeworkadmin/system/NEEDPARAM = 'false'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                <xsl:if test="/bedework/system/NEEDPARAM = 'false'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
                 Use 12 Hour clock/time + am/pm
               </option>
             </select>
@@ -4767,7 +4767,7 @@
         <tr>
           <th>System id:</th>
           <td>
-            <xsl:variable name="systemid" select="/bedeworkadmin/system/systemid"/>
+            <xsl:variable name="systemid" select="/bedework/system/systemid"/>
             <xsl:value-of select="$systemid"/>
             <div class="desc">
               System id used when building uids and identifying users. Should not be changed.
@@ -4777,7 +4777,7 @@
         <tr>
           <th>Public Calendar Root:</th>
           <td>
-            <xsl:variable name="publicCalendarRoot" select="/bedeworkadmin/system/publicCalendarRoot"/>
+            <xsl:variable name="publicCalendarRoot" select="/bedework/system/publicCalendarRoot"/>
             <xsl:value-of select="$publicCalendarRoot"/>
             <div class="desc">
               Name for public calendars root directory. Should not be changed.
@@ -4787,7 +4787,7 @@
         <tr>
           <th>User Calendar Root:</th>
           <td>
-            <xsl:variable name="userCalendarRoot" select="/bedeworkadmin/system/userCalendarRoot"/>
+            <xsl:variable name="userCalendarRoot" select="/bedework/system/userCalendarRoot"/>
             <xsl:value-of select="$userCalendarRoot"/>
             <div class="desc">
               Name for user calendars root directory. Should not be changed.
@@ -4797,7 +4797,7 @@
         <tr>
           <th>User Calendar Default name:</th>
           <td>
-            <xsl:variable name="userDefaultCalendar" select="/bedeworkadmin/system/userDefaultCalendar"/>
+            <xsl:variable name="userDefaultCalendar" select="/bedework/system/userDefaultCalendar"/>
             <input value="{$userDefaultCalendar}" name="userDefaultCalendar" />
             <div class="desc">
               Default name for user calendar. Used when initialising user. Possibly can be changed.
@@ -4807,7 +4807,7 @@
         <tr>
           <th>Trash Calendar Default name:</th>
           <td>
-            <xsl:variable name="defaultTrashCalendar" select="/bedeworkadmin/system/defaultTrashCalendar"/>
+            <xsl:variable name="defaultTrashCalendar" select="/bedework/system/defaultTrashCalendar"/>
             <input value="{$defaultTrashCalendar}" name="defaultTrashCalendar" />
             <div class="desc">
               Default name for user trash calendar. Used when initialising user. Possibly can be changed.
@@ -4817,7 +4817,7 @@
         <tr>
           <th>User Inbox Default name:</th>
           <td>
-            <xsl:variable name="userInbox" select="/bedeworkadmin/system/userInbox"/>
+            <xsl:variable name="userInbox" select="/bedework/system/userInbox"/>
             <input value="{$userInbox}" name="userInbox" />
             <div class="desc">
               Default name for user inbox. Used when initialising user. Possibly can be changed.
@@ -4827,7 +4827,7 @@
         <tr>
           <th>User Outbox Default name:</th>
           <td>
-            <xsl:variable name="userOutbox" select="/bedeworkadmin/system/userOutbox"/>
+            <xsl:variable name="userOutbox" select="/bedework/system/userOutbox"/>
             <input value="{$userOutbox}" name="userOutbox" />
             <div class="desc">
               Default name for user outbox. Used when initialising user. Possibly can be changed.
@@ -4837,7 +4837,7 @@
         <tr>
           <th>User Deleted Calendar Default name:</th>
           <td>
-            <xsl:variable name="deletedCalendar" select="/bedeworkadmin/system/deletedCalendar"/>
+            <xsl:variable name="deletedCalendar" select="/bedework/system/deletedCalendar"/>
             <input value="{$deletedCalendar}" name="deletedCalendar" />
             <div class="desc">
               Default name for user calendar used to hold deleted items. Used when initialising user. Possibly can be changed.
@@ -4847,7 +4847,7 @@
         <tr>
           <th>User Busy Calendar Default name:</th>
           <td>
-            <xsl:variable name="busyCalendar" select="/bedeworkadmin/system/busyCalendar"/>
+            <xsl:variable name="busyCalendar" select="/bedework/system/busyCalendar"/>
             <input value="{$busyCalendar}" name="busyCalendar" />
             <div class="desc">
               Default name for user busy time calendar. Used when initialising user. Possibly can be changed.
@@ -4857,7 +4857,7 @@
         <tr>
           <th>Default user view name:</th>
           <td>
-            <xsl:variable name="defaultViewName" select="/bedeworkadmin/system/defaultUserViewName"/>
+            <xsl:variable name="defaultViewName" select="/bedework/system/defaultUserViewName"/>
             <input value="{$defaultViewName}" name="defaultUserViewName" />
             <div class="desc">
               Name used for default view created when a new user is added
@@ -4867,7 +4867,7 @@
         <tr>
           <th>Http connections per user:</th>
           <td>
-            <xsl:variable name="httpPerUser" select="/bedeworkadmin/system/httpConnectionsPerUser"/>
+            <xsl:variable name="httpPerUser" select="/bedework/system/httpConnectionsPerUser"/>
             <input value="{$httpPerUser}" name="httpConnectionsPerUser" />
             <div class="desc">
             </div>
@@ -4876,7 +4876,7 @@
         <tr>
           <th>Http connections per host:</th>
           <td>
-            <xsl:variable name="httpPerHost" select="/bedeworkadmin/system/httpConnectionsPerHost"/>
+            <xsl:variable name="httpPerHost" select="/bedework/system/httpConnectionsPerHost"/>
             <input value="{$httpPerHost}" name="httpConnectionsPerHost" />
             <div class="desc">
             </div>
@@ -4885,7 +4885,7 @@
         <tr>
           <th>Total http connections:</th>
           <td>
-            <xsl:variable name="httpTotal" select="/bedeworkadmin/system/httpConnections"/>
+            <xsl:variable name="httpTotal" select="/bedework/system/httpConnections"/>
             <input value="{$httpTotal}" name="httpConnections" />
             <div class="desc">
             </div>
@@ -4894,7 +4894,7 @@
         <tr>
           <th>Maximum length of public event description:</th>
           <td>
-            <xsl:variable name="maxPublicDescriptionLength" select="/bedeworkadmin/system/maxPublicDescriptionLength"/>
+            <xsl:variable name="maxPublicDescriptionLength" select="/bedework/system/maxPublicDescriptionLength"/>
             <input value="{$maxPublicDescriptionLength}" name="maxPublicDescriptionLength" />
             <div class="desc">
             </div>
@@ -4903,7 +4903,7 @@
         <tr>
           <th>Maximum length of user event description:</th>
           <td>
-            <xsl:variable name="maxUserDescriptionLength" select="/bedeworkadmin/system/maxUserDescriptionLength"/>
+            <xsl:variable name="maxUserDescriptionLength" select="/bedework/system/maxUserDescriptionLength"/>
             <input value="{$maxUserDescriptionLength}" name="maxUserDescriptionLength" />
             <div class="desc">
             </div>
@@ -4912,7 +4912,7 @@
         <tr>
           <th>Maximum size of a user entity:</th>
           <td>
-            <xsl:variable name="maxUserEntitySize" select="/bedeworkadmin/system/maxUserEntitySize"/>
+            <xsl:variable name="maxUserEntitySize" select="/bedework/system/maxUserEntitySize"/>
             <input value="{$maxUserEntitySize}" name="maxUserEntitySize" />
             <div class="desc">
             </div>
@@ -4921,7 +4921,7 @@
         <tr>
           <th>Default user quota:</th>
           <td>
-            <xsl:variable name="defaultUserQuota" select="/bedeworkadmin/system/defaultUserQuota"/>
+            <xsl:variable name="defaultUserQuota" select="/bedework/system/defaultUserQuota"/>
             <input value="{$defaultUserQuota}" name="defaultUserQuota" />
             <div class="desc">
             </div>
@@ -4930,7 +4930,7 @@
         <tr>
           <th>Max recurring instances:</th>
           <td>
-            <xsl:variable name="maxInstances" select="/bedeworkadmin/system/maxInstances"/>
+            <xsl:variable name="maxInstances" select="/bedework/system/maxInstances"/>
             <input value="{$maxInstances}" name="maxInstances" />
             <div class="desc">
               Used to limit recurring events to reasonable numbers of instances.
@@ -4940,7 +4940,7 @@
         <tr>
           <th>Max recurring years:</th>
           <td>
-            <xsl:variable name="maxYears" select="/bedeworkadmin/system/maxYears"/>
+            <xsl:variable name="maxYears" select="/bedework/system/maxYears"/>
             <input value="{$maxYears}" name="maxYears" />
             <div class="desc">
               Used to limit recurring events to reasonable period of time.
@@ -4950,7 +4950,7 @@
         <tr>
           <th>User authorisation class:</th>
           <td>
-            <xsl:variable name="userauthClass" select="/bedeworkadmin/system/userauthClass"/>
+            <xsl:variable name="userauthClass" select="/bedework/system/userauthClass"/>
             <input value="{$userauthClass}" name="userauthClass" class="wide"/>
             <div class="desc">
               Class used to determine authorisation (not authentication) for
@@ -4961,7 +4961,7 @@
         <tr>
           <th>Mailer class:</th>
           <td>
-            <xsl:variable name="mailerClass" select="/bedeworkadmin/system/mailerClass"/>
+            <xsl:variable name="mailerClass" select="/bedework/system/mailerClass"/>
             <input value="{$mailerClass}" name="mailerClass" class="wide"/>
             <div class="desc">
               Class used to mail events. Should probably only be changed on rebuild.
@@ -4971,7 +4971,7 @@
         <tr>
           <th>Admin groups class:</th>
           <td>
-            <xsl:variable name="admingroupsClass" select="/bedeworkadmin/system/admingroupsClass"/>
+            <xsl:variable name="admingroupsClass" select="/bedework/system/admingroupsClass"/>
             <input value="{$admingroupsClass}" name="admingroupsClass" class="wide"/>
             <div class="desc">
               Class used to query and maintain groups for
@@ -4982,7 +4982,7 @@
         <tr>
           <th>User groups class:</th>
           <td>
-            <xsl:variable name="usergroupsClass" select="/bedeworkadmin/system/usergroupsClass"/>
+            <xsl:variable name="usergroupsClass" select="/bedework/system/usergroupsClass"/>
             <input value="{$usergroupsClass}" name="usergroupsClass" class="wide"/>
             <div class="desc">
               Class used to query and maintain groups for
@@ -4993,7 +4993,7 @@
         <tr>
           <th>Directory browsing disallowed:</th>
           <td>
-            <xsl:variable name="directoryBrowsingDisallowed" select="/bedeworkadmin/system/directoryBrowsingDisallowed"/>
+            <xsl:variable name="directoryBrowsingDisallowed" select="/bedework/system/directoryBrowsingDisallowed"/>
             <input value="{$directoryBrowsingDisallowed}" name="directoryBrowsingDisallowed" />
             <div class="desc">
               True if the server hosting the xsl disallows directory browsing.
@@ -5003,7 +5003,7 @@
         <tr>
           <th>Index root:</th>
           <td>
-            <xsl:variable name="indexRoot" select="/bedeworkadmin/system/indexRoot"/>
+            <xsl:variable name="indexRoot" select="/bedework/system/indexRoot"/>
             <input value="{$indexRoot}" name="indexRoot" class="wide"/>
             <div class="desc">
               Root for the event indexes. Should only be changed if the indexes are moved/copied
@@ -5160,7 +5160,7 @@
     <!--<div id="sharingBox">
       <xsl:variable name="calPath" select="path"/>
       <xsl:variable name="encodedCalPath" select="encodedPath"/>
-      <xsl:if test="currentAccess/current-user-privilege-set/privilege/read-acl or /bedeworkadmin/userInfo/superUser='true'">
+      <xsl:if test="currentAccess/current-user-privilege-set/privilege/read-acl or /bedework/userInfo/superUser='true'">
         <h3>Manage suite administrators</h3>
         <table class="common" id="sharing">
           <tr>
@@ -5193,13 +5193,13 @@
                   Not
                 </xsl:if>
                 <xsl:choose>
-                  <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">
+                  <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">
                     <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/>
+                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/>
                   </xsl:when>
-                  <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">
+                  <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">
                     <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
-                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/>
+                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/>
                   </xsl:when>
                   <xsl:when test="invert and $who='owner'">
                     <xsl:value-of select="$who"/> (other)
@@ -5238,8 +5238,8 @@
                     local:
                     <xsl:variable name="whoType">
                       <xsl:choose>
-                        <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)">user</xsl:when>
-                        <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)">group</xsl:when>
+                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
+                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
                         <xsl:when test="$who='authenticated'">auth</xsl:when>
                         <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
                         <xsl:when test="invert/principal/property/owner">other</xsl:when>
@@ -5250,8 +5250,8 @@
                     </xsl:variable>
                     <xsl:variable name="shortWho">
                       <xsl:choose>
-                        <xsl:when test="contains($who,/bedeworkadmin/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/userPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:when test="contains($who,/bedeworkadmin/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedeworkadmin/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
+                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
+                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
                         <xsl:otherwise></xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
@@ -5275,7 +5275,7 @@
         </table>
       </xsl:if>
 
-      <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-acl or /bedeworkadmin/userInfo/superUser='true'">
+      <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-acl or /bedework/userInfo/superUser='true'">
         <form name="calsuiteShareForm" action="{$calsuite-setAccess}" id="shareForm" method="post">
           <input type="hidden" name="calSuiteName" value="{$calSuiteName}"/>
           <table cellspacing="0" id="shareFormTable" class="common">
@@ -5351,7 +5351,7 @@
             Calendar Suite:
           </td>
           <td>
-            <xsl:value-of select="/bedeworkadmin/currentCalSuite/name"/>
+            <xsl:value-of select="/bedework/currentCalSuite/name"/>
           </td>
         </tr>
         <tr>
@@ -5359,7 +5359,7 @@
             Preferred view:
           </td>
           <td>
-            <xsl:variable name="preferredView" select="/bedeworkadmin/prefs/preferredView"/>
+            <xsl:variable name="preferredView" select="/bedework/prefs/preferredView"/>
             <input type="text" name="preferredView" value="{$preferredView}" size="40"/>
           </td>
         </tr>
@@ -5368,7 +5368,7 @@
             Preferred view period:
           </td>
           <td>
-            <xsl:variable name="preferredViewPeriod" select="/bedeworkadmin/prefs/preferredViewPeriod"/>
+            <xsl:variable name="preferredViewPeriod" select="/bedework/prefs/preferredViewPeriod"/>
             <select name="viewPeriod">
               <!-- picking the selected item could be done with javascript. for
                    now, this will do.  -->
@@ -5420,7 +5420,7 @@
             Skin name:
           </td>
           <td>
-            <xsl:variable name="skinName" select="/bedeworkadmin/prefs/skinName"/>
+            <xsl:variable name="skinName" select="/bedework/prefs/skinName"/>
             <input type="text" name="skin" value="{$skinName}" size="40"/>
           </td>
         </tr>
@@ -5429,7 +5429,7 @@
             Skin style:
           </td>
           <td>
-            <xsl:variable name="skinStyle" select="/bedeworkadmin/prefs/skinStyle"/>
+            <xsl:variable name="skinStyle" select="/bedework/prefs/skinStyle"/>
             <input type="text" name="skinStyle" value="{$skinStyle}" size="40"/>
           </td>
         </tr>
@@ -5478,7 +5478,7 @@
         <th></th>
       </tr>
 
-      <xsl:for-each select="bedeworkadmin/authUsers/authUser">
+      <xsl:for-each select="/bedework/authUsers/authUser">
         <!--<xsl:sort select="account" order="ascending" case-order="upper-first"/>-->
         <tr>
           <td>
@@ -5508,7 +5508,7 @@
 
   <xsl:template name="modAuthUser">
     <h2>Update Administrator</h2>
-    <xsl:variable name="modAuthUserAction" select="/bedeworkadmin/formElements/form/@action"/>
+    <xsl:variable name="modAuthUserAction" select="/bedework/formElements/form/@action"/>
     <form action="{$modAuthUserAction}" method="post">
       <table id="eventFormTable">
         <tr>
@@ -5516,7 +5516,7 @@
             Account:
           </td>
           <td>
-            <xsl:value-of select="/bedeworkadmin/formElements/form/account"/>
+            <xsl:value-of select="/bedework/formElements/form/account"/>
           </td>
         </tr>
         <tr>
@@ -5524,7 +5524,7 @@
             Alerts:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/alerts/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/alerts/*"/>
           </td>
         </tr>
         <tr>
@@ -5532,7 +5532,7 @@
             Public Events:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/publicEvents/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/publicEvents/*"/>
           </td>
         </tr>
         <tr>
@@ -5540,7 +5540,7 @@
             Super User:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/superUser/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/superUser/*"/>
           </td>
         </tr>
         <!--<tr>
@@ -5548,7 +5548,7 @@
             Email:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/email/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/email/*"/>
             <span class="fieldInfo"></span>
           </td>
         </tr>
@@ -5557,7 +5557,7 @@
             Phone:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/phone/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/phone/*"/>
             <span class="fieldInfo"></span>
           </td>
         </tr>
@@ -5566,7 +5566,7 @@
             Department:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/dept/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/dept/*"/>
             <span class="fieldInfo"></span>
           </td>
         </tr>
@@ -5575,7 +5575,7 @@
             Last name:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/lastName/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/lastName/*"/>
             <span class="fieldInfo"></span>
           </td>
         </tr>
@@ -5584,7 +5584,7 @@
             First name:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/firstName/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/firstName/*"/>
             <span class="fieldInfo"></span>
           </td>
         </tr>-->
@@ -5607,8 +5607,8 @@
             User:
           </td>
           <td>
-            <xsl:value-of select="/bedeworkadmin/prefs/user"/>
-            <xsl:variable name="user" select="/bedeworkadmin/prefs/user"/>
+            <xsl:value-of select="/bedework/prefs/user"/>
+            <xsl:variable name="user" select="/bedework/prefs/user"/>
             <input type="hidden" name="user" value="{$user}"/>
           </td>
         </tr>
@@ -5617,7 +5617,7 @@
             Preferred view:
           </td>
           <td>
-            <xsl:variable name="preferredView" select="/bedeworkadmin/prefs/preferredView"/>
+            <xsl:variable name="preferredView" select="/bedework/prefs/preferredView"/>
             <input type="text" name="preferredView" value="{$preferredView}" size="40"/>
           </td>
         </tr>
@@ -5626,7 +5626,7 @@
             Preferred view period:
           </td>
           <td>
-            <xsl:variable name="preferredViewPeriod" select="/bedeworkadmin/prefs/preferredViewPeriod"/>
+            <xsl:variable name="preferredViewPeriod" select="/bedework/prefs/preferredViewPeriod"/>
             <select name="viewPeriod">
               <!-- picking the selected item could be done with javascript. for
                    now, this will do.  -->
@@ -5678,7 +5678,7 @@
             Skin name:
           </td>
           <td>
-            <xsl:variable name="skinName" select="/bedeworkadmin/prefs/skinName"/>
+            <xsl:variable name="skinName" select="/bedework/prefs/skinName"/>
             <input type="text" name="skin" value="{$skinName}" size="40"/>
           </td>
         </tr>
@@ -5687,7 +5687,7 @@
             Skin style:
           </td>
           <td>
-            <xsl:variable name="skinStyle" select="/bedeworkadmin/prefs/skinStyle"/>
+            <xsl:variable name="skinStyle" select="/bedework/prefs/skinStyle"/>
             <input type="text" name="skinStyle" value="{$skinStyle}" size="40"/>
           </td>
         </tr>
@@ -5705,7 +5705,7 @@
     <h2>Modify Groups</h2>
     <form name="adminGroupMembersForm" method="post" action="{$admingroup-initUpdate}">
       <xsl:choose>
-        <xsl:when test="/bedeworkadmin/groups/showMembers='true'">
+        <xsl:when test="/bedework/groups/showMembers='true'">
           <input type="radio" name="showAgMembers" value="false" onclick="document.adminGroupMembersForm.submit();"/>
           Hide members
           <input type="radio" name="showAgMembers" value="true" checked="checked" onclick="document.adminGroupMembersForm.submit();"/>
@@ -5729,12 +5729,12 @@
       <tr>
         <th>Name</th>
         <th>Description</th>
-        <xsl:if test="/bedeworkadmin/groups/showMembers='true'">
+        <xsl:if test="/bedework/groups/showMembers='true'">
           <th>Members</th>
         </xsl:if>
         <th></th>
       </tr>
-      <xsl:for-each select="/bedeworkadmin/groups/group">
+      <xsl:for-each select="/bedework/groups/group">
         <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
         <xsl:variable name="groupName" select="name"/>
         <tr>
@@ -5746,7 +5746,7 @@
           <td>
             <xsl:value-of select="desc"/>
           </td>
-          <xsl:if test="/bedeworkadmin/groups/showMembers='true'">
+          <xsl:if test="/bedework/groups/showMembers='true'">
             <td>
               <xsl:for-each select="members/member/account">
                 <xsl:value-of select="."/>&#160;
@@ -5793,7 +5793,7 @@
 
   <xsl:template name="modAdminGroup">
     <xsl:choose>
-      <xsl:when test="/bedeworkadmin/creating = 'true'">
+      <xsl:when test="/bedework/creating = 'true'">
         <h2>Add Group</h2>
       </xsl:when>
       <xsl:otherwise>
@@ -5808,11 +5808,11 @@
           </td>
           <td>
             <xsl:choose>
-              <xsl:when test="/bedeworkadmin/creating = 'true'">
-                <xsl:copy-of select="/bedeworkadmin/formElements/form/name/*"/>
+              <xsl:when test="/bedework/creating = 'true'">
+                <xsl:copy-of select="/bedework/formElements/form/name/*"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="/bedeworkadmin/formElements/form/name"/>
+                <xsl:value-of select="/bedework/formElements/form/name"/>
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -5822,7 +5822,7 @@
             Description:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/desc/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/desc/*"/>
           </td>
         </tr>
         <tr>
@@ -5830,7 +5830,7 @@
             Group owner:
           </td>
           <td>
-            <xsl:copy-of select="/bedeworkadmin/formElements/form/groupOwner/*"/>
+            <xsl:copy-of select="/bedework/formElements/form/groupOwner/*"/>
           </td>
         </tr>
         <tr>
@@ -5839,11 +5839,11 @@
           </td>
           <td>
            <xsl:choose>
-              <xsl:when test="/bedeworkadmin/creating = 'true'">
-                <xsl:copy-of select="/bedeworkadmin/formElements/form/eventsOwner/*"/>
+              <xsl:when test="/bedework/creating = 'true'">
+                <xsl:copy-of select="/bedework/formElements/form/eventsOwner/*"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="/bedeworkadmin/formElements/form/eventsOwner/input/@value"/>
+                <xsl:value-of select="/bedework/formElements/form/eventsOwner/input/@value"/>
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -5853,7 +5853,7 @@
         <tr>
           <td>
             <xsl:choose>
-              <xsl:when test="/bedeworkadmin/creating = 'true'">
+              <xsl:when test="/bedework/creating = 'true'">
                 <input type="submit" name="updateAdminGroup" value="Add Admin Group"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
                 <input type="reset" value="Clear"/>
@@ -5866,7 +5866,7 @@
             </xsl:choose>
           </td>
           <td align="right">
-            <xsl:if test="/bedeworkadmin/creating = 'false'">
+            <xsl:if test="/bedework/creating = 'false'">
               <input type="submit" name="delete" value="Delete"/>
             </xsl:if>
           </td>
@@ -5898,7 +5898,7 @@
           Name:
         </td>
         <td>
-          <xsl:value-of select="/bedeworkadmin/adminGroup/name"/>
+          <xsl:value-of select="/bedework/adminGroup/name"/>
         </td>
       </tr>
       <tr>
@@ -5907,7 +5907,7 @@
         </td>
         <td>
           <table id="memberAccountList">
-            <xsl:for-each select="/bedeworkadmin/adminGroup/members/member">
+            <xsl:for-each select="/bedework/adminGroup/members/member">
               <xsl:choose>
                 <xsl:when test="kind='0'"><!-- kind = user -->
                   <tr>
@@ -5962,9 +5962,9 @@
     <p>The following group will be deleted. Continue?</p>
     <p>
       <strong>
-        <xsl:value-of select="/bedeworkadmin/groups/group/name"/>
+        <xsl:value-of select="/bedework/groups/group/name"/>
       </strong>:
-      <xsl:value-of select="/bedeworkadmin/groups/group/desc"/>
+      <xsl:value-of select="/bedework/groups/group/desc"/>
     </p>
     <form name="adminGroupDelete" method="post" action="{$admingroup-delete}">
       <input type="submit" name="removeAdminGroupOK" value="Yes: Delete!"/>
@@ -6024,17 +6024,17 @@
         <form name="searchForm" method="post" action="{$search}">
           Search:
           <input type="text" name="query" size="15">
-            <xsl:attribute name="value"><xsl:value-of select="/bedeworkadmin/searchResults/query"/></xsl:attribute>
+            <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
           </input>
           <input type="submit" name="submit" value="go"/>
           Limit:
           <xsl:choose>
-            <xsl:when test="/bedeworkadmin/searchResults/searchLimits = 'beforeToday'">
+            <xsl:when test="/bedework/searchResults/searchLimits = 'beforeToday'">
               <input type="radio" name="searchLimits" value="fromToday"/>today forward
               <input type="radio" name="searchLimits" value="beforeToday" checked="checked"/>past dates
               <input type="radio" name="searchLimits" value="none"/>all dates
             </xsl:when>
-            <xsl:when test="/bedeworkadmin/searchResults/searchLimits = 'none'">
+            <xsl:when test="/bedework/searchResults/searchLimits = 'none'">
               <input type="radio" name="searchLimits" value="fromToday"/>today forward
               <input type="radio" name="searchLimits" value="beforeToday"/>past dates
               <input type="radio" name="searchLimits" value="none" checked="checked"/>all dates
@@ -6052,11 +6052,11 @@
     <table id="searchTable" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="5">
-          <xsl:if test="/bedeworkadmin/searchResults/numPages &gt; 1">
-            <xsl:variable name="curPage" select="/bedeworkadmin/searchResults/curPage"/>
+          <xsl:if test="/bedework/searchResults/numPages &gt; 1">
+            <xsl:variable name="curPage" select="/bedework/searchResults/curPage"/>
             <div id="searchPageForm">
               page:
-              <xsl:if test="/bedeworkadmin/searchResults/curPage != 1">
+              <xsl:if test="/bedework/searchResults/curPage != 1">
                 <xsl:variable name="prevPage" select="number($curPage) - 1"/>
                 &lt;<a href="{$search-next}&amp;pageNum={$prevPage}">prev</a>
               </xsl:if>
@@ -6073,7 +6073,7 @@
 
               <xsl:text> </xsl:text>
               <xsl:choose>
-                <xsl:when test="$curPage != /bedeworkadmin/searchResults/numPages">
+                <xsl:when test="$curPage != /bedework/searchResults/numPages">
                   <xsl:variable name="nextPage" select="number($curPage) + 1"/>
                   <a href="{$search-next}&amp;pageNum={$nextPage}">next</a>&gt;
                 </xsl:when>
@@ -6083,12 +6083,12 @@
               </xsl:choose>
             </div>
           </xsl:if>
-          <xsl:value-of select="/bedeworkadmin/searchResults/resultSize"/>
-          result<xsl:if test="/bedeworkadmin/searchResults/resultSize != 1">s</xsl:if> returned
-          for <em><xsl:value-of select="/bedeworkadmin/searchResults/query"/></em>
+          <xsl:value-of select="/bedework/searchResults/resultSize"/>
+          result<xsl:if test="/bedework/searchResults/resultSize != 1">s</xsl:if> returned
+          for <em><xsl:value-of select="/bedework/searchResults/query"/></em>
         </th>
       </tr>
-      <xsl:if test="/bedeworkadmin/searchResults/searchResult">
+      <xsl:if test="/bedework/searchResults/searchResult">
         <tr class="fieldNames">
           <td>
             relevance
@@ -6107,7 +6107,7 @@
           </td>
         </tr>
       </xsl:if>
-      <xsl:for-each select="/bedeworkadmin/searchResults/searchResult">
+      <xsl:for-each select="/bedework/searchResults/searchResult">
         <xsl:variable name="subscriptionId" select="event/subscription/id"/>
         <xsl:variable name="calPath" select="event/calendar/encodedPath"/>
         <xsl:variable name="guid" select="event/guid"/>
@@ -6152,8 +6152,8 @@
 
   <xsl:template name="searchResultPageNav">
     <xsl:param name="page">1</xsl:param>
-    <xsl:variable name="curPage" select="/bedeworkadmin/searchResults/curPage"/>
-    <xsl:variable name="numPages" select="/bedeworkadmin/searchResults/numPages"/>
+    <xsl:variable name="curPage" select="/bedework/searchResults/curPage"/>
+    <xsl:variable name="numPages" select="/bedework/searchResults/numPages"/>
     <xsl:variable name="endPage">
       <xsl:choose>
         <xsl:when test="number($curPage) + 6 &gt; number($numPages)"><xsl:value-of select="$numPages"/></xsl:when>
