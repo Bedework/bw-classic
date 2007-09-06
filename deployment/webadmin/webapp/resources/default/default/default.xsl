@@ -911,7 +911,7 @@
                 <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField"/>
               </xsl:otherwise>
             </xsl:choose>
-            all day (anniversary)
+            all day
 
             <!-- floating event: no timezone (and not UTC) -->
             <xsl:choose>
@@ -1618,7 +1618,7 @@
                   </h4>
                   <div id="raContent">
                     <div class="dateStartEndBox" id="rdatesFormFields">
-                      <!-- dateonly (anniversary) event: this is temporary - should be determined by the main event -->
+                      <!-- dateonly event: this is temporary - should be determined by the main event -->
                       <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="true"/>
                       all day
                       <!-- floating event: no timezone (and not UTC) -->
@@ -2309,7 +2309,7 @@
             <xsl:text> </xsl:text>
             <input type="submit" value="add rdate"/>
             <br/>
-            <!-- dateonly (anniversary) event: this is temporary - should be determined by the main event -->
+            <!-- dateonly event: this is temporary - should be determined by the main event -->
             <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="on"/>
             all day
             <!-- floating event: no timezone (and not UTC) -->
