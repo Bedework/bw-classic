@@ -2486,6 +2486,28 @@
             </td>
           </tr>
         </xsl:if>
+        
+        <!--  Transparency  -->
+        <tr>
+          <td class="fieldname padMeTop">
+            Effects free/busy:
+          </td>
+          <td align="left" class="padMeTop">
+            <input type="radio" value="OPAQUE" name="transparency">
+              <xsl:if test="form/transparency = 'OPAQUE'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+            
+            <input type="radio" value="TRANSPARENT" name="transparency">
+              <xsl:if test="form/transparency = 'TRANSPARENT'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            no <span class="note">(transparent: event status does not affect your free/busy)</span><br/>
+          </td>
+        </tr>
 
         <!--  Category  -->
         <tr>

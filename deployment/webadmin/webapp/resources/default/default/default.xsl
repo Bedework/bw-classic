@@ -1766,6 +1766,27 @@
             </xsl:choose>
           </td>
         </tr>
+        <!--  Transparency  -->
+        <tr>
+          <td class="fieldName">
+            Effects free/busy:
+          </td>
+          <td align="left" class="padMeTop">
+            <input type="radio" value="OPAQUE" name="transparency">
+              <xsl:if test="form/transparency = 'OPAQUE'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            yes (opaque)
+            
+            <input type="radio" value="TRANSPARENT" name="transparency">
+              <xsl:if test="form/transparency = 'TRANSPARENT'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            no (transparent)
+          </td>
+        </tr>
         <!--  Description  -->
         <tr>
           <td class="fieldName">
@@ -4672,16 +4693,16 @@
             [<a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">change</a>]
           </td>
         </tr>
-        <!--<tr>
+        <tr>
           <td class="fieldname padMeTop">
             Effects free/busy:
           </td>
           <td align="left" class="padMeTop">
             <input type="radio" value="" name="transparency" checked="checked"/> accept event's settings<br/>
-            <input type="radio" value="OPAQUE" name="transparency"/> yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-            <input type="radio" value="TRANSPARENT" name="transparency"/> no <span class="note">(transparent: event status does not affect your free/busy)</span><br/>
+            <input type="radio" value="OPAQUE" name="transparency"/> yes <span class="note">(opaque: event status affects free/busy)</span><br/>
+            <input type="radio" value="TRANSPARENT" name="transparency"/> no <span class="note">(transparent: event status does not affect free/busy)</span><br/>
           </td>
-        </tr>-->
+        </tr>
         <tr>
           <td class="fieldname padMeTop">
             Status:
