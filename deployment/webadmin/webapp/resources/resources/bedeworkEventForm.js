@@ -63,14 +63,12 @@ function BwREXdate(date, time, allDay, floating, utc, tzid) {
    * row: current table row
    * rdi: index of rdate fro delete
    */
-  this.toFormRow = function(varName, reqPar, row, rdi) {
+  this.toFormRow = function(varName, row, rdi) {
     row.insertCell(0).appendChild(document.createTextNode(this.date));
     row.insertCell(1).appendChild(document.createTextNode(this.time));
     row.insertCell(2).appendChild(document.createTextNode(this.tzid));
     row.insertCell(3).innerHTML = "<a href=\"javascript:" + varName + ".deleteDate('" +
-                                   rdi + "')\">" + rdateDeleteStr + "</a>" +
-                                   "<input type='hidden' name='" + reqPar +
-                                   "' value='" + this.format() + "'/>";
+                                   rdi + "')\">" + rdateDeleteStr + "</a>";
   }
 
   this.format= function() {
@@ -118,27 +116,29 @@ function sortCompare(thys, that) {
   return thys.compareTo(that);
 }
 
-var bwRdates = new BwREXdates("bwRdates", "rdate", "bwCurrentRdates", "bwCurrentRdatesNone",
+var bwRdates = new BwREXdates("bwRdates", "bwRdatesField",
+                              "bwCurrentRdates", "bwCurrentRdatesNone",
                               "visible", "invisible", 2);
-var bwExdates = new BwREXdates("bwExdates", "exdate", "bwCurrentExdates", "bwCurrentExdatesNone",
+var bwExdates = new BwREXdates("bwExdates", "bwExdatesField",
+                               "bwCurrentExdates", "bwCurrentExdatesNone",
                                "visible", "invisible", 2);
 
 /** Manipulate table of exception or recurrence dates.
  *
  * @param varName: NOT GOOD - name of object
- * @param reqPar:    request parameter we gernate (multi-valued)
+ * @param reqParId: id of hidden field we update
  * @param tableId:   id of table we are manipulating
  * @param noDatesId: some info to display when we have nothing
  * @param visibleClass: class to set to make something visible
  * @param invisibleClass: class to set to make something invisible
  * @param numHeaderRows: Number of header rows in the table.
  */
-function BwREXdates(varName, reqPar, tableId, noDatesId,
+function BwREXdates(varName, reqParId, tableId, noDatesId,
                     visibleClass, invisibleClass, numHeaderRows) {
   var dates = new Array();
 
   this.varName = varName;
-  this.reqPar = reqPar;
+  this.reqParId = reqParId;
   this.tableId = tableId;
   this.noDatesId = noDatesId;
   this.visibleClass = visibleClass;
@@ -198,10 +198,10 @@ function BwREXdates(varName, reqPar, tableId, noDatesId,
 
       // recreate the table rows
       for (var j = 0; j < dates.length; j++) {
-        var curRdate = dates[j];
+        var curDate = dates[j];
         var tr = rdTableBody.insertRow(j + numHeaderRows);
 
-        curRdate.toFormRow(varName, reqPar, tr, j);
+        curDate.toFormRow(varName, tr, j);
       }
 
       if (dates.length == 0) {
@@ -211,9 +211,27 @@ function BwREXdates(varName, reqPar, tableId, noDatesId,
         changeClass(tableId, visibleClass);
         changeClass(noDatesId, invisibleClass);
       }
+
+      /* Update the hidden field */
+
+      var formAcl = document.getElementById(reqParId);
+      formAcl.value = this.format();
+
     } catch (e) {
       alert(e);
     }
+  }
+
+  this.format = function() {
+    var res = "";
+
+    for (var j = 0; j < dates.length; j++) {
+      var curDate = dates[j];
+
+      res += "DATE\t" + curDate.format();
+    }
+
+    return res;
   }
 }
 
