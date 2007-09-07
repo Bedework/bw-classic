@@ -91,6 +91,55 @@
   </tag>
 
   <tag>
+    <name>emitRexdates</name>
+    <tagclass>org.bedework.webcommon.taglib.EmitRExDatesTag</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>Emit txt in a tag</info>
+
+    <attribute>
+      <name>name</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>tagName</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>indent</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>exdates</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>filter</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
     <name>emitCurrentPrivs</name>
     <tagclass>org.bedework.webcommon.taglib.EmitCurrentPrivsTag</tagclass>
     <bodycontent>empty</bodycontent>
