@@ -1778,7 +1778,7 @@
               </xsl:if>
             </input>
             yes (opaque)
-            
+
             <input type="radio" value="TRANSPARENT" name="transparency">
               <xsl:if test="form/transparency = 'TRANSPARENT'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
@@ -1831,7 +1831,7 @@
           <td>
             <xsl:if test="form/location/preferred/select/option">
               <select name="prefLocationId" id="eventFormPrefLocationList">
-                <option value="-1">
+                <option value="">
                   Select preferred:
                 </option>
                 <xsl:copy-of select="form/location/preferred/select/*"/>
@@ -1839,7 +1839,7 @@
               or Location (all):
             </xsl:if>
             <select name="allLocationId" id="eventFormLocationList">
-              <option value="-1">
+              <option value="">
                 Select:
               </option>
               <xsl:copy-of select="form/location/all/select/*"/>
@@ -1890,7 +1890,7 @@
           <td>
             <xsl:if test="form/contact/preferred/select/option">
               <select name="prefContactId" id="eventFormContactList">
-                <option value="-1">
+                <option value="">
                   Select preferred:
                 </option>option>
                 <xsl:copy-of select="form/contact/preferred/select/*"/>
@@ -1898,7 +1898,7 @@
               or Contact (all):
             </xsl:if>
             <select name="allContactId" id="eventFormPrefContactList">
-              <option value="-1">
+              <option value="">
                 Select:
               </option>
               <xsl:copy-of select="form/contact/all/select/*"/>
