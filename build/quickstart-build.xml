@@ -418,7 +418,7 @@
       <jvmarg value="-XX:MaxPermSize=128m" />
       -->
       <jvmarg value="-server" />
-      <jvmarg value="-Xrunyjpagent:cpu=times,onexit=cpu" />
+      <jvmarg value="-agentlib:hprof=cpu=samples,depth=15" />
       <jvmarg value="-Djava.net.preferIPv4Stack=true"/>
       <arg value="start"/>
     </java>
