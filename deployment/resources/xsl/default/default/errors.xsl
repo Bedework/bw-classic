@@ -288,6 +288,10 @@
          Error: Entity required recipients but had none.
       </xsl:when>
 
+      <xsl:when test="id='org.bedework.error.scheduling.notattendee'">
+         Error: You are not an attendee of this meeting.
+      </xsl:when>
+
       <xsl:when test="id='org.bedework.error.scheduling.unknownattendee'">
          Error: Attendee for reply not in event.
       </xsl:when>
