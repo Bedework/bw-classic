@@ -81,10 +81,6 @@
   <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete/a/@href"/>
   <xsl:variable name="event-showAccess" select="/bedework/urlPrefixes/event/showAccess/a/@href"/>
   <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>
-  <!--<xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>-->
-  <xsl:variable name="event-showRdates" select="/bedework/urlPrefixes/event/showRdates"/>
-  <xsl:variable name="event-showExdates" select="/bedework/urlPrefixes/event/showExdates"/>
-  <xsl:variable name="event-setRdate" select="/bedework/urlPrefixes/event/setRdate"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/event/editEvent"/>
   <xsl:variable name="gotoEditEvent" select="/bedework/urlPrefixes/event/gotoEditEvent"/>
   <xsl:variable name="updateEvent" select="/bedework/urlPrefixes/event/updateEvent"/>
@@ -3122,10 +3118,6 @@
                 </td>
               </tr>
             </table>
-            <!-- recurrence dates (rdates) -->
-            <!--<div id="recurrenceDatesButton">
-              <input type="button" value="manage recurrence &amp; exception dates" onclick="launchSizedWindow('{$event-showRdates}','560','400')"/>
-            </div>-->
             <h4>
               Recurrence and Exception Dates
             </h4>
@@ -3517,185 +3509,6 @@
         <area shape="poly" alt="1 AM, 0100 hour" title="1 AM, 0100 hour" coords="196,96, 221,102, 247,10, 209,-1, 201,61, 206,64, 205,74, 199,75" href="javascript:bwClockUpdateDateTimeForm('hour','1',{$hour24})" />
         <area shape="poly" alt="Midnight, 0000 hour" title="Midnight, 0000 hour" coords="172,96, 169,74, 161,73, 161,65, 168,63, 158,-1, 209,-1, 201,61, 200,62, 206,64, 205,74, 198,75, 196,96, 183,95" href="javascript:bwClockUpdateDateTimeForm('hour','0',{$hour24})" />
       </map>
-    </div>
-  </xsl:template>
-
-  <xsl:template name="rdates">
-    <div id="bwDialogBox">
-      <form name="rdatesForm" id="rdates" action="{$event-setRdate}" method="post" onsubmit="setRdateDatetime(this)">
-        <h4 id="dialogTitle">
-          Recurrence and Exception Dates
-        </h4>
-        <div id="raContent">
-          <div class="dateStartEndBox" id="rdatesFormFields">
-            <div class="dateFields">
-              <input name="eventRdate.date"
-                     dojoType="dropdowndatepicker"
-                     formatLength="medium"
-                     value="today"
-                     saveFormat="yyyyMMdd"
-                     id="bwEventWidgeRdate"
-                     iconURL="{$resourcesRoot}/resources/calIcon.gif"/>
-            </div>
-            <div id="rdateTimeFields" class="timeFields">
-             <select name="eventRdate.hour">
-                <option value="00">00</option>
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12" selected="selected">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-              </select>
-              <select name="eventRdate.minute">
-                <option value="00" selected="selected">00</option>
-                <option value="05">05</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-                <option value="30">30</option>
-                <option value="35">35</option>
-                <option value="40">40</option>
-                <option value="45">45</option>
-                <option value="50">50</option>
-                <option value="55">55</option>
-              </select>
-             <xsl:text> </xsl:text>
-
-              <select name="tzid" id="rdateTzid" class="timezones">
-                <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-                <option value="-1">select timezone...</option>
-                <xsl:variable name="rdateTzId" select="/bedework/rdates/tzid"/>
-                <xsl:for-each select="/bedework/timezones/timezone">
-                  <option>
-                    <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                    <xsl:if test="$rdateTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                    <xsl:value-of select="name"/>
-                  </option>
-                </xsl:for-each>
-              </select>
-            </div>
-            <xsl:text> </xsl:text>
-            <input type="submit" value="add rdate"/>
-            <br/>
-            <!-- dateonly event: this is temporary - should be determined by the main event -->
-            <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="on"/>
-            all day
-            <!-- floating event: no timezone (and not UTC) -->
-            <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="on"/>
-            floating
-            <!-- store time as coordinated universal time (UTC) -->
-            <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="on"/>
-            store as UTC
-          </div>
-
-          <xsl:call-template name="messagesAndErrors"/>
-
-          <table cellspacing="0" class="rdatesTable">
-            <tr>
-              <th colspan="2">Recurrence Dates</th>
-            </tr>
-            <xsl:choose>
-              <xsl:when test="/bedework/rdates/rdate">
-                <xsl:for-each select="/bedework/rdates/rdate">
-                  <tr>
-                    <td>
-                      <xsl:value-of select="longdate"/>
-                      <xsl:if test="allday='false'">
-                        <xsl:text> </xsl:text>
-                        <xsl:value-of select="time"/>
-                        <xsl:if test="floating='false'">
-                          <xsl:text> </xsl:text>
-                          <xsl:value-of select="timezone/id"/>
-                        </xsl:if>
-                      </xsl:if>
-                    </td>
-                    <td class="trash">
-                      <xsl:variable name="datetime"><xsl:value-of select="unformatted"/></xsl:variable>
-                      <xsl:variable name="tzid" select="timezone/id"/>
-                      <xsl:variable name="dateOnly"><xsl:if test="allday = 'true'">&amp;dateOnly=true</xsl:if></xsl:variable>
-                      <xsl:variable name="floating"><xsl:if test="floating = 'true'">&amp;floating=true</xsl:if></xsl:variable>
-                      <xsl:variable name="storeUTC"><xsl:if test="utc = 'true'">&amp;storeUTC=true</xsl:if></xsl:variable>
-                      <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}{$dateOnly}{$floating}{$storeUTC}&amp;delete=true" title="remove">
-                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                      </a>
-                    </td>
-                  </tr>
-                </xsl:for-each>
-              </xsl:when>
-              <xsl:otherwise>
-                <tr>
-                  <td colspan="2">No recurrence dates</td>
-                </tr>
-              </xsl:otherwise>
-            </xsl:choose>
-          </table>
-
-          <table cellspacing="0" class="rdatesTable">
-            <tr>
-              <th colspan="2">Exception Dates</th>
-            </tr>
-            <tr>
-              <td colspan="2" class="note">
-                exception dates are created by deleting an instance of a
-                recurring event
-              </td>
-            </tr>
-            <xsl:choose>
-              <xsl:when test="/bedework/exdates/exdate">
-                <xsl:for-each select="/bedework/exdates/exdate">
-                  <tr>
-                    <td>
-                      <xsl:value-of select="longdate"/>
-                      <xsl:if test="allday='false'">
-                        <xsl:value-of select="time"/>
-                        <xsl:if test="floating='false'">
-                          <xsl:value-of select="timezone/id"/>
-                        </xsl:if>
-                      </xsl:if>
-                    </td>
-                    <td class="trash">
-                      <xsl:variable name="datetime"><xsl:value-of select="unformatted"/></xsl:variable>
-                      <xsl:variable name="tzid" select="timezone/id"/>
-                      <xsl:variable name="dateOnly"><xsl:if test="allday = 'true'">&amp;dateOnly=true</xsl:if></xsl:variable>
-                      <xsl:variable name="floating"><xsl:if test="floating = 'true'">&amp;floating=true</xsl:if></xsl:variable>
-                      <xsl:variable name="storeUTC"><xsl:if test="utc = 'true'">&amp;storeUTC=true</xsl:if></xsl:variable>
-                      <a href="{$event-setRdate}&amp;datetime={$datetime}&amp;tzid={$tzid}{$dateOnly}{$floating}{$storeUTC}&amp;exdelete=true" title="remove">
-                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
-                      </a>
-                    </td>
-                  </tr>
-                </xsl:for-each>
-              </xsl:when>
-              <xsl:otherwise>
-                <tr>
-                  <td colspan="2">No exception dates</td>
-                </tr>
-              </xsl:otherwise>
-            </xsl:choose>
-          </table>
-
-          <input type="button" value="done" onclick="window.close()"/>
-        </div>
-      </form>
     </div>
   </xsl:template>
 
