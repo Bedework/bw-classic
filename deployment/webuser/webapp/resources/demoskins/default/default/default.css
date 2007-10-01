@@ -672,9 +672,14 @@ messages.
 #bedework table.dottedBorder td.fieldname {
   text-align: right;
 }
-#bedework /*table.common td.comments {
-  border-top: 1px solid #ccc;
-}*/
+#bedework table.common tr.subField {
+  font-size: 0.8em;
+}
+#bedework table.common tr.subField td.fieldname {
+  padding-left: 2em;
+  color: black;
+  background-color: #fff;
+}
 #bedework table.common td.comments p {
   margin: 0;
   padding: 0.5em 0 1em 0;
