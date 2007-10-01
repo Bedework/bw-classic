@@ -55,3 +55,14 @@ function swapScheduleDisplay(val) {
     changeClass('scheduleDateEdit','invisible');
   }
 }
+function toggleAutoRespondFields(val) {
+  if (val == "true") {
+    document.getElementById("scheduleDoubleBookTrue").disabled = false;
+    document.getElementById("scheduleDoubleBookFalse").disabled = false;
+    document.getElementById("scheduleAutoCancelAction").disabled = false;
+  } else {
+    document.getElementById("scheduleDoubleBookTrue").disabled = true;
+    document.getElementById("scheduleDoubleBookFalse").disabled = true;
+    document.getElementById("scheduleAutoCancelAction").disabled = true;
+  }
+}

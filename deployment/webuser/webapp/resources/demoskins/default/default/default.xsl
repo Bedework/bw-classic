@@ -6963,21 +6963,21 @@
       </tr>
     </table>
 
-    <form name="eventForm" method="post" action="{$prefs-updateSchedulingPrefs}">
+    <form name="scheduleAutoProcessingForm" method="post" action="{$prefs-updateSchedulingPrefs}">
       <table class="common">
-        <tr><td colspan="2" class="fill">Scheduling auto-respond preferences:</td></tr>
+        <tr><td colspan="2" class="fill">Scheduling auto-processing:</td></tr>
         <tr>
           <td class="fieldname">
-            Auto-respond to scheduling requests:
+            Respond to scheduling requests:
           </td>
           <td>
-            <input type="radio" name="scheduleAutoRespond" value="true">
+            <input type="radio" name="scheduleAutoRespond" value="true" onclick="toggleAutoRespondFields(this.value)">
               <xsl:if test="scheduleAutoRespond = 'true'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
               true
             </input>
-            <input type="radio" name="scheduleAutoRespond" value="false">
+            <input type="radio" name="scheduleAutoRespond" value="false" onclick="toggleAutoRespondFields(this.value)">
               <xsl:if test="scheduleAutoRespond = 'false'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
@@ -6985,17 +6985,45 @@
             </input>
           </td>
         </tr>
-        <tr>
+        <tr class="subField">
           <td class="fieldname">
-            Auto-cancel processing:
+            Accept double-bookings:
           </td>
           <td>
-            <select name="scheduleAutoCancelAction">
+            <input type="radio" name="scheduleDoubleBook" value="true" id="scheduleDoubleBookTrue">
+              <xsl:if test="scheduleAutoRespond = 'false'">
+                <xsl:attribute name="disabled">disabled</xsl:attribute>
+              </xsl:if>
+              <xsl:if test="scheduleDoubleBook = 'true'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              true
+            </input>
+            <input type="radio" name="scheduleDoubleBook" value="false" id="scheduleDoubleBookFalse">
+              <xsl:if test="scheduleAutoRespond = 'false'">
+                <xsl:attribute name="disabled">disabled</xsl:attribute>
+              </xsl:if>
+              <xsl:if test="scheduleDoubleBook = 'false'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+              false
+            </input>
+          </td>
+        </tr>
+        <tr class="subField">
+          <td class="fieldname">
+            Cancel processing:
+          </td>
+          <td>
+            <select name="scheduleAutoCancelAction" id="scheduleAutoCancelAction">
+              <xsl:if test="scheduleAutoRespond = 'false'">
+                <xsl:attribute name="disabled">disabled</xsl:attribute>
+              </xsl:if>
               <option value="0">
                 <xsl:if test="scheduleAutoCancelAction = '0'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                do not process auto-cancels
+                do nothing
               </option>
               <option value="1">
                 <xsl:if test="scheduleAutoCancelAction = '1'">
@@ -7013,27 +7041,11 @@
           </td>
         </tr>
         <tr>
-          <td class="fieldname">
-            Auto-decline double-bookings:
-          </td>
-          <td>
-            <input type="radio" name="scheduleDoubleBook" value="true">
-              <xsl:if test="scheduleDoubleBook = 'true'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-              true
-            </input>
-            <input type="radio" name="scheduleDoubleBook" value="false">
-              <xsl:if test="scheduleDoubleBook = 'false'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-              false
-            </input>
-          </td>
+          <td colspan="2">&#160;</td>
         </tr>
         <tr>
           <td class="fieldname">
-            Auto-response processing:
+            Response processing:
           </td>
           <td>
             <select name="scheduleAutoProcessResponses">
@@ -7059,7 +7071,7 @@
           </td>
         </tr>
       </table>
-      <input type="submit" name="modPrefs" value="Update auto-respond preferences"/>
+      <input type="submit" name="modPrefs" value="Update scheduling auto-processing"/>
       <input type="reset" value="Reset"/>
       <input type="submit" name="cancelled" value="cancel"/>
     </form>
