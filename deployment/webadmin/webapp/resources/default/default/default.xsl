@@ -203,8 +203,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
-        <xsl:if test="/bedework/page='modEvent' or
-                      /bedework/page='rdates'">
+        <xsl:if test="/bedework/page='modEvent'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
           <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
@@ -243,9 +242,6 @@
         <xsl:choose>
           <xsl:when test="/bedework/page='selectCalForEvent'">
             <xsl:call-template name="selectCalForEvent"/>
-          </xsl:when>
-          <xsl:when test="/bedework/page='rdates'">
-            <xsl:call-template name="rdates"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:call-template name="header"/>
