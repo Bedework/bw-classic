@@ -70,7 +70,6 @@
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection"/>
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod"/>
-  <xsl:variable name="showPage" select="/bedework/urlPrefixes/main/showPage"/>
   <!-- events -->
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/event/initEvent"/>
@@ -195,168 +194,152 @@
           </xsl:when>
         </xsl:choose>
         <div id="bedework"><!-- main wrapper div to keep styles encapsulated within portals -->
-          <xsl:choose>
-            <!--deprecated:
-            <xsl:when test="/bedework/page='selectCalForEvent'">
-              <xsl:call-template name="selectCalForEvent"/>
-            </xsl:when>-->
-            <xsl:when test="/bedework/page='rdates'">
-              <xsl:call-template name="rdates"/>
-            </xsl:when>
-            <!--deprecated:
-            <xsl:when test="/bedework/page='eventAccess'">
-              <xsl:call-template name="messagesAndErrors"/>
-              <xsl:apply-templates select="/bedework/eventAccess"/>
-            </xsl:when>-->
-            <xsl:otherwise>
-              <xsl:call-template name="headBar"/>
-              <xsl:call-template name="messagesAndErrors"/>
-              <table id="bodyBlock" cellspacing="0">
-                <tr>
-                  <xsl:choose>
-                    <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
-                      <td id="sideBarClosed">
-                        <img src="{$resourcesRoot}/resources/spacer.gif" width="1" height="1" border="0" alt="*"/>
-                      </td>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <td id="sideBar">
-                        <xsl:call-template name="sideBar"/>
-                      </td>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                  <td id="bodyContent">
-                    <xsl:call-template name="tabs"/>
-                    <xsl:call-template name="navigation"/>
-                    <xsl:call-template name="utilBar"/>
+          <xsl:call-template name="headBar"/>
+          <xsl:call-template name="messagesAndErrors"/>
+          <table id="bodyBlock" cellspacing="0">
+            <tr>
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
+                  <td id="sideBarClosed">
+                    <img src="{$resourcesRoot}/resources/spacer.gif" width="1" height="1" border="0" alt="*"/>
+                  </td>
+                </xsl:when>
+                <xsl:otherwise>
+                  <td id="sideBar">
+                    <xsl:call-template name="sideBar"/>
+                  </td>
+                </xsl:otherwise>
+              </xsl:choose>
+              <td id="bodyContent">
+                <xsl:call-template name="tabs"/>
+                <xsl:call-template name="navigation"/>
+                <xsl:call-template name="utilBar"/>
+                <xsl:choose>
+                  <xsl:when test="/bedework/page='event'">
+                    <!-- show an event -->
+                    <xsl:apply-templates select="/bedework/event"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='addEvent'">
+                    <xsl:apply-templates select="/bedework/formElements" mode="addEvent"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='attendees'">
+                    <xsl:call-template name="attendees"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='editEvent'">
+                    <xsl:apply-templates select="/bedework/formElements" mode="editEvent"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='addEventRef'">
+                    <xsl:apply-templates select="/bedework/event" mode="addEventRef"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='alarmOptions'">
+                    <xsl:call-template name="alarmOptions" />
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='upload'">
+                    <xsl:call-template name="upload" />
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='categoryList'">
+                    <xsl:call-template name="categoryList"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='modCategory'">
+                    <xsl:call-template name="modCategory"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='deleteCategoryConfirm'">
+                    <xsl:call-template name="deleteCategoryConfirm"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='locationList'">
+                    <xsl:call-template name="locationList" />
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='modLocation'">
+                    <xsl:call-template name="modLocation"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='deleteLocationConfirm'">
+                    <xsl:call-template name="deleteLocationConfirm"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='subscriptions' or
+                                  /bedework/page='modSubscription' or
+                                  /bedework/page='addSubByUri'">
+                    <xsl:apply-templates select="/bedework/subscriptions"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='subInaccessible'">
+                    <xsl:call-template name="subInaccessible"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='calendarList' or
+                                  /bedework/page='calendarDescriptions' or
+                                  /bedework/page='displayCalendar' or
+                                  /bedework/page='modCalendar' or
+                                  /bedework/page='deleteCalendarConfirm' or
+                                  /bedework/page='calendarReferenced'">
+                    <xsl:apply-templates select="/bedework/calendars" mode="manageCalendars"/>
+                  </xsl:when>
+                   <xsl:when test="/bedework/page='calendarListForExport'">
+                    <xsl:apply-templates select="/bedework/calendars" mode="exportCalendars"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='freeBusy'">
+                    <xsl:apply-templates select="/bedework/freebusy" mode="freeBusyPage"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='modPrefs'">
+                    <xsl:apply-templates select="/bedework/prefs"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='modSchedulingPrefs'">
+                    <xsl:apply-templates select="/bedework/schPrefs"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='inbox'">
+                    <xsl:apply-templates select="/bedework/inbox"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='outbox'">
+                    <xsl:apply-templates select="/bedework/outbox"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='attendeeRespond'">
+                    <xsl:apply-templates select="/bedework/formElements" mode="attendeeRespond"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='attendeeReply'">
+                    <xsl:apply-templates select="/bedework/event" mode="attendeeReply"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='searchResult'">
+                    <xsl:call-template name="searchResult"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='other'">
+                    <!-- show an arbitrary page -->
+                    <xsl:call-template name="selectPage"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <!-- otherwise, show the eventsCalendar -->
+                    <!-- main eventCalendar content -->
                     <xsl:choose>
-                      <xsl:when test="/bedework/page='event'">
-                        <!-- show an event -->
-                        <xsl:apply-templates select="/bedework/event"/>
+                      <xsl:when test="/bedework/periodname='Day'">
+                        <xsl:call-template name="listView"/>
                       </xsl:when>
-                      <xsl:when test="/bedework/page='addEvent'">
-                        <xsl:apply-templates select="/bedework/formElements" mode="addEvent"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='attendees'">
-                        <xsl:call-template name="attendees"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='editEvent'">
-                        <xsl:apply-templates select="/bedework/formElements" mode="editEvent"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='addEventRef'">
-                        <xsl:apply-templates select="/bedework/event" mode="addEventRef"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='alarmOptions'">
-                        <xsl:call-template name="alarmOptions" />
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='upload'">
-                        <xsl:call-template name="upload" />
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='categoryList'">
-                        <xsl:call-template name="categoryList"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='modCategory'">
-                        <xsl:call-template name="modCategory"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='deleteCategoryConfirm'">
-                        <xsl:call-template name="deleteCategoryConfirm"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='locationList'">
-                        <xsl:call-template name="locationList" />
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='modLocation'">
-                        <xsl:call-template name="modLocation"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='deleteLocationConfirm'">
-                        <xsl:call-template name="deleteLocationConfirm"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='subscriptions' or
-                                      /bedework/page='modSubscription' or
-                                      /bedework/page='addSubByUri'">
-                        <xsl:apply-templates select="/bedework/subscriptions"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='subInaccessible'">
-                        <xsl:call-template name="subInaccessible"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='calendarList' or
-                                      /bedework/page='calendarDescriptions' or
-                                      /bedework/page='displayCalendar' or
-                                      /bedework/page='modCalendar' or
-                                      /bedework/page='deleteCalendarConfirm' or
-                                      /bedework/page='calendarReferenced'">
-                        <xsl:apply-templates select="/bedework/calendars" mode="manageCalendars"/>
-                      </xsl:when>
-                       <xsl:when test="/bedework/page='calendarListForExport'">
-                        <xsl:apply-templates select="/bedework/calendars" mode="exportCalendars"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='freeBusy'">
-                        <xsl:apply-templates select="/bedework/freebusy" mode="freeBusyPage"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='modPrefs'">
-                        <xsl:apply-templates select="/bedework/prefs"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='modSchedulingPrefs'">
-                        <xsl:apply-templates select="/bedework/schPrefs"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='inbox'">
-                        <xsl:apply-templates select="/bedework/inbox"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='outbox'">
-                        <xsl:apply-templates select="/bedework/outbox"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='attendeeRespond'">
-                        <xsl:apply-templates select="/bedework/formElements" mode="attendeeRespond"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='attendeeReply'">
-                        <xsl:apply-templates select="/bedework/event" mode="attendeeReply"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='searchResult'">
-                        <xsl:call-template name="searchResult"/>
-                      </xsl:when>
-                      <xsl:when test="/bedework/page='other'">
-                        <!-- show an arbitrary page -->
-                        <xsl:call-template name="selectPage"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <!-- otherwise, show the eventsCalendar -->
-                        <!-- main eventCalendar content -->
+                      <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
                         <xsl:choose>
-                          <xsl:when test="/bedework/periodname='Day'">
+                          <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
                             <xsl:call-template name="listView"/>
                           </xsl:when>
-                          <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
-                            <xsl:choose>
-                              <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                                <xsl:call-template name="listView"/>
-                              </xsl:when>
-                              <xsl:otherwise>
-                                <xsl:call-template name="weekView"/>
-                              </xsl:otherwise>
-                            </xsl:choose>
-                          </xsl:when>
-                          <xsl:when test="/bedework/periodname='Month'">
-                            <xsl:choose>
-                              <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-                                <xsl:call-template name="listView"/>
-                              </xsl:when>
-                              <xsl:otherwise>
-                                <xsl:call-template name="monthView"/>
-                              </xsl:otherwise>
-                            </xsl:choose>
-                          </xsl:when>
                           <xsl:otherwise>
-                            <xsl:call-template name="yearView"/>
+                            <xsl:call-template name="weekView"/>
                           </xsl:otherwise>
                         </xsl:choose>
+                      </xsl:when>
+                      <xsl:when test="/bedework/periodname='Month'">
+                        <xsl:choose>
+                          <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
+                            <xsl:call-template name="listView"/>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:call-template name="monthView"/>
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:call-template name="yearView"/>
                       </xsl:otherwise>
                     </xsl:choose>
-                  </td>
-                </tr>
-              </table>
-              <!-- footer -->
-              <xsl:call-template name="footer"/>
-            </xsl:otherwise>
-          </xsl:choose>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </td>
+            </tr>
+          </table>
+          <!-- footer -->
+          <xsl:call-template name="footer"/>
         </div>
       </body>
     </html>
@@ -1109,7 +1092,7 @@
     </xsl:if>
     <xsl:if test="owner != /bedework/userid and public='true'">
             <!-- provide this link for public subscriptions; subscriptions to user calendars are
-                 currently too confusing since the current user may be able to add events to the 
+                 currently too confusing since the current user may be able to add events to the
                  other calendar, making the ownership test a bad test -->
       <xsl:variable name="subname" select="subscription/name"/>
       <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
@@ -1511,7 +1494,7 @@
             </xsl:if>
             <xsl:if test="owner != /bedework/userid and public='true'">
             <!-- provide this link for public subscriptions; subscriptions to user calendars are
-                 currently too confusing since the current user may be able to add events to the 
+                 currently too confusing since the current user may be able to add events to the
                  other calendar, making the ownership test a bad test -->
               |
               <xsl:variable name="subname" select="subscription/name"/>
@@ -2482,7 +2465,7 @@
             </td>
           </tr>
         </xsl:if>
-        
+
         <!--  Transparency  -->
         <tr>
           <td class="fieldname padMeTop">
@@ -2495,7 +2478,7 @@
               </xsl:if>
             </input>
             yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-            
+
             <input type="radio" value="TRANSPARENT" name="transparency">
               <xsl:if test="form/transparency = 'TRANSPARENT'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
@@ -3118,6 +3101,7 @@
                 </td>
               </tr>
             </table>
+
             <h4>
               Recurrence and Exception Dates
             </h4>
@@ -3208,7 +3192,7 @@
                   <tr><th>Recurrence Dates</th></tr>
                   <tr><td>No recurrence dates</td></tr>
                 </table>
-  
+
                 <!-- if there are recurrence dates, the following table will show -->
                 <table cellspacing="0" class="invisible" id="bwCurrentRdates">
                   <tr>
@@ -3221,14 +3205,14 @@
                     <td></td>
                   </tr>
                 </table>
-  
+
                 <input type="hidden" name="exdates" value="" id="bwExdatesField" />
                 <!-- if there are no exception dates, the following table will show -->
                 <table cellspacing="0" class="invisible" id="bwCurrentExdatesNone">
                   <tr><th>Exception Dates</th></tr>
                   <tr><td>No exception dates</td></tr>
                 </table>
-  
+
                 <!-- if there are exception dates, the following table will show -->
                 <table cellspacing="0" class="invisible" id="bwCurrentExdates">
                   <tr>
@@ -3886,7 +3870,7 @@
         <input type="submit" name="submit" value="Submit"/>
       </form>
       <xsl:apply-templates select="." mode="freeBusyGrid">
-        <xsl:with-param name="type">normal</xsl:with-param> 
+        <xsl:with-param name="type">normal</xsl:with-param>
       </xsl:apply-templates>
     </div>
   </xsl:template>

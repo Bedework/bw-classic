@@ -93,8 +93,10 @@
   <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
   <xsl:variable name="calendar-fetchForExport" select="/bedework/urlPrefixes/calendar/fetchForExport"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
+  <!-- Unused
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/main/showPage"/>
-  <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
+   -->
+ <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
 
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
