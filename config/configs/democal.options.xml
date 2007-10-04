@@ -229,6 +229,32 @@
         </UserCal>
 
         <!-- ==================================================================
+                          User CalDAV server UserCalDAV
+             ================================================================== -->
+        <UserCalDAV classname="org.bedework.calfacade.configs.CalDAVConfig">
+          <!-- Comment out or delete for no real time server to server service
+               Currently under development and may present a security risk in
+               production systems -->
+          <realTimeServiceURI>/rtsvc</realTimeServiceURI>
+
+          <!-- Comment out or delete for no freebusy url service -->
+          <fburlServiceURI>/fbsvc</fburlServiceURI>
+        </UserCalDAV>
+
+        <!-- ==================================================================
+                          Public (unauthenticated) CalDAV server PublicCalDAV
+             ================================================================== -->
+        <PublicCalDAV classname="org.bedework.calfacade.configs.CalDAVConfig">
+          <!-- Comment out or delete for no real time server to server service
+               Currently under development and may present a security risk in
+               production systems -->
+          <realTimeServiceURI>/rtsvc</realTimeServiceURI>
+
+          <!-- Comment out or delete for no freebusy url service -->
+          <fburlServiceURI>/fbsvc</fburlServiceURI>
+        </PublicCalDAV>
+
+        <!-- ==================================================================
                           Dump restore program dumpres
              ================================================================== -->
         <dumpres classname="org.bedework.calfacade.configs.DumpRestoreConfig">
