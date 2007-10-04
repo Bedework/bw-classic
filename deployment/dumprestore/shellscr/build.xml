@@ -67,6 +67,7 @@ hibernate.connection.username=${propval.app.jdbcid}
 hibernate.connection.password=${propval.app.jdbcpw}
 hibernate.connection.url=${propval.app.jdbcurl}
 hibernate.cglib.use_reflection_optimizer=false
+hibernate.cache.use_second_level_cache=false
 #
 # Here for better debugging
 #
