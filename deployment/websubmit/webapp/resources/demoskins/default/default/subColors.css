@@ -1,0 +1,184 @@
+/* Subscription colors for web clients.
+   These colors correspond to subColors.xml, which is used
+   to create the web forms. Background-color must be
+   "important" to override more specific selectors in
+   the default.css stylesheet. */
+
+    /* **********************************************************************
+    Copyright 2006 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+
+    Redistribution and use of this distribution in source and binary forms,
+    with or without modification, are permitted provided that:
+       The above copyright notice and this permission notice appear in all
+        copies and supporting documentation;
+
+        The name, identifiers, and trademarks of Rensselaer Polytechnic
+        Institute are not used in advertising or publicity without the
+        express prior written permission of Rensselaer Polytechnic Institute;
+
+    DISCLAIMER: The software is distributed" AS IS" without any express or
+    implied warranty, including but not limited to, any implied warranties
+    of merchantability or fitness for a particular purpose or any warrant)'
+    of non-infringement of any current or pending patent rights. The authors
+    of the software make no representations about the suitability of this
+    software for any particular purpose. The entire risk as to the quality
+    and performance of the software is with the user. Should the software
+    prove defective, the user assumes the cost of all necessary servicing,
+    repair or correction. In particular, neither Rensselaer Polytechnic
+    Institute, nor the authors of the software are liable for any indirect,
+    special, consequential, or incidental damages related to the software,
+    to the maximum extent the law permits. */
+
+
+.bwwhite {
+  background-color: #ffffff !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwltpink {
+  background-color: #fddeee !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwltpurple {
+  background-color: #ddd4e8 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwltsteelblue {
+  background-color: #bfd5e8 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwltblue {
+  background-color: #ccecef !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwltaquamarine {
+  background-color: #b3e2dd !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwltaquamarine {
+  background-color: #cfeccf !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwltgreen {
+  background-color: #e0f3b0 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwltyellow {
+  background-color: #ffffb0 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwltsalmon {
+  background-color: #feebc9 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+/* medium pastels */
+.bwgray {
+  background-color: #eeeeee !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwpink {
+  background-color: #fbb6d1 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwpurple {
+  background-color: #c1b3d7 !important;
+  color: black;
+  border-bottom: 1px solid #999 !important;
+}
+.bwsteelblue {
+  background-color: #94a8d0 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwblue {
+  background-color: #9acedf !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwaquamarine {
+  background-color: #86cfbe !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwseagreen {
+  background-color: #b5e1ae !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwgreen {
+  background-color: #bfe476 !important;
+  color: black;
+  border-bottom: 1px solid #999 !important;
+}
+.bwyellow {
+  background-color: #fffa81 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwsalmon {
+  background-color: #fdcaa2 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+/* dark pastels */
+.bwmdgray {
+  background-color: #dddddd !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwmdpink {
+  background-color: #f98cb6 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwmdpurple {
+  background-color: #a589c1 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwmdsteelblue {
+  background-color: #7589bf !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwmdblue {
+  background-color: #6fb7d6 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwmdaquamarine {
+  background-color: #48b5a3 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwmdseagreen {
+  background-color: #91d290 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwmdgreen {
+  background-color: #85ca5d !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwmdyellow {
+  background-color: #ffed62 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}
+.bwmdsalmon {
+  background-color: #fca985 !important;
+  color: black;
+  border-bottom: 1px solid #999;
+}

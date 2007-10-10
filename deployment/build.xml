@@ -35,8 +35,9 @@
 
     <property name="source.home" location="${this.build.dir}/src"/>
 
-    <!-- Load default deploy properties -->
+    <!-- Load default deploy properties
     <property file="${this.build.dir}/deploy.properties"/>
+     -->
 
     <!-- ==================== config properties ========================= -->
     <property name="org.bedework.clone.name" value="${org.bedework.clone.default}" />
