@@ -78,9 +78,7 @@
     <!-- Load user property definition overrides -->
     <property file="${org.bedework.user.build.properties}" />
 
-    <property file="${basedir}/bedework/deployment/deploy.properties" />
-
-    <!-- Unfortuanately it sits on top of everything
+    <!-- Unfortunately it sits on top of everything
     <splash imageurl="file://${org.bedework.project.bedework}/docs/icons/bedeworkLogo.gif"/>
     -->
   </target>
