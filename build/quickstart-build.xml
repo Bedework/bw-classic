@@ -68,6 +68,9 @@
     <property name="org.bedework.project.bedework"
               location="${basedir}/bedework" />
 
+    <property name="org.bedework.config.base"
+              location="${org.bedework.project.bedework}/config" />
+
     <property name="bedework.build.file"
               location="${basedir}/bedework/build.xml" />
     <property name="org.bedework.user.build.properties"
@@ -92,6 +95,20 @@
     <!-- Load user property definition overrides -->
     <property file="${org.bedework.user.build.properties}" />
 
+    <!-- ==================== config properties ========================= -->
+    <property name="org.bedework.config.properties"
+              location="${org.bedework.config.base}/configs/democal.properties" />
+    <property name="org.bedework.config.options"
+              location="${org.bedework.config.base}/configs/democal.options.xml" />
+
+    <echo message="==========================================================" />
+    <echo message="Use config properties ${org.bedework.config.properties}" />
+    <loadproperties
+          srcFile="${org.bedework.config.properties}" >
+      <filterchain>
+        <expandproperties/>
+      </filterchain>
+    </loadproperties>
   </target>
 
   <!-- =================================================================
