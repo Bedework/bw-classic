@@ -149,7 +149,7 @@
         <!-- ==================================================================
                           Public event submission web client EventSubmit
              ================================================================== -->
-        <UserCal classname="org.bedework.calfacade.configs.EventSubmit">
+        <UserCal classname="org.bedework.calfacade.configs.ClientConfig">
           <autoCreateContacts>false</autoCreateContacts>
           <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
