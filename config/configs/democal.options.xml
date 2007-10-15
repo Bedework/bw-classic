@@ -149,7 +149,7 @@
         <!-- ==================================================================
                           Public event submission web client EventSubmit
              ================================================================== -->
-        <UserCal classname="org.bedework.calfacade.configs.ClientConfig">
+        <EventSubmit classname="org.bedework.calfacade.configs.ClientConfig">
           <autoCreateContacts>false</autoCreateContacts>
           <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
@@ -170,7 +170,7 @@
 
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>900</refreshInterval>
-        </UserCal>
+        </EventSubmit>
         
         <!-- ==================================================================
                           Public web client Events
