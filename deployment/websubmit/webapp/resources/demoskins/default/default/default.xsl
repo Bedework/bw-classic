@@ -9,9 +9,9 @@
   standalone="yes"
   omit-xml-declaration="yes"/>
 
-  <!-- ========================================= -->
-  <!--       PERSONAL CALENDAR STYLESHEET        -->
-  <!-- ========================================= -->
+  <!-- ========================================================= -->
+  <!--         PUBLIC EVENTS SUBMISSION CALENDAR STYLESHEET      -->
+  <!-- ========================================================= -->
 
   <!-- **********************************************************************
     Copyright 2007 Rensselaer Polytechnic Institute. All worldwide rights reserved.

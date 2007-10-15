@@ -147,6 +147,32 @@
         </CalAdmin>
 
         <!-- ==================================================================
+                          Public event submission web client EventSubmit
+             ================================================================== -->
+        <UserCal classname="org.bedework.calfacade.configs.EventSubmit">
+          <autoCreateContacts>false</autoCreateContacts>
+          <autoDeleteContacts>false</autoDeleteContacts>
+          <autoCreateLocations>false</autoCreateLocations>
+          <autoDeleteLocations>false</autoDeleteLocations>
+
+          <!-- Default value for 24 hour mode -->
+          <hour24>false</hour24>
+
+          <!-- Default value for minute increments -->
+          <minIncrement>5</minIncrement>
+
+          <showYearData>false</showYearData>
+
+          <logPrefix>EventSubmit</logPrefix>
+
+          <appRoot>/eventsubmitrsrc</appRoot>
+          <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
+
+          <refreshAction>setup.do</refreshAction>
+          <refreshInterval>900</refreshInterval>
+        </UserCal>
+        
+        <!-- ==================================================================
                           Public web client Events
              ================================================================== -->
         <Events classname="org.bedework.calfacade.configs.ClientConfig">
