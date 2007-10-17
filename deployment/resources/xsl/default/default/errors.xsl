@@ -241,7 +241,7 @@
       <!-- Scheduling error codes are defined in CalfacadeException -->
 
       <xsl:when test="id='org.bedework.error.scheduling.attendeeaccessdisallowed'">
-         Error: Access is disallowed to any attendee.
+         Error: Access is disallowed to one or more attendees.
       </xsl:when>
 
       <xsl:when test="id='org.bedework.error.scheduling.badttendees'">

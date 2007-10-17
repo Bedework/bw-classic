@@ -845,7 +845,7 @@
           <td>
             <xsl:if test="form/calendar/preferred/select/option">
               <select name="prefCalendarId">
-                <option value="-1">
+                <option value="">
                   Select preferred:
                 </option>
                 <xsl:for-each select="form/calendar/preferred/select/option">
@@ -860,7 +860,7 @@
               or Calendar (all):
             </xsl:if>
             <select name="calendarId">
-              <option value="-1">
+              <option value="">
                 Select:
               </option>
               <xsl:for-each select="form/calendar/all/select/option">
