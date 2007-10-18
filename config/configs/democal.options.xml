@@ -176,6 +176,9 @@
                           Public web client Events
              ================================================================== -->
         <Events classname="org.bedework.calfacade.configs.ClientConfig">
+          <cachingOn>true</cachingOn>
+          <cachePrefix>bwpubevents</cachePrefix>
+
           <autoCreateContacts>false</autoCreateContacts>
           <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
@@ -204,6 +207,9 @@
                           Demo departmental Public web client SoEDept
              ================================================================== -->
         <SoEDept classname="org.bedework.calfacade.configs.ClientConfig">
+          <cachingOn>true</cachingOn>
+          <cachePrefix>bwpubevents</cachePrefix>
+
           <autoCreateContacts>false</autoCreateContacts>
           <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
