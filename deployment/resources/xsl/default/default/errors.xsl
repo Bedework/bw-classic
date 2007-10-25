@@ -394,6 +394,10 @@
         Your information is incomplete: please supply a subscription id.
       </xsl:when>
 
+      <xsl:when test="id='org.bedework.exception.duplicatesubscription'">
+        Error: duplicate subscription.
+      </xsl:when>
+      
       <xsl:when test="id='org.bedework.validation.error.missingtitle'">
         Your information is incomplete: please supply a title.
       </xsl:when>

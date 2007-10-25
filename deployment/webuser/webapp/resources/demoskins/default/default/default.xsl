@@ -4882,7 +4882,7 @@
         <tr>
           <td class="fieldname">Style:</td>
           <td>
-            <select name="style">
+            <select name="subscription.style">
               <option value="default">default</option>
               <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
                 <xsl:variable name="subColor" select="."/>
