@@ -98,7 +98,7 @@
       <head>
         <xsl:call-template name="headSection"/>
       </head>
-      <body onload="focusElement('bwEventTitle');">
+      <body>
         <div id="bedework"><!-- main wrapper div -->
           <xsl:call-template name="headBar"/>
           <xsl:call-template name="messagesAndErrors"/>
@@ -125,7 +125,7 @@
 
   <!--==== HEAD SECTION  ====-->
   <xsl:template name="headSection">
-    <title>Bedework: Public Event Submission</title>
+    <title>Bedework: Submit a Public Event</title>
     <meta name="robots" content="noindex,nofollow"/>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
