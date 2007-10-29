@@ -1,22 +1,20 @@
 #bedework {
-  /* this is the main wrapper div used to encapsulate all Bedework CSS; we 
-     will prepend each selector below with this ID - this helps encapsulate 
-     the css for use in portal environments (though it does imply that only 
+  /* this is the main wrapper div used to encapsulate all Bedework CSS; we
+     will prepend each selector below with this ID - this helps encapsulate
+     the css for use in portal environments (though it does imply that only
      one instance should be running on a portal page) */
   font-family : Arial, Helvetica, sans-serif;
   font-size: 100%; /* to make IE behave */
   background-color : white;
   color : black;
   padding: 0.75em 1em 0em 1em;
-  margin: 0; 
+  margin: 0;
 }
 /* Generic selectors*/
 #bedework h2 {
   margin: 0em;
   padding: 0.2em 0.2em 0.2em 0.5em;
   font-size: 1.3em;
-  border-bottom: 1px solid #ccc;
-  /*border-top: 1px solid #ccc;*/
 }
 #bedework #bodyBlock h2 {
   color: black;
@@ -29,19 +27,6 @@
   color: black;
   background-color: transparent;
   text-decoration: none;
-}
-#bedework h2.bwStatusConfirmed,
-#bedework h2.common {
-  background-color: #eee;
-  color: black;
-}
-#bedework h2.bwStatusCancelled {
-  background-color: #eee;
-  color: black;
-}
-#bedework h2.bwStatusTentative {
-  background: #eee url('../../resources/tentativeLines.gif') top !important;
-  color: black;
 }
 #bedework .formButtons {
   float: right;
@@ -78,6 +63,7 @@
 }
 /* Header IDs and classes */
 #bedework #headBar {
+  position: relative;
   text-align: right;
   vertical-align: bottom;
   clear: right;
@@ -86,9 +72,16 @@
   margin: 0em;
 }
 #bedework #logo {
-  float: left;
+  position: absolute;
+  left: 0;
+  bottom: 0;
   padding: 0 0 2px 5px;
   margin: 0;
+}
+#bedework #headBar #title {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 #bedework #headBar h2 {
   margin: 0 0 2px 0;
@@ -98,221 +91,47 @@
   background-color: transparent;
   border: none;
 }
-#bedework #logoTable #schoolLinksCell a:link,
-#bedework #logoTable #schoolLinksCell a:visited,
-#bedework #logoTable #schoolLinksCell a:active {
-  background-color: transparent;
-  color: #999;
-  text-decoration: none;
-}
-#bedework #logoTable #schoolLinksCell a:hover {
-  background-color: #eee;
-  color: #333;
-  text-decoration: none;
-}
-#bedework #curDateRangeTable {
-  width: 100%;
-  height: 26px;
-  background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
-  color : #eee;
-  margin: 0em;
-  font-weight : bold;
-  text-align : center;
-  white-space: nowrap;
-}
-#bedework #curDateRangeTable td {
-  padding-top: 5px;
-  padding-bottom: 1px;
+#bedework #headBar .logout {
   padding-left: 0.5em;
-  padding-right: 0.5em;
-  vertical-align: middle;
-}
-#bedework #curDateRangeTable td.sideBarOpenCloseIcon {
-  background: url(../../resources/glassFill-02-leftBorder.gif) no-repeat top left;
-  color: inherit;
-  width: 200px;
-}
-#bedework #curDateRangeTable td.date {
-  font-weight : bold;
-  text-align : center;
-  white-space: nowrap;
-}
-#bedework #curDateRangeTable td.rssPrint {
-  background: url(../../resources/glassFill-02-rightBorder.gif) no-repeat top right;
-  color: inherit;
-  width: 200px;
-  font-weight : bold;
-  text-align : right;
-  white-space: nowrap;
-  vertical-align: middle;
-}
-#bedework #curDateRangeTable td.rssPrint img {
-  position: relative;
-  top: 3px;
-}
-#bedework #curDateRangeTable td.rssPrint a:link,
-#bedework #curDateRangeTable td.rssPrint a:active,
-#bedework #curDateRangeTable td.rssPrint a:visited {
-  font-size: 10px;
-  color: #eee;
-  background-color: transparent;
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 0;
-  text-decoration: none;
-  margin-right: 0.5em;
-  position: relative;
-  top: -3px;
-}
-#bedework #curDateRangeTable td.rssPrint a:hover {
-  color: #663;
-  background-color: #fff;
-}
-#bedework #curDateRangeTable td.rssPrint a.rss:link,
-#bedework #curDateRangeTable td.rssPrint a.rss:active,
-#bedework #curDateRangeTable td.rssPrint a.rss:visited {
-  font-size: 10px;
-  font-weight: bold;
-  color: #444;
-  background-color: #ddd;
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-  padding: 0px 1px 0px 1px;
-  text-decoration: none;
-  margin-right: 0.5em;
-  margin-left: 2px;
-  position: relative;
-  top: -3px;
-  border: solid 1px #666;
-}
-#bedework #curDateRangeTable td.rssPrint a.rss:hover {
-  color: #900;
-  background-color: #fff;
-}
-#bedework #bodyBlock {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-#bedework #bodyBlock td#sideBar {
-  width: 200px;
   font-size: 0.8em;
-  color: black;
-  background: white url(../../resources/sideBarGrayGrad.gif) repeat-y right;
-  border-left: 2px solid #333;
-  border-right: 1px solid #333;
-  border-bottom: 2px solid #aaa;
-  border-top: 24px solid #333;
-  vertical-align: top;
-  white-space: nowrap;
+}
+#bedework #headBar p {
   margin: 0;
   padding: 0;
 }
-#bedework #bodyBlock td#sideBar h3 {
-  color: #eee;
-  background: #4164AE url(../../resources/sideBarBlueGrad.gif) repeat-y right;
-  font-weight: normal;
-  margin: 0;
-  padding: 2px 4px;
-}
-#bedework #bodyBlock td#sideBar h3 a:link,
-#bedework #bodyBlock td#sideBar h3 a:active,
-#bedework #bodyBlock td#sideBar h3 a:visited {
-  float: right;
-  font-size: 0.8em;
-  color: #eee;
-  background: transparent;
-  text-decoration: none;
-}
-#bedework #bodyBlock td#sideBar h3 a:hover {
-  color: #ff3;
-  background: transparent;
-  text-decoration: none;
-}
-#bedework #bodyBlock td#sideBarClosed {
-  width: 1px;
-  border-left: 1px solid #333;
-  border-bottom: 2px solid #aaa;
+#bedework #menuTabs {
+  margin: 1em 0 0 0;
   padding: 0;
-  color: black;
-  background-color: #333;
+  border-bottom: 2px solid #999;
 }
-#bedework #bodyBlock td#sideBar a:link,
-#bedework #bodyBlock td#sideBar a:active,
-#bedework #bodyBlock td#sideBar a:visited {
-  text-decoration: none;
-}
-#bedework #bodyBlock td#sideBar a:hover {
-  color: black;
-  background-color: #ff3;
-}
-#bedework #sideBarOpenCloseIcon {
-  float: left;
-  margin: 3px 0;
-  vertical-align: middle;
-}
-#bedework #bodyBlock td#sideBar #sideBarMenu li {
-  padding-bottom: 0.5em;
-}
-#bedework #myViews li {
+#bedework #menuTabs li {
+  display: inline;
   list-style: none;
-}
-#bedework #myViews li.selected {
-  list-style-image: url(../../resources/glassFill-icon-view.gif);
-  font-weight: bold;
-}
-#bedework #bodyBlock td#bodyContent {
-  border-right: 2px solid #333;
-  border-bottom: 2px solid #aaa;
-  vertical-align: top;
-  padding: 0;
-  margin: 0;
-}
-#bedework #utilBarTable {
-  margin: 0;
-  padding: 0;
-  background-color : #eee;
+  margin: 0 2px 0 0;
+  padding: 0 1em;
+  text-align: center;
+  border-top: 2px solid #999;
+  border-left: 2px solid #999;
+  border-right: 2px solid #999;
   color: black;
+  background-color: #eee;
   font-size: 0.9em;
-  border-bottom: 1px solid #999;
 }
-#bedework #utilBarTable .leftCell {
+#bedework #menuTabs li.selected {
+  border-bottom: 2px solid #fff;
+  color: black;
+  background-color: #fff;
+}
+#bedework #bodyContent {
   margin: 0;
-  padding: 0;
-  padding: 0.2em 0 0.2em 0.2em;
-  white-space: nowrap;
-}
-#bedework #utilBarTable .leftCell img {
-  display: inline;
-  margin-right: 2px;
-  vertical-align: middle;
-}
-#bedework #utilBarTable .rightCell {
-  margin: 0;
-  padding: 0.1em 0.2em 0 0;
-  text-align: right;
-  white-space: nowrap;
-}
-#bedework #utilBarTable form,
-#bedework #searchPageForm {
-  display: inline;
-  margin: 0px 0px 1px 0px;
-  padding: 0em;
-  white-space: nowrap;
-}
-#bedework #searchPageForm {
-  float: right;
-}
-#bedework #utilBarTable input {
-  font-size: 0.7em;
-}
-#bedework #utilBarTable img {
-  vertical-align: middle;
-  margin: 0;
-  padding: 0;
+  padding:  2em;
+  border-left: 2px solid #999;
+  border-right: 2px solid #999;
 }
 #bedework .bwActionIcons {
   position: absolute;
   white-space: nowrap;
-  border: 1px solid #333;
+  border: 2px solid #999;
   background-color: #eee;
   color: black;
   padding: 0.5em;
@@ -325,7 +144,7 @@
   right: 2em;
 }
 #bedework .bwActionIcons a:link,
-#bedework .bwActionIcons a:active, 
+#bedework .bwActionIcons a:active,
 #bedework .bwActionIcons a:visited {
   display: block;
   margin: 0 0 2px 0;
@@ -338,143 +157,13 @@
   color: black !important; /* set important to override other more specific selectors */
   background-color: transparent;
 }
-#bedework #searchTable {
-  width: 100%;
-  font-size: 0.9em;
-  margin: 0px;
-  padding: 0px;
-  border-bottom: 2px solid #aaa;
-  border-left: 2px solid #aaa;
-  border-right: 2px solid #aaa;
-}
-#bedework #searchTable th {
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  text-align: left;
-  background: #e5e5e5;
-  color: #000;
-  font-weight: normal;
-}
-#bedework #searchTable td {
-  vertical-align: top;
-  padding: 4px;
-}
-#bedework #searchTable tr.fieldNames td {
-  background: #eee;
-  border-bottom: 1px solid #ccc;
-}
-#bedework #searchTable td.relevance {
-  white-space: nowrap;
-}
-#bedework #searchTable .searchRelevance {
-  background-color: #2c5f89;
-  color: black;
-}
-#bedework #searchFilter {
-  float: right;
-  font-size: 10pt;
-  font-weight: normal;
-  margin-top: 5px;
-}
-#bedework #tabsTable {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  vertical-align: bottom;
-  background-color: #333;
-  color: #eee;
-  font-size: 0.8em;
-}
-#bedework #tabsTable td {
-  padding: 4px 0 0 0;
-  white-space: nowrap;
-}
-#bedework #tabsTable img {
-  display: inline;
-}
-#bedework #tabsTable a {
-  background-color: inherit;
-  color: #ccc;
-}
-#bedework #tabsTable td.rightCell {
-  width: 100%;
-  background : url(../../resources/std-tab-space.gif);
-  padding-right: 0.5em;
-  text-align: right;
-}
-#bedework #tabsTable .logout {
-  padding-left: 0.5em;
-  font-size: 0.8em;
-}
-#bedework #navigationBarTable {
-  font-size: 0.8em;
-  margin: 0em;
-  padding: 0em;
-  vertical-align: top;
-  border-bottom: 1px solid Gray;
-}
-#bedework #navigationBarTable a {
-  text-decoration: none;
-  white-space: nowrap;
-}
-#bedework #navigationBarTable td {
-  vertical-align: top;
-}
-#bedework #navigationBarTable form {
-  display: inline;
-  margin-bottom: 0em;
-}
-#bedework #navigationBarTable table {
-  display: inline;
-  margin-bottom: 0em;
-}
-#bedework #navigationBarTable td.todayButton {
-  padding: 1em 1em 0 1em;
-}
-#bedework #navigationBarTable td.gotoForm {
-  padding: 1em 0.5em 0 0;
-}
-#bedework #navigationBarTable td.leftCell {
-  text-align: left;
-  white-space: nowrap;
-  padding-left: 0.5em;
-  font-size: 1.3em;
-  font-weight: bold;
-  padding: 0.75em 0em 0.75em 1em;
-  width: 100%;
-  vertical-align: middle;
-}
-#bedework #navigationBarTable td.leftCell .prevImg {
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
-}
-#bedework #navigationBarTable td.leftCell .nextImg {
-  margin: 0 0.5em 0 0.2em;
-  padding: 0;
-  vertical-align: middle;
-}
-#bedework #navigationBarTable td.rightCell {
-  text-align: right;
-  padding: 1em 0.5em 0em 0em;
-}
-#bedework #navigationBarTable td.rightCell select {
-  padding-right: 0em;
-  margin: 0em;
-  width: 10em;
-}
-#bedework #navigationBarTable .calLinks {
-  white-space: nowrap;
-}
 #bedework #messages,
 #bedework #errors {
   font-size: 0.8em;
   margin: 0em;
   padding: 0.3em 0 0.3em 1em;
-  border-left : 2px solid #333;
-  border-right : 2px solid #333;
+  border-left : 2px solid #999;
+  border-right : 2px solid #999;
   border-bottom: 1px solid Gray;
   color: black;
   background: #d8e118 url(../../resources/glassFill-message.gif) repeat-x bottom;
@@ -487,31 +176,22 @@
 #bedework #errors p {
   margin: 0;
   padding: 2px 0;
-}/*
-make no distinction in this stylesheet - yellow is good for both errors and
-messages.
-#bedework #messages {
-  color: black;
-  background: #d8e118 url(../../resources/glassFill-message.gif) repeat-x bottom;
 }
-#bedework #errors {
-  color: black;
-  background: #FF8B86 url(../../resources/glassFill-error.gif) repeat-x bottom;
-}*/
+#bedework #eventFormTabs {
+}
 #bedework ul.submenu {
-  margin: 0 0 1em 0;
+  margin: 0;
   padding: 0;
   font-size: 0.8em;
-  color: black;
-  background-color: #eee;
-  border-bottom: 1px solid #666;
-  border-top: 1px solid #999;
+  border-bottom: 1px solid #ccc;
 }
 #bedework ul.submenu li {
   display: inline;
-  margin: 0;
+  margin: 0 2px 0 0;
   padding: 0 1em 0 1em;
-  border-right: 1px solid #999;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-top: 1px solid #ccc;
   color: black;
   background-color: #ddd;
 }
@@ -585,9 +265,9 @@ messages.
   font-size: 0.9em;
   margin: 0px;
   padding: 0px;
-}
-#bedework table.dottedBorder {
-  border: 1px dotted #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 #bedework table.common th {
   text-align: left;
@@ -658,8 +338,6 @@ messages.
   margin: 0em;
   vertical-align: top;
   padding: 0.5em 0.5em 0.2em 0.5em;
-  color: black;
-  background-color: #eee;
   white-space: nowrap;
 }
 #bedework table.dottedBorder td.fieldname {
@@ -698,7 +376,7 @@ display: inline;
   vertical-align: middle;
 }
 #bedework #refreshEventAction {
-  padding-left: 1em;  
+  padding-left: 1em;
 }
 #bedework table.common td.allField {
   white-space: nowrap;
@@ -995,7 +673,7 @@ display: inline;
 }
 #bedework table.widget tr.subHead td {
   background-color: #eee;
-  color: black;  
+  color: black;
 }
 #bedework table.widget td {
   padding: 0.1em 1em;
@@ -1099,7 +777,7 @@ display: inline;
   vertical-align: middle;
   background-color: #2B4795;
   color: #eee;
-  border: 1px solid #333;
+  border: 2px solid #999;
 }
 #bedework #monthCalendarTable td {
   width: 14%;
@@ -1194,7 +872,7 @@ display: inline;
   background-color: #ffa;
   color: black;
   padding: 4px;
-  border: 1px solid #333;
+  border: 2px solid #999;
 }
 #bedework #monthCalendarTable a:hover span.eventTipReverse {
   display: block;
@@ -1205,7 +883,7 @@ display: inline;
   background-color: #ffa;
   color: black;
   padding: 4px;
-  border: 1px solid #333;
+  border: 2px solid #999;
 }
 #bedework #monthCalendarTable a:hover span.eventTipStatusCancelled {
   display: block;
@@ -1481,22 +1159,6 @@ display: inline;
 #bedework  li.calendar {
   list-style-image: url(../../resources/calIcon-sm.gif);
 }
-#bedework  li.trash {
-  list-style-image: url(../../resources/trashIcon.gif);
-}
-#bedework  li.inbox {
-  list-style-image: url(../../resources/inboxIcon.gif);
-}
-#bedework  li.outbox {
-  list-style-image: url(../../resources/outboxIcon.gif);
-}
-#bedework  li.deleted {
-  list-style-image: url(../../resources/calIconDeleted-sm.gif);
-}
-#bedework  li.selected {
-  list-style-image: url(../../resources/glassFill-icon-view.gif);
-  font-weight: bold;
-}
 #bedework .calendarTree a:link,
 #bedework .calendarTree a:active,
 #bedework .calendarTree a:visited {
@@ -1545,7 +1207,7 @@ display: inline;
 #bedework .helpBox {
   margin: 1em;
   padding: 0.5em;
-  border: 1px solid #333;
+  border: 2px solid #999;
   color: black;
   background-color: #fee;
 }
@@ -1631,7 +1293,7 @@ display: inline;
   margin: 0.5em 1em 0 0;
 }
 #freeBusyPage #freeBusyKey {
-  margin-left: 2em; 
+  margin-left: 2em;
 }
 #freeBusyKey td {
   padding: 2px 4px;
@@ -1678,7 +1340,7 @@ display: inline;
   background-color: #ffe;
   color: black;
   padding: 4px;
-  border: 1px solid #333;
+  border: 2px solid #999;
 }
 #freeBusy #timezonesDropDown {
   width: 14em;
@@ -1690,7 +1352,7 @@ display: inline;
 }
 #bedework #sharingBox {
   margin: 0;
-  border-top: 1px solid #333;
+  border-top: 2px solid #999;
   padding: 1em 1em 2em 1em;
 }
 #bedework #bwEventTab-Access #sharingBox {
@@ -1791,9 +1453,9 @@ display: inline;
   padding: 1em;
   color: #333;
   background-color: #eee;
-  border-bottom: 2px solid #333;
-  border-left: 2px solid #333;
-  border-right: 2px solid #333;
+  border-bottom: 2px solid #999;
+  border-left: 2px solid #999;
+  border-right: 2px solid #999;
   white-space: nowrap;
 }
 #bedework #footer a {
@@ -1834,7 +1496,7 @@ display: inline;
   background-color: #eee;
 }
 /*   LINKS    */
-#bedework a:link, 
+#bedework a:link,
 #bedework a:active {
   color: #00a;
   background-color: transparent;
