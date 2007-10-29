@@ -1,3 +1,9 @@
+body {
+  /* removed for portals */
+  margin: 0;
+  padding: 0;
+}
+
 #bedework {
   /* this is the main wrapper div used to encapsulate all Bedework CSS; we
      will prepend each selector below with this ID - this helps encapsulate
@@ -5,20 +11,17 @@
      one instance should be running on a portal page) */
   font-family : Arial, Helvetica, sans-serif;
   font-size: 100%; /* to make IE behave */
-  background-color : white;
-  color : black;
-  padding: 0.75em 1em 0em 1em;
+  background-color: white;
+  color: black;
+  padding: 2em 2em 0em 2em;
   margin: 0;
+  min-width: 835px;
 }
 /* Generic selectors*/
 #bedework h2 {
   margin: 0em;
   padding: 0.2em 0.2em 0.2em 0.5em;
   font-size: 1.3em;
-}
-#bedework #bodyBlock h2 {
-  color: black;
-  background: #f5f5f5;
 }
 #bedework h2 a:link,
 #bedework h2 a:active,
@@ -64,24 +67,16 @@
 /* Header IDs and classes */
 #bedework #headBar {
   position: relative;
-  text-align: right;
-  vertical-align: bottom;
   clear: right;
-  height: 80px;
   padding: 0em;
   margin: 0em;
 }
 #bedework #logo {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: 0 0 2px 5px;
-  margin: 0;
-}
-#bedework #headBar #title {
-  position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: -10px;
+  padding: 0 5px 0 0;
+  margin: 0;
 }
 #bedework #headBar h2 {
   margin: 0 0 2px 0;
@@ -123,6 +118,7 @@
   background-color: #fff;
 }
 #bedework #bodyContent {
+  position: relative;
   margin: 0;
   padding:  2em;
   border-left: 2px solid #999;
@@ -179,6 +175,18 @@
 }
 #bedework #eventFormTabs {
 }
+#bedework .instructions {
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  padding: 0.5em;
+  margin: 0;
+  border: 1px solid #ccc;
+  background-color: #ffe;
+  width: 300px;
+  font-size: 0.9em;
+  text-align: right;
+}
 #bedework ul.submenu {
   margin: 0;
   padding: 0;
@@ -187,7 +195,7 @@
 }
 #bedework ul.submenu li {
   display: inline;
-  margin: 0 2px 0 0;
+  margin: 0 4px 0 0;
   padding: 0 1em 0 1em;
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
@@ -216,6 +224,13 @@
 #bedework ul.submenu li.selected:hover {
   color: black;
   background-color: white;
+}
+#bedework #eventFormContent {
+  margin: 0;
+  padding: 1em;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 #bedework #standardForm {
   margin: 0;
@@ -265,9 +280,6 @@
   font-size: 0.9em;
   margin: 0px;
   padding: 0px;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
 }
 #bedework table.common th {
   text-align: left;
