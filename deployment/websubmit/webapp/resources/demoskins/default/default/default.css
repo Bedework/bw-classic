@@ -13,7 +13,7 @@ body {
   font-size: 100%; /* to make IE behave */
   background-color: white;
   color: black;
-  padding: 2em 2em 0em 2em;
+  padding: 0;
   margin: 0;
   min-width: 835px;
 }
@@ -65,44 +65,103 @@ body {
   font-size: 0.8em;
 }
 /* Header IDs and classes */
-#bedework #headBar {
-  position: relative;
-  clear: right;
-  padding: 0em;
+
+#bedework #header {
+  color: #eee;
+  background-color : #333;
   margin: 0em;
+  padding: 0.5em 1em 0.5em 1em;
 }
-#bedework #logo {
-  position: absolute;
-  right: 0;
-  bottom: -10px;
-  padding: 0 5px 0 0;
+#bedework #header a {
+  color: #dde;
+  background-color : transparent;
+}
+#bedework #header h1 {
+  font-size: 1.4em;
+  margin: 0.5em 0.5em 0em 0em;
+}
+#bedework #header img {
+  float: right;
+  border: 0;
+}
+#bedework #messages {
+  background-color: #333;
+  color: #ff0;
+  font-weight: bold;
+  margin: 0.5em 0;
+}
+#bedework #messages p {
   margin: 0;
 }
-#bedework #headBar h2 {
-  margin: 0 0 2px 0;
-  padding: 0;
-  font-size: 2em;
-  color: #444;
-  background-color: transparent;
-  border: none;
+#bedework #errors {
+  background-color: #333;
+  color: #f99;
+  font-weight: bold;
+  margin: 0.5em 0;
 }
-#bedework #headBar .logout {
-  padding-left: 0.5em;
+#bedework #errors em {
+  background-color: #333;
+  color: #ff9;
+}
+#bedework #errors p {
+  margin: 0;
+}
+#bedework #adminLeftColumn {
+  float: left;
+}
+#bedework #adminRightColumn {
+  float: left;
+  margin: 1em 0 1em 3em;
+}
+#bedework #statusBar {
+  margin: 0em;
+  padding: 0.2em 1em;
+  text-align: right;
+  color: black;
+  background-color: #edc;
   font-size: 0.8em;
 }
-#bedework #headBar p {
-  margin: 0;
-  padding: 0;
+#bedework #statusBarTable td.leftCell {
+  color: #666;
+  background-color: #edc;
+  text-align: left;
+  padding: 0.2em 0em 0.2em 1em;
 }
+#bedework #statusBar span.status {
+  font-weight: bold;
+}
+#bedework #statusBar a:link,
+#bedework #statusBar a:active,
+#bedework #statusBar a:visited {
+  text-decoration : none;
+  color: blue;
+  background-color: transparent;
+}
+#bedework #statusBar a:hover {
+  text-decoration: none;
+  background-color: #ffe;
+  color: black;
+}
+#bedework #titleBar {
+  font-size: 0.7em;
+  font-weight: bold;
+  letter-spacing: 3px;
+  background-color: #ddd;
+  color: #666;
+  border-top: 1px solid black;
+  border-bottom: 2px solid black;
+  text-align: center;
+}
+/* MenuTabs */
 #bedework #menuTabs {
-  margin: 1em 0 0 0;
+  margin: 0.5em 0 0 0;
   padding: 0;
   border-bottom: 2px solid #999;
 }
 #bedework #menuTabs li {
   display: inline;
   list-style: none;
-  margin: 0 2px 0 0;
+  margin: 0 0 0 4px;
   padding: 0 1em;
   text-align: center;
   border-top: 2px solid #999;
@@ -121,8 +180,6 @@ body {
   position: relative;
   margin: 0;
   padding:  2em;
-  border-left: 2px solid #999;
-  border-right: 2px solid #999;
 }
 #bedework .bwActionIcons {
   position: absolute;
@@ -175,17 +232,12 @@ body {
 }
 #bedework #eventFormTabs {
 }
-#bedework .instructions {
-  position: absolute;
-  right: 1em;
-  top: 1em;
+#bedework #instructions {
   padding: 0.5em;
-  margin: 0;
+  margin: 0 0 1em 0;
   border: 1px solid #ccc;
   background-color: #ffe;
-  width: 300px;
   font-size: 0.9em;
-  text-align: right;
 }
 #bedework ul.submenu {
   margin: 0;
@@ -228,9 +280,7 @@ body {
 #bedework #eventFormContent {
   margin: 0;
   padding: 1em;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 #bedework #standardForm {
   margin: 0;
@@ -1466,8 +1516,6 @@ display: inline;
   color: #333;
   background-color: #eee;
   border-bottom: 2px solid #999;
-  border-left: 2px solid #999;
-  border-right: 2px solid #999;
   white-space: nowrap;
 }
 #bedework #footer a {
@@ -1475,37 +1523,15 @@ display: inline;
   background-color: transparent;
   text-decoration: underline;
 }
-#bedework #skinSelectorTable {
-  width: 100%;
-  padding-top: 0.5em;
+#bedework #subfoot {
+  padding: 0.5em 1em;
   font-size: 0.7em;
   color: #333;
   background-color: inherit;
 }
-#bedework #skinSelectorTable td {
-  vertical-align: top;
-}
-#bedework #skinSelectorTable td.rightCell {
-  text-align: right;
-}
-#bedework #skinSelectorTable td.leftCell {
-  text-align: left;
+#bedework #subfoot a {
   color: #999;
   background-color: inherit;
-}
-#bedework #skinSelectorTable td.leftCell  a {
-  color: #999;
-  background-color: inherit;
-}
-#bedework #skinSelectorTable td.rightCell form {
-  display: inline;
-  margin: 0em;
-  padding: 0em;
-}
-#bedework #skinSelectorTable td.rightCell select {
-  font-size: 0.9em;
-  color: #333;
-  background-color: #eee;
 }
 /*   LINKS    */
 #bedework a:link,

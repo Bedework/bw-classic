@@ -396,7 +396,7 @@
       <a href="/bedework/">
         <img id="logo"
             alt="logo"
-            src="{$resourcesRoot}/resources/bedeworkLogo.gif"
+            src="{$resourcesRoot}/resources/bedeworkAdminLogo.gif"
             width="217"
             height="40"
             border="0"/>

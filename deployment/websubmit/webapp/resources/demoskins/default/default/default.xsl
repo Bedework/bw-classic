@@ -100,8 +100,7 @@
       </head>
       <body>
         <div id="bedework"><!-- main wrapper div -->
-          <xsl:call-template name="headBar"/>
-          <xsl:call-template name="messagesAndErrors"/>
+          <xsl:call-template name="header"/>
           <xsl:call-template name="menuTabs"/>
           <div id="bodyContent">
             <xsl:choose>
@@ -141,7 +140,7 @@
     <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
     <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
-    <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
+    <!-- <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script> -->
     <xsl:if test="$portalFriendly = 'true'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
       <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
@@ -160,6 +159,36 @@
 
   <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
 
+  <xsl:template name="header">
+    <div id="header">
+      <a href="/bedework/">
+        <img id="logo"
+            alt="logo"
+            src="{$resourcesRoot}/resources/bedeworkAdminLogo.gif"
+            width="217"
+            height="40"
+            border="0"/>
+      </a>
+      <!-- set the page heading: -->
+      <h1>
+        Bedework Public Event Submission
+      </h1>
+
+      <xsl:call-template name="messagesAndErrors"/>
+
+    </div>
+    <div id="statusBar">
+      logged in as
+          <xsl:text> </xsl:text>
+          <strong><xsl:value-of select="/bedework/userid"/></strong>
+          <xsl:text> </xsl:text>
+          <span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
+    </div>
+    <div id="titleBar">
+      CALENDAR of EVENTS
+    </div>
+  </xsl:template>
+
   <xsl:template name="messagesAndErrors">
     <xsl:if test="/bedework/message">
       <ul id="messages">
@@ -175,24 +204,6 @@
         </xsl:for-each>
       </ul>
     </xsl:if>
-  </xsl:template>
-
-  <xsl:template name="headBar">
-    <div id="headBar">
-      <a href="/bedework/" id="logo">
-        <img src="{$resourcesRoot}/resources/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/>
-      </a>
-      <div id="title">
-        <h2>Public Event Submission</h2>
-        <p>
-          logged in as
-          <xsl:text> </xsl:text>
-          <strong><xsl:value-of select="/bedework/userid"/></strong>
-          <xsl:text> </xsl:text>
-          <span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
-        </p>
-      </div>
-    </div>
   </xsl:template>
 
   <!--==== MENUTABS ====-->
@@ -226,9 +237,6 @@
   <!--==== ADD EVENT ====-->
   <xsl:template match="formElements" mode="addEvent">
     <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this)">
-      <h2>
-        Add Event
-      </h2>
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>
@@ -236,9 +244,6 @@
   <!--==== EDIT EVENT ====-->
   <xsl:template match="formElements" mode="editEvent">
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this)">
-      <h2>
-        Edit Event
-      </h2>
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>
@@ -311,6 +316,7 @@
       </xsl:if>
 
       <!-- event form submenu -->
+      <!--
       <ul id="eventFormTabs" class="submenu">
         <li class="selected">
           <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Details'); hide('bwEventTab-Location','bwEventTab-Categories','bwEventTab-Contact');">
@@ -333,18 +339,50 @@
           </a>
         </li>
       </ul>
+    -->
+
+    <div id="instructions">
+      <div id="bwHelp-Details">
+        <strong>Step 1:</strong> Enter your basic event information.
+        <a href="javascript:show('bwEventTab-Location','bwHelp-Location'); hide('bwEventTab-Details','bwHelp-Details');">
+          next&gt;
+        </a>
+      </div>
+      <div id="bwHelp-Location" class="invisible">
+        <strong>Step 2:</strong> Enter your location.
+        <a href="javascript:show('bwEventTab-Details','bwHelp-Details'); hide('bwEventTab-Location','bwHelp-Location');">
+          &lt;prev
+        </a>
+        <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact'); hide('bwEventTab-Location','bwHelp-Location');">
+          next&gt;
+        </a>
+      </div>
+      <div id="bwHelp-Contact" class="invisible">
+          <strong>Step 3:</strong> Select an event contact.
+          <a href="javascript:show('bwEventTab-Location','bwHelp-Location'); hide('bwHelp-Contact','bwEventTab-Contact');">
+            &lt;prev
+          </a>
+          <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories'); hide('bwHelp-Contact','bwEventTab-Contact');">
+            next&gt;
+          </a>
+        </div>
+      <div id="bwHelp-Categories" class="invisible">
+        <strong>Step 4:</strong> Select categories.
+        <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact'); hide('bwHelp-Categories','bwEventTab-Categories');">
+          &lt;prev
+        </a>
+        <div class="eventSubmitButtons">
+          <input name="submit" type="submit" value="submit for approval"/>
+          <input name="cancelled" type="submit" value="cancel"/>
+        </div>
+      </div>
+    </div>
 
     <div id="eventFormContent">
       <!-- Basic tab -->
       <!-- ============== -->
       <!-- this tab is visible by default -->
       <div id="bwEventTab-Details">
-        <div class="instructions">
-          <strong>Step 1:</strong> Enter your basic event information.<br/>
-          <a href="javascript:setTab('eventFormTabs',1); show('bwEventTab-Location'); hide('bwEventTab-Details','bwEventTab-Categories','bwEventTab-Contact');">
-            next&gt;
-          </a>
-        </div>
         <!--  For now, hard code the path to the submissions calendar -->
         <input type="hidden" name="newCalPath" value="/public/unbrowsable/submissions/submissions"/>
         <table cellspacing="0" class="common">
@@ -779,15 +817,6 @@
       <!-- Location tab -->
       <!-- ============== -->
       <div id="bwEventTab-Location" class="invisible">
-        <div class="instructions">
-          <strong>Step 2:</strong> Enter your location.<br/>
-          <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Details'); hide('bwEventTab-Location','bwEventTab-Categories','bwEventTab-Contact');">
-            &lt;prev
-          </a>
-          <a href="javascript:setTab('eventFormTabs',2); show('bwEventTab-Contact'); hide('bwEventTab-Details','bwEventTab-Location','bwEventTab-Categories');">
-            next&gt;
-          </a>
-        </div>
         <span class="std-text">Choose: </span>
         <span id="eventFormLocationList">
           <select name="locationUid">
@@ -800,12 +829,28 @@
       <!-- Contact tab -->
       <!-- ============== -->
       <div id="bwEventTab-Contact" class="invisible">
-        move contacts here
+        <p><strong>Select a contact:</strong></p>
+        <xsl:if test="form/contact/preferred/select/option">
+          <select name="prefContactId" id="eventFormContactList">
+            <option value="">
+              Select preferred:
+            </option>option>
+            <xsl:copy-of select="form/contact/preferred/select/*"/>
+          </select>
+          or Contact (all):
+        </xsl:if>
+        <select name="allContactId" id="eventFormPrefContactList">
+          <option value="">
+            Select:
+          </option>
+          <xsl:copy-of select="form/contact/all/select/*"/>
+        </select>
       </div>
 
       <!-- Categories tab -->
       <!-- ============== -->
       <div id="bwEventTab-Categories" class="invisible">
+        <p><strong>Choose categories:</strong></p>
         <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
         <xsl:choose>
           <xsl:when test="not(form/categories/all/category)">
@@ -837,11 +882,6 @@
           </xsl:otherwise>
         </xsl:choose>
       </div>
-    </div>
-
-    <div class="eventSubmitButtons">
-      <input name="submit" type="submit" value="submit for approval"/>
-      <input name="cancelled" type="submit" value="cancel"/>
     </div>
   </xsl:template>
 
@@ -1139,25 +1179,10 @@
     <div id="footer">
       Demonstration calendar; place footer information here.
     </div>
-    <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td class="leftCell">
-          <a href="http://www.bedework.org/">Bedework Website</a> |
-          <a href="?noxslt=yes">show XML</a> |
-          <a href="?refreshXslt=yes">refresh XSLT</a>
-        </td>
-        <td class="rightCell">
-          <!--<form name="skinSelectForm" method="post" action="{$setup}">
-            skin selector:
-            <select name="skinNameSticky" onchange="submit()">
-              <option>select a skin</option>
-              <option value="default">Demo Calendar</option>
-              <option value="rensselaer">Rensselaer</option>
-              <option value="washington">Washington</option>
-            </select>
-          </form>-->
-        </td>
-      </tr>
-    </table>
+    <div id="subfoot">
+      <a href="http://www.bedework.org/">Bedework Website</a> |
+      <a href="?noxslt=yes">show XML</a> |
+      <a href="?refreshXslt=yes">refresh XSLT</a>
+    </div>
   </xsl:template>
 </xsl:stylesheet>
