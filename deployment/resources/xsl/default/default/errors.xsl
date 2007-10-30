@@ -21,6 +21,9 @@
       <xsl:when test="id='org.bedework.client.error.alreadymember'">
         Error: already a member: <em><xsl:value-of select="param"/></em>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.badfilter'">
+        Error: invalid filter definition: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.badinterval'">
         Error: bad interval.
       </xsl:when>
@@ -360,6 +363,10 @@
 
       <xsl:when test="id='org.bedework.validation.error.missingeventowner'">
         Your information is incomplete: please supply an event owner.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingfilterdef'">
+        Your information is incomplete: please supply a filter definition.
       </xsl:when>
 
       <xsl:when test="id='org.bedework.validation.error.missinggroupname'">
