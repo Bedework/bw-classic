@@ -148,6 +148,9 @@
       <xsl:when test="id='org.bedework.client.error.unknown.event'">
           Event <xsl:value-of select="param"/> does not exist.
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.filter'">
+        Error: unknown filter:  <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unknown.group'">
         Error: unknown group:  <em><xsl:value-of select="param"/></em>.
       </xsl:when>
@@ -404,7 +407,7 @@
       <xsl:when test="id='org.bedework.exception.duplicatesubscription'">
         Error: duplicate subscription.
       </xsl:when>
-      
+
       <xsl:when test="id='org.bedework.validation.error.missingtitle'">
         Your information is incomplete: please supply a title.
       </xsl:when>
