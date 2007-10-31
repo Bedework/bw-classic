@@ -343,38 +343,81 @@
 
     <div id="instructions">
       <div id="bwHelp-Details">
-        <strong>Step 1:</strong> Enter your basic event information.
-        <a href="javascript:show('bwEventTab-Location','bwHelp-Location'); hide('bwEventTab-Details','bwHelp-Details');">
-          next&gt;
-        </a>
+        <div class="navButtons">
+          <a href="javascript:show('bwEventTab-Location','bwHelp-Location'); hide('bwEventTab-Details','bwHelp-Details');">
+            next
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowRight.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          </a>
+        </div>
+        <strong>Step 1:</strong> Event Details
       </div>
       <div id="bwHelp-Location" class="invisible">
-        <strong>Step 2:</strong> Enter your location.
-        <a href="javascript:show('bwEventTab-Details','bwHelp-Details'); hide('bwEventTab-Location','bwHelp-Location');">
-          &lt;prev
-        </a>
-        <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact'); hide('bwEventTab-Location','bwHelp-Location');">
-          next&gt;
-        </a>
+        <div class="navButtons">
+          <a href="javascript:show('bwEventTab-Details','bwHelp-Details'); hide('bwEventTab-Location','bwHelp-Location');">
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowLeft.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          previous</a> |
+          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact'); hide('bwEventTab-Location','bwHelp-Location');">
+            next
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowRight.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          </a>
+        </div>
+        <strong>Step 2:</strong> Location
       </div>
       <div id="bwHelp-Contact" class="invisible">
-          <strong>Step 3:</strong> Select an event contact.
+        <div class="navButtons">
           <a href="javascript:show('bwEventTab-Location','bwHelp-Location'); hide('bwHelp-Contact','bwEventTab-Contact');">
-            &lt;prev
-          </a>
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowLeft.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          previous</a> |
           <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories'); hide('bwHelp-Contact','bwEventTab-Contact');">
-            next&gt;
+            next
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowRight.gif"
+              width="13"
+              height="13"
+              border="0"/>
           </a>
         </div>
+        <strong>Step 3:</strong> Contact
+      </div>
       <div id="bwHelp-Categories" class="invisible">
-        <strong>Step 4:</strong> Select categories.
-        <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact'); hide('bwHelp-Categories','bwEventTab-Categories');">
-          &lt;prev
-        </a>
-        <div class="eventSubmitButtons">
-          <input name="submit" type="submit" value="submit for approval"/>
-          <input name="cancelled" type="submit" value="cancel"/>
+        <div class="navButtons">
+          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact'); hide('bwHelp-Categories','bwEventTab-Categories');">
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowLeft.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          previous</a>
+          <span class="hidden">
+            <xsl:text> </xsl:text>| next
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowRight.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          </span>
+          <div class="eventSubmitButtons">
+            <input name="submit" class="submit" type="submit" value="submit for approval"/>
+            <input name="cancelled" type="submit" value="cancel"/>
+          </div>
         </div>
+        <strong>Step 4:</strong> Categories
       </div>
     </div>
 
@@ -817,34 +860,63 @@
       <!-- Location tab -->
       <!-- ============== -->
       <div id="bwEventTab-Location" class="invisible">
-        <span class="std-text">Choose: </span>
-        <span id="eventFormLocationList">
-          <select name="locationUid">
-            <option value="">select...</option>
-            <xsl:copy-of select="form/location/locationmenu/select/*"/>
-          </select>
-        </span>
+        <div class="mainForm">
+          Choose:
+          <span id="eventFormLocationList">
+            <select name="locationUid">
+              <option value="">Select an existing location...</option>
+              <xsl:copy-of select="form/location/locationmenu/select/*"/>
+            </select>
+          </span>
+        </div>
+        <p class="subFormMessage">
+          Didn't find the location?  Suggest a new one:
+        </p>
+        <div class="subForm">
+          <p>
+            <label for="commentLocationAddress">Address: </label>
+            <input type="text" name="commentLocationAddress"/>
+          </p>
+          <p>
+            <label for="commentLocationSubaddress">Sub-address: </label><input type="text" name="commentLocationSubaddress"/>
+          </p>
+          <p>
+            <label for="commentLocationURL">URL: </label><input type="text" name="commentLocationURL"/>
+          </p>
+        </div>
       </div>
 
       <!-- Contact tab -->
       <!-- ============== -->
       <div id="bwEventTab-Contact" class="invisible">
-        <p><strong>Select a contact:</strong></p>
-        <xsl:if test="form/contact/preferred/select/option">
-          <select name="prefContactId" id="eventFormContactList">
+        <div class="mainForm">
+          Choose:
+          <select name="allContactId" id="eventFormPrefContactList">
             <option value="">
-              Select preferred:
-            </option>option>
-            <xsl:copy-of select="form/contact/preferred/select/*"/>
+              Select an existing contact:
+            </option>
+            <xsl:copy-of select="form/contact/all/select/*"/>
           </select>
-          or Contact (all):
-        </xsl:if>
-        <select name="allContactId" id="eventFormPrefContactList">
-          <option value="">
-            Select:
-          </option>
-          <xsl:copy-of select="form/contact/all/select/*"/>
-        </select>
+        </div>
+        <p class="subFormMessage">
+          Didn't find the contact you need?  Suggest a new one:
+        </p>
+        <div class="subForm">
+          <p>
+            <label for="commentContactName">Organization Name: </label>
+            <input type="text" name="commentContactName"/>
+            <span class="note"> Please limit contacts to organizations, not individuals.</span>
+          </p>
+          <p>
+            <label for="commentContactPhone">Phone: </label><input type="text" name="commentContactPhone"/>
+          </p>
+          <p>
+            <label for="commentContactURL">URL: </label><input type="text" name="commentContactURL"/>
+          </p>
+          <p>
+            <label for="commentContactEmail">Email: </label><input type="text" name="commentContactEmail"/>
+          </p>
+        </div>
       </div>
 
       <!-- Categories tab -->

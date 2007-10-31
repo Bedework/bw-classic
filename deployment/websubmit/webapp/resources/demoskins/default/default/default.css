@@ -2,6 +2,8 @@ body {
   /* removed for portals */
   margin: 0;
   padding: 0;
+  background-color: #ddd;
+  color: black;
 }
 
 #bedework {
@@ -43,7 +45,10 @@ body {
 #bedework .eventSubmitButtons input,
 #bedework .formButtons input {
   margin: 0;
-  font-size: 0.8em;
+  font-size: 1.1em;
+}
+#bedework .eventSubmitButtons input.submit {
+  color: #060;
 }
 #bedework h3 {
   margin: 0em;
@@ -159,6 +164,7 @@ body {
   border-bottom: 2px solid #999;
 }
 #bedework #menuTabs li {
+  position: relative;
   display: inline;
   list-style: none;
   margin: 0 0 0 4px;
@@ -238,6 +244,13 @@ body {
   border: 1px solid #ccc;
   background-color: #ffe;
   font-size: 0.9em;
+}
+#bedework #instructions .navButtons {
+  float: right;
+  text-align: right;
+}
+#bedework #instructions .navButtons img {
+  vertical-align: middle;
 }
 #bedework ul.submenu {
   margin: 0;
@@ -324,6 +337,34 @@ body {
   padding: 0 2px;
   text-decoration: none;
 }
+#bedework .mainForm {
+  padding: 0;
+  margin: 0 0 1.5em 0;
+  font-weight: bold;
+  color: black;
+}
+#bedework .subForm {
+  font-size: 0.9em;
+  padding: 1em;
+  margin: 0;
+  background-color: #eee;
+  color: black;
+}
+#bedework .subForm label {
+  float: left;
+  text-align: right;
+  width: 150px;
+  padding: 0 1em 0 0;
+}
+#bedework p.subFormMessage {
+  font-size: 0.9em;
+  margin: 1em 0 0 0;
+  padding: 0;
+}
+#bedework .subForm p {
+  margin: 0 0 0.5em 0;
+  padding: 0;
+}
 /* table below is used for almost all forms  */
 #bedework table.common {
   width: 100%;
@@ -405,9 +446,6 @@ body {
 #bedework table.dottedBorder td.fieldname {
   text-align: right;
 }
-#bedework /*table.common td.comments {
-  border-top: 1px solid #ccc;
-}*/
 #bedework table.common td.comments p {
   margin: 0;
   padding: 0.5em 0 1em 0;
@@ -494,20 +532,6 @@ display: inline;
   font-weight: bold;
   margin: 0 1em;
 }
-#bedework table.scheduling td {
-  white-space: nowrap;
-}
-#bedework table.scheduling td.acls {
-  white-space: normal;
-}
-#bedework table.scheduling .grant {
-  color: #080;
-  background-color: inherit;
-}
-#bedework table.scheduling .deny {
-  color: #800;
-  background-color: inherit;
-}
 #bedework table#manage td {
   padding: 0.2em 0 0 0.5em;
 }
@@ -534,125 +558,10 @@ display: inline;
 #bedework #tztable td {
   padding: 2px 4px;
 }
-#bedework #scheduling {
-  margin: 1em;
-  font-size: 0.9em;
-}
-#bedework #scheduling p.editAttendees {
-  padding-top: 1em;
-  clear: both;
-}
-#bedework #recurringSwitch {
-  margin: 0 0 1em 0;
-}
-#bedework #recurrenceInfo {
-  margin: 0;
-  padding: 1em;
-  border: 1px solid #ddd;
-  font-size: 0.9em;
-}
-#bedework #rrulesSwitch,
-#bedework #rrulesUiSwitch {
-  font-size: 0.8em;
-}
-#bedework #rrulesFields {
-  margin: 0;
-  padding: 0;
-}
-#bedework #rrulesTable {
-  border: 1px solid #ddd;
-  margin: 0;
-  padding: 0;
-}
-#bedework #rrulesTable strong {
-  display: inline;
-}
-#bedework #rrulesTable td#recurrenceFrequency {
-  padding: 0.5em 1em;
-  border-right: 1px solid #ddd;
-  white-space: nowrap;
-}
-#bedework #rrulesTable td#advancedRrules {
-  padding: 0.5em 1em 0.5em 1em;
-  border-top: 1px solid #ddd;
-}
-#bedework #rrulesTable td#recurrenceUntil {
-  width: 100%;
-  padding: 0.5em 0 0 1em;
-}
 #bedework .chkBoxListItem {
   display: block;
   float: left;
   width: 3em;
-}
-#bedework #rrulesTable br {
-  clear: both;
-}
-#bedework #rrulesTable p {
-  margin: 0 0 0.5em 0;
-}
-#bedework #rrulesTable p.weekRecurLinks {
-  margin: 1em 0 1em 0;
-}
-#bedework #rrulesTable .extraByMonthPosFields {
-  margin: 0 0 1em 2em;
-  padding: 0;
-}
-#bedework #rrulesTable #monthRecurFields div,
-#bedework #rrulesTable #yearRecurFields div {
-  display: block;
-  margin: 0 0 0.5em 0;
-}
-#bedework #rrulesTable #dayMonthCheckBoxList,
-#bedework #rrulesTable #monthDaysCheckBoxList,
-#bedework #rrulesTable #yearWeeksCheckBoxList,
-#bedework #rrulesTable #yearMonthCheckBoxList,
-#bedework #rrulesTable #yearMonthDaysCheckBoxList,
-#bedework #rrulesTable #yearDaysCheckBoxList {
-  margin: 0.5em 0 0.5em 2em;
-  display: block;
-  clear: both;
-  white-space: nowrap !important;
-}
-#bedework #recurrenceDatesButton input {
-  margin: 2em 0 0 0;
-  font-size: 0.8em;
-}
-#bedework #rdatesFormFields {
-  font-size: 0.9em;
-  padding: 0.5em;
-}
-#bedework #rdatesFormFields p {
-  clear: both;
-  margin-top: 1em;
-}
-#bedework .rdatesTable {
-  font-size: 0.9em;
-  border: 1px solid #ddd;
-}
-#bedework .rdatesTable td {
-  padding: 0.5em 1em;
-}
-#bedework .rdatesTable td.trash {
-  text-align: right;
-}
-#bedework .rdatesTable td.note {
-  text-align: center;
-  font-size: 0.9em;
-}
-#bedework #bwCurrentRdates,
-#bedework #bwCurrentExdates,
-#bedework #bwCurrentRdatesNone,
-#bedework #bwCurrentExdatesNone {
-  float: left;
-  margin: 1em 2em 1em 0;
-}
-#bedework #bwCurrentRdates th,
-#bedework #bwCurrentRdates td,
-#bedework #bwCurrentExdates th,
-#bedework #bwCurrentExdates td {
-  text-align: left;
-  padding: 0 0.5em 0 0;
 }
 #bedework .shown {
   display: inline;
@@ -678,518 +587,8 @@ display: inline;
      contain an absolutely positioned div. */
   position: relative;
 }
-#bedework table#inoutbox td {
-  padding: 0.2em 0.5em;
-  border-bottom: 1px solid #ccc;
-  font-size: 0.75em;
-}
-#bedework table.common td.scheduleActions {
-  color: black;
-  background: #ddc;
-}
-#bedework table.common td.scheduleActions ul {
-  margin: 0;
-  padding: 0 0 0 20px;
-}
 #bedework #comments p {
   margin: 0 0 1em 2em;
-}
-#bedework table#inoutbox tr.unprocessed {
-  background: #fcc;
-  color: black;
-}
-#bedework table#inoutbox tr.publish {
-  background: #ddf;
-  color: black;
-}
-#bedework table#inoutbox tr.request {
-  background: #ffd;
-  color: black;
-}
-#bedework table#inoutbox tr.cancel {
-  background: #ddd;
-  color: black;
-}
-#bedework table#inoutbox tr.counter {
-  background: #fcc;
-  color: black;
-}
-#bedework a.emailIcon {
-  margin-left: 0.5em;
-}
-#bedework form#subscriptions {
-  margin: 0;
-  padding: 0;
-}
-#bedework table.widget {
-  margin: 1em 1em 0 0;
-  float: left;
-  clear: none;
-}
-#bedework table.widget th {
-  padding: 2px 0 2px 4px;
-  background-color: #ddd;
-  color: black;
-  border-bottom: 1px solid #ccc;
-  font-size: 0.9em;
-}
-#bedework table.widget tr.subHead td {
-  background-color: #eee;
-  color: black;
-}
-#bedework table.widget td {
-  padding: 0.1em 1em;
-  font-size: 0.8em;
-}
-#bedework table.widget td.role,
-#bedework table.widget td.status {
-  text-transform: lowercase;
-}
-#bedework table.widget {
-  border: 1px solid #999;
-}
-#bedework table.widget td,
-#bedework table.widget th {
-  text-align: left;
-}
-#bedework table.widget td.trash {
-  width: 15px;
-  padding: 4px 6px 4px 4px;
-}
-#bedework table.common table#attendees {
-  font-size: 0.9em;
-}
-#bedework table.common #attendees th {
-  padding: 0 0.5em 0 0;
-}
-#bedework table.common #attendees td {
-  padding: 0 0.5em 0 0;
-}
-#bedework #recipientsAndAttendees {
-  margin: 0;
-  padding:  0 1em;
-}
-/* dialog box - popup, most likely deprectaed */
-#bedework #bwDialogBox {
-  margin: 0;
-  background: white;
-  color: black;
-}
-#bedework #bwDialogBox h4 {
-  padding: 4px;
-  margin: 0;
-  text-align: center;
-  color: #eee;
-  background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
-  border: 2px solid #233979;
-}
-#bedework #bwDialogBox #errors,
-#bedework #bwDialogBox #messages {
-  margin: 0;
-}
-#bedework #bwDialogBox table {
-  width: 100%;
-  margin: 1em 0;
-}
-#bedework #bwDialogBox table th {
-  padding: 2px;
-  text-align: center;
-  color: black;
-  background: #eee;
-}
-#bedework #weekCalendarTable {
-  width: 100%;
-  font-size: 0.9em;
-  margin: 0px;
-  padding: 0px;
-  border-top: 1px solid #666;
-}
-#bedework #weekCalendarTable td {
-  padding: 0.4em;
-  margin: 0em;
-}
-#bedework #weekCalendarTable .dateRange {
-  text-align: left;
-  background-color: #e2decc;
-  color: black;
-  white-space: nowrap;
-}
-#bedework #weekCalendarTable .description {
-  text-align: left;
-  background-color: #fff;
-  color: black;
-  width: 100%;
-}
-#bedework #weekCalendarTable .more {
-  text-align: center;
-  background-color: #eee;
-  color: black;
-  font-size: 0.8em;
-}
-#bedework #monthCalendarTable {
-  width: 100%;
-  font-size: 0.8em;
-  margin: 0px;
-  padding: 0px;
-  border-top: 1px solid #666;
-}
-#bedework #monthCalendarTable th.dayHeading {
-  width: 14%;
-  text-align: center;
-  vertical-align: middle;
-  background-color: #2B4795;
-  color: #eee;
-  border: 2px solid #999;
-}
-#bedework #monthCalendarTable td {
-  width: 14%;
-  height: 60px;
-  vertical-align: top;
-  text-align: left;
-  padding: 0em;
-  border: 1px solid #aaa;
-  background-color: white;
-  color: black;
-}
-#bedework #monthCalendarTable td.filler {
-  border: none;
-  background-color: #eee;
-  color: black;
-}
-#bedework #monthCalendarTable ul {
-  font-size: 0.8em;
-  list-style : none;
-  margin: 0em;
-  padding: 0.3em 0em 0em 0em;
-}
-#bedework #monthCalendarTable ul li {
-  margin: 0em;
-  padding: 0em;
-  display: inline;
-}
-#bedework #monthCalendarTable a.event {
-  display: block;
-  padding: 0.1em 0.2em 0.1em 0.2em;
-  text-decoration: none;
-  border-bottom: 1px solid #bbb;
-}
-#bedework #monthCalendarTable a.firstEvent {
-  border-top: 1px solid #bbb; /* first item in the grid needs a top border */
-}
-#bedework #monthCalendarTable a.eventLinkA:link,
-#bedework #monthCalendarTable a.eventLinkA:visited,
-#bedework #monthCalendarTable a.eventLinkA:active  {
-  background-color: #CCD7F5;
-  color: black;
-}
-#bedework #monthCalendarTable a.eventLinkB:link,
-#bedework #monthCalendarTable a.eventLinkB:visited,
-#bedework #monthCalendarTable a.eventLinkB:active  {
-  background-color: #EBF0FF;
-  color: black;
-}
-#bedework #monthCalendarTable a.eventCancelled:link,
-#bedework #monthCalendarTable a.eventCancelled:visited,
-#bedework #monthCalendarTable a.eventCancelled:active  {
-  background-color: #ccc;
-  color: black;
-}
-#bedework #monthCalendarTable a.eventTentative:link,
-#bedework #monthCalendarTable a.eventTentative:visited,
-#bedework #monthCalendarTable a.eventTentative:active  {
-  border-bottom: 1px solid #ccc;
-  border-top: 1px solid #ccc;
-  background: #eee url('../../resources/tentativeLines.gif') top;
-  color: black;
-}
-#bedework #monthCalendarTable a:hover {
-  color: black;
-  background-color: #ffa !important; /* must be important to override subscription colors */
-  /* required for eventTip to hover correctly;
-     apply only to the hover pseudo class, or
-     the other anchors nearby will cover the eventTip in IE */
-  position: relative;
-}
-#bedework #monthCalendarTable a.dayLink {
-  text-decoration: none;
-  color: black;
-  background-color: transparent;
-  padding-left: 2px;
-}
-#bedework #monthCalendarTable a:hover.dayLink {
-  text-decoration: none;
-  color: #eee !important; /* must be important to override a:hover selector above */
-  background-color: black !important; /* must be important to override a:hover selector above */
-}
-#bedework #monthCalendarTable a span.eventTip,
-#bedework #monthCalendarTable a span.eventTipReverse {
-  display: none;
-}
-#bedework #monthCalendarTable a:hover span.eventTip {
-  display: block;
-  position: absolute;
-  width: 20em;
-  top: 1em;
-  left: 12em;
-  background-color: #ffa;
-  color: black;
-  padding: 4px;
-  border: 2px solid #999;
-}
-#bedework #monthCalendarTable a:hover span.eventTipReverse {
-  display: block;
-  position: absolute;
-  width: 20em;
-  top: 1em;
-  left: -21em;
-  background-color: #ffa;
-  color: black;
-  padding: 4px;
-  border: 2px solid #999;
-}
-#bedework #monthCalendarTable a:hover span.eventTipStatusCancelled {
-  display: block;
-  color: white;
-  background-color: #333;
-  padding: 2px;
-  margin-bottom: 6px;
-  text-align: center;
-}
-#bedework #monthCalendarTable a:hover span.eventTipStatusTentative {
-  display: block;
-  color: black;
-  background: #eee url('../../resources/tentativeLines.gif') top;
-  padding: 2px;
-  margin-bottom: 6px;
-  border: 1px solid #ccc;
-  text-align: center;
-}
-#bedework div.gridAdd {
-  display: block;
-  float: right;
-  margin: 0;
-  padding: 0;
-}
-#bedework a.calendarAdd img {
-  margin: 0 0 0 0.5em;
-  padding: 0;
-}
-#bedework #monthCalendarTable td.today,
-#bedework #yearCalendarTable td.today {
-  background-color: #ffb;
-  color: black;
-}
-#bedework #yearCalendarTable td.today {
-  border: 1px solid #666;
-}
-#bedework #yearCalendarTable {
-  width: 100%;
-  font-size: 0.9em;
-  margin: 0px;
-  padding: 0em;
-  border-top: 1px solid #666;
-  border-bottom: 2px solid #aaa;
-  border-left: 2px solid #aaa;
-  border-right: 2px solid #aaa;
-}
-#bedework #yearCalendarTable td {
-  padding: 1em 0em 0em 0em;
-  margin: 0em;
-  vertical-align: top;
-  text-align: center;
-  width: 33%;
-}
-#bedework #yearCalendarTable table.yearViewMonthTable {
-  margin: 0em  1em 0.5em 1em;
-  border: 1px solid #ddd;
-}
-#bedework #yearCalendarTable table.yearViewMonthTable td {
-  text-align: center;
-  padding: 0.2em;
-  width: 12.5%;
-}
-#bedework #yearCalendarTable table.yearViewMonthTable th {
-  font-weight: bold;
-  background-color: #eee;
-  color: black;
-  padding: 0.2em;
-}
-#bedework #yearCalendarTable table.yearViewMonthTable td.monthName {
-  font-weight: bold;
-  text-align: center;
-  background-color: #2B4795;
-  color: #eee;
-  white-space: nowrap;
-  border-bottom: 1px solid #999;
-}
-#bedework #yearCalendarTable table.yearViewMonthTable td.weekCell {
-  font-weight: bold;
-  font-size: 0.8em;
-  background-color: #eee;
-  color: black;
-}
-#bedework #yearCalendarTable  table.yearViewMonthTable td  a  {
-  text-decoration: none;
-  background-color: inherit;
-  padding: 1px;
-  color: black;
-}
-#bedework #yearCalendarTable  table.yearViewMonthTable td.weekCell a  {
-  text-decoration: none;
-  background-color: inherit;
-  padding: 1px;
-  color: black;
-}
-#bedework #yearCalendarTable  table.yearViewMonthTable td.monthName a  {
-  text-decoration: none;
-  background-color: inherit;
-  padding: 1px;
-  color: #eee;
-}
-#bedework #yearCalendarTable  table.yearViewMonthTable td a:hover  {
-  text-decoration: none;
-  background-color: #FFC;
-  color: black;
-  border: 1px solid black;
-  padding: 0;
-}
-#bedework #listTable {
-  width: 100%;
-  font-size: 0.9em;
-  margin: 0px;
-  padding: 0px;
-  border-top: 1px solid #666;
-}
-#bedework #listTable td {
-  padding: 0.5em;
-  margin: 0em;
-  border-bottom: 1px solid #bbb;
-}
-#bedework #listTable td a {
-  background-color: transparent;
-  color: black;
-  text-decoration: none;
-}
-#bedework #listTable td.dateRangeCrossDay {
-  font-size: 0.9em;
-  text-transform: lowercase;
-  background-color: #ddd;
-  color: black;
-  white-space: nowrap;
-}
-#bedework #listTable td.dateRangeEarlyMorning {
-  font-size: 0.9em;
-  text-transform: lowercase;
-  background-color: #D0D5E1;
-  color: black;
-  white-space: nowrap;
-}
-#bedework #listTable td.dateRangeMorning {
-  font-size: 0.9em;
-  text-transform: lowercase;
-  background-color: #DFE7FB;
-  color: black;
-  white-space: nowrap;
-}
-#bedework #listTable td.dateRangeAfternoon {
-  font-size: 0.9em;
-  text-transform: lowercase;
-  background-color: #CCD7F5;
-  color: black;
-  white-space: nowrap;
-}
-#bedework #listTable td.dateRangeEvening {
-  font-size: 0.9em;
-  text-transform: lowercase;
-  background-color: #B3C0E6;
-  color: black;
-  white-space: nowrap;
-}
-#bedework #listTable span.littleArrow {
-  font-size: 1.4em;
-}
-#bedework #listTable td.description {
-  text-align: left;
-  background-color: #fff;
-  color: black;
-  width: 100%;
-}
-#bedework #listTable td.bwStatusCancelled {
-  background-color: #ddd;
-  color: black;
-}
-#bedework #listTable td.bwStatusTentative {
-  background: white url('../../resources/tentativeLines.gif') top;
-  color: black;
-}
-#bedework #listTable td.description a {
-  display: block;
-  background-color: transparent;
-  color: black;
-  text-decoration: none;
-}
-#bedework #listTable td.description a.moreLink {
-  display: inline;
-  background-color: transparent;
-  color: #663;
-  text-decoration: underline;
-}
-#bedework #listTable td.description:hover {
-  background-color: #eee !important;
-  color: black;
-  text-decoration: none;
-}
-#bedework #listTable td.dateRow {
-  text-align: left;
-  background-color: #444;
-  /*background-color: #2B4795;*/
-  color: #eee;
-  font-size: 0.8em;
-  margin: 0;
-  padding: 0.2em 0.5em 0.2em 0.5em;
-}
-#bedework #listTable td.dateRow a {
-  color: #fff;
-  background-color: transparent;
-  font-weight: bold;
-  text-decoration : none;
-}
-#bedework #listTable td.dateRow .listAdd {
-  float:right;
-  text-decoration : none;
-  font-weight: normal;
-  padding-left: 1em;
-}
-#bedework #listTable td.dateRow .listAdd a:link,
-#bedework #listTable td.dateRow .listAdd a:active,
-#bedework #listTable td.dateRow .listAdd a:visited {
-  color: #eee;
-  background-color: transparent;
-}
-#bedework #listTable td.dateRow .listAdd a:hover {
-  color: #ffa;
-  background-color: transparent;
-}
-#bedework #listTable td.eventLinks {
-  color: black;
-  background-color: #ddd;
-  white-space : nowrap;
-  font-size : 0.7em;
-}
-#bedework #listTable td.eventLinks a {
-  text-decoration: underline;
-}
-#bedework #listTable td.eventLinks a:hover {
-  color: #eee;
-  background-color: #333;
-  text-decoration: none;
-}
-#bedework #listTable td.smallIcon {
-  color: black;
-  background-color: #ccc;
-}
-#bedework .noEventsCell {
-  padding: 1em;
 }
 /* Calendars and Subscriptions */
 #calendarTable td,
@@ -1257,11 +656,6 @@ display: inline;
   font-size: 0.8em;
   font-style: italic;
 }
-#bedework #freeBusyShareLink {
-  float: right;
-  font-size: 0.8em;
-  margin: 0.5em 0.5em 0 0;
-}
 #bedework .contextHelp {
   position: relative;
   margin-left: 0.5em;
@@ -1272,240 +666,6 @@ display: inline;
   border: 2px solid #999;
   color: black;
   background-color: #fee;
-}
-#bedework #helpShareFreeBusy {
-  position: absolute;
-  right: 20px;
-  width: 300px;
-}
-#bedework #recipientsAndAttendeesForm {
-  white-space: nowrap;
-}
-#freeBusy {
-  clear: both;
-  margin: 1em 0 0 0;
-  padding: 1em 1em 1em 0;
-  border: 1px solid #ccc;
-}
-#freeBusyPage #freeBusy {
-  border: none;
-  margin-top: 0;
-  padding-top: 0;
-}
-#freeBusyPage #viewFreeBusyForm {
-  float: right;
-  font-size: 0.9em;
-  margin: 1em 1em 0 0;
-}
-#freeBusy td {
-  vertical-align: middle;
-  text-align: center;
-  font-size: 0.8em;
-  padding: 0;
-  margin: 0;
-  width: 2em;
-  height: 10px;
-}
-#freeBusy th.left {
-  text-align: left;
-}
-#freeBusy td.morning {
-  color: black;
-  background: #ddf;
-}
-#freeBusy td.evening {
-  color: black;
-  background: #ccc;
-}
-#freeBusy td.timeLabels {
-  vertical-align: middle;
-  text-align: center;
-  font-weight: normal;
-  padding: 0;
-  margin: 0;
-}
-#freeBusy td.dayDate {
-  white-space: nowrap;
-  text-align: right;
-  padding: 0;
-  width: 4em;
-}
-#freeBusy td.free,
-#freeBusyKey td.free {
-  /*color: #A3BAEA;
-  background-color: #A3BAEA;*/
-  color: white;
-  background-color: white;
-  border: 1px solid #ddd;
-}
-#freeBusy td.busy,
-#freeBusyKey td.busy {
-  color: #A3BAEA;
-  background-color: #A3BAEA;
-  border: 1px solid #ddd;
-}
-#freeBusy td.tentative,
-#freeBusyKey td.tentative {
-  color: #DFE7FB;
-  background: #DFE7FB url('../../resources/tentativeLines.gif') top;
-  border: 1px solid #ddd;
-}
-#freeBusyKey {
-  float: left;
-  margin: 0.5em 1em 0 0;
-}
-#freeBusyPage #freeBusyKey {
-  margin-left: 2em;
-}
-#freeBusyKey td {
-  padding: 2px 4px;
-}
-#freeBusy a {
-  display: block;
-  text-decoration: none;
-  width: 100%;
-}
-#freeBusy td.free a {
-  color: #A3BAEA;
-  background-color: transparent;
-}
-#freeBusy td.tentative a  {
-  color: #333;
-  background-color: transparent;
-}
-#freeBusy td.busy a {
-  color: #333;
-  background-color: transparent;
-}
-#freeBusy td.busy a:hover,
-#freeBusy td.free a:hover,
-#freeBusy td.tentative a:hover  {
-  color: black;
-  background-color: yellow;
-  text-decoration: none;
-}
-#freeBusy a:hover {
-  /* required for eventTip to hover correctly;
-     apply only to the hover pseudo class, or
-     the other anchors nearby will cover the eventTip in IE */
-  position: relative;
-}
-#freeBusy a span.eventTip {
-  display: none;
-}
-#freeBusy a:hover span.eventTip {
-  display: block;
-  position: absolute;
-  width: 8em;
-  top: 3em;
-  left: -4em;
-  background-color: #ffe;
-  color: black;
-  padding: 4px;
-  border: 2px solid #999;
-}
-#freeBusy #timezonesDropDown {
-  width: 14em;
-  font-size: 8pt;
-  margin: 0 0 0 2em;
-}
-#freeBusy #timezonesButton {
-  font-size: 8pt;
-}
-#bedework #sharingBox {
-  margin: 0;
-  border-top: 2px solid #999;
-  padding: 1em 1em 2em 1em;
-}
-#bedework #bwEventTab-Access #sharingBox {
-  border-top: none;
-}
-#bedework #sharingBox h3,
-#bedework #sharingBox h5 {
-  padding: 0 0 0.5em 0;
-}
-#bedework #sharingBox ul {
-  font-size: 0.8em;
-  margin: 0 1em;
-}
-#bedework #sharingBox p {
-  font-size: 0.9em;
-}
-#bedework #shareForm {
-  margin: 1em 0;
-  padding: 0;
-}
-#bedework #shareFormTable td {
-  border: 1px solid #666;
-  padding: 0 0 0.5em 0;
-}
-#bedework #shareFormTable h5 {
-  background: #e5e5e5;
-  color: black;
-  margin: 0;
-  padding: 4px;
-}
-#bedework #shareFormTable #accessRightsToggle {
-  float: right;
-  font-weight: normal;
-  font-size: 0.8em;
-}
-#bedework #shareFormTable .whoTypes {
-  margin: 1em;
-}
-#bedework #howTable {
-  border: none;
-  padding: 0;
-  margin: 0;
-  font-size: 0.8em;
-  width: 100%;
-}
-#bedework #howTable th {
-  color: white;
-  background-color: #999;
-  font-weight: normal;
-}
-#bedework #howTable td {
-  white-space: nowrap;
-  border-top: 1px dotted #ccc;
-  border-right: none;
-  border-left: none;
-  border-bottom: none;
-  text-align: center;
-}
-#bedework #howTable td.level1 {
-  text-align: left;
-  font-weight: bold;
-}
-#bedework #howTable td.level2 {
-  padding-left: 2em;
-  text-align: left;
-  font-weight: bold;
-}
-#bedework #howTable td.level3 {
-  padding-left: 4em;
-  text-align: left;
-}
-#bedework #howTable td.level4 {
-  padding-left: 6em;
-  text-align: left;
-}
-#bedework #howTable td.level5 {
-  padding-left: 8em;
-  text-align: left;
-}
-#bedework #howList {
-  margin: 0;
-  padding: 1em 0;
-}
-#bedework #howList ul {
-  margin: 0 0 0 2em;
-  padding: 0 0 0.5em 0;
-}
-#bedework #howList li {
-  list-style-type: none;
-  margin-left: 0;
-  font-size: 11px;
 }
 /* Footer */
 #bedework #footer {
@@ -1527,7 +687,7 @@ display: inline;
   padding: 0.5em 1em;
   font-size: 0.7em;
   color: #333;
-  background-color: inherit;
+  background-color: #ddd;
 }
 #bedework #subfoot a {
   color: #999;
@@ -1548,7 +708,7 @@ display: inline;
 #bedework a:hover {
   color: red;
   background-color: transparent;
-  text-decoration: underline;
+  text-decoration: none;
 }
 #bedework span.time {
   text-transform : lowercase;
