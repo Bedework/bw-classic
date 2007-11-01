@@ -929,7 +929,7 @@
         <div class="subForm">
           <p>
             <label for="commentContactName">Organization Name: </label>
-            <input type="text" name="commentContactName"/>
+            <input type="text" name="commentContactName" size="40"/>
             <span class="note"> Please limit contacts to organizations, not individuals.</span>
           </p>
           <p>
@@ -986,7 +986,7 @@
         <div class="subForm">
           <p>
             <label for="commentCategories">Category suggestion: </label>
-            <input type="text" name="commentCategories"/>
+            <input type="text" name="commentCategories" size="30"/>
           </p>
         </div>
       </div>
