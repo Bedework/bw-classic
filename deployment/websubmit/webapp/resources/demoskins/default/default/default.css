@@ -89,28 +89,6 @@ body {
   float: right;
   border: 0;
 }
-#bedework #messages {
-  background-color: #333;
-  color: #ff0;
-  font-weight: bold;
-  margin: 0.5em 0;
-}
-#bedework #messages p {
-  margin: 0;
-}
-#bedework #errors {
-  background-color: #333;
-  color: #f99;
-  font-weight: bold;
-  margin: 0.5em 0;
-}
-#bedework #errors em {
-  background-color: #333;
-  color: #ff9;
-}
-#bedework #errors p {
-  margin: 0;
-}
 #bedework #adminLeftColumn {
   float: left;
 }
@@ -219,10 +197,8 @@ body {
 #bedework #messages,
 #bedework #errors {
   font-size: 0.8em;
-  margin: 0em;
+  margin: 0;
   padding: 0.3em 0 0.3em 1em;
-  border-left : 2px solid #999;
-  border-right : 2px solid #999;
   border-bottom: 1px solid Gray;
   color: black;
   background: #d8e118 url(../../resources/glassFill-message.gif) repeat-x bottom;
@@ -235,6 +211,21 @@ body {
 #bedework #errors p {
   margin: 0;
   padding: 2px 0;
+}
+#bedework #bodyContent h1 {
+  font-size: 1.2em;
+}
+#bedework #bodyContent h2 {
+  font-size: 1.1em;
+}
+#bedework #introduction li {
+  margin-bottom: 1em;
+}
+#bedework #introduction a:link,
+#bedework #introduction a:active,
+#bedework #introduction a:visited,
+#bedework #introduction a:hover {
+  text-decoration: underline;
 }
 #bedework #eventFormTabs {
 }
@@ -251,6 +242,12 @@ body {
 }
 #bedework #instructions .navButtons img {
   vertical-align: middle;
+}
+#bedework #bwBottomNav {
+  padding: 0.5em;
+  margin: 0 0 1em 0;
+  font-size: 0.9em;
+  text-align: right;
 }
 #bedework ul.submenu {
   margin: 0;
@@ -298,11 +295,6 @@ body {
 #bedework #standardForm {
   margin: 0;
   padding: 0;
-}
-#bedework #eventAccessLink {
-  float: right;
-  font-size: 0.8em;
-  margin: 0 1em;
 }
 #bedework #calSelectWidget {
   position: absolute;
@@ -365,7 +357,9 @@ body {
   margin: 0 0 0.5em 0;
   padding: 0;
 }
-/* table below is used for almost all forms  */
+#bedework .bigSelect {
+  font-size: 1.1em;
+}
 #bedework table.common {
   width: 100%;
   font-size: 0.9em;

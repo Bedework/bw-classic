@@ -101,6 +101,7 @@
       <body>
         <div id="bedework"><!-- main wrapper div -->
           <xsl:call-template name="header"/>
+          <xsl:call-template name="messagesAndErrors"/>
           <xsl:call-template name="menuTabs"/>
           <div id="bodyContent">
             <xsl:choose>
@@ -173,9 +174,6 @@
       <h1>
         Bedework Public Event Submission
       </h1>
-
-      <xsl:call-template name="messagesAndErrors"/>
-
     </div>
     <div id="statusBar">
       logged in as
@@ -231,7 +229,33 @@
 
   <!--==== HOME ====-->
   <xsl:template name="home">
-    Descriptive information here
+    <h1>Entering Events</h1>
+    <ol id="introduction">
+      <li>
+        Before submitting a public event, <a href="/cal">see if it has already been
+        entered</a>. It is possible that an event may be created under a
+        different title than you'd expect.
+      </li>
+      <li>
+        Make your titles descriptive: rather than
+        "Lecture" use "Music Lecture Series: 'Uses of the
+        Neapolitan Chord'". "Cinema Club" would also be too vague,
+        while "Cinema Club: 'The Last Samurai'" is better. Bear in
+        mind that your event will "share the stage" with other events
+        in the calendar - try to be as clear as possible when
+        thinking of titles. Express not only what the event is, but
+        (briefly) what it's about. Elaborate on the event in the
+        description field, but try not to repeat the same
+        information.  Try to think like a user when suggest an event:
+        use language that will explain your event to someone who knows
+        absolutely nothing about it.
+      </li>
+      <li>
+        Do not include locations and times in the description
+        field (unless it is to add extra information not already
+        displayed).
+      </li>
+    </ol>
   </xsl:template>
 
   <!--==== ADD EVENT ====-->
@@ -344,7 +368,7 @@
     <div id="instructions">
       <div id="bwHelp-Details">
         <div class="navButtons">
-          <a href="javascript:show('bwEventTab-Location','bwHelp-Location'); hide('bwEventTab-Details','bwHelp-Details');">
+          <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location'); hide('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details');">
             next
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowRight.gif"
@@ -353,18 +377,18 @@
               border="0"/>
           </a>
         </div>
-        <strong>Step 1:</strong> Event Details
+        <strong>Step 1:</strong> Enter Event Details. <em>Optional fields are italicized.</em>
       </div>
       <div id="bwHelp-Location" class="invisible">
         <div class="navButtons">
-          <a href="javascript:show('bwEventTab-Details','bwHelp-Details'); hide('bwEventTab-Location','bwHelp-Location');">
+          <a href="javascript:show('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');">
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
               height="13"
               border="0"/>
           previous</a> |
-          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact'); hide('bwEventTab-Location','bwHelp-Location');">
+          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');">
             next
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowRight.gif"
@@ -373,18 +397,18 @@
               border="0"/>
           </a>
         </div>
-        <strong>Step 2:</strong> Location
+        <strong>Step 2:</strong> Select Location.
       </div>
       <div id="bwHelp-Contact" class="invisible">
         <div class="navButtons">
-          <a href="javascript:show('bwEventTab-Location','bwHelp-Location'); hide('bwHelp-Contact','bwEventTab-Contact');">
+          <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');">
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
               height="13"
               border="0"/>
           previous</a> |
-          <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories'); hide('bwHelp-Contact','bwEventTab-Contact');">
+          <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories','bwBottomNav-Categories'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');">
             next
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowRight.gif"
@@ -393,11 +417,11 @@
               border="0"/>
           </a>
         </div>
-        <strong>Step 3:</strong> Contact
+        <strong>Step 3:</strong> Select Contact.
       </div>
       <div id="bwHelp-Categories" class="invisible">
         <div class="navButtons">
-          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact'); hide('bwHelp-Categories','bwEventTab-Categories');">
+          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories');">
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
@@ -417,7 +441,7 @@
             <input name="cancelled" type="submit" value="cancel"/>
           </div>
         </div>
-        <strong>Step 4:</strong> Categories
+        <strong>Step 4:</strong> Select Categories. <em>Optional.</em>
       </div>
     </div>
 
@@ -806,14 +830,6 @@
           </tr>
 
 
-          <!--  Link (url associated with event)  -->
-          <tr>
-            <td class="fieldname">Event Link:</td>
-            <td class="fieldval">
-              <xsl:variable name="link" select="form/link/input/@value"/>
-              <input type="text" name="event.link" size="80" value="{$link}"/>
-            </td>
-          </tr>
           <!--  Description  -->
           <tr>
             <td class="fieldname">Description:</td>
@@ -832,6 +848,15 @@
                   </textarea>
                 </xsl:otherwise>
               </xsl:choose>
+            </td>
+          </tr>
+          <!--  Link (url associated with event)  -->
+          <tr>
+            <td class="fieldname"><em>Event Link:</em></td>
+            <td class="fieldval">
+              <xsl:variable name="link" select="form/link/input/@value"/>
+              <input type="text" name="event.link" size="81" value="{$link}"/>
+              <span class="note"> optional</span>
             </td>
           </tr>
           <!--  Status  -->
@@ -861,10 +886,9 @@
       <!-- ============== -->
       <div id="bwEventTab-Location" class="invisible">
         <div class="mainForm">
-          Choose:
           <span id="eventFormLocationList">
-            <select name="locationUid">
-              <option value="">Select an existing location...</option>
+            <select name="locationUid" class="bigSelect">
+              <option value="">select an existing location...</option>
               <xsl:copy-of select="form/location/locationmenu/select/*"/>
             </select>
           </span>
@@ -878,10 +902,12 @@
             <input type="text" name="commentLocationAddress"/>
           </p>
           <p>
-            <label for="commentLocationSubaddress">Sub-address: </label><input type="text" name="commentLocationSubaddress"/>
+            <label for="commentLocationSubaddress"><em>Sub-address:</em> </label><input type="text" name="commentLocationSubaddress"/>
+            <span class="note"> optional</span>
           </p>
           <p>
-            <label for="commentLocationURL">URL: </label><input type="text" name="commentLocationURL"/>
+            <label for="commentLocationURL"><em>URL:</em> </label><input type="text" name="commentLocationURL"/>
+            <span class="note"> optional</span>
           </p>
         </div>
       </div>
@@ -890,10 +916,9 @@
       <!-- ============== -->
       <div id="bwEventTab-Contact" class="invisible">
         <div class="mainForm">
-          Choose:
-          <select name="allContactId" id="eventFormPrefContactList">
+          <select name="allContactId" id="eventFormPrefContactList" class="bigSelect">
             <option value="">
-              Select an existing contact:
+              select an existing contact...
             </option>
             <xsl:copy-of select="form/contact/all/select/*"/>
           </select>
@@ -908,13 +933,16 @@
             <span class="note"> Please limit contacts to organizations, not individuals.</span>
           </p>
           <p>
-            <label for="commentContactPhone">Phone: </label><input type="text" name="commentContactPhone"/>
+            <label for="commentContactPhone"><em>Phone:</em> </label><input type="text" name="commentContactPhone"/>
+            <span class="note"> optional</span>
           </p>
           <p>
-            <label for="commentContactURL">URL: </label><input type="text" name="commentContactURL"/>
+            <label for="commentContactURL"><em>URL:</em> </label><input type="text" name="commentContactURL"/>
+            <span class="note"> optional</span>
           </p>
           <p>
-            <label for="commentContactEmail">Email: </label><input type="text" name="commentContactEmail"/>
+            <label for="commentContactEmail"><em>Email:</em> </label><input type="text" name="commentContactEmail"/>
+            <span class="note"> optional</span>
           </p>
         </div>
       </div>
@@ -922,7 +950,6 @@
       <!-- Categories tab -->
       <!-- ============== -->
       <div id="bwEventTab-Categories" class="invisible">
-        <p><strong>Choose categories:</strong></p>
         <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
         <xsl:choose>
           <xsl:when test="not(form/categories/all/category)">
@@ -953,6 +980,91 @@
             </table>
           </xsl:otherwise>
         </xsl:choose>
+        <p class="subFormMessage">
+          Didn't find the category you want?  Suggest a new one:
+        </p>
+        <div class="subForm">
+          <p>
+            <label for="commentCategories">Category suggestion: </label>
+            <input type="text" name="commentCategories"/>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="bwBottomNav">
+      <div id="bwBottomNav-Details">
+        <div class="navButtons">
+          <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location'); hide('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details');">
+            next
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowRight.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          </a>
+        </div>
+      </div>
+      <div id="bwBottomNav-Location" class="invisible">
+        <div class="navButtons">
+          <a href="javascript:show('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');">
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowLeft.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          previous</a> |
+          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');">
+            next
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowRight.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          </a>
+        </div>
+      </div>
+      <div id="bwBottomNav-Contact" class="invisible">
+        <div class="navButtons">
+          <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');">
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowLeft.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          previous</a> |
+          <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories','bwBottomNav-Categories'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');">
+            next
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowRight.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          </a>
+        </div>
+      </div>
+      <div id="bwBottomNav-Categories" class="invisible">
+        <div class="navButtons">
+          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories');">
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowLeft.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          previous</a>
+          <span class="hidden">
+            <xsl:text> </xsl:text>| next
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowRight.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          </span>
+          <div class="eventSubmitButtons">
+            <input name="submit" class="submit" type="submit" value="submit for approval"/>
+            <input name="cancelled" type="submit" value="cancel"/>
+          </div>
+        </div>
       </div>
     </div>
   </xsl:template>
