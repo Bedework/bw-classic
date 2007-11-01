@@ -134,6 +134,8 @@
           <allowEditAllContacts>false</allowEditAllContacts>
           <categoryOptional>true</categoryOptional>
 
+          <appType>webadmin</appType>
+
           <!-- Default value for 24 hour mode -->
           <hour24>true</hour24>
 
@@ -142,7 +144,7 @@
 
           <logPrefix>PubEventsAdmin</logPrefix>
 
-          <appRoot>/caladminrsrc</appRoot>
+          <appRoot>http://localhost:8080/caladminrsrc</appRoot>
           <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
         </CalAdmin>
 
@@ -155,6 +157,8 @@
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
 
+          <appType>websubmit</appType>
+
           <!-- Default value for 24 hour mode -->
           <hour24>false</hour24>
 
@@ -165,13 +169,13 @@
 
           <logPrefix>EventSubmit</logPrefix>
 
-          <appRoot>/eventsubmitrsrc</appRoot>
+          <appRoot>http://localhost:8080/eventsubmitrsrc</appRoot>
           <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
 
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>900</refreshInterval>
         </EventSubmit>
-        
+
         <!-- ==================================================================
                           Public web client Events
              ================================================================== -->
@@ -184,6 +188,8 @@
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
 
+          <appType>webpublic</appType>
+
           <!-- Default value for 24 hour mode -->
           <hour24>true</hour24>
 
@@ -194,7 +200,7 @@
 
           <logPrefix>PubEvents</logPrefix>
 
-          <appRoot>/calrsrc</appRoot>
+          <appRoot>http://localhost:8080/calrsrc</appRoot>
           <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
 
           <refreshAction>setup.do</refreshAction>
@@ -214,6 +220,8 @@
           <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
+
+          <appType>webpublic</appType>
 
           <!-- Default value for 24 hour mode -->
           <hour24>true</hour24>
@@ -242,6 +250,8 @@
           <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
+
+          <appType>webuser</appType>
 
           <!-- Default value for 24 hour mode -->
           <hour24>true</hour24>
