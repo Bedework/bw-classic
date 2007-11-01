@@ -158,6 +158,7 @@
           <autoDeleteLocations>false</autoDeleteLocations>
 
           <appType>websubmit</appType>
+          <submissionRoot>/public/hidden/submission</submissionRoot>
 
           <!-- Default value for 24 hour mode -->
           <hour24>false</hour24>
