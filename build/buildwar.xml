@@ -458,7 +458,7 @@
     </copy>
 
     <!-- Add the portlet servlet mapping -->
-    <replace file="${app.temp.web.xml">
+    <replace file="${app.temp.web.xml}">
       <replacetoken><![CDATA[<!-- portlet servlet mapping here -->]]></replacetoken>
       <replacevalue><![CDATA[<servlet-mapping>
     <servlet-name>@PORTLET-NAME@</servlet-name>
