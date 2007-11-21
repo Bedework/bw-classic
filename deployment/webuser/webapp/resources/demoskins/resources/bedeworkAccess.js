@@ -446,10 +446,10 @@ function bwAce(who, whoType, how, inherited, invert) {
 
   this.howsToXml = function(doGrants) {
     var open = false;
+    var res = "";
 
     for (var hi = 0; hi < how.length; hi++) {
       var h = how[hi];
-      var res = "";
 
       if (doGrants && (h == "-")) {
         // skip
