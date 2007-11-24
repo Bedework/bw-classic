@@ -77,7 +77,10 @@ check() {
 # ------------------------------------------------------------------
 copyproject() {
   echo "copyproject $1 $2"
-  echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
+  if [ "${1}" != "bedework" ]
+  then
+    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
+  fi
   svn copy -m "$3" -rHEAD $SVNREPOSITORY/$1/trunk $SVNREPOSITORY/$1/$2
 }
 
