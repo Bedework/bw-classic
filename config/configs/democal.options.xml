@@ -306,19 +306,6 @@
           <superGroupName>campusAdminGroups</superGroupName>
           <defaultPublicCalPath>/public/Other Events/Other</defaultPublicCalPath>
         </dumpres>
-
-        <!-- ==================================================================
-                          Dump restore program restoreFrom2p3px
-             Use the restore utility to convert from uwcal 2.3
-             ================================================================== -->
-        <restoreFrom2p3px classname="org.bedework.calfacade.configs.DumpRestoreConfig">
-          <debug>true</debug>
-          <debugEntity>false</debugEntity>
-          <from2p3px>true</from2p3px>
-          <timezonesFilename>resources/bwtimezones.xml</timezonesFilename>
-          <superGroupName>campusAdminGroups</superGroupName>
-          <defaultPublicCalPath>/public/Other Events/Other</defaultPublicCalPath>
-        </restoreFrom2p3px>
       </app>
     </bedework>
   </org>
