@@ -23,8 +23,14 @@
     <property name="portlet.resources.dir"
               location="${portlet.build.dir}/../portlet/resources" />
 
+    <!-- The intent is to have a set of quickstart skins configured for
+         portal use. So far we've not managed that so for th etime being we
+         will just use the standalone skin set.
     <property name="portlet.skins.dir"
-              location="${portlet.resources.dir}/default" />
+              location="${portlet.resources.dir}/demoskins" />
+              -->
+    <property name="portlet.skins.dir"
+              location="${portlet.build.dir}/../webapp/resources/demoskins" />
   </target>
 
   <!-- =================================================================
