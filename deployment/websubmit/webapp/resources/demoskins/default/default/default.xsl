@@ -340,6 +340,7 @@
       </xsl:if>
 
       <!-- event form submenu -->
+
       <!--
       <ul id="eventFormTabs" class="submenu">
         <li class="selected">
