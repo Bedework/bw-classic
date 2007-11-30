@@ -240,7 +240,7 @@
         Make your titles descriptive: rather than
         "Lecture" use "Music Lecture Series: 'Uses of the
         Neapolitan Chord'". "Cinema Club" would also be too vague,
-        while "Cinema Club: 'The Last Samurai'" is better. Bear in
+        while "Cinema Club: 'Citizen Kane'" is better. Bear in
         mind that your event will "share the stage" with other events
         in the calendar - try to be as clear as possible when
         thinking of titles. Express not only what the event is, but
