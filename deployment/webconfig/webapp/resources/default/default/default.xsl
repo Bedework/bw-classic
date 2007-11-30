@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <!-- ==================================================================== -->
   <!-- ==================================================================== -->
-  <!--                           BEDEWORK LUWAK                             -->
+  <!--                    BEDEWORK CONFIGURATION WEB APP                    -->
   <!-- ==================================================================== -->
   <!-- ==================================================================== -->
   <xsl:output method="xhtml" indent="yes" media-type="text/html" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" standalone="yes" omit-xml-declaration="yes"/>
