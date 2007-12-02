@@ -61,11 +61,11 @@
     <mkdir dir="${app.temp.home}/resources"/>
     <echo file="${app.temp.home}/resources/hibernate.properties">
 hibernate.query.substitutions true 'T', false 'F', yes 'Y', no 'N'
-hibernate.dialect=${propval.app.hibernate.dialect}
-hibernate.connection.driver_class=${propval.app.jdbcdriver}
-hibernate.connection.username=${propval.app.jdbcid}
-hibernate.connection.password=${propval.app.jdbcpw}
-hibernate.connection.url=${propval.app.jdbcurl}
+hibernate.dialect=${org.bedework.global.hibernate.dialect}
+hibernate.connection.driver_class=${org.bedework.global.jdbcdriver}
+hibernate.connection.username=${org.bedework.global.jdbcid}
+hibernate.connection.password=${org.bedework.global.jdbcpw}
+hibernate.connection.url=${org.bedework.global.jdbcurl}
 hibernate.cglib.use_reflection_optimizer=false
 hibernate.cache.use_second_level_cache=false
 #

@@ -451,16 +451,17 @@
       <!-- ============== -->
       <!-- this tab is visible by default -->
       <div id="bwEventTab-Details">
-        <!--  For now, hard code the path to the submissions calendar -->
-        <input type="hidden" name="newCalPath" value="/public/unbrowsable/submissions/submissions"/>
+        <!--  For now, hard code the path to the submissions calendar
+        <input type="hidden" name="newCalPath"
+               value="/public/unbrowsable/submissions/submissions"/>-->
         <table cellspacing="0" class="common">
-          <!--  and hide calendar selection code;
+          <!--  and hide calendar selection code; -->
           <tr>
             <td class="fieldname">
               Calendar:
             </td>
             <td class="fieldval">
-              // the string "user/" should not be hard coded; fix this
+              <!--  the string "user/" should not be hard coded; fix this -->
               <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
               <xsl:variable name="writableCalendars">
                 <xsl:value-of select="
@@ -472,7 +473,7 @@
               </xsl:variable>
               <xsl:choose>
                 <xsl:when test="$writableCalendars = 1">
-                  // there is only 1 writable calendar, so find it by looking down both trees at once
+                  <!-- there is only 1 writable calendar, so find it by looking down both trees at once -->
                   <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[calType = '1' and
                            currentAccess/current-user-privilege-set/privilege/write-content]/path"/><xsl:value-of select="/bedework/mySubscriptions//calendar[calType = '1' and
                          currentAccess/current-user-privilege-set/privilege/write-content and
@@ -508,15 +509,14 @@
                       </xsl:otherwise>
                     </xsl:choose>
                     <xsl:text> </xsl:text>
-                    // this final text element is required to avoid an empty
-                         span element which is improperly rendered in the browser
+                    <!-- this final text element is required to avoid an empty
+                         span element which is improperly rendered in the browser -->
                   </span>
 
                 </xsl:otherwise>
               </xsl:choose>
             </td>
           </tr>
-          -->
           <!--  Summary (title) of event  -->
           <tr>
             <td class="fieldname">
