@@ -528,6 +528,9 @@
                        target="${org.bedework.project.synchml}" />
     <copy-to-dependent this="${org.bedework.project.calendarapi}"
                        target="${org.bedework.project.webapps}" />
+    <copy-special-to-dependent this="${org.bedework.project.calendarapi}"
+                       target="${org.bedework.project.webapps}"
+                       prefix="bw-calenv" />
     <copy-to-dependent this="${org.bedework.project.calendarapi}"
                        target="${org.bedework.project.testsuite}" />
 

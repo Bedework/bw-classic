@@ -572,7 +572,7 @@
       </replacevalue>
     </replace>
     <replace file="${app.dest.webinf}/jboss-web.xml">
-      <replacefilter token="@VIRTUAL-HOST@" value="${org.bedework.global.virtual.host}"/>
+      <replacefilter token="@VIRTUAL-HOST@" value="${propval.app.virtual.host}"/>
     </replace>
   </target>
 
