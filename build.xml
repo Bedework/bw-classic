@@ -273,7 +273,7 @@
 
   <target name="build.configured" depends="build"
           description="Build configured applications" >
-    <ant antfile="${org.bedework.project.bedework}/deployment}/build.xml" inheritrefs="true"
+    <ant antfile="${org.bedework.project.bedework}/deployment/build.xml" inheritrefs="true"
          target="build.configured"  >
       <property name="app.debug.val" value="9" />
     </ant>
