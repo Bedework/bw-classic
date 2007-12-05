@@ -153,6 +153,14 @@
       // focuses element by id
         document.getElementById(id).focus();
       }
+      function validate(form) {
+        alert ("check");
+        if (form.summary.value == "") {
+          alert("Please enter a summary.");
+          form.summary.focus();
+          return false;
+        }
+      }
       ]]>
       </xsl:comment>
     </script>
@@ -260,14 +268,14 @@
 
   <!--==== ADD EVENT ====-->
   <xsl:template match="formElements" mode="addEvent">
-    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this)">
+    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="return validate(); setEventFields(this);">
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>
 
   <!--==== EDIT EVENT ====-->
   <xsl:template match="formElements" mode="editEvent">
-    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this)">
+    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="return validate(); setEventFields(this);">
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>
@@ -451,11 +459,7 @@
       <!-- ============== -->
       <!-- this tab is visible by default -->
       <div id="bwEventTab-Details">
-        <!--  For now, hard code the path to the submissions calendar
-        <input type="hidden" name="newCalPath"
-               value="/public/unbrowsable/submissions/submissions"/>-->
         <table cellspacing="0" class="common">
-          <!--  and hide calendar selection code; -->
           <tr>
             <td class="fieldname">
               Calendar:

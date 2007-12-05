@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:output
-      method="html"
-      indent="no"
-      media-type="text/html"
-      doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-      doctype-system="http://www.w3.org/TR/html4/strict.dtd"
-      standalone="yes"
-      omit-xml-declaration="yes"/>
-   <xsl:strip-space elements="*"/>
-
+<xsl:output
+     method="html"
+     indent="no"
+     media-type="text/html"
+     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
+     doctype-system="http://www.w3.org/TR/html4/strict.dtd"
+     standalone="yes"
+     omit-xml-declaration="yes"/>
+ <xsl:strip-space elements="*"/>
   <!-- ======================================== -->
   <!--      BEDEWORK ADMIN CLIENT STYLESHEET     -->
   <!-- ========================================= -->
@@ -65,10 +64,16 @@
        urls; allows the application to be used without cookies or within a portal.
        we will probably change the way we create these before long (e.g. build them
        dynamically in the xslt). -->
+  <!-- primary navigation, menu tabs -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup/a/@href"/>
+  <xsl:variable name="initPendingTab" select="/bedework/urlPrefixes/initPendingTab/a/@href"/>
+  <xsl:variable name="showCalsuitesTab" select="/bedework/urlPrefixes/showCalsuitesTab/a/@href"/>
+  <xsl:variable name="showUsersTab" select="/bedework/urlPrefixes/showUsersTab/a/@href"/>
+  <xsl:variable name="showSystemTab" select="/bedework/urlPrefixes/showSystemTab/a/@href"/>
   <xsl:variable name="logout" select="/bedework/urlPrefixes/logout/a/@href"/>
   <xsl:variable name="search" select="/bedework/urlPrefixes/search/search/a/@href"/>
   <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next/a/@href"/>
+
   <!-- events -->
   <xsl:variable name="event-showEvent" select="/bedework/urlPrefixes/event/showEvent/a/@href"/>
   <xsl:variable name="event-showModForm" select="/bedework/urlPrefixes/event/showModForm/a/@href"/>
@@ -247,6 +252,18 @@
             <xsl:call-template name="header"/>
             <div id="content">
               <xsl:choose>
+                <xsl:when test="/bedework/page='tabPendingEvents'">
+                  <xsl:call-template name="tabPendingEvents"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='tabCalsuites'">
+                  <xsl:call-template name="tabCalsuites"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='tabUsers'">
+                  <xsl:call-template name="tabUsers"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='tabSystem'">
+                  <xsl:call-template name="tabSystem"/>
+                </xsl:when>
                 <xsl:when test="/bedework/page='eventList'">
                   <xsl:call-template name="eventList"/>
                 </xsl:when>
@@ -461,9 +478,9 @@
     <table id="statusBarTable">
       <tr>
         <td class="leftCell">
-          <a href="{$setup}">Main Menu</a> |
+          <a href="{$setup}">Home</a> |
           <a href="{$publicCal}" target="calendar">Launch Calendar</a> |
-          <a href="{$logout}">Log Out</a>
+          <a href="{$logout}" id="bwLogoutButton">Log Out</a>
         </td>
         <xsl:if test="/bedework/userInfo/user">
           <td class="rightCell">
@@ -489,9 +506,47 @@
         </xsl:if>
       </tr>
     </table>
-    <div id="titleBar">
-      CALENDAR of EVENTS
-    </div>
+    <xsl:if test="/bedework/userInfo/group">
+      <!-- user has selected a group, so show menu tabs -->
+      <ul id="bwAdminMenu">
+        <li>
+          <xsl:if test="/bedework/appvar[key='menutab']/value = 'home' or not(/bedework/appvar[key='menutab']) or /bedework/page = 'main'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a href="{$setup}&amp;setappvar=menutab(home)">Event Management</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/appvar[key='menutab']/value = 'pending' and /bedework/page != 'main'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a href="{$initPendingTab}&amp;setappvar=menutab(pending)&amp;ignoreCreator=yes&amp;calPath=%2Fpublic%2Funbrowsable%2Fsubmissions">Pending Events</a>
+        </li>
+        <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
+          <li>
+            <xsl:if test="/bedework/appvar[key='menutab']/value = 'calsuites' and /bedework/page != 'main'">
+              <xsl:attribute name="class">selected</xsl:attribute>
+            </xsl:if>
+            <a href="{$showCalsuitesTab}&amp;setappvar=menutab(calsuites)">Calendar Suites</a>
+          </li>
+        </xsl:if>
+        <xsl:if test="/bedework/userInfo/contentAdminUser='true'">
+          <li>
+            <xsl:if test="/bedework/appvar[key='menutab']/value = 'users' and /bedework/page != 'main'">
+              <xsl:attribute name="class">selected</xsl:attribute>
+            </xsl:if>
+            <a href="{$showUsersTab}&amp;setappvar=menutab(users)">Users</a>
+          </li>
+        </xsl:if>
+        <xsl:if test="/bedework/userInfo/superUser='true'">
+          <li>
+            <xsl:if test="/bedework/appvar[key='menutab']/value = 'system' and /bedework/page != 'main'">
+              <xsl:attribute name="class">selected</xsl:attribute>
+            </xsl:if>
+            <a href="{$showSystemTab}&amp;setappvar=menutab(system)">System</a>
+          </li>
+        </xsl:if>
+      </ul>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="messagesAndErrors">
@@ -517,195 +572,212 @@
   <!--==============================================-->
   <!--==============================================-->
 
-  <!--+++++++++++++++ Main Menu ++++++++++++++++++++-->
+  <!--+++++++++++++++ Main Menu Tab ++++++++++++++++++++-->
   <xsl:template name="mainMenu">
-    <div id="adminLeftColumn">
-      <h2 class="menuTitle">Main Menu</h2>
-      <table id="mainMenuTable">
-        <tr>
-          <th>Events</th>
-          <td>
-            <a id="addEventLink" href="{$event-initAddEvent}">
-              Add
-            </a>
-          </td>
-          <td>
-            <a href="{$event-initUpdateEvent}">
-              Edit / Delete
-            </a>
-          </td>
-          <!--
-          Disable direct selection by ID; we'll need to find another way
-          of quickly getting to events: search and grid views should be implemented. -->
-          <!--
-          <td>
-            Event ID:
-            <xsl:copy-of select="/bedework/formElements/*"/>
-          </td>-->
-        </tr>
-        <tr>
-          <th>Contacts</th>
-          <td>
-            <a id="addContactLink" href="{$contact-initAdd}">
-              Add
-            </a>
-          </td>
-          <td>
-            <a href="{$contact-initUpdate}">
-              Edit / Delete
-            </a>
-          </td>
-        </tr>
-        <tr>
-          <th>Locations</th>
-          <td>
-            <a id="addLocationLink" href="{$location-initAdd}">
-              Add
-            </a>
-          </td>
-          <td>
-            <a href="{$location-initUpdate}">
-              Edit / Delete
-            </a>
-          </td>
-        </tr>
-        <tr>
-          <th>Categories</th>
-          <td>
-            <a id="addCategoryLink" href="{$category-initAdd}">
-              Add
-            </a>
-          </td>
-          <td>
-            <a href="{$category-initUpdate}">
-              Edit / Delete
-            </a>
-          </td>
-        </tr>
-      </table>
+    <h2 class="menuTitle">Main Menu</h2>
+    <table id="mainMenuTable">
+      <tr>
+        <th>Events</th>
+        <td>
+          <a id="addEventLink" href="{$event-initAddEvent}">
+            Add
+          </a>
+        </td>
+        <td>
+          <a href="{$event-initUpdateEvent}">
+            Edit / Delete
+          </a>
+        </td>
+        <!--
+        Disable direct selection by ID; we'll need to find another way
+        of quickly getting to events: search and grid views should be implemented. -->
+        <!--
+        <td>
+          Event ID:
+          <xsl:copy-of select="/bedework/formElements/*"/>
+        </td>-->
+      </tr>
+      <tr>
+        <th>Contacts</th>
+        <td>
+          <a id="addContactLink" href="{$contact-initAdd}">
+            Add
+          </a>
+        </td>
+        <td>
+          <a href="{$contact-initUpdate}">
+            Edit / Delete
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <th>Locations</th>
+        <td>
+          <a id="addLocationLink" href="{$location-initAdd}">
+            Add
+          </a>
+        </td>
+        <td>
+          <a href="{$location-initUpdate}">
+            Edit / Delete
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <th>Categories</th>
+        <td>
+          <a id="addCategoryLink" href="{$category-initAdd}">
+            Add
+          </a>
+        </td>
+        <td>
+          <a href="{$category-initUpdate}">
+            Edit / Delete
+          </a>
+        </td>
+      </tr>
+    </table>
 
-      <h4 class="menuTitle">Event search:</h4>
-      <form name="searchForm" method="post" action="{$search}" id="searchForm">
-        <input type="text" name="query" size="30">
-          <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
-        </input>
-        <input type="submit" name="submit" value="go"/>
-        <div id="searchFields">
-          Limit:
-          <input type="radio" name="searchLimits" value="fromToday" checked="checked"/>today forward
-          <input type="radio" name="searchLimits" value="beforeToday"/>past dates
-          <input type="radio" name="searchLimits" value="none"/>all dates
-        </div>
-      </form>
+    <h4 class="menuTitle">Event search:</h4>
+    <form name="searchForm" method="post" action="{$search}" id="searchForm">
+      <input type="text" name="query" size="30">
+        <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
+      </input>
+      <input type="submit" name="submit" value="go"/>
+      <div id="searchFields">
+        Limit:
+        <input type="radio" name="searchLimits" value="fromToday" checked="checked"/>today forward
+        <input type="radio" name="searchLimits" value="beforeToday"/>past dates
+        <input type="radio" name="searchLimits" value="none"/>all dates
+      </div>
+    </form>
+  </xsl:template>
 
-    </div>
+  <!--+++++++++++++++ Pending Events Tab ++++++++++++++++++++-->
+  <xsl:template name="tabPendingEvents">
+    <h2>Pending Events</h2>
+    <p>The following events were submitted to the calendar:</p>
+    <xsl:call-template name="eventListCommon"/>
+  </xsl:template>
 
-    <div id="adminRightColumn">
-      <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
-        <h4 class="menuTitle">
-          Manage calendar suite:
-          <em><xsl:value-of select="/bedework/currentCalSuite/name"/>
-          </em>
-        </h4>
-        <ul class="adminMenu">
-          <li>
-            <a href="{$calendar-fetch}">
-              Manage calendars
-            </a>
-          </li>
-          <li>
-            <a href="{$subscriptions-fetch}">
-              Manage subscriptions
-            </a>
-          </li>
-          <li>
-            <a href="{$view-fetch}">
-              Manage views
-            </a>
-          </li>
-          <li>
-            <a href="{$calsuite-fetchPrefsForUpdate}">
-              Manage preferences
-            </a>
-          </li>
-          <li>
-            <a href="{$event-initUpload}">
-              Upload iCAL file
-            </a>
-          </li>
-        </ul>
-      </xsl:if>
+  <!--+++++++++++++++ Calendar Suites Tab ++++++++++++++++++++-->
+  <xsl:template name="tabCalsuites">
+    <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
+      <h2>
+        Manage Calendar Suite
+      </h2>
+      <div id="calSuiteTitle">
+        Calendar Suite:
+        <strong><xsl:value-of select="/bedework/currentCalSuite/name"/></strong>
+        <xsl:text> </xsl:text>
+        <a href="{$admingroup-switch}" class="fieldInfo">change</a>
+      </div>
+      <ul class="adminMenu">
+        <li>
+          <a href="{$subscriptions-fetch}">
+            Manage subscriptions
+          </a>
+        </li>
+        <li>
+          <a href="{$view-fetch}">
+            Manage views
+          </a>
+        </li>
+        <li>
+          <a href="{$calsuite-fetchPrefsForUpdate}">
+            Manage preferences
+          </a>
+        </li>
+        <li>
+          <a href="{$event-initUpload}">
+            Upload iCAL file
+          </a>
+        </li>
+      </ul>
+    </xsl:if>
+  </xsl:template>
 
-      <xsl:if test="/bedework/userInfo/contentAdminUser='true'">
-        <h4 class="menuTitle">Manage users:</h4>
-        <ul class="adminMenu">
-          <xsl:if test="/bedework/userInfo/userMaintOK='true'">
-            <li>
-              <a href="{$authuser-initUpdate}">
-                Manage admin roles
-              </a>
-            </li>
-          </xsl:if>
-          <xsl:if test="/bedework/userInfo/adminGroupMaintOk='true'">
-            <li>
-              <a href="{$admingroup-initUpdate}">
-                Manage admin groups
-              </a>
-            </li>
-          </xsl:if>
+  <!--+++++++++++++++ User/Group Tab ++++++++++++++++++++-->
+  <xsl:template name="tabUsers">
+    <xsl:if test="/bedework/userInfo/contentAdminUser='true'">
+      <h2>Manage Users &amp; Groups</h2>
+      <ul class="adminMenu">
+        <xsl:if test="/bedework/userInfo/userMaintOK='true'">
           <li>
-            <a href="{$admingroup-switch}">
-              Choose/change group...
+            <a href="{$authuser-initUpdate}">
+              Manage admin roles
             </a>
           </li>
-          <xsl:if test="/bedework/userInfo/userMaintOK='true'">
-            <li>
-              <form action="{$prefs-fetchForUpdate}" method="post">
-                Edit user preferences (enter userid):<br/>
-                <input type="text" name="user" size="15"/>
-                <input type="submit" name="getPrefs" value="go"/>
-              </form>
-            </li>
-          </xsl:if>
-        </ul>
-      </xsl:if>
+        </xsl:if>
+        <xsl:if test="/bedework/userInfo/adminGroupMaintOk='true'">
+          <li>
+            <a href="{$admingroup-initUpdate}">
+              Manage admin groups
+            </a>
+          </li>
+        </xsl:if>
+        <li>
+          <a href="{$admingroup-switch}">
+            Change group...
+          </a>
+        </li>
+        <xsl:if test="/bedework/userInfo/userMaintOK='true'">
+          <li>
+            <form action="{$prefs-fetchForUpdate}" method="post">
+              Edit user preferences (enter userid):<br/>
+              <input type="text" name="user" size="15"/>
+              <input type="submit" name="getPrefs" value="go"/>
+            </form>
+          </li>
+        </xsl:if>
+      </ul>
+    </xsl:if>
+  </xsl:template>
 
-      <xsl:if test="/bedework/userInfo/superUser='true'">
-        <h4 class="menuTitle">Super user features:</h4>
-        <ul class="adminMenu">
-          <li>
-            <a href="{$calsuite-fetch}">
-              Manage calendar suites
-            </a>
-          </li>
-          <li>
-            <a href="{$system-fetch}">
-              Manage system preferences
-            </a>
-          </li>
-          <li>
-            <a href="{$timezones-initUpload}">
-              Manage system timezones
-            </a>
-          </li>
-          <li>
-            System statistics:
-            <ul>
-              <li>
-                <a href="{$stats-update}&amp;fetch=yes">
-                  admin web client
-                </a>
-              </li>
-              <li>
-                <a href="{$publicCal}/stats.do" target="pubClient">
-                  public web client
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </xsl:if>
-    </div>
+  <!--+++++++++++++++ System Tab ++++++++++++++++++++-->
+  <xsl:template name="tabSystem">
+    <xsl:if test="/bedework/userInfo/superUser='true'">
+      <h2>Manage System</h2>
+      <h4 class="menuTitle">Calendars and Calendar Suites</h4>
+      <ul class="adminMenu">
+        <li>
+          <a href="{$calendar-fetch}">
+            Manage calendars
+          </a>
+        </li>
+        <li>
+          <a href="{$calsuite-fetch}">
+            Manage calendar suites
+          </a>
+        </li>
+      </ul>
+      <h4 class="menuTitle">System settings</h4>
+      <ul class="adminMenu">
+        <li>
+          <a href="{$system-fetch}">
+            Manage system preferences
+          </a>
+        </li>
+        <li>
+          <a href="{$timezones-initUpload}">
+            Manage system timezones
+          </a>
+        </li>
+      </ul>
+      <h4 class="menuTitle">Statistics</h4>
+      <ul class="adminMenu">
+        <li>
+          <a href="{$stats-update}&amp;fetch=yes">
+            admin web client
+          </a>
+        </li>
+        <li>
+          <a href="{$publicCal}/stats.do" target="pubClient">
+            public web client
+          </a>
+        </li>
+      </ul>
+    </xsl:if>
   </xsl:template>
 
   <!--++++++++++++++++++ Events ++++++++++++++++++++-->
@@ -732,6 +804,10 @@
       </table>
     </form>
 
+    <xsl:call-template name="eventListCommon"/>
+  </xsl:template>
+
+  <xsl:template name="eventListCommon">
     <table id="commonListTable">
       <tr>
         <th>Title</th>
