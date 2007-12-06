@@ -136,6 +136,9 @@
 
           <appType>webadmin</appType>
 
+          <!-- This will become a system configuration in time -->
+          <submissionRoot>/public/unbrowsable/submissions</submissionRoot>
+
           <!-- Default value for 24 hour mode -->
           <hour24>true</hour24>
 

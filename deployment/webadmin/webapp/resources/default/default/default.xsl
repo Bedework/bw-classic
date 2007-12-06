@@ -64,6 +64,9 @@
        urls; allows the application to be used without cookies or within a portal.
        we will probably change the way we create these before long (e.g. build them
        dynamically in the xslt). -->
+
+  <xsl:variable name="submissionsRoot" select="/bedework/submissionsRoot"/>
+
   <!-- primary navigation, menu tabs -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup/a/@href"/>
   <xsl:variable name="initPendingTab" select="/bedework/urlPrefixes/initPendingTab/a/@href"/>
@@ -519,7 +522,10 @@
           <xsl:if test="/bedework/appvar[key='menutab']/value = 'pending' and /bedework/page != 'main'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
+          <!--
           <a href="{$initPendingTab}&amp;setappvar=menutab(pending)&amp;ignoreCreator=yes&amp;calPath=%2Fpublic%2Funbrowsable%2Fsubmissions">Pending Events</a>
+           -->
+          <a href="{$initPendingTab}&amp;setappvar=menutab(pending)&amp;ignoreCreator=yes&amp;calPath={submissionsRoot}">Pending Events</a>
         </li>
         <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
           <li>
