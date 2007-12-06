@@ -141,7 +141,7 @@ body {
 #content h2 {
   margin: 0em;
   padding: 1em 0.2em 0em 0.2em;
-  font-size: 1.4em;
+  font-size: 1.3em;
 }
 #content h3 {
   margin: 0em;
@@ -262,11 +262,8 @@ th {
 
 }
 .adminMenu {
-  margin-top: 0em;
-  /*width: 100%;*/
 }
 ul.adminMenu {
-  margin-top: 0;
 }
 ul.adminMenu li {
   padding: 0.25em 0 0 0;

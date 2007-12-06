@@ -70,7 +70,7 @@
   <!-- primary navigation, menu tabs -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup/a/@href"/>
   <xsl:variable name="initPendingTab" select="/bedework/urlPrefixes/initPendingTab/a/@href"/>
-  <xsl:variable name="showCalsuitesTab" select="/bedework/urlPrefixes/showCalsuitesTab/a/@href"/>
+  <xsl:variable name="showCalsuiteTab" select="/bedework/urlPrefixes/showCalsuiteTab/a/@href"/>
   <xsl:variable name="showUsersTab" select="/bedework/urlPrefixes/showUsersTab/a/@href"/>
   <xsl:variable name="showSystemTab" select="/bedework/urlPrefixes/showSystemTab/a/@href"/>
   <xsl:variable name="logout" select="/bedework/urlPrefixes/logout/a/@href"/>
@@ -258,8 +258,8 @@
                 <xsl:when test="/bedework/page='tabPendingEvents'">
                   <xsl:call-template name="tabPendingEvents"/>
                 </xsl:when>
-                <xsl:when test="/bedework/page='tabCalsuites'">
-                  <xsl:call-template name="tabCalsuites"/>
+                <xsl:when test="/bedework/page='tabCalsuite'">
+                  <xsl:call-template name="tabCalsuite"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='tabUsers'">
                   <xsl:call-template name="tabUsers"/>
@@ -513,39 +513,39 @@
       <!-- user has selected a group, so show menu tabs -->
       <ul id="bwAdminMenu">
         <li>
-          <xsl:if test="/bedework/appvar[key='menutab']/value = 'home' or not(/bedework/appvar[key='menutab']) or /bedework/page = 'main'">
+          <xsl:if test="/bedework/tab = 'main'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$setup}&amp;setappvar=menutab(home)">Event Management</a>
+          <a href="{$setup}">Event Management</a>
         </li>
         <li>
-          <xsl:if test="/bedework/appvar[key='menutab']/value = 'pending' and /bedework/page != 'main'">
+          <xsl:if test="/bedework/tab = 'pending'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$initPendingTab}&amp;setappvar=menutab(pending)&amp;ignoreCreator=yes&amp;calPath={$submissionsRoot}">Pending Events</a>
+          <a href="{$initPendingTab}&amp;ignoreCreator=yes&amp;calPath={$submissionsRoot}">Pending Events</a>
         </li>
         <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
           <li>
-            <xsl:if test="/bedework/appvar[key='menutab']/value = 'calsuites' and /bedework/page != 'main'">
+            <xsl:if test="/bedework/tab = 'calsuite'">
               <xsl:attribute name="class">selected</xsl:attribute>
             </xsl:if>
-            <a href="{$showCalsuitesTab}&amp;setappvar=menutab(calsuites)">Calendar Suites</a>
+            <a href="{$showCalsuiteTab}">Calendar Suite</a>
           </li>
         </xsl:if>
         <xsl:if test="/bedework/userInfo/contentAdminUser='true'">
           <li>
-            <xsl:if test="/bedework/appvar[key='menutab']/value = 'users' and /bedework/page != 'main'">
+            <xsl:if test="/bedework/tab = 'users'">
               <xsl:attribute name="class">selected</xsl:attribute>
             </xsl:if>
-            <a href="{$showUsersTab}&amp;setappvar=menutab(users)">Users</a>
+            <a href="{$showUsersTab}">Users</a>
           </li>
         </xsl:if>
         <xsl:if test="/bedework/userInfo/superUser='true'">
           <li>
-            <xsl:if test="/bedework/appvar[key='menutab']/value = 'system' and /bedework/page != 'main'">
+            <xsl:if test="/bedework/tab = 'system'">
               <xsl:attribute name="class">selected</xsl:attribute>
             </xsl:if>
-            <a href="{$showSystemTab}&amp;setappvar=menutab(system)">System</a>
+            <a href="{$showSystemTab}">System</a>
           </li>
         </xsl:if>
       </ul>
@@ -663,11 +663,11 @@
     <xsl:call-template name="eventListCommon"/>
   </xsl:template>
 
-  <!--+++++++++++++++ Calendar Suites Tab ++++++++++++++++++++-->
-  <xsl:template name="tabCalsuites">
+  <!--+++++++++++++++ Calendar Suite Tab ++++++++++++++++++++-->
+  <xsl:template name="tabCalsuite">
     <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
       <h2>
-        Manage Calendar Suite
+        Manage Current Calendar Suite
       </h2>
       <div id="calSuiteTitle">
         Calendar Suite:
@@ -689,11 +689,6 @@
         <li>
           <a href="{$calsuite-fetchPrefsForUpdate}">
             Manage preferences
-          </a>
-        </li>
-        <li>
-          <a href="{$event-initUpload}">
-            Upload iCAL file
           </a>
         </li>
       </ul>
@@ -741,7 +736,6 @@
   <xsl:template name="tabSystem">
     <xsl:if test="/bedework/userInfo/superUser='true'">
       <h2>Manage System</h2>
-      <h4 class="menuTitle">Calendars and Calendar Suites</h4>
       <ul class="adminMenu">
         <li>
           <a href="{$calendar-fetch}">
@@ -753,8 +747,12 @@
             Manage calendar suites
           </a>
         </li>
+        <li>
+          <a href="{$event-initUpload}">
+            Upload iCAL file
+          </a>
+        </li>
       </ul>
-      <h4 class="menuTitle">System settings</h4>
       <ul class="adminMenu">
         <li>
           <a href="{$system-fetch}">
@@ -767,17 +765,21 @@
           </a>
         </li>
       </ul>
-      <h4 class="menuTitle">Statistics</h4>
       <ul class="adminMenu">
         <li>
-          <a href="{$stats-update}&amp;fetch=yes">
-            admin web client
-          </a>
-        </li>
-        <li>
-          <a href="{$publicCal}/stats.do" target="pubClient">
-            public web client
-          </a>
+          Statistics:
+          <ul>
+            <li>
+              <a href="{$stats-update}&amp;fetch=yes">
+                admin web client
+              </a>
+            </li>
+            <li>
+              <a href="{$publicCal}/stats.do" target="pubClient">
+                public web client
+              </a>
+            </li>
+          </ul>
         </li>
       </ul>
     </xsl:if>
@@ -881,43 +883,7 @@
     <xsl:variable name="modEventAction" select="form/@action"/>
     <form name="eventForm" method="post" action="{$modEventAction}" onsubmit="setEventFields(this)">
 
-      <table border="0" id="submitTable">
-        <tr>
-          <xsl:choose>
-            <xsl:when test="starts-with(form/calendar/all/select/option[@selected],$submissionsRoot)">
-              <td>
-                <input type="submit" name="updateSubmitEvent" value="Update Event"/>
-                <input type="submit" name="publishEvent" value="Publish Event"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-              </td>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="/bedework/creating='true'">
-                  <td>
-                    <input type="submit" name="addEvent" value="Add Event"/>
-                    <input type="submit" name="cancelled" value="Cancel"/>
-                    <input type="reset" value="Clear"/>
-                  </td>
-                </xsl:when>
-                <xsl:otherwise>
-                  <td>
-                    <input type="submit" name="updateEvent" value="Update Event"/>
-                    <input type="submit" name="cancelled" value="Cancel"/>
-                    <xsl:if test="form/recurringEntity != 'true' and recurrenceId = ''">
-                      <!-- cannot duplicate recurring events for now -->
-                      <input type="submit" name="copy" value="Duplicate Event"/>
-                    </xsl:if>
-                  </td>
-                  <td align="right">
-                    <input type="submit" name="delete" value="Delete Event"/>
-                  </td>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:otherwise>
-          </xsl:choose>
-        </tr>
-      </table>
+      <xsl:call-template name="submitEventButtons"/>
 
       <table class="eventFormTable">
         <tr>
@@ -2132,34 +2098,48 @@
           </tr>
         </xsl:if>
       </table>
-
-      <table border="0" id="submitTable">
-        <tr>
-          <xsl:choose>
-            <xsl:when test="/bedework/creating='true'">
-              <td>
-                <input type="submit" name="addEvent" value="Add Event"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Clear"/>
-              </td>
-            </xsl:when>
-            <xsl:otherwise>
-              <td>
-                <input type="submit" name="updateEvent" value="Update Event"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-                <xsl:if test="form/recurringEntity != 'true' and recurrenceId = ''">
-                  <!-- cannot duplicate recurring events for now -->
-                  <input type="submit" name="copy" value="Duplicate Event"/>
-                </xsl:if>
-              </td>
-              <td align="right">
-                <input type="submit" name="delete" value="Delete Event"/>
-              </td>
-            </xsl:otherwise>
-          </xsl:choose>
-        </tr>
-      </table>
+      <xsl:call-template name="submitEventButtons"/>
     </form>
+  </xsl:template>
+
+  <xsl:template name="submitEventButtons">
+    <table border="0" id="submitTable">
+      <tr>
+        <xsl:choose>
+          <xsl:when test="starts-with(form/calendar/all/select/option[@selected],$submissionsRoot)">
+            <td>
+              <input type="submit" name="updateSubmitEvent" value="Update Event"/>
+              <input type="submit" name="publishEvent" value="Publish Event"/>
+              <input type="submit" name="cancelled" value="Cancel"/>
+            </td>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:choose>
+              <xsl:when test="/bedework/creating='true'">
+                <td>
+                  <input type="submit" name="addEvent" value="Add Event"/>
+                  <input type="submit" name="cancelled" value="Cancel"/>
+                  <input type="reset" value="Clear"/>
+                </td>
+              </xsl:when>
+              <xsl:otherwise>
+                <td>
+                  <input type="submit" name="updateEvent" value="Update Event"/>
+                  <input type="submit" name="cancelled" value="Cancel"/>
+                  <xsl:if test="form/recurringEntity != 'true' and recurrenceId = ''">
+                    <!-- cannot duplicate recurring events for now -->
+                    <input type="submit" name="copy" value="Duplicate Event"/>
+                  </xsl:if>
+                </td>
+                <td align="right">
+                  <input type="submit" name="delete" value="Delete Event"/>
+                </td>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:otherwise>
+        </xsl:choose>
+      </tr>
+    </table>
   </xsl:template>
 
   <xsl:template match="val" mode="weekMonthYearNumbers">
