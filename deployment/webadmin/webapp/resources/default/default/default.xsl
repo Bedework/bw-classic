@@ -522,10 +522,7 @@
           <xsl:if test="/bedework/appvar[key='menutab']/value = 'pending' and /bedework/page != 'main'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <!--
-          <a href="{$initPendingTab}&amp;setappvar=menutab(pending)&amp;ignoreCreator=yes&amp;calPath=%2Fpublic%2Funbrowsable%2Fsubmissions">Pending Events</a>
-           -->
-          <a href="{$initPendingTab}&amp;setappvar=menutab(pending)&amp;ignoreCreator=yes&amp;calPath={submissionsRoot}">Pending Events</a>
+          <a href="{$initPendingTab}&amp;setappvar=menutab(pending)&amp;ignoreCreator=yes&amp;calPath={$submissionsRoot}">Pending Events</a>
         </li>
         <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
           <li>
@@ -887,25 +884,36 @@
       <table border="0" id="submitTable">
         <tr>
           <xsl:choose>
-            <xsl:when test="/bedework/creating='true'">
+            <xsl:when test="starts-with(form/calendar/all/select/option[@selected],$submissionsRoot)">
               <td>
-                <input type="submit" name="addEvent" value="Add Event"/>
+                <input type="submit" name="updateSubmitEvent" value="Update Event"/>
+                <input type="submit" name="publishEvent" value="Publish Event"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Clear"/>
               </td>
             </xsl:when>
             <xsl:otherwise>
-              <td>
-                <input type="submit" name="updateEvent" value="Update Event"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-                <xsl:if test="form/recurringEntity != 'true' and recurrenceId = ''">
-                  <!-- cannot duplicate recurring events for now -->
-                  <input type="submit" name="copy" value="Duplicate Event"/>
-                </xsl:if>
-              </td>
-              <td align="right">
-                <input type="submit" name="delete" value="Delete Event"/>
-              </td>
+              <xsl:choose>
+                <xsl:when test="/bedework/creating='true'">
+                  <td>
+                    <input type="submit" name="addEvent" value="Add Event"/>
+                    <input type="submit" name="cancelled" value="Cancel"/>
+                    <input type="reset" value="Clear"/>
+                  </td>
+                </xsl:when>
+                <xsl:otherwise>
+                  <td>
+                    <input type="submit" name="updateEvent" value="Update Event"/>
+                    <input type="submit" name="cancelled" value="Cancel"/>
+                    <xsl:if test="form/recurringEntity != 'true' and recurrenceId = ''">
+                      <!-- cannot duplicate recurring events for now -->
+                      <input type="submit" name="copy" value="Duplicate Event"/>
+                    </xsl:if>
+                  </td>
+                  <td align="right">
+                    <input type="submit" name="delete" value="Delete Event"/>
+                  </td>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:otherwise>
           </xsl:choose>
         </tr>
@@ -4621,7 +4629,7 @@
 
   <!--+++++++++++++++ System Parameters (preferences) ++++++++++++++++++++-->
   <xsl:template name="modSyspars">
-    <h2>Modify System Preferences/Parameters</h2>
+    <h2>Manage System Preferences/Parameters</h2>
     <p>
       Do not change unless you know what you're doing.<br/>
       Changes to these parameters have wide impact on the system.
