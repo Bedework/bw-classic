@@ -48,9 +48,9 @@ body {
 }
 #statusBarTable {
   margin: 0;
-  color: black;
-  /*background-color: #ccc;*/
-  background-color: #edc;
+  color: #eee;
+  /*background-color: #edc;*/
+  background-color: #5c7486;
   font-size: 0.8em;
   width: 100%;
   border-bottom: 1px solid #999;
@@ -70,13 +70,11 @@ body {
 #statusBarTable a:active,
 #statusBarTable a:visited {
   text-decoration : none;
-  color: blue;
+  color: #eee;
   background-color: transparent;
 }
 #statusBarTable a:hover {
-  text-decoration: none;
-  background-color: #ffe;
-  color: black;
+  text-decoration: underline;
 }
 #statusBarTable #bwLogoutButton {
   margin: 0 0 0 4px;
@@ -163,6 +161,7 @@ body {
 th {
   text-align: left;
 }
+/* mainMenuTable is deprecated */
 #mainMenuTable {
   margin-top: 0em;
   margin-bottom: 1em;
@@ -198,6 +197,31 @@ th {
 }
 #mainMenuTable form {
   display: inline;
+}
+/* mainMenu = manage events tab icons and links */
+#mainMenu {
+  margin: 2em auto 4em auto;
+}
+#mainMenu td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 1em 0.5em;
+}
+#mainMenu img {
+  text-align: center;
+}
+#mainMenu a:link,
+#mainMenu a:active,
+#mainMenu a:visited,
+#mainMenu a:hover {
+  display: block;
+  padding: 0.2em 1em 0.2em 1em;
+  text-decoration: none;
+  color: #483D8B;
+  background-color: transparent;
+}
+#mainMenuEventSearch {
+
 }
 #searchForm {
   font-size: 0.8em;

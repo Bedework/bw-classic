@@ -207,7 +207,7 @@
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title>Calendar Admin: Events Calendar Administration</title>
+        <title>Calendar Admin: Public Events Administration</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
@@ -470,7 +470,7 @@
             Error
           </xsl:when>
           <xsl:otherwise>
-            Bedework Calendar Administration
+            Bedework Public Events Administration
           </xsl:otherwise>
         </xsl:choose>
       </h1>
@@ -577,6 +577,63 @@
 
   <!--+++++++++++++++ Main Menu Tab ++++++++++++++++++++-->
   <xsl:template name="mainMenu">
+
+    <table id="mainMenu">
+      <tr>
+        <td>
+          <a id="addEventLink" href="{$event-initAddEvent}">
+            <img src="{$resourcesRoot}/resources/bwAdminAddEventIcon.jpg" width="140" height="140" alt="Add Event" border="0"/>
+            <br/>Add Event
+          </a>
+        </td>
+        <td>
+          <a id="addContactLink" href="{$contact-initAdd}">
+            <img src="{$resourcesRoot}/resources/bwAdminAddContactIcon.jpg" width="100" height="100" alt="Add Event" border="0"/>
+            <br/>Add Contact
+          </a>
+        </td>
+        <td>
+          <a id="addLocationLink" href="{$location-initAdd}">
+            <img src="{$resourcesRoot}/resources/bwAdminAddLocationIcon.jpg" width="100" height="100" alt="Add Event" border="0"/>
+            <br/>Add Location
+          </a>
+        </td>
+        <td>
+          <a id="addCategoryLink" href="{$category-initAdd}">
+            <img src="{$resourcesRoot}/resources/bwAdminAddCategoryIcon.jpg" width="100" height="100" alt="Add Event" border="0"/>
+            <br/>Add Category
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="{$event-initUpdateEvent}">
+            <img src="{$resourcesRoot}/resources/bwAdminManageEventsIcon.jpg" width="100" height="73" alt="Manage Events" border="0"/>
+            <br/>Manage Events
+          </a>
+        </td>
+        <td>
+          <a href="{$contact-initUpdate}">
+            <img src="{$resourcesRoot}/resources/bwAdminManageContactsIcon.jpg" width="100" height="73" alt="Manage Events" border="0"/>
+            <br/>Manage Contacts
+          </a>
+        </td>
+        <td>
+          <a href="{$location-initUpdate}">
+            <img src="{$resourcesRoot}/resources/bwAdminManageLocsIcon.jpg" width="100" height="73" alt="Manage Events" border="0"/>
+            <br/>Manage Locations
+          </a>
+        </td>
+        <td>
+          <a href="{$category-initUpdate}">
+            <img src="{$resourcesRoot}/resources/bwAdminManageCatsIcon.jpg" width="100" height="73" alt="Manage Events" border="0"/>
+            <br/>Manage Categories
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <!--
     <h2 class="menuTitle">Main Menu</h2>
     <table id="mainMenuTable">
       <tr>
@@ -591,14 +648,14 @@
             Edit / Delete
           </a>
         </td>
-        <!--
+        <!- -
         Disable direct selection by ID; we'll need to find another way
-        of quickly getting to events: search and grid views should be implemented. -->
-        <!--
+        of quickly getting to events: search and grid views should be implemented. - - >
+        <!- -
         <td>
           Event ID:
           <xsl:copy-of select="/bedework/formElements/*"/>
-        </td>-->
+        </td>- - >
       </tr>
       <tr>
         <th>Contacts</th>
@@ -640,20 +697,22 @@
         </td>
       </tr>
     </table>
-
-    <h4 class="menuTitle">Event search:</h4>
-    <form name="searchForm" method="post" action="{$search}" id="searchForm">
-      <input type="text" name="query" size="30">
-        <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
-      </input>
-      <input type="submit" name="submit" value="go"/>
-      <div id="searchFields">
-        Limit:
-        <input type="radio" name="searchLimits" value="fromToday" checked="checked"/>today forward
-        <input type="radio" name="searchLimits" value="beforeToday"/>past dates
-        <input type="radio" name="searchLimits" value="none"/>all dates
-      </div>
-    </form>
+    -->
+    <div id="mainMenuEventSearch">
+      <h4 class="menuTitle">Event search:</h4>
+      <form name="searchForm" method="post" action="{$search}" id="searchForm">
+        <input type="text" name="query" size="30">
+          <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
+        </input>
+        <input type="submit" name="submit" value="go"/>
+        <div id="searchFields">
+          Limit:
+          <input type="radio" name="searchLimits" value="fromToday" checked="checked"/>today forward
+          <input type="radio" name="searchLimits" value="beforeToday"/>past dates
+          <input type="radio" name="searchLimits" value="none"/>all dates
+        </div>
+      </form>
+    </div>
   </xsl:template>
 
   <!--+++++++++++++++ Pending Events Tab ++++++++++++++++++++-->
