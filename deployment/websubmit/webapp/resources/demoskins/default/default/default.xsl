@@ -190,9 +190,6 @@
           <xsl:text> </xsl:text>
           <span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
     </div>
-    <div id="titleBar">
-      CALENDAR of EVENTS
-    </div>
   </xsl:template>
 
   <xsl:template name="messagesAndErrors">

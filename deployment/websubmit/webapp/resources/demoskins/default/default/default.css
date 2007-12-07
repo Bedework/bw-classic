@@ -4,6 +4,7 @@ body {
   padding: 0;
   background-color: #ddd;
   color: black;
+  font-size: 16px;
 }
 
 #bedework {
@@ -100,8 +101,9 @@ body {
   margin: 0em;
   padding: 0.2em 1em;
   text-align: right;
-  color: black;
-  background-color: #edc;
+  color: #eee;
+  /*background-color: #edc;*/
+  background-color: #5c7486;
   font-size: 0.8em;
 }
 #bedework #statusBarTable td.leftCell {
@@ -117,48 +119,57 @@ body {
 #bedework #statusBar a:active,
 #bedework #statusBar a:visited {
   text-decoration : none;
-  color: blue;
+  color: #eee;
   background-color: transparent;
 }
 #bedework #statusBar a:hover {
-  text-decoration: none;
-  background-color: #ffe;
-  color: black;
-}
-#bedework #titleBar {
-  font-size: 0.7em;
-  font-weight: bold;
-  letter-spacing: 3px;
-  background-color: #ddd;
-  color: #666;
-  border-top: 1px solid black;
-  border-bottom: 2px solid black;
-  text-align: center;
+  text-decoration: underline;
+  color: #eee;
+  background-color: transparent;
 }
 /* MenuTabs */
 #bedework #menuTabs {
-  margin: 0.5em 0 0 0;
-  padding: 0;
-  border-bottom: 2px solid #999;
+  margin: 0;
+  padding: 6px 0 4px 0;
+  color: #eee;
+  background-color: #ddd;
+  font-size: 0.9em;
+  border-bottom: 1px solid #999;
 }
 #bedework #menuTabs li {
-  position: relative;
   display: inline;
-  list-style: none;
-  margin: 0 0 0 4px;
-  padding: 0 1em;
-  text-align: center;
-  border-top: 2px solid #999;
-  border-left: 2px solid #999;
-  border-right: 2px solid #999;
-  color: black;
+  margin: 0;
+  /*color: #eee;
+  background: #009 url("../../resources/menuBgBlue.gif") repeat-x top;*/
+  color: #777;
   background-color: #eee;
-  font-size: 0.9em;
+  padding-top: 6px;
+  padding-bottom: 4px;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-bottom: 1px solid #999;
+  border-right: 1px solid #999;
 }
 #bedework #menuTabs li.selected {
-  border-bottom: 2px solid #fff;
+  color: #333;
+  background: white url("../../resources/menuBgGray.gif") repeat-x top;
+  border-bottom: 1px solid white;
+}
+#bedework #menuTabs a:link,
+#bedework #menuTabs a:active,
+#bedework #menuTabs a:hover,
+#bedework #menuTabs a:visited {
+  color: #777;
+  background-color: transparent;
+  text-decoration: none;
+}
+#bedework #menuTabs li.selected a:link,
+#bedework #menuTabs li.selected a:active,
+#bedework #menuTabs li.selected a:hover,
+#bedework #menuTabs li.selected a:visited {
   color: black;
-  background-color: #fff;
+  background-color: transparent;
+  text-decoration: none;
 }
 #bedework #bodyContent {
   position: relative;
