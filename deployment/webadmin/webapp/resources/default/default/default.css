@@ -58,17 +58,21 @@ body {
 #statusBarTable td.rightCell {
   text-align: right;
   padding: 0.2em 1em 0.2em 0em;
+  white-space: nowrap;
 }
 #statusBarTable td.leftCell {
   text-align: left;
   padding: 0.2em 0em 0.2em 1em;
+  white-space: nowrap;
 }
 #statusBarTable span.status {
   font-weight: bold;
 }
 #statusBarTable a:link,
 #statusBarTable a:active,
-#statusBarTable a:visited {
+#statusBarTable a:visited,
+#statusBarTable a:hover {
+  margin-right: 1em;
   text-decoration : none;
   color: #eee;
   background-color: transparent;

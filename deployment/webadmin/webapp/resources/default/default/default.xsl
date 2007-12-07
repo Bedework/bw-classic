@@ -481,8 +481,8 @@
     <table id="statusBarTable">
       <tr>
         <td class="leftCell">
-          <a href="{$setup}">Home</a> |
-          <a href="{$publicCal}" target="calendar">Launch Calendar</a> |
+          <a href="{$setup}">Home</a>
+          <a href="{$publicCal}" target="calendar">Launch Calendar</a>
           <a href="{$logout}" id="bwLogoutButton">Log Out</a>
         </td>
         <xsl:if test="/bedework/userInfo/user">
