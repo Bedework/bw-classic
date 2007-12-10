@@ -290,7 +290,7 @@
     <!-- for now, the comment field will hold the user's suggestions;
          this should be replaced with a different field to avoid
          overloading the RFC property.  -->
-    <input type="hidden" name="comment" id="bwEventComment"/>
+    <input type="hidden" name="comment" id="bwEventComment" value="test"/>
 
       <!-- event info for edit event -->
       <xsl:if test="/bedework/creating != 'true'">

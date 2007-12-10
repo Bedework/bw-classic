@@ -263,7 +263,8 @@ function setComment(formObj) {
   // set the submission comments (location, contact, and category suggestions)
   // in xml format for easier post processing.
   // add and remove values as the application grows.
-  var comment = "<location>"
+
+  var comment = "<location>";
   if (formObj["commentLocationAddress"].value != "") {
     comment += "<address>" + formObj["commentLocationAddress"].value + "</address>";
   }
@@ -272,9 +273,6 @@ function setComment(formObj) {
   }
   if (formObj["commentLocationURL"].value != "") {
     comment += "<url>" + formObj["commentLocationURL"].value + "</url>";
-  }
-  if (formObj["commentLocationSubaddress"].value != "") {
-    comment += "<subaddress>" + formObj["commentLocationSubaddress"].value + "</subaddress>";
   }
   comment += "</location>";
   comment += "<contact>";
@@ -291,9 +289,10 @@ function setComment(formObj) {
     comment += "<email>" + formObj["commentContactEmail"].value + "</email>";
   }
   comment += "</contact>";
-  if (formObj["commentCategory"].value != "") {
-    comment += "<category>" + formObj["commentCategory"].value + "</category>";
+  if (formObj["commentCategories"].value != "") {
+    comment += "<category>" + formObj["commentCategories"].value + "</category>";
   }
+
   formObj["comment"].value = comment;
 }
 function swapAllDayEvent(obj) {
@@ -643,7 +642,6 @@ function validateStep1() {
     changeClass("bwEventDesc","none");
     changeClass("bwEventDescNotice","invisible");
   }
-  document.getElementById("bwEventComment").value = "<comment>test</comment>";
   return validity;
 }
 
