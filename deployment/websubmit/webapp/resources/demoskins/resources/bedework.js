@@ -217,3 +217,9 @@ function setupAccessForm(val,formObj) {
       break;
   }
 }
+// trim function
+function trim(str) {
+  var trimmedStr = str.replace(/^\s+|\s+$/g, '');
+  return trimmedStr.replace(/^(\&nbsp\;)+|(\&nbsp\;)+$/g, '');
+}
+

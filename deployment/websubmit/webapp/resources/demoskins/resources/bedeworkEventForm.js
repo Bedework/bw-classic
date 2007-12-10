@@ -236,10 +236,12 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
 }
 
 // ========================================================================
+// Form Manipulation Functions
 // ========================================================================
 
 function setEventFields(formObj) {
   setDates(formObj);
+  setComment(formObj);
   setRecurrence(formObj);
   setAccessHow(formObj,1);
   //setAccessAcl(formObj);
@@ -256,6 +258,43 @@ function setDates(formObj) {
   formObj["eventEndDate.year"].value = endDate.getFullYear();
   formObj["eventEndDate.month"].value = endDate.getMonth() + 1;
   formObj["eventEndDate.day"].value = endDate.getDate();
+}
+function setComment(formObj) {
+  // set the submission comments (location, contact, and category suggestions)
+  // in xml format for easier post processing.
+  // add and remove values as the application grows.
+  var comment = "<location>"
+  if (formObj["commentLocationAddress"].value != "") {
+    comment += "<address>" + formObj["commentLocationAddress"].value + "</address>";
+  }
+  if (formObj["commentLocationSubaddress"].value != "") {
+    comment += "<subaddress>" + formObj["commentLocationSubaddress"].value + "</subaddress>";
+  }
+  if (formObj["commentLocationURL"].value != "") {
+    comment += "<url>" + formObj["commentLocationURL"].value + "</url>";
+  }
+  if (formObj["commentLocationSubaddress"].value != "") {
+    comment += "<subaddress>" + formObj["commentLocationSubaddress"].value + "</subaddress>";
+  }
+  comment += "</location>";
+  comment += "<contact>";
+  if (formObj["commentContactName"].value != "") {
+    comment += "<name>" + formObj["commentContactName"].value + "</name>";
+  }
+  if (formObj["commentContactPhone"].value != "") {
+    comment += "<phone>" + formObj["commentContactPhone"].value + "</phone>";
+  }
+  if (formObj["commentContactURL"].value != "") {
+    comment += "<url>" + formObj["commentContactURL"].value + "</url>";
+  }
+  if (formObj["commentContactEmail"].value != "") {
+    comment += "<email>" + formObj["commentContactEmail"].value + "</email>";
+  }
+  comment += "</contact>";
+  if (formObj["commentCategory"].value != "") {
+    comment += "<category>" + formObj["commentCategory"].value + "</category>";
+  }
+  formObj["comment"].value = comment;
 }
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
@@ -582,6 +621,66 @@ function setRdateDateTime(formObj) {
 function untilClickHandler(evt) {
    selectRecurCountUntil('recurUntil');
 }
+
+// =======================================================
+// Event submit validation by page
+// =======================================================
+function validateStep1() {
+  var validity = true;
+  if (trim(document.getElementById("bwEventTitle").value) == '') {
+    changeClass("bwEventTitle","highlight");
+    changeClass("bwEventTitleNotice","notice");
+    validity = false;
+  } else {
+    changeClass("bwEventTitle","none");
+    changeClass("bwEventTitleNotice","invisible");
+  }
+  if (trim(document.getElementById("bwEventDesc").value) == '') {
+    changeClass("bwEventDesc","highlight");
+    changeClass("bwEventDescNotice","notice");
+    validity = false;
+  } else {
+    changeClass("bwEventDesc","none");
+    changeClass("bwEventDescNotice","invisible");
+  }
+  document.getElementById("bwEventComment").value = "<comment>test</comment>";
+  return validity;
+}
+
+function validateStep2() {
+  var validity = true;
+  if (document.getElementById("bwLocationUid").value == '' &&
+      document.getElementById("bwCommentLocationAddress").value == '') {
+    changeClass("bwLocationUid","highlight bigSelect");
+    changeClass("bwCommentLocationAddress","highlight");
+    changeClass("bwLocationUidNotice","notice");
+    validity = false;
+  } else {
+    changeClass("bwLocationUid","bigSelect");
+    changeClass("bwCommentLocationAddress","none");
+    changeClass("bwLocationUidNotice","invisible");
+  }
+  return validity;
+}
+function validateStep3() {
+  var validity = true;
+  if (document.getElementById("bwContactUid").value == '' &&
+      document.getElementById("bwCommentContactName").value == '') {
+    changeClass("bwContactUid","highlight bigSelect");
+    changeClass("bwCommentContactName","highlight");
+    changeClass("bwContactUidNotice","notice");
+    validity = false;
+  } else {
+    changeClass("bwContactUid","bigSelect");
+    changeClass("bwCommentContactName","none");
+    changeClass("bwContactUidNotice","invisible");
+  }
+  return validity;
+}
+
+// =======================================================
+// Dojo initialization
+// =======================================================
 
 function init() {
   var untilHolder = dojo.byId("untilHolder");

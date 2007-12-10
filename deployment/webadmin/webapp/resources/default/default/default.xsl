@@ -65,7 +65,8 @@
        we will probably change the way we create these before long (e.g. build them
        dynamically in the xslt). -->
 
-  <xsl:variable name="submissionsRoot" select="/bedework/submissionsRoot"/>
+  <xsl:variable name="submissionsRootEncoded" select="/bedework/submissionsRoot/encoded"/>
+  <xsl:variable name="submissionsRootUnencoded" select="/bedework/submissionsRoot/unencoded"/>
 
   <!-- primary navigation, menu tabs -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup/a/@href"/>
@@ -522,7 +523,7 @@
           <xsl:if test="/bedework/tab = 'pending'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$initPendingTab}&amp;ignoreCreator=yes&amp;calPath={$submissionsRoot}">Pending Events</a>
+          <a href="{$initPendingTab}&amp;ignoreCreator=yes&amp;calPath={$submissionsRootEncoded}">Pending Events</a>
         </li>
         <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
           <li>
@@ -2165,7 +2166,7 @@
     <table border="0" id="submitTable">
       <tr>
         <xsl:choose>
-          <xsl:when test="starts-with(form/calendar/all/select/option[@selected],$submissionsRoot)">
+          <xsl:when test="starts-with(form/calendar/all/select/option[@selected],$submissionsRootUnencoded)">
             <td>
               <input type="submit" name="updateSubmitEvent" value="Update Event"/>
               <input type="submit" name="publishEvent" value="Publish Event"/>

@@ -153,14 +153,6 @@
       // focuses element by id
         document.getElementById(id).focus();
       }
-      function validate(form) {
-        alert ("check");
-        if (form.summary.value == "") {
-          alert("Please enter a summary.");
-          form.summary.focus();
-          return false;
-        }
-      }
       ]]>
       </xsl:comment>
     </script>
@@ -234,6 +226,15 @@
 
   <!--==== HOME ====-->
   <xsl:template name="home">
+    <div class="navButtons navBox">
+      <a href="{$initEvent}">start
+        <img alt="previous"
+          src="{$resourcesRoot}/resources/arrowRight.gif"
+          width="13"
+          height="13"
+          border="0"/>
+      </a>
+    </div>
     <h1>Entering Events</h1>
     <ol id="introduction">
       <li>
@@ -265,14 +266,14 @@
 
   <!--==== ADD EVENT ====-->
   <xsl:template match="formElements" mode="addEvent">
-    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="return validate(); setEventFields(this);">
+    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this);">
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>
 
   <!--==== EDIT EVENT ====-->
   <xsl:template match="formElements" mode="editEvent">
-    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="return validate(); setEventFields(this);">
+    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this);">
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>
@@ -286,6 +287,10 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <input type="hidden" name="endType" value="date"/>
+    <!-- for now, the comment field will hold the user's suggestions;
+         this should be replaced with a different field to avoid
+         overloading the RFC property.  -->
+    <input type="hidden" name="comment" id="bwEventComment"/>
 
       <!-- event info for edit event -->
       <xsl:if test="/bedework/creating != 'true'">
@@ -374,7 +379,8 @@
     <div id="instructions">
       <div id="bwHelp-Details">
         <div class="navButtons">
-          <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location'); hide('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details');">
+          <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');hide('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details');"
+             onclick="return validateStep1();">
             next
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowRight.gif"
@@ -394,7 +400,8 @@
               height="13"
               border="0"/>
           previous</a> |
-          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');">
+          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');"
+             onclick="return validateStep2();">
             next
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowRight.gif"
@@ -414,7 +421,8 @@
               height="13"
               border="0"/>
           previous</a> |
-          <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories','bwBottomNav-Categories'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');">
+          <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories','bwBottomNav-Categories'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');"
+             onclick="return validateStep3();">
             next
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowRight.gif"
@@ -457,21 +465,28 @@
       <!-- this tab is visible by default -->
       <div id="bwEventTab-Details">
         <table cellspacing="0" class="common">
+          <!-- Calendar -->
+          <!-- ======== -->
+          <!--  the string "user/" should not be hard coded; fix this -->
+          <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
+          <xsl:variable name="writableCalendars">
+            <xsl:value-of select="
+              count(/bedework/myCalendars//calendar[calType = '1' and
+                     currentAccess/current-user-privilege-set/privilege/write-content]) +
+              count(/bedework/mySubscriptions//calendar[calType = '1' and
+                     currentAccess/current-user-privilege-set/privilege/write-content and
+                     (not(contains(path,$userPath)))])"/>
+          </xsl:variable>
           <tr>
+            <xsl:if test="$writableCalendars = 1">
+              <xsl:attribute name="class">invisible</xsl:attribute>
+              <!-- hide this row altogether if there is only one calendar; if you want the calendar
+                   path displayed, comment out this xsl:if. -->
+            </xsl:if>
             <td class="fieldname">
               Calendar:
             </td>
             <td class="fieldval">
-              <!--  the string "user/" should not be hard coded; fix this -->
-              <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
-              <xsl:variable name="writableCalendars">
-                <xsl:value-of select="
-                  count(/bedework/myCalendars//calendar[calType = '1' and
-                         currentAccess/current-user-privilege-set/privilege/write-content]) +
-                  count(/bedework/mySubscriptions//calendar[calType = '1' and
-                         currentAccess/current-user-privilege-set/privilege/write-content and
-                         (not(contains(path,$userPath)))])"/>
-              </xsl:variable>
               <xsl:choose>
                 <xsl:when test="$writableCalendars = 1">
                   <!-- there is only 1 writable calendar, so find it by looking down both trees at once -->
@@ -519,11 +534,13 @@
             </td>
           </tr>
           <!--  Summary (title) of event  -->
+          <!--  ========================= -->
           <tr>
             <td class="fieldname">
               Title:
             </td>
             <td class="fieldval">
+              <div id="bwEventTitleNotice" class="invisible">You must include a title.</div> <!-- a holder for validation notes -->
               <xsl:variable name="title" select="form/title/input/@value"/>
               <input type="text" name="summary" size="80" value="{$title}" id="bwEventTitle"/>
             </td>
@@ -836,16 +853,17 @@
           <tr>
             <td class="fieldname">Description:</td>
             <td class="fieldval">
+              <div id="bwEventDescNotice" class="invisible">You must include a description.</div> <!-- a holder for validation notes -->
               <xsl:choose>
                 <xsl:when test="normalize-space(form/desc/textarea) = ''">
-                  <textarea name="description" cols="60" rows="4">
+                  <textarea name="description" cols="60" rows="4" id="bwEventDesc">
                     <xsl:text> </xsl:text>
                   </textarea>
                   <!-- keep this space to avoid browser
                   rendering errors when the text area is empty -->
                 </xsl:when>
                 <xsl:otherwise>
-                  <textarea name="description" cols="60" rows="4">
+                  <textarea name="description" cols="60" rows="4" id="bwEventDescription">
                     <xsl:value-of select="form/desc/textarea"/>
                   </textarea>
                 </xsl:otherwise>
@@ -887,9 +905,10 @@
       <!-- Location tab -->
       <!-- ============== -->
       <div id="bwEventTab-Location" class="invisible">
+        <div id="bwLocationUidNotice" class="invisible">You must either select a location or suggest one below.</div>
         <div class="mainForm">
           <span id="eventFormLocationList">
-            <select name="locationUid" class="bigSelect">
+            <select name="locationUid" class="bigSelect" id="bwLocationUid">
               <option value="">select an existing location...</option>
               <xsl:copy-of select="form/location/locationmenu/select/*"/>
             </select>
@@ -901,7 +920,7 @@
         <div class="subForm">
           <p>
             <label for="commentLocationAddress">Address: </label>
-            <input type="text" name="commentLocationAddress"/>
+            <input type="text" name="commentLocationAddress" id="bwCommentLocationAddress"/>
           </p>
           <p>
             <label for="commentLocationSubaddress"><em>Sub-address:</em> </label><input type="text" name="commentLocationSubaddress"/>
@@ -917,8 +936,9 @@
       <!-- Contact tab -->
       <!-- ============== -->
       <div id="bwEventTab-Contact" class="invisible">
+        <div id="bwContactUidNotice" class="invisible">You must either select a contact or suggest one below.</div>
         <div class="mainForm">
-          <select name="allContactId" id="eventFormPrefContactList" class="bigSelect">
+          <select name="contactUid" id="bwContactUid" class="bigSelect">
             <option value="">
               select an existing contact...
             </option>
@@ -931,7 +951,7 @@
         <div class="subForm">
           <p>
             <label for="commentContactName">Organization Name: </label>
-            <input type="text" name="commentContactName" size="40"/>
+            <input type="text" name="commentContactName" id="bwCommentContactName" size="40"/>
             <span class="note"> Please limit contacts to organizations, not individuals.</span>
           </p>
           <p>
