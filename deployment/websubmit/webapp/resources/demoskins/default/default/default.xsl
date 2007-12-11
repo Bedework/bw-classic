@@ -286,11 +286,9 @@
     <xsl:variable name="calPath" select="form/calendar/path"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
-    <input type="hidden" name="endType" value="date"/>
-    <!-- for now, the comment field will hold the user's suggestions;
-         this should be replaced with a different field to avoid
-         overloading the RFC property.  -->
-    <input type="hidden" name="comment" id="bwEventComment" value="test"/>
+    <!-- DEPRECATED: <input type="hidden" name="endType" value="date"/> -->
+    <!-- comment field to hold the user's suggestions:  -->
+    <input type="hidden" name="xbwsubmitcomment" id="bwEventComment" value=""/>
 
       <!-- event info for edit event -->
       <xsl:if test="/bedework/creating != 'true'">

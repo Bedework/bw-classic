@@ -293,7 +293,7 @@ function setComment(formObj) {
     comment += "<category>" + formObj["commentCategories"].value + "</category>";
   }
 
-  formObj["comment"].value = comment;
+  formObj["xbwsubmitcomment"].value = comment;
 }
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
