@@ -308,6 +308,27 @@ ul.adminMenu a:hover {
   color: #483D8B;
   background-color: #ff3;
 }
+#bwSubmittedEventCommentBlock {
+  font-size: 0.9em;
+  padding: 1em;
+  border: 1px solid #ccc;
+  background-color: #ffe;
+  color: black;
+}
+#bwSubmittedEventCommentBlock h4 {
+  display: inline;
+  font-size: 1.1em;
+}
+#bwSubmittedEventCommentBlock table {
+  margin: 1em 0 0 0;
+}
+#bwSubmittedEventCommentBlock td {
+  padding-left: 2em;
+}
+#bwSubmittedEventCommentBlock a.toggle {
+  padding-left: 1em;
+  font-size: 0.9em;
+}
 #commonListTable {
   margin-bottom: 2em;
 }

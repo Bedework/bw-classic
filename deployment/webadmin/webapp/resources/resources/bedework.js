@@ -6,6 +6,13 @@ function changeClass(id, newClass) {
   identity = document.getElementById(id);
   identity.className=newClass;
 }
+function toggleVisibility(id) {
+  if (document.getElementById(id).className == 'invisible') {
+    changeClass(id,'visible');
+  } else {
+    changeClass(id,'invisible');
+  }
+}
 // show hide items using a checkbox
 function swapVisible(obj,id) {
   if (obj.checked) {

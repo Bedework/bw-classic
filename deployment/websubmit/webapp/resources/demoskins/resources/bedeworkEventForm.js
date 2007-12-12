@@ -261,37 +261,17 @@ function setDates(formObj) {
 }
 function setComment(formObj) {
   // set the submission comments (location, contact, and category suggestions)
-  // in xml format for easier post processing.
-  // add and remove values as the application grows.
+  // in a parsable format that can be filtered on output.
 
-  var comment = "<location>";
-  if (formObj["commentLocationAddress"].value != "") {
-    comment += "<address>" + formObj["commentLocationAddress"].value + "</address>";
-  }
-  if (formObj["commentLocationSubaddress"].value != "") {
-    comment += "<subaddress>" + formObj["commentLocationSubaddress"].value + "</subaddress>";
-  }
-  if (formObj["commentLocationURL"].value != "") {
-    comment += "<url>" + formObj["commentLocationURL"].value + "</url>";
-  }
-  comment += "</location>";
-  comment += "<contact>";
-  if (formObj["commentContactName"].value != "") {
-    comment += "<name>" + formObj["commentContactName"].value + "</name>";
-  }
-  if (formObj["commentContactPhone"].value != "") {
-    comment += "<phone>" + formObj["commentContactPhone"].value + "</phone>";
-  }
-  if (formObj["commentContactURL"].value != "") {
-    comment += "<url>" + formObj["commentContactURL"].value + "</url>";
-  }
-  if (formObj["commentContactEmail"].value != "") {
-    comment += "<email>" + formObj["commentContactEmail"].value + "</email>";
-  }
-  comment += "</contact>";
-  if (formObj["commentCategories"].value != "") {
-    comment += "<category>" + formObj["commentCategories"].value + "</category>";
-  }
+  var comment = "";
+  comment += formObj["commentLocationAddress"].value + "\t";
+  comment += formObj["commentLocationSubaddress"].value + "\t";
+  comment += formObj["commentLocationURL"].value + "\t";
+  comment += formObj["commentContactName"].value + "\t";
+  comment += formObj["commentContactPhone"].value + "\t";
+  comment += formObj["commentContactURL"].value + "\t";
+  comment += formObj["commentContactEmail"].value + "\t";
+  comment += formObj["commentCategories"].value;
 
   formObj["xbwsubmitcomment"].value = comment;
 }

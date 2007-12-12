@@ -940,6 +940,24 @@
 
     <h2>Event Information</h2>
 
+    <!-- if a submitted event has comments, display them -->
+    <xsl:if test="normalize-space(form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value) != ''">
+      <script type="text/javascript">
+        bwSubmitComment = new bwSubmitComment('<xsl:value-of select="form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value"/>','bwSubmittedEventComment');
+      </script>
+
+      <div id="bwSubmittedEventCommentBlock">
+        <h4>Comments from Submitter</h4>
+        <a href="javascript:toggleVisibility('bwSubmittedEventComment');" class="toggle">show/hide</a>
+        <a href="javascript:bwSubmitComment.launch();" class="toggle">pop-up</a>
+        <div id="bwSubmittedEventComment">
+        </div>
+      </div>
+      <script type="text/javascript">
+        bwSubmitComment.display();
+      </script>
+    </xsl:if>
+
     <xsl:variable name="modEventAction" select="form/@action"/>
     <form name="eventForm" method="post" action="{$modEventAction}" onsubmit="setEventFields(this)">
 

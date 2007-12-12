@@ -71,7 +71,7 @@ function BwREXdate(date, time, allDay, floating, utc, tzid) {
                                    rdi + "')\">" + rdateDeleteStr + "</a>";
   }
 
-  this.format= function() {
+  this.format = function() {
     var res = this.date + "\t" + this.time + "\t";
 
     if (this.tzid != null) {
@@ -232,6 +232,58 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
     }
 
     return res;
+  }
+}
+// ========================================================================
+// Submitted event comments
+// ========================================================================
+
+/* An comment accompanying a submitted event
+/* comment: the x-property string X-BEDEWORK-SUBMIT-COMMENT, tab delimited
+ * id: id of the div to be written to for display
+ */
+function bwSubmitComment(comment,displayId) {
+  var commentVals = comment.split('\t');
+  this.locationAddress = commentVals[0];
+  this.locationSubaddress = commentVals[1];
+  this.locationUrl = commentVals[2];
+  this.contactName = commentVals[3];
+  this.contactPhone = commentVals[4];
+  this.contactUrl = commentVals[5];
+  this.contactEmail = commentVals[6];
+  this.category = commentVals[7];
+  this.notes = commentVals[8];
+
+  this.render = function() {
+    var output = "";
+    output += '<table>';
+    output += '<tr><th colspan="2">Suggested Location:</th><th colspan="2">Suggested Contact:</th></tr>';
+    output += '<tr><td>Address:</td><td>' + this.locationAddress + '</td><td>Name:</td><td>' + this.contactName + '</td></tr>';
+    output += '<tr><td>Subaddress:</td><td>' + this.locationSubddress + '</td><td>Phone:</td><td>' + this.contactPhone + '</td></tr>';
+    output += '<tr><td>URL:</td><td>' + this.locationUrl + '</td><td>URL:</td><td>' + this.contactUrl + '</td></tr>';
+    output += '<tr><td colspan="2"></td><td>Email:</td><td>' + this.contactEmail + '</td></tr>';
+    output += '<tr><th colspan="4">Notes:</th></tr>';
+    output += '<tr><td colspan="4">' + this.notes + '</td></tr>';
+    output += '</table>';
+
+    return output;
+  }
+
+  this.display = function() {
+    var showComment = document.getElementById(displayId);
+    showComment.innerHTML = this.render();
+  }
+
+  // launch comment in a pop-up window
+  this.launch = function() {
+    var commentWindow = window.open("", "commentWindow", "width=800,height=400,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
+    commentWindow.document.open();
+    commentWindow.document.writeln("<html><head><title>Submitted Event Comments</title>");
+    commentWindow.document.writeln('<style type="text/css">body{background-color: #ffe; color: black; padding: 1em; font-size: 0.9em; font-family: Arial,sans-serif;}th{text-align: left;}td{padding-left: 2em;}</style></head>');
+    commentWindow.document.writeln("<body><h2>Comments from Submitter</h2>");
+    commentWindow.document.writeln(this.render());
+    commentWindow.document.writeln("</body></html>");
+    commentWindow.document.close();
   }
 }
 
