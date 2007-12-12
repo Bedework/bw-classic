@@ -943,7 +943,7 @@
     <!-- if a submitted event has comments, display them -->
     <xsl:if test="normalize-space(form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value) != ''">
       <script type="text/javascript">
-        bwSubmitComment = new bwSubmitComment('<xsl:value-of select="form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value"/>','bwSubmittedEventComment');
+        bwSubmitComment = new bwSubmitComment('<xsl:value-of select="form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value"/>');
       </script>
 
       <div id="bwSubmittedEventCommentBlock">
@@ -954,7 +954,7 @@
         </div>
       </div>
       <script type="text/javascript">
-        bwSubmitComment.display();
+        bwSubmitComment.display('bwSubmittedEventComment');
       </script>
     </xsl:if>
 

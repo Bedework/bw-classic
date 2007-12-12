@@ -240,9 +240,8 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
 
 /* An comment accompanying a submitted event
 /* comment: the x-property string X-BEDEWORK-SUBMIT-COMMENT, tab delimited
- * id: id of the div to be written to for display
  */
-function bwSubmitComment(comment,displayId) {
+function bwSubmitComment(comment) {
   var commentVals = comment.split('\t');
   this.locationAddress = commentVals[0];
   this.locationSubaddress = commentVals[1];
@@ -269,7 +268,7 @@ function bwSubmitComment(comment,displayId) {
     return output;
   }
 
-  this.display = function() {
+  this.display = function(displayId) {
     var showComment = document.getElementById(displayId);
     showComment.innerHTML = this.render();
   }
