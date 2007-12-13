@@ -2190,6 +2190,9 @@
               <input type="submit" name="publishEvent" value="Publish Event"/>
               <input type="submit" name="cancelled" value="Cancel"/>
             </td>
+            <td align="right">
+              <input type="submit" name="delete" value="Delete Event"/>
+            </td>
           </xsl:when>
           <xsl:otherwise>
             <xsl:choose>
