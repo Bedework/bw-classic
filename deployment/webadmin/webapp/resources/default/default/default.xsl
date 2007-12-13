@@ -523,7 +523,7 @@
           <xsl:if test="/bedework/tab = 'pending'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$initPendingTab}&amp;ignoreCreator=yes&amp;calPath={$submissionsRootEncoded}">Pending Events</a>
+          <a href="{$initPendingTab}&amp;ignoreCreator=yes&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true">Pending Events</a>
         </li>
         <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
           <li>
