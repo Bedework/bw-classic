@@ -523,7 +523,7 @@
           <xsl:if test="/bedework/tab = 'pending'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$initPendingTab}&amp;ignoreCreator=yes&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true">Pending Events</a>
+          <a href="{$initPendingTab}&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true">Pending Events</a>
         </li>
         <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
           <li>
@@ -2188,7 +2188,7 @@
             <td>
               <input type="submit" name="updateSubmitEvent" value="Update Event"/>
               <input type="submit" name="publishEvent" value="Publish Event"/>
-              <input type="submit" name="cancelled" value="Cancel"/>
+              <input type="submit" name="cancel" value="Cancel"/>
             </td>
             <td align="right">
               <input type="submit" name="delete" value="Delete Event"/>

@@ -271,9 +271,37 @@ function setComment(formObj) {
   comment += formObj["commentContactPhone"].value + "\t";
   comment += formObj["commentContactURL"].value + "\t";
   comment += formObj["commentContactEmail"].value + "\t";
-  comment += formObj["commentCategories"].value;
+  comment += formObj["commentCategories"].value + "\t";
+  comment += formObj["commentNotes"].value;
 
   formObj["xbwsubmitcomment"].value = comment;
+}
+// create table of form fields for review
+function displayReview(formId,tableId,numHeaderRows) {
+  try {
+    // get the form
+    var formObj = document.getElementById(formId);
+
+    // get the table body
+    var reviewTableBody = document.getElementById(tableId).tBodies[0];
+
+    // remove existing rows
+    for (i = reviewTableBody.rows.length - 1; i >= numHeaderRows; i--) {
+      reviewTableBody.deleteRow(i);
+    }
+
+    // recreate the table rows
+    var tr = reviewTableBody.insertRow(0 + numHeaderRows);
+    tr.insertCell(0).innerHTML = "Title";
+    tr.insertCell(1).appendChild(document.createTextNode(formObj.summary.value));
+
+    tr = reviewTableBody.insertRow(1 + numHeaderRows);
+    tr.insertCell(0).innerHTML = "Description";
+    tr.insertCell(1).appendChild(document.createTextNode(formObj.description.value));
+
+  } catch (e) {
+    alert(e);
+  }
 }
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");

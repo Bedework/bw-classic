@@ -286,7 +286,6 @@
     <xsl:variable name="calPath" select="form/calendar/path"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
-    <!-- DEPRECATED: <input type="hidden" name="endType" value="date"/> -->
     <!-- comment field to hold the user's suggestions:  -->
     <input type="hidden" name="xbwsubmitcomment" id="bwEventComment" value=""/>
 
@@ -439,8 +438,29 @@
               width="13"
               height="13"
               border="0"/>
+          previous</a> |
+          <a href="javascript:show('bwHelp-Review','bwEventTab-Review','bwBottomNav-Review'); hide('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories'); ">
+            next
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowRight.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          </a>
+        </div>
+        <strong>Step 4:</strong> Select Categories. <em>Optional.</em>
+      </div>
+      <div id="bwHelp-Review" class="invisible">
+        <div class="navButtons">
+          <a href="javascript:show('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories'); hide('bwHelp-Review','bwEventTab-Review','bwBottomNav-Review'); ">
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowLeft.gif"
+              width="13"
+              height="13"
+              border="0"/>
           previous</a>
           <span class="hidden">
+            <!-- this is here just to take up the appropriate space  -->
             <xsl:text> </xsl:text>| next
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowRight.gif"
@@ -448,12 +468,8 @@
               height="13"
               border="0"/>
           </span>
-          <div class="eventSubmitButtons">
-            <input name="submit" class="submit" type="submit" value="submit for approval"/>
-            <input name="cancelled" type="submit" value="cancel"/>
-          </div>
         </div>
-        <strong>Step 4:</strong> Select Categories. <em>Optional.</em>
+        <strong>Step 5:</strong> Add Comments. <em>Optional.</em>
       </div>
     </div>
 
@@ -846,7 +862,6 @@
             </td>
           </tr>
 
-
           <!--  Description  -->
           <tr>
             <td class="fieldname">Description:</td>
@@ -1010,6 +1025,25 @@
           </p>
         </div>
       </div>
+
+      <!--   Review tab   -->
+      <!-- ============== -->
+      <div id="bwEventTab-Review" class="invisible">
+        <!--  <table id="bwEventSubmitReview" class="common">
+          <tr>
+            <th colspan="2">Event Details</th>
+          </tr>-->
+          <!-- the form elements will be inserted here -->
+        <!-- </table>-->
+        <div id="bwCommentNotes">
+          Please supply any final notes or instructions regarding your event:<br/>
+          <textarea name="commentNotes" cols="60" rows="4">&#160;</textarea>
+        </div>
+        <div class="eventSubmitButtons">
+          <input name="submit" class="submit" type="submit" value="submit for approval"/>
+          <input name="cancelled" type="submit" value="cancel"/>
+        </div>
+      </div>
     </div>
 
     <div id="bwBottomNav">
@@ -1071,6 +1105,26 @@
               width="13"
               height="13"
               border="0"/>
+          previous</a> |
+          <a href="javascript:show('bwHelp-Review','bwEventTab-Review','bwBottomNav-Review'); hide('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories');">
+            <!-- displayReview('standardForm','bwEventSubmitReview',1) -->
+            next
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowRight.gif"
+              width="13"
+              height="13"
+              border="0"/>
+          </a>
+        </div>
+      </div>
+      <div id="bwBottomNav-Review" class="invisible">
+        <div class="navButtons">
+          <a href="javascript:show('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories'); hide('bwHelp-Review','bwEventTab-Review','bwBottomNav-Review'); ">
+            <img alt="previous"
+              src="{$resourcesRoot}/resources/arrowLeft.gif"
+              width="13"
+              height="13"
+              border="0"/>
           previous</a>
           <span class="hidden">
             <xsl:text> </xsl:text>| next
@@ -1080,10 +1134,6 @@
               height="13"
               border="0"/>
           </span>
-          <div class="eventSubmitButtons">
-            <input name="submit" class="submit" type="submit" value="submit for approval"/>
-            <input name="cancelled" type="submit" value="cancel"/>
-          </div>
         </div>
       </div>
     </div>

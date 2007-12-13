@@ -283,6 +283,7 @@ function bwSubmitComment(comment) {
     commentWindow.document.writeln(this.render());
     commentWindow.document.writeln("</body></html>");
     commentWindow.document.close();
+    commentWindow.focus();
   }
 }
 
