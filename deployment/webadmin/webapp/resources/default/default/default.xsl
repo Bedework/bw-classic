@@ -979,7 +979,8 @@
           <td>
             <xsl:if test="form/calendar/preferred/select/option">
               <select name="prefCalendarId">
-                <option value="">
+                <option>
+                  <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
                   Select preferred:
                 </option>
                 <xsl:for-each select="form/calendar/preferred/select/option">
@@ -994,7 +995,8 @@
               or Calendar (all):
             </xsl:if>
             <select name="calendarId">
-              <option value="">
+              <option>
+                <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
                 Select:
               </option>
               <xsl:for-each select="form/calendar/all/select/option">
@@ -2184,7 +2186,7 @@
     <table border="0" id="submitTable">
       <tr>
         <xsl:choose>
-          <xsl:when test="starts-with(form/calendar/all/select/option[@selected],$submissionsRootUnencoded)">
+          <xsl:when test="starts-with(form/calendar/path,$submissionsRootUnencoded)">
             <td>
               <input type="submit" name="updateSubmitEvent" value="Update Event"/>
               <input type="submit" name="publishEvent" value="Publish Event"/>

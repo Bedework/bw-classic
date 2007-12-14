@@ -320,10 +320,20 @@ ul.adminMenu a:hover {
   font-size: 1.1em;
 }
 #bwSubmittedEventCommentBlock table {
-  margin: 1em 0 0 0;
+  float: left;
+  margin: 1em 1em 0 0;
+  padding: 0.5em;
+  border: 1px solid #ccc;
 }
 #bwSubmittedEventCommentBlock td {
-  padding-left: 2em;
+  padding: 0 3em 0 1em;
+}
+#bwSubmittedEventCommentBlock th {
+  padding: 0 3em 0 0;
+}
+#bwSubmittedEventCommentBlock p {
+  padding-top: 1em;
+  clear: both;
 }
 #bwSubmittedEventCommentBlock a.toggle {
   padding-left: 1em;

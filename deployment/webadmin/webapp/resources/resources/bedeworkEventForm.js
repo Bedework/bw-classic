@@ -238,32 +238,38 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
 // Submitted event comments
 // ========================================================================
 
-/* An comment accompanying a submitted event
+/* A comment accompanying a submitted event.
 /* comment: the x-property string X-BEDEWORK-SUBMIT-COMMENT, tab delimited
  */
 function bwSubmitComment(comment) {
-  var commentVals = comment.split('\t');
-  this.locationAddress = commentVals[0];
-  this.locationSubaddress = commentVals[1];
-  this.locationUrl = commentVals[2];
-  this.contactName = commentVals[3];
-  this.contactPhone = commentVals[4];
-  this.contactUrl = commentVals[5];
-  this.contactEmail = commentVals[6];
-  this.category = commentVals[7];
-  this.notes = commentVals[8];
+  var commentVals = comment.split("\t");
+  this.locationAddress = (commentVals[0] == undefined) ? "" : commentVals[0];
+  this.locationSubaddress = (commentVals[1] == undefined) ? "" : commentVals[1];
+  this.locationUrl = (commentVals[2] == undefined) ? "" : commentVals[2];
+  this.contactName = (commentVals[3] == undefined) ? "" : commentVals[3];
+  this.contactPhone = (commentVals[4] == undefined) ? "" : commentVals[4];
+  this.contactUrl = (commentVals[5] == undefined) ? "" : commentVals[5];
+  this.contactEmail = (commentVals[6] == undefined) ? "" : commentVals[6];
+  this.category = (commentVals[7] == undefined) ? "" : commentVals[7];
+  this.notes = (commentVals[8] == undefined) ? "" : commentVals[8];
 
   this.render = function() {
     var output = "";
     output += '<table>';
-    output += '<tr><th colspan="2">Suggested Location:</th><th colspan="2">Suggested Contact:</th></tr>';
-    output += '<tr><td>Address:</td><td>' + this.locationAddress + '</td><td>Name:</td><td>' + this.contactName + '</td></tr>';
-    output += '<tr><td>Subaddress:</td><td>' + this.locationSubddress + '</td><td>Phone:</td><td>' + this.contactPhone + '</td></tr>';
-    output += '<tr><td>URL:</td><td>' + this.locationUrl + '</td><td>URL:</td><td>' + this.contactUrl + '</td></tr>';
-    output += '<tr><td colspan="2"></td><td>Email:</td><td>' + this.contactEmail + '</td></tr>';
-    output += '<tr><th colspan="4">Notes:</th></tr>';
-    output += '<tr><td colspan="4">' + this.notes + '</td></tr>';
+    output += '<tr><th colspan="2">Suggested Location:</th></tr>';
+    output += '<tr><td>Address:</td><td>' + this.locationAddress + '</td>';
+    output += '<tr><td>Subaddress:</td><td>' + this.locationSubaddress + '</td>';
+    output += '<tr><td>URL:</td><td>' + this.locationUrl + '</td>';
     output += '</table>';
+    output += '<table>';
+    output += '<tr><th colspan="2">Suggested Contact:</th></tr>';
+    output += '<tr><td>Name:</td><td>' + this.contactName + '</td></tr>';
+    output += '<tr><td>Phone:</td><td>' + this.contactPhone + '</td></tr>';
+    output += '<tr><td>URL:</td><td>' + this.contactUrl + '</td></tr>';
+    output += '<tr><td>Email:</td><td>' + this.contactEmail + '</td></tr>';
+    output += '</table>';
+    output += '<p><strong>Notes:</strong><br/>';
+    output += this.notes + '</p>';
 
     return output;
   }
@@ -278,8 +284,14 @@ function bwSubmitComment(comment) {
     var commentWindow = window.open("", "commentWindow", "width=800,height=400,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
     commentWindow.document.open();
     commentWindow.document.writeln("<html><head><title>Submitted Event Comments</title>");
-    commentWindow.document.writeln('<style type="text/css">body{background-color: #ffe; color: black; padding: 1em; font-size: 0.9em; font-family: Arial,sans-serif;}th{text-align: left;}td{padding-left: 2em;}</style></head>');
-    commentWindow.document.writeln("<body><h2>Comments from Submitter</h2>");
+    commentWindow.document.writeln('<style type="text/css">');
+    commentWindow.document.writeln('body{background-color: #ffe; color: black; padding: 1em; font-size: 0.9em; font-family: Arial,sans-serif;}');
+    commentWindow.document.writeln('table{float: left; margin: 1em 1em 0 0; padding: 0.5em; border: 1px solid #ccc; font-size: 0.9em;}');
+    commentWindow.document.writeln('th{text-align: left;}');
+    commentWindow.document.writeln('td{padding-left: 2em;}');
+    commentWindow.document.writeln('p{clear:both; padding-top: 1em;}');
+    commentWindow.document.writeln('</style></head>');
+    commentWindow.document.writeln("<body><h3>Comments from Submitter</h3>");
     commentWindow.document.writeln(this.render());
     commentWindow.document.writeln("</body></html>");
     commentWindow.document.close();
