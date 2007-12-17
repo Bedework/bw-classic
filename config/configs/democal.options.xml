@@ -94,7 +94,6 @@
         <httpConnectionsPerHost>50</httpConnectionsPerHost>
         <httpConnections>200</httpConnections>
 
-
         <!-- size limits -->
         <maxPublicDescriptionLength>500</maxPublicDescriptionLength>
         <maxUserDescriptionLength>5000</maxUserDescriptionLength>
