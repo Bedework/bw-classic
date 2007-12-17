@@ -66,9 +66,15 @@
        here. Every url includes a query string (either ?b=de or a real query
        string) so that all links constructed in this stylesheet may begin the
        query string with an ampersand. -->
+
+  <xsl:variable name="submissionsRootEncoded" select="/bedework/submissionsRoot/encoded"/>
+  <xsl:variable name="submissionsRootUnencoded" select="/bedework/submissionsRoot/unencoded"/>
+
   <!-- main -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/event/initEvent"/>
+  <xsl:variable name="initPendingEvents" select="/bedework/urlPrefixes/event/initPendingEvents"/>
+  <xsl:variable name="event-fetchForUpdate" select="/bedework/urlPrefixes/event/fetchForUpdate/a/@href"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/event/addEvent"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/event/editEvent"/>
   <xsl:variable name="gotoEditEvent" select="/bedework/urlPrefixes/event/gotoEditEvent"/>
@@ -107,6 +113,9 @@
             <xsl:choose>
               <xsl:when test="/bedework/page='addEvent'">
                 <xsl:apply-templates select="/bedework/formElements" mode="addEvent"/>
+              </xsl:when>
+              <xsl:when test="/bedework/page='eventList'">
+                <xsl:call-template name="eventList"/>
               </xsl:when>
               <xsl:when test="/bedework/page='editEvent'">
                 <xsl:apply-templates select="/bedework/formElements" mode="editEvent"/>
@@ -208,7 +217,7 @@
         <xsl:when test="/bedework/page='home'">
           <li class="selected">Overview</li>
           <li><a href="{$initEvent}">Add Event</a></li>
-          <li><a href="">My Pending Events</a></li>
+          <li><a href="{$initPendingEvents}&amp;calPath={$submissionsRootEncoded}">My Pending Events</a></li>
         </xsl:when>
         <xsl:when test="/bedework/page='eventList'">
           <li><a href="{$setup}">Overview</a></li>
@@ -218,7 +227,7 @@
         <xsl:otherwise>
           <li><a href="{$setup}">Overview</a></li>
           <li class="selected">Add Event</li>
-          <li><a href="">My Pending Events</a></li>
+          <li><a href="{$initPendingEvents}&amp;calPath={$submissionsRootEncoded}">My Pending Events</a></li>
         </xsl:otherwise>
       </xsl:choose>
     </ul>
@@ -1309,6 +1318,71 @@
         <area shape="poly" alt="Midnight, 0000 hour" title="Midnight, 0000 hour" coords="172,96, 169,74, 161,73, 161,65, 168,63, 158,-1, 209,-1, 201,61, 200,62, 206,64, 205,74, 198,75, 196,96, 183,95" href="javascript:bwClockUpdateDateTimeForm('hour','0',{$hour24})" />
       </map>
     </div>
+  </xsl:template>
+
+  <!--++++++++++++++++++ Events ++++++++++++++++++++-->
+  <xsl:template name="eventList">
+    <h2>Pending Events</h2>
+    <xsl:call-template name="eventListCommon"/>
+  </xsl:template>
+
+  <xsl:template name="eventListCommon">
+    <table id="commonListTable">
+      <tr>
+        <th>Title</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Calendar</th>
+        <th>Description</th>
+      </tr>
+
+      <xsl:for-each select="/bedework/events/event">
+        <xsl:variable name="subscriptionId" select="subscription/id"/>
+        <xsl:variable name="calPath" select="calendar/encodedPath"/>
+        <xsl:variable name="guid" select="guid"/>
+        <xsl:variable name="recurrenceId" select="recurrenceId"/>
+        <tr>
+          <td>
+            <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+              <xsl:choose>
+                <xsl:when test="summary != ''">
+                  <xsl:value-of select="summary"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <em>no title</em>
+                </xsl:otherwise>
+              </xsl:choose>
+            </a>
+          </td>
+          <td class="date">
+            <xsl:value-of select="start/longdate"/>,
+            <xsl:value-of select="start/time"/>
+          </td>
+          <td class="date">
+            <xsl:value-of select="end/longdate"/>,
+            <xsl:value-of select="end/time"/>
+          </td>
+          <td>
+            <xsl:value-of select="calendar/name"/>
+          </td>
+          <td>
+            <xsl:value-of select="description"/>
+            <xsl:if test="recurring = 'true' or recurrenceId != ''">
+              <div class="recurrenceEditLinks">
+                Recurring event.
+                Edit:
+                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+                  master
+                </a> |
+                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                  instance
+                </a>
+              </div>
+            </xsl:if>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
   </xsl:template>
 
   <!--==== UPLOAD ====-->

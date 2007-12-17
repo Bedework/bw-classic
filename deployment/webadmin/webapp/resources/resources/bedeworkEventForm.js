@@ -255,21 +255,27 @@ function bwSubmitComment(comment) {
 
   this.render = function() {
     var output = "";
-    output += '<table>';
-    output += '<tr><th colspan="2">Suggested Location:</th></tr>';
-    output += '<tr><td>Address:</td><td>' + this.locationAddress + '</td>';
-    output += '<tr><td>Subaddress:</td><td>' + this.locationSubaddress + '</td>';
-    output += '<tr><td>URL:</td><td>' + this.locationUrl + '</td>';
-    output += '</table>';
-    output += '<table>';
-    output += '<tr><th colspan="2">Suggested Contact:</th></tr>';
-    output += '<tr><td>Name:</td><td>' + this.contactName + '</td></tr>';
-    output += '<tr><td>Phone:</td><td>' + this.contactPhone + '</td></tr>';
-    output += '<tr><td>URL:</td><td>' + this.contactUrl + '</td></tr>';
-    output += '<tr><td>Email:</td><td>' + this.contactEmail + '</td></tr>';
-    output += '</table>';
-    output += '<p><strong>Notes:</strong><br/>';
-    output += this.notes + '</p>';
+    if (this.locationAddress != "" || this.locationSubaddress != "" || this.locationUrl != "") {
+      output += '<table>';
+      output += '<tr><th colspan="2">Suggested Location:</th></tr>';
+      output += '<tr><td>Address:</td><td>' + this.locationAddress + '</td>';
+      output += '<tr><td>Subaddress:</td><td>' + this.locationSubaddress + '</td>';
+      output += '<tr><td>URL:</td><td>' + this.locationUrl + '</td>';
+      output += '</table>';
+    }
+    if (this.contactName != "" || this.contactPhone != "" || this.contactEmail != "" || this.contactUrl != "") {
+      output += '<table>';
+      output += '<tr><th colspan="2">Suggested Contact:</th></tr>';
+      output += '<tr><td>Name:</td><td>' + this.contactName + '</td></tr>';
+      output += '<tr><td>Phone:</td><td>' + this.contactPhone + '</td></tr>';
+      output += '<tr><td>URL:</td><td>' + this.contactUrl + '</td></tr>';
+      output += '<tr><td>Email:</td><td>' + this.contactEmail + '</td></tr>';
+      output += '</table>';
+    }
+    if (this.notes != "") {
+      output += '<p><strong>Notes:</strong><br/>';
+      output += this.notes + '</p>';
+    }
 
     return output;
   }
