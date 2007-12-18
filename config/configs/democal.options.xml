@@ -165,7 +165,7 @@
           <submissionRoot>/public/unbrowsable/submissions</submissionRoot>
 
           <!-- Default value for 24 hour mode -->
-          <hour24>false</hour24>
+          <hour24>true</hour24>
 
           <!-- Default value for minute increments -->
           <minIncrement>5</minIncrement>
@@ -278,7 +278,7 @@
         <!-- ==================================================================
                           User CalDAV server UserCalDAV
              ================================================================== -->
-        <UserCalDAV classname="org.bedework.calfacade.configs.CalDAVConfig">
+        <Usercaldav classname="org.bedework.calfacade.configs.CalDAVConfig">
           <!-- Comment out or delete for no real time server to server service
                Currently under development and may present a security risk in
                production systems -->
@@ -286,12 +286,12 @@
 
           <!-- Comment out or delete for no freebusy url service -->
           <fburlServiceURI>/fbsvc</fburlServiceURI>
-        </UserCalDAV>
+        </Usercaldav>
 
         <!-- ==================================================================
                           Public (unauthenticated) CalDAV server PublicCalDAV
              ================================================================== -->
-        <PublicCalDAV classname="org.bedework.calfacade.configs.CalDAVConfig">
+        <Pubcaldav classname="org.bedework.calfacade.configs.CalDAVConfig">
           <!-- Comment out or delete for no real time server to server service
                Currently under development and may present a security risk in
                production systems -->
@@ -299,7 +299,7 @@
 
           <!-- Comment out or delete for no freebusy url service -->
           <fburlServiceURI>/fbsvc</fburlServiceURI>
-        </PublicCalDAV>
+        </Pubcaldav>
 
         <!-- ==================================================================
                           Dump restore program dumpres

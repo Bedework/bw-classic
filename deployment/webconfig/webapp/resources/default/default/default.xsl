@@ -6,33 +6,33 @@
   <!-- ==================================================================== -->
   <!-- ==================================================================== -->
   <xsl:output method="xhtml" indent="yes" media-type="text/html" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" standalone="yes" omit-xml-declaration="yes"/>
-  <xsl:variable name="appRoot" select="/bedeworkconfig/appRoot"/>
-  <xsl:variable name="urlPrefix" select="/bedeworkconfig/urlPrefix"/>
+  <xsl:variable name="appRoot" select="/bedework/appRoot"/>
+  <xsl:variable name="urlPrefix" select="/bedework/urlPrefix"/>
 
   <xsl:variable name="firstView">welcome</xsl:variable>
-  <xsl:variable name="lastView" select="/bedeworkconfig/propertyGroups/form/propertyGroup[position()=last()]/@name"/>
+  <xsl:variable name="lastView" select="/bedework/propertyGroups/form/propertyGroup[position()=last()]/@name"/>
   <xsl:variable name="currentView">
     <xsl:choose>
-      <xsl:when test="/bedeworkconfig/appvar/key='setView'"><xsl:value-of select="/bedeworkconfig/appvar[key='setView']/value"/></xsl:when>
+      <xsl:when test="/bedework/appvar/key='setView'"><xsl:value-of select="/bedework/appvar[key='setView']/value"/></xsl:when>
       <xsl:otherwise><xsl:value-of select="$firstView"/></xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
   <xsl:variable name="currentViewPos">
     <xsl:choose>
       <xsl:when test="$currentView = $firstView">0</xsl:when>
-      <xsl:otherwise><xsl:for-each select="/bedeworkconfig/propertyGroups/form/propertyGroup[@name=$currentView]"><xsl:number/></xsl:for-each></xsl:otherwise>
+      <xsl:otherwise><xsl:for-each select="/bedework/propertyGroups/form/propertyGroup[@name=$currentView]"><xsl:number/></xsl:for-each></xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
   <xsl:variable name="prevView">
     <xsl:choose>
       <xsl:when test="$currentView = $firstView">$currentView</xsl:when>
-      <xsl:otherwise><xsl:value-of select="/bedeworkconfig/propertyGroups/form/propertyGroup[position()=number($currentViewPos)-1]/@name"/></xsl:otherwise>
+      <xsl:otherwise><xsl:value-of select="/bedework/propertyGroups/form/propertyGroup[position()=number($currentViewPos)-1]/@name"/></xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
   <xsl:variable name="nextView">
     <xsl:choose>
       <xsl:when test="$currentView = $lastView">$currentView</xsl:when>
-      <xsl:otherwise><xsl:value-of select="/bedeworkconfig/propertyGroups/form/propertyGroup[position()=number($currentViewPos)+1]/@name"/></xsl:otherwise>
+      <xsl:otherwise><xsl:value-of select="/bedework/propertyGroups/form/propertyGroup[position()=number($currentViewPos)+1]/@name"/></xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
 
@@ -77,19 +77,19 @@
               BedeFig: Bedework Calendar Properties Config
             </div>
           </div>
-          <xsl:if test="/bedeworkconfig/message">
+          <xsl:if test="/bedework/message">
             <div id="messages">
-              <xsl:apply-templates select="/bedeworkconfig/message"/>
+              <xsl:apply-templates select="/bedework/message"/>
             </div>
           </xsl:if>
-          <xsl:if test="/bedeworkconfig/error">
+          <xsl:if test="/bedework/error">
             <div id="errors">
-              <xsl:apply-templates select="/bedeworkconfig/error"/>
+              <xsl:apply-templates select="/bedework/error"/>
             </div>
           </xsl:if>
           <div id="content">
             <xsl:choose>
-              <xsl:when test="/bedeworkconfig/page='main'">
+              <xsl:when test="/bedework/page='main'">
                 <form action="save.do" method="POST" enctype="multipart/form-data" name="propsForm">
                   <div id="buttonMenuTop">
                     <xsl:choose>
@@ -117,7 +117,7 @@
 
                   <select name="setappvar" onchange="submit()">
                     <option value="setView(welcome)">welcome</option>
-                    <xsl:for-each select="/bedeworkconfig/propertyGroups/form/propertyGroup">
+                    <xsl:for-each select="/bedework/propertyGroups/form/propertyGroup">
                       <xsl:variable name="groupName" select="@name"/>
                       <xsl:choose>
                         <xsl:when test="$currentView = $groupName">
@@ -136,7 +136,7 @@
 
                   advanced:
                   <xsl:choose>
-                    <xsl:when test="/bedeworkconfig/propertyGroups/form/propertyGroup[@name='modules']/property[@name='advanced']/fieldValue='true'">
+                    <xsl:when test="/bedework/propertyGroups/form/propertyGroup[@name='modules']/property[@name='advanced']/fieldValue='true'">
                       <input type="radio" name="modules.advanced" value="true" checked="checked" onclick="submit()"/> yes
                       <input type="radio" name="modules.advanced" value="false" onclick="submit()"/> no
                     </xsl:when>
@@ -174,7 +174,7 @@
                       </div>
                     </xsl:when>
                     <xsl:otherwise>
-                      <xsl:apply-templates select="/bedeworkconfig/propertyGroups/form/propertyGroup[@name=$currentView]"/>
+                      <xsl:apply-templates select="/bedework/propertyGroups/form/propertyGroup[@name=$currentView]"/>
                     </xsl:otherwise>
                   </xsl:choose>
 
@@ -184,7 +184,7 @@
     <!-- ======================================================================= -->
                 </form>
               </xsl:when>
-              <xsl:when test="/bedeworkconfig/page='save'">
+              <xsl:when test="/bedework/page='save'">
                 <form action="save.do" method="POST" enctype="multipart/form-data" name="downloadForm">
                   <input type="hidden" name="contentType" value="text/text"/>
                   <input type="hidden" name="contentName" value="myBedework.properties"/>
@@ -197,7 +197,7 @@
                 </form>
                 <h1>Your Configured Properties File:</h1>
                 <div id="propFile">
-                  <xsl:for-each select="/bedeworkconfig/propertyGroups/propertyGroup">
+                  <xsl:for-each select="/bedework/propertyGroups/propertyGroup">
                     #<br/>
                     # <xsl:value-of select="@name"/><br/>
                     #<br/>
@@ -414,12 +414,12 @@
         highlighted below.</p>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="id"/>
+        <p><xsl:value-of select="id"/>
         <xsl:if test="param"> =
           <xsl:for-each select="param">
             <xsl:value-of select="."/>
           </xsl:for-each>
-        </xsl:if>
+        </xsl:if></p>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
