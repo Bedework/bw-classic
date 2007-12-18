@@ -415,9 +415,9 @@
       </xsl:when>
       <xsl:otherwise>
         <p><xsl:value-of select="id"/>
-        <xsl:if test="param"> =
+        <xsl:if test="param"><xsl:text>: </xsl:text>
           <xsl:for-each select="param">
-            <xsl:value-of select="."/>
+            <xsl:value-of select="."/><xsl:text> </xsl:text>
           </xsl:for-each>
         </xsl:if></p>
       </xsl:otherwise>
