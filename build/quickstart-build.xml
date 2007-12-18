@@ -75,6 +75,8 @@
               location="${basedir}/bedework/build.xml" />
     <property name="org.bedework.user.build.properties"
               location="${user.home}/bedework.build.properties" />
+    <dirname property="org.bedework.configuration.location"
+             file="${org.bedework.user.build.properties}" />
 
     <echo message="Load user properties from ${org.bedework.user.build.properties}" />
 
