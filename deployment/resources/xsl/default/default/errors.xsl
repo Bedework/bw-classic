@@ -243,6 +243,9 @@
       <xsl:when test="id='org.bedework.validation.error.cannot.change.method'">
         Error: you cannot change scheduling method
       </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.insubmissionscalendar'">
+        Error: to publish this event, please select a public calendar
+      </xsl:when>
 
       <!-- Scheduling error codes are defined in CalfacadeException -->
 

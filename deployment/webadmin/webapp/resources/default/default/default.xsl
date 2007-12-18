@@ -86,9 +86,12 @@
   <xsl:variable name="event-initAddEvent" select="/bedework/urlPrefixes/event/initAddEvent/a/@href"/>
   <xsl:variable name="event-initUpdateEvent" select="/bedework/urlPrefixes/event/initUpdateEvent/a/@href"/>
   <xsl:variable name="event-delete" select="/bedework/urlPrefixes/event/delete/a/@href"/>
+  <xsl:variable name="event-deletePending" select="/bedework/urlPrefixes/event/deletePending/a/@href"/>
   <xsl:variable name="event-fetchForDisplay" select="/bedework/urlPrefixes/event/fetchForDisplay/a/@href"/>
   <xsl:variable name="event-fetchForUpdate" select="/bedework/urlPrefixes/event/fetchForUpdate/a/@href"/>
+  <xsl:variable name="event-fetchForUpdatePending" select="/bedework/urlPrefixes/event/fetchForUpdatePending/a/@href"/>
   <xsl:variable name="event-update" select="/bedework/urlPrefixes/event/update/a/@href"/>
+  <xsl:variable name="event-updatePending" select="/bedework/urlPrefixes/event/updatePending/a/@href"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent/a/@href"/>
   <xsl:variable name="event-initUpload" select="/bedework/urlPrefixes/event/initUpload/a/@href"/>
   <xsl:variable name="event-upload" select="/bedework/urlPrefixes/event/upload/a/@href"/>
@@ -212,7 +215,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
-        <xsl:if test="/bedework/page='modEvent'">
+        <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
           <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
@@ -271,10 +274,13 @@
                 <xsl:when test="/bedework/page='eventList'">
                   <xsl:call-template name="eventList"/>
                 </xsl:when>
-                <xsl:when test="/bedework/page='modEvent'">
+                <xsl:when test="/bedework/page='modEvent' or
+                               /bedework/page='modEventPending'">
                   <xsl:apply-templates select="/bedework/formElements" mode="modEvent"/>
                 </xsl:when>
-                <xsl:when test="/bedework/page='displayEvent' or /bedework/page='deleteEventConfirm'">
+                <xsl:when test="/bedework/page='displayEvent' or
+                                /bedework/page='deleteEventConfirm' or
+                                /bedework/page='deleteEventConfirmPending'">
                   <xsl:apply-templates select="/bedework/event" mode="displayEvent"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='contactList'">
@@ -283,7 +289,8 @@
                 <xsl:when test="/bedework/page='modContact'">
                   <xsl:call-template name="modContact"/>
                 </xsl:when>
-                <xsl:when test="/bedework/page='deleteContactConfirm' or /bedework/page='contactReferenced'">
+                <xsl:when test="/bedework/page='deleteContactConfirm' or
+                                /bedework/page='contactReferenced'">
                   <xsl:call-template name="deleteContactConfirm"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='locationList'">
@@ -304,13 +311,19 @@
                 <xsl:when test="/bedework/page='deleteCategoryConfirm'">
                   <xsl:call-template name="deleteCategoryConfirm"/>
                 </xsl:when>
-                <xsl:when test="/bedework/page='calendarList' or /bedework/page='calendarDescriptions' or /bedework/page='displayCalendar' or /bedework/page='modCalendar' or /bedework/page='deleteCalendarConfirm' or /bedework/page='calendarReferenced'">
+                <xsl:when test="/bedework/page='calendarList' or
+                                /bedework/page='calendarDescriptions' or
+                                /bedework/page='displayCalendar' or
+                                /bedework/page='modCalendar' or
+                                /bedework/page='deleteCalendarConfirm' or
+                                /bedework/page='calendarReferenced'">
                   <xsl:apply-templates select="/bedework/calendars" mode="calendarCommon"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='moveCalendar'">
                   <xsl:call-template name="calendarMove"/>
                 </xsl:when>
-                <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
+                <xsl:when test="/bedework/page='subscriptions' or
+                                /bedework/page='modSubscription'">
                   <xsl:apply-templates select="/bedework/subscriptions"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='views'">
@@ -720,7 +733,9 @@
   <xsl:template name="tabPendingEvents">
     <h2>Pending Events</h2>
     <p>The following events were submitted to the calendar:</p>
-    <xsl:call-template name="eventListCommon"/>
+    <xsl:call-template name="eventListCommon">
+      <xsl:with-param name="pending">true</xsl:with-param>
+    </xsl:call-template>
   </xsl:template>
 
   <!--+++++++++++++++ Calendar Suite Tab ++++++++++++++++++++-->
@@ -873,12 +888,20 @@
   </xsl:template>
 
   <xsl:template name="eventListCommon">
+    <xsl:param name="pending">false</xsl:param>
     <table id="commonListTable">
       <tr>
         <th>Title</th>
         <th>Start Date</th>
         <th>End Date</th>
-        <th>Calendar</th>
+        <xsl:choose>
+          <xsl:when test="$pending = 'true'">
+            <th>Categories</th>
+          </xsl:when>
+          <xsl:otherwise>
+            <th>Calendar</th>
+          </xsl:otherwise>
+        </xsl:choose>
         <th>Description</th>
       </tr>
 
@@ -889,27 +912,54 @@
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
         <tr>
           <td>
-            <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-              <xsl:choose>
-                <xsl:when test="summary != ''">
-                  <xsl:value-of select="summary"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <em>no title</em>
-                </xsl:otherwise>
-              </xsl:choose>
-            </a>
+            <xsl:choose>
+              <xsl:when test="$pending = 'true'">
+                <a href="{$event-fetchForUpdatePending}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                  <xsl:choose>
+                    <xsl:when test="summary != ''">
+                      <xsl:value-of select="summary"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <em>no title</em>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </a>
+              </xsl:when>
+              <xsl:otherwise>
+                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                  <xsl:choose>
+                    <xsl:when test="summary != ''">
+                      <xsl:value-of select="summary"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <em>no title</em>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
           <td class="date">
-            <xsl:value-of select="start/longdate"/>,
+            <xsl:value-of select="start/shortdate"/>
+            <xsl:text> </xsl:text>
             <xsl:value-of select="start/time"/>
           </td>
           <td class="date">
-            <xsl:value-of select="end/longdate"/>,
+            <xsl:value-of select="end/shortdate"/>
+            <xsl:text> </xsl:text>
             <xsl:value-of select="end/time"/>
           </td>
-          <td>
-            <xsl:value-of select="calendar/name"/>
+          <td class="calcat">
+            <xsl:choose>
+              <xsl:when test="$pending = 'true'">
+                <xsl:for-each select="categories/category">
+                  <xsl:value-of select="word"/><br/>
+                </xsl:for-each>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="calendar/name"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
           <td>
             <xsl:value-of select="description"/>
@@ -958,8 +1008,15 @@
       </script>
     </xsl:if>
 
-    <xsl:variable name="modEventAction" select="form/@action"/>
-    <form name="eventForm" method="post" action="{$modEventAction}" onsubmit="setEventFields(this)">
+    <form name="eventForm" method="post" onsubmit="setEventFields(this)">
+      <xsl:choose>
+        <xsl:when test="/bedework/page = 'modEventPending'">
+          <xsl:attribute name="action"><xsl:value-of select="$event-updatePending"/></xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="action"><xsl:value-of select="$event-update"/></xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
 
       <xsl:call-template name="submitEventButtons"/>
 
@@ -2403,13 +2460,21 @@
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
 
     <xsl:choose>
-      <xsl:when test="/bedework/page='deleteEventConfirm'">
+      <xsl:when test="/bedework/page='deleteEventConfirm' or /bedework/page='deleteEventConfirmPending'">
         <h2>Ok to delete this event?</h2>
         <p style="width: 400px;">Note: we do not encourage deletion of old but correct events; we prefer to keep
            old events for historical reasons.  Please remove only those events
            that are truly erroneous.</p>
         <p id="confirmButtons">
-          <form action="{$event-delete}" method="post">
+          <form method="post">
+            <xsl:choose>
+              <xsl:when test="/bedework/page = 'deleteEventConfirmPending'">
+                <xsl:attribute name="action"><xsl:value-of select="$event-deletePending"/></xsl:attribute>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="action"><xsl:value-of select="$event-delete"/></xsl:attribute>
+              </xsl:otherwise>
+            </xsl:choose>
             <input type="submit" name="cancelled" value="Cancel"/>
             <input type="submit" name="delete" value="Delete"/>
             <input type="hidden" name="calPath" value="{$calPath}"/>

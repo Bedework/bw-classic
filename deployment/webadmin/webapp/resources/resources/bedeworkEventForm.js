@@ -272,10 +272,18 @@ function bwSubmitComment(comment) {
       output += '<tr><td>Email:</td><td>' + this.contactEmail + '</td></tr>';
       output += '</table>';
     }
-    if (this.notes != "") {
-      output += '<p><strong>Notes:</strong><br/>';
-      output += this.notes + '</p>';
+    if (this.category != "") {
+      output += '<table>';
+      output += '<tr><th colspan="2">Suggested Category:</th></tr>';
+      output += '<tr><td>Category:</td><td>' + this.category + '</td></tr>';
+      output += '</table>';
     }
+    output += '<p>';
+    if (this.notes != "") {
+      output += '<strong>Notes:</strong><br/>';
+      output += this.notes;
+    }
+    output += '</p>';
 
     return output;
   }

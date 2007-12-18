@@ -355,6 +355,10 @@ ul.adminMenu a:hover {
   color: black;
   background-color: #eee;
 }
+#commonListTable td.date,
+#commonListTable td.calcat {
+  white-space: nowrap;
+}
 .recurrenceEditLinks {
   font-style: italic;
   font-size: 0.9em;

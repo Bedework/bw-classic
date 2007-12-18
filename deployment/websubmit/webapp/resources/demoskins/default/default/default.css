@@ -746,3 +746,20 @@ display: inline;
   font-weight: bold;
   font-style: italic;
 }
+#bedework #commonListTable {
+  margin-bottom: 2em;
+}
+#bedework #commonListTable th {
+  padding: 0.2em 1em 0.2em 0.5em;
+  background-color : #ccc;
+  color: black;
+  white-space: nowrap;
+  text-align: left;
+}
+#bedework #commonListTable td {
+  vertical-align: top;
+  font-size: 0.9em;
+  padding: 0.2em 1em 0.2em 0.5em;
+  color: black;
+  background-color: #eee;
+}

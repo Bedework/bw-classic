@@ -217,7 +217,7 @@
         <xsl:when test="/bedework/page='home'">
           <li class="selected">Overview</li>
           <li><a href="{$initEvent}">Add Event</a></li>
-          <li><a href="{$initPendingEvents}&amp;calPath={$submissionsRootEncoded}">My Pending Events</a></li>
+          <li><a href="{$initPendingEvents}&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true">My Pending Events</a></li>
         </xsl:when>
         <xsl:when test="/bedework/page='eventList'">
           <li><a href="{$setup}">Overview</a></li>
@@ -227,7 +227,7 @@
         <xsl:otherwise>
           <li><a href="{$setup}">Overview</a></li>
           <li class="selected">Add Event</li>
-          <li><a href="{$initPendingEvents}&amp;calPath={$submissionsRootEncoded}">My Pending Events</a></li>
+          <li><a href="{$initPendingEvents}&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true">My Pending Events</a></li>
         </xsl:otherwise>
       </xsl:choose>
     </ul>
@@ -1322,7 +1322,7 @@
 
   <!--++++++++++++++++++ Events ++++++++++++++++++++-->
   <xsl:template name="eventList">
-    <h2>Pending Events</h2>
+    <h1>Pending Events</h1>
     <xsl:call-template name="eventListCommon"/>
   </xsl:template>
 
@@ -1330,9 +1330,10 @@
     <table id="commonListTable">
       <tr>
         <th>Title</th>
+        <!-- <th>Submitted</th> -->
         <th>Start Date</th>
         <th>End Date</th>
-        <th>Calendar</th>
+        <th>Categories</th>
         <th>Description</th>
       </tr>
 
@@ -1354,16 +1355,24 @@
               </xsl:choose>
             </a>
           </td>
+          <!-- need to output created date
           <td class="date">
-            <xsl:value-of select="start/longdate"/>,
+            <xsl:value-of select="end/longdate"/>
+          </td> -->
+          <td class="date">
+            <xsl:value-of select="start/shortdate"/>
+            <xsl:text> </xsl:text>
             <xsl:value-of select="start/time"/>
           </td>
           <td class="date">
-            <xsl:value-of select="end/longdate"/>,
+            <xsl:value-of select="end/shortdate"/>
+            <xsl:text> </xsl:text>
             <xsl:value-of select="end/time"/>
           </td>
           <td>
-            <xsl:value-of select="calendar/name"/>
+            <xsl:for-each select="categories/category">
+              <xsl:value-of select="word"/><br/>
+            </xsl:for-each>
           </td>
           <td>
             <xsl:value-of select="description"/>
