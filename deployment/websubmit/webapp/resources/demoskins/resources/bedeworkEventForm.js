@@ -241,7 +241,7 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
 
 function setEventFields(formObj) {
   setDates(formObj);
-  setComment(formObj);
+  setComments(formObj);
   setRecurrence(formObj);
   setAccessHow(formObj,1);
   //setAccessAcl(formObj);
@@ -259,7 +259,7 @@ function setDates(formObj) {
   formObj["eventEndDate.month"].value = endDate.getMonth() + 1;
   formObj["eventEndDate.day"].value = endDate.getDate();
 }
-function setComment(formObj) {
+function setComments(formObj) {
   // set the submission comments (location, contact, and category suggestions)
   // in a parsable format that can be filtered on output.
 
@@ -275,6 +275,22 @@ function setComment(formObj) {
   comment += formObj["commentNotes"].value;
 
   formObj["xbwsubmitcomment"].value = comment;
+}
+function getComments(formId,comment) {
+  // get the submission comments (location, contact, and category suggestions)
+  // and load them into the form
+  var formObj = document.getElementById(formId);
+
+  var commentVals = comment.split("\t");
+  formObj["commentLocationAddress"].value = (commentVals[0] == undefined) ? "" : commentVals[0];
+  formObj["commentLocationSubaddress"].value = (commentVals[2] == undefined) ? "" : commentVals[2];
+  formObj["commentLocationURL"].value = (commentVals[2] == undefined) ? "" : commentVals[2];
+  formObj["commentContactName"].value = (commentVals[3] == undefined) ? "" : commentVals[3];
+  formObj["commentContactPhone"].value = (commentVals[4] == undefined) ? "" : commentVals[4];
+  formObj["commentContactURL"].value = (commentVals[5] == undefined) ? "" : commentVals[5];
+  formObj["commentContactEmail"].value = (commentVals[6] == undefined) ? "" : commentVals[6];
+  formObj["commentCategories"].value = (commentVals[7] == undefined) ? "" : commentVals[7];
+  formObj["commentNotes"].value = (commentVals[8] == undefined) ? "" : commentVals[8];
 }
 // create table of form fields for review
 function displayReview(formId,tableId,numHeaderRows) {

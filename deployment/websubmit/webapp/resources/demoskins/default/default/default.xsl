@@ -74,7 +74,6 @@
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/event/initEvent"/>
   <xsl:variable name="initPendingEvents" select="/bedework/urlPrefixes/event/initPendingEvents"/>
-  <xsl:variable name="event-fetchForUpdate" select="/bedework/urlPrefixes/event/fetchForUpdate/a/@href"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/event/addEvent"/>
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/event/editEvent"/>
   <xsl:variable name="gotoEditEvent" select="/bedework/urlPrefixes/event/gotoEditEvent"/>
@@ -105,6 +104,10 @@
         <xsl:call-template name="headSection"/>
       </head>
       <body>
+        <xsl:if test="/bedework/page = 'editEvent' and
+                      normalize-space(/bedework/formElements/form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value) != ''">
+          <xsl:attribute name="onload">getComments('standardForm','<xsl:value-of select="/bedework/formElements/form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value"/>');</xsl:attribute>
+        </xsl:if>
         <div id="bedework"><!-- main wrapper div -->
           <xsl:call-template name="header"/>
           <xsl:call-template name="messagesAndErrors"/>
@@ -354,33 +357,6 @@
           </tr>
         </table>
       </xsl:if>
-
-      <!-- event form submenu -->
-
-      <!--
-      <ul id="eventFormTabs" class="submenu">
-        <li class="selected">
-          <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Details'); hide('bwEventTab-Location','bwEventTab-Categories','bwEventTab-Contact');">
-            1. details
-          </a>
-        </li>
-        <li>
-          <a href="javascript:setTab('eventFormTabs',1); show('bwEventTab-Location'); hide('bwEventTab-Details','bwEventTab-Categories','bwEventTab-Contact');">
-            2. location
-          </a>
-        </li>
-        <li>
-          <a href="javascript:setTab('eventFormTabs',2); show('bwEventTab-Contact'); hide('bwEventTab-Details','bwEventTab-Location','bwEventTab-Categories');">
-            3. contact
-          </a>
-        </li>
-        <li>
-          <a href="javascript:setTab('eventFormTabs',3); show('bwEventTab-Categories'); hide('bwEventTab-Details','bwEventTab-Location','bwEventTab-Contact');">
-            4. categories
-          </a>
-        </li>
-      </ul>
-    -->
 
     <div id="instructions">
       <div id="bwHelp-Details">
@@ -885,7 +861,7 @@
                   rendering errors when the text area is empty -->
                 </xsl:when>
                 <xsl:otherwise>
-                  <textarea name="description" cols="60" rows="4" id="bwEventDescription">
+                  <textarea name="description" cols="60" rows="4" id="bwEventDesc">
                     <xsl:value-of select="form/desc/textarea"/>
                   </textarea>
                 </xsl:otherwise>
@@ -1331,8 +1307,8 @@
       <tr>
         <th>Title</th>
         <!-- <th>Submitted</th> -->
-        <th>Start Date</th>
-        <th>End Date</th>
+        <th>Start</th>
+        <th>End</th>
         <th>Categories</th>
         <th>Description</th>
       </tr>
@@ -1344,7 +1320,7 @@
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
         <tr>
           <td>
-            <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <xsl:choose>
                 <xsl:when test="summary != ''">
                   <xsl:value-of select="summary"/>
@@ -1380,10 +1356,10 @@
               <div class="recurrenceEditLinks">
                 Recurring event.
                 Edit:
-                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+                <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
                   master
                 </a> |
-                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                   instance
                 </a>
               </div>

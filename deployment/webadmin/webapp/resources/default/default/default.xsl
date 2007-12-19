@@ -890,8 +890,8 @@
     <table id="commonListTable">
       <tr>
         <th>Title</th>
-        <th>Start Date</th>
-        <th>End Date</th>
+        <th>Start</th>
+        <th>End</th>
         <xsl:choose>
           <xsl:when test="$pending = 'true'">
             <th>Categories</th>
@@ -1043,7 +1043,14 @@
                   <option>
                     <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
                     <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                    <xsl:value-of select="substring-after(node(),'/public/')"/>
+                    <xsl:choose>
+                      <xsl:when test="starts-with(node(),/bedework/submissionsRoot/unencoded)">
+                        submitted events
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="substring-after(node(),'/public/')"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </option>
                 </xsl:for-each>
               </select><br/>
@@ -1058,8 +1065,15 @@
                 <xsl:sort select="." order="ascending"/>
                 <option>
                   <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
-                    <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                  <xsl:value-of select="substring-after(node(),'/public/')"/>
+                  <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                  <xsl:choose>
+                    <xsl:when test="starts-with(node(),/bedework/submissionsRoot/unencoded)">
+                      submitted events
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="substring-after(node(),'/public/')"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </option>
               </xsl:for-each>
             </select>
