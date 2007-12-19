@@ -1302,8 +1302,8 @@
     <p>
       The events below are waiting to be published by a
       calendar administrator.  You may edit or delete the
-      events until they have been picked up by an
-      administrator.  Once your event is picked up, you
+      events until they have been accepted.  Once your
+      event is picked up, you
       will no longer see it in your list.
     </p>
     <xsl:call-template name="eventListCommon"/>
