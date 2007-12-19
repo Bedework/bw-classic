@@ -216,7 +216,10 @@ body {
   padding: 0.3em 0 0.3em 1em;
   border-bottom: 1px solid Gray;
   color: black;
-  background: #d8e118 url(../../resources/glassFill-message.gif) repeat-x bottom;
+  background: #ff0 url(../../resources/glassFill-message.gif) repeat-x top;
+}
+#bedework #errors {
+  border-bottom: 2px solid red;
 }
 #bedework #errors li,
 #bedework #messages li {
@@ -739,7 +742,7 @@ display: inline;
 }
 #bedework .highlight {
   color: black;
-  background-color: #fee;
+  background: #ff0 url(../../resources/glassFill-message.gif) repeat-x top;
   border: 1px solid #333;
 }
 #bedework .notice {

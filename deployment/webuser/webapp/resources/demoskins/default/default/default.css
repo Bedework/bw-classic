@@ -1,14 +1,14 @@
 #bedework {
-  /* this is the main wrapper div used to encapsulate all Bedework CSS; we 
-     will prepend each selector below with this ID - this helps encapsulate 
-     the css for use in portal environments (though it does imply that only 
+  /* this is the main wrapper div used to encapsulate all Bedework CSS; we
+     will prepend each selector below with this ID - this helps encapsulate
+     the css for use in portal environments (though it does imply that only
      one instance should be running on a portal page) */
   font-family : Arial, Helvetica, sans-serif;
   font-size: 100%; /* to make IE behave */
   background-color : white;
   color : black;
   padding: 0.75em 1em 0em 1em;
-  margin: 0; 
+  margin: 0;
 }
 /* Generic selectors*/
 #bedework h2 {
@@ -332,7 +332,7 @@
   right: 2em;
 }
 #bedework .bwActionIcons a:link,
-#bedework .bwActionIcons a:active, 
+#bedework .bwActionIcons a:active,
 #bedework .bwActionIcons a:visited {
   display: block;
   margin: 0 0 2px 0;
@@ -484,7 +484,11 @@
   border-right : 2px solid #333;
   border-bottom: 1px solid Gray;
   color: black;
-  background: #d8e118 url(../../resources/glassFill-message.gif) repeat-x bottom;
+  background: #ff0 url(../../resources/glassFill-message.gif) repeat-x top;
+}
+#bedework #errors {
+  border-top: 2px solid red;
+  border-bottom: 2px solid red;
 }
 #bedework #errors li,
 #bedework #messages li {
@@ -494,17 +498,7 @@
 #bedework #errors p {
   margin: 0;
   padding: 2px 0;
-}/*
-make no distinction in this stylesheet - yellow is good for both errors and
-messages.
-#bedework #messages {
-  color: black;
-  background: #d8e118 url(../../resources/glassFill-message.gif) repeat-x bottom;
 }
-#bedework #errors {
-  color: black;
-  background: #FF8B86 url(../../resources/glassFill-error.gif) repeat-x bottom;
-}*/
 #bedework ul.submenu {
   margin: 0 0 1em 0;
   padding: 0;
@@ -710,7 +704,7 @@ display: inline;
   vertical-align: middle;
 }
 #bedework #refreshEventAction {
-  padding-left: 1em;  
+  padding-left: 1em;
 }
 #bedework table.common td.allField {
   white-space: nowrap;
@@ -1007,7 +1001,7 @@ display: inline;
 }
 #bedework table.widget tr.subHead td {
   background-color: #eee;
-  color: black;  
+  color: black;
 }
 #bedework table.widget td {
   padding: 0.1em 1em;
@@ -1643,7 +1637,7 @@ display: inline;
   margin: 0.5em 1em 0 0;
 }
 #freeBusyPage #freeBusyKey {
-  margin-left: 2em; 
+  margin-left: 2em;
 }
 #freeBusyKey td {
   padding: 2px 4px;
@@ -1846,7 +1840,7 @@ display: inline;
   background-color: #eee;
 }
 /*   LINKS    */
-#bedework a:link, 
+#bedework a:link,
 #bedework a:active {
   color: #00a;
   background-color: transparent;

@@ -488,10 +488,8 @@
           </xsl:otherwise>
         </xsl:choose>
       </h1>
-
-      <xsl:call-template name="messagesAndErrors"/>
-
     </div>
+    <xsl:call-template name="messagesAndErrors"/>
     <table id="statusBarTable">
       <tr>
         <td class="leftCell">
