@@ -244,7 +244,7 @@
         Error: you cannot change scheduling method
       </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.insubmissionscalendar'">
-        To publish this event, you must move it off the submitted events calendar onto a public calendar.
+        To publish this event, you must move it to a public calendar.  Please select a different calendar.
       </xsl:when>
 
       <!-- Scheduling error codes are defined in CalfacadeException -->
