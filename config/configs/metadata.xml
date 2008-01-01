@@ -1,0 +1,1009 @@
+<?xml version="1.0"?>
+
+<!--
+  This file contains the metadata used to describe each type of module and
+  application that can be built by the bedework system. This is NOT the
+  actual configuration.
+
+  For example, the application type="webadmin" element below describes a type of
+  web application which is used to administer the system.
+
+  The actual configuration of that type of application is contained in the
+  current properties and xml files.
+
+  A default value may contain the name of a previously defined property
+  surrounded by ${ and }. The property "name" is predefined.
+-->
+
+<meta-data>
+  <!-- Bedework defined modules are:
+    directory - configuration for dummy directory
+    ldapdirectory - configuration for ldap directory interface
+    mailconfig - configuration for mailer interface
+
+    Custom modules can be defined. Define the type below and provide the
+    information about the module type. Then define the attributes
+    required for that type.
+
+    Module configuration is only in the xml options file.
+   -->
+
+  <!-- =====================================================================
+                          module: dirconfig
+       ===================================================================== -->
+  <module type="dirconfig">
+    <options-class-name>org.bedework.calfacade.configs.DirConfigProperties</options-class-name>
+
+    <comment>A dummy module with no directory.</comment>
+
+    <text name="principalRoot" option="principalRoot" advanced="true">
+      <default>/principals</default>
+    </text>
+
+    <text name="userPrincipalRoot" option="userPrincipalRoot" advanced="true">
+      <default>/principals/users</default>
+    </text>
+
+    <text name="groupPrincipalRoot" option="groupPrincipalRoot" advanced="true">
+      <default>/principals/groups</default>
+    </text>
+
+    <text name="resourcePrincipalRoot" option="resourcePrincipalRoot" advanced="true">
+      <default>/principals/resources</default>
+    </text>
+
+    <text name="venuePrincipalRoot" option="venuePrincipalRoot" advanced="true">
+      <default>/principals/locations</default>
+    </text>
+
+    <text name="ticketPrincipalRoot" option="ticketPrincipalRoot" advanced="true">
+      <default>/principals/tickets</default>
+    </text>
+
+    <text name="hostPrincipalRoot" option="hostPrincipalRoot" advanced="true">
+      <default>/principals/hosts</default>
+    </text>
+
+    <text name="domains" option="domains" advanced="false">
+      <default>mysite.edu</default>
+      <comment>List domains at your site separated by commas.
+               A single leading wildcard \"*\" is allowed.
+               If there is a single domain with no wildcard it wil be stripped from
+               user accounts as they are entered and added as they are turned
+               back into CUAs.
+               Wildcarded or multiple domains will cause retention of the domain
+               (partially untested feature)</comment>
+    </text>
+
+    <text name="defaultDomain" option="defaultDomain" advanced="false">
+      <default>mysite.edu</default>
+      <comment>defaultDomain can be left unspecified for no default or a single
+               exactly specified domain</comment>
+    </text>
+
+    <boolean name="debug" option="debug" advanced="false">
+      <default>true</default>
+    </boolean>
+  </module>
+
+  <!-- =====================================================================
+                           module: ldapdirconfig
+       ===================================================================== -->
+
+  <module type="ldapdirconfig">
+    <options-class-name>org.bedework.calfacade.configs.LdapConfigProperties</options-class-name>
+
+    <comment>A configurable ldap module.</comment>
+
+    <text name="principalRoot" option="principalRoot" advanced="true">
+      <default>/principals</default>
+    </text>
+
+    <text name="userPrincipalRoot" option="userPrincipalRoot" advanced="true">
+      <default>/principals/users</default>
+    </text>
+
+    <text name="groupPrincipalRoot" option="groupPrincipalRoot" advanced="true">
+      <default>/principals/groups</default>
+    </text>
+
+    <text name="resourcePrincipalRoot" option="resourcePrincipalRoot" advanced="true">
+      <default>/principals/resources</default>
+    </text>
+
+    <text name="venuePrincipalRoot" option="venuePrincipalRoot" advanced="true">
+      <default>/principals/locations</default>
+    </text>
+
+    <text name="ticketPrincipalRoot" option="ticketPrincipalRoot" advanced="true">
+      <default>/principals/tickets</default>
+    </text>
+
+    <text name="hostPrincipalRoot" option="hostPrincipalRoot" advanced="true">
+      <default>/principals/hosts</default>
+    </text>
+
+    <text name="domains" option="domains" advanced="false">
+      <default>mysite.edu</default>
+      <comment>List domains at your site separated by commas.
+               A single leading wildcard \"*\" is allowed.
+               If there is a single domain with no wildcard it wil be stripped from
+               user accounts as they are entered and added as they are turned
+               back into CUAs.
+               Wildcarded or multiple domains will cause retention of the domain
+               (partially untested feature)</comment>
+    </text>
+
+    <text name="defaultDomain" option="defaultDomain" advanced="false">
+      <default>mysite.edu</default>
+      <comment>defaultDomain can be left unspecified for no default or a single
+               exactly specified domain</comment>
+    </text>
+
+    <text name="initialContextFactory" suffix="initialContextFactory" advanced="true">
+      <default>com.sun.jndi.ldap.LdapCtxFactory</default>
+    </text>
+
+    <text name="providerUrl" suffix="providerUrl" advanced="false">
+      <default>ldap://localhost/</default>
+    </text>
+
+    <text name="groupContextDn" suffix="groupContextDn" advanced="true">
+      <default>ou=groups, dc=bedework, dc=org</default>
+    </text>
+
+    <text name="groupMemberAttr" suffix="groupMemberAttr" advanced="true">
+      <default>uniqueMember</default>
+    </text>
+
+    <text name="userDnPrefix" suffix="userDnPrefix" advanced="true">
+      <default>uid=</default>
+    </text>
+
+    <text name="userDnSuffix" suffix="userDnSuffix" advanced="true">
+      <default>,ou=accounts, dc=bedework, dc=org</default>
+    </text>
+
+    <text name="groupDnPrefix" suffix="groupDnPrefix" advanced="true">
+      <default>cn=</default>
+    </text>
+
+    <text name="groupDnSuffix" suffix="groupDnSuffix" advanced="true">
+      <default>,ou=groups, dc=bedework, dc=org</default>
+    </text>
+
+    <boolean name="debug" option="debug" advanced="false">
+      <default>true</default>
+    </boolean>
+  </module>
+
+  <!-- =====================================================================
+                           module: mailconfig
+       ===================================================================== -->
+
+  <module type="mailconfig">
+    <options-class-name>org.bedework.mail.MailConfigProperties</options-class-name>
+
+    <comment>Configuration to use java mail classes..</comment>
+
+    <text name="protocol" suffix="protocol" advanced="true">
+      <default>/principals</default>
+    </text>
+
+    <text name="protocolClass" suffix="protocolClass" advanced="true">
+      <default>com.sun.mail.smtp.SMTPTransport</default>
+    </text>
+
+    <text name="serverIp" suffix="serverIp" advanced="false">
+      <default>localhost</default>
+    </text>
+
+    <text name="from" suffix="from" advanced="false">
+      <default>calendar.myplace.edu</default>
+    </text>
+
+    <text name="subject" suffix="subject" advanced="false">
+      <default>Message from demo calendar server</default>
+    </text>
+
+    <boolean name="disabled" option="disabled" advanced="true">
+      <default>false</default>
+    </boolean>
+  </module>
+
+  <!-- =====================================================================
+                         application: webconfig
+       ===================================================================== -->
+  <application type="webconfig">
+    <comment>Web config client properties.</comment>
+
+    <hidden-text name="type" suffix="type" option="appType">
+      <value>${type}</value>
+    </hidden-text>
+
+    <text name="defaultContentType" suffix="default.contenttype" advanced="false">
+      <default>text/xml</default>
+    </text>
+
+    <text name="war" suffix="war.name" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="context.root" suffix="context.root" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="app.root" suffix="root" advanced="false">
+      <option>appRoot</option>
+      <default>http://localhost:8080/${name}rsrc</default>
+    </text>
+
+    <text name="resources.dir" suffix="resources.dir" advanced="false">
+      <default>http://localhost:8080/${name}rsrc</default>
+    </text>
+
+    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+      <default>/webapps</default>
+    </text>
+
+    <text name="description" suffix="description" advanced="true">
+      <default>Bedework configuration client.</default>
+    </text>
+
+    <text name="display.name" suffix="display.name" advanced="true">
+      <default>Bedework configuration client</default>
+    </text>
+
+    <text name="name" suffix="name" advanced="true">
+      <default>${name}</default>
+    </text>
+
+    <hidden-boolean name="guestmode" suffix="guestmode" value="false"/>
+
+    <hidden-boolean name="publicadmin" suffix="publicadmin" value="false"/>
+
+    <text name="logPrefix" advanced="true">
+      <option>logPrefix</option>
+      <default>${name}</default>
+    </text>
+  </application>
+
+  <!-- =====================================================================
+                         application: webadmin
+       ===================================================================== -->
+  <application type="webadmin">
+    <options-class-name>org.bedework.calfacade.configs.AdminConfig</options-class-name>
+
+    <comment>Web administrative client properties.</comment>
+
+    <hidden-text name="type" suffix="type">
+      <option>appType</option>
+      <value>${type}</value>
+    </hidden-text>
+
+    <hidden-text name="sou.dir" suffix="sou.dir">
+      <value>webadmin</value>
+    </hidden-text>
+
+    <text name="defaultContentType" suffix="default.contenttype" advanced="false">
+      <default>text/xml</default>
+    </text>
+
+    <text name="war" suffix="war.name" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="context.root" suffix="context.root" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="app.root" suffix="root" advanced="false">
+      <option>appRoot</option>
+      <default>http://localhost:8080/${name}rsrc</default>
+    </text>
+
+    <text name="resources.dir" suffix="resources.dir" advanced="false">
+      <default>http://localhost:8080/${name}rsrc</default>
+    </text>
+
+    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+      <default>/webapps</default>
+    </text>
+
+    <text name="security.domain" suffix="security.domain" advanced="false">
+      <default>demo</default>
+    </text>
+
+    <text name="security.prefix" suffix="security.prefix" advanced="false">
+      <default>demo</default>
+    </text>
+
+    <text name="transport.guarantee" suffix="transport.guarantee" advanced="false">
+      <default>NONE</default>
+    </text>
+
+    <!--
+       We really want this to set the value of the above to NONE or CONFIDENTIAL
+       addProperty(new BooleanProperty("ssl" suffix="use.ssl", true));
+       -->
+
+    <text name="description" suffix="description" advanced="true">
+      <default>Bedework calendar public events admin client.</default>
+    </text>
+
+    <text name="display.name" suffix="display.name" advanced="true">
+      <default>Public Events Administration</default>
+    </text>
+
+    <text name="name" suffix="name" advanced="true">
+      <default>${name}</default>
+    </text>
+
+    <text name="admingroupsidprefix" option="admingroupsidprefix" advanced="true">
+      <default>agrp_</default>
+    </text>
+
+    <boolean name="noGroupAllowed" suffix="nogroupallowed" advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="autoCreateContacts" option="autoCreateContacts"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="autoDeleteContacts" option="autoDeleteContacts"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="autoCreateLocations" option="autoCreateLocations"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="autoDeleteLocations" option="autoDeleteLocations"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="allowEditAllCategories" option="allowEditAllCategories"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="allowEditAllLocations" option="allowEditAllLocations"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="allowEditAllContacts" option="allowEditAllContacts"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="categoryOptional" option="categoryOptional"
+             advanced="true">
+      <default>true</default>
+    </boolean>
+
+    <boolean name="hour24" option="hour24" advanced="false">
+      <default>true</default>
+    </boolean>
+
+    <text name="submissionRoot" option="submissionRoot" advanced="false">
+      <default>/public/unbrowsable/submissions</default>
+    </text>
+
+    <int name="minincrement" option="minincrement" advanced="true">
+      <default>5</default>
+    </int>
+
+    <hidden-boolean name="guestmode" suffix="guestmode" value="false"/>
+
+    <hidden-boolean name="publicadmin" suffix="publicadmin" value="true"/>
+
+    <text name="logPrefix" advanced="true">
+      <option>logPrefix</option>
+      <default>${name}</default>
+    </text>
+
+    <text name="run.as.user" suffix="run.as.user" advanced="true">
+      <default>public-user</default>
+    </text>
+  </application>
+
+  <!-- =====================================================================
+                         application: websubmit
+       ===================================================================== -->
+  <application type="websubmit">
+    <options-class-name>org.bedework.calfacade.configs.ClientConfig</options-class-name>
+
+    <comment>Web config client properties.</comment>
+
+    <hidden-text name="type" suffix="type">
+      <option>appType</option>
+      <value>${type}</value>
+    </hidden-text>
+
+    <hidden-text name="sou.dir" suffix="sou.dir">
+      <value>websubmit</value>
+    </hidden-text>
+
+    <text name="defaultContentType" suffix="default.contenttype" advanced="false">
+      <default>text/xml</default>
+    </text>
+
+    <text name="web.xml" suffix="web.xml" advanced="true">
+      <default>war/WEB-INF/web.xml</default>
+    </text>
+
+    <text name="tomcat.context.xml" suffix="tomcat.context.xml" advanced="true">
+      <default>war/META-INF/context.xml</default>
+    </text>
+
+    <!-- #org.bedework.app.UserCal.portlet.name=EventSubmit -->
+
+    <text name="war" suffix="war.name" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="context.root" suffix="context.root" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <!--
+    //# Set for jboss
+    //#org.bedework.app.UserCal.virtual.host=
+     -->
+
+    <text name="app.root" suffix="root" advanced="false">
+      <option>appRoot</option>
+      <default>http://localhost:8080/${name}rsrc</default>
+    </text>
+
+    <text name="resources.dir" suffix="resources.dir" advanced="false">
+      <default>http://localhost:8080/${name}rsrc</default>
+    </text>
+
+    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+      <default>/webapps</default>
+    </text>
+
+    <text name="security.domain" suffix="security.domain" advanced="false">
+      <default>demo</default>
+    </text>
+
+    <text name="security.prefix" suffix="security.prefix" advanced="false">
+      <default>demo</default>
+    </text>
+
+    <text name="transport.guarantee" suffix="transport.guarantee" advanced="false">
+      <default>NONE</default>
+    </text>
+
+    <!--
+       We really want this to set the value of the above to NONE or CONFIDENTIAL
+       addProperty(new BooleanProperty("ssl" suffix="use.ssl", true));
+       -->
+
+    <text name="description" suffix="description" advanced="true">
+      <default>Bedework calendar event submission client.</default>
+    </text>
+
+    <text name="display.name" suffix="display.name" advanced="true">
+      <default>Bedework event submission client</default>
+    </text>
+
+    <text name="name" suffix="name" advanced="true">
+      <default>${name}</default>
+    </text>
+
+    <boolean name="autoCreateContacts" option="autoCreateContacts"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="autoDeleteContacts" option="autoDeleteContacts"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="autoCreateLocations" option="autoCreateLocations"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <boolean name="autoDeleteLocations" option="autoDeleteLocations"
+             advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <text name="submissionRoot" option="submissionRoot" advanced="false">
+      <default>/public/unbrowsable/submissions</default>
+    </text>
+
+    <boolean name="hour24" option="hour24" advanced="false">
+      <default>true</default>
+    </boolean>
+
+    <int name="minincrement" option="minincrement" advanced="true">
+      <default>5</default>
+    </int>
+
+    <boolean name="showYearData" option="showYearData" advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <!--
+    //requiredText("default.view" suffix="default.view");
+
+    //requiredInt("refresh.interval" suffix="refresh.interval");
+
+    //requiredText("refresh.action" suffix="refresh.action");
+    -->
+
+    <text name="logPrefix" advanced="true">
+      <option>logPrefix</option>
+      <default>${name}</default>
+    </text>
+
+    <hidden-boolean name="guestmode" suffix="guestmode" value="false"/>
+
+    <hidden-boolean name="publicadmin" suffix="publicadmin" value="false"/>
+  </application>
+
+  <!-- =====================================================================
+                         application: webpublic
+       ===================================================================== -->
+  <application type="webpublic">
+    <options-class-name>org.bedework.calfacade.configs.ClientConfig</options-class-name>
+
+    <comment>Web config client properties.</comment>
+
+    <hidden-text name="type" suffix="type">
+      <option>appType</option>
+      <value>${type}</value>
+    </hidden-text>
+
+    <hidden-text name="sou.dir" suffix="sou.dir">
+      <value>webclient</value>
+    </hidden-text>
+
+    <text name="defaultContentType" suffix="default.contenttype" advanced="false">
+      <default>text/xml</default>
+    </text>
+
+    <text name="web.xml" suffix="web.xml" advanced="true">
+      <default>war/WEB-INF/publicweb.xml</default>
+    </text>
+
+    <text name="tomcat.context.xml" suffix="tomcat.context.xml" advanced="true">
+      <default>war/META-INF/publiccontext.xml</default>
+    </text>
+
+    <!-- //#org.bedework.app.UserCal.portlet.name=UserCal -->
+
+    <text name="war" suffix="war.name" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="context.root" suffix="context.root" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <!--
+    //# Set for jboss
+    //#org.bedework.app.UserCal.virtual.host=
+     -->
+
+    <text name="app.root" suffix="root" advanced="false">
+      <option>appRoot</option>
+      <default>http://localhost:8080/${name}rsrc</default>
+    </text>
+
+    <text name="resources.dir" suffix="resources.dir" advanced="false">
+      <default>http://localhost:8080/${name}rsrc</default>
+    </text>
+
+    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+      <default>/webapps</default>
+    </text>
+
+    <text name="description" suffix="description" advanced="true">
+      <default>Bedework calendar public client.</default>
+    </text>
+
+    <text name="display.name" suffix="display.name" advanced="true">
+      <default>Bedework public client</default>
+    </text>
+
+    <text name="name" suffix="name" advanced="true">
+      <default>${name}</default>
+    </text>
+
+    <text name="run-as" suffix="run.as.user" advanced="true">
+      <default>public-user</default>
+    </text>
+
+    <boolean name="hour24" option="hour24" advanced="false">
+      <default>true</default>
+    </boolean>
+
+    <int name="minincrement" option="minincrement" advanced="true">
+      <default>5</default>
+    </int>
+
+    <!--  -->
+    //<cachingOn>true</cachingOn>
+    //<cachePrefix>bwpubevents</cachePrefix>
+
+    //<autoCreateContacts>false</autoCreateContacts>
+    //<autoDeleteContacts>false</autoDeleteContacts>
+    //<autoCreateLocations>false</autoCreateLocations>
+    //<autoDeleteLocations>false</autoDeleteLocations>
+    -->
+
+    <boolean name="showYearData" option="showYearData" advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <int name="refresh.interval" option="refreshInterval" advanced="true">
+      <default>300</default>
+    </int>
+
+    <text name="refresh.action" option="refreshAction" advanced="true">
+      <default>setup.do</default>
+    </text>
+
+    <text name="calSuite" option="calSuite" advanced="true">
+      <default>${name}</default>
+    </text>
+
+    <text name="logPrefix" option="logPrefix" advanced="true">
+      <default>${name}</default>
+    </text>
+
+    <hidden-boolean name="guestmode" suffix="guestmode" value="true"/>
+
+    <hidden-boolean name="publicadmin" suffix="publicadmin" value="false"/>
+  </application>
+
+  <!-- =====================================================================
+                         application: webuser
+       ===================================================================== -->
+  <application type="webuser">
+    <options-class-name>org.bedework.calfacade.configs.ClientConfig</options-class-name>
+
+    <comment>Web config client properties.</comment>
+
+    <hidden-text name="type" suffix="type">
+      <option>appType</option>
+      <value>${type}</value>
+    </hidden-text>
+
+    <hidden-text name="sou.dir" suffix="sou.dir">
+      <value>webclient</value>
+    </hidden-text>
+
+    <text name="defaultContentType" suffix="default.contenttype" advanced="false">
+      <default>text/xml</default>
+    </text>
+
+    <text name="web.xml" suffix="web.xml" advanced="true">
+      <default>war/WEB-INF/userweb.xml</default>
+    </text>
+
+    <text name="tomcat.context.xml" suffix="tomcat.context.xml" advanced="true">
+      <default>war/META-INF/usercontext.xml</default>
+    </text>
+
+    <!-- //#org.bedework.app.UserCal.portlet.name=UserCal -->
+
+    <text name="war" suffix="war.name" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="context.root" suffix="context.root" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <!--
+    //# Set for jboss
+    //#org.bedework.app.UserCal.virtual.host=
+    -->
+
+    <text name="app.root" suffix="root" advanced="false">
+      <option>appRoot</option>
+      <default>http://localhost:8080/${name}rsrc</default>
+    </text>
+
+    <text name="resources.dir" suffix="resources.dir" advanced="false">
+      <default>http://localhost:8080/${name}rsrc</default>
+    </text>
+
+    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+      <default>/webapps</default>
+    </text>
+
+    <text name="security.domain" suffix="security.domain" advanced="false">
+      <default>demo</default>
+    </text>
+
+    <text name="security.prefix" suffix="security.prefix" advanced="false">
+      <default>demo</default>
+    </text>
+
+    <text name="transport.guarantee" suffix="transport.guarantee" advanced="false">
+      <default>NONE</default>
+    </text>
+
+    <!--
+       We really want this to set the value of the above to NONE or CONFIDENTIAL
+       addProperty(new BooleanProperty("ssl" suffix="use.ssl", true));
+       -->
+
+    <text name="description" suffix="description" advanced="true">
+      <default>Bedework calendar user client.</default>
+    </text>
+
+    <text name="display.name" suffix="display.name" advanced="true">
+      <default>Bedework user client</default>
+    </text>
+
+    <text name="name" suffix="name" advanced="true">
+      <default>${name}</default>
+    </text>
+
+    <boolean name="hour24" option="hour24" advanced="false">
+      <default>true</default>
+    </boolean>
+
+    <int name="minincrement" option="minincrement" advanced="true">
+      <default>5</default>
+    </int>
+
+    <boolean name="showYearData" option="showYearData" advanced="true">
+      <default>false</default>
+    </boolean>
+
+    <!--
+    //requiredText("default.view" suffix="default.view");
+     -->
+
+    <int name="refresh.interval" option="refreshInterval" advanced="true">
+      <default>300</default>
+    </int>
+
+    <text name="refresh.action" option="refreshAction" advanced="true">
+      <default>setup.do</default>
+    </text>
+
+    <text name="logPrefix" advanced="true">
+      <option>logPrefix</option>
+      <default>${name}</default>
+    </text>
+
+    <hidden-boolean name="guestmode" suffix="guestmode" value="false"/>
+
+    <hidden-boolean name="publicadmin" suffix="publicadmin" value="false"/>
+  </application>
+
+  <!-- =====================================================================
+                         application: publiccaldav
+       ===================================================================== -->
+  <application type="publiccaldav">
+    <options-class-name>org.bedework.calfacade.configs.CalDAVConfig</options-class-name>
+
+    <comment>Web config client properties.</comment>
+
+    <hidden-text name="type" suffix="type">
+      <option>appType</option>
+      <value>${type}</value>
+    </hidden-text>
+
+    <text name="war" suffix="war.name" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="context.root" suffix="context.root" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+      <default>/webapps</default>
+    </text>
+
+    <text name="description" suffix="description" advanced="true">
+      <default>Bedework public caldav server.</default>
+    </text>
+
+    <text name="display.name" suffix="display.name" advanced="true">
+      <default>Bedework public caldav</default>
+    </text>
+
+    <text name="name" suffix="name" advanced="true">
+      <default>${name}</default>
+    </text>
+
+    <hidden-boolean name="guestmode" suffix="guestmode" value="true"/>
+
+    <hidden-boolean name="publicadmin" suffix="publicadmin" value="false"/>
+
+    <!--
+    <text name="logPrefix" advanced="true">
+      <option>logPrefix</option>
+      <default>${name}</default>
+    </text>
+     -->
+  </application>
+
+  <!-- =====================================================================
+                         application: usercaldav
+       ===================================================================== -->
+  <application type="usercaldav">
+    <options-class-name>org.bedework.calfacade.configs.CalDAVConfig</options-class-name>
+
+    <comment>Web config client properties.</comment>
+
+    <hidden-text name="type" suffix="type">
+      <option>appType</option>
+      <value>${type}</value>
+    </hidden-text>
+
+    <text name="war" suffix="war.name" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="context.root" suffix="context.root" advanced="false">
+      <default>${name}</default>
+    </text>
+
+    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+      <default>/webapps</default>
+    </text>
+
+    <text name="security.domain" suffix="security.domain" advanced="false">
+      <default>demo</default>
+    </text>
+
+    <text name="security.prefix" suffix="security.prefix" advanced="false">
+      <default>demo</default>
+    </text>
+
+    <text name="transport.guarantee" suffix="transport.guarantee" advanced="false">
+      <default>NONE</default>
+    </text>
+
+    <!--
+       We really want this to set the value of the above to NONE or CONFIDENTIAL
+       addProperty(new BooleanProperty("ssl" suffix="use.ssl", true));
+       -->
+
+    <text name="description" suffix="description" advanced="true">
+      <default>Bedework user caldav server.</default>
+    </text>
+
+    <text name="display.name" suffix="display.name" advanced="true">
+      <default>Bedework user caldav</default>
+    </text>
+
+    <text name="name" suffix="name" advanced="true">
+      <default>${name}</default>
+    </text>
+
+    <hidden-boolean name="guestmode" suffix="guestmode" value="false"/>
+
+    <hidden-boolean name="publicadmin" suffix="publicadmin" value="false"/>
+
+    <!--     <text name="logPrefix" advanced="true">
+      <option>logPrefix</option>
+      <default>${name}</default>
+    </text>
+     -->
+  </application>
+
+  <!-- =====================================================================
+                         application: caldavTest
+       ===================================================================== -->
+  <application type="caldavTest">
+    <comment>Web config client properties.</comment>
+
+    hiddenText("project" suffix="project", inProps, "caldavTest");
+
+    <hidden-text name="type" suffix="type">
+      <option>appType</option>
+      <value>${type}</value>
+    </hidden-text>
+
+    hiddenText("sou.dir" suffix="sou.dir", inProps, "caldavTest");
+
+    <text name="shellscr.name" suffix="shellscr.name" advanced="true">
+      <default>bwruntest</default>
+    </text>
+
+    <text name="batscr.name" suffix="batscr.name" advanced="true">
+      <default>bwruntest.bat</default>
+    </text>
+
+    <text name="zip.name" suffix="zip.name" advanced="false">
+      <default>caldavTest</default>
+    </text>
+
+    <text name="description" suffix="description" advanced="true">
+      <default>Bedework CalDAV test utility.</default>
+    </text>
+  </application>
+
+  <!-- =====================================================================
+                         application: testsuite
+       ===================================================================== -->
+  <application type="testsuite">
+    <comment>Web config client properties.</comment>
+
+    hiddenText("project" suffix="project", inProps, "testsuite");
+
+    <hidden-text name="type" suffix="type">
+      <option>appType</option>
+      <value>${type}</value>
+    </hidden-text>
+
+    hiddenText("sou.dir" suffix="sou.dir", inProps, null);
+
+    <text name="shellscr.name" suffix="shellscr.name" advanced="true">
+      <default>bwruntest</default>
+    </text>
+
+    <text name="batscr.name" suffix="batscr.name" advanced="true">
+      <default>bwruntest.bat</default>
+    </text>
+
+    <text name="zip.name" suffix="zip.name" advanced="false">
+      <default>testsuite</default>
+    </text>
+
+    <text name="description" suffix="description" advanced="true">
+      <default>Bedework test suite.</default>
+    </text>
+
+    <text name="schema.delimiter" suffix="schema.delimiter" advanced="false">
+      <default>;</default>
+    </text>
+  </application>
+
+  <!-- =====================================================================
+                         application: dumprestore
+       ===================================================================== -->
+  <application type="dumprestore">
+    <comment>Web config client properties.</comment>
+
+    hiddenText("project" suffix="project", inProps, "dumprestore");
+
+    <hidden-text name="type" suffix="type">
+      <option>appType</option>
+      <value>${type}</value>
+    </hidden-text>
+
+    hiddenText("sou.dir" suffix="sou.dir", inProps, null);
+
+    <text name="shellscr.name" suffix="shellscr.name" advanced="true">
+      <default>bwrun</default>
+    </text>
+
+    <text name="batscr.name" suffix="batscr.name" advanced="true">
+      <default>bwrun.bat</default>
+    </text>
+
+    <text name="zip.name" suffix="zip.name" advanced="false">
+      <default>dumpres</default>
+    </text>
+
+    <text name="description" suffix="description" advanced="true">
+      <default>Bedework dump/restore utility.</default>
+    </text>
+
+    <text name="schema.delimiter" suffix="schema.delimiter" advanced="false">
+      <default>;</default>
+    </text>
+  </application>
+</meta-data>
