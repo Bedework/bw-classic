@@ -16,6 +16,318 @@
 -->
 
 <meta-data>
+  <!-- =====================================================================
+                         globals - system wide settings
+       ===================================================================== -->
+  <globals>
+    <options-class-name>org.bedework.calfacade.BwSystem</options-class-name>
+
+    <comment>Global settings for the systemn.</comment>
+
+<!--
+    setOptionsName("org.bedework.syspars");
+    setOptionsElementName("syspars");
+    setPnamePrefix("org.bedework.global.");
+    -->
+
+    <hidden-text name="version" suffix="version">
+      <value>3.4.1</value>
+    </hidden-text>
+
+    <text name="hibernate.dialect" suffix="hibernate.dialect" advanced="true">
+      <default>org.hibernate.dialect.HSQLDialect</default>
+    </text>
+
+    <hidden-text name="system.name" suffix="system.name" option="name">
+      <value>bedework</value>
+    </hidden-text>
+
+<!-- XXX
+    //org.bedework.global.jdbcdriver=org.hsqldb.jdbcDriver
+    //org.bedework.global.jdbcurl=jdbc:hsqldb:hsql://localhost:8887
+    //org.bedework.global.jdbcid=sa
+    //org.bedework.global.jdbcpw=
+    //org.bedework.global.hibernate.cache.use_second_level_cache=false
+    //org.bedework.global.hibernate.cache.provider_class org.hibernate.cache.EhCacheProvider
+
+    //requiredText("calintfclass", "calintfclass");
+    -->
+
+    <boolean name="directoryBrowsingDisallowed"
+             suffix="directory.browsing.disallowed"
+             option="directoryBrowsingDisallowed" advanced="true">
+      <default>true</default>
+    </boolean>
+
+    <boolean name="buildStandaloneApp" suffix="buildStandaloneApp" advanced="false">
+      <default>true</default>
+    </boolean>
+
+  <!--  XXX
+    //# Comment this out if deploying on some other app server
+    //org.bedework.global.deploy.on.tomcat=true
+     -->
+
+<!-- XXX Need to allow multiple comments
+    <comment>uris to cross link apps - of dubious usefulness</comment>
+    -->
+
+    <text name="public.admin.uri" suffix="public.admin.uri" advanced="true">
+      <default>/caladmin</default>
+    </text>
+
+    <text name="public.calendar.uri" suffix="public.calendar.uri" advanced="true">
+      <default>/cal</default>
+    </text>
+
+    <text name="personal.calendar.uri" suffix="personal.calendar.uri" advanced="true">
+      <default>/ucal</default>
+    </text>
+
+  <!--  XXX
+    //BooleanProperty jetspeedportlet = optBoolean("jetspeedPortlet",
+    //                                             "build.jetspeed.portlet");
+
+    //requiredText("jetspeed2.roles", "app.jetspeed2.roles", jetspeedportlet);
+
+    //optBoolean("uportalPortlet", "build.uportal.portlet");
+
+    //BooleanProperty j2ee = optBoolean("j2ee.deploy", "deploy.j2ee");
+
+    //requiredText("ear", "ear.name", j2ee);
+
+    /*
+     *
+# This is where we copy common xsl and javascript for inclusion by xsl and generated
+# content.
+org.bedework.global.common.deploydir=/webapps/ROOT/bedework-common
+
+#
+# Specify the portal platform we want to run on. Enable the appropriaet section.
+# Properties rquired:
+# org.bedework.build.for.XXX     Used to enable functions
+# org.bedework.global.portal.platform Used by deployment process to pick
+#                                appropriate build. Value is name of directory
+#                                in deployment/<kind>  e.g. uportal2
+#
+# For each portlet define the portlet name, e.g.
+#     org.bedework.app.Events.portlet.name=PublicCal
+#
+# If you want to build some struts applications standalone, and others as
+# portlets you will need two configs and two builds
+
+# These for standalone and for j2ee
+org.bedework.global.servlet.class=org.apache.struts.action.ActionServlet
+org.bedework.global.ignoreContentType=false
+org.bedework.global.portlet.mapping=
+org.bedework.global.genurl.taglib.tld=struts-html.tld
+
+# enable this and standalone for jboss
+#org.bedework.build.for.jboss=yes
+
+# These for uportal
+#org.bedework.build.for.uportal2=yes
+#org.bedework.global.portal.platform=uportal2
+#org.bedework.global.servlet.class=org.apache.portals.bridges.struts.PortletServlet
+#org.bedework.global.portlet-servlet.class=org.apache.pluto.core.PortletServlet
+#org.bedework.global.portlet.class=org.apache.portals.bridges.struts.StrutsPortlet
+#org.bedework.global.portal-servlet.context.provider=org.bedework.portal.uportal.PortalServletContextProvider
+#org.bedework.global.ignoreContentType=true
+#org.bedework.global.genurl.taglib.tld=bedework-portlet-struts-html.tld
+
+# These for liferay 4
+#org.bedework.build.for.liferay4=yes
+#org.bedework.global.portal.platform=liferay4
+# servlet-class is the action servlet in web.xml
+#org.bedework.global.servlet.class=org.apache.portals.bridges.struts.PortletServlet
+# portlet-servlet.class is the servlet-class element  for the portlet servlet in web.xml
+#org.bedework.global.portlet-servlet.class=com.liferay.portal.servlet.PortletServlet
+# portlet.class is in portlet.xml and the value for the portlet-class init par in web.xml
+#org.bedework.global.portlet.class=com.liferay.portal.apache.bridges.LiferayStrutsPortlet
+# portal-servlet.context.provider is in portlet.xml
+#org.bedework.global.portal-servlet.context.provider=com.liferay.util.apache.bridges.struts.LiferayServletContextProviderWrapper
+#org.bedework.global.portal-servlet.context.listener=com.liferay.portal.kernel.servlet.PortletContextListener
+#org.bedework.global.ignoreContentType=true
+#org.bedework.global.genurl.taglib.tld=bedework-portlet-struts-html.tld
+#org.bedework.global.liferay.company-id=liferay.com
+#liferay4.lib=${org.bedework.default.lib}/liferay4
+
+#
+# ========================================================================
+# ========================================================================
+#    bedework calendar default deployment definitions.
+# ========================================================================
+# ========================================================================
+
+#
+# ========================================================================
+# hsqldb defs
+# ========================================================================
+
+#  where the default db is
+org.bedework.hsqldb.dir=${org.bedework.project.bedework}/../hsqldb-1.7.3.3
+
+#  hsqldb db name for bedework.
+org.bedework.hsqldb.dbname=demo/events
+
+#  If uPortal2 builds are enabled this is the default dbname
+org.bedework.hsqldb.uportal2.dbname=uportal2/uportal
+
+#  default db name for tests
+org.bedework.hsqldb.test.dbdir=test
+
+# ========================================================================
+# Application server defs
+# ========================================================================
+
+#  where the application server lives
+org.bedework.appserver.dir=${org.bedework.project.bedework}/../apache-tomcat-5.5.17
+
+#  where we deploy
+org.bedework.appserver.deploy.dir=${org.bedework.appserver.dir}/webapps
+
+#  where most library files used by all applications go
+appserver.lib.dir=${org.bedework.appserver.dir}/common/lib
+
+# where 'endorsed' library files go.  These classes override anything
+# the JVM has. This is particularly important for things like Xalan,
+# etc., which can break the application if you choose the wrong version
+appserver.endorsed.dir=${org.bedework.appserver.dir}/common/endorsed
+
+# where things like log4j config files go
+log4j.config.destination=${org.bedework.appserver.dir}/common/classes
+
+# the toplevel directory for the default web application
+webapp.root.dir=${org.bedework.appserver.deploy.dir}/ROOT
+
+#  If jetspeed2 builds are enabled this is where we deploy
+org.bedework.jetspeed2.deploy.dir=${org.bedework.appserver.deploy.dir}/jetspeed/WEB-INF/deploy
+
+#  Set to yes if you want your log4j.xml overwritten
+org.bedework.deploy.log4j.config=no
+     */
+     -->
+    <!-- Global options are stored in the syspars object -->
+
+    <text name="tzid" option="tzid" advanced="false">
+      <default>America/New_York</default>
+    </text>
+
+    <text name="systemid" option="systemid" advanced="false">
+      <default>demobedework@mysite.edu</default>
+    </text>
+
+    <text name="publicCalendarRoot" option="publicCalendarRoot" advanced="true">
+      <default>public</default>
+    </text>
+
+    <text name="userCalendarRoot" option="userCalendarRoot" advanced="true">
+      <default>user</default>
+    </text>
+
+    <text name="userDefaultCalendar" option="userDefaultCalendar" advanced="true">
+      <default>calendar</default>
+    </text>
+
+    <text name="defaultTrashCalendar" option="defaultTrashCalendar" advanced="true">
+      <default>Trash</default>
+    </text>
+
+    <text name="userInbox" option="userInbox" advanced="true">
+      <default>Inbox</default>
+    </text>
+
+    <text name="userOutbox" option="userOutbox" advanced="true">
+      <default>Outbox</default>
+    </text>
+
+    <text name="deletedCalendar" option="deletedCalendar" advanced="true">
+      <default>Deleted</default>
+    </text>
+
+    <text name="busyCalendar" option="busyCalendar" advanced="true">
+      <default>Busy</default>
+    </text>
+
+    <text name="defaultUserViewName" option="defaultUserViewName" advanced="true">
+      <default>All</default>
+    </text>
+
+    <boolean name="defaultUserHour24" option="defaultUserHour24" advanced="true">
+      <default>true</default>
+    </boolean>
+
+    <text name="publicUser" option="publicUser" advanced="true">
+      <default>public-user</default>
+    </text>
+
+    <int name="httpConnectionsPerUser" option="httpConnectionsPerUser"
+         advanced="true">
+      <default>10</default>
+    </int>
+
+    <int name="httpConnectionsPerHost" option="xxhttpConnectionsPerHost"
+         advanced="true">
+      <default>50</default>
+    </int>
+
+    <int name="httpConnections" option="httpConnections" advanced="true">
+      <default>200</default>
+    </int>
+
+    <!--      size limits  -->
+
+    <int name="maxPublicDescriptionLength" option="maxPublicDescriptionLength"
+         advanced="true">
+      <default>500</default>
+    </int>
+
+    <int name="maxUserDescriptionLength" option="maxUserDescriptionLength"
+         advanced="true">
+      <default>5000</default>
+    </int>
+
+    <int name="maxUserEntitySize" option="maxUserEntitySize" advanced="true">
+      <default>100000</default>
+    </int>
+
+    <int name="defaultUserQuota" option="defaultUserQuota" advanced="true">
+      <default>10000000</default>
+    </int>
+
+    <!-- Max number of instances and years per recurring event -->
+
+    <int name="maxInstances" option="maxInstances" advanced="true">
+      <default>1000</default>
+    </int>
+
+    <int name="maxYears" option="maxYears" advanced="true">
+      <default>50</default>
+    </int>
+
+    <text name="userauthClass" option="userauthClass" advanced="true">
+      <default>org.bedework.calsvc.directory.UserAuthUWDbImpl</default>
+    </text>
+
+    <text name="mailerClass" option="mailerClass" advanced="true">
+      <default>org.bedework.mail.DummyMailer</default>
+    </text>
+
+    <text name="admingroupsClass" option="admingroupsClass" advanced="true">
+      <default>org.bedework.calsvc.directory.AdminGroupsDbImpl</default>
+    </text>
+
+    <text name="usergroupsClass" option="usergroupsClass" advanced="true">
+      <default>org.bedework.calsvc.directory.GroupsDbImpl</default>
+    </text>
+    <!--  org.bedework.calsvc.directory.UserGroupsLdapImpl -->
+
+    <text name="indexRoot" option="indexRoot" advanced="false">
+      <default>
+             "lucene/indexroot</default>
+    </text>
+   </globals>
+
   <!-- Bedework defined modules are:
     directory - configuration for dummy directory
     ldapdirectory - configuration for ldap directory interface
@@ -81,7 +393,7 @@
                exactly specified domain</comment>
     </text>
 
-    <boolean name="debug" option="debug" advanced="false">
+    <boolean name="debug" option="debug" advanced="false" required="false">
       <default>true</default>
     </boolean>
   </module>
@@ -172,7 +484,7 @@
       <default>,ou=groups, dc=bedework, dc=org</default>
     </text>
 
-    <boolean name="debug" option="debug" advanced="false">
+    <boolean name="debug" option="debug" advanced="false" required="false">
       <default>true</default>
     </boolean>
   </module>
@@ -206,7 +518,7 @@
       <default>Message from demo calendar server</default>
     </text>
 
-    <boolean name="disabled" option="disabled" advanced="true">
+    <boolean name="disabled" option="disabled" advanced="true" required="false">
       <default>false</default>
     </boolean>
   </module>
@@ -275,8 +587,7 @@
 
     <comment>Web administrative client properties.</comment>
 
-    <hidden-text name="type" suffix="type">
-      <option>appType</option>
+    <hidden-text name="type" suffix="type" option="appType">
       <value>${type}</value>
     </hidden-text>
 
@@ -419,8 +730,7 @@
 
     <comment>Web config client properties.</comment>
 
-    <hidden-text name="type" suffix="type">
-      <option>appType</option>
+    <hidden-text name="type" suffix="type" option="appType">
       <value>${type}</value>
     </hidden-text>
 
@@ -558,8 +868,7 @@
 
     <comment>Web config client properties.</comment>
 
-    <hidden-text name="type" suffix="type">
-      <option>appType</option>
+    <hidden-text name="type" suffix="type" option="appType">
       <value>${type}</value>
     </hidden-text>
 
@@ -674,8 +983,7 @@
 
     <comment>Web config client properties.</comment>
 
-    <hidden-text name="type" suffix="type">
-      <option>appType</option>
+    <hidden-text name="type" suffix="type" option="appType">
       <value>${type}</value>
     </hidden-text>
 
@@ -793,8 +1101,7 @@
 
     <comment>Web config client properties.</comment>
 
-    <hidden-text name="type" suffix="type">
-      <option>appType</option>
+    <hidden-text name="type" suffix="type" option="appType">
       <value>${type}</value>
     </hidden-text>
 
@@ -841,8 +1148,7 @@
 
     <comment>Web config client properties.</comment>
 
-    <hidden-text name="type" suffix="type">
-      <option>appType</option>
+    <hidden-text name="type" suffix="type" option="appType">
       <value>${type}</value>
     </hidden-text>
 
@@ -904,14 +1210,17 @@
   <application type="caldavTest">
     <comment>Web config client properties.</comment>
 
-    hiddenText("project" suffix="project", inProps, "caldavTest");
+    <hidden-text name="project" suffix="project">
+      <value>caldavTest</value>
+    </hidden-text>
 
-    <hidden-text name="type" suffix="type">
-      <option>appType</option>
+    <hidden-text name="type" suffix="type" option="appType">
       <value>${type}</value>
     </hidden-text>
 
-    hiddenText("sou.dir" suffix="sou.dir", inProps, "caldavTest");
+    <hidden-text name="sou.dir" suffix="sou.dir">
+      <value>caldavTest</value>
+    </hidden-text>
 
     <text name="shellscr.name" suffix="shellscr.name" advanced="true">
       <default>bwruntest</default>
@@ -936,14 +1245,16 @@
   <application type="testsuite">
     <comment>Web config client properties.</comment>
 
-    hiddenText("project" suffix="project", inProps, "testsuite");
+    <hidden-text name="project" suffix="project">
+      <value>testsuite</value>
+    </hidden-text>
 
-    <hidden-text name="type" suffix="type">
-      <option>appType</option>
+    <hidden-text name="type" suffix="type" option="appType">
       <value>${type}</value>
     </hidden-text>
 
-    hiddenText("sou.dir" suffix="sou.dir", inProps, null);
+    <hidden-text name="sou.dir" suffix="sou.dir">
+    </hidden-text>
 
     <text name="shellscr.name" suffix="shellscr.name" advanced="true">
       <default>bwruntest</default>
@@ -972,14 +1283,16 @@
   <application type="dumprestore">
     <comment>Web config client properties.</comment>
 
-    hiddenText("project" suffix="project", inProps, "dumprestore");
+    <hidden-text name="project" suffix="project">
+      <value>dumprestore</value>
+    </hidden-text>
 
-    <hidden-text name="type" suffix="type">
-      <option>appType</option>
+    <hidden-text name="type" suffix="type" option="appType">
       <value>${type}</value>
     </hidden-text>
 
-    hiddenText("sou.dir" suffix="sou.dir", inProps, null);
+    <hidden-text name="sou.dir" suffix="sou.dir">
+    </hidden-text>
 
     <text name="shellscr.name" suffix="shellscr.name" advanced="true">
       <default>bwrun</default>
