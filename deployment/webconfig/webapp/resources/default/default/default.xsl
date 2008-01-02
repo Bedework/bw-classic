@@ -317,11 +317,11 @@
   <xsl:template match="error">
     <xsl:choose>
       <xsl:when test="id = 'org.bedework.config.error.missingvalue'">
-        <p>A value is missing.  See the field
+        <p>Property<xsl:text> </xsl:text>
         (<xsl:for-each select="param">
-            <xsl:value-of select="."/>
+            <xsl:value-of select="."/><xsl:text> </xsl:text>
           </xsl:for-each>)
-        highlighted below.</p>
+        is missing.</p>
       </xsl:when>
       <xsl:otherwise>
         <p><xsl:value-of select="id"/>

@@ -262,8 +262,7 @@
 
     <hidden-boolean name="publicadmin" suffix="publicadmin" value="false"/>
 
-    <text name="logPrefix" advanced="true">
-      <option>logPrefix</option>
+    <text name="logPrefix" option="logPrefix" advanced="true">
       <default>${name}</default>
     </text>
   </application>
@@ -403,8 +402,7 @@
 
     <hidden-boolean name="publicadmin" suffix="publicadmin" value="true"/>
 
-    <text name="logPrefix" advanced="true">
-      <option>logPrefix</option>
+    <text name="logPrefix" option="logPrefix" advanced="true">
       <default>${name}</default>
     </text>
 
@@ -543,8 +541,7 @@
     //requiredText("refresh.action" suffix="refresh.action");
     -->
 
-    <text name="logPrefix" advanced="true">
-      <option>logPrefix</option>
+    <text name="logPrefix" option="logPrefix" advanced="true">
       <default>${name}</default>
     </text>
 
@@ -779,8 +776,7 @@
       <default>setup.do</default>
     </text>
 
-    <text name="logPrefix" advanced="true">
-      <option>logPrefix</option>
+    <text name="logPrefix" option="logPrefix" advanced="true">
       <default>${name}</default>
     </text>
 
@@ -831,8 +827,7 @@
     <hidden-boolean name="publicadmin" suffix="publicadmin" value="false"/>
 
     <!--
-    <text name="logPrefix" advanced="true">
-      <option>logPrefix</option>
+    <text name="logPrefix" option="logPrefix" advanced="true">
       <default>${name}</default>
     </text>
      -->
@@ -896,8 +891,8 @@
 
     <hidden-boolean name="publicadmin" suffix="publicadmin" value="false"/>
 
-    <!--     <text name="logPrefix" advanced="true">
-      <option>logPrefix</option>
+    <!--
+    <text name="logPrefix" option="logPrefix" advanced="true">
       <default>${name}</default>
     </text>
      -->
