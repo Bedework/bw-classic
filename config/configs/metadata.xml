@@ -59,7 +59,7 @@
       <default>true</default>
     </boolean>
 
-    <boolean name="buildStandaloneApp" suffix="buildStandaloneApp" advanced="false">
+    <boolean name="buildStandaloneApp" suffix="build.standalone.app" advanced="false">
       <default>true</default>
     </boolean>
 
@@ -266,7 +266,7 @@ org.bedework.deploy.log4j.config=no
       <default>10</default>
     </int>
 
-    <int name="httpConnectionsPerHost" option="xxhttpConnectionsPerHost"
+    <int name="httpConnectionsPerHost" option="httpConnectionsPerHost"
          advanced="true">
       <default>50</default>
     </int>
@@ -649,7 +649,7 @@ org.bedework.deploy.log4j.config=no
       <default>${name}</default>
     </text>
 
-    <text name="admingroupsidprefix" option="admingroupsidprefix" advanced="true">
+    <text name="admingroupsidprefix" suffix="admingroupsidprefix" advanced="true">
       <default>agrp_</default>
     </text>
 
@@ -705,7 +705,7 @@ org.bedework.deploy.log4j.config=no
       <default>/public/unbrowsable/submissions</default>
     </text>
 
-    <int name="minincrement" option="minincrement" advanced="true">
+    <int name="minincrement" option="minIncrement" advanced="true">
       <default>5</default>
     </int>
 
@@ -835,7 +835,7 @@ org.bedework.deploy.log4j.config=no
       <default>true</default>
     </boolean>
 
-    <int name="minincrement" option="minincrement" advanced="true">
+    <int name="minincrement" option="minIncrement" advanced="true">
       <default>5</default>
     </int>
 
@@ -936,7 +936,7 @@ org.bedework.deploy.log4j.config=no
       <default>true</default>
     </boolean>
 
-    <int name="minincrement" option="minincrement" advanced="true">
+    <int name="minincrement" option="minIncrement" advanced="true">
       <default>5</default>
     </int>
 
@@ -1064,7 +1064,7 @@ org.bedework.deploy.log4j.config=no
       <default>true</default>
     </boolean>
 
-    <int name="minincrement" option="minincrement" advanced="true">
+    <int name="minincrement" option="minIncrement" advanced="true">
       <default>5</default>
     </int>
 
@@ -1214,7 +1214,7 @@ org.bedework.deploy.log4j.config=no
       <value>caldavTest</value>
     </hidden-text>
 
-    <hidden-text name="type" suffix="type" option="appType">
+    <hidden-text name="type" suffix="type">
       <value>${type}</value>
     </hidden-text>
 
@@ -1249,7 +1249,7 @@ org.bedework.deploy.log4j.config=no
       <value>testsuite</value>
     </hidden-text>
 
-    <hidden-text name="type" suffix="type" option="appType">
+    <hidden-text name="type" suffix="type">
       <value>${type}</value>
     </hidden-text>
 
