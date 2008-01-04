@@ -661,6 +661,15 @@ function untilClickHandler(evt) {
    selectRecurCountUntil('recurUntil');
 }
 
+function resetPublishBox(calSelectId) {
+  // User has closed the publish box without publishing.
+  // Reset the calendar select box to default value and hide the publishBox.
+  var calSelect = document.getElementById(calSelectId);
+  calSelect.selectedIndex = 0;
+  changeClass('publishBox','invisible');
+}
+
+
 function init() {
   var untilHolder = dojo.byId("untilHolder");
   dojo.event.connect(untilHolder, "onclick", untilClickHandler);

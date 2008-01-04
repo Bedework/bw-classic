@@ -1027,18 +1027,42 @@
             <xsl:copy-of select="form/title/*"/>
           </td>
         </tr>
-        <tr>
-          <td class="fieldName">
-            Calendar:**
-          </td>
-          <td>
-            <xsl:if test="form/calendar/preferred/select/option">
-              <select name="prefCalendarId">
+        <xsl:if test="not(starts-with(form/calendar/path,$submissionsRootUnencoded))">
+          <tr>
+            <td class="fieldName">
+              Calendar:**
+            </td>
+            <td>
+              <xsl:if test="form/calendar/preferred/select/option">
+                <select name="prefCalendarId">
+                  <option>
+                    <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
+                    Select preferred:
+                  </option>
+                  <xsl:for-each select="form/calendar/preferred/select/option">
+                    <xsl:sort select="." order="ascending"/>
+                    <option>
+                      <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
+                      <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                      <xsl:choose>
+                        <xsl:when test="starts-with(node(),/bedework/submissionsRoot/unencoded)">
+                          submitted events
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="substring-after(node(),'/public/')"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </option>
+                  </xsl:for-each>
+                </select><br/>
+                or Calendar (all):
+              </xsl:if>
+              <select name="calendarId">
                 <option>
                   <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
-                  Select preferred:
+                  Select:
                 </option>
-                <xsl:for-each select="form/calendar/preferred/select/option">
+                <xsl:for-each select="form/calendar/all/select/option">
                   <xsl:sort select="." order="ascending"/>
                   <option>
                     <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
@@ -1053,36 +1077,14 @@
                     </xsl:choose>
                   </option>
                 </xsl:for-each>
-              </select><br/>
-              or Calendar (all):
-            </xsl:if>
-            <select name="calendarId">
-              <option>
-                <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
-                Select:
-              </option>
-              <xsl:for-each select="form/calendar/all/select/option">
-                <xsl:sort select="." order="ascending"/>
-                <option>
-                  <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
-                  <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                  <xsl:choose>
-                    <xsl:when test="starts-with(node(),/bedework/submissionsRoot/unencoded)">
-                      submitted events
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="substring-after(node(),'/public/')"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </option>
-              </xsl:for-each>
-            </select>
-            <xsl:text> </xsl:text>
-            <span id="calDescriptionsLink">
-              <a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a>
-            </span>
-          </td>
-        </tr>
+              </select>
+              <xsl:text> </xsl:text>
+              <span id="calDescriptionsLink">
+                <a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a>
+              </span>
+            </td>
+          </tr>
+        </xsl:if>
 
         <tr>
           <td class="fieldName">
@@ -2257,8 +2259,44 @@
         <xsl:choose>
           <xsl:when test="starts-with(form/calendar/path,$submissionsRootUnencoded)">
             <td>
+              <div id="publishBox" class="invisible">
+                <div id="publishBoxCloseButton">
+                  <a href="javascript:resetPublishBox('calendarId')">
+                    <img src="{$resourcesRoot}/resources/closeIcon.gif" width="20" height="20" alt="close" border="0"/>
+                  </a>
+                </div>
+                <strong>Select a calendar in which to publish this event:</strong><br/>
+                <select name="calendarId" id="calendarId">
+                  <option>
+                    <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
+                    Select:
+                  </option>
+                  <xsl:for-each select="form/calendar/all/select/option">
+                    <xsl:sort select="." order="ascending"/>
+                    <option>
+                      <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
+                      <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                      <xsl:choose>
+                        <xsl:when test="starts-with(node(),/bedework/submissionsRoot/unencoded)">
+                          submitted events
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="substring-after(node(),'/public/')"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </option>
+                  </xsl:for-each>
+                </select>
+                <input type="submit" name="publishEvent" value="Publish" onclick="changeClass('publishBox','invisible')"/>
+                <xsl:if test="$portalFriendly = 'false'">
+                  <br/>
+                  <span id="calDescriptionsLink">
+                    <a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a>
+                  </span>
+                </xsl:if>
+              </div>
               <input type="submit" name="updateSubmitEvent" value="Update Event"/>
-              <input type="submit" name="publishEvent" value="Publish Event"/>
+              <input type="button" name="publishEvent" value="Publish Event" onclick="changeClass('publishBox','visible')"/>
               <input type="submit" name="cancel" value="Cancel"/>
             </td>
             <td align="right">

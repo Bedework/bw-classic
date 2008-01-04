@@ -697,8 +697,25 @@ table.params .desc {
   height: 20px;
 }
 #submitTable {
+  position: relative; /* allows for absolute positioning within the table, e.g. #pubishBox */
   width: 96%; /* less than 100% helps avoid IE weirdness */
   margin-top: 1em;
+}
+#publishBox {
+  position: absolute;
+  padding: 1em;
+  background-color: #ffa;
+  color: black;
+  border: 1px solid #333;
+  width: 420px;
+  height: 60px;
+}
+#publishBoxCloseButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
 }
 #sharingBox {
   margin: 0;
