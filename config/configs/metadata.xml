@@ -34,24 +34,38 @@
       <value>3.4.1</value>
     </hidden-text>
 
-    <text name="hibernate.dialect" suffix="hibernate.dialect" advanced="true">
-      <default>org.hibernate.dialect.HSQLDialect</default>
-    </text>
-
     <hidden-text name="system.name" suffix="system.name" option="name">
       <value>bedework</value>
     </hidden-text>
 
-<!-- XXX
-    //org.bedework.global.jdbcdriver=org.hsqldb.jdbcDriver
-    //org.bedework.global.jdbcurl=jdbc:hsqldb:hsql://localhost:8887
-    //org.bedework.global.jdbcid=sa
-    //org.bedework.global.jdbcpw=
-    //org.bedework.global.hibernate.cache.use_second_level_cache=false
-    //org.bedework.global.hibernate.cache.provider_class org.hibernate.cache.EhCacheProvider
+    <text name="hibernate.dialect" suffix="hibernate.dialect" advanced="true">
+      <default>org.hibernate.dialect.HSQLDialect</default>
+    </text>
 
-    //requiredText("calintfclass", "calintfclass");
-    -->
+    <text name="jdbcdriver" suffix="jdbcdriver">
+      <default>org.hsqldb.jdbcDriver</default>
+    </text>
+
+    <text name="jdbcurl" suffix="jdbcurl">
+      <default>jdbc:hsqldb:hsql://localhost:8887</default>
+    </text>
+
+    <text name="jdbcid" suffix="jdbcid" required="false">
+      <default>sa</default>
+    </text>
+
+    <text name="jdbcpw" suffix="jdbcpw" required="false">
+    </text>
+
+    <boolean name="hibernate.cache.use_second_level_cache"
+             suffix="hibernate.cache.use_second_level_cache">
+      <default>false</default>
+    </boolean>
+
+    <text name="hibernate.cache.provider_class"
+          suffix="hibernate.cache.provider_class">
+      <default>org.hibernate.cache.EhCacheProvider</default>
+    </text>
 
     <boolean name="directoryBrowsingDisallowed"
              suffix="directory.browsing.disallowed"
@@ -59,7 +73,7 @@
       <default>true</default>
     </boolean>
 
-    <boolean name="buildStandaloneApp" suffix="build.standalone.app" advanced="false">
+    <boolean name="buildStandaloneApp" suffix="build.standalone.app">
       <default>true</default>
     </boolean>
 
@@ -116,42 +130,146 @@ org.bedework.global.common.deploydir=/webapps/ROOT/bedework-common
 # If you want to build some struts applications standalone, and others as
 # portlets you will need two configs and two builds
 
-# These for standalone and for j2ee
-org.bedework.global.servlet.class=org.apache.struts.action.ActionServlet
-org.bedework.global.ignoreContentType=false
-org.bedework.global.portlet.mapping=
-org.bedework.global.genurl.taglib.tld=struts-html.tld
+-->
+    <choice name="portal.platform" suffix="portal.platform">
+      <values>standalone,uportal2,liferay4</values>
+      <default>standalone</default>
+    </choice>
 
-# enable this and standalone for jboss
-#org.bedework.build.for.jboss=yes
+    <!-- ===================================================================
+                    These are condional on portal.platform
+         =================================================================== -->
+    <text name="servlet.class" suffix="servlet.class"
+          advanced="true">
+      <comment>servlet-class is the action servlet in web.xml</comment>
 
-# These for uportal
-#org.bedework.build.for.uportal2=yes
-#org.bedework.global.portal.platform=uportal2
-#org.bedework.global.servlet.class=org.apache.portals.bridges.struts.PortletServlet
-#org.bedework.global.portlet-servlet.class=org.apache.pluto.core.PortletServlet
-#org.bedework.global.portlet.class=org.apache.portals.bridges.struts.StrutsPortlet
-#org.bedework.global.portal-servlet.context.provider=org.bedework.portal.uportal.PortalServletContextProvider
-#org.bedework.global.ignoreContentType=true
-#org.bedework.global.genurl.taglib.tld=bedework-portlet-struts-html.tld
+      <default-if onlyIf="portal.platform" equals="standalone">
+        <value>org.apache.struts.action.ActionServlet</value>
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="uportal2">
+        <value>org.apache.portals.bridges.struts.PortletServlet</value>
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="liferay4">
+        <value>org.apache.portals.bridges.struts.PortletServlet</value>
+      </default-if>
+    </text>
 
-# These for liferay 4
-#org.bedework.build.for.liferay4=yes
-#org.bedework.global.portal.platform=liferay4
-# servlet-class is the action servlet in web.xml
-#org.bedework.global.servlet.class=org.apache.portals.bridges.struts.PortletServlet
-# portlet-servlet.class is the servlet-class element  for the portlet servlet in web.xml
-#org.bedework.global.portlet-servlet.class=com.liferay.portal.servlet.PortletServlet
-# portlet.class is in portlet.xml and the value for the portlet-class init par in web.xml
-#org.bedework.global.portlet.class=com.liferay.portal.apache.bridges.LiferayStrutsPortlet
-# portal-servlet.context.provider is in portlet.xml
-#org.bedework.global.portal-servlet.context.provider=com.liferay.util.apache.bridges.struts.LiferayServletContextProviderWrapper
-#org.bedework.global.portal-servlet.context.listener=com.liferay.portal.kernel.servlet.PortletContextListener
-#org.bedework.global.ignoreContentType=true
-#org.bedework.global.genurl.taglib.tld=bedework-portlet-struts-html.tld
-#org.bedework.global.liferay.company-id=liferay.com
-#liferay4.lib=${org.bedework.default.lib}/liferay4
+    <text name="portlet-servlet.class" suffix="portlet-servlet.class"
+          advanced="true">
+      <comment>portlet-servlet.class is the servlet-class element  for the
+               portlet servlet in web.xml</comment>
 
+      <default-if onlyIf="portal.platform" equals="standalone"
+                  required="false">
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="uportal2">
+        <value>org.apache.pluto.core.PortletServlet</value>
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="liferay4">
+        <value>com.liferay.portal.servlet.PortletServlet</value>
+      </default-if>
+    </text>
+
+    <text name="portlet.class" suffix="portlet.class"
+          advanced="true">
+      <comment>portlet.class is in portlet.xml and the value for the
+               portlet-class init par in web.xml</comment>
+
+      <default-if onlyIf="portal.platform" equals="standalone"
+                  required="false">
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="uportal2">
+        <value>org.apache.portals.bridges.struts.StrutsPortlet</value>
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="liferay4">
+        <value>com.liferay.portal.apache.bridges.LiferayStrutsPortlet</value>
+      </default-if>
+    </text>
+
+    <text name="portlet-servlet.context.provider"
+          suffix="portlet-servlet.context.provider"
+          advanced="true">
+      <comment>portal-servlet.context.provider is in portlet.xml</comment>
+
+      <default-if onlyIf="portal.platform" equals="standalone"
+                  required="false">
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="uportal2">
+        <value>org.bedework.portal.uportal.PortalServletContextProvider</value>
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="liferay4">
+        <value>com.liferay.util.apache.bridges.struts.LiferayServletContextProviderWrapper</value>
+      </default-if>
+    </text>
+
+    <text name="portlet-servlet.context.listener"
+          suffix="portlet-servlet.context.listener"
+          advanced="true">
+      <comment>portal-servlet.context.listener is ???</comment>
+
+      <default-if onlyIf="portal.platform" equals="standalone"
+                  required="false">
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="uportal2"
+                  required="false">
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="liferay4">
+        <value>com.liferay.portal.kernel.servlet.PortletContextListener</value>
+      </default-if>
+    </text>
+
+    <boolean name="ignoreContentType" suffix="ignoreContentType"
+            advanced="true">
+      <default-if onlyIf="portal.platform" equals="standalone">
+        <value>false</value>
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="uportal2">
+        <value>true</value>
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="liferay4">
+        <value>true</value>
+      </default-if>
+    </boolean>
+
+    <!--
+    <text name="portlet.mapping" suffix="portlet.mapping"
+          advanced="true">
+      <default-if onlyIf="portal.platform" equals="standalone">
+      </default-if>
+    </text>
+    -->
+
+    <text name="genurl.taglib.tld" suffix="genurl.taglib.tld"
+          advanced="true">
+      <default-if onlyIf="portal.platform" equals="standalone">
+        <value>struts-html.tld</value>
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="uportal2">
+        <value>bedework-portlet-struts-html.tld</value>
+      </default-if>
+      <default-if onlyIf="portal.platform" equals="liferay4">
+        <value>bedework-portlet-struts-html.tld</value>
+      </default-if>
+    </text>
+
+    <!-- select standalone and enable this for jboss -->
+    <boolean name="build.for.jboss" suffix="build.for.jboss"
+          onlyIf="portal.platform" equals="standalone">
+      <default>false</default>
+    </boolean>
+
+    <text name="liferay.company-id" suffix="liferay.company-id"
+          onlyIf="portal.platform" equals="liferay4">
+      <default>liferay.com</default>
+    </text>
+
+    <!-- org.bedework.build.for.uportal2=yes
+         org.bedework.build.for.liferay4=yes -->
+    <hidden-text name="liferay4.lib" suffix="liferay4.lib">
+      <value>${org.bedework.default.lib}/liferay4</value>
+    </hidden-text>
+
+<!--
 #
 # ========================================================================
 # ========================================================================
@@ -209,11 +327,11 @@ org.bedework.deploy.log4j.config=no
      -->
     <!-- Global options are stored in the syspars object -->
 
-    <text name="tzid" option="tzid" advanced="false">
+    <text name="tzid" option="tzid">
       <default>America/New_York</default>
     </text>
 
-    <text name="systemid" option="systemid" advanced="false">
+    <text name="systemid" option="systemid">
       <default>demobedework@mysite.edu</default>
     </text>
 
@@ -322,7 +440,7 @@ org.bedework.deploy.log4j.config=no
     </text>
     <!--  org.bedework.calsvc.directory.UserGroupsLdapImpl -->
 
-    <text name="indexRoot" option="indexRoot" advanced="false">
+    <text name="indexRoot" option="indexRoot">
       <default>
              "lucene/indexroot</default>
     </text>
@@ -376,7 +494,7 @@ org.bedework.deploy.log4j.config=no
       <default>/principals/hosts</default>
     </text>
 
-    <text name="domains" option="domains" advanced="false">
+    <text name="domains" option="domains">
       <default>mysite.edu</default>
       <comment>List domains at your site separated by commas.
                A single leading wildcard \"*\" is allowed.
@@ -387,13 +505,13 @@ org.bedework.deploy.log4j.config=no
                (partially untested feature)</comment>
     </text>
 
-    <text name="defaultDomain" option="defaultDomain" advanced="false">
+    <text name="defaultDomain" option="defaultDomain">
       <default>mysite.edu</default>
       <comment>defaultDomain can be left unspecified for no default or a single
                exactly specified domain</comment>
     </text>
 
-    <boolean name="debug" option="debug" advanced="false" required="false">
+    <boolean name="debug" option="debug" required="false">
       <default>true</default>
     </boolean>
   </module>
@@ -435,7 +553,7 @@ org.bedework.deploy.log4j.config=no
       <default>/principals/hosts</default>
     </text>
 
-    <text name="domains" option="domains" advanced="false">
+    <text name="domains" option="domains">
       <default>mysite.edu</default>
       <comment>List domains at your site separated by commas.
                A single leading wildcard \"*\" is allowed.
@@ -446,7 +564,7 @@ org.bedework.deploy.log4j.config=no
                (partially untested feature)</comment>
     </text>
 
-    <text name="defaultDomain" option="defaultDomain" advanced="false">
+    <text name="defaultDomain" option="defaultDomain">
       <default>mysite.edu</default>
       <comment>defaultDomain can be left unspecified for no default or a single
                exactly specified domain</comment>
@@ -456,7 +574,7 @@ org.bedework.deploy.log4j.config=no
       <default>com.sun.jndi.ldap.LdapCtxFactory</default>
     </text>
 
-    <text name="providerUrl" suffix="providerUrl" advanced="false">
+    <text name="providerUrl" suffix="providerUrl">
       <default>ldap://localhost/</default>
     </text>
 
@@ -484,7 +602,7 @@ org.bedework.deploy.log4j.config=no
       <default>,ou=groups, dc=bedework, dc=org</default>
     </text>
 
-    <boolean name="debug" option="debug" advanced="false" required="false">
+    <boolean name="debug" option="debug" required="false">
       <default>true</default>
     </boolean>
   </module>
@@ -506,15 +624,15 @@ org.bedework.deploy.log4j.config=no
       <default>com.sun.mail.smtp.SMTPTransport</default>
     </text>
 
-    <text name="serverIp" suffix="serverIp" advanced="false">
+    <text name="serverIp" suffix="serverIp">
       <default>localhost</default>
     </text>
 
-    <text name="from" suffix="from" advanced="false">
+    <text name="from" suffix="from">
       <default>calendar.myplace.edu</default>
     </text>
 
-    <text name="subject" suffix="subject" advanced="false">
+    <text name="subject" suffix="subject">
       <default>Message from demo calendar server</default>
     </text>
 
@@ -533,28 +651,28 @@ org.bedework.deploy.log4j.config=no
       <value>${type}</value>
     </hidden-text>
 
-    <text name="defaultContentType" suffix="default.contenttype" advanced="false">
+    <text name="defaultContentType" suffix="default.contenttype">
       <default>text/xml</default>
     </text>
 
-    <text name="war" suffix="war.name" advanced="false">
+    <text name="war" suffix="war.name">
       <default>${name}</default>
     </text>
 
-    <text name="context.root" suffix="context.root" advanced="false">
+    <text name="context.root" suffix="context.root">
       <default>${name}</default>
     </text>
 
-    <text name="app.root" suffix="root" advanced="false">
+    <text name="app.root" suffix="root">
       <option>appRoot</option>
       <default>http://localhost:8080/${name}rsrc</default>
     </text>
 
-    <text name="resources.dir" suffix="resources.dir" advanced="false">
+    <text name="resources.dir" suffix="resources.dir">
       <default>http://localhost:8080/${name}rsrc</default>
     </text>
 
-    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+    <text name="deploy.dir" suffix="deploy.dir">
       <default>/webapps</default>
     </text>
 
@@ -595,40 +713,40 @@ org.bedework.deploy.log4j.config=no
       <value>webadmin</value>
     </hidden-text>
 
-    <text name="defaultContentType" suffix="default.contenttype" advanced="false">
+    <text name="defaultContentType" suffix="default.contenttype">
       <default>text/xml</default>
     </text>
 
-    <text name="war" suffix="war.name" advanced="false">
+    <text name="war" suffix="war.name">
       <default>${name}</default>
     </text>
 
-    <text name="context.root" suffix="context.root" advanced="false">
+    <text name="context.root" suffix="context.root">
       <default>${name}</default>
     </text>
 
-    <text name="app.root" suffix="root" advanced="false">
+    <text name="app.root" suffix="root">
       <option>appRoot</option>
       <default>http://localhost:8080/${name}rsrc</default>
     </text>
 
-    <text name="resources.dir" suffix="resources.dir" advanced="false">
+    <text name="resources.dir" suffix="resources.dir">
       <default>http://localhost:8080/${name}rsrc</default>
     </text>
 
-    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+    <text name="deploy.dir" suffix="deploy.dir">
       <default>/webapps</default>
     </text>
 
-    <text name="security.domain" suffix="security.domain" advanced="false">
+    <text name="security.domain" suffix="security.domain">
       <default>demo</default>
     </text>
 
-    <text name="security.prefix" suffix="security.prefix" advanced="false">
+    <text name="security.prefix" suffix="security.prefix">
       <default>demo</default>
     </text>
 
-    <text name="transport.guarantee" suffix="transport.guarantee" advanced="false">
+    <text name="transport.guarantee" suffix="transport.guarantee">
       <default>NONE</default>
     </text>
 
@@ -697,11 +815,11 @@ org.bedework.deploy.log4j.config=no
       <default>true</default>
     </boolean>
 
-    <boolean name="hour24" option="hour24" advanced="false">
+    <boolean name="hour24" option="hour24">
       <default>true</default>
     </boolean>
 
-    <text name="submissionRoot" option="submissionRoot" advanced="false">
+    <text name="submissionRoot" option="submissionRoot">
       <default>/public/unbrowsable/submissions</default>
     </text>
 
@@ -738,7 +856,7 @@ org.bedework.deploy.log4j.config=no
       <value>websubmit</value>
     </hidden-text>
 
-    <text name="defaultContentType" suffix="default.contenttype" advanced="false">
+    <text name="defaultContentType" suffix="default.contenttype">
       <default>text/xml</default>
     </text>
 
@@ -752,11 +870,11 @@ org.bedework.deploy.log4j.config=no
 
     <!-- #org.bedework.app.UserCal.portlet.name=EventSubmit -->
 
-    <text name="war" suffix="war.name" advanced="false">
+    <text name="war" suffix="war.name">
       <default>${name}</default>
     </text>
 
-    <text name="context.root" suffix="context.root" advanced="false">
+    <text name="context.root" suffix="context.root">
       <default>${name}</default>
     </text>
 
@@ -765,28 +883,28 @@ org.bedework.deploy.log4j.config=no
     //#org.bedework.app.UserCal.virtual.host=
      -->
 
-    <text name="app.root" suffix="root" advanced="false">
+    <text name="app.root" suffix="root">
       <option>appRoot</option>
       <default>http://localhost:8080/${name}rsrc</default>
     </text>
 
-    <text name="resources.dir" suffix="resources.dir" advanced="false">
+    <text name="resources.dir" suffix="resources.dir">
       <default>http://localhost:8080/${name}rsrc</default>
     </text>
 
-    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+    <text name="deploy.dir" suffix="deploy.dir">
       <default>/webapps</default>
     </text>
 
-    <text name="security.domain" suffix="security.domain" advanced="false">
+    <text name="security.domain" suffix="security.domain">
       <default>demo</default>
     </text>
 
-    <text name="security.prefix" suffix="security.prefix" advanced="false">
+    <text name="security.prefix" suffix="security.prefix">
       <default>demo</default>
     </text>
 
-    <text name="transport.guarantee" suffix="transport.guarantee" advanced="false">
+    <text name="transport.guarantee" suffix="transport.guarantee">
       <default>NONE</default>
     </text>
 
@@ -827,11 +945,11 @@ org.bedework.deploy.log4j.config=no
       <default>false</default>
     </boolean>
 
-    <text name="submissionRoot" option="submissionRoot" advanced="false">
+    <text name="submissionRoot" option="submissionRoot">
       <default>/public/unbrowsable/submissions</default>
     </text>
 
-    <boolean name="hour24" option="hour24" advanced="false">
+    <boolean name="hour24" option="hour24">
       <default>true</default>
     </boolean>
 
@@ -876,7 +994,7 @@ org.bedework.deploy.log4j.config=no
       <value>webclient</value>
     </hidden-text>
 
-    <text name="defaultContentType" suffix="default.contenttype" advanced="false">
+    <text name="defaultContentType" suffix="default.contenttype">
       <default>text/xml</default>
     </text>
 
@@ -890,11 +1008,11 @@ org.bedework.deploy.log4j.config=no
 
     <!-- //#org.bedework.app.UserCal.portlet.name=UserCal -->
 
-    <text name="war" suffix="war.name" advanced="false">
+    <text name="war" suffix="war.name">
       <default>${name}</default>
     </text>
 
-    <text name="context.root" suffix="context.root" advanced="false">
+    <text name="context.root" suffix="context.root">
       <default>${name}</default>
     </text>
 
@@ -903,16 +1021,16 @@ org.bedework.deploy.log4j.config=no
     //#org.bedework.app.UserCal.virtual.host=
      -->
 
-    <text name="app.root" suffix="root" advanced="false">
+    <text name="app.root" suffix="root">
       <option>appRoot</option>
       <default>http://localhost:8080/${name}rsrc</default>
     </text>
 
-    <text name="resources.dir" suffix="resources.dir" advanced="false">
+    <text name="resources.dir" suffix="resources.dir">
       <default>http://localhost:8080/${name}rsrc</default>
     </text>
 
-    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+    <text name="deploy.dir" suffix="deploy.dir">
       <default>/webapps</default>
     </text>
 
@@ -932,7 +1050,7 @@ org.bedework.deploy.log4j.config=no
       <default>public-user</default>
     </text>
 
-    <boolean name="hour24" option="hour24" advanced="false">
+    <boolean name="hour24" option="hour24">
       <default>true</default>
     </boolean>
 
@@ -991,7 +1109,7 @@ org.bedework.deploy.log4j.config=no
       <value>webclient</value>
     </hidden-text>
 
-    <text name="defaultContentType" suffix="default.contenttype" advanced="false">
+    <text name="defaultContentType" suffix="default.contenttype">
       <default>text/xml</default>
     </text>
 
@@ -1005,11 +1123,11 @@ org.bedework.deploy.log4j.config=no
 
     <!-- //#org.bedework.app.UserCal.portlet.name=UserCal -->
 
-    <text name="war" suffix="war.name" advanced="false">
+    <text name="war" suffix="war.name">
       <default>${name}</default>
     </text>
 
-    <text name="context.root" suffix="context.root" advanced="false">
+    <text name="context.root" suffix="context.root">
       <default>${name}</default>
     </text>
 
@@ -1018,28 +1136,28 @@ org.bedework.deploy.log4j.config=no
     //#org.bedework.app.UserCal.virtual.host=
     -->
 
-    <text name="app.root" suffix="root" advanced="false">
+    <text name="app.root" suffix="root">
       <option>appRoot</option>
       <default>http://localhost:8080/${name}rsrc</default>
     </text>
 
-    <text name="resources.dir" suffix="resources.dir" advanced="false">
+    <text name="resources.dir" suffix="resources.dir">
       <default>http://localhost:8080/${name}rsrc</default>
     </text>
 
-    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+    <text name="deploy.dir" suffix="deploy.dir">
       <default>/webapps</default>
     </text>
 
-    <text name="security.domain" suffix="security.domain" advanced="false">
+    <text name="security.domain" suffix="security.domain">
       <default>demo</default>
     </text>
 
-    <text name="security.prefix" suffix="security.prefix" advanced="false">
+    <text name="security.prefix" suffix="security.prefix">
       <default>demo</default>
     </text>
 
-    <text name="transport.guarantee" suffix="transport.guarantee" advanced="false">
+    <text name="transport.guarantee" suffix="transport.guarantee">
       <default>NONE</default>
     </text>
 
@@ -1060,7 +1178,7 @@ org.bedework.deploy.log4j.config=no
       <default>${name}</default>
     </text>
 
-    <boolean name="hour24" option="hour24" advanced="false">
+    <boolean name="hour24" option="hour24">
       <default>true</default>
     </boolean>
 
@@ -1105,15 +1223,15 @@ org.bedework.deploy.log4j.config=no
       <value>${type}</value>
     </hidden-text>
 
-    <text name="war" suffix="war.name" advanced="false">
+    <text name="war" suffix="war.name">
       <default>${name}</default>
     </text>
 
-    <text name="context.root" suffix="context.root" advanced="false">
+    <text name="context.root" suffix="context.root">
       <default>${name}</default>
     </text>
 
-    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+    <text name="deploy.dir" suffix="deploy.dir">
       <default>/webapps</default>
     </text>
 
@@ -1152,27 +1270,27 @@ org.bedework.deploy.log4j.config=no
       <value>${type}</value>
     </hidden-text>
 
-    <text name="war" suffix="war.name" advanced="false">
+    <text name="war" suffix="war.name">
       <default>${name}</default>
     </text>
 
-    <text name="context.root" suffix="context.root" advanced="false">
+    <text name="context.root" suffix="context.root">
       <default>${name}</default>
     </text>
 
-    <text name="deploy.dir" suffix="deploy.dir" advanced="false">
+    <text name="deploy.dir" suffix="deploy.dir">
       <default>/webapps</default>
     </text>
 
-    <text name="security.domain" suffix="security.domain" advanced="false">
+    <text name="security.domain" suffix="security.domain">
       <default>demo</default>
     </text>
 
-    <text name="security.prefix" suffix="security.prefix" advanced="false">
+    <text name="security.prefix" suffix="security.prefix">
       <default>demo</default>
     </text>
 
-    <text name="transport.guarantee" suffix="transport.guarantee" advanced="false">
+    <text name="transport.guarantee" suffix="transport.guarantee">
       <default>NONE</default>
     </text>
 
@@ -1230,7 +1348,7 @@ org.bedework.deploy.log4j.config=no
       <default>bwruntest.bat</default>
     </text>
 
-    <text name="zip.name" suffix="zip.name" advanced="false">
+    <text name="zip.name" suffix="zip.name">
       <default>caldavTest</default>
     </text>
 
@@ -1264,7 +1382,7 @@ org.bedework.deploy.log4j.config=no
       <default>bwruntest.bat</default>
     </text>
 
-    <text name="zip.name" suffix="zip.name" advanced="false">
+    <text name="zip.name" suffix="zip.name">
       <default>testsuite</default>
     </text>
 
@@ -1272,7 +1390,7 @@ org.bedework.deploy.log4j.config=no
       <default>Bedework test suite.</default>
     </text>
 
-    <text name="schema.delimiter" suffix="schema.delimiter" advanced="false">
+    <text name="schema.delimiter" suffix="schema.delimiter">
       <default>;</default>
     </text>
   </application>
@@ -1302,7 +1420,7 @@ org.bedework.deploy.log4j.config=no
       <default>bwrun.bat</default>
     </text>
 
-    <text name="zip.name" suffix="zip.name" advanced="false">
+    <text name="zip.name" suffix="zip.name">
       <default>dumpres</default>
     </text>
 
@@ -1310,7 +1428,7 @@ org.bedework.deploy.log4j.config=no
       <default>Bedework dump/restore utility.</default>
     </text>
 
-    <text name="schema.delimiter" suffix="schema.delimiter" advanced="false">
+    <text name="schema.delimiter" suffix="schema.delimiter">
       <default>;</default>
     </text>
   </application>
