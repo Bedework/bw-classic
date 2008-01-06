@@ -24,12 +24,6 @@
 
     <comment>Global settings for the systemn.</comment>
 
-<!--
-    setOptionsName("org.bedework.syspars");
-    setOptionsElementName("syspars");
-    setPnamePrefix("org.bedework.global.");
-    -->
-
     <hidden-text name="version" suffix="version">
       <value>3.4.1</value>
     </hidden-text>
@@ -98,6 +92,12 @@
       <default>/ucal</default>
     </text>
 
+    <!-- This is where we copy common xsl and javascript for inclusion by xsl
+         and generated content. -->
+    <text name="common.deploydir" suffix="common.deploydir">
+      <default>/webapps/ROOT/bedework-common</default>
+    </text>
+
   <!--  XXX
     //BooleanProperty jetspeedportlet = optBoolean("jetspeedPortlet",
     //                                             "build.jetspeed.portlet");
@@ -112,9 +112,6 @@
 
     /*
      *
-# This is where we copy common xsl and javascript for inclusion by xsl and generated
-# content.
-org.bedework.global.common.deploydir=/webapps/ROOT/bedework-common
 
 #
 # Specify the portal platform we want to run on. Enable the appropriaet section.
@@ -137,7 +134,7 @@ org.bedework.global.common.deploydir=/webapps/ROOT/bedework-common
     </choice>
 
     <!-- ===================================================================
-                    These are condional on portal.platform
+                    These are conditional on portal.platform
          =================================================================== -->
     <text name="servlet.class" suffix="servlet.class"
           advanced="true">
@@ -616,23 +613,23 @@ org.bedework.deploy.log4j.config=no
 
     <comment>Configuration to use java mail classes..</comment>
 
-    <text name="protocol" suffix="protocol" advanced="true">
+    <text name="protocol" option="protocol" advanced="true">
       <default>/principals</default>
     </text>
 
-    <text name="protocolClass" suffix="protocolClass" advanced="true">
+    <text name="protocolClass" option="protocolClass" advanced="true">
       <default>com.sun.mail.smtp.SMTPTransport</default>
     </text>
 
-    <text name="serverIp" suffix="serverIp">
+    <text name="serverIp" option="serverIp">
       <default>localhost</default>
     </text>
 
-    <text name="from" suffix="from">
+    <text name="from" option="from">
       <default>calendar.myplace.edu</default>
     </text>
 
-    <text name="subject" suffix="subject">
+    <text name="subject" option="subject">
       <default>Message from demo calendar server</default>
     </text>
 
