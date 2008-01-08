@@ -88,7 +88,7 @@ checkbranchtag "$1"
 check "Name" "$2"
 check "Comment" "$3"
 
-SVNREPOSITORY="http://svn.bedework.org"
+SVNREPOSITORY="https://www.bedework.org/svn"
 TARGET="$BTR/$2"
 COMMENT="$3"
 
