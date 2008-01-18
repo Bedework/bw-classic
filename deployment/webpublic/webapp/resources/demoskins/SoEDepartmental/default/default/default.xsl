@@ -157,7 +157,7 @@
             <xsl:apply-templates select="/bedework/calendars"/>
           </xsl:when>
           <xsl:when test="/bedework/page='displayCalendarForExport'">
-            <!-- page for calendar export (can optionally be replaced by 
+            <!-- page for calendar export (can optionally be replaced by
                  a pop-up widget; see the calendars template) -->
             <xsl:apply-templates select="/bedework/currentCalendar" mode="export"/>
           </xsl:when>
@@ -1257,7 +1257,7 @@
   </xsl:template>
 
   <!--==== CALENDARS ====-->
-  
+
   <!-- list of available calendars -->
   <xsl:template match="calendars">
     <xsl:variable name="topLevelCalCount" select="count(calendar/calendar)"/>
@@ -1273,11 +1273,11 @@
             Select a calendar from the list below to see only that calendar's events.
           </p>
           <!-- Uncomment this block, and change the links on the download calendar
-               icon (in the following template) to use a dojo floating 
+               icon (in the following template) to use a dojo floating
                widget instead of a separate page
-               for downloading whole calendars (this method does not work 
-               portal-agnostically: it is not intended for use in portals). 
-               
+               for downloading whole calendars (this method does not work
+               portal-agnostically: it is not intended for use in portals).
+
           <div dojoType="FloatingPane" id="bwCalendarExportWidget"
                title="Export Calendar as iCal" toggle="plain"
                windowState="minimized" hasShadow="true"
@@ -1339,7 +1339,7 @@
       <xsl:if test="calendarCollection='true'">
         <xsl:variable name="calPath" select="path"/>
         <span class="exportCalLink">
-          <!-- To use the dojo floating widget from the template above, uncomment 
+          <!-- To use the dojo floating widget from the template above, uncomment
                this block:
           <xsl:variable name="name" select="name"/>
           <xsl:variable name="idForCal" select="translate(translate(path,'/','S'),' ','s')"/>
@@ -1358,7 +1358,7 @@
       </xsl:if>
     </li>
   </xsl:template>
-  
+
   <!-- calendar export page -->
   <xsl:template match="currentCalendar" mode="export">
     <h2 class="bwStatusConfirmed">Export Calendar</h2>
@@ -1517,7 +1517,7 @@
             <xsl:value-of select="event/start/time"/>
             <xsl:choose>
               <xsl:when test="event/start/longdate != event/end/longdate">
-                - <xsl:value-of select="event/start/longdate"/>
+                - <xsl:value-of select="event/end/longdate"/>
                 <xsl:text> </xsl:text>
                 <xsl:value-of select="event/end/time"/>
               </xsl:when>

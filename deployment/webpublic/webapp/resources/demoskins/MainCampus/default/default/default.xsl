@@ -1517,7 +1517,7 @@
             <xsl:value-of select="event/start/time"/>
             <xsl:choose>
               <xsl:when test="event/start/longdate != event/end/longdate">
-                - <xsl:value-of select="event/start/longdate"/>
+                - <xsl:value-of select="event/end/longdate"/>
                 <xsl:text> </xsl:text>
                 <xsl:value-of select="event/end/time"/>
               </xsl:when>
