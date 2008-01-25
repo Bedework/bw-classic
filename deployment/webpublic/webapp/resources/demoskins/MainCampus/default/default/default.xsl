@@ -151,6 +151,10 @@
             <!-- show an event -->
             <xsl:apply-templates select="/bedework/event"/>
           </xsl:when>
+          <xsl:when test="/bedework/page='eventList'">
+            <!-- show a list of discrete events in a time period -->
+            To be implemented: A list of discrete events will be displayed
+          </xsl:when>
           <xsl:when test="/bedework/page='showSysStats'">
             <!-- show system stats -->
             <xsl:call-template name="stats"/>
