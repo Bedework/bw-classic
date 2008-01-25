@@ -4,7 +4,23 @@ body {
   color: #000;
   margin: 0;
   padding: 0;
-  font-size: 12px;
+  font-size: 10px;
+}
+h1#homeTitle {
+  text-align: center;
+  margin: 0;
+  padding: 2px 0;
+  background-color: #900;
+  color: white;
+  font-size: 10px;
+}
+#homeLink {
+  padding-left: 1em;
+  font-size: 0.8em;
+}
+#homeLink a {
+  background-color: transparent;
+  color: #eee;
 }
 #titleBar {
   background: #e2decc;
@@ -14,23 +30,35 @@ body {
   text-align: center;
   font-weight: bold;
 }
-#homeLink {
-  padding-left: 1em;
-  font-size: 0.8em;
-}
 #dateInfo,
 #mainNav {
   text-align: center;
   white-space: nowrap;
 }
+#mainNav {
+  margin-bottom: 1em;
+}
 h1 {
-  font-size: 12px;
+  font-size: 11px;
   margin: 0; /* must wrap h1s with <p> tags for blackberry */
   padding: 0;
 }
 h2,h3,h4,h5 {
-  font-size: 12px;
+  font-size: 11px;
   text-align: left;
+}
+h3 {
+  background-color: #e2decc;
+  color: black;
+  margin: 1em 0 0 0;
+}
+a:link,
+a:active,
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
 }
 dl {
   margin: 0.5em 1em;
@@ -40,6 +68,40 @@ dl {
 }
 #eventTable td.fieldname {
   padding-right: 1em;
+}
+.eventList {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.eventList tr.a td {
+  color: black;
+  background-color: #F3F1E8;
+}
+.eventList td {
+  padding: 0;
+  border-bottom: 1px dotted #ccc;
+}
+.eventList td.date {
+  font-size: 8px;
+  white-space: nowrap;
+}
+ul.calendarTree {
+  text-align: left;
+}
+ul.calendarTree li {
+  font-weight: bold;
+}
+ul.calendarTree li ul li {
+  font-weight: normal;
+}
+ul.calendarTree li.folder {
+  list-style-image: url(../../images/catIcon.gif);
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+ul.calendarTree li.calendar {
+  list-style-image: url(../../images/calIcon-sm.gif);
 }
 #footer {
   font-size: 0.8em;

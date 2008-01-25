@@ -97,6 +97,7 @@
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection"/>
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars"/>
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod"/>
+  <xsl:variable name="listEvents" select="/bedework/urlPrefixes/main/listEvents"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
@@ -268,7 +269,7 @@
         <a href="javascript:window.print()" title="print this view">
           <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
         </a>
-        <a class="rss" href="{$setSelection}&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
+        <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="RSS feed">RSS</a>
       </td>
     </table>-->
   </xsl:template>
@@ -322,7 +323,7 @@
               <a href="javascript:window.print()" title="print this view">
                 <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
               </a>
-              <a class="rss" href="{$setup}&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
+              <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="RSS feed">RSS</a>
             </td>
           </tr>
         </table>

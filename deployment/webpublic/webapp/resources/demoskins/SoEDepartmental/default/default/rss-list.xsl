@@ -10,17 +10,24 @@
    />
    <!-- =========================================================
 
-                      BEDEWORK RSS FEED (deprecated)
+                      BEDEWORK RSS FEED
 
-     Deprecated: use rss-list.xsl instead.
+     RSS for the Bedework events calendar.
 
-     This is an older file used to pull a list of events from the
-     day, week, or month views and was originally used to
-     produce "Today's Events".  rss-list.xsl takes timezones into
-     account.  This file does not.
-     .
-     Call the feed with the listEvents action like so:
-     http://localhost:8080/main/setViewPeriod.do?viewType=todayView&setappvar=summaryMode(details)&skinName=rss
+     Call the feed with the listEvents action to return
+     the discrete events in the next seven days (seven days is default):
+     http://localhost:8080/cal/main/listEvents.do?setappvar=summaryMode(details)&skinName=rss-list
+
+     _________________________________________________________
+     Optional parameters that may be added to the query string:
+
+     days=n    return n days from today into the future.
+               Example: http://localhost:8080/cal/main/listEvents.do?setappvar=summaryMode(details)&skinName=rss-list&days=5
+
+
+     Note: rss.xsl is an older file used to pull a list of events from the
+     day, week, or month views.  It is maintained for backwards
+     compatibility.
 
      ===============================================================  -->
 <!-- **********************************************************************
@@ -53,37 +60,41 @@
       <channel>
         <title>Bedework Events Calendar</title>
         <link><xsl:value-of select="/bedework/urlprefix"/></link>
-        <description><xsl:choose>
-          <xsl:when test="/bedework/firstday/longdate = /bedework/lastday/longdate"><xsl:value-of select="/bedework/firstday/longdate"/></xsl:when>
-          <xsl:otherwise><xsl:value-of select="/bedework/firstday/longdate"/> - <xsl:value-of select="/bedework/lastday/longdate"/></xsl:otherwise></xsl:choose></description>
-        <pubDate><xsl:value-of select="substring(/bedework/eventscalendar/year/month/week/day[event]/event/start/dayname,1,3)"/>,<xsl:text> </xsl:text><!--
-          --><xsl:value-of select="/bedework/eventscalendar/year/month/week/day[event]/event/start/twodigitday"/><xsl:text> </xsl:text><!--
-          --><xsl:value-of select="substring(/bedework/eventscalendar/year/month/week/day[event]/event/start/monthname,1,3)"/><xsl:text> </xsl:text><!--
-          --><xsl:value-of select="/bedework/eventscalendar/year/month/week/day[event]/event/start/fourdigityear"/><xsl:text> </xsl:text><!--
-          --><xsl:value-of select="/bedework/eventscalendar/year/month/week/day[event]/event/start/twodigithour24"/>:<xsl:value-of select="/bedework/eventscalendar/year/month/week/day[event]/event/start/twodigitminute"/>:00 EST</pubDate>
+        <description>
+          <xsl:choose>
+            <xsl:when test="/bedework/events/event/start/longdate = /bedework/events/event[position()=last()]/start/longdate"><xsl:value-of select="/bedework/events/event/start/longdate"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="/bedework/events/event/start/longdate"/> - <xsl:value-of select="/bedework/events/event[position()=last()]/start/longdate"/></xsl:otherwise>
+          </xsl:choose>
+        </description>
+        <pubDate><!-- takes the form: 11 Jan 2008 17:00:00 UT (note - do not output dayname - we only provide dayname in local time).
+          --><xsl:value-of select="substring(/bedework/events/event/start/utcdate,7,8)"/><xsl:text> </xsl:text><!--
+          --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(/bedework/events/event/start/utcdate,5,6)"/></xsl:call-template><xsl:text> </xsl:text><!--
+          --><xsl:value-of select="substring(/bedework/events/event/start/utcdate,1,4)"/><xsl:text> </xsl:text><!--
+          --><xsl:value-of select="substring(/bedework/events/event/start/utcdate,10,11)"/>:<xsl:value-of select="substring(/bedework/events/event/start/utcdate,11,12)"/>:00 UT</pubDate>
         <language>en-US</language>
-        <copyright>Copyright <xsl:value-of select="substring(/bedework/currentdate/date,1,4)"/>, Rensselaer Polytechnic Institute</copyright>
+        <copyright>Copyright <xsl:value-of select="substring(/bedework/events/event/start/utcdate,1,4)"/>, Bedework</copyright>
         <managingEditor>editor@mysite.edu, Editor Name</managingEditor>
         <xsl:choose>
            <xsl:when test="/bedework/page='searchResult'">
              <xsl:apply-templates select="/bedework/searchResults/searchResult"/>
            </xsl:when>
            <xsl:otherwise>
-             <xsl:apply-templates select="/bedework/eventscalendar//event"/>
+             <xsl:apply-templates select="/bedework/events/event"/>
            </xsl:otherwise>
         </xsl:choose>
       </channel>
     </rss>
   </xsl:template>
+
   <xsl:template match="event">
     <item>
       <title><xsl:if test="status = 'CANCELLED'">CANCELLED: </xsl:if><xsl:value-of select="summary"/> - <xsl:value-of select="substring(start/dayname,1,3)"/>, <xsl:value-of select="start/longdate"/></title>
       <link><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?subid=<xsl:value-of select="subscription/id"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></link>
-      <pubDate><xsl:value-of select="substring(start/dayname,1,3)"/>,<xsl:text> </xsl:text><!--
-               --><xsl:value-of select="start/twodigitday"/><xsl:text> </xsl:text><!--
-               --><xsl:value-of select="substring(start/monthname,1,3)"/><xsl:text> </xsl:text><!--
-               --><xsl:value-of select="start/fourdigityear"/><xsl:text> </xsl:text><!--
-               --><xsl:value-of select="start/twodigithour24"/>:<xsl:value-of select="start/twodigitminute"/>:00 EST</pubDate>
+      <pubDate><!-- takes the form: 11 Jan 2008 17:00:00 UT (note - do not output dayname - we only provide dayname in local time).
+        --><xsl:value-of select="substring(start/utcdate,7,8)"/><xsl:text> </xsl:text><!--
+        --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(start/utcdate,5,6)"/></xsl:call-template><xsl:text> </xsl:text><!--
+        --><xsl:value-of select="substring(start/utcdate,1,4)"/><xsl:text> </xsl:text><!--
+        --><xsl:value-of select="substring(start/utcdate,10,11)"/>:<xsl:value-of select="substring(start/utcdate,11,12)"/>:00 UT</pubDate>
       <description><!--
         --><xsl:value-of select="substring(start/dayname,1,3)"/>,<xsl:text> </xsl:text><!--
         --><xsl:value-of select="start/longdate"/><!--
@@ -102,5 +113,26 @@
         --><xsl:text> </xsl:text><xsl:if test="status = 'CANCELLED'">(CANCELLED)</xsl:if><!--
       --></description>
     </item>
+  </xsl:template>
+
+  <!-- convert 2-digit utc month numeric values to
+       short month names as expected by RFC 822 -->
+  <xsl:template name="monthNumToName">
+    <xsl:param name="monthNum">00</xsl:param>
+    <xsl:choose>
+      <xsl:when test="$monthNum = '01'">Jan</xsl:when>
+      <xsl:when test="$monthNum = '02'">Feb</xsl:when>
+      <xsl:when test="$monthNum = '03'">Mar</xsl:when>
+      <xsl:when test="$monthNum = '04'">Apr</xsl:when>
+      <xsl:when test="$monthNum = '05'">May</xsl:when>
+      <xsl:when test="$monthNum = '06'">Jun</xsl:when>
+      <xsl:when test="$monthNum = '07'">Jul</xsl:when>
+      <xsl:when test="$monthNum = '08'">Aug</xsl:when>
+      <xsl:when test="$monthNum = '09'">Sep</xsl:when>
+      <xsl:when test="$monthNum = '10'">Oct</xsl:when>
+      <xsl:when test="$monthNum = '11'">Nov</xsl:when>
+      <xsl:when test="$monthNum = '12'">Dec</xsl:when>
+      <xsl:otherwise>badMonthNum</xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 </xsl:stylesheet>

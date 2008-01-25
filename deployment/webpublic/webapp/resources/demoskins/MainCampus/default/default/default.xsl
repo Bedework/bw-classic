@@ -86,6 +86,7 @@
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection"/>
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars"/>
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod"/>
+  <xsl:variable name="listEvents" select="/bedework/urlPrefixes/main/listEvents"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
@@ -271,7 +272,7 @@
           <a href="javascript:window.print()" title="print this view">
             <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
           </a>
-          <a class="rss" href="{$setup}&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
+          <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="RSS feed">RSS</a>
         </td>
       </tr>
     </table>
@@ -1652,7 +1653,7 @@
           <a href="?refreshXslt=yes">refresh XSLT</a>
         </td>
         <td class="rightCell">
-          <form name="styleSelectForm" method="post" action="{$setup}">
+          <form name="styleSelectForm" method="get" action="{$setup}">
             <select name="setappvar" onchange="submit()">
               <option value="">example styles:</option>
               <option value="style(green)">green</option>
@@ -1664,8 +1665,9 @@
             <input type="hidden" name="setappvar" value="summaryMode(details)"/>
             <select name="skinPicker" onchange="window.location = this.value">
               <option value="{$setup}&amp;skinNameSticky=default">example skins:</option>
-              <option value="{$setViewPeriod}&amp;viewType=weekView&amp;skinName=rss&amp;setappvar=summaryMode(details)">rss feed</option>
+              <option value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3">rss feed</option>
               <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedework.js">javascript feed</option>
+              <option value="{$setup}&amp;browserTypeSticky=PDA">for mobile browsers</option>
               <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=videocal">video feed</option>
               <option value="{$setup}&amp;skinNameSticky=default">reset to calendar default</option>
             </select>

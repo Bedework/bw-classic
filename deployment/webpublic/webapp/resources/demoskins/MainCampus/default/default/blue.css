@@ -528,6 +528,7 @@ body {
   padding: 0.1em 0.2em 0.1em 0.2em;
   text-decoration: none;
   background-color: #ccc;
+  border-bottom: 1px solid #bbb;
   color: black;
 }
 #monthCalendarTable a.eventTentative:link,
