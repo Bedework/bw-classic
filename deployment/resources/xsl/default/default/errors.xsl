@@ -49,6 +49,9 @@
       <xsl:when test="id='org.bedework.client.error.choosegroupsuppressed'">
         Error: choose group is suppressed.  You cannot perform that action at this time.
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.duplicatecategory'">
+        Cannot add: the category already exists.
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.duplicatecontact'">
         Cannot add: the contact already exists.
       </xsl:when>
