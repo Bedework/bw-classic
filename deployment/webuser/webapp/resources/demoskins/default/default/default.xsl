@@ -14,7 +14,7 @@
   <!-- ========================================= -->
 
   <!-- **********************************************************************
-    Copyright 2007 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+    Copyright 2008 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
     Redistribution and use of this distribution in source and binary forms,
     with or without modification, are permitted provided that:
@@ -1095,7 +1095,7 @@
             <!-- provide this link for public subscriptions; subscriptions to user calendars are
                  currently too confusing since the current user may be able to add events to the
                  other calendar, making the ownership test a bad test -->
-      <xsl:variable name="subname" select="subscription/name"/>
+      <xsl:variable name="subname" select="subscription/encodedName"/>
       <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
         Subscription
       </a>
@@ -1498,7 +1498,7 @@
                  currently too confusing since the current user may be able to add events to the
                  other calendar, making the ownership test a bad test -->
               |
-              <xsl:variable name="subname" select="subscription/name"/>
+              <xsl:variable name="subname" select="subscription/encodedName"/>
               <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
                 <img src="{$resourcesRoot}/resources/std-ical_iconSubsDkGray.gif" width="12" height="16" border="0" alt="manage/view subscription"/>
                 Subscription
@@ -5114,7 +5114,7 @@
         <xsl:variable name="style" select="style"/>
         <tr>
           <td>
-            <xsl:variable name="subname" select="name"/>
+            <xsl:variable name="subname" select="encodedName"/>
             <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}">
               <xsl:value-of select="name"/>
             </a>
@@ -5166,7 +5166,7 @@
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
-      <xsl:variable name="subName" select="name"/>
+      <xsl:variable name="subname" select="encodedName"/>
       <xsl:if test="style != '' and style != 'default'">
         <!-- the spacer gif approach allows us to avoid some IE misbehavior -->
         <xsl:variable name="subStyle" select="style"/>
@@ -5179,21 +5179,11 @@
           </a>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{$setSelection}&amp;subname={$subName}">
+          <a href="{$setSelection}&amp;subname={$subname}">
             <xsl:value-of select="name"/>
           </a>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:if test="calendars/calendar/calendarCollection='true' and
-                    calendars/calendar/currentAccess/current-user-privilege-set/privilege/write-content">
-        <!-- set the start date for adding an event to the first day of the
-             given period, the hour of "now", and give a duration of 60 minutes -->
-        <xsl:variable name="calPath" select="calendars/calendar/encodedPath"/>
-        <xsl:variable name="startDate"><xsl:value-of select="/bedework/firstday/date"/>T<xsl:value-of select="substring(/bedework/now/time,1,2)"/>0000</xsl:variable>
-        <a href="{$initEvent}&amp;startdate={$startDate}&amp;newCalPath={$calPath}&amp;minutes=60" class="calendarAdd" title="add event">
-          <img src="{$resourcesRoot}/resources/addEvent-forCals-icon.gif" width="9" height="12" border="0" alt="add event"/>
-        </a>
-      </xsl:if>
     </li>
   </xsl:template>
 
