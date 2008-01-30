@@ -528,7 +528,7 @@
           <xsl:if test="/bedework/tab = 'main'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$setup}">Event Management</a>
+          <a href="{$setup}&amp;listAllEvents=false">Event Management</a>
         </li>
         <li>
           <xsl:if test="/bedework/tab = 'pending'">
@@ -4654,9 +4654,9 @@
     <h2>Update View</h2>
 
     <p class="note">
-      Note: Views are cached.  Changes made here will not show up in the calendar suite until
-      the cache is refreshed or you start a new session (e.g. clear your cookies).
-      Deleting a view on a production system  should be followed by a server restart to clear the cache for all users.
+      Note: In some configurations, changes made here will not show up in the calendar suite until
+      the cache is flushed (approx. 5 minutes) or you start a new session (e.g. clear your cookies).
+      Deleting a view on a production system should be followed by a server restart to clear the cache for all users.
     </p>
 
     <xsl:variable name="viewName" select="/bedework/views/view/name"/>

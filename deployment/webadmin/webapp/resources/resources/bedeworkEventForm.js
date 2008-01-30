@@ -338,19 +338,22 @@ function setDates(formObj) {
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
   allDayEndDateField = document.getElementById("allDayEndDateField");
+  durDays = document.getElementById("durationDays");
   if (obj.checked) {
-    //lets keep it simple for now: just show or hide time fields
+    // show or hide time fields and set the days duration
     changeClass('startTimeFields','invisible');
     changeClass('endTimeFields','invisible');
     changeClass('durationHrMin','invisible');
     allDayStartDateField.value = "true";
     allDayEndDateField.value = "true";
+    durDays.value = 1;
   } else {
     changeClass('startTimeFields','timeFields');
     changeClass('endTimeFields','timeFields');
     changeClass('durationHrMin','shown');
     allDayStartDateField.value = "false";
     allDayEndDateField.value = "false";
+    durDays.value = 0;
   }
 }
 function swapFloatingTime(obj) {
