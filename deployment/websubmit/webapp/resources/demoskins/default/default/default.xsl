@@ -467,17 +467,11 @@
           <!-- Calendar -->
           <!-- ======== -->
           <!--  the string "user/" should not be hard coded; fix this -->
-          <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
-          <xsl:variable name="writableCalendars">
-            <xsl:value-of select="
-              count(/bedework/myCalendars//calendar[calType = '1' and
-                     currentAccess/current-user-privilege-set/privilege/write-content]) +
-              count(/bedework/mySubscriptions//calendar[calType = '1' and
-                     currentAccess/current-user-privilege-set/privilege/write-content and
-                     (not(contains(path,$userPath)))])"/>
+          <xsl:variable name="submissionCalendars">
+            <xsl:value-of select="count(/bedework/myCalendars//calendar[starts-with(path,/bedework/submissionsRoot/unencoded) and calType='1']) = '1'"/>
           </xsl:variable>
           <tr>
-            <xsl:if test="$writableCalendars = 1">
+            <xsl:if test="$submissionCalendars = 1">
               <xsl:attribute name="class">invisible</xsl:attribute>
               <!-- hide this row altogether if there is only one calendar; if you want the calendar
                    path displayed, comment out this xsl:if. -->
@@ -487,47 +481,24 @@
             </td>
             <td class="fieldval">
               <xsl:choose>
-                <xsl:when test="$writableCalendars = 1">
+                <xsl:when test="$submissionCalendars = 1">
                   <!-- there is only 1 writable calendar, so find it by looking down both trees at once -->
-                  <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[calType = '1' and
-                           currentAccess/current-user-privilege-set/privilege/write-content]/path"/><xsl:value-of select="/bedework/mySubscriptions//calendar[calType = '1' and
-                         currentAccess/current-user-privilege-set/privilege/write-content and
-                         (not(contains(path,$userPath)))]/path"/></xsl:variable>
-
+                  <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[starts-with(path,/bedework/submissionsRoot/unencoded) and calType='1']/path"/></xsl:variable>
                   <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
 
-                  <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
                   <span id="bwEventCalDisplay">
-                    <xsl:choose>
-                      <xsl:when test="contains($newCalPath,$userFullPath)">
-                        <xsl:value-of select="substring-after($newCalPath,$userFullPath)"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="$newCalPath"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
+                    <xsl:value-of select="$newCalPath"/>
                   </span>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="hidden" name="newCalPath" id="bwNewCalPathField">
-                    <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
-                  </input>
-
-                  <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
-                  <span id="bwEventCalDisplay">
-                    <xsl:choose>
-                      <xsl:when test="contains(form/calendar/path,$userFullPath)">
-                        <xsl:value-of select="substring-after(form/calendar/path,$userFullPath)"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="form/calendar/path"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                    <xsl:text> </xsl:text>
-                    <!-- this final text element is required to avoid an empty
-                         span element which is improperly rendered in the browser -->
-                  </span>
-
+                  <select name="newCalPath" id="bwNewCalPathField">
+                    <xsl:for-each select="/bedework/myCalendars//calendar[starts-with(path,/bedework/submissionsRoot/unencoded) and calType='1']">
+                      <option>
+                        <xsl:attribute name="value"><xsl:value-of select="/bedework/submissionsRoot/unencoded"/></xsl:attribute>
+                        <xsl:value-of select="substring-after(substring-after(path,/bedework/submissionsRoot/unencoded),'/')"/>
+                      </option>
+                    </xsl:for-each>
+                  </select>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
