@@ -1099,9 +1099,9 @@
       <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
         Subscription
       </a>
+      |
     </xsl:if>
     <xsl:if test="subscription/unremoveable != 'true'">
-      |
       <xsl:choose>
         <xsl:when test="recurring='true' or recurrenceId != ''">
           Delete:
