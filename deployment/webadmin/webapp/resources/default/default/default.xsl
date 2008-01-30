@@ -4652,6 +4652,13 @@
 
   <xsl:template name="modView">
     <h2>Update View</h2>
+
+    <p class="note">
+      Note: Views are cached.  Changes made here will not show up in the calendar suite until
+      the cache is refreshed or you start a new session (e.g. clear your cookies).
+      Deleting a view on a production system  should be followed by a server restart to clear the cache for all users.
+    </p>
+
     <xsl:variable name="viewName" select="/bedework/views/view/name"/>
     <h3 class="viewName">
       <xsl:value-of select="$viewName"/>
@@ -4663,7 +4670,7 @@
 
           <table class="subscriptionsListSubs">
             <xsl:for-each select="/bedework/subscriptions/subscription">
-              <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
+              <xsl:sort select="name" order="ascending" case-order="upper-first"/>
               <xsl:if test="not(/bedework/views/view/subscriptions/subscription/name=name)">
                 <tr>
                   <td>
@@ -4686,7 +4693,7 @@
           <h3>Active Subscriptions:</h3>
           <table class="subscriptionsListView">
             <xsl:for-each select="/bedework/views/view/subscriptions/subscription">
-              <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
+              <xsl:sort select="name" order="ascending" case-order="upper-first"/>
               <tr>
                 <td class="arrows">
                   <xsl:variable name="subRemoveName" select="name"/>
