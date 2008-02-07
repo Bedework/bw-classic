@@ -238,8 +238,11 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
 // ========================================================================
 // ========================================================================
 
-function setEventFields(formObj) {
-  setDates(formObj);
+
+function setEventFields(formObj,portalFriendly) {
+  if (!portalFriendly) {
+    setDates(formObj);
+  }
   setRecurrence(formObj);
   setAccessHow(formObj,1);
   //setAccessAcl(formObj);

@@ -1932,7 +1932,7 @@
   <xsl:template match="formElements" mode="addEvent">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
-    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this)">
+    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly})">
       <h2>
         <span class="formButtons">
           <input name="submit" type="submit" value="save"/>
@@ -1952,7 +1952,7 @@
   <xsl:template match="formElements" mode="editEvent">
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
-    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this)">
+    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly})">
       <h2>
         <span class="formButtons">
           <input name="submit" type="submit" value="save"/>

@@ -1006,7 +1006,7 @@
       </script>
     </xsl:if>
 
-    <form name="eventForm" method="post" onsubmit="setEventFields(this)">
+    <form name="eventForm" method="post" onsubmit="setEventFields(this,{$portalFriendly})">
       <xsl:choose>
         <xsl:when test="/bedework/page = 'modEventPending'">
           <xsl:attribute name="action"><xsl:value-of select="$event-updatePending"/></xsl:attribute>
