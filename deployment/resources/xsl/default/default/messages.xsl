@@ -109,6 +109,11 @@
         View deleted
       </xsl:when>
 
+      <xsl:when test="id='org.bedework.client.message.freebusy.unavailable'">
+        Freebusy information is (currently) unavailable for
+          <xsl:value-of select="param"/>
+      </xsl:when>
+
       <xsl:when test="id='org.bedework.client.message.imported.timezones'">
         Timezones successfully imported
       </xsl:when>
