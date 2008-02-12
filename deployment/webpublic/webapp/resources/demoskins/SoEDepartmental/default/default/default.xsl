@@ -1298,7 +1298,6 @@
               <input type="hidden" name="eventEndDate.day" value=""/>
               <input type="hidden" name="nocache" value="no"/>
               <input type="hidden" name="skinName" value="ical"/>
-              <input type="hidden" name="contentType" value="text/calendar"/>
               <input type="hidden" name="contentName" value="calendar.ics"/>
               <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> today forward
               <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
@@ -1387,8 +1386,6 @@
         <input type="hidden" name="eventEndDate.day" value=""/>
         <!-- static fields -->
         <input type="hidden" name="nocache" value="no"/>
-        <input type="hidden" name="skinName" value="ical"/>
-        <input type="hidden" name="contentType" value="text/calendar"/>
         <input type="hidden" name="contentName">
           <xsl:attribute name="value"><xsl:value-of select="name"/>.ics</xsl:attribute>
         </input>
