@@ -528,7 +528,7 @@
           <xsl:if test="/bedework/tab = 'main'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$setup}&amp;listAllEvents=false">Event Management</a>
+          <a href="{$setup}&amp;listAllEvents=false">Main Menu</a>
         </li>
         <li>
           <xsl:if test="/bedework/tab = 'pending'">

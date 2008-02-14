@@ -1661,8 +1661,9 @@
             <input type="hidden" name="setappvar" value="summaryMode(details)"/>
             <select name="skinPicker" onchange="window.location = this.value">
               <option value="{$setup}&amp;skinNameSticky=default">example skins:</option>
-              <option value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3">rss feed</option>
-              <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedework.js">javascript feed</option>
+              <option value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3">rss: next 3 days</option>
+              <option value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=js-list&amp;days=3&amp;contentType=text/javascript&amp;contentName=bedework.js">javascript: next 3 days</option>
+              <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedeworkToday.js">javascript: today's events</option>
               <option value="{$setup}&amp;browserTypeSticky=PDA">for mobile browsers</option>
               <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=videocal">video feed</option>
               <option value="{$setup}&amp;skinNameSticky=default">reset to calendar default</option>

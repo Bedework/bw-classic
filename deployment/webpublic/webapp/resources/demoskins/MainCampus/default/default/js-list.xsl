@@ -45,12 +45,12 @@
   <xsl:template match="/">
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;h3&gt;');</xsl:text>
       <!--<xsl:text disable-output-escaping="yes">document.writeln("Today's Events");</xsl:text>-->
-      <xsl:text disable-output-escaping="yes">document.writeln("Today's Events");</xsl:text>
+      <xsl:text disable-output-escaping="yes">document.writeln("Current Events");</xsl:text>
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;/h3&gt;');</xsl:text>
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;ul class="eventFeed"&gt;');</xsl:text>
     <xsl:choose>
-      <xsl:when test="/bedework/eventscalendar/year/month/week/day/event">
-        <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day/event"/>
+      <xsl:when test="/bedework/events/event">
+        <xsl:apply-templates select="/bedework/events/event"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:text disable-output-escaping="yes">document.writeln('&lt;li&gt;');</xsl:text>
@@ -76,7 +76,7 @@
     <xsl:text disable-output-escaping="yes">document.writeln('    &lt;a href="</xsl:text><xsl:value-of select="$urlprefix"/><xsl:text disable-output-escaping="yes">/event/eventView.do?subid=</xsl:text><xsl:value-of select="subscription/id"/><xsl:text disable-output-escaping="yes">&amp;guid=</xsl:text><xsl:value-of select="guid"/><xsl:text disable-output-escaping="yes">&amp;recurrenceId=</xsl:text><xsl:value-of select="recurrenceId"/><xsl:text disable-output-escaping="yes">&amp;calPath=</xsl:text><xsl:value-of select="calendar/encodedPath"/><xsl:text disable-output-escaping="yes">&amp;skinName=default" target="_top"</xsl:text><xsl:if test="status = 'CANCELLED'"> class="cancelled" </xsl:if><xsl:text disable-output-escaping="yes">&gt;</xsl:text><xsl:if test="status = 'CANCELLED'">CANCELLED: </xsl:if><xsl:value-of select="$strippedSummary" disable-output-escaping="yes"/><xsl:text disable-output-escaping="yes">&lt;/a&gt;');</xsl:text>
     <xsl:text disable-output-escaping="yes">document.writeln('&lt;/li&gt;');</xsl:text>
   </xsl:template>
-  
+
   <xsl:template name="replace">
     <xsl:param name="string" select="''"/>
     <xsl:param name="pattern" select="''"/>
