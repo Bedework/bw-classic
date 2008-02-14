@@ -5782,6 +5782,7 @@
             </select>
           </td>
         </tr>
+        <!--
         <tr>
           <td class="fieldName">
             Skin name:
@@ -5800,6 +5801,7 @@
             <input type="text" name="skinStyle" value="{$skinStyle}" size="40"/>
           </td>
         </tr>
+        -->
       </table>
       <br />
 
