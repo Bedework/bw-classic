@@ -62,17 +62,17 @@
         <link><xsl:value-of select="/bedework/urlprefix"/></link>
         <description>
           <xsl:choose>
-            <xsl:when test="/bedework/events/event/start/longdate = /bedework/events/event[position()=last()]/start/longdate"><xsl:value-of select="/bedework/events/event/start/longdate"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="/bedework/events/event/start/longdate"/> - <xsl:value-of select="/bedework/events/event[position()=last()]/start/longdate"/></xsl:otherwise>
+            <xsl:when test="/bedework/now/longdate = /bedework/events/event[position()=last()]/start/longdate"><xsl:value-of select="/bedework/now/longdate"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="/bedework/now/longdate"/> - <xsl:value-of select="/bedework/events/event[position()=last()]/start/longdate"/></xsl:otherwise>
           </xsl:choose>
         </description>
         <pubDate><!-- takes the form: 11 Jan 2008 17:00:00 UT (note - do not output dayname - we only provide dayname in local time).
-          --><xsl:value-of select="substring(/bedework/events/event/start/utcdate,7,8)"/><xsl:text> </xsl:text><!--
-          --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(/bedework/events/event/start/utcdate,5,6)"/></xsl:call-template><xsl:text> </xsl:text><!--
-          --><xsl:value-of select="substring(/bedework/events/event/start/utcdate,1,4)"/><xsl:text> </xsl:text><!--
-          --><xsl:value-of select="substring(/bedework/events/event/start/utcdate,10,11)"/>:<xsl:value-of select="substring(/bedework/events/event/start/utcdate,11,12)"/>:00 UT</pubDate>
+          --><xsl:value-of select="substring(/bedework/now/utc,7,2)"/><xsl:text> </xsl:text><!--
+          --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(/bedework/now/utc,5,2)"/></xsl:call-template><xsl:text> </xsl:text><!--
+          --><xsl:value-of select="substring(/bedework/now/utc,1,4)"/><xsl:text> </xsl:text><!--
+          --><xsl:value-of select="substring(/bedework/now/utc,10,2)"/>:<xsl:value-of select="substring(/bedework/now/utc,11,2)"/>:00 UT</pubDate>
         <language>en-US</language>
-        <copyright>Copyright <xsl:value-of select="substring(/bedework/events/event/start/utcdate,1,4)"/>, Bedework</copyright>
+        <copyright>Copyright <xsl:value-of select="substring(/bedework/now/utc,1,4)"/>, Bedework</copyright>
         <managingEditor>editor@mysite.edu, Editor Name</managingEditor>
         <xsl:choose>
            <xsl:when test="/bedework/page='searchResult'">
@@ -91,10 +91,10 @@
       <title><xsl:if test="status = 'CANCELLED'">CANCELLED: </xsl:if><xsl:value-of select="summary"/> - <xsl:value-of select="substring(start/dayname,1,3)"/>, <xsl:value-of select="start/longdate"/></title>
       <link><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?subid=<xsl:value-of select="subscription/id"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></link>
       <pubDate><!-- takes the form: 11 Jan 2008 17:00:00 UT (note - do not output dayname - we only provide dayname in local time).
-        --><xsl:value-of select="substring(start/utcdate,7,8)"/><xsl:text> </xsl:text><!--
-        --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(start/utcdate,5,6)"/></xsl:call-template><xsl:text> </xsl:text><!--
+        --><xsl:value-of select="substring(start/utcdate,7,2)"/><xsl:text> </xsl:text><!--
+        --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(start/utcdate,5,2)"/></xsl:call-template><xsl:text> </xsl:text><!--
         --><xsl:value-of select="substring(start/utcdate,1,4)"/><xsl:text> </xsl:text><!--
-        --><xsl:value-of select="substring(start/utcdate,10,11)"/>:<xsl:value-of select="substring(start/utcdate,11,12)"/>:00 UT</pubDate>
+        --><xsl:value-of select="substring(start/utcdate,10,2)"/>:<xsl:value-of select="substring(start/utcdate,11,2)"/>:00 UT</pubDate>
       <description><!--
         --><xsl:value-of select="substring(start/dayname,1,3)"/>,<xsl:text> </xsl:text><!--
         --><xsl:value-of select="start/longdate"/><!--
