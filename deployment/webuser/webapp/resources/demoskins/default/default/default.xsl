@@ -4091,7 +4091,7 @@
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
-      <xsl:variable name="calPath" select="path"/>
+      <xsl:variable name="calPath" select="encodedPath"/>
       <a href="{$setSelection}&amp;calUrl={$calPath}">
         <xsl:value-of select="name"/>
       </a>
@@ -4118,7 +4118,7 @@
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
-      <xsl:variable name="calPath" select="path"/>
+      <xsl:variable name="calPath" select="encodedPath"/>
         <xsl:choose>
           <xsl:when test="calType='5'">
             <a href="{$showInbox}" title="incoming scheduling requests">
