@@ -2394,13 +2394,32 @@
                     <!-- must send either no week value or week value of 0 (zero) -->
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')" checked="checked"/>
-                        <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
-                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays"/>days
+                        <input type="text" name="eventDuration.daysStr" size="2" id="durationDays">
+                          <xsl:attribute name="value">
+                            <xsl:choose>
+                              <xsl:when test="/bedework/creating='true' and form/allDay/input/@checked='checked'">1</xsl:when>
+                              <xsl:when test="/bedework/creating='true' and form/allDay/input/@checked!='checked'">0</xsl:when>
+                              <xsl:otherwise><xsl:value-of select="form/end/duration/days/input/@value"/></xsl:otherwise>
+                            </xsl:choose>
+                          </xsl:attribute>
+                        </input>days
                         <span id="durationHrMin" class="{$durationHrMinClass}">
-                          <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
-                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours"/>hours
-                          <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
-                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes"/>minutes
+                          <input type="text" name="eventDuration.hoursStr" size="2" id="durationHours">
+                            <xsl:attribute name="value">
+                              <xsl:choose>
+                                <xsl:when test="/bedework/creating='true'">1</xsl:when>
+                                <xsl:otherwise><xsl:value-of select="form/end/duration/hours/input/@value"/></xsl:otherwise>
+                              </xsl:choose>
+                            </xsl:attribute>
+                          </input>hours
+                          <input type="text" name="eventDuration.minutesStr" size="2" id="durationMinutes">
+                            <xsl:attribute name="value">
+                              <xsl:choose>
+                                <xsl:when test="/bedework/creating='true'">0</xsl:when>
+                                <xsl:otherwise><xsl:value-of select="form/end/duration/minutes/input/@value"/></xsl:otherwise>
+                              </xsl:choose>
+                            </xsl:attribute>
+                          </input>minutes
                         </span>
                       </div>
                       <span class="durationSpacerText">or</span>
