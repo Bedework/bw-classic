@@ -121,6 +121,8 @@
           description="builds the jars">
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="build" />
+    <tstamp prefix="endbuild" />
+    <echo message="=================> Build finished at ${endbuild.TODAY}" />
   </target>
 
   <target name="clean.build" depends="clean"
@@ -143,6 +145,11 @@
           description="builds and deploys the applications">
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="deploy.debug" />
+    <tstamp>
+      <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
+    </tstamp>
+
+    <echo message="=================> deploy.debug finished at ${deploydebug.time}" />
   </target>
 
   <!-- =================================================================
