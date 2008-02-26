@@ -5514,8 +5514,7 @@
                 <input type="reset" value="Reset"/>
               </td>
               <td align="right">
-                <!--<xsl:variable name="uid" select="form/uid"/>-->
-                <a href="{$location-delete}"><input type="button" name="delete" value="Delete Location"/></a>
+                <input type="submit" name="delete" value="Delete Location"/>
               </td>
             </tr>
           </table>
