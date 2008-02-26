@@ -5829,7 +5829,7 @@
       <input type="hidden" name="endType" value="date"/>
       <h2>
         <xsl:choose>
-          <xsl:when test="form/status = 'CANCELLED'">
+          <xsl:when test="scheduleMethod = '5'">
             Meeting Cancelled
           </xsl:when>
           <xsl:otherwise>
@@ -5948,7 +5948,7 @@
           <td class="fieldname">Action:</td>
           <td class="fieldval scheduleActions">
             <xsl:choose>
-              <xsl:when test="form/status = 'CANCELLED' or form/scheduleMethod = '8'">
+              <xsl:when test="scheduleMethod = '5' or scheduleMethod = '8'">
               <!-- respond to a cancel -->
                 <input type="hidden" name="method" value="REPLY"/>
                 <select name="cancelAction">
@@ -6176,14 +6176,16 @@
             <input type="text" name="locationAddress.value" value="" />
           </td>
         </tr>
-        <tr>
-          <td class="fieldname">Comment:</td>
-          <td class="fieldval scheduleActions">
-            <textarea name="comment" cols="60" rows="2">
-              <xsl:text> </xsl:text>
-            </textarea>
-          </td>
-        </tr>
+        <xsl:if test="scheduleMethod != '5'">
+          <tr>
+            <td class="fieldname">Comment:</td>
+            <td class="fieldval scheduleActions">
+              <textarea name="comment" cols="60" rows="2">
+                <xsl:text> </xsl:text>
+              </textarea>
+            </td>
+          </tr>
+        </xsl:if>
         <tr>
           <td class="fieldname">&#160;</td>
           <td class="fieldval scheduleActions">
