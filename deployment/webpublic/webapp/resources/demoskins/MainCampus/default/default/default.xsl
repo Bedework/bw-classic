@@ -130,7 +130,7 @@
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <!-- load javascript -->
-        <xsl:if test="/bedework/page='calendarList' or /bedework/page='displayCalendarForExport'">
+        <xsl:if test="/bedework/page='event' or /bedework/page='calendarList' or /bedework/page='displayCalendarForExport'">
           <script type="text/javascript" src="{$resourceCommons}/javascript/dojo/dojo.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js">&#160;</script>
         </xsl:if>
@@ -591,6 +591,9 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
+      <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="generate link to this event">
+       link to this event
+     </a>
       <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">

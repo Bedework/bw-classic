@@ -959,6 +959,21 @@ h2.bwStatusTentative {
   background: #eee url('../../images/tentativeLines.gif') top;
   color: black;
 }
+h2 a:link#linkToEvent,
+h2 a:active#linkToEvent,
+h2 a:visited#linkToEvent,
+h2 a:hover#linkToEvent {
+  float: right;
+  font-size: 12px;
+  font-weight: normal;
+  color: #552;
+  background-color: transparent;
+  padding-top: 5px;
+}
+h2 a:hover#linkToEvent {
+  color: red;
+  background-color: transparent;
+}
 /* Header IDs and classes */
 #errors {
   margin: 0;
