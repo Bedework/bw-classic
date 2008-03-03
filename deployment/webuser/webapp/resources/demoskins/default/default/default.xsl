@@ -4487,6 +4487,18 @@
         </xsl:call-template>
       </form>
     </div>
+    <div class="note">
+      <p><strong>Note:</strong> If you grant write access to another user, and you wish 
+        to see events added by that user in your calendar, <strong>you must explicitly
+        grant yourself access to the same calendar.</strong>  Enter your RCS UserID as  
+        a user in the "Who" box with "All" set in the "Rights" box.  
+      </p>
+      <p>
+        This is standard access control; the reason you will not see the other
+        user's events without doing this is that the default access is grant:all to 
+        "owner" - and you don't own the other user's events.
+      </p>
+    </div>
   </xsl:template>
 
   <xsl:template name="calendarList">
@@ -4921,6 +4933,19 @@
         </tr>
       </table>
     </form>
+    
+    <ul class="note" style="margin-left: 2em;">
+      <li>The <strong>Name</strong> is anything you want to call your subscription.</li>
+      <li>
+        The <strong>Path</strong> is the name of the folder and/or calendar within
+        the remote user's calendar tree.  For example, to subscribe to 
+        bwcal:///user/johnsa/someFolder/someCalendar, enter "someFolder/someCalendar"
+      </li>
+      <li>
+        You must be granted at least read access to the other user's calendar
+        to subscribe to it.  
+      </li>
+    </ul>
   </xsl:template>
 
   <!-- add a subscription to a public calendar within the system -->
