@@ -403,7 +403,9 @@
       <sysproperty key="catalina.home" value="${org.bedework.appserver.dir}"/>
       <!--jvmarg value="-Dcatalina.home=${tomcat.dir}"/-->
       <jvmarg value="-Xms128m" />
-      <jvmarg value="-Xmx630m" />
+      <jvmarg value="-Xmx1028m" />
+      <jvmarg value="-XX:PermSize=128m" />
+      <jvmarg value="-XX:MaxPermSize=128m" />
       <jvmarg value="-Djava.net.preferIPv4Stack=true"/>
       <arg value="start"/>
     </java>
@@ -436,13 +438,32 @@
       <sysproperty key="catalina.home" value="${org.bedework.appserver.dir}"/>
       <!--jvmarg value="-Dcatalina.home=${tomcat.dir}"/-->
       <jvmarg value="-Xms128m" />
-      <jvmarg value="-Xmx630m" />
-      <!--
+      <jvmarg value="-Xmx1028m" />
       <jvmarg value="-XX:PermSize=128m" />
       <jvmarg value="-XX:MaxPermSize=128m" />
-      -->
       <jvmarg value="-server" />
-      <jvmarg value="-agentlib:hprof=cpu=samples,depth=15" />
+      <jvmarg value="-agentlib:hprof=cpu=samples,depth=15,onexit=memory" />
+      <jvmarg value="-Djava.net.preferIPv4Stack=true"/>
+      <arg value="start"/>
+    </java>
+  </target>
+
+  <target name="tomcatstart-profile-yk" depends="run.init"
+          description="starts the tomcat server with rpofiling">
+    <echo message="Starting Tomcat from ${org.bedework.appserver.dir}"/>
+    <java fork="true" dir="${basedir}"
+          classname="org.apache.catalina.startup.Bootstrap">
+      <classpath>
+        <pathelement path="${org.bedework.appserver.dir}/bin/bootstrap.jar"/>
+      </classpath>
+      <sysproperty key="catalina.home" value="${org.bedework.appserver.dir}"/>
+      <!--jvmarg value="-Dcatalina.home=${tomcat.dir}"/-->
+      <jvmarg value="-Xms128m" />
+      <jvmarg value="-Xmx1028m" />
+      <jvmarg value="-XX:PermSize=128m" />
+      <jvmarg value="-XX:MaxPermSize=128m" />
+      <jvmarg value="-server" />
+      <jvmarg value="-agentlib:yjpagent" />
       <jvmarg value="-Djava.net.preferIPv4Stack=true"/>
       <arg value="start"/>
     </java>
