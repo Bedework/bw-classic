@@ -10,6 +10,9 @@
       <xsl:when test="id='edu.rpi.sss.util.error.exc'">
         An exception occurred: <em><xsl:value-of select="param"/></em>
       </xsl:when>
+      <xsl:when test="id='org.bedework.exception.norecurrenceinstances'">
+        Event or task has no recurrence instances: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
 
       <!-- client.error messages generally do not quite constitute validation errors
            which mostly involve changing a field content.
