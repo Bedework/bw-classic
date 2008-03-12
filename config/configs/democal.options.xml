@@ -286,6 +286,9 @@
 
           <!-- Comment out or delete for no freebusy url service -->
           <fburlServiceURI>/fbsvc</fburlServiceURI>
+
+          <!-- Comment out or delete for no web calendar service -->
+          <webcalServiceURI>/webcal</webcalServiceURI>
         </Usercaldav>
 
         <!-- ==================================================================
@@ -299,6 +302,9 @@
 
           <!-- Comment out or delete for no freebusy url service -->
           <fburlServiceURI>/fbsvc</fburlServiceURI>
+
+          <!-- Comment out or delete for no web calendar service -->
+          <webcalServiceURI>/webcal</webcalServiceURI>
         </Pubcaldav>
 
         <!-- ==================================================================
