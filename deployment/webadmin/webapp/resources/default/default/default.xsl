@@ -195,6 +195,10 @@
   <xsl:variable name="admingroup-update" select="/bedework/urlPrefixes/admingroup/update/a/@href"/>
   <xsl:variable name="admingroup-updateMembers" select="/bedework/urlPrefixes/admingroup/updateMembers/a/@href"/>
   <xsl:variable name="admingroup-switch" select="/bedework/urlPrefixes/admingroup/switch/a/@href"/>
+  <!-- filters -->
+  <xsl:variable name="filter-showAddForm" select="/bedework/urlPrefixes/filter/showAddForm/a/@href"/>
+  <xsl:variable name="filter-add" select="/bedework/urlPrefixes/filter/add/a/@href"/>
+
 
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
@@ -373,6 +377,9 @@
                 </xsl:when>
                 <xsl:when test="/bedework/page='deleteAdminGroupConfirm'">
                   <xsl:call-template name="deleteAdminGroupConfirm"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='addFilter'">
+                  <xsl:call-template name="addFilter"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='searchResult'">
                   <xsl:call-template name="searchResult"/>
@@ -818,6 +825,11 @@
         <li>
           <a href="{$calsuite-fetch}">
             Manage calendar suites
+          </a>
+        </li>
+        <li>
+          <a href="{$filter-showAddForm}">
+            Add a named CalDAV filter
           </a>
         </li>
         <li>
@@ -3005,8 +3017,7 @@
                 Description:
               </td>
               <td>
-                <textarea name="categoryDesc.value" rows="3" cols="60">
-                </textarea>
+                <textarea name="categoryDesc.value" rows="3" cols="60"></textarea>
               </td>
             </tr>
           </table>
@@ -6080,6 +6091,47 @@
     <form name="adminGroupDelete" method="post" action="{$admingroup-delete}">
       <input type="submit" name="removeAdminGroupOK" value="Yes: Delete!"/>
       <input type="submit" name="cancelled" value="No: Cancel"/>
+    </form>
+  </xsl:template>
+
+  <!--+++++++++++++++ Filters ++++++++++++++++++++-->
+  <xsl:template name="addFilter">
+    <h2>Add a Named CalDAV Filter</h2>
+    <form name="peForm" method="post" action="{$filter-add}">
+      <table id="addFilterFormTable" class="eventFormTable">
+        <tr>
+          <th>
+            Name:
+          </th>
+          <td>
+            <input type="text" name="name" value="" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Description:
+          </th>
+          <td>
+            <input type="text" name="desc" value="" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Filter Definition:
+          </th>
+          <td>
+            <textarea name="def" rows="30" cols="80"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          </td>
+          <td>
+            <input type="submit" name="add" value="Add Filter"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+          </td>
+        </tr>
+      </table>
     </form>
   </xsl:template>
 
