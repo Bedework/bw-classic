@@ -1457,6 +1457,24 @@ display: inline;
 #bedework .noEventsCell {
   padding: 1em;
 }
+#bedework #tasks {
+  margin: 0;
+  padding: 0;
+  font-size: 0.9em;
+}
+#bedework #tasks h3 {
+  margin: 0;
+  padding: 2px 4px;
+  font-size: 1em;
+  /*background-color: #2B4795;*/
+  background-color: #999;
+  color: #eee;
+  font-weight: normal;
+}
+#bedework #tasks .taskDate {
+  font-size: 0.7em;
+  margin-left: 1em;
+}
 /* Calendars and Subscriptions */
 #calendarTable td,
 #bedework #subsTable td {

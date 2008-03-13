@@ -903,7 +903,7 @@
                  </td>
               </tr>
             </xsl:if>
-            <xsl:for-each select="event">
+            <xsl:for-each select="event[not(entityType=2 and start/noStart='true' and end/type='N')]">
               <xsl:variable name="id" select="id"/>
               <xsl:variable name="subscriptionId" select="subscription/id"/>
               <xsl:variable name="calPath" select="calendar/encodedPath"/>
@@ -1051,6 +1051,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </table>
+    <xsl:call-template name="tasks"/>
   </xsl:template>
 
   <xsl:template name="eventLinks">
@@ -1149,7 +1150,7 @@
               </a>
               <xsl:if test="event">
                 <ul>
-                  <xsl:apply-templates select="event" mode="calendarLayout">
+                  <xsl:apply-templates select="event[not(entityType=2 and start/noStart='true' and end/type='N')]" mode="calendarLayout">
                     <xsl:with-param name="dayPos" select="$dayPos"/>
                   </xsl:apply-templates>
                 </ul>
@@ -1159,6 +1160,7 @@
         </xsl:for-each>
       </tr>
     </table>
+    <xsl:call-template name="tasks"/>
   </xsl:template>
 
   <!--==== MONTH CALENDAR VIEW ====-->
@@ -1198,7 +1200,7 @@
                   </a>
                   <xsl:if test="event">
                     <ul>
-                      <xsl:apply-templates select="event" mode="calendarLayout">
+                      <xsl:apply-templates select="event[not(entityType=2 and start/noStart='true' and end/type='N')]" mode="calendarLayout">
                         <xsl:with-param name="dayPos" select="$dayPos"/>
                       </xsl:apply-templates>
                     </ul>
@@ -1210,6 +1212,7 @@
         </tr>
       </xsl:for-each>
     </table>
+    <xsl:call-template name="tasks"/>
   </xsl:template>
 
   <!--== EVENTS IN THE CALENDAR GRID ==-->
@@ -1404,6 +1407,43 @@
         </xsl:for-each>
       </table>
     </td>
+  </xsl:template>
+
+  <!--== TASKS ==-->
+  <xsl:template name="tasks">
+    <xsl:if test="/bedework/eventscalendar//event[entityType=2 and start/noStart='true' and end/type='N']">
+      <div id="tasks">
+        <h3>
+          reminders (tasks with no start or end date)
+        </h3>
+        <ul class="tasks">
+          <xsl:apply-templates select="/bedework/eventscalendar//event[entityType=2 and start/noStart='true' and end/type='N']" mode="tasks"/>
+        </ul>
+      </div>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="event" mode="tasks">
+    <xsl:variable name="subscriptionId" select="subscription/id"/>
+    <xsl:variable name="calPath" select="calendar/encodedPath"/>
+    <xsl:variable name="guid" select="guid"/>
+    <xsl:variable name="recurrenceId" select="recurrenceId"/>
+
+    <li>
+      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+        <xsl:choose>
+          <xsl:when test="summary = ''">
+            <em>no title</em>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="summary"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </a>
+      <xsl:if test="start/noStart = 'false'">
+        <span class="taskDate"><xsl:value-of select="start/shortdate"/></span>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <!--==== SINGLE EVENT ====-->
@@ -4488,14 +4528,14 @@
       </form>
     </div>
     <div class="note">
-      <p><strong>Note:</strong> If you grant write access to another user, and you wish 
+      <p><strong>Note:</strong> If you grant write access to another user, and you wish
         to see events added by that user in your calendar, <strong>you must explicitly
-        grant yourself access to the same calendar.</strong>  Enter your RCS UserID as  
-        a user in the "Who" box with "All" set in the "Rights" box.  
+        grant yourself access to the same calendar.</strong>  Enter your RCS UserID as
+        a user in the "Who" box with "All" set in the "Rights" box.
       </p>
       <p>
         This is standard access control; the reason you will not see the other
-        user's events without doing this is that the default access is grant:all to 
+        user's events without doing this is that the default access is grant:all to
         "owner" - and you don't own the other user's events.
       </p>
     </div>
@@ -4933,17 +4973,17 @@
         </tr>
       </table>
     </form>
-    
+
     <ul class="note" style="margin-left: 2em;">
       <li>The <strong>Name</strong> is anything you want to call your subscription.</li>
       <li>
         The <strong>Path</strong> is the name of the folder and/or calendar within
-        the remote user's calendar tree.  For example, to subscribe to 
+        the remote user's calendar tree.  For example, to subscribe to
         bwcal:///user/johnsa/someFolder/someCalendar, enter "someFolder/someCalendar"
       </li>
       <li>
         You must be granted at least read access to the other user's calendar
-        to subscribe to it.  
+        to subscribe to it.
       </li>
     </ul>
   </xsl:template>
