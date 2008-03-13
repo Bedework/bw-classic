@@ -54,11 +54,13 @@
 package org.bedework.deployment;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
@@ -73,6 +75,7 @@ import org.apache.tools.ant.util.FileUtils;
  * <li>displayName  Optional display name</li>
  * <li>warDir    Directory containing war files or expanded wars with names
  *               ending in ".war"</li>
+ * <li>contexts  property file defining context roots</li>
  * </ul>
  *
  * <p>Body is a fileset giving jar files to add.
@@ -90,8 +93,11 @@ public class ApplicationXmlTask extends MatchingTask {
 
   private String displayName;
 
+  private String contexts;
+
   private File outFile;
   private Writer wtr;
+  private Properties contextProps;
 
   /** Add a fileset
    *
@@ -107,6 +113,14 @@ public class ApplicationXmlTask extends MatchingTask {
    */
   public void setDisplayName(String val) {
     displayName = val;
+  }
+
+  /** Set the contexts file name
+   *
+   * @param val   String
+   */
+  public void setContexts(String val) {
+    contexts = val;
   }
 
   /** Set the application.xml output file
@@ -135,6 +149,12 @@ public class ApplicationXmlTask extends MatchingTask {
 
       wtr = new FileWriter(outFile);
 
+      if (contexts != null) {
+        FileInputStream propFile = new FileInputStream(contexts);
+        contextProps = new Properties();
+        contextProps.load(propFile);
+      }
+
       writeLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
       writeLine("");
       writeLine("<application>");
@@ -147,9 +167,23 @@ public class ApplicationXmlTask extends MatchingTask {
         writeLine("  <module>");
         writeLine("    <web>");
         writeLine("      <web-uri>" + nm + "</web-uri>");
-        writeLine("      <context-root>/" +
-                  nm.substring(0, nm.lastIndexOf(".war")) +
-                  "</context-root>");
+
+        String warName = nm.substring(0, nm.lastIndexOf(".war"));
+        String contextRoot = null;
+
+        if (contextProps != null) {
+          contextRoot = contextProps.getProperty(warName + ".context");
+
+          if (contextRoot.length() == 0) {
+            contextRoot = "/";
+          }
+        }
+
+        if (contextRoot == null) {
+          contextRoot = "/" + warName;
+        }
+
+        writeLine("      <context-root>" + contextRoot + "</context-root>");
         writeLine("    </web>");
         writeLine("  </module>");
       }

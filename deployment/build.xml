@@ -64,6 +64,16 @@
     <property name="org.bedework.common.resources"
               location="${app.root.dir}/resources" />
 
+    <if>
+      <not>
+        <isset property="org.bedework.global.context.roots" />
+      </not>
+      <then>
+        <tempfile property="org.bedework.global.context.roots"
+                  destdir="${org.bedework.temp.dir}"
+                  prefix="context-roots" suffix=".properties" />
+      </then>
+    </if>
 
     <!-- ==================== config properties =========================
     <property name="org.bedework.config.properties"

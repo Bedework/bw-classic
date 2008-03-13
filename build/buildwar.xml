@@ -167,6 +167,11 @@
 
     <delete file="${app.temp.web.xml}" />
 
+    <!-- Add the contex root to the file. Note that newline is required -->
+    <echo file="${org.bedework.global.context.roots}" append="yes">
+${propval.app.war.name}.context=${propval.app.context.root}
+    </echo>
+
     <!-- ===============================================================
          Add hibernate jars and property files from calendar api.
          =============================================================== -->
@@ -570,19 +575,21 @@
           file="${app.sou.dir}/war/WEB-INF/jboss-web.xml">
       <filterset refid="property.filters" />
     </copy>
-    <antcall target="jboss-virtual-host" inheritRefs="true" />
-  </target>
 
-  <target name="jboss-virtual-host" if="org.bedework.global.virtual.host">
-    <replace file="${app.dest.webinf}/jboss-web.xml">
-      <replacetoken><![CDATA[<!-- Virtual host -->]]></replacetoken>
-      <replacevalue><![CDATA[<virtual-host>@VIRTUAL-HOST@</virtual-host>
-      ]]>
-      </replacevalue>
-    </replace>
-    <replace file="${app.dest.webinf}/jboss-web.xml">
-      <replacefilter token="@VIRTUAL-HOST@" value="${propval.app.virtual.host}"/>
-    </replace>
+    <if>
+      <isset property="propval.app.virtual.host" />
+      <then>
+        <replace file="${app.dest.webinf}/jboss-web.xml">
+          <replacetoken><![CDATA[<!-- Virtual host -->]]></replacetoken>
+          <replacevalue><![CDATA[<virtual-host>@VIRTUAL-HOST@</virtual-host>
+          ]]>
+          </replacevalue>
+        </replace>
+        <replace file="${app.dest.webinf}/jboss-web.xml">
+          <replacefilter token="@VIRTUAL-HOST@" value="${propval.app.virtual.host}"/>
+        </replace>
+      </then>
+    </if>
   </target>
 
   <target name="build.ear" if="cal.j2ee">

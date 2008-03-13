@@ -70,7 +70,8 @@
 
     <applicationXml displayName="Bedework calendar suite"
                     outFile="${ear.dir}/META-INF/application.xml"
-                    warDir="${org.bedework.temp.dir}/wars">
+                    warDir="${org.bedework.temp.dir}/wars"
+                    contexts="${org.bedework.global.context.roots}">
       <fileset dir="${ear.dir}">
         <include name="*.jar"/>
       </fileset>
