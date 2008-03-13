@@ -1440,9 +1440,6 @@
           </xsl:otherwise>
         </xsl:choose>
       </a>
-      <xsl:if test="start/noStart = 'false'">
-        <span class="taskDate"><xsl:value-of select="start/shortdate"/></span>
-      </xsl:if>
     </li>
   </xsl:template>
 
