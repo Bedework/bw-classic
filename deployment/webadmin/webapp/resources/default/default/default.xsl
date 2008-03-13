@@ -829,7 +829,7 @@
         </li>
         <li>
           <a href="{$filter-showAddForm}">
-            Add a named CalDAV filter
+            Manage CalDAV filters
           </a>
         </li>
         <li>
@@ -6133,6 +6133,29 @@
         </tr>
       </table>
     </form>
+    <xsl:if test="filters/filter">
+      <table id="filterTable">
+        <tr>
+          <th>Filter Name</th>
+          <th>Description/Definition</th>
+        </tr>
+        <xsl:for-each select="filters/filter">
+          <xsl:variable name="filterName" select="name"/>
+          <tr>
+            <td><xsl:value-of select="$filterName"/></td>
+            <td>
+              <xsl:if test="description"><xsl:value-of select="description"/><br/></xsl:if>
+              <a href="javascript:toggleVisibility(bwfilter-{$filterName})">
+                show/hide filter definition
+              </a>
+              <p id="bwfilter-{$filterName}" class="invisible">
+                <xsl:copy-of select="definition/*"/>
+              </p>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </table>
+    </xsl:if>
   </xsl:template>
 
   <!--+++++++++++++++ System Stats ++++++++++++++++++++-->
