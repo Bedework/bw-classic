@@ -6141,13 +6141,13 @@
         </tr>
       </table>
     </form>
-    <xsl:if test="filters/filter">
+    <xsl:if test="/bedework/filters/filter">
       <table id="filterTable">
         <tr>
           <th>Filter Name</th>
           <th>Description/Definition</th>
         </tr>
-        <xsl:for-each select="filters/filter">
+        <xsl:for-each select="/bedework/filters/filter">
           <xsl:variable name="filterName" select="name"/>
           <tr>
             <td><xsl:value-of select="$filterName"/></td>
