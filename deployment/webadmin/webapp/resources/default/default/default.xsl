@@ -254,6 +254,9 @@
         <xsl:if test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
           <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
         </xsl:if>
+        <xsl:if test="/bedework/page='addFilter'">
+          <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
+        </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
         <script language="JavaScript" type="text/javascript">
           <xsl:comment>
@@ -6103,7 +6106,7 @@
 
   <!--+++++++++++++++ Filters ++++++++++++++++++++-->
   <xsl:template name="addFilter">
-    <h2>Add a Named CalDAV Filter</h2>
+    <h2>Add a Named CalDAV Filter (<a href="http://bedework.org/trac/bedework/wiki/Bedework/DevDocs/Filters">examples</a>)</h2>
     <form name="peForm" method="post" action="{$filter-add}">
       <table id="addFilterFormTable" class="eventFormTable">
         <tr>
@@ -6151,13 +6154,13 @@
           <tr>
             <td><xsl:value-of select="$filterName"/></td>
             <td>
-              <xsl:if test="description"><xsl:value-of select="description"/><br/></xsl:if>
-              <a href="javascript:toggleVisibility(bwfilter-{$filterName})">
+              <xsl:if test="description != ''"><xsl:value-of select="description"/><br/></xsl:if>
+              <a href="javascript:toggleVisibility('bwfilter-{$filterName}')">
                 show/hide filter definition
               </a>
-              <p id="bwfilter-{$filterName}" class="invisible">
-                <xsl:copy-of select="definition/*"/>
-              </p>
+              <div id="bwfilter-{$filterName}" class="invisible" style="white-space: pre;">
+                <xsl:value-of select="definition"/>
+              </div>
             </td>
           </tr>
         </xsl:for-each>
