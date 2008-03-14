@@ -1855,15 +1855,14 @@
                   </h4>
                   <div id="raContent">
                     <div class="dateStartEndBox" id="rdatesFormFields">
-                      <!-- dateonly event: this is temporary - should be determined by the main event -->
+                      <!--
                       <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="true"/>
                       all day
-                      <!-- floating event: no timezone (and not UTC) -->
                       <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="true"/>
                       floating
-                      <!-- store time as coordinated universal time (UTC) -->
+                      store time as coordinated universal time (UTC)
                       <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
-                      store as UTC<br/>
+                      store as UTC<br/>-->
                       <div class="dateFields">
                         <input name="eventRdate.date"
                                dojoType="dropdowndatepicker"
