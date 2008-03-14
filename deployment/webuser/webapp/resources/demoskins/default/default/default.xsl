@@ -187,6 +187,9 @@
           <xsl:when test="/bedework/page = 'addEvent'">
             <xsl:attribute name="onload">focusElement('bwEventTitle');</xsl:attribute>
           </xsl:when>
+          <xsl:when test="/bedework/page = 'editEvent'">
+            <xsl:attribute name="onload">initRXDates();</xsl:attribute>
+          </xsl:when>
           <xsl:when test="/bedework/page = 'attendees'">
             <xsl:attribute name="onload">focusElement('bwRaUri');</xsl:attribute>
           </xsl:when>
@@ -384,6 +387,22 @@
     <xsl:if test="/bedework/editableAccess/access/acl/ace">
       <script type="text/javascript">
         <xsl:apply-templates select="/bedework/editableAccess/access/acl/ace" mode="initJS"/>
+      </script>
+    </xsl:if>
+    <xsl:if test="/bedework/page='editEvent'">
+      <script type="text/javascript">
+        <xsl:comment>
+        function initRXDates() {
+          // return string values to be loaded into javascript for rdates
+          <xsl:for-each select="/bedework/formElements/form/rdates/rdate">
+            bwRdates.update('<xsl:value-of select="date"/>','<xsl:value-of select="time"/>',false,false,false,'<xsl:value-of select="tzid"/>');
+          </xsl:for-each>
+          // return string values to be loaded into javascript for rdates
+          <xsl:for-each select="/bedework/formElements/form/exdates/rdate">
+            bwExdates.update('<xsl:value-of select="date"/>','<xsl:value-of select="time"/>',false,false,false,'<xsl:value-of select="tzid"/>');
+          </xsl:for-each>
+        }
+        </xsl:comment>
       </script>
     </xsl:if>
     <script type="text/javascript">
@@ -4002,7 +4021,6 @@
               <td>
                 <input type="submit" name="addCategory" value="Add Category"/>
                 <input type="submit" name="cancelled" value="cancel"/>
-                <input type="reset" value="Clear"/>
               </td>
             </tr>
           </table>
@@ -4046,7 +4064,6 @@
               <td>
                 <input type="submit" name="updateCategory" value="Update Category"/>
                 <input type="submit" name="cancelled" value="cancel"/>
-                <input type="reset" value="Reset"/>
               </td>
               <td align="right">
                 <input type="submit" name="delete" value="Delete Category"/>
@@ -4399,7 +4416,6 @@
           <td>
             <input type="submit" name="addCalendar" value="Add Calendar/Folder"/>
             <input type="submit" name="cancelled" value="cancel"/>
-            <input type="reset" value="Clear"/>
           </td>
         </tr>
       </table>
@@ -4491,7 +4507,6 @@
               </xsl:otherwise>
             </xsl:choose>
             <input type="submit" name="cancelled" value="cancel"/>
-            <input type="reset" value="Reset"/>
           </td>
           <td align="right">
             <xsl:choose>
@@ -4965,7 +4980,6 @@
           <td>
             <input type="submit" name="addSubscription" value="Add Subscription"/>
             <input type="submit" name="cancelled" value="cancel"/>
-            <input type="reset" value="Clear"/>
           </td>
         </tr>
       </table>
@@ -5048,7 +5062,6 @@
           <td>
             <input type="submit" name="addSubscription" value="Add Subscription"/>
             <input type="submit" name="cancelled" value="cancel"/>
-            <input type="reset" value="Clear"/>
           </td>
         </tr>
       </table>
@@ -5161,7 +5174,6 @@
           <td>
             <input type="submit" name="updateSubscription" value="Update Subscription"/>
             <input type="submit" name="cancelled" value="cancel"/>
-            <input type="reset" value="Reset"/>
           </td>
           <td align="right">
             <xsl:choose>
@@ -5573,7 +5585,6 @@
               <td>
                 <input name="submit" type="submit" value="Submit Location"/>
                 <input name="cancelled" type="submit" value="cancel"/>
-                <input type="reset" value="Reset"/>
               </td>
               <td align="right">
                 <input type="submit" name="delete" value="Delete Location"/>
@@ -6967,7 +6978,6 @@
       <br />
 
       <input type="submit" name="modPrefs" value="Update"/>
-      <input type="reset" value="Reset"/>
       <input type="submit" name="cancelled" value="cancel"/>
     </form>
   </xsl:template>
@@ -7119,7 +7129,6 @@
         </tr>
       </table>
       <input type="submit" name="modPrefs" value="Update scheduling auto-processing"/>
-      <input type="reset" value="Reset"/>
       <input type="submit" name="cancelled" value="cancel"/>
     </form>
   </xsl:template>
@@ -7179,7 +7188,6 @@
     </dl>
 
     <input type="submit" name="modPrefs" value="Update"/>
-    <input type="reset" value="Reset"/>
     <input type="submit" name="cancelled" value="cancel"/>
   </xsl:template>
 

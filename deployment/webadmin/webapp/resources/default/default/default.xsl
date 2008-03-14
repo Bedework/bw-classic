@@ -229,6 +229,20 @@
             <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
             <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
           </xsl:if>
+          <script type="text/javascript">
+            <xsl:comment>
+            function initRXDates() {
+              // return string values to be loaded into javascript for rdates
+              <xsl:for-each select="/bedework/formElements/form/rdates/rdate">
+                bwRdates.update('<xsl:value-of select="date"/>','<xsl:value-of select="time"/>',false,false,false,'<xsl:value-of select="tzid"/>');
+              </xsl:for-each>
+              // return string values to be loaded into javascript for rdates
+              <xsl:for-each select="/bedework/formElements/form/exdates/rdate">
+                bwExdates.update('<xsl:value-of select="date"/>','<xsl:value-of select="time"/>',false,false,false,'<xsl:value-of select="tzid"/>');
+              </xsl:for-each>
+            }
+            </xsl:comment>
+          </script>
         </xsl:if>
         <xsl:if test="/bedework/page='modCalendar' or /bedework/page='modCalSuite'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
@@ -243,18 +257,32 @@
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
         <script language="JavaScript" type="text/javascript">
           <xsl:comment>
-        <![CDATA[
-        // places the cursor in the first available form element when the page is loaded
-        // (if a form exists on the page)
-        function focusFirstElement() {
-          if (window.document.forms[0]) {
-            window.document.forms[0].elements[0].focus();
-          }
-        }]]>
-        </xsl:comment>
+          <![CDATA[
+          // places the cursor in the first available form element when the page is loaded
+          // (if a form exists on the page)
+          function focusFirstElement() {
+            if (window.document.forms[0]) {
+              for (i=0; i<window.document.forms[0].elements.length; i++) {
+                if (window.document.forms[0].elements[i].type != "submit" &&
+                    window.document.forms[0].elements[i].type != "reset" ) {
+                  window.document.forms[0].elements[i].focus();
+                  break;
+                }
+              }
+            }
+          }]]>
+          </xsl:comment>
         </script>
       </head>
-      <body onload="focusFirstElement()">
+      <body>
+        <xsl:choose>
+          <xsl:when test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
+            <xsl:attribute name="onload">initRXDates();focusFirstElement();</xsl:attribute>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:attribute name="onload">focusFirstElement();</xsl:attribute>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:choose>
           <xsl:when test="/bedework/page='selectCalForEvent'">
             <xsl:call-template name="selectCalForEvent"/>
@@ -2321,7 +2349,6 @@
                 <td>
                   <input type="submit" name="addEvent" value="Add Event"/>
                   <input type="submit" name="cancelled" value="Cancel"/>
-                  <input type="reset" value="Clear"/>
                 </td>
               </xsl:when>
               <xsl:otherwise>
@@ -2777,14 +2804,12 @@
               <td>
                 <input type="submit" name="addContact" value="Add Contact"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Clear"/>
               </td>
             </xsl:when>
             <xsl:otherwise>
               <td>
                 <input type="submit" name="updateContact" value="Update Contact"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Reset"/>
               </td>
               <td align="right">
                 <input type="submit" name="delete" value="Delete Contact"/>
@@ -2912,14 +2937,12 @@
               <td>
                 <input type="submit" name="addLocation" value="Add Location"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Clear"/>
               </td>
             </xsl:when>
             <xsl:otherwise>
               <td>
                 <input type="submit" name="updateLocation" value="Update Location"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Reset"/>
               </td>
               <td align="right">
                 <input type="submit" name="delete" value="Delete Location"/>
@@ -3026,7 +3049,6 @@
               <td>
                 <input type="submit" name="addCategory" value="Add Category"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Clear"/>
               </td>
             </tr>
           </table>
@@ -3062,7 +3084,6 @@
               <td>
                 <input type="submit" name="updateCategory" value="Update Category"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Reset"/>
               </td>
               <td align="right">
                 <input type="submit" name="delete" value="Delete Category"/>
@@ -3306,7 +3327,6 @@
           <td>
             <input type="submit" name="addCalendar" value="Add Calendar/Folder"/>
             <input type="submit" name="cancelled" value="Cancel"/>
-            <input type="reset" value="Clear"/>
           </td>
         </tr>
       </table>
@@ -3392,7 +3412,6 @@
               </xsl:otherwise>
             </xsl:choose>
             <input type="submit" name="cancelled" value="Cancel"/>
-            <input type="reset" value="Reset"/>
           </td>
           <td align="right">
             <xsl:choose>
@@ -3926,7 +3945,6 @@
     </dl>
 
     <input type="submit" name="modPrefs" value="Update"/>
-    <input type="reset" value="Reset"/>
     <input type="submit" name="cancelled" value="cancel"/>
   </xsl:template>
 
@@ -4462,7 +4480,6 @@
           <td>
             <input type="submit" name="addSubscription" value="Add Subscription"/>
             <input type="submit" name="cancelled" value="Cancel"/>
-            <input type="reset" value="Clear"/>
           </td>
         </tr>
       </table>
@@ -4562,7 +4579,6 @@
           <td>
             <input type="submit" name="updateSubscription" value="Update Subscription"/>
             <input type="submit" name="cancelled" value="Cancel"/>
-            <input type="reset" value="Reset"/>
           </td>
           <td align="right">
             <input type="submit" name="delete" value="Delete Subscription"/>
@@ -5134,7 +5150,6 @@
           <td>
             <input type="submit" name="updateSystemParams" value="Update"/>
             <input type="submit" name="cancelled" value="Cancel"/>
-            <input type="reset" value="Reset"/>
           </td>
         </tr>
       </table>
@@ -5200,7 +5215,6 @@
           <td>
             <input type="submit" name="updateCalSuite" value="Add"/>
             <input type="submit" name="cancelled" value="Cancel"/>
-            <input type="reset" value="Reset"/>
           </td>
         </tr>
       </table>
@@ -5247,7 +5261,6 @@
           <td>
             <input type="submit" name="updateCalSuite" value="Update"/>
             <input type="submit" name="cancelled" value="Cancel"/>
-            <input type="reset" value="Reset"/>
           </td>
           <td align="right">
             <input type="submit" name="delete" value="Delete Calendar Suite"/>
@@ -5557,7 +5570,6 @@
       <br />
 
       <input type="submit" name="modPrefs" value="Update"/>
-      <input type="reset" value="Reset"/>
       <input type="submit" name="cancelled" value="Cancel"/>
     </form>
   </xsl:template>
@@ -5712,7 +5724,6 @@
       <br />
 
       <input type="submit" name="modAuthUser" value="Update"/>
-      <input type="reset" value="Reset"/>
       <input type="submit" name="cancelled" value="Cancel"/>
     </form>
   </xsl:template>
@@ -5817,7 +5828,6 @@
       <br />
 
       <input type="submit" name="modPrefs" value="Update"/>
-      <input type="reset" value="Reset"/>
       <input type="submit" name="cancelled" value="Cancel"/>
     </form>
   </xsl:template>
@@ -5978,12 +5988,10 @@
               <xsl:when test="/bedework/creating = 'true'">
                 <input type="submit" name="updateAdminGroup" value="Add Admin Group"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Clear"/>
               </xsl:when>
               <xsl:otherwise>
                 <input type="submit" name="updateAdminGroup" value="Update Admin Group"/>
                 <input type="submit" name="cancelled" value="Cancel"/>
-                <input type="reset" value="Reset"/>
               </xsl:otherwise>
             </xsl:choose>
           </td>
