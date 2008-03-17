@@ -820,6 +820,9 @@ a.gridAdd {
 #listTable td.icons img.addref {
   margin-right: 0.5em;
 }
+#listTable td.eventListDateTime {
+  white-space: nowrap;
+}
 #calPageTable ul.calendarTree li {
   font-weight: bold;
 }
@@ -1051,4 +1054,7 @@ html .dojoFloatingPaneClient #bwCalendarExportWidgetCalName {
 html .dojoFloatingPaneClient form#exportCalendarForm {
   margin: 0;
   padding: 0;
+}
+#listTable td.eventListDateTime {
+  white-space: nowrap;
 }
