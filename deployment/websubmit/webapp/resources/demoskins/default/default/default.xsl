@@ -264,7 +264,7 @@
         thinking of titles. Express not only what the event is, but
         (briefly) what it's about. Elaborate on the event in the
         description field, but try not to repeat the same
-        information.  Try to think like a user when suggest an event:
+        information.  Try to think like a user when suggesting an event:
         use language that will explain your event to someone who knows
         absolutely nothing about it.
       </li>
