@@ -954,6 +954,26 @@ p.note {
   top: -2px;
   margin: 0 25px 0 -35px;
 }
+#filterTable {
+  font-size: 0.9em;
+}
+#filterTable th {
+  vertical-align: top;
+  border: 1px solid #ddd;
+  color: black;
+  background-color: #ddd;
+}
+#filterTable td {
+  vertical-align: top;
+  border: 1px solid #ddd;
+  padding: 0.5em;
+}
+#filterTable .filterdef {
+  white-space: pre;
+  padding: 1em;
+  color: #8B4513;
+  background-color: transparent;
+}
 #statsTable {
   margin: 1em 0 0 4em;
   width: 300px;

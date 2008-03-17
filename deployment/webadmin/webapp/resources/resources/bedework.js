@@ -6,9 +6,13 @@ function changeClass(id, newClass) {
   identity = document.getElementById(id);
   identity.className=newClass;
 }
-function toggleVisibility(id) {
+function toggleVisibility(id,newClass) {
   if (document.getElementById(id).className == 'invisible') {
-    changeClass(id,'visible');
+    if (newClass != "") {
+      changeClass(id,newClass);
+    } else {
+      changeClass(id,'visible');
+    }
   } else {
     changeClass(id,'invisible');
   }

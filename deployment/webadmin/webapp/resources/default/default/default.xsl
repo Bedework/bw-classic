@@ -198,6 +198,7 @@
   <!-- filters -->
   <xsl:variable name="filter-showAddForm" select="/bedework/urlPrefixes/filter/showAddForm/a/@href"/>
   <xsl:variable name="filter-add" select="/bedework/urlPrefixes/filter/add/a/@href"/>
+  <xsl:variable name="filter-delete" select="/bedework/urlPrefixes/filter/delete/a/@href"/>
 
 
   <!-- URL of the web application - includes web context -->
@@ -1039,7 +1040,7 @@
 
       <div id="bwSubmittedEventCommentBlock">
         <h4>Comments from Submitter</h4>
-        <a href="javascript:toggleVisibility('bwSubmittedEventComment');" class="toggle">show/hide</a>
+        <a href="javascript:toggleVisibility('bwSubmittedEventComment','visible');" class="toggle">show/hide</a>
         <a href="javascript:bwSubmitComment.launch();" class="toggle">pop-up</a>
         <div id="bwSubmittedEventComment">
         </div>
@@ -6144,10 +6145,12 @@
       </table>
     </form>
     <xsl:if test="/bedework/filters/filter">
+      <h2>Current Filters</h2>
       <table id="filterTable">
         <tr>
           <th>Filter Name</th>
           <th>Description/Definition</th>
+          <th>Delete</th>
         </tr>
         <xsl:for-each select="/bedework/filters/filter">
           <xsl:variable name="filterName" select="name"/>
@@ -6155,12 +6158,17 @@
             <td><xsl:value-of select="$filterName"/></td>
             <td>
               <xsl:if test="description != ''"><xsl:value-of select="description"/><br/></xsl:if>
-              <a href="javascript:toggleVisibility('bwfilter-{$filterName}')">
+              <a href="javascript:toggleVisibility('bwfilter-{$filterName}','filterdef')">
                 show/hide filter definition
               </a>
-              <div id="bwfilter-{$filterName}" class="invisible" style="white-space: pre;">
+              <div id="bwfilter-{$filterName}" class="invisible">
                 <xsl:value-of select="definition"/>
               </div>
+            </td>
+            <td>
+              <a href="{$filter-delete}&amp;name={$filterName}" title="delete filter">
+                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete filter"/>
+              </a>
             </td>
           </tr>
         </xsl:for-each>
