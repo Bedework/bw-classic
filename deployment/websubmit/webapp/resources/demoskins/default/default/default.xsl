@@ -466,9 +466,8 @@
         <table cellspacing="0" class="common">
           <!-- Calendar -->
           <!-- ======== -->
-          <!--  the string "user/" should not be hard coded; fix this -->
           <xsl:variable name="submissionCalendars">
-            <xsl:value-of select="count(/bedework/myCalendars//calendar[starts-with(path,/bedework/submissionsRoot/unencoded) and calType='1']) = '1'"/>
+            <xsl:value-of select="count(/bedework/myCalendars//calendar[calType='1'])"/>
           </xsl:variable>
           <tr>
             <xsl:if test="$submissionCalendars = 1">
@@ -482,19 +481,18 @@
             <td class="fieldval">
               <xsl:choose>
                 <xsl:when test="$submissionCalendars = 1">
-                  <!-- there is only 1 writable calendar, so find it by looking down both trees at once -->
-                  <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[starts-with(path,/bedework/submissionsRoot/unencoded) and calType='1']/path"/></xsl:variable>
+                  <!-- there is only 1 writable calendar, just send a hidden field -->
+                  <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[calType='1']/path"/></xsl:variable>
                   <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
-
                   <span id="bwEventCalDisplay">
                     <xsl:value-of select="$newCalPath"/>
                   </span>
                 </xsl:when>
                 <xsl:otherwise>
                   <select name="newCalPath" id="bwNewCalPathField">
-                    <xsl:for-each select="/bedework/myCalendars//calendar[starts-with(path,/bedework/submissionsRoot/unencoded) and calType='1']">
+                    <xsl:for-each select="/bedework/myCalendars//calendar[calType='1']">
                       <option>
-                        <xsl:attribute name="value"><xsl:value-of select="/bedework/submissionsRoot/unencoded"/></xsl:attribute>
+                        <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
                         <xsl:value-of select="substring-after(substring-after(path,/bedework/submissionsRoot/unencoded),'/')"/>
                       </option>
                     </xsl:for-each>
