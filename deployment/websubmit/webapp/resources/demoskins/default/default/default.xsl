@@ -951,7 +951,7 @@
                   <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
                     <input type="checkbox" name="categoryKey">
                       <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="keyword = form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                      <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                       <xsl:value-of select="keyword"/>
                     </input><br/>
                   </xsl:for-each>
@@ -960,7 +960,7 @@
                   <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
                     <input type="checkbox" name="categoryKey">
                       <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="keyword = form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                      <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                       <xsl:value-of select="keyword"/>
                     </input><br/>
                   </xsl:for-each>
