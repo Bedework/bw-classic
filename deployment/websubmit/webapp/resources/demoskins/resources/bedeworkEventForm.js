@@ -283,7 +283,7 @@ function getComments(formId,comment) {
 
   var commentVals = comment.split("\t");
   formObj["commentLocationAddress"].value = (commentVals[0] == undefined) ? "" : commentVals[0];
-  formObj["commentLocationSubaddress"].value = (commentVals[2] == undefined) ? "" : commentVals[2];
+  formObj["commentLocationSubaddress"].value = (commentVals[1] == undefined) ? "" : commentVals[1];
   formObj["commentLocationURL"].value = (commentVals[2] == undefined) ? "" : commentVals[2];
   formObj["commentContactName"].value = (commentVals[3] == undefined) ? "" : commentVals[3];
   formObj["commentContactPhone"].value = (commentVals[4] == undefined) ? "" : commentVals[4];
