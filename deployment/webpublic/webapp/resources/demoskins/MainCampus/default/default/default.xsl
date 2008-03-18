@@ -1780,7 +1780,8 @@
     <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td class="leftCell">
-          Based on the <a href="http://www.bedework.org/">Bedework Website</a> |
+          <a href="http://www.bedework.org/">Bedework website</a> |
+          <a href="http://www.bedework.org/bedework/update.do?artcenterkey=35">production examples</a> |
           <a href="?noxslt=yes">show XML</a> |
           <a href="?refreshXslt=yes">refresh XSLT</a>
         </td>
@@ -1803,14 +1804,6 @@
               <option value="{$setup}&amp;browserTypeSticky=PDA">for mobile browsers</option>
               <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=videocal">video feed</option>
               <option value="{$setup}&amp;skinNameSticky=default">reset to calendar default</option>
-            </select>
-          </form>
-          <form name="skinSelectForm" method="post" action="">
-            <select name="sitePicker" onchange="window.location = this.value">
-              <option>production examples:</option>
-              <option value="http://events.dal.ca/">Dalhousie</option>
-              <option value="http://events.rpi.edu">Rensselaer</option>
-              <option value="http://myuw.washington.edu/cal/">Washington</option>
             </select>
           </form>
         </td>
