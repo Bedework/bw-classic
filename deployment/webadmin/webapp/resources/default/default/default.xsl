@@ -2360,7 +2360,7 @@
                   <input type="submit" name="cancelled" value="Cancel"/>
                   <xsl:if test="form/recurringEntity != 'true' and recurrenceId = ''">
                     <!-- cannot duplicate recurring events for now -->
-                    <input type="submit" name="copy" value="Duplicate Event"/>
+                    <input type="submit" name="copy" value="Copy Event"/>
                   </xsl:if>
                 </td>
                 <td align="right">
