@@ -3,11 +3,11 @@
 # Copy the current trunk to a new location and adjust the externals property
 
 usage() {
-  echo "This script will copy the trunk to a new location and adjust the "
-  echo "svn:externals property to refer to the new copies"
+  echo "This script will copy the trunk (or named location) to a new location and"
+  echo "adjust the svn:externals property to refer to the new copies"
   echo " "
   echo " $0 help"
-  echo " $0 (branch | tag | release) name comment-text"
+  echo " $0 (branch | tag | release) name comment-text [ from (branch | tag | release) name]"
   echo " "
   echo " par 1: branch tag or release specifies what kind of copy"
   echo " par 2: name e.g. my-copy or bedework-4.0.1"
@@ -74,15 +74,25 @@ check() {
 # par 1 - project name
 # par 2 - destination
 # par 3 - comment
+# par 4 - source
 # ------------------------------------------------------------------
 copyproject() {
-  echo "copyproject $1 $2"
+  echo "copyproject $1 $2 from $4"
   if [ "${1}" != "bedework" ]
   then
     echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
   fi
-  svn copy -m "$3" -rHEAD $SVNREPOSITORY/$1/trunk $SVNREPOSITORY/$1/$2
+  svn copy -m "$3" -rHEAD $SVNREPOSITORY/$1/$4 $SVNREPOSITORY/$1/$2
 }
+
+SOURCE="trunk"
+
+if [ "${4}" = "from" ]
+then
+  checkbranchtag "$5"
+  check "from-Name" "$6"
+  SOURCE=$BTR/$6
+fi
 
 checkbranchtag "$1"
 check "Name" "$2"
@@ -122,7 +132,7 @@ trap "exit 2" 1 2 3 15
 
 for project in $PROJECTS
 do
-   copyproject "$project" "$TARGET" "$COMMENT"
+   copyproject "$project" "$TARGET" "$COMMENT" "$SOURCE"
 done
 
 svn co -N $SVNREPOSITORY/bedework/$TARGET $SCTEMPDIR/bedework
