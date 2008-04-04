@@ -111,7 +111,7 @@
     </copy>
 
     <!-- Include the quickstart jdbc driver -->
-    <copy todir="${app.dest.lib}" file="${hsqldb.jdbcdriver.jar}"/>
+    <copy todir="${app.dest.lib}" file="${appserver.jdbcdriver.jar}"/>
 
     <copy todir="${app.dest.classes}">
       <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/properties" />

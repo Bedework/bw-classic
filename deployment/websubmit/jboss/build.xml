@@ -25,6 +25,12 @@
     <echo message="***************************************************************" />
     <echo message="Readying app ${propval.app.war.name}.war for jboss deployment" />
     <echo message="***************************************************************" />
+    <!-- First copy the resources into the server -->
+
+    <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}" />
+    <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}">
+      <fileset dir="${this.dir}/../webapp/resources/demoskins" />
+    </copy>
   </target>
 
   <target name="build.configured" >

@@ -25,6 +25,19 @@
     <echo message="***************************************************************" />
     <echo message="Readying app ${propval.app.war.name}.war for jboss deployment" />
     <echo message="***************************************************************" />
+    <!-- First copy the resources into the server -->
+
+    <if>
+      <not>
+        <isset property="org.bedework.global.noskins" />
+      </not>
+      <then>
+        <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.cal.suite}" />
+        <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${propval.app.cal.suite}">
+          <fileset dir="${this.dir}/../webapp/resources/demoskins/${propval.app.cal.suite}" />
+        </copy>
+      </then>
+    </if>
   </target>
 
   <target name="build.configured" >

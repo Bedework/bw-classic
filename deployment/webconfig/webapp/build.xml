@@ -46,10 +46,17 @@
        ================================================================= -->
 
   <target name="deploy" depends="init,build.configured" >
-    <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}" />
-    <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}">
-      <fileset dir="${app.resources.dir}" />
-    </copy>
+    <if>
+      <not>
+        <isset property="org.bedework.global.noskins" />
+      </not>
+      <then>
+        <delete dir="${org.bedework.appserver.dir}/${propval.app.resources.dir}" />
+        <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}">
+          <fileset dir="${app.resources.dir}" />
+        </copy>
+      </then>
+    </if>
 
     <echo message="***************************************************************" />
     <echo message="Deploying standalone app ${app.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />

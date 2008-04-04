@@ -83,6 +83,10 @@
     <!-- Load user property definition overrides -->
     <property file="${org.bedework.user.build.properties}" />
 
+    <!-- This may have defined the config properties location. Load that now to get overrides -->
+    <property file="${org.bedework.config.properties}" />
+
+
     <!-- Unfortunately it sits on top of everything
     <splash imageurl="file://${org.bedework.project.bedework}/docs/icons/bedeworkLogo.gif"/>
     -->

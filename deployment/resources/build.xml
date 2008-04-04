@@ -104,22 +104,29 @@
         -->
       </then>
       <else>
-        <!-- Just copy into a common location -->
-        <property name="cmn.destdir"
-                  location="${org.bedework.appserver.dir}/${org.bedework.global.common.deploydir}"/>
         <if>
-          <isset property="org.bedework.use.dojo" />
+          <not>
+            <isset property="org.bedework.global.noskins" />
+          </not>
           <then>
-            <!-- Add dojo -->
-            <copy todir="${cmn.destdir}/javascript/dojo">
-              <fileset dir="${common.resources.dir}/javascript/${dojo.dir}" />
+            <!-- Just copy into a common location -->
+            <property name="cmn.destdir"
+                      location="${org.bedework.appserver.dir}/${org.bedework.global.common.deploydir}"/>
+            <if>
+              <isset property="org.bedework.use.dojo" />
+              <then>
+                <!-- Add dojo -->
+                <copy todir="${cmn.destdir}/javascript/dojo">
+                  <fileset dir="${common.resources.dir}/javascript/${dojo.dir}" />
+                </copy>
+              </then>
+            </if>
+
+            <copy todir="${cmn.destdir}">
+              <fileset dir="${common.resources.dir}/xsl" />
             </copy>
           </then>
         </if>
-
-        <copy todir="${cmn.destdir}">
-          <fileset dir="${common.resources.dir}/xsl" />
-        </copy>
       </else>
     </if>
   </target>
