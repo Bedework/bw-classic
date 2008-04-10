@@ -2020,6 +2020,10 @@
           <xsl:otherwise>Edit Event</xsl:otherwise>
         </xsl:choose>
       </h2>
+      <xsl:for-each select="form/xproperties/xproperty">
+        <xsl:variable name="xprop"><xsl:value-of select="@name"/><xsl:value-of select="pars"/>:<xsl:value-of select="value"/></xsl:variable>
+        <input type="hidden" name="xproperty" value="{$xprop}"/>
+      </xsl:for-each>
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>

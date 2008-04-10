@@ -1060,6 +1060,11 @@
         </xsl:otherwise>
       </xsl:choose>
 
+      <xsl:for-each select="form/xproperties/xproperty">
+        <xsl:variable name="xprop"><xsl:value-of select="@name"/><xsl:value-of select="pars"/>:<xsl:value-of select="value"/></xsl:variable>
+        <input type="hidden" name="xproperty" value="{$xprop}"/>
+      </xsl:for-each>
+
       <xsl:call-template name="submitEventButtons"/>
 
       <table class="eventFormTable">
@@ -2061,6 +2066,22 @@
             <xsl:copy-of select="form/link/*"/>
             <xsl:text> </xsl:text>
             <span class="fieldInfo">(optional: for more information about the event)</span>
+          </td>
+        </tr>
+        <!-- Url -->
+        <tr>
+          <td class="optional">
+            Image URL:
+          </td>
+          <td>
+            <input type="hidden" name="xproperty" id="X-BEDEWORK-IMAGE"/>
+            <input type="text" name="xBwImageHolder" value="" class="edit" size="30">
+              <xsl:if test="form/xproperties/xproperty[@name='X-BEDEWORK-IMAGE']">
+                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/xproperty[@name='X-BEDEWORK-IMAGE']/value"/></xsl:attribute>
+              </xsl:if>
+            </input>
+            <xsl:text> </xsl:text>
+            <span class="fieldInfo">(optional: to include an image with the event description)</span>
           </td>
         </tr>
         <!-- Location -->

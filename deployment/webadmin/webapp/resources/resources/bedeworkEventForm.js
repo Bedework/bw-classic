@@ -321,6 +321,7 @@ function setEventFields(formObj,portalFriendly) {
     setDates(formObj);
   }
   setRecurrence(formObj);
+  setBedeworkXProperties(formObj);
   //setAccessHow(formObj,1);
   //setAccessAcl(formObj);
 }
@@ -336,6 +337,11 @@ function setDates(formObj) {
   formObj["eventEndDate.year"].value = endDate.getFullYear();
   formObj["eventEndDate.month"].value = endDate.getMonth() + 1;
   formObj["eventEndDate.day"].value = endDate.getDate();
+}
+function setBedeworkXProperties(formObj) {
+  // set up specific Bedework X-Properties
+  var xBwImage = document.getElementById("X-BEDEWORK-IMAGE");
+  xBwImage.value = "X-BEDEWORK-IMAGE:" + formObj["xBwImageHolder"].value;
 }
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
