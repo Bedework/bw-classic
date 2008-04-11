@@ -1060,8 +1060,8 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <xsl:for-each select="form/xproperties/xproperty">
-        <xsl:variable name="xprop"><xsl:value-of select="@name"/><xsl:value-of select="pars"/>:<xsl:value-of select="value"/></xsl:variable>
+      <xsl:for-each select="form/xproperties/node()">
+        <xsl:variable name="xprop"><xsl:value-of select="name()"/><xsl:for-each select="parameters/node()">;<xsl:value-of select="name()"/>=<xsl:value-of select="node()"/></xsl:for-each>:<xsl:value-of select="values/text"/></xsl:variable>
         <input type="hidden" name="xproperty" value="{$xprop}"/>
       </xsl:for-each>
 
@@ -2060,7 +2060,7 @@
         <!-- Url -->
         <tr>
           <td class="optional">
-            URL:
+            Event URL:
           </td>
           <td>
             <xsl:copy-of select="form/link/*"/>
@@ -2076,8 +2076,8 @@
           <td>
             <input type="hidden" name="xproperty" id="X-BEDEWORK-IMAGE"/>
             <input type="text" name="xBwImageHolder" value="" class="edit" size="30">
-              <xsl:if test="form/xproperties/xproperty[@name='X-BEDEWORK-IMAGE']">
-                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/xproperty[@name='X-BEDEWORK-IMAGE']/value"/></xsl:attribute>
+              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:attribute>
               </xsl:if>
             </input>
             <xsl:text> </xsl:text>

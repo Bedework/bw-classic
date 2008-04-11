@@ -340,8 +340,11 @@ function setDates(formObj) {
 }
 function setBedeworkXProperties(formObj) {
   // set up specific Bedework X-Properties
-  var xBwImage = document.getElementById("X-BEDEWORK-IMAGE");
-  xBwImage.value = "X-BEDEWORK-IMAGE:" + formObj["xBwImageHolder"].value;
+  if (formObj["xBwImageHolder"].value != '') {
+    var xBwImage = document.getElementById("X-BEDEWORK-IMAGE");
+    // the fake description parameter is temporary
+    xBwImage.value = "X-BEDEWORK-IMAGE;X-BEDEWORK-PARAM-DESCRIPTION=anImage:" + formObj["xBwImageHolder"].value;
+  }
 }
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
