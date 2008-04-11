@@ -149,10 +149,12 @@
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
-    <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
-    <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
-    <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
-    <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
+    <xsl:if test="/bedework/page='addEvent' or /bedework/page='editEvent'">
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
+      <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
+      <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
+    </xsl:if>
     <!-- <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script> -->
     <xsl:if test="$portalFriendly = 'true'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>

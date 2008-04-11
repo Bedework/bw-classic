@@ -707,11 +707,11 @@ function validateStep3() {
 // Dojo initialization
 // =======================================================
 
-function init() {
-  var untilHolder = dojo.byId("untilHolder");
-  dojo.event.connect(untilHolder, "onclick", untilClickHandler);
-}
+//function init() {
+//  var untilHolder = dojo.byId("untilHolder");
+//  dojo.event.connect(untilHolder, "onclick", untilClickHandler);
+//}
 
-dojo.addOnLoad(init);
+//dojo.addOnLoad(init);
 
 
