@@ -2182,6 +2182,7 @@
                   <xsl:variable name="catCount" select="count(form/categories/preferred/category)"/>
                   <td>
                     <xsl:for-each select="form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
+                      <xsl:sort select="keyword" order="ascending"/>
                       <input type="checkbox" name="categoryKey">
                         <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
@@ -2193,6 +2194,7 @@
                   </td>
                   <td>
                     <xsl:for-each select="form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
+                      <xsl:sort select="keyword" order="ascending"/>
                       <input type="checkbox" name="categoryKey">
                         <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
