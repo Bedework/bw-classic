@@ -39,13 +39,22 @@ dojo.require("dojo.widget.DropdownTimePicker");
 var rdateDeleteStr = "remove";
 
 // ========================================================================
+// ========================================================================
+//   Bedework specific x-properties
+
+var bwXpropertyImageUrl = "X-BEDEWORK-IMAGEURL";
+var bwXparamDescription = "X-BEDEWORK-PARAM-DESCRIPTION";
+var bwXparamWidth = "X-BEDEWORK-PARAM-WIDTH";
+var bwXparamHeight = "X-BEDEWORK-PARAM-HEIGHT";
+
+// ========================================================================
 // rdate functions
 // ========================================================================
 
 /* An rdate
-/* date: String: internal date
+ * date: String: internal date
  * time: String
- * tzid timezone id or null
+ * tzid: timezone id or null
  */
 function BwREXdate(date, time, allDay, floating, utc, tzid) {
   this.date = date;
@@ -239,7 +248,7 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
 // ========================================================================
 
 /* A comment accompanying a submitted event.
-/* comment: the x-property string X-BEDEWORK-SUBMIT-COMMENT, tab delimited
+ * comment: the x-property string X-BEDEWORK-SUBMIT-COMMENT, tab delimited
  */
 function bwSubmitComment(comment) {
   var commentVals = comment.split("\t");
@@ -340,10 +349,20 @@ function setDates(formObj) {
 }
 function setBedeworkXProperties(formObj) {
   // set up specific Bedework X-Properties
+
+  // X-BEDEWORK-IMAGEURL and its parameters:
   if (formObj["xBwImageHolder"].value != '') {
-    var xBwImage = document.getElementById("X-BEDEWORK-IMAGE");
-    // the fake description parameter is temporary
-    xBwImage.value = "X-BEDEWORK-IMAGE;X-BEDEWORK-PARAM-DESCRIPTION=anImage:" + formObj["xBwImageHolder"].value;
+    var xprop = bwXpropertyImageUrl + ";" + bwXparamDescription + "=bogusDesc" + ":" + formObj["xBwImageHolder"].value;
+    var xBwImage = document.getElementById(bwXpropertyImageUrl);
+    if (xBwImage == null) {
+      var xBwImageNew = formObj.appendChild(document.createElement("input"));
+      xBwImageNew.type = "hidden";
+      xBwImageNew.name = "xproperty";
+      xBwImageNew.id = bwXpropertyImageUrl;
+      xBwImageNew.value = xprop;
+    } else {
+      xBwImage.value = xprop;
+    }
   }
 }
 function swapAllDayEvent(obj) {

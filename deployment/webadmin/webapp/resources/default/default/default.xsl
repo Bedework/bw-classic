@@ -1062,7 +1062,7 @@
 
       <xsl:for-each select="form/xproperties/node()">
         <xsl:variable name="xprop"><xsl:value-of select="name()"/><xsl:for-each select="parameters/node()">;<xsl:value-of select="name()"/>=<xsl:value-of select="node()"/></xsl:for-each>:<xsl:value-of select="values/text"/></xsl:variable>
-        <input type="hidden" name="xproperty" value="{$xprop}"/>
+        <input type="hidden" name="xproperty" value="{$xprop}" id="name()"/>
       </xsl:for-each>
 
       <xsl:call-template name="submitEventButtons"/>
@@ -2074,10 +2074,9 @@
             Image URL:
           </td>
           <td>
-            <input type="hidden" name="xproperty" id="X-BEDEWORK-IMAGE"/>
             <input type="text" name="xBwImageHolder" value="" class="edit" size="30">
-              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
-                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:attribute>
+              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGEURL']">
+                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGEURL']/values/text"/></xsl:attribute>
               </xsl:if>
             </input>
             <xsl:text> </xsl:text>
@@ -2182,7 +2181,7 @@
                   <xsl:variable name="catCount" select="count(form/categories/preferred/category)"/>
                   <td>
                     <xsl:for-each select="form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
-                      <xsl:sort select="keyword" order="ascending"/>
+                      <!-- <xsl:sort select="keyword" order="ascending"/> -->
                       <input type="checkbox" name="categoryKey">
                         <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
@@ -2194,7 +2193,7 @@
                   </td>
                   <td>
                     <xsl:for-each select="form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
-                      <xsl:sort select="keyword" order="ascending"/>
+                      <!-- <xsl:sort select="keyword" order="ascending"/> -->
                       <input type="checkbox" name="categoryKey">
                         <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
