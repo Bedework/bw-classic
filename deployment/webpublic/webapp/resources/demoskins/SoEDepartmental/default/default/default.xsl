@@ -765,8 +765,8 @@
       <tr>
         <td class="fieldname">Description:</td>
         <td colspan="2" class="fieldval description">
-          <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGEURL']">
-            <xsl:variable name="bwImageUrl"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGEURL']/values/text"/></xsl:variable>
+          <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+            <xsl:variable name="bwImageUrl"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:variable>
             <img src="{$bwImageUrl}" class="bwEventImage"/>
           </xsl:if>
           <xsl:call-template name="replace">
