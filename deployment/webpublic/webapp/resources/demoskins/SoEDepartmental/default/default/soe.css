@@ -996,7 +996,7 @@ h2.bwStatusTentative {
 }
 .bwEventImage {
   float: right;
-  margin: 0 0 1em 1em;
+  margin: 0 0.5em 1em 1em;
 }
 .indent {
   margin-left: 1em;
