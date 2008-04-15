@@ -1013,6 +1013,10 @@ h2 a:hover#linkToEvent {
   text-align: right;
   padding-right: 2em;
 }
+.bwEventImage {
+  float: right;
+  margin: 0 0 1em 1em;
+}
 .indent {
   margin-left: 1em;
 }
