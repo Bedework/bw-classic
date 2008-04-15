@@ -2075,8 +2075,8 @@
           </td>
           <td>
             <input type="text" name="xBwImageHolder" value="" class="edit" size="30">
-              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGEURL']">
-                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGEURL']/values/text"/></xsl:attribute>
+              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:attribute>
               </xsl:if>
             </input>
             <xsl:text> </xsl:text>

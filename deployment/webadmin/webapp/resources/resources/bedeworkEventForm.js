@@ -42,7 +42,7 @@ var rdateDeleteStr = "remove";
 // ========================================================================
 //   Bedework specific x-properties
 
-var bwXpropertyImageUrl = "X-BEDEWORK-IMAGEURL";
+var bwXpropertyImage = "X-BEDEWORK-IMAGE";
 var bwXparamDescription = "X-BEDEWORK-PARAM-DESCRIPTION";
 var bwXparamWidth = "X-BEDEWORK-PARAM-WIDTH";
 var bwXparamHeight = "X-BEDEWORK-PARAM-HEIGHT";
@@ -350,15 +350,15 @@ function setDates(formObj) {
 function setBedeworkXProperties(formObj) {
   // set up specific Bedework X-Properties
 
-  // X-BEDEWORK-IMAGEURL and its parameters:
+  // X-BEDEWORK-IMAGE and its parameters:
   if (formObj["xBwImageHolder"].value != '') {
-    var xprop = bwXpropertyImageUrl + ";" + bwXparamDescription + "=bogusDesc" + ":" + formObj["xBwImageHolder"].value;
-    var xBwImage = document.getElementById(bwXpropertyImageUrl);
+    var xprop = bwXpropertyImage + ";" + bwXparamDescription + "=bogusDesc" + ":" + formObj["xBwImageHolder"].value;
+    var xBwImage = document.getElementById(bwXpropertyImage);
     if (xBwImage == null) {
       var xBwImageNew = formObj.appendChild(document.createElement("input"));
       xBwImageNew.type = "hidden";
       xBwImageNew.name = "xproperty";
-      xBwImageNew.id = bwXpropertyImageUrl;
+      xBwImageNew.id = bwXpropertyImage;
       xBwImageNew.value = xprop;
     } else {
       xBwImage.value = xprop;
