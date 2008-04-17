@@ -226,6 +226,7 @@
           <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
           <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkXProperties.js">&#160;</script>
           <xsl:if test="$portalFriendly = 'true'">
             <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
             <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
@@ -237,9 +238,16 @@
               <xsl:for-each select="/bedework/formElements/form/rdates/rdate">
                 bwRdates.update('<xsl:value-of select="date"/>','<xsl:value-of select="time"/>',false,false,false,'<xsl:value-of select="tzid"/>');
               </xsl:for-each>
-              // return string values to be loaded into javascript for rdates
+              // return string values to be loaded into javascript for exdates
               <xsl:for-each select="/bedework/formElements/form/exdates/rdate">
                 bwExdates.update('<xsl:value-of select="date"/>','<xsl:value-of select="time"/>',false,false,false,'<xsl:value-of select="tzid"/>');
+              </xsl:for-each>
+            }
+            function initXProperties() {
+              <xsl:for-each select="form/xproperties/node()">
+                bwXprops.init('<xsl:value-of select="name()"/>',[<xsl:for-each select="parameters/node()">['<xsl:value-of select="name()"/>','<xsl:value-of select="node()"/>']</xsl:for-each>],"<xsl:value-of select="values/text"/>");
+                <!-- <xsl:variable name="xprop"><xsl:value-of select="name()"/><xsl:for-each select="parameters/node()">;<xsl:value-of select="name()"/>=<xsl:value-of select="node()"/></xsl:for-each>:<xsl:value-of select="values/text"/></xsl:variable>
+                <input type="hidden" name="xproperty" value="{$xprop}" id="name()"/> -->
               </xsl:for-each>
             }
             </xsl:comment>
@@ -281,7 +289,7 @@
       <body>
         <xsl:choose>
           <xsl:when test="(/bedework/page='modEvent' or /bedework/page='modEventPending') and /bedework/formElements/recurrenceId=''">
-            <xsl:attribute name="onload">initRXDates();focusFirstElement();</xsl:attribute>
+            <xsl:attribute name="onload">initRXDates();initXProperties();focusFirstElement();</xsl:attribute>
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="onload">focusFirstElement();</xsl:attribute>
@@ -1059,11 +1067,6 @@
           <xsl:attribute name="action"><xsl:value-of select="$event-update"/></xsl:attribute>
         </xsl:otherwise>
       </xsl:choose>
-
-      <xsl:for-each select="form/xproperties/node()">
-        <xsl:variable name="xprop"><xsl:value-of select="name()"/><xsl:for-each select="parameters/node()">;<xsl:value-of select="name()"/>=<xsl:value-of select="node()"/></xsl:for-each>:<xsl:value-of select="values/text"/></xsl:variable>
-        <input type="hidden" name="xproperty" value="{$xprop}" id="name()"/>
-      </xsl:for-each>
 
       <xsl:call-template name="submitEventButtons"/>
 

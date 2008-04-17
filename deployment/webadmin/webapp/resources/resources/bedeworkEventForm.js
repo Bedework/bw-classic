@@ -39,15 +39,6 @@ dojo.require("dojo.widget.DropdownTimePicker");
 var rdateDeleteStr = "remove";
 
 // ========================================================================
-// ========================================================================
-//   Bedework specific x-properties
-
-var bwXpropertyImage = "X-BEDEWORK-IMAGE";
-var bwXparamDescription = "X-BEDEWORK-PARAM-DESCRIPTION";
-var bwXparamWidth = "X-BEDEWORK-PARAM-WIDTH";
-var bwXparamHeight = "X-BEDEWORK-PARAM-HEIGHT";
-
-// ========================================================================
 // rdate functions
 // ========================================================================
 
@@ -331,6 +322,7 @@ function setEventFields(formObj,portalFriendly) {
   }
   setRecurrence(formObj);
   setBedeworkXProperties(formObj);
+
   //setAccessHow(formObj,1);
   //setAccessAcl(formObj);
 }
@@ -346,24 +338,6 @@ function setDates(formObj) {
   formObj["eventEndDate.year"].value = endDate.getFullYear();
   formObj["eventEndDate.month"].value = endDate.getMonth() + 1;
   formObj["eventEndDate.day"].value = endDate.getDate();
-}
-function setBedeworkXProperties(formObj) {
-  // set up specific Bedework X-Properties
-
-  // X-BEDEWORK-IMAGE and its parameters:
-  if (formObj["xBwImageHolder"].value != '') {
-    var xprop = bwXpropertyImage + ";" + bwXparamDescription + "=bogusDesc" + ":" + formObj["xBwImageHolder"].value;
-    var xBwImage = document.getElementById(bwXpropertyImage);
-    if (xBwImage == null) {
-      var xBwImageNew = formObj.appendChild(document.createElement("input"));
-      xBwImageNew.type = "hidden";
-      xBwImageNew.name = "xproperty";
-      xBwImageNew.id = bwXpropertyImage;
-      xBwImageNew.value = xprop;
-    } else {
-      xBwImage.value = xprop;
-    }
-  }
 }
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
