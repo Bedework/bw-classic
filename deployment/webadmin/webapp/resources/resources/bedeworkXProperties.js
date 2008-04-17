@@ -76,9 +76,7 @@ function BwXProperties() {
     var xprop = new BwXProperty(name, params, value);
     if (isUnique && this.contains(xprop)) {
       index = this.getIndex(name);
-      if (index != null) {
-        xproperties.splice(index,1,xprop);
-      }
+      xproperties.splice(index,1,xprop);
     } else {
       xproperties.push(xprop);
     }
