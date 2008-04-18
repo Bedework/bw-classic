@@ -246,8 +246,6 @@
             function initXProperties() {
               <xsl:for-each select="form/xproperties/node()">
                 bwXprops.init('<xsl:value-of select="name()"/>',[<xsl:for-each select="parameters/node()">['<xsl:value-of select="name()"/>','<xsl:value-of select="node()"/>']</xsl:for-each>],"<xsl:value-of select="values/text"/>");
-                <!-- <xsl:variable name="xprop"><xsl:value-of select="name()"/><xsl:for-each select="parameters/node()">;<xsl:value-of select="name()"/>=<xsl:value-of select="node()"/></xsl:for-each>:<xsl:value-of select="values/text"/></xsl:variable>
-                <input type="hidden" name="xproperty" value="{$xprop}" id="name()"/> -->
               </xsl:for-each>
             }
             </xsl:comment>
@@ -1058,7 +1056,8 @@
       </script>
     </xsl:if>
 
-    <form name="eventForm" method="post" onsubmit="setEventFields(this,{$portalFriendly})">
+    <xsl:variable name="submitter" select="/bedework/userInfo/group"/>
+    <form name="eventForm" method="post" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
       <xsl:choose>
         <xsl:when test="/bedework/page = 'modEventPending'">
           <xsl:attribute name="action"><xsl:value-of select="$event-updatePending"/></xsl:attribute>

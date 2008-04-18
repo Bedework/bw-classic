@@ -316,12 +316,12 @@ function bwSubmitComment(comment) {
 // ========================================================================
 // ========================================================================
 
-function setEventFields(formObj,portalFriendly) {
+function setEventFields(formObj,portalFriendly,submitter) {
   if (!portalFriendly) {
     setDates(formObj);
   }
   setRecurrence(formObj);
-  setBedeworkXProperties(formObj);
+  setBedeworkXProperties(formObj,submitter);
 
   //setAccessHow(formObj,1);
   //setAccessAcl(formObj);

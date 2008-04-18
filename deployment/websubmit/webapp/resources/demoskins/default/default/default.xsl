@@ -106,7 +106,7 @@
       <body>
         <xsl:if test="/bedework/page = 'editEvent' and
                       normalize-space(/bedework/formElements/form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value) != ''">
-          <xsl:attribute name="onload">getComments('standardForm','<xsl:value-of select="/bedework/formElements/form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value"/>');</xsl:attribute>
+          <xsl:attribute name="onload">initRXDates();initXProperties();getComments('standardForm','<xsl:value-of select="/bedework/formElements/form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value"/>');</xsl:attribute>
         </xsl:if>
         <div id="bedework"><!-- main wrapper div -->
           <xsl:call-template name="header"/>
@@ -154,6 +154,7 @@
       <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
       <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkXProperties.js">&#160;</script>
     </xsl:if>
     <!-- <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script> -->
     <xsl:if test="$portalFriendly = 'true'">
@@ -162,12 +163,25 @@
     </xsl:if>
     <script type="text/javascript">
       <xsl:comment>
-      <![CDATA[
       function focusElement(id) {
       // focuses element by id
         document.getElementById(id).focus();
       }
-      ]]>
+      function initRXDates() {
+        // return string values to be loaded into javascript for rdates
+        <xsl:for-each select="/bedework/formElements/form/rdates/rdate">
+          bwRdates.update('<xsl:value-of select="date"/>','<xsl:value-of select="time"/>',false,false,false,'<xsl:value-of select="tzid"/>');
+        </xsl:for-each>
+        // return string values to be loaded into javascript for exdates
+        <xsl:for-each select="/bedework/formElements/form/exdates/rdate">
+          bwExdates.update('<xsl:value-of select="date"/>','<xsl:value-of select="time"/>',false,false,false,'<xsl:value-of select="tzid"/>');
+        </xsl:for-each>
+      }
+      function initXProperties() {
+        <xsl:for-each select="form/xproperties/node()">
+          bwXprops.init('<xsl:value-of select="name()"/>',[<xsl:for-each select="parameters/node()">['<xsl:value-of select="name()"/>','<xsl:value-of select="node()"/>']</xsl:for-each>],"<xsl:value-of select="values/text"/>");
+        </xsl:for-each>
+      }
       </xsl:comment>
     </script>
   </xsl:template>
@@ -280,14 +294,16 @@
 
   <!--==== ADD EVENT ====-->
   <xsl:template match="formElements" mode="addEvent">
-    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this);">
+    <xsl:variable name="submitter" select="/bedework/userid"/>
+    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}');">
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>
 
   <!--==== EDIT EVENT ====-->
   <xsl:template match="formElements" mode="editEvent">
-    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this);">
+    <xsl:variable name="submitter" select="/bedework/userid"/>
+    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}');">
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>

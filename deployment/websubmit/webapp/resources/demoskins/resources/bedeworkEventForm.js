@@ -239,10 +239,13 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
 // Form Manipulation Functions
 // ========================================================================
 
-function setEventFields(formObj) {
-  setDates(formObj);
+function setEventFields(formObj,portalFriendly,submitter) {
+  if (!portalFriendly) {
+    setDates(formObj);
+  }
   setComments(formObj);
   setRecurrence(formObj);
+  setBedeworkXProperties(formObj,submitter);
   setAccessHow(formObj,1);
   //setAccessAcl(formObj);
 }
