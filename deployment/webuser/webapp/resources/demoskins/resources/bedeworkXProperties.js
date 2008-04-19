@@ -121,7 +121,7 @@ function setBedeworkXProperties(formObj,submitter) {
   // set up specific Bedework X-Properties on event form submission
 
   // X-BEDEWORK-IMAGE and its parameters:
-  if (formObj["xBwImageHolder"].value != '') {
+  if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {
     bwXProps.update(bwXPropertyImage,[[bwXParamDescription,''],[bwXParamWidth,''],[bwXParamHeight,'']],formObj["xBwImageHolder"].value,true);
   }
   // X-BEDEWORK-SUBMITTEDBY
