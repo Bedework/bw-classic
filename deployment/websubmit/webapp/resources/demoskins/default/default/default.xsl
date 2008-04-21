@@ -104,9 +104,8 @@
         <xsl:call-template name="headSection"/>
       </head>
       <body>
-        <xsl:if test="/bedework/page = 'editEvent' and
-                      normalize-space(/bedework/formElements/form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value) != ''">
-          <xsl:attribute name="onload">initRXDates();initXProperties();getComments('standardForm','<xsl:value-of select="/bedework/formElements/form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value"/>');</xsl:attribute>
+        <xsl:if test="/bedework/page = 'editEvent'">
+          <xsl:attribute name="onload">initRXDates();initXProperties();</xsl:attribute>
         </xsl:if>
         <div id="bedework"><!-- main wrapper div -->
           <xsl:call-template name="header"/>
@@ -905,14 +904,22 @@
         <div class="subForm">
           <p>
             <label for="commentLocationAddress">Address: </label>
-            <input type="text" name="commentLocationAddress" id="bwCommentLocationAddress"/>
+            <input type="text" name="commentLocationAddress" id="bwCommentLocationAddress">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-ADDRESS']"/></xsl:attribute>
+            </input>
           </p>
           <p>
-            <label for="commentLocationSubaddress"><em>Sub-address:</em> </label><input type="text" name="commentLocationSubaddress"/>
+            <label for="commentLocationSubaddress"><em>Sub-address:</em> </label>
+            <input type="text" name="commentLocationSubaddress" id="commentLocationSubaddress">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-SUBADDRESS']"/></xsl:attribute>
+            </input>
             <span class="note"> optional</span>
           </p>
           <p>
-            <label for="commentLocationURL"><em>URL:</em> </label><input type="text" name="commentLocationURL"/>
+            <label for="commentLocationURL"><em>URL:</em> </label>
+            <input type="text" name="commentLocationURL" id="commentLocationURL">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-URL']"/></xsl:attribute>
+            </input>
             <span class="note"> optional</span>
           </p>
         </div>
@@ -936,19 +943,30 @@
         <div class="subForm">
           <p>
             <label for="commentContactName">Organization Name: </label>
-            <input type="text" name="commentContactName" id="bwCommentContactName" size="40"/>
+            <input type="text" name="commentContactName" id="bwCommentContactName" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-NAME']"/></xsl:attribute>
+            </input>
             <span class="note"> Please limit contacts to organizations, not individuals.</span>
           </p>
           <p>
-            <label for="commentContactPhone"><em>Phone:</em> </label><input type="text" name="commentContactPhone"/>
+            <label for="commentContactPhone"><em>Phone:</em> </label>
+            <input type="text" name="commentContactPhone">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-PHONE']"/></xsl:attribute>
+            </input>
             <span class="note"> optional</span>
           </p>
           <p>
-            <label for="commentContactURL"><em>URL:</em> </label><input type="text" name="commentContactURL"/>
+            <label for="commentContactURL"><em>URL:</em> </label>
+            <input type="text" name="commentContactURL">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-URL']"/></xsl:attribute>
+            </input>
             <span class="note"> optional</span>
           </p>
           <p>
-            <label for="commentContactEmail"><em>Email:</em> </label><input type="text" name="commentContactEmail"/>
+            <label for="commentContactEmail"><em>Email:</em> </label>
+            <input type="text" name="commentContactEmail">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-EMAIL']"/></xsl:attribute>
+            </input>
             <span class="note"> optional</span>
           </p>
         </div>
@@ -993,7 +1011,9 @@
         <div class="subForm">
           <p>
             <label for="commentCategories">Category suggestion: </label>
-            <input type="text" name="commentCategories" size="30"/>
+            <input type="text" name="commentCategories" size="30">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CATEGORIES']"/></xsl:attribute>
+            </input>
           </p>
         </div>
       </div>
@@ -1009,7 +1029,10 @@
         <!-- </table>-->
         <div id="bwCommentNotes">
           Please supply any final notes or instructions regarding your event:<br/>
-          <textarea name="commentNotes" cols="60" rows="4">&#160;</textarea>
+          <!-- note: don't remove the #160 from the textarea or browsers will see it as a closed tag when empty -->
+          <textarea name="commentNotes" cols="60" rows="4"><!--
+           --><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/>&#160;<!--
+           --></textarea>
         </div>
         <div class="eventSubmitButtons">
           <input name="submit" class="submit" type="submit" value="submit for approval"/>

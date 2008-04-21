@@ -244,9 +244,9 @@ function setEventFields(formObj,portalFriendly,submitter) {
     setDates(formObj);
   }
   setComments(formObj);
-  setRecurrence(formObj);
+  //setRecurrence(formObj);
   setBedeworkXProperties(formObj,submitter);
-  setAccessHow(formObj,1);
+  //setAccessHow(formObj,1);
   //setAccessAcl(formObj);
 }
 function setDates(formObj) {
@@ -264,36 +264,36 @@ function setDates(formObj) {
 }
 function setComments(formObj) {
   // set the submission comments (location, contact, and category suggestions)
-  // in a parsable format that can be filtered on output.
+  // as an xproperty.  Relies on bedeworkXProperties.js
 
-  var comment = "";
-  comment += formObj["commentLocationAddress"].value + "\t";
-  comment += formObj["commentLocationSubaddress"].value + "\t";
-  comment += formObj["commentLocationURL"].value + "\t";
-  comment += formObj["commentContactName"].value + "\t";
-  comment += formObj["commentContactPhone"].value + "\t";
-  comment += formObj["commentContactURL"].value + "\t";
-  comment += formObj["commentContactEmail"].value + "\t";
-  comment += formObj["commentCategories"].value + "\t";
-  comment += formObj["commentNotes"].value;
 
-  formObj["xbwsubmitcomment"].value = comment;
 }
-function getComments(formId,comment) {
-  // get the submission comments (location, contact, and category suggestions)
-  // and load them into the form
-  var formObj = document.getElementById(formId);
+function setBedeworkXProperties(formObj,submitter) {
+  // set up specific Bedework X-Properties on event form submission
+  // Depends on bedeworkXProperties.js
+  // Set application x-properties here.
 
-  var commentVals = comment.split("\t");
-  formObj["commentLocationAddress"].value = (commentVals[0] == undefined) ? "" : commentVals[0];
-  formObj["commentLocationSubaddress"].value = (commentVals[1] == undefined) ? "" : commentVals[1];
-  formObj["commentLocationURL"].value = (commentVals[2] == undefined) ? "" : commentVals[2];
-  formObj["commentContactName"].value = (commentVals[3] == undefined) ? "" : commentVals[3];
-  formObj["commentContactPhone"].value = (commentVals[4] == undefined) ? "" : commentVals[4];
-  formObj["commentContactURL"].value = (commentVals[5] == undefined) ? "" : commentVals[5];
-  formObj["commentContactEmail"].value = (commentVals[6] == undefined) ? "" : commentVals[6];
-  formObj["commentCategories"].value = (commentVals[7] == undefined) ? "" : commentVals[7];
-  formObj["commentNotes"].value = (commentVals[8] == undefined) ? "" : commentVals[8];
+  // X-BEDEWORK-SUBMIT-COMMENT and its parameters
+  bwXProps.update(bwXPropertySubmitComment,
+                  [[bwXParamLocationAddress,formObj["commentLocationAddress"].value],
+                   [bwXParamLocationSubAddress,formObj["commentLocationSubaddress"].value],
+                   [bwXParamLocationURL,formObj["commentLocationURL"].value],
+                   [bwXParamContactName,formObj["commentContactName"].value],
+                   [bwXParamContactPhone,formObj["commentContactPhone"].value],
+                   [bwXParamContactURL,formObj["commentContactURL"].value],
+                   [bwXParamContactEmail,formObj["commentContactEmail"].value],
+                   [bwXParamCategories,formObj["commentCategories"].value]],
+                  formObj["commentNotes"].value,true);
+
+  // X-BEDEWORK-IMAGE and its parameters:
+  if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {
+    bwXProps.update(bwXPropertyImage,[[bwXParamDescription,''],[bwXParamWidth,''],[bwXParamHeight,'']],formObj["xBwImageHolder"].value,true);
+  }
+  // X-BEDEWORK-SUBMITTEDBY
+  bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);
+
+  // commit all xproperties back to the form
+  bwXProps.generate(formObj);
 }
 // create table of form fields for review
 function displayReview(formId,tableId,numHeaderRows) {

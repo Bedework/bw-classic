@@ -339,6 +339,21 @@ function setDates(formObj) {
   formObj["eventEndDate.month"].value = endDate.getMonth() + 1;
   formObj["eventEndDate.day"].value = endDate.getDate();
 }
+function setBedeworkXProperties(formObj,submitter) {
+  // set up specific Bedework X-Properties on event form submission
+  // Depends on bedeworkXProperties.js
+  // Set application local x-properties here.
+
+  // X-BEDEWORK-IMAGE and its parameters:
+  if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {
+    bwXProps.update(bwXPropertyImage,[[bwXParamDescription,''],[bwXParamWidth,''],[bwXParamHeight,'']],formObj["xBwImageHolder"].value,true);
+  }
+  // X-BEDEWORK-SUBMITTEDBY
+  bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);
+
+  // commit all xproperties back to the form
+  bwXProps.generate(formObj);
+}
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
   allDayEndDateField = document.getElementById("allDayEndDateField");

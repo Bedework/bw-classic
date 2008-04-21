@@ -37,7 +37,14 @@ var bwXParamHeight = "X-BEDEWORK-PARAM-HEIGHT";
 
 var bwXPropertySubmittedBy = "X-BEDEWORK-SUBMITTEDBY";
 var bwXPropertySubmitComment = "X-BEDEWORK-SUBMIT-COMMENT";
-
+var bwXParamLocationAddress = "X-BEDEWORK-PARAM-LOCATION-ADDRESS";
+var bwXParamLocationSubAddress = "X-BEDEWORK-PARAM-LOCATION-SUBADDRESS";
+var bwXParamLocationURL = "X-BEDEWORK-PARAM-LOCATION-URL";
+var bwXParamContactName = "X-BEDEWORK-PARAM-CONTACT-NAME";
+var bwXParamContactPhone = "X-BEDEWORK-PARAM-CONTACT-PHONE";
+var bwXParamContactURL = "X-BEDEWORK-PARAM-CONTACT-URL";
+var bwXParamContactEmail = "X-BEDEWORK-PARAM-CONTACT-EMAIL";
+var bwXParamCategories = "X-BEDEWORK-PARAM-CATEGORIES";
 
 // ========================================================================
 // x-property functions
@@ -60,7 +67,9 @@ function BwXProperty(name, params, value) {
     var curXparams = "";
     if (this.params.length) {
       for (var i = 0; i < this.params.length; i++) {
-        curXparams += ";" + this.params[i][0] + "=" + this.params[i][1];
+        if (this.params[i][1] != "") {
+          curXparams += ";" + this.params[i][0] + "=\"" + this.params[i][1] + "\"";
+        }
       }
     }
     return this.name + curXparams + ":" + this.value;
@@ -76,6 +85,20 @@ function BwXProperties() {
   }
 
   this.update = function(name, params, value, isUnique) {
+    // strip out any double quotes in the parameter values:
+    if (params.length) {
+      for (var i = 0; i < params.length; i++) {
+        var strippedParamValue = "";
+        for (var j = 0; j < params[i][1].length; j++) {
+          var c = params[i][1][j];
+          if (c != '"') {
+            strippedParamValue += c;
+          }
+        }
+        params[i][1] = strippedParamValue;
+      }
+    }
+    // add or update the xproperty:
     var xprop = new BwXProperty(name, params, value);
     if (isUnique && this.contains(name)) {
       index = this.getIndex(name);
@@ -115,18 +138,4 @@ function BwXProperties() {
     }
   }
 
-}
-
-function setBedeworkXProperties(formObj,submitter) {
-  // set up specific Bedework X-Properties on event form submission
-
-  // X-BEDEWORK-IMAGE and its parameters:
-  if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {
-    bwXProps.update(bwXPropertyImage,[[bwXParamDescription,''],[bwXParamWidth,''],[bwXParamHeight,'']],formObj["xBwImageHolder"].value,true);
-  }
-  // X-BEDEWORK-SUBMITTEDBY
-  bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);
-
-  // commit all xproperties back to the form
-  bwXProps.generate(formObj);
 }
