@@ -1039,9 +1039,18 @@
     <h2>Event Information</h2>
 
     <!-- if a submitted event has comments, display them -->
-    <xsl:if test="normalize-space(form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value) != ''">
+    <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']">
       <script type="text/javascript">
-        bwSubmitComment = new bwSubmitComment('<xsl:value-of select="form/xproperties/xproperty[@name='X-BEDEWORK-SUBMIT-COMMENT']/value"/>');
+        bwSubmitComment = new bwSubmitComment(
+          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-ADDRESS']"/>',
+          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-SUBADDRESS']"/>',
+          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-URL']"/>',
+          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-NAME']"/>',
+          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-PHONE']"/>',
+          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-URL']"/>',
+          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-EMAIL']"/>',
+          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CATEGORIES']"/>',
+          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/>');
       </script>
 
       <div id="bwSubmittedEventCommentBlock">

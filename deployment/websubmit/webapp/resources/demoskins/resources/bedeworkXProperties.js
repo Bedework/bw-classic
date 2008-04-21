@@ -68,7 +68,13 @@ function BwXProperty(name, params, value) {
     if (this.params.length) {
       for (var i = 0; i < this.params.length; i++) {
         if (this.params[i][1] != "") {
-          curXparams += ";" + this.params[i][0] + "=\"" + this.params[i][1] + "\"";
+          curXparams += ";" + this.params[i][0];
+          // if parameter values contain ";" or ":" they must be quoted
+          if (this.params[i][1].indexOf(":") != -1 || this.params[i][1].indexOf(";") != -1) {
+            curXparams += "=\"" + this.params[i][1] + "\"";
+          } else {
+            curXparams += "=" + this.params[i][1];
+          }
         }
       }
     }

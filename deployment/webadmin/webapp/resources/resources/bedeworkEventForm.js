@@ -239,19 +239,27 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
 // ========================================================================
 
 /* A comment accompanying a submitted event.
- * comment: the x-property string X-BEDEWORK-SUBMIT-COMMENT, tab delimited
+ * These values come from the x-property X-BEDEWORK-SUBMIT-COMMENT
+ * locationAddress: value of parameter X-BEDEWORK-PARAM-LOCATION-ADDRESS
+ * locationSubaddress: value of parameter X-BEDEWORK-PARAM-LOCATION-SUBADDRESS
+ * locationUrl: value of parameter X-BEDEWORK-PARAM-LOCATION-URL
+ * contactName: value of parameter X-BEDEWORK-PARAM-CONTACT-NAME
+ * contactPhone: value of parameter X-BEDEWORK-PARAM-CONTACT-PHONE
+ * contactUrl: value of parameter X-BEDEWORK-PARAM-CONTACT-URL
+ * contactEmail: value of parameter X-BEDEWORK-PARAM-CONTACT-EMAIL
+ * category: value of parameter X-BEDEWORK-PARAM-CATEGORIES
+ * notes: value of the x-property
  */
-function bwSubmitComment(comment) {
-  var commentVals = comment.split("\t");
-  this.locationAddress = (commentVals[0] == undefined) ? "" : commentVals[0];
-  this.locationSubaddress = (commentVals[1] == undefined) ? "" : commentVals[1];
-  this.locationUrl = (commentVals[2] == undefined) ? "" : commentVals[2];
-  this.contactName = (commentVals[3] == undefined) ? "" : commentVals[3];
-  this.contactPhone = (commentVals[4] == undefined) ? "" : commentVals[4];
-  this.contactUrl = (commentVals[5] == undefined) ? "" : commentVals[5];
-  this.contactEmail = (commentVals[6] == undefined) ? "" : commentVals[6];
-  this.category = (commentVals[7] == undefined) ? "" : commentVals[7];
-  this.notes = (commentVals[8] == undefined) ? "" : commentVals[8];
+function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactName,contactPhone,contactUrl,contactEmail,category,notes) {
+  this.locationAddress = locationAddress;
+  this.locationSubaddress = locationSubaddress;
+  this.locationUrl = locationUrl;
+  this.contactName = contactName;
+  this.contactPhone = contactPhone;
+  this.contactUrl = contactUrl;
+  this.contactEmail = contactEmail;
+  this.category = category;
+  this.notes = notes;
 
   this.render = function() {
     var output = "";
