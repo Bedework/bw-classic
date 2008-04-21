@@ -315,6 +315,9 @@ ul.adminMenu a:hover {
   background-color: #ffe;
   color: black;
 }
+#bwSubmittedBy {
+  float: right;
+}
 #bwSubmittedEventCommentBlock h4 {
   display: inline;
   font-size: 1.1em;

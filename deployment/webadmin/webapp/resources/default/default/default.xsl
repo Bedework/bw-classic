@@ -9,6 +9,7 @@
      standalone="yes"
      omit-xml-declaration="yes"/>
  <xsl:strip-space elements="*"/>
+
   <!-- ======================================== -->
   <!--      BEDEWORK ADMIN CLIENT STYLESHEET     -->
   <!-- ========================================= -->
@@ -1039,21 +1040,22 @@
     <h2>Event Information</h2>
 
     <!-- if a submitted event has comments, display them -->
-    <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']">
+    <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-LOCATION' or name()='X-BEDEWORK-CONTACT' or name()='X-BEDEWORK-CATEGORIES' or name()='X-BEDEWORK-SUBMIT-COMMENT']">
       <script type="text/javascript">
         bwSubmitComment = new bwSubmitComment(
-          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-ADDRESS']"/>',
-          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-SUBADDRESS']"/>',
-          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-URL']"/>',
-          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-NAME']"/>',
-          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-PHONE']"/>',
-          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-URL']"/>',
-          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-EMAIL']"/>',
-          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CATEGORIES']"/>',
-          '<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/>');
+          '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/values/text"/></xsl:call-template>',
+          '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/parameters/node()[name()='X-BEDEWORK-PARAM-SUBADDRESS']"/></xsl:call-template>',
+          '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']"/></xsl:call-template>',
+          '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/values/text"/></xsl:call-template>',
+          '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-PHONE']"/></xsl:call-template>',
+          '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']"/></xsl:call-template>',
+          '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-EMAIL']"/></xsl:call-template>',
+          '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:call-template>',
+          '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/></xsl:call-template>');
       </script>
 
       <div id="bwSubmittedEventCommentBlock">
+        <div id="bwSubmittedBy">Submitted by <xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/></div>
         <h4>Comments from Submitter</h4>
         <a href="javascript:toggleVisibility('bwSubmittedEventComment','visible');" class="toggle">show/hide</a>
         <a href="javascript:bwSubmitComment.launch();" class="toggle">pop-up</a>
@@ -1065,7 +1067,12 @@
       </script>
     </xsl:if>
 
-    <xsl:variable name="submitter" select="/bedework/userInfo/group"/>
+    <xsl:variable name="submitter">
+      <xsl:choose>
+        <xsl:when test="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="/bedework/userInfo/user"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <form name="eventForm" method="post" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
       <xsl:choose>
         <xsl:when test="/bedework/page = 'modEventPending'">
@@ -6424,4 +6431,23 @@
       <a href="?refreshXslt=yes">refresh XSLT</a>
     </div>
   </xsl:template>
+
+  <!--==== Utility Templates ====-->
+  <xsl:template name="escapeApos">
+    <xsl:param name="str"/>
+    <xsl:variable name="apos" select='"&apos;"'/>
+    <xsl:choose>
+      <xsl:when test="contains($str, $apos)">
+         <xsl:value-of select="substring-before($str, $apos)" />
+         <xsl:text>\'</xsl:text>
+         <xsl:call-template name="escapeApos">
+            <xsl:with-param name="str" select="substring-after($str, $apos)" />
+         </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+         <xsl:value-of select="$str" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>

@@ -293,7 +293,12 @@
 
   <!--==== ADD EVENT ====-->
   <xsl:template match="formElements" mode="addEvent">
-    <xsl:variable name="submitter" select="/bedework/userid"/>
+    <xsl:variable name="submitter">
+      <xsl:choose>
+        <xsl:when test="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="/bedework/userid"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}');">
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
@@ -301,7 +306,12 @@
 
   <!--==== EDIT EVENT ====-->
   <xsl:template match="formElements" mode="editEvent">
-    <xsl:variable name="submitter" select="/bedework/userid"/>
+    <xsl:variable name="submitter">
+      <xsl:choose>
+        <xsl:when test="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="/bedework/userid"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}');">
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
@@ -905,20 +915,20 @@
           <p>
             <label for="commentLocationAddress">Address: </label>
             <input type="text" name="commentLocationAddress" id="bwCommentLocationAddress">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-ADDRESS']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/values/text"/></xsl:attribute>
             </input>
           </p>
           <p>
             <label for="commentLocationSubaddress"><em>Sub-address:</em> </label>
             <input type="text" name="commentLocationSubaddress" id="commentLocationSubaddress">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-SUBADDRESS']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/parameters/node()[name()='X-BEDEWORK-PARAM-SUBADDRESS']"/></xsl:attribute>
             </input>
             <span class="note"> optional</span>
           </p>
           <p>
             <label for="commentLocationURL"><em>URL:</em> </label>
             <input type="text" name="commentLocationURL" id="commentLocationURL">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-LOCATION-URL']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']"/></xsl:attribute>
             </input>
             <span class="note"> optional</span>
           </p>
@@ -944,28 +954,28 @@
           <p>
             <label for="commentContactName">Organization Name: </label>
             <input type="text" name="commentContactName" id="bwCommentContactName" size="40">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-NAME']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/values/text"/></xsl:attribute>
             </input>
             <span class="note"> Please limit contacts to organizations, not individuals.</span>
           </p>
           <p>
             <label for="commentContactPhone"><em>Phone:</em> </label>
             <input type="text" name="commentContactPhone">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-PHONE']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-PHONE']"/></xsl:attribute>
             </input>
             <span class="note"> optional</span>
           </p>
           <p>
             <label for="commentContactURL"><em>URL:</em> </label>
             <input type="text" name="commentContactURL">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-URL']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']"/></xsl:attribute>
             </input>
             <span class="note"> optional</span>
           </p>
           <p>
             <label for="commentContactEmail"><em>Email:</em> </label>
             <input type="text" name="commentContactEmail">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CONTACT-EMAIL']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-EMAIL']"/></xsl:attribute>
             </input>
             <span class="note"> optional</span>
           </p>
@@ -1012,7 +1022,7 @@
           <p>
             <label for="commentCategories">Category suggestion: </label>
             <input type="text" name="commentCategories" size="30">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/parameters/node()[name()='X-BEDEWORK-PARAM-CATEGORIES']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:attribute>
             </input>
           </p>
         </div>

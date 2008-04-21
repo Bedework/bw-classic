@@ -31,20 +31,19 @@
 // ========================================================================
 
 var bwXPropertyImage = "X-BEDEWORK-IMAGE";
+var bwXPropertySubmittedBy = "X-BEDEWORK-SUBMITTEDBY";
+var bwXPropertyLocation = "X-BEDEWORK-LOCATION";
+var bwXPropertyContact = "X-BEDEWORK-CONTACT";
+var bwXPropertyCategories = "X-BEDEWORK-CATEGORIES";
+var bwXPropertySubmitComment = "X-BEDEWORK-SUBMIT-COMMENT";
+
 var bwXParamDescription = "X-BEDEWORK-PARAM-DESCRIPTION";
 var bwXParamWidth = "X-BEDEWORK-PARAM-WIDTH";
 var bwXParamHeight = "X-BEDEWORK-PARAM-HEIGHT";
-
-var bwXPropertySubmittedBy = "X-BEDEWORK-SUBMITTEDBY";
-var bwXPropertySubmitComment = "X-BEDEWORK-SUBMIT-COMMENT";
-var bwXParamLocationAddress = "X-BEDEWORK-PARAM-LOCATION-ADDRESS";
-var bwXParamLocationSubAddress = "X-BEDEWORK-PARAM-LOCATION-SUBADDRESS";
-var bwXParamLocationURL = "X-BEDEWORK-PARAM-LOCATION-URL";
-var bwXParamContactName = "X-BEDEWORK-PARAM-CONTACT-NAME";
-var bwXParamContactPhone = "X-BEDEWORK-PARAM-CONTACT-PHONE";
-var bwXParamContactURL = "X-BEDEWORK-PARAM-CONTACT-URL";
-var bwXParamContactEmail = "X-BEDEWORK-PARAM-CONTACT-EMAIL";
-var bwXParamCategories = "X-BEDEWORK-PARAM-CATEGORIES";
+var bwXParamSubAddress = "X-BEDEWORK-PARAM-SUBADDRESS";
+var bwXParamURL = "X-BEDEWORK-PARAM-URL";
+var bwXParamPhone = "X-BEDEWORK-PARAM-PHONE";
+var bwXParamEmail = "X-BEDEWORK-PARAM-EMAIL";
 
 // ========================================================================
 // x-property functions

@@ -267,7 +267,11 @@ function setBedeworkXProperties(formObj,submitter) {
 
   // X-BEDEWORK-IMAGE and its parameters:
   if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {
-    bwXProps.update(bwXPropertyImage,[[bwXParamDescription,''],[bwXParamWidth,''],[bwXParamHeight,'']],formObj["xBwImageHolder"].value,true);
+    bwXProps.update(bwXPropertyImage,
+                  [[bwXParamDescription,''],
+                   [bwXParamWidth,''],
+                   [bwXParamHeight,'']],
+                   formObj["xBwImageHolder"].value,true);
   }
   // X-BEDEWORK-SUBMITTEDBY
   bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);

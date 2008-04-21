@@ -239,16 +239,16 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
 // ========================================================================
 
 /* A comment accompanying a submitted event.
- * These values come from the x-property X-BEDEWORK-SUBMIT-COMMENT
- * locationAddress: value of parameter X-BEDEWORK-PARAM-LOCATION-ADDRESS
- * locationSubaddress: value of parameter X-BEDEWORK-PARAM-LOCATION-SUBADDRESS
- * locationUrl: value of parameter X-BEDEWORK-PARAM-LOCATION-URL
- * contactName: value of parameter X-BEDEWORK-PARAM-CONTACT-NAME
- * contactPhone: value of parameter X-BEDEWORK-PARAM-CONTACT-PHONE
- * contactUrl: value of parameter X-BEDEWORK-PARAM-CONTACT-URL
- * contactEmail: value of parameter X-BEDEWORK-PARAM-CONTACT-EMAIL
- * category: value of parameter X-BEDEWORK-PARAM-CATEGORIES
- * notes: value of the x-property
+ * These values come from sumbitted x-properties
+ * locationAddress: value of property X-BEDEWORK-LOCATION
+ * locationSubaddress: value of location's parameter X-BEDEWORK-SUBADDRESS
+ * locationUrl: value of location's parameter X-BEDEWORK-PARAM-URL
+ * contactName: value of x-property X-BEDEWORK-CONTACT
+ * contactPhone: value of contact's parameter X-BEDEWORK-PARAM-PHONE
+ * contactUrl: value of contact's parameter X-BEDEWORK-PARAM-URL
+ * contactEmail: value of contact's parameter X-BEDEWORK-PARAM-EMAIL
+ * category: value of x-property X-BEDEWORK-CATEGORIES
+ * notes: value of the x-property X-BEDEWORK-SUBMIT-COMMENT
  */
 function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactName,contactPhone,contactUrl,contactEmail,category,notes) {
   this.locationAddress = locationAddress;
@@ -354,7 +354,11 @@ function setBedeworkXProperties(formObj,submitter) {
 
   // X-BEDEWORK-IMAGE and its parameters:
   if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {
-    bwXProps.update(bwXPropertyImage,[[bwXParamDescription,''],[bwXParamWidth,''],[bwXParamHeight,'']],formObj["xBwImageHolder"].value,true);
+    bwXProps.update(bwXPropertyImage,
+                  [[bwXParamDescription,''],
+                   [bwXParamWidth,''],
+                   [bwXParamHeight,'']],
+                   formObj["xBwImageHolder"].value,true);
   }
   // X-BEDEWORK-SUBMITTEDBY
   bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);

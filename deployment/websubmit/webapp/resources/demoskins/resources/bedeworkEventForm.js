@@ -273,21 +273,26 @@ function setBedeworkXProperties(formObj,submitter) {
   // Depends on bedeworkXProperties.js
   // Set application x-properties here.
 
-  // X-BEDEWORK-SUBMIT-COMMENT and its parameters
-  bwXProps.update(bwXPropertySubmitComment,
-                  [[bwXParamLocationAddress,formObj["commentLocationAddress"].value],
-                   [bwXParamLocationSubAddress,formObj["commentLocationSubaddress"].value],
-                   [bwXParamLocationURL,formObj["commentLocationURL"].value],
-                   [bwXParamContactName,formObj["commentContactName"].value],
-                   [bwXParamContactPhone,formObj["commentContactPhone"].value],
-                   [bwXParamContactURL,formObj["commentContactURL"].value],
-                   [bwXParamContactEmail,formObj["commentContactEmail"].value],
-                   [bwXParamCategories,formObj["commentCategories"].value]],
-                  formObj["commentNotes"].value,true);
+  // Sumbission comments as x-properties
+  bwXProps.update(bwXPropertyLocation,
+                  [[bwXParamSubAddress,formObj["commentLocationSubaddress"].value],
+                   [bwXParamURL,formObj["commentLocationURL"].value]],
+                   formObj["commentLocationAddress"].value,true);
+  bwXProps.update(bwXPropertyContact,
+                  [[bwXParamPhone,formObj["commentContactPhone"].value],
+                   [bwXParamURL,formObj["commentContactURL"].value],
+                   [bwXParamEmail,formObj["commentContactEmail"].value]],
+                   formObj["commentContactName"].value,true);
+  bwXProps.update(bwXPropertyCategories,[],formObj["commentCategories"].value,true);
+  bwXProps.update(bwXPropertySubmitComment,[],formObj["commentNotes"].value,true);
 
   // X-BEDEWORK-IMAGE and its parameters:
   if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {
-    bwXProps.update(bwXPropertyImage,[[bwXParamDescription,''],[bwXParamWidth,''],[bwXParamHeight,'']],formObj["xBwImageHolder"].value,true);
+    bwXProps.update(bwXPropertyImage,
+                  [[bwXParamDescription,''],
+                   [bwXParamWidth,''],
+                   [bwXParamHeight,'']],
+                   formObj["xBwImageHolder"].value,true);
   }
   // X-BEDEWORK-SUBMITTEDBY
   bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);

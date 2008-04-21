@@ -1994,7 +1994,12 @@
   <xsl:template match="formElements" mode="addEvent">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
-    <xsl:variable name="submitter" select="/bedework/userid"/>
+    <xsl:variable name="submitter">
+      <xsl:choose>
+        <xsl:when test="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="/bedework/userid"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
       <h2>
         <span class="formButtons">
@@ -2015,7 +2020,12 @@
   <xsl:template match="formElements" mode="editEvent">
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
-    <xsl:variable name="submitter" select="/bedework/userid"/>
+    <xsl:variable name="submitter">
+      <xsl:choose>
+        <xsl:when test="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="/bedework/userid"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
       <h2>
         <span class="formButtons">
