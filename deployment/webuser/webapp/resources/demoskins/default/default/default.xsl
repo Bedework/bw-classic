@@ -7191,8 +7191,9 @@
     <p>
       <strong>or</strong>
       <span class="nowrap"><input type="radio" name="whoType" value="owner"/>owner</span>
-      <span class="nowrap"><input type="radio" name="whoType" value="auth"/>authenticated users</span>
-      <span class="nowrap"><input type="radio" name="whoType" value="other"/>anyone</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="auth"/>authenticated</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="unauth"/>unauthenticated</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="all"/>all</span>
     </p>
 
     <input type="hidden" name="how" value="S"/>
