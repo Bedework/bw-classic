@@ -245,8 +245,8 @@
               </xsl:for-each>
             }
             function initXProperties() {
-              <xsl:for-each select="form/xproperties/node()">
-                bwXprops.init('<xsl:value-of select="name()"/>',[<xsl:for-each select="parameters/node()">['<xsl:value-of select="name()"/>','<xsl:value-of select="node()"/>']</xsl:for-each>],"<xsl:value-of select="values/text"/>");
+              <xsl:for-each select="/bedework/formElements/form/xproperties/node()">
+                bwXProps.init('<xsl:value-of select="name()"/>',[<xsl:for-each select="parameters/node()">['<xsl:value-of select="name()"/>','<xsl:value-of select="node()"/>']<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>],'<xsl:call-template name="escapeApos"><xsl:with-param name="str"><xsl:value-of select="values/text"/></xsl:with-param></xsl:call-template>');
               </xsl:for-each>
             }
             </xsl:comment>
@@ -1060,6 +1060,7 @@
         <a href="javascript:toggleVisibility('bwSubmittedEventComment','visible');" class="toggle">show/hide</a>
         <a href="javascript:bwSubmitComment.launch();" class="toggle">pop-up</a>
         <div id="bwSubmittedEventComment">
+          <xsl:if test="/bedework/page = 'modEvent'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
         </div>
       </div>
       <script type="text/javascript">
@@ -1280,10 +1281,10 @@
               <strong>End:</strong>
               <xsl:choose>
                 <xsl:when test="form/end/type='E'">
-                  <input type="radio" name="eventEndType" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                  <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="radio" name="eventEndType" value="E" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                  <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:otherwise>
               </xsl:choose>
               Date

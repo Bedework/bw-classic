@@ -45,6 +45,7 @@ var bwXParamURL = "X-BEDEWORK-PARAM-URL";
 var bwXParamPhone = "X-BEDEWORK-PARAM-PHONE";
 var bwXParamEmail = "X-BEDEWORK-PARAM-EMAIL";
 
+
 // ========================================================================
 // x-property functions
 // ========================================================================
@@ -68,8 +69,8 @@ function BwXProperty(name, params, value) {
       for (var i = 0; i < this.params.length; i++) {
         if (this.params[i][1] != "") {
           curXparams += ";" + this.params[i][0];
-          // if parameter values contain ";" or ":" they must be quoted
-          if (this.params[i][1].indexOf(":") != -1 || this.params[i][1].indexOf(";") != -1) {
+          // if parameter values contain ";" or ":" or "," they must be quoted
+          if (this.params[i][1].indexOf(":") != -1 || this.params[i][1].indexOf(";") != -1 || this.params[i][1].indexOf(",") != -1) {
             curXparams += "=\"" + this.params[i][1] + "\"";
           } else {
             curXparams += "=" + this.params[i][1];
@@ -103,24 +104,19 @@ function BwXProperties() {
         params[i][1] = strippedParamValue;
       }
     }
+
     // add or update the xproperty:
     var xprop = new BwXProperty(name, params, value);
-    if (isUnique && this.contains(name)) {
+    if (isUnique) {
       index = this.getIndex(name);
-      xproperties.splice(index,1,xprop);
+      if (index < 0) {
+        xproperties.push(xprop);
+      } else {
+        xproperties.splice(index,1,xprop);
+      }
     } else {
       xproperties.push(xprop);
     }
-  }
-
-  this.contains = function(name) {
-    for (var i = 0; i < xproperties.length; i++) {
-      var curXprop = xproperties[i];
-      if (curXprop.name == name) {
-        return true;
-      }
-    }
-    return false;
   }
 
   this.getIndex = function(name) {
@@ -130,8 +126,9 @@ function BwXProperties() {
         return i;
       }
     }
-    return null;
+    return -1;
   }
+
 
   this.generate = function(formObj) {
     for (var i = 0; i < xproperties.length; i++) {

@@ -404,8 +404,8 @@
           </xsl:for-each>
         }
         function initXProperties() {
-          <xsl:for-each select="form/xproperties/node()">
-            bwXprops.init('<xsl:value-of select="name()"/>',[<xsl:for-each select="parameters/node()">['<xsl:value-of select="name()"/>','<xsl:value-of select="node()"/>']</xsl:for-each>],"<xsl:value-of select="values/text"/>");
+          <xsl:for-each select="/bedework/formElements/form/xproperties/node()">
+            bwXProps.init('<xsl:value-of select="name()"/>',[<xsl:for-each select="parameters/node()">['<xsl:value-of select="name()"/>','<xsl:value-of select="node()"/>']<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>],'<xsl:call-template name="escapeApos"><xsl:with-param name="str"><xsl:value-of select="values/text"/></xsl:with-param></xsl:call-template>');
           </xsl:for-each>
         }
         </xsl:comment>
@@ -7963,28 +7963,6 @@
      </xsl:choose><!--
 --></xsl:template>
 
-  <!-- search and replace template taken from
-       http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
-  <xsl:template name="replace">
-    <xsl:param name="string" select="''"/>
-    <xsl:param name="pattern" select="''"/>
-    <xsl:param name="replacement" select="''"/>
-    <xsl:choose>
-      <xsl:when test="$pattern != '' and $string != '' and contains($string, $pattern)">
-        <xsl:value-of select="substring-before($string, $pattern)"/>
-        <xsl:copy-of select="$replacement"/>
-        <xsl:call-template name="replace">
-          <xsl:with-param name="string" select="substring-after($string, $pattern)"/>
-          <xsl:with-param name="pattern" select="$pattern"/>
-          <xsl:with-param name="replacement" select="$replacement"/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$string"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <!--==== FOOTER ====-->
   <xsl:template name="footer">
     <div id="footer">
@@ -8010,5 +7988,46 @@
         </td>
       </tr>
     </table>
+  </xsl:template>
+
+  <!--==== Utility Templates ====-->
+
+  <xsl:template name="escapeApos">
+    <xsl:param name="str"/>
+    <xsl:variable name="apos" select='"&apos;"'/>
+    <xsl:choose>
+      <xsl:when test="contains($str, $apos)">
+         <xsl:value-of select="substring-before($str, $apos)" />
+         <xsl:text>\'</xsl:text>
+         <xsl:call-template name="escapeApos">
+            <xsl:with-param name="str" select="substring-after($str, $apos)" />
+         </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+         <xsl:value-of select="$str" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- search and replace template taken from
+       http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
+  <xsl:template name="replace">
+    <xsl:param name="string" select="''"/>
+    <xsl:param name="pattern" select="''"/>
+    <xsl:param name="replacement" select="''"/>
+    <xsl:choose>
+      <xsl:when test="$pattern != '' and $string != '' and contains($string, $pattern)">
+        <xsl:value-of select="substring-before($string, $pattern)"/>
+        <xsl:copy-of select="$replacement"/>
+        <xsl:call-template name="replace">
+          <xsl:with-param name="string" select="substring-after($string, $pattern)"/>
+          <xsl:with-param name="pattern" select="$pattern"/>
+          <xsl:with-param name="replacement" select="$replacement"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$string"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 </xsl:stylesheet>
