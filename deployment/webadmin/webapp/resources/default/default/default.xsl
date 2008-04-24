@@ -554,7 +554,7 @@
             </xsl:if>
             Logged in as:
             <span class="status">
-              <xsl:value-of select="/bedework/userInfo/user"/>
+              <xsl:value-of select="/bedework/userInfo/currentUser"/>
             </span>
             &#160;
             <xsl:if test="/bedework/userInfo/group">
@@ -1071,7 +1071,7 @@
     <xsl:variable name="submitter">
       <xsl:choose>
         <xsl:when test="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/></xsl:when>
-        <xsl:otherwise><xsl:value-of select="/bedework/userInfo/user"/></xsl:otherwise>
+        <xsl:otherwise><xsl:value-of select="/bedework/userInfo/currentUser"/> for <xsl:value-of select="/bedework/userInfo/group"/> (<xsl:value-of select="/bedework/userInfo/user"/>)</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <form name="eventForm" method="post" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
