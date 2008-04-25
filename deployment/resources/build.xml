@@ -130,7 +130,7 @@
               <fileset dir="${common.resources.dir}/xsl" />
             </copy>
 
-            <copy todir="${common.dest.war}/images">
+            <copy todir="${cmn.destdir}/images">
               <fileset dir="${common.resources.dir}/images" />
             </copy>
 
