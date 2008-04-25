@@ -11,8 +11,8 @@
             value="${org.bedework.global.build.common.context.deploy.dir}" />
   <property name="propval.app.display.name"
             value="${org.bedework.global.build.common.context.name}" />
-    <property name="propval.app.war.name"
-              value="${org.bedework.global.build.common.context.war.name}" />
+  <property name="propval.app.war.name"
+            value="${org.bedework.global.build.common.context.war.name}" />
 
   <import file="${build.dir}/buildfilters.xml" />
 
@@ -67,6 +67,10 @@
 
         <copy todir="${common.dest.war}">
           <fileset dir="${common.resources.dir}/xsl" />
+        </copy>
+
+        <copy todir="${common.dest.war}/images">
+          <fileset dir="${common.resources.dir}/images" />
         </copy>
 
         <!-- build the war file -->
@@ -125,6 +129,11 @@
             <copy todir="${cmn.destdir}">
               <fileset dir="${common.resources.dir}/xsl" />
             </copy>
+
+            <copy todir="${common.dest.war}/images">
+              <fileset dir="${common.resources.dir}/images" />
+            </copy>
+
           </then>
         </if>
       </else>
