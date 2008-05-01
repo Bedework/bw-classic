@@ -15,7 +15,7 @@ RUNCMDPREFIX="$JAVA_HOME/bin/java -cp $cp "
 
 APPNAME=@BW-APP-NAME@
 
-function runit() {
+runit() {
   echo $RUNCMDPREFIX "org.junit.runner.JUnitCore org.bedework.testsuite.$1"
   $RUNCMDPREFIX "org.junit.runner.JUnitCore" "org.bedework.testsuite.$1"
 }

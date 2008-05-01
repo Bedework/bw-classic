@@ -455,6 +455,8 @@
   <target name="tomcatstart-profile-yk" depends="run.init"
           description="starts the tomcat server with rpofiling">
     <echo message="Starting Tomcat from ${org.bedework.appserver.dir}"/>
+    <echo message="For this to work you need to do something like:"/>
+    <echo message="export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/douglm/drop2/java/yourkit/yjp-6.0.15/bin/linux-x86-32"/>
     <java fork="true" dir="${basedir}"
           classname="org.apache.catalina.startup.Bootstrap">
       <classpath>
