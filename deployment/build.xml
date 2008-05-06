@@ -104,6 +104,11 @@
              classname="org.bedework.deployment.ResolveFile">
       <classpath refid="app.xml.cp"/>
     </taskdef>
+
+    <taskdef name="makeLangXsl"
+             classname="org.bedework.deployment.MakeLangXsl">
+      <classpath refid="app.xml.cp"/>
+    </taskdef>
   </target>
 
   <target name="build.configured" depends="deftasks" >
@@ -152,6 +157,24 @@
   <target name="deploy" depends="deftasks" >
     <!-- Clean up before we start -->
     <delete dir="${org.bedework.temp.wars.home}" />
+
+    <property name="org.bedework.lang.properties"
+              location="${org.bedework.project.calendarapi}/calFacade/resources/org/bedework/locale/resources" />
+
+    <property name="org.bedework.xsllang.dir"
+              location="${org.bedework.temp.dir}/xsllang" />
+
+    <delete dir="${org.bedework.xsllang.dir}"/>
+    <mkdir dir="${org.bedework.xsllang.dir}"/>
+
+    <makeLangXsl dir="${org.bedework.lang.properties}"
+                 prefix="BwResources"
+                 resdir="${org.bedework.xsllang.dir}"
+                 xsldir="${org.bedework.xsllang.dir}"
+                 name="org.bedework.locales"
+                 check="true" />
+
+    <echo message="LLLLLLLLLLLLLLLLLLLL locales=${org.bedework.locales}" />
 
     <!--<antcall target="deploy.standalone.apps" inheritrefs="true" />-->
     <if>

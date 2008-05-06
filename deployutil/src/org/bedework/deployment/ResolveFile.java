@@ -79,7 +79,7 @@ public class ResolveFile extends Task {
   /**
    * helper for path -> URI and URI -> path conversions.
    */
-  private static FileUtils fu = FileUtils.newFileUtils();
+  private static FileUtils fu = FileUtils.getFileUtils();
 
   /**
    * The name of the property to set.

@@ -145,7 +145,7 @@ public class ApplicationXmlTask extends MatchingTask {
     try {
       getModules();
 
-      FileUtils.newFileUtils().createNewFile(outFile, true);
+      FileUtils.getFileUtils().createNewFile(outFile, true);
 
       wtr = new FileWriter(outFile);
 
