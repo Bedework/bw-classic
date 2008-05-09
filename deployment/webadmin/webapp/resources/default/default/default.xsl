@@ -2068,7 +2068,7 @@
         <!-- Cost -->
         <tr>
           <td class="optional">
-            Price:
+            Cost:
           </td>
           <td>
             <xsl:copy-of select="form/cost/*"/>

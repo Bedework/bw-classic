@@ -1045,7 +1045,7 @@
 
   <!--==== LIST EVENTS - for listing discrete events ====-->
   <xsl:template match="events" mode="eventList">
-    <h2 class="">
+    <h2 class="bwStatusConfirmed">
       Event List:
       <xsl:choose>
         <xsl:when test="/bedework/now/longdate = /bedework/events/event[position()=last()]/start/longdate"><xsl:value-of select="/bedework/now/longdate"/></xsl:when>

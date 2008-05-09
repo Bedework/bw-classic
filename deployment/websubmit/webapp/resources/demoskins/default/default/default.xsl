@@ -104,9 +104,14 @@
         <xsl:call-template name="headSection"/>
       </head>
       <body>
-        <xsl:if test="/bedework/page = 'editEvent'">
-          <xsl:attribute name="onload">initRXDates();initXProperties();</xsl:attribute>
-        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="/bedework/page = 'addEvent'">
+            <xsl:attribute name="onload">focusElement('bwEventTitle');</xsl:attribute>
+          </xsl:when>
+          <xsl:when test="/bedework/page = 'editEvent'">
+            <xsl:attribute name="onload">initRXDates();initXProperties();</xsl:attribute>
+          </xsl:when>
+        </xsl:choose>
         <div id="bedework"><!-- main wrapper div -->
           <xsl:call-template name="header"/>
           <xsl:call-template name="messagesAndErrors"/>
@@ -870,6 +875,16 @@
             <td class="fieldval">
               <xsl:variable name="link" select="form/link/input/@value"/>
               <input type="text" name="event.link" size="81" value="{$link}"/>
+              <span class="note"> optional</span>
+            </td>
+          </tr>
+          <!-- Cost -->
+          <tr>
+            <td class="fieldname"><em>Cost:</em></td>
+            <td class="fieldval">
+              <input type="text" name="event.cost" size="81" value="">
+                <xsl:attribute name="value"><xsl:value-of select="form/cost/input/@value"/></xsl:attribute>
+              </input>
               <span class="note"> optional</span>
             </td>
           </tr>
