@@ -43,7 +43,7 @@ var rdateDeleteStr = "remove";
 // ========================================================================
 
 /* An rdate
-/* date: String: internal date
+ * date: String: internal date
  * time: String
  * tzid timezone id or null
  */
@@ -273,18 +273,29 @@ function setBedeworkXProperties(formObj,submitter) {
   // Depends on bedeworkXProperties.js
   // Set application x-properties here.
 
-  // Sumbission comments as x-properties
-  bwXProps.update(bwXPropertyLocation,
+  // Submission comments as x-properties
+  // Only return those comments that contain non-empty values;
+  // throw out the subfields if main field has no value.
+
+  if (formObj["commentLocationAddress"].value != "") {
+    bwXProps.update(bwXPropertyLocation,
                   [[bwXParamSubAddress,formObj["commentLocationSubaddress"].value],
                    [bwXParamURL,formObj["commentLocationURL"].value]],
                    formObj["commentLocationAddress"].value,true);
-  bwXProps.update(bwXPropertyContact,
+  }
+  if (formObj["commentContactName"].value != "") {
+    bwXProps.update(bwXPropertyContact,
                   [[bwXParamPhone,formObj["commentContactPhone"].value],
                    [bwXParamURL,formObj["commentContactURL"].value],
                    [bwXParamEmail,formObj["commentContactEmail"].value]],
                    formObj["commentContactName"].value,true);
-  bwXProps.update(bwXPropertyCategories,[],formObj["commentCategories"].value,true);
-  bwXProps.update(bwXPropertySubmitComment,[],formObj["commentNotes"].value,true);
+  }
+  if (formObj["commentCategories"].value) {
+    bwXProps.update(bwXPropertyCategories,[],formObj["commentCategories"].value,true);
+  }
+  if (formObj["commentNotes"].value) {
+    bwXProps.update(bwXPropertySubmitComment,[],formObj["commentNotes"].value,true);
+  }
 
   // X-BEDEWORK-IMAGE and its parameters:
   if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {

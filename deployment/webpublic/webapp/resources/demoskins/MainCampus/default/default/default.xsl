@@ -1779,7 +1779,7 @@
 
   <xsl:template name="footer">
     <div id="footer">
-      Demonstration calendar; place footer information here.
+      Based on the <a href="http://www.bedework.org/">Bedework Calendar System</a>
     </div>
     <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
       <tr>

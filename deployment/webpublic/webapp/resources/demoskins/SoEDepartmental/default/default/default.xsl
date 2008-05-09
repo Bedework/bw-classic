@@ -1640,10 +1640,10 @@
 
   <xsl:template name="footer">
     <div id="footer">
-      Demonstration calendar; place footer information here.
+      Footer information here
     </div>
     <div id="subFoot">
-      Based on the <a href="http://www.bedework.org/">Bedework Calendar</a> |
+      Based on the <a href="http://www.bedework.org/">Bedework Calendar System</a> |
       <a href="?noxslt=yes">show XML</a> |
       <a href="?refreshXslt=yes">refresh XSLT</a>
     </div>

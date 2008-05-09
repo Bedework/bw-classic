@@ -869,25 +869,6 @@
               </xsl:choose>
             </td>
           </tr>
-          <!--  Link (url associated with event)  -->
-          <tr>
-            <td class="fieldname"><em>Event Link:</em></td>
-            <td class="fieldval">
-              <xsl:variable name="link" select="form/link/input/@value"/>
-              <input type="text" name="event.link" size="81" value="{$link}"/>
-              <span class="note"> optional</span>
-            </td>
-          </tr>
-          <!-- Cost -->
-          <tr>
-            <td class="fieldname"><em>Cost:</em></td>
-            <td class="fieldval">
-              <input type="text" name="event.cost" size="81" value="">
-                <xsl:attribute name="value"><xsl:value-of select="form/cost/input/@value"/></xsl:attribute>
-              </input>
-              <span class="note"> optional</span>
-            </td>
-          </tr>
           <!--  Status  -->
           <tr>
             <td class="fieldname">
@@ -906,6 +887,37 @@
                 <xsl:if test="form/status = 'CANCELLED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
               </input>
               cancelled
+            </td>
+          </tr>
+          <!-- Cost -->
+          <tr>
+            <td class="fieldname"><em>Cost:</em></td>
+            <td class="fieldval">
+              <input type="text" name="event.cost" size="30" value="">
+                <xsl:attribute name="value"><xsl:value-of select="form/cost/input/@value"/></xsl:attribute>
+              </input>
+              <span class="note"> optional: if any, and place to purchase tickets</span>
+            </td>
+          </tr>
+          <!--  Link (url associated with event)  -->
+          <tr>
+            <td class="fieldname"><em>Event URL:</em></td>
+            <td class="fieldval">
+              <input type="text" name="event.link" size="30" value="">
+                <xsl:attribute name="value"><xsl:value-of select="form/link/input/@value"/></xsl:attribute>
+              </input>
+              <span class="note"> optional: for more information about the event</span>
+            </td>
+          </tr>
+          <!-- Image Url -->
+          <tr>
+            <td class="fieldname"><em>Image URL:</em></td>
+            <td class="fieldval">
+              <input type="text" name="xBwImageHolder" size="30" value="">
+                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:attribute>
+              </input>
+              <xsl:text> </xsl:text>
+              <span class="note"> optional: to include an image with the event description</span>
             </td>
           </tr>
         </table>

@@ -2087,16 +2087,14 @@
             <span class="fieldInfo">(optional: for more information about the event)</span>
           </td>
         </tr>
-        <!-- Url -->
+        <!-- Image Url -->
         <tr>
           <td class="optional">
             Image URL:
           </td>
           <td>
             <input type="text" name="xBwImageHolder" value="" class="edit" size="30">
-              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
-                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:attribute>
-              </xsl:if>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:attribute>
             </input>
             <xsl:text> </xsl:text>
             <span class="fieldInfo">(optional: to include an image with the event description)</span>
@@ -2333,7 +2331,11 @@
           </tr>
         </xsl:if>
       </table>
-      <xsl:call-template name="submitEventButtons"/>
+      <xsl:if test="not(starts-with(form/calendar/path,$submissionsRootUnencoded))">
+        <!-- don't create two instances of the submit buttons on pending events;
+             the publishing buttons require numerous unique ids -->
+        <xsl:call-template name="submitEventButtons"/>
+      </xsl:if>
     </form>
   </xsl:template>
 
