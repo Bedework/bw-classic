@@ -182,7 +182,7 @@
         </xsl:for-each>
       }
       function initXProperties() {
-        <xsl:for-each select="/bedework/formElements/form/xproperties/node()">
+        <xsl:for-each select="/bedework/formElements/form/xproperties/node()[text()]">
           bwXProps.init('<xsl:value-of select="name()"/>',[<xsl:for-each select="parameters/node()">['<xsl:value-of select="name()"/>','<xsl:value-of select="node()"/>']<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>],'<xsl:call-template name="escapeApos"><xsl:with-param name="str"><xsl:value-of select="values/text"/></xsl:with-param></xsl:call-template>');
         </xsl:for-each>
       }
@@ -1522,7 +1522,7 @@
   <!--==== FOOTER ====-->
   <xsl:template name="footer">
     <div id="footer">
-      Demonstration calendar; place footer information here.
+      Based on the <a href="http://www.bedework.org/">Bedework Calendar System</a>
     </div>
     <div id="subfoot">
       <a href="http://www.bedework.org/">Bedework Website</a> |
