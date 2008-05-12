@@ -1787,6 +1787,10 @@
       <tr>
         <td class="fieldname">Description:</td>
         <td class="fieldval">
+          <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+            <xsl:variable name="bwImage"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:variable>
+            <img src="{$bwImage}" class="bwEventImage"/>
+          </xsl:if>
           <xsl:call-template name="replace">
             <xsl:with-param name="string" select="description"/>
             <xsl:with-param name="pattern" select="'&#xA;'"/>

@@ -932,6 +932,10 @@ display: inline;
 #bedework .hidden {
   visibility: hidden;
 }
+#bedework .bwEventImage {
+  float: right;
+  margin: 0 0.5em 1em 1em;
+}
 #bedework .padMe {
   padding: 1em 0 !important;
 }
