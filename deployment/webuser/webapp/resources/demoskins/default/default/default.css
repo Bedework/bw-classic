@@ -542,6 +542,9 @@
   margin: 0;
   padding: 0;
 }
+#bedework form {
+  margin: 0;
+}
 #bedework #eventAccessLink {
   float: right;
   font-size: 0.8em;
@@ -633,6 +636,11 @@
 }
 #bedework table.common td {
   padding: 0;
+}
+#bedework table.common td.highlight {
+  padding: 0.5em;
+  color: black;
+  background-color: #ee0;
 }
 #bedework table.common td.filler {
   height: 250px;
