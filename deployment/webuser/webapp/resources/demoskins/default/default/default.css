@@ -1478,7 +1478,8 @@ display: inline;
   margin: 0;
   padding: 2px 4px;
   font-size: 1em;
-  background-color: #5A6B93;
+  /*background-color: #5A6B93;*/
+  background-color: #747A8F;
   color: #eee;
   font-weight: normal;
 }
@@ -1531,6 +1532,15 @@ display: inline;
 #bedework  li.selected {
   list-style-image: url(../../resources/glassFill-icon-view.gif);
   font-weight: bold;
+}
+#bedework  li.subscription {
+  list-style-image: url(../../resources/subIcon.gif);
+  font-style: italic;
+  margin-left: 0;
+  padding-left: 0;
+}
+#bedework  li.subscription li {
+  font-style: normal;
 }
 #bedework .calendarTree a:link,
 #bedework .calendarTree a:active,

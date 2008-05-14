@@ -165,7 +165,8 @@
 
   <!-- the following variable can be set to "true" or "false";
        to use dojo widgets and fancier UI features, set to false - these are
-       not guaranteed to work in portals -->
+       not guaranteed to work in portals. Setting to true will make the
+       add/edit event form much faster, but will not support internationalization. -->
   <xsl:variable name="portalFriendly">false</xsl:variable>
 
  <!-- BEGIN MAIN TEMPLATE -->
@@ -376,14 +377,19 @@
                   /bedework/page='calendarListForExport'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
       <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
-      <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkXProperties.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
-      <xsl:if test="$portalFriendly = 'true'">
-        <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
-        <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="$portalFriendly = 'true'">
+          <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
+          <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkDojo.js">&#160;</script>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:if>
     <xsl:if test="/bedework/editableAccess/access/acl/ace">
       <script type="text/javascript">
@@ -907,7 +913,9 @@
           </tr>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[event]">
+          <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[event[not(entityType=2 and start/noStart='true' and end/type='N')]]">
+          <!-- reminders are displayed below the normal event listings and are represented as
+               entityType=2 and start/noStart='true' and end/type='N'; we skip them within grid and list views -->
             <xsl:if test="/bedework/periodname='Week' or /bedework/periodname='Month' or /bedework/periodname=''">
               <tr>
                 <td colspan="6" class="dateRow">
@@ -4340,7 +4348,14 @@
         <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
         <xsl:choose>
           <xsl:when test="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]">
-            <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+            <xsl:for-each select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath)) and calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]]">
+              <li class="subscription">
+                <xsl:value-of select="name"/>
+                <ul>
+                  <xsl:apply-templates select="calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+                </ul>
+              </li>
+            </xsl:for-each>
           </xsl:when>
           <xsl:otherwise>
             <em>no writable calendars</em>
@@ -4379,9 +4394,10 @@
           <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
             <strong><xsl:value-of select="name"/></strong>
           </a>
+          <!-- deprecated:
           <xsl:if test="name != $calDisplay">
-            <span class="small">(<xsl:value-of select="$calDisplay"/>)</span>
-          </xsl:if>
+            <span class="small"> (<xsl:value-of select="$calDisplay"/>)</span>
+          </xsl:if> -->
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="name"/>

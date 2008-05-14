@@ -25,11 +25,6 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. */
 
-dojo.require("dojo.event.*");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.DropdownDatePicker");
-dojo.require("dojo.widget.DropdownTimePicker");
-
 // ========================================================================
 // ========================================================================
 //   Language and customization
@@ -43,7 +38,7 @@ var rdateDeleteStr = "remove";
 // ========================================================================
 
 /* An rdate
-/* date: String: internal date
+ * date: String: internal date
  * time: String
  * tzid timezone id or null
  */
@@ -604,15 +599,5 @@ function setRdateDateTime(formObj) {
   }
 }
 
-function untilClickHandler(evt) {
-   selectRecurCountUntil('recurUntil');
-}
-
-function init() {
-  var untilHolder = dojo.byId("untilHolder");
-  dojo.event.connect(untilHolder, "onclick", untilClickHandler);
-}
-
-dojo.addOnLoad(init);
 
 
