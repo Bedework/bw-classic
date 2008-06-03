@@ -3872,6 +3872,26 @@
             </div>
           </td>
         </tr>
+        <tr>
+          <th>Locale list:</th>
+          <td>
+            <xsl:variable name="localeList" select="/bedework/system/localeList"/>
+            <input value="{$localeList}" name="localeList" class="wide"/>
+            <div class="desc">
+              Comma separated list of supported locales
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Root users:</th>
+          <td>
+            <xsl:variable name="rootUsers" select="/bedework/system/rootUsers"/>
+            <input value="{$rootUsers}" name="rootUsers" class="wide"/>
+            <div class="desc">
+              Comman separated list of super uses for the calendar system
+            </div>
+          </td>
+        </tr>
       </table>
       <table border="0" id="submitTable">
         <tr>
@@ -4383,12 +4403,6 @@
             <xsl:if test="publicEventUser='true'">
               publicEvent; <xsl:text> </xsl:text>
             </xsl:if>
-            <xsl:if test="superUser='true'">
-              superUser; <xsl:text> </xsl:text>
-            </xsl:if>
-            <xsl:if test="alertUser='true'">
-              alert; <xsl:text> </xsl:text>
-            </xsl:if>
           </td>
           <td>
             <xsl:variable name="account" select="account"/>
@@ -4416,26 +4430,10 @@
         </tr>
         <tr>
           <td class="fieldName">
-            Alerts:
-          </td>
-          <td>
-            <xsl:copy-of select="/bedework/formElements/form/alerts/*"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldName">
             Public Events:
           </td>
           <td>
             <xsl:copy-of select="/bedework/formElements/form/publicEvents/*"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldName">
-            Super User:
-          </td>
-          <td>
-            <xsl:copy-of select="/bedework/formElements/form/superUser/*"/>
           </td>
         </tr>
         <!--<tr>

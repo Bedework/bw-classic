@@ -5666,12 +5666,6 @@
             <xsl:if test="publicEventUser='true'">
               publicEvent; <xsl:text> </xsl:text>
             </xsl:if>
-            <xsl:if test="superUser='true'">
-              superUser; <xsl:text> </xsl:text>
-            </xsl:if>
-            <xsl:if test="alertUser='true'">
-              alert; <xsl:text> </xsl:text>
-            </xsl:if>
           </td>
           <td>
             <xsl:variable name="account" select="account"/>
@@ -5699,26 +5693,10 @@
         </tr>
         <tr>
           <td class="fieldName">
-            Alerts:
-          </td>
-          <td>
-            <xsl:copy-of select="/bedework/formElements/form/alerts/*"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldName">
             Public Events:
           </td>
           <td>
             <xsl:copy-of select="/bedework/formElements/form/publicEvents/*"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldName">
-            Super User:
-          </td>
-          <td>
-            <xsl:copy-of select="/bedework/formElements/form/superUser/*"/>
           </td>
         </tr>
         <!--<tr>
