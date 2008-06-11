@@ -1,0 +1,54 @@
+#! /bin/sh
+
+#
+# This file is included by the quickstart script file bw so that it can live
+# within the svn repository.
+#
+
+if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
+  echo "*******************************************************"
+  echo "Error: JAVA_HOME is not defined correctly for bedework."
+  echo "*******************************************************"
+  exit 1
+fi
+
+PRG="$0"
+saveddir=`pwd`
+
+export BEDEWORK_HOME=$saveddir
+
+BWCONFIGS=
+
+if [ "$1" = "-bwchome" ] ; then
+  shift
+  BWCONFIGS="$1"
+  shift
+else
+  BWCONFIGS=$HOME/bwbuild
+fi
+
+# Make available for ant
+export BEDEWORK_CONFIGS_HOME=$BWCONFIGS
+
+BWCONFIG=
+
+if [ "$1" = "-bwc" ] ; then
+  shift
+
+  # Make available for ant
+  export BEDEWORK_CONFIG=$BWCONFIGS/$1
+
+  BWCONFIG="-Dorg.bedework.user.build.properties=$BWCONFIGS/$1/build.properties"
+  shift
+fi
+
+echo "BWCONFIGS=$BWCONFIGS"
+echo "BWCONFIG=$BWCONFIG"
+
+ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
+ANT_HOME=`cd "$ANT_HOME" && pwd`
+
+CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
+
+$JAVA_HOME/bin/java -classpath $CLASSPATH -Dant.home=$ANT org.apache.tools.ant.launch.Launcher $BWCONFIG $*
+

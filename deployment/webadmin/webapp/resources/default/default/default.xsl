@@ -5190,6 +5190,26 @@
             </div>
           </td>
         </tr>
+        <tr>
+          <th>Supported Locales:</th>
+          <td>
+            <xsl:variable name="localeList" select="/bedework/system/localeList"/>
+            <input value="{$localeList}" name="localeList" class="wide"/>
+            <div class="desc">
+              List of supported locales. The format is rigid, comma separated list of 2 letter language, underscore, 2 letter country. No spaces.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Super Users:</th>
+          <td>
+            <xsl:variable name="rootUsers" select="/bedework/system/rootUsers"/>
+            <input value="{$rootUsers}" name="rootUsers" class="wide"/>
+            <div class="desc">
+              Comma separated list of super users. No spaces.
+            </div>
+          </td>
+        </tr>
       </table>
       <table border="0" id="submitTable">
         <tr>
