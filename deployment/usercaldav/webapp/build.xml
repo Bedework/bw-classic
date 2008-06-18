@@ -53,20 +53,11 @@
          Libraries for this application
          =============================================================== -->
 
-    <!-- from  the lib directory -->
-    <fileset id="app.lib.files" dir="${org.bedework.empty.dir}" >
-    </fileset>
-
     <!-- from  the bin directory -->
     <fileset id="app.bin.files" dir="${bin.home}" >
       <include name="bw-caldav*.jar" />
       <include name="bw-cdvserver*.jar" />
       <include name="bw-webdavserver*.jar" />
-      <include name="${propval.app.interface.jar}*.jar" />
-    </fileset>
-
-    <!-- from  the temp jars directory -->
-    <fileset id="app.temp.lib.files" dir="${org.bedework.empty.dir}" >
     </fileset>
 
     <!-- ===============================================================

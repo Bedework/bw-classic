@@ -101,6 +101,10 @@
   </target>
 
   <target name="build" depends="init">
+    <echo message="**************************************************" />
+    <echo message=" * Building war ${propval.app.war.name}"/>
+    <echo message="**************************************************" />
+
     <delete dir="${app.dest.war}" />
 
     <!-- Add modifed login pages -->
@@ -186,11 +190,15 @@ ${propval.app.war.name}.context=${propval.app.context.root}
       <filterset refid="property.filters" />
     </copy>
 
-    <copy todir="${app.dest.lib}">
-      <fileset dir="${hibernate.jars.dir}">
-        <include name="*.jar"/>
-      </fileset>
-    </copy>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.antlr}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.asm-attrs}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.asm}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.cglib}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.dom4j}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ehcache}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.hibernate}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jgroups}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jta}" />
 
     <antcall target="jboss-stuff" inheritRefs="true" />
     <antcall target="bexchange-stuff" inheritRefs="true" />
@@ -201,31 +209,22 @@ ${propval.app.war.name}.context=${propval.app.context.root}
          Any jar files required
          =============================================================== -->
 
-    <copy todir="${app.dest.lib}" overwrite="yes">
-      <fileset dir="${bin.home}">
-        <!-- jars from sub-projects needed by all -->
-        <include name="rpiaccess*.jar"/>
-        <include name="rpiutil*.jar"/>
-        <include name="bw-davio*.jar"/>
-
-        <!-- Calendar api jars -->
-        <include name="bw-apiutil*.jar"/>
-        <include name="bw-calcore*.jar"/>
-        <include name="bw-calcorei*.jar"/>
-        <include name="bw-calenv*.jar"/>
-        <include name="bw-calfacade*.jar"/>
-        <include name="bw-calsvc*.jar"/>
-        <include name="bw-calsvci*.jar"/>
-        <include name="bw-client*.jar"/>
-        <include name="bw-icalendar*.jar"/>
-        <include name="bw-locale*.jar"/>
-        <include name="bw-logging*.jar"/>
-        <include name="bw-mail*.jar"/>
-
-        <!-- Common jars for web apps -->
-        <include name="bw-appcommon*.jar"/>
-      </fileset>
-    </copy>
+    <echo message="+++++++++++  bw-logging at ${org.bedework.appjar.bw-logging}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.rpiaccess}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.rpiutil}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-davio}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-apiutil}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calcore}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calcorei}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calenv}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calfacade}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calsvc}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calsvci}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-client}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-icalendar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-logging}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-mail}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-appcommon}" />
 
      <!-- any extra bin files-->
     <copy todir="${app.dest.lib}" >
@@ -238,35 +237,38 @@ ${propval.app.war.name}.context=${propval.app.context.root}
         <isset property="org.bedework.build.for.jboss"/>
       </not>
       <then>
-        <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
+        <copy todir="${app.dest.lib}" file="${org.bedework.appjar.log4j}"/>
       </then>
     </if>
-    <copy todir="${app.dest.lib}" file="${lucene.core.jar}"/>
-    <copy todir="${app.dest.lib}" file="${lucene.misc.jar}"/>
-    <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-codec.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-collections.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-httpclient.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-lang.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-ssl.jar}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.lucene-core}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.lucene-misc}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ical4j}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-codec}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-collections}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-httpclient}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-lang}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-ssl}"/>
 
-    <copy todir="${app.dest.lib}" overwrite="yes">
-      <fileset dir="${javamail.dir}">
-        <include name="*.jar"/>
-      </fileset>
-    </copy>
+    <!-- Mail related stuff -->
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.activation}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.dsn}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.imap}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.mailapi}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.pop3}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.smtp}" />
 
-    <!-- add the jdbcdriver if defined -->
-    <antcall target="add.jdbcdriver" inheritRefs="true" />
+    <!-- add the jdbcdriver if defined
+         Disable this - shouldn't be adding jdbc drivers to the war file
+    <if>
+      <isset property="app.jdbcdriver.jar"/>
+      <then>
+        <copy todir="${app.dest.lib}" file="${app.jdbcdriver.jar}"/>
+      </then>
+    </if>
+     -->
 
     <!-- tomcat -->
     <antcall target="add.tomcat" inheritRefs="true" />
-
-     <!-- any extra lib files-->
-    <copy todir="${app.dest.lib}" >
-      <fileset refid="app.lib.files" />
-      <!-- <fileset refid="app.temp.lib.files" /> -->
-    </copy>
 
     <!-- build the war file -->
     <mkdir dir="${dist.home}" />
@@ -276,10 +278,6 @@ ${propval.app.war.name}.context=${propval.app.context.root}
          webxml="${app.dest.web.xml}"
          basedir="${app.dest.war}"
          excludes="WEB-INF/web.xml" />
-  </target>
-
-  <target name="add.jdbcdriver" if="app.jdbcdriver.jar">
-    <copy todir="${app.dest.lib}" file="${app.jdbcdriver.jar}"/>
   </target>
 
   <target name="add.tomcat" if="org.bedework.global.deploy.on.tomcat">
@@ -310,13 +308,6 @@ ${propval.app.war.name}.context=${propval.app.context.root}
     </copy>
   </target>
 
-  <!--
-  <target name="copy.servlet.properties" if="org.bedework.servlet.properties.exists">
-    <copy tofile="${app.dest.classes}/servlet.properties" file="${app.sou.properties}">
-      <filterset refid="property.filters" />
-    </copy>
-  </target>
-  -->
   <target name="copy.servlet.properties">
     <copy todir="${app.dest.classes}">
       <fileset dir="${app.sou.dir}/war/WEB-INF/classes"
@@ -368,12 +359,7 @@ ${propval.app.war.name}.context=${propval.app.context.root}
 
     <mkdir  dir="${app.dest.webinf}/tlds"/>
     <copy todir="${app.dest.webinf}/tlds" >
-      <fileset dir="${struts.tlds.dir}">
-        <include name="*"/>
-      </fileset>
-    </copy>
-    <copy todir="${app.dest.webinf}/tlds" >
-      <fileset dir="${org.bedework.default.lib}/tlds">
+      <fileset dir="${org.bedework.struts.tlds}">
         <include name="*"/>
       </fileset>
     </copy>
@@ -392,11 +378,10 @@ ${propval.app.war.name}.context=${propval.app.context.root}
       <then>
         <!-- Add common portlet files -->
 
-        <copy todir="${app.dest.lib}" >
-          <fileset dir="${portals-bridges.jars.dir}">
-            <include name="*.jar"/>
-          </fileset>
-        </copy>
+        <copy todir="${app.dest.lib}"
+              file="${org.bedework.appjar.portals-bridges-common}"/>
+        <copy todir="${app.dest.lib}"
+              file="${org.bedework.appjar.portals-bridges-struts-1.2.7}"/>
 
         <!-- Use generic bedework portlet tld -->
         <copy todir="${app.dest.webinf}/tlds"
@@ -433,19 +418,15 @@ ${propval.app.war.name}.context=${propval.app.context.root}
       </then>
     </if>
 
-    <copy todir="${app.dest.lib}">
-      <fileset dir="${struts.dir}">
-        <include name="*.jar"/>
-      </fileset>
-    </copy>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.struts}"/>
 
-    <copy todir="${app.dest.lib}" file="${antlr.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-beanutils.jar}"/>
-    <copy todir="${app.dest.lib}" file="${digester.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-fileupload.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-logging.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-validator.jar}"/>
-    <copy todir="${app.dest.lib}" file="${jakarta-oro.jar}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.antlr}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-beanutils}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-digester}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-fileupload}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-logging}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-validator}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jakarta-oro}"/>
   </target>
 
   <!-- =================================================================
@@ -465,11 +446,7 @@ ${propval.app.war.name}.context=${propval.app.context.root}
        ================================================================= -->
 
   <target name="add.uportal2" if="org.bedework.build.for.uportal2" >
-    <copy todir="${app.dest.lib}" >
-      <fileset dir="${bin.home}">
-        <include name="bw-uportal*.jar"/>
-      </fileset>
-    </copy>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.uportal}"/>
 
     <!-- Add the portlet servlet mapping -->
     <replace file="${app.temp.web.xml}">
@@ -496,14 +473,9 @@ ${propval.app.war.name}.context=${propval.app.context.root}
       <filterset refid="property.filters" />
     </copy>
 
-    <copy todir="${app.dest.lib}" >
-      <fileset dir="${bin.home}">
-        <include name="bw-liferay*.jar"/>
-      </fileset>
-      <fileset dir="${liferay4.lib}">
-        <include name="*.jar"/>
-      </fileset>
-    </copy>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.liferay}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.liferay.util-bridges}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.liferay.util-java}"/>
 
     <!-- Add the context params -->
     <replace file="${app.temp.web.xml}">

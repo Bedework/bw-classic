@@ -8,6 +8,9 @@
 <project name="bedework.build" default="usage" basedir=".">
   <property environment="env"/>
 
+  <!-- This affects some of the build process in the projects -->
+  <property name="org.bedework.quickstart.build" value="true" />
+
   <!-- this project -->
   <property name="org.bedework.project.bedework"
             location="${basedir}" />
@@ -124,6 +127,7 @@
 
     <property name="dist.home" location="${project.home}/dist"/>
     <property name="lib.dir" location="${project.home}/lib"/>
+    <property name="resources.dir" location="${project.home}/resources"/>
     <property name="bin.home" location="${project.home}/bin"/>
 
     <property name="build.dir" location="${project.home}/build"/>
@@ -397,21 +401,6 @@
     <ant antfile="${org.bedework.project.access}/build.xml" inheritall="false"
            target="build-all" />
 
-    <copy-to-dependent this="${org.bedework.project.access}"
-                       target="${org.bedework.project.caldav}" />
-    <copy-to-dependent this="${org.bedework.project.access}"
-                       target="${org.bedework.project.calendarapi}" />
-    <copy-to-dependent this="${org.bedework.project.access}"
-                       target="${org.bedework.project.davutil}" />
-    <copy-to-dependent this="${org.bedework.project.access}"
-                       target="${org.bedework.project.dumprestore}" />
-    <copy-to-dependent this="${org.bedework.project.access}"
-                       target="${org.bedework.project.webapps}" />
-    <copy-to-dependent this="${org.bedework.project.access}"
-                       target="${org.bedework.project.webdav}" />
-    <copy-to-dependent this="${org.bedework.project.access}"
-                       target="${org.bedework.project.testsuite}" />
-
     <copy-to-bin this="${org.bedework.project.access}"/>
   </target>
 
@@ -512,28 +501,6 @@
     <ant antfile="${org.bedework.project.calendarapi}/build.xml" inheritall="false"
            target="build-all" />
 
-    <copy-to-dependent this="${org.bedework.project.calendarapi}"
-                       target="${org.bedework.project.caldav}" />
-    <copy-to-dependent this="${org.bedework.project.calendarapi}"
-                       target="${org.bedework.project.dumprestore}" />
-    <copy-special-to-dependent this="${org.bedework.project.calendarapi}"
-                       target="${org.bedework.project.dumprestore}"
-                       prefix="bw-calcore" />
-    <copy-special-to-dependent this="${org.bedework.project.calendarapi}"
-                       target="${org.bedework.project.dumprestore}"
-                       prefix="bw-calsvc" />
-    <copy-to-dependent this="${org.bedework.project.calendarapi}"
-                       target="${org.bedework.project.freebusy}" />
-    <copy-to-dependent this="${org.bedework.project.calendarapi}"
-                       target="${org.bedework.project.synchml}" />
-    <copy-to-dependent this="${org.bedework.project.calendarapi}"
-                       target="${org.bedework.project.webapps}" />
-    <copy-special-to-dependent this="${org.bedework.project.calendarapi}"
-                       target="${org.bedework.project.webapps}"
-                       prefix="bw-calenv" />
-    <copy-to-dependent this="${org.bedework.project.calendarapi}"
-                       target="${org.bedework.project.testsuite}" />
-
     <copy-to-bin this="${org.bedework.project.calendarapi}"/>
   </target>
 
@@ -553,19 +520,6 @@
           description="builds the davutil project">
     <ant antfile="${org.bedework.project.davutil}/build.xml" inheritall="false"
            target="build-all" />
-
-    <copy-to-dependent this="${org.bedework.project.davutil}"
-                       target="${org.bedework.project.caldav}" />
-    <copy-to-dependent this="${org.bedework.project.davutil}"
-                       target="${org.bedework.project.caldavTest}" />
-    <copy-to-dependent this="${org.bedework.project.davutil}"
-                       target="${org.bedework.project.calendarapi}" />
-    <copy-to-dependent this="${org.bedework.project.davutil}"
-                       target="${org.bedework.project.freebusy}" />
-    <copy-to-dependent this="${org.bedework.project.davutil}"
-                       target="${org.bedework.project.webapps}" />
-    <copy-to-dependent this="${org.bedework.project.davutil}"
-                       target="${org.bedework.project.webdav}" />
 
     <copy-to-bin this="${org.bedework.project.davutil}"/>
   </target>
@@ -637,25 +591,6 @@
     <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritall="false"
            target="build-all" />
 
-    <copy-to-dependent this="${org.bedework.project.rpiutil}"
-                       target="${org.bedework.project.access}" />
-    <copy-to-dependent this="${org.bedework.project.rpiutil}"
-                       target="${org.bedework.project.caldav}" />
-    <copy-to-dependent this="${org.bedework.project.rpiutil}"
-                       target="${org.bedework.project.calendarapi}" />
-    <copy-to-dependent this="${org.bedework.project.rpiutil}"
-                       target="${org.bedework.project.davutil}" />
-    <copy-to-dependent this="${org.bedework.project.rpiutil}"
-                       target="${org.bedework.project.dumprestore}" />
-    <copy-to-dependent this="${org.bedework.project.rpiutil}"
-                       target="${org.bedework.project.freebusy}" />
-    <copy-to-dependent this="${org.bedework.project.rpiutil}"
-                       target="${org.bedework.project.webapps}" />
-    <copy-to-dependent this="${org.bedework.project.rpiutil}"
-                       target="${org.bedework.project.webdav}" />
-    <copy-to-dependent this="${org.bedework.project.rpiutil}"
-                       target="${org.bedework.project.testsuite}" />
-
     <copy-to-bin this="${org.bedework.project.rpiutil}"/>
   </target>
 
@@ -726,10 +661,6 @@
     <ant antfile="${org.bedework.project.webapps}/build.xml" inheritall="false"
            target="build-all" />
 
-    <copy-special-to-dependent this="${org.bedework.project.webapps}"
-                       target="${org.bedework.project.testsuite}"
-                       prefix="bw-appcommon" />
-
     <copy-to-bin this="${org.bedework.project.webapps}"/>
   </target>
 
@@ -752,9 +683,6 @@
       <then>
         <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
              target="build-all" />
-
-        <copy-to-dependent this="${org.bedework.project.webdav}"
-                           target="${org.bedework.project.caldav}" />
 
         <copy-to-bin this="${org.bedework.project.webdav}"/>
       </then>
@@ -830,44 +758,6 @@
   </target>
 
   <!-- =============================================================================
-       Update dependent project (target) from a project just built (this)
-       with a special library (i.e. not one in libapi
-       ============================================================================= -->
-  <macrodef name="copy-special-to-dependent">
-    <attribute name="target"/>
-    <attribute name="this"/>
-    <attribute name="fromdir" default="dist"/>
-    <attribute name="prefix" />
-    <sequential>
-      <delete>
-        <fileset dir="@{target}/lib" includes="@{prefix}*.jar"/>
-      </delete>
-
-      <copy todir="@{target}/lib" overwrite="yes">
-        <fileset dir="@{this}/@{fromdir}">
-          <include name="@{prefix}*.jar" />
-        </fileset>
-      </copy>
-    </sequential>
-  </macrodef>
-
-  <!-- =============================================================================
-       Update dependent project (target) from a project just built (this).
-       ============================================================================= -->
-  <macrodef name="copy-to-dependent">
-    <attribute name="target"/>
-    <attribute name="this"/>
-    <attribute name="fromdir" default="libapi"/>
-    <sequential>
-      <copy todir="@{target}/lib" overwrite="yes">
-        <fileset dir="@{this}/@{fromdir}">
-          <include name="*.jar" />
-        </fileset>
-      </copy>
-    </sequential>
-  </macrodef>
-
-  <!-- =============================================================================
        Copy from a project just built (this) into bedework bin directory.
        ============================================================================= -->
   <macrodef name="copy-to-bin">
@@ -876,22 +766,6 @@
       <copy todir="${org.bedework.project.bedework}/bin" overwrite="yes">
         <fileset dir="@{this}/dist">
           <include name="*.jar" />
-        </fileset>
-      </copy>
-    </sequential>
-  </macrodef>
-
-  <!-- =============================================================================
-       Update a project library from the bedework lib directory.
-       ============================================================================= -->
-  <macrodef name="copy-lib-to-lib">
-    <attribute name="this"/>
-    <sequential>
-      <delete file="@{target}/lib/@{jarprefix}*.jar" />
-
-      <copy todir="@{target}/lib" >
-        <fileset dir="${org.bedework.project.bedework}/lib" >
-          <include name="@{jarprefix}*.jar" />
         </fileset>
       </copy>
     </sequential>

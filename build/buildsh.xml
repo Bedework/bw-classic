@@ -50,38 +50,36 @@
 
     <mkdir dir="${app.dest.lib}" />
 
-    <copy todir="${app.dest.lib}">
-      <fileset dir="${hibernate.jars.dir}">
-        <include name="*.jar"/>
-      </fileset>
-    </copy>
+    <!-- hibernate jars -->
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.antlr}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.asm-attrs}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.asm}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.cglib}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.dom4j}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ehcache}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.hibernate}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jgroups}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jta}" />
 
-    <copy todir="${app.dest.lib}" file="${commons-collections.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-logging.jar}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-collections}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-logging}"/>
 
     <!-- core files -->
 
-    <copy todir="${app.dest.lib}" overwrite="yes">
-      <fileset dir="${bin.home}">
-        <!-- jars from sub-projects needed by all -->
-        <include name="rpiaccess*.jar"/>
-        <include name="rpiutil*.jar"/>
-        <include name="bw-davio*.jar"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.rpiaccess}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.rpiutil}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-davio}" />
 
-        <!-- Calendar api jars -->
-        <include name="bw-apiutil*.jar"/>
-        <include name="bw-calcore*.jar"/>
-        <include name="bw-calcorei*.jar"/>
-        <include name="bw-calenv*.jar"/>
-        <include name="bw-calfacade*.jar"/>
-        <include name="bw-calsvc*.jar"/>
-        <include name="bw-calsvci*.jar"/>
-        <include name="bw-icalendar*.jar"/>
-        <include name="bw-locale*.jar"/>
-        <include name="bw-logging*.jar"/>
-        <include name="bw-mail*.jar"/>
-      </fileset>
-    </copy>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-apiutil}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calcore}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calcorei}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calenv}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calfacade}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calsvc}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calsvci}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-icalendar}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-logging}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-mail}" />
 
      <!-- any extra bin files-->
     <copy todir="${app.dest.lib}" >
@@ -89,19 +87,19 @@
     </copy>
 
     <!-- Some more standard libs -->
-    <copy todir="${app.dest.lib}" file="${log4j.jar}"/>
-    <copy todir="${app.dest.lib}" file="${lucene.core.jar}"/>
-    <copy todir="${app.dest.lib}" file="${lucene.misc.jar}"/>
-    <copy todir="${app.dest.lib}" file="${ical4j.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-digester.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-httpclient.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-ssl.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-codec.jar}"/>
-    <copy todir="${app.dest.lib}" file="${commons-lang.jar}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.log4j}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.lucene-core}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.lucene-misc}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ical4j}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-codec}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-digester}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-collections}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-httpclient}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-lang}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-ssl}"/>
 
     <!-- Extra libraries specified in calling build file -->
     <copy todir="${app.dest.lib}" flatten="yes" >
-      <fileset refid="org.bedework.run.jars" />
       <fileset refid="org.bedework.run.lib.jars" />
 
       <!-- local jdbc drivers -->
@@ -129,7 +127,12 @@
     </copy>
 
     <!-- add the jdbcdriver if defined -->
-    <antcall target="add.jdbcdriver" inheritRefs="true" />
+    <if>
+      <isset property="propval.app.jdbcdriver.jar"/>
+      <then>
+        <copy todir="${app.dest.lib}" file="${propval.app.jdbcdriver.jar}"/>
+      </then>
+    </if>
 
     <!-- Create the env.properties file -->
     <mkdir dir="${app.dest.properties}" />
@@ -209,10 +212,6 @@
     <zip destfile="${app.zip.file}" >
       <zipfileset prefix="${propval.app.zip.name}" dir="${app.dest.home}" />
     </zip>
-  </target>
-
-  <target name="add.jdbcdriver" if="propval.app.jdbcdriver.jar">
-    <copy todir="${app.dest.lib}" file="${propval.app.jdbcdriver.jar}"/>
   </target>
 </project>
 

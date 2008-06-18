@@ -30,8 +30,14 @@
     <!-- Load the location of the libraries -->
     <property file="${org.bedework.project.bedework}/build/libjars.properties" />
 
+  <dirname property="this.build.dir" file="${ant.file}"/>
+
+  <import file="${build.dir}/getJar.xml"/>
+
+  <import file="${this.build.dir}/appjars.xml" />
+
   <target name="init" >
-    <dirname property="this.build.dir" file="${ant.file}"/>
+    <getAppJars />
 
     <property name="source.home" location="${this.build.dir}/src"/>
 

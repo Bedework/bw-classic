@@ -42,10 +42,6 @@
          Libraries for this application
          =============================================================== -->
 
-    <!-- from the dist directory -->
-    <fileset id="org.bedework.run.jars" dir="${org.bedework.empty.dir}" >
-    </fileset>
-
     <fileset id="org.bedework.run.lib.jars" dir="${org.bedework.empty.dir}" >
     </fileset>
 
