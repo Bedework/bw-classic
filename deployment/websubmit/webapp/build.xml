@@ -7,12 +7,15 @@
 <project name="bwsubmit.deploy" default="deploy" >
   <import file="${org.bedework.deployment.base}/deployprops.xml" />
 
+  <dirname property="this.dir" file="${ant.file}"/>
+
+  <import file="${this.dir}/appjars.xml" />
+
   <target name="init" >
-    <!-- and define some properties based on those -->
+    <getExtraJars />
+
     <property name="app.war.file"
               location="${dist.home}/${propval.app.war.name}.war" />
-
-    <dirname property="this.dir" file="${ant.file}"/>
 
     <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
 
@@ -90,15 +93,6 @@
   </target>
 
   <target name="build.configured" depends="init" >
-    <!-- ===============================================================
-         Libraries for this application
-         =============================================================== -->
-
-    <!-- from  the bin directory -->
-    <fileset id="app.bin.files" dir="${bin.home}" >
-      <include name="bw-webcommon*.jar" />
-    </fileset>
-
     <!-- ===============================================================
          Build the war
          =============================================================== -->

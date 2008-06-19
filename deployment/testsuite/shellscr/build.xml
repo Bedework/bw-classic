@@ -7,8 +7,12 @@
 <project name="testsuite.deploy" default="deploy" >
   <import file="${org.bedework.deployment.base}/deployprops.xml" />
 
+  <dirname property="this.dir" file="${ant.file}"/>
+
+  <import file="${this.dir}/appjars.xml" />
+
   <target name="init" >
-    <dirname property="this.dir" file="${ant.file}"/>
+    <getExtraJars />
 
     <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
 
@@ -38,20 +42,6 @@
   </target>
 
   <target name="build.configured" depends="init" >
-    <!-- ===============================================================
-         Libraries for this application
-         =============================================================== -->
-
-    <fileset id="org.bedework.run.lib.jars" dir="${org.bedework.default.lib}" >
-      <include name="${junit4.jar.name}" />
-    </fileset>
-
-    <!-- from  the bin directory -->
-    <fileset id="app.bin.files" dir="${bin.home}" >
-      <include name="bw-appcommon*.jar"/>
-      <include name="bw-testsuite*.jar" />
-    </fileset>
-
     <!-- Extra resources -->
     <property name="app.temp.home"
               location="${org.bedework.temp.shellscr.home}/bldtemp/${propval.app.zip.name}" />

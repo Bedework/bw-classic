@@ -7,8 +7,12 @@
 <project name="bwdumpres.deploy" default="deploy" >
   <import file="${org.bedework.deployment.base}/deployprops.xml" />
 
+  <dirname property="this.dir" file="${ant.file}"/>
+
+  <import file="${this.dir}/appjars.xml" />
+
   <target name="init" >
-    <dirname property="this.dir" file="${ant.file}"/>
+    <getExtraJars />
 
     <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
 
@@ -41,14 +45,6 @@
     <!-- ===============================================================
          Libraries for this application
          =============================================================== -->
-
-    <fileset id="org.bedework.run.lib.jars" dir="${org.bedework.empty.dir}" >
-    </fileset>
-
-    <!-- from  the bin directory -->
-    <fileset id="app.bin.files" dir="${bin.home}" >
-      <include name="bw-dumpres*.jar" />
-    </fileset>
 
     <!-- Extra resources -->
     <property name="app.temp.home"

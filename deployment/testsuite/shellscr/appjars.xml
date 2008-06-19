@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     Fetch extra jars for this application
+     =================================================================== -->
+<project name="extraJars" basedir="." default="">
+  <macrodef name="getExtraJars">
+    <sequential>
+      <delete dir="${org.bedework.temp.extrajars.dir}" />
+      <mkdir dir="${org.bedework.temp.extrajars.dir}" />
+
+      <getJar lib="${org.bedework.app.lib}"
+              name="junit" version="4.4" />
+
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-appcommon" version="3.5"
+              projecthome="${project.home}/projects/webapps" />
+
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-testsuite" version="3.5"
+              projecthome="${project.home}/projects/testsuite" />
+    </sequential>
+ </macrodef>
+</project>

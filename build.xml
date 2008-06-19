@@ -135,6 +135,9 @@
     <property name="buildsh" location="${build.dir}/buildsh.xml"/>
     <property name="buildwar" location="${build.dir}/buildwar.xml"/>
 
+    <property name="org.bedework.libcache.dir"
+              location="${project.home}/libcache"/>
+
     <property name="org.bedework.build.caldav" value="yes" />
 
     <condition property="org.bedework.qs.build.caldav">
@@ -177,12 +180,6 @@
 
     <property name="org.bedework.temp.dir"
               location="${dist.home}/temp" />
-
-    <property name="org.bedework.temp.wars.home"
-              location="${org.bedework.temp.dir}/wars" />
-
-    <property name="org.bedework.temp.shellscr.home"
-              location="${org.bedework.temp.dir}/shellscr" />
 
     <property name="org.bedework.config.base"
               location="${org.bedework.project.bedework}/config" />
@@ -388,9 +385,8 @@
   </target>
 
   <!-- =================================================================
-       Targets to build sub-projects and copy the results into dependent
-       libraries. Each sub-project generates a libapi directory which
-       contains the public api for that project.
+       Targets to build sub-projects. Each sub-project generates a libapi
+       directory which contains the public api for that project.
        ================================================================= -->
 
   <!-- .................................................................
@@ -400,8 +396,6 @@
           description="builds the access project">
     <ant antfile="${org.bedework.project.access}/build.xml" inheritall="false"
            target="build-all" />
-
-    <copy-to-bin this="${org.bedework.project.access}"/>
   </target>
 
   <target name="clean.access" depends="init"
@@ -420,8 +414,6 @@
           description="builds the bwtools project">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
            target="build-all" />
-
-    <copy-to-bin this="${org.bedework.project.bwtools}"/>
   </target>
 
   <target name="clean.bwtools" depends="init"
@@ -443,8 +435,6 @@
       <then>
         <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
              target="build-all" />
-
-      <copy-to-bin this="${org.bedework.project.caldav}"/>
       </then>
     </if>
   </target>
@@ -473,8 +463,6 @@
       <then>
         <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
              target="build-all" />
-
-        <copy-to-bin this="${org.bedework.project.caldavTest}"/>
       </then>
     </if>
   </target>
@@ -500,8 +488,6 @@
           description="builds the calendar project">
     <ant antfile="${org.bedework.project.calendarapi}/build.xml" inheritall="false"
            target="build-all" />
-
-    <copy-to-bin this="${org.bedework.project.calendarapi}"/>
   </target>
 
   <target name="clean.calendarapi" depends="init"
@@ -520,8 +506,6 @@
           description="builds the davutil project">
     <ant antfile="${org.bedework.project.davutil}/build.xml" inheritall="false"
            target="build-all" />
-
-    <copy-to-bin this="${org.bedework.project.davutil}"/>
   </target>
 
   <target name="clean.davutil" depends="init"
@@ -540,8 +524,6 @@
           description="builds the dumprestore project">
     <ant antfile="${org.bedework.project.dumprestore}/build.xml" inheritall="false"
            target="build-all" />
-
-    <copy-to-bin this="${org.bedework.project.dumprestore}"/>
   </target>
 
   <target name="clean.dumprestore" depends="init"
@@ -563,8 +545,6 @@
       <then>
         <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
              target="build-all" />
-
-        <copy-to-bin this="${org.bedework.project.freebusy}"/>
       </then>
     </if>
   </target>
@@ -590,8 +570,6 @@
           description="builds the rpiutil project">
     <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritall="false"
            target="build-all" />
-
-    <copy-to-bin this="${org.bedework.project.rpiutil}"/>
   </target>
 
   <target name="clean.rpiutil" depends="init"
@@ -613,8 +591,6 @@
       <then>
         <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
              target="build-all" />
-
-        <copy-to-bin this="${org.bedework.project.synchml}"/>
       </then>
     </if>
   </target>
@@ -640,8 +616,6 @@
           description="builds the testsuite project">
     <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
          target="build-all" />
-
-    <copy-to-bin this="${org.bedework.project.testsuite}"/>
   </target>
 
   <target name="clean.testsuite" depends="init"
@@ -660,8 +634,6 @@
           description="builds the webapps project">
     <ant antfile="${org.bedework.project.webapps}/build.xml" inheritall="false"
            target="build-all" />
-
-    <copy-to-bin this="${org.bedework.project.webapps}"/>
   </target>
 
   <target name="clean.webapps" depends="init"
@@ -683,8 +655,6 @@
       <then>
         <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
              target="build-all" />
-
-        <copy-to-bin this="${org.bedework.project.webdav}"/>
       </then>
     </if>
   </target>
@@ -756,18 +726,4 @@
     <ant antfile="${calendar.build.file}" inheritrefs="true"
            target="run.httptest" />
   </target>
-
-  <!-- =============================================================================
-       Copy from a project just built (this) into bedework bin directory.
-       ============================================================================= -->
-  <macrodef name="copy-to-bin">
-    <attribute name="this"/>
-    <sequential>
-      <copy todir="${org.bedework.project.bedework}/bin" overwrite="yes">
-        <fileset dir="@{this}/dist">
-          <include name="*.jar" />
-        </fileset>
-      </copy>
-    </sequential>
-  </macrodef>
 </project>

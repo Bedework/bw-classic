@@ -81,10 +81,10 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-logging}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-mail}" />
 
-     <!-- any extra bin files-->
-    <copy todir="${app.dest.lib}" >
-      <fileset refid="app.bin.files" />
-    </copy>
+    <!-- any extra files-->
+   <copy todir="${app.dest.lib}" >
+     <fileset dir="${org.bedework.temp.extrajars.dir}" />
+   </copy>
 
     <!-- Some more standard libs -->
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.log4j}"/>
@@ -98,15 +98,23 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-lang}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-ssl}"/>
 
-    <!-- Extra libraries specified in calling build file -->
-    <copy todir="${app.dest.lib}" flatten="yes" >
-      <fileset refid="org.bedework.run.lib.jars" />
+    <!-- This jdbc stuff needs fixing -->
 
+    <!-- jdbc drivers -->
+    <copy todir="${app.dest.lib}" flatten="yes" >
       <!-- local jdbc drivers -->
       <fileset dir="${org.bedework.jdbc.lib}">
         <include name="*.jar"/>
       </fileset>
     </copy>
+
+    <!-- add the jdbcdriver if defined -->
+    <if>
+      <isset property="propval.app.jdbcdriver.jar"/>
+      <then>
+        <copy todir="${app.dest.lib}" file="${propval.app.jdbcdriver.jar}"/>
+      </then>
+    </if>
 
     <!-- Include the quickstart jdbc driver -->
     <copy todir="${app.dest.lib}" file="${appserver.jdbcdriver.jar}"/>
@@ -125,14 +133,6 @@
       <fileset refid="org.bedework.extra.resources" />
       <filterset refid="property.filters" />
     </copy>
-
-    <!-- add the jdbcdriver if defined -->
-    <if>
-      <isset property="propval.app.jdbcdriver.jar"/>
-      <then>
-        <copy todir="${app.dest.lib}" file="${propval.app.jdbcdriver.jar}"/>
-      </then>
-    </if>
 
     <!-- Create the env.properties file -->
     <mkdir dir="${app.dest.properties}" />

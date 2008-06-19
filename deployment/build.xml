@@ -27,8 +27,19 @@
 
 <project name="deploy.bedework" default="init">
   <property name="base.name" value="deployment"/>
-    <!-- Load the location of the libraries -->
-    <property file="${org.bedework.project.bedework}/build/libjars.properties" />
+
+  <property name="org.bedework.temp.wars.home"
+            location="${org.bedework.temp.dir}/wars" />
+
+  <property name="org.bedework.temp.shellscr.home"
+            location="${org.bedework.temp.dir}/shellscr" />
+
+  <!-- Recreateed by each app build file. Place extra jars here -->
+  <property name="org.bedework.temp.extrajars.dir"
+            location="${org.bedework.temp.dir}/extrajars" />
+
+  <!-- Load the location of the libraries -->
+  <property file="${org.bedework.project.bedework}/build/libjars.properties" />
 
   <dirname property="this.build.dir" file="${ant.file}"/>
 

@@ -226,9 +226,9 @@ ${propval.app.war.name}.context=${propval.app.context.root}
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-mail}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-appcommon}" />
 
-     <!-- any extra bin files-->
+     <!-- any extra files-->
     <copy todir="${app.dest.lib}" >
-      <fileset refid="app.bin.files" />
+      <fileset dir="${org.bedework.temp.extrajars.dir}" />
     </copy>
 
     <!-- Some more standard libs -->
