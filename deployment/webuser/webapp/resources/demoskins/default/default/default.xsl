@@ -4449,6 +4449,12 @@
             <input type="radio" value="false" name="calendarCollection"/> Folder
           </td>
         </tr>
+        <tr>
+          <th>URL: (for external subscriptions only)</th>
+          <td>
+            <input name="aliasUri" value="" size="40"/>
+          </td>
+        </tr>
       </table>
 
       <table border="0" id="submitTable">
