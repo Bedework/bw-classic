@@ -4,6 +4,102 @@
 # This file is included by the quickstart script file bw so that it can live
 # within the svn repository.
 #
+PRG="$0"
+
+usage() {
+  echo "$PRG [-bwchome path | -quickstart ] [ -bwc configname ] [ -offline } [ target ] "
+  echo ""
+  echo " -bwchome specify path to configurations"
+  echo " -quickstart  Use the current quickstart configurations "
+  echo " - bwc specify configuration name"
+  echo " -offline  build without atempting to retrieve library jars"
+  echo " target  ant target to execute"
+  echo ""
+  echo "Invokes ant to build or deploy the bedework system. Uses a configuration"
+  echo "directory which contains one directory per configuration."
+  echo ""
+  echo "Within each configuration directory we expect a file called build.properties"
+  echo "which should point to the proerty and options file needed for th edeploy process"
+  echo ""
+  echo "In general these files will be in the same directory as build.properties."
+  echo "The environment variable BEDEWORK_CONFIG contains the path to the current"
+  echo "configuration directory and can be used to build a path to the other files."
+  echo ""
+}
+
+saveddir=`pwd`
+
+export QUICKSTART_HOME=$saveddir
+
+# Default some parameters
+
+BWCONFIGS=
+bwc=default
+BWCONFIG=
+offline=
+quickstart=
+
+while [ "$1" != "" ]
+do
+  # Process the next arg
+  case $1       # Look at $1
+  in
+    -bwchome)         # Define location of configs
+      shift
+      BWCONFIGS="$1"
+      shift
+      ;;
+    -quickstart)
+      quickstart="yes"
+      shift
+      ;;
+    -usage | -help | -? | ?)
+      usage
+      exit
+      shift
+      ;;
+    -bwc)
+      shift
+      bwc="$1"
+      shift
+      ;;
+    -offline)
+      offline="-Dorg.bedework.offline.build=yes"
+      shift
+      ;;
+    -*)
+      usage
+      exit 1
+      ;;
+    *)
+      # Assume we've reached the target(s)
+      break
+      ;;
+  esac
+done
+
+if [ "$quickstart" != "" ] ; then
+  if [ "$BWCONFIGS" != "" ] ; then
+    echo "*******************************************************"
+    echo "Error: Cannot specify both -quickstart and -bwchome"
+    echo "*******************************************************"
+    exit 1
+  fi
+
+  BWCONFIGS=$QUICKSTART_HOME/bedework/config/bwbuild
+elif [ "$BWCONFIGS" = "" ] ; then
+  BWCONFIGS=$HOME/bwbuild
+fi
+
+export BEDEWORK_CONFIGS_HOME=$BWCONFIGS
+export BEDEWORK_CONFIG=$BWCONFIGS/$bwc
+
+if [ ! -f "$BEDEWORK_CONFIG/build.properties" ] ; then
+  echo "*******************************************************"
+  echo "Error: Configuration $BEDEWORK_CONFIG does not exist or is not a bedework configuration."
+  echo "*******************************************************"
+  exit 1
+fi
 
 if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
   echo "*******************************************************"
@@ -12,35 +108,8 @@ if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
   exit 1
 fi
 
-PRG="$0"
-saveddir=`pwd`
-
-export BEDEWORK_HOME=$saveddir
-
-BWCONFIGS=
-
-if [ "$1" = "-bwchome" ] ; then
-  shift
-  BWCONFIGS="$1"
-  shift
-else
-  BWCONFIGS=$HOME/bwbuild
-fi
-
 # Make available for ant
-export BEDEWORK_CONFIGS_HOME=$BWCONFIGS
-
-BWCONFIG=
-
-if [ "$1" = "-bwc" ] ; then
-  shift
-
-  # Make available for ant
-  export BEDEWORK_CONFIG=$BWCONFIGS/$1
-
-  BWCONFIG="-Dorg.bedework.user.build.properties=$BWCONFIGS/$1/build.properties"
-  shift
-fi
+export BWCONFIG="-Dorg.bedework.user.build.properties=$BEDEWORK_CONFIG/build.properties"
 
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
@@ -50,5 +119,4 @@ ANT_HOME=`cd "$ANT_HOME" && pwd`
 
 CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
 
-$JAVA_HOME/bin/java -classpath $CLASSPATH -Dant.home=$ANT org.apache.tools.ant.launch.Launcher $BWCONFIG $*
-
+$JAVA_HOME/bin/java -classpath $CLASSPATH $offline -Dant.home=$ANT org.apache.tools.ant.launch.Launcher $BWCONFIG $*
