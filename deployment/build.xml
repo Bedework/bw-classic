@@ -42,6 +42,7 @@
   <property file="${org.bedework.project.bedework}/build/libjars.properties" />
 
   <dirname property="this.build.dir" file="${ant.file}"/>
+  <property name="bedework.deployment.base" location="this.build.dir" />
 
   <import file="${build.dir}/getJar.xml"/>
 
