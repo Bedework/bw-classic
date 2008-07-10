@@ -14,7 +14,7 @@
      Authors: Mike Douglass   douglm@rpi.edu
      =================================================================== -->
 
-<project name="uwcal.buildsh" default="build">
+<project name="bw.buildsh" default="build">
   <import file="${build.dir}/buildfilters.xml" />
 
   <target name="init">
