@@ -8,6 +8,9 @@
 <project name="bedework.buildfilters" default="dummy" >
   <filterset id="property.filters" >
     <!--      Global settings            -->
+    <filter token="QUICKSTART_DIR"
+            value="${quickstart.dir}"/>
+
     <filter token="BW-APP-NAME"
             value="${org.bedework.deploy.name}"/>
 

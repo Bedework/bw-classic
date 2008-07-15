@@ -69,8 +69,8 @@
           </dummymail>
 
           <default-pwencrypt classname="org.bedework.calfacade.security.DefaultPwEncryptionConfig">
-            <privKeys>/data/bedework/privkeys</privKeys>
-            <pubKeys>/data/bedework/pubkeys</pubKeys>
+            <privKeys>@QUICKSTART_DIR@/data/bedework/privkeys</privKeys>
+            <pubKeys>@QUICKSTART_DIR@/data/bedework/pubkeys</pubKeys>
 
             <debug>true</debug>
             <verbose>true</verbose>
