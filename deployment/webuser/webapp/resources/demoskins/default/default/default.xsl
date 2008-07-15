@@ -4455,6 +4455,18 @@
             <input name="aliasUri" value="" size="40"/>
           </td>
         </tr>
+        <tr>
+          <th>Id: (for external subscriptions only)</th>
+          <td>
+            <input name="remoteId" value="" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Password: (for external subscriptions only)</th>
+          <td>
+            <input type="password" name="remotePw" value="" size="40"/>
+          </td>
+        </tr>
       </table>
 
       <table border="0" id="submitTable">
@@ -4537,6 +4549,24 @@
                 <input type="radio" value="false" name="calendarCollection" checked="checked"/> Folder
               </xsl:otherwise>
             </xsl:choose>
+          </td>
+        </tr>
+        <tr>
+          <th>URL: (for external subscriptions only)</th>
+          <td>
+            <input name="aliasUri" value="" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Id: (for external subscriptions only)</th>
+          <td>
+            <input name="remoteId" value="" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Password: (for external subscriptions only)</th>
+          <td>
+            <input type="password" name="remotePw" value="" size="40"/>
           </td>
         </tr>
       </table>

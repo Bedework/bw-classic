@@ -67,6 +67,14 @@
           <dummymail classname="org.bedework.mail.MailConfigProperties">
             <disabled>false</disabled>
           </dummymail>
+
+          <default-pwencrypt classname="org.bedework.calfacade.security.DefaultPwEncryptionConfig">
+            <privKeys>/data/bedework/privkeys</privKeys>
+            <pubKeys>/data/bedework/pubkeys</pubKeys>
+
+            <debug>true</debug>
+            <verbose>true</verbose>
+          </default-pwencrypt>
         </module>
       </global>
 

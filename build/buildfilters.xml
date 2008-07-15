@@ -5,7 +5,7 @@
      Authors: Mike Douglass
      =================================================================== -->
 
-<project name="bedework.buildfilters" default="init" >
+<project name="bedework.buildfilters" default="dummy" >
   <filterset id="property.filters" >
     <!--      Global settings            -->
     <filter token="BW-APP-NAME"
@@ -118,5 +118,8 @@
       <filter token="RESTORE-CLASS"
               value="org.bedework.dumprestore.restore.Restore"/>
   </filterset>
+
+  <target name="dummy">
+  </target>
 </project>
 
