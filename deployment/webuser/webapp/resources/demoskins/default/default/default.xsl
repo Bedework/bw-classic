@@ -544,7 +544,7 @@
     </h3>
     <!-- normal calendars -->
     <ul class="calendarTree">
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType &lt; 2]" mode="myCalendars"/>
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[canAlias = 'true']" mode="myCalendars"/>
     </ul>
     <!-- special calendars: inbox, outbox, and trash -->
     <ul class="calendarTree">
@@ -4209,7 +4209,9 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="mySpecialCalendars">
-    <!-- calTypes: Trash = 2, Deleted = 3, Busy = 4, Inbox = 5, Outbox = 6  -->
+    <!-- calTypes: Trash = 2, Deleted = 3, Busy = 4,
+                   Inbox = 5, Outbox = 6
+                   Alias = 7, eternal subscription = 8 -->
     <xsl:variable name="id" select="id"/>
     <li>
       <xsl:attribute name="class">
@@ -4928,11 +4930,11 @@
           </p>
           <h3>My calendars</h3>
           <ul class="calendarTree">
-            <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType &lt; 2]" mode="subscribe"/>
+            <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[canAlias='true']" mode="subscribe"/>
           </ul>
           <h3>Public calendars</h3>
           <ul class="calendarTree">
-            <xsl:apply-templates select="/bedework/subscriptions/subscribe/calendars/calendar[calType &lt; 2]" mode="subscribe"/>
+            <xsl:apply-templates select="/bedework/subscriptions/subscribe/calendars/calendar[canAlias='true']" mode="subscribe"/>
           </ul>
         </td>
         <td class="subs">
