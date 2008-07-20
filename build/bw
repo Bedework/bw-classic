@@ -1,29 +1,36 @@
 #! /bin/sh
 
 #
-# This file is included by the quickstart script file bw so that it can live
+# This file is included by the quickstart script file "bw" so that it can live
 # within the svn repository.
 #
+
+echo ""
+echo ""
+echo "  Bedework Calendar System"
+ECHO "  ------------------------"
+ECHO ""
+
 PRG="$0"
 
 usage() {
-  echo "$PRG [-bwchome path | -quickstart ] [ -bwc configname ] [ -offline } [ target ] "
+  echo "  $PRG [ -quickstart | -bwchome path ] [ -bwc configname ] [ -offline } [ target ] "
   echo ""
-  echo " -bwchome specify path to configurations"
-  echo " -quickstart  Use the current quickstart configurations "
-  echo " - bwc specify configuration name"
-  echo " -offline  build without atempting to retrieve library jars"
-  echo " target  ant target to execute"
+  echo "     -quickstart  Use the current quickstart configurations "
+  echo "     -bwchome     Specify path to configurations"
+  echo "     -bwc         Specify configuration name"
+  echo "     -offline     Build without atempting to retrieve library jars"
+  echo "     target       Ant target to execute"
   echo ""
-  echo "Invokes ant to build or deploy the bedework system. Uses a configuration"
-  echo "directory which contains one directory per configuration."
+  echo "   Invokes ant to build or deploy the bedework system. Uses a configuration"
+  echo "   directory which contains one directory per configuration."
   echo ""
-  echo "Within each configuration directory we expect a file called build.properties"
-  echo "which should point to the proerty and options file needed for th edeploy process"
+  echo "   Within each configuration directory we expect a file called build.properties"
+  echo "   which should point to the property and options file needed for the deploy process"
   echo ""
-  echo "In general these files will be in the same directory as build.properties."
-  echo "The environment variable BEDEWORK_CONFIG contains the path to the current"
-  echo "configuration directory and can be used to build a path to the other files."
+  echo "   In general these files will be in the same directory as build.properties."
+  echo "   The environment variable BEDEWORK_CONFIG contains the path to the current"
+  echo "   configuration directory and can be used to build a path to the other files."
   echo ""
 }
 
