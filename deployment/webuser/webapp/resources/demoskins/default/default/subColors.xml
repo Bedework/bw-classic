@@ -26,42 +26,59 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. -->
 
+<!--
+
+  Bedework Subscription Colors
+
+  Parameters
+    name = value suitable for displaying in a UI
+    rgb  = rgb value for embedding in objects, e.g. calendars
+
+  Value
+    The value is a class name reprsented in subColors.css.
+    Future versions of Bedework will imbed rgb values as properties of
+    calendars, and will use these values directly.
+    The class names are kept for Bedework 3.4.1.1 backwards compatibility.
+
+ -->
+
+
 <subscriptionColors>
   <!-- light pastels -->
-  <color name="white">bwwhite</color>
-  <color name="lt pink">bwltpink</color>
-  <color name="lt purple">bwltpurple</color>
-  <color name="lt steelblue">bwltsteelblue</color>
-  <color name="lt blue">bwltblue</color>
-  <color name="lt aquamarine">bwltaquamarine</color>
-  <color name="lt seagreen">bwltaquamarine</color>
-  <color name="lt green">bwltgreen</color>
-  <color name="lt yellow">bwltyellow</color>
-  <color name="lt salmon">bwltsalmon</color>
+  <color name="white" rgb="ffffff" rgb="">bwwhite</color>
+  <color name="lt pink" rgb="fddeee">bwltpink</color>
+  <color name="lt purple" rgb="ddd4e8">bwltpurple</color>
+  <color name="lt steelblue" rgb="bfd5e8">bwltsteelblue</color>
+  <color name="lt blue" rgb="ccecef">bwltblue</color>
+  <color name="lt aquamarine" rgb="b3e2dd">bwltaquamarine</color>
+  <color name="lt seagreen" rgb="cfeccf">bwltaquamarine</color>
+  <color name="lt green" rgb="e0f3b0">bwltgreen</color>
+  <color name="lt yellow" rgb="ffffb0">bwltyellow</color>
+  <color name="lt salmon" rgb="feebc9">bwltsalmon</color>
 
   <!-- medium pastels -->
-  <color name="gray">bwgray</color>
-  <color name="pink">bwpink</color>
-  <color name="purple">bwpurple</color>
-  <color name="steelblue">bwsteelblue</color>
-  <color name="blue">bwblue</color>
-  <color name="aquamarine">bwaquamarine</color>
-  <color name="seagreen">bwseagreen</color>
-  <color name="green">bwgreen</color>
+  <color name="gray" rgb="eeeeee">bwgray</color>
+  <color name="pink" rgb="fbb6d1">bwpink</color>
+  <color name="purple" rgb="c1b3d7">bwpurple</color>
+  <color name="steelblue" rgb="94a8d0">bwsteelblue</color>
+  <color name="blue" rgb="9acedf">bwblue</color>
+  <color name="aquamarine" rgb="86cfbe">bwaquamarine</color>
+  <color name="seagreen" rgb="b5e1ae">bwseagreen</color>
+  <color name="green" rgb="bfe476">bwgreen</color>
   <!-- don't allow bright yellow - reserve for a hover color
-  <color name="yellow">bwyellow</color> -->
-  <color name="salmon">bwsalmon</color>
+  <color name="yellow" rgb="fffa81">bwyellow</color> -->
+  <color name="salmon" rgb="fdcaa2">bwsalmon</color>
 
   <!-- dark pastels -->
-  <color name="md gray">bwmdgray</color>
-  <color name="md pink">bwmdpink</color>
-  <color name="md purple">bwmdpurple</color>
-  <color name="md steelblue">bwmdsteelblue</color>
-  <color name="md blue">bwmdblue</color>
-  <color name="md aquamarine">bwmdaquamarine</color>
-  <color name="md seagreen">bwmdseagreen</color>
-  <color name="md green">bwmdgreen</color>
+  <color name="md gray" rgb="dddddd">bwmdgray</color>
+  <color name="md pink" rgb="f98cb6">bwmdpink</color>
+  <color name="md purple" rgb="a589c1">bwmdpurple</color>
+  <color name="md steelblue" rgb="7589bf">bwmdsteelblue</color>
+  <color name="md blue" rgb="6fb7d6">bwmdblue</color>
+  <color name="md aquamarine" rgb="48b5a3">bwmdaquamarine</color>
+  <color name="md seagreen" rgb="91d290">bwmdseagreen</color>
+  <color name="md green" rgb="85ca5d">bwmdgreen</color>
   <!-- don't allow bright yellow - reserve for a hover color
-  <color name="md yellow">bwmdyellow</color> -->
-  <color name="md salmon">bwmdsalmon</color>
+  <color name="md yellow" rgb="ffed62">bwmdyellow</color> -->
+  <color name="md salmon" rgb="fca985">bwmdsalmon</color>
 </subscriptionColors>

@@ -1,3 +1,8 @@
+body {
+  color: black;
+  background-color: white;
+}
+
 #bedework {
   /* this is the main wrapper div used to encapsulate all Bedework CSS; we
      will prepend each selector below with this ID - this helps encapsulate
@@ -233,6 +238,11 @@
   color: #ff3;
   background: transparent;
   text-decoration: none;
+}
+#bedework #bodyBlock td#sideBar h3 a.calManageLink {
+  padding-right: 4px;
+  margin-right: 4px;
+  border-right: 1px solid #aaa;
 }
 #bedework #bodyBlock td#sideBarClosed {
   width: 1px;
@@ -1502,7 +1512,7 @@ display: inline;
   width: 300px;
 }
 #bedework #subsTable td.cals {
-  width: 200px;
+  white-space: nowrap;
 }
 #bedework .calendarTree ul {
   padding-left: 10px;
@@ -1571,6 +1581,14 @@ display: inline;
 }
 #bedework #submitTable td {
   white-space: nowrap;
+}
+#bedework #subsMenu li {
+  padding-bottom: 0.5em;
+}
+#bedework #content {
+  /* for genric content - no tables */
+  margin: 0;
+  padding: 1em;
 }
 #bedework .note {
   margin: 0;
