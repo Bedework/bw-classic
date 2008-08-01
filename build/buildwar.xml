@@ -427,6 +427,8 @@ ${propval.app.war.name}.context=${propval.app.context.root}
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-logging}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-validator}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jakarta-oro}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jstl}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jstl-standard}"/>
   </target>
 
   <!-- =================================================================
