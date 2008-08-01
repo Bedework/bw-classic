@@ -42,10 +42,9 @@
 
  -->
 
-
 <subscriptionColors>
   <!-- light pastels -->
-  <color name="white" rgb="ffffff" rgb="">bwwhite</color>
+  <color name="white" rgb="ffffff">bwwhite</color>
   <color name="lt pink" rgb="fddeee">bwltpink</color>
   <color name="lt purple" rgb="ddd4e8">bwltpurple</color>
   <color name="lt steelblue" rgb="bfd5e8">bwltsteelblue</color>

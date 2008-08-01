@@ -106,6 +106,7 @@
   <xsl:variable name="calendar-initAdd" select="/bedework/urlPrefixes/calendar/initAdd/a/@href"/>
   <xsl:variable name="calendar-initAddExternal" select="/bedework/urlPrefixes/calendar/initAddExternal/a/@href"/>
   <xsl:variable name="calendar-initAddAlias" select="/bedework/urlPrefixes/calendar/initAddAlias/a/@href"/>
+  <xsl:variable name="calendar-initAddPublicAlias" select="/bedework/urlPrefixes/calendar/initAddPublicAlias/a/@href"/>
   <xsl:variable name="calendar-delete" select="/bedework/urlPrefixes/calendar/delete/a/@href"/>
   <xsl:variable name="calendar-fetchForDisplay" select="/bedework/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
   <xsl:variable name="calendar-fetchForUpdate" select="/bedework/urlPrefixes/calendar/fetchForUpdate/a/@href"/>
@@ -264,12 +265,16 @@
                   <xsl:when test="/bedework/page='subsMenu'">
                     <xsl:call-template name="subsMenu"/>
                   </xsl:when>
+                  <!-- DEPRECATED
                   <xsl:when test="/bedework/page='subscriptions' or
                                   /bedework/page='modSubscription'">
                     <xsl:apply-templates select="/bedework/subscriptions"/>
-                  </xsl:when>
+                  </xsl:when> -->
                   <xsl:when test="/bedework/page='addAlias'">
                     <xsl:call-template name="addAlias"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='addPublicAlias'">
+                    <xsl:call-template name="addPublicAlias"/>
                   </xsl:when>
                   <xsl:when test="/bedework/page='subInaccessible'">
                     <xsl:call-template name="subInaccessible"/>
@@ -4423,6 +4428,60 @@
     </li>
   </xsl:template>
 
+  <xsl:template name="selectCalForPublicAlias">
+  <!-- selectCalForPublicAlias creates a calendar tree in a pop-up window.
+      Used when selecting a public calendar subscription (alias). -->
+
+    <input type="button" onclick="javascript:changeClass('calSelectWidget','visible')" value="select calendar" class="small"/>
+    <div id="calSelectWidget" class="invisible">
+      <h2>select a calendar</h2>
+      <a href="javascript:changeClass('calSelectWidget','invisible')" id="calSelectWidgetCloser" title="close">x</a>
+      <ul class="calendarTree">
+        <xsl:apply-templates select="/bedework/calendars/calendar/calendar[canAlias='true']" mode="selectCalForPublicAliasCalTree"/>
+      </ul>
+      <!-- Uncomment the following to use a three column format
+      <xsl:variable name="topCalsCount" select="count(/bedework/calendars/calendar/calendar)"/>
+      <xsl:variable name="topCalsDivThree" select="floor($topCalsCount div 3)"/>
+      <xsl:variable name="topCalsTopSet" select="number($topCalsCount - $topCalsDivThree)"/>
+      <ul class="calendarTree left">
+        <xsl:apply-templates select="/bedework/calendars/calendar/calendar[canAlias='true' and (position() &lt;= $topCalsDivThree)]" mode="selectCalForPublicAliasCalTree"/>
+      </ul>
+      <ul class="calendarTree left">
+        <xsl:apply-templates select="/bedework/calendars/calendar/calendar[canAlias='true' and (position() &gt; $topCalsDivThree) and (position() &lt;= $topCalsTopSet)]" mode="selectCalForPublicAliasCalTree"/>
+      </ul>
+      <ul class="calendarTree left">
+        <xsl:apply-templates select="/bedework/calendars/calendar/calendar[canAlias='true' and (position() &gt; $topCalsTopSet)]" mode="selectCalForPublicAliasCalTree"/>
+      </ul>
+      -->
+    </div>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="selectCalForPublicAliasCalTree">
+    <xsl:variable name="id" select="id"/>
+    <li>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
+                          and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
+          <xsl:when test="name='Trash'">trash</xsl:when>
+          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:variable name="calPath" select="path"/>
+      <xsl:variable name="calDisplay" select="path"/>
+      <xsl:variable name="calendarCollection" select="calendarCollection"/>
+      <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}','{$calendarCollection}')">
+        <strong><xsl:value-of select="name"/></strong>
+      </a>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="selectCalForPublicAliasCalTree"/>
+        </ul>
+      </xsl:if>
+    </li>
+  </xsl:template>
+
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3>Add Calendar / Folder</h3>
     <form name="addCalForm" method="post" action="{$calendar-update}">
@@ -4799,7 +4858,7 @@
 
       <table class="common" cellspacing="0">
         <tr>
-          <th class="commonHeader" colspan="3">
+          <th class="commonHeader" colspan="2">
               Event date limits:
               <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> today forward
               <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
@@ -4807,7 +4866,7 @@
           </th>
         </tr>
         <tr id="exportDateRange" class="invisible">
-          <td colspan="3" class="dates">
+          <td colspan="2" class="dates">
             <strong>Start:</strong>
             <div class="dateFields">
               <xsl:copy-of select="/bedework/formElements/form/start/month/*"/>
@@ -4826,9 +4885,6 @@
         <tr>
           <th class="borderRight">
             My Calendars
-          </th>
-          <th class="borderRight">
-            Subscriptions (underlying calendars)
           </th>
           <th>
             Public Calendars
@@ -4862,62 +4918,9 @@
               </xsl:for-each>
             </ul>
           </td>
-          <td class="borderRight">
-            <!-- My Subscriptions (underlying calendars) -->
-            <ul class="calendarTree">
-              <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
-              <xsl:for-each select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]">
-                <xsl:choose>
-                  <xsl:when test="calendarDeleted='true'">
-                    <li class="deleted">
-                      <xsl:value-of select="name"/><br/>
-                      <em>calendar not available</em>
-                    </li>
-                  </xsl:when>
-                  <xsl:when test="count(calendars//calendar[calendarCollection='true']) = 1">
-                    <xsl:for-each select="calendars//calendar[calendarCollection='true']">
-                      <li class="calendar">
-                        <xsl:variable name="calPath" select="path"/>
-                        <xsl:variable name="name" select="name"/>
-                        <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
-                          <xsl:value-of select="name"/>
-                        </a>
-                      </li>
-                    </xsl:for-each>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <li class="folder">
-                      <xsl:value-of select="name"/>:
-                      <xsl:if test="calendars//calendar[calendarCollection='true']">
-                        <ul>
-                          <xsl:for-each select="calendars//calendar[calendarCollection='true']">
-                            <li class="calendar">
-                              <xsl:variable name="calPath" select="path"/>
-                              <xsl:variable name="name" select="name"/>
-                              <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
-                                <xsl:value-of select="name"/>
-                              </a>
-                            </li>
-                          </xsl:for-each>
-                        </ul>
-                      </xsl:if>
-                    </li>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:for-each>
-            </ul>
-          </td>
           <td>
             <ul class="calendarTree">
-              <xsl:for-each select=".//calendar[calendarCollection='true']">
-                <li class="calendar">
-                  <xsl:variable name="calPath" select="path"/>
-                  <xsl:variable name="name" select="name"/>
-                  <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
-                    <xsl:value-of select="name"/>
-                  </a>
-                </li>
-              </xsl:for-each>
+              <xsl:apply-templates select="./calendar" mode="buildExportTree"/>
             </ul>
           </td>
         </tr>
@@ -4925,113 +4928,131 @@
     </form>
   </xsl:template>
 
+  <xsl:template match="calendar" mode="buildExportTree">
+    <xsl:choose>
+      <xsl:when test="calendarCollection='true'">
+        <li class="calendar">
+          <xsl:variable name="calPath" select="path"/>
+          <xsl:variable name="name" select="name"/>
+          <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
+            <xsl:value-of select="name"/>
+          </a>
+        </li>
+      </xsl:when>
+      <xsl:otherwise>
+        <li class="folder">
+          <xsl:value-of select="name"/>
+          <xsl:if test="calendar">
+            <ul>
+              <xsl:apply-templates select="calendar" mode="buildExportTree"/>
+            </ul>
+          </xsl:if>
+        </li>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->
   <xsl:template name="subsMenu">
+    <!-- This top-level menu adds subscriptions to the root of the user's calendar tree.
+         Contextual menus on the calendar tree (will) allow for adding subscriptions under
+         subfolders.  -->
+    <xsl:variable name="userid" select="/bedework/userid"/>
     <h2>Add Subscriptions</h2>
     <div id="content">
       <h4>Subscribe to:</h4>
       <ul id="subsMenu">
         <li>
-          <a href="{$subscriptions-fetch}" title="manage subscriptions">
+          <a href="{$calendar-initAddPublicAlias}&amp;calPath=/user/{$userid}" title="subscribe to a public calendar">
             a public calendar (in this system)
           </a>
         </li>
         <li>
-          <a href="{$calendar-initAddAlias}&amp;calPath=/user/johnsa">
+          <a href="{$calendar-initAddAlias}&amp;calPath=/user/{$userid}" title="subscribe to a user calendar">
             a user calendar (in this system)
           </a>
         </li>
         <li>
-           an external iCal feed (e.g. Google, Eventful, etc)
+          <a href="{$calendar-initAddExternal}&amp;calPath=/user/{$userid}" title="subscribe to an external calendar">
+            an external iCal feed (e.g. Google, Eventful, etc)
+          </a>
         </li>
       </ul>
     </div>
   </xsl:template>
 
-  <xsl:template match="subscriptions">
+  <xsl:template name="addPublicAlias">
     <h2>Subscribe to a Public Calendar</h2>
-    <table id="subsTable">
-      <tr>
-        <td class="cals">
-          <h3>Public calendars</h3>
-          <ul class="calendarTree">
-            <xsl:apply-templates select="/bedework/subscriptions/subscribe/calendars/calendar[canAlias='true']" mode="subscribe"/>
-          </ul>
-        </td>
-        <td class="subs">
-          <h3>Add a public subscription</h3>
-          <p>
-            Select a calendar to the left to add a new internal public subscription.
-          </p>
-          <h3>Add a public subscription</h3>
-          <p class="note">*the subsciption name must be unique</p>
-          <form name="subscribeForm" action="{$calendar-update}" onsubmit="return setSubscriptionUri(this,'bwcal://')" method="post">
-            <input type="hidden" value="" name="aliasUri"/>
-            <table class="common" cellspacing="0">
-              <tr>
-                <td class="fieldname">Name:</td>
-                <td>
-                  <xsl:variable name="subName" select="name"/>
-                  <input type="text" value="{$subName}" name="calendar.name" size="60"/>
-                </td>
-              </tr>
-              <!--<xsl:if test="internal='false'">
-                <tr>
-                  <td class="fieldname">Uri:</td>
-                  <td>
-                    <xsl:variable name="calPath" select="uri"/>
-                    <input type="text" value="{$calPath}" name="aliasUri" size="60"/>
-                  </td>
-                </tr>
-              </xsl:if>
-              <tr>
-                <td class="fieldname">Display:</td>
-                <td>
-                  <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
-                  <input type="radio" value="false" name="subscription.display"/> no
-                </td>
-              </tr>-->
-              <tr>
-                <td class="fieldname">Affects Free/Busy:</td>
-                <td>
-                  <input type="radio" value="true" name="subscription.affectsFreeBusy"/> yes
-                  <input type="radio" value="false" name="subscription.affectsFreeBusy" checked="checked"/> no
-                </td>
-              </tr>
-              <tr>
-                <td class="fieldname">Style:</td>
-                <td>
-                  <select name="subscription.style">
-                    <option value="default">default</option>
-                    <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
-                      <xsl:variable name="subColor" select="."/>
-                      <option value="{$subColor}" class="{$subColor}">
-                        <xsl:value-of select="@name"/>
-                      </option>
-                    </xsl:for-each>
-                  </select>
-                </td>
-              </tr>
-              <!--<tr>
-                <td class="fieldname">Unremovable:</td>
-                <td>
-                  <input type="radio" value="true" name="subscription.unremoveable" size="60"/> true
-                  <input type="radio" value="false" name="subscription.unremoveable" size="60" checked="checked"/> false
-                </td>
-              </tr>-->
-            </table>
-            <table border="0" id="submitTable">
-              <tr>
-                <td>
-                  <input type="submit" name="addSubscription" value="Add Subscription"/>
-                  <input type="submit" name="cancelled" value="cancel"/>
-                </td>
-              </tr>
-            </table>
-          </form>
-        </td>
-      </tr>
-    </table>
+    <div id="content">
+      <h3>Add a public subscription</h3>
+      <p class="note">*the subsciption name must be unique</p>
+      <form name="subscribeForm" action="{$calendar-update}" onsubmit="return setSubscriptionUri(this,'bwcal://')" method="post">
+        <table class="common" cellspacing="0">
+          <tr>
+            <td class="fieldname">Calendar:</td>
+            <td>
+              <input type="hidden" value="" name="aliasUri" size="60" id="bwNewCalPathField"/>
+              <input type="hidden" value="" name="calendarCollection" id="bwCalCollectionField"/>
+              <span id="bwEventCalDisplay">
+                <xsl:text> </xsl:text>
+              </span>
+              <xsl:call-template name="selectCalForPublicAlias"/>
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldname">Name:</td>
+            <td>
+              <xsl:variable name="subName" select="name"/>
+              <input type="text" value="{$subName}" name="calendar.name" size="30"/>
+            </td>
+          </tr>
+          <!--<tr>
+            <td class="fieldname">Display:</td>
+            <td>
+              <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
+              <input type="radio" value="false" name="subscription.display"/> no
+            </td>
+          </tr>-->
+          <tr>
+            <td class="fieldname">Affects Free/Busy:</td>
+            <td>
+              <input type="radio" value="true" name="subscription.affectsFreeBusy"/> yes
+              <input type="radio" value="false" name="subscription.affectsFreeBusy" checked="checked"/> no
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldname">Style:</td>
+            <td>
+              <select name="calendar.color">
+                <option value="">default</option>
+                <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
+                  <xsl:variable name="subColor" select="@rgb"/>
+                  <xsl:variable name="subColorClass" select="."/>
+                  <option value="{$subColor}" class="{$subColorClass}">
+                    <xsl:value-of select="@name"/>
+                  </option>
+                </xsl:for-each>
+              </select>
+            </td>
+          </tr>
+          <!--<tr>
+            <td class="fieldname">Unremovable:</td>
+            <td>
+              <input type="radio" value="true" name="subscription.unremoveable" size="60"/> true
+              <input type="radio" value="false" name="subscription.unremoveable" size="60" checked="checked"/> false
+            </td>
+          </tr>-->
+        </table>
+        <table border="0" id="submitTable">
+          <tr>
+            <td>
+              <input type="submit" name="addSubscription" value="Add Subscription"/>
+              <input type="submit" name="cancelled" value="cancel"/>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
   </xsl:template>
 
   <xsl:template match="calendar" mode="subscribe">
@@ -5058,7 +5079,7 @@
 
   <!-- add a subscription to a user calendar by user and path -->
   <xsl:template name="addAlias">
-    <h2>Subscribe to User Calendar</h2>
+    <h2>Subscribe to a User Calendar</h2>
     <div id="content">
       <p class="note">*the subsciption name must be unique</p>
       <form name="subscribeForm" action="{$calendar-update}" onsubmit="return setSubscriptionUri(this,'bwcal:///user/')" method="post">
@@ -5108,7 +5129,7 @@
           <tr>
             <td class="fieldname">Style:</td>
             <td>
-              <select name="style">
+              <select name="calendar.color">
                 <option value="default">default</option>
                 <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
                   <xsl:variable name="subColor" select="."/>
@@ -5138,16 +5159,16 @@
       </form>
 
       <ul class="note" style="margin-left: 2em;">
+        <li>
+          You must be granted at least read access to the other user's calendar
+          to subscribe to it.
+        </li>
         <li>The <strong>Name</strong> is anything you want to call your subscription.</li>
         <li>The <strong>User ID</strong> is the user id that owns the calendar</li>
         <li>
           The <strong>Path</strong> is the name of the folder and/or calendar within
           the remote user's calendar tree.  For example, to subscribe to
           janedoe/someFolder/someCalendar, enter "someFolder/someCalendar".  To subscribe to janedoe's root folder, leave this field blank.
-        </li>
-        <li>
-          You must be granted at least read access to the other user's calendar
-          to subscribe to it.
         </li>
         <li>
           You can add subscriptions to your own calendars to help group and organize collections you may wish to share.

@@ -43,7 +43,7 @@
       <getJar lib="${org.bedework.app.lib}"
               name="jta" />
 
-      <!-- Struts -->
+      <!-- Struts and JSTL -->
 
       <property name="org.bedework.struts.tlds"
                 location="${resources.dir}/struts-1.2.9/tlds"/>
@@ -71,6 +71,12 @@
 
       <getJar lib="${org.bedework.app.lib}"
               name="jakarta-oro" version="2.0.8" />
+
+      <getJar lib="${org.bedework.app.lib}"
+              name="jstl-standard" version="1.1.2" />
+
+      <getJar lib="${org.bedework.app.lib}"
+              name="jstl" version="1.1.2" />
 
       <!-- Java mail -->
 

@@ -1926,3 +1926,6 @@ display: inline;
   color: #dd0;
   font-style: italic;
 }
+#bedework .left {
+  float: left;
+}
