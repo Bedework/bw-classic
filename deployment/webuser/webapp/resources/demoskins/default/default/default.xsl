@@ -5009,15 +5009,15 @@
           <!--<tr>
             <td class="fieldname">Display:</td>
             <td>
-              <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
-              <input type="radio" value="false" name="subscription.display"/> no
+              <input type="radio" value="true" name="calendar.display" checked="checked"/> yes
+              <input type="radio" value="false" name="calendar.display"/> no
             </td>
           </tr>-->
           <tr>
             <td class="fieldname">Affects Free/Busy:</td>
             <td>
-              <input type="radio" value="true" name="subscription.affectsFreeBusy"/> yes
-              <input type="radio" value="false" name="subscription.affectsFreeBusy" checked="checked"/> no
+              <input type="radio" value="true" name="calendar.affectsFreeBusy"/> yes
+              <input type="radio" value="false" name="calendar.affectsFreeBusy" checked="checked"/> no
             </td>
           </tr>
           <tr>
@@ -5038,8 +5038,8 @@
           <!--<tr>
             <td class="fieldname">Unremovable:</td>
             <td>
-              <input type="radio" value="true" name="subscription.unremoveable" size="60"/> true
-              <input type="radio" value="false" name="subscription.unremoveable" size="60" checked="checked"/> false
+              <input type="radio" value="true" name="calendar.unremoveable" size="60"/> true
+              <input type="radio" value="false" name="calendar.unremoveable" size="60" checked="checked"/> false
             </td>
           </tr>-->
         </table>
