@@ -4986,7 +4986,7 @@
     <div id="content">
       <h3>Add a public subscription</h3>
       <p class="note">*the subsciption name must be unique</p>
-      <form name="subscribeForm" action="{$calendar-update}" onsubmit="return setSubscriptionUri(this,'bwcal://')" method="post">
+      <form name="subscribeForm" action="{$calendar-update}" onsubmit="return setBwSubscriptionUri(this, true)" method="post">
         <table class="common" cellspacing="0">
           <tr>
             <td class="fieldname">Calendar:</td>
@@ -5082,7 +5082,7 @@
     <h2>Subscribe to a User Calendar</h2>
     <div id="content">
       <p class="note">*the subsciption name must be unique</p>
-      <form name="subscribeForm" action="{$calendar-update}" onsubmit="return setSubscriptionUri(this,'bwcal:///user/')" method="post">
+      <form name="subscribeForm" action="{$calendar-update}" onsubmit="return setBwSubscriptionUri(this, false)" method="post">
         <table class="common" cellspacing="0">
           <tr>
             <td class="fieldname">Name:</td>

@@ -177,22 +177,29 @@ function updateEventFormCalendar(newCalPath,calDisplay,calendarCollection) {
   changeClass("calSelectWidget","invisible");
 }
 // build a uri based on user and path in the subscription form
-function setSubscriptionUri(formObj,prefix) {
-  if (formObj) {
-    var fullUri =  prefix + formObj.userId.value;
-    if (formObj.userPath.value != "") {
-      if (formObj.userPath.value.substring(0,1) == "/") {
-        fullUri += formObj.userPath.value;
-      } else {
-        fullUri += "/" + formObj.userPath.value;
-      }
-    }
-    formObj.aliasUri.value = fullUri;
-    return true;
-  } else {
+function setBwSubscriptionUri(formObj, publicUri) {
+  if (!formObj) {
     alert("The subscription form is not available.");
     return false;
   }
+
+  var fullUri = "bwcal://";
+
+  if (publicUri) {
+    fullUri += formObj.aliasUri.value;
+  } else {
+    fullUri +=  "/user" + formObj.userId.value;
+    if (formObj.userPath.value != "") {
+      if (formObj.userPath.value.substring(0,1) != "/") {
+        fullUri += "/";
+      }
+
+      fullUri += formObj.userPath.value;
+    }
+  }
+
+  formObj.aliasUri.value = fullUri;
+  return true;
 }
 function exportCalendar(formId,name,calPath) {
   var formObj = document.getElementById(formId);
