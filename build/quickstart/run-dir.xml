@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+
+<!-- Run hsqldb for the bedework Calendar quickstart.
+
+     This is imported by the quickstart build.xml ensuring all changes to this file
+     appear in the repository.
+
+     Authors: Mike Douglass   douglm - rpi.edu
+-->
+
+<project name="quickstart-run-dir" default="dirstart" basedir=".">
+  <!-- This target normally overriden by the importing build.xml -->
+  <target name="run.init">
+    <property name="org.bedework.project.bedework"
+              location="${basedir}/bedework" />
+
+    <property name="org.bedework.directory.dir"
+              location="${org.bedework.project.bedework}/../apacheds-1.5.3.fixed" />
+  </target>
+
+  <!-- =================================================================
+       The "hsqldb" target starts the hsqldb server
+       ================================================================= -->
+
+  <target name="dirstart" depends="run.init"
+          description="starts the directory server">
+    <echo message="Starting directory"/>
+    <java fork="true" dir="${org.bedework.directory.dir}"
+          classname="org.apache.directory.server.UberjarMain">
+      <classpath>
+        <fileset dir="${org.bedework.directory.dir}/lib">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+      <jvmarg value="-Dlog4j.configuration=file:conf/log4j.properties" />
+      <jvmarg value="-Dapacheds.log.dir=${org.bedework.directory.dir}/logs" />
+      <arg value="conf/server.xml"/>
+    </java>
+  </target>
+
+  <!-- =================================================================
+       The "dstool" target runs the directory server tool which
+       allows dump/restore and configuration.
+       ================================================================= -->
+
+  <target name="dstool" depends="run.init"
+          description="Runs the directory tool">
+    <echo message="Starting dstool"/>
+    <java fork="true" dir="${org.bedework.directory.dir}"
+          jar="${org.bedework.directory.dir}/bin/apacheds-tools.jar">
+      <arg value="-i ${org.bedework.directory.dir}"/>
+      <arg value="--configuration" />
+      <arg value="--help" />
+    </java>
+  </target>
+
+  <!-- =================================================================
+       The "dirclient" target runs the directory server client which
+       provides a gui interface to the running directory.
+       ================================================================= -->
+
+  <target name="dirclient" depends="run.init"
+          description="Runs the directory client">
+    <echo message="Starting hsqldb DatabaseManager"/>
+    <echo message="Select type: HSQL Database Engine Server"/>
+    <echo message="Set the URL to jdbc:hsqldb:hsql://localhost:8887"/>
+    <java fork="true" dir="${basedir}"
+          classname="org.hsqldb.util.DatabaseManager">
+      <classpath>
+        <pathelement path="${org.bedework.hsqldb.dir}/lib/hsqldb.jar"/>
+      </classpath>
+    </java>
+  </target>
+</project>

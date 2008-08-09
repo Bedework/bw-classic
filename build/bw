@@ -8,8 +8,8 @@
 echo ""
 echo ""
 echo "  Bedework Calendar System"
-ECHO "  ------------------------"
-ECHO ""
+echo "  ------------------------"
+echo ""
 
 PRG="$0"
 
