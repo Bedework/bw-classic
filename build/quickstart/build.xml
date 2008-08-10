@@ -238,4 +238,10 @@
            target="initDir" />
   </target>
 
+  <target name="addUser" depends="init"
+          description="Build and run directory tools to add a user">
+    <ant antfile="${bedework.build.file}" inheritrefs="true"
+           target="addUser" />
+  </target>
+
 </project>

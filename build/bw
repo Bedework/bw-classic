@@ -5,6 +5,9 @@
 # within the svn repository.
 #
 
+ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
+ANT_HOME=`cd "$ANT_HOME" && pwd`
+
 echo ""
 echo ""
 echo "  Bedework Calendar System"
@@ -120,9 +123,6 @@ export BWCONFIG="-Dorg.bedework.user.build.properties=$BEDEWORK_CONFIG/build.pro
 
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
-
-ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
-ANT_HOME=`cd "$ANT_HOME" && pwd`
 
 CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
 
