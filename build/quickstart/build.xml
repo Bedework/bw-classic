@@ -244,4 +244,15 @@
            target="addUser" />
   </target>
 
+  <target name="addGroup" depends="init"
+          description="Build and run directory tools to add a group">
+    <ant antfile="${bedework.build.file}" inheritall="false"
+           target="addGroup" />
+  </target>
+
+  <target name="addGroupMember" depends="init"
+          description="Build and run directory tools to add a group member">
+    <ant antfile="${bedework.build.file}" inheritall="false"
+           target="addGroupMember" />
+  </target>
 </project>
