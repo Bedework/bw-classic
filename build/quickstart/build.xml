@@ -227,32 +227,4 @@
     <ant antfile="${bedework.build.file}" inheritrefs="true"
          target="javadoc" />
   </target>
-
-  <!-- =================================================================
-       Build and run the directory tools
-       ================================================================= -->
-
-  <target name="initDir" depends="init"
-          description="Build and run directory init">
-    <ant antfile="${bedework.build.file}" inheritrefs="true"
-           target="initDir" />
-  </target>
-
-  <target name="addUser" depends="init"
-          description="Build and run directory tools to add a user">
-    <ant antfile="${bedework.build.file}" inheritrefs="true"
-           target="addUser" />
-  </target>
-
-  <target name="addGroup" depends="init"
-          description="Build and run directory tools to add a group">
-    <ant antfile="${bedework.build.file}" inheritall="false"
-           target="addGroup" />
-  </target>
-
-  <target name="addGroupMember" depends="init"
-          description="Build and run directory tools to add a group member">
-    <ant antfile="${bedework.build.file}" inheritall="false"
-           target="addGroupMember" />
-  </target>
 </project>

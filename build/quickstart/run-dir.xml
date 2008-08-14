@@ -19,7 +19,7 @@
   </target>
 
   <!-- =================================================================
-       The "hsqldb" target starts the hsqldb server
+       The "dirstart" target starts the directory server
        ================================================================= -->
 
   <target name="dirstart" depends="run.init"
@@ -52,6 +52,34 @@
       <arg value="--configuration" />
       <arg value="--help" />
     </java>
+  </target>
+
+  <!-- =================================================================
+       Build and run the directory tools
+       ================================================================= -->
+
+  <target name="initDir" depends="run.init"
+          description="Build and run directory init">
+    <ant antfile="${bedework.build.file}" inheritrefs="true"
+           target="initDir" />
+  </target>
+
+  <target name="addUser" depends="run.init"
+          description="Build and run directory tools to add a user">
+    <ant antfile="${bedework.build.file}" inheritrefs="true"
+           target="addUser" />
+  </target>
+
+  <target name="addGroup" depends="run.init"
+          description="Build and run directory tools to add a group">
+    <ant antfile="${bedework.build.file}" inheritall="false"
+           target="addGroup" />
+  </target>
+
+  <target name="addGroupMember" depends="run.init"
+          description="Build and run directory tools to add a group member">
+    <ant antfile="${bedework.build.file}" inheritall="false"
+           target="addGroupMember" />
   </target>
 
   <!-- =================================================================

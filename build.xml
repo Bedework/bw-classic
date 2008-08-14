@@ -385,8 +385,7 @@
   </target>
 
   <!-- =================================================================
-       Targets to build sub-projects. Each sub-project generates a libapi
-       directory which contains the public api for that project.
+       Targets to build sub-projects.
        ================================================================= -->
 
   <!-- .................................................................
