@@ -727,8 +727,10 @@ function validateStep3() {
 // =======================================================
 
 //function init() {
-//  var untilHolder = dojo.byId("untilHolder");
-//  dojo.event.connect(untilHolder, "onclick", untilClickHandler);
+//  if(dojo.byId("untilHolder")) {
+//    var untilHolder = dojo.byId("untilHolder");
+//    dojo.event.connect(untilHolder, "onclick", untilClickHandler);
+//  } // else we are editing an instance of a recurrence
 //}
 
 //dojo.addOnLoad(init);

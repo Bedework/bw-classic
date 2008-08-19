@@ -328,7 +328,9 @@ function setEventFields(formObj,portalFriendly,submitter) {
   if (!portalFriendly) {
     setDates(formObj);
   }
-  setRecurrence(formObj);
+  if(formObj.freq){
+    setRecurrence(formObj);
+  } // else we are editing an instance of a recurrence
   setBedeworkXProperties(formObj,submitter);
 
   //setAccessHow(formObj,1);
@@ -705,8 +707,10 @@ function resetPublishBox(calSelectId) {
 
 
 function init() {
-  var untilHolder = dojo.byId("untilHolder");
-  dojo.event.connect(untilHolder, "onclick", untilClickHandler);
+  if(dojo.byId("untilHolder")) {
+    var untilHolder = dojo.byId("untilHolder");
+    dojo.event.connect(untilHolder, "onclick", untilClickHandler);
+  } // else we are editing an instance of a recurrence
 }
 
 dojo.addOnLoad(init);

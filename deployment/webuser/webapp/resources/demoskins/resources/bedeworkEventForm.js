@@ -237,7 +237,9 @@ function setEventFields(formObj,portalFriendly,submitter) {
   if (!portalFriendly) {
     setDates(formObj);
   }
-  setRecurrence(formObj);
+  if(formObj.freq){
+    setRecurrence(formObj);
+  } // else we are editing an instance of a recurrence
   setBedeworkXProperties(formObj,submitter);
   setAccessHow(formObj,1);
   //setAccessAcl(formObj);

@@ -96,7 +96,8 @@ function BwXProperties() {
       for (var i = 0; i < params.length; i++) {
         var strippedParamValue = "";
         for (var j = 0; j < params[i][1].length; j++) {
-          var c = params[i][1][j];
+          var currWord = params[i][1];
+          var c = currWord.charAt(j); // Helps IE to get the desired character at the specified position.
           if (c != '"') {
             strippedParamValue += c;
           }
@@ -132,11 +133,11 @@ function BwXProperties() {
 
   this.generate = function(formObj) {
     for (var i = 0; i < xproperties.length; i++) {
-      var xpropField = formObj.appendChild(document.createElement("input"));
-      xpropField.type = "hidden";
+      var xpropField = document.createElement("input");
+      xpropField.type = "hidden"; // change type prior to appending to DOM
+      formObj.appendChild(xpropField);
       xpropField.name = "xproperty";
       xpropField.value = xproperties[i].format();
-      // alert(xproperties[i].format());
     }
   }
 
