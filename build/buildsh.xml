@@ -70,6 +70,7 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.rpiutil}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-davio}" />
 
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-annotations}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-apiutil}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calcore}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calcorei}" />

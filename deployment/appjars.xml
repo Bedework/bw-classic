@@ -164,6 +164,10 @@
               projecthome="${project.home}/projects/davutil" />
 
       <getJar lib="${org.bedework.app.lib}"
+               name="bw-annotations" version="3.5"
+               projecthome="${project.home}/projects/calendarapi" />
+
+      <getJar lib="${org.bedework.app.lib}"
                name="bw-apiutil" version="3.5"
                projecthome="${project.home}/projects/calendarapi" />
 
