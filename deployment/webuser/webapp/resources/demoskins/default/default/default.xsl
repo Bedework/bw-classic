@@ -7084,7 +7084,29 @@
               </option>
             </select>
           </td>
-        </tr><!-- as you add skins, update this list and set the selected flag
+        </tr>
+        <tr>
+          <th>Default timezone:</th>
+          <td>
+            <xsl:variable name="tzid" select="/bedework/prefs/tzid"/>
+
+            <select name="defaultTzid">
+              <option value="-1">select timezone...</option>
+              <xsl:for-each select="/bedework/timezones/timezone">
+                <option>
+                  <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
+                  <xsl:if test="/bedework/prefs/defaultTzid = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                  <xsl:value-of select="name"/>
+                </option>
+              </xsl:for-each>
+            </select>
+
+            <div class="desc">
+              Default timezone id for date/time values. This should normally be your local timezone.
+            </div>
+          </td>
+        </tr>
+        <!-- as you add skins, update this list and set the selected flag
                  as required; hide if not in use -->
         <!--<tr>
           <td class="fieldname">
