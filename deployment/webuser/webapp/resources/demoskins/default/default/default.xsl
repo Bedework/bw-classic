@@ -7086,7 +7086,9 @@
           </td>
         </tr>
         <tr>
-          <th>Default timezone:</th>
+          <td class="fieldname">
+            Default timezone:
+          </td>
           <td>
             <xsl:variable name="tzid" select="/bedework/prefs/tzid"/>
 
