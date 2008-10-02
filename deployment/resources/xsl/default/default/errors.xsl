@@ -213,6 +213,9 @@
       <xsl:when test="id='org.bedework.validation.error.invalid.organizer'">
           The organizer uri is invalid
       </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.invalidschedulingobject'">
+          Cannot change this into a scheduling message
+      </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.invalid.prefendtype'">
         The preferred endtype <em><xsl:value-of select="param"/></em> is invalid.
       </xsl:when>
@@ -397,8 +400,8 @@
         Your information is incomplete: please supply a name.
       </xsl:when>
 
-      <xsl:when test="id='org.bedework.validation.error.missingorganizor'">
-        Your event is missing the organizor
+      <xsl:when test="id='org.bedework.validation.error.missingorganizer'">
+        Your event is missing the organizer
       </xsl:when>
 
       <xsl:when test="id='org.bedework.validation.error.missingoriginator'">

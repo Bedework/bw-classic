@@ -6132,7 +6132,10 @@
                 <!-- the event exists in calendars already, so this is a
                      subsequent follow-up.  Let the user choose which copies
                      of the event to update.  For now, we'll just list them
-                     and add calPath request parameters -->
+                     and add calPath request parameters.
+
+                     This should be changed - we will only have one of these so
+                     the for-each is not needed -->
                 <ul>
                   <xsl:for-each select="guidcals/calendar">
                     <li class="calendar">
