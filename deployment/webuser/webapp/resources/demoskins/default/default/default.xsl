@@ -1874,7 +1874,7 @@
                         <xsl:value-of select="cn"/>
                       </xsl:when>
                       <xsl:otherwise>
-                        <xsl:value-of select="substring-after(attendeeUri,'mailto:')"/>
+                        <xsl:value-of select="substring-after(translate(attendeeUri, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'mailto:')"/>
                       </xsl:otherwise>
                     </xsl:choose>
                   </td>
