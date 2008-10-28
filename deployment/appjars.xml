@@ -100,11 +100,63 @@
 
       <!-- Liferay -->
 
-      <getJar lib="${org.bedework.app.lib}"
-              name="liferay.util-bridges" version="4.2" />
+      <if>
+        <isset property="org.bedework.build.for.liferay4" />
+        <then>
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.util-bridges" version="4.2" />
 
-      <getJar lib="${org.bedework.app.lib}"
-              name="liferay.util-java" version="4.2" />
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.util-java" version="4.2" />
+        </then>
+      </if>
+
+      <if>
+        <isset property="org.bedework.build.for.liferay5" />
+        <then>
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.util-bridges" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.util-java" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.util-taglib" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.portal-impl" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.portal-kernel" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.spring" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.easyconf" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.portal-service" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.xstream" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.commons-lang" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.commons-collections" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.aspectj-weaver" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="liferay.portlet" version="5.1" />
+
+          <getJar lib="${org.bedework.app.lib}"
+                  name="commons-configuration" />
+        </then>
+      </if>
 
       <!-- Other commons apis -->
 

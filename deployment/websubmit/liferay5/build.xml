@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 
 <!-- ===================================================================
-     jetspeed portlet deployer
+     liferay5 portlet deployer
      =================================================================== -->
 
-<project name="bwpersonal.jetspeed.deploy" default="deploy" >
+<project name="bwsubmit.liferay5.deploy" default="deploy" >
   <target name="init">
     <!-- and define some properties based on those -->
     <property name="app.war.file"
@@ -22,8 +22,14 @@
     <property name="portlet.resources.dir"
               location="${portlet.build.dir}/../portlet/resources" />
 
+    <!-- The intent is to have a set of quickstart skins configured for
+         portal use. So far we've not managed that so for th etime being we
+         will just use the standalone skin set.
     <property name="portlet.skins.dir"
               location="${portlet.resources.dir}/demoskins" />
+              -->
+    <property name="portlet.skins.dir"
+              location="${portlet.build.dir}/../webapp/resources/demoskins" />
   </target>
 
   <!-- =================================================================

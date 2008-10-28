@@ -16,8 +16,6 @@
               value="${app.sou.dir}/war/WEB-INF/web.xml" />
               -->
 
-    <property name="propval.app.guestmode" value="false" />
-
     <dirname property="portlet.build.dir" file="${ant.file}"/>
 
     <!-- Use generic portlet resources -->
@@ -25,7 +23,7 @@
               location="${portlet.build.dir}/../portlet/resources" />
 
     <!-- The intent is to have a set of quickstart skins configured for
-         portal use. So far we've not managed that so for th etime being we
+         portal use. So far we've not managed that so for the time being we
          will just use the standalone skin set.
     <property name="portlet.skins.dir"
               location="${portlet.resources.dir}/demoskins" />

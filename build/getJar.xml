@@ -18,7 +18,7 @@
      @param src      optional url for the get task
      @param lib      optional destination for the get task
      @param libcache optional location of the cache
-     @param property optional name of property to hold localtion of resulting jar
+     @param property optional name of property to hold location of resulting jar
      @param project optional project name for local fetch from generated quickstart.
      =================================================================== -->
 <project name="getJar" basedir="." default="">

@@ -14,8 +14,6 @@
     <property name="propval.directory.browsing.disallowed"
               value="${app.directory.browsing.disallowed}" />
 
-    <property name="propval.app.guestmode" value="true" />
-
     <dirname property="portlet.build.dir" file="${ant.file}"/>
 
     <property name="portlet.resources.dir"

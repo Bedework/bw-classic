@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     Liferay 5 terminations tasks.
+     =================================================================== -->
+
+<project name="bwdeploy.termination" default="deploy" >
+  <import file="${org.bedework.deployment.base}/deployprops.xml" />
+
+  <dirname property="liferay5.term.dir" file="${ant.file}"/>
+
+  <target name="init">
+  </target>
+
+  <target name="deploy" depends="init,build.configured" >
+    <!--
+    <java classname="com.liferay.portal.tools.PortletDeployer"
+          fork="true"
+          newenvironment="true">
+      <classpath>
+        <pathelement path="${org.bedework.appjar.liferay.portal-impl}"/>
+        <pathelement path="${org.bedework.appjar.liferay.portal-kernel}"/>
+        <pathelement path="${org.bedework.appjar.liferay.util-java}"/>
+        <pathelement path="${org.bedework.appjar.commons-beanutils}"/>
+        <pathelement path="${org.bedework.appjar.liferay.commons-collections}"/>
+        <pathelement path="${org.bedework.appjar.commons-configuration}"/>
+        <pathelement path="${org.bedework.appjar.commons-digester}"/>
+        <pathelement path="${org.bedework.appjar.liferay.commons-lang}"/>
+        <pathelement path="${org.bedework.appjar.commons-logging}"/>
+        <pathelement path="${org.bedework.appjar.log4j}"/>
+        <pathelement path="${org.bedework.appjar.servletapi}"/>
+        <pathelement path="${org.bedework.appjar.servlet.jsp}"/>
+        <pathelement path="${org.bedework.appjar.liferay.spring}"/>
+        <pathelement path="${org.bedework.appjar.liferay.easyconf}"/>
+        <pathelement path="${org.bedework.appjar.liferay.portal-service}"/>
+        <pathelement path="${org.bedework.appjar.liferay.xstream}"/>
+        <pathelement path="${org.bedework.appjar.liferay.aspectj-weaver}"/>
+        <pathelement path="${org.bedework.appjar.liferay.portlet}"/>
+        <pathelement path="${org.bedework.appjar.hibernate}"/>
+      </classpath>
+
+      < ! - - Required Arguments - - >
+
+      <jvmarg value="-Ddeployer.base.dir=${dist.home}" />
+      <jvmarg value="-Ddeployer.dest.dir=${org.bedework.appserver.deploy.dir}" />
+      <jvmarg value="-Ddeployer.app.server.type=${org.bedework.global.liferay.server.type}" />
+      <jvmarg value="-Ddeployer.portlet.taglib.dtd=${liferay5.term.dir}/liferay-portlet.tld" />
+      <jvmarg value="-Ddeployer.unpack.war=true" />
+
+      < !  - - Optional Arguments
+
+      <jvmarg value="-Ddeployer.tomcat.lib.dir=${app.server.tomcat.lib.global.dir}" />
+      - - >
+
+      < ! - -  Dependent Libraries - - >
+
+      <arg value="${org.bedework.appjar.liferay.util-bridges}" />
+      <arg value="${org.bedework.appjar.liferay.util-java}" />
+      <arg value="${org.bedework.appjar.liferay.util-taglib}" />
+
+      < ! - - Specific WARs
+
+      <arg line="${deploy.specific.wars}" />
+       - - >
+    </java>
+ -->
+   </target>
+
+  <target name="build.configured" depends="init" >
+  </target>
+</project>

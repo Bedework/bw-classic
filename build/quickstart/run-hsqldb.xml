@@ -86,6 +86,20 @@
     </java>
   </target>
 
+  <target name="liferaydb" depends="run.init"
+          description="starts the hsqldb server for likferay">
+    <echo message="Starting hsqldb"/>
+    <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
+      <classpath>
+        <pathelement path="${org.bedework.hsqldb.dir}/lib/hsqldb.jar"/>
+      </classpath>
+      <arg value="-database"/>
+      <arg value="${org.bedework.hsqldb.dir}/lportal"/>
+      <arg value="-port"/>
+      <arg value="9887"/>
+    </java>
+  </target>
+
   <!-- =================================================================
        The "hsqldb-test" target starts the hsqldb server for testing
        ================================================================= -->

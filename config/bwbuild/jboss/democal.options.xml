@@ -4,6 +4,15 @@
   <org>
     <bedework>
       <global>
+        <!-- This property is how the running system finds the system settings.
+             In theory we could have multiple settings with different names
+         -->
+        <systemName>bedework</systemName>
+
+        <!-- This is used to prefix administrative group names to distinguish
+             them from user group names. -->
+        <adminGroupsIdPrefix>agrp_</adminGroupsIdPrefix>
+
         <module>
           <!-- A dummy module with no directory. -->
           <dir-config classname="org.bedework.calfacade.configs.DirConfigProperties">
@@ -133,7 +142,11 @@
           <allowEditAllContacts>false</allowEditAllContacts>
           <categoryOptional>true</categoryOptional>
 
+          <noGroupAllowed>false</noGroupAllowed>
+
           <appType>webadmin</appType>
+          <publicAdmin>true</publicAdmin>
+          <guestMode>false</guestMode>
 
           <!-- This will become a system configuration in time -->
           <submissionRoot>/public/unbrowsable/submissions</submissionRoot>
@@ -160,6 +173,8 @@
           <autoDeleteLocations>false</autoDeleteLocations>
 
           <appType>websubmit</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>false</guestMode>
 
           <!-- This will become a system configuration in time -->
           <submissionRoot>/public/unbrowsable/submissions</submissionRoot>
@@ -194,6 +209,9 @@
           <autoDeleteLocations>false</autoDeleteLocations>
 
           <appType>webpublic</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>true</guestMode>
+          <runAsUser>public-user</runAsUser>
 
           <!-- Default value for 24 hour mode -->
           <hour24>true</hour24>
@@ -227,6 +245,9 @@
           <autoDeleteLocations>false</autoDeleteLocations>
 
           <appType>webpublic</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>true</guestMode>
+          <runAsUser>public-user</runAsUser>
 
           <!-- Default value for 24 hour mode -->
           <hour24>true</hour24>
@@ -257,6 +278,8 @@
           <autoDeleteLocations>false</autoDeleteLocations>
 
           <appType>webuser</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>false</guestMode>
 
           <!-- Default value for 24 hour mode -->
           <hour24>true</hour24>
@@ -279,6 +302,11 @@
                           User CalDAV server UserCalDAV
              ================================================================== -->
         <Usercaldav classname="org.bedework.calfacade.configs.CalDAVConfig">
+          <publicAdmin>false</publicAdmin>
+          <guestMode>false</guestMode>
+
+          <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
+
           <!-- Comment out or delete for no real time server to server service
                Currently under development and may present a security risk in
                production systems -->
@@ -295,6 +323,12 @@
                           Public (unauthenticated) CalDAV server PublicCalDAV
              ================================================================== -->
         <Pubcaldav classname="org.bedework.calfacade.configs.CalDAVConfig">
+          <publicAdmin>false</publicAdmin>
+          <guestMode>true</guestMode>
+          <runAsUser>public-user</runAsUser>
+
+          <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
+
           <!-- Comment out or delete for no real time server to server service
                Currently under development and may present a security risk in
                production systems -->

@@ -91,9 +91,6 @@
     <filter token="APPLICATION-ROOT"
             value="${propval.app.root}" />
 
-    <filter token="APP-GUESTMODE"
-            value="${propval.app.guestmode}" />
-
     <!-- Change this to be an app par -->
     <filter token="RUN-AS-USER"
             value="${org.bedework.syspar.public.user}" />

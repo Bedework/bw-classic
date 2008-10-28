@@ -34,8 +34,6 @@
     <property name="propval.directory.browsing.disallowed"
               value="${app.directory.browsing.disallowed}" />
 
-    <property name="propval.app.guestmode" value="true" />
-
     <property name="app.resources.dir"
               location="${this.dir}/resources" />
   </target>

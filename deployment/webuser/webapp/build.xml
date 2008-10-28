@@ -30,8 +30,6 @@
               value="${app.sou.dir}/war/WEB-INF/web.xml" />
               -->
 
-    <property name="propval.app.guestmode" value="false" />
-
     <property name="app.resources.dir"
               location="${this.dir}/resources" />
   </target>
