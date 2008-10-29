@@ -121,7 +121,7 @@
               <then>
                 <!-- Add dojo -->
                 <copy todir="${cmn.destdir}/javascript/dojo">
-                  <fileset dir="${common.resources.dir}/javascript/${dojo.dir}" />
+                  <fileset dir="${common.resources.dir}/javascript/${org.bedework.dojo.dir}" />
                 </copy>
               </then>
             </if>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     Load the deployment configuration from the properties file. We also load
+     the run time options and define some properties based on some of the
+     values found there
+     =================================================================== -->
+<project name="loadDeployConfig" basedir="." default="">
+  <macrodef name="loadDeployConfig">
+    <sequential>
+      <property name="org.bedework.config.properties"
+                location="${org.bedework.config.base}/configs/democal.properties" />
+      <property name="org.bedework.config.options"
+                location="${org.bedework.config.base}/configs/democal.options.xml" />
+
+      <echo message="==========================================================" />
+      <echo message="Use config properties ${org.bedework.config.properties}" />
+      <loadproperties srcFile="${org.bedework.config.properties}" >
+        <filterchain>
+          <expandproperties/>
+        </filterchain>
+      </loadproperties>
+
+      <!-- Load the run time options and define some properties based on some
+           of the values -->
+
+      <xmlproperty file="${org.bedework.config.options}"/>
+
+      <property name="org.bedework.global.version"
+                value="${bedework-options.org.bedework.global.version}" />
+    </sequential>
+  </macrodef>
+</project>

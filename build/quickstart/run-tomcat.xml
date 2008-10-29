@@ -9,7 +9,7 @@
 -->
 
 <project name="quickstart-run-tomcat" default="tomcatstart" basedir=".">
-  <!-- This target normally overriden by the importing build.xml -->
+  <!-- This target normally overridden by the importing build.xml -->
   <target name="run.init">
     <property name="org.bedework.project.bedework"
               location="${basedir}/bedework" />

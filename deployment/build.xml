@@ -38,9 +38,6 @@
   <property name="org.bedework.temp.extrajars.dir"
             location="${org.bedework.temp.dir}/extrajars" />
 
-  <!-- Load the location of the libraries -->
-  <property file="${org.bedework.project.bedework}/build/libjars.properties" />
-
   <dirname property="this.build.dir" file="${ant.file}"/>
   <property name="bedework.deployment.base" location="this.build.dir" />
 
@@ -48,16 +45,16 @@
 
   <import file="${this.build.dir}/appjars.xml" />
 
+  <import file="${build.dir}/loadDeployConfig.xml"/>
+
   <target name="init" >
     <getAppJars />
 
     <property name="source.home" location="${this.build.dir}/src"/>
 
-    <!-- Load default deploy properties
-    <property file="${this.build.dir}/deploy.properties"/>
-     -->
+    <loadDeployConfig />
 
-    <!-- ==================== config properties ========================= -->
+    <!-- ==================== config properties =========================
     <property name="org.bedework.config.properties"
               location="${org.bedework.config.base}/configs/democal.properties" />
     <property name="org.bedework.config.options"
@@ -65,12 +62,12 @@
 
     <echo message="==========================================================" />
     <echo message="Use config properties ${org.bedework.config.properties}" />
-    <loadproperties
-          srcFile="${org.bedework.config.properties}" >
+    <loadproperties srcFile="${org.bedework.config.properties}" >
       <filterchain>
         <expandproperties/>
       </filterchain>
     </loadproperties>
+-->
 
     <!-- default to debug off -->
     <property name="app.debug.val" value="0" />
@@ -92,20 +89,6 @@
                   prefix="context-roots" suffix=".properties" />
       </then>
     </if>
-
-    <!-- ==================== config properties =========================
-    <property name="org.bedework.config.properties"
-              location="${org.bedework.config.base}/configs/${org.bedework.clone.name}.properties" />
-
-    <echo message="==========================================================" />
-    <echo message="Use clone properties ${org.bedework.config.properties}" />
-    <loadproperties
-          srcFile="${org.bedework.config.properties}" >
-      <filterchain>
-        <expandproperties/>
-      </filterchain>
-    </loadproperties>
-    -->
   </target>
 
   <target name="deftasks" depends="init">

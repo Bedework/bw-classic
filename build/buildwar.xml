@@ -45,9 +45,6 @@
   <target name="init" depends="init.common,init.j2ee,init.standalone" />
 
   <target name="init.common">
-    <!-- Load the location of the libraries -->
-    <property file="${org.bedework.project.bedework}/build/libjars.properties" />
-
     <!-- Destinations - where we build an unwrapped war -->
     <property name="app.dest.war"
               location="${org.bedework.temp.wars.home}/${propval.app.war.name}.war" />
@@ -367,7 +364,7 @@ ${propval.app.war.name}.context=${propval.app.context.root}
         <isset property="xalan.in.tomcat.common.endorsed" />
       </not>
       <then>
-        <copy todir="${app.dest.lib}" file="${xalan.jar}"/>
+        <copy todir="${app.dest.lib}" file="${org.bedework.appjar.xalan}"/>
       </then>
     </if>
 

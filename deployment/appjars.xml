@@ -302,6 +302,11 @@
 
       <getJar lib="${org.bedework.app.lib}"
               name="servletapi" version="2.4" />
+
+      <getJar lib="${org.bedework.app.lib}"
+              name="xalan" version="2.6.0" />
+      <getJar lib="${org.bedework.app.lib}"
+              name="hsqldb" version="1.7.3.3" />
     </sequential>
  </macrodef>
 </project>
