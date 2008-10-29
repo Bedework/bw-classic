@@ -101,7 +101,8 @@
       <!-- Liferay -->
 
       <if>
-        <isset property="org.bedework.build.for.liferay4" />
+        <equals arg1="${org.bedework.global.portal.platform}"
+                arg2="liferay4" />
         <then>
           <getJar lib="${org.bedework.app.lib}"
                   name="liferay.util-bridges" version="4.2" />
@@ -112,7 +113,8 @@
       </if>
 
       <if>
-        <isset property="org.bedework.build.for.liferay5" />
+        <equals arg1="${org.bedework.global.portal.platform}"
+                arg2="liferay5" />
         <then>
           <getJar lib="${org.bedework.app.lib}"
                   name="liferay.util-bridges" version="5.1" />

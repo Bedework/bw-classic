@@ -54,21 +54,6 @@
 
     <loadDeployConfig />
 
-    <!-- ==================== config properties =========================
-    <property name="org.bedework.config.properties"
-              location="${org.bedework.config.base}/configs/democal.properties" />
-    <property name="org.bedework.config.options"
-              location="${org.bedework.config.base}/configs/democal.options.xml" />
-
-    <echo message="==========================================================" />
-    <echo message="Use config properties ${org.bedework.config.properties}" />
-    <loadproperties srcFile="${org.bedework.config.properties}" >
-      <filterchain>
-        <expandproperties/>
-      </filterchain>
-    </loadproperties>
--->
-
     <!-- default to debug off -->
     <property name="app.debug.val" value="0" />
 
@@ -118,8 +103,6 @@
 
     <antcall target="build.standalone.apps" inheritrefs="true" />
 
-    <antcall target="build.portal.apps" inheritrefs="true" />
-
     <antcall target="build.j2ee.apps" inheritrefs="true" />
   </target>
 
@@ -130,18 +113,7 @@
        ================================================================= -->
 
   <target name="build.standalone.apps" if="org.bedework.global.build.standalone.app" >
-    <!-- ======================= webconfig - only standalone =================
-    <ant antfile="${org.bedework.deployment.base}/webconfig/webapp/build.xml"
-         inheritrefs="true" target="build.configured" />
-          -->
-
     <property name="org.bedework.deploy.kind" value="webapp" />
-    <antcall target="build.configured.apps" inheritrefs="true" />
-  </target>
-
-  <target name="build.portal.apps" if="org.bedework.global.portal.platform" >
-    <property name="org.bedework.deploy.kind"
-              value="${org.bedework.global.portal.platform}" />
     <antcall target="build.configured.apps" inheritrefs="true" />
   </target>
 
@@ -175,9 +147,6 @@
                  name="org.bedework.locales"
                  check="true" />
 
-    <echo message="LLLLLLLLLLLLLLLLLLLL locales=${org.bedework.locales}" />
-
-    <!--<antcall target="deploy.standalone.apps" inheritrefs="true" />-->
     <if>
       <isset property="org.bedework.global.build.standalone.app" />
       <then>
@@ -187,24 +156,11 @@
       </then>
     </if>
 
-    <!--<antcall target="deploy.shellscr.apps" inheritrefs="true" />-->
     <!-- Always build the shellscr stuff.-->
     <antcall target="deploy.apps" inheritrefs="true" >
       <param name="org.bedework.deploy.kind" value="shellscr" />
     </antcall>
 
-    <!-- <antcall target="deploy.portal.apps" inheritrefs="true" />-->
-    <if>
-      <isset property="org.bedework.global.portal.platform" />
-      <then>
-        <antcall target="deploy.apps" inheritrefs="true" >
-          <param name="org.bedework.deploy.kind"
-                 value="${org.bedework.global.portal.platform}" />
-        </antcall>
-      </then>
-    </if>
-
-    <!-- <antcall target="deploy.j2ee.apps" inheritrefs="true" />-->
     <if>
       <isset property="org.bedework.global.j2ee.platform" />
       <then>
@@ -263,29 +219,40 @@
                 appPrefix="org.bedework.app"
                 projectPrefix="org.bedework.project">
       <sequential>
-        <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
-                   property="app.kind.available" />
         <antcall target="build.available.configured.app" inheritrefs="true" />
       </sequential>
     </forEachApp>
 
     <!-- ======================= termination tasks ================= -->
-    <!--
-    <property name="org.bedework.deploy.type.dir"
-              location="${org.bedework.deployment.base}/termination" />
-              -->
 
     <ant antfile="${org.bedework.deployment.base}/termination/build.xml"
          inheritrefs="true" target="build.configured" />
   </target>
 
-  <target name="build.available.configured.app" if="app.kind.available">
-    <!-- Pick out the application build properties based on the prefix "org.bedework.app."
-         and the deployment name -->
-    <propertyset id="build-app-properties">
-      <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
-      <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
-    </propertyset>
+  <target name="build.available.configured.app">
+    <propertycopy name="propval.app.type"
+                  from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.appType" />
+    <property name="org.bedework.deploy.type.dir"
+              location="${app.root.dir}/${org.bedework.deploy.name}/${propval.app.type}" />
+    <echo message="*********************************** deploy directory is ${org.bedework.deploy.type.dir}" />
+
+    <if>
+      <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"/>
+      <then>
+        <propertyset id="deploy-app-properties">
+          <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
+          <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
+        </propertyset>
+
+        <propertycopy name="propval.app.unauthenticated"
+                      from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.guestMode" />
+
+        <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
+             inheritrefs="true" target="build.configured" >
+          <propertyset refid="deploy-app-properties" />
+        </ant>
+      </then>
+    </if>
   </target>
 
   <target name="deploy.apps">
@@ -305,6 +272,12 @@
   </target>
 
   <target name="deploy.available.app">
+    <propertycopy name="propval.app.type"
+                  from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.appType" />
+    <property name="org.bedework.deploy.type.dir"
+              location="${app.root.dir}/${propval.app.type}" />
+    <echo message="*********************************** deploy directory is ${org.bedework.deploy.type.dir}" />
+
     <if>
       <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"/>
       <then>
@@ -312,6 +285,9 @@
           <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
           <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
         </propertyset>
+
+        <propertycopy name="propval.app.unauthenticated"
+                      from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.guestMode" />
 
         <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
              inheritrefs="true" target="deploy" >

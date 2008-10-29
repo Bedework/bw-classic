@@ -75,8 +75,6 @@ import org.apache.tools.ant.taskdefs.Sequential;
  *
  * <p>Generated properties are all prefixed by the prefix attribute and are:<ul>
  * <li>project.path     Path to project</li>
- * <li>type             type of application</li>
- * <li>type.dir         location of application type deployment directory</li>
  * <li>name             name of the application</li>
  * </ul>
  *
@@ -166,13 +164,6 @@ public class ForEachAppTask extends Sequential {
       while (nit.hasNext()) {
         String name = (String)nit.next();
 
-        String appTypeProperty = appPrefix + name + ".type";
-        String type = (String)props.getProperty(null, appTypeProperty);
-
-        if (type == null) {
-          throw new BuildException("Must supply property " + appTypeProperty);
-        }
-
         String appProjectProperty = appPrefix + name + ".project";
         String project = (String)props.getProperty(null, appProjectProperty);
 
@@ -209,10 +200,6 @@ public class ForEachAppTask extends Sequential {
         props.setProperty(null, prefix + "projectName", project, false);
         props.setProperty(null, prefix + "project.path", projectPath, false);
         props.setProperty(null, prefix + "app.sou", appSou, false);
-        props.setProperty(null, prefix + "type", type, false);
-        props.setProperty(null, prefix + "type.dir",
-                          bedeworkHome + "/deployment/" + type,
-                          false);
 
         super.execute();
       }

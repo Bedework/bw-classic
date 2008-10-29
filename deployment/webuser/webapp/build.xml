@@ -55,6 +55,22 @@
         <copy todir="${org.bedework.appserver.dir}/${propval.app.resources.dir}">
           <fileset dir="${app.resources.dir}/demoskins" />
         </copy>
+
+
+        <if>
+          <isset property="org.bedework.global.portal.platform" />
+          <then>
+            <!-- The intent is to have a set of quickstart skins configured for
+                 portal use. So far we've not managed that so for the time being we
+                 will just use the standalone skin set. -->
+            <property name="dest.skins.dir"
+                      location="${org.bedework.appserver.dir}/${propval.app.resources.dir}.${org.bedework.global.portal.platform}" />
+            <delete dir="${dest.skins.dir}" />
+            <copy todir="${dest.skins.dir}">
+              <fileset dir="${app.resources.dir}/demoskins" />
+            </copy>
+          </then>
+        </if>
       </then>
     </if>
 

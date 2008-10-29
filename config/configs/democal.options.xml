@@ -15,6 +15,14 @@
              them from user group names. -->
         <adminGroupsIdPrefix>agrp_</adminGroupsIdPrefix>
 
+        <!-- Uncomment this and set the value to one of the supported portals
+             Values that will result in something happening are
+             liferay5
+             liferay4
+             uportal2
+        <portalPlatform>your-portal</portalPlatform>
+         -->
+
         <module>
           <!-- A dummy module with no directory. -->
           <dir-config classname="org.bedework.calfacade.configs.DirConfigProperties">
@@ -133,12 +141,21 @@
         -->
         <usergroupsClass>org.bedework.calsvc.directory.GroupsDbImpl</usergroupsClass>
 
-        <directoryBrowsingDisallowed>@DIRECTORY-BROWSING-DISALLOWED@</directoryBrowsingDisallowed>
+        <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
 
         <indexRoot>lucene/indexroot</indexRoot>
       </syspars>
 
       <app>
+        <!-- ==================================================================
+                          Config web client
+             ================================================================== -->
+        <bwconfig classname="org.bedework.calfacade.configs.ConfigCommon">
+          <appType>webconfig</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>false</guestMode>
+        </bwconfig>
+
         <!-- ==================================================================
                           Admin web client CalAdmin
              ================================================================== -->
@@ -170,7 +187,6 @@
           <logPrefix>PubEventsAdmin</logPrefix>
 
           <appRoot>http://localhost:8080/caladminrsrc</appRoot>
-          <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
         </CalAdmin>
 
         <!-- ==================================================================
@@ -200,7 +216,6 @@
           <logPrefix>EventSubmit</logPrefix>
 
           <appRoot>http://localhost:8080/eventsubmitrsrc</appRoot>
-          <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
 
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>900</refreshInterval>
@@ -234,7 +249,6 @@
           <logPrefix>PubEvents</logPrefix>
 
           <appRoot>http://localhost:8080/calrsrc</appRoot>
-          <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
 
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>300</refreshInterval>
@@ -269,8 +283,7 @@
 
           <logPrefix>SoEDept</logPrefix>
 
-          <appRoot>/calrsrc</appRoot>
-          <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
+          <appRoot>http://localhost:8080/calrsrc</appRoot>
 
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>300</refreshInterval>
@@ -301,8 +314,7 @@
 
           <logPrefix>PersonalCalendar</logPrefix>
 
-          <appRoot>/ucalrsrc</appRoot>
-          <portalPlatform>@PORTAL-PLATFORM@</portalPlatform>
+          <appRoot>http://localhost:8080/ucalrsrc</appRoot>
 
           <refreshAction>setup.do</refreshAction>
           <refreshInterval>300</refreshInterval>

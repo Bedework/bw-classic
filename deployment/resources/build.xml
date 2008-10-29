@@ -24,10 +24,6 @@
 
     <property name="org.bedework.use.dojo" value="true" />
 
-    <!-- This should be in the config stuff -->
-    <property name="propval.directory.browsing.disallowed"
-              value="${app.directory.browsing.disallowed}" />
-
     <property name="common.war.name"
               value="${org.bedework.global.build.common.context.war.name}" />
     <property name="common.dest.war"

@@ -148,15 +148,6 @@
 
       <app>
         <!-- ==================================================================
-                          Config web client
-             ================================================================== -->
-        <bwconfig classname="org.bedework.calfacade.configs.ConfigCommon">
-          <appType>webconfig</appType>
-          <publicAdmin>false</publicAdmin>
-          <guestMode>false</guestMode>
-        </bwconfig>
-
-        <!-- ==================================================================
                           Admin web client CalAdmin
              ================================================================== -->
         <CalAdmin classname="org.bedework.calfacade.configs.AdminConfig">
@@ -324,7 +315,6 @@
                           User CalDAV server UserCalDAV
              ================================================================== -->
         <Usercaldav classname="org.bedework.calfacade.configs.CalDAVConfig">
-          <appType>usercaldav</appType>
           <publicAdmin>false</publicAdmin>
           <guestMode>false</guestMode>
 
@@ -346,7 +336,6 @@
                           Public (unauthenticated) CalDAV server PublicCalDAV
              ================================================================== -->
         <Pubcaldav classname="org.bedework.calfacade.configs.CalDAVConfig">
-          <appType>publiccaldav</appType>
           <publicAdmin>false</publicAdmin>
           <guestMode>true</guestMode>
           <runAsUser>public-user</runAsUser>
@@ -366,30 +355,10 @@
         </Pubcaldav>
 
         <!-- ==================================================================
-                          CalDAV test suite
-             ================================================================== -->
-        <caldavTest classname="org.bedework.calfacade.configs.ConfigCommon">
-          <appType>caldavTest</appType>
-          <publicAdmin>false</publicAdmin>
-          <guestMode>false</guestMode>
-        </caldavTest>
-
-        <!-- ==================================================================
-                          bedework test suite
-             ================================================================== -->
-        <test classname="org.bedework.calfacade.configs.ConfigCommon">
-          <appType>testsuite</appType>
-          <publicAdmin>false</publicAdmin>
-          <guestMode>false</guestMode>
-        </test>
-
-        <!-- ==================================================================
                           Dump restore program dumpres
              ================================================================== -->
         <dumpres classname="org.bedework.calfacade.configs.DumpRestoreConfig">
           <debug>true</debug>
-          <appType>dumprestore</appType>
-          <guestMode>true</guestMode>
           <debugEntity>false</debugEntity>
           <superGroupName>campusAdminGroups</superGroupName>
           <defaultPublicCalPath>/public/Other Events/Other</defaultPublicCalPath>

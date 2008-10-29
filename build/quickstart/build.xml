@@ -108,27 +108,6 @@
 
     <property name="org.bedework.hsqldb.dir"
               location="${org.bedework.project.bedework}/../hsqldb-1.7.3.3" />
-
-    <echo message="Load user properties from ${org.bedework.user.build.properties}" />
-
-    <!-- Load user property definition overrides -->
-    <property file="${org.bedework.user.build.properties}" />
-
-    <!-- ==================== config properties =========================
-    <property name="org.bedework.config.properties"
-              location="${org.bedework.config.base}/configs/democal.properties" />
-    <property name="org.bedework.config.options"
-              location="${org.bedework.config.base}/configs/democal.options.xml" />
-
-    <echo message="==========================================================" />
-    <echo message="Use config properties ${org.bedework.config.properties}" />
-    <loadproperties
-          srcFile="${org.bedework.config.properties}" >
-      <filterchain>
-        <expandproperties/>
-      </filterchain>
-    </loadproperties>
-    -->
   </target>
 
   <!-- =================================================================

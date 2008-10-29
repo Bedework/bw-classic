@@ -42,6 +42,13 @@
 <project name="bedework.buildwar" default="build" >
   <import file="${build.dir}/buildfilters.xml" />
 
+  <if>
+    <isset property="org.bedework.global.portal.platform" />
+    <then>
+      <import file="${build.dir}/portals/${org.bedework.global.portal.platform}War.xml" />
+    </then>
+  </if>
+
   <target name="init" depends="init.common,init.j2ee,init.standalone" />
 
   <target name="init.common">
@@ -371,46 +378,7 @@ ${propval.app.war.name}.context=${propval.app.context.root}
     <if>
       <isset property="org.bedework.global.portal.platform" />
       <then>
-        <!-- Add common portlet files -->
-
-        <copy todir="${app.dest.lib}"
-              file="${org.bedework.appjar.portals-bridges-common}"/>
-        <copy todir="${app.dest.lib}"
-              file="${org.bedework.appjar.portals-bridges-struts-1.2.7}"/>
-
-        <!-- Use generic bedework portlet tld -->
-        <copy todir="${app.dest.webinf}/tlds"
-              overwrite="yes"
-              failonerror="no" >
-          <fileset dir="${app.root.dir}/resources/portlet" >
-            <include name="*.tld"/>
-          </fileset>
-        </copy>
-
-        <copy todir="${app.dest.webinf}"
-              file="${org.bedework.deploy.type.dir}/portlet/struts-portlet-config.xml"
-              overwrite="yes"
-              failonerror="no" />
-
-        <copy todir="${app.dest.webinf}"
-              file="${org.bedework.deploy.type.dir}/portlet/portlet.xml"
-              overwrite="yes"
-              failonerror="no" >
-          <filterset refid="property.filters" />
-        </copy>
-
-        <!-- Add the portal bridge controller def -->
-        <replace file="${app.dest.webinf}/struts-config.xml">
-          <replacetoken><![CDATA[<!-- portlet controller def here -->]]></replacetoken>
-          <replacevalue><![CDATA[<controller pagePattern="$M$P" inputForward="true"
-                  processorClass="org.apache.portals.bridges.struts.PortletRequestProcessor"/>]]>
-          </replacevalue>
-        </replace>
-
-        <antcall target="add.jetspeed2" inheritRefs="true" />
-        <antcall target="add.uportal2" inheritRefs="true" />
-        <antcall target="add.liferay4" inheritRefs="true" />
-        <antcall target="add.liferay5" inheritRefs="true" />
+        <antcall target="doPortal" inheritRefs="true" />
       </then>
     </if>
 
@@ -425,191 +393,6 @@ ${propval.app.war.name}.context=${propval.app.context.root}
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jakarta-oro}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jstl}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jstl-standard}"/>
-  </target>
-
-  <!-- =================================================================
-       Jetspeed 2 modifications
-       ================================================================= -->
-
-  <target name="add.jetspeed2" if="org.bedework.build.for.jetspeed2" >
-    <copy todir="${app.dest.webinf}/tlds" >
-      <fileset dir="${org.bedework.default.lib}/${jetspeed2.jars.dir}/portals-bridges-struts">
-        <include name="*.tld"/>
-      </fileset>
-    </copy>
-  </target>
-
-  <!-- =================================================================
-       Uportal 2 modifications
-       ================================================================= -->
-
-  <target name="add.uportal2" if="org.bedework.build.for.uportal2" >
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.uportal}"/>
-
-    <!-- Add the portlet servlet mapping -->
-    <replace file="${app.temp.web.xml}">
-      <replacetoken><![CDATA[<!-- portlet servlet mapping here -->]]></replacetoken>
-      <replacevalue><![CDATA[<servlet-mapping>
-    <servlet-name>@PORTLET-NAME@</servlet-name>
-    <url-pattern>/@PORTLET-NAME@/*</url-pattern>
-  </servlet-mapping>]]>
-      </replacevalue>
-    </replace>
-
-  </target>
-
-  <!-- =================================================================
-       Liferay 4 modifications
-       ================================================================= -->
-
-  <target name="add.liferay4" if="org.bedework.build.for.liferay4" >
-   <!-- Add liferay config files -->
-    <copy todir="${app.dest.webinf}" >
-      <fileset dir="${app.sou.dir}/war/WEB-INF" >
-        <include name="liferay*"/>
-      </fileset>
-      <filterset refid="property.filters" />
-    </copy>
-
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.liferay}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.liferay.util-bridges}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.liferay.util-java}"/>
-
-    <!-- Add the context params -->
-    <replace file="${app.temp.web.xml}">
-      <replacetoken><![CDATA[<!-- add context params here -->]]></replacetoken>
-      <replacevalue><![CDATA[<!-- add context params here -->
-
-  <context-param>
-    <param-name>company_id</param-name>
-    <param-value>@LIFERAY-COMPANY-ID@</param-value>
-  </context-param>]]>
-      </replacevalue>
-    </replace>
-
-    <!-- Add the portal listener -->
-    <replace file="${app.temp.web.xml}">
-      <replacetoken><![CDATA[<!-- add listeners here -->]]></replacetoken>
-      <replacevalue><![CDATA[<!-- add listeners here -->
-
-  <listener>
-    <listener-class>
-      @PORTAL-SERVLET-CONTEXT-LISTENER@
-    </listener-class>
-  </listener>]]>
-      </replacevalue>
-    </replace>
-
-    <!-- Add the portlet servlet definition -->
-    <replace file="${app.temp.web.xml}">
-      <replacetoken><![CDATA[<!-- add servlet definitions here -->]]></replacetoken>
-      <replacevalue><![CDATA[<!-- add servlet definitions here -->
-
-  <!-- Servlet definition for portlet use. -->
-  <servlet>
-    <servlet-name>@PORTLET-NAME@</servlet-name>
-    <display-name>@PORTLET-NAME@ Wrapper</display-name>
-    <servlet-class>@PORTLET-SERVLET-CLASS@</servlet-class>
-    <init-param>
-      <param-name>portlet-class</param-name>
-      <param-value>@PORTLET-CLASS@</param-value>
-    </init-param>
-    <init-param>
-      <param-name>portlet-guid</param-name>
-      <param-value>@CONTEXT-ROOT@.@PORTLET-NAME@</param-value>
-    </init-param>
-  </servlet>]]>
-      </replacevalue>
-    </replace>
-
-    <!-- Add the portlet servlet mapping -->
-    <replace file="${app.temp.web.xml}">
-      <replacetoken><![CDATA[<!-- add servlet mappings here -->]]></replacetoken>
-      <replacevalue><![CDATA[<!-- add servlet mappings here -->
-
-  <servlet-mapping>
-    <servlet-name>@PORTLET-NAME@</servlet-name>
-    <url-pattern>/@PORTLET-NAME@/*</url-pattern>
-  </servlet-mapping>]]>
-      </replacevalue>
-    </replace>
-  </target>
-
-  <!-- =================================================================
-       Liferay 5 modifications
-       ================================================================= -->
-
-  <target name="add.liferay5" if="org.bedework.build.for.liferay5" >
-   <!-- Add liferay config files -->
-    <copy todir="${app.dest.webinf}" >
-      <fileset dir="${app.sou.dir}/war/WEB-INF" >
-        <include name="liferay*"/>
-      </fileset>
-      <filterset refid="property.filters" />
-    </copy>
-
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.liferay.util-taglib}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.liferay.util-bridges}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.liferay.util-java}"/>
-
-    <!-- Add the context params -->
-    <replace file="${app.temp.web.xml}">
-      <replacetoken><![CDATA[<!-- add context params here -->]]></replacetoken>
-      <replacevalue><![CDATA[<!-- add context params here -->
-
-  <context-param>
-    <param-name>company_id</param-name>
-    <param-value>@LIFERAY-COMPANY-ID@</param-value>
-  </context-param>]]>
-      </replacevalue>
-    </replace>
-
-    <!-- Add the portal listener -->
-    <replace file="${app.temp.web.xml}">
-      <replacetoken><![CDATA[<!-- add listeners here -->]]></replacetoken>
-      <replacevalue><![CDATA[<!-- add listeners here -->
-
-  <listener>
-    <listener-class>
-      @PORTAL-SERVLET-CONTEXT-LISTENER@
-    </listener-class>
-  </listener>]]>
-      </replacevalue>
-    </replace>
-
-    <!-- Add the portlet servlet definition -->
-    <replace file="${app.temp.web.xml}">
-      <replacetoken><![CDATA[<!-- add servlet definitions here -->]]></replacetoken>
-      <replacevalue><![CDATA[<!-- add servlet definitions here -->
-
-  <!-- Servlet definition for portlet use. -->
-  <servlet>
-    <servlet-name>@PORTLET-NAME@</servlet-name>
-    <display-name>@PORTLET-NAME@ Wrapper</display-name>
-    <servlet-class>@PORTLET-SERVLET-CLASS@</servlet-class>
-    <init-param>
-      <param-name>portlet-class</param-name>
-      <param-value>@PORTLET-CLASS@</param-value>
-    </init-param>
-    <init-param>
-      <param-name>portlet-guid</param-name>
-      <param-value>@CONTEXT-ROOT@.@PORTLET-NAME@</param-value>
-    </init-param>
-  </servlet>]]>
-      </replacevalue>
-    </replace>
-
-    <!-- Add the portlet servlet mapping -->
-    <replace file="${app.temp.web.xml}">
-      <replacetoken><![CDATA[<!-- add servlet mappings here -->]]></replacetoken>
-      <replacevalue><![CDATA[<!-- add servlet mappings here -->
-
-  <servlet-mapping>
-    <servlet-name>@PORTLET-NAME@</servlet-name>
-    <url-pattern>/@PORTLET-NAME@/*</url-pattern>
-  </servlet-mapping>]]>
-      </replacevalue>
-    </replace>
   </target>
 
   <!-- =================================================================

@@ -18,13 +18,25 @@
               location="${org.bedework.project.bedework}/../hsqldb-1.7.3.3" />
   </target>
 
+  <target name="hsql.init" depends="run.init">
+    <!--  Set this property in the configuration if you want to overrride the
+         quickstart hsql defs. -->
+    <property name="org.bedework.quickstart.hsql.defs"
+              location="${org.bedework.project.bedework}/build/quickstart/hsqldb.properties" />
+
+    <echo message="load hsql properties from ${org.bedework.quickstart.hsql.defs}"/>
+
+    <property file="${org.bedework.quickstart.hsql.defs}" />
+  </target>
+
   <!-- =================================================================
        The "hsqldb" target starts the hsqldb server
        ================================================================= -->
 
-  <target name="hsqldb" depends="run.init"
+  <target name="hsqldb" depends="hsql.init"
           description="starts the hsqldb server">
-    <echo message="Starting hsqldb"/>
+    <echo message="Starting hsqldb on port ${org.bedework.hsqldb.port}"/>
+
     <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
       <classpath>
         <pathelement path="${org.bedework.hsqldb.dir}/lib/hsqldb.jar"/>
@@ -32,13 +44,14 @@
       <arg value="-database"/>
       <arg value="${org.bedework.hsqldb.dir}/${org.bedework.hsqldb.dbname}"/>
       <arg value="-port"/>
-      <arg value="8887"/>
+      <arg value="${org.bedework.hsqldb.port}"/>
     </java>
   </target>
 
-  <target name="hsqldb-trace" depends="run.init"
+  <target name="hsqldb-trace" depends="hsql.init"
           description="starts the hsqldb server">
-    <echo message="Starting hsqldb"/>
+    <echo message="Starting hsqldb on port ${org.bedework.hsqldb.port}"/>
+
     <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
       <classpath>
         <pathelement path="${org.bedework.hsqldb.dir}/lib/hsqldb.jar"/>
@@ -50,11 +63,11 @@
       <arg value="-database"/>
       <arg value="${org.bedework.hsqldb.dir}/${org.bedework.hsqldb.dbname}"/>
       <arg value="-port"/>
-      <arg value="8887"/>
+      <arg value="${org.bedework.hsqldb.port}"/>
     </java>
   </target>
 
-  <target name="hsqldb-trace-9887" depends="run.init"
+  <target name="hsqldb-trace-9887" depends="hsql.init"
           description="starts the hsqldb server">
     <echo message="Starting hsqldb"/>
     <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
@@ -72,7 +85,7 @@
     </java>
   </target>
 
-  <target name="uportaldb" depends="run.init"
+  <target name="uportaldb" depends="hsql.init"
           description="starts the hsqldb server">
     <echo message="Starting hsqldb"/>
     <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
@@ -86,7 +99,7 @@
     </java>
   </target>
 
-  <target name="liferaydb" depends="run.init"
+  <target name="liferaydb" depends="hsql.init"
           description="starts the hsqldb server for likferay">
     <echo message="Starting hsqldb"/>
     <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
@@ -104,9 +117,10 @@
        The "hsqldb-test" target starts the hsqldb server for testing
        ================================================================= -->
 
-  <target name="hsqldb-test" depends="run.init"
+  <target name="hsqldb-test" depends="hsql.init"
           description="starts the hsqldb server for testing">
-    <echo message="Starting hsqldb for testing"/>
+    <echo message="Starting hsqldb on port ${org.bedework.hsqldb.port}"/>
+
     <delete dir="${org.bedework.hsqldb.dbdir}" />
 
     <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
@@ -116,13 +130,14 @@
       <arg value="-database"/>
       <arg value="${org.bedework.hsqldb.dir}/${org.bedework.hsqldb.test.dbdir}/events"/>
       <arg value="-port"/>
-      <arg value="8887"/>
+      <arg value="${org.bedework.hsqldb.port}"/>
     </java>
   </target>
 
-  <target name="hsqldb-test-trace" depends="run.init"
+  <target name="hsqldb-test-trace" depends="hsql.init"
           description="starts the hsqldb server for testing">
-    <echo message="Starting hsqldb for testing"/>
+    <echo message="Starting hsqldb on port ${org.bedework.hsqldb.port}"/>
+
     <delete dir="${org.bedework.hsqldb.dbdir}" />
 
     <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
@@ -136,7 +151,7 @@
       <arg value="-database"/>
       <arg value="${org.bedework.hsqldb.dir}/${org.bedework.hsqldb.test.dbdir}/events"/>
       <arg value="-port"/>
-      <arg value="8887"/>
+      <arg value="${org.bedework.hsqldb.port}"/>
     </java>
   </target>
 
@@ -145,12 +160,12 @@
        provides a gui interface to the running hsqldb database.
        ================================================================= -->
 
-  <target name="hsqldb-mngr" depends="run.init"
+  <target name="hsqldb-mngr" depends="hsql.init"
           description="Runs the DatabaseManager class which provides a
                        gui interface to the running hsqldb database">
     <echo message="Starting hsqldb DatabaseManager"/>
     <echo message="Select type: HSQL Database Engine Server"/>
-    <echo message="Set the URL to jdbc:hsqldb:hsql://localhost:8887"/>
+    <echo message="Set the URL to jdbc:hsqldb:hsql://localhost:${org.bedework.hsqldb.port}"/>
     <java fork="true" dir="${basedir}"
           classname="org.hsqldb.util.DatabaseManager">
       <classpath>

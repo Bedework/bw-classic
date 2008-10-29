@@ -26,9 +26,6 @@
     <filter token="DIRECTORY-BROWSING-DISALLOWED"
             value="${org.bedework.global.directory.browsing.disallowed}" />
 
-    <filter token="PORTAL-PLATFORM"
-            value="${org.bedework.global.portal.platform}"/>
-
     <filter token="SERVLET-CLASS"
             value="${org.bedework.global.servlet.class}"/>
 
@@ -77,6 +74,8 @@
             value="${propval.app.context.root}" />
     <filter token="APP-NAME"
             value="${propval.app.name}"/>
+    <filter token="APP-DESCRIPTION"
+            value="${propval.app.description}"/>
     <filter token="APP-VERSION"
             value="${org.bedework.global.version}"/>
     <filter token="WAR-NAME"
@@ -88,8 +87,6 @@
             value="${propval.app.default.contenttype}" />
     <filter token="NOXSLT"
             value="${propval.app.noxslt}" />
-    <filter token="APPLICATION-ROOT"
-            value="${propval.app.root}" />
 
     <!-- Change this to be an app par -->
     <filter token="RUN-AS-USER"
