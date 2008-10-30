@@ -67,10 +67,6 @@
       <default>true</default>
     </boolean>
 
-    <boolean name="buildStandaloneApp" suffix="build.standalone.app">
-      <default>true</default>
-    </boolean>
-
   <!--  XXX
     //# Comment this out if deploying on some other app server
     //org.bedework.global.deploy.on.tomcat=true

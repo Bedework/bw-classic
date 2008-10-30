@@ -73,34 +73,24 @@
       </then>
     </if>
 
-    <!-- Deploy common resources -->
-    <!--
-    <ant antfile="${org.bedework.common.resources}/build.xml"
-         inheritrefs="true" target="deploy" >
-      <property name="app.common.resources.dest.dir"
-                location="${org.bedework.appserver.dir}/${propval.app.resources.dir}/resources" />
-    </ant>
-    -->
-
-    <echo message="***************************************************************" />
-    <echo message="Deploying standalone app ${app.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />
-    <echo message="***************************************************************" />
-
-    <!-- copy the war file. -->
-    <copy todir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}" file="${app.war.file}"
-          overwrite="yes" />
-
-    <!-- Delete expanded version -->
-    <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.war.name}" />
-
-    <!-- Delete the quickstart context def -->
-    <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
-
     <if>
-      <isset property="org.bedework.global.portal.platform" />
+      <not>
+        <isset property="org.bedework.global.build.ear" />
+      </not>
       <then>
-        <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.global.portal.platform}/build.xml"
-             inheritrefs="true" target="deploy" />
+        <echo message="***************************************************************" />
+        <echo message="Deploying standalone app ${app.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />
+        <echo message="***************************************************************" />
+
+        <!-- copy the war file. -->
+        <copy todir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}" file="${app.war.file}"
+              overwrite="yes" />
+
+        <!-- Delete expanded version -->
+        <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.war.name}" />
+
+        <!-- Delete the quickstart context def -->
+        <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
       </then>
     </if>
   </target>

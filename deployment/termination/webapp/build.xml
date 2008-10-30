@@ -8,12 +8,77 @@
   <import file="${org.bedework.deployment.base}/deployprops.xml" />
 
   <target name="init">
+    <dirname property="this.dir" file="${ant.file}"/>
+
+    <property name="app.ear.file.name"
+              value="${org.bedework.global.ear.name}.ear" />
+    <property name="app.ear.file"
+              location="${dist.home}/${app.ear.file.name}" />
   </target>
 
   <target name="deploy" depends="init,build.configured" >
     <!-- Deploy common resources -->
     <ant antfile="${org.bedework.common.resources}/build.xml"
          inheritrefs="true" target="deploy" />
+
+    <if>
+      <isset property="org.bedework.global.build.ear" />
+      <then>
+        <echo message="***************************************************************" />
+        <echo message="Building ear file for jboss deployment" />
+        <echo message="***************************************************************" />
+
+        <jar jarfile="${org.bedework.ear.properties.jar}">
+          <fileset dir="${org.bedework.ear.properties.dir}"/>
+        </jar>
+
+        <path id="app.xml.cp">
+          <pathelement location="${org.bedework.deployutil.jar}"/>
+        </path>
+
+        <taskdef name="applicationXml"
+                 classname="org.bedework.deployment.ApplicationXmlTask">
+          <classpath refid="app.xml.cp"/>
+        </taskdef>
+
+        <!-- We have to drop some of the libraries so they don't conflict -->
+        <copy toDir="${ear.dir}">
+          <fileset dir="${org.bedework.temp.dir}/earlib"
+                   excludes="${org.bedework.global.ear.lib.excludes}" />
+        </copy>
+
+        <applicationXml displayName="Bedework calendar suite"
+                        outFile="${ear.dir}/META-INF/application.xml"
+                        warDir="${org.bedework.temp.dir}/wars"
+                        contexts="${org.bedework.global.context.roots}">
+          <fileset dir="${ear.dir}">
+            <include name="*.jar"/>
+          </fileset>
+        </applicationXml>
+
+        <manifest file="${ear.dir}/META-INF/MANIFEST.MF" />
+
+        <copy toDir="${ear.dir}">
+          <fileset dir="${org.bedework.temp.wars.home}"/>
+        </copy>
+
+        <zip destfile="${app.ear.file}"
+             basedir="${ear.dir}"/>
+
+        <!-- copy the ear - at the moment copy the uncompressed. -->
+
+        <if>
+          <isset property="org.bedework.appserver.deploy.dir" />
+          <then>
+            <delete dir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}" />
+            <mkdir dir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}" />
+            <copy todir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}">
+              <fileset dir="${ear.dir}"/>
+            </copy>
+          </then>
+        </if>
+      </then>
+    </if>
   </target>
 
   <target name="build.configured" depends="init" >

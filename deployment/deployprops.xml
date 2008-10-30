@@ -6,10 +6,6 @@
   <!-- ensure has value -->
   <property name="propval.app.cal.suite" value="" />
 
-  <condition property="org.bedework.build.for.jboss">
-    <equals arg1="jboss" arg2="${org.bedework.global.j2ee.platform}"/>
-  </condition>
-
   <target name="deployprops.init" >
   </target>
 </project>

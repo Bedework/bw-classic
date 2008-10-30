@@ -101,9 +101,7 @@
     <!-- Clean up before we start -->
     <delete dir="${org.bedework.temp.wars.home}" />
 
-    <antcall target="build.standalone.apps" inheritrefs="true" />
-
-    <antcall target="build.j2ee.apps" inheritrefs="true" />
+    <antcall target="build.apps" inheritrefs="true" />
   </target>
 
   <!-- =================================================================
@@ -112,14 +110,8 @@
        this component.
        ================================================================= -->
 
-  <target name="build.standalone.apps" if="org.bedework.global.build.standalone.app" >
+  <target name="build.apps" >
     <property name="org.bedework.deploy.kind" value="webapp" />
-    <antcall target="build.configured.apps" inheritrefs="true" />
-  </target>
-
-  <target name="build.j2ee.apps" if="org.bedework.global.j2ee.platform" >
-    <property name="org.bedework.deploy.kind"
-              value="${org.bedework.global.j2ee.platform}" />
     <antcall target="build.configured.apps" inheritrefs="true" />
   </target>
 
@@ -147,29 +139,15 @@
                  name="org.bedework.locales"
                  check="true" />
 
-    <if>
-      <isset property="org.bedework.global.build.standalone.app" />
-      <then>
-        <antcall target="deploy.apps" inheritrefs="true" >
-          <param name="org.bedework.deploy.kind" value="webapp" />
-        </antcall>
-      </then>
-    </if>
+    <!-- Build the webapps stuff.-->
+    <antcall target="deploy.apps" inheritrefs="true" >
+      <param name="org.bedework.deploy.kind" value="webapp" />
+    </antcall>
 
-    <!-- Always build the shellscr stuff.-->
+    <!-- Build the shellscr stuff.-->
     <antcall target="deploy.apps" inheritrefs="true" >
       <param name="org.bedework.deploy.kind" value="shellscr" />
     </antcall>
-
-    <if>
-      <isset property="org.bedework.global.j2ee.platform" />
-      <then>
-        <antcall target="deploy.apps" inheritrefs="true" >
-          <param name="org.bedework.deploy.kind"
-                 value="${org.bedework.global.j2ee.platform}" />
-        </antcall>
-      </then>
-    </if>
 
     <!-- copy startup website that sends you to the applications -->
     <delete dir="${webapp.root.dir}/bedework"/>

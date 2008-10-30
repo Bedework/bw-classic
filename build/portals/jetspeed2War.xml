@@ -53,7 +53,7 @@
     </copy>
 
     <copy tofile="${app.dest.webinf}/portlet.psml"
-          file="${org.bedework.deploy.type.dir}/portlet/jetspeed2-portlet.psml"
+          file="${org.bedework.config.portal.common.home}/jetspeed2-portlet.psml"
           overwrite="yes"
           failonerror="no" >
       <filterset refid="property.filters" />
@@ -64,7 +64,7 @@
         <equals arg1="${propval.app.unauthenticated}" arg2="true" />
       </not>
       <then>
-        <replace file="${app.dest.webinf}/struts-config.xml">
+        <replace file="${app.dest.webinf}/portlet.psml">
           <replacetoken><![CDATA[<!-- Security constraints go here -->]]></replacetoken>
           <replacevalue><![CDATA[<security-constraints>
     <security-constraints-ref>users</security-constraints-ref>

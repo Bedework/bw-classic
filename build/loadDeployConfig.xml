@@ -38,18 +38,25 @@
                     value="${bedework-options.org.bedework.global.portal.platform}" />
 
           <property name="org.bedework.config.portal.home"
-                    value="${org.bedework.config.home}/.portal/${org.bedework.global.portal.platform}" />
+                    value="${org.bedework.configurations.home}/.portal/${org.bedework.global.portal.platform}" />
 
           <property name="org.bedework.config.portal.common.home"
-                    value="${org.bedework.config.home}/.portal/common-resources" />
+                    value="${org.bedework.configurations.home}/.portal/common-resources" />
 
           <echo message="******************* load from ${org.bedework.config.portal.home}/portal.properties" />
           <property file="${org.bedework.config.portal.home}/portal.properties" />
         </then>
         <else>
-          <echo message="******************* load from ${org.bedework.config.home}/.standalone/standalone.properties" />
-          <property file="${org.bedework.config.home}/.standalone/standalone.properties" />
+          <echo message="******************* load from ${org.bedework.configurations.home}/.standalone/standalone.properties" />
+          <property file="${org.bedework.configurations.home}/.platform/standalone.properties" />
         </else>
+      </if>
+
+      <if>
+        <isset property="org.bedework.global.build.ear"/>
+        <then>
+          <property file="${org.bedework.configurations.home}/.platform/ear.properties" />
+        </then>
       </if>
 
       <property name="org.bedework.global.version"

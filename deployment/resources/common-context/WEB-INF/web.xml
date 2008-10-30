@@ -13,13 +13,6 @@
       <description>Deliver common files from their own context</description>
       <url-pattern>/*</url-pattern>
     </web-resource-collection>
-    <auth-constraint>
-      <role-name>*</role-name>
-    </auth-constraint>
-    <user-data-constraint>
-      <description>open - http</description>
-      <transport-guarantee>NONE</transport-guarantee>
-    </user-data-constraint>
   </security-constraint>
 </web-app>
 
