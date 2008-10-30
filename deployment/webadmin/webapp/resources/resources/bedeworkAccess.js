@@ -156,11 +156,7 @@ function setupAccessForm(chkBoxObj,formObj) {
 // enable and disable corresponding allow/deny flags when a howItem checkbox is
 // clicked
 function toggleAllowDenyFlag(chkBoxObj,formObj) {
-  if (chkBoxObj.checked == true) {
-    activateAllowDenyFlag(chkBoxObj.value, formObj, false);
-  } else {
-    activateAllowDenyFlag(chkBoxObj.value, formObj, true);
-  }
+  activateAllowDenyFlag(chkBoxObj.value, formObj, !chkBoxObj.checked);
 }
 // iterate over the allow/deny radio buttons and set them to true or false
 function activateAllowDenyFlag(val,formObj,disabledFlag) {
