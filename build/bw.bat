@@ -1,4 +1,4 @@
-::  This file is included by the quickstart script file "..\..\bw.bat" so that 
+::  This file is included by the quickstart script file "..\..\bw.bat" so that
 ::  we may keep this script under version control in the svn repository.
 
 @ECHO off
@@ -30,33 +30,29 @@ GOTO branch
   ECHO     Preparing quickstart build ...
   SET quickstart="yes"
   SHIFT
-  IF "%1noarg" == "noarg" GOTO doneWithArgs
   GOTO branch
-  
-:bwchome         
+
+:bwchome
   :: Define location of configs
   SHIFT
   SET BWCONFIGS=%1
   SHIFT
-  IF "%1noarg" == "noarg" GOTO doneWithArgs
   GOTO branch
 
 :bwc
   SHIFT
   SET bwc=%1
   SHIFT
-  IF "%1noarg" == "noarg" GOTO doneWithArgs
   GOTO branch
-  
+
 :offline
   ECHO     Setting to offline mode; libraries will not be downloaded ...
   SET offline="-Dorg.bedework.offline.build=yes"
   SHIFT
-  IF "%1noarg" == "noarg" GOTO doneWithArgs
   GOTO branch
 
 :doneWithArgs
-  
+
 IF NOT "%quickstart%empty" == "empty" GOTO checkBwConfig
 IF NOT "%BWCONFIGS%empty" == "empty" GOTO DoneQB
 SET BWCONFIGS=%HOME%\bwbuild
@@ -91,22 +87,22 @@ REM    GOTO:EOF
 
 :runBedework
   :: Make available for ant
-  SET BWCONFIG=-Dorg.bedework.user.build.properties=%BEDEWORK_CONFIG%\build.properties"
-  
+  SET BWCONFIG=-Dorg.bedework.user.build.properties=%BEDEWORK_CONFIG%\build.properties
+
   ECHO.
   ECHO     BWCONFIGS = %BWCONFIGS%
   ECHO     BWCONFIG = %BWCONFIG%
-  ECHO. 
-  
+  ECHO.
+
   SET ANT_HOME=%QUICKSTART_HOME%\apache-ant-1.7.0
-  
+
   SET CLASSPATH="%ANT_HOME%\lib\ant-launcher.jar"
-  
-  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home=%ANT_HOME% org.apache.tools.ant.launch.Launcher %BWCONFIG% %*%
-  
+
+  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home=%ANT_HOME% org.apache.tools.ant.launch.Launcher %BWCONFIG% %1
+
   GOTO:EOF
 
-  
+
 :: Iterate over the command line arguments;
 :: DOS Batch labels can't contain hyphens, so convert them
 :: (otherwise, we could just "GOTO %1")
@@ -115,13 +111,14 @@ IF "%1" == "-quickstart" GOTO quickstart
 IF "%1" == "-bwchome" GOTO bwchome
 IF "%1" == "-bwc" GOTO bwc
 IF "%1" == "-offline" GOTO offline
-  
+GOTO doneWithArgs
+
 :usage
   ECHO    Usage:
   ECHO.
   ECHO    %0 [ -quickstart OR -bwchome path ] [ -bwc configname ] [ -offline ] [ target ]
   ECHO.
-  ECHO      -quickstart  Use the current quickstart configurations.  
+  ECHO      -quickstart  Use the current quickstart configurations.
   ECHO      -bwchome     Specify path to configurations
   ECHO      -bwc         Specify configuration name
   ECHO      -offline     Build without atempting to retrieve library jars
@@ -130,8 +127,8 @@ IF "%1" == "-offline" GOTO offline
   ECHO    Invokes ant to build or deploy the bedework system. Uses a configuration
   ECHO    directory which contains one directory per configuration.
   ECHO.
-  ECHO    Within each configuration directory we expect a file called 
-  ECHO    build.properties which should point to the property and options file 
+  ECHO    Within each configuration directory we expect a file called
+  ECHO    build.properties which should point to the property and options file
   ECHO    needed for the deploy process.
   ECHO.
   ECHO    In general these files will be in the same directory as build.properties.
