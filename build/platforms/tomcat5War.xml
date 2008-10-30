@@ -19,5 +19,7 @@
           overwrite="yes" >
       <filterset refid="property.filters" />
     </copy>
+
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.log4j}"/>
   </target>
 </project>
