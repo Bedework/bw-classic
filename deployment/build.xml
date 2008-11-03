@@ -156,9 +156,30 @@
       <fileset dir="${app.root.dir}/resources/bedework"/>
     </copy>
 
-    <!-- copy libs that the application server needs -->
-    <antcall target="deploy.appserver.jdbcdriver" inheritrefs="true" />
-    <antcall target="deploy.appserver.javatools" inheritrefs="true" />
+    <!-- copy jdbc jar so datasources work -->
+    <if>
+      <available file="${org.bedework.global.ext.lib}/jdbc" type="dir" />
+      <then>
+        <!-- jdbc drivers -->
+        <copy todir="${appserver.lib.dir}" flatten="yes" >
+          <!-- local jdbc drivers -->
+          <fileset dir="${org.bedework.global.ext.lib}/jdbc">
+            <include name="*.jar"/>
+          </fileset>
+        </copy>
+      </then>
+      <else>
+        <!-- Include the quickstart jdbc driver -->
+        <copy todir="${appserver.lib.dir}" file="${org.bedework.appjar.hsqldb}"/>
+      </else>
+    </if>
+
+    <if>
+      <available file="${java.tools.jar}" />
+      <then>
+        <copy todir="${appserver.lib.dir}" file="${java.tools.jar}"/>
+      </then>
+    </if>
   </target>
 
   <!-- =================================================================
@@ -172,18 +193,6 @@
   <target name="cp.xalan" if="xalan.in.tomcat.common.endorsed">
     <copy file="${org.bedework.default.lib}/xalan.jar"
           todir="${appserver.endorsed.dir}"/>
-  </target>
-
-  <target name="deploy.appserver.jdbcdriver"
-          if="appserver.jdbcdriver.jar" >
-    <!-- copy jdbc jar so datasources work -->
-    <copy todir="${appserver.lib.dir}" file="${appserver.jdbcdriver.jar}"/>
-  </target>
-
-  <target name="deploy.appserver.javatools"
-          if="java.tools.jar" >
-    <!-- copy tools jar so jsps work -->
-    <copy todir="${appserver.lib.dir}" file="${java.tools.jar}"/>
   </target>
 
   <!-- =================================================================

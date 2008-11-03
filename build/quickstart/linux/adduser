@@ -89,9 +89,9 @@ CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
 ant_home_def="-Dant.home=$ANT"
 ant_class_def="org.apache.tools.ant.launch.Launcher"
 
-adduser_defs="-Dorg.bedework.adduser.account=$account"
-adduser_defs="$adduser_defs -Dorg.bedework.adduser.firstname=$firstname"
-adduser_defs="$adduser_defs -Dorg.bedework.adduser.lastname=$lastname"
-adduser_defs="$adduser_defs -Dorg.bedework.adduser.password=$password"
+adduser_defs="-Dorg.bedework.directory.account=$account"
+adduser_defs="$adduser_defs -Dorg.bedework.directory.firstname=$firstname"
+adduser_defs="$adduser_defs -Dorg.bedework.directory.lastname=$lastname"
+adduser_defs="$adduser_defs -Dorg.bedework.directory.password=$password"
 
 $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_home_def $adduser_defs $ant_class_def addUser

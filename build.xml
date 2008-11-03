@@ -691,25 +691,41 @@
   <target name="initDir" depends="init"
           description="Build and run directory init">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-           target="initDir" />
+           target="initDir" >
+      <propertyset>
+        <propertyref prefix="org.bedework.directory."/>
+      </propertyset>
+    </ant>
   </target>
 
   <target name="addUser" depends="init"
           description="Build and run directory tools to add a user">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-           target="addUser" />
+           target="addUser" >
+      <propertyset>
+        <propertyref prefix="org.bedework.directory."/>
+      </propertyset>
+    </ant>
   </target>
 
   <target name="addGroup" depends="init"
           description="Build and run directory tools to add a group">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-           target="addGroup" />
+           target="addGroup" >
+      <propertyset>
+        <propertyref prefix="org.bedework.directory."/>
+      </propertyset>
+    </ant>
   </target>
 
   <target name="addGroupMember" depends="init"
           description="Build and run directory tools to add a group member">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-           target="addGroupMember" />
+           target="addGroupMember" >
+      <propertyset>
+        <propertyref prefix="org.bedework.directory."/>
+      </propertyset>
+    </ant>
   </target>
 
   <!-- =================================================================

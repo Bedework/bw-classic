@@ -96,26 +96,24 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-lang}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-ssl}"/>
 
-    <!-- This jdbc stuff needs fixing -->
+    <!-- jdbc stuff -->
 
-    <!-- jdbc drivers -->
-    <copy todir="${app.dest.lib}" flatten="yes" >
-      <!-- local jdbc drivers -->
-      <fileset dir="${org.bedework.jdbc.lib}">
-        <include name="*.jar"/>
-      </fileset>
-    </copy>
-
-    <!-- add the jdbcdriver if defined -->
     <if>
-      <isset property="propval.app.jdbcdriver.jar"/>
+      <available file="${org.bedework.global.ext.lib}/jdbc" type="dir" />
       <then>
-        <copy todir="${app.dest.lib}" file="${propval.app.jdbcdriver.jar}"/>
+        <!-- jdbc drivers -->
+        <copy todir="${app.dest.lib}" flatten="yes" >
+          <!-- local jdbc drivers -->
+          <fileset dir="${org.bedework.global.ext.lib}/jdbc">
+            <include name="*.jar"/>
+          </fileset>
+        </copy>
       </then>
+      <else>
+        <!-- Include the quickstart jdbc driver -->
+        <copy todir="${app.dest.lib}" file="${org.bedework.appjar.hsqldb}"/>
+      </else>
     </if>
-
-    <!-- Include the quickstart jdbc driver -->
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.hsqldb}"/>
 
     <copy todir="${app.dest.classes}">
       <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/properties" />

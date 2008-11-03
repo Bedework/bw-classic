@@ -56,8 +56,8 @@ CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
 ant_home_def="-Dant.home=$ANT"
 ant_class_def="org.apache.tools.ant.launch.Launcher"
 
-addgroup_defs="-Dorg.bedework.adduser.group=$group"
-addgroup_defs="$addgroup_defs -Dorg.bedework.adduser.group.member=$groupmember"
+addgroup_defs="-Dorg.bedework.directory.group=$group"
+addgroup_defs="$addgroup_defs -Dorg.bedework.directory.group.member=$groupmember"
 
 $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_home_def $addgroup_defs $ant_class_def addGroup
 

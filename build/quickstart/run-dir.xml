@@ -24,7 +24,7 @@
 
   <target name="dirstart" depends="run.init"
           description="starts the directory server">
-    <echo message="Starting directory"/>
+    <echo message="Starting directory in ${org.bedework.directory.dir}"/>
     <java fork="true" dir="${org.bedework.directory.dir}"
           classname="org.apache.directory.server.UberjarMain">
       <classpath>
@@ -48,9 +48,25 @@
     <echo message="Starting dstool"/>
     <java fork="true" dir="${org.bedework.directory.dir}"
           jar="${org.bedework.directory.dir}/bin/apacheds-tools.jar">
-      <arg value="-i ${org.bedework.directory.dir}"/>
+      <arg value="install-path ${org.bedework.directory.dir}"/>
       <arg value="--configuration" />
       <arg value="--help" />
+    </java>
+  </target>
+
+  <!-- =================================================================
+       The "dirstop" target runs the directory server tool to shut down the
+       directory server.
+       ================================================================= -->
+
+  <target name="dirstop" depends="run.init"
+          description="Runs the directory tool">
+    <echo message="Starting dstool to shut down directory"/>
+    <java fork="true" dir="${org.bedework.directory.dir}"
+          jar="${org.bedework.directory.dir}/bin/apacheds-tools.jar">
+      <arg value="graceful" />
+      <arg line="--install-path ${org.bedework.directory.dir}"/>
+      <arg value="--configuration" />
     </java>
   </target>
 
@@ -72,13 +88,13 @@
 
   <target name="addGroup" depends="run.init"
           description="Build and run directory tools to add a group">
-    <ant antfile="${bedework.build.file}" inheritall="false"
+    <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="addGroup" />
   </target>
 
   <target name="addGroupMember" depends="run.init"
           description="Build and run directory tools to add a group member">
-    <ant antfile="${bedework.build.file}" inheritall="false"
+    <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="addGroupMember" />
   </target>
 
@@ -99,4 +115,22 @@
       </classpath>
     </java>
   </target>
+
+  <macrodef name="addBedeworkUser">
+    <attribute name="account"/>
+    <attribute name="firstName" default="first" />
+    <attribute name="lastName" default="last"/>
+    <attribute name="password" />
+    <sequential>
+      <var name="org.bedework.directory.account" value="@{account}" />
+      <var name="org.bedework.directory.firstname"  value="@{firstName}" />
+      <var name="org.bedework.directory.lastname"  value="@{lastName}" />
+      <var name="org.bedework.directory.password"  value="@{password}" />
+
+      <echo message="======== Add user ${org.bedework.directory.account} =======" />
+
+      <ant antfile="${bedework.build.file}" inheritrefs="true"
+             target="addUser" />
+    </sequential>
+  </macrodef>
 </project>
