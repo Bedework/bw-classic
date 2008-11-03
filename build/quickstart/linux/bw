@@ -37,6 +37,14 @@ usage() {
   echo ""
 }
 
+errorUsage() {
+  echo "*******************************************************"
+  echo "Error: $1"
+  echo "*******************************************************"
+  usage
+  exit 1
+}
+
 saveddir=`pwd`
 
 export QUICKSTART_HOME=$saveddir
@@ -48,6 +56,11 @@ bwc=default
 BWCONFIG=
 offline=
 quickstart=
+
+if [ "$1" = "" ] ; then
+  usage
+  exit 1
+fi
 
 while [ "$1" != "" ]
 do
@@ -90,10 +103,7 @@ done
 
 if [ "$quickstart" != "" ] ; then
   if [ "$BWCONFIGS" != "" ] ; then
-    echo "*******************************************************"
-    echo "Error: Cannot specify both -quickstart and -bwchome"
-    echo "*******************************************************"
-    exit 1
+    errorUsage "Cannot specify both -quickstart and -bwchome"
   fi
 
   BWCONFIGS=$QUICKSTART_HOME/bedework/config/bwbuild
@@ -105,17 +115,11 @@ export BEDEWORK_CONFIGS_HOME=$BWCONFIGS
 export BEDEWORK_CONFIG=$BWCONFIGS/$bwc
 
 if [ ! -f "$BEDEWORK_CONFIG/build.properties" ] ; then
-  echo "*******************************************************"
-  echo "Error: Configuration $BEDEWORK_CONFIG does not exist or is not a bedework configuration."
-  echo "*******************************************************"
-  exit 1
+  errorUsage "Configuration $BEDEWORK_CONFIG does not exist or is not a bedework configuration."
 fi
 
 if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
-  echo "*******************************************************"
-  echo "Error: JAVA_HOME is not defined correctly for bedework."
-  echo "*******************************************************"
-  exit 1
+  errorUsage "JAVA_HOME is not defined correctly for bedework."
 fi
 
 # Make available for ant

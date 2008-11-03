@@ -1,7 +1,7 @@
 #! /bin/sh
 
 #
-# This file is included by the quickstart script file "adduser" so that it can live
+# This file is included by the quickstart script file "bwadduser" so that it can live
 # within the svn repository.
 #
 
@@ -95,7 +95,3 @@ adduser_defs="$adduser_defs -Dorg.bedework.adduser.lastname=$lastname"
 adduser_defs="$adduser_defs -Dorg.bedework.adduser.password=$password"
 
 $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_home_def $adduser_defs $ant_class_def addUser
-
-
-
-
