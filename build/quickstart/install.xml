@@ -72,7 +72,9 @@
 
     <echo message="Creating a new directory for the quickstart" />
     <parallel>
-      <antcall target="dirstart" inheritrefs="true" />
+      <daemons>
+        <antcall target="dirstart" inheritrefs="true" />
+      </daemons>
       <sequential>
         <sleep seconds="10" />
         <antcallback target="initDir" inheritrefs="true"
@@ -92,15 +94,7 @@
 
               <input message="Continue with adding users/groups? yes/no"
                      addproperty="org.bedework.install.dirinit.reply" />
-
-              <if>
-                <not>
-                  <equals arg1="${org.bedework.install.dirinit.reply}" arg2="yes" />
-                </not>
-                <then>
-                  <fail />
-                </then>
-              </if>
+              <echo message="" />
             </then>
           </elseif>
           <else>
@@ -112,32 +106,32 @@
         <if>
           <equals arg1="${org.bedework.install.dirinit.reply}" arg2="yes" />
           <then>
-    <echo message="======== super user info =======" />
+            <echo message="======== super user info =======" />
 
-    <input message="Account name for superuser"
-           defaultvalue="caladmin"
-           addproperty="org.bedework.install.superuser.account" />
+            <input message="Account name for superuser"
+                   defaultvalue="caladmin"
+                   addproperty="org.bedework.install.superuser.account" />
 
-    <input message="Account password for superuser"
-           addproperty="org.bedework.install.superuser.password" />
+            <input message="Account password for superuser"
+                   addproperty="org.bedework.install.superuser.password" />
 
-    <echo message="======== Administrative user info =======" />
+            <echo message="======== Administrative user info =======" />
 
-    <input message="Account name for an administrative user"
-           defaultvalue="calowner01"
-           addproperty="org.bedework.install.admin.account" />
+            <input message="Account name for an administrative user"
+                   defaultvalue="calowner01"
+                   addproperty="org.bedework.install.admin.account" />
 
-    <input message="Account password for an administrative user"
-           addproperty="org.bedework.install.admin.password" />
+            <input message="Account password for an administrative user"
+                   addproperty="org.bedework.install.admin.password" />
 
-    <echo message="======== personal calendar user info =======" />
+            <echo message="======== personal calendar user info =======" />
 
-    <input message="Account name for a test user"
-           defaultvalue="testuser01"
-           addproperty="org.bedework.install.testuser.account" />
+            <input message="Account name for a test user"
+                   defaultvalue="testuser01"
+                   addproperty="org.bedework.install.testuser.account" />
 
-    <input message="Account password for test user"
-           addproperty="org.bedework.install.testuser.password" />
+            <input message="Account password for test user"
+                   addproperty="org.bedework.install.testuser.password" />
 
             <echo message="======== Create superuser =======" />
 
@@ -181,4 +175,17 @@
       </then>
     </if>
   </target>
-</project>
+
+  <macrodef name="initDirectory">
+    <sequential>
+      <var name="org.bedework.directory.account" value="@{account}" />
+      <var name="org.bedework.directory.firstname"  value="@{firstName}" />
+      <var name="org.bedework.directory.lastname"  value="@{lastName}" />
+      <var name="org.bedework.directory.password"  value="@{password}" />
+
+      <echo message="======== Add user ${org.bedework.directory.account} =======" />
+
+      <ant antfile="${bedework.build.file}" inheritrefs="true"
+             target="addUser" />
+    </sequential>
+  </macrodef></project>

@@ -76,8 +76,9 @@
 
   <target name="initDir" depends="run.init"
           description="Build and run directory init">
-    <ant antfile="${bedework.build.file}" inheritrefs="true"
-           target="initDir" />
+    <antfetch antfile="${bedework.build.file}" inheritrefs="true"
+              target="initDir"
+              return="org.bedework.directory.init.status" />
   </target>
 
   <target name="addUser" depends="run.init"
