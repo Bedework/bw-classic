@@ -14,7 +14,7 @@ usage() {
   echo "   Invokes ant to build the bedework tools then uses that tool to add"
   echo "   a group to the directory."
   echo ""
-  echo "   The first group member is required"
+  echo "   The first group member is required."
   echo ""
 }
 
@@ -46,7 +46,7 @@ fi
 
 if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
   echo "*******************************************************"
-  echo "Error: JAVA_HOME is not defined correctly for bedework."
+  echo "Error: JAVA_HOME is not defined correctly for Bedework."
   echo "*******************************************************"
   exit 1
 fi
