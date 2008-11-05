@@ -11,7 +11,7 @@ ANT_HOME=`cd "$ANT_HOME" && pwd`
 usage() {
   echo "  $PRG help | ? | group groupmember"
   echo ""
-  echo "   Invokes ant to build the bedework tools then uses that tool to add"
+  echo "   Invokes ant to build the Bedework tools then uses that tool to add"
   echo "   a group to the directory."
   echo ""
   echo "   The first group member is required."
@@ -53,7 +53,7 @@ fi
 
 CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
 
-ant_home_def="-Dant.home=$ANT"
+ant_home_def="-Dant.home=$ANT_HOME"
 ant_class_def="org.apache.tools.ant.launch.Launcher"
 
 addgroup_defs="-Dorg.bedework.directory.group=$group"

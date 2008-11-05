@@ -15,11 +15,11 @@ SETLOCAL
   SET QUICKSTART_HOME=%saveddir%
   SET ANT_HOME=%QUICKSTART_HOME%\apache-ant-1.7.0
 
-  IF NOT "%JAVA_HOME%empty"=="empty" GOTO javaOk
+  IF NOT "%JAVA_HOME%empty" == "empty" GOTO javaOk
   ECHO    *******************************************************
-  ECHO    Error: JAVA_HOME is not defined correctly for bedework.
+  ECHO    Error: JAVA_HOME is not defined correctly for Bedework.
   ECHO    *******************************************************
-  GOTO:usage
+  GOTO usage
 
 :javaOk
   SET CLASSPATH=%ANT_HOME%\lib\ant-launcher.jar
@@ -35,7 +35,7 @@ SETLOCAL
   ECHO.
   ECHO    %PRG%
   ECHO.
-  ECHO    Invokes ant to build the bedework tools then uses that tool to
+  ECHO    Invokes ant to build the Bedework tools then uses that tool to
   ECHO    initialise the directory.
   ECHO.
   ECHO.

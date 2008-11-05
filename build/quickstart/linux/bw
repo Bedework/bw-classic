@@ -25,7 +25,7 @@ usage() {
   echo "     -offline     Build without atempting to retrieve library jars"
   echo "     target       Ant target to execute"
   echo ""
-  echo "   Invokes ant to build or deploy the bedework system. Uses a configuration"
+  echo "   Invokes ant to build or deploy the Bedework system. Uses a configuration"
   echo "   directory which contains one directory per configuration."
   echo ""
   echo "   Within each configuration directory we expect a file called build.properties"

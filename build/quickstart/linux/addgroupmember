@@ -11,7 +11,7 @@ ANT_HOME=`cd "$ANT_HOME" && pwd`
 usage() {
   echo "  $PRG help | ? | group account"
   echo ""
-  echo "   Invokes ant to build the bedework tools then uses that tool to add"
+  echo "   Invokes ant to build the Bedework tools then uses that tool to add"
   echo "   a group member to the given group in the directory."
   echo ""
 }
@@ -44,14 +44,14 @@ fi
 
 if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
   echo "*******************************************************"
-  echo "Error: JAVA_HOME is not defined correctly for bedework."
+  echo "Error: JAVA_HOME is not defined correctly for Bedework."
   echo "*******************************************************"
   exit 1
 fi
 
 CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
 
-ant_home_def="-Dant.home=$ANT"
+ant_home_def="-Dant.home=$ANT_HOME"
 ant_class_def="org.apache.tools.ant.launch.Launcher"
 
 addgroup_defs="-Dorg.bedework.directory.group=$group"

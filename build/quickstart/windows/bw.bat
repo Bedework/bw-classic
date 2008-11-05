@@ -73,14 +73,15 @@ REM    GOTO:EOF
 
   IF EXIST "%BEDEWORK_CONFIG%\build.properties" GOTO foundBuildProperties
   ECHO *******************************************************
-  ECHO Error: Configuration %BEDEWORK_CONFIG% does not exist or is not a bedework configuration.
+  ECHO Error: Configuration %BEDEWORK_CONFIG%
+  ECHO does not exist or is not a Bedework configuration.
   ECHO *******************************************************
   GOTO:EOF
 :foundBuildProperties
 
   IF NOT "%JAVA_HOME%empty"=="empty" GOTO javaOk
   ECHO *******************************************************
-  ECHO Error: JAVA_HOME is not defined correctly for bedework.
+  ECHO Error: JAVA_HOME is not defined correctly for Bedework.
   ECHO *******************************************************
   GOTO:EOF
 :javaOk
@@ -124,7 +125,7 @@ GOTO doneWithArgs
   ECHO      -offline     Build without atempting to retrieve library jars
   ECHO      target       Ant target to execute
   ECHO.
-  ECHO    Invokes ant to build or deploy the bedework system. Uses a configuration
+  ECHO    Invokes ant to build or deploy the Bedework system. Uses a configuration
   ECHO    directory which contains one directory per configuration.
   ECHO.
   ECHO    Within each configuration directory we expect a file called

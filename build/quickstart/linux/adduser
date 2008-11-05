@@ -11,7 +11,7 @@ ANT_HOME=`cd "$ANT_HOME" && pwd`
 usage() {
   echo "  $PRG help | ? | account firstname lastname [password]"
   echo ""
-  echo "   Invokes ant to build the bedework tools then uses that tool to add"
+  echo "   Invokes ant to build the Bedework tools then uses that tool to add"
   echo "   an account in the directory."
   echo ""
   echo "   firstname and lastname are required"
@@ -79,7 +79,7 @@ done
 
 if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
   echo "*******************************************************"
-  echo "Error: JAVA_HOME is not defined correctly for bedework."
+  echo "Error: JAVA_HOME is not defined correctly for Bedework."
   echo "*******************************************************"
   exit 1
 fi

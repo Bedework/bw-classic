@@ -1,5 +1,5 @@
-::  This file is included by the quickstart script file "addgroup.bat" so that
-::  we may keep this script under version control in the svn repository.
+::  This file is included by the quickstart script file "addgroupmember.bat"
+::  so that we may keep this script under version control in the svn repository.
 
 @ECHO off
 SETLOCAL
@@ -36,7 +36,7 @@ SETLOCAL
   SET addgroup_defs=-Dorg.bedework.directory.group=%group%
   SET addgroup_defs=%addgroup_defs% -Dorg.bedework.directory.group.member=%groupmember%
 
-  "%JAVA_HOME%\bin\java" -classpath "%CLASSPATH%" %ant_home_def% %addgroup_defs% %ant_class_def% addGroup
+  "%JAVA_HOME%\bin\java" -classpath "%CLASSPATH%" %ant_home_def% %addgroup_defs% %ant_class_def% addGroupMember
   GOTO:EOF
 
 :errorUsage
@@ -48,11 +48,9 @@ SETLOCAL
   ECHO.
   ECHO    Usage:
   ECHO.
-  ECHO    %PRG% group groupmemeber
+  ECHO    %PRG% group account
   ECHO.
   ECHO    Invokes ant to build the Bedework tools then uses that tool to add
-  ECHO    a group to the directory.
-  ECHO.
-  ECHO    The first group member is required.
+  ECHO    a group member to the directory.
   ECHO.
   ECHO.
