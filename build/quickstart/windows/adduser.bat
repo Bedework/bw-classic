@@ -58,6 +58,6 @@ SETLOCAL
   ECHO    Invokes ant to build the Bedework tools then uses that tool to add
   ECHO    an account in the directory.
   ECHO.
-  ECHO    firstname and lastname are required
+  ECHO    firstname, lastname, and password are required
   ECHO.
   ECHO.
