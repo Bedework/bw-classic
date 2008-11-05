@@ -19,8 +19,8 @@ SETLOCAL
   SET groupmember=%2
 
   IF "%group%" == "help" GOTO usage
-  IF "%group%" == "" GOTO errorUsage
-  IF "%groupmember%" == "" GOTO errorUsage
+  IF "%group%empty" == "empty" GOTO errorUsage
+  IF "%groupmember%empty" == "empty" GOTO errorUsage
 
   IF NOT "%JAVA_HOME%empty" == "empty" GOTO javaOk
   ECHO    *******************************************************

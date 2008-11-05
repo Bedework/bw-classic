@@ -21,25 +21,16 @@ SETLOCAL
   SET password=%4
 
   IF "%account%" == "help" GOTO usage
-  IF "%account%" == "" GOTO errorUsage
-  IF "%firstname%" == "" GOTO errorUsage
-  IF "%lastname%" == "" GOTO errorUsage
+  IF "%account%empty" == "empty" GOTO errorUsage
+  IF "%firstname%empty" == "empty" GOTO errorUsage
+  IF "%lastname%empty" == "empty" GOTO errorUsage
+  IF "%password%empty" == "empty" GOTO errorUsage
 
   IF NOT "%JAVA_HOME%empty" == "empty" GOTO javaOk
   ECHO    *******************************************************
   ECHO    Error: JAVA_HOME is not defined correctly for Bedework.
   ECHO    *******************************************************
   GOTO usage
-
-  IF NOT %password% == "" GOTO javaOk
-  ECHO.
-  ECHO    Password:
-  SET /p password=
-  ECHO    Reenter password:
-  SET /p checkpassword=
-  IF %password% == %checkpassword% GOTO javaOk
-  ECHO    Passwords do not match
-  GOTO:EOF
 
 :javaOk
   SET CLASSPATH=%ANT_HOME%\lib\ant-launcher.jar
@@ -54,21 +45,19 @@ SETLOCAL
   GOTO:EOF
 
 :errorUsage
-  ECHO    *********************************************************
-  ECHO    Error: You must supply account, first name and last name.
-  ECHO    *********************************************************
+  ECHO    ********************************************************************
+  ECHO    Error: You must supply account, first name, last name, and password.
+  ECHO    ********************************************************************
 
 :usage
   ECHO.
   ECHO    Usage:
   ECHO.
-  ECHO    %PRG% account firstname lastname [password]
+  ECHO    %PRG% account firstname lastname password
   ECHO.
   ECHO    Invokes ant to build the Bedework tools then uses that tool to add
   ECHO    an account in the directory.
   ECHO.
   ECHO    firstname and lastname are required
-  ECHO.
-  ECHO    If the password is not supplied you will be prompted for the password.
   ECHO.
   ECHO.
