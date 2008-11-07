@@ -41,7 +41,7 @@
   <dirname property="this.build.dir" file="${ant.file}"/>
   <property name="bedework.deployment.base" location="this.build.dir" />
 
-  <import file="${build.dir}/getJar.xml"/>
+  <import file="${build.dir}/buildTools/getJar.xml"/>
 
   <import file="${this.build.dir}/appjars.xml" />
 

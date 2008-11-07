@@ -134,7 +134,7 @@
     <property name="bin.home" location="${project.home}/bin"/>
 
     <property name="build.dir" location="${project.home}/build"/>
-    <property name="buildjar" location="${build.dir}/buildjar.xml"/>
+    <property name="buildjar" location="${build.dir}/buildTools/buildjar.xml"/>
     <property name="buildsh" location="${build.dir}/buildsh.xml"/>
     <property name="buildwar" location="${build.dir}/buildwar.xml"/>
 
