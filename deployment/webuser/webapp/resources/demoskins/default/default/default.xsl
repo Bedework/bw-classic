@@ -382,6 +382,13 @@
                   /bedework/page='eventAccess'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
     </xsl:if>
+    <xsl:if test="/bedework/page='attendees'">
+      <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js"></script>
+      <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.js"></script>
+      <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.bgiframe.min.js"></script>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAttendees.js"></script>
+      <link rel="stylesheet" type="text/css" href="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.css" />
+    </xsl:if>
     <xsl:if test="/bedework/page='addEvent' or
                   /bedework/page='editEvent' or
                   /bedework/page='rdates' or
@@ -3633,8 +3640,8 @@
             <input name="uri" width="40" id="bwRaUri"/>
             <input type="submit" value="add" />
             &#160;
-            <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
-            <input type="checkbox" name="attendee" value="true" checked="checked"/> attendee
+            <input type="checkbox" name="recipient" id="bw-recipient" value="true" checked="checked"/> recipient
+            <input type="checkbox" name="attendee" id="bw-attendee" value="true" checked="checked"/> attendee
             &#160;
             Role:
             <select name="role">
