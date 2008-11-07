@@ -3637,11 +3637,11 @@
       <form name="raForm" id="recipientsAndAttendeesForm" action="{$event-attendeesForEvent}" method="post">
         <div id="raContent">
           <div id="raFields">
-            <input name="uri" width="40" id="bwRaUri"/>
+            <input type="text" name="uri" width="40" id="bwRaUri"/>
             <input type="submit" value="add" />
             &#160;
-            <input type="checkbox" name="recipient" id="bw-recipient" value="true" checked="checked"/> recipient
-            <input type="checkbox" name="attendee" id="bw-attendee" value="true" checked="checked"/> attendee
+            <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
+            <input type="checkbox" name="attendee"  value="true" checked="checked"/> attendee
             &#160;
             Role:
             <select name="role">

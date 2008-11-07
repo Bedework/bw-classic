@@ -21,23 +21,7 @@ $(document).ready(function(){
     return row[0].replace(/(<.+?>)/gi, '');
   }
 
-  $("#bw-attendee").autocomplete(entries, {
-    minChars: 0,
-    width: 310,
-    matchContains: false,
-    autoFill: false,
-    formatItem: function(row, i, max) {
-      return " \"" + row.name + "\" [" + row.address + "]";
-    },
-    formatMatch: function(row, i, max) {
-      return row.name + " " + row.address;
-    },
-    formatResult: function(row) {
-      return row.address;
-    }
-  });
-
-    $("#bw-attendee").autocomplete(entries, {
+  $("#bwRaUri").autocomplete(entries, {
     minChars: 0,
     width: 310,
     matchContains: false,
