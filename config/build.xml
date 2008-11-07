@@ -75,7 +75,7 @@ org.bedework.jdbcpw=${org.bedework.jdbcpw}
           description="Build bedework web config jar">
     <!-- ==================== Sources and classes ====================== -->
 
-    <fileset id="base.java.sources" dir="${source.home}" >
+    <fileset id="buildjar.java.sources" dir="${source.home}" >
       <include name="org/bedework/webconfig/**/*.java"/>
     </fileset>
 
@@ -107,7 +107,7 @@ org.bedework.jdbcpw=${org.bedework.jdbcpw}
           description="Build UW calendar config shell script">
     <!-- ==================== Sources and classes ====================== -->
 
-    <fileset id="base.java.sources" dir="${source.home}" >
+    <fileset id="buildjar.java.sources" dir="${source.home}" >
       <!--
       <include name="edu/rpi/cct/uwcal/config/**/*.java"/>
       -->
