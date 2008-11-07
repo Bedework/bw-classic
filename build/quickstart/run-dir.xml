@@ -81,6 +81,13 @@
               return="org.bedework.directory.init.status" />
   </target>
 
+  <target name="initDirForQuickstart" depends="run.init"
+          description="Build and run directory init">
+    <antfetch antfile="${bedework.build.file}" inheritrefs="true"
+              target="initDirForQuickstart"
+              return="org.bedework.directory.init.status" />
+  </target>
+
   <target name="addUser" depends="run.init"
           description="Build and run directory tools to add a user">
     <ant antfile="${bedework.build.file}" inheritrefs="true"

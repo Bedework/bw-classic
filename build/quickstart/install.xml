@@ -77,7 +77,7 @@
       </daemons>
       <sequential>
         <sleep seconds="10" />
-        <antcallback target="initDir" inheritrefs="true"
+        <antcallback target="initDirForQuickstart" inheritrefs="true"
                      return="org.bedework.directory.init.status" />
         <if>
           <equals arg1="${org.bedework.directory.init.status}" arg2="0" />
@@ -91,69 +91,12 @@
               <echo message="========================================================" />
               <echo message="The directory appears to be initialised already" />
               <echo message="========================================================" />
-
-              <input message="Continue with adding users/groups? yes/no"
-                     addproperty="org.bedework.install.dirinit.reply" />
-              <echo message="" />
             </then>
           </elseif>
           <else>
             <echo message="Initialisation failed" />
 
           </else>
-        </if>
-
-        <if>
-          <equals arg1="${org.bedework.install.dirinit.reply}" arg2="yes" />
-          <then>
-            <echo message="======== super user info =======" />
-
-            <input message="Account name for superuser"
-                   defaultvalue="caladmin"
-                   addproperty="org.bedework.install.superuser.account" />
-
-            <input message="Account password for superuser"
-                   addproperty="org.bedework.install.superuser.password" />
-
-            <echo message="======== Administrative user info =======" />
-
-            <input message="Account name for an administrative user"
-                   defaultvalue="calowner01"
-                   addproperty="org.bedework.install.admin.account" />
-
-            <input message="Account password for an administrative user"
-                   addproperty="org.bedework.install.admin.password" />
-
-            <echo message="======== personal calendar user info =======" />
-
-            <input message="Account name for a test user"
-                   defaultvalue="testuser01"
-                   addproperty="org.bedework.install.testuser.account" />
-
-            <input message="Account password for test user"
-                   addproperty="org.bedework.install.testuser.password" />
-
-            <echo message="======== Create superuser =======" />
-
-            <addBedeworkUser account="${org.bedework.install.superuser.account}"
-                             firstName="first"
-                             lastName="last"
-                             password="${org.bedework.install.superuser.account}" />
-
-            <echo message="======== Create administrative user =======" />
-
-            <addBedeworkUser account="${org.bedework.install.admin.account}"
-                             firstName="first"
-                             lastName="last"
-                             password="${org.bedework.install.admin.account}" />
-
-            <echo message="======== Create personal calendar user =======" />
-
-            <addBedeworkUser account="${org.bedework.install.testuser.account}"
-                             firstName="first"
-                             lastName="last"
-                             password="${org.bedework.install.testuser.account}" />
-          </then>
         </if>
 
         <antcall target="dirstop" inheritrefs="true" />
@@ -174,6 +117,34 @@
         <echo message="========================================================" />
       </then>
     </if>
+  </target>
+
+  <target name="getUserInfo">
+    <input message="Account name:"
+           addproperty="org.bedework.install.user.account" />
+
+    <input message="First name:"
+           defaultValue="First"
+           addproperty="org.bedework.install.user.firstname" />
+
+    <input message="Last name:"
+           defaultValue="Last"
+           addproperty="org.bedework.install.user.lastname" />
+
+    <input message="Account password:"
+           addproperty="org.bedework.install.user.password" />
+
+    <var name="org.bedework.install.user.info"
+         value="${org.bedework.install.user.account}" />
+
+    <var name="org.bedework.install.user.info"
+         value="${org.bedework.install.user.info} ${org.bedework.install.user.firstname}" />
+
+    <var name="org.bedework.install.user.info"
+         value="${org.bedework.install.user.info} ${org.bedework.install.user.lastname}" />
+
+    <var name="org.bedework.install.user.info"
+         value="${org.bedework.install.user.info} ${org.bedework.install.user.password}" />
   </target>
 
   <macrodef name="initDirectory">

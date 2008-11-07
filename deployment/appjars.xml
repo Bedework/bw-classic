@@ -210,6 +210,10 @@
               projecthome="${project.home}/projects/access" />
 
       <getJar lib="${org.bedework.app.lib}"
+              name="bw-tools" version="3.5"
+              projecthome="${project.home}/projects/bwtools" />
+
+      <getJar lib="${org.bedework.app.lib}"
               name="rpiutil" version="3.5"
               projecthome="${project.home}/projects/rpiutil" />
 

@@ -84,13 +84,7 @@
       <then>
         <echo message="**** ${build.jar.file} is up to date" />
       </then>
-    </if>
-
-    <if>
-      <not>
-        <isset property="build.jar.uptodate"/>
-      </not>
-      <then>
+      <else>
         <echo message="**** ${build.jar.file} needs rebuilding" />
 
         <!-- Delete jar file -->
@@ -146,7 +140,7 @@
 
         <delete dir="${jar.temp.sources}" />
         <delete dir="${jar.temp.classes}"/>
-      </then>
+      </else>
     </if>
   </target>
 </project>

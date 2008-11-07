@@ -15,6 +15,9 @@
   <property name="org.bedework.project.bedework"
             location="${basedir}" />
 
+    <property name="org.bedework.libcache.dir"
+              location="${org.bedework.project.bedework}/libcache"/>
+
   <!-- Where we put other projects -->
   <property name="org.bedework.projects"
             location="${org.bedework.project.bedework}/projects" />
@@ -134,9 +137,6 @@
     <property name="buildjar" location="${build.dir}/buildjar.xml"/>
     <property name="buildsh" location="${build.dir}/buildsh.xml"/>
     <property name="buildwar" location="${build.dir}/buildwar.xml"/>
-
-    <property name="org.bedework.libcache.dir"
-              location="${project.home}/libcache"/>
 
     <property name="org.bedework.build.caldav" value="yes" />
 
@@ -394,7 +394,10 @@
   <target name="build.access" depends="init"
           description="builds the access project">
     <ant antfile="${org.bedework.project.access}/build.xml" inheritall="false"
-           target="build-all" />
+           target="build-all" >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.access" depends="init"
@@ -412,7 +415,10 @@
   <target name="build.bwtools" depends="init"
           description="builds the bwtools project">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-           target="build-all" />
+           target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.bwtools" depends="init"
@@ -429,24 +435,17 @@
        .................................................................. -->
   <target name="build.caldav" depends="init"
           description="builds the caldav project">
-    <if>
-      <isset property="org.bedework.qs.build.caldav"/>
-      <then>
-        <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
-             target="build-all" />
-      </then>
-    </if>
+    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
+       target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.caldav" depends="init"
           description="clean the caldav project">
-    <if>
-      <isset property="org.bedework.qs.build.caldav"/>
-      <then>
-        <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
-             target="deep-clean" />
-      </then>
-    </if>
+    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
+         target="deep-clean" />
   </target>
 
   <target name="clean.build.caldav" depends="clean.caldav,build.caldav"
@@ -457,24 +456,17 @@
        .................................................................. -->
   <target name="build.caldavTest" depends="init"
           description="builds the caldavTest project">
-    <if>
-      <isset property="org.bedework.qs.build.caldav"/>
-      <then>
-        <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
-             target="build-all" />
-      </then>
-    </if>
+    <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
+         target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.caldavTest" depends="init"
           description="clean the caldavTest project">
-    <if>
-      <isset property="org.bedework.qs.build.caldav"/>
-      <then>
-        <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
-             target="deep-clean" />
-      </then>
-    </if>
+    <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
+         target="deep-clean" />
   </target>
 
   <target name="clean.build.caldavTest" depends="clean.caldavTest,build.caldavTest"
@@ -486,7 +478,10 @@
   <target name="build.calendarapi" depends="init"
           description="builds the calendar project">
     <ant antfile="${org.bedework.project.calendarapi}/build.xml" inheritall="false"
-           target="build-all" />
+           target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.calendarapi" depends="init"
@@ -504,7 +499,10 @@
   <target name="build.davutil" depends="init"
           description="builds the davutil project">
     <ant antfile="${org.bedework.project.davutil}/build.xml" inheritall="false"
-           target="build-all" />
+           target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.davutil" depends="init"
@@ -522,7 +520,10 @@
   <target name="build.dumprestore" depends="init"
           description="builds the dumprestore project">
     <ant antfile="${org.bedework.project.dumprestore}/build.xml" inheritall="false"
-           target="build-all" />
+           target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.dumprestore" depends="init"
@@ -543,7 +544,10 @@
       <isset property="org.bedework.qs.build.freebusy"/>
       <then>
         <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
-             target="build-all" />
+             target="build-all"  >
+          <property name="org.bedework.libcache.dir"
+                    location="${org.bedework.project.bedework}/libcache"/>
+        </ant>
       </then>
     </if>
   </target>
@@ -568,7 +572,10 @@
   <target name="build.rpiutil" depends="init"
           description="builds the rpiutil project">
     <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritall="false"
-           target="build-all" />
+           target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.rpiutil" depends="init"
@@ -589,7 +596,10 @@
       <isset property="org.bedework.qs.build.synchml"/>
       <then>
         <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
-             target="build-all" />
+             target="build-all"  >
+          <property name="org.bedework.libcache.dir"
+                    location="${org.bedework.project.bedework}/libcache"/>
+        </ant>
       </then>
     </if>
   </target>
@@ -614,7 +624,10 @@
   <target name="build.testsuite" depends="init"
           description="builds the testsuite project">
     <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
-         target="build-all" />
+         target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.testsuite" depends="init"
@@ -632,7 +645,10 @@
   <target name="build.webapps" depends="init"
           description="builds the webapps project">
     <ant antfile="${org.bedework.project.webapps}/build.xml" inheritall="false"
-           target="build-all" />
+           target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.webapps" depends="init"
@@ -649,24 +665,17 @@
        .................................................................. -->
   <target name="build.webdav" depends="init"
           description="builds the webdav project">
-    <if>
-      <isset property="org.bedework.qs.build.caldav"/>
-      <then>
-        <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
-             target="build-all" />
-      </then>
-    </if>
+    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
+         target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
   </target>
 
   <target name="clean.webdav" depends="init"
           description="cleans the webdav project">
-    <if>
-      <isset property="org.bedework.qs.build.caldav"/>
-      <then>
-        <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
-             target="deep-clean" />
-      </then>
-    </if>
+    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
+         target="deep-clean" />
   </target>
 
   <target name="clean.build.webdav" depends="clean.webdav,build.webdav"
@@ -696,6 +705,21 @@
       <propertyset>
         <propertyref prefix="org.bedework.directory."/>
       </propertyset>
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </antfetch>
+  </target>
+
+  <target name="initDirForQuickstart" depends="init"
+          description="Build and run directory tool to initialise a quickstart system">
+    <antfetch antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
+              target="initDirForQuickstart"
+              return="org.bedework.directory.init.status" >
+      <propertyset>
+        <propertyref prefix="org.bedework.directory."/>
+      </propertyset>
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
     </antfetch>
   </target>
 
@@ -706,6 +730,8 @@
       <propertyset>
         <propertyref prefix="org.bedework.directory."/>
       </propertyset>
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
     </ant>
   </target>
 
@@ -716,6 +742,8 @@
       <propertyset>
         <propertyref prefix="org.bedework.directory."/>
       </propertyset>
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
     </ant>
   </target>
 
@@ -726,6 +754,8 @@
       <propertyset>
         <propertyref prefix="org.bedework.directory."/>
       </propertyset>
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
     </ant>
   </target>
 
