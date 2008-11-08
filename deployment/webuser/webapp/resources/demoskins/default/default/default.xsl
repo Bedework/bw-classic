@@ -382,13 +382,13 @@
                   /bedework/page='eventAccess'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
     </xsl:if>
-    <xsl:if test="/bedework/page='attendees'">
+    <!-- xsl:if test="/bedework/page='attendees'">
       <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js"></script>
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.js"></script>
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.bgiframe.min.js"></script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAttendees.js"></script>
       <link rel="stylesheet" type="text/css" href="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.css" />
-    </xsl:if>
+    </xsl:if -->
     <xsl:if test="/bedework/page='addEvent' or
                   /bedework/page='editEvent' or
                   /bedework/page='rdates' or
