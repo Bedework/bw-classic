@@ -24,6 +24,8 @@
 
     <property name="org.bedework.use.dojo" value="true" />
 
+    <property name="org.bedework.use.jquery" value="true" />
+
     <property name="common.war.name"
               value="${org.bedework.global.build.common.context.war.name}" />
     <property name="common.dest.war"
@@ -59,6 +61,16 @@
             <!-- Add dojo -->
             <copy todir="${common.dest.war}/javascript/dojo">
               <fileset dir="${common.resources.dir}/javascript/${org.bedework.dojo.dir}" />
+            </copy>
+          </then>
+        </if>
+
+        <if>
+          <isset property="org.bedework.use.jquery" />
+          <then>
+            <!-- Add jquery -->
+            <copy todir="${common.dest.war}/javascript/jquery">
+              <fileset dir="${common.resources.dir}/javascript/${org.bedework.jquery.dir}" />
             </copy>
           </then>
         </if>

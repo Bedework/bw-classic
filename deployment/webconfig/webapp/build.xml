@@ -21,6 +21,8 @@
 
     <property name="org.bedework.use.dojo" value="true" />
 
+    <property name="org.bedework.use.jquery" value="true" />
+
     <!-- Flag as struts -->
     <property name="org.bedework.strutsapp" value="true" />
 
