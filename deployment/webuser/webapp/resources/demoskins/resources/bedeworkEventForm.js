@@ -601,5 +601,16 @@ function setRdateDateTime(formObj) {
   }
 }
 
+/* jQuery Features */
+
+$(document).ready(function(){
+
+  $.datepicker.setDefaults({
+    showOn: "both",
+    buttonImageOnly: false
+  })
+
+});
+
 
 

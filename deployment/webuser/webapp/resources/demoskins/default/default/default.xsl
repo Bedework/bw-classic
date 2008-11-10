@@ -393,21 +393,38 @@
                   /bedework/page='editEvent' or
                   /bedework/page='rdates' or
                   /bedework/page='calendarListForExport'">
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
-      <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkXProperties.js">&#160;</script>
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
+
       <xsl:choose>
         <xsl:when test="$portalFriendly = 'true'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
           <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
         </xsl:when>
         <xsl:otherwise>
-          <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
-          <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkDojo.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/themes/flora/flora.datepicker.css"/>
+          <script type="text/javascript">
+            <xsl:comment>
+            $.datepicker.setDefaults({
+              constrainInput: true,
+              dateFormat: "yy-mm-dd",
+              showOn: "both",
+              buttonImage: "<xsl:value-of select='$resourcesRoot'/>/resources/calIcon.gif",
+              buttonImageOnly: true,
+              gotoCurrent: true,
+              duration: ""
+            });
+            </xsl:comment>
+          </script>
+          <!-- script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkDojo.js">&#160;</script-->
         </xsl:otherwise>
       </xsl:choose>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
+      <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkXProperties.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
     </xsl:if>
     <xsl:if test="/bedework/editableAccess/access/acl/ace">
       <script type="text/javascript">
@@ -2349,10 +2366,20 @@
                     </script>
                   </xsl:when>
                   <xsl:otherwise>
-                    <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
+                    <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
                       <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
                       <xsl:text> </xsl:text>
-                    </span>
+                    </span -->
+                    <input type="text" name="bwEventWidgetStartDate" id="bwEventWidgetStartDate" size="10"/>
+                    <script language="JavaScript" type="text/javascript">
+                      <xsl:comment>
+                      $("#bwEventWidgetStartDate").datepicker({
+                        defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>)
+                      }).attr("readonly", "readonly");
+                      $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');
+                      //alert($("#bwEventWidgetStartDate").datepicker("getDate"));
+                      </xsl:comment>
+                    </script>
                     <input type="hidden" name="eventStartDate.year">
                       <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
                     </input>
@@ -4510,7 +4537,7 @@
         <tr>
           <th>Description:</th>
           <td>
-            <textarea name="calendar.description" cols="40" rows="4">
+            <textarea name="calendar.description" cols="30" rows="4">
               <xsl:value-of select="desc"/>
               <xsl:if test="normalize-space(desc) = ''">
                 <xsl:text> </xsl:text>
