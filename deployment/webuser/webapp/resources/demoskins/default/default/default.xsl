@@ -402,7 +402,7 @@
         <xsl:otherwise>
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
-          <link rel="stylesheet" href="/bedework-common/javascript/jquery/themes/flora/flora.datepicker.css"/>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/themes/ui.datepicker.css"/>
           <script type="text/javascript">
             <xsl:comment>
             $.datepicker.setDefaults({
