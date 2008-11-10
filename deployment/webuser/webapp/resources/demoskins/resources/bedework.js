@@ -170,8 +170,8 @@ function updateEventFormCalendar(newCalPath,calDisplay,calendarCollection) {
   newCalPathField.value = newCalPath;
   bwCalDisplay = document.getElementById("bwEventCalDisplay");
   bwCalDisplay.innerHTML = calDisplay;
-  if (calendarCollection != '') {
-    bwCalCollectionField = document.getElementById("bwCalCollectionField");
+  bwCalCollectionField = document.getElementById("bwCalCollectionField");
+  if (bwCalCollectionField && calendarCollection != '') {
     bwCalCollectionField.value = calendarCollection;
   }
   changeClass("calSelectWidget","invisible");
