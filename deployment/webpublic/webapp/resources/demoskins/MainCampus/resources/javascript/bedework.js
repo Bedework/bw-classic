@@ -17,13 +17,14 @@ function launchExportWidget(formId,action,name,calPath) {
 }
 function fillExportFields(formObj) {
   var startDate = new Date();
-  startDate = dojo.widget.byId("bwExportCalendarWidgetStartDate").getDate();
+  //startDate = dojo.widget.byId("bwExportCalendarWidgetStartDate").getDate();
+  startDate = $("bwExportCalendarWidgetStartDate").datepicker("getDate");
   formObj["eventStartDate.year"].value = startDate.getFullYear();
   formObj["eventStartDate.month"].value = startDate.getMonth() + 1;
   formObj["eventStartDate.day"].value = startDate.getDate();
 
   var endDate = new Date();
-  endDate = dojo.widget.byId("bwExportCalendarWidgetEndDate").getDate();
+  endDate = $("bwExportCalendarWidgetEndDate").datepicker("getDate");
   formObj["eventEndDate.year"].value = endDate.getFullYear();
   formObj["eventEndDate.month"].value = endDate.getMonth() + 1;
   formObj["eventEndDate.day"].value = endDate.getDate();
