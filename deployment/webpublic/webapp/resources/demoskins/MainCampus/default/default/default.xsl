@@ -133,7 +133,7 @@
         <xsl:if test="/bedework/page='event' or /bedework/page='calendarList' or /bedework/page='displayCalendarForExport'">
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
-          <link rel="stylesheet" href="{$resourcesRoot}/default/default/jquery.css"/>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
           <script type="text/javascript">
             <xsl:comment>
             $.datepicker.setDefaults({

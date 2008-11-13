@@ -167,8 +167,7 @@
 
   <!-- the following variable can be set to "true" or "false";
        to use jQuery widgets and fancier UI features, set to false - these are
-       not guaranteed to work in portals. Setting to true will make the
-       add/edit event form much faster, but will not support internationalization. -->
+       not guaranteed to work in portals. -->
   <xsl:variable name="portalFriendly">false</xsl:variable>
 
  <!-- BEGIN MAIN TEMPLATE -->
@@ -402,7 +401,7 @@
         <xsl:otherwise>
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
-          <link rel="stylesheet" href="{$resourcesRoot}/default/default/jquery.css"/>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
           <script type="text/javascript">
             <xsl:comment>
             $.datepicker.setDefaults({
@@ -416,8 +415,6 @@
             });
             </xsl:comment>
           </script>
-          <!-- script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
-          <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkDojo.js">&#160;</script-->
         </xsl:otherwise>
       </xsl:choose>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
