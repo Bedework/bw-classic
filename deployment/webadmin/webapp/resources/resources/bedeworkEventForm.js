@@ -25,11 +25,6 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. */
 
-dojo.require("dojo.event.*");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.DropdownDatePicker");
-dojo.require("dojo.widget.DropdownTimePicker");
-
 // ========================================================================
 // ========================================================================
 //   Language and customization
@@ -336,21 +331,23 @@ function setEventFields(formObj,portalFriendly,submitter) {
   //setAccessHow(formObj,1);
   //setAccessAcl(formObj);
 }
+
+/* Set dates based on jQuery widgets */
 function setDates(formObj) {
   var startDate = new Date();
-  startDate = dojo.widget.byId("bwEventWidgetStartDate").getDate();
+  startDate = $("#bwEventWidgetStartDate").datepicker("getDate");
   formObj["eventStartDate.year"].value = startDate.getFullYear();
   formObj["eventStartDate.month"].value = startDate.getMonth() + 1;
   formObj["eventStartDate.day"].value = startDate.getDate();
 
   var endDate = new Date();
-  endDate = dojo.widget.byId("bwEventWidgetEndDate").getDate();
+  endDate = $("#bwEventWidgetEndDate").datepicker("getDate");
   formObj["eventEndDate.year"].value = endDate.getFullYear();
   formObj["eventEndDate.month"].value = endDate.getMonth() + 1;
   formObj["eventEndDate.day"].value = endDate.getDate();
 }
 function setBedeworkXProperties(formObj,submitter) {
-  // set up specific Bedework X-Properties on event form submission
+  // Set up specific Bedework X-Properties on event form submission
   // Depends on bedeworkXProperties.js
   // Set application local x-properties here.
 
@@ -667,7 +664,9 @@ function setRecurrence(formObj) {
       case "until":
         // the following will not be adequate for recurrences smaller than a day;
         // we will need to set the time properly at that point.
-        formObj.until.value = dojo.widget.byId("bwEventWidgetUntilDate").getValue() + "T000000";
+        // Dojo is deprecated:
+        //formObj.until.value = dojo.widget.byId("bwEventWidgetUntilDate").getValue() + "T000000";
+        formObj.until.value = formObj.bwEventUntilDate.value + "T000000";
         break;
     }
   }
@@ -683,20 +682,6 @@ function setRecurrence(formObj) {
   return true;
 }
 
-function setRdateDateTime(formObj) {
-  var rdateTime = dojo.byId("bwEventWidgeRdateTime");
-  alert (rdateTime.getValue());
-  if (rdateTime.getValue() != "") {
-    /*var rdateTimeObj = rdateTime.getTime();
-    var timeString = rdateTimeObj.
-    formOjb.datetime.value += "T" +*/
-  }
-}
-
-function untilClickHandler(evt) {
-   selectRecurCountUntil('recurUntil');
-}
-
 function resetPublishBox(calSelectId) {
   // User has closed the publish box without publishing.
   // Reset the calendar select box to default value and hide the publishBox.
@@ -704,15 +689,4 @@ function resetPublishBox(calSelectId) {
   calSelect.selectedIndex = 0;
   changeClass('publishBox','invisible');
 }
-
-
-function init() {
-  if(dojo.byId("untilHolder")) {
-    var untilHolder = dojo.byId("untilHolder");
-    dojo.event.connect(untilHolder, "onclick", untilClickHandler);
-  } // else we are editing an instance of a recurrence
-}
-
-dojo.addOnLoad(init);
-
 

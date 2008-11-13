@@ -209,8 +209,9 @@
   <xsl:variable name="publicCal">/cal</xsl:variable>
 
   <!-- the following variable can be set to "true" or "false";
-       to use dojo widgets and fancier UI features, set to false - these are
-       not guaranteed to work in portals -->
+       to use jQuery widgets and fancier UI features, set to false - these are
+       not guaranteed to work in portals. Setting to true will make the
+       add/edit event form much faster, but will not support internationalization. -->
   <xsl:variable name="portalFriendly">false</xsl:variable>
 
   <!--==== MAIN TEMPLATE  ====-->
@@ -225,13 +226,33 @@
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
           <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
-          <script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script>
+          <xsl:choose>
+            <xsl:when test="$portalFriendly = 'true'">
+              <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
+              <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
+              <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
+              <link rel="stylesheet" href="{$resourcesRoot}/default/default/jquery.css"/>
+              <script type="text/javascript">
+                <xsl:comment>
+                $.datepicker.setDefaults({
+                  constrainInput: true,
+                  dateFormat: "yy-mm-dd",
+                  showOn: "both",
+                  buttonImage: "<xsl:value-of select='$resourcesRoot'/>/resources/calIcon.gif",
+                  buttonImageOnly: true,
+                  gotoCurrent: true,
+                  duration: ""
+                });
+                </xsl:comment>
+              </script>
+              <!-- script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script-->
+            </xsl:otherwise>
+          </xsl:choose>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkXProperties.js">&#160;</script>
-          <xsl:if test="$portalFriendly = 'true'">
-            <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
-            <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
-          </xsl:if>
           <script type="text/javascript">
             <xsl:comment>
             function initRXDates() {
@@ -1236,10 +1257,20 @@
                     </script>
                   </xsl:when>
                   <xsl:otherwise>
-                    <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
+                    <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
                       <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
                       <xsl:text> </xsl:text>
-                    </span>
+                    </span-->
+                    <input type="text" name="bwEventWidgetStartDate" id="bwEventWidgetStartDate" size="10"/>
+                    <script language="JavaScript" type="text/javascript">
+                      <xsl:comment>
+                      $("#bwEventWidgetStartDate").datepicker({
+                        defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>)
+                      }).attr("readonly", "readonly");
+                      $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');
+                      //alert($("#bwEventWidgetStartDate").datepicker("getDate"));
+                      </xsl:comment>
+                    </script>
                     <input type="hidden" name="eventStartDate.year">
                       <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
                     </input>
@@ -1315,10 +1346,19 @@
                       </script>
                     </xsl:when>
                     <xsl:otherwise>
-                      <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetEndDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
+                      <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetEndDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
                         <xsl:attribute name="value"><xsl:value-of select="form/end/rfc3339DateTime"/></xsl:attribute>
                         <xsl:text> </xsl:text>
-                      </span>
+                      </span-->
+                      <input type="text" name="bwEventWidgetEndDate" id="bwEventWidgetEndDate" size="10"/>
+                      <script language="JavaScript" type="text/javascript">
+                        <xsl:comment>
+                        $("#bwEventWidgetEndDate").datepicker({
+                          defaultDate: new Date(<xsl:value-of select="form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)
+                        }).attr("readonly", "readonly");
+                        $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(form/end/rfc3339DateTime,'T')"/>');
+                        </xsl:comment>
+                      </script>
                       <input type="hidden" name="eventEndDate.year">
                         <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/yearText/input/@value"/></xsl:attribute>
                       </input>
@@ -1654,10 +1694,29 @@
                             </input>
                             until
                             <span id="untilHolder">
-                              <span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
+                              <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
                                 <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
                                 <xsl:text> </xsl:text>
-                              </span>
+                              </span -->
+                              <input type="hidden" name="bwEventUntilDate" id="bwEventUntilDate" size="10"/>
+                              <input type="text" name="bwEventWidgetUntilDate" id="bwEventWidgetUntilDate" size="10" onfocus="selectRecurCountUntil('recurUntil')"/>
+                              <script language="JavaScript" type="text/javascript">
+                                <xsl:comment>
+                                $("#bwEventWidgetUntilDate").datepicker({
+                                  <xsl:choose>
+                                    <xsl:when test="form/recurrence/until">
+                                      defaultDate: new Date(<xsl:value-of select="substring(form/recurrence/until,1,4)"/>, <xsl:value-of select="number(substring(form/recurrence/until,5,2)) - 1"/>, <xsl:value-of select="substring(form/recurrence/until,7,2)"/>),
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                      defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>),
+                                    </xsl:otherwise>
+                                  </xsl:choose>
+                                  altField: "#bwEventUntilDate",
+                                  altFormat: "yymmdd"
+                                }).attr("readonly", "readonly");
+                                $("#bwEventWidgetUntilDate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');
+                                </xsl:comment>
+                              </script>
                             </span>
                           </p>
                         </div>
@@ -1892,13 +1951,23 @@
                       <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
                       store as UTC<br/>-->
                       <div class="dateFields">
-                        <input name="eventRdate.date"
+                        <!-- input name="eventRdate.date"
                                dojoType="dropdowndatepicker"
                                formatLength="medium"
                                value="today"
                                saveFormat="yyyyMMdd"
                                id="bwEventWidgeRdate"
-                               iconURL="{$resourcesRoot}/resources/calIcon.gif"/>
+                               iconURL="{$resourcesRoot}/resources/calIcon.gif"/-->
+                        <input type="text" name="eventRdate.date" id="bwEventWidgetRdate" size="10"/>
+                        <script language="JavaScript" type="text/javascript">
+                          <xsl:comment>
+                          $("#bwEventWidgetRdate").datepicker({
+                            defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>),
+                            dateFormat: "yymmdd"
+                          }).attr("readonly", "readonly");
+                          $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');
+                          </xsl:comment>
+                        </script>
                       </div>
                       <div id="rdateTimeFields" class="timeFields">
                        <select name="eventRdate.hour">

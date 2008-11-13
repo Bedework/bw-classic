@@ -40,7 +40,7 @@ var rdateDeleteStr = "remove";
 /* An rdate
  * date: String: internal date
  * time: String
- * tzid timezone id or null
+ * tzid: timezone id or null
  */
 function BwREXdate(date, time, allDay, floating, utc, tzid) {
   this.date = date;
@@ -275,7 +275,7 @@ function setDates(formObj) {
 function setBedeworkXProperties(formObj,submitter) {
   // Set up specific Bedework X-Properties on event form submission
   // Depends on bedeworkXProperties.js
-  // Set application x-properties here.
+  // Set application local x-properties here.
 
   // X-BEDEWORK-IMAGE and its parameters:
   if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {
