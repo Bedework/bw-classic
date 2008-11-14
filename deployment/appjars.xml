@@ -238,10 +238,6 @@
               projecthome="${project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-calenv" version="3.5"
-              projecthome="${project.home}/projects/calendarapi" />
-
-      <getJar lib="${org.bedework.app.lib}"
               name="bw-calfacade" version="3.5"
               projecthome="${project.home}/projects/calendarapi" />
 

@@ -248,7 +248,6 @@ ${propval.app.war.name}.context=${propval.app.context.root}
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-apiutil}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calcore}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calcorei}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calenv}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calfacade}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calsvc}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calsvci}" />

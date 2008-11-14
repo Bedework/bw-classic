@@ -79,20 +79,31 @@ trap "exit 2" 1 2 3 15
 
   echo "Pausing while the server starts"
 
-  sleep 10
+#  sleep 10
 
   echo "Getting directory information and creating entries"
 
   DIRTOOL_HOME=$BEDEWORK_HOME/projects/bwtools
   DIRTOOL_CP=$libcache/commons-codec-1.3.jar:$libcache/log4j-1.2.8.jar
   DIRTOOL_CP=$DIRTOOL_CP:$BEDEWORK_HOME/dist/bw-tools-3.5.jar
+  dirtool="$JAVA_HOME/bin/java -classpath $DIRTOOL_CP org.bedework.tools.directory.DirTool"
 
-  $JAVA_HOME/bin/java -classpath $DIRTOOL_CP org.bedework.tools.directory.DirTool -initSystem
+#  $dirtool -initSystem
 
-  echo "Enter superuser account"
   superuser=
   until [ "$superuser" != "" ] ; do
+    echo "Enter superuser account"
     read superuser
+
+    if [ "$superuser" != "" ] ; then
+      $dirtool -userExists $superuser
+      dirstat=$?
+      echo "status is $dirstat"
+      if [ "$dirstat" != "0" ] ; then
+        echo "user $superuser does not exist"
+        superuser=
+      fi
+    fi
   done
 
   echo "create data"
