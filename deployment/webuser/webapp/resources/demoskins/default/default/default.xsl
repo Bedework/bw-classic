@@ -372,6 +372,9 @@
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
+    <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
                   /bedework/page='modPrefs' or
                   /bedework/page='attendeeRespond'">
@@ -399,9 +402,6 @@
           <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
         </xsl:when>
         <xsl:otherwise>
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
-          <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
           <script type="text/javascript">
             <xsl:comment>
             $.datepicker.setDefaults({
@@ -569,10 +569,10 @@
     </ul>
 
     <h3>
-      <a href="{$subscriptions-showSubsMenu}" title="subscribe to calendars or iCal feeds">
+      <!-- a href="{$subscriptions-showSubsMenu}" title="subscribe to calendars or iCal feeds">
         subscribe
-      </a>
-      <a href="{$calendar-fetch}" title="manage calendars" class="calManageLink">
+      </a -->
+      <a href="{$calendar-fetch}" title="manage calendars and subscriptions" class="calManageLink">
         manage
       </a>
       calendars
@@ -4224,7 +4224,7 @@
 
   <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
   <xsl:template match="calendars" mode="manageCalendars">
-    <h2>Manage Calendars</h2>
+    <h2>Manage Calendars &amp; Subscriptions</h2>
     <table id="calendarTable">
       <tr>
         <td class="cals">
@@ -4300,7 +4300,7 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
+          <xsl:when test="/bedework/selectionState/selectionType = 'collections'
                           and path = /bedework/selectionState/subscriptions/subscription/calendar/path">selected</xsl:when>
           <xsl:when test="calType='2' or calType='3'">trash</xsl:when>
           <xsl:when test="calType='5'">inbox</xsl:when>
@@ -4770,13 +4770,15 @@
   </xsl:template>
 
   <xsl:template name="calendarList">
-    <h3>Managing Calendars</h3>
+    <h3>Managing Calendars &amp; Subscriptions</h3>
     <ul>
-      <li>Select an item from the calendar list on the left to modify
-      a calendar or folder.</li>
+      <li>Select an item from the calendar tree on the left to modify a<br/>
+      calendar (<img src="{$resourcesRoot}/resources/calIcon-sm.gif" width="13" height="13" alt="true" border="0"/>),
+      subscription (<img src="{$resourcesRoot}/resources/calIconAlias2-sm.gif" width="17" height="13" alt="true" border="0"/>), or
+      folder (<img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="true" border="0"/>).</li>
       <li>Select the
       <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
-      icon to add a new calendar or folder to the tree.
+      icon to add a new calendar, subscription, or folder to the tree.
         <ul>
           <li>Folders may only contain calendars and subfolders.</li>
           <li>Calendars may only contain events (and other calendar items).</li>

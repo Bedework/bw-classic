@@ -242,7 +242,7 @@ body {
 #bedework #bodyBlock td#sideBar h3 a.calManageLink {
   padding-right: 4px;
   margin-right: 4px;
-  border-right: 1px solid #aaa;
+  /*border-right: 1px solid #aaa;*/
 }
 #bedework #bodyBlock td#sideBarClosed {
   width: 1px;
