@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <!-- URL-encoding template Written by Mike J. Brown, mike@skew.org.
+       No license; use freely, but credit me if reproducing in print.
        http://skew.org/xml/stylesheets/url-encode/ -->
   <xsl:template name="url-encode">
     <xsl:param name="str"/>
