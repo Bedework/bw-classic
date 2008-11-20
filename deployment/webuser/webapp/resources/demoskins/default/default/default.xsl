@@ -584,7 +584,7 @@
     </h3>
     <!-- normal calendars -->
     <ul class="calendarTree">
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="myCalendars"/>
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3]" mode="myCalendars"/>
     </ul>
     <!-- special calendars: inbox, outbox, and trash -->
     <ul class="calendarTree">
@@ -4273,15 +4273,31 @@
     </table>
   </xsl:template>
 
+  <!--
+    Calendar templates depend heavily on calendar types:
+
+    calTypes: 0 - Folder
+              1 - Calendar
+              2 - Trash
+              3 - Deleted
+              4 - Busy
+              5 - Inbox
+              6 - Outbox
+              7 - Alias
+              8 - External subscription
+              9 - Resource collection
+  -->
+
   <xsl:template match="calendar" mode="myCalendars">
+    <!-- this template receives calType 0,1,4,7,8,9  -->
     <xsl:variable name="id" select="id"/>
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
           <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
-                          and path = /bedework/selectionState/subscriptions/subscription/calendar/path">selected</xsl:when>
-          <xsl:when test="name='Trash'">trash</xsl:when>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+                          and path = /bedework/selectionState/calendar/path">selected</xsl:when>
+          <xsl:when test="calType = 0">folder</xsl:when>
+          <xsl:when test="calType = 7">alias</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
@@ -4298,9 +4314,7 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="mySpecialCalendars">
-    <!-- calTypes: Trash = 2, Deleted = 3, Busy = 4,
-                   Inbox = 5, Outbox = 6
-                   Alias = 7, eternal subscription = 8 -->
+    <!-- this template receives calType 2,3,5,6  -->
     <xsl:variable name="id" select="id"/>
     <li>
       <xsl:attribute name="class">

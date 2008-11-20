@@ -1543,8 +1543,8 @@ display: inline;
   list-style-image: url(../../resources/glassFill-icon-view.gif);
   font-weight: bold;
 }
-#bedework  li.subscription {
-  list-style-image: url(../../resources/subIcon.gif);
+#bedework  li.alias {
+  list-style-image: url(../../resources/calIconAlias-sm.gif);
   font-style: italic;
   margin-left: 0;
   padding-left: 0;
