@@ -611,15 +611,13 @@
             <a href="{$showCalsuiteTab}">Calendar Suite</a>
           </li>
         </xsl:if>
-        <xsl:if test="/bedework/userInfo/contentAdminUser='true'">
+        <xsl:if test="/bedework/userInfo/superUser='true'">
           <li>
             <xsl:if test="/bedework/tab = 'users'">
               <xsl:attribute name="class">selected</xsl:attribute>
             </xsl:if>
             <a href="{$showUsersTab}">Users</a>
           </li>
-        </xsl:if>
-        <xsl:if test="/bedework/userInfo/superUser='true'">
           <li>
             <xsl:if test="/bedework/tab = 'system'">
               <xsl:attribute name="class">selected</xsl:attribute>
@@ -817,17 +815,17 @@
       </div>
       <ul class="adminMenu">
         <li>
-          <a href="{$subscriptions-fetch}">
+          <a href="{$subscriptions-fetch}" title="subscriptions to calendars">
             Manage subscriptions
           </a>
         </li>
         <li>
-          <a href="{$view-fetch}">
+          <a href="{$view-fetch}" title="collections of subscriptions">
             Manage views
           </a>
         </li>
         <li>
-          <a href="{$calsuite-fetchPrefsForUpdate}">
+          <a href="{$calsuite-fetchPrefsForUpdate}" title="calendar suite defaults such as viewperiod and view">
             Manage preferences
           </a>
         </li>
@@ -837,7 +835,7 @@
 
   <!--+++++++++++++++ User/Group Tab ++++++++++++++++++++-->
   <xsl:template name="tabUsers">
-    <xsl:if test="/bedework/userInfo/contentAdminUser='true'">
+    <xsl:if test="/bedework/userInfo/superUser='true'">
       <h2>Manage Users &amp; Groups</h2>
       <ul class="adminMenu">
         <xsl:if test="/bedework/userInfo/userMaintOK='true'">
