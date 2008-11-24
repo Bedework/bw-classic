@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <!-- search and replace template taken from
+       http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
+  <xsl:template name="replace">
+    <xsl:param name="string" select="''"/>
+    <xsl:param name="pattern" select="''"/>
+    <xsl:param name="replacement" select="''"/>
+    <xsl:choose>
+      <xsl:when test="$pattern != '' and $string != '' and contains($string, $pattern)">
+        <xsl:value-of select="substring-before($string, $pattern)"/>
+        <xsl:copy-of select="$replacement"/>
+        <xsl:call-template name="replace">
+          <xsl:with-param name="string" select="substring-after($string, $pattern)"/>
+          <xsl:with-param name="pattern" select="$pattern"/>
+          <xsl:with-param name="replacement" select="$replacement"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$string"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <!-- URL-encoding template Written by Mike J. Brown, mike@skew.org.
        No license; use freely, but credit me if reproducing in print.
        http://skew.org/xml/stylesheets/url-encode/ -->
