@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+<!-- UTILITY TEMPLATES -->
+
+  <xsl:template name="escapeApos">
+    <xsl:param name="str"/>
+    <xsl:variable name="apos" select='"&apos;"'/>
+    <xsl:choose>
+      <xsl:when test="contains($str, $apos)">
+         <xsl:value-of select="substring-before($str, $apos)" />
+         <xsl:text>\'</xsl:text>
+         <xsl:call-template name="escapeApos">
+            <xsl:with-param name="str" select="substring-after($str, $apos)" />
+         </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+         <xsl:value-of select="$str" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <!-- search and replace template taken from
        http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
   <xsl:template name="replace">
