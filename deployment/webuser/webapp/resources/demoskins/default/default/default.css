@@ -52,7 +52,8 @@ body {
   float: right;
   font-size: 0.8em;
 }
-#bedework div.eventSubmitButtons {
+#bedework div.eventSubmitButtons,
+#bedework div.submitButtons {
   clear: both;
   text-align: right;
   margin: 1em 0.5em;
@@ -1895,6 +1896,9 @@ display: inline;
   font-size: 0.9em;
   color: #333;
   background-color: #eee;
+}
+#bedework #subscriptionTypes {
+  font-size: 0.9em;
 }
 /*   LINKS    */
 #bedework a:link,

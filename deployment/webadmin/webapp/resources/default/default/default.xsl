@@ -42,6 +42,7 @@
   <!-- DEFINE INCLUDES -->
   <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
   <!-- URL of html resources (images, css, other html); by default this is
@@ -6498,24 +6499,6 @@
       <a href="?noxslt=yes">show XML</a> |
       <a href="?refreshXslt=yes">refresh XSLT</a>
     </div>
-  </xsl:template>
-
-  <!--==== Utility Templates ====-->
-  <xsl:template name="escapeApos">
-    <xsl:param name="str"/>
-    <xsl:variable name="apos" select='"&apos;"'/>
-    <xsl:choose>
-      <xsl:when test="contains($str, $apos)">
-         <xsl:value-of select="substring-before($str, $apos)" />
-         <xsl:text>\'</xsl:text>
-         <xsl:call-template name="escapeApos">
-            <xsl:with-param name="str" select="substring-after($str, $apos)" />
-         </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-         <xsl:value-of select="$str" />
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>

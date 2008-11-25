@@ -34,6 +34,12 @@ function changeClass(id, newClass) {
   }
   identity.className=newClass;
 }
+// set a field's value by ID
+// typically used to set the value of a hidden field
+function setField(id,val) {
+  field = document.getElementById(id);
+  field.value = val;
+}
 
 // show hide items using a checkbox
 function swapVisible(obj,id) {
@@ -175,6 +181,36 @@ function updateEventFormCalendar(newCalPath,calDisplay,calendarCollection) {
     bwCalCollectionField.value = calendarCollection;
   }
   changeClass("calSelectWidget","invisible");
+}
+// used to update a calendar subscription (alias) We must do two things: update the hidden
+// calendar input field and update the displayed text
+function updatePublicCalendarAlias(newCalPath,calDisplay,calendarCollection) {
+  calendarAliasHolder = document.getElementById("publicAliasHolder");
+  calendarAliasHolder.value = "bwcal://" + newCalPath;
+  bwCalDisplay = document.getElementById("bwPublicCalDisplay");
+  bwCalDisplay.innerHTML = "Selected calendar: <strong>" + calDisplay + "</strong>";
+}
+// set the subscription URI when creating or updating a subscription
+function setCalendarAlias(formObj) {
+  // set the aliasUri to an empty string.  Only set it if user
+  // has requested a subscription.
+  formObj.aliasUri.value == "";
+  if (formObj.type.value == "folder") {
+    formObj.calendarCollection.value = "false";
+  } else if (formObj.type.value == "subscription") {
+    switch (formObj.subType.value) {
+      case "public":
+        formObj.aliasUri.value = formObj.publicAliasHolder.value;
+        break;
+      case "user":
+        //the "/user/" string is temporary; it needs to be passed as a param.
+        formObj.aliasUri.value = "bwcal:///user/" + formObj.userIdHolder.value + "/" + formObj.userCalHolder.value;
+        break;
+      case "external":
+        formObj.aliasUri.value = formObj.aliasUriHolder.value;
+        break;
+    }
+  }
 }
 // build a uri based on user and path in the subscription form
 function setBwSubscriptionUri(formObj, publicUri) {

@@ -4525,7 +4525,7 @@
       <h2>select a calendar</h2>
       <a href="javascript:changeClass('calSelectWidget','invisible')" id="calSelectWidgetCloser" title="close">x</a>
       <ul class="calendarTree">
-        <xsl:apply-templates select="/bedework/calendars/calendar/calendar[canAlias='true']" mode="selectCalForPublicAliasCalTree"/>
+        <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
       </ul>
       <!-- Uncomment the following to use a three column format
       <xsl:variable name="topCalsCount" select="count(/bedework/calendars/calendar/calendar)"/>
@@ -4549,8 +4549,6 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
-                          and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
           <xsl:when test="name='Trash'">trash</xsl:when>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
@@ -4559,9 +4557,16 @@
       <xsl:variable name="calPath" select="path"/>
       <xsl:variable name="calDisplay" select="path"/>
       <xsl:variable name="calendarCollection" select="calendarCollection"/>
-      <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}','{$calendarCollection}')">
-        <strong><xsl:value-of select="name"/></strong>
-      </a>
+      <xsl:choose>
+        <xsl:when test="canAlias = 'true'">
+          <a href="javascript:updatePublicCalendarAlias('{$calPath}','{$calDisplay}','{$calendarCollection}')">
+            <xsl:value-of select="name"/>
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="name"/>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="selectCalForPublicAliasCalTree"/>
@@ -4571,8 +4576,8 @@
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="addCalendar">
-    <h3>Add Calendar / Folder</h3>
-    <form name="addCalForm" method="post" action="{$calendar-update}">
+    <h3>Add Calendar, Folder, or Subscription</h3>
+    <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="setCalendarAlias(this)">
       <table class="common">
         <tr>
           <th>Name:</th>
@@ -4602,40 +4607,87 @@
           </td>
         </tr>
         <tr>
-          <th>Calendar/Folder:</th>
+          <th>Type:</th>
           <td>
-            <input type="radio" value="true" name="calendarCollection" checked="checked"/> Calendar
-            <input type="radio" value="false" name="calendarCollection"/> Folder
-          </td>
-        </tr>
-        <tr>
-          <th>URL: (for external subscriptions only)</th>
-          <td>
-            <input name="aliasUri" value="" size="40"/>
-          </td>
-        </tr>
-        <tr>
-          <th>Id: (for external subscriptions only)</th>
-          <td>
-            <input name="remoteId" value="" size="40"/>
-          </td>
-        </tr>
-        <tr>
-          <th>Password: (for external subscriptions only)</th>
-          <td>
-            <input type="password" name="remotePw" value="" size="40"/>
+            <!-- we will set the value of "calendarCollection on submit.
+                 Value is false only for folders, so we default it to true here.  -->
+            <input type="hidden" value="true" name="calendarCollection"/>
+            <input type="hidden" value="" name="type" id="bwCalType"/>
+            <input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Calendar
+            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Folder
+            <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');setField('bwCalType',this.value);"/> Subscription
           </td>
         </tr>
       </table>
+      <div id="subscriptionTypes" class="invisible">
+        <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
+             on the subscription type. -->
+        <input type="hidden" name="aliasUri" value=""/>
+        <p>
+          <strong>Subscription Type:</strong><br/>
+          <input type="hidden" value="" name="subType" id="bwSubType"/>
+          <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> Public calendar
+          <input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/> User calendar
+          <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> External / URL
+        </p>
 
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input type="submit" name="addCalendar" value="Add Calendar/Folder"/>
-            <input type="submit" name="cancelled" value="cancel"/>
-          </td>
-        </tr>
-      </table>
+        <div id="subscriptionTypePublic">
+          <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>
+          <div id="bwPublicCalDisplay">
+            Select the public calendar or folder:
+          </div>
+          <ul id="publicSubscriptionTree">
+            <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
+          </ul>
+        </div>
+
+        <div id="subscriptionTypeUser" class="invisible">
+          <table class="common">
+            <tr>
+              <th>User's ID:</th>
+              <td>
+                <input type="text" name="userIdHolder" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Calendar Path:</th>
+              <td>
+                <input type="text" name="userCalHolder" value="calendar" size="40"/><br/>
+                <span class="note">E.g. "calendar" (default) or "someFolder/someCalendar"</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="invisible" id="subscriptionTypeExternal">
+          <table class="common">
+            <tr>
+              <th>URL to external calendar:</th>
+              <td>
+                <input type="text" name="aliasUriHolder" id="aliasUriHolder" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>ID (if required):</th>
+              <td>
+                <input type="text" name="remoteId" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Password (if required):</th>
+              <td>
+                <input type="password" name="remotePw" value="" size="40"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="submitButtons">
+        <input type="submit" name="addCalendar" value="Add"/>
+        <input type="submit" name="cancelled" value="cancel"/>
+      </div>
     </form>
 
     <div id="sharingBox">
