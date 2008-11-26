@@ -185,22 +185,28 @@ function updateEventFormCalendar(newCalPath,calDisplay,calendarCollection) {
 // used to update a calendar subscription (alias) We must do two things: update the hidden
 // calendar input field and update the displayed text
 function updatePublicCalendarAlias(newCalPath,calDisplay,calendarCollection) {
-  calendarAliasHolder = document.getElementById("publicAliasHolder");
-  calendarAliasHolder.value = "bwcal://" + newCalPath;
-  bwCalDisplay = document.getElementById("bwPublicCalDisplay");
+  var calendarAliasHolder = document.getElementById("publicAliasHolder");
+  calendarAliasHolder.value = newCalPath;
+  var bwCalDisplay = document.getElementById("bwPublicCalDisplay");
   bwCalDisplay.innerHTML = "Selected calendar: <strong>" + calDisplay + "</strong>";
 }
 // set the subscription URI when creating or updating a subscription
 function setCalendarAlias(formObj) {
+  if (!formObj) {
+    alert("The subscription form is not available.");
+    return false;
+  }
+
   // set the aliasUri to an empty string.  Only set it if user
   // has requested a subscription.
   formObj.aliasUri.value == "";
+
   if (formObj.type.value == "folder") {
     formObj.calendarCollection.value = "false";
   } else if (formObj.type.value == "subscription") {
     switch (formObj.subType.value) {
       case "public":
-        formObj.aliasUri.value = formObj.publicAliasHolder.value;
+        formObj.aliasUri.value = "bwcal://" + formObj.publicAliasHolder.value;
         break;
       case "user":
         //the "/user/" string is temporary; it needs to be passed as a param.
@@ -211,8 +217,10 @@ function setCalendarAlias(formObj) {
         break;
     }
   }
+  return true;
 }
 // build a uri based on user and path in the subscription form
+// DEPRECATED - use setCalendarAlias() above.
 function setBwSubscriptionUri(formObj, publicUri) {
   if (!formObj) {
     alert("The subscription form is not available.");

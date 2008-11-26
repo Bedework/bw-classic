@@ -4228,6 +4228,22 @@
   </xsl:template>
 
   <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
+
+   <!--
+    Calendar templates depend heavily on calendar types:
+
+    calTypes: 0 - Folder
+              1 - Calendar
+              2 - Trash
+              3 - Deleted
+              4 - Busy
+              5 - Inbox
+              6 - Outbox
+              7 - Alias
+              8 - External subscription
+              9 - Resource collection
+  -->
+
   <xsl:template match="calendars" mode="manageCalendars">
     <h2>Manage Calendars &amp; Subscriptions</h2>
     <table id="calendarTable">
@@ -4238,10 +4254,10 @@
             <xsl:choose>
               <xsl:when test="/bedework/page='calendarDescriptions' or
                               /bedework/page='displayCalendar'">
-                <xsl:apply-templates select="calendar[calType &lt; 2]" mode="listForDisplay"/>
+                <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForDisplay"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:apply-templates select="calendar[calType &lt; 2]" mode="listForUpdate"/>
+                <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForUpdate"/>
               </xsl:otherwise>
             </xsl:choose>
           </ul>
@@ -4273,21 +4289,6 @@
     </table>
   </xsl:template>
 
-  <!--
-    Calendar templates depend heavily on calendar types:
-
-    calTypes: 0 - Folder
-              1 - Calendar
-              2 - Trash
-              3 - Deleted
-              4 - Busy
-              5 - Inbox
-              6 - Outbox
-              7 - Alias
-              8 - External subscription
-              9 - Resource collection
-  -->
-
   <xsl:template match="calendar" mode="myCalendars">
     <!-- this template receives calType 0,1,4,7,8,9  -->
     <xsl:variable name="id" select="id"/>
@@ -4296,8 +4297,8 @@
         <xsl:choose>
           <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
                           and path = /bedework/selectionState/calendar/path">selected</xsl:when>
-          <xsl:when test="calType = 0">folder</xsl:when>
-          <xsl:when test="calType = 7">alias</xsl:when>
+          <xsl:when test="calType = '0'">folder</xsl:when>
+          <xsl:when test="calType = '7' or calType = '8'">alias</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
@@ -4307,7 +4308,9 @@
       </a>
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar[canAlias = 'true']" mode="myCalendars"/>
+          <xsl:apply-templates select="calendar[canAlias = 'true']" mode="myCalendars">
+            <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+          </xsl:apply-templates>
         </ul>
       </xsl:if>
     </li>
@@ -4324,7 +4327,7 @@
           <xsl:when test="calType='2' or calType='3'">trash</xsl:when>
           <xsl:when test="calType='5'">inbox</xsl:when>
           <xsl:when test="calType='6'">outbox</xsl:when>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:when test="calType='0'">folder</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
@@ -4369,18 +4372,20 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="listForUpdate">
+    <!-- this template receives calType 0,1,4,7,8,9 -->
     <xsl:variable name="calPath" select="encodedPath"/>
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:when test="calType = '0'">folder</xsl:when>
+          <xsl:when test="calType = '7' or calType = '8'">alias</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
       <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="update">
         <xsl:value-of select="name"/>
       </a>
-      <xsl:if test="calendarCollection='false'">
+      <xsl:if test="calType = '0'">
         <xsl:text> </xsl:text>
         <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="add a calendar or folder">
           <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
@@ -4388,8 +4393,8 @@
       </xsl:if>
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar" mode="listForUpdate">
-            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
+          <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForUpdate">
+            <xsl:sort select="name" order="ascending" case-order="upper-first"/>
           </xsl:apply-templates>
         </ul>
       </xsl:if>
@@ -4397,11 +4402,13 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="listForDisplay">
+    <!-- this template receives calType 0,1,4,7,8,9 -->
     <xsl:variable name="calPath" select="encodedPath"/>
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:when test="calType = '0'">folder</xsl:when>
+          <xsl:when test="calType = '7' or calType = '8'">alias</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
@@ -4410,8 +4417,8 @@
       </a>
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar" mode="listForDisplay">
-            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>-->
+          <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForDisplay">
+            <xsl:sort select="name" order="ascending" case-order="upper-first"/>
           </xsl:apply-templates>
         </ul>
       </xsl:if>
@@ -4612,7 +4619,8 @@
             <!-- we will set the value of "calendarCollection on submit.
                  Value is false only for folders, so we default it to true here.  -->
             <input type="hidden" value="true" name="calendarCollection"/>
-            <input type="hidden" value="" name="type" id="bwCalType"/>
+            <!-- type is defaulted to calendar.  It is changed when a typeSwitch is clicked. -->
+            <input type="hidden" value="calendar" name="type" id="bwCalType"/>
             <input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Calendar
             <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Folder
             <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');setField('bwCalType',this.value);"/> Subscription
@@ -4625,7 +4633,8 @@
         <input type="hidden" name="aliasUri" value=""/>
         <p>
           <strong>Subscription Type:</strong><br/>
-          <input type="hidden" value="" name="subType" id="bwSubType"/>
+          <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
+          <input type="hidden" value="public" name="subType" id="bwSubType"/>
           <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> Public calendar
           <input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/> User calendar
           <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> External / URL
