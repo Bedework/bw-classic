@@ -4582,8 +4582,23 @@
     </li>
   </xsl:template>
 
-  <xsl:template match="currentCalendar" mode="addCalendar">
-    <h3>Add Calendar, Folder, or Subscription</h3>
+  <xsl:template match="currentCalendar" mode="modCalendar">
+    <xsl:variable name="calPath" select="path"/>
+    <xsl:variable name="calPathEncoded" select="encodedPath"/>
+    <xsl:choose>
+      <xsl:when test="creating='true'">
+        <h3>Add Calendar, Folder, or Subscription</h3>
+      </xsl:when>
+      <xsl:when test="isSubscription='true'">
+        <h3>Modify Subscription</h3>
+      </xsl:when>
+      <xsl:when test="calendarCollection='true'">
+        <h3>Modify Calendar</h3>
+      </xsl:when>
+      <xsl:otherwise>
+        <h3>Modify Folder</h3>
+      </xsl:otherwise>
+    </xsl:choose>
     <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="setCalendarAlias(this)">
       <table class="common">
         <tr>
@@ -4710,6 +4725,9 @@
     <xsl:variable name="calPath" select="path"/>
     <xsl:variable name="calPathEncoded" select="encodedPath"/>
     <xsl:choose>
+      <xsl:when test="isSubscription='true'">
+        <h3>Modify Subscription</h3>
+      </xsl:when>
       <xsl:when test="calendarCollection='true'">
         <h3>Modify Calendar</h3>
       </xsl:when>
