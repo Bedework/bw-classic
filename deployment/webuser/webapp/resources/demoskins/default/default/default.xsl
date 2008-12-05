@@ -4297,8 +4297,13 @@
         <xsl:choose>
           <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
                           and path = /bedework/selectionState/calendar/path">selected</xsl:when>
+          <xsl:when test="isSubscription = 'true'">
+            <xsl:choose>
+              <xsl:when test="calType = '0'">aliasFolder</xsl:when>
+              <xsl:otherwise>alias</xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
           <xsl:when test="calType = '0'">folder</xsl:when>
-          <xsl:when test="calType = '7' or calType = '8'">alias</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
@@ -4377,21 +4382,26 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
+          <xsl:when test="isSubscription = 'true'">
+            <xsl:choose>
+              <xsl:when test="calType = '0'">aliasFolder</xsl:when>
+              <xsl:otherwise>alias</xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
           <xsl:when test="calType = '0'">folder</xsl:when>
-          <xsl:when test="calType = '7' or calType = '8'">alias</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
       <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="update">
         <xsl:value-of select="name"/>
       </a>
-      <xsl:if test="calType = '0'">
+      <xsl:if test="calType = '0' and isSubscription = 'false'">
         <xsl:text> </xsl:text>
         <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="add a calendar or folder">
           <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
         </a>
       </xsl:if>
-      <xsl:if test="calendar">
+      <xsl:if test="calendar and isSubscription='false'">
         <ul>
           <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForUpdate">
             <xsl:sort select="name" order="ascending" case-order="upper-first"/>
@@ -4407,8 +4417,8 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
+          <xsl:when test="isSubscription = 'true'">alias</xsl:when>
           <xsl:when test="calType = '0'">folder</xsl:when>
-          <xsl:when test="calType = '7' or calType = '8'">alias</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
@@ -4484,6 +4494,7 @@
         <xsl:choose>
           <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
                           and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
+          <xsl:when test="isSubscription = 'true'">alias</xsl:when>
           <xsl:when test="name='Trash'">trash</xsl:when>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
@@ -4557,6 +4568,7 @@
       <xsl:attribute name="class">
         <xsl:choose>
           <xsl:when test="name='Trash'">trash</xsl:when>
+          <xsl:when test="isSubscription = 'true'">alias</xsl:when>
           <xsl:when test="calendarCollection='false'">folder</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
@@ -4582,23 +4594,8 @@
     </li>
   </xsl:template>
 
-  <xsl:template match="currentCalendar" mode="modCalendar">
-    <xsl:variable name="calPath" select="path"/>
-    <xsl:variable name="calPathEncoded" select="encodedPath"/>
-    <xsl:choose>
-      <xsl:when test="creating='true'">
-        <h3>Add Calendar, Folder, or Subscription</h3>
-      </xsl:when>
-      <xsl:when test="isSubscription='true'">
-        <h3>Modify Subscription</h3>
-      </xsl:when>
-      <xsl:when test="calendarCollection='true'">
-        <h3>Modify Calendar</h3>
-      </xsl:when>
-      <xsl:otherwise>
-        <h3>Modify Folder</h3>
-      </xsl:otherwise>
-    </xsl:choose>
+  <xsl:template match="currentCalendar" mode="addCalendar">
+    <h3>Add Calendar, Folder, or Subscription</h3>
     <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="setCalendarAlias(this)">
       <table class="common">
         <tr>
@@ -4748,12 +4745,12 @@
             <xsl:value-of select="name"/>
           </td>
         </tr>
-        <tr>
+        <!-- tr>
           <th>Mailing List ID:</th>
           <td>
             <xsl:value-of select="mailListId"/>
           </td>
-        </tr>
+        </tr -->
         <tr>
           <th>Summary:</th>
           <td>
@@ -4774,45 +4771,39 @@
             </textarea>
           </td>
         </tr>
-        <tr>
-          <th>Calendar/Folder:</th>
-          <td>
-            <xsl:choose>
-              <xsl:when test="calendarCollection='true'">
-                <input type="radio" value="true" name="calendarCollection" checked="checked"/> Calendar
-                <input type="radio" value="false" name="calendarCollection"/> Folder
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="radio" value="true" name="calendarCollection"/> Calendar
-                <input type="radio" value="false" name="calendarCollection" checked="checked"/> Folder
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
-        <tr>
-          <th>URL: (for external subscriptions only)</th>
-          <td>
-            <input name="aliasUri" value="" size="40"/>
-          </td>
-        </tr>
-        <tr>
-          <th>Id: (for external subscriptions only)</th>
-          <td>
-            <input name="remoteId" value="" size="40"/>
-          </td>
-        </tr>
-        <tr>
-          <th>Password: (for external subscriptions only)</th>
-          <td>
-            <input type="password" name="remotePw" value="" size="40"/>
-          </td>
-        </tr>
+        <xsl:if test="isSubscription = 'true'">
+          <tr>
+            <th>URL:</th>
+            <td>
+              <input name="aliasUri" value="" size="40">
+                <xsl:attribute name="value"><xsl:value-of select="aliasUri"/></xsl:attribute>
+              </input>
+            </td>
+          </tr>
+          <xsl:if test="externalSub = 'true'">
+            <tr>
+              <th>Id (if required):</th>
+              <td>
+                <input name="remoteId" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Password (if required):</th>
+              <td>
+                <input type="password" name="remotePw" value="" size="40"/>
+              </td>
+            </tr>
+          </xsl:if>
+        </xsl:if>
       </table>
 
       <table border="0" id="submitTable">
         <tr>
           <td>
             <xsl:choose>
+              <xsl:when test="isSubscription='true'">
+                <input type="submit" name="updateCalendar" value="Update Subscription"/>
+              </xsl:when>
               <xsl:when test="calendarCollection='true'">
                 <input type="submit" name="updateCalendar" value="Update Calendar"/>
               </xsl:when>
@@ -4824,6 +4815,9 @@
           </td>
           <td align="right">
             <xsl:choose>
+              <xsl:when test="isSubscription='true'">
+                <input type="submit" name="delete" value="Delete Subscription"/>
+              </xsl:when>
               <xsl:when test="calendarCollection='true'">
                 <input type="submit" name="delete" value="Delete Calendar"/>
               </xsl:when>
