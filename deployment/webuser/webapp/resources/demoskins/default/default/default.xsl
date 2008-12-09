@@ -4626,6 +4626,12 @@
           </td>
         </tr>
         <tr>
+          <th>Color:</th>
+          <td>
+            <input type="text" name="calendar.color" value="" size="40"/>
+          </td>
+        </tr>
+        <tr>
           <th>Type:</th>
           <td>
             <!-- we will set the value of "calendarCollection on submit.
@@ -4639,6 +4645,10 @@
           </td>
         </tr>
       </table>
+      <div class="submitButtons">
+        <input type="submit" name="addCalendar" value="Add"/>
+        <input type="submit" name="cancelled" value="cancel"/>
+      </div>
       <div id="subscriptionTypes" class="invisible">
         <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
              on the subscription type. -->
@@ -4649,7 +4659,7 @@
           <input type="hidden" value="public" name="subType" id="bwSubType"/>
           <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> Public calendar
           <input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/> User calendar
-          <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> External / URL
+          <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> URL
         </p>
 
         <div id="subscriptionTypePublic">
@@ -4684,7 +4694,7 @@
         <div class="invisible" id="subscriptionTypeExternal">
           <table class="common">
             <tr>
-              <th>URL to external calendar:</th>
+              <th>URL to calendar:</th>
               <td>
                 <input type="text" name="aliasUriHolder" id="aliasUriHolder" value="" size="40"/>
               </td>
@@ -4705,34 +4715,33 @@
         </div>
       </div>
 
-      <div class="submitButtons">
-        <input type="submit" name="addCalendar" value="Add"/>
-        <input type="submit" name="cancelled" value="cancel"/>
-      </div>
     </form>
 
     <div id="sharingBox">
       <h3>Current Access:</h3>
       Sharing may be added to a calendar once created.
     </div>
-
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="modCalendar">
     <xsl:variable name="calPath" select="path"/>
     <xsl:variable name="calPathEncoded" select="encodedPath"/>
-    <xsl:choose>
-      <xsl:when test="isSubscription='true'">
-        <h3>Modify Subscription</h3>
-      </xsl:when>
-      <xsl:when test="calendarCollection='true'">
-        <h3>Modify Calendar</h3>
-      </xsl:when>
-      <xsl:otherwise>
-        <h3>Modify Folder</h3>
-      </xsl:otherwise>
-    </xsl:choose>
+
     <form name="modCalForm" method="post" action="{$calendar-update}">
+      <xsl:choose>
+        <xsl:when test="isSubscription='true'">
+          <h3>Modify Subscription</h3>
+          <input type="hidden" value="true" name="calendarCollection"/>
+        </xsl:when>
+        <xsl:when test="calendarCollection='true'">
+          <h3>Modify Calendar</h3>
+          <input type="hidden" value="true" name="calendarCollection"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <h3>Modify Folder</h3>
+          <input type="hidden" value="false" name="calendarCollection"/>
+        </xsl:otherwise>
+      </xsl:choose>
       <table class="common">
         <tr>
           <th class="commonHeader" colspan="2">
@@ -4769,6 +4778,14 @@
                 rendering errors when the text area is empty -->
               </xsl:if>
             </textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>Color:</th>
+          <td>
+            <input type="text" name="calendar.color" value="" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
+            </input>
           </td>
         </tr>
         <xsl:if test="isSubscription = 'true'">
@@ -4874,10 +4891,10 @@
         <ul>
           <li>Folders may only contain calendars and subfolders.</li>
           <li>Calendars may only contain events (and other calendar items).</li>
-          <li>
+          <!-- li>
             An empty calendar may be converted to a folder and vice
             versa.
-          </li>
+          </li-->
         </ul>
       </li>
     </ul>
