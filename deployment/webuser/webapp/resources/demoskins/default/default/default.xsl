@@ -4628,7 +4628,16 @@
         <tr>
           <th>Color:</th>
           <td>
-            <input type="text" name="calendar.color" value="" size="40"/>
+            <select name="calendar.color">
+              <option value="">default</option>
+              <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
+                <xsl:variable name="subColor" select="@rgb"/>
+                <xsl:variable name="subColorClass" select="."/>
+                <option value="{$subColor}" class="{$subColorClass}">
+                  <xsl:value-of select="@name"/>
+                </option>
+              </xsl:for-each>
+            </select>
           </td>
         </tr>
         <tr>
