@@ -4641,6 +4641,12 @@
           </td>
         </tr>
         <tr>
+          <th>Filter Expression:</th>
+          <td>
+            <input type="text" name="calendar.fexpr" value="" size="40"/>
+          </td>
+        </tr>
+        <tr>
           <th>Type:</th>
           <td>
             <!-- we will set the value of "calendarCollection on submit.
@@ -4794,6 +4800,14 @@
           <td>
             <input type="text" name="calendar.color" value="" size="40">
               <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
+            </input>
+          </td>
+        </tr>
+        <tr>
+          <th>Filter Expression:</th>
+          <td>
+            <input type="text" name="calendar.fexpr" value="" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="filterExpr"/></xsl:attribute>
             </input>
           </td>
         </tr>
