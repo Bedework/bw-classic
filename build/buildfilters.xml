@@ -95,12 +95,6 @@
             <!-- ???????
     <filter token="CALFILE-NAME"
             value="${propval.app.calfile.name}" /> -->
-    <filter token="ADMIN-URI"
-            value="${org.bedework.global.public.admin.uri}" />
-    <filter token="PUBEVENTS-URI"
-            value="${org.bedework.global.public.calendar.uri}" />
-    <filter token="PERSONAL-URI"
-            value="${org.bedework.global.personal.calendar.uri}" />
 
     <!--      Shell script settings            -->
 

@@ -195,7 +195,7 @@
               name="lucene-misc" version="2.0.0" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="ical4j" version="head" />
+              name="ical4j" version="head-20081217" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="portals-bridges-common" version="1.0" />

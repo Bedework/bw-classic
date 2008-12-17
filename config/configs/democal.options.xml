@@ -23,6 +23,11 @@
         <portalPlatform>your-portal</portalPlatform>
          -->
 
+        <!-- uris to cross link apps - of dubious usefulness -->
+        <publicAdminUri>/caladmin</publicAdminUri>
+        <publicCalendarUri>/cal</publicCalendarUri>
+        <personalCalendarUri>/ucal</personalCalendarUri>
+
         <module>
           <!-- A dummy module with no directory. -->
           <dir-config classname="org.bedework.calfacade.configs.DirConfigProperties">

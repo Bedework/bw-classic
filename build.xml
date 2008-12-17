@@ -103,7 +103,7 @@
   </target>
 
   <target name="init" >
-    <property name="org.bedework.qs.build.synchml" value="yes" />
+    <property name="org.bedework.qs.build.synchml" value="no" />
 
     <!-- Overriding this when invoking ant allows different user property
          files to be included e.g.
@@ -339,11 +339,16 @@
                 location="${org.bedework.projectdocs.home}/dumprestore/api" />
     </ant>
 
-    <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/synchml/api" />
-    </ant>
+    <if>
+      <isset property="org.bedework.qs.build.synchml"/>
+      <then>
+        <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
+             target="javadoc" >
+          <property name="destdir"
+                    location="${org.bedework.projectdocs.home}/synchml/api" />
+        </ant>
+      </then>
+    </if>
 
     <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
          target="javadoc" >
