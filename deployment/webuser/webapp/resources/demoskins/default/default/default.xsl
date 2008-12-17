@@ -7968,7 +7968,7 @@
               <xsl:if test="grant">
                 grant:
                 <span class="grant">
-                  <xsl:for-each select="grant/*">
+                  <xsl:for-each select="grant/privilege/*">
                     <xsl:value-of select="name(.)"/>
                     <xsl:if test="position() != last()">, </xsl:if>
                   </xsl:for-each>
@@ -7977,7 +7977,7 @@
               <xsl:if test="deny">
                 deny:
                 <span class="deny">
-                  <xsl:for-each select="deny/*">
+                  <xsl:for-each select="deny/privilege/*">
                     <xsl:value-of select="name(.)"/>
                     <xsl:if test="position() != last()">, </xsl:if>
                   </xsl:for-each>
@@ -8293,10 +8293,10 @@
  --></xsl:variable><!--
  --><xsl:variable name="aclString"><!--
    --><xsl:if test="grant"><!--
-     --><xsl:for-each select="grant/*"><xsl:call-template name="grantDenyToInternal"><xsl:with-param name="name"><xsl:value-of select="name(.)"/></xsl:with-param></xsl:call-template></xsl:for-each><!--
+     --><xsl:for-each select="grant/privilege/*"><xsl:call-template name="grantDenyToInternal"><xsl:with-param name="name"><xsl:value-of select="name(.)"/></xsl:with-param></xsl:call-template></xsl:for-each><!--
    --></xsl:if><!--
    --><xsl:if test="deny"><!--
-     --><xsl:for-each select="deny/*">-<xsl:call-template name="grantDenyToInternal"><xsl:with-param name="name"><xsl:value-of select="name(.)"/></xsl:with-param></xsl:call-template></xsl:for-each><!--
+     --><xsl:for-each select="deny/privilege/*">-<xsl:call-template name="grantDenyToInternal"><xsl:with-param name="name"><xsl:value-of select="name(.)"/></xsl:with-param></xsl:call-template></xsl:for-each><!--
    --></xsl:if><!--
  --></xsl:variable><!--
  --><xsl:variable name="inherited"><!--

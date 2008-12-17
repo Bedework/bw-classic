@@ -3616,10 +3616,10 @@
                 </xsl:choose>
               </th>
               <td>
-                <xsl:for-each select="grant/node()">
+                <xsl:for-each select="grant/privilege/node()">
                   <xsl:value-of select="name(.)"/>&#160;&#160;
                 </xsl:for-each>
-                <xsl:for-each select="deny/node()">
+                <xsl:for-each select="deny/privilege/node()">
                   <xsl:choose>
                     <xsl:when test="name(.)='all'">
                       none
@@ -4418,7 +4418,7 @@
             <xsl:if test="grant">
               grant:
               <span class="grant">
-                <xsl:for-each select="grant/*">
+                <xsl:for-each select="grant/privilege/*">
                   <xsl:value-of select="name(.)"/>
                   <xsl:if test="position() != last()">, </xsl:if>
                 </xsl:for-each>
@@ -4427,7 +4427,7 @@
             <xsl:if test="deny">
               deny:
               <span class="deny">
-                <xsl:for-each select="deny/*">
+                <xsl:for-each select="deny/privilege/*">
                   <xsl:value-of select="name(.)"/>
                   <xsl:if test="position() != last()">, </xsl:if>
                 </xsl:for-each>
@@ -5475,10 +5475,10 @@
                 </xsl:choose>
               </th>
               <td>
-                <xsl:for-each select="grant/node()">
+                <xsl:for-each select="grant/privilege/node()">
                   <xsl:value-of select="name(.)"/>&#160;&#160;
                 </xsl:for-each>
-                <xsl:for-each select="deny/node()">
+                <xsl:for-each select="deny/privilege/node()">
                   <xsl:choose>
                     <xsl:when test="name(.)='all'">
                       none
