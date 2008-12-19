@@ -267,8 +267,14 @@ body {
   margin: 3px 0;
   vertical-align: middle;
 }
+#bedework #bodyBlock td#sideBar #sideBarMenu {
+  margin: 1em;
+  padding: 0;
+}
 #bedework #bodyBlock td#sideBar #sideBarMenu li {
-  padding-bottom: 0.5em;
+  list-style: none;
+  padding: 0 0 0.5em 0;
+  margin: 0;
 }
 #bedework #myViews li {
   list-style: none;

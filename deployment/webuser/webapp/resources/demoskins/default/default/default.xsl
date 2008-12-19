@@ -615,11 +615,36 @@
 
     <h3>options</h3>
     <ul id="sideBarMenu">
-      <li><a href="{$category-initUpdate}">Manage Categories</a></li>
-      <li><a href="{$location-initUpdate}">Manage Locations</a></li>
-      <li><a href="{$prefs-fetchForUpdate}">Preferences</a></li>
-      <li><a href="{$initUpload}" title="upload event">Upload iCAL</a></li>
-      <li><a href="{$calendar-listForExport}" title="upload event">Export Calendars</a></li>
+      <li>
+        <a href="{$category-initUpdate}">Manage Categories</a>
+      </li>
+      <li>
+        <a href="{$location-initUpdate}">Manage Locations</a>
+      </li>
+      <li class="prefs">
+        <a href="{$prefs-fetchForUpdate}">
+          <img height="13" border="0" width="13"
+            src="{$resourcesRoot}/resources/prefsIcon.gif"
+            alt="upload event" />
+          Preferences
+        </a>
+      </li>
+      <li>
+        <a href="{$initUpload}" title="upload event">
+          <img height="16" border="0" width="12"
+            src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif"
+            alt="upload ical" />
+          Upload iCAL
+        </a>
+      </li>
+      <li>
+        <a href="{$calendar-listForExport}" title="upload event">
+          <img height="16" border="0" width="12"
+            src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif"
+            alt="upload event" />
+          Export Calendars
+        </a>
+      </li>
     </ul>
   </xsl:template>
 
@@ -4074,6 +4099,19 @@
 
   <!--+++++++++++++++ Categories ++++++++++++++++++++-->
   <xsl:template name="categoryList">
+    <h2>Manage Preferences</h2>
+    <ul class="submenu">
+      <li>
+        <a href="{$prefs-fetchForUpdate}">general</a>
+      </li>
+      <li class="selected">categories</li>
+      <li>
+        <a href="{$location-initUpdate}">locations</a>
+      </li>
+      <li>
+        <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
+      </li>
+    </ul>
     <h2>
       Manage Categories
       <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')" class="titleButton"/>
@@ -7054,7 +7092,15 @@
     <h2>Manage Preferences</h2>
     <ul class="submenu">
       <li class="selected">general</li>
-      <li><a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a></li>
+      <li>
+        <a href="{$category-initUpdate}">categories</a>
+      </li>
+      <li>
+        <a href="{$location-initUpdate}">locations</a>
+      </li>
+      <li>
+        <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
+      </li>
     </ul>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
@@ -7380,7 +7426,15 @@
   <xsl:template match="schPrefs">
     <h2>Manage Preferences</h2>
     <ul class="submenu">
-      <li><a href="{$prefs-fetchForUpdate}">general</a></li>
+      <li>
+        <a href="{$prefs-fetchForUpdate}">general</a>
+      </li>
+      <li>
+        <a href="{$category-initUpdate}">categories</a>
+      </li>
+      <li>
+        <a href="{$location-initUpdate}">locations</a>
+      </li>
       <li class="selected">scheduling/meetings</li>
     </ul>
 
