@@ -28,6 +28,10 @@
         <publicCalendarUri>/cal</publicCalendarUri>
         <personalCalendarUri>/ucal</personalCalendarUri>
 
+        <!-- CardDAV server locations -->
+        <publicCardDAVUri>http://localhost:8080/carddav</publicCardDAVUri>
+        <personalCardDAVUri>http://localhost:8080/ucarddav</personalCardDAVUri>
+
         <module>
           <!-- A dummy module with no directory. -->
           <dir-config classname="org.bedework.calfacade.configs.DirConfigProperties">

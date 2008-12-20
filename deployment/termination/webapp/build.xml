@@ -10,10 +10,6 @@
   <target name="init">
     <dirname property="this.dir" file="${ant.file}"/>
 
-    <property name="app.ear.file.name"
-              value="${org.bedework.global.ear.name}.ear" />
-    <property name="app.ear.file"
-              location="${dist.home}/${app.ear.file.name}" />
   </target>
 
   <target name="deploy" depends="init,build.configured" >
@@ -42,28 +38,50 @@
         </taskdef>
 
         <!-- We have to drop some of the libraries so they don't conflict -->
-        <copy toDir="${ear.dir}">
-          <fileset dir="${org.bedework.temp.dir}/earlib"
+        <copy toDir="${org.bedework.ear.dir}">
+          <fileset dir="${org.bedework.ear.templib}"
                    excludes="${org.bedework.global.ear.lib.excludes}" />
         </copy>
 
+        <echo message="outFile=${org.bedework.ear.dir}/META-INF/application.xml
+                        warDir=${org.bedework.temp.dir}/wars
+                        contexts=${org.bedework.global.context.roots}" />
+
         <applicationXml displayName="Bedework calendar suite"
-                        outFile="${ear.dir}/META-INF/application.xml"
+                        outFile="${org.bedework.ear.dir}/META-INF/application.xml"
                         warDir="${org.bedework.temp.dir}/wars"
                         contexts="${org.bedework.global.context.roots}">
-          <fileset dir="${ear.dir}">
+          <fileset dir="${org.bedework.ear.dir}">
             <include name="*.jar"/>
           </fileset>
         </applicationXml>
 
-        <manifest file="${ear.dir}/META-INF/MANIFEST.MF" />
+        <manifest file="${org.bedework.ear.dir}/META-INF/MANIFEST.MF" />
 
-        <copy toDir="${ear.dir}">
-          <fileset dir="${org.bedework.temp.wars.home}"/>
-        </copy>
+        <if>
+          <equals arg1="${org.bedework.global.ear.wars.zipped}"
+                  arg2="yes" />
+          <then>
+            <copy toDir="${org.bedework.ear.dir}">
+              <fileset dir="${dist.home}"
+                       includes="*.war" />
+            </copy>
+          </then>
+          <else>
+            <copy toDir="${org.bedework.ear.dir}">
+              <fileset dir="${org.bedework.temp.wars.home}"/>
+            </copy>
+          </else>
+        </if>
 
-        <zip destfile="${app.ear.file}"
-             basedir="${ear.dir}"/>
+        <if>
+          <equals arg1="${org.bedework.global.ear.zipped}"
+                  arg2="yes" />
+          <then>
+             <zip destfile="${org.bedework.ear.file}"
+                 basedir="${org.bedework.ear.dir}"/>
+          </then>
+        </if>
 
         <!-- copy the ear - at the moment copy the uncompressed. -->
 
@@ -73,7 +91,7 @@
             <delete dir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}" />
             <mkdir dir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}" />
             <copy todir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}">
-              <fileset dir="${ear.dir}"/>
+              <fileset dir="${org.bedework.ear.dir}"/>
             </copy>
           </then>
         </if>

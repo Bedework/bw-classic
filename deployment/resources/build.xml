@@ -113,6 +113,11 @@
             <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
           </then>
         </if>
+
+    <!-- Add the contex root to the file. Note that newline is required -->
+    <echo file="${org.bedework.global.context.roots}" append="yes">
+${propval.app.war.name}.context=${org.bedework.global.build.common.context.root}
+    </echo>
 <!--
       </then>
       <else>

@@ -174,6 +174,10 @@ public class ApplicationXmlTask extends MatchingTask {
         if (contextProps != null) {
           contextRoot = contextProps.getProperty(warName + ".context");
 
+          if (contextRoot == null) {
+            throw new BuildException("No context root defined for " + warName);
+          }
+
           if (contextRoot.length() == 0) {
             contextRoot = "/";
           }
@@ -199,8 +203,10 @@ public class ApplicationXmlTask extends MatchingTask {
 
       wtr.close();
     } catch (BuildException be) {
+      be.printStackTrace();
       throw be;
     } catch (Throwable t) {
+      t.printStackTrace();
       throw new BuildException(t);
     }
   }

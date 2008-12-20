@@ -64,6 +64,53 @@
     <property name="org.bedework.common.resources"
               location="${app.root.dir}/resources" />
 
+    <property name="org.bedework.global.build.common.context.war.name"
+              value="bw-common" />
+
+    <!-- Where we put ear stuff -->
+    <if>
+      <isset property="org.bedework.global.build.ear" />
+      <then>
+        <property name="app.ear.file.name"
+                  value="${org.bedework.global.ear.name}.ear" />
+
+        <if>
+          <equals arg1="${org.bedework.global.ear.zipped}"
+                  arg2="yes" />
+          <then>
+            <property name="org.bedework.ear.dir"
+                      location="${dist.home}/${org.bedework.global.ear.name}" />
+            <property name="org.bedework.ear.file"
+                      location="${dist.home}/${org.bedework.global.ear.name}.ear" />
+          </then>
+          <else>
+            <property name="org.bedework.ear.dir"
+                      location="${dist.home}/${org.bedework.global.ear.name}.ear" />
+          </else>
+        </if>
+
+        <property name="org.bedework.ear.templib"
+                  location="${org.bedework.ear.dir}/lib" />
+        <property name="org.bedework.ear.properties.dir"
+                  location="${org.bedework.temp.dir}/ear-properties" />
+
+        <property name="org.bedework.ear.properties.jar"
+                  location="${org.bedework.ear.dir}/bw-ear-properties.jar"/>
+
+        <delete dir="${org.bedework.ear.dir}" />
+        <mkdir dir="${org.bedework.ear.dir}" />
+
+        <delete dir="${org.bedework.ear.templib}" />
+        <mkdir dir="${org.bedework.ear.templib}" />
+
+        <delete dir="${org.bedework.ear.properties.dir}" />
+        <mkdir dir="${org.bedework.ear.properties.dir}" />
+      </then>
+    </if>
+
+    <property name="org.bedework.global.context.roots"
+              location="${org.bedework.temp.dir}/context-roots.properties" />
+
     <if>
       <not>
         <isset property="org.bedework.global.context.roots" />
