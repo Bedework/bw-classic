@@ -389,7 +389,7 @@
                 </xsl:when>
                 <xsl:when test="/bedework/page='subscriptions' or
                                 /bedework/page='modSubscription'">
-                  <xsl:apply-templates select="/bedework/subscriptions"/>
+                  <xsl:apply-templates select="/bedework/calendars" mode="subscriptions"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='views'">
                   <xsl:apply-templates select="/bedework/views" mode="viewList"/>
@@ -4457,37 +4457,99 @@
   </xsl:template>
 
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->
-  <xsl:template match="subscriptions">
-    <table id="subsTable">
+  <!--
+    Calendar and subscription templates depend heavily on calendar types:
+
+    calTypes: 0 - Folder
+              1 - Calendar
+              2 - Trash
+              3 - Deleted
+              4 - Busy
+              5 - Inbox
+              6 - Outbox
+              7 - Alias
+              8 - External subscription
+              9 - Resource collection
+  -->
+
+  <xsl:template match="calendars" mode="subscriptions">
+    <table id="calendarTable">
       <tr>
         <td class="cals">
-          <h3>Public calendars</h3>
-          <p class="smaller">
-            Select a calendar below to add a <em><strong>new</strong>
-            </em>
-            internal subscription. <!-- or
-            <a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">
-            subscribe to an external calendar</a>.-->
-          </p>
+          <h3>Subscription Tree</h3>
           <ul id="calendarTree">
-            <xsl:apply-templates select="/bedework/subscriptions/subscribe/calendars/calendar" mode="subscribe"/>
+            <xsl:apply-templates select="/bedework/publicCalendars/calendar[number(calType) = 0 or number(calType) &gt; 6]" mode="listForUpdateSubscription"/>
           </ul>
         </td>
-        <td class="subs">
+        <td class="calendarContent">
           <xsl:choose>
             <xsl:when test="/bedework/page='subscriptions'">
-              <xsl:call-template name="subscriptionList"/>
+              <xsl:call-template name="subscriptionIntro"/>
             </xsl:when>
             <xsl:when test="/bedework/creating='true'">
-              <xsl:apply-templates select="subscription" mode="addSubscription"/>
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="addSubscription"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:apply-templates select="subscription" mode="modSubscription"/>
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="modSubscription"/>
             </xsl:otherwise>
           </xsl:choose>
         </td>
       </tr>
     </table>
+  </xsl:template>
+
+  <xsl:template name="subscriptionIntro">
+    <h3>Managing Subscriptions</h3>
+    <ul>
+      <li>Select an item from the tree on the left to modify a subscription.</li>
+      <li>Select the
+      <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
+      icon to add a new subscription or folder to the tree.
+      </li>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="listForUpdateSubscription">
+    <xsl:variable name="calPath" select="encodedPath"/>
+    <xsl:variable name="itemClass">
+      <xsl:choose>
+        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:otherwise>calendar</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <li class="{$itemClass}">
+      <xsl:if test="calendarCollection='false'">
+        <!-- test the open state of the folder; if it's open,
+             build a URL to close it and vice versa -->
+        <xsl:choose>
+          <xsl:when test="open = 'true'">
+            <a href="{$subscriptions-openCloseMod}&amp;calPath={$calPath}&amp;open=false">
+              <img src="{$resourcesRoot}/resources/minus.gif" width="9" height="9" alt="close" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{$subscriptions-openCloseMod}&amp;calPath={$calPath}&amp;open=true">
+              <img src="{$resourcesRoot}/resources/plus.gif" width="9" height="9" alt="open" border="0" class="bwPlusMinusIcon"/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
+      <a href="{$subscriptions-fetchForUpdate}&amp;calPath={$calPath}" title="update">
+        <xsl:value-of select="name"/>
+      </a>
+      <xsl:if test="calendarCollection='false'">
+        <xsl:text> </xsl:text>
+        <a href="{$subscriptions-initAdd}&amp;calPath={$calPath}" title="add a calendar or folder">
+          <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
+        </a>
+      </xsl:if>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar[number(calType) = 0 or number(calType) &gt; 6]" mode="listForUpdateSubscription">
+            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>--></xsl:apply-templates>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <xsl:template match="calendar" mode="subscribe">
