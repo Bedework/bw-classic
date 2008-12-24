@@ -71,7 +71,7 @@
         Administrator removed
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.deleted.calendar'">
-        Calendar/folder deleted.
+        Item deleted.
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.deleted.category'">
         Category deleted.

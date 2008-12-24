@@ -149,7 +149,7 @@
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch/a/@href"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
   <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd/a/@href"/>
-  <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/subscriptions/subscribe/a/@href"/>
+  <xsl:variable name="subscriptions-update" select="/bedework/urlPrefixes/subscriptions/update/a/@href"/>
   <xsl:variable name="subscriptions-openCloseMod" select="/bedework/urlPrefixes/subscriptions/subOpenCloseMod/a/@href"/>
   <!-- views -->
   <xsl:variable name="view-fetch" select="/bedework/urlPrefixes/view/fetch/a/@href"/>
@@ -3394,9 +3394,9 @@
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="addCalendar">
-    <h3>Add Calendar / Folder</h3>
-    <form name="addCalForm" method="post" action="{$calendar-update}">
-      <table class="eventFormTable">
+    <h3>Add Calendar, Folder, or Subscription</h3>
+    <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="setCalendarAlias(this)">
+      <table class="common">
         <tr>
           <th>Name:</th>
           <td>
@@ -3414,61 +3414,153 @@
         <tr>
           <th>Description:</th>
           <td>
-            <textarea name="calendar.description" cols="40" rows="4">
+            <textarea name="calendar.description" cols="30" rows="4">
               <xsl:value-of select="desc"/>
+              <xsl:if test="normalize-space(desc) = ''">
+                <xsl:text> </xsl:text>
+                <!-- keep this non-breaking space to avoid browser
+                rendering errors when the text area is empty -->
+              </xsl:if>
             </textarea>
           </td>
         </tr>
         <tr>
-          <th>Calendar/Folder:</th>
+          <th>Color:</th>
           <td>
-            <xsl:choose>
-              <xsl:when test="calendarCollection='true'">
-                <input type="radio" value="true" name="calendarCollection" checked="checked"/> Calendar
-                <input type="radio" value="false" name="calendarCollection"/> Folder
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="radio" value="true" name="calendarCollection"/> Calendar
-                <input type="radio" value="false" name="calendarCollection" checked="checked"/> Folder
-              </xsl:otherwise>
-            </xsl:choose>
+            <select name="calendar.color">
+              <option value="">default</option>
+              <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
+                <xsl:variable name="subColor" select="@rgb"/>
+                <xsl:variable name="subColorClass" select="."/>
+                <option value="{$subColor}" class="{$subColorClass}">
+                  <xsl:value-of select="@name"/>
+                </option>
+              </xsl:for-each>
+            </select>
           </td>
         </tr>
-      </table>
-
-      <table border="0" id="submitTable">
         <tr>
+          <th>Filter Expression:</th>
           <td>
-            <input type="submit" name="addCalendar" value="Add Calendar/Folder"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="text" name="calendar.fexpr" value="" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Type:</th>
+          <td>
+            <!-- we will set the value of "calendarCollection on submit.
+                 Value is false only for folders, so we default it to true here.  -->
+            <input type="hidden" value="true" name="calendarCollection"/>
+            <!-- type is defaulted to calendar.  It is changed when a typeSwitch is clicked. -->
+            <input type="hidden" value="calendar" name="type" id="bwCalType"/>
+            <input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Calendar
+            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Folder
+            <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');setField('bwCalType',this.value);"/> Subscription
           </td>
         </tr>
       </table>
+      <div class="submitButtons">
+        <input type="submit" name="addCalendar" value="Add"/>
+        <input type="submit" name="cancelled" value="cancel"/>
+      </div>
+      <div id="subscriptionTypes" class="invisible">
+        <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
+             on the subscription type. -->
+        <input type="hidden" name="aliasUri" value=""/>
+        <p>
+          <strong>Subscription Type:</strong><br/>
+          <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
+          <input type="hidden" value="public" name="subType" id="bwSubType"/>
+          <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> Public calendar (alias)
+          <!-- input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/> User calendar-->
+          <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> URL
+        </p>
+
+        <div id="subscriptionTypePublic">
+          <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>
+          <div id="bwPublicCalDisplay">
+            Select the public calendar or folder:
+          </div>
+          <ul id="publicSubscriptionTree">
+            <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
+          </ul>
+        </div>
+
+        <div id="subscriptionTypeUser" class="invisible">
+          <table class="common">
+            <tr>
+              <th>User's ID:</th>
+              <td>
+                <input type="text" name="userIdHolder" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Calendar Path:</th>
+              <td>
+                <input type="text" name="userCalHolder" value="calendar" size="40"/><br/>
+                <span class="note">E.g. "calendar" (default) or "someFolder/someCalendar"</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="invisible" id="subscriptionTypeExternal">
+          <table class="common">
+            <tr>
+              <th>URL to calendar:</th>
+              <td>
+                <input type="text" name="aliasUriHolder" id="aliasUriHolder" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>ID (if required):</th>
+              <td>
+                <input type="text" name="remoteId" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Password (if required):</th>
+              <td>
+                <input type="password" name="remotePw" value="" size="40"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
     </form>
+
     <div id="sharingBox">
-      <h3>Sharing</h3>
+      <h3>Current Access:</h3>
       Sharing may be added to a calendar once created.
     </div>
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="modCalendar">
-    <xsl:choose>
-      <xsl:when test="calendarCollection='true'">
-        <h3>Modify Calendar</h3>
-      </xsl:when>
-      <xsl:otherwise>
-        <h3>Modify Folder</h3>
-      </xsl:otherwise>
-    </xsl:choose>
-    <form name="modCalForm" action="{$calendar-update}" method="post">
-      <table class="eventFormTable">
+    <xsl:variable name="calPath" select="path"/>
+    <xsl:variable name="calPathEncoded" select="encodedPath"/>
+
+    <form name="modCalForm" method="post" action="{$calendar-update}">
+      <xsl:choose>
+        <xsl:when test="isSubscription='true'">
+          <h3>Modify Subscription</h3>
+          <input type="hidden" value="true" name="calendarCollection"/>
+        </xsl:when>
+        <xsl:when test="calendarCollection='true'">
+          <h3>Modify Calendar</h3>
+          <input type="hidden" value="true" name="calendarCollection"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <h3>Modify Folder</h3>
+          <input type="hidden" value="false" name="calendarCollection"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <table class="common">
         <tr>
-          <th>Path:</th>
-          <td>
+          <th class="commonHeader" colspan="2">
             <xsl:value-of select="path"/>
-            <xsl:text> </xsl:text>
-            <a href="{$calendar-move}">move</a>
-          </td>
+          </th>
         </tr>
         <tr>
           <th>Name:</th>
@@ -3476,12 +3568,12 @@
             <xsl:value-of select="name"/>
           </td>
         </tr>
-        <tr>
+        <!-- tr>
           <th>Mailing List ID:</th>
           <td>
             <xsl:value-of select="mailListId"/>
           </td>
-        </tr>
+        </tr -->
         <tr>
           <th>Summary:</th>
           <td>
@@ -3494,30 +3586,63 @@
           <td>
             <textarea name="calendar.description" cols="40" rows="4">
               <xsl:value-of select="desc"/>
+              <xsl:if test="normalize-space(desc) = ''">
+                <xsl:text> </xsl:text>
+                <!-- keep this non-breaking space to avoid browser
+                rendering errors when the text area is empty -->
+              </xsl:if>
             </textarea>
           </td>
         </tr>
         <tr>
-          <th>Calendar/Folder:</th>
+          <th>Color:</th>
           <td>
-            <xsl:choose>
-              <xsl:when test="calendarCollection='true'">
-                <input type="radio" value="true" name="calendarCollection" checked="checked"/> Calendar
-                <input type="radio" value="false" name="calendarCollection"/> Folder
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="radio" value="true" name="calendarCollection"/> Calendar
-                <input type="radio" value="false" name="calendarCollection" checked="checked"/> Folder
-              </xsl:otherwise>
-            </xsl:choose>
+            <input type="text" name="calendar.color" value="" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
+            </input>
           </td>
         </tr>
+        <tr>
+          <th>Filter Expression:</th>
+          <td>
+            <input type="text" name="calendar.fexpr" value="" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="filterExpr"/></xsl:attribute>
+            </input>
+          </td>
+        </tr>
+        <xsl:if test="isSubscription = 'true'">
+          <tr>
+            <th>URL:</th>
+            <td>
+              <input name="aliasUri" value="" size="40">
+                <xsl:attribute name="value"><xsl:value-of select="aliasUri"/></xsl:attribute>
+              </input>
+            </td>
+          </tr>
+          <xsl:if test="externalSub = 'true'">
+            <tr>
+              <th>Id (if required):</th>
+              <td>
+                <input name="remoteId" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Password (if required):</th>
+              <td>
+                <input type="password" name="remotePw" value="" size="40"/>
+              </td>
+            </tr>
+          </xsl:if>
+        </xsl:if>
       </table>
 
       <table border="0" id="submitTable">
         <tr>
           <td>
             <xsl:choose>
+              <xsl:when test="isSubscription='true'">
+                <input type="submit" name="updateCalendar" value="Update Subscription"/>
+              </xsl:when>
               <xsl:when test="calendarCollection='true'">
                 <input type="submit" name="updateCalendar" value="Update Calendar"/>
               </xsl:when>
@@ -3525,10 +3650,13 @@
                 <input type="submit" name="updateCalendar" value="Update Folder"/>
               </xsl:otherwise>
             </xsl:choose>
-            <input type="submit" name="cancelled" value="Cancel"/>
+            <input type="submit" name="cancelled" value="cancel"/>
           </td>
           <td align="right">
             <xsl:choose>
+              <xsl:when test="isSubscription='true'">
+                <input type="submit" name="delete" value="Delete Subscription"/>
+              </xsl:when>
               <xsl:when test="calendarCollection='true'">
                 <input type="submit" name="delete" value="Delete Calendar"/>
               </xsl:when>
@@ -3540,17 +3668,13 @@
         </tr>
       </table>
     </form>
-
-
     <div id="sharingBox">
       <xsl:apply-templates select="acl" mode="currentAccess">
         <xsl:with-param name="action" select="$calendar-setAccess"/>
-        <xsl:with-param name="calPathEncoded" select="encodedPath"/>
+        <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
       </xsl:apply-templates>
-      <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" onsubmit="setAccessHow(this)" method="post">
-        <input type="hidden" name="calPath">
-          <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
-        </input>
+      <form name="calendarShareForm" method="post" action="{$calendar-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
+        <input type="hidden" name="calPath" value="{$calPath}"/>
         <xsl:call-template name="entityAccessForm">
           <xsl:with-param name="type">
             <xsl:choose>
@@ -3562,198 +3686,6 @@
         </xsl:call-template>
       </form>
     </div>
-
-    <!--<div id="sharingBox">
-      <xsl:variable name="calPath" select="path"/>
-      <xsl:variable name="encodedCalPath" select="encodedPath"/>
-      <xsl:if test="currentAccess/current-user-privilege-set/privilege/read-acl or /bedework/userInfo/superUser='true'">
-        <h3>Sharing</h3>
-        <table class="common" id="sharing">
-          <tr>
-            <th class="commonHeader">Who:</th>
-            <th class="commonHeader">Current access:</th>
-            <th class="commonHeader">Source:</th>
-          </tr>
-          <xsl:for-each select="acl/ace">
-            <xsl:variable name="who">
-              <xsl:choose>
-                <xsl:when test="invert">
-                  <xsl:choose>
-                    <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
-                    <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
-                    <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <tr>
-            <th class="thin">
-                <xsl:if test="invert">
-                  Not
-                </xsl:if>
-                <xsl:choose>
-                  <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">
-                    <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/>
-                  </xsl:when>
-                  <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">
-                    <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
-                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/>
-                  </xsl:when>
-                  <xsl:when test="invert and $who='owner'">
-                    <xsl:value-of select="$who"/> (other)
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="$who"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </th>
-              <td>
-                <xsl:for-each select="grant/privilege/node()">
-                  <xsl:value-of select="name(.)"/>&#160;&#160;
-                </xsl:for-each>
-                <xsl:for-each select="deny/privilege/node()">
-                  <xsl:choose>
-                    <xsl:when test="name(.)='all'">
-                      none
-                    </xsl:when>
-                    <xsl:otherwise>
-                      deny-<xsl:value-of select="name(.)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                  &#160;&#160;
-                </xsl:for-each>
-              </td>
-              <td>
-                <xsl:choose>
-                  <xsl:when test="inherited">
-                    inherited from:
-                    <a>
-                      <xsl:attribute name="href"><xsl:value-of select="$calendar-fetchForUpdate"/>&amp;calPath=<xsl:value-of select="inherited/href"/></xsl:attribute>
-                      <xsl:value-of select="inherited/href"/>
-                    </a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    local:
-                    <xsl:variable name="whoType">
-                      <xsl:choose>
-                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
-                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
-                        <xsl:when test="$who='authenticated'">auth</xsl:when>
-                        <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
-                        <xsl:when test="invert/principal/property/owner">other</xsl:when>
-                        <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-                        <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:variable name="shortWho">
-                      <xsl:choose>
-                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise>--> <!-- if not user or group, send no who -->
-        <!--              </xsl:choose>
-                    </xsl:variable>
-                    <xsl:choose>
-                      <xsl:when test="invert">
-                        <a href="{$calendar-setAccess}&amp;calPath={$encodedCalPath}&amp;how=default&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes">
-                          reset to default
-                        </a>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <a href="{$calendar-setAccess}&amp;calPath={$encodedCalPath}&amp;how=default&amp;who={$shortWho}&amp;whoType={$whoType}">
-                          reset to default
-                        </a>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </td>
-            </tr>
-          </xsl:for-each>
-        </table>
-      </xsl:if>
-
-      <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-acl or /bedework/userInfo/superUser='true'">
-        <form name="calendarShareForm" action="{$calendar-setAccess}" id="shareForm" method="post">
-          <input type="hidden" name="calPath" value="{$calPath}"/>
-          <table cellspacing="0" id="shareFormTable" class="common">
-            <tr>
-              <th colspan="2" class="commonHeader">Set access:</th>
-            </tr>
-            <tr class="subhead">
-              <th>Who:</th>
-              <th>Rights:</th>
-            </tr>
-            <tr>
-              <td>
-                <input type="text" name="who" size="20"/>
-                <br/>
-                <input type="radio" value="user" name="whoType" checked="checked"/> user
-                <input type="radio" value="group" name="whoType"/> group
-                <p>OR</p>
-                <p>
-                  <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
-                  <input type="radio" value="other" name="whoType"/> other users<br/>
-                  <input type="radio" value="owner" name="whoType"/> owner
-                </p>-->
-                <!-- we may never use the invert action ...it is probably
-                     too confusing, and can be achieved in other ways -->
-                <!--
-                <p class="padTop">
-                  <input type="checkbox" value="yes" name="notWho"/> invert (deny)
-                </p>-->
-              <!--</td>
-              <td>
-                <ul id="howList">
-                  <li>
-                    <input type="radio" value="A" name="how"/>
-                    <strong>All</strong> (read, write, delete)</li>
-                  <li class="padTop">
-                    <input type="radio" value="R" name="how" checked="checked"/>
-                    <strong>Read</strong> (content, access, freebusy)
-                  </li>
-                  <li>
-                    <input type="radio" value="f" name="how"/> Read freebusy only
-                  </li>
-                  <li class="padTop">
-                    <input type="radio" value="Rc" name="how"/>
-                    <strong>Read</strong> and <strong>Write content only</strong>
-                  </li>
-                  <li class="padTop">
-                    <input type="radio" value="W" name="how"/>
-                    <strong>Write and delete</strong> (content, access, properties)
-                  </li>
-                  <li>
-                    <input type="radio" value="c" name="how"/> Write content only
-                  </li>
-                  <li>
-                    <input type="radio" value="u" name="how"/> Delete only
-                  </li>
-                  <li class="padTop">
-                    <input type="radio" value="N" name="how"/>
-                    <strong>None</strong>
-                  </li>-->
-                  <!--
-                  <li class="padTop">
-                    <input type="radio" value="default" name="how"/>
-                    <strong>Restore default access</strong>
-                  </li>-->
-                <!--</ul>
-              </td>
-            </tr>
-          </table>
-          <input type="submit" name="submit" value="Submit"/>
-        </form>
-      </xsl:if>
-    </div>-->
   </xsl:template>
 
 
@@ -4552,269 +4484,299 @@
     </li>
   </xsl:template>
 
-  <xsl:template match="calendar" mode="subscribe">
-    <xsl:variable name="calPath" select="encodedPath"/>
-    <xsl:variable name="itemClass">
-      <xsl:choose>
-        <xsl:when test="calendarCollection='false'">folder</xsl:when>
-        <xsl:otherwise>calendar</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <li class="{$itemClass}">
-      <xsl:if test="calendarCollection='false'">
-        <!-- test the open state of the folder; if it's open,
-             build a URL to close it and vice versa -->
-        <xsl:choose>
-          <xsl:when test="open = 'true'">
-            <a href="{$subscriptions-openCloseMod}&amp;calPath={$calPath}&amp;open=false">
-              <img src="{$resourcesRoot}/resources/minus.gif" width="9" height="9" alt="close" border="0" class="bwPlusMinusIcon"/>
-            </a>
-          </xsl:when>
-          <xsl:otherwise>
-            <a href="{$subscriptions-openCloseMod}&amp;calPath={$calPath}&amp;open=true">
-              <img src="{$resourcesRoot}/resources/plus.gif" width="9" height="9" alt="open" border="0" class="bwPlusMinusIcon"/>
-            </a>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:if>
-      <a href="{$subscriptions-initAdd}&amp;calPath={$calPath}">
-        <xsl:value-of select="name"/>
-      </a>
-      <xsl:if test="calendar">
-        <ul>
-          <xsl:apply-templates select="calendar" mode="subscribe">
-            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>--></xsl:apply-templates>
-        </ul>
-      </xsl:if>
-    </li>
-  </xsl:template>
-
-  <xsl:template match="subscription" mode="addSubscription">
-    <h2>Add New Subscription</h2>
-    <p class="note">*the subsciption name must be unique</p>
-    <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
-      <table class="eventFormTable">
+  <xsl:template match="currentCalendar" mode="addSubscription">
+    <h3>Add Subscription or Folder</h3>
+    <form name="addCalForm" method="post" action="{$subscriptions-update}" onsubmit="setCalendarAlias(this)">
+      <table class="common">
         <tr>
-          <th>Name*:</th>
+          <th>Name:</th>
           <td>
-            <xsl:variable name="subName" select="name"/>
-            <input type="text" value="{$subName}" name="subscription.name" size="60"/>
+            <xsl:variable name="curCalName" select="name"/>
+            <input name="calendar.name" value="{$curCalName}" size="40"/>
           </td>
         </tr>
-        <xsl:if test="internal='false'">
-          <tr>
-            <th>Uri:</th>
-            <td>
-              <xsl:variable name="subUri" select="uri"/>
-              <input type="text" value="{$subUri}" name="subscription.uri" size="60"/>
-            </td>
-          </tr>
-        </xsl:if>
         <tr>
-          <th>Display:</th>
+          <th>Summary:</th>
           <td>
-            <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
-            <input type="radio" value="false" name="subscription.display"/> no
+            <xsl:variable name="curCalSummary" select="summary"/>
+            <input type="text" name="calendar.summary" value="{$curCalSummary}" size="40"/>
           </td>
         </tr>
-        <xsl:if test="/bedework/userInfo/superUser='true'">
-          <tr>
-            <th>Unremovable:</th>
-            <td>
-              <input type="radio" value="true" name="unremoveable" size="60"/> true
-              <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
-            </td>
-          </tr>
-        </xsl:if>
         <tr>
-          <th>Style:</th>
+          <th>Description:</th>
           <td>
-            <xsl:variable name="subStyle" select="style"/>
-            <input type="text" value="{$subStyle}" name="subscription.style" size="50"/>
-            <div style="width: 400px">
-              Enter a css class to style events rendered in the list and grid
-              views.  Leave blank to render with the default colors, or select from
-              one of the system-wide choices:
-              <select name="bwColors" onchange="document.subscribeForm['subscription.style'].value = this.value">
-                <option value="">default</option>
-                <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
-                  <xsl:variable name="subColor" select="."/>
-                  <option value="{$subColor}" class="{$subColor}">
-                    <xsl:value-of select="@name"/>
-                  </option>
-                </xsl:for-each>
-              </select>
-              <p class="note">Note: This class is added alongside the default class used
-              in the list and grid views.  It does not replace it, so create your
-              style appropriately.</p>
-            </div>
+            <textarea name="calendar.description" cols="30" rows="4">
+              <xsl:value-of select="desc"/>
+              <xsl:if test="normalize-space(desc) = ''">
+                <xsl:text> </xsl:text>
+                <!-- keep this non-breaking space to avoid browser
+                rendering errors when the text area is empty -->
+              </xsl:if>
+            </textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>Color:</th>
+          <td>
+            <select name="calendar.color">
+              <option value="">default</option>
+              <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
+                <xsl:variable name="subColor" select="@rgb"/>
+                <xsl:variable name="subColorClass" select="."/>
+                <option value="{$subColor}" class="{$subColorClass}">
+                  <xsl:value-of select="@name"/>
+                </option>
+              </xsl:for-each>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>Filter Expression:</th>
+          <td>
+            <input type="text" name="calendar.fexpr" value="" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Type:</th>
+          <td>
+            <!-- we will set the value of "calendarCollection on submit.
+                 Value is false only for folders, so we default it to true here.  -->
+            <input type="hidden" value="true" name="calendarCollection"/>
+            <!-- type is defaulted to calendar.  It is changed when a typeSwitch is clicked. -->
+            <input type="hidden" value="calendar" name="type" id="bwCalType"/>
+            <!-- input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Calendar-->
+            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Folder
+            <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');setField('bwCalType',this.value);"/> Subscription
           </td>
         </tr>
       </table>
+      <div class="submitButtons">
+        <input type="submit" name="addCalendar" value="Add"/>
+        <input type="submit" name="cancelled" value="cancel"/>
+      </div>
+      <div id="subscriptionTypes" class="invisible">
+        <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
+             on the subscription type. -->
+        <input type="hidden" name="aliasUri" value=""/>
+        <p>
+          <strong>Subscription Type:</strong><br/>
+          <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
+          <input type="hidden" value="public" name="subType" id="bwSubType"/>
+          <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> Public calendar (alias)
+          <!-- input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/> User calendar-->
+          <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> URL
+        </p>
+
+        <div id="subscriptionTypePublic">
+          <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>
+          <div id="bwPublicCalDisplay">
+            Select the public calendar or folder:
+          </div>
+          <ul id="publicSubscriptionTree">
+            <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
+          </ul>
+        </div>
+
+        <div id="subscriptionTypeUser" class="invisible">
+          <table class="common">
+            <tr>
+              <th>User's ID:</th>
+              <td>
+                <input type="text" name="userIdHolder" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Calendar Path:</th>
+              <td>
+                <input type="text" name="userCalHolder" value="calendar" size="40"/><br/>
+                <span class="note">E.g. "calendar" (default) or "someFolder/someCalendar"</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="invisible" id="subscriptionTypeExternal">
+          <table class="common">
+            <tr>
+              <th>URL to calendar:</th>
+              <td>
+                <input type="text" name="aliasUriHolder" id="aliasUriHolder" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>ID (if required):</th>
+              <td>
+                <input type="text" name="remoteId" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Password (if required):</th>
+              <td>
+                <input type="password" name="remotePw" value="" size="40"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+    </form>
+
+    <div id="sharingBox">
+      <h3>Current Access:</h3>
+      Sharing may be added to a calendar once created.
+    </div>
+  </xsl:template>
+
+  <xsl:template match="currentCalendar" mode="modSubscription">
+    <xsl:variable name="calPath" select="path"/>
+    <xsl:variable name="calPathEncoded" select="encodedPath"/>
+
+    <form name="modCalForm" method="post" action="{$subscriptions-update}">
+      <xsl:choose>
+        <xsl:when test="isSubscription='true'">
+          <h3>Modify Subscription</h3>
+          <input type="hidden" value="true" name="calendarCollection"/>
+        </xsl:when>
+        <xsl:when test="calendarCollection='true'">
+          <h3>Modify Calendar</h3>
+          <input type="hidden" value="true" name="calendarCollection"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <h3>Modify Folder</h3>
+          <input type="hidden" value="false" name="calendarCollection"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <table class="common">
+        <tr>
+          <th class="commonHeader" colspan="2">
+            <xsl:value-of select="path"/>
+          </th>
+        </tr>
+        <tr>
+          <th>Name:</th>
+          <td>
+            <xsl:value-of select="name"/>
+          </td>
+        </tr>
+        <!-- tr>
+          <th>Mailing List ID:</th>
+          <td>
+            <xsl:value-of select="mailListId"/>
+          </td>
+        </tr -->
+        <tr>
+          <th>Summary:</th>
+          <td>
+            <xsl:variable name="curCalSummary" select="summary"/>
+            <input type="text" name="calendar.summary" value="{$curCalSummary}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Description:</th>
+          <td>
+            <textarea name="calendar.description" cols="40" rows="4">
+              <xsl:value-of select="desc"/>
+              <xsl:if test="normalize-space(desc) = ''">
+                <xsl:text> </xsl:text>
+                <!-- keep this non-breaking space to avoid browser
+                rendering errors when the text area is empty -->
+              </xsl:if>
+            </textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>Color:</th>
+          <td>
+            <input type="text" name="calendar.color" value="" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
+            </input>
+          </td>
+        </tr>
+        <tr>
+          <th>Filter Expression:</th>
+          <td>
+            <input type="text" name="calendar.fexpr" value="" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="filterExpr"/></xsl:attribute>
+            </input>
+          </td>
+        </tr>
+        <xsl:if test="isSubscription = 'true'">
+          <tr>
+            <th>URL:</th>
+            <td>
+              <input name="aliasUri" value="" size="40">
+                <xsl:attribute name="value"><xsl:value-of select="aliasUri"/></xsl:attribute>
+              </input>
+            </td>
+          </tr>
+          <xsl:if test="externalSub = 'true'">
+            <tr>
+              <th>Id (if required):</th>
+              <td>
+                <input name="remoteId" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th>Password (if required):</th>
+              <td>
+                <input type="password" name="remotePw" value="" size="40"/>
+              </td>
+            </tr>
+          </xsl:if>
+        </xsl:if>
+      </table>
+
       <table border="0" id="submitTable">
         <tr>
           <td>
-            <input type="submit" name="addSubscription" value="Add Subscription"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
-          </td>
-        </tr>
-      </table>
-    </form>
-  </xsl:template>
-
-  <xsl:template match="subscription" mode="modSubscription">
-    <h2>Modify Subscription</h2>
-    <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
-      <table class="eventFormTable">
-        <tr>
-          <th>Name*:</th>
-          <td>
-            <xsl:value-of select="name"/>
-            <xsl:variable name="subName" select="name"/>
-            <input type="hidden" value="{$subName}" name="name"/>
-          </td>
-        </tr>
-        <xsl:choose>
-          <xsl:when test="internal='false'">
-            <tr>
-              <th>Uri:</th>
-              <td>
-                <xsl:variable name="subUri" select="uri"/>
-                <input type="text" value="{$subUri}" name="subscription.uri" size="60"/>
-              </td>
-            </tr>
-          </xsl:when>
-          <xsl:otherwise>
-            <tr>
-              <th>Uri:</th>
-              <td>
-                <xsl:value-of select="uri"/>
-              </td>
-            </tr>
-          </xsl:otherwise>
-        </xsl:choose>
-        <tr>
-          <th>Display:</th>
-          <td>
             <xsl:choose>
-              <xsl:when test="display='true'">
-                <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
-                <input type="radio" value="false" name="subscription.display"/> no
+              <xsl:when test="isSubscription='true'">
+                <input type="submit" name="updateCalendar" value="Update Subscription"/>
+              </xsl:when>
+              <xsl:when test="calendarCollection='true'">
+                <input type="submit" name="updateCalendar" value="Update Calendar"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="radio" value="true" name="subscription.display"/> yes
-                <input type="radio" value="false" name="subscription.display" checked="checked"/> no
+                <input type="submit" name="updateCalendar" value="Update Folder"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            <input type="submit" name="cancelled" value="cancel"/>
+          </td>
+          <td align="right">
+            <xsl:choose>
+              <xsl:when test="isSubscription='true'">
+                <input type="submit" name="delete" value="Delete Subscription"/>
+              </xsl:when>
+              <xsl:when test="calendarCollection='true'">
+                <input type="submit" name="delete" value="Delete Calendar"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="delete" value="Delete Folder"/>
               </xsl:otherwise>
             </xsl:choose>
           </td>
         </tr>
-        <xsl:if test="/bedework/userInfo/superUser='true'">
-          <tr>
-            <th>Unremovable:</th>
-            <td>
-              <xsl:choose>
-                <xsl:when test="unremoveable='true'">
-                  <input type="radio" value="true" name="unremoveable" size="60" checked="checked"/> true
-                  <input type="radio" value="false" name="unremoveable" size="60"/> false
-                </xsl:when>
-                <xsl:otherwise>
-                  <input type="radio" value="true" name="unremoveable" size="60"/> true
-                  <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-          </tr>
-        </xsl:if>
-        <tr>
-          <th>Style:</th>
-          <td>
-            <xsl:variable name="subStyle" select="style"/>
-            <input type="text" value="{$subStyle}" name="subscription.style" size="60"/>
-            <div style="width: 400px">
-              Enter a css class to style events rendered in the list and grid
-              views.  Leave blank to render with the default colors, or select from
-              one of the system-wide choices:
-              <select name="bwColors" onchange="document.subscribeForm['subscription.style'].value = this.value">
-                <option value="">default</option>
-                <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
-                  <xsl:variable name="subColor" select="."/>
-                  <option value="{$subColor}" class="{$subColor}">
-                    <xsl:value-of select="@name"/>
-                  </option>
-                </xsl:for-each>
-              </select>
-              <p class="note">Note: This class is added alongside the default class used
-              in the list and grid views.  It does not replace it, so create your
-              style appropriately.</p>
-            </div>
-          </td>
-        </tr>
-      </table>
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input type="submit" name="updateSubscription" value="Update Subscription"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
-          </td>
-          <td align="right">
-            <input type="submit" name="delete" value="Delete Subscription"/>
-          </td>
-        </tr>
       </table>
     </form>
-  </xsl:template>
-
-  <xsl:template name="subscriptionList">
-    <h3>Current subscriptions</h3>
-    <table id="commonListTable">
-      <tr>
-        <th>Name</th>
-        <th>URI</th>
-        <th>Style</th>
-        <th>Display</th>
-        <th>Unremovable</th>
-        <th>External</th>
-        <th>Deleted?</th>
-      </tr>
-      <xsl:for-each select="subscription">
-        <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
-        <tr>
-          <td>
-            <xsl:variable name="subname" select="name"/>
-            <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}">
-              <xsl:value-of select="name"/>
-            </a>
-          </td>
-          <td>
-            <xsl:value-of select="uri"/>
-          </td>
-          <td>
-            <xsl:value-of select="style"/>
-          </td>
-          <td class="center">
-            <xsl:if test="display='true'">
-              <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
-            </xsl:if>
-          </td>
-          <td class="center">
-            <xsl:if test="unremoveable='true'">
-              <img src="{$resourcesRoot}/resources/redCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
-            </xsl:if>
-          </td>
-          <td class="center">
-            <xsl:if test="internal='false'">
-              <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
-            </xsl:if>
-          </td>
-          <td class="center">
-            <xsl:if test="calendarDeleted='true'">
-              <img src="{$resourcesRoot}/resources/redCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
-            </xsl:if>
-          </td>
-        </tr>
-      </xsl:for-each>
-    </table>
-    <!--<h4><a href="{$subscriptions-initAdd}&amp;calUri=please enter a calendar uri">Subscribe to a remote calendar</a> (by URI)</h4>-->
+    <div id="sharingBox">
+      <xsl:apply-templates select="acl" mode="currentAccess">
+        <xsl:with-param name="action" select="$calendar-setAccess"/>
+        <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
+      </xsl:apply-templates>
+      <form name="calendarShareForm" method="post" action="{$calendar-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
+        <input type="hidden" name="calPath" value="{$calPath}"/>
+        <xsl:call-template name="entityAccessForm">
+          <xsl:with-param name="type">
+            <xsl:choose>
+              <xsl:when test="calType = '5'">inbox</xsl:when>
+              <xsl:when test="calType = '6'">outbox</xsl:when>
+              <xsl:otherwise>normal</xsl:otherwise>
+            </xsl:choose>
+          </xsl:with-param>
+        </xsl:call-template>
+      </form>
+    </div>
   </xsl:template>
 
   <!--+++++++++++++++ Views ++++++++++++++++++++-->
