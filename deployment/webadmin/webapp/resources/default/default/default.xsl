@@ -4478,7 +4478,7 @@
         <td class="cals">
           <h3>Subscription Tree</h3>
           <ul id="calendarTree">
-            <xsl:apply-templates select="/bedework/publicCalendars/calendar[number(calType) = 0 or number(calType) &gt; 6]" mode="listForUpdateSubscription"/>
+            <xsl:apply-templates select="calendar[number(calType) = 0 or number(calType) &gt; 6]" mode="listForUpdateSubscription"/>
           </ul>
         </td>
         <td class="calendarContent">
