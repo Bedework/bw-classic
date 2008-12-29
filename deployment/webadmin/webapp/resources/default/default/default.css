@@ -1000,6 +1000,9 @@ p.note {
 .center {
   text-align: center;
 }
+.strong {
+  font-weight: bold;
+}
 .smaller {
   font-size: 0.8em;
 }

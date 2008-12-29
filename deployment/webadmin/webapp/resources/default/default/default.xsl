@@ -503,88 +503,43 @@
             height="40"
             border="0"/>
       </a>
-      <!-- set the page heading: -->
       <h1>
-        <xsl:choose>
-          <xsl:when test="/bedework/page='modEvent' or /bedework/page='eventList' or /bedework/page='displayEvent'">
-            Manage Events
-          </xsl:when>
-          <xsl:when test="/bedework/page='contactList' or /bedework/page='modContact' or /bedework/page='deleteContactConfirm'">
-            Manage Contacts
-          </xsl:when>
-          <xsl:when test="/bedework/page='locationList' or /bedework/page='modLocation' or /bedework/page='deleteLocationConfirm'">
-            Manage Locations
-          </xsl:when>
-          <xsl:when test="/bedework/page='calendarList' or /bedework/page='modCalendar' or /bedework/page='calendarReferenced' or /bedework/page='deleteCalendarConfirm'">
-            Manage Calendars
-          </xsl:when>
-          <xsl:when test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
-            Public Calendars
-          </xsl:when>
-          <xsl:when test="/bedework/page='subscriptions' or /bedework/page='modSubscription'">
-            Manage Subscriptions
-          </xsl:when>
-          <xsl:when test="/bedework/page='views' or /bedework/page='modView'">
-            Manage Views
-          </xsl:when>
-          <xsl:when test="/bedework/page='modSyspars'">
-            Manage System Preferences
-          </xsl:when>
-          <xsl:when test="/bedework/page='authUserList' or /bedework/page='modAuthUser'">
-            Manage Administrative Roles
-          </xsl:when>
-          <xsl:when test="/bedework/page='chooseGroup'">
-            Choose Administrative Group
-          </xsl:when>
-          <xsl:when test="/bedework/page='adminGroupList' or /bedework/page='modAdminGroup' or /bedework/page='modAdminGroup' or /bedework/page='modAdminGroupMembers'">
-            Manage Administrative Groups
-          </xsl:when>
-          <xsl:when test="/bedework/page='noGroup'">
-            No Administrative Group
-          </xsl:when>
-          <xsl:when test="/bedework/page='uploadTimezones'">
-            Manage Time Zones
-          </xsl:when>
-          <xsl:when test="/bedework/page='noAccess'">
-            Access Denied
-          </xsl:when>
-          <xsl:when test="/bedework/page='error'">
-            Error
-          </xsl:when>
-          <xsl:otherwise>
-            Bedework Public Events Administration
-          </xsl:otherwise>
-        </xsl:choose>
+        Bedework Public Events Administration
       </h1>
     </div>
     <xsl:call-template name="messagesAndErrors"/>
     <table id="statusBarTable">
       <tr>
         <td class="leftCell">
+          <xsl:if test="/bedework/currentCalSuite/name">
+            Calendar Suite:
+            <span class="status">
+              <xsl:value-of select="/bedework/currentCalSuite/name"/>
+            </span>
+            <xsl:text> </xsl:text>
+          </xsl:if>
+          <!--
           <a href="{$setup}">Home</a>
           <a href="{$publicCal}" target="calendar">Launch Calendar</a>
-          <a href="{$logout}" id="bwLogoutButton">Log Out</a>
+          -->
         </td>
         <xsl:if test="/bedework/userInfo/user">
           <td class="rightCell">
-            <xsl:if test="/bedework/currentCalSuite/name">
-              Calendar Suite:
-              <span class="status">
-                <xsl:value-of select="/bedework/currentCalSuite/name"/>
-              </span>
-              &#160;
-            </xsl:if>
-            Logged in as:
-            <span class="status">
-              <xsl:value-of select="/bedework/userInfo/currentUser"/>
-            </span>
-            &#160;
             <xsl:if test="/bedework/userInfo/group">
               Group:
               <span class="status">
                 <xsl:value-of select="/bedework/userInfo/group"/>
               </span>
+              <xsl:text> </xsl:text>
+              <a href="{$admingroup-switch}" class="fieldInfo">change</a>
+              <xsl:text> </xsl:text>
             </xsl:if>
+            Logged in as:
+            <span class="status">
+              <xsl:value-of select="/bedework/userInfo/currentUser"/>
+            </span>
+            <xsl:text> </xsl:text>
+            <a href="{$logout}" id="bwLogoutButton" class="fieldInfo">log out</a>
           </td>
         </xsl:if>
       </tr>
@@ -604,13 +559,15 @@
           </xsl:if>
           <a href="{$initPendingTab}&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true">Pending Events</a>
         </li>
-        <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
-          <li>
-            <xsl:if test="/bedework/tab = 'calsuite'">
-              <xsl:attribute name="class">selected</xsl:attribute>
-            </xsl:if>
-            <a href="{$showCalsuiteTab}">Calendar Suite</a>
-          </li>
+        <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
+          <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser = 'true'">
+            <li>
+              <xsl:if test="/bedework/tab = 'calsuite'">
+                <xsl:attribute name="class">selected</xsl:attribute>
+              </xsl:if>
+              <a href="{$showCalsuiteTab}">Calendar Suite</a>
+            </li>
+          </xsl:if>
         </xsl:if>
         <xsl:if test="/bedework/userInfo/superUser='true'">
           <li>
@@ -806,11 +763,15 @@
   <xsl:template name="tabCalsuite">
     <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
       <h2>
-        Manage Current Calendar Suite
+        Manage Calendar Suite
       </h2>
+
       <div id="calSuiteTitle">
         Calendar Suite:
         <strong><xsl:value-of select="/bedework/currentCalSuite/name"/></strong>
+        <xsl:text> </xsl:text>
+        Group:
+        <strong><xsl:value-of select="/bedework/currentCalSuite/group"/></strong>
         <xsl:text> </xsl:text>
         <a href="{$admingroup-switch}" class="fieldInfo">change</a>
       </div>
@@ -839,13 +800,14 @@
     <xsl:if test="/bedework/userInfo/superUser='true'">
       <h2>Manage Users &amp; Groups</h2>
       <ul class="adminMenu">
-        <xsl:if test="/bedework/userInfo/userMaintOK='true'">
+        <!-- deprecated (for now, likely permanent) -->
+        <!-- xsl:if test="/bedework/userInfo/userMaintOK='true'">
           <li>
             <a href="{$authuser-initUpdate}">
               Manage admin roles
             </a>
           </li>
-        </xsl:if>
+        </xsl:if-->
         <xsl:if test="/bedework/userInfo/adminGroupMaintOk='true'">
           <li>
             <a href="{$admingroup-initUpdate}">
@@ -875,7 +837,7 @@
   <xsl:template name="tabSystem">
     <xsl:if test="/bedework/userInfo/superUser='true'">
       <h2>Manage System</h2>
-      <ul class="adminMenu">
+      <ul class="adminMenu strong">
         <li>
           <a href="{$calendar-fetch}">
             Manage calendars
@@ -887,13 +849,15 @@
           </a>
         </li>
         <li>
-          <a href="{$filter-showAddForm}">
-            Manage CalDAV filters
-          </a>
-        </li>
-        <li>
           <a href="{$event-initUpload}">
             Upload iCAL file
+          </a>
+        </li>
+      </ul>
+      <ul class="adminMenu">
+        <li>
+          <a href="{$filter-showAddForm}">
+            Manage CalDAV filters
           </a>
         </li>
       </ul>
@@ -931,7 +895,7 @@
 
   <!--++++++++++++++++++ Events ++++++++++++++++++++-->
   <xsl:template name="eventList">
-    <h2>Edit Events</h2>
+    <h2>Manage Events</h2>
     <p>
       Select the event that you would like to update:
       <input type="button" name="return" value="Add new event" onclick="javascript:location.replace('{$event-initAddEvent}')"/>
@@ -2830,7 +2794,7 @@
 
   <!--+++++++++++++++ Contacts ++++++++++++++++++++-->
   <xsl:template name="contactList">
-    <h2>Edit Contacts</h2>
+    <h2>Manage Contacts</h2>
     <p>
       Select the contact you would like to update:
       <input type="button" name="return" value="Add new contact" onclick="javascript:location.replace('{$contact-initAdd}')"/>
@@ -2972,7 +2936,7 @@
 
    <!--+++++++++++++++ Locations ++++++++++++++++++++-->
   <xsl:template name="locationList">
-    <h2>Edit Locations</h2>
+    <h2>Manage Locations</h2>
     <p>
       Select the location that you would like to update:
       <input type="button" name="return" value="Add new location" onclick="javascript:location.replace('{$location-initAdd}')"/>
@@ -3107,7 +3071,7 @@
 
   <!--+++++++++++++++ Categories ++++++++++++++++++++-->
   <xsl:template name="categoryList">
-    <h2>Edit Categories</h2>
+    <h2>Manage Categories</h2>
     <p>
       Select the category you would like to update:
       <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')"/>
@@ -4399,8 +4363,8 @@
               4 - Busy
               5 - Inbox
               6 - Outbox
-              7 - Alias
-              8 - External subscription
+              7 - Alias (internal - the underlying calType will be returned; check for the isSubscription property)
+              8 - External subscription (internal - the underlying calType will be returned; check for the isSubscription property and check on the item's status)
               9 - Resource collection
   -->
 
@@ -4410,7 +4374,7 @@
         <td class="cals">
           <h3>Subscription Tree</h3>
           <ul id="calendarTree">
-            <xsl:apply-templates select="calendar[number(calType) = 0 or number(calType) &gt; 6]" mode="listForUpdateSubscription"/>
+            <xsl:apply-templates select="calendar" mode="listForUpdateSubscription"/>
           </ul>
         </td>
         <td class="calendarContent">
@@ -4471,13 +4435,13 @@
       </a>
       <xsl:if test="calendarCollection='false'">
         <xsl:text> </xsl:text>
-        <a href="{$subscriptions-initAdd}&amp;calPath={$calPath}" title="add a calendar or folder">
-          <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
+        <a href="{$subscriptions-initAdd}&amp;calPath={$calPath}" title="add a subscription or folder">
+          <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a subscription or folder" border="0"/>
         </a>
       </xsl:if>
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar[number(calType) = 0 or number(calType) &gt; 6]" mode="listForUpdateSubscription">
+          <xsl:apply-templates select="calendar[isSubscription = 'true']" mode="listForUpdateSubscription">
             <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>--></xsl:apply-templates>
         </ul>
       </xsl:if>
@@ -5017,6 +4981,16 @@
             </div>
           </td>
         </tr>
+        <tr>
+          <th>Super Users:</th>
+          <td>
+            <xsl:variable name="rootUsers" select="/bedework/system/rootUsers"/>
+            <input value="{$rootUsers}" name="rootUsers" class="wide"/>
+            <div class="desc">
+              Comma separated list of super users. No spaces.
+            </div>
+          </td>
+        </tr>
         <!--<tr>
           <th>12 or 24 hour clock/time:</th>
           <td>
@@ -5292,16 +5266,6 @@
             </div>
           </td>
         </tr>
-        <tr>
-          <th>Super Users:</th>
-          <td>
-            <xsl:variable name="rootUsers" select="/bedework/system/rootUsers"/>
-            <input value="{$rootUsers}" name="rootUsers" class="wide"/>
-            <div class="desc">
-              Comma separated list of super users. No spaces.
-            </div>
-          </td>
-        </tr>
       </table>
       <table border="0" id="submitTable">
         <tr>
@@ -5318,32 +5282,41 @@
   <xsl:template match="calSuites" mode="calSuiteList">
     <h2>Manage Calendar Suites</h2>
 
-    <h4>Calendar suites:</h4>
     <p>
       <input type="button" name="return" value="Add calendar suite" onclick="javascript:location.replace('{$calsuite-showAddForm}')"/>
     </p>
 
-    <ul>
+    <table id="commonListTable">
+      <tr>
+        <th>Name</th>
+        <th>Associated Group</th>
+      </tr>
       <xsl:for-each select="calSuite">
-        <li>
-          <xsl:variable name="name" select="name"/>
-          <a href="{$calsuite-fetchForUpdate}&amp;name={$name}">
-            <xsl:value-of select="name"/>
-          </a>
-        </li>
+        <tr>
+          <td>
+            <xsl:variable name="name" select="name"/>
+            <a href="{$calsuite-fetchForUpdate}&amp;name={$name}">
+              <xsl:value-of select="name"/>
+            </a>
+          </td>
+          <td>
+            <xsl:value-of select="group"/>
+          </td>
+        </tr>
       </xsl:for-each>
-    </ul>
+    </table>
 
   </xsl:template>
 
   <xsl:template name="addCalSuite">
     <h2>Add Calendar Suite</h2>
     <form name="calSuiteForm" action="{$calsuite-add}" method="post">
+      <input type="hidden" name="calPath" value="/public" size="20"/>
       <table class="eventFormTable">
         <tr>
           <th>Name:</th>
           <td>
-            <input name="name" size="20"/>
+            <input type="text" name="name" size="20"/>
           </td>
           <td>
             Name of your calendar suite
@@ -5352,19 +5325,10 @@
         <tr>
           <th>Group:</th>
           <td>
-            <input name="groupName" size="20"/>
+            <input type="text" name="groupName" size="20"/>
           </td>
           <td>
             Name of admin group which contains event administrators and event owner to which preferences for the suite are attached
-          </td>
-        </tr>
-        <tr>
-          <th>Root calendar:</th>
-          <td>
-            <input name="calPath" size="20"/>
-          </td>
-          <td>
-            Path of root calendar (not required if suite only consists of subscriptions and views)
           </td>
         </tr>
       </table>
@@ -5383,6 +5347,9 @@
     <h2>Modify Calendar Suite</h2>
     <xsl:variable name="calSuiteName" select="name"/>
     <form name="calSuiteForm" action="{$calsuite-update}" method="post">
+      <input type="hidden" name="calPath" size="20">
+        <xsl:attribute name="value"><xsl:variable name="calPath" select="calPath"/></xsl:attribute>
+      </input>
       <table class="eventFormTable">
         <tr>
           <th>Name:</th>
@@ -5401,16 +5368,6 @@
           </td>
           <td>
             Name of admin group which contains event administrators and event owner to which preferences for the suite are attached
-          </td>
-        </tr>
-        <tr>
-          <th>Root calendar:</th>
-          <td>
-            <xsl:variable name="calPath" select="calPath"/>
-            <input name="calPath" value="{$calPath}" size="20"/>
-          </td>
-          <td>
-            Path of root calendar (not required if suite only consists of subscriptions and views)
           </td>
         </tr>
       </table>
@@ -5445,190 +5402,6 @@
         </xsl:call-template>
       </form>
     </div>
-
-    <!--<div id="sharingBox">
-      <xsl:variable name="calPath" select="path"/>
-      <xsl:variable name="encodedCalPath" select="encodedPath"/>
-      <xsl:if test="currentAccess/current-user-privilege-set/privilege/read-acl or /bedework/userInfo/superUser='true'">
-        <h3>Manage suite administrators</h3>
-        <table class="common" id="sharing">
-          <tr>
-            <th class="commonHeader">Who:</th>
-            <th class="commonHeader">Current access:</th>
-            <th class="commonHeader">Source:</th>
-          </tr>
-          <xsl:for-each select="acl/ace">
-            <xsl:variable name="who">
-              <xsl:choose>
-                <xsl:when test="invert">
-                  <xsl:choose>
-                    <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
-                    <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
-                    <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <tr>
-            <th class="thin">
-                <xsl:if test="invert">
-                  Not
-                </xsl:if>
-                <xsl:choose>
-                  <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">
-                    <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/>
-                  </xsl:when>
-                  <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">
-                    <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
-                    <xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/>
-                  </xsl:when>
-                  <xsl:when test="invert and $who='owner'">
-                    <xsl:value-of select="$who"/> (other)
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="$who"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </th>
-              <td>
-                <xsl:for-each select="grant/privilege/node()">
-                  <xsl:value-of select="name(.)"/>&#160;&#160;
-                </xsl:for-each>
-                <xsl:for-each select="deny/privilege/node()">
-                  <xsl:choose>
-                    <xsl:when test="name(.)='all'">
-                      none
-                    </xsl:when>
-                    <xsl:otherwise>
-                      deny-<xsl:value-of select="name(.)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                  &#160;&#160;
-                </xsl:for-each>
-              </td>
-              <td>
-                <xsl:choose>
-                  <xsl:when test="inherited">
-                    inherited from:
-                    <a>
-                      <xsl:attribute name="href"><xsl:value-of select="$calendar-fetchForUpdate"/>&amp;calPath=<xsl:value-of select="inherited/href"/></xsl:attribute>
-                      <xsl:value-of select="inherited/href"/>
-                    </a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    local:
-                    <xsl:variable name="whoType">
-                      <xsl:choose>
-                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
-                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
-                        <xsl:when test="$who='authenticated'">auth</xsl:when>
-                        <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
-                        <xsl:when test="invert/principal/property/owner">other</xsl:when>
-                        <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-                        <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:variable name="shortWho">
-                      <xsl:choose>
-                        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-                        <xsl:otherwise></xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:choose>
-                      <xsl:when test="invert">
-                        <a href="{$calsuite-setAccess}&amp;calSuiteName={$calSuiteName}&amp;how=default&amp;who={$shortWho}&amp;whoType={$whoType}&amp;notWho=yes">
-                          reset to default
-                        </a>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <a href="{$calsuite-setAccess}&amp;calSuiteName={$calSuiteName}&amp;how=default&amp;who={$shortWho}&amp;whoType={$whoType}">
-                          reset to default
-                        </a>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </td>
-            </tr>
-          </xsl:for-each>
-        </table>
-      </xsl:if>
-
-      <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-acl or /bedework/userInfo/superUser='true'">
-        <form name="calsuiteShareForm" action="{$calsuite-setAccess}" id="shareForm" method="post">
-          <input type="hidden" name="calSuiteName" value="{$calSuiteName}"/>
-          <table cellspacing="0" id="shareFormTable" class="common">
-            <tr>
-              <th colspan="2" class="commonHeader">Set access:</th>
-            </tr>
-            <tr class="subhead">
-              <th>Who:</th>
-              <th>Rights:</th>
-            </tr>
-            <tr>
-              <td>
-                <input type="text" name="who" size="20"/>
-                <br/>
-                <input type="radio" value="user" name="whoType" checked="checked"/> user
-                <input type="radio" value="group" name="whoType"/> group
-                <p>OR</p>
-                <p>
-                  <input type="radio" value="auth" name="whoType"/> all authorized users<br/>
-                  <input type="radio" value="other" name="whoType"/> other users<br/>
-                  <input type="radio" value="owner" name="whoType"/> owner
-                </p>
-                <p class="padTop">
-                  <input type="checkbox" value="yes" name="notWho"/> invert (deny)
-                </p>
-              </td>
-              <td>
-                <ul id="howList">
-                  <li>
-                    <input type="radio" value="A" name="how"/>
-                    <strong>All</strong> (read, write, delete)</li>
-                  <li class="padTop">
-                    <input type="radio" value="R" name="how"/>
-                    <strong>Read</strong> (content, access, freebusy)
-                  </li>
-                  <li>
-                    <input type="radio" value="f" name="how"/> Read freebusy only
-                  </li>
-                  <li class="padTop">
-                    <input type="radio" value="Rc" name="how" checked="checked"/>
-                    <strong>Read</strong> and <strong>Write content only</strong>
-                  </li>
-                  <li class="padTop">
-                    <input type="radio" value="W" name="how"/>
-                    <strong>Write and delete</strong> (content, access, properties)
-                  </li>
-                  <li>
-                    <input type="radio" value="c" name="how"/> Write content only
-                  </li>
-                  <li>
-                    <input type="radio" value="u" name="how"/> Delete only
-                  </li>
-                  <li class="padTop">
-                    <input type="radio" value="N" name="how"/>
-                    <strong>None</strong>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-          <input type="submit" name="submit" value="Submit"/>
-        </form>
-      </xsl:if>
-    </div>-->
   </xsl:template>
 
   <xsl:template name="calSuitePrefs">
@@ -6175,7 +5948,7 @@
           <table id="memberAccountList">
             <xsl:for-each select="/bedework/adminGroup/members/member">
               <xsl:choose>
-                <xsl:when test="kind='0'"><!-- kind = user -->
+                <xsl:when test="kind='1'"><!-- kind = user -->
                   <tr>
                     <td>
                       <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
