@@ -157,6 +157,15 @@
 
       <app>
         <!-- ==================================================================
+                          Timezones server
+             ================================================================== -->
+        <tzsvr classname="org.bedework.calfacade.configs.ConfigCommon">
+          <appType>tzsvr</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>true</guestMode>
+        </tzsvr>
+
+        <!-- ==================================================================
                           Config web client
              ================================================================== -->
         <bwconfig classname="org.bedework.calfacade.configs.ConfigCommon">

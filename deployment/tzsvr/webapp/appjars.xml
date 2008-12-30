@@ -11,18 +11,8 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-webcommon" version="3.5"
-              projecthome="${bw.project.home}/projects/webapps" />
-
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-fbaggregator" version="3.5"
-              projecthome="${bw.project.home}/projects/freebusy" />
-
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-fbclient" version="3.5"
-              projecthome="${bw.project.home}/projects/freebusy" />
+              name="bw-timezonessvr" version="3.5"
+              projecthome="${bw.project.home}/projects/bwtzsvr" />
     </sequential>
  </macrodef>
 </project>

@@ -5,7 +5,7 @@
      applications
      =================================================================== -->
 <project name="appJars" basedir="." default="">
-  <property name="org.bedework.app.lib" location="${project.home}/applib" />
+  <property name="org.bedework.app.lib" location="${bw.project.home}/applib" />
   <macrodef name="getAppJars">
     <sequential>
       <delete dir="${org.bedework.app.lib}" />
@@ -207,75 +207,75 @@
 
       <getJar lib="${org.bedework.app.lib}"
               name="rpiaccess" version="3.5"
-              projecthome="${project.home}/projects/access" />
+              projecthome="${bw.project.home}/projects/access" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-tools" version="3.5"
-              projecthome="${project.home}/projects/bwtools" />
+              projecthome="${bw.project.home}/projects/bwtools" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="rpiutil" version="3.5"
-              projecthome="${project.home}/projects/rpiutil" />
+              projecthome="${bw.project.home}/projects/rpiutil" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-davio" version="3.5"
-              projecthome="${project.home}/projects/davutil" />
+              projecthome="${bw.project.home}/projects/davutil" />
 
       <getJar lib="${org.bedework.app.lib}"
                name="bw-annotations" version="3.5"
-               projecthome="${project.home}/projects/calendarapi" />
+               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
                name="bw-apiutil" version="3.5"
-               projecthome="${project.home}/projects/calendarapi" />
+               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-calcore" version="3.5"
-              projecthome="${project.home}/projects/calendarapi" />
+              projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-calcorei" version="3.5"
-              projecthome="${project.home}/projects/calendarapi" />
+              projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-calfacade" version="3.5"
-              projecthome="${project.home}/projects/calendarapi" />
+              projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
                name="bw-calsvc" version="3.5"
-               projecthome="${project.home}/projects/calendarapi" />
+               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-calsvci" version="3.5"
-              projecthome="${project.home}/projects/calendarapi" />
+              projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-client" version="3.5"
-              projecthome="${project.home}/projects/calendarapi" />
+              projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-icalendar" version="3.5"
-              projecthome="${project.home}/projects/calendarapi" />
+              projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-logging" version="3.5"
-              projecthome="${project.home}/projects/calendarapi" />
+              projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-mail" version="3.5"
-              projecthome="${project.home}/projects/calendarapi" />
+              projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-appcommon" version="3.5"
-              projecthome="${project.home}/projects/webapps" />
+              projecthome="${bw.project.home}/projects/webapps" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-liferay" version="3.5"
-              projecthome="${project.home}/projects/webapps" />
+              projecthome="${bw.project.home}/projects/webapps" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="bw-uportal" version="3.5"
-              projecthome="${project.home}/projects/webapps" />
+              projecthome="${bw.project.home}/projects/webapps" />
 
       <!-- Included jars for eclipse -->
 

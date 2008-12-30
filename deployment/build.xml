@@ -50,8 +50,6 @@
   <target name="init" >
     <getAppJars />
 
-    <property name="source.home" location="${this.build.dir}/src"/>
-
     <loadDeployConfig />
 
     <!-- default to debug off -->

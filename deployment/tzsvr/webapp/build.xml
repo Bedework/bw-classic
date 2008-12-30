@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     timezones servlet deployer
+     =================================================================== -->
+
+<project name="bwpubcaldav.deploy" default="deploy" >
+  <import file="${org.bedework.deployment.base}/deployprops.xml" />
+
+  <dirname property="deployer.dir" file="${ant.file}"/>
+
+  <import file="${deployer.dir}/appjars.xml" />
+
+  <target name="init" >
+    <getExtraJars />
+
+    <!-- dist.home is bedework dist.home -->
+    <property name="app.war.file"
+              location="${dist.home}/${propval.app.war.name}.war" />
+
+    <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
+  </target>
+
+  <!-- =================================================================
+       The "deploy" target first builds a configured component then copies
+       all required files to the appropriate servlet container directories.
+
+       Currently this only works for the quickstart distribution.
+       For example, it does not handle deploying into jboss and copying
+       resource files (images, stylesheets) to external locations.
+       ================================================================= -->
+
+  <target name="deploy" depends="init,build.configured" >
+    <if>
+      <not>
+        <isset property="org.bedework.global.build.ear" />
+      </not>
+      <then>
+        <echo message="***************************************************************" />
+        <echo message="Deploying standalone app ${app.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />
+        <echo message="***************************************************************" />
+
+        <!-- copy the war file. -->
+        <copy todir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}" file="${app.war.file}"
+              overwrite="yes" />
+
+        <!-- Delete expanded version -->
+        <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.war.name}" />
+
+        <!-- Delete the quickstart context def -->
+        <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
+      </then>
+    </if>
+  </target>
+
+  <target name="build.configured" depends="init" >
+    <!-- ===============================================================
+         Build the war
+         =============================================================== -->
+
+    <!--
+    <ant antfile="${buildwar}" inheritRefs="true" target="build" />
+    -->
+    <ant antfile="${app.sou.dir}/../build.xml" inheritRefs="true" target="build-war" />
+    <copy toDir="${dist.home}" file="${app.sou.dir}/../dist/${propval.app.war.name}.war"/>
+  </target>
+</project>

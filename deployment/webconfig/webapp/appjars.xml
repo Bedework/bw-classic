@@ -12,12 +12,12 @@
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-webconfig" version="3.5"
-              projecthome="${project.home}/projects/webapps" />
+              projecthome="${bw.project.home}/projects/webapps" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-webcommon" version="3.5"
-              projecthome="${project.home}/projects/webapps" />
+              projecthome="${bw.project.home}/projects/webapps" />
     </sequential>
  </macrodef>
 </project>
