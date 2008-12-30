@@ -164,6 +164,7 @@ body {
 }
 th {
   text-align: left;
+  font-size: 0.9em;
 }
 /* mainMenuTable is deprecated */
 #mainMenuTable {
@@ -361,6 +362,9 @@ ul.adminMenu a:hover {
 #commonListTable td.date,
 #commonListTable td.calcat {
   white-space: nowrap;
+}
+#commonListTable tr.highlight td {
+  background-color: #ffd;
 }
 .recurrenceEditLinks {
   font-style: italic;
@@ -940,6 +944,37 @@ p.note {
 }
 #calendarTree li.calendar {
   list-style-image: url(../../resources/calIcon-sm.gif);
+}
+#calendarTree  li.trash {
+  list-style-image: url(../../resources/trashIcon.gif);
+}
+#calendarTree  li.inbox {
+  list-style-image: url(../../resources/inboxIcon.gif);
+}
+#calendarTree  li.outbox {
+  list-style-image: url(../../resources/outboxIcon.gif);
+}
+#calendarTree  li.deleted {
+  list-style-image: url(../../resources/calIconDeleted-sm.gif);
+}
+#calendarTree  li.selected {
+  list-style-image: url(../../resources/glassFill-icon-view.gif);
+  font-weight: bold;
+}
+#calendarTree  li.alias {
+  list-style-image: url(../../resources/calIconAlias-sm.gif);
+  font-style: italic;
+  margin-left: 0;
+  padding-left: 0;
+}
+#calendarTree  li.aliasFolder {
+  list-style-image: url(../../resources/catIconAlias.gif);
+  font-style: italic;
+  margin-left: 0;
+  padding-left: 0;
+}
+#calendarTree  li.subscription li {
+  font-style: normal;
 }
 #calendarTree a:link,
 #calendarTree a:active,

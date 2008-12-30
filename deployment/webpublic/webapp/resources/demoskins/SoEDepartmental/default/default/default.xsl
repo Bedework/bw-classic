@@ -1333,14 +1333,14 @@
   <xsl:template match="calendar" mode="calTree">
     <xsl:variable name="itemClass">
       <xsl:choose>
-        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:when test="calType = '0'">folder</xsl:when>
         <xsl:otherwise>calendar</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="url" select="encodedPath"/>
     <li class="{$itemClass}">
       <a href="{$setSelection}&amp;calUrl={$url}" title="view calendar"><xsl:value-of select="name"/></a>
-      <xsl:if test="calendarCollection='true'">
+      <xsl:if test="calType != '0'">
         <xsl:variable name="calPath" select="path"/>
         <span class="exportCalLink">
           <!-- To use the dojo floating widget from the template above, uncomment

@@ -4277,8 +4277,8 @@
               4 - Busy
               5 - Inbox
               6 - Outbox
-              7 - Alias
-              8 - External subscription
+              7 - Alias (internal - the underlying calType will be returned; check for the isSubscription property)
+              8 - External subscription (internal - the underlying calType will be returned; check for the isSubscription property and check on the item's status)
               9 - Resource collection
   -->
 
@@ -4534,7 +4534,7 @@
                           and name = /bedework/selectionState/subscriptions/subscription/calendar/name">selected</xsl:when>
           <xsl:when test="isSubscription = 'true'">alias</xsl:when>
           <xsl:when test="name='Trash'">trash</xsl:when>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:when test="calType = '0'">folder</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
@@ -4551,7 +4551,7 @@
         </xsl:choose>
       </xsl:variable>
       <xsl:choose>
-        <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calendarCollection = 'true')">
+        <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calType != '0')">
           <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
             <strong><xsl:value-of select="name"/></strong>
           </a>
@@ -4607,7 +4607,7 @@
         <xsl:choose>
           <xsl:when test="name='Trash'">trash</xsl:when>
           <xsl:when test="isSubscription = 'true'">alias</xsl:when>
-          <xsl:when test="calendarCollection='false'">folder</xsl:when>
+          <xsl:when test="calType = '0'">folder</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
@@ -4786,13 +4786,13 @@
           <h3>Modify Subscription</h3>
           <input type="hidden" value="true" name="calendarCollection"/>
         </xsl:when>
-        <xsl:when test="calendarCollection='true'">
-          <h3>Modify Calendar</h3>
-          <input type="hidden" value="true" name="calendarCollection"/>
-        </xsl:when>
-        <xsl:otherwise>
+        <xsl:when test="calType = '0'">
           <h3>Modify Folder</h3>
           <input type="hidden" value="false" name="calendarCollection"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <h3>Modify Calendar</h3>
+          <input type="hidden" value="true" name="calendarCollection"/>
         </xsl:otherwise>
       </xsl:choose>
       <table class="common">
@@ -4882,11 +4882,11 @@
               <xsl:when test="isSubscription='true'">
                 <input type="submit" name="updateCalendar" value="Update Subscription"/>
               </xsl:when>
-              <xsl:when test="calendarCollection='true'">
-                <input type="submit" name="updateCalendar" value="Update Calendar"/>
+              <xsl:when test="calType = '0'">
+                <input type="submit" name="updateCalendar" value="Update Folder"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="submit" name="updateCalendar" value="Update Folder"/>
+                <input type="submit" name="updateCalendar" value="Update Calendar"/>
               </xsl:otherwise>
             </xsl:choose>
             <input type="submit" name="cancelled" value="cancel"/>
@@ -4896,11 +4896,11 @@
               <xsl:when test="isSubscription='true'">
                 <input type="submit" name="delete" value="Delete Subscription"/>
               </xsl:when>
-              <xsl:when test="calendarCollection='true'">
-                <input type="submit" name="delete" value="Delete Calendar"/>
+              <xsl:when test="calType = '0'">
+                <input type="submit" name="delete" value="Delete Folder"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="submit" name="delete" value="Delete Folder"/>
+                <input type="submit" name="delete" value="Delete Calendar"/>
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -4952,10 +4952,6 @@
         <ul>
           <li>Folders may only contain calendars and subfolders.</li>
           <li>Calendars may only contain events (and other calendar items).</li>
-          <!-- li>
-            An empty calendar may be converted to a folder and vice
-            versa.
-          </li-->
         </ul>
       </li>
     </ul>
@@ -5026,17 +5022,17 @@
 
   <xsl:template match="currentCalendar" mode="deleteCalendarConfirm">
     <xsl:choose>
-      <xsl:when test="calendarCollection='true'">
-        <h3>Delete Calendar</h3>
-        <p>
-          The following calendar will be deleted.  Continue?
-        </p>
-      </xsl:when>
-      <xsl:otherwise>
+      <xsl:when test="calType = '0'">
         <h3>Delete Folder</h3>
         <p>
           The following folder <em>and all its contents</em> will be deleted.
           Continue?
+        </p>
+      </xsl:when>
+      <xsl:otherwise>
+        <h3>Delete Calendar</h3>
+        <p>
+          The following calendar will be deleted.  Continue?
         </p>
       </xsl:otherwise>
     </xsl:choose>
@@ -5076,11 +5072,11 @@
           </td>
           <td align="right">
             <xsl:choose>
-              <xsl:when test="calendarCollection='true'">
-                <input type="submit" name="delete" value="Yes: Delete Calendar!"/>
+              <xsl:when test="calType = '0'">
+                <input type="submit" name="delete" value="Yes: Delete Folder!"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="submit" name="delete" value="Yes: Delete Folder!"/>
+                <input type="submit" name="delete" value="Yes: Delete Calendar!"/>
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -5136,7 +5132,7 @@
             <!-- My Calendars -->
             <ul class="calendarTree">
               <!-- list normal calendars first -->
-              <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calendarCollection='true' and calType &lt; 2]">
+              <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calType = '1']">
                 <li class="calendar">
                   <xsl:variable name="calPath" select="path"/>
                   <xsl:variable name="name" select="name"/>
@@ -5148,7 +5144,7 @@
             </ul>
             <ul class="calendarTree">
               <!-- list special calendars next -->
-              <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calendarCollection='true' and calType &gt; 1]">
+              <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calType &gt; 1]">
                 <li class="calendar">
                   <xsl:variable name="calPath" select="path"/>
                   <xsl:variable name="name" select="name"/>
@@ -5171,16 +5167,7 @@
 
   <xsl:template match="calendar" mode="buildExportTree">
     <xsl:choose>
-      <xsl:when test="calendarCollection='true'">
-        <li class="calendar">
-          <xsl:variable name="calPath" select="path"/>
-          <xsl:variable name="name" select="name"/>
-          <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
-            <xsl:value-of select="name"/>
-          </a>
-        </li>
-      </xsl:when>
-      <xsl:otherwise>
+      <xsl:when test="calType = '0'">
         <li class="folder">
           <xsl:value-of select="name"/>
           <xsl:if test="calendar">
@@ -5188,6 +5175,15 @@
               <xsl:apply-templates select="calendar" mode="buildExportTree"/>
             </ul>
           </xsl:if>
+        </li>
+      </xsl:when>
+      <xsl:otherwise>
+        <li class="calendar">
+          <xsl:variable name="calPath" select="path"/>
+          <xsl:variable name="name" select="name"/>
+          <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
+            <xsl:value-of select="name"/>
+          </a>
         </li>
       </xsl:otherwise>
     </xsl:choose>
@@ -5300,7 +5296,7 @@
     <xsl:variable name="calPath" select="encodedPath"/>
     <xsl:variable name="itemClass">
       <xsl:choose>
-        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:when test="calType = '0'">folder</xsl:when>
         <xsl:otherwise>calendar</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>

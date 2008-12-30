@@ -598,7 +598,7 @@
   <xsl:template match="calendar" mode="calTree">
     <xsl:variable name="itemClass">
       <xsl:choose>
-        <xsl:when test="calendarCollection='false'">folder</xsl:when>
+        <xsl:when test="calType = '0'">folder</xsl:when>
         <xsl:otherwise>calendar</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
