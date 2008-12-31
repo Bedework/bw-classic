@@ -32,6 +32,9 @@
         <publicCardDAVUri>http://localhost:8080/carddav</publicCardDAVUri>
         <personalCardDAVUri>http://localhost:8080/ucarddav</personalCardDAVUri>
 
+        <!-- Timezone server locations -->
+        <timezonesUri>http://localhost:8080/tzsvr</timezonesUri>
+
         <module>
           <!-- A dummy module with no directory. -->
           <dir-config classname="org.bedework.calfacade.configs.DirConfigProperties">

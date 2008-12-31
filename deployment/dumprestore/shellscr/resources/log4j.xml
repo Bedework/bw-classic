@@ -165,6 +165,10 @@
       <priority value="INFO"/>
    </category>
 
+   <category name="httpclient">
+      <priority value="INFO"/>
+   </category>
+
    <!-- ical4j is noisy -->
    <category name="net.fortuna.ical4j">
       <priority value="INFO"/>
