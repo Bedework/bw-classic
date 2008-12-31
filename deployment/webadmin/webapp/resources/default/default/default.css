@@ -297,18 +297,6 @@ ul.adminMenu {
 ul.adminMenu li {
   padding: 0.25em 0 0 0;
 }
-ul.adminMenu a:link,
-ul.adminMenu a:active,
-ul.adminMenu a:visited {
-  text-decoration: none;
-  color: #483D8B;
-  background-color: transparent;
-}
-ul.adminMenu a:hover {
-  text-decoration: none;
-  color: #483D8B;
-  background-color: #ff3;
-}
 #bwSubmittedEventCommentBlock {
   font-size: 0.9em;
   padding: 1em;
@@ -348,7 +336,7 @@ ul.adminMenu a:hover {
 }
 #commonListTable th {
   padding: 0.2em 1em 0.2em 0.5em;
-  background-color : #ccc;
+  background-color : #bbb;
   color: black;
   white-space: nowrap;
 }
@@ -357,14 +345,15 @@ ul.adminMenu a:hover {
   font-size: 0.9em;
   padding: 0.2em 1em 0.2em 0.5em;
   color: black;
-  background-color: #eee;
+  background-color: #ddd;
 }
 #commonListTable td.date,
 #commonListTable td.calcat {
   white-space: nowrap;
 }
 #commonListTable tr.highlight td {
-  background-color: #ffd;
+  background-color: #eee;
+  color: black;
 }
 .recurrenceEditLinks {
   font-style: italic;
@@ -725,7 +714,7 @@ table.params .desc {
   padding: 0;
 }
 #sharingBox {
-  margin: 0;
+  margin: 1em 0;
   border-top: 1px solid #333;
   padding: 1em 1em 2em 1em;
 }
@@ -931,66 +920,60 @@ p.note {
   font-size: 0.9em;
   padding: 2em;
 }
-#calendarTree ul {
+.calendarTree ul {
   padding-left: 10px;
   margin-left: 10px;
 }
-#calendarTree li {
+.calendarTree li {
   padding-top: 0.25em;
   /*font-weight: bold;*/
 }
-#calendarTree li.folder {
+li.folder {
   list-style-image: url(../../resources/catIcon.gif);
 }
-#calendarTree li.calendar {
+li.calendar {
   list-style-image: url(../../resources/calIcon-sm.gif);
 }
-#calendarTree  li.trash {
+.calendarTree  li.trash {
   list-style-image: url(../../resources/trashIcon.gif);
 }
-#calendarTree  li.inbox {
+.calendarTree  li.inbox {
   list-style-image: url(../../resources/inboxIcon.gif);
 }
-#calendarTree  li.outbox {
+.calendarTree  li.outbox {
   list-style-image: url(../../resources/outboxIcon.gif);
 }
-#calendarTree  li.deleted {
+.calendarTree  li.deleted {
   list-style-image: url(../../resources/calIconDeleted-sm.gif);
 }
-#calendarTree  li.selected {
+.calendarTree  li.selected {
   list-style-image: url(../../resources/glassFill-icon-view.gif);
   font-weight: bold;
 }
-#calendarTree  li.alias {
+.calendarTree  li.alias {
   list-style-image: url(../../resources/calIconAlias-sm.gif);
   font-style: italic;
   margin-left: 0;
   padding-left: 0;
 }
-#calendarTree  li.aliasFolder {
+.calendarTree  li.aliasFolder {
   list-style-image: url(../../resources/catIconAlias.gif);
   font-style: italic;
   margin-left: 0;
   padding-left: 0;
 }
-#calendarTree  li.subscription li {
+.calendarTree  li.subscription li {
   font-style: normal;
 }
-#calendarTree a:link,
-#calendarTree a:active,
-#calendarTree a:visited {
-  text-decoration: none;
-}
-#calendarTree a:hover {
-  color: black;
-  background-color: #ff3;
-}
-#calendarTree img.bwPlusMinusIcon {
+.calendarTree img.bwPlusMinusIcon {
   /* the arrangement below is required for cross-browser compatibility;
      be cautious changing it (works IE7, FF2, Safari 3) */
   position: relative;
   top: -2px;
   margin: 0 25px 0 -35px;
+}
+#bwPublicCalDisplay {
+  margin: 1em 0 -1em 1em;
 }
 #filterTable {
   font-size: 0.9em;
@@ -1052,6 +1035,18 @@ p.note {
 }
 .padTop {
   padding-top: 1em;
+}
+.viewsTable {
+  width: 60%;
+}
+a {
+  color: #00c;
+  background-color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: #483D8B;
+  background-color: #ff3;
 }
 #footer {
   clear: both;

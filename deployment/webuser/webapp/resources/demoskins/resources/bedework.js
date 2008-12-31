@@ -1,5 +1,5 @@
 /* **********************************************************************
-    Copyright 2007 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+    Copyright 2008 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
     Redistribution and use of this distribution in source and binary forms,
     with or without modification, are permitted provided that:
@@ -22,6 +22,10 @@
     Institute, nor the authors of the software are liable for any indirect,
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. */
+
+/* NOTE: this file is different between Bedework web applications and is 
+   therefore not currently interchangable between apps.  This will be normalized
+   in the coming versions, but for now don't try to exchange them. */
 
 var debug = false; // very basic debugging for now
 
@@ -70,9 +74,13 @@ function show() {
 // show and hide an item based on its current
 // visibility; if visible, hide it; if invisible
 // show it.
-function toggleVisibility(id,cl) {
-  if(document.getElementById(id).className == 'invisible') {
-    changeClass(id,cl);
+function toggleVisibility(id,newClass) {
+  if (document.getElementById(id).className == 'invisible') {
+    if (newClass != "") {
+      changeClass(id,newClass);
+    } else {
+      changeClass(id,'visible');
+    }
   } else {
     changeClass(id,'invisible');
   }
@@ -157,8 +165,6 @@ function launchPrintWindow(URL) {
 }
 // launch the calSelect pop-up window for selecting a calendar when creating,
 // editing, and importing events
-// DEPRECATED - can't use pop-ups in current portal environments in a
-// portal-agnostic way
 function launchCalSelectWindow(URL) {
   calSelect = window.open(URL, "calSelect", "width=500,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
   window.calSelect.focus();

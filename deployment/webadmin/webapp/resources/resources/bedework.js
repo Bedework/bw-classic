@@ -1,22 +1,50 @@
+/* **********************************************************************
+    Copyright 2008 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+
+    Redistribution and use of this distribution in source and binary forms,
+    with or without modification, are permitted provided that:
+       The above copyright notice and this permission notice appear in all
+        copies and supporting documentation;
+
+        The name, identifiers, and trademarks of Rensselaer Polytechnic
+        Institute are not used in advertising or publicity without the
+        express prior written permission of Rensselaer Polytechnic Institute;
+
+    DISCLAIMER: The software is distributed" AS IS" without any express or
+    implied warranty, including but not limited to, any implied warranties
+    of merchantability or fitness for a particular purpose or any warrant)'
+    of non-infringement of any current or pending patent rights. The authors
+    of the software make no representations about the suitability of this
+    software for any particular purpose. The entire risk as to the quality
+    and performance of the software is with the user. Should the software
+    prove defective, the user assumes the cost of all necessary servicing,
+    repair or correction. In particular, neither Rensselaer Polytechnic
+    Institute, nor the authors of the software are liable for any indirect,
+    special, consequential, or incidental damages related to the software,
+    to the maximum extent the law permits. */
+
+/* NOTE: this file is different between Bedework web applications and is
+   therefore not currently interchangable between apps.  This will be normalized
+   in the coming versions, but for now don't try to exchange them. */
+
 var debug = false; // very basic debugging for now
 
 /* COMMON and GENERAL FUNCTIONS */
 
 function changeClass(id, newClass) {
-  identity = document.getElementById(id);
+  var identity = document.getElementById(id);
+  if (identity == null) {
+    alert("No element with id: " + id + " to set to class: " + newClass);
+  }
   identity.className=newClass;
 }
-function toggleVisibility(id,newClass) {
-  if (document.getElementById(id).className == 'invisible') {
-    if (newClass != "") {
-      changeClass(id,newClass);
-    } else {
-      changeClass(id,'visible');
-    }
-  } else {
-    changeClass(id,'invisible');
-  }
+// set a field's value by ID
+// typically used to set the value of a hidden field
+function setField(id,val) {
+  field = document.getElementById(id);
+  field.value = val;
 }
+
 // show hide items using a checkbox
 function swapVisible(obj,id) {
   if (obj.checked) {
@@ -41,6 +69,20 @@ function show() {
     for (i = 0; i < arguments.length; i++) {
       changeClass(arguments[i],'visible');
     }
+  }
+}
+// show and hide an item based on its current
+// visibility; if visible, hide it; if invisible
+// show it.
+function toggleVisibility(id,newClass) {
+  if (document.getElementById(id).className == 'invisible') {
+    if (newClass != "") {
+      changeClass(id,newClass);
+    } else {
+      changeClass(id,'visible');
+    }
+  } else {
+    changeClass(id,'invisible');
   }
 }
 function setTab(listId,listIndex) {
@@ -105,7 +147,7 @@ function launchPrintWindow(URL) {
 // launch the calSelect pop-up window for selecting a calendar when creating,
 // editing, and importing events
 function launchCalSelectWindow(URL) {
-  calSelect = window.open(URL, "calSelect", "width=700,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
+  calSelect = window.open(URL, "calSelect", "width=500,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
   window.calSelect.focus();
 }
 // used to update the calendar in various forms from
@@ -121,7 +163,45 @@ function updateEventFormCalendar(newCalPath,calDisplay) {
   }
   window.close();
 }
+// used to update a calendar subscription (alias) We must do two things: update the hidden
+// calendar input field and update the displayed text
+function updatePublicCalendarAlias(newCalPath,calDisplay,calendarCollection) {
+  var calendarAliasHolder = document.getElementById("publicAliasHolder");
+  calendarAliasHolder.value = newCalPath;
+  var bwCalDisplay = document.getElementById("bwPublicCalDisplay");
+  bwCalDisplay.innerHTML = "Selected calendar: <strong>" + calDisplay + "</strong>";
+}
+// set the subscription URI when creating or updating a subscription
+function setCalendarAlias(formObj) {
+  if (!formObj) {
+    alert("The subscription form is not available.");
+    return false;
+  }
+
+  // set the aliasUri to an empty string.  Only set it if user
+  // has requested a subscription.
+  formObj.aliasUri.value == "";
+
+  if (formObj.type.value == "folder") {
+    formObj.calendarCollection.value = "false";
+  } else if (formObj.type.value == "subscription") {
+    switch (formObj.subType.value) {
+      case "public":
+        formObj.aliasUri.value = "bwcal://" + formObj.publicAliasHolder.value;
+        break;
+      case "user":
+        //the "/user/" string is temporary; it needs to be passed as a param.
+        formObj.aliasUri.value = "bwcal:///user/" + formObj.userIdHolder.value + "/" + formObj.userCalHolder.value;
+        break;
+      case "external":
+        formObj.aliasUri.value = formObj.aliasUriHolder.value;
+        break;
+    }
+  }
+  return true;
+}
 // build a uri based on user and path in the subscription form
+// DEPRECATED - use setCalendarAlias() above.
 function setSubscriptionUri(formObj,prefix) {
   if (formObj) {
     var fullUri =  prefix + formObj.userId.value;

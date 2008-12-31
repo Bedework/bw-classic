@@ -274,7 +274,9 @@
             </xsl:comment>
           </script>
         </xsl:if>
-        <xsl:if test="/bedework/page='modCalendar' or /bedework/page='modCalSuite'">
+        <xsl:if test="/bedework/page='modCalendar' or
+                      /bedework/page='modCalSuite' or
+                      /bedework/page='modSubscription'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
         </xsl:if>
@@ -3210,7 +3212,7 @@
       <tr>
         <td class="cals">
           <h3>Public calendars</h3>
-          <ul id="calendarTree">
+          <ul class="calendarTree">
             <xsl:choose>
               <xsl:when test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
                 <xsl:apply-templates select="calendar" mode="listForDisplay"/>
@@ -3436,53 +3438,13 @@
         <input type="submit" name="cancelled" value="cancel"/>
       </div>
       <div id="subscriptionTypes" class="invisible">
-        <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
-             on the subscription type. -->
-        <input type="hidden" name="aliasUri" value=""/>
-        <p>
-          <strong>Subscription Type:</strong><br/>
-          <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
-          <input type="hidden" value="public" name="subType" id="bwSubType"/>
-          <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> Public calendar (alias)
-          <!-- input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/> User calendar-->
-          <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> URL
-        </p>
-
-        <div id="subscriptionTypePublic">
-          <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>
-          <div id="bwPublicCalDisplay">
-            Select the public calendar or folder:
-          </div>
-          <ul id="publicSubscriptionTree">
-            <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
-          </ul>
-        </div>
-
-        <div id="subscriptionTypeUser" class="invisible">
-          <table class="common">
-            <tr>
-              <th>User's ID:</th>
-              <td>
-                <input type="text" name="userIdHolder" value="" size="40"/>
-              </td>
-            </tr>
-            <tr>
-              <th>Calendar Path:</th>
-              <td>
-                <input type="text" name="userCalHolder" value="calendar" size="40"/><br/>
-                <span class="note">E.g. "calendar" (default) or "someFolder/someCalendar"</span>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-
-        <div class="invisible" id="subscriptionTypeExternal">
-          <table class="common">
+        <h4>Subscription URL</h4>
+        <div id="subscriptionTypeExternal">
+          <table class="common" id="subscriptionTypes">
             <tr>
               <th>URL to calendar:</th>
               <td>
-                <input type="text" name="aliasUriHolder" id="aliasUriHolder" value="" size="40"/>
+                <input type="text" name="aliasUri" value="" size="40"/>
               </td>
             </tr>
             <tr>
@@ -3498,6 +3460,10 @@
               </td>
             </tr>
           </table>
+          <p>
+            Note: An alias can be added to a Bedework calendar using a URL of the form:<br/>
+            bwcal://[path], e.g. bwcal:///public/Arts
+          </p>
         </div>
       </div>
 
@@ -3637,7 +3603,7 @@
           <td align="right">
             <xsl:choose>
               <xsl:when test="isSubscription='true'">
-                <input type="submit" name="delete" value="Delete Subscription"/>
+                <input type="submit" name="delete" value="Remove Subscription"/>
               </xsl:when>
               <xsl:when test="calType = '0'">
                 <input type="submit" name="delete" value="Delete Folder"/>
@@ -3728,6 +3694,13 @@
 
   <xsl:template match="currentCalendar" mode="deleteCalendarConfirm">
     <xsl:choose>
+      <xsl:when test="isSubscription = 'true'">
+        <h3>Remove Subscription</h3>
+        <p>
+          The following subscription will be removed.
+          Continue?
+        </p>
+      </xsl:when>
       <xsl:when test="calType = '0'">
         <h3>Delete Folder</h3>
         <p>
@@ -3778,6 +3751,9 @@
           </td>
           <td align="right">
             <xsl:choose>
+              <xsl:when test="isSubscription = 'true'">
+                <input type="submit" name="delete" value="Yes: Remove Subscription!"/>
+              </xsl:when>
               <xsl:when test="calType = '0'">
                 <input type="submit" name="delete" value="Yes: Delete Folder!"/>
               </xsl:when>
@@ -3812,7 +3788,7 @@
         </xsl:choose>
       </form>-->
       <h4>Calendars</h4>
-      <ul id="calendarTree">
+      <ul class="calendarTree">
         <xsl:apply-templates select="/bedework/calendars/calendar" mode="selectCalForEventCalTree"/>
       </ul>
     </div>
@@ -3905,7 +3881,7 @@
         </td>
         <td class="bwCalsForMove">
           <p>Select a new parent folder:</p>
-          <ul id="calendarTree">
+          <ul class="calendarTree">
             <xsl:apply-templates select="/bedework/calendars/calendar" mode="listForMove"/>
           </ul>
         </td>
@@ -4386,7 +4362,7 @@
       <tr>
         <td class="cals">
           <h3>Subscription Tree</h3>
-          <ul id="calendarTree">
+          <ul class="calendarTree">
             <xsl:apply-templates select="calendar" mode="listForUpdateSubscription">
               <xsl:with-param name="root">true</xsl:with-param>
             </xsl:apply-templates>
@@ -4470,16 +4446,15 @@
       </xsl:if>
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar[isSubscription = 'true']" mode="listForUpdateSubscription">
-            <!--<xsl:sort select="title" order="ascending" case-order="upper-first"/>--></xsl:apply-templates>
+          <xsl:apply-templates select="calendar[isSubscription = 'true']" mode="listForUpdateSubscription"/>
         </ul>
       </xsl:if>
     </li>
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="addSubscription">
-    <h3>Add Subscription or Folder</h3>
-    <form name="addCalForm" method="post" action="{$subscriptions-update}" onsubmit="setCalendarAlias(this)">
+    <h3>Add Subscription</h3>
+    <form name="addCalForm" method="post" action="{$subscriptions-update}" onsubmit="return setCalendarAlias(this)">
       <table class="common">
         <tr>
           <th>Name:</th>
@@ -4532,14 +4507,47 @@
         <tr>
           <th>Type:</th>
           <td>
-            <!-- we will set the value of "calendarCollection on submit.
-                 Value is false only for folders, so we default it to true here.  -->
             <input type="hidden" value="true" name="calendarCollection"/>
-            <!-- type is defaulted to calendar.  It is changed when a typeSwitch is clicked. -->
-            <input type="hidden" value="calendar" name="type" id="bwCalType"/>
-            <!-- input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Calendar-->
-            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Folder
-            <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');setField('bwCalType',this.value);"/> Subscription
+            <input type="hidden" value="subscription" name="type"/>
+            <input type="hidden" name="aliasUri" value=""/>
+            <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
+            <input type="hidden" value="public" name="subType" id="bwSubType"/>
+            <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');setField('bwSubType',this.value);"/> Public alias
+            <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');setField('bwSubType',this.value);"/> URL
+
+              <div id="subscriptionTypePublic">
+                <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>
+                <div id="bwPublicCalDisplay">
+                  Select the public calendar or folder:
+                </div>
+                <ul id="publicSubscriptionTree" class="calendarTree">
+                  <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
+                </ul>
+              </div>
+
+              <div class="invisible" id="subscriptionTypeExternal">
+                <table class="common">
+                  <tr>
+                    <th>URL to calendar:</th>
+                    <td>
+                      <input type="text" name="aliasUriHolder" id="aliasUriHolder" value="" size="40"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>ID (if required):</th>
+                    <td>
+                      <input type="text" name="remoteId" value="" size="40"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Password (if required):</th>
+                    <td>
+                      <input type="password" name="remotePw" value="" size="40"/>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
           </td>
         </tr>
       </table>
@@ -4547,72 +4555,6 @@
         <input type="submit" name="addCalendar" value="Add"/>
         <input type="submit" name="cancelled" value="cancel"/>
       </div>
-      <div id="subscriptionTypes" class="invisible">
-        <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
-             on the subscription type. -->
-        <input type="hidden" name="aliasUri" value=""/>
-        <p>
-          <strong>Subscription Type:</strong><br/>
-          <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
-          <input type="hidden" value="public" name="subType" id="bwSubType"/>
-          <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> Public calendar (alias)
-          <!-- input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/> User calendar-->
-          <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> URL
-        </p>
-
-        <div id="subscriptionTypePublic">
-          <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>
-          <div id="bwPublicCalDisplay">
-            Select the public calendar or folder:
-          </div>
-          <ul id="publicSubscriptionTree">
-            <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
-          </ul>
-        </div>
-
-        <div id="subscriptionTypeUser" class="invisible">
-          <table class="common">
-            <tr>
-              <th>User's ID:</th>
-              <td>
-                <input type="text" name="userIdHolder" value="" size="40"/>
-              </td>
-            </tr>
-            <tr>
-              <th>Calendar Path:</th>
-              <td>
-                <input type="text" name="userCalHolder" value="calendar" size="40"/><br/>
-                <span class="note">E.g. "calendar" (default) or "someFolder/someCalendar"</span>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-
-        <div class="invisible" id="subscriptionTypeExternal">
-          <table class="common">
-            <tr>
-              <th>URL to calendar:</th>
-              <td>
-                <input type="text" name="aliasUriHolder" id="aliasUriHolder" value="" size="40"/>
-              </td>
-            </tr>
-            <tr>
-              <th>ID (if required):</th>
-              <td>
-                <input type="text" name="remoteId" value="" size="40"/>
-              </td>
-            </tr>
-            <tr>
-              <th>Password (if required):</th>
-              <td>
-                <input type="password" name="remotePw" value="" size="40"/>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
     </form>
 
     <div id="sharingBox">
@@ -4621,19 +4563,57 @@
     </div>
   </xsl:template>
 
+  <xsl:template match="calendar" mode="selectCalForPublicAliasCalTree">
+    <xsl:variable name="id" select="id"/>
+    <li>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="name='Trash'">trash</xsl:when>
+          <xsl:when test="isSubscription = 'true'">alias</xsl:when>
+          <xsl:when test="calType = '0'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:variable name="calPath" select="path"/>
+      <xsl:variable name="calDisplay" select="path"/>
+      <xsl:variable name="calendarCollection" select="calendarCollection"/>
+      <xsl:choose>
+        <xsl:when test="canAlias = 'true'">
+          <a href="javascript:updatePublicCalendarAlias('{$calPath}','{$calDisplay}','{$calendarCollection}')">
+            <xsl:value-of select="name"/>
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="name"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="selectCalForPublicAliasCalTree"/>
+        </ul>
+      </xsl:if>
+    </li>
+  </xsl:template>
+
   <!--+++++++++++++++ Views ++++++++++++++++++++-->
   <xsl:template match="views" mode="viewList">
     <!-- fix this: /user/ should be parameterized not hard-coded here -->
     <xsl:variable name="userPath">/user/<xsl:value-of select="/bedework/userInfo/user"/>/</xsl:variable>
 
-    <h3>Add a new view</h3>
+    <h2>Manage Views</h2>
+    <p>
+      Views are named aggregations of subscriptions used
+      to display sets of events within a calendar suite.
+    </p>
+
+    <h4>Add a new view</h4>
     <form name="addView" action="{$view-addView}" method="post">
       <input type="text" name="name" size="60"/>
       <input type="submit" value="add view" name="addview"/>
     </form>
 
-    <h3>Views</h3>
-    <table id="commonListTable">
+    <h4>Views</h4>
+    <table id="commonListTable" class="viewsTable">
       <tr>
         <th>Name</th>
         <th>Included subscriptions</th>
@@ -4724,6 +4704,7 @@
         </td>
       </tr>
     </table>
+
     <table border="0" id="submitTable">
       <tr>
         <td>
@@ -5653,15 +5634,19 @@
       <tr>
         <th>Name</th>
         <th>Description</th>
+        <th>Calendar Suite*</th>
         <xsl:if test="/bedework/groups/showMembers='true'">
           <th>Members</th>
         </xsl:if>
         <th></th>
       </tr>
       <xsl:for-each select="/bedework/groups/group">
-        <!--<xsl:sort select="name" order="ascending" case-order="upper-first"/>-->
+        <xsl:sort select="name" order="ascending" case-order="lower-first"/>
         <xsl:variable name="groupName" select="name"/>
         <tr>
+          <xsl:if test="name = /bedework/calSuites//calSuite/group">
+            <xsl:attribute name="class">highlight</xsl:attribute>
+          </xsl:if>
           <td>
             <a href="{$admingroup-fetchForUpdate}&amp;adminGroupName={$groupName}">
               <xsl:value-of select="name"/>
@@ -5669,6 +5654,13 @@
           </td>
           <td>
             <xsl:value-of select="desc"/>
+          </td>
+          <td>
+            <xsl:for-each select="/bedework/calSuites/calSuite">
+              <xsl:if test="group = $groupName">
+                <xsl:value-of select="name"/>
+              </xsl:if>
+            </xsl:for-each>
           </td>
           <xsl:if test="/bedework/groups/showMembers='true'">
             <td>
@@ -5683,6 +5675,9 @@
         </tr>
       </xsl:for-each>
     </table>
+    <p class="note">
+     *Highlighted rows indicate a group to which a Calendar Suite is attached.
+    </p>
     <p>
       <input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initAdd}')" value="Add a new group"/>
     </p>

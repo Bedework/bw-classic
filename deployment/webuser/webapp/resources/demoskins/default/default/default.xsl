@@ -615,12 +615,6 @@
 
     <h3>options</h3>
     <ul id="sideBarMenu">
-      <li>
-        <a href="{$category-initUpdate}">Manage Categories</a>
-      </li>
-      <li>
-        <a href="{$location-initUpdate}">Manage Locations</a>
-      </li>
       <li class="prefs">
         <a href="{$prefs-fetchForUpdate}">
           <img height="13" border="0" width="13"
