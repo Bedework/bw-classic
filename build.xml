@@ -46,14 +46,8 @@
   <property name="org.bedework.project.dumprestore"
             location="${org.bedework.projects}/dumprestore" />
 
-  <property name="org.bedework.project.freebusy"
-            location="${org.bedework.projects}/freebusy" />
-
   <property name="org.bedework.project.rpiutil"
             location="${org.bedework.projects}/rpiutil" />
-
-  <property name="org.bedework.project.synchml"
-            location="${org.bedework.projects}/synchml" />
 
   <property name="org.bedework.project.testsuite"
             location="${org.bedework.projects}/testsuite" />
@@ -106,8 +100,6 @@
   </target>
 
   <target name="init" >
-    <property name="org.bedework.qs.build.synchml" value="no" />
-
     <!-- Overriding this when invoking ant allows different user property
          files to be included e.g.
             ant -Dorg.bedework.user.build.properties=/home/me/bedework.properties ...
@@ -145,12 +137,6 @@
 
     <condition property="org.bedework.qs.build.caldav">
       <equals arg1="yes" arg2="${org.bedework.build.caldav}"/>
-    </condition>
-
-    <property name="org.bedework.build.freebusy" value="no" />
-
-    <condition property="org.bedework.qs.build.freebusy">
-      <equals arg1="yes" arg2="${org.bedework.build.freebusy}"/>
     </condition>
 
     <mkdir dir="${dist.home}" />
@@ -212,9 +198,9 @@
 
   <target name="build" depends="init.build,build.rpiutil,build.bwtzsvr,
                                 build.access,build.davutil,
-                                build.calendarapi,build.dumprestore,build.synchml,
+                                build.calendarapi,build.dumprestore,
                                 build.webdav,build.caldav,build.caldavTest,
-                                build.freebusy,build.bwtools,build.webapps,
+                                build.bwtools,build.webapps,
                                 build.testsuite,build.deployutil"
           description="builds the project">
     <copy toDir="${dist.home}" >
@@ -224,9 +210,9 @@
 
   <target name="clean" depends="init,clean.rpiutil,clean.bwtzsvr,
                                 clean.access,clean.davutil,
-                                clean.calendarapi,clean.dumprestore,clean.synchml,
+                                clean.calendarapi,clean.dumprestore,
                                 clean.webdav,clean.caldav,clean.caldavTest,
-                                clean.freebusy,clean.bwtools,clean.webapps,
+                                clean.bwtools,clean.webapps,
                                 clean.testsuite"
           description="Remove all generated files.">
     <delete dir="${dist.home}" />
@@ -235,9 +221,9 @@
 
   <target name="quickstart-clean" depends="init,clean.rpiutil,clean.bwtzsvr,
                                            clean.access,clean.davutil,
-                                           clean.calendarapi,clean.dumprestore,clean.synchml,
+                                           clean.calendarapi,clean.dumprestore,
                                            clean.webdav,clean.caldav,clean.caldavTest,
-                                           clean.freebusy,clean.bwtools,clean.webapps,
+                                           clean.bwtools,clean.webapps,
                                            clean.testsuite"
           description="partial clean up for quickstart.">
     <delete dir="${bin.home}" />
@@ -345,17 +331,6 @@
                 location="${org.bedework.projectdocs.home}/dumprestore/api" />
     </ant>
 
-    <if>
-      <isset property="org.bedework.qs.build.synchml"/>
-      <then>
-        <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
-             target="javadoc" >
-          <property name="destdir"
-                    location="${org.bedework.projectdocs.home}/synchml/api" />
-        </ant>
-      </then>
-    </if>
-
     <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
          target="javadoc" >
       <property name="destdir"
@@ -372,12 +347,6 @@
          target="javadoc" >
       <property name="destdir"
                 location="${org.bedework.projectdocs.home}/caldavTest/api" />
-    </ant>
-
-    <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/freebusy/api" />
     </ant>
 
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
@@ -572,37 +541,6 @@
           description="builds the dumprestore project"/>
 
   <!-- .................................................................
-                          freebusy
-       .................................................................. -->
-  <target name="build.freebusy" depends="init"
-          description="builds the freebusy project">
-    <if>
-      <isset property="org.bedework.qs.build.freebusy"/>
-      <then>
-        <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
-             target="build-all"  >
-          <property name="org.bedework.libcache.dir"
-                    location="${org.bedework.project.bedework}/libcache"/>
-        </ant>
-      </then>
-    </if>
-  </target>
-
-  <target name="clean.freebusy" depends="init"
-          description="cleans the freebusy project">
-    <if>
-      <isset property="org.bedework.qs.build.freebusy"/>
-      <then>
-        <ant antfile="${org.bedework.project.freebusy}/build.xml" inheritall="false"
-             target="deep-clean" />
-      </then>
-    </if>
-  </target>
-
-  <target name="clean.build.freebusy" depends="clean.freebusy,build.freebusy"
-          description="builds the freebusy project"/>
-
-  <!-- .................................................................
                           rpiutil
        .................................................................. -->
   <target name="build.rpiutil" depends="init"
@@ -622,37 +560,6 @@
 
   <target name="clean.build.rpiutil" depends="clean.rpiutil,build.rpiutil"
           description="builds the rpiutil project"/>
-
-  <!-- .................................................................
-                          synchml
-       .................................................................. -->
-  <target name="build.synchml" depends="init"
-          description="builds the synchml project">
-    <if>
-      <isset property="org.bedework.qs.build.synchml"/>
-      <then>
-        <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
-             target="build-all"  >
-          <property name="org.bedework.libcache.dir"
-                    location="${org.bedework.project.bedework}/libcache"/>
-        </ant>
-      </then>
-    </if>
-  </target>
-
-  <target name="clean.synchml" depends="init"
-          description="clean the synchml project">
-    <if>
-      <isset property="org.bedework.qs.build.synchml"/>
-      <then>
-        <ant antfile="${org.bedework.project.synchml}/build.xml" inheritall="false"
-             target="deep-clean" />
-      </then>
-    </if>
-  </target>
-
-  <target name="clean.build.synchml" depends="clean.synchml,clean.synchml"
-          description="builds the synchml project"/>
 
   <!-- .................................................................
                           testsuite
