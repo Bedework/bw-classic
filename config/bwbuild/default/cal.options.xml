@@ -156,6 +156,8 @@
         <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
 
         <indexRoot>lucene/indexroot</indexRoot>
+
+        <rootUsers>caladmin</rootUsers>
       </syspars>
 
       <app>

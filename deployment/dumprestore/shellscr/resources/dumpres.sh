@@ -46,6 +46,10 @@ case "$1" in
     echo $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars $2 $3 $4 $5 $6 $7 $8 $9
     $RESTORECMD -appname $APPNAME -f ./data/initbedework.xml -initSyspars $2 $3 $4 $5 $6 $7 $8 $9
     ;;
+  newsys)
+    echo $RESTORECMD -appname $APPNAME -newSystem -rootid $2 $3 $4 $5 $6 $7 $8 $9
+    $RESTORECMD -appname $APPNAME -newSystem -rootid $2 $3 $4 $5 $6 $7 $8 $9
+    ;;
   drop)
     echo $SCHEMACMD --text --drop --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
     $SCHEMACMD --text --drop --format --delimiter="@SCHEMA-DELIMITER@" --config=./classes/hibernate.cfg.xml --output=schema.sql
@@ -77,6 +81,10 @@ case "$1" in
     echo $" "
     echo $"  $0 initdb [ -ndebug] [-indexroot=<lucene-index-root>"
     echo $"     Populate the database using the provided initial data."
+    echo $" "
+    echo $"  $0 newsys <root-user> [ -ndebug]"
+    echo $"     Create a new empty system based on the build configuration with a"
+    echo $"     single root user."
     echo $" "
     echo $"  $0 drop [--haltonerror] "
     echo $"     Create a file in the current directory with sql drop statements"

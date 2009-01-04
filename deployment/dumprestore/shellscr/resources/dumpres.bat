@@ -52,6 +52,9 @@ ECHO.
   ECHO     initdb [--indexroot={lucene-index-root}]
   ECHO        Populate the database using the provided initial data.
   ECHO.
+  ECHO     newsys [ -ndebug]
+  ECHO        Create a new empty system based on the build configuration.
+  ECHO.
   ECHO     dump {filename}
   ECHO        Dump the database in xml format suitable for restore.
   ECHO.
@@ -70,7 +73,7 @@ ECHO.
   ECHO        was changed.
   ECHO.
   ECHO     schema [--haltonerror]
-  ECHO        Create a schema from the xml schema. Placed in a file in the 
+  ECHO        Create a schema from the xml schema. Placed in a file in the
   ECHO        current directory
   ECHO.
 
