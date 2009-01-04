@@ -37,6 +37,7 @@ ECHO.
   if "%1" == "restore-for-quickstart" GOTO restore-for-quickstart
   if "%1" == "backup" GOTO backup
   if "%1" == "initdb" GOTO initdb
+  if "%1" == "newsys" GOTO newsys
   if "%1" == "drop" GOTO drop
   if "%1" == "drop-export" GOTO drop-export
   if "%1" == "schema" GOTO schema
@@ -52,8 +53,9 @@ ECHO.
   ECHO     initdb [--indexroot={lucene-index-root}]
   ECHO        Populate the database using the provided initial data.
   ECHO.
-  ECHO     newsys [ -ndebug]
-  ECHO        Create a new empty system based on the build configuration.
+  ECHO     newsys <root-user> [-ndebug]
+  ECHO        Create a new empty system based on the build configuration with a
+  ECHO        single root user
   ECHO.
   ECHO     dump {filename}
   ECHO        Dump the database in xml format suitable for restore.
@@ -131,6 +133,7 @@ ECHO.
   %DUMPCMD% -appname %APPNAME% -f %TARGET%
   GOTO end
   ::
+
 :initdb
   ECHO   Initializing the database:
   ECHO.
@@ -138,6 +141,15 @@ ECHO.
   %RESTORECMD% -appname %APPNAME% -f ./data/initbedework.xml -initSyspars %2 %3 %4 %5 %6 %7 %8 %9
   GOTO end
   ::
+
+:newsys
+  ECHO   Creating new system database:
+  ECHO.
+  ECHO   %RESTORECMD% -appname %APPNAME% -newSystem rootid %2 %3 %4 %5 %6 %7 %8 %9
+  %RESTORECMD% -appname %APPNAME% -newSystem rootid %2 %3 %4 %5 %6 %7 %8 %9
+  GOTO end
+  ::
+
 :drop
   ECHO   Creating drop sql
   ECHO.
