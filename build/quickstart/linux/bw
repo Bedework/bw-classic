@@ -5,6 +5,10 @@
 # within the svn repository.
 #
 
+if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
+  errorUsage "JAVA_HOME is not defined correctly for bedework."
+fi
+
 ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
 ANT_HOME=`cd "$ANT_HOME" && pwd`
 
@@ -116,10 +120,6 @@ export BEDEWORK_CONFIG=$BWCONFIGS/$bwc
 
 if [ ! -f "$BEDEWORK_CONFIG/build.properties" ] ; then
   errorUsage "Configuration $BEDEWORK_CONFIG does not exist or is not a bedework configuration."
-fi
-
-if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
-  errorUsage "JAVA_HOME is not defined correctly for bedework."
 fi
 
 # Make available for ant

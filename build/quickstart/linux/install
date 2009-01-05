@@ -5,21 +5,50 @@
 # within the svn repository.
 #
 
+errorMsg() {
+  echo "*******************************************************"
+  echo "Error: $1"
+  echo "*******************************************************"
+  exit 1
+}
+
+if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
+  errorMsg "JAVA_HOME is not defined correctly for bedework."
+fi
+
+# Ant
 ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
 ANT_HOME=`cd "$ANT_HOME" && pwd`
 saveddir=`pwd`
 
 export QUICKSTART_HOME=$saveddir
 
+# Directory server
+export DS_HOME=$QUICKSTART_HOME/apacheds-1.5.3-fixed
+
+# ------------- Should not need to change anything below this ----------
+
+ANT=$ANT_HOME/bin/ant
+
 export BEDEWORK_HOME=$QUICKSTART_HOME/bedework
 
 libcache=$BEDEWORK_HOME/libcache
 
-export DS_HOME=$QUICKSTART_HOME/apacheds-1.5.3-fixed
+quickStartBuildFile=$QUICKSTART_HOME/build.xml
+
+qsant="$ANT -buildfile $quickStartBuildFile"
 
 shutdownServer() {
   echo "Stopping directory server"
   $JAVA_HOME/bin/java -jar $DS_HOME/bin/apacheds-tools.jar graceful --install-path $DS_HOME --configuration
+}
+
+readVal() {
+  val=
+  until [ "$val" != "" ] ; do
+    echo "Enter $1"
+    read val
+  done
 }
 
 echo "========================================================"
@@ -41,35 +70,37 @@ echo "then you will provide the account which will be made superuser"
 echo "which must be one of those supplied above."
 echo "========================================================"
 
-if [ -d "$HOME/bwbuild" ] ; then
-  echo "========================================================"
-  echo "You already have a bwbuild in user home $HOME"
-  echo "Enter 'yes' to continue with the directory unchanged"
-  echo "(you may need to update it afterwards)"
-  echo "Enter anything else to terminate the install allowing "
-  echo "you to rename or destroy it."
-  echo "========================================================"
-
-  echo "Continue? yes/no"
-  read reply
-
-  if [ "$reply" != "yes" ] ; then
-    exit 1
-  fi
-else
-  cp $BEDEWORK_HOME/config/bwbuild $USER_HOME
-fi
-
 # Ensure we shut down the directory server at program termination
 # or after we received a signal:
 trap 'shutdownServer' 0
 trap "exit 2" 1 2 3 15
 
+#XXif [ -d "$HOME/bwbuild" ] ; then
+#XX  echo "========================================================"
+#XX  echo "You already have a bwbuild in user home $HOME"
+#XX  echo "Enter 'yes' to continue with the directory unchanged"
+#XX  echo "(you may need to update it afterwards)"
+#XX  echo "Enter anything else to terminate the install allowing "
+#XX  echo "you to rename or destroy it."
+#XX  echo "========================================================"
+#XX
+#XX  echo "Continue? yes/no"
+#XX  read reply
+#XX
+#XX  if [ "$reply" != "yes" ] ; then
+#XX    exit 1
+#XX  fi
+#XXelse
+#XX  cp $BEDEWORK_HOME/config/bwbuild $USER_HOME
+#XXfi
+
+$qsant install-configs
+
   echo "========================================================"
   echo "We need to create a new ldap directory for the quickstart"
-  #  <!-- This after 3.5
-  #  <echo message="or copy a previous quickstart ldap directory into the new quickstart" />
-  #  -->
+#  <!-- This after 3.5
+#  <echo message="or copy a previous quickstart ldap directory into the new quickstart" />
+#  -->
   echo "========================================================"
 
   echo "Starting directory server"
@@ -79,9 +110,31 @@ trap "exit 2" 1 2 3 15
 
   echo "Pausing while the server starts"
 
-#  sleep 10
+  sleep 10
 
-  echo "Getting directory information and creating entries"
+$qsant initDirForQuickstart
+
+echo "Now we invoke the adduser script to add a superuser to the system"
+echo "We need to know the account, first name last name and a password
+
+readVal "account"
+rootAccount=$val
+adduser_defs="-Dorg.bedework.directory.account=$val"
+
+readVal "firstname"
+adduser_defs="$adduser_defs -Dorg.bedework.directory.firstname=$val"
+
+readVal "lastname"
+adduser_defs="$adduser_defs -Dorg.bedework.directory.lastname=$val"
+
+readVal "password"
+adduser_defs="$adduser_defs -Dorg.bedework.directory.password=$val"
+
+$qsant addUser
+
+exit 2
+
+$qsant addUserPrompt
 
   DIRTOOL_HOME=$BEDEWORK_HOME/projects/bwtools
   DIRTOOL_CP=$libcache/commons-codec-1.3.jar:$libcache/log4j-1.2.8.jar
@@ -89,7 +142,7 @@ trap "exit 2" 1 2 3 15
   dirtool="$JAVA_HOME/bin/java -classpath $DIRTOOL_CP org.bedework.tools.directory.DirTool"
 
 #  $dirtool -initSystem
-
+superuser
   superuser=
   until [ "$superuser" != "" ] ; do
     echo "Enter superuser account"
@@ -105,5 +158,7 @@ trap "exit 2" 1 2 3 15
       fi
     fi
   done
+
+
 
   echo "create data"

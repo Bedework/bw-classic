@@ -25,12 +25,12 @@
             a. init the directory
             b. Create a caladmin user with supplied password
             c. Create a test user
-          If a directory is to be copied from a previous quickstart, copy the
+          If an ldap directory is to be copied from a previous quickstart, copy the
           directory server files.
        ================================================================= -->
 
-  <target name="install" depends="run.init"
-          description="Install the quickstart">
+  <target name="install-configs" depends="run.init"
+          description="Install the build configuration files">
     <echo message="Create bwbuild in user home"/>
 
     <if>
@@ -63,19 +63,39 @@
       </else>
     </if>
 
+    <!-- =================================================================
+         Some final reminders
+         =================================================================
+
+    This should go into some sort of summary file we echo at the end.
+    <if>
+      <isset property="org.bedework.install.bwbuild.reply" />
+      <then>
+        <echo message="========================================================" />
+        <echo message="Note:" />
+        <echo message="${user.home}/bwbuild was left unchanged. You may need" />
+        <echo message="to update it for this release." />
+        <echo message="========================================================" />
+      </then>
+    </if>-->
+  </target>
+
+  <target name="install-ldap" depends="run.init"
+          description="Install the ldap directory server">
     <echo message="========================================================" />
-    <echo message="We need to create a new directory for the quickstart" />
+    <echo message="We need to create a new ldap directory for the quickstart" />
     <!-- This after 3.5
     <echo message="or copy a previous quickstart directory into the new quickstart" />
     -->
     <echo message="========================================================" />
 
-    <echo message="Creating a new directory for the quickstart" />
+    <echo message="Creating a new ldap directory for the quickstart" />
     <parallel>
       <daemons>
         <antcall target="dirstart" inheritrefs="true" />
       </daemons>
       <sequential>
+        <echo message="Pausing to let the ldap server start" />
         <sleep seconds="10" />
         <antcallback target="initDirForQuickstart" inheritrefs="true"
                      return="org.bedework.directory.init.status" />
@@ -95,28 +115,12 @@
           </elseif>
           <else>
             <echo message="Initialisation failed" />
-
           </else>
         </if>
 
         <antcall target="dirstop" inheritrefs="true" />
       </sequential>
     </parallel>
-
-    <!-- =================================================================
-         Some final reminders
-         ================================================================= -->
-
-    <if>
-      <isset property="org.bedework.install.bwbuild.reply" />
-      <then>
-        <echo message="========================================================" />
-        <echo message="Note:" />
-        <echo message="${user.home}/bwbuild was left unchanged. You may need" />
-        <echo message="to update it for this release." />
-        <echo message="========================================================" />
-      </then>
-    </if>
   </target>
 
   <target name="getUserInfo">
