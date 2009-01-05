@@ -546,6 +546,7 @@
         </xsl:if>
       </tr>
     </table>
+
     <ul id="bwAdminMenu">
       <li>
         <xsl:if test="/bedework/tab = 'main'">
