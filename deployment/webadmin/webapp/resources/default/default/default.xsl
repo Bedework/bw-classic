@@ -546,47 +546,44 @@
         </xsl:if>
       </tr>
     </table>
-    <xsl:if test="/bedework/userInfo/group">
-      <!-- user has selected a group, so show menu tabs -->
-      <ul id="bwAdminMenu">
-        <li>
-          <xsl:if test="/bedework/tab = 'main'">
-            <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if>
-          <a href="{$setup}&amp;listAllEvents=false">Main Menu</a>
-        </li>
-        <li>
-          <xsl:if test="/bedework/tab = 'pending'">
-            <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if>
-          <a href="{$initPendingTab}&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true">Pending Events</a>
-        </li>
-        <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
-          <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser = 'true'">
-            <li>
-              <xsl:if test="/bedework/tab = 'calsuite'">
-                <xsl:attribute name="class">selected</xsl:attribute>
-              </xsl:if>
-              <a href="{$showCalsuiteTab}">Calendar Suite</a>
-            </li>
-          </xsl:if>
+    <ul id="bwAdminMenu">
+      <li>
+        <xsl:if test="/bedework/tab = 'main'">
+          <xsl:attribute name="class">selected</xsl:attribute>
         </xsl:if>
-        <xsl:if test="/bedework/userInfo/superUser='true'">
+        <a href="{$setup}&amp;listAllEvents=false">Main Menu</a>
+      </li>
+      <li>
+        <xsl:if test="/bedework/tab = 'pending'">
+          <xsl:attribute name="class">selected</xsl:attribute>
+        </xsl:if>
+        <a href="{$initPendingTab}&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true">Pending Events</a>
+      </li>
+      <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
+        <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser = 'true'">
           <li>
-            <xsl:if test="/bedework/tab = 'users'">
+            <xsl:if test="/bedework/tab = 'calsuite'">
               <xsl:attribute name="class">selected</xsl:attribute>
             </xsl:if>
-            <a href="{$showUsersTab}">Users</a>
-          </li>
-          <li>
-            <xsl:if test="/bedework/tab = 'system'">
-              <xsl:attribute name="class">selected</xsl:attribute>
-            </xsl:if>
-            <a href="{$showSystemTab}">System</a>
+            <a href="{$showCalsuiteTab}">Calendar Suite</a>
           </li>
         </xsl:if>
-      </ul>
-    </xsl:if>
+      </xsl:if>
+      <xsl:if test="/bedework/userInfo/superUser='true'">
+        <li>
+          <xsl:if test="/bedework/tab = 'users'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a href="{$showUsersTab}">Users</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/tab = 'system'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a href="{$showSystemTab}">System</a>
+        </li>
+      </xsl:if>
+    </ul>
   </xsl:template>
 
   <xsl:template name="messagesAndErrors">

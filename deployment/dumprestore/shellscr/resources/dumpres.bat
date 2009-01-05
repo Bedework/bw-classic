@@ -145,8 +145,8 @@ ECHO.
 :newsys
   ECHO   Creating new system database:
   ECHO.
-  ECHO   %RESTORECMD% -appname %APPNAME% -newSystem rootid %2 %3 %4 %5 %6 %7 %8 %9
-  %RESTORECMD% -appname %APPNAME% -newSystem rootid %2 %3 %4 %5 %6 %7 %8 %9
+  ECHO   %RESTORECMD% -appname %APPNAME% -newSystem -rootid %2 %3 %4 %5 %6 %7 %8 %9
+  %RESTORECMD% -appname %APPNAME% -newSystem -rootid %2 %3 %4 %5 %6 %7 %8 %9
   GOTO end
   ::
 
