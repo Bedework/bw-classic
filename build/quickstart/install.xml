@@ -15,6 +15,9 @@
 
     <property name="org.bedework.directory.dir"
               location="${org.bedework.project.bedework}/../apacheds-1.5.3.fixed" />
+
+    <property name="org.bedework.hsqldb.dir"
+              location="${org.bedework.project.bedework}/../hsqldb-1.7.3.3" />
   </target>
 
   <!-- =================================================================
@@ -119,6 +122,56 @@
         </if>
 
         <antcall target="dirstop" inheritrefs="true" />
+      </sequential>
+    </parallel>
+  </target>
+
+  <target name="create-newsys" depends="run.init"
+          description="Create the new empty bedework system">
+    <!-- This target assumes an unwrapped dump/restore at dist/temp/dumpres -->
+
+    <!-- Remove the hsqldb data file. It wil create an empty one -->
+
+    <delete dir="${org.bedework.hsqldb.dir}/demo" verbose="yes" />
+
+    <property name="org.bedework.dumpres.unzipdir"
+              location="${org.bedework.project.bedework}/dist/temp/dumpres" />
+
+    <parallel>
+      <daemons>
+        <antcall target="hsqldb" inheritrefs="true" />
+      </daemons>
+      <sequential>
+        <echo message="Wait for the db to start" />
+        <sleep seconds="5" />
+
+        <path id="dumpres.class.path">
+          <pathelement location="${org.bedework.dumpres.unzipdir}/classes/"/>
+          <pathelement location="${org.bedework.dumpres.unzipdir}/resources/"/>
+          <fileset dir="${org.bedework.dumpres.unzipdir}/lib">
+            <include name="**/*"/>
+          </fileset>
+        </path>
+
+        <java fork="true" dir="${org.bedework.dumpres.unzipdir}"
+              classname="org.hibernate.tool.hbm2ddl.SchemaExport">
+          <classpath refid="dumpres.class.path" />
+          <arg value="--create"/>
+          <arg value="--format"/>
+          <arg value="--delimiter=;"/>
+          <arg value="--config=/hibernate.cfg.xml"/>
+          <arg value="--output=schema.sql"/>
+        </java>
+
+        <java fork="true" dir="${org.bedework.dumpres.unzipdir}"
+              classname="org.bedework.dumprestore.restore.Restore">
+          <classpath refid="dumpres.class.path" />
+          <arg value="-appname"/>
+          <arg value="dumpres"/>
+          <arg value="-newSystem"/>
+          <arg value="-rootid"/>
+          <arg value="${org.bedework.newsys.rootid}"/>
+        </java>
       </sequential>
     </parallel>
   </target>
