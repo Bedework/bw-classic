@@ -653,7 +653,7 @@
     </antfetch>
   </target>
 
-  <target name="initDirForQuickstart" depends="init"
+  <target name="initDirForQuickstart" depends="init.build,build.rpiutil"
           description="Build and run directory tool to initialise a quickstart system">
     <antfetch antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
               target="initDirForQuickstart"
@@ -666,7 +666,7 @@
     </antfetch>
   </target>
 
-  <target name="addUser" depends="init"
+  <target name="addUser" depends="init.build,build.rpiutil"
           description="Build and run directory tools to add a user">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
            target="addUser" >
@@ -678,7 +678,7 @@
     </ant>
   </target>
 
-  <target name="addGroup" depends="init"
+  <target name="addGroup" depends="init.build,build.rpiutil"
           description="Build and run directory tools to add a group">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
            target="addGroup" >
@@ -690,7 +690,7 @@
     </ant>
   </target>
 
-  <target name="addGroupMember" depends="init"
+  <target name="addGroupMember" depends="init.build,build.rpiutil"
           description="Build and run directory tools to add a group member">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
            target="addGroupMember" >

@@ -38,6 +38,11 @@ quickStartBuildFile=$QUICKSTART_HOME/build.xml
 
 qsant="$ANT -buildfile $quickStartBuildFile"
 
+ANT_CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
+
+qsantrunner="$JAVA_HOME/bin/java -classpath $ANT_HOME/lib/ant-launcher.jar -Dant.home=$ANT_HOME"
+ant_class_def="org.apache.tools.ant.launch.Launcher"
+
 shutdownServer() {
   echo "Stopping directory server"
   $JAVA_HOME/bin/java -jar $DS_HOME/bin/apacheds-tools.jar graceful --install-path $DS_HOME --configuration
@@ -115,7 +120,7 @@ $qsant install-configs
 $qsant initDirForQuickstart
 
 echo "Now we invoke the adduser script to add a superuser to the system"
-echo "We need to know the account, first name last name and a password
+echo "We need to know the account, first name last name and a password"
 
 readVal "account"
 rootAccount=$val
@@ -130,7 +135,7 @@ adduser_defs="$adduser_defs -Dorg.bedework.directory.lastname=$val"
 readVal "password"
 adduser_defs="$adduser_defs -Dorg.bedework.directory.password=$val"
 
-$qsant addUser
+$qsantrunner $adduser_defs $ant_class_def addUser
 
 exit 2
 
