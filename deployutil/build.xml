@@ -8,10 +8,25 @@
 
 <project name="bedework.deployutil" default="build">
   <property name="base.name" value="deployutil"/>
+  <property name="lib.dir" location="${org.bedework.default.lib}"/>
 
   <target name="init">
+     <delete dir="${lib.dir}" />
+    <mkdir dir="${lib.dir}" />
+
     <dirname property="this.dir" file="${ant.file}"/>
     <property name="source.home" location="${this.dir}/src"/>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <fileset dir="${lib.dir}">
+         <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${dist.home}">
+         <include name="*.jar"/>
+      </fileset>
+    </path>
   </target>
 
   <target name="build" depends="init"
