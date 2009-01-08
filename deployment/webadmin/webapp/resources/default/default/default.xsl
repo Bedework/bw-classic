@@ -528,13 +528,17 @@
         <xsl:if test="/bedework/userInfo/user">
           <td class="rightCell">
             <xsl:if test="/bedework/userInfo/group">
-              Group:
-              <span class="status">
-                <xsl:value-of select="/bedework/userInfo/group"/>
+              <span id="groupDisplay">
+                Group:
+                <span class="status">
+                  <xsl:value-of select="/bedework/userInfo/group"/>
+                </span>
+                <xsl:text> </xsl:text>
+                <xsl:if test="/bedework/userInfo/oneGroup = 'false' or /bedework/userInfo/superUser = 'true'">
+                  <a href="{$admingroup-switch}" class="fieldInfo">change</a>
+                </xsl:if>
+                <xsl:text> </xsl:text>
               </span>
-              <xsl:text> </xsl:text>
-              <a href="{$admingroup-switch}" class="fieldInfo">change</a>
-              <xsl:text> </xsl:text>
             </xsl:if>
             Logged in as:
             <span class="status">

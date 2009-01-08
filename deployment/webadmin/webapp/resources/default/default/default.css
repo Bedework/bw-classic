@@ -83,6 +83,9 @@ body {
 #statusBarTable #bwLogoutButton {
   margin: 0 0 0 4px;
 }
+#statusBarTable #groupDisplay {
+  padding-right: 1.5em;
+}
 #bwAdminMenu {
   margin: 0;
   padding: 6px 0 4px 0;
