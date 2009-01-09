@@ -211,8 +211,7 @@
 
   <!-- the following variable can be set to "true" or "false";
        to use jQuery widgets and fancier UI features, set to false - these are
-       not guaranteed to work in portals. Setting to true will make the
-       add/edit event form much faster, but will not support internationalization. -->
+       not guaranteed to work in portals.  -->
   <xsl:variable name="portalFriendly">false</xsl:variable>
 
   <!--==== MAIN TEMPLATE  ====-->
@@ -1086,14 +1085,17 @@
         <xsl:if test="not(starts-with(form/calendar/path,$submissionsRootUnencoded))">
           <tr>
             <td class="fieldName">
-              Calendar:**
+              Calendar:
+              <input type="hidden" name="newCalPath" value="">
+                <xsl:attribute name="value"><xsl:value-of select="form/calendar/all/select/option[@selected]/@value"/></xsl:attribute>
+              </input>
             </td>
             <td>
               <xsl:if test="form/calendar/preferred/select/option">
-                <select name="prefCalendarId">
-                  <option>
-                    <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
-                    Select preferred:
+                <!-- Display the preferred calendars by default if they exist -->
+                <select name="bwPreferredCalendars" id="bwPreferredCalendars" onchange="this.form.newCalPath.value = this.value">
+                  <option value="">
+                    Select:
                   </option>
                   <xsl:for-each select="form/calendar/preferred/select/option">
                     <xsl:sort select="." order="ascending"/>
@@ -1110,12 +1112,14 @@
                       </xsl:choose>
                     </option>
                   </xsl:for-each>
-                </select><br/>
-                or Calendar (all):
+                </select>
               </xsl:if>
-              <select name="calendarId">
-                <option>
-                  <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
+              <!-- hide the listing of all calendars if preferred calendars exist, otherwise show them -->
+              <select name="bwAllCalendars" id="bwAllCalendars" onchange="this.form.newCalPath.value = this.value;">
+                <xsl:if test="form/calendar/preferred/select/option">
+                  <xsl:attribute name="class">invisible</xsl:attribute>
+                </xsl:if>
+                <option value="">
                   Select:
                 </option>
                 <xsl:for-each select="form/calendar/all/select/option">
@@ -1135,6 +1139,15 @@
                 </xsl:for-each>
               </select>
               <xsl:text> </xsl:text>
+              <!-- allow for toggling between the preferred and all calendars listings if preferred
+                   calendars exist -->
+              <xsl:if test="form/calendar/preferred/select/option">
+                <input type="radio" name="toggleCalendarLists" value="preferred" checked="checked" onclick="changeClass('bwPreferredCalendars','shown');changeClass('bwAllCalendars','invisible');this.form.newCalPath.value = this.form.bwPreferredCalendars.value;"/>
+                preferred
+                <input type="radio" name="toggleCalendarLists" value="all" onclick="changeClass('bwPreferredCalendars','invisible');changeClass('bwAllCalendars','shown');this.form.newCalPath.value = this.form.bwAllCalendars.value;"/>
+                all
+              </xsl:if>
+              <br/>
               <span id="calDescriptionsLink">
                 <a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a>
               </span>
@@ -2139,24 +2152,35 @@
         <!-- Location -->
         <tr>
           <td class="fieldName">
-            Location:**
+            Location:
           </td>
           <td>
             <xsl:if test="form/location/preferred/select/option">
-              <select name="prefLocationId" id="eventFormPrefLocationList">
+              <select name="prefLocationId" id="bwPreferredLocationList">
                 <option value="">
-                  Select preferred:
+                  Select:
                 </option>
                 <xsl:copy-of select="form/location/preferred/select/*"/>
               </select>
-              or Location (all):
             </xsl:if>
-            <select name="allLocationId" id="eventFormLocationList">
+            <select name="allLocationId" id="bwAllLocationList">
+              <xsl:if test="form/location/preferred/select/option">
+                <xsl:attribute name="class">invisible</xsl:attribute>
+              </xsl:if>
               <option value="">
                 Select:
               </option>
               <xsl:copy-of select="form/location/all/select/*"/>
             </select>
+            <xsl:text> </xsl:text>
+            <!-- allow for toggling between the preferred and all location listings if preferred
+                 locations exist -->
+            <xsl:if test="form/location/preferred/select/option">
+              <input type="radio" name="toggleLocationLists" value="preferred" checked="checked" onclick="changeClass('bwPreferredLocationList','shown');changeClass('bwAllLocationList','invisible');"/>
+              preferred
+              <input type="radio" name="toggleLocationLists" value="all" onclick="changeClass('bwPreferredLocationList','invisible');changeClass('bwAllLocationList','shown');"/>
+              all
+            </xsl:if>
           </td>
         </tr>
 
@@ -2198,24 +2222,35 @@
         <!-- Contact -->
         <tr>
           <td class="fieldName">
-            Contact:**
+            Contact:
           </td>
           <td>
             <xsl:if test="form/contact/preferred/select/option">
-              <select name="prefContactId" id="eventFormContactList">
+              <select name="prefContactId" id="bwPreferredContactList">
                 <option value="">
-                  Select preferred:
+                  Select:
                 </option>option>
                 <xsl:copy-of select="form/contact/preferred/select/*"/>
               </select>
-              or Contact (all):
             </xsl:if>
-            <select name="allContactId" id="eventFormPrefContactList">
+            <select name="allContactId" id="bwAllContactList">
+              <xsl:if test="form/contact/preferred/select/option">
+                <xsl:attribute name="class">invisible</xsl:attribute>
+              </xsl:if>
               <option value="">
                 Select:
               </option>
               <xsl:copy-of select="form/contact/all/select/*"/>
             </select>
+            <xsl:text> </xsl:text>
+            <!-- allow for toggling between the preferred and all contacts listings if preferred
+                 contacts exist -->
+            <xsl:if test="form/contact/preferred/select/option">
+              <input type="radio" name="toggleContactLists" value="preferred" checked="checked" onclick="changeClass('bwPreferredContactList','shown');changeClass('bwAllContactList','invisible');"/>
+              preferred
+              <input type="radio" name="toggleContactLists" value="all" onclick="changeClass('bwPreferredContactList','invisible');changeClass('bwAllContactList','shown');"/>
+              all
+            </xsl:if>
           </td>
         </tr>
 
@@ -2223,12 +2258,12 @@
         <!--  Category  -->
         <tr>
           <td class="fieldName">
-            Categories:**
+            Categories:
           </td>
           <td>
             <xsl:if test="form/categories/preferred/category and /bedework/creating='true'">
-              <input type="radio" name="categoryCheckboxes" value="preferred" checked="checked" onclick="changeClass('preferredCategoryCheckboxes','shown');changeClass('allCategoryCheckboxes','invisible');"/>show preferred
-              <input type="radio" name="categoryCheckboxes" value="all" onclick="changeClass('preferredCategoryCheckboxes','invisible');changeClass('allCategoryCheckboxes','shown')"/>show all<br/>
+              <input type="radio" name="categoryCheckboxes" value="preferred" checked="checked" onclick="changeClass('preferredCategoryCheckboxes','shown');changeClass('allCategoryCheckboxes','invisible');"/>preferred
+              <input type="radio" name="categoryCheckboxes" value="all" onclick="changeClass('preferredCategoryCheckboxes','invisible');changeClass('allCategoryCheckboxes','shown')"/>all<br/>
               <table cellpadding="0" id="preferredCategoryCheckboxes">
                 <tr>
                   <xsl:variable name="catCount" select="count(form/categories/preferred/category)"/>
@@ -2303,8 +2338,8 @@
         <tr>
           <td colspan="2" style="padding-top: 1em;">
             <span class="fieldInfo">
-              **<strong>If "preferred values" are enabled</strong>
-              by your administrator, the category, location, and contact lists will
+              <strong>If "preferred values" are enabled</strong>
+              by your administrator, the calendar, category, location, and contact lists will
               contain only those value you've used previously.  If you don't find the value
               you need in one of these lists, use the "all" list adjacent to each
               of these fields.  The event you select from the "all" list will be added
