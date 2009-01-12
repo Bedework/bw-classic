@@ -24,9 +24,6 @@
       <xsl:when test="id='org.bedework.client.error.alreadymember'">
         Error: already a member: <em><xsl:value-of select="param"/></em>
       </xsl:when>
-      <xsl:when test="id='org.bedework.client.error.badfilter'">
-        Error: invalid filter definition: <em><xsl:value-of select="param"/></em>
-      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.badinterval'">
         Error: bad interval.
       </xsl:when>
@@ -153,9 +150,6 @@
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unknown.event'">
           Event <xsl:value-of select="param"/> does not exist.
-      </xsl:when>
-      <xsl:when test="id='org.bedework.client.error.unknown.filter'">
-        Error: unknown filter:  <em><xsl:value-of select="param"/></em>.
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unknown.group'">
         Error: unknown group:  <em><xsl:value-of select="param"/></em>.
@@ -319,6 +313,50 @@
       </xsl:when>
 
       <!--         End of scheduling            -->
+
+      <!--             Filters            -->
+
+      <xsl:when test="id='org.bedework.client.error.badfilter'">
+        Error: invalid filter definition: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.filter'">
+        Error: unknown filter:  <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.unexpected.eof'">
+        Filter error: Unexpected eof while parsing
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.expected.word'">
+        Filter error: expected a word found <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.expected.openparen'">
+        Filter error: expected open paren
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.mixedlogicaloperators'">
+        Filter error: Cannot mix logical operators
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.unknown.property'">
+        Filter error: unknown property <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.badproperty'">
+        Filter error: Bad property value <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.badoperator'">
+        Filter error: Bad operator <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.syntax'">
+        Filter error: Syntax error
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.typeneedsand'">
+        Filter error: Type requires andop
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.badtype'">
+        Filter error: Bad type value <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.exception.filter.typefirst'">
+        Filter error: Type must come first
+      </xsl:when>
+
+      <!--         End of filters            -->
 
       <!-- Other error codes defined in CalfacadeException -->
 

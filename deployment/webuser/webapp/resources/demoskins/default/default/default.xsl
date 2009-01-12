@@ -4675,7 +4675,7 @@
         <tr>
           <th>Filter Expression:</th>
           <td>
-            <input type="text" name="calendar.filterExpr" value="" size="40"/>
+            <input type="text" name="fexpr" value="" size="40"/>
           </td>
         </tr>
         <tr>
@@ -4838,7 +4838,7 @@
         <tr>
           <th>Filter Expression:</th>
           <td>
-            <input type="text" name="calendar.filterExpr" value="" size="40">
+            <input type="text" name="fexpr" value="" size="40">
               <xsl:attribute name="value"><xsl:value-of select="filterExpr"/></xsl:attribute>
             </input>
           </td>
