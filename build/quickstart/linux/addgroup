@@ -5,6 +5,13 @@
 # within the svn repository.
 #
 
+if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
+  echo "*******************************************************"
+  echo "Error: JAVA_HOME is not defined correctly for Bedework."
+  echo "*******************************************************"
+  exit 1
+fi
+
 ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
 ANT_HOME=`cd "$ANT_HOME" && pwd`
 
@@ -42,13 +49,6 @@ fi
 
 if [ "$group" = "" -o "$groupmember" = "" ] ; then
   errorUsage "Must supply group name and group member"
-fi
-
-if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
-  echo "*******************************************************"
-  echo "Error: JAVA_HOME is not defined correctly for Bedework."
-  echo "*******************************************************"
-  exit 1
 fi
 
 CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
