@@ -67,11 +67,15 @@
           Action cancelled.
       </xsl:when>
 
+      <xsl:when test="id='org.bedework.client.message.moved.calendar'">
+        Moved <xsl:value-of select="param"/>
+      </xsl:when>
+
       <xsl:when test="id='org.bedework.client.message.deleted.authuser'">
         Administrator removed
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.deleted.calendar'">
-        Item deleted.
+        Deleted <xsl:value-of select="param"/>
       </xsl:when>
       <xsl:when test="id='org.bedework.client.message.deleted.category'">
         Category deleted.

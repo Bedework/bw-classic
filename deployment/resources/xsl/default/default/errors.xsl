@@ -46,6 +46,14 @@
         Forbidden: you are not allowed to change the mode of the non-empty
         collection <em><xsl:value-of select="param"/></em>.
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.cannotdeletehome'">
+        Forbidden: you are not allowed to delete your calendar home.
+        <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.cannotmovehome'">
+        Forbidden: you are not allowed to move your calendar home. */
+        <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.choosegroupsuppressed'">
         Error: choose group is suppressed.  You cannot perform that action at this time.
       </xsl:when>

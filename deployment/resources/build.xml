@@ -75,6 +75,11 @@
           </then>
         </if>
 
+        <!-- Add bedework javascript -->
+        <copy todir="${common.dest.war}/javascript/bedework">
+          <fileset dir="${common.resources.dir}/javascript/bedework" />
+        </copy>
+
         <copy todir="${common.dest.war}">
           <fileset dir="${common.resources.dir}/xsl" />
         </copy>
