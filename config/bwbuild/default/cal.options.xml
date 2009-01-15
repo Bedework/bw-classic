@@ -259,7 +259,6 @@
           <appType>webpublic</appType>
           <publicAdmin>false</publicAdmin>
           <guestMode>true</guestMode>
-          <runAsUser>public-user</runAsUser>
 
           <!-- Default value for 24 hour mode -->
           <hour24>true</hour24>
@@ -294,7 +293,6 @@
           <appType>webpublic</appType>
           <publicAdmin>false</publicAdmin>
           <guestMode>true</guestMode>
-          <runAsUser>public-user</runAsUser>
 
           <!-- Default value for 24 hour mode -->
           <hour24>true</hour24>
@@ -372,7 +370,6 @@
           <appType>publiccaldav</appType>
           <publicAdmin>false</publicAdmin>
           <guestMode>true</guestMode>
-          <runAsUser>public-user</runAsUser>
 
           <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
 
