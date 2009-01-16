@@ -62,41 +62,41 @@
           description="Describe targets and their usage">
     <loadfile property="org.bedework.README"
               srcFile="${org.bedework.project.bedework}/docs/README"/>
-    <echo message="${org.bedework.README}" />
+    <echo level="info" message="${org.bedework.README}" />
   </target>
 
   <target name="usage" depends="init"
           description="Describe targets and their usage">
-    <echo message="As distributed the package should be ready to go."/>
-    <echo message="Ensure ant is on your path, (a version is in the" />
-    <echo message="package)"/>
-    <echo message=""/>
-    <echo message="First in one window do"/>
-    <echo message="    ant hsqldb"/>
-    <echo message="This will start the hsqldb server ready for the "/>
-    <echo message="application."/>
-    <echo message=""/>
-    <echo message="In another window do"/>
-    <echo message="    ant tomcatstart"/>
-    <echo message=""/>
-    <echo message="Once tomcat is running you should be able to go to a"/>
-    <echo message="browser and connect to"/>
-    <echo message="    http://localhost:8080/bedework"/>
-    <echo message="and follow the instructions."/>
-    <echo message=""/>
-    <echo message="To build the calendar do"/>
-    <echo message="    ant deploy    or "/>
-    <echo message="    ant deploy.debug "/>
-    <echo message="which does a build and deploy of all components"/>
-    <echo message=""/>
-    <echo message="To rebuild the calendar do"/>
-    <echo message="    ant clean.deploy    or "/>
-    <echo message="    ant clean.deploy.debug "/>
-    <echo message="which does a clean, build and deploy of all components"/>
-    <echo message=""/>
-    <echo message="See documentation in the docs directory or on bedework.org"/>
-    <echo message="for instructions on creating a locally configured calendar application"/>
-    <echo message=""/>
+    <echo level="info" message="As distributed the package should be ready to go."/>
+    <echo level="info" message="Ensure ant is on your path, (a version is in the" />
+    <echo level="info" message="package)"/>
+    <echo level="info" message=""/>
+    <echo level="info" message="First in one window do"/>
+    <echo level="info" message="    ant hsqldb"/>
+    <echo level="info" message="This will start the hsqldb server ready for the "/>
+    <echo level="info" message="application."/>
+    <echo level="info" message=""/>
+    <echo level="info" message="In another window do"/>
+    <echo level="info" message="    ant tomcatstart"/>
+    <echo level="info" message=""/>
+    <echo level="info" message="Once tomcat is running you should be able to go to a"/>
+    <echo level="info" message="browser and connect to"/>
+    <echo level="info" message="    http://localhost:8080/bedework"/>
+    <echo level="info" message="and follow the instructions."/>
+    <echo level="info" message=""/>
+    <echo level="info" message="To build the calendar do"/>
+    <echo level="info" message="    ant deploy    or "/>
+    <echo level="info" message="    ant deploy.debug "/>
+    <echo level="info" message="which does a build and deploy of all components"/>
+    <echo level="info" message=""/>
+    <echo level="info" message="To rebuild the calendar do"/>
+    <echo level="info" message="    ant clean.deploy    or "/>
+    <echo level="info" message="    ant clean.deploy.debug "/>
+    <echo level="info" message="which does a clean, build and deploy of all components"/>
+    <echo level="info" message=""/>
+    <echo level="info" message="See documentation in the docs directory or on bedework.org"/>
+    <echo level="info" message="for instructions on creating a locally configured calendar application"/>
+    <echo level="info" message=""/>
   </target>
 
   <target name="init" >
@@ -107,7 +107,7 @@
     <property name="org.bedework.user.build.properties"
               location="${user.home}/bedework.build.properties" />
 
-    <echo message="Load user properties from ${org.bedework.user.build.properties}" />
+    <echo level="info" message="Load user properties from ${org.bedework.user.build.properties}" />
 
     <!-- Load user property definition overrides -->
     <property file="${org.bedework.user.build.properties}" />

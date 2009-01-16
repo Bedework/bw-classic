@@ -5,14 +5,17 @@
 # within the svn repository.
 #
 
-if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
-  errorUsage "JAVA_HOME is not defined correctly for bedework."
-fi
-
 ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
 ANT_HOME=`cd "$ANT_HOME" && pwd`
 
-echo ""
+#ant_listener="-listener org.apache.tools.ant.listener.Log4jListener"
+#ant_xmllogfile="-DXmlLogger.file=log.xml"
+#ant_logger="-logger org.apache.tools.ant.XmlLogger"
+
+ant_listener=
+ant_xmllogfile=
+ant_logger=
+
 echo ""
 echo "  Bedework Calendar System"
 echo "  ------------------------"
@@ -48,6 +51,10 @@ errorUsage() {
   usage
   exit 1
 }
+
+if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
+  errorUsage "JAVA_HOME is not defined correctly for bedework."
+fi
 
 saveddir=`pwd`
 
@@ -129,5 +136,7 @@ echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
 
 CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
+CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/build/quickstart/antlib
+CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/applib/log4j-1.2.8.jar
 
-$JAVA_HOME/bin/java -classpath $CLASSPATH $offline -Dant.home=$ANT org.apache.tools.ant.launch.Launcher $BWCONFIG $*
+$JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $*

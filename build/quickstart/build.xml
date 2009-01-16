@@ -38,36 +38,36 @@
 
   <target name="usage" depends="init"
           description="Describe targets and their usage">
-    <echo message="As distributed the package should be ready to go."/>
-    <echo message="Ensure ant is on your path, (a version is in the" />
-    <echo message="package)"/>
-    <echo message=""/>
-    <echo message="First in one window do"/>
-    <echo message="    ant hsqldb"/>
-    <echo message="This will start the hsqldb server ready for the "/>
-    <echo message="application."/>
-    <echo message=""/>
-    <echo message="In another window do"/>
-    <echo message="    ant tomcatstart"/>
-    <echo message=""/>
-    <echo message="Once tomcat is running you should be able to go to a"/>
-    <echo message="browser and connect to"/>
-    <echo message="    http://localhost:8080/bedework"/>
-    <echo message="and follow the instructions."/>
-    <echo message=""/>
-    <echo message="To build the calendar do"/>
-    <echo message="    ant deploy    or "/>
-    <echo message="    ant deploy.debug "/>
-    <echo message="which does a build and deploy of all components"/>
-    <echo message=""/>
-    <echo message="To rebuild the calendar do"/>
-    <echo message="    ant clean.deploy    or "/>
-    <echo message="    ant clean.deploy.debug "/>
-    <echo message="which does a clean, build and deploy of all components"/>
-    <echo message=""/>
-    <echo message="See documentation in the docs directory or on bedework.org"/>
-    <echo message="for instructions on creating a locally configured calendar application"/>
-    <echo message=""/>
+    <echo level="info" message="As distributed the package should be ready to go."/>
+    <echo level="info" message="Ensure ant is on your path, (a version is in the" />
+    <echo level="info" message="package)"/>
+    <echo level="info" message=""/>
+    <echo level="info" message="First in one window do"/>
+    <echo level="info" message="    ant hsqldb"/>
+    <echo level="info" message="This will start the hsqldb server ready for the "/>
+    <echo level="info" message="application."/>
+    <echo level="info" message=""/>
+    <echo level="info" message="In another window do"/>
+    <echo level="info" message="    ant tomcatstart"/>
+    <echo level="info" message=""/>
+    <echo level="info" message="Once tomcat is running you should be able to go to a"/>
+    <echo level="info" message="browser and connect to"/>
+    <echo level="info" message="    http://localhost:8080/bedework"/>
+    <echo level="info" message="and follow the instructions."/>
+    <echo level="info" message=""/>
+    <echo level="info" message="To build the calendar do"/>
+    <echo level="info" message="    ant deploy    or "/>
+    <echo level="info" message="    ant deploy.debug "/>
+    <echo level="info" message="which does a build and deploy of all components"/>
+    <echo level="info" message=""/>
+    <echo level="info" message="To rebuild the calendar do"/>
+    <echo level="info" message="    ant clean.deploy    or "/>
+    <echo level="info" message="    ant clean.deploy.debug "/>
+    <echo level="info" message="which does a clean, build and deploy of all components"/>
+    <echo level="info" message=""/>
+    <echo level="info" message="See documentation in the docs directory or on bedework.org"/>
+    <echo level="info" message="for instructions on creating a locally configured calendar application"/>
+    <echo level="info" message=""/>
   </target>
 
    <!-- The only properties set below should be those directly used to
@@ -123,7 +123,7 @@
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="build" />
     <tstamp prefix="endbuild" />
-    <echo message="=================> Build finished at ${endbuild.TODAY}" />
+    <echo level="info" message="=================> Build finished at ${endbuild.TODAY}" />
   </target>
 
   <target name="clean.build" depends="clean"
@@ -150,7 +150,7 @@
       <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
     </tstamp>
 
-    <echo message="=================> deploy.debug finished at ${deploydebug.time}" />
+    <echo level="info" message="=================> deploy.debug finished at ${deploydebug.time}" />
   </target>
 
   <!-- =================================================================
