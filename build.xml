@@ -728,6 +728,7 @@
       <fileset dir="${org.bedework.project.bedework}/applib">
          <include name="*.jar"/>
       </fileset>
+      <pathelement location="${org.bedework.project.bwtools}/resources" />
       <pathelement location="${app.dest.classes}" />
     </path>
 
