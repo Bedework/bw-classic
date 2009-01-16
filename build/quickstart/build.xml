@@ -210,6 +210,18 @@
   </target>
 
   <!-- =================================================================
+       Build and run the cmdline utility
+       ================================================================= -->
+
+  <target name="cmdutil" depends="init"
+          description="run the cmdline utility">
+    <antfetch antfile="${bedework.build.file}" inheritall="true"
+              target="cmdutil"
+              return="org.bedework.cmdutil.status" >
+    </antfetch>
+  </target>
+
+  <!-- =================================================================
        The "javadoc" target builds javadocs for all projects
        ================================================================= -->
 
