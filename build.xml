@@ -58,6 +58,9 @@
   <property name="org.bedework.project.webdav"
             location="${org.bedework.projects}/webdav" />
 
+  <import file="${org.bedework.project.bedework}/build/buildfilters.xml" />
+  <import file="${org.bedework.project.bedework}/build/loadDeployConfig.xml"/>
+
   <target name="README" depends="init"
           description="Describe targets and their usage">
     <loadfile property="org.bedework.README"
@@ -708,17 +711,66 @@
 
   <target name="cmdutil" depends="init"
           description="run the cmdline utility">
-    <antfetch antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-              inheritrefs="true"
-              target="cmdutil"
-              return="org.bedework.cmdutil.status" >
-      <propertyset>
-        <propertyref prefix="org.bedework.global."/>
-        <propertyref prefix="org.bedework.config.options"/>
-        <propertyref prefix="org.bedework.project.bedework"/>
-        <propertyref prefix="org.bedework.project.calendarapi"/>
-      </propertyset>
-    </antfetch>
+    <loadDeployConfig />
+
+    <property name="app.dest.classes"
+              location="${dist.home}/temp/classes" />
+
+    <property name="app.dest.properties"
+              location="${app.dest.classes}/properties/calendar" />
+
+    <mkdir dir="${app.dest.properties}" />
+
+    <copy tofile="${app.dest.properties}/options.xml"
+          file="${org.bedework.config.options}" />
+
+    <path id="run.classpath">
+      <fileset dir="${org.bedework.project.bedework}/applib">
+         <include name="*.jar"/>
+      </fileset>
+      <pathelement location="${app.dest.classes}" />
+    </path>
+
+    <echo file="${app.dest.classes}/hibernate.properties">
+hibernate.query.substitutions true 'T', false 'F', yes 'Y', no 'N'
+hibernate.dialect=${org.bedework.global.hibernate.dialect}
+hibernate.connection.driver_class=${org.bedework.global.jdbcdriver}
+hibernate.connection.username=${org.bedework.global.jdbcid}
+hibernate.connection.password=${org.bedework.global.jdbcpw}
+hibernate.connection.url=${org.bedework.global.jdbcurl}
+hibernate.cglib.use_reflection_optimizer=false
+hibernate.cache.use_second_level_cache=false
+#
+# Here for better debugging
+#
+hibernate.jdbc.batch_size=0
+    </echo>
+
+    <copy todir="${app.dest.classes}">
+      <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/properties" />
+      <filterset refid="property.filters" />
+    </copy>
+
+    <copy todir="${app.dest.classes}">
+      <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/hbms" />
+      <filterset refid="property.filters" />
+    </copy>
+
+    <pathconvert property="run.txt.classpath"
+                 refid="run.classpath"
+                 targetos="unix"  pathsep=":" />
+
+    <input message="Enter administrative user account:"
+           addproperty="org.bedework.cmdutil.arg.account" />
+
+    <java classname="org.bedework.tools.cmdutil.CmdUtil"
+          fork="true"
+          failonerror="false"
+          resultproperty="org.bedework.cmdutil.status" >
+      <classpath refid="run.classpath" />
+      <arg value="-user" />
+      <arg value="${org.bedework.cmdutil.arg.account}" />
+    </java>
   </target>
 
   <!-- =================================================================
