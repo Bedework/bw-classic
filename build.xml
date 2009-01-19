@@ -714,7 +714,10 @@
     <loadDeployConfig />
 
     <property name="app.dest.classes"
-              location="${dist.home}/temp/classes" />
+              location="${dist.home}/temp/cmdutil/classes" />
+
+    <delete dir="${app.dest.classes}" />
+    <mkdir dir="${app.dest.classes}" />
 
     <property name="app.dest.properties"
               location="${app.dest.classes}/properties/calendar" />
