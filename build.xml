@@ -750,6 +750,9 @@ hibernate.cache.use_second_level_cache=false
 hibernate.jdbc.batch_size=0
     </echo>
 
+    <copy todir="${app.dest.classes}"
+          file="${org.bedework.project.bwtools}/resources/log4j.xml" />
+
     <copy todir="${app.dest.classes}">
       <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/properties" />
       <filterset refid="property.filters" />
@@ -767,6 +770,21 @@ hibernate.jdbc.batch_size=0
     <input message="Enter administrative user account:"
            addproperty="org.bedework.cmdutil.arg.account" />
 
+    <input message="Enter input file name - null for System.in:"
+           addproperty="org.bedework.cmdutil.arg.infile" />
+
+
+    <if>
+      <equals arg1="${org.bedework.cmdutil.arg.infile}"
+              arg2="" />
+      <then>
+        <property name="org.bedework.cmdutil.arg.infile.par" value="" />
+      </then>
+      <else>
+        <property name="org.bedework.cmdutil.arg.infile.par" value="-f" />
+      </else>
+    </if>
+
     <java classname="org.bedework.tools.cmdutil.CmdUtil"
           fork="true"
           failonerror="false"
@@ -774,6 +792,8 @@ hibernate.jdbc.batch_size=0
       <classpath refid="run.classpath" />
       <arg value="-user" />
       <arg value="${org.bedework.cmdutil.arg.account}" />
+      <arg value="${org.bedework.cmdutil.arg.infile.par}" />
+      <arg value="${org.bedework.cmdutil.arg.infile}" />
     </java>
   </target>
 
