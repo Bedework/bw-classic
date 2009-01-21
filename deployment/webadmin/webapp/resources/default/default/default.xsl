@@ -4449,8 +4449,7 @@
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
-      <!-- allow opening and closing in the subscription tree for now only on the root folder -->
-      <xsl:if test="calType = '0' and $root = 'true'">
+      <xsl:if test="calType = '0' and isSubscription='false'">
          <xsl:choose>
           <xsl:when test="open = 'true'">
             <a href="{$subscriptions-openCloseMod&amp;calPath={$calPath}&amp;open=false">
@@ -4483,7 +4482,7 @@
       </xsl:if>
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar[isSubscription = 'true']" mode="listForUpdateSubscription"/>
+          <xsl:apply-templates select="calendar[isSubscription = 'true' or calType = '0']" mode="listForUpdateSubscription"/>
         </ul>
       </xsl:if>
     </li>
@@ -4544,11 +4543,18 @@
         <tr>
           <th>Type:</th>
           <td>
+            <!-- we will set the value of "calendarCollection" on submit.
+                 Value is false only for folders, so we default it to true here. -->
             <input type="hidden" value="true" name="calendarCollection"/>
-            <input type="hidden" value="subscription" name="type"/>
+
+            <!-- type is defaulted to "subscription".  It is changed to "folder"
+                 if subTypeSwitch is set to folder. -->
+            <input type="hidden"  name="type" value="subscription" id="bwType"/>
             <input type="hidden" name="aliasUri" value=""/>
+
             <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
             <input type="hidden" value="public" name="subType" id="bwSubType"/>
+            <input type="radio" name="subTypeSwitch" value="folder" onclick="changeClass('subscriptionTypePublic','invisible');setField('bwType',this.value);"/> Folder
             <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');setField('bwSubType',this.value);"/> Public alias
             <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');setField('bwSubType',this.value);"/> URL
 
