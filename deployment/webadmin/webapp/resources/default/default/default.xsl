@@ -636,12 +636,15 @@
             <br/>Add Location
           </a>
         </td>
+        <!--
+          Category management is becomeing a  super-user and calsuite admin feature;
+          Categories underly much of the new single calendar and filtering model.
         <td>
           <a id="addCategoryLink" href="{$category-initAdd}">
             <img src="{$resourcesRoot}/resources/bwAdminAddCategoryIcon.jpg" width="100" height="100" alt="Add Event" border="0"/>
             <br/>Add Category
           </a>
-        </td>
+        </td> -->
       </tr>
       <tr>
         <td>
@@ -662,80 +665,18 @@
             <br/>Manage Locations
           </a>
         </td>
+        <!--
+          Category management is becomeing a super-user and calsuite admin feature;
+          Categories underly much of the new single calendar and filtering model.
         <td>
           <a href="{$category-initUpdate}">
             <img src="{$resourcesRoot}/resources/bwAdminManageCatsIcon.jpg" width="100" height="73" alt="Manage Events" border="0"/>
             <br/>Manage Categories
           </a>
-        </td>
+        </td> -->
       </tr>
     </table>
 
-    <!--
-    <h2 class="menuTitle">Main Menu</h2>
-    <table id="mainMenuTable">
-      <tr>
-        <th>Events</th>
-        <td>
-          <a id="addEventLink" href="{$event-initAddEvent}">
-            Add
-          </a>
-        </td>
-        <td>
-          <a href="{$event-initUpdateEvent}">
-            Edit / Delete
-          </a>
-        </td>
-        <!- -
-        Disable direct selection by ID; we'll need to find another way
-        of quickly getting to events: search and grid views should be implemented. - - >
-        <!- -
-        <td>
-          Event ID:
-          <xsl:copy-of select="/bedework/formElements/*"/>
-        </td>- - >
-      </tr>
-      <tr>
-        <th>Contacts</th>
-        <td>
-          <a id="addContactLink" href="{$contact-initAdd}">
-            Add
-          </a>
-        </td>
-        <td>
-          <a href="{$contact-initUpdate}">
-            Edit / Delete
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <th>Locations</th>
-        <td>
-          <a id="addLocationLink" href="{$location-initAdd}">
-            Add
-          </a>
-        </td>
-        <td>
-          <a href="{$location-initUpdate}">
-            Edit / Delete
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <th>Categories</th>
-        <td>
-          <a id="addCategoryLink" href="{$category-initAdd}">
-            Add
-          </a>
-        </td>
-        <td>
-          <a href="{$category-initUpdate}">
-            Edit / Delete
-          </a>
-        </td>
-      </tr>
-    </table>
-    -->
     <div id="mainMenuEventSearch">
       <h4 class="menuTitle">Event search:</h4>
       <form name="searchForm" method="post" action="{$search}" id="searchForm">
@@ -812,19 +753,19 @@
           </li>
         </xsl:if-->
         <xsl:if test="/bedework/userInfo/adminGroupMaintOk='true'">
-          <li>
+          <li class="groups">
             <a href="{$admingroup-initUpdate}">
               Manage admin groups
             </a>
           </li>
         </xsl:if>
-        <li>
+        <li class="changeGroup">
           <a href="{$admingroup-switch}">
             Change group...
           </a>
         </li>
         <xsl:if test="/bedework/userInfo/userMaintOK='true'">
-          <li>
+          <li class="user">
             <form action="{$prefs-fetchForUpdate}" method="post">
               Edit user preferences (enter userid):<br/>
               <input type="text" name="user" size="15"/>
@@ -841,36 +782,34 @@
     <xsl:if test="/bedework/userInfo/superUser='true'">
       <h2>Manage System</h2>
       <ul class="adminMenu strong">
-        <li>
+        <li class="calendar">
           <a href="{$calendar-fetch}">
             Manage calendars
           </a>
         </li>
-        <li>
+        <li class="categories">
+          <a href="{$category-initUpdate}">
+            Manage categories
+          </a>
+        </li>
+        <li class="calsuites">
           <a href="{$calsuite-fetch}">
             Manage calendar suites
           </a>
         </li>
-        <li>
+        <li class="upload">
           <a href="{$event-initUpload}">
-            Upload iCAL file
+            Upload ical file
           </a>
         </li>
       </ul>
       <ul class="adminMenu">
-        <li>
-          <a href="{$filter-showAddForm}">
-            Manage CalDAV filters
-          </a>
-        </li>
-      </ul>
-      <ul class="adminMenu">
-        <li>
+        <li class="prefs">
           <a href="{$system-fetch}">
             Manage system preferences
           </a>
         </li>
-        <li>
+        <li class="timezones">
           <a href="{$timezones-initUpload}">
             Manage system timezones
           </a>
@@ -891,6 +830,13 @@
               </a>
             </li>
           </ul>
+        </li>
+      </ul>
+      <ul class="adminMenu">
+        <li>
+          <a href="{$filter-showAddForm}">
+            Manage CalDAV filters
+          </a>
         </li>
       </ul>
     </xsl:if>
@@ -1082,6 +1028,11 @@
             <xsl:copy-of select="form/title/*"/>
           </td>
         </tr>
+        <!-- Disabling calendar selection is temporary - but we must determine if we're using
+             a single calendar model (e.g. excluding submissions calendar, etc). The following value should *not* be
+             hard coded, but we'll do this for the moment. -->
+        <input type="hidden" name="newCalPath" value="/public/cals/MainCal"/>
+        <!--
         <xsl:if test="not(starts-with(form/calendar/path,$submissionsRootUnencoded))">
           <tr>
             <td class="fieldName">
@@ -1092,7 +1043,7 @@
             </td>
             <td>
               <xsl:if test="form/calendar/preferred/select/option">
-                <!-- Display the preferred calendars by default if they exist -->
+                -  - Display the preferred calendars by default if they exist - -
                 <select name="bwPreferredCalendars" id="bwPreferredCalendars" onchange="this.form.newCalPath.value = this.value">
                   <option value="">
                     Select:
@@ -1114,7 +1065,7 @@
                   </xsl:for-each>
                 </select>
               </xsl:if>
-              <!-- hide the listing of all calendars if preferred calendars exist, otherwise show them -->
+               - - hide the listing of all calendars if preferred calendars exist, otherwise show them - -
               <select name="bwAllCalendars" id="bwAllCalendars" onchange="this.form.newCalPath.value = this.value;">
                 <xsl:if test="form/calendar/preferred/select/option">
                   <xsl:attribute name="class">invisible</xsl:attribute>
@@ -1139,8 +1090,8 @@
                 </xsl:for-each>
               </select>
               <xsl:text> </xsl:text>
-              <!-- allow for toggling between the preferred and all calendars listings if preferred
-                   calendars exist -->
+               - - allow for toggling between the preferred and all calendars listings if preferred
+                   calendars exist - -
               <xsl:if test="form/calendar/preferred/select/option">
                 <input type="radio" name="toggleCalendarLists" value="preferred" checked="checked" onclick="changeClass('bwPreferredCalendars','shown');changeClass('bwAllCalendars','invisible');this.form.newCalPath.value = this.form.bwPreferredCalendars.value;"/>
                 preferred
@@ -1153,7 +1104,7 @@
               </span>
             </td>
           </tr>
-        </xsl:if>
+        </xsl:if> -->
 
         <tr>
           <td class="fieldName">
@@ -2254,8 +2205,27 @@
           </td>
         </tr>
 
+        <!-- Display in  -->
+        <!-- These are the subscriptions (aliases) where the events should show up.
+             By selecting one or more of these, appropriate categories will be set on the event -->
+        <tr>
+          <td class="fieldName">
+            Display in:
+          </td>
+          <td>
+            <xsl:for-each select="true">
+              <input type="checkbox" name="alias" value=""/>Test<br/>
+            </xsl:for-each>
+          </td>
+        </tr>
 
         <!--  Category  -->
+        <!--
+          categories will no longer be directly set by the user; they are set
+          by the back-end based on the subscriptions in the calendar suite.
+          A user, therefore, tells the system where they want the event to
+          show up, and the categories are set for them. -->
+        <!--
         <tr>
           <td class="fieldName">
             Categories:
@@ -2269,7 +2239,7 @@
                   <xsl:variable name="catCount" select="count(form/categories/preferred/category)"/>
                   <td>
                     <xsl:for-each select="form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
-                      <!-- <xsl:sort select="keyword" order="ascending"/> -->
+                      <xsl:sort select="keyword" order="ascending"/>
                       <input type="checkbox" name="categoryKey">
                         <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
@@ -2281,7 +2251,7 @@
                   </td>
                   <td>
                     <xsl:for-each select="form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
-                      <!-- <xsl:sort select="keyword" order="ascending"/> -->
+                      <xsl:sort select="keyword" order="ascending"/>
                       <input type="checkbox" name="categoryKey">
                         <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
                         <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
@@ -2333,8 +2303,9 @@
               </tr>
             </table>
           </td>
-        </tr>
+        </tr> -->
         <!-- note -->
+        <!-- let's shut this off for now - needs rewriting if we keep it at all
         <tr>
           <td colspan="2" style="padding-top: 1em;">
             <span class="fieldInfo">
@@ -2352,7 +2323,7 @@
               <a href="" target="_blank">Calendar Definitions</a>
             </span>
           </td>
-        </tr>
+        </tr> -->
 
         <xsl:if test="form/contact/name">
           <tr>

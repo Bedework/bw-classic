@@ -932,35 +932,59 @@ p.note {
   /*font-weight: bold;*/
 }
 li.folder {
-  list-style-image: url(../../resources/catIcon.gif);
+  list-style-image: url("../../resources/catIcon.gif");
 }
 li.calendar {
-  list-style-image: url(../../resources/calIcon-sm.gif);
+  list-style-image: url("../../resources/calIcon-sm.gif");
+}
+li.categories {
+  list-style-image: url("../../resources/categoryIcon.gif");
+}
+li.calsuites {
+  list-style-image: url("../../resources/calsuitesIcon.gif");
+}
+li.upload {
+  list-style-image: url("../../resources/uploadIcon.gif");
+}
+li.prefs {
+  list-style-image: url("../../resources/prefsIcon.gif");
+}
+li.timezones {
+  list-style-image: url("../../resources/clockIcon-sm.gif");
+}
+li.groups {
+  list-style-image: url("../../resources/groupIcon.gif");
+}
+li.user {
+  list-style-image: url("../../resources/userIcon.gif");
+}
+li.changeGroup {
+  list-style-image: url("../../resources/changeGroup.gif");
 }
 .calendarTree  li.trash {
-  list-style-image: url(../../resources/trashIcon.gif);
+  list-style-image: url("../../resources/trashIcon.gif");
 }
 .calendarTree  li.inbox {
-  list-style-image: url(../../resources/inboxIcon.gif);
+  list-style-image: url("../../resources/inboxIcon.gif");
 }
 .calendarTree  li.outbox {
-  list-style-image: url(../../resources/outboxIcon.gif);
+  list-style-image: url("../../resources/outboxIcon.gif");
 }
 .calendarTree  li.deleted {
-  list-style-image: url(../../resources/calIconDeleted-sm.gif);
+  list-style-image: url("../../resources/calIconDeleted-sm.gif");
 }
 .calendarTree  li.selected {
-  list-style-image: url(../../resources/glassFill-icon-view.gif);
+  list-style-image: url("../../resources/glassFill-icon-view.gif");
   font-weight: bold;
 }
 .calendarTree  li.alias {
-  list-style-image: url(../../resources/calIconAlias-sm.gif);
+  list-style-image: url("../../resources/calIconAlias-sm.gif");
   font-style: italic;
   margin-left: 0;
   padding-left: 0;
 }
 .calendarTree  li.aliasFolder {
-  list-style-image: url(../../resources/catIconAlias.gif);
+  list-style-image: url("../../resources/catIconAlias.gif");
   font-style: italic;
   margin-left: 0;
   padding-left: 0;
