@@ -655,13 +655,13 @@
         </td>
         <td>
           <a href="{$contact-initUpdate}">
-            <img src="{$resourcesRoot}/resources/bwAdminManageContactsIcon.jpg" width="100" height="73" alt="Manage Events" border="0"/>
+            <img src="{$resourcesRoot}/resources/bwAdminManageContactsIcon.jpg" width="100" height="73" alt="Manage Contacts" border="0"/>
             <br/>Manage Contacts
           </a>
         </td>
         <td>
           <a href="{$location-initUpdate}">
-            <img src="{$resourcesRoot}/resources/bwAdminManageLocsIcon.jpg" width="100" height="73" alt="Manage Events" border="0"/>
+            <img src="{$resourcesRoot}/resources/bwAdminManageLocsIcon.jpg" width="100" height="73" alt="Manage Locations" border="0"/>
             <br/>Manage Locations
           </a>
         </td>
@@ -670,7 +670,7 @@
           Categories underly much of the new single calendar and filtering model.
         <td>
           <a href="{$category-initUpdate}">
-            <img src="{$resourcesRoot}/resources/bwAdminManageCatsIcon.jpg" width="100" height="73" alt="Manage Events" border="0"/>
+            <img src="{$resourcesRoot}/resources/bwAdminManageCatsIcon.jpg" width="100" height="73" alt="Manage Categories" border="0"/>
             <br/>Manage Categories
           </a>
         </td> -->
@@ -876,14 +876,8 @@
         <th>Title</th>
         <th>Start</th>
         <th>End</th>
-        <xsl:choose>
-          <xsl:when test="$pending = 'true'">
-            <th>Categories</th>
-          </xsl:when>
-          <xsl:otherwise>
-            <th>Calendar</th>
-          </xsl:otherwise>
-        </xsl:choose>
+        <th>Categories</th>
+        <th>Calendar</th>
         <th>Description</th>
       </tr>
 
@@ -932,16 +926,12 @@
             <xsl:value-of select="end/time"/>
           </td>
           <td class="calcat">
-            <xsl:choose>
-              <xsl:when test="$pending = 'true'">
-                <xsl:for-each select="categories/category">
-                  <xsl:value-of select="word"/><br/>
-                </xsl:for-each>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="calendar/name"/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:for-each select="categories/category">
+              <xsl:value-of select="word"/><br/>
+            </xsl:for-each>
+          </td>
+          <td>
+            <xsl:value-of select="calendar/name"/>
           </td>
           <td>
             <xsl:value-of select="description"/>
@@ -2213,9 +2203,11 @@
             Display in:
           </td>
           <td>
-            <xsl:for-each select="true">
-              <input type="checkbox" name="alias" value=""/>Test<br/>
-            </xsl:for-each>
+            <ul class="calendarTree">
+              <xsl:apply-templates select="form/subscriptions/calsuite/calendars/calendar" mode="showEventFormAliases">
+                <xsl:with-param name="root">true</xsl:with-param>
+              </xsl:apply-templates>
+            </ul>
           </td>
         </tr>
 
@@ -2379,6 +2371,39 @@
         <xsl:call-template name="submitEventButtons"/>
       </xsl:if>
     </form>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="showEventFormAliases">
+    <xsl:param name="root">false</xsl:param>
+    <li>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="calType = 0">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+
+      <xsl:choose>
+        <xsl:when test="$root = 'true'">
+          <!-- treat the root calendar as the root of calendar suite; -->
+          <strong>
+            <xsl:value-of select="/bedework/currentCalSuite/name"/>
+          </strong>
+        </xsl:when>
+        <xsl:otherwise>
+          <input type="checkbox" name="alias">
+            <xsl:attribute name="value"><xsl:value-of select="calPath"/></xsl:attribute>
+          </input>
+          <xsl:value-of select="name"/>
+        </xsl:otherwise>
+      </xsl:choose>
+
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar[isSubscription = 'true' or calType = '0']" mode="showEventFormAliases"/>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <xsl:template name="submitEventButtons">
@@ -5161,7 +5186,8 @@
     <h2>Manage Calendar Suites</h2>
 
     <p>
-      <input type="button" name="return" value="Add calendar suite" onclick="javascript:location.replace('{$calsuite-showAddForm}')"/>
+      <input type="button" name="addSuite" value="Add calendar suite" onclick="javascript:location.replace('{$calsuite-showAddForm}')"/>
+      <input type="button" name="switchGroup" value="Switch group" onclick="javascript:location.replace('{$admingroup-switch}')"/>
     </p>
 
     <table id="commonListTable">
