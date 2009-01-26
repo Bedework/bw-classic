@@ -2195,7 +2195,7 @@
           </td>
         </tr>
 
-        <!-- Display in  -->
+        <!-- Topical area  -->
         <!-- These are the subscriptions (aliases) where the events should show up.
              By selecting one or more of these, appropriate categories will be set on the event -->
         <tr>
