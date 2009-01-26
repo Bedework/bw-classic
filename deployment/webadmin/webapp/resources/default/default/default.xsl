@@ -2200,7 +2200,7 @@
              By selecting one or more of these, appropriate categories will be set on the event -->
         <tr>
           <td class="fieldName">
-            Display in:
+            Topical area:
           </td>
           <td>
             <ul class="aliasTree">

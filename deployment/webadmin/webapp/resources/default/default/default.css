@@ -999,8 +999,14 @@ li.changeGroup {
   top: -2px;
   margin: 0 25px 0 -35px;
 }
+.aliasTree {
+  margin: 1em 0;
+  padding: 0;
+}
 .aliasTree li {
   list-style: none !important;
+  margin: 0;
+  padding: 0;
 }
 .aliasTree li ul {
   margin-left: 10px;
