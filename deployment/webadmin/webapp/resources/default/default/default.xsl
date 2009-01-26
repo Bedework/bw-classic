@@ -2203,7 +2203,7 @@
             Display in:
           </td>
           <td>
-            <ul class="calendarTree">
+            <ul class="aliasTree">
               <xsl:apply-templates select="form/subscriptions/calsuite/calendars/calendar" mode="showEventFormAliases">
                 <xsl:with-param name="root">true</xsl:with-param>
               </xsl:apply-templates>
@@ -2376,27 +2376,13 @@
   <xsl:template match="calendar" mode="showEventFormAliases">
     <xsl:param name="root">false</xsl:param>
     <li>
-      <xsl:attribute name="class">
-        <xsl:choose>
-          <xsl:when test="calType = 0">folder</xsl:when>
-          <xsl:otherwise>calendar</xsl:otherwise>
-        </xsl:choose>
-      </xsl:attribute>
-
-      <xsl:choose>
-        <xsl:when test="$root = 'true'">
-          <!-- treat the root calendar as the root of calendar suite; -->
-          <strong>
-            <xsl:value-of select="/bedework/currentCalSuite/name"/>
-          </strong>
-        </xsl:when>
-        <xsl:otherwise>
-          <input type="checkbox" name="alias">
-            <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
-          </input>
-          <xsl:value-of select="name"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="$root != 'true'">
+        <!-- hide the root calendar. -->
+        <input type="checkbox" name="alias">
+          <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
+        </input>
+        <xsl:value-of select="name"/>
+      </xsl:if>
 
       <xsl:if test="calendar[isSubscription = 'true' or calType = '0']">
         <ul>

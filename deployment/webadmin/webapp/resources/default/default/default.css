@@ -999,6 +999,13 @@ li.changeGroup {
   top: -2px;
   margin: 0 25px 0 -35px;
 }
+.aliasTree li {
+  list-style: none !important;
+}
+.aliasTree li ul {
+  margin-left: 10px;
+  padding-left: 10px;
+}
 #bwPublicCalDisplay {
   margin: 1em 0 -1em 1em;
 }
