@@ -2380,6 +2380,7 @@
         <!-- hide the root calendar. -->
         <input type="checkbox" name="alias">
           <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
+          <xsl:if test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
         </input>
         <xsl:value-of select="name"/>
       </xsl:if>
