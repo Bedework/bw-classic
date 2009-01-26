@@ -2392,13 +2392,13 @@
         </xsl:when>
         <xsl:otherwise>
           <input type="checkbox" name="alias">
-            <xsl:attribute name="value"><xsl:value-of select="calPath"/></xsl:attribute>
+            <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
           </input>
           <xsl:value-of select="name"/>
         </xsl:otherwise>
       </xsl:choose>
 
-      <xsl:if test="calendar">
+      <xsl:if test="calendar[isSubscription = 'true' or calType = '0']">
         <ul>
           <xsl:apply-templates select="calendar[isSubscription = 'true' or calType = '0']" mode="showEventFormAliases"/>
         </ul>
