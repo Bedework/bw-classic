@@ -3440,6 +3440,28 @@
           </td>
         </tr>
         <tr>
+          <th>Categories:</th>
+          <td>
+            <a href="javascript:toggleVisibility('calCategories','visible')">
+              show/hide categories
+            </a>
+            <div id="calCategories" class="invisible">
+              <ul class="catlist">
+                <xsl:for-each select="/bedework/categories/category">
+                  <xsl:sort select="keyword" order="ascending"/>
+                  <li>
+                    <input type="checkbox" name="categoryKey">
+                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                    </input>
+                    <xsl:value-of select="keyword"/>
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <tr>
           <th>Type:</th>
           <td>
             <!-- we will set the value of "calendarCollection on submit.
@@ -3576,6 +3598,29 @@
             <input type="text" name="fexpr" size="40">
               <xsl:attribute name="value"><xsl:value-of select="filterExpr"/></xsl:attribute>
             </input>
+          </td>
+        </tr>
+        <tr>
+          <th>Categories:</th>
+          <td>
+            output the checked cats here.<br/>
+            <a href="javascript:toggleVisibility('calCategories','visible')">
+              show/hide unused categories
+            </a>
+            <div id="calCategories" class="invisible">
+              <ul class="catlist">
+                <xsl:for-each select="/bedework/categories/category">
+                  <xsl:sort select="keyword" order="ascending"/>
+                  <li>
+                    <input type="checkbox" name="categoryKey">
+                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                    </input>
+                    <xsl:value-of select="keyword"/>
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </div>
           </td>
         </tr>
         <xsl:if test="isSubscription = 'true'">
@@ -4524,6 +4569,28 @@
           </td>
         </tr>
         <tr>
+          <th>Categories:</th>
+          <td>
+            <a href="javascript:toggleVisibility('calCategories','visible')">
+              show/hide categories
+            </a>
+            <div id="calCategories" class="invisible">
+              <ul class="catlist">
+                <xsl:for-each select="/bedework/categories/category">
+                  <xsl:sort select="keyword" order="ascending"/>
+                  <li>
+                    <input type="checkbox" name="categoryKey">
+                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                    </input>
+                    <xsl:value-of select="keyword"/>
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <tr>
           <th>Type:</th>
           <td>
             <!-- we will set the value of "calendarCollection" on submit.
@@ -4537,7 +4604,7 @@
 
             <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
             <input type="hidden" value="public" name="subType" id="bwSubType"/>
-            <input type="radio" name="subTypeSwitch" value="folder" onclick="changeClass('subscriptionTypePublic','invisible');setField('bwType',this.value);"/> Folder
+            <input type="radio" name="subTypeSwitch" value="folder" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');setField('bwType',this.value);"/> Folder
             <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');setField('bwSubType',this.value);"/> Public alias
             <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');setField('bwSubType',this.value);"/> URL
 

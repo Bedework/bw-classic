@@ -1012,6 +1012,15 @@ li.changeGroup {
   margin-left: 10px;
   padding-left: 10px;
 }
+.catlist {
+  margin: 0;
+  padding: 0;
+}
+.catlist li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 #bwPublicCalDisplay {
   margin: 1em 0 -1em 1em;
 }
