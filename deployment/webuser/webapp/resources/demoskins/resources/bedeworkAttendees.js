@@ -1,4 +1,4 @@
-var entries = [
+/*var entries = [
   { name: "Peter Pan", address: "peter@pan.de", uri: "someUri", type: "user"},
   { name: "Molly", address: "molly@yahoo.com", uri: "someUri", type: "user"},
   { name: "Forneria Marconi", address: "live@japan.jp", uri: "someUri", type: "user"},
@@ -9,7 +9,100 @@ var entries = [
   { name: "Donnie Darko", address: "dd@timeshift.info", uri: "someUri", type: "user"},
   { name: "Quake The Net", address: "webmaster@quakenet.org", uri: "someUri", type: "user"},
   { name: "Dr. Write", address: "write@writable.com", uri: "someUri", type: "user"}
-];
+];*/
+
+var entries = {
+  "microformats": {
+    "vcard": [
+    {
+      "version": {
+        "value": "4.0"
+      },
+
+      "rev": {
+        "value": "20080811051937Z"
+      },
+
+      "source": [{
+        "value": "\/ucarddav\/douglm.vcf"
+      }],
+      "uid": {
+        "value": "\/ucarddav\/douglm.vcf"
+      },
+      "mail": [{
+        "value": "douglm@mysite.org"
+      }],
+
+      "kind": {
+        "value": "individual"
+      },
+
+      "fn": {
+        "value": "Douglass, Mike"
+      }
+
+    }, {
+      "version": {
+        "value": "4.0"
+      },
+
+      "rev": {
+        "value": "20080812153529Z"
+      },
+
+      "source": [{
+        "value": "\/ucarddav\/johnsa.vcf"
+      }],
+      "uid": {
+        "value": "\/ucarddav\/johnsa.vcf"
+      },
+
+      "mail": [{
+        "value": "johnsa@rpi.edu",
+        "value": "johnsa@mysite.org"
+      }],
+
+      "kind": {
+        "value": "individual"
+      },
+
+      "fn": {
+        "value": "Johnson, Arlen"
+      }
+
+    }, {
+      "version": {
+        "value": "4.0"
+      },
+
+      "rev": {
+        "value": "20081103181729Z"
+      },
+
+      "source": [{
+        "value": "\/ucarddav\/calowner01.vcf"
+      }],
+      "uid": {
+        "value": "\/ucarddav\/calowner01.vcf"
+      },
+
+      "mail": [{
+        "value": "bogus@mysite.org"
+      }],
+
+      "kind": {
+        "value": "individual"
+      },
+
+      "fn": {
+        "value": "last, first"
+      }
+
+    }]
+  }
+}
+
+
 
 $(document).ready(function(){
 
@@ -27,13 +120,13 @@ $(document).ready(function(){
     matchContains: false,
     autoFill: false,
     formatItem: function(row, i, max) {
-      return " \"" + row.name + "\" [" + row.address + "]";
+      return " \"" + row.fn + "\" [" + row.mail + "]";
     },
     formatMatch: function(row, i, max) {
-      return row.name + " " + row.address;
+      return row.fn + " " + row.mail;
     },
     formatResult: function(row) {
-      return row.address;
+      return row.mail;
     }
   });
 

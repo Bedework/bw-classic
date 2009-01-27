@@ -973,8 +973,9 @@
           </tr>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[event[not(entityType=2 and start/noStart='true' and end/type='N')]]">
-          <!-- reminders are displayed below the normal event listings and are represented as
+          <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[event[not(entityType=2)]]">
+          <!-- tasks (entityType=2) are displayed below the normal event listings.  Reminders (tasks without
+               start or end dates) can also be represented as:
                entityType=2 and start/noStart='true' and end/type='N'; we skip them within grid and list views -->
             <xsl:if test="/bedework/periodname='Week' or /bedework/periodname='Month' or /bedework/periodname=''">
               <tr>
@@ -996,7 +997,7 @@
                  </td>
               </tr>
             </xsl:if>
-            <xsl:for-each select="event[not(entityType=2 and start/noStart='true' and end/type='N')]">
+            <xsl:for-each select="event[not(entityType=2)]">
               <xsl:variable name="id" select="id"/>
               <xsl:variable name="subscriptionId" select="subscription/id"/>
               <xsl:variable name="calPath" select="calendar/encodedPath"/>
@@ -1243,7 +1244,7 @@
               </a>
               <xsl:if test="event">
                 <ul>
-                  <xsl:apply-templates select="event[not(entityType=2 and start/noStart='true' and end/type='N')]" mode="calendarLayout">
+                  <xsl:apply-templates select="event[not(entityType=2)]" mode="calendarLayout">
                     <xsl:with-param name="dayPos" select="$dayPos"/>
                   </xsl:apply-templates>
                 </ul>
@@ -1293,7 +1294,7 @@
                   </a>
                   <xsl:if test="event">
                     <ul>
-                      <xsl:apply-templates select="event[not(entityType=2 and start/noStart='true' and end/type='N')]" mode="calendarLayout">
+                      <xsl:apply-templates select="event[not(entityType=2)]" mode="calendarLayout">
                         <xsl:with-param name="dayPos" select="$dayPos"/>
                       </xsl:apply-templates>
                     </ul>
@@ -1504,13 +1505,13 @@
 
   <!--== TASKS ==-->
   <xsl:template name="tasks">
-    <xsl:if test="/bedework/eventscalendar//event[entityType=2 and start/noStart='true' and end/type='N']">
+    <xsl:if test="/bedework/eventscalendar//event[entityType=2]">
       <div id="tasks">
         <h3>
-          reminders (tasks with no start or end date)
+          tasks &amp; reminders
         </h3>
         <ul class="tasks">
-          <xsl:apply-templates select="/bedework/eventscalendar//event[entityType=2 and start/noStart='true' and end/type='N']" mode="tasks"/>
+          <xsl:apply-templates select="/bedework/eventscalendar//event[entityType=2]" mode="tasks"/>
         </ul>
       </div>
     </xsl:if>
@@ -1530,6 +1531,12 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="summary"/>
+            <xsl:if test="not(start/noStart='true')">
+              <span class="taskDate"> - Start: <xsl:value-of select="start/shortdate"/></span>
+            </xsl:if>
+            <xsl:if test="not(end/type='N')">
+              <span class="taskDate">- Due: <xsl:value-of select="end/shortdate"/></span>
+            </xsl:if>
           </xsl:otherwise>
         </xsl:choose>
       </a>
@@ -3773,8 +3780,8 @@
     <xsl:param name="type">normal</xsl:param>
       <table id="freeBusy">
         <tr>
-          <td></td>
-          <th colspan="24" class="left">
+          <td>&#160;</td>
+          <td colspan="24" class="left">
             Freebusy for
             <span class="who">
               <xsl:choose>
@@ -3789,9 +3796,9 @@
                 </xsl:otherwise>
               </xsl:choose>
             </span>
-          </th>
+          </td>
           <!-- at some point allow switching of timezones:
-          <th colspan="32" class="right">
+          <td colspan="24" class="right">
             <xsl:variable name="currentTimezone">America/Los_Angeles</xsl:variable>
             <xsl:value-of select="$formattedStartDate"/> to <xsl:value-of select="$formattedEndDate"/>
             <select name="timezone" id="timezonesDropDown" onchange="submit()">
@@ -3803,7 +3810,7 @@
                 </option>
               </xsl:for-each>
             </select>
-          </th>-->
+          </td>-->
         </tr>
         <tr>
           <td>&#160;</td>
@@ -4106,45 +4113,53 @@
         <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
       </li>
     </ul>
-    <h2>
-      Manage Categories
-      <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')" class="titleButton"/>
-    </h2>
     <table class="common" id="manage" cellspacing="0">
       <tr>
-        <th class="commonHeader" colspan="2">Edit/Delete Categories</th>
+        <th class="commonHeader">Manage Categories</th>
       </tr>
-      <xsl:choose>
-        <xsl:when test="/bedework/categories/category">
-          <xsl:for-each select="/bedework/categories/category">
-            <xsl:variable name="categoryKey" select="normalize-space(keyword)"/>
-            <tr>
-              <td>
-                <a href="{$category-fetchForUpdate}&amp;categoryKey={$categoryKey}">
-                  <xsl:value-of select="keyword"/>
-                </a>
-              </td>
-              <td>
-                <xsl:value-of select="desc"/>
-              </td>
-            </tr>
-          </xsl:for-each>
-        </xsl:when>
-        <xsl:otherwise>
-          <tr>
-            <td colspan="2">
-              No categories defined
-            </td>
-          </tr>
-        </xsl:otherwise>
-      </xsl:choose>
+      <tr>
+        <td>
+          <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')" class="titleButton"/>
+          <ul>
+            <xsl:choose>
+              <xsl:when test="/bedework/categories/category">
+                <xsl:for-each select="/bedework/categories/category">
+                  <xsl:variable name="categoryKey" select="normalize-space(keyword)"/>
+                  <li>
+                    <a href="{$category-fetchForUpdate}&amp;categoryKey={$categoryKey}">
+                      <xsl:value-of select="keyword"/>
+                    </a>
+                  </li>
+                </xsl:for-each>
+              </xsl:when>
+              <xsl:otherwise>
+                <li>
+                  No categories defined
+                </li>
+              </xsl:otherwise>
+            </xsl:choose>
+          </ul>
+        </td>
+      </tr>
     </table>
   </xsl:template>
 
   <xsl:template name="modCategory">
+    <h2>Manage Preferences</h2>
+    <ul class="submenu">
+      <li>
+        <a href="{$prefs-fetchForUpdate}">general</a>
+      </li>
+      <li class="selected">categories</li>
+      <li>
+        <a href="{$location-initUpdate}">locations</a>
+      </li>
+      <li>
+        <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
+      </li>
+    </ul>
     <xsl:choose>
       <xsl:when test="/bedework/creating='true'">
-        <h2>Manage Categories</h2>
         <form action="{$category-update}" method="post">
           <table class="common" cellspacing="0">
             <tr>
@@ -4180,11 +4195,10 @@
         </form>
       </xsl:when>
       <xsl:otherwise>
-        <h2>Manage Categories</h2>
         <form action="{$category-update}" method="post">
           <table class="common" cellspacing="0">
             <tr>
-              <th class="commonHeader" colspan="2">Update Category</th>
+              <th class="commonHeader" colspan="2">Edit Category</th>
             </tr>
             <tr>
               <td class="fieldname">
@@ -5813,15 +5827,27 @@
   <!--==== MANAGE LOCATIONS ====-->
   <xsl:template name="locationList">
     <h2>
-      Manage Locations
-      <input type="button" name="return" value="Add new location" onclick="javascript:location.replace('{$location-initAdd}')" class="titleButton"/>
+      Manage Preferences
     </h2>
+    <ul class="submenu">
+      <li>
+        <a href="{$prefs-fetchForUpdate}">general</a>
+      </li>
+      <li>
+        <a href="{$category-initUpdate}">categories</a>
+      </li>
+      <li class="selected">locations</li>
+      <li>
+        <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
+      </li>
+    </ul>
     <table class="common" id="manage" cellspacing="0">
       <tr>
-        <th class="commonHeader">Edit/Delete Locations</th>
+        <th class="commonHeader">Manage Locations</th>
       </tr>
       <tr>
         <td>
+          <input type="button" name="return" value="Add new location" onclick="javascript:location.replace('{$location-initAdd}')" class="titleButton"/>
           <xsl:if test="/bedework/locations/location">
             <ul>
               <xsl:for-each select="/bedework/locations/location">
@@ -5839,10 +5865,26 @@
   </xsl:template>
 
   <xsl:template name="modLocation">
+    <h2>
+      Manage Preferences
+    </h2>
+    <ul class="submenu">
+      <li>
+        <a href="{$prefs-fetchForUpdate}">general</a>
+      </li>
+      <li>
+        <a href="{$category-initUpdate}">categories</a>
+      </li>
+      <li class="selected">
+        <a href="{$location-initUpdate}">locations</a>
+      </li>
+      <li>
+        <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
+      </li>
+    </ul>
     <xsl:choose>
       <xsl:when test="/bedework/creating = 'true'">
         <form name="addLocationForm" method="post" action="{$location-update}" id="standardForm">
-          <h2>Manage Locations</h2>
           <table class="common" cellspacing="0">
             <tr>
               <th class="commonHeader" colspan="2">Add Location</th>
@@ -5885,7 +5927,6 @@
       <xsl:otherwise>
         <form name="editLocationForm" method="post" action="{$location-update}" id="standardForm">
           <input type="hidden" name="updateLocation" value="true"/>
-          <h2>Manage Locations</h2>
           <table class="common" cellspacing="0">
             <tr>
               <th colspan="2" class="commonHeader">

@@ -1501,8 +1501,8 @@ display: inline;
   font-weight: normal;
 }
 #bedework #tasks .taskDate {
-  font-size: 0.7em;
-  margin-left: 1em;
+  font-size: 0.8em;
+  font-style: italic;
 }
 /* Calendars and Subscriptions */
 #calendarTable td,
@@ -1655,7 +1655,7 @@ display: inline;
   font-size: 0.8em;
   padding: 0;
   margin: 0;
-  width: 2em;
+  width: 2em !important;
   height: 10px;
 }
 #freeBusy th.left {
@@ -1912,7 +1912,6 @@ display: inline;
 #bedework #subscriptionTypes {
   font-size: 0.9em;
 }
-/*   LINKS    */
 #bedework a:link,
 #bedework a:active {
   color: #00a;
@@ -1944,4 +1943,8 @@ display: inline;
 }
 #bedework .left {
   float: left;
+}
+#bedework .titleButton {
+  display: block;
+  margin: 1em;
 }
