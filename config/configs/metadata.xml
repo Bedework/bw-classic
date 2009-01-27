@@ -13,6 +13,8 @@
 
   A default value may contain the name of a previously defined property
   surrounded by ${ and }. The property "name" is predefined.
+
+  NOTE: this is not being used so don't pay too much attention
 -->
 
 <meta-data>
