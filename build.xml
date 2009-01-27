@@ -60,6 +60,7 @@
 
   <import file="${org.bedework.project.bedework}/build/buildfilters.xml" />
   <import file="${org.bedework.project.bedework}/build/loadDeployConfig.xml"/>
+  <import file="${org.bedework.project.bedework}/build/dirTools.xml"/>
 
   <target name="README" depends="init"
           description="Describe targets and their usage">
@@ -640,73 +641,7 @@
   </target>
 
   <!-- =================================================================
-       Build and run the directory tools
-       ================================================================= -->
-
-  <target name="initDir" depends="init"
-          description="Build and run directory init">
-    <antfetch antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-              target="initDir"
-              return="org.bedework.directory.init.status" >
-      <propertyset>
-        <propertyref prefix="org.bedework.directory."/>
-      </propertyset>
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </antfetch>
-  </target>
-
-  <target name="initDirForQuickstart" depends="init.build,build.rpiutil"
-          description="Build and run directory tool to initialise a quickstart system">
-    <antfetch antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-              target="initDirForQuickstart"
-              return="org.bedework.directory.init.status" >
-      <propertyset>
-        <propertyref prefix="org.bedework.directory."/>
-      </propertyset>
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </antfetch>
-  </target>
-
-  <target name="addUser" depends="init.build,build.rpiutil"
-          description="Build and run directory tools to add a user">
-    <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-           target="addUser" >
-      <propertyset>
-        <propertyref prefix="org.bedework.directory."/>
-      </propertyset>
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="addGroup" depends="init.build,build.rpiutil"
-          description="Build and run directory tools to add a group">
-    <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-           target="addGroup" >
-      <propertyset>
-        <propertyref prefix="org.bedework.directory."/>
-      </propertyset>
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="addGroupMember" depends="init.build,build.rpiutil"
-          description="Build and run directory tools to add a group member">
-    <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
-           target="addGroupMember" >
-      <propertyset>
-        <propertyref prefix="org.bedework.directory."/>
-      </propertyset>
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <!-- =================================================================
-       Build and run the cmdline utility
+       Run the cmdline utility
        ================================================================= -->
 
   <target name="cmdutil" depends="init"
@@ -786,7 +721,9 @@ hibernate.jdbc.batch_size=0
     </if>
 
     <echo message="For this to work you need to do something like:"/>
+    <!--
     <echo message="export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/douglm/drop2/java/yourkit/yjp-6.0.15/bin/linux-x86-32"/>
+     -->
 
     <java classname="org.bedework.tools.cmdutil.CmdUtil"
           fork="true"
@@ -797,7 +734,7 @@ hibernate.jdbc.batch_size=0
       <arg value="${org.bedework.cmdutil.arg.account}" />
       <arg value="${org.bedework.cmdutil.arg.infile.par}" />
       <arg value="${org.bedework.cmdutil.arg.infile}" />
-      <jvmarg value="-agentlib:yjpagent" />
+      <!-- <jvmarg value="-agentlib:yjpagent" /> -->
     </java>
   </target>
 
