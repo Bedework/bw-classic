@@ -3447,7 +3447,7 @@
             </a>
             <div id="calCategories" class="invisible">
               <ul class="catlist">
-                <xsl:for-each select="/bedework/categories/category">
+                <xsl:for-each select="/bedework/categories/all/category">
                   <xsl:sort select="keyword" order="ascending"/>
                   <li>
                     <input type="checkbox" name="categoryKey">
@@ -3603,21 +3603,34 @@
         <tr>
           <th>Categories:</th>
           <td>
-            output the checked cats here.<br/>
+            <!-- show the selected categories -->
+            <ul class="catlist">
+              <xsl:for-each select="/bedework/categories/current/category">
+                <xsl:sort select="keyword" order="ascending"/>
+                <li>
+                  <input type="checkbox" name="categoryKey" checked="checked">
+                    <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                  </input>
+                  <xsl:value-of select="keyword"/>
+                </li>
+              </xsl:for-each>
+            </ul>
             <a href="javascript:toggleVisibility('calCategories','visible')">
               show/hide unused categories
             </a>
             <div id="calCategories" class="invisible">
               <ul class="catlist">
-                <xsl:for-each select="/bedework/categories/category">
+                <xsl:for-each select="/bedework/categories/all/category">
                   <xsl:sort select="keyword" order="ascending"/>
-                  <li>
-                    <input type="checkbox" name="categoryKey">
-                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                    </input>
-                    <xsl:value-of select="keyword"/>
-                  </li>
+                  <!-- don't duplicate the selected categories -->
+                  <xsl:if test="not(keyword = ../../current//category/keyword)">
+                    <li>
+                      <input type="checkbox" name="categoryKey">
+                        <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      </input>
+                      <xsl:value-of select="keyword"/>
+                    </li>
+                  </xsl:if>
                 </xsl:for-each>
               </ul>
             </div>
@@ -4576,7 +4589,7 @@
             </a>
             <div id="calCategories" class="invisible">
               <ul class="catlist">
-                <xsl:for-each select="/bedework/categories/category">
+                <xsl:for-each select="/bedework/categories/all/category">
                   <xsl:sort select="keyword" order="ascending"/>
                   <li>
                     <input type="checkbox" name="categoryKey">
