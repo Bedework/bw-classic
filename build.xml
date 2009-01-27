@@ -785,10 +785,8 @@ hibernate.jdbc.batch_size=0
       </else>
     </if>
 
-<!--
     <echo message="For this to work you need to do something like:"/>
     <echo message="export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/douglm/drop2/java/yourkit/yjp-6.0.15/bin/linux-x86-32"/>
- -->
 
     <java classname="org.bedework.tools.cmdutil.CmdUtil"
           fork="true"
@@ -799,7 +797,7 @@ hibernate.jdbc.batch_size=0
       <arg value="${org.bedework.cmdutil.arg.account}" />
       <arg value="${org.bedework.cmdutil.arg.infile.par}" />
       <arg value="${org.bedework.cmdutil.arg.infile}" />
-      <!-- <jvmarg value="-agentlib:yjpagent" /> -->
+      <jvmarg value="-agentlib:yjpagent" />
     </java>
   </target>
 
