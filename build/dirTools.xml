@@ -72,6 +72,7 @@
       <arg value="${org.bedework.directory.account}" />
       <arg value="${org.bedework.directory.firstname}" />
       <arg value="${org.bedework.directory.lastname}" />
+      <arg value="${org.bedework.directory.caladdr}" />
       <arg value="${org.bedework.directory.password}" />
       <!-- <jvmarg value="-agentlib:yjpagent" /> -->
     </java>
