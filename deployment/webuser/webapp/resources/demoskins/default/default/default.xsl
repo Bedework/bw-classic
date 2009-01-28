@@ -22,12 +22,12 @@
 
     Redistribution and use of this distribution in source and binary forms,
     with or without modification, are permitted provided that:
-       The above copyright notice and this permission notice appear in all
-        copies and supporting documentation;
+    The above copyright notice and this permission notice appear in all
+    copies and supporting documentation;
 
-        The name, identifiers, and trademarks of Rensselaer Polytechnic
-        Institute are not used in advertising or publicity without the
-        express prior written permission of Rensselaer Polytechnic Institute;
+    The name, identifiers, and trademarks of Rensselaer Polytechnic
+    Institute are not used in advertising or publicity without the
+    express prior written permission of Rensselaer Polytechnic Institute;
 
     DISCLAIMER: The software is distributed" AS IS" without any express or
     implied warranty, including but not limited to, any implied warranties
