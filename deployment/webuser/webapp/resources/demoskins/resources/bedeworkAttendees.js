@@ -96,33 +96,46 @@ var options = {
   width: 310,
   matchContains: false,
   autoFill: false,
+
   extraParams: {
     format: 'json'
   },
+
+  dataType: 'json',
+
   parse: function(data) {
     var parsed = [];
     data = data.microformats.vcard;
     for (var i = 0; i < data.length; i++) {
-      parsed[parsed.length] = {
-        data: data[i],
+      dataRow = {
+        fn: data[i].fn.value,
+        email: data[i].email[0].value,
+        uri: data[i].caladruri.value,
+        type: data[i].kind.value
+      };
+      parsed[i] = {
+        data: dataRow,
         value: data[i].fn.value,
-        result: data[i].mail.value };
-      }
+        result: data[i].email[0].value
+      };
+    }
+    //alert("parsedlen=" + parsed.length);
     return parsed;
   },
-  formatItem: function(item, i, max) {
-    return " \"" + item.fn.value + "\" [" + item.mail.value + "]";
+  formatItem: function(item) {
+      return " \"" + item.fn + "\" [" + item.email + "]";
   },
-  formatMatch: function(item, i, max) {
-      return item.fn.value + " " + item.mail.value;
+
+  formatMatch: function(item) {
+      return " \"" + item.fn + "\" [" + item.email + "]";
   },
-  formatResult: function(item, i, max) {
-    return item.mail.value;
+  formatResult: function(item) {
+    return item.email;
   }
 };
 
 jQuery(document).ready(function($) {
-  $('#bwRaUri').autocomplete(entries, options)
+  $('#bwRaUri').autocomplete("http://localhost:8080/ucarddav/find", options)
 });
 
 /*

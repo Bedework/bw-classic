@@ -120,7 +120,8 @@ $qsant install-configs
 $qsant initDirForQuickstart
 
 echo "Now we invoke the adduser script to add a superuser to the system"
-echo "We need to know the account, first name last name and a password"
+echo "We need to know the account, first name, last name, the calendar address"
+echo "(email address) and a password"
 
 readVal "account"
 rootAccount=$val
@@ -131,6 +132,9 @@ adduser_defs="$adduser_defs -Dorg.bedework.directory.firstname=$val"
 
 readVal "lastname"
 adduser_defs="$adduser_defs -Dorg.bedework.directory.lastname=$val"
+
+readVal "calendar address (email)"
+adduser_defs="$adduser_defs -Dorg.bedework.directory.caladdr=$val"
 
 readVal "password"
 adduser_defs="$adduser_defs -Dorg.bedework.directory.password=$val"
