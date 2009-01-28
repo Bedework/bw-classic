@@ -18,12 +18,14 @@ SETLOCAL
   SET account=%1
   SET firstname=%2
   SET lastname=%3
-  SET password=%4
+  set caladdr=%4
+  SET password=%5
 
   IF "%account%" == "help" GOTO usage
   IF "%account%empty" == "empty" GOTO errorUsage
   IF "%firstname%empty" == "empty" GOTO errorUsage
   IF "%lastname%empty" == "empty" GOTO errorUsage
+  IF "%caladdr%empty" == "empty" GOTO errorUsage
   IF "%password%empty" == "empty" GOTO errorUsage
 
   IF NOT "%JAVA_HOME%empty" == "empty" GOTO javaOk
@@ -40,24 +42,26 @@ SETLOCAL
   SET adduser_defs=-Dorg.bedework.directory.account=%account%
   SET adduser_defs=%adduser_defs% -Dorg.bedework.directory.firstname=%firstname%
   SET adduser_defs=%adduser_defs% -Dorg.bedework.directory.lastname=%lastname%
+  SET adduser_defs=%adduser_defs% -Dorg.bedework.directory.caladdr=%caladdr%
   SET adduser_defs=%adduser_defs% -Dorg.bedework.directory.password=%password%
   "%JAVA_HOME%\bin\java" -classpath "%CLASSPATH%" %ant_home_def% %adduser_defs% %ant_class_def% addUser
   GOTO:EOF
 
 :errorUsage
-  ECHO    ********************************************************************
-  ECHO    Error: You must supply account, first name, last name, and password.
-  ECHO    ********************************************************************
+  ECHO    *******************************************************************************
+  ECHO    Error: You must supply account, first name, last name, caladdress, and password.
+  ECHO    *******************************************************************************
 
 :usage
   ECHO.
   ECHO    Usage:
-  ECHO.
-  ECHO    %PRG% account firstname lastname password
+  ECHO    %PRG% account firstname lastname caladdr password
   ECHO.
   ECHO    Invokes ant to build the Bedework tools then uses that tool to add
   ECHO    an account in the directory.
   ECHO.
-  ECHO    firstname, lastname, and password are required
+  ECHO    firstname, lastname, caladdr*, and password are required
+  ECHO.   *(caladdr is the calendar address, which at this time is
+  ECHO.     typically an email address)
   ECHO.
   ECHO.

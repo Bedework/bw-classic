@@ -20,7 +20,7 @@ usage() {
   echo ""
   echo "   Invokes ant to run dirtool to add an account to the directory."
   echo ""
-  echo "   firstname, lastname adn caladdr are required"
+  echo "   firstname, lastname and caladdr are required"
   echo ""
   echo "   If the password is not supplied you will be prompted for the password."
   echo ""
