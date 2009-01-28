@@ -1658,7 +1658,8 @@ display: inline;
   width: 2em !important;
   height: 10px;
 }
-#freeBusy th.left {
+#freeBusy th.left,
+#freeBusy td.left {
   text-align: left;
 }
 #freeBusy td.morning {
@@ -1940,9 +1941,6 @@ display: inline;
 #bedework #featureHighlight {
   color: #dd0;
   font-style: italic;
-}
-#bedework .left {
-  float: left;
 }
 #bedework .titleButton {
   display: block;

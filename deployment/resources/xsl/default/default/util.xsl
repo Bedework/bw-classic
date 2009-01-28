@@ -90,5 +90,20 @@
       </xsl:if>
     </xsl:if>
   </xsl:template>
+
+  <xsl:template name="substring-afterLastInstanceOf">
+    <xsl:param name="string" />
+    <xsl:param name="char" />
+    <xsl:choose>
+      <xsl:when test="contains($string, $char)">
+        <xsl:call-template name="substring-afterLastInstanceOf">
+          <xsl:with-param name="string" select="substring-after($string, $char)" />
+          <xsl:with-param name="char" select="$char" />
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise><xsl:value-of select="$string" /></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>
 

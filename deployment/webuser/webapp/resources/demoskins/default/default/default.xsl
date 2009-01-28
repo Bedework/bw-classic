@@ -42,6 +42,13 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. -->
 
+  <!-- GENERATE KEYS -->
+  <!-- We occasionally need to pick out unique events from the calendar tree view
+       which breaks up an event across multiple days.  In the future, we may
+       work from a list of unique events and build the tree from it in the UI. -->
+       <xsl:key name="eventUid" match="event" use="guid"/>
+
+
   <!-- DEFINE INCLUDES -->
   <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
@@ -391,7 +398,7 @@
     </xsl:if>
     <xsl:if test="/bedework/page='attendees'">
       <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
-      <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.js">&#160;</script>
+      <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/bw-jquery.autocomplete.js">&#160;</script>
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.bgiframe.min.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAttendees.js">&#160;</script>
       <link rel="stylesheet" type="text/css" href="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.css" />
@@ -965,7 +972,7 @@
   <xsl:template name="listView">
     <table id="listTable" border="0" cellpadding="0" cellspacing="0">
       <xsl:choose>
-        <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event)">
+        <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event[not(entityType=2)])">
           <tr>
             <td class="noEventsCell">
               No events to display.
@@ -1511,7 +1518,7 @@
           tasks &amp; reminders
         </h3>
         <ul class="tasks">
-          <xsl:apply-templates select="/bedework/eventscalendar//event[entityType=2]" mode="tasks"/>
+          <xsl:apply-templates select="/bedework/eventscalendar//event[entityType=2 and generate-id() = generate-id(key('eventUid',guid)[1])]" mode="tasks"/>
         </ul>
       </div>
     </xsl:if>

@@ -60,6 +60,7 @@
   <!-- cannot use the resourceCommons variable in xsl:include paths -->
   <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
 
@@ -853,6 +854,22 @@
           </td>
         </tr>
       </xsl:if>
+      <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+        <tr>
+          <td class="fieldname">Topical Area:</td>
+          <td class="fieldval">
+            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+              <xsl:variable name="calUrl" select="values/text"/>
+              <a href="{$setSelection}&amp;calUrl={$calUrl}">
+                <xsl:call-template name="substring-afterLastInstanceOf">
+                  <xsl:with-param name="string" select="values/text"/>
+                  <xsl:with-param name="char">/</xsl:with-param>
+                </xsl:call-template>
+              </a><xsl:if test="position()!=last()">, </xsl:if>
+            </xsl:for-each>
+          </td>
+        </tr>
+      </xsl:if>
       <xsl:if test="calendar/path!=''">
         <tr>
           <td class="fieldname">Calendar:</td>
@@ -1023,7 +1040,18 @@
                             Contact: <xsl:value-of select="contact/name"/>
                           </xsl:if>
                         </em>
-                        - <xsl:value-of select="calendar/name"/>
+                        -
+                        <span class="eventSubscription">
+                          <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+                            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+                              <xsl:call-template name="substring-afterLastInstanceOf">
+                                <xsl:with-param name="string" select="values/text"/>
+                                <xsl:with-param name="char">/</xsl:with-param>
+                              </xsl:call-template>
+                              <xsl:if test="position()!=last()">, </xsl:if>
+                            </xsl:for-each>
+                          </xsl:if>
+                        </span>
                       </a>
                       <xsl:if test="link != ''">
                         <xsl:variable name="link" select="link"/>
@@ -1034,7 +1062,18 @@
                       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:value-of select="summary"/>
                         <xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
-                         - <em><xsl:value-of select="calendar/name"/></em>
+                         -
+                        <span class="eventSubscription">
+                          <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+                            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+                              <xsl:call-template name="substring-afterLastInstanceOf">
+                                <xsl:with-param name="string" select="values/text"/>
+                                <xsl:with-param name="char">/</xsl:with-param>
+                              </xsl:call-template>
+                              <xsl:if test="position()!=last()">, </xsl:if>
+                            </xsl:for-each>
+                          </xsl:if>
+                        </span>
                       </a>
                     </xsl:otherwise>
                   </xsl:choose>
@@ -1342,7 +1381,16 @@
           <xsl:if test="location/address">
             Location: <xsl:value-of select="location/address"/><br/>
           </xsl:if>
-          Calendar: <xsl:value-of select="calendar/name"/>
+          <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+            Topical Area:
+              <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+                <xsl:call-template name="substring-afterLastInstanceOf">
+                  <xsl:with-param name="string" select="values/text"/>
+                  <xsl:with-param name="char">/</xsl:with-param>
+                </xsl:call-template>
+                <xsl:if test="position()!=last()">, </xsl:if>
+              </xsl:for-each>
+          </xsl:if>
         </span>
       </a>
     </li>
@@ -1768,30 +1816,6 @@
         </xsl:for-each>
       </table>
     </div>
-  </xsl:template>
-
-  <!--==== UTILITY TEMPLATES ====-->
-
-  <!-- search and replace template taken from
-       http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
-  <xsl:template name="replace">
-    <xsl:param name="string" select="''"/>
-    <xsl:param name="pattern" select="''"/>
-    <xsl:param name="replacement" select="''"/>
-    <xsl:choose>
-      <xsl:when test="$pattern != '' and $string != '' and contains($string, $pattern)">
-        <xsl:value-of select="substring-before($string, $pattern)"/>
-        <xsl:copy-of select="$replacement"/>
-        <xsl:call-template name="replace">
-          <xsl:with-param name="string" select="substring-after($string, $pattern)"/>
-          <xsl:with-param name="pattern" select="$pattern"/>
-          <xsl:with-param name="replacement" select="$replacement"/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$string"/>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
   <!--==== FOOTER ====-->

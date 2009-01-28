@@ -823,6 +823,9 @@ a.gridAdd {
 #listTable td.eventListDateTime {
   white-space: nowrap;
 }
+#listTable .eventSubscription {
+  font-size: 0.8em;
+}
 #calPageTable ul.calendarTree li {
   font-weight: bold;
 }
