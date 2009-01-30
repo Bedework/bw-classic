@@ -240,7 +240,10 @@
     <parallel>
       <antcall target="dirstart" inheritrefs="true" />
       <antcall target="hsqldb" inheritrefs="true" />
-      <antcall target="tomcatstart" inheritrefs="true" />
+      <sequential>
+        <sleep seconds="10"/>
+        <antcall target="tomcatstart" inheritrefs="true" />
+      </sequential>
     </parallel>
   </target>
 </project>
