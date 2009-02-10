@@ -29,7 +29,8 @@ usage() {
   echo "     -quickstart  Use the current quickstart configurations "
   echo "     -bwchome     Specify path to configurations"
   echo "     -bwc         Specify configuration name"
-  echo "     -offline     Build without atempting to retrieve library jars"
+  echo "     -offline     Build without attempting to retrieve library jars"
+  echo "     -carddav     Target is for the CardDAV build, otherwise it's a calendar build"
   echo "     target       Ant target to execute"
   echo ""
   echo "   Invokes ant to build or deploy the Bedework system. Uses a configuration"
@@ -58,6 +59,9 @@ fi
 
 saveddir=`pwd`
 
+trap 'cd $saveddir' 0
+trap "exit 2" 1 2 3 15
+
 export QUICKSTART_HOME=$saveddir
 
 # Default some parameters
@@ -67,6 +71,7 @@ bwc=default
 BWCONFIG=
 offline=
 quickstart=
+carddav=
 
 if [ "$1" = "" ] ; then
   usage
@@ -85,6 +90,10 @@ do
       ;;
     -quickstart)
       quickstart="yes"
+      shift
+      ;;
+    -carddav)
+      carddav="yes"
       shift
       ;;
     -usage | -help | -? | ?)
@@ -138,5 +147,10 @@ echo "BWCONFIG=$BWCONFIG"
 CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
 CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/build/quickstart/antlib
 CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/applib/log4j-1.2.8.jar
+
+
+if [ "$carddav" != "" ] ; then
+  cd $QUICKSTART_HOME/bedework-carddav
+fi
 
 $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $*
