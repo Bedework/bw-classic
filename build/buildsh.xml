@@ -77,6 +77,7 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-icalendar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-logging}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-mail}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-sysevents}" />
 
     <!-- any extra files-->
    <copy todir="${app.dest.lib}" >

@@ -233,6 +233,8 @@
     <delete dir="${bin.home}" />
     <delete dir="${org.bedework.temp.dir}" />
     <delete dir="${org.bedework.empty.dir}" />
+    <delete dir="${bw.project.home}/libcache"/>
+    <delete dir="${bw.project.home}/applib"/>
 
     <delete>
       <fileset dir="${dist.home}" includes="*.war"/>

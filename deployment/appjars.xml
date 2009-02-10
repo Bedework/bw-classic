@@ -266,6 +266,10 @@
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
+              name="bw-sysevents" version="3.5"
+              projecthome="${bw.project.home}/projects/calendarapi" />
+
+      <getJar lib="${org.bedework.app.lib}"
               name="bw-appcommon" version="3.5"
               projecthome="${bw.project.home}/projects/webapps" />
 

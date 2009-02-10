@@ -255,6 +255,7 @@ ${propval.app.war.name}.context=${propval.app.context.root}
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-icalendar}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-logging}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-mail}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-sysevents}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-appcommon}" />
 
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.lucene-core}"/>
