@@ -1,4 +1,5 @@
 // Bedework Dojo functions
+// DEPRECATED
 
 /* **********************************************************************
     Copyright 2007 Rensselaer Polytechnic Institute. All worldwide rights reserved.

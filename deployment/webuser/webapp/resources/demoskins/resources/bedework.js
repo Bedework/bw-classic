@@ -23,7 +23,7 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. */
 
-/* NOTE: this file is different between Bedework web applications and is 
+/* NOTE: this file is different between Bedework web applications and is
    therefore not currently interchangable between apps.  This will be normalized
    in the coming versions, but for now don't try to exchange them. */
 
@@ -170,10 +170,10 @@ function launchCalSelectWindow(URL) {
   window.calSelect.focus();
 }
 // launch a dojo widget used for contextual help
-function launchHelpWidget(id) {
+/*function launchHelpWidget(id) {
   var helpWidget = dojo.widget.byId(id);
   helpWidget.show();
-}
+}*/
 // used to update the calendar in various forms from
 // the calSelect pop-up widget.  We must do three things: update the hidden
 // calendar input field, update the displayed text, and close widget
