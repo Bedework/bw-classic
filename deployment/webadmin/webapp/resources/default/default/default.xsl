@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output
-     method="html"
+     method="xml"
      indent="no"
      media-type="text/html"
      doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -2790,6 +2790,18 @@
           <strong><xsl:value-of select="creator"/></strong>
         </td>
       </tr>
+
+      <!-- Submitter -->
+      <xsl:if test="xproperties/X-BEDEWORK-SUBMITTEDBY">
+        <tr>
+          <th>
+            Submitter:
+          </th>
+          <td>
+            <strong><xsl:value-of select="xproperties/X-BEDEWORK-SUBMITTEDBY/values/text"/></strong>
+          </td>
+        </tr>
+      </xsl:if>
 
       <!--  Categories  -->
       <tr>

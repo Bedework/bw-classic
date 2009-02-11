@@ -5,7 +5,7 @@
   <!--                    BEDEWORK CONFIGURATION WEB APP                    -->
   <!-- ==================================================================== -->
   <!-- ==================================================================== -->
-  <xsl:output method="xhtml" indent="yes" media-type="text/html" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" standalone="yes" omit-xml-declaration="yes"/>
+  <xsl:output method="xml" indent="yes" media-type="text/html" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" standalone="yes" omit-xml-declaration="yes"/>
   <xsl:variable name="resourcesRoot" select="/bedework/appRoot"/>
   <xsl:variable name="urlPrefix" select="/bedework/urlPrefix"/>
 

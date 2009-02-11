@@ -4,51 +4,72 @@ var bwClockRequestedType = null;
 var bwClockCurrentType = null;
 
 function bwClockLaunch(type) {
-  if ((document.getElementById("clock").className == "shown") && (bwClockCurrentType == type)) {
-    changeClass("clock","invisible"); // if the clock with the same type is showing, toggle it off
-  } else { // otherwise, turn it on and display the correct type
+  // type: type of clock "eventStartDate" or "eventEndDate"
+  if ((document.getElementById("clock").className == "visible") && (bwClockCurrentType == type)) {
+    // if the clock with the same type is visible, toggle it off
+    changeClass("clock","invisible");
+  } else {
+    // otherwise, turn it on and display the correct type
+    changeClass("clock","visible");
     bwClockRequestedType = type;
     bwClockCurrentType = type;
-    changeClass("clock","shown");
-    // the following is for Internet Explorer.  IE draws "windowed" objects
-    // and unwindowed objects on seperate "planes"; windowed objects are always
-    // drawn obove unwindowed objects and select boxes are "windowed";
-    // this is required to make IE not overwrite the clock div with
-    // the select boxes that fall below it on the page.  Note: we set them
-    // to display:hidden (not none) so their space is still occupied (and the
-    // browser window doesn't shift around)
-   changeClass("eventFormPrefLocationList","hidden");
-   changeClass("eventFormLocationList","hidden");
-   changeClass("eventFormSponsorList","hidden");
-   changeClass("eventFormPrefSponsorList","hidden");
-    bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
+    // reset hours and minutes to null
+    bwClockHour = null;
+    bwClockMinute = null;
+    var bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
+    var bwClockSwitch = document.getElementById("bwClockSwitch");
+    document.getElementById("bwClockTime").innerHTML = "select time";
     if (type == 'eventStartDate') {
-      bwClockIndicator.innerHTML = "Start Time"
+      bwClockIndicator.innerHTML = "Start Time";
+      bwClockSwitch.innerHTML = '<a href="javascript:bwClockLaunch(\'eventEndDate\');">switch to end</a>';
     } else {
-      bwClockIndicator.innerHTML = "End Time"
+      bwClockIndicator.innerHTML = "End Time";
+      bwClockSwitch.innerHTML = '<a href="javascript:bwClockLaunch(\'eventStartDate\');">switch to start</a>';
     }
   }
 }
 
 function bwClockClose() {
   changeClass("clock","invisible");
-  changeClass("eventFormPrefLocationList","shown");
-  changeClass("eventFormLocationList","shown");
-  changeClass("eventFormSponsorList","shown");
-  changeClass("eventFormPrefSponsorList","shown");
 }
 
-function bwClockUpdateDateTimeForm(type,val) {
+function bwClockUpdateDateTimeForm(valType,val,hour24) {
+  // valType: "hour" or "minute"
+  // val: hour or minute value as integer
+  // hour24: true (24hr clock) or false (12hr clock + am/pm)
   if (bwClockRequestedType) {
     try {
-      if (type == 'minute') {
+      if (valType == 'minute') {
         var fieldName = bwClockRequestedType + ".minute"
-        window.document.peForm[fieldName].value = val;
+        window.document.eventForm[fieldName].value = val;
+        if (val < 10) {
+          val = "0" + val; // pad the value for display
+        }
         bwClockMinute = val;
       } else {
         var fieldName = bwClockRequestedType + ".hour"
-        window.document.peForm[fieldName].value = val;
-        bwClockHour = val;
+        if (hour24) {
+          window.document.eventForm[fieldName].value = val;
+          if (val < 10) {
+            val = "0" + val; // pad the value for display
+          }
+          bwClockHour = val;
+        } else {
+          var hour12 = val;
+          if (hour12 > 12) {
+            hour12 -= 12;
+          } else if (hour12 == 12) {
+            hour12 = 0; // noon and midnight are both represented by '0' in 12hr mode
+          }
+          window.document.eventForm[fieldName].value = hour12;
+          if (val < 10) {
+            val = "0" + val; // pad the value for display
+          }
+          bwClockHour = val;
+          // now set the am/pm field
+          fieldName = bwClockRequestedType + ".ampm";
+          window.document.eventForm[fieldName].value = bwClockGetAmPm(bwClockHour);
+        }
       }
       if (bwClockHour && bwClockMinute) {
         document.getElementById("bwClockTime").innerHTML = bwClockHour + ":" + bwClockMinute + " , " + bwClockConvertAmPm(bwClockHour) + ":" + bwClockMinute + " " + bwClockGetAmPm(bwClockHour);
@@ -79,8 +100,8 @@ function bwClockConvertAmPm(hour24) {
 function bwClockGetAmPm(hour24) {
   hour24 = parseInt(hour24,10);
   if (hour24 < 12) {
-    return 'a.m.';
+    return 'am';
   } else {
-    return 'p.m.';
+    return 'pm';
   }
 }

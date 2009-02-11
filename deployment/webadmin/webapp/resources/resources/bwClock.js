@@ -16,8 +16,8 @@ function bwClockLaunch(type) {
     // reset hours and minutes to null
     bwClockHour = null;
     bwClockMinute = null;
-    bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
-    bwClockSwitch = document.getElementById("bwClockSwitch");
+    var bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
+    var bwClockSwitch = document.getElementById("bwClockSwitch");
     document.getElementById("bwClockTime").innerHTML = "select time";
     if (type == 'eventStartDate') {
       bwClockIndicator.innerHTML = "Start Time";
@@ -36,7 +36,7 @@ function bwClockClose() {
 function bwClockUpdateDateTimeForm(valType,val,hour24) {
   // valType: "hour" or "minute"
   // val: hour or minute value as integer
-  // hour24: true (24hr clock) or false (12hr clock + am/pm) 
+  // hour24: true (24hr clock) or false (12hr clock + am/pm)
   if (bwClockRequestedType) {
     try {
       if (valType == 'minute') {

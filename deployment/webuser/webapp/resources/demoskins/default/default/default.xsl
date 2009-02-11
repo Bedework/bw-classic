@@ -5,7 +5,7 @@
   xmlns:url="http://whatever/java/java.net.URLEncoder"
   exclude-result-prefixes="url">
 <xsl:output
-  method="xhtml"
+  method="xml"
   indent="no"
   media-type="text/html"
   doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
