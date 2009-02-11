@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output
-     method="xml"
+     method="html"
      indent="no"
      media-type="text/html"
      doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -4505,7 +4505,7 @@
       <xsl:if test="calType = '0' and isSubscription='false'">
          <xsl:choose>
           <xsl:when test="open = 'true'">
-            <a href="{$subscriptions-openCloseMod&amp;calPath={$calPath}&amp;open=false">
+            <a href="{$subscriptions-openCloseMod}&amp;calPath={$calPath}&amp;open=false">
               <img src="{$resourcesRoot}/resources/minus.gif" width="9" height="9" alt="close" border="0" class="bwPlusMinusIcon"/>
             </a>
           </xsl:when>
