@@ -169,7 +169,7 @@
           <defaultAddressbook>address-book</defaultAddressbook>
         </usercarddav>
 
-        <pubcarddav>
+        <pubcarddav classname="org.bedework.carddav.util.CardDAVConfig" >
           <sysintfImpl>org.bedework.carddav.bwserver.BwSysIntfImpl</sysintfImpl>
           <webaddrServiceURI>/find</webaddrServiceURI>
           <webaddrPublicAddrbook>/principals/users</webaddrPublicAddrbook>
