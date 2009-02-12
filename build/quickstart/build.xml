@@ -246,4 +246,16 @@
       </sequential>
     </parallel>
   </target>
+
+  <!-- =================================================================
+       The "start-debug" target starts all quickstart components except tomcat
+       ================================================================= -->
+
+  <target name="start-debug" depends="run.init"
+          description="Start quickstart system" >
+    <parallel>
+      <antcall target="dirstart" inheritrefs="true" />
+      <antcall target="hsqldb" inheritrefs="true" />
+    </parallel>
+  </target>
 </project>
