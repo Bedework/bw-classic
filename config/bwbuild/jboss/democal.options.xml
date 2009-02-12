@@ -32,6 +32,9 @@
         <publicCardDAVUri>http://localhost:8080/carddav</publicCardDAVUri>
         <personalCardDAVUri>http://localhost:8080/ucarddav</personalCardDAVUri>
 
+        <!-- Timezone server locations -->
+        <timezonesUri>http://localhost:8080/tzsvr</timezonesUri>
+
         <module>
           <!-- A dummy module with no directory. -->
           <dir-config classname="org.bedework.calfacade.configs.DirConfigProperties">
@@ -95,6 +98,14 @@
           <dummymail classname="org.bedework.mail.MailConfigProperties">
             <disabled>false</disabled>
           </dummymail>
+
+          <default-pwencrypt classname="org.bedework.calfacade.security.DefaultPwEncryptionConfig">
+            <privKeys>@QUICKSTART_DIR@/data/bedework/privkeys</privKeys>
+            <pubKeys>@QUICKSTART_DIR@/data/bedework/pubkeys</pubKeys>
+
+            <debug>true</debug>
+            <verbose>true</verbose>
+          </default-pwencrypt>
         </module>
       </global>
 
@@ -145,9 +156,20 @@
         <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
 
         <indexRoot>lucene/indexroot</indexRoot>
+
+        <rootUsers>caladmin</rootUsers>
       </syspars>
 
       <app>
+        <!-- ==================================================================
+                          Timezones server
+             ================================================================== -->
+        <tzsvr classname="org.bedework.calfacade.configs.ConfigCommon">
+          <appType>tzsvr</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>true</guestMode>
+        </tzsvr>
+
         <!-- ==================================================================
                           Admin web client CalAdmin
              ================================================================== -->
