@@ -32,7 +32,6 @@
 //   file.
 
 var rdateDeleteStr = "remove";
-var timezoneUrl = "/tzsvr/?names";
 
 // ========================================================================
 // rdate functions
@@ -594,12 +593,66 @@ function setRecurrence(formObj) {
   return true;
 }
 
+// populate timezone select boxes in event form
 function setTimezones(timezones) {
   var tzList = timezones.split(/\n|\r/);
-  //alert(tzList[0]);
+  tzList.sort();
+
+  var defaultTzOptions = '<option value="-1">select timezone...</option>';
+
+  // create the default options list
+  for (i = 0; i < tzList.length; i++) {
+    if (tzList[i] != "") {
+      // defaultTzid is set in the xslt head
+      if (defaultTzid == tzList[i]) {
+        defaultTzOptions += '<option value="' + tzList[i] + '" selected="selected">' + tzList[i] + '</option>';
+      } else {
+        defaultTzOptions += '<option value="' + tzList[i] + '">' + tzList[i] + '</option>';
+      }
+    }
+  }
+
+  // set the start and end timezone options to the default
+  var startTimeTzOptions = defaultTzOptions;
+  var endTimeTzOptions = defaultTzOptions;
+
+  // startTzid and endTzid are set in the xslt head
+  // if the start and end date timezones exist, and if they are
+  // different from the default timezone, build the options list appropriately
+
+  if (startTzid != defaultTzid) {
+    // create the start time options list
+    for (i = 0; i < tzList.length; i++) {
+      if (tzList[i] != "") {
+        if (startTzid == tzList[i]) {
+          startTimeTzOptions += '<option value="' + tzList[i] + '" selected="selected">' + tzList[i] + '</option>';
+        } else {
+          startTimeTzOptions += '<option value="' + tzList[i] + '">' + tzList[i] + '</option>';
+        }
+      }
+    }
+  }
+
+  if (endTzid != defaultTzid) {
+    // create the end time options list
+    for (i = 0; i < tzList.length; i++) {
+      if (tzList[i] != "") {
+        if (endTzid == tzList[i]) {
+          endTimeTzOptions += '<option value="' + tzList[i] + '" selected="selected">' + tzList[i] + '</option>';
+        } else {
+          endTimeTzOptions += '<option value="' + tzList[i] + '">' + tzList[i] + '</option>';
+        }
+      }
+    }
+  }
+
+  $('#startTzid').html(startTimeTzOptions);
+  $('#endTzid').html(endTimeTzOptions);
+  $('#rdateTzid').html(defaultTzOptions);
 }
 
 /* jQuery initialization */
+// timezoneUrl supplied in bedework.js
 jQuery(document).ready(function($) {
   // get the timezones from the timezone server
   $.ajax({

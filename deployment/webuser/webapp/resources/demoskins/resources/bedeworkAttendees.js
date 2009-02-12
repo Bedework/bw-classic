@@ -1,5 +1,3 @@
-var carddavUrl = "/ucarddav/find";
-
 var options = {
   minChars: 0,
   width: 310,
@@ -45,6 +43,7 @@ var options = {
   }
 };
 
+// carddavUrl supplied in bedeworkProperties.js
 jQuery(document).ready(function($) {
   $('#bwRaUri').autocomplete(carddavUrl, options)
 });

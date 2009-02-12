@@ -2,9 +2,7 @@
 <xsl:stylesheet
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:url="http://whatever/java/java.net.URLEncoder"
-  exclude-result-prefixes="url">
+  xmlns="http://www.w3.org/1999/xhtml">
 <xsl:output
   method="xml"
   indent="no"
@@ -382,12 +380,20 @@
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
     <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
     <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
+
+    <!-- set globals that must be passed in from the XSLT -->
+    <script type="text/javascript">
+      var defaultTzid = "<xsl:value-of select="/bedework/now/defaultTzid"/>";
+      var startTzid = "<xsl:value-of select="/bedework/formElements/form/start/tzid"/>";
+      var endTzid = "<xsl:value-of select="/bedework/formElements/form/end/dateTime/tzid"/>";
+    </script>
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
     <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
     <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
     <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
+
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
                   /bedework/page='modPrefs' or
                   /bedework/page='attendeeRespond'">
@@ -2450,6 +2456,8 @@
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                     <option value="-1">select timezone...</option>
+                    <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
+                    <!--
                     <xsl:variable name="startTzId" select="form/start/tzid"/>
                     <xsl:for-each select="/bedework/timezones/timezone">
                       <option>
@@ -2458,6 +2466,7 @@
                         <xsl:value-of select="name"/>
                       </option>
                     </xsl:for-each>
+                    -->
                   </select>
                 </span>
               </div>
@@ -2543,6 +2552,8 @@
                     <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                       <option value="-1">select timezone...</option>
+                      <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
+                      <!--
                       <xsl:variable name="endTzId" select="form/end/dateTime/tzid"/>
                       <xsl:for-each select="/bedework/timezones/timezone">
                         <option>
@@ -2551,6 +2562,7 @@
                           <xsl:value-of select="name"/>
                         </option>
                       </xsl:for-each>
+                      -->
                     </select>
                   </span>
                 </div>
@@ -3411,6 +3423,9 @@
                   <select name="tzid" id="rdateTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                     <option value="">select timezone...</option>
+                    <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
+                    <!--
+                    <option value="">select timezone...</option>
                     <xsl:variable name="rdateTzId" select="/bedework/now/defaultTzid"/>
                     <xsl:for-each select="/bedework/timezones/timezone">
                       <option>
@@ -3419,6 +3434,7 @@
                         <xsl:value-of select="name"/>
                       </option>
                     </xsl:for-each>
+                    -->
                   </select>
                 </div>
                 <xsl:text> </xsl:text>
@@ -4524,7 +4540,7 @@
             <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
           </xsl:when>
           <xsl:otherwise>
-            <em>no writable calendars</em>
+            <li><em>no writable calendars</em></li>
           </xsl:otherwise>
         </xsl:choose>
       </ul>
@@ -4543,7 +4559,7 @@
             </xsl:for-each>
           </xsl:when>
           <xsl:otherwise>
-            <em>no writable calendars</em>
+            <li><em>no writable calendars</em></li>
           </xsl:otherwise>
         </xsl:choose>
       </ul>
@@ -7392,8 +7408,10 @@
           <td>
             <xsl:variable name="tzid" select="/bedework/prefs/tzid"/>
 
-            <select name="defaultTzid">
+            <select name="defaultTzid" id="defaultTzid">
               <option value="-1">select timezone...</option>
+              <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
+              <!--
               <xsl:for-each select="/bedework/timezones/timezone">
                 <option>
                   <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
@@ -7401,6 +7419,7 @@
                   <xsl:value-of select="name"/>
                 </option>
               </xsl:for-each>
+              -->
             </select>
 
             <div class="desc">
