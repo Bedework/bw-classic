@@ -310,7 +310,11 @@
               name="servletapi" version="2.4" />
 
       <getJar lib="${org.bedework.app.lib}"
+              name="serializer" version="2.7.1" />
+
+      <getJar lib="${org.bedework.app.lib}"
               name="xalan" version="2.7.1" />
+
       <getJar lib="${org.bedework.app.lib}"
               name="hsqldb" version="1.7.3.3" />
     </sequential>

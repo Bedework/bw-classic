@@ -342,6 +342,7 @@ ${propval.app.war.name}.context=${propval.app.context.root}
       </then>
     </if>
 
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.serializer}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.xalan}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.struts}"/>
 
