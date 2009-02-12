@@ -1,4 +1,4 @@
-var carddavUrl = "http://localhost:8080/ucarddav/find";
+var carddavUrl = "/ucarddav/find";
 
 var options = {
   minChars: 0,

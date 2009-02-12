@@ -32,6 +32,7 @@
 //   file.
 
 var rdateDeleteStr = "remove";
+var timezoneUrl = "/tzsvr/?names";
 
 // ========================================================================
 // rdate functions
@@ -593,6 +594,21 @@ function setRecurrence(formObj) {
   return true;
 }
 
+function setTimezones(timezones) {
+  var tzList = timezones.split(/\n|\r/);
+  //alert(tzList[0]);
+}
 
-
+/* jQuery initialization */
+jQuery(document).ready(function($) {
+  // get the timezones from the timezone server
+  $.ajax({
+    type: "GET",
+    url: timezoneUrl,
+    dataType: "text",
+    success: function(text){
+      setTimezones(text);
+    }
+  });
+});
 

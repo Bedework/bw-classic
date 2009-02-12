@@ -943,22 +943,29 @@
 
   <xsl:template name="actionIcons">
     <xsl:param name="startDate"/>
+    <xsl:param name="startTime"/>
     <xsl:param name="actionIconsId"/>
+    <xsl:variable name="dateTime">
+      <xsl:choose>
+        <xsl:when test="$startTime != ''"><xsl:value-of select="$startDate"/>T<xsl:value-of select="$startTime"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="$startDate"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <br/>
     <div id="{$actionIconsId}" class="invisible">
-       <a href="{$initEvent}&amp;entityType=event&amp;startdate={$startDate}" title="add event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+       <a href="{$initEvent}&amp;entityType=event&amp;startdate={$dateTime}" title="add event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
           add event
        </a>
-       <a href="{$event-initMeeting}&amp;entityType=event&amp;schedule=request&amp;startdate={$startDate}" title="schedule a meeting" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+       <a href="{$event-initMeeting}&amp;entityType=event&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a meeting" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="schedule meeting"/>
           schedule meeting
        </a>
-       <a href="{$initEvent}&amp;entityType=task&amp;startdate={$startDate}" title="add task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+       <a href="{$initEvent}&amp;entityType=task&amp;startdate={$dateTime}" title="add task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalTask-icon-small.gif" width="12" height="16" border="0" alt="add task"/>
           add task
        </a>
-       <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$startDate}" title="schedule a task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+       <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalSchTask-icon-small.gif" width="12" height="16" border="0" alt="schedule task"/>
           schedule task
        </a>
@@ -997,6 +1004,7 @@
                      <xsl:call-template name="actionIcons">
                        <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
                        <xsl:with-param name="startDate"><xsl:value-of select="$date"/></xsl:with-param>
+                  <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
                      </xsl:call-template>
                    </div>
                    <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$date}">
@@ -1245,6 +1253,7 @@
                 <xsl:call-template name="actionIcons">
                   <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
                   <xsl:with-param name="startDate"><xsl:value-of select="$dayDate"/></xsl:with-param>
+                  <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
                 </xsl:call-template>
               </div>
               <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
