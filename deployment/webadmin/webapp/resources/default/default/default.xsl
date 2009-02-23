@@ -825,7 +825,7 @@
               </a>
             </li>
             <li>
-              <a href="{$publicCal}/stats.do" target="pubClient">
+              <a href="{$publicCal}/stats/stats.do&amp;fetch=yes" target="pubClient">
                 public web client
               </a>
             </li>
