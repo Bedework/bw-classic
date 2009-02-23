@@ -820,12 +820,12 @@
           Statistics:
           <ul>
             <li>
-              <a href="{$stats-update}&amp;fetch=yes">
+              <a href="{$stats-update}&amp;fetch=yes" target="adminStats">
                 admin web client
               </a>
             </li>
             <li>
-              <a href="{$publicCal}/stats/stats.do&amp;fetch=yes" target="pubClient">
+              <a href="{$publicCal}/stats/stats.do&amp;fetch=yes" target="pubStats">
                 public web client
               </a>
             </li>
@@ -6120,7 +6120,7 @@
         <a href="{$stats-update}&amp;disable=yes">disable</a>
       </li>
       <li>
-        <a href="{$stats-update}&amp;fetch=yes">fetch statistics</a>
+        <a href="{$stats-update}&amp;fetch=yes">fetch/refresh statistics</a>
       </li>
       <li>
         <a href="{$stats-update}&amp;dump=yes">dump stats to log</a>
