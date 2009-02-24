@@ -386,7 +386,9 @@
       var defaultTzid = "<xsl:value-of select="/bedework/now/defaultTzid"/>";
       var startTzid = "<xsl:value-of select="/bedework/formElements/form/start/tzid"/>";
       var endTzid = "<xsl:value-of select="/bedework/formElements/form/end/dateTime/tzid"/>";
+      var resourcesRoot = "<xsl:value-of select="$resourcesRoot"/>";
     </script>
+
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
@@ -399,9 +401,14 @@
                   /bedework/page='attendeeRespond'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
     </xsl:if>
-    <xsl:if test="/bedework/page='modCalendar' or
-                  /bedework/page='eventAccess'">
+    <xsl:if test="/bedework/page='modCalendar'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
+      <!-- initialize calendar acls, if present -->
+      <xsl:if test="/bedework/currentCalendar/acl/ace">
+        <script type="text/javascript">
+          <xsl:apply-templates select="/bedework/currentCalendar/acl/ace" mode="initJS"/>
+        </script>
+      </xsl:if>
     </xsl:if>
     <xsl:if test="/bedework/page='attendees'">
       <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
@@ -441,11 +448,12 @@
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkXProperties.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
-    </xsl:if>
-    <xsl:if test="/bedework/editableAccess/access/acl/ace">
-      <script type="text/javascript">
-        <xsl:apply-templates select="/bedework/editableAccess/access/acl/ace" mode="initJS"/>
-      </script>
+      <!-- initialize event acls, if present -->
+      <xsl:if test="/bedework/editableAccess/access/acl/ace">
+        <script type="text/javascript">
+          <xsl:apply-templates select="/bedework/editableAccess/access/acl/ace" mode="initJS"/>
+        </script>
+      </xsl:if>
     </xsl:if>
     <xsl:if test="/bedework/page='editEvent'">
       <script type="text/javascript">
@@ -3514,7 +3522,7 @@
                   <th>Entry</th>
                   <th>Access</th>
                   <th>Inherited from</th>
-                  <td></td>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -4836,6 +4844,39 @@
           <input type="hidden" value="true" name="calendarCollection"/>
         </xsl:otherwise>
       </xsl:choose>
+
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <xsl:choose>
+              <xsl:when test="isSubscription='true'">
+                <input type="submit" name="updateCalendar" value="Update Subscription"/>
+              </xsl:when>
+              <xsl:when test="calType = '0'">
+                <input type="submit" name="updateCalendar" value="Update Folder"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="updateCalendar" value="Update Calendar"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            <input type="submit" name="cancelled" value="cancel"/>
+          </td>
+          <td align="right">
+            <xsl:choose>
+              <xsl:when test="isSubscription='true'">
+                <input type="submit" name="delete" value="Delete Subscription"/>
+              </xsl:when>
+              <xsl:when test="calType = '0'">
+                <input type="submit" name="delete" value="Delete Folder"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="delete" value="Delete Calendar"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+      </table>
+
       <table class="common">
         <tr>
           <th class="commonHeader" colspan="2">
@@ -4916,6 +4957,52 @@
         </xsl:if>
       </table>
 
+      <div id="sharingBox">
+        <xsl:choose>
+          <xsl:when test="acl">
+            <xsl:apply-templates select="acl" mode="currentAccess">
+              <xsl:with-param name="action" select="$calendar-setAccess"/>
+              <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
+              <xsl:with-param name="method">2</xsl:with-param>
+            </xsl:apply-templates>
+          </xsl:when>
+          <xsl:otherwise>
+            <h3>Current Access:</h3>
+            <table class="common scheduling" id="bwCurrentAccess">
+              <thead>
+                <tr>
+                  <th>Entry</th>
+                  <th>Access</th>
+                  <th>Inherited from</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="bwEventNoAcl">
+                  <td colspan="4">no access defined</td>
+                </tr>
+              </tbody>
+            </table>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:call-template name="entityAccessForm">
+          <xsl:with-param name="method">2</xsl:with-param>
+        </xsl:call-template>
+      </div>
+
+      <div class="note">
+        <p><strong>Note:</strong> If you grant write access to another user, and you wish
+          to see events added by that user in your calendar, <strong>you must explicitly
+          grant yourself access to the same calendar.</strong>  Enter your RCS UserID as
+          a user in the "Who" box with "All" set in the "Rights" box.
+        </p>
+        <p>
+          This is standard access control; the reason you will not see the other
+          user's events without doing this is that the default access is grant:all to
+          "owner" - and you don't own the other user's events.
+        </p>
+      </div>
+
       <table border="0" id="submitTable">
         <tr>
           <td>
@@ -4948,7 +5035,9 @@
         </tr>
       </table>
     </form>
-    <div id="sharingBox">
+    <!-- Method 1 access setting is now deprecated.
+         see the "entityAccessForm" template for more information -->
+    <!--  div id="sharingBox">
       <xsl:apply-templates select="acl" mode="currentAccess">
         <xsl:with-param name="action" select="$calendar-setAccess"/>
         <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
@@ -4965,19 +5054,7 @@
           </xsl:with-param>
         </xsl:call-template>
       </form>
-    </div>
-    <div class="note">
-      <p><strong>Note:</strong> If you grant write access to another user, and you wish
-        to see events added by that user in your calendar, <strong>you must explicitly
-        grant yourself access to the same calendar.</strong>  Enter your RCS UserID as
-        a user in the "Who" box with "All" set in the "Rights" box.
-      </p>
-      <p>
-        This is standard access control; the reason you will not see the other
-        user's events without doing this is that the default access is grant:all to
-        "owner" - and you don't own the other user's events.
-      </p>
-    </div>
+    </div -->
   </xsl:template>
 
   <xsl:template name="calendarList">
@@ -7710,14 +7787,12 @@
 
   <xsl:template name="entityAccessForm">
     <xsl:param name="type"/><!-- optional: currently used for inbox and outbox to conditionally display scheduling access -->
-    <xsl:param name="method">1</xsl:param><!-- optional:
+    <xsl:param name="method">2</xsl:param><!-- optional:
       there are two methods of setting access
       - method 1, the older method, uses a single request/response per principal
       - method 2 constructs a javascript object that commits the entire ACL
         structure in a single request
-      Both methods are currently supported.  Method one is used for calendars,
-      method two for setting event access.  At some point we may move all access
-      control setting to method two. -->
+      Both methods are currently supported.  Method two is now the default. -->
     <xsl:param name="acl"/><!-- nodeset of entity acls used to initialize
       javascript object. Required for method two. -->
 
@@ -7739,6 +7814,14 @@
               <input type="radio" value="unauth" name="whoType"/> unauthenticated<br/>
               <input type="radio" value="all" name="whoType"/> all users
             </p>
+            <xsl:choose>
+              <xsl:when test="$method = '2'">
+                <input type="button" name="updateACLs" value="add entry" onclick="bwAcl.update(this.form)"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="submit" value="update access"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </div>
         </td>
         <td>
@@ -7961,46 +8044,9 @@
               <input type="radio" value="R" name="basicHowItem" checked="checked"/>Read only
             </li>
           </ul>
-
-          <!-- below is a simplified listing using radio buttons only; keep for
-               those who would like something inbetween the advanced and simple
-               interfaces -->
-          <!--
-          <ul id="howList">
-            <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
-            <li class="padTop">
-              <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
-            </li>
-            <li>
-              <input type="radio" value="F" name="how"/> Read freebusy only
-            </li>
-            <li class="padTop">
-              <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
-            </li>
-            <li>
-              <input type="radio" value="c" name="how"/> Write content only
-            </li>
-            <li>
-             <input type="radio" value="u" name="how"/> Delete only
-            </li>
-            <li class="padTop">
-              <input type="radio" value="Rc" name="how"/> <strong>Read</strong> and <strong>Write content only</strong>
-            </li>
-            <li class="padTop">
-              <input type="radio" value="N" name="how"/> <strong>None</strong>
-            </li>
-          </ul> -->
         </td>
       </tr>
     </table>
-    <xsl:choose>
-      <xsl:when test="$method = '2'">
-        <input type="button" name="updateACLs" value="update access" onclick="bwAcl.update(this.form)"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <input type="submit" name="submit" value="Submit"/>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="acl" mode="currentAccess">
@@ -8009,7 +8055,7 @@
     <xsl:param name="guid"/> <!-- optional (for entities) -->
     <xsl:param name="recurrenceId"/> <!-- optional (for entities) -->
     <xsl:param name="what"/> <!-- optional (for scheduling only) -->
-    <xsl:param name="method">1</xsl:param> <!-- which method of access control
+    <xsl:param name="method">2</xsl:param> <!-- which method of access control
       are we using: 1 (one request per pricipal) or 2 (set all with
       javascript and send entire ACL to server) -->
     <h3>Current Access:</h3>
@@ -8019,7 +8065,7 @@
           <th>Entry</th>
           <th>Access</th>
           <th>Inherited from</th>
-          <td></td>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -8122,7 +8168,7 @@
                     <!-- we are using javascript to update the form -->
                     <xsl:variable name="rowPos" select="position()-1"/>
                     <a href="javascript:bwAcl.deleteAce({$rowPos})" title="reset to default">
-                      remove
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>

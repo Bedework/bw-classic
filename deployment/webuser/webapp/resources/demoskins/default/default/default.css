@@ -1767,11 +1767,11 @@ display: inline;
 }
 #bedework #sharingBox {
   margin: 0;
-  border-top: 1px solid #333;
-  padding: 1em 1em 2em 1em;
+  padding: 1em 0 0 0;
 }
 #bedework #bwEventTab-Access #sharingBox {
-  border-top: none;
+  margin: 0;
+  padding: 1em;
 }
 #bedework #sharingBox h3,
 #bedework #sharingBox h5 {

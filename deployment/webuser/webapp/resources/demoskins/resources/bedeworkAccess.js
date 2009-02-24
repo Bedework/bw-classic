@@ -51,9 +51,15 @@ var unauthenticatedStr = "unauthenticated";
 var ownerStr = "owner";
 var otherStr = "other";
 var grantStr = "grant";
+var denyStr = "deny"
 var allStr = "all";
 
 var deleteStr = "remove";
+
+// note that resourcesRoot is passed in from the html head section defined in the xslt
+var trashIcon = '<img src="' + resourcesRoot  + '/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>';
+var userIcon = '<img src="' + resourcesRoot  + '/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>';
+var groupIcon = '<img src="' + resourcesRoot  + '/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>';
 
 // How granted accesses appear
 var howAllVal = "all";
@@ -105,7 +111,7 @@ var howDenyUnlockVal = "not-unlock";
 
 /* We shouldn't use the word local - it probably doesn't mean too much and it might actually be
    inherited from something called /local for example */
-var inheritedStr = "Not inherited";
+var inheritedStr = "not inherited";
 
 // **************************
 // The prefixes come from the directory code so should be emitted by the jsp.
@@ -324,11 +330,11 @@ function bwPrincipal(who, whoType) {
   // format the who string for on-screen display
   this.format = function() {
     if (whoType == "user") {
-      return who;
+      return userIcon + " " + who;
     }
 
     if (whoType == "group") {
-      return who;
+      return groupIcon + " " + who;
     }
 
     if (whoType == "resource") {
@@ -336,23 +342,23 @@ function bwPrincipal(who, whoType) {
     }
 
     if (whoType == "auth") {
-      return authenticatedStr;
+      return groupIcon + " " + authenticatedStr;
     }
 
     if (whoType == "unauth") {
-      return unauthenticatedStr;
+      return groupIcon + " " + unauthenticatedStr;
     }
 
     if (whoType == "owner") {
-      return ownerStr;
+      return userIcon + " " + ownerStr;
     }
 
     if (whoType == "other") {
-      return otherStr;
+      return groupIcon + " " + otherStr;
     }
 
     if (whoType == "all") {
-      return allStr;
+      return groupIcon + " " + allStr;
     }
 
     return "***************" + whoType;
@@ -505,12 +511,13 @@ function bwAce(who, whoType, how, inherited, invert) {
   // row: current row in table
   // aceI: index of the ace
   this.toFormRow = function(row, aceI) {
-    row.insertCell(0).appendChild(document.createTextNode(this.principal.format()));
+    var td_0 = row.insertCell(0);
+    td_0.innerHTML = this.principal.format();
     row.insertCell(1).appendChild(document.createTextNode(this.formatHow()));
     row.insertCell(2).appendChild(document.createTextNode(this.formatInherited()));
     var td_3 = row.insertCell(3);
     if (this.inherited == "") {
-      td_3.innerHTML = "<a href=\"javascript:bwAcl.deleteAce('" + aceI + "')\">" + deleteStr + "</a>";
+      td_3.innerHTML = "<a href=\"javascript:bwAcl.deleteAce('" + aceI + "')\">" + trashIcon + " " + deleteStr + "</a>";
     }
   }
 }
