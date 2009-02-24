@@ -113,17 +113,17 @@
           <xsl:when test="/bedework/periodname!='Day'">
             <!-- we're starting up on the wrong view; go to today and begin with the first event;
                  the title slide will display during this switch. -->
-            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/setViewPeriod.do?viewType=todayView&amp;setappvar=event(1)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
+            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/main/setViewPeriod.do?viewType=todayView&amp;setappvar=event(1)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
           </xsl:when>
           <xsl:when test="($nextDay > $dayCount) and ($nextEvent > $eventCount)">
             <!-- passed the last day, and all events have been displayed,
                  so start over: go to today, set day=1 and *event=0* to allow
                  for the title slide "calPlug" -->
-            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/setViewPeriod.do?viewType=todayView&amp;setappvar=event(0)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
+            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/main/setViewPeriod.do?viewType=todayView&amp;setappvar=event(0)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
           </xsl:when>
           <xsl:when test="$nextEvent > $eventCount">
             <!-- passed the last event for the day; go to the next day and set event=1 -->
-            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/setViewPeriod.do?date={$nextDate}&amp;viewType=dayView&amp;setappvar=event(1)&amp;setappvar=day({$nextDay})&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
+            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/main/setViewPeriod.do?date={$nextDate}&amp;viewType=dayView&amp;setappvar=event(1)&amp;setappvar=day({$nextDay})&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
           </xsl:when>
           <xsl:otherwise>
             <!-- otherwise, go to the next event on the same day -->
@@ -156,7 +156,7 @@
         </xsl:choose>
         <!-- remove the following two divs if used for video -->
         <div id="getBack">
-          (<a href="setup.do?skinNameSticky=default">restore normal calendar</a>)
+          (<a href="{$urlPrefix}/setup.do?skinNameSticky=default">restore normal calendar</a>)
         </div>
         <div id="info">
           This stylesheet will rotate through five days of events at ten
