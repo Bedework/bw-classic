@@ -1009,8 +1009,11 @@ li.changeGroup {
   padding: 0;
 }
 .aliasTree li ul {
-  margin-left: 10px;
+  margin: 0 0 0.5em 0.75em;
   padding-left: 10px;
+}
+img.folderForAliasTree {
+  padding: 0.5em 0.2em 0 0.5em;
 }
 .catlist {
   margin: 0;

@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>@DISPLAY-NAME@ Login</title>
     <script language="JavaScript" type="text/javascript">
@@ -45,7 +46,6 @@
     <div id="logo">
       <img src="/bedework-common/images/bedeworkLogo.gif" alt="Bedework Logo"/>
     </div>
-    <!--<h3 id="title">@DISPLAY-NAME@ Login</h3>-->
     <form method="post" action="j_security_check" >
       <table border="0" id="loginBox">
         <tr>
@@ -53,7 +53,7 @@
             UserID:
           </td>
           <td>
-            <input type="text" name="j_username">
+            <input type="text" name="j_username" size="20"/>
           </td>
         </tr>
         <tr>
@@ -61,8 +61,8 @@
             Password:
           </td>
           <td>
-            <input type="password" name="j_password">
-            <input type="submit" name="j_security_check" value="login">
+            <input type="password" name="j_password" size="20"/>
+            <input type="submit" name="j_security_check" value="login"/>
           </td>
         </tr>
       </table>
