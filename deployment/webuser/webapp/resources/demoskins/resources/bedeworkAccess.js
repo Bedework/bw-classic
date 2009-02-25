@@ -430,13 +430,15 @@ function bwAce(who, whoType, how, inherited, invert) {
     for (var i = 0; i < how.length; i++) {
       var h = how[i];
       var negated = false;
+      var grantDenyStr = grantStr;
       if (h == "-") {
         negated = true;
+        grantDenyStr = denyStr;
         i++;
         h = how[i];
       }
 
-      formattedHow += hows.getHows(h).getDispVal(negated) + " ";
+      formattedHow += '<span class="' + grantDenyStr + '">' + hows.getHows(h).getDispVal(negated) + '</span>';
     }
 
     return formattedHow;
@@ -513,7 +515,8 @@ function bwAce(who, whoType, how, inherited, invert) {
   this.toFormRow = function(row, aceI) {
     var td_0 = row.insertCell(0);
     td_0.innerHTML = this.principal.format();
-    row.insertCell(1).appendChild(document.createTextNode(this.formatHow()));
+    var td_1 = row.insertCell(1);
+    td_1.innerHTML = this.formatHow();
     row.insertCell(2).appendChild(document.createTextNode(this.formatInherited()));
     var td_3 = row.insertCell(3);
     if (this.inherited == "") {

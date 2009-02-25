@@ -2738,20 +2738,20 @@
                   <tr>
                     <td>
                       <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
-                        <input type="checkbox" name="categoryKey">
+                        <input type="checkbox" name="categoryKey"/>
                           <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
                           <xsl:if test="keyword = form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                           <xsl:value-of select="keyword"/>
-                        </input><br/>
+                        <br/>
                       </xsl:for-each>
                     </td>
                     <td>
                       <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
-                        <input type="checkbox" name="categoryKey">
+                        <input type="checkbox" name="categoryKey"/>
                           <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
                           <xsl:if test="keyword = form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                           <xsl:value-of select="keyword"/>
-                        </input><br/>
+                        <br/>
                       </xsl:for-each>
                     </td>
                   </tr>
@@ -3165,7 +3165,7 @@
                       </input>
                       day(s)
                     </p>
-                    <p>
+                    <div>
                       <input type="checkbox" name="swapDayMonthCheckBoxList" value="" onclick="swapVisible(this,'dayMonthCheckBoxList')"/>
                       in these months:
                       <div id="dayMonthCheckBoxList" class="invisible">
@@ -3180,7 +3180,7 @@
                           <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
                         </xsl:for-each>
                       </div>
-                    </p>
+                    </div>
                     <!--<p>
                       <input type="checkbox" name="swapDaySetPos" value="" onclick="swapVisible(this,'daySetPos')"/>
                       limit to:
@@ -3200,13 +3200,11 @@
                       </input>
                       week(s) on:
                     </p>
-                    <p>
-                      <div id="weekRecurFields">
-                        <xsl:call-template name="byDayChkBoxList">
-                          <xsl:with-param name="name">byDayWeek</xsl:with-param>
-                        </xsl:call-template>
-                      </div>
-                    </p>
+                    <div id="weekRecurFields">
+                      <xsl:call-template name="byDayChkBoxList">
+                        <xsl:with-param name="name">byDayWeek</xsl:with-param>
+                      </xsl:call-template>
+                    </div>
                     <p class="weekRecurLinks">
                       <a href="javascript:recurSelectWeekdays('weekRecurFields')">select weekdays</a> |
                       <a href="javascript:recurSelectWeekends('weekRecurFields')">select weekends</a>
@@ -3239,7 +3237,7 @@
                     <div id="monthRecurFields">
                       <div id="monthRecurFields1">
                         on
-                        <select name="bymonthposPos1" width="7em" onchange="changeClass('monthRecurFields2','shown')">
+                        <select name="bymonthposPos1" size="7" onchange="changeClass('monthRecurFields2','shown')">
                           <xsl:call-template name="recurrenceDayPosOptions"/>
                         </select>
                         <xsl:call-template name="byDayChkBoxList"/>
@@ -3250,7 +3248,7 @@
                         <xsl:with-param name="name">month</xsl:with-param>
                       </xsl:call-template>
                     </div>
-                    <p>
+                    <div>
                       <input type="checkbox" name="swapMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'monthDaysCheckBoxList')"/>
                       on these days:<br/>
                       <div id="monthDaysCheckBoxList" class="invisible">
@@ -3260,7 +3258,7 @@
                           <xsl:with-param name="name">monthDayBoxes</xsl:with-param>
                         </xsl:call-template>
                       </div>
-                    </p>
+                    </div>
                   </div>
                   <!-- yearly -->
                   <div id="yearlyRecurrenceRules" class="invisible">
@@ -3277,7 +3275,7 @@
                     <div id="yearRecurFields">
                       <div id="yearRecurFields1">
                         on
-                        <select name="byyearposPos1" width="7em" onchange="changeClass('yearRecurFields2','shown')">
+                        <select name="byyearposPos1" size="7" onchange="changeClass('yearRecurFields2','shown')">
                           <xsl:call-template name="recurrenceDayPosOptions"/>
                         </select>
                         <xsl:call-template name="byDayChkBoxList"/>
@@ -3288,7 +3286,7 @@
                         <xsl:with-param name="name">year</xsl:with-param>
                       </xsl:call-template>
                     </div>
-                    <p>
+                    <div>
                       <input type="checkbox" name="swapYearMonthCheckBoxList" value="" onclick="swapVisible(this,'yearMonthCheckBoxList')"/>
                       in these months:
                       <div id="yearMonthCheckBoxList" class="invisible">
@@ -3303,8 +3301,8 @@
                           <xsl:if test="$pos mod 6 = 0"><br/></xsl:if>
                         </xsl:for-each>
                       </div>
-                    </p>
-                    <p>
+                    </div>
+                    <div>
                       <input type="checkbox" name="swapYearMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'yearMonthDaysCheckBoxList')"/>
                       on these days of the month:<br/>
                       <div id="yearMonthDaysCheckBoxList" class="invisible">
@@ -3314,8 +3312,8 @@
                           <xsl:with-param name="name">yearMonthDayBoxes</xsl:with-param>
                         </xsl:call-template>
                       </div>
-                    </p>
-                    <p>
+                    </div>
+                    <div>
                       <input type="checkbox" name="swapYearWeeksCheckBoxList" value="" onclick="swapVisible(this,'yearWeeksCheckBoxList')"/>
                       in these weeks of the year:<br/>
                       <div id="yearWeeksCheckBoxList" class="invisible">
@@ -3325,8 +3323,8 @@
                           <xsl:with-param name="name">yearWeekBoxes</xsl:with-param>
                         </xsl:call-template>
                       </div>
-                    </p>
-                    <p>
+                    </div>
+                    <div>
                       <input type="checkbox" name="swapYearDaysCheckBoxList" value="" onclick="swapVisible(this,'yearDaysCheckBoxList')"/>
                       on these days of the year:<br/>
                       <div id="yearDaysCheckBoxList" class="invisible">
@@ -3336,7 +3334,7 @@
                           <xsl:with-param name="name">yearDayBoxes</xsl:with-param>
                         </xsl:call-template>
                       </div>
-                    </p>
+                    </div>
                     <p>
                       Week start:
                       <select name="yearWkst">
@@ -3655,7 +3653,7 @@
     <div class="invisible">
       <xsl:attribute name="id"><xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current"/></xsl:attribute>
       and
-      <select width="12em">
+      <select size="12">
         <xsl:attribute name="name">by<xsl:value-of select="$name"/>posPos<xsl:value-of select="$current"/></xsl:attribute>
         <xsl:if test="$current != $total">
           <xsl:attribute name="onchange">changeClass('<xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current+1"/>','shown')</xsl:attribute>
@@ -4546,25 +4544,6 @@
         <xsl:choose>
           <xsl:when test="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]">
             <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <li><em>no writable calendars</em></li>
-          </xsl:otherwise>
-        </xsl:choose>
-      </ul>
-      <h4>Subscribed Calendars</h4>
-      <ul class="calendarTree">
-        <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
-        <xsl:choose>
-          <xsl:when test="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]">
-            <xsl:for-each select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath)) and calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]]">
-              <li class="subscription">
-                <xsl:value-of select="name"/>
-                <ul>
-                  <xsl:apply-templates select="calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
-                </ul>
-              </li>
-            </xsl:for-each>
           </xsl:when>
           <xsl:otherwise>
             <li><em>no writable calendars</em></li>
@@ -7757,7 +7736,7 @@
       <xsl:attribute name="value"><xsl:value-of select="$what"/></xsl:attribute>
     </input>
     <p>
-      <input type="text" name="who" width="40"/>
+      <input type="text" name="who" size="40"/>
       <span class="nowrap"><input type="radio" name="whoType" value="user" checked="checked"/>user</span>
       <span class="nowrap"><input type="radio" name="whoType" value="group"/>group</span>
     </p>
@@ -8133,7 +8112,6 @@
             </td>
             <td class="acls">
               <xsl:if test="grant">
-                grant:
                 <span class="grant">
                   <xsl:for-each select="grant/privilege/*">
                     <xsl:value-of select="name(.)"/>
@@ -8142,10 +8120,9 @@
                 </span><br/>
               </xsl:if>
               <xsl:if test="deny">
-                deny:
                 <span class="deny">
                   <xsl:for-each select="deny/privilege/*">
-                    <xsl:value-of select="name(.)"/>
+                    not-<xsl:value-of select="name(.)"/>
                     <xsl:if test="position() != last()">, </xsl:if>
                   </xsl:for-each>
                 </span>
