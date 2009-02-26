@@ -242,7 +242,7 @@ function setEventFields(formObj,portalFriendly,submitter) {
     setRecurrence(formObj);
   } // else we are editing an instance of a recurrence
   setBedeworkXProperties(formObj,submitter);
-  setAccessHow(formObj,1);
+  setAccessHow(formObj);
   //setAccessAcl(formObj);
 }
 /* Set dates based on jQuery widgets */

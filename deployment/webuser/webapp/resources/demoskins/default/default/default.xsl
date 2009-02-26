@@ -401,7 +401,8 @@
                   /bedework/page='attendeeRespond'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
     </xsl:if>
-    <xsl:if test="/bedework/page='modCalendar'">
+    <xsl:if test="/bedework/page='modCalendar' or
+                  /bedework/page='modSchedulingPrefs'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
       <!-- initialize calendar acls, if present -->
       <xsl:if test="/bedework/currentCalendar/acl/ace">
@@ -7766,14 +7767,8 @@
 
   <xsl:template name="entityAccessForm">
     <xsl:param name="type"/><!-- optional: currently used for inbox and outbox to conditionally display scheduling access -->
-    <xsl:param name="method">2</xsl:param><!-- optional:
-      there are two methods of setting access
-      - method 1, the older method, uses a single request/response per principal
-      - method 2 constructs a javascript object that commits the entire ACL
-        structure in a single request
-      Both methods are currently supported.  Method two is now the default. -->
-    <xsl:param name="acl"/><!-- nodeset of entity acls used to initialize
-      javascript object. Required for method two. -->
+    <xsl:param name="acl"/><!-- required: nodeset of entity acls used to initialize javascript object. -->
+    <xsl:param name="outputId"/><!-- required: id of the current access block display to update -->
 
     <table cellpadding="0" id="shareFormTable" class="common">
       <tr>
@@ -7793,14 +7788,7 @@
               <input type="radio" value="unauth" name="whoType"/> unauthenticated<br/>
               <input type="radio" value="all" name="whoType"/> all users
             </p>
-            <xsl:choose>
-              <xsl:when test="$method = '2'">
-                <input type="button" name="updateACLs" value="add entry" onclick="bwAcl.update(this.form)"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="submit" name="submit" value="update access"/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <input type="button" name="updateACLs" value="add entry" onclick="bwAcl.update(this.form,${id})"/>
           </div>
         </td>
         <td>
@@ -8029,137 +8017,11 @@
   </xsl:template>
 
   <xsl:template match="acl" mode="currentAccess">
-    <xsl:param name="action"/> <!-- required -->
-    <xsl:param name="calPathEncoded"/> <!-- optional (for entities) -->
-    <xsl:param name="guid"/> <!-- optional (for entities) -->
-    <xsl:param name="recurrenceId"/> <!-- optional (for entities) -->
-    <xsl:param name="what"/> <!-- optional (for scheduling only) -->
-    <xsl:param name="method">2</xsl:param> <!-- which method of access control
-      are we using: 1 (one request per pricipal) or 2 (set all with
-      javascript and send entire ACL to server) -->
     <h3>Current Access:</h3>
-    <table class="common scheduling" id="bwCurrentAccess">
-      <thead>
-        <tr>
-          <th>Entry</th>
-          <th>Access</th>
-          <th>Inherited from</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <xsl:for-each select="ace">
-          <xsl:variable name="who">
-            <xsl:choose>
-              <xsl:when test="invert">
-                <xsl:choose>
-                  <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
-                  <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-                  <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
-                </xsl:choose>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:choose>
-                  <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
-                  <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-                  <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
-                </xsl:choose>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-          <xsl:variable name="whoType">
-            <xsl:choose>
-              <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
-              <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
-              <xsl:when test="$who='authenticated'">auth</xsl:when>
-              <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
-              <xsl:when test="$who='all'">all</xsl:when>
-              <xsl:when test="invert/principal/property/owner">other</xsl:when>
-              <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
-              <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
-              <xsl:otherwise></xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-          <xsl:variable name="shortWho">
-            <xsl:choose>
-              <xsl:when test="$whoType='user'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/userPrincipalRoot)),'/')"/></xsl:when>
-              <xsl:when test="$whoType='group'"><xsl:value-of select="substring-after(substring-after($who,normalize-space(/bedework/syspars/groupPrincipalRoot)),'/')"/></xsl:when>
-              <xsl:otherwise></xsl:otherwise> <!-- if not user or group, send no who -->
-            </xsl:choose>
-          </xsl:variable>
-          <tr>
-            <td>
-              <xsl:choose>
-                <xsl:when test="$whoType = 'user' or ($who = 'owner' and $whoType != 'other')">
-                  <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:text> </xsl:text>
-              <xsl:choose>
-                <xsl:when test="$whoType = 'other'">
-                  anyone (other)
-                </xsl:when>
-                <xsl:when test="$shortWho != ''">
-                  <xsl:value-of select="$shortWho"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="$who"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td class="acls">
-              <xsl:if test="grant">
-                <span class="grant">
-                  <xsl:for-each select="grant/privilege/*">
-                    <xsl:value-of select="name(.)"/>
-                    <xsl:if test="position() != last()">, </xsl:if>
-                  </xsl:for-each>
-                </span><br/>
-              </xsl:if>
-              <xsl:if test="deny">
-                <span class="deny">
-                  <xsl:for-each select="deny/privilege/*">
-                    not-<xsl:value-of select="name(.)"/>
-                    <xsl:if test="position() != last()">, </xsl:if>
-                  </xsl:for-each>
-                </span>
-              </xsl:if>
-            </td>
-            <td>
-              <xsl:choose>
-                <xsl:when test="inherited">
-                  <xsl:value-of select="inherited/href"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  Not inherited
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td>
-              <xsl:if test="not(inherited)">
-                <xsl:choose>
-                  <xsl:when test="$method = '2'">
-                    <!-- we are using javascript to update the form -->
-                    <xsl:variable name="rowPos" select="position()-1"/>
-                    <a href="javascript:bwAcl.deleteAce({$rowPos})" title="reset to default">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
-                    </a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <a href="{$action}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}&amp;calPath={$calPathEncoded}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="reset to default">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
-                    </a>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:if>
-            </td>
-          </tr>
-        </xsl:for-each>
-      </tbody>
-    </table>
+    <div id="bwCurrentAccessWidget">&#160;</div>
+    <script type="text/javascript">
+      bwAcl.display("bwCurrentAccessWidget"); // display acls in the table
+    </script>
   </xsl:template>
 
   <!--==== SEARCH RESULT ====-->
@@ -8401,8 +8263,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- return string values to be loaded into javascript for access control
-       forms, method 2 -->
+  <!-- return string values to be loaded into javascript for access control forms -->
   <xsl:template match="ace" mode="initJS"><!--
   --><xsl:variable name="who"><!--
    --><xsl:choose>

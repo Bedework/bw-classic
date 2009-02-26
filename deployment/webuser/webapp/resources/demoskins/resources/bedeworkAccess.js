@@ -54,7 +54,10 @@ var grantStr = "grant";
 var denyStr = "deny"
 var allStr = "all";
 
-var deleteStr = "remove";
+var bwAclWidgetDeleteStr = "remove";
+var bwAclWidgetEntryStr = "Entry";
+var bwAclWidgetAccessStr = "Access";
+var bwAclWidgetInheritedStr = "Inherited from";
 
 // note that resourcesRoot is passed in from the html head section defined in the xslt
 var trashIcon = '<img src="' + resourcesRoot  + '/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>';
@@ -257,8 +260,7 @@ function activateAllowDenyFlag(val,formObj,disabledFlag) {
   }
 }
 
-// Gather up the how values on access form submission and set the how field
-// (method 1) or return the value (method 2).
+// Gather up the how values on access form submission and return the value.
 // If in "basic" mode:
 //   Set the value of how to the value of the basicHowItem radio button.
 // If in "advanced" mode:
@@ -266,10 +268,7 @@ function activateAllowDenyFlag(val,formObj,disabledFlag) {
 //   named after the howItem's value (e.g. "A","R","F","N", etc).
 //   The allow/deny flag contains the final values to be returned with
 //   the "-" switch if we set the value to deny (e.g. "A" or "-A", "R" or "-R").
-// Method: there are two methods used with this function; method one sets
-//   the "how" field in the form used to update a single principal.  Method
-//   two returns the assembled how string to the calling function.
-function setAccessHow(formObj,method) {
+function setAccessHow(formObj) {
   var howString = "";
   if (formObj.setappvar[0].checked == true) { // "basic" mode is selected
     for (i = 0; i < formObj.basicHowItem.length; i++) {
@@ -289,11 +288,7 @@ function setAccessHow(formObj,method) {
       }
     }
   }
-  if (method == 2) {
-    return howString;
-  } else {
-    formObj.how.value = howString;
-  }
+  return howString;
 }
 
 /* Information about a principal
@@ -434,19 +429,15 @@ function bwPrincipal(who, whoType) {
   }
 
   this.equals = function(pr) {
-    //alert("this=" + this.toString() + " pr=" + pr.toString());
-
     if (this.whoType != pr.whoType) {
       return false;
     }
-
     return this.who == pr.who;
   }
 }
 
-/* METHOD TWO FUNCTIONS*/
-// Access Control Entry (ACE) object
-
+/* Access Control Entry (ACE) object
+ */
 function bwAce(who, whoType, how, inherited, invert) {
   this.principal = new bwPrincipal(who, whoType);
   this.how = how;
@@ -554,7 +545,8 @@ function bwAce(who, whoType, how, inherited, invert) {
 
   // row: current row in table
   // aceI: index of the ace
-  this.toFormRow = function(row, aceI) {
+  // id: id of widget output block in the html
+  this.toFormRow = function(row, aceI, id) {
     var td_0 = row.insertCell(0);
     td_0.innerHTML = this.principal.format();
     var td_1 = row.insertCell(1);
@@ -562,7 +554,7 @@ function bwAce(who, whoType, how, inherited, invert) {
     row.insertCell(2).appendChild(document.createTextNode(this.formatInherited()));
     var td_3 = row.insertCell(3);
     if (this.inherited == "") {
-      td_3.innerHTML = "<a href=\"javascript:bwAcl.deleteAce('" + aceI + "')\">" + trashIcon + " " + deleteStr + "</a>";
+      td_3.innerHTML = "<a href=\"javascript:bwAcl.deleteAce('" + aceI + "','" + id + "')\">" + trashIcon + " " + bwAclWidgetDeleteStr + "</a>";
     }
   }
 }
@@ -602,7 +594,7 @@ var bwAcl = new function() {
   }
 
   // Update the list - expects the browser form object
-  this.update = function(formObj) {
+  this.update = function(formObj,id) {
     // get the type of ace being set
     var type;
     for (i = 0; i < formObj.whoType.length; i++) {
@@ -619,7 +611,7 @@ var bwAcl = new function() {
     }
 
     // get the how string from the form
-    var how = setAccessHow(formObj, 2);
+    var how = setAccessHow(formObj);
 
     //alert("About to update who=" + formObj.who.value +
     //       "\ntype= " + type + "\nhow=" + how);
@@ -632,10 +624,10 @@ var bwAcl = new function() {
     formAcl.value = this.toXml();
 
     // redraw the display
-    this.display();
+    this.display(id);
   }
 
-  this.deleteAce = function(index) {
+  this.deleteAce = function(index,id) {
     var ace = aces[index];
     var replace = false;
 
@@ -658,27 +650,44 @@ var bwAcl = new function() {
     formAcl.value = this.toXml();
 
     // redraw the display
-    this.display();
+    this.display(id);
   }
 
-  // update the ACL table displayed on screen
-  this.display = function() {
+  // build the ACL widget displayed on screen in the given id
+  this.display = function(id) {
     try {
+
+      var aclWidget = document.getElementById(id);
+      aclWidget.innerHTML = "";
+
+      var bwCurrentAccess = document.createElement("table");
+      bwCurrentAccess.className = "common scheduling";
+      bwCurrentAccess.id = "bwCurrentAccess";
+      bwCurrentAccess.createTHead();
+      bwCurrAccessHead = bwCurrentAccess.tHead.insertRow(0);
+      bwCurrAccessHead.innerHTML = '<th>' + bwAclWidgetEntryStr + '</th>' +  '<th>' + bwAclWidgetAccessStr + '</th>' + '<th>' + bwAclWidgetInheritedStr + '</th><th></th>';
+      var bwCurrAccessTBody = document.createElement("tbody");
+      bwCurrentAccess.appendChild(bwCurrAccessTBody);
+
+      // finally, write the table back to the display
+      aclWidget.appendChild(bwCurrentAccess);
+
       // get the table body
       var aclTableBody = document.getElementById("bwCurrentAccess").tBodies[0];
 
       // remove existing rows
-      for (i = aclTableBody.rows.length - 1; i >= 0; i--) {
-        aclTableBody.deleteRow(i);
-      }
+      //for (i = aclTableBody.rows.length - 1; i >= 0; i--) {
+      //  aclTableBody.deleteRow(i);
+      //}
 
-      // recreate the table rows
+      // create the table rows
       for (var j = 0; j < aces.length; j++) {
         var curAce = aces[j];
         var tr = aclTableBody.insertRow(j);
 
-        curAce.toFormRow(tr, j);
+        curAce.toFormRow(tr, j, id);
       }
+
     } catch (e) {
       alert(e);
     }
