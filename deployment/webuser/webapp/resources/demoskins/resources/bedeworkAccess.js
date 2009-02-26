@@ -181,7 +181,7 @@ var hows = new function() {
 
   hv.push(new howVals("W", "apcbStysuN", "<D:write/>", howWriteVal, howDenyWriteVal));
   hv.push(new howVals("a", "", "<D:write-acl/>", howWriteAclVal, howDenyWriteAclVal));
-  hv.push(new howVals("p", "", "<D: write-properties/>", howWritePropertiesVal, howDenyWritePropertiesVal));
+  hv.push(new howVals("p", "", "<D:write-properties/>", howWritePropertiesVal, howDenyWritePropertiesVal));
   hv.push(new howVals("c", "", "<D:write-content/>", howWriteContentVal, howDenyWriteContentVal));
 
   hv.push(new howVals("b", "Stys", "<D:bind/>", howBindVal, howDenyBindVal));
@@ -228,8 +228,8 @@ function setupAccessForm(chkBoxObj, formObj) {
         formObj.howItem[i].checked = false;
         formObj.howItem[i].disabled = true;
         // now iterate over corresponding radio buttons for each howItem
-        for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-          formObj[formObj.howItem[i].value][j].disabled = true;
+        for (j = 0; j < formObj[formObj.howItem[i].id].length; j++) {
+          formObj[formObj.howItem[i].id][j].disabled = true;
         }
       } else {
         formObj.howItem[i].disabled = false;
@@ -242,16 +242,18 @@ function setupAccessForm(chkBoxObj, formObj) {
 // clicked
 function toggleAllowDenyFlag(chkBoxObj,formObj) {
   if (chkBoxObj.checked == true) {
-    activateAllowDenyFlag(chkBoxObj.value, formObj, false);
+    activateAllowDenyFlag(chkBoxObj.id, formObj, false);
   } else {
-    activateAllowDenyFlag(chkBoxObj.value, formObj, true);
+    activateAllowDenyFlag(chkBoxObj.id, formObj, true);
   }
 }
 
 // iterate over the allow/deny radio buttons and set them to true or false
 function activateAllowDenyFlag(val,formObj,disabledFlag) {
   for (i = 0; i < formObj[val].length; i++) {
-    formObj[val][i].disabled = disabledFlag;
+    if (formObj[val][i].type == "radio") { //skip the checkbox with matching id
+      formObj[val][i].disabled = disabledFlag;
+    }
   }
 }
 
@@ -278,10 +280,10 @@ function setAccessHow(formObj,method) {
   } else { // "advanced" mode is selected
     for (i = 0; i < formObj.howItem.length; i++) {
       if (formObj.howItem[i].checked == true) {
-        var howItemVal = formObj.howItem[i].value; // get the howItem value and
-        for (j = 0; j < formObj[howItemVal].length; j++) { // look up the value from the corresponding allow/deny flag
-          if (formObj[howItemVal][j].checked == true) {
-            howString += formObj[howItemVal][j].value;
+        var howItemId = formObj.howItem[i].id; // get the howItem id and
+        for (j = 0; j < formObj[howItemId].length; j++) { // look up the value from the corresponding allow/deny flag
+          if ((formObj[howItemId][j].checked == true) && (formObj[howItemId][j].type == "radio")) {
+            howString += formObj[howItemId][j].value;
           }
         }
       }
@@ -364,8 +366,45 @@ function bwPrincipal(who, whoType) {
     return "***************" + whoType;
   }
 
+  // format the who string for xml representation
+  this.formatXml = function() {
+    if (whoType == "user") {
+      return who;
+    }
+
+    if (whoType == "group") {
+      return who;
+    }
+
+    if (whoType == "resource") {
+      return who;
+    }
+
+    if (whoType == "auth") {
+      return authenticatedStr;
+    }
+
+    if (whoType == "unauth") {
+      return unauthenticatedStr;
+    }
+
+    if (whoType == "owner") {
+      return ownerStr;
+    }
+
+    if (whoType == "other") {
+      return otherStr;
+    }
+
+    if (whoType == "all") {
+      return allStr;
+    }
+
+    return "***************" + whoType;
+  }
+
   this.toXml = function() {
-    var w = this.format();
+    var w = this.formatXml();
 
     if (whoType == "other") {
       return "    <D:invert>\n        <D:principal><D:owner/></D:principal>\n      </D:invert>";
@@ -439,6 +478,9 @@ function bwAce(who, whoType, how, inherited, invert) {
       }
 
       formattedHow += '<span class="' + grantDenyStr + '">' + hows.getHows(h).getDispVal(negated) + '</span>';
+      if (i != how.length-1) {
+        formattedHow += ', ';
+      }
     }
 
     return formattedHow;
