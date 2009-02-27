@@ -2258,11 +2258,13 @@
             scheduling
           </a>
         </li>
+        <!-- Hide from use.  If you wish to enable the access control form for
+         events, uncomment this block.
         <li>
           <a href="javascript:setTab('eventFormTabs',4); show('bwEventTab-Access'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Recurrence','bwEventTab-Scheduling');">
             access
           </a>
-        </li>
+        </li>-->
       </ul>
 
     <!-- Basic tab -->
@@ -7728,7 +7730,7 @@
     <h3>Current Access:</h3>
     <div id="bwCurrentAccessWidget">&#160;</div>
     <script type="text/javascript">
-      bwAcl.display("bwCurrentAccessWidget"); // display acls in the table
+      bwAcl.display("bwCurrentAccessWidget");
     </script>
   </xsl:template>
 
