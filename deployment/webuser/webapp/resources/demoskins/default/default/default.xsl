@@ -4326,7 +4326,7 @@
                 <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForDisplay"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForUpdate"/>
+                <xsl:apply-templates select="calendar" mode="listForUpdate"/>
               </xsl:otherwise>
             </xsl:choose>
           </ul>
@@ -4446,7 +4446,7 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="listForUpdate">
-    <!-- this template receives calType 0,1,4,7,8,9 -->
+    <!-- this template receives all calTypes -->
     <xsl:variable name="calPath" select="encodedPath"/>
     <li>
       <xsl:attribute name="class">
@@ -4458,6 +4458,9 @@
             </xsl:choose>
           </xsl:when>
           <xsl:when test="calType = '0'">folder</xsl:when>
+          <xsl:when test="calType='2' or calType='3'">trash</xsl:when>
+          <xsl:when test="calType='5'">inbox</xsl:when>
+          <xsl:when test="calType='6'">outbox</xsl:when>
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
@@ -4472,7 +4475,7 @@
       </xsl:if>
       <xsl:if test="calendar and isSubscription='false'">
         <ul>
-          <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForUpdate">
+          <xsl:apply-templates select="calendar" mode="listForUpdate">
             <xsl:sort select="name" order="ascending" case-order="upper-first"/>
           </xsl:apply-templates>
         </ul>
@@ -4825,17 +4828,19 @@
             <input type="submit" name="cancelled" value="cancel"/>
           </td>
           <td align="right">
-            <xsl:choose>
-              <xsl:when test="isSubscription='true'">
-                <input type="submit" name="delete" value="Delete Subscription"/>
-              </xsl:when>
-              <xsl:when test="calType = '0'">
-                <input type="submit" name="delete" value="Delete Folder"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="submit" name="delete" value="Delete Calendar"/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:if test="calType != '3' and calType != '5' and calType != '6'">
+              <xsl:choose>
+                <xsl:when test="isSubscription='true'">
+                  <input type="submit" name="delete" value="Delete Subscription"/>
+                </xsl:when>
+                <xsl:when test="calType = '0'">
+                  <input type="submit" name="delete" value="Delete Folder"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="submit" name="delete" value="Delete Calendar"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
           </td>
         </tr>
       </table>
@@ -4961,17 +4966,19 @@
             <input type="submit" name="cancelled" value="cancel"/>
           </td>
           <td align="right">
-            <xsl:choose>
-              <xsl:when test="isSubscription='true'">
-                <input type="submit" name="delete" value="Delete Subscription"/>
-              </xsl:when>
-              <xsl:when test="calType = '0'">
-                <input type="submit" name="delete" value="Delete Folder"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="submit" name="delete" value="Delete Calendar"/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:if test="calType != '3' and calType != '5' and calType != '6'">
+              <xsl:choose>
+                <xsl:when test="isSubscription='true'">
+                  <input type="submit" name="delete" value="Delete Subscription"/>
+                </xsl:when>
+                <xsl:when test="calType = '0'">
+                  <input type="submit" name="delete" value="Delete Folder"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="submit" name="delete" value="Delete Calendar"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
           </td>
         </tr>
       </table>
@@ -7523,50 +7530,14 @@
       <li class="selected">scheduling/meetings</li>
     </ul>
 
-    <table class="common" cellspacing="0">
-      <tr>
-        <th class="leftBorder">Can send me scheduling requests:</th>
-        <th class="leftBorder">Can schedule on my behalf:</th>
-      </tr>
-      <tr>
-        <td class="leftBorder padMe">
-          <form name="prefsSetAccess1" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
-            <xsl:call-template name="schedulingAccessForm">
-              <xsl:with-param name="what">in</xsl:with-param>
-            </xsl:call-template>
-          </form>
-
-          <!-- xsl:apply-templates select="inbox/acl" mode="currentAccess">
-            <xsl:with-param name="action" select="$prefs-setAccess"/>
-            <xsl:with-param name="what">in</xsl:with-param>
-          </xsl:apply-templates-->
-
-          <h3>Current Access:</h3>
-          <div id="bwCurrentAccessWidgetIn">&#160;</div>
-          <script type="text/javascript">
-            bwAcl.display("bwCurrentAccessWidgetIn");
-          </script>
-        </td>
-        <td class="leftBorder padMe">
-          <form name="prefsSetAccess2" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
-            <xsl:call-template name="schedulingAccessForm">
-              <xsl:with-param name="what">out</xsl:with-param>
-            </xsl:call-template>
-          </form>
-
-          <!-- xsl:apply-templates select="outbox/acl" mode="currentAccess">
-            <xsl:with-param name="action" select="$prefs-setAccess"/>
-            <xsl:with-param name="what">out</xsl:with-param>
-          </xsl:apply-templates-->
-
-          <h3>Current Access:</h3>
-          <div id="bwCurrentAccessWidgetOut">&#160;</div>
-          <script type="text/javascript">
-            bwAcl.display("bwCurrentAccessWidgetOut");
-          </script>
-        </td>
-      </tr>
-    </table>
+    <div class="innerBlock">
+      <h3>This page is in progress.</h3>
+      <p>In the meantime, you may <a href="{$calendar-fetch}">set scheduling access by modifying acls on your inbox and outbox</a>.  Grant scheduling access and read freebusy.</p>
+      <ul>
+        <li>Inbox: users granted scheduling access on your inbox can send you scheduling requests.</li>
+        <li>Outbox: users granted scheduling access on your outbox can schedule on your behalf.</li>
+      </ul>
+    </div>
 
     <form name="scheduleAutoProcessingForm" method="post" action="{$prefs-updateSchedulingPrefs}">
       <table class="common">

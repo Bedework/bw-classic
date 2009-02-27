@@ -166,11 +166,10 @@
                 <input type="radio" value="-b" name="b" disabled="disabled"/>
               </td>
             </tr>
-            <xsl:if test="$type = 'inbox' or $type = 'outbox'">
-              <tr>
-                <td class="level4">
-                  <input type="checkbox" value="S" id="accessSchedule" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> schedule
-                </td>
+            <tr>
+              <td class="level4">
+                <input type="checkbox" value="S" id="accessSchedule" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> schedule
+              </td>
               <td>
                 <input type="radio" value="S" name="accessSchedule" checked="checked" disabled="disabled"/>
               </td>
@@ -210,8 +209,7 @@
               <td>
                 <input type="radio" value="-s" name="s" disabled="disabled"/>
               </td>
-              </tr>
-            </xsl:if>
+            </tr>
             <tr>
               <td class="level3">
                  <input type="checkbox" value="u" id="u" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> delete (unbind)

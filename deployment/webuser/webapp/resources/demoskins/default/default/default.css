@@ -1860,3 +1860,10 @@ display: inline;
   display: block;
   margin: 1em;
 }
+#bedework .innerBlock {
+  margin: 0 1em 2em 1em;
+}
+#bedework .innerBlock a {
+  text-decoration: underline;
+}
+
