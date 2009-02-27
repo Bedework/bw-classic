@@ -7535,10 +7535,17 @@
               <xsl:with-param name="what">in</xsl:with-param>
             </xsl:call-template>
           </form>
-          <xsl:apply-templates select="inbox/acl" mode="currentAccess">
+
+          <!-- xsl:apply-templates select="inbox/acl" mode="currentAccess">
             <xsl:with-param name="action" select="$prefs-setAccess"/>
             <xsl:with-param name="what">in</xsl:with-param>
-          </xsl:apply-templates>
+          </xsl:apply-templates-->
+
+          <h3>Current Access:</h3>
+          <div id="bwCurrentAccessWidgetIn">&#160;</div>
+          <script type="text/javascript">
+            bwAcl.display("bwCurrentAccessWidgetIn");
+          </script>
         </td>
         <td class="leftBorder padMe">
           <form name="prefsSetAccess2" method="post" action="{$prefs-setAccess}" onsubmit="setScheduleHow(this)">
@@ -7546,10 +7553,17 @@
               <xsl:with-param name="what">out</xsl:with-param>
             </xsl:call-template>
           </form>
-          <xsl:apply-templates select="outbox/acl" mode="currentAccess">
+
+          <!-- xsl:apply-templates select="outbox/acl" mode="currentAccess">
             <xsl:with-param name="action" select="$prefs-setAccess"/>
             <xsl:with-param name="what">out</xsl:with-param>
-          </xsl:apply-templates>
+          </xsl:apply-templates-->
+
+          <h3>Current Access:</h3>
+          <div id="bwCurrentAccessWidgetOut">&#160;</div>
+          <script type="text/javascript">
+            bwAcl.display("bwCurrentAccessWidgetOut");
+          </script>
         </td>
       </tr>
     </table>
@@ -7723,15 +7737,6 @@
     </dl>
 
     <input type="submit" name="modPrefs" value="Update"/>
-    <input type="submit" name="cancelled" value="cancel"/>
-  </xsl:template>
-
-  <xsl:template match="acl" mode="currentAccess">
-    <h3>Current Access:</h3>
-    <div id="bwCurrentAccessWidget">&#160;</div>
-    <script type="text/javascript">
-      bwAcl.display("bwCurrentAccessWidget");
-    </script>
   </xsl:template>
 
   <!--==== SEARCH RESULT ====-->
