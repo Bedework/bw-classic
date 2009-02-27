@@ -1,13 +1,10 @@
 /* Bedework Access control form functions
 
-   Bedework uses to methods to set access control.  The first and older method
-   is to send a single access control string per principal in one
-   request/response cycle.  The second and more current method (which is
-   required in the event form) is to build a javascript object representing
-   the acls on an item (e.g. an event), manipulate the object with the GUI, and send
-   all the acls in a single request parameter.  Both methods are currently used.
-   Method one is used for calendar access, method two for event access.  In time
-   we will probably move all access control to use method two.
+   Bedework sets access control by building a javascript object representing
+   the acls on an item (e.g. an event), manipulating the object with the GUI, and
+   sending all the acls in a single request parameter.  We would like to replace
+   this approach with wizards that ask the user what they want to do (and hide
+   the acls).
 
 /* **********************************************************************
     Copyright 2007 Rensselaer Polytechnic Institute. All worldwide rights reserved.
@@ -51,9 +48,18 @@ var unauthenticatedStr = "unauthenticated";
 var ownerStr = "owner";
 var otherStr = "other";
 var grantStr = "grant";
+var denyStr = "deny"
 var allStr = "all";
 
-var deleteStr = "remove";
+var bwAclWidgetDeleteStr = "remove";
+var bwAclWidgetEntryStr = "Entry";
+var bwAclWidgetAccessStr = "Access";
+var bwAclWidgetInheritedStr = "Inherited from";
+
+// note that resourcesRoot is passed in from the html head section defined in the xslt
+var trashIcon = '<img src="' + resourcesRoot  + '/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>';
+var userIcon = '<img src="' + resourcesRoot  + '/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>';
+var groupIcon = '<img src="' + resourcesRoot  + '/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>';
 
 // How granted accesses appear
 var howAllVal = "all";
@@ -105,7 +111,7 @@ var howDenyUnlockVal = "not-unlock";
 
 /* We shouldn't use the word local - it probably doesn't mean too much and it might actually be
    inherited from something called /local for example */
-var inheritedStr = "Not inherited";
+var inheritedStr = "not inherited";
 
 // **************************
 // The prefixes come from the directory code so should be emitted by the jsp.
@@ -175,7 +181,7 @@ var hows = new function() {
 
   hv.push(new howVals("W", "apcbStysuN", "<D:write/>", howWriteVal, howDenyWriteVal));
   hv.push(new howVals("a", "", "<D:write-acl/>", howWriteAclVal, howDenyWriteAclVal));
-  hv.push(new howVals("p", "", "<D: write-properties/>", howWritePropertiesVal, howDenyWritePropertiesVal));
+  hv.push(new howVals("p", "", "<D:write-properties/>", howWritePropertiesVal, howDenyWritePropertiesVal));
   hv.push(new howVals("c", "", "<D:write-content/>", howWriteContentVal, howDenyWriteContentVal));
 
   hv.push(new howVals("b", "Stys", "<D:bind/>", howBindVal, howDenyBindVal));
@@ -222,8 +228,8 @@ function setupAccessForm(chkBoxObj, formObj) {
         formObj.howItem[i].checked = false;
         formObj.howItem[i].disabled = true;
         // now iterate over corresponding radio buttons for each howItem
-        for (j = 0; j < formObj[formObj.howItem[i].value].length; j++) {
-          formObj[formObj.howItem[i].value][j].disabled = true;
+        for (j = 0; j < formObj[formObj.howItem[i].id].length; j++) {
+          formObj[formObj.howItem[i].id][j].disabled = true;
         }
       } else {
         formObj.howItem[i].disabled = false;
@@ -236,21 +242,22 @@ function setupAccessForm(chkBoxObj, formObj) {
 // clicked
 function toggleAllowDenyFlag(chkBoxObj,formObj) {
   if (chkBoxObj.checked == true) {
-    activateAllowDenyFlag(chkBoxObj.value, formObj, false);
+    activateAllowDenyFlag(chkBoxObj.id, formObj, false);
   } else {
-    activateAllowDenyFlag(chkBoxObj.value, formObj, true);
+    activateAllowDenyFlag(chkBoxObj.id, formObj, true);
   }
 }
 
 // iterate over the allow/deny radio buttons and set them to true or false
 function activateAllowDenyFlag(val,formObj,disabledFlag) {
   for (i = 0; i < formObj[val].length; i++) {
-    formObj[val][i].disabled = disabledFlag;
+    if (formObj[val][i].type == "radio") { //skip the checkbox with matching id
+      formObj[val][i].disabled = disabledFlag;
+    }
   }
 }
 
-// Gather up the how values on access form submission and set the how field
-// (method 1) or return the value (method 2).
+// Gather up the how values on access form submission and return the value.
 // If in "basic" mode:
 //   Set the value of how to the value of the basicHowItem radio button.
 // If in "advanced" mode:
@@ -258,10 +265,7 @@ function activateAllowDenyFlag(val,formObj,disabledFlag) {
 //   named after the howItem's value (e.g. "A","R","F","N", etc).
 //   The allow/deny flag contains the final values to be returned with
 //   the "-" switch if we set the value to deny (e.g. "A" or "-A", "R" or "-R").
-// Method: there are two methods used with this function; method one sets
-//   the "how" field in the form used to update a single principal.  Method
-//   two returns the assembled how string to the calling function.
-function setAccessHow(formObj,method) {
+function setAccessHow(formObj) {
   var howString = "";
   if (formObj.setappvar[0].checked == true) { // "basic" mode is selected
     for (i = 0; i < formObj.basicHowItem.length; i++) {
@@ -272,20 +276,16 @@ function setAccessHow(formObj,method) {
   } else { // "advanced" mode is selected
     for (i = 0; i < formObj.howItem.length; i++) {
       if (formObj.howItem[i].checked == true) {
-        var howItemVal = formObj.howItem[i].value; // get the howItem value and
-        for (j = 0; j < formObj[howItemVal].length; j++) { // look up the value from the corresponding allow/deny flag
-          if (formObj[howItemVal][j].checked == true) {
-            howString += formObj[howItemVal][j].value;
+        var howItemId = formObj.howItem[i].id; // get the howItem id and
+        for (j = 0; j < formObj[howItemId].length; j++) { // look up the value from the corresponding allow/deny flag
+          if ((formObj[howItemId][j].checked == true) && (formObj[howItemId][j].type == "radio")) {
+            howString += formObj[howItemId][j].value;
           }
         }
       }
     }
   }
-  if (method == 2) {
-    return howString;
-  } else {
-    formObj.how.value = howString;
-  }
+  return howString;
 }
 
 /* Information about a principal
@@ -324,6 +324,43 @@ function bwPrincipal(who, whoType) {
   // format the who string for on-screen display
   this.format = function() {
     if (whoType == "user") {
+      return userIcon + " " + who;
+    }
+
+    if (whoType == "group") {
+      return groupIcon + " " + who;
+    }
+
+    if (whoType == "resource") {
+      return who;
+    }
+
+    if (whoType == "auth") {
+      return groupIcon + " " + authenticatedStr;
+    }
+
+    if (whoType == "unauth") {
+      return groupIcon + " " + unauthenticatedStr;
+    }
+
+    if (whoType == "owner") {
+      return userIcon + " " + ownerStr;
+    }
+
+    if (whoType == "other") {
+      return groupIcon + " " + otherStr;
+    }
+
+    if (whoType == "all") {
+      return groupIcon + " " + allStr;
+    }
+
+    return "***************" + whoType;
+  }
+
+  // format the who string for xml representation
+  this.formatXml = function() {
+    if (whoType == "user") {
       return who;
     }
 
@@ -359,7 +396,7 @@ function bwPrincipal(who, whoType) {
   }
 
   this.toXml = function() {
-    var w = this.format();
+    var w = this.formatXml();
 
     if (whoType == "other") {
       return "    <D:invert>\n        <D:principal><D:owner/></D:principal>\n      </D:invert>";
@@ -389,19 +426,15 @@ function bwPrincipal(who, whoType) {
   }
 
   this.equals = function(pr) {
-    //alert("this=" + this.toString() + " pr=" + pr.toString());
-
     if (this.whoType != pr.whoType) {
       return false;
     }
-
     return this.who == pr.who;
   }
 }
 
-/* METHOD TWO FUNCTIONS*/
-// Access Control Entry (ACE) object
-
+/* Access Control Entry (ACE) object
+ */
 function bwAce(who, whoType, how, inherited, invert) {
   this.principal = new bwPrincipal(who, whoType);
   this.how = how;
@@ -424,13 +457,18 @@ function bwAce(who, whoType, how, inherited, invert) {
     for (var i = 0; i < how.length; i++) {
       var h = how[i];
       var negated = false;
+      var grantDenyStr = grantStr;
       if (h == "-") {
         negated = true;
+        grantDenyStr = denyStr;
         i++;
         h = how[i];
       }
 
-      formattedHow += hows.getHows(h).getDispVal(negated) + " ";
+      formattedHow += '<span class="' + grantDenyStr + '">' + hows.getHows(h).getDispVal(negated) + '</span>';
+      if (i != how.length-1) {
+        formattedHow += ', ';
+      }
     }
 
     return formattedHow;
@@ -504,13 +542,16 @@ function bwAce(who, whoType, how, inherited, invert) {
 
   // row: current row in table
   // aceI: index of the ace
-  this.toFormRow = function(row, aceI) {
-    row.insertCell(0).appendChild(document.createTextNode(this.principal.format()));
-    row.insertCell(1).appendChild(document.createTextNode(this.formatHow()));
+  // id: id of widget output block in the html
+  this.toFormRow = function(row, aceI, id) {
+    var td_0 = row.insertCell(0);
+    td_0.innerHTML = this.principal.format();
+    var td_1 = row.insertCell(1);
+    td_1.innerHTML = this.formatHow();
     row.insertCell(2).appendChild(document.createTextNode(this.formatInherited()));
     var td_3 = row.insertCell(3);
     if (this.inherited == "") {
-      td_3.innerHTML = "<a href=\"javascript:bwAcl.deleteAce('" + aceI + "')\">" + deleteStr + "</a>";
+      td_3.innerHTML = "<a href=\"javascript:bwAcl.deleteAce('" + aceI + "','" + id + "')\">" + trashIcon + " " + bwAclWidgetDeleteStr + "</a>";
     }
   }
 }
@@ -550,7 +591,7 @@ var bwAcl = new function() {
   }
 
   // Update the list - expects the browser form object
-  this.update = function(formObj) {
+  this.update = function(formObj,id) {
     // get the type of ace being set
     var type;
     for (i = 0; i < formObj.whoType.length; i++) {
@@ -567,7 +608,7 @@ var bwAcl = new function() {
     }
 
     // get the how string from the form
-    var how = setAccessHow(formObj, 2);
+    var how = setAccessHow(formObj);
 
     //alert("About to update who=" + formObj.who.value +
     //       "\ntype= " + type + "\nhow=" + how);
@@ -580,10 +621,10 @@ var bwAcl = new function() {
     formAcl.value = this.toXml();
 
     // redraw the display
-    this.display();
+    this.display(id);
   }
 
-  this.deleteAce = function(index) {
+  this.deleteAce = function(index,id) {
     var ace = aces[index];
     var replace = false;
 
@@ -606,27 +647,44 @@ var bwAcl = new function() {
     formAcl.value = this.toXml();
 
     // redraw the display
-    this.display();
+    this.display(id);
   }
 
-  // update the ACL table displayed on screen
-  this.display = function() {
+  // build the ACL widget displayed on screen in the given id
+  this.display = function(id) {
     try {
+
+      var aclWidget = document.getElementById(id);
+      aclWidget.innerHTML = "";
+
+      var bwCurrentAccess = document.createElement("table");
+      bwCurrentAccess.className = "common scheduling";
+      bwCurrentAccess.id = "bwCurrentAccess";
+      bwCurrentAccess.createTHead();
+      bwCurrAccessHead = bwCurrentAccess.tHead.insertRow(0);
+      bwCurrAccessHead.innerHTML = '<th>' + bwAclWidgetEntryStr + '</th>' +  '<th>' + bwAclWidgetAccessStr + '</th>' + '<th>' + bwAclWidgetInheritedStr + '</th><th></th>';
+      var bwCurrAccessTBody = document.createElement("tbody");
+      bwCurrentAccess.appendChild(bwCurrAccessTBody);
+
+      // finally, write the table back to the display
+      aclWidget.appendChild(bwCurrentAccess);
+
       // get the table body
       var aclTableBody = document.getElementById("bwCurrentAccess").tBodies[0];
 
       // remove existing rows
-      for (i = aclTableBody.rows.length - 1; i >= 0; i--) {
-        aclTableBody.deleteRow(i);
-      }
+      //for (i = aclTableBody.rows.length - 1; i >= 0; i--) {
+      //  aclTableBody.deleteRow(i);
+      //}
 
-      // recreate the table rows
+      // create the table rows
       for (var j = 0; j < aces.length; j++) {
         var curAce = aces[j];
         var tr = aclTableBody.insertRow(j);
 
-        curAce.toFormRow(tr, j);
+        curAce.toFormRow(tr, j, id);
       }
+
     } catch (e) {
       alert(e);
     }

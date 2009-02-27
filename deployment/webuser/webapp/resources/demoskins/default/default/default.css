@@ -1788,22 +1788,22 @@ display: inline;
   margin: 1em 0;
   padding: 0;
 }
-#bedework #shareFormTable td {
+#bedework #accessFormTable td {
   border: 1px solid #666;
   padding: 0 0 0.5em 0;
 }
-#bedework #shareFormTable h5 {
+#bedework #accessFormTable h5 {
   background: #e5e5e5;
   color: black;
   margin: 0;
   padding: 4px;
 }
-#bedework #shareFormTable #accessRightsToggle {
+#bedework #accessFormTable #accessRightsToggle {
   float: right;
   font-weight: normal;
   font-size: 0.8em;
 }
-#bedework #shareFormTable .whoTypes {
+#bedework #accessFormTable .whoTypes {
   margin: 1em;
 }
 #bedework #howTable {
