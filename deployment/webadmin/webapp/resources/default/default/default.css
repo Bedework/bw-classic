@@ -829,6 +829,14 @@ table.common th {
 table.common th.thin {
   width: 80px;
 }
+#bedework table.common th.icon {
+  margin: 0em;
+  vertical-align: middle;
+  padding: 0.5em 1em 0.2em 0;
+  font-size: 0.7em;
+  background-color: #fff;
+  color: black;
+}
 table.common th.commonHeader {
   vertical-align: middle;
   background-color: #666;
@@ -836,6 +844,14 @@ table.common th.commonHeader {
   padding: 0.2em 0.5em;
   text-align: left;
   font-weight: normal;
+}
+#bedework table.common td.scheduleActions {
+  color: black;
+  background: #ddc;
+}
+#bedework table.common td.scheduleActions ul {
+  margin: 0;
+  padding: 0 0 0 20px;
 }
 #deleteListTable {
   margin: 1em 0em 2em 1em;

@@ -43,6 +43,7 @@
   <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/bedeworkAccess.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
   <!-- URL of html resources (images, css, other html); by default this is
@@ -222,6 +223,15 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
+        <!-- set globals that must be passed in from the XSLT -->
+        <script type="text/javascript">
+          <xsl:comment>
+          var defaultTzid = "<xsl:value-of select="/bedework/now/defaultTzid"/>";
+          var startTzid = "<xsl:value-of select="/bedework/formElements/form/start/tzid"/>";
+          var endTzid = "<xsl:value-of select="/bedework/formElements/form/end/dateTime/tzid"/>";
+          var resourcesRoot = "<xsl:value-of select="$resourcesRoot"/>";
+          </xsl:comment>
+        </script>
         <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
@@ -277,7 +287,14 @@
                       /bedework/page='modCalSuite' or
                       /bedework/page='modSubscription'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
-          <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAccess.js">&#160;</script>
+          <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
+          <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
+          <!-- initialize calendar acls, if present -->
+          <xsl:if test="/bedework/currentCalendar/acl/ace">
+            <script type="text/javascript">
+              <xsl:apply-templates select="/bedework/currentCalendar/acl/ace" mode="initJS"/>
+            </script>
+          </xsl:if>
         </xsl:if>
         <xsl:if test="/bedework/page='upload' or /bedework/page='selectCalForEvent'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
@@ -317,6 +334,7 @@
             <xsl:attribute name="onload">focusFirstElement();</xsl:attribute>
           </xsl:otherwise>
         </xsl:choose>
+        <div id="bedework"><!-- main wrapper div to keep styles encapsulated -->
         <xsl:choose>
           <xsl:when test="/bedework/page='selectCalForEvent'">
             <xsl:call-template name="selectCalForEvent"/>
@@ -487,6 +505,7 @@
             <xsl:call-template name="footer"/>
           </xsl:otherwise>
         </xsl:choose>
+        </div>
       </body>
     </html>
   </xsl:template>
@@ -3531,12 +3550,27 @@
         </div>
       </div>
 
+      <div id="sharingBox">
+        <h3>Current Access:</h3>
+        <div id="bwCurrentAccessWidget">&#160;</div>
+        <script type="text/javascript">
+          bwAcl.display("bwCurrentAccessWidget");
+        </script>
+        <xsl:call-template name="entityAccessForm">
+          <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
+        </xsl:call-template>
+      </div>
+
+      <div class="submitButtons">
+        <input type="submit" name="addCalendar" value="Add"/>
+        <input type="submit" name="cancelled" value="cancel"/>
+      </div>
     </form>
 
-    <div id="sharingBox">
+    <!-- div id="sharingBox">
       <h3>Current Access:</h3>
       Sharing may be added to a calendar once created.
-    </div>
+    </div-->
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="modCalendar">
@@ -3684,6 +3718,17 @@
         </xsl:if>
       </table>
 
+      <div id="sharingBox">
+        <h3>Current Access:</h3>
+        <div id="bwCurrentAccessWidget">&#160;</div>
+        <script type="text/javascript">
+          bwAcl.display("bwCurrentAccessWidget");
+        </script>
+        <xsl:call-template name="entityAccessForm">
+          <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
+        </xsl:call-template>
+      </div>
+
       <table border="0" id="submitTable">
         <tr>
           <td>
@@ -3716,7 +3761,7 @@
         </tr>
       </table>
     </form>
-    <div id="sharingBox">
+    <!-- div id="sharingBox">
       <xsl:apply-templates select="acl" mode="currentAccess">
         <xsl:with-param name="action" select="$calendar-setAccess"/>
         <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
@@ -3733,7 +3778,7 @@
           </xsl:with-param>
         </xsl:call-template>
       </form>
-    </div>
+    </div-->
   </xsl:template>
 
 
@@ -3991,29 +4036,6 @@
 
   <!--==== ACCESS CONTROL TEMPLATES ====-->
 
-  <!--<xsl:template match="eventAccess">
-    <xsl:variable name="calPathEncoded" select="calendar/encodedPath"/>
-    <xsl:variable name="calPath" select="calendar/path"/>
-    <xsl:variable name="guid" select="guid"/>
-    <xsl:variable name="recurrenceId" select="recurrenceId"/>
-    <div id="bwEventTab-Access">
-      <div id="sharingBox">
-        <xsl:apply-templates select="access/acl" mode="currentAccess">
-          <xsl:with-param name="action" select="$event-setAccess"/>
-          <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
-          <xsl:with-param name="guid" select="$guid"/>
-          <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
-        </xsl:apply-templates>
-        <form name="eventShareForm" action="{$event-setAccess}" id="shareForm" onsubmit="setAccessHow(this)" method="post">
-          <input type="hidden" name="calPath" value="{$calPath}"/>
-          <input type="hidden" name="guid" value="{$guid}"/>
-          <input type="hidden" name="recurid" value="{$recurrenceId}"/>
-          <xsl:call-template name="entityAccessForm"/>
-        </form>
-      </div>
-    </div>
-  </xsl:template>-->
-
   <xsl:template name="schedulingAccessForm">
     <xsl:param name="what"/>
     <input type="hidden" name="what">
@@ -4045,281 +4067,6 @@
 
     <input type="submit" name="modPrefs" value="Update"/>
     <input type="submit" name="cancelled" value="cancel"/>
-  </xsl:template>
-
-  <xsl:template name="entityAccessForm">
-    <xsl:param name="type"/><!-- optional:
-    currently used for inbox and outbox to conditionally
-    display scheduling access -->
-    <table cellpadding="0" id="shareFormTable" class="common">
-      <tr>
-        <th colspan="2" class="commonHeader">Add:</th>
-      </tr>
-      <tr>
-        <td>
-          <h5>Who:</h5>
-          <div class="whoTypes">
-            <input type="text" name="who" size="20"/><br/>
-            <input type="radio" value="user" name="whoType" checked="checked"/> user
-            <input type="radio" value="group" name="whoType"/> group
-            <p>OR</p>
-            <p>
-              <input type="radio" value="owner" name="whoType"/> owner<br/>
-              <input type="radio" value="auth" name="whoType"/> authenticated<br/>
-              <input type="radio" value="unauth" name="whoType"/> unauthenticated<br/>
-              <input type="radio" value="all" name="whoType"/> all users
-            </p>
-          </div>
-        </td>
-        <td>
-          <h5>
-            <span id="accessRightsToggle">
-              <xsl:choose>
-                <xsl:when test="/bedework/appvar[key='accessRightsToggle']/value='basic'">
-                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" checked="checked" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
-                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
-                </xsl:when>
-                <xsl:otherwise>
-                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
-                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" checked="checked" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
-                </xsl:otherwise>
-              </xsl:choose>
-            </span>
-            Rights:
-          </h5>
-          <input type="hidden" name="how" value=""/>
-          <!-- Advanced Access Rights: -->
-          <!-- the "how" field is set by iterating over the howItems below -->
-          <table id="howTable" class="visible" cellspacing="0">
-            <xsl:if test="/bedework/appvar[key='accessRightsToggle']/value='basic'">
-              <xsl:attribute name="class">invisible</xsl:attribute>
-            </xsl:if>
-            <tr>
-              <th>access type</th>
-              <th>allow</th>
-              <th>deny</th>
-            </tr>
-            <tr>
-              <td class="level1">
-                <input type="checkbox" value="A" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/>All
-              </td>
-              <td>
-                <input type="radio" value="A" name="A" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-A" name="A" disabled="disabled"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level2">
-                <input type="checkbox" value="R" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> Read
-              </td>
-              <td>
-                <input type="radio" value="R" name="R" checked="checked"/>
-              </td>
-              <td>
-                <input type="radio" value="-R" name="R"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level3">
-                <input type="checkbox" value="r" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read ACL
-              </td>
-              <td>
-                <input type="radio" value="r" name="r" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-r" name="r" disabled="disabled"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level3">
-                <input type="checkbox" value="P" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read current user privilege set
-              </td>
-              <td>
-                <input type="radio" value="P" name="P" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-P" name="P" disabled="disabled"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level3">
-                <input type="checkbox" value="F" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read freebusy
-              </td>
-              <td>
-                <input type="radio" value="F" name="F" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-F" name="F" disabled="disabled"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level2">
-                <input type="checkbox" value="W" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> Write
-              </td>
-              <td>
-                <input type="radio" value="W" name="W" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-W" name="W" disabled="disabled"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level3">
-                <input type="checkbox" value="a" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write ACL
-              </td>
-              <td>
-                <input type="radio" value="a" name="a" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-a" name="a" disabled="disabled"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level3">
-                <input type="checkbox" value="p" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write properties
-              </td>
-              <td>
-                <input type="radio" value="p" name="p" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-p" name="p" disabled="disabled"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level3">
-                <input type="checkbox" value="c" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write content
-              </td>
-              <td>
-                <input type="radio" value="c" name="c" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-c" name="c" disabled="disabled"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level3">
-                <input type="checkbox" value="b" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> create (bind)
-              </td>
-              <td>
-                <input type="radio" value="b" name="b" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-b" name="b" disabled="disabled"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level4">
-                <input type="checkbox" value="S" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> schedule
-              </td>
-              <td>
-                <input type="radio" value="S" name="S" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-S" name="S" disabled="disabled"/>
-              </td>
-              </tr>
-              <tr>
-                <td class="level5">
-                  <input type="checkbox" value="t" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule request
-                </td>
-              <td>
-                <input type="radio" value="t" name="t" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-t" name="t" disabled="disabled"/>
-              </td>
-              </tr>
-              <tr>
-                <td class="level5">
-                  <input type="checkbox" value="y" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule reply
-                </td>
-              <td>
-                <input type="radio" value="y" name="y" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-y" name="y" disabled="disabled"/>
-              </td>
-              </tr>
-              <tr>
-                <td class="level5">
-                  <input type="checkbox" value="s" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule free-busy
-                </td>
-              <td>
-                <input type="radio" value="s" name="s" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-s" name="s" disabled="disabled"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="level3">
-                 <input type="checkbox" value="u" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> delete (unbind)
-              </td>
-              <td>
-                <input type="radio" value="u" name="u" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-u" name="u" disabled="disabled"/>
-              </td>
-            </tr>
-            <!--<tr>
-              <td class="level1">
-                <input type="checkbox" value="N" name="howItem" onclick="setupAccessForm(this, this.form)"/> None
-              </td>
-              <td>
-              </td>
-              <td>
-              </td>
-            </tr>-->
-          </table>
-          <!-- Simple Access Rights: -->
-          <!-- the "how" field is set by getting the selected basicHowItem -->
-          <ul id="howList" class="invisible">
-            <xsl:if test="/bedework/appvar[key='accessRightsToggle']/value='basic'">
-              <xsl:attribute name="class">visible</xsl:attribute>
-            </xsl:if>
-            <li>
-              <input type="radio" value="A" name="basicHowItem"/>All
-            </li>
-            <li>
-              <input type="radio" value="R" name="basicHowItem" checked="checked"/>Read only
-            </li>
-          </ul>
-
-          <!-- below is a simplified listing using radio buttons only; keep for
-               those who would like something inbetween the advanced and simple
-               interfaces -->
-          <!--
-          <ul id="howList">
-            <li><input type="radio" value="A" name="how"/> <strong>All</strong> (read, write, delete)</li>
-            <li class="padTop">
-              <input type="radio" value="R" name="how" checked="checked"/> <strong>Read</strong> (content, access, freebusy)
-            </li>
-            <li>
-              <input type="radio" value="F" name="how"/> Read freebusy only
-            </li>
-            <li class="padTop">
-              <input type="radio" value="W" name="how"/> <strong>Write and delete</strong> (content, access, properties)
-            </li>
-            <li>
-              <input type="radio" value="c" name="how"/> Write content only
-            </li>
-            <li>
-             <input type="radio" value="u" name="how"/> Delete only
-            </li>
-            <li class="padTop">
-              <input type="radio" value="Rc" name="how"/> <strong>Read</strong> and <strong>Write content only</strong>
-            </li>
-            <li class="padTop">
-              <input type="radio" value="N" name="how"/> <strong>None</strong>
-            </li>
-          </ul> -->
-        </td>
-      </tr>
-    </table>
-    <input type="submit" name="submit" value="Submit"/>
   </xsl:template>
 
   <xsl:template match="acl" mode="currentAccess">
@@ -4679,16 +4426,24 @@
           </td>
         </tr>
       </table>
+
+      <div id="sharingBox">
+        <h3>Current Access:</h3>
+        <div id="bwCurrentAccessWidget">&#160;</div>
+        <script type="text/javascript">
+          bwAcl.display("bwCurrentAccessWidget");
+        </script>
+        <xsl:call-template name="entityAccessForm">
+          <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
+        </xsl:call-template>
+      </div>
+
       <div class="submitButtons">
         <input type="submit" name="addCalendar" value="Add"/>
         <input type="submit" name="cancelled" value="cancel"/>
       </div>
     </form>
 
-    <div id="sharingBox">
-      <h3>Current Access:</h3>
-      Sharing may be added to a calendar once created.
-    </div>
   </xsl:template>
 
   <xsl:template match="calendar" mode="selectCalForPublicAliasCalTree">
@@ -5364,6 +5119,18 @@
           </td>
         </tr>
       </table>
+
+      <div id="sharingBox">
+        <h3>Current Access:</h3>
+        <div id="bwCurrentAccessWidget">&#160;</div>
+        <script type="text/javascript">
+          bwAcl.display("bwCurrentAccessWidget");
+        </script>
+        <xsl:call-template name="entityAccessForm">
+          <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
+        </xsl:call-template>
+      </div>
+
       <table border="0" id="submitTable">
         <tr>
           <td>
@@ -5377,7 +5144,7 @@
       </table>
     </form>
 
-    <div id="sharingBox">
+    <!-- div id="sharingBox">
       <xsl:apply-templates select="acl" mode="currentAccess">
         <xsl:with-param name="action" select="$calsuite-setAccess"/>
         <xsl:with-param name="calSuiteName" select="$calSuiteName"/>
@@ -5394,7 +5161,7 @@
           </xsl:with-param>
         </xsl:call-template>
       </form>
-    </div>
+    </div-->
   </xsl:template>
 
   <xsl:template name="calSuitePrefs">

@@ -251,4 +251,83 @@
     </table>
   </xsl:template>
 
+  <!-- return string values to be loaded into javascript for access control forms -->
+  <xsl:template match="ace" mode="initJS"><!--
+  --><xsl:variable name="who"><!--
+   --><xsl:choose>
+        <xsl:when test="invert">
+          <xsl:choose>
+            <xsl:when test="invert/principal/href"><xsl:value-of select="normalize-space(invert/principal/href)"/></xsl:when>
+            <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="name(invert/principal/*)"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="principal/href"><xsl:value-of select="normalize-space(principal/href)"/></xsl:when>
+            <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="name(principal/*)"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose><!--
+  --></xsl:variable><!--
+  --><xsl:variable name="whoType"><!--
+   --><xsl:choose>
+        <xsl:when test="contains($who,/bedework/syspars/userPrincipalRoot)">user</xsl:when>
+        <xsl:when test="contains($who,/bedework/syspars/groupPrincipalRoot)">group</xsl:when>
+        <xsl:when test="$who='authenticated'">auth</xsl:when>
+        <xsl:when test="$who='unauthenticated'">unauth</xsl:when>
+        <xsl:when test="$who='all'">all</xsl:when>
+        <xsl:when test="invert/principal/property/owner">other</xsl:when>
+        <xsl:when test="principal/property"><xsl:value-of select="name(principal/property/*)"/></xsl:when>
+        <xsl:when test="invert/principal/property"><xsl:value-of select="name(invert/principal/property/*)"/></xsl:when>
+        <xsl:otherwise></xsl:otherwise>
+      </xsl:choose><!--
+ --></xsl:variable><!--
+ --><xsl:variable name="aclString"><!--
+   --><xsl:if test="grant"><!--
+     --><xsl:for-each select="grant/privilege/*"><xsl:call-template name="grantDenyToInternal"><xsl:with-param name="name"><xsl:value-of select="name(.)"/></xsl:with-param></xsl:call-template></xsl:for-each><!--
+   --></xsl:if><!--
+   --><xsl:if test="deny"><!--
+     --><xsl:for-each select="deny/privilege/*">-<xsl:call-template name="grantDenyToInternal"><xsl:with-param name="name"><xsl:value-of select="name(.)"/></xsl:with-param></xsl:call-template></xsl:for-each><!--
+   --></xsl:if><!--
+ --></xsl:variable><!--
+ --><xsl:variable name="inherited"><!--
+   --><xsl:choose>
+       <xsl:when test="inherited"><xsl:value-of select="inherited/href"/></xsl:when>
+       <xsl:otherwise></xsl:otherwise>
+     </xsl:choose><!--
+  --></xsl:variable><!--
+  --><xsl:variable name="invert"><!--
+    --><xsl:choose>
+         <xsl:when test="invert">true</xsl:when>
+         <xsl:otherwise>false</xsl:otherwise>
+       </xsl:choose><!--
+  --></xsl:variable>
+  <!-- now initialize the object:-->
+    bwAcl.init('<xsl:value-of select="$who"/>','<xsl:value-of select="$whoType"/>','<xsl:value-of select="$aclString"/>','<xsl:value-of select="$inherited"/>','<xsl:value-of select="$invert"/>');
+  </xsl:template>
+
+  <xsl:template name="grantDenyToInternal"><!--
+  --><xsl:param name="name"/><!--
+  --><xsl:choose>
+       <xsl:when test="$name = 'all'">A</xsl:when>
+       <xsl:when test="$name = 'read'">R</xsl:when>
+       <xsl:when test="$name = 'read-acl'">r</xsl:when>
+       <xsl:when test="$name = 'read-cuurrent-user-privilege-set'">P</xsl:when>
+       <xsl:when test="$name = 'read-free-busy'">F</xsl:when>
+       <xsl:when test="$name = 'write'">W</xsl:when>
+       <xsl:when test="$name = 'write-acl'">a</xsl:when>
+       <xsl:when test="$name = 'write-properties'">p</xsl:when>
+       <xsl:when test="$name = 'write-content'">c</xsl:when>
+       <xsl:when test="$name = 'bind'">b</xsl:when>
+       <xsl:when test="$name = 'schedule'">S</xsl:when>
+       <xsl:when test="$name = 'schedule-request'">t</xsl:when>
+       <xsl:when test="$name = 'schedule-reply'">y</xsl:when>
+       <xsl:when test="$name = 'schedule-free-busy'">s</xsl:when>
+       <xsl:when test="$name = 'unbind'">u</xsl:when>
+       <xsl:when test="$name = 'unlock'">U</xsl:when>
+       <xsl:when test="$name = 'none'">N</xsl:when>
+     </xsl:choose><!--
+--></xsl:template>
 </xsl:stylesheet>
