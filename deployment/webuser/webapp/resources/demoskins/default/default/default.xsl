@@ -3503,37 +3503,13 @@
     <!-- ========== -->
     <div id="bwEventTab-Access" class="invisible">
       <div id="sharingBox">
-        <xsl:choose>
-          <xsl:when test="/bedework/editableAccess/access/acl">
-            <xsl:apply-templates select="/bedework/editableAccess/access/acl" mode="currentAccess">
-              <xsl:with-param name="action" select="$event-setAccess"/>
-              <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
-              <xsl:with-param name="guid" select="$guid"/>
-              <xsl:with-param name="recurrenceId" select="$recurrenceId"/>
-              <xsl:with-param name="method">2</xsl:with-param>
-            </xsl:apply-templates>
-          </xsl:when>
-          <xsl:otherwise>
-            <h3>Current Access:</h3>
-            <table class="common scheduling" id="bwCurrentAccess">
-              <thead>
-                <tr>
-                  <th>Entry</th>
-                  <th>Access</th>
-                  <th>Inherited from</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr id="bwEventNoAcl">
-                  <td colspan="4">no access defined</td>
-                </tr>
-              </tbody>
-            </table>
-          </xsl:otherwise>
-        </xsl:choose>
+        <h3>Current Access:</h3>
+        <div id="bwCurrentAccessWidget">&#160;</div>
+        <script type="text/javascript">
+          bwAcl.display("bwCurrentAccessWidget");
+        </script>
         <xsl:call-template name="entityAccessForm">
-          <xsl:with-param name="method">2</xsl:with-param>
+          <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
         </xsl:call-template>
       </div>
     </div>
@@ -4938,35 +4914,12 @@
       </table>
 
       <div id="sharingBox">
-        <xsl:choose>
-          <xsl:when test="acl">
-            <xsl:apply-templates select="acl" mode="currentAccess">
-              <xsl:with-param name="action" select="$calendar-setAccess"/>
-              <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
-              <xsl:with-param name="method">2</xsl:with-param>
-            </xsl:apply-templates>
-          </xsl:when>
-          <xsl:otherwise>
-            <h3>Current Access:</h3>
-            <table class="common scheduling" id="bwCurrentAccess">
-              <thead>
-                <tr>
-                  <th>Entry</th>
-                  <th>Access</th>
-                  <th>Inherited from</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr id="bwEventNoAcl">
-                  <td colspan="4">no access defined</td>
-                </tr>
-              </tbody>
-            </table>
-          </xsl:otherwise>
-        </xsl:choose>
+        <div id="bwCurrentAccessWidget">&#160;</div>
+        <script type="text/javascript">
+          bwAcl.display("bwCurrentAccessWidget");
+        </script>
         <xsl:call-template name="entityAccessForm">
-          <xsl:with-param name="method">2</xsl:with-param>
+          <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
         </xsl:call-template>
       </div>
 
@@ -7788,7 +7741,7 @@
               <input type="radio" value="unauth" name="whoType"/> unauthenticated<br/>
               <input type="radio" value="all" name="whoType"/> all users
             </p>
-            <input type="button" name="updateACLs" value="add entry" onclick="bwAcl.update(this.form,${id})"/>
+            <input type="button" name="updateACLs" value="add entry" onclick="bwAcl.update(this.form,'{$outputId}')"/>
           </div>
         </td>
         <td>
