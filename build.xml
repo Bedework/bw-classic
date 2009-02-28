@@ -736,7 +736,9 @@ hibernate.jdbc.batch_size=0
       <arg value="${org.bedework.cmdutil.arg.account}" />
       <arg value="${org.bedework.cmdutil.arg.infile.par}" />
       <arg value="${org.bedework.cmdutil.arg.infile}" />
+      <!--
       <jvmarg value="-agentlib:yjpagent" />
+       -->
     </java>
   </target>
 
