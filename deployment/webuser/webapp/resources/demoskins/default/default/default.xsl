@@ -678,7 +678,45 @@
         <xsl:otherwise><xsl:value-of select="$setViewPeriod"/></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <table cellspacing="0" id="tabsTable">
+    <div id="bwTabs">
+      <div id="bwUserInfo">
+        logged in as
+        <xsl:text> </xsl:text>
+        <strong><xsl:value-of select="/bedework/userid"/></strong>
+        <xsl:text> </xsl:text>
+        <span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
+      </div>
+      <ul>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Day'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">DAY</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Week' or /bedework/periodname=''">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}">WEEK</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Month'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if><a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">MONTH</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Year'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if><a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}">YEAR</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventList'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if><a href="{$listEvents}">LIST</a>
+        </li>
+      </ul>
+    </div>
+    <!-- table cellspacing="0" id="tabsTable">
       <tr>
         <td>
           <xsl:choose>
@@ -712,7 +750,7 @@
         </td>
         <td>
           <xsl:choose>
-            <!-- don't allow switching to year for free busy view, so only use setViewPeriod action -->
+            < ! - - don't allow switching to year for free busy view, so only use setViewPeriod action - - >
             <xsl:when test="/bedework/periodname='Year'">
               <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
             </xsl:when>
@@ -736,7 +774,7 @@
           <span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
         </td>
       </tr>
-    </table>
+    </table-->
   </xsl:template>
 
   <xsl:template name="navigation">

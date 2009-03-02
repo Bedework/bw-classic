@@ -402,6 +402,63 @@ body {
   font-weight: normal;
   margin-top: 5px;
 }
+#bedework #bwTabs {
+  width: 100%;
+  min-width: 567px;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+  color: #eee;
+}
+#bedework #bwTabs ul {
+  height: 20px;
+  margin: 0;
+  padding: 4px 0 0 0;
+}
+#bedework #bwTabs li {
+  float: left;
+  width: 80px;
+  height: 20px;
+  text-align: center;
+  line-height: 23px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-image: none;
+  color: black;
+  background: #eee url("../../resources/std-tab-off-80x20.gif") no-repeat bottom;
+}
+#bedework #bwTabs li.selected {
+  color: black;
+  background: #eee url("../../resources/std-tab-on-80x20.gif") no-repeat top;
+}
+#bedework #bwTabs a {
+  text-decoration: none;
+  color: black;
+  background-color: transparent;
+}
+#bedework #bwTabs a:hover {
+  color: #c00;
+  background-color: transparent;
+}
+#bedework #bwUserInfo {
+  float: right;
+  padding-right: 0.5em;
+  margin: 4px 0 0 0;
+  font-size: 0.8em;
+  vertical-align: bottom;
+}
+#bedework #bwUserInfo a {
+  background-color: inherit;
+  color: #ccc;
+}
+#bedework #bwUserInfo .logout {
+  padding-left: 0.5em;
+  font-size: 0.8em;
+}
 #bedework #tabsTable {
   margin: 0;
   padding: 0;
@@ -1324,8 +1381,8 @@ display: inline;
 #bedework #yearCalendarTable  table.yearViewMonthTable td.monthName a  {
   text-decoration: none;
   background-color: inherit;
-  padding: 1px;
   color: #eee;
+  padding: 1px;
 }
 #bedework #yearCalendarTable  table.yearViewMonthTable td a:hover  {
   text-decoration: none;
@@ -1354,7 +1411,7 @@ display: inline;
 #bedework #listTable td.dateRangeCrossDay {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #ddd;
+  background-color: #eee;
   color: black;
   white-space: nowrap;
 }

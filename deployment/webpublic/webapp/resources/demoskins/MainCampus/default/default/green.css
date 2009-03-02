@@ -196,6 +196,47 @@ h2 {
 #searchFilter form {
   display: inline;
 }
+#bwTabs {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+  color: #eee;
+}
+#bwTabs ul {
+  height: 20px;
+  margin: 0 2px;
+  padding: 4px 0 0 0;
+}
+#bwTabs li {
+  float: left;
+  width: 80px;
+  height: 20px;
+  text-align: center;
+  line-height: 23px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-image: none;
+  color: black;
+  background: #eee url("../../images/std-tab-off-80x20.gif") no-repeat bottom;
+}
+#bwTabs li.selected {
+  color: black;
+  background: #eee url("../../images/std-tab-on-80x20.gif") no-repeat top;
+}
+#bwTabs a {
+  text-decoration: none;
+  color: black;
+  background-color: transparent;
+}
+#bwTabs a:hover {
+  color: #c00;
+  background-color: transparent;
+}
 #tabsTable {
   margin: 0em;
   padding: 4px 0px 0px 0px;

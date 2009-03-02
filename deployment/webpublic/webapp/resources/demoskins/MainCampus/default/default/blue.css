@@ -49,7 +49,7 @@ body {
 #curDateRangeTable {
   width: 100%;
   height: 26px;
-  background: #2c5f89 url(../../images/curDateRangeBlue.gif) repeat-x bottom;
+  background: #2B4795 url(../../images/glassFill-02.gif) repeat-x bottom;
   color : #eee;
   margin: 0em;
   font-weight : bold;
@@ -64,7 +64,7 @@ body {
   padding-right: 13px;
 }
 #curDateRangeTable td.sideBarOpenCloseIcon {
-  background: url(../../images/curDateRangeBlue-left.gif) no-repeat top left;
+  background: url(../../images/glassFill-02-leftBorder.gif) no-repeat top left;
   color: inherit;
   width: 200px;
 }
@@ -74,7 +74,7 @@ body {
   white-space: nowrap;
 }
 #curDateRangeTable td.rssPrint {
-  background: url(../../images/curDateRangeBlue-right.gif) no-repeat top right;
+  background: url(../../images/glassFill-02-rightBorder.gif) no-repeat top right;
   color: inherit;
   width: 200px;
   font-weight : bold;
@@ -190,6 +190,48 @@ body {
 #searchFilter form {
   display: inline;
 }
+#bwTabs {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+  color: #eee;
+}
+#bwTabs ul {
+  height: 20px;
+  margin: 0 2px;
+  padding: 4px 0 0 0;
+}
+#bwTabs li {
+  float: left;
+  width: 80px;
+  height: 20px;
+  text-align: center;
+  line-height: 23px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-image: none;
+  color: black;
+  background: #eee url("../../images/std-tab-off-80x20.gif") no-repeat bottom;
+}
+#bwTabs li.selected {
+  color: black;
+  background: #eee url("../../images/std-tab-on-80x20.gif") no-repeat top;
+}
+#bwTabs a {
+  text-decoration: none;
+  color: black;
+  background-color: transparent;
+}
+#bwTabs a:hover {
+  color: #c00;
+  background-color: transparent;
+}
+/* tabsTable provides styles for the older version of Bedework's tabs */
 #tabsTable {
   margin: 0em;
   padding: 4px 0px 0px 0px;
@@ -209,6 +251,7 @@ body {
   padding-right: 0.5em;
 }
 #navigationBarTable {
+  clear: both;
   font-size: 0.8em;
   margin: 0em;
   padding: 0em;
@@ -340,7 +383,7 @@ body {
   white-space: nowrap;
 }
 #searchTable .searchRelevance {
-  background-color: #2c5f89;
+  background-color: #2B4795;
   color: black;
 }
 #calPageTable {
@@ -402,7 +445,7 @@ body {
 }
 #dayCalendarTable .dateRange {
   text-align: left;
-  background-color: #D3E4F0;
+  background-color: #e2decc;
   color: black;
   white-space: nowrap;
 }
@@ -434,7 +477,7 @@ body {
 }
 #weekCalendarTable .dateRange {
   text-align: left;
-  background-color: #D3E4F0;
+  background-color: #e2decc;
   color: black;
   white-space: nowrap;
 }
@@ -464,7 +507,7 @@ body {
   width: 14%;
   text-align: center;
   vertical-align: middle;
-  background-color: #2c5f89;
+  background-color: #2B4795;
   color: #eee;
   border: 1px solid black;
 }
@@ -509,7 +552,7 @@ body {
   display: block;
   padding: 0.1em 0.2em 0.1em 0.2em;
   text-decoration: none;
-  background-color: #A3C8D9;
+  background-color: #CCD7F5;
   color: black;
 }
 #monthCalendarTable a.eventLinkB:link,
@@ -518,7 +561,7 @@ body {
   display: block;
   padding: 0.1em 0.2em 0.1em 0.2em;
   text-decoration: none;
-  background-color: #DEECF2;
+  background-color: #EBF0FF;
   color: black;
 }
 #monthCalendarTable a.eventCancelled:link,
@@ -673,8 +716,8 @@ a.gridAdd {
 #yearCalendarTable table.yearViewMonthTable td.monthName {
   font-weight: bold;
   text-align: center;
-  background-color: #EDF5F9;
-  color: black;
+  background-color: #2B4795;
+  color: #eee;
   white-space: nowrap;
   border-bottom: 1px solid #999;
 }
@@ -699,8 +742,8 @@ a.gridAdd {
 #yearCalendarTable  table.yearViewMonthTable td.monthName a  {
   text-decoration: none;
   background-color: inherit;
+  color: #eee;
   padding: 1px;
-  color: black;
 }
 #yearCalendarTable  table.yearViewMonthTable td a:hover  {
   text-decoration: none;
@@ -739,28 +782,28 @@ a.gridAdd {
 #listTable td.dateRangeEarlyMorning {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #C0D4DD;
+  background-color: #D0D5E1;
   color: black;
   white-space: nowrap;
 }
 #listTable td.dateRangeMorning {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #F0F9FF;
+  background-color: #DFE7FB;
   color: black;
   white-space: nowrap;
 }
 #listTable td.dateRangeAfternoon {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #DEECF2;
+  background-color: #CCD7F5;
   color: black;
   white-space: nowrap;
 }
 #listTable td.dateRangeEvening {
   font-size: 0.9em;
   text-transform: lowercase;
-  background-color: #A3C8D9;
+  background-color: #B3C0E6;
   color: black;
   white-space: nowrap;
 }
@@ -799,15 +842,15 @@ a.gridAdd {
 }
 #listTable td.dateRow {
   text-align: left;
-  background-color: #B1D4E3;
-  color: #333;
+  background-color: #666;
+  /*background-color: #2B4795;*/
+  color: #eee;
   font-size: 0.8em;
+  margin: 0;
   padding: 0.2em 0.5em 0.2em 0.5em;
-  margin: 0em;
 }
 #listTable td.dateRow a {
-  display: block;
-  color: #333;
+  color: #fff;
   background-color: transparent;
   font-weight: bold;
   text-decoration : none;
@@ -916,7 +959,7 @@ a.gridAdd {
 }
 /*   LINKS    */
 a:link, a:active, a:visited {
-  color: #2c5f89;
+  color: #2B4795;
   background-color: transparent;
 }
 a:hover {
@@ -1042,7 +1085,7 @@ html .dojoFloatingPane {
 }
 html .dojoFloatingPaneTitleBar {
   color: white;
-  background: #2c5f89 url(../../images/curDateRangeBlue.gif) repeat-x bottom;
+  background: #2B4795 url(../../images/curDateRangeBlue.gif) repeat-x bottom;
 }
 html .dojoFloatingPaneTitleText {
   padding: 0.25em 1em;

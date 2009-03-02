@@ -300,7 +300,38 @@
   </xsl:template>
 
   <xsl:template name="tabs">
-    <xsl:choose>
+    <div id="bwTabs">
+      <ul>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Day'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">DAY</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Week' or /bedework/periodname=''">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}">WEEK</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Month'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if><a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">MONTH</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Year'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if><a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}">YEAR</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventList'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if><a href="{$listEvents}">LIST</a>
+        </li>
+      </ul>
+    </div>
+    <!-- xsl:choose>
       <xsl:when test="/bedework/page='eventscalendar'">
         <table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
           <tr>
@@ -345,7 +376,7 @@
               </xsl:choose>
             </td>
             <td class="centerCell">
-              &#160;<!--<img src="{$resourcesRoot}/images/std-button-today.gif" width="46" height="17" border="0" alt="TODAY"/>-->
+              &#160;
             </td>
             <td class="rightCell">
               &#160;
@@ -369,7 +400,7 @@
               <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
             </td>
             <td class="centerCell">
-              &#160;<!--<img src="{$resourcesRoot}/images/std-button-today.gif" width="46" height="17" border="0" alt="TODAY"/>-->
+              &#160;
             </td>
             <td class="rightCell">
               &#160;
@@ -377,7 +408,7 @@
           </tr>
         </table>
       </xsl:otherwise>
-    </xsl:choose>
+    </xsl:choose-->
   </xsl:template>
 
   <xsl:template name="navigation">
@@ -858,6 +889,16 @@
           </td>
         </tr>
       </xsl:if>
+      <xsl:if test="comments/comment">
+        <tr>
+          <td class="fieldname">Comments:</td>
+          <td class="fieldval comments">
+            <xsl:for-each select="comments/comment">
+              <p><xsl:value-of select="value"/></p>
+            </xsl:for-each>
+          </td>
+        </tr>
+      </xsl:if>
       <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
         <tr>
           <td class="fieldname">Topical Area:</td>
@@ -874,17 +915,6 @@
           </td>
         </tr>
       </xsl:if>
-      <xsl:if test="calendar/path!=''">
-        <tr>
-          <td class="fieldname">Calendar:</td>
-          <td class="fieldval">
-            <xsl:variable name="calUrl" select="calendar/encodedPath"/>
-            <a href="{$setSelection}&amp;calUrl={$calUrl}">
-              <xsl:value-of select="calendar/name"/>
-            </a>
-          </td>
-        </tr>
-      </xsl:if>
       <xsl:if test="categories/category">
         <tr>
           <td class="fieldname">Categories:</td>
@@ -895,13 +925,14 @@
           </td>
         </tr>
       </xsl:if>
-      <xsl:if test="comments/comment">
+      <xsl:if test="calendar/path!=''">
         <tr>
-          <td class="fieldname">Comments:</td>
-          <td class="fieldval comments">
-            <xsl:for-each select="comments/comment">
-              <p><xsl:value-of select="value"/></p>
-            </xsl:for-each>
+          <td class="fieldname">Calendar:</td>
+          <td class="fieldval">
+            <xsl:variable name="calUrl" select="calendar/encodedPath"/>
+            <a href="{$setSelection}&amp;calUrl={$calUrl}">
+              <xsl:value-of select="calendar/name"/>
+            </a>
           </td>
         </tr>
       </xsl:if>
