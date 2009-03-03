@@ -313,6 +313,7 @@ ul.adminMenu li {
 #bwSubmittedEventCommentBlock h4 {
   display: inline;
   font-size: 1.1em;
+  padding: 1em 0;
 }
 #bwSubmittedEventCommentBlock table {
   float: left;
@@ -327,7 +328,6 @@ ul.adminMenu li {
   padding: 0 3em 0 0;
 }
 #bwSubmittedEventCommentBlock p {
-  padding-top: 1em;
   clear: both;
 }
 #bwSubmittedEventCommentBlock a.toggle {

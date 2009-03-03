@@ -470,6 +470,7 @@
         <strong>Step 3:</strong> Select Contact.
       </div>
       <div id="bwHelp-Categories" class="invisible">
+        <!-- this tab is now "topical areas - we will leave the ids named "categories" for now. -->
         <div class="navButtons">
           <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories');">
             <img alt="previous"
@@ -487,7 +488,7 @@
               border="0"/>
           </a>
         </div>
-        <strong>Step 4:</strong> Select Categories. <em>Optional.</em>
+        <strong>Step 4:</strong> Select Topical Areas. <em>Optional.</em>
       </div>
       <div id="bwHelp-Review" class="invisible">
         <div class="navButtons">
@@ -534,7 +535,7 @@
             </td>
             <td class="fieldval">
               <xsl:choose>
-                <xsl:when test="$submissionCalendars &gt; 1">
+                <xsl:when test="$submissionCalendars = 1">
                   <!-- there is only 1 writable calendar, just send a hidden field -->
                   <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[calType='1']/path"/></xsl:variable>
                   <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
@@ -1050,10 +1051,30 @@
         </div>
       </div>
 
-      <!-- Categories tab -->
-      <!-- ============== -->
+      <!-- Categories tab (now Topical areas) -->
+      <!-- ================================== -->
       <div id="bwEventTab-Categories" class="invisible">
-        <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
+        <!-- Topical area  -->
+        <!-- These are the subscriptions (aliases) where the events should show up.
+             By selecting one or more of these, appropriate categories will be set on the event -->
+        <ul class="aliasTree">
+          <!-- hard coding the "aliases" name is not best, but will do for now -->
+          <xsl:apply-templates select="form/calendars/calendar/calendar[name='aliases']" mode="showEventFormAliases">
+            <xsl:with-param name="root">true</xsl:with-param>
+          </xsl:apply-templates>
+        </ul>
+        <p class="subFormMessage">
+          Missing a topical area?  Please describe what type of event you're submitting:
+        </p>
+        <div class="subForm">
+          <p>
+            <label for="commentCategories">Type of event: </label>
+            <input type="text" name="commentCategories" size="80">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:attribute>
+            </input>
+          </p>
+        </div>
+        <!-- xsl:variable name="catCount" select="count(form/categories/all/category)"/>
         <xsl:choose>
           <xsl:when test="not(form/categories/all/category)">
             no categories defined
@@ -1093,7 +1114,7 @@
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:attribute>
             </input>
           </p>
-        </div>
+        </div-->
       </div>
 
       <!--   Review tab   -->
@@ -1210,6 +1231,37 @@
         </div>
       </div>
     </div>
+  </xsl:template>
+
+  <xsl:template match="calendar" mode="showEventFormAliases">
+    <xsl:param name="root">false</xsl:param>
+    <li>
+      <xsl:if test="$root != 'true'">
+        <!-- hide the root calendar. -->
+        <xsl:choose>
+          <xsl:when test="calType = '0'">
+            <!-- no direct selecting of folders or folder aliases: we only want users to select the
+                 underlying calendar aliases -->
+            <!--img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="folder" class="folderForAliasTree" border="0"/-->
+            <input type="checkbox" name="forDiplayOnly" disabled="disabled"/>
+            <xsl:value-of select="name"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <input type="checkbox" name="alias">
+              <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
+              <xsl:if test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
+            </input>
+            <xsl:value-of select="name"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
+
+      <xsl:if test="calendar">
+        <ul>
+          <xsl:apply-templates select="calendar" mode="showEventFormAliases"/>
+        </ul>
+      </xsl:if>
+    </li>
   </xsl:template>
 
   <xsl:template match="val" mode="weekMonthYearNumbers">

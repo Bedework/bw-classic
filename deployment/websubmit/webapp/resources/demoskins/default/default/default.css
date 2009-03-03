@@ -660,6 +660,22 @@ display: inline;
   height: 0.5em;
   border: 1px solid #666 !important;
 }
+#bedework .aliasTree {
+  margin: 1em 0;
+  padding: 0;
+}
+#bedework .aliasTree li {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+}
+#bedework .aliasTree li ul {
+  margin: 0 0 0.5em 0.75em;
+  padding-left: 10px;
+}
+#bedework img.folderForAliasTree {
+  padding: 0.5em 0.2em 0 0.5em;
+}
 #bedework #submitTable {
   width: 98%; /* less than 100% helps avoid IE weirdness */
   margin: 1em 0;

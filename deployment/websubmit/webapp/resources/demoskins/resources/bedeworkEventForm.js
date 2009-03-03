@@ -271,6 +271,30 @@ function setBedeworkXProperties(formObj,submitter) {
   // Depends on bedeworkXProperties.js
   // Set application local x-properties here.
 
+  // Submission comments as x-properties
+  // Only return those comments that contain non-empty values;
+  // throw out the subfields if main field has no value.
+
+  if (formObj["commentLocationAddress"].value != "") {
+    bwXProps.update(bwXPropertyLocation,
+                  [[bwXParamSubAddress,formObj["commentLocationSubaddress"].value],
+                   [bwXParamURL,formObj["commentLocationURL"].value]],
+                   formObj["commentLocationAddress"].value,true);
+  }
+  if (formObj["commentContactName"].value != "") {
+    bwXProps.update(bwXPropertyContact,
+                  [[bwXParamPhone,formObj["commentContactPhone"].value],
+                   [bwXParamURL,formObj["commentContactURL"].value],
+                   [bwXParamEmail,formObj["commentContactEmail"].value]],
+                   formObj["commentContactName"].value,true);
+  }
+  if (formObj["commentCategories"].value) {
+    bwXProps.update(bwXPropertyCategories,[],formObj["commentCategories"].value,true);
+  }
+  if (formObj["commentNotes"].value) {
+    bwXProps.update(bwXPropertySubmitComment,[],formObj["commentNotes"].value,true);
+  }
+
   // X-BEDEWORK-IMAGE and its parameters:
   if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {
     bwXProps.update(bwXPropertyImage,

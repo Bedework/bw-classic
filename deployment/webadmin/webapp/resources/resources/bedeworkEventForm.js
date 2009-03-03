@@ -276,10 +276,9 @@ function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactN
       output += '</table>';
     }
     if (this.category != "") {
-      output += '<table>';
-      output += '<tr><th colspan="2">Suggested Category:</th></tr>';
-      output += '<tr><td>Category:</td><td>' + this.category + '</td></tr>';
-      output += '</table>';
+      output += '<p><strong>Suggested Type of Event:</strong><br/>';
+      output += this.category;
+      output += '</p>';
     }
     output += '<p>';
     if (this.notes != "") {
