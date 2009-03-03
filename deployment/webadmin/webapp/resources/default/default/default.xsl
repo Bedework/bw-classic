@@ -2398,20 +2398,26 @@
       <xsl:if test="$root != 'true'">
         <!-- hide the root calendar. -->
         <xsl:choose>
+          <xsl:when test="calType = '7' or calType = '8'">
+            <!-- we've hit an unresolvable alias; stop descending -->
+            <input type="checkbox" name="forDiplayOnly" disabled="disabled"/>
+            <em><xsl:value-of select="name"/>?</em>
+          </xsl:when>
           <xsl:when test="calType = '0'">
             <!-- no direct selecting of folders or folder aliases: we only want users to select the
                  underlying calendar aliases -->
             <!--img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="folder" class="folderForAliasTree" border="0"/-->
             <input type="checkbox" name="forDiplayOnly" disabled="disabled"/>
+            <xsl:value-of select="name"/>
           </xsl:when>
           <xsl:otherwise>
             <input type="checkbox" name="alias">
               <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
               <xsl:if test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
+            <xsl:value-of select="name"/>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:value-of select="name"/>
       </xsl:if>
 
       <xsl:if test="calendar[isSubscription = 'true' or calType = '0']">
@@ -4202,6 +4208,11 @@
               7 - Alias (internal - the underlying calType will be returned; check for the isSubscription property)
               8 - External subscription (internal - the underlying calType will be returned; check for the isSubscription property and check on the item's status)
               9 - Resource collection
+
+      calType 7 and 8 will only be returned when a link to an alias is broken.
+      The system will instead return the underlying calendar type (down the tree).
+      Check the isSubscription flag to see if a collection is an alias and set
+      icons etc. based on that + the underlying calType.
   -->
 
   <xsl:template match="calendars" mode="subscriptions">

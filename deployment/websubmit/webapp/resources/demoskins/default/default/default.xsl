@@ -534,7 +534,7 @@
             </td>
             <td class="fieldval">
               <xsl:choose>
-                <xsl:when test="$submissionCalendars = 1">
+                <xsl:when test="$submissionCalendars &gt; 1">
                   <!-- there is only 1 writable calendar, just send a hidden field -->
                   <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[calType='1']/path"/></xsl:variable>
                   <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
