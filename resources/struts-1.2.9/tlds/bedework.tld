@@ -94,7 +94,7 @@
     <name>emitContainer</name>
     <tagclass>org.bedework.webcommon.taglib.EmitContainerTag</tagclass>
     <bodycontent>empty</bodycontent>
-    <info>Emit txt in a tag</info>
+    <info>Emit bedework collections in a tag</info>
 
     <attribute>
       <name>name</name>
@@ -121,7 +121,68 @@
     </attribute>
 
     <attribute>
+      <name>noTag</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
       <name>indent</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>full</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>emitCollection</name>
+    <tagclass>org.bedework.webcommon.taglib.EmitCollectionTag</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>Emit bedework collections in a tag</info>
+
+    <attribute>
+      <name>name</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>tagName</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>noTag</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>indent</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>full</name>
       <required>false</required>
       <rtexprvalue>false</rtexprvalue>
     </attribute>
@@ -131,7 +192,7 @@
     <name>emitRexdates</name>
     <tagclass>org.bedework.webcommon.taglib.EmitRExDatesTag</tagclass>
     <bodycontent>empty</bodycontent>
-    <info>Emit txt in a tag</info>
+    <info>Emit recurrence or exception dates</info>
 
     <attribute>
       <name>name</name>
