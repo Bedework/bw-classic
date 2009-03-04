@@ -46,6 +46,7 @@
   <xsl:include href="../../../bedework-common/default/default/bedeworkAccess.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
+
   <!-- URL of html resources (images, css, other html); by default this is
        set to the application root, but for the admin client
        this should be changed to point to a
@@ -63,13 +64,14 @@
        and can be safely removed if you so choose. -->
   <xsl:variable name="appRoot" select="/bedework/approot"/>
 
+  <!-- Root folder of the submissions calendars used by the submissions client -->
+  <xsl:variable name="submissionsRootEncoded" select="/bedework/submissionsRoot/encoded"/>
+  <xsl:variable name="submissionsRootUnencoded" select="/bedework/submissionsRoot/unencoded"/>
+
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal.
        we will probably change the way we create these before long (e.g. build them
        dynamically in the xslt). -->
-
-  <xsl:variable name="submissionsRootEncoded" select="/bedework/submissionsRoot/encoded"/>
-  <xsl:variable name="submissionsRootUnencoded" select="/bedework/submissionsRoot/unencoded"/>
 
   <!-- primary navigation, menu tabs -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup/a/@href"/>
@@ -1026,6 +1028,19 @@
         </xsl:otherwise>
       </xsl:choose>
 
+      <!-- Set the underlying calendar; if there is more than one publishing calendar, the
+           form below will test for that and allow this value to be changed.  -->
+      <input type="hidden" name="newCalPath" id="newCalPath">
+        <xsl:choose>
+          <xsl:when test="/bedework/creating='true'">
+            <xsl:attribute name="value"><xsl:value-of select="form/calendar/all/select/option/@value"/></xsl:attribute>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:attribute name="value"><xsl:value-of select="form/calendar/all/select/option[@selected]/@value"/></xsl:attribute>
+          </xsl:otherwise>
+        </xsl:choose>
+      </input>
+
       <xsl:call-template name="submitEventButtons"/>
 
       <table class="eventFormTable">
@@ -1037,22 +1052,18 @@
             <xsl:copy-of select="form/title/*"/>
           </td>
         </tr>
-        <!-- Disabling calendar selection is temporary - but we must determine if we're using
-             a single calendar model (e.g. excluding submissions calendar, etc). The following value should *not* be
-             hard coded, but we'll do this for the moment. -->
-        <input type="hidden" name="newCalPath" value="/public/cals/MainCal"/>
-        <!--
-        <xsl:if test="not(starts-with(form/calendar/path,$submissionsRootUnencoded))">
+
+        <xsl:if test="count(form/calendar/all/select/option) &gt; 1 and
+                      not(starts-with(form/calendar/path,$submissionsRootUnencoded))">
+        <!-- check to see if we have more than one publishing calendar
+             but disallow directly setting for pending events -->
           <tr>
             <td class="fieldName">
               Calendar:
-              <input type="hidden" name="newCalPath" value="">
-                <xsl:attribute name="value"><xsl:value-of select="form/calendar/all/select/option[@selected]/@value"/></xsl:attribute>
-              </input>
             </td>
             <td>
               <xsl:if test="form/calendar/preferred/select/option">
-                -  - Display the preferred calendars by default if they exist - -
+                <!-- Display the preferred calendars by default if they exist -->
                 <select name="bwPreferredCalendars" id="bwPreferredCalendars" onchange="this.form.newCalPath.value = this.value">
                   <option value="">
                     Select:
@@ -1074,7 +1085,7 @@
                   </xsl:for-each>
                 </select>
               </xsl:if>
-               - - hide the listing of all calendars if preferred calendars exist, otherwise show them - -
+              <!-- hide the listing of all calendars if preferred calendars exist, otherwise show them -->
               <select name="bwAllCalendars" id="bwAllCalendars" onchange="this.form.newCalPath.value = this.value;">
                 <xsl:if test="form/calendar/preferred/select/option">
                   <xsl:attribute name="class">invisible</xsl:attribute>
@@ -1099,8 +1110,8 @@
                 </xsl:for-each>
               </select>
               <xsl:text> </xsl:text>
-               - - allow for toggling between the preferred and all calendars listings if preferred
-                   calendars exist - -
+              <!-- allow for toggling between the preferred and all calendars listings if preferred
+                   calendars exist -->
               <xsl:if test="form/calendar/preferred/select/option">
                 <input type="radio" name="toggleCalendarLists" value="preferred" checked="checked" onclick="changeClass('bwPreferredCalendars','shown');changeClass('bwAllCalendars','invisible');this.form.newCalPath.value = this.form.bwPreferredCalendars.value;"/>
                 preferred
@@ -1113,7 +1124,7 @@
               </span>
             </td>
           </tr>
-        </xsl:if> -->
+        </xsl:if>
 
         <tr>
           <td class="fieldName">
@@ -2432,47 +2443,60 @@
     <table border="0" id="submitTable">
       <tr>
         <xsl:choose>
-          <xsl:when test="starts-with(form/calendar/path,$submissionsRootUnencoded)">
+          <xsl:when test="starts-with(form/calendar/event/path,$submissionsRootUnencoded)">
             <td>
-              <div id="publishBox" class="invisible">
-                <div id="publishBoxCloseButton">
-                  <a href="javascript:resetPublishBox('calendarId')">
-                    <img src="{$resourcesRoot}/resources/closeIcon.gif" width="20" height="20" alt="close" border="0"/>
-                  </a>
-                </div>
-                <strong>Select a calendar in which to publish this event:</strong><br/>
-                <select name="calendarId" id="calendarId">
-                  <option>
-                    <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
-                    Select:
-                  </option>
-                  <xsl:for-each select="form/calendar/all/select/option">
-                    <xsl:sort select="." order="ascending"/>
-                    <option>
-                      <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
-                      <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                      <xsl:choose>
-                        <xsl:when test="starts-with(node(),/bedework/submissionsRoot/unencoded)">
-                          submitted events
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="substring-after(node(),'/public/')"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </option>
-                  </xsl:for-each>
-                </select>
-                <input type="submit" name="publishEvent" value="Publish" onclick="changeClass('publishBox','invisible')"/>
-                <xsl:if test="$portalFriendly = 'false'">
-                  <br/>
-                  <span id="calDescriptionsLink">
-                    <a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a>
-                  </span>
-                </xsl:if>
-              </div>
-              <input type="submit" name="updateSubmitEvent" value="Update Event"/>
-              <input type="button" name="publishEvent" value="Publish Event" onclick="changeClass('publishBox','visible')"/>
-              <input type="submit" name="cancel" value="Cancel"/>
+              <!-- no need for a publish box in the single calendar model unless we have more than one calendar; -->
+              <xsl:choose>
+                <xsl:when test="count(form/calendar/all/select/option) &gt; 1"><!-- test for the presence of more than one publishing calendar -->
+                  <div id="publishBox" class="invisible">
+                    <div id="publishBoxCloseButton">
+                      <a href="javascript:resetPublishBox('calendarId')">
+                        <img src="{$resourcesRoot}/resources/closeIcon.gif" width="20" height="20" alt="close" border="0"/>
+                      </a>
+                    </div>
+                    <strong>Select a calendar in which to publish this event:</strong><br/>
+                    <select name="calendarId" id="calendarId">
+                      <option>
+                        <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
+                        Select:
+                      </option>
+                      <xsl:for-each select="form/calendar/all/select/option">
+                        <xsl:sort select="." order="ascending"/>
+                        <option>
+                          <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
+                          <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                          <xsl:choose>
+                            <xsl:when test="starts-with(node(),/bedework/submissionsRoot/unencoded)">
+                              submitted events
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <xsl:value-of select="substring-after(node(),'/public/')"/>
+                            </xsl:otherwise>
+                          </xsl:choose>
+                        </option>
+                      </xsl:for-each>
+                    </select>
+                    <input type="submit" name="publishEvent" value="Publish" onclick="changeClass('publishBox','invisible')"/>
+                    <xsl:if test="$portalFriendly = 'false'">
+                      <br/>
+                      <span id="calDescriptionsLink">
+                        <a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a>
+                      </span>
+                    </xsl:if>
+                  </div>
+                  <input type="submit" name="updateSubmitEvent" value="Update Event"/>
+                  <input type="button" name="publishEvent" value="Publish Event" onclick="changeClass('publishBox','visible')"/>
+                  <input type="submit" name="cancel" value="Cancel"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <!-- we are using the single calendar model for public events -->
+                  <input type="submit" name="updateSubmitEvent" value="Update Event"/>
+                  <input type="button" name="publishEvent" value="Publish Event">
+                    <xsl:attribute name="onclick">publishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>');</xsl:attribute>
+                  </input>
+                  <input type="submit" name="cancel" value="Cancel"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </td>
             <td align="right">
               <input type="submit" name="delete" value="Delete Event"/>

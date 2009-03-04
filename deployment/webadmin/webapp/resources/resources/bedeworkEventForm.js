@@ -689,3 +689,11 @@ function resetPublishBox(calSelectId) {
   changeClass('publishBox','invisible');
 }
 
+function publishEvent(publishingCal) {
+  // User has submitted the event when there is only a single publishing calendar.
+  // Update the newCalPath to reflect the publishing calendar:
+  var newCalPath = document.getElementById("newCalPath");
+  newCalPath = publishingCal;
+}
+
+
