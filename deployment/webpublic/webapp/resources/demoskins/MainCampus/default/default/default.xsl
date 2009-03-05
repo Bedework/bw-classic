@@ -331,84 +331,6 @@
         </li>
       </ul>
     </div>
-    <!-- xsl:choose>
-      <xsl:when test="/bedework/page='eventscalendar'">
-        <table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
-          <tr>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Day'">
-                  <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-day-on.gif" width="91" height="20" border="0" alt="DAY"/></a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
-                  <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-week-on.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-                 </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-                 </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Month'">
-                  <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-month-on.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Year'">
-                  <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td class="centerCell">
-              &#160;
-            </td>
-            <td class="rightCell">
-              &#160;
-            </td>
-          </tr>
-        </table>
-      </xsl:when>
-      <xsl:otherwise>
-        <table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
-          <tr>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
-            </td>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-            </td>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-            </td>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
-            </td>
-            <td class="centerCell">
-              &#160;
-            </td>
-            <td class="rightCell">
-              &#160;
-            </td>
-          </tr>
-        </table>
-      </xsl:otherwise>
-    </xsl:choose-->
   </xsl:template>
 
   <xsl:template name="navigation">
@@ -1155,11 +1077,11 @@
   <!--==== LIST EVENTS - for listing discrete events ====-->
   <xsl:template match="events" mode="eventList">
     <h2 class="bwStatusConfirmed">
-      Event List:
-      <xsl:choose>
+      Next 7 Days
+      <!-- xsl:choose>
         <xsl:when test="/bedework/now/longdate = /bedework/events/event[position()=last()]/start/longdate"><xsl:value-of select="/bedework/now/longdate"/></xsl:when>
         <xsl:otherwise><xsl:value-of select="/bedework/now/longdate"/> - <xsl:value-of select="/bedework/events/event[position()=last()]/start/longdate"/></xsl:otherwise>
-      </xsl:choose>
+      </xsl:choose-->
     </h2>
 
     <div id="listEvents">
