@@ -5,7 +5,7 @@
      indent="no"
      media-type="text/html"
      doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/strict.dtd"
+     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
      standalone="yes"
      omit-xml-declaration="yes"/>
  <xsl:strip-space elements="*"/>
@@ -805,7 +805,7 @@
       <ul class="adminMenu strong">
         <li class="calendar">
           <a href="{$calendar-fetch}">
-            Manage calendars
+            Manage calendars &amp; folders
           </a>
         </li>
         <li class="categories">
@@ -3302,7 +3302,13 @@
     <table id="calendarTable">
       <tr>
         <td class="cals">
-          <h3>Public calendars</h3>
+          <h2>Collections</h2>
+          <form name="getCollection" id="bwGetCollectionForm" action="{$calendar-fetchForUpdate}">
+            Select by path:<br/>
+            <input type="text" size="15" name="calPath"/>
+            <input type="submit" value="go"/>
+          </form>
+          <h4>Public Tree</h4>
           <ul class="calendarTree">
             <xsl:choose>
               <xsl:when test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
@@ -3813,9 +3819,10 @@
 
 
   <xsl:template name="calendarList">
-    <h3>Manage Calendars</h3>
+    <h3>Manage Calendars &amp; Folders</h3>
     <ul>
-      <li>Select an item from the calendar list on the left to modify
+
+      <li>Select an item from the Public Tree on the left to modify
       a calendar or folder.</li>
       <li>Select the
       <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
@@ -3824,6 +3831,9 @@
           <li>Folders may only contain calendars and subfolders.</li>
           <li>Calendars may only contain events (and other calendar items).</li>
         </ul>
+      </li>
+      <li>
+        You may also retrieve a calendar or folder directly by its path using the form to the left.
       </li>
     </ul>
   </xsl:template>

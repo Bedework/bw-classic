@@ -154,8 +154,8 @@ body {
   font-size: 1.1em;
 }
 #content h4 {
-  margin: 0em;
-  padding: 1em 0.2em 0em 0.2em;
+  margin: 0;
+  padding: 1em 0.2em 0 0.2em;
   font-size: 1em;
 }
 #content .menuTitle {
@@ -939,13 +939,16 @@ p.note {
   font-size: 0.9em;
   padding: 2em;
 }
+ul.calendarTree {
+  margin-top: 0;
+  white-space: nowrap;
+}
 .calendarTree ul {
   padding-left: 10px;
   margin-left: 10px;
 }
 .calendarTree li {
   padding-top: 0.25em;
-  /*font-weight: bold;*/
 }
 li.folder {
   list-style-image: url("../../resources/catIcon.gif");
@@ -1039,6 +1042,10 @@ img.folderForAliasTree {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+#bwGetCollectionForm {
+  margin-top: 1em;
+  white-space: nowrap;
 }
 #bwPublicCalDisplay {
   margin: 1em 0 -1em 1em;
