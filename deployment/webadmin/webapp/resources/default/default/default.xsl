@@ -3833,7 +3833,7 @@
         </ul>
       </li>
       <li>
-        You may also retrieve a calendar or folder directly by its path using the form to the left.
+        Retrieve a calendar or folder directly by its path using the form to the left.
       </li>
     </ul>
   </xsl:template>
