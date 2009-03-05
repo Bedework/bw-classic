@@ -866,7 +866,7 @@
           </td>
         </tr>
       </xsl:if>
-      <xsl:if test="calendar/path!=''">
+      <!--  xsl:if test="calendar/path!=''">
         <tr>
           <td class="fieldname">Calendar:</td>
           <td class="fieldval">
@@ -876,7 +876,7 @@
             </a>
           </td>
         </tr>
-      </xsl:if>
+      </xsl:if-->
     </table>
   </xsl:template>
 
