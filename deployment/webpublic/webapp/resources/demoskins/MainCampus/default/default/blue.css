@@ -904,6 +904,31 @@ a.gridAdd {
 .noEventsCell {
   padding: 1em;
 }
+#listEvents {
+  margin: 0px;
+  padding: 0px;
+  font-size: 0.9em;
+  border-top: 1px solid #666;
+  border-bottom: 2px solid #aaa;
+  border-left: 2px solid #aaa;
+  border-right: 2px solid #aaa;
+}
+#listEvents ul {
+  margin: 2em 1em 2em 0.5em;
+}
+#listEvents li {
+  margin-bottom: 1em;
+}
+#listEvents a.title {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-decoration: none;
+}
+#listEvents li.bwStatusTentative a.title,
+#listEvents li.bwStatusCancelled a.title {
+  color: #999;
+  background-color: transparent;
+}
 #footer {
   font-size: 0.75em;
   text-align : center;
