@@ -429,21 +429,17 @@
        <tr>
          <td class="leftCell">
            <xsl:choose>
-             <xsl:when test="/bedework/selectionState/selectionType = 'calendar'">
-               Calendar: <xsl:value-of select="/bedework/selectionState/subscriptions/subscription/calendar/name"/>
-               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
+             <xsl:when test="/bedework/selectionState/selectionType = 'collections'">
+               Calendar:
+               <strong>
+                 <xsl:call-template name="substring-afterLastInstanceOf">
+                   <xsl:with-param name="string" select="/bedework/appvar[key='curCollection']/value"/>
+                   <xsl:with-param name="char">/</xsl:with-param>
+                 </xsl:call-template>
+               </strong>
              </xsl:when>
              <xsl:when test="/bedework/selectionState/selectionType = 'search'">
                Current search: <xsl:value-of select="/bedework/search"/>
-               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
-             </xsl:when>
-             <xsl:when test="/bedework/selectionState/selectionType = 'subscription'">
-               Subscription: (not implemented yet)
-               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
-             </xsl:when>
-             <xsl:when test="/bedework/selectionState/selectionType = 'filter'">
-               Filter: (not implemented yet)
-               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
              </xsl:when>
              <xsl:otherwise><!-- view -->
                View:
@@ -462,9 +458,9 @@
                   </xsl:for-each>
                 </select>
               </form>
-              <span class="link"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">available calendars</a></span>
              </xsl:otherwise>
            </xsl:choose>
+           <span class="link"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">available calendars</a></span>
          </td>
          <td class="rightCell">
             <xsl:if test="/bedework/page!='searchResult'">
@@ -1465,7 +1461,8 @@
     </xsl:variable>
     <xsl:variable name="url" select="encodedPath"/>
     <li class="{$itemClass}">
-      <a href="{$setSelection}&amp;calUrl={$url}" title="view calendar"><xsl:value-of select="name"/></a>
+      <xsl:variable name="calPath" select="path"/>
+      <a href="{$setSelection}&amp;calUrl={$url}&amp;setappvar=curCollection({$calPath})" title="view calendar"><xsl:value-of select="name"/></a>
       <xsl:if test="calType != '0'">
         <xsl:variable name="calPath" select="path"/>
         <span class="exportCalLink">
