@@ -39,6 +39,7 @@
           <principalRoot>/principals</principalRoot>
           <userPrincipalRoot>/principals/users</userPrincipalRoot>
           <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
+          <bwadmingroupPrincipalRoot>/principals/groups/bwadmin</bwadmingroupPrincipalRoot>
           <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
           <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
           <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>

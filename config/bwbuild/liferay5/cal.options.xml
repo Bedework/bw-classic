@@ -32,17 +32,23 @@
         <publicCardDAVUri>http://localhost:8080/carddav</publicCardDAVUri>
         <personalCardDAVUri>http://localhost:8080/ucarddav</personalCardDAVUri>
 
+        <!-- Timezone server locations -->
+        <timezonesUri>http://localhost:8080/tzsvr</timezonesUri>
+
+        <systemRoots  classname="org.bedework.calfacade.configs.SystemRoots" >
+          <principalRoot>/principals</principalRoot>
+          <userPrincipalRoot>/principals/users</userPrincipalRoot>
+          <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
+          <bwadmingroupPrincipalRoot>/principals/groups/bwadmin</bwadmingroupPrincipalRoot>
+          <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
+          <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
+          <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
+          <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
+        </systemRoots>
+
         <module>
           <!-- A dummy module with no directory. -->
           <dir-config classname="org.bedework.calfacade.configs.DirConfigProperties">
-            <principalRoot>/principals</principalRoot>
-            <userPrincipalRoot>/principals/users</userPrincipalRoot>
-            <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
-            <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
-            <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
-            <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
-            <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
-
             <!-- List domains at your site separated by commas.
                     A single leading wildcard "*" is allowed.
                     If there is a single domain with no wildcard it wil be stripped from
@@ -61,14 +67,6 @@
 
           <!-- An example of how we might configure an ldap directory module. -->
           <user-ldap-group classname="org.bedework.calfacade.configs.LdapConfigProperties">
-            <principalRoot>/principals</principalRoot>
-            <userPrincipalRoot>/principals/users</userPrincipalRoot>
-            <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
-            <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
-            <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
-            <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
-            <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
-
             <domains>mysite.edu</domains>
             <defaultDomain>mysite.edu</defaultDomain>
 
