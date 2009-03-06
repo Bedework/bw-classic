@@ -5,6 +5,7 @@
     <bedework>
       <global>
         <version>3.5</version>
+
         <dirhandlers>
           <!-- handle the principal hierarchy.
                This could be a read-only interface if we don't intend to allow
