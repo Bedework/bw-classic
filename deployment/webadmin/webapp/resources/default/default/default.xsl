@@ -3685,6 +3685,34 @@
           </td>
         </tr>
         <tr>
+          <th>Display:</th>
+          <td>
+            <input type="checkbox" name="calendar.display" size="40">
+              <xsl:if test="display = 'true'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input> display items in this collection
+          </td>
+        </tr>
+        <tr>
+          <xsl:if test="disabled = 'true'">
+            <xsl:attribute name="class">disabled</xsl:attribute>
+          </xsl:if>
+          <th>Disabled:</th>
+          <td>
+            <input type="hidden" name="calendar.disabled" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="disabled"/></xsl:attribute>
+            </input>
+            <xsl:value-of select="disabled"/>
+            <xsl:if test="disabled = 'true'">
+              <span class="disabledNote">
+                This item is inaccessible and has been disabled.  You may
+                re-enable it to try again.
+              </span>
+            </xsl:if>
+          </td>
+        </tr>
+        <tr>
           <th>Filter Expression:</th>
           <td>
             <input type="text" name="fexpr" size="40">
