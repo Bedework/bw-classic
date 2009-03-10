@@ -3495,7 +3495,8 @@
             </textarea>
           </td>
         </tr>
-        <tr>
+        <!-- For now, colors need to be set in the calendar suite stylesheet. -->
+        <!-- tr>
           <th>Color:</th>
           <td>
             <select name="calendar.color">
@@ -3509,7 +3510,7 @@
               </xsl:for-each>
             </select>
           </td>
-        </tr>
+        </tr-->
         <tr>
           <th>Filter Expression:</th>
           <td>
@@ -3676,14 +3677,15 @@
             </textarea>
           </td>
         </tr>
-        <tr>
+        <!-- For now, colors need to be set in the calendar suite stylesheet. -->
+        <!-- tr>
           <th>Color:</th>
           <td>
             <input type="text" name="calendar.color" value="" size="40">
               <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
             </input>
           </td>
-        </tr>
+        </tr-->
         <tr>
           <th>Display:</th>
           <td>
@@ -4402,7 +4404,8 @@
             </textarea>
           </td>
         </tr>
-        <tr>
+        <!-- For now, colors need to be set in the calendar suite stylesheet. -->
+        <!-- tr>
           <th>Color:</th>
           <td>
             <select name="calendar.color">
@@ -4416,7 +4419,7 @@
               </xsl:for-each>
             </select>
           </td>
-        </tr>
+        </tr-->
         <tr>
           <th>Filter Expression:</th>
           <td>
