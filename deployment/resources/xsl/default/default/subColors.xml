@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Bedework Calendar subscription colors -->
+
+  <!-- **********************************************************************
+    Copyright 2006 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+
+    Redistribution and use of this distribution in source and binary forms,
+    with or without modification, are permitted provided that:
+       The above copyright notice and this permission notice appear in all
+        copies and supporting documentation;
+
+        The name, identifiers, and trademarks of Rensselaer Polytechnic
+        Institute are not used in advertising or publicity without the
+        express prior written permission of Rensselaer Polytechnic Institute;
+
+    DISCLAIMER: The software is distributed" AS IS" without any express or
+    implied warranty, including but not limited to, any implied warranties
+    of merchantability or fitness for a particular purpose or any warrant)'
+    of non-infringement of any current or pending patent rights. The authors
+    of the software make no representations about the suitability of this
+    software for any particular purpose. The entire risk as to the quality
+    and performance of the software is with the user. Should the software
+    prove defective, the user assumes the cost of all necessary servicing,
+    repair or correction. In particular, neither Rensselaer Polytechnic
+    Institute, nor the authors of the software are liable for any indirect,
+    special, consequential, or incidental damages related to the software,
+    to the maximum extent the law permits. -->
+
+<!--
+
+  Bedework Calendar Colors
+
+  Parameters
+    name = value suitable for displaying in a UI
+    classname  = value suitable for using as a css class
+
+  Value
+    The value is the rrggbb value of the color
+
+ -->
+
+<subscriptionColors>
+  <!-- light pastels -->
+  <color name="white" classname="bwwhite">#ffffff</color>
+  <color name="lt pink" classname="bwltpink">#fddeee</color>
+  <color name="lt purple" classname="bwltpurple">#ddd4e8</color>
+  <color name="lt steelblue" classname="bwltsteelblue">#bfd5e8</color>
+  <color name="lt blue" classname="bwltblue">#ccecef</color>
+  <color name="lt aquamarine" classname="bwltaquamarine">#b3e2dd</color>
+  <color name="lt seagreen" classname="bwltaquamarine">#cfeccf</color>
+  <color name="lt green" classname="bwltgreen">#e0f3b0</color>
+  <color name="lt yellow" classname="bwltyellow">#ffffb0</color>
+  <color name="lt salmon" classname="bwltsalmon">#feebc9</color>
+
+  <!-- medium pastels -->
+  <color name="gray" classname="bwgray">#eeeeee</color>
+  <color name="pink" classname="bwpink">#fbb6d1</color>
+  <color name="purple" classname="bwpurple">#c1b3d7</color>
+  <color name="steelblue" classname="bwsteelblue">#94a8d0</color>
+  <color name="blue" classname="bwblue">#9acedf</color>
+  <color name="aquamarine" classname="bwaquamarine">#86cfbe</color>
+  <color name="seagreen" classname="bwseagreen">#b5e1ae</color>
+  <color name="green" classname="bwgreen">#bfe476</color>
+  <color name="yellow" classname="bwyellow">#fffa81</color>
+  <color name="salmon" classname="bwsalmon">#fdcaa2</color>
+
+  <!-- dark pastels -->
+  <color name="md gray" classname="bwmdgray">#dddddd</color>
+  <color name="md pink" classname="bwmdpink">#f98cb6</color>
+  <color name="md purple" classname="bwmdpurple">#a589c1</color>
+  <color name="md steelblue" classname="bwmdsteelblue">#7589bf</color>
+  <color name="md blue" classname="bwmdblue">#6fb7d6</color>
+  <color name="md aquamarine" classname="bwmdaquamarine">#48b5a3</color>
+  <color name="md seagreen" classname="bwmdseagreen">#91d290</color>
+  <color name="md green" classname="bwmdgreen">#85ca5d</color>
+  <color name="md yellow" classname="bwmdyellow">#ffed62</color>
+  <color name="md salmon" classname="bwmdsalmon">#fca985</color>
+</subscriptionColors>

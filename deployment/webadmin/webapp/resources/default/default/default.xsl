@@ -3308,7 +3308,7 @@
             <input type="text" size="15" name="calPath"/>
             <input type="submit" value="go"/>
           </form>
-          <h4>Public Tree</h4>
+          <h4 class="calendarTreeTitle">Public Tree</h4>
           <ul class="calendarTree">
             <xsl:choose>
               <xsl:when test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">

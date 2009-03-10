@@ -237,6 +237,10 @@
                     <!-- show an event -->
                     <xsl:apply-templates select="/bedework/event"/>
                   </xsl:when>
+                  <xsl:when test="/bedework/page='eventList'">
+                    <!-- show a list of discrete events in a time period -->
+                    <xsl:apply-templates select="/bedework/events" mode="eventList"/>
+                  </xsl:when>
                   <xsl:when test="/bedework/page='addEvent'">
                     <xsl:apply-templates select="/bedework/formElements" mode="addEvent"/>
                   </xsl:when>
@@ -922,7 +926,7 @@
 
            <!-- toggle list / calendar view -->
            <xsl:choose>
-             <xsl:when test="/bedework/periodname='Day'">
+             <xsl:when test="/bedework/periodname='Day' or /bedework/page='eventList'">
                <img src="{$resourcesRoot}/resources/std-button-listview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
              </xsl:when>
              <xsl:when test="/bedework/periodname='Year'">
@@ -960,37 +964,51 @@
 
            <!-- summary / detailed mode toggle -->
            <xsl:choose>
-             <xsl:when test="/bedework/periodname='Year' or
+              <xsl:when test="/bedework/page = 'eventList'">
+                <xsl:choose>
+                  <xsl:when test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
+                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="toggle summary/detailed view">
+                      <img src="{$resourcesRoot}/resources/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    </a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="toggle summary/detailed view">
+                      <img src="{$resourcesRoot}/resources/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    </a>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:when test="/bedework/periodname='Year' or
                               (/bedework/periodname='Month' and
                               (/bedework/appvar[key='monthViewMode']/value='cal' or
                                not(/bedework/appvar[key='monthViewMode']))) or
                               (/bedework/periodname='Week' and
                               (/bedework/appvar[key='weekViewMode']/value='cal' or
                                not(/bedework/appvar[key='weekViewMode'])))">
-               <xsl:choose>
-                 <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                   <img src="{$resourcesRoot}/resources/std-button-summary-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
-                 </xsl:when>
-                 <xsl:otherwise>
-                   <img src="{$resourcesRoot}/resources/std-button-details-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
-                 </xsl:otherwise>
-               </xsl:choose>
-             </xsl:when>
-             <xsl:otherwise>
-               <xsl:choose>
-                 <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                   <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="toggle summary/detailed view">
-                     <img src="{$resourcesRoot}/resources/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
-                   </a>
-                 </xsl:when>
-                 <xsl:otherwise>
-                   <a href="{$setup}&amp;setappvar=summaryMode(details)" title="toggle summary/detailed view">
-                     <img src="{$resourcesRoot}/resources/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
-                   </a>
-                 </xsl:otherwise>
-               </xsl:choose>
-             </xsl:otherwise>
-           </xsl:choose>
+                <xsl:choose>
+                  <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
+                    <img src="{$resourcesRoot}/resources/std-button-summary-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <img src="{$resourcesRoot}/resources/std-button-details-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:choose>
+                  <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
+                    <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="toggle summary/detailed view">
+                      <img src="{$resourcesRoot}/resources/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    </a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <a href="{$setup}&amp;setappvar=summaryMode(details)" title="toggle summary/detailed view">
+                      <img src="{$resourcesRoot}/resources/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    </a>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:otherwise>
+            </xsl:choose>
 
            <!-- refresh button -->
            <a href="{$setup}"><img src="{$resourcesRoot}/resources/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
@@ -1286,6 +1304,115 @@
     </xsl:if>
   </xsl:template>
 
+  <!--==== LIST EVENTS - for listing discrete events ====-->
+  <xsl:template match="events" mode="eventList">
+    <h2 class="bwStatusConfirmed">
+      Next 7 Days
+      <!-- xsl:choose>
+        <xsl:when test="/bedework/now/longdate = /bedework/events/event[position()=last()]/start/longdate"><xsl:value-of select="/bedework/now/longdate"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="/bedework/now/longdate"/> - <xsl:value-of select="/bedework/events/event[position()=last()]/start/longdate"/></xsl:otherwise>
+      </xsl:choose-->
+    </h2>
+
+    <div id="listEvents">
+      <ul>
+        <xsl:choose>
+          <xsl:when test="not(event)">
+            <li>No events to display.</li>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:for-each select="event">
+              <xsl:variable name="id" select="id"/>
+              <xsl:variable name="subscriptionId" select="subscription/id"/>
+              <xsl:variable name="calPath" select="calendar/encodedPath"/>
+              <xsl:variable name="guid" select="guid"/>
+              <xsl:variable name="recurrenceId" select="recurrenceId"/>
+              <li>
+                <xsl:attribute name="class">
+                  <xsl:choose>
+                    <xsl:when test="status='CANCELLED'">bwStatusCancelled</xsl:when>
+                    <xsl:when test="status='TENTATIVE'">bwStatusTentative</xsl:when>
+                  </xsl:choose>
+                </xsl:attribute>
+
+                <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
+                <xsl:if test="status='TENTATIVE'"><em>TENTATIVE: </em></xsl:if>
+
+                <a class="title" href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                  <xsl:value-of select="summary"/>
+                </a><xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
+                <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
+                  <xsl:if test="location/subaddress != ''">
+                    , <xsl:value-of select="location/subaddress"/>
+                  </xsl:if>
+                </xsl:if>
+
+                <xsl:text> </xsl:text>
+                <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
+                <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                  <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                </a>
+
+                <br/>
+
+                <xsl:value-of select="substring(start/dayname,1,3)"/>,
+                <xsl:value-of select="start/longdate"/>
+                <xsl:text> </xsl:text>
+                <xsl:if test="start/allday != 'true'">
+                  <xsl:value-of select="start/time"/>
+                </xsl:if>
+                <xsl:choose>
+                  <xsl:when test="start/shortdate != end/shortdate">
+                    -
+                    <xsl:value-of select="substring(end/dayname,1,3)"/>,
+                    <xsl:value-of select="end/longdate"/>
+                    <xsl:text> </xsl:text>
+                    <xsl:if test="start/allday != 'true'">
+                      <xsl:value-of select="end/time"/>
+                    </xsl:if>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:if test="start/time != end/time">
+                      -
+                      <xsl:value-of select="end/time"/>
+                    </xsl:if>
+                  </xsl:otherwise>
+                </xsl:choose>
+
+                <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
+                  <br/>
+                  <xsl:value-of select="description"/>
+                  <xsl:if test="link != ''">
+                    <br/>
+                    <xsl:variable name="link" select="link"/>
+                    <a href="{$link}" class="moreLink"><xsl:value-of select="link"/></a>
+                  </xsl:if>
+                  <xsl:if test="categories/category">
+                    <br/>
+                    Categories:
+                    <xsl:for-each select="categories/category">
+                      <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
+                    </xsl:for-each>
+                  </xsl:if>
+                  <br/>
+                  <em>
+                    <xsl:if test="cost!=''">
+                      <xsl:value-of select="cost"/>.&#160;
+                    </xsl:if>
+                    <xsl:if test="contact/name!='none'">
+                      Contact: <xsl:value-of select="contact/name"/>
+                    </xsl:if>
+                  </em>
+                </xsl:if>
+
+              </li>
+            </xsl:for-each>
+          </xsl:otherwise>
+        </xsl:choose>
+      </ul>
+    </div>
+  </xsl:template>
+
   <!--==== WEEK CALENDAR VIEW ====-->
   <xsl:template name="weekView">
     <table id="monthCalendarTable" border="0" cellpadding="0" cellspacing="0">
@@ -1408,19 +1535,15 @@
         <xsl:otherwise>eventLinkB</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <!-- User defined subscription styles.
-         These are set in the add/modify subscription forms which
-         rely (in this stylesheet) on subColors.css; if present, these
+    <!-- Calendar colors are set in the add/modify calendar forms which, if present,
          override the background-color set by eventClass. User styles should
          not be used for cancelled events (tentative is ok). -->
-    <xsl:variable name="subscriptionClass">
-      <xsl:if test="status != 'CANCELLED' and
-                    subscription/subStyle != '' and
-                    subscription/subStyle != 'default'"><xsl:value-of select="subscription/subStyle"/></xsl:if>
-    </xsl:variable>
     <li>
       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"
-        class="{$eventRootClass} {$eventClass} {$subscriptionClass}">
+        class="{$eventRootClass} {$eventClass}">
+        <xsl:if test="status != 'CANCELLED' and calendar/color != ''">
+          <xsl:attribute name="style">background-color: <xsl:value-of select="calendar/color"/>; color: black;</xsl:attribute>
+        </xsl:if>
         <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
         <xsl:choose>
           <xsl:when test="start/shortdate != ../shortdate">
@@ -4414,6 +4537,11 @@
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
+      <xsl:if test="color != '' and color != 'null'">
+        <!-- the spacer gif approach allows us to avoid some IE misbehavior -->
+        <xsl:variable name="color" select="color"/>
+        <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="calendar color" class="bwCalendarColor" style="background-color: {$color}; color:black;"/>
+      </xsl:if>
       <xsl:variable name="calPath" select="encodedPath"/>
       <a href="{$setSelection}&amp;calUrl={$calPath}">
         <xsl:value-of select="name"/>
@@ -4719,16 +4847,17 @@
         <tr>
           <th>Color:</th>
           <td>
-            <select name="calendar.color">
+            <input type="text" name="calendar.color" value="" size="40"/>
+            <!-- select name="calendar.color">
               <option value="">default</option>
-              <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
-                <xsl:variable name="subColor" select="@rgb"/>
-                <xsl:variable name="subColorClass" select="."/>
-                <option value="{$subColor}" class="{$subColorClass}">
+              <xsl:for-each select="document('../../../bedework-common/default/default/subColors.xml')/subscriptionColors/color">
+                <xsl:variable name="subColor" select="."/>
+                <xsl:variable name="subColorClass" select="@classname"/>
+                <option value="{$subColor}" style="background-color:{$subColor};color:black;">
                   <xsl:value-of select="@name"/>
                 </option>
               </xsl:for-each>
-            </select>
+            </select-->
           </td>
         </tr>
         <tr>
@@ -4924,8 +5053,9 @@
         <tr>
           <th>Color:</th>
           <td>
-            <input type="text" name="calendar.color" value="" size="40">
+            <input type="text" name="calendar.color" size="7">
               <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
+              <xsl:attribute name="style">background-color: <xsl:value-of select="color"/>;color: black;</xsl:attribute>
             </input>
           </td>
         </tr>
