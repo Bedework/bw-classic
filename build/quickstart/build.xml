@@ -241,7 +241,9 @@
       <antcall target="dirstart" inheritrefs="true" />
       <antcall target="hsqldb" inheritrefs="true" />
       <sequential>
-        <sleep seconds="10"/>
+        <waitfor maxwait="3" maxwaitunit="minute" checkevery="250">
+           <socket server="localhost" port="10389"/>
+        </waitfor>
         <antcall target="tomcatstart" inheritrefs="true" />
       </sequential>
     </parallel>
