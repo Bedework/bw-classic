@@ -533,33 +533,39 @@
     <table id="statusBarTable">
       <tr>
         <td class="leftCell">
-          <xsl:if test="/bedework/currentCalSuite/name">
-            Calendar Suite:
-            <span class="status">
-              <xsl:value-of select="/bedework/currentCalSuite/name"/>
-            </span>
-            <xsl:text> </xsl:text>
-          </xsl:if>
-          <!--
-          <a href="{$setup}">Home</a>
-          <a href="{$publicCal}" target="calendar">Launch Calendar</a>
-          -->
+          Calendar Suite:
+          <span class="status">
+            <xsl:choose>
+              <xsl:when test="/bedework/currentCalSuite/name">
+                <xsl:value-of select="/bedework/currentCalSuite/name"/>
+              </xsl:when>
+              <xsl:otherwise>
+                none
+              </xsl:otherwise>
+            </xsl:choose>
+          </span>
+          <xsl:text> </xsl:text>
         </td>
         <xsl:if test="/bedework/userInfo/user">
           <td class="rightCell">
-            <xsl:if test="/bedework/userInfo/group">
               <span id="groupDisplay">
                 Group:
                 <span class="status">
-                  <xsl:value-of select="/bedework/userInfo/group"/>
+                  <xsl:choose>
+                    <xsl:when test="/bedework/userInfo/group">
+                      <xsl:value-of select="/bedework/userInfo/group"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      none
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </span>
                 <xsl:text> </xsl:text>
-                <xsl:if test="/bedework/userInfo/oneGroup = 'false' or /bedework/userInfo/superUser = 'true'">
+                <xsl:if test="(/bedework/userInfo/group and /bedework/userInfo/oneGroup = 'false') or /bedework/userInfo/superUser = 'true'">
                   <a href="{$admingroup-switch}" class="fieldInfo">change</a>
                 </xsl:if>
                 <xsl:text> </xsl:text>
               </span>
-            </xsl:if>
             Logged in as:
             <span class="status">
               <xsl:value-of select="/bedework/userInfo/currentUser"/>
