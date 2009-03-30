@@ -234,6 +234,13 @@
           var resourcesRoot = "<xsl:value-of select="$resourcesRoot"/>";
           </xsl:comment>
         </script>
+        <!-- Load jQuery when needed -->
+        <xsl:if test="/bedework/page='modEvent' or
+                      /bedework/page='modEventPending' or
+                      /bedework/page='modSubscription'">
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
+        </xsl:if>
         <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
@@ -244,8 +251,6 @@
               <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
             </xsl:when>
             <xsl:otherwise>
-              <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
-              <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
               <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
               <script type="text/javascript">
                 <xsl:comment>
@@ -749,11 +754,11 @@
       <ul class="adminMenu">
         <li>
           <a href="{$subscriptions-fetch}" title="subscriptions to calendars">
-            Manage subscriptions
+            Manage topical areas
           </a>
         </li>
         <li>
-          <a href="{$view-fetch}" title="collections of subscriptions">
+          <a href="{$view-fetch}" title="collections of topical areas">
             Manage views
           </a>
         </li>
@@ -2249,10 +2254,11 @@
 
         <!--  Category  -->
         <!--
-          categories will no longer be directly set by the user; they are set
-          by the back-end based on the subscriptions in the calendar suite.
+          categories are no longer be directly set by the event administrator; they are set
+          by the back-end based on the subscriptions (topical area) in the calendar suite.
           A user, therefore, tells the system where they want the event to
-          show up, and the categories are set for them. -->
+          show up, and the categories are set for them. To make categories
+          available to the event administrator -->
         <!--
         <tr>
           <td class="fieldName">
@@ -4289,7 +4295,7 @@
     <table id="calendarTable">
       <tr>
         <td class="cals">
-          <h3>Subscription Tree</h3>
+          <h3>Topical Areas</h3>
           <ul class="calendarTree">
             <xsl:apply-templates select="calendar" mode="listForUpdateSubscription">
               <xsl:with-param name="root">true</xsl:with-param>
@@ -4314,12 +4320,12 @@
   </xsl:template>
 
   <xsl:template name="subscriptionIntro">
-    <h3>Managing Subscriptions</h3>
+    <h3>Managing Topical Areas</h3>
     <ul>
-      <li>Select an item from the tree on the left to modify a subscription.</li>
+      <li>Select an item from the tree on the left to modify a topical area.</li>
       <li>Select the
       <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
-      icon to add a new subscription to the tree.
+      icon to add a new topical area to the tree.
       </li>
     </ul>
   </xsl:template>
@@ -4544,7 +4550,7 @@
       <xsl:variable name="calendarCollection" select="calendarCollection"/>
       <xsl:choose>
         <xsl:when test="canAlias = 'true'">
-          <a href="javascript:updatePublicCalendarAlias('{$calPath}','{$calDisplay}','{$calendarCollection}')">
+          <a href="javascript:updatePublicCalendarAlias('{$calPath}','{$calDisplay}','bw-{$calPath}','{$calendarCollection}')" id="bw-{$calPath}">
             <xsl:value-of select="name"/>
           </a>
         </xsl:when>
@@ -4567,7 +4573,7 @@
 
     <h2>Manage Views</h2>
     <p>
-      Views are named aggregations of subscriptions used
+      Views are named aggregations of topical areas used
       to display sets of events within a calendar suite.
     </p>
 
@@ -4581,7 +4587,7 @@
     <table id="commonListTable" class="viewsTable">
       <tr>
         <th>Name</th>
-        <th>Included subscriptions</th>
+        <th>Included topical areas</th>
       </tr>
 
       <xsl:for-each select="view">
@@ -4623,7 +4629,7 @@
     <table id="viewsTable">
       <tr>
         <td class="subs">
-          <h3>Available Subscriptions:</h3>
+          <h3>Available topical areas:</h3>
 
           <table class="subscriptionsListSubs">
             <xsl:for-each select="/bedework/calendars/calendar/calendar[isSubscription = 'true']">
@@ -4638,7 +4644,7 @@
                     <a href="{$view-update}&amp;name={$viewName}&amp;add={$subAddName}">
                       <img src="{$resourcesRoot}/resources/arrowRight.gif"
                           width="13" height="13" border="0"
-                          alt="add subscription"/>
+                          alt="add topical area"/>
                     </a>
                   </td>
                 </tr>
@@ -4647,7 +4653,7 @@
           </table>
         </td>
         <td class="view">
-          <h3>Active Subscriptions:</h3>
+          <h3>Active topical areas:</h3>
           <table class="subscriptionsListView">
             <xsl:for-each select="/bedework/currentView/path">
               <xsl:sort select="." order="ascending" case-order="upper-first"/>
@@ -4657,7 +4663,7 @@
                   <a href="{$view-update}&amp;name={$viewName}&amp;remove={$subRemoveName}">
                     <img src="{$resourcesRoot}/resources/arrowLeft.gif"
                         width="13" height="13" border="0"
-                        alt="add subscription"/>
+                        alt="add topical area"/>
                   </a>
                 </td>
                 <td>
