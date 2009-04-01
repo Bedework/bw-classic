@@ -4542,6 +4542,24 @@
         <xsl:variable name="color" select="color"/>
         <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="calendar color" class="bwCalendarColor" style="background-color: {$color}; color:black;"/>
       </xsl:if>
+      <form name="bwHideDisplayCal" class="bwHideDisplayCal" action="">
+        <input type="hidden" name="calPath">
+          <xsl:attribute name="value" select="path"/>
+        </input>
+        <xsl:choose>
+          <xsl:when test="display = 'true'">
+            <!-- set the value of display to false so that when the form is submitted we toggle -->
+            <input type="hidden" name="display" value="false"/>
+            <input type="checkbox" name="bwDisplaySetter" checked="checked"  onclick="this.submit()"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- set the value of display to true so that when the form is submitted we toggle -->
+            <input type="hidden" name="display" value="true"/>
+            <input type="checkbox" name="bwDisplaySetter" onclick="this.submit()"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </form>
+      <xsl:text> </xsl:text>
       <xsl:variable name="calPath" select="encodedPath"/>
       <a href="{$setSelection}&amp;calUrl={$calPath}">
         <xsl:value-of select="name"/>
@@ -4861,6 +4879,34 @@
           </td>
         </tr>
         <tr>
+          <th>Display:</th>
+          <td>
+            <input type="checkbox" name="calendar.display" size="40">
+              <xsl:if test="display = 'true'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input> display items in this collection
+          </td>
+        </tr>
+        <tr>
+          <xsl:if test="disabled = 'true'">
+            <xsl:attribute name="class">disabled</xsl:attribute>
+          </xsl:if>
+          <th>Disabled:</th>
+          <td>
+            <input type="hidden" name="calendar.disabled" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="disabled"/></xsl:attribute>
+            </input>
+            <xsl:value-of select="disabled"/>
+            <xsl:if test="disabled = 'true'">
+              <span class="disabledNote">
+                This item is inaccessible and has been disabled.  You may
+                re-enable it to try again.
+              </span>
+            </xsl:if>
+          </td>
+        </tr>
+        <tr>
           <th>Filter Expression:</th>
           <td>
             <input type="text" name="fexpr" value="" size="40"/>
@@ -5059,6 +5105,34 @@
             </input>
           </td>
         </tr>
+        <tr>
+          <th>Display:</th>
+          <td>
+            <input type="checkbox" name="calendar.display" size="40">
+              <xsl:if test="display = 'true'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input> display items in this collection
+          </td>
+        </tr>
+        <xsl:if test="disabled = 'true'">
+          <tr>
+            <xsl:attribute name="class">disabled</xsl:attribute>
+            <th>Disabled:</th>
+            <td>
+              <input type="hidden" name="calendar.disabled" size="40">
+                <xsl:attribute name="value"><xsl:value-of select="disabled"/></xsl:attribute>
+              </input>
+              <xsl:value-of select="disabled"/>
+              <xsl:if test="disabled = 'true'">
+                <span class="disabledNote">
+                  This item is inaccessible and has been disabled.  You may
+                  re-enable it to try again.
+                </span>
+              </xsl:if>
+            </td>
+          </tr>
+        </xsl:if>
         <tr>
           <th>Filter Expression:</th>
           <td>

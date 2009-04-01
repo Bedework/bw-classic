@@ -1569,7 +1569,8 @@ display: inline;
   margin-left: 10px;
 }
 #bedework .calendarTree li {
-  padding-top: 0.25em;
+  padding: 0.25em 0 0 0;
+  margin: 0;
 }
 #bedework li.folder {
   list-style-image: url(../../resources/catIcon.gif);
@@ -1627,9 +1628,19 @@ display: inline;
   clear: right;
   padding: 0;
   margin: 5px 10px 0 2px;
-  width: 0.8em;
+  width: 0.6em;
   height: 0.5em;
   border: 1px solid #666 !important;
+}
+#bedework form.bwHideDisplayCal,
+#bedework form.bwHideDisplayCal input {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+#bedework form.bwHideDisplayCal input {
+  width: 10px;
+  height: 10px;
 }
 #bedework #submitTable {
   width: 98%; /* less than 100% helps avoid IE weirdness */
