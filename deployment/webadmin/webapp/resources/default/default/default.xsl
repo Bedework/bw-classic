@@ -882,20 +882,12 @@
       <input type="button" name="return" value="Add new event" onclick="javascript:location.replace('{$event-initAddEvent}')"/>
     </p>
 
-    <form name="calForm" method="post" action="{$event-initUpdateEvent}">
-      <table>
-        <tr>
-          <td style="padding-right: 1em;">Show:</td>
-          <td>
-            <xsl:copy-of select="/bedework/formElements/form/listAllSwitchFalse/*"/>
-            Active
-          </td>
-          <td>
-            <xsl:copy-of select="/bedework/formElements/form/listAllSwitchTrue/*"/>
-            All
-          </td>
-        </tr>
-      </table>
+    <form name="calForm" id="bwManageEventListControls" method="post" action="{$event-initUpdateEvent}">
+      Show:
+      <xsl:copy-of select="/bedework/formElements/form/listAllSwitchFalse/*"/>
+      Active
+      <xsl:copy-of select="/bedework/formElements/form/listAllSwitchTrue/*"/>
+      All
     </form>
 
     <xsl:call-template name="eventListCommon"/>
