@@ -127,8 +127,8 @@
   <xsl:variable name="calendar-trash" select="/bedework/urlPrefixes/calendar/trash/a/@href"/>
   <xsl:variable name="calendar-emptyTrash" select="/bedework/urlPrefixes/calendar/emptyTrash/a/@href"/>
   <xsl:variable name="calendar-listForExport" select="/bedework/urlPrefixes/calendar/listForExport/a/@href"/>
-  <xsl:variable name="calendar-setPropsInGrid" select="/bedework/urlPrefixes/calendar/setPropsInGrid/a/@href"/>
-  <xsl:variable name="calendar-setPropsInList" select="/bedework/urlPrefixes/calendar/setPropsInList/a/@href"/>
+  <xsl:variable name="calendar-setPropsInGrid" select="/bedework/urlPrefixes/calendar/setPropsInGrid"/>
+  <xsl:variable name="calendar-setPropsInList" select="/bedework/urlPrefixes/calendar/setPropsInList"/>
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-showSubsMenu" select="/bedework/urlPrefixes/subscriptions/showSubsMenu/a/@href"/>
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch/a/@href"/>
@@ -4544,34 +4544,36 @@
         <xsl:variable name="color" select="color"/>
         <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="calendar color" class="bwCalendarColor" style="background-color: {$color}; color:black;"/>
       </xsl:if>
-      <form name="bwHideDisplayCal" class="bwHideDisplayCal" method="post">
-        <xsl:attribute name="action">
+      <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-properties">
+        <form name="bwHideDisplayCal" class="bwHideDisplayCal" method="post">
+          <xsl:attribute name="action">
+            <xsl:choose>
+              <xsl:when test="/bedework/page = 'eventList'"><xsl:value-of select="$calendar-setPropsInList"/></xsl:when>
+              <xsl:otherwise><xsl:value-of select="$calendar-setPropsInGrid"/></xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+          <input type="hidden" name="calPath">
+            <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
+          </input>
           <xsl:choose>
-            <xsl:when test="/bedework/page = 'eventList'"><xsl:value-of select="$calendar-setPropsInList"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="$calendar-setPropsInGrid"/></xsl:otherwise>
+            <xsl:when test="display = 'true'">
+              <!-- set the value of display to false so that when the form is submitted we toggle -->
+              <input type="hidden" name="display" value="false"/>
+              <input type="checkbox" name="bwDisplaySetter" checked="checked"  onclick="this.form.submit()">
+                <xsl:if test="/bedework/page != 'eventscalendar' and /bedework/page != 'eventList'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+              </input>
+            </xsl:when>
+            <xsl:otherwise>
+              <!-- set the value of display to true so that when the form is submitted we toggle -->
+              <input type="hidden" name="display" value="true"/>
+              <input type="checkbox" name="bwDisplaySetter" onclick="this.form.submit()">
+                <xsl:if test="/bedework/page != 'eventscalendar' and /bedework/page != 'eventList'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+              </input>
+            </xsl:otherwise>
           </xsl:choose>
-        </xsl:attribute>
-        <input type="hidden" name="calPath">
-          <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
-        </input>
-        <xsl:choose>
-          <xsl:when test="display = 'true'">
-            <!-- set the value of display to false so that when the form is submitted we toggle -->
-            <input type="hidden" name="display" value="false"/>
-            <input type="checkbox" name="bwDisplaySetter" checked="checked"  onclick="this.form.submit()">
-              <xsl:if test="/bedework/page != 'eventscalendar' and /bedework/page != 'eventList'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-            </input>
-          </xsl:when>
-          <xsl:otherwise>
-            <!-- set the value of display to true so that when the form is submitted we toggle -->
-            <input type="hidden" name="display" value="true"/>
-            <input type="checkbox" name="bwDisplaySetter" onclick="this.form.submit()">
-              <xsl:if test="/bedework/page != 'eventscalendar' and /bedework/page != 'eventList'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-            </input>
-          </xsl:otherwise>
-        </xsl:choose>
-      </form>
-      <xsl:text> </xsl:text>
+        </form>
+        <xsl:text> </xsl:text>
+      </xsl:if>
       <xsl:variable name="calPath" select="encodedPath"/>
       <a href="{$setSelection}&amp;calUrl={$calPath}">
         <xsl:value-of select="name"/>
