@@ -283,3 +283,6 @@ function setupAccessForm(val,formObj) {
       break;
   }
 }
+function setCalDisplayFlag(calDisplayFlag, val){
+  calDisplayFlag.value = val;
+}
