@@ -4527,8 +4527,8 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="/bedework/selectionState/selectionType = 'calendar'
-                          and path = /bedework/selectionState/calendar/path">selected</xsl:when>
+          <xsl:when test="/bedework/selectionState/selectionType = 'collections'
+                          and name = /bedework/selectionState/collection/name">selected</xsl:when>
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
               <xsl:when test="calType = '0'">aliasFolder</xsl:when>
