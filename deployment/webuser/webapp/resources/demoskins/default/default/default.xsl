@@ -4544,7 +4544,7 @@
         <xsl:variable name="color" select="color"/>
         <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="calendar color" class="bwCalendarColor" style="background-color: {$color}; color:black;"/>
       </xsl:if>
-      <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-properties">
+      <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
         <form name="bwHideDisplayCal" class="bwHideDisplayCal" method="post">
           <xsl:attribute name="action">
             <xsl:choose>
@@ -4728,7 +4728,9 @@
       <ul class="calendarTree">
         <xsl:choose>
           <xsl:when test="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]">
-            <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree"/>
+            <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree">
+              <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+            </xsl:apply-templates>
           </xsl:when>
           <xsl:otherwise>
             <li><em>no writable calendars</em></li>
@@ -4779,7 +4781,9 @@
       </xsl:choose>
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar[calType &lt; 2]" mode="selectCalForEventCalTree"/>
+          <xsl:apply-templates select="calendar[calType &lt; 2]" mode="selectCalForEventCalTree">
+            <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+          </xsl:apply-templates>
         </ul>
       </xsl:if>
     </li>
