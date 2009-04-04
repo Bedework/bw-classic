@@ -1423,7 +1423,7 @@
 
   <!-- list of available calendars -->
   <xsl:template match="calendars">
-    <xsl:variable name="topLevelCalCount" select="count(calendar/calendar[name='aliases']/calendar)"/>
+    <xsl:variable name="topLevelCalCount" select="count(calendar/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3])"/>
     <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="2">
@@ -1440,12 +1440,12 @@
       <tr>
         <td class="leftCell">
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[name='aliases']/calendar[position() &lt;= ceiling($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3 and position() &lt;= ceiling($topLevelCalCount div 2)]" mode="calTree"/>
           </ul>
         </td>
         <td>
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[name='aliases']/calendar[position() &gt; ceiling($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3 and position() &gt; ceiling($topLevelCalCount div 2)]" mode="calTree"/>
           </ul>
         </td>
       </tr>
