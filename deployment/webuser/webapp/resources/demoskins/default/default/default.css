@@ -1000,6 +1000,9 @@ display: inline;
 #bedework .hidden {
   visibility: hidden;
 }
+#bedework .clear  {
+  clear: both;
+}
 #bedework .bwEventImage {
   float: right;
   margin: 0 0.5em 1em 1em;
@@ -1058,6 +1061,9 @@ display: inline;
 #bedework form#subscriptions {
   margin: 0;
   padding: 0;
+}
+#bwColorPickerButton {
+  width: 28px;
 }
 #bedework table.widget {
   margin: 1em 1em 0 0;

@@ -286,3 +286,14 @@ function setupAccessForm(val,formObj) {
 function setCalDisplayFlag(calDisplayFlag, val){
   calDisplayFlag.value = val;
 }
+function launchBwColorPicker() {
+  $.ui.dialog.defaults.bgiframe = true;
+  $(function() {
+    $("#bwColorPicker").dialog();
+  });
+}
+function bwUpdateColor(color,colorFieldId) {
+  var colorField = document.getElementById(colorFieldId);
+  colorField.value = color;
+  colorField.style.backgroundColor = color;
+}

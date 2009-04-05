@@ -401,9 +401,9 @@
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
-    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
-    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
-    <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
+    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
 
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
                   /bedework/page='modPrefs' or
@@ -1927,7 +1927,7 @@
                   Floating time
                 </xsl:when>
                 <xsl:otherwise>
-                  Local time
+                  <xsl:value-of select="/bedework/now/defaultTzid"/>
                 </xsl:otherwise>
               </xsl:choose>
             </strong>
@@ -4528,7 +4528,7 @@
       <xsl:attribute name="class">
         <xsl:choose>
           <xsl:when test="/bedework/selectionState/selectionType = 'collections'
-                          and name = /bedework/selectionState/collection/name">selected</xsl:when>
+                          and path = /bedework/selectionState/collection/path">selected</xsl:when>
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
               <xsl:when test="calType = '0'">aliasFolder</xsl:when>
@@ -4883,7 +4883,10 @@
         <tr>
           <th>Color:</th>
           <td>
-            <input type="text" name="calendar.color" value="" size="40"/>
+            <input type="text" name="calendar.color" id="bwCalColor" value="" size="7"/>
+            <xsl:call-template name="colorPicker">
+              <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
+            </xsl:call-template>
             <!-- select name="calendar.color">
               <option value="">default</option>
               <xsl:for-each select="document('../../../bedework-common/default/default/subColors.xml')/subscriptionColors/color">
@@ -5102,10 +5105,13 @@
         <tr>
           <th>Color:</th>
           <td>
-            <input type="text" name="calendar.color" size="7">
+            <input type="text" name="calendar.color" id="bwCalColor" size="7">
               <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
               <xsl:attribute name="style">background-color: <xsl:value-of select="color"/>;color: black;</xsl:attribute>
             </input>
+            <xsl:call-template name="colorPicker">
+              <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
+            </xsl:call-template>
           </td>
         </tr>
         <tr>
@@ -5251,6 +5257,37 @@
         </xsl:call-template>
       </form>
     </div -->
+  </xsl:template>
+
+  <xsl:template name="colorPicker">
+    <xsl:param name="colorFieldId"/><!-- required: id of text field to be updated -->
+    <script type="text/javascript">
+      $.ui.dialog.defaults.bgiframe = true;
+      $(function() {
+        $("#bwColorPicker").dialog({ autoOpen: false, width: 214 });
+      });
+      $(function() {
+        $('#bwColorPickerButton').click(function() {
+          $('#bwColorPicker').dialog('open');
+        });
+      });
+    </script>
+    <button type="button" id="bwColorPickerButton" value="pick"><img src="{$resourcesRoot}/resources/colorIcon.gif" width="16" height="13" alt="pick a color"/></button>
+
+    <div id="bwColorPicker" title="Select a color">
+      <xsl:for-each select="document('../../../bedework-common/default/default/subColors.xml')/subscriptionColors/color">
+        <xsl:variable name="color" select="."/>
+        <xsl:variable name="colorName" select="@name"/>
+        <a href="javascript:bwUpdateColor('{$color}','{$colorFieldId}')"
+           style="display:block;float:left;background-color:{$color};color:black;width=25px;height=25px;margin:0;padding:0;"
+           title="{$colorName}"
+           onclick="$('#bwColorPicker').dialog('close');">
+          <img src="{$resourcesRoot}/resources/spacer.gif" width="25" height="25" style="border:1px solid #333;margin:0;padding:0;" alt="{$colorName}"/>
+        </a>
+        <xsl:if test="position() mod 6 = 0"><br style="clear:both;"/></xsl:if>
+      </xsl:for-each>
+      <p><a href="javascript:bwUpdateColor('','{$colorFieldId}')" onclick="$('#bwColorPicker').dialog('close');">use default colors</a></p>
+    </div>
   </xsl:template>
 
   <xsl:template name="calendarList">
