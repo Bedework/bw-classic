@@ -1876,16 +1876,22 @@
             <xsl:when test="owner = /bedework/userid">
               Personal <xsl:value-of select="$entityType"/>
             </xsl:when>
+            <xsl:when test="scheduleMethod = '2'">
+              <!-- a scheduled meeting ro task -->
+              <xsl:value-of select="$entityType"/> - organizer: <xsl:value-of select="substring-after(organizer/organizerUri,':')"/>
+            </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="$entityType"/> (<xsl:value-of select="calendar/owner"/>)
+              <xsl:value-of select="$entityType"/>
             </xsl:otherwise>
           </xsl:choose>
           <xsl:if test="recurring='true' and recurrenceId = ''">
             <xsl:text> </xsl:text>
             <em>(recurrence master)</em>
           </xsl:if>
-          <xsl:if test="scheduleMethod = '2'">
+          <xsl:if test="scheduleMethod = '2' and not(/bedework/userid = substring-before(substring-after(organizer/organizerUri,':'),'@'))">
             <!-- this is a scheduled event (meeting or task) - allow a direct refresh -->
+            <!-- NOTE: we need to actually output the organizer account for testing, rather
+                 than testing against the organizerUri...might not be the same -->
             <a href="{$schedule-refresh}&amp;method=REFRESH" id="refreshEventAction">
               <img src="{$resourcesRoot}/resources/std-icalRefresh-icon-small.gif" width="12" height="16" border="0" alt="send a request to refresh this scheduled event"/>
               Request refresh
@@ -2387,7 +2393,7 @@
                   Public <xsl:value-of select="$entityType"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="$entityType"/> (<xsl:value-of select="calendar/owner"/>)
+                  <xsl:value-of select="$entityType"/>
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:if test="form/recurringEntity='true' and recurrenceId = ''">
