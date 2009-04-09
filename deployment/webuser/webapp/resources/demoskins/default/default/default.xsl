@@ -1537,14 +1537,20 @@
         <xsl:otherwise>eventLinkB</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <xsl:variable name="calendarColor">
+      <xsl:choose>
+        <xsl:when test="xproperties/X-BEDEWORK-ALIAS/values/text = /bedework/myCalendars//calendar/path"><xsl:value-of select="/bedework/myCalendars//calendar[path=xproperties/X-BEDEWORK-ALIAS/values/text]/color"/></xsl:when>
+        <xsl:when test="calendar/color != ''"><xsl:value-of select="calendar/color"/></xsl:when>
+      </xsl:choose>
+    </xsl:variable>
     <!-- Calendar colors are set in the add/modify calendar forms which, if present,
          override the background-color set by eventClass. User styles should
          not be used for cancelled events (tentative is ok). -->
     <li>
       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"
         class="{$eventRootClass} {$eventClass}">
-        <xsl:if test="status != 'CANCELLED' and calendar/color != ''">
-          <xsl:attribute name="style">background-color: <xsl:value-of select="calendar/color"/>; color: black;</xsl:attribute>
+        <xsl:if test="status != 'CANCELLED' and $calendarColor != ''">
+          <xsl:attribute name="style">background-color: <xsl:value-of select="$calendarColor"/>; color: black;</xsl:attribute>
         </xsl:if>
         <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
         <xsl:choose>
@@ -2595,7 +2601,7 @@
                         <xsl:copy-of select="/bedework/formElements/form/start/yearText/*"/>
                       </xsl:otherwise>
                     </xsl:choose>
-                    <script language="JavaScript" type="text/javascript">
+                    <script type="text/javascript">
                       <xsl:comment>
                       startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
                       </xsl:comment>
@@ -2607,7 +2613,7 @@
                       <xsl:text> </xsl:text>
                     </span -->
                     <input type="text" name="bwEventWidgetStartDate" id="bwEventWidgetStartDate" size="10"/>
-                    <script language="JavaScript" type="text/javascript">
+                    <script type="text/javascript">
                       <xsl:comment>
                       $("#bwEventWidgetStartDate").datepicker({
                         defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>)
@@ -2692,7 +2698,7 @@
                           <xsl:copy-of select="/bedework/formElements/form/end/dateTime/yearText/*"/>
                         </xsl:otherwise>
                       </xsl:choose>
-                      <script language="JavaScript" type="text/javascript">
+                      <script type="text/javascript">
                       <xsl:comment>
                         endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
                       </xsl:comment>
@@ -2704,7 +2710,7 @@
                         <xsl:text> </xsl:text>
                       </span-->
                       <input type="text" name="bwEventWidgetEndDate" id="bwEventWidgetEndDate" size="10"/>
-                      <script language="JavaScript" type="text/javascript">
+                      <script type="text/javascript">
                         <xsl:comment>
                         $("#bwEventWidgetEndDate").datepicker({
                           defaultDate: new Date(<xsl:value-of select="form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)
@@ -3293,7 +3299,7 @@
                         </span -->
                         <input type="hidden" name="bwEventUntilDate" id="bwEventUntilDate" size="10"/>
                         <input type="text" name="bwEventWidgetUntilDate" id="bwEventWidgetUntilDate" size="10" onfocus="selectRecurCountUntil('recurUntil')"/>
-                        <script language="JavaScript" type="text/javascript">
+                        <script type="text/javascript">
                           <xsl:comment>
                           $("#bwEventWidgetUntilDate").datepicker({
                             <xsl:choose>
@@ -3550,7 +3556,7 @@
                          id="bwEventWidgetRdate"
                          iconURL="{$resourcesRoot}/resources/calIcon.gif"/-->
                   <input type="text" name="eventRdate.date" id="bwEventWidgetRdate" size="10"/>
-                  <script language="JavaScript" type="text/javascript">
+                  <script type="text/javascript">
                     <xsl:comment>
                     $("#bwEventWidgetRdate").datepicker({
                       defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>),
@@ -4893,16 +4899,6 @@
             <xsl:call-template name="colorPicker">
               <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
             </xsl:call-template>
-            <!-- select name="calendar.color">
-              <option value="">default</option>
-              <xsl:for-each select="document('../../../bedework-common/default/default/subColors.xml')/subscriptionColors/color">
-                <xsl:variable name="subColor" select="."/>
-                <xsl:variable name="subColorClass" select="@classname"/>
-                <option value="{$subColor}" style="background-color:{$subColor};color:black;">
-                  <xsl:value-of select="@name"/>
-                </option>
-              </xsl:for-each>
-            </select-->
           </td>
         </tr>
         <tr>
@@ -5575,6 +5571,7 @@
     </div>
   </xsl:template>
 
+  <!-- This template is deprecated -->
   <xsl:template name="addPublicAlias">
     <h2>Subscribe to a Public Calendar</h2>
     <div id="content">
@@ -6840,7 +6837,7 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </div>
-                <!--<script language="JavaScript" type="text/javascript">
+                <!--<script type="text/javascript">
                 <xsl:comment>
                   startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback');
                 </xsl:comment>
@@ -6888,7 +6885,7 @@
                       </xsl:otherwise>
                     </xsl:choose>
                   </div>
-                  <!--<script language="JavaScript" type="text/javascript">
+                  <!--<script type="text/javascript">
                   <xsl:comment>
                     endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback');
                   </xsl:comment>
