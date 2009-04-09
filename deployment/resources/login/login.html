@@ -34,6 +34,12 @@
       #loginBox td {
         padding-right: 0.5em;
       }
+      #loginBox input {
+        width: 10em;
+      }
+      #loginBox input.submit {
+        width: 6em;
+      }
       form {
         margin: 1em 0;
         padding: 0;
@@ -62,7 +68,7 @@
           </td>
           <td>
             <input type="password" name="j_password" size="20"/>
-            <input type="submit" name="j_security_check" value="login"/>
+            <input type="submit" class="submit" name="j_security_check" value="login"/>
           </td>
         </tr>
       </table>

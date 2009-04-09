@@ -401,15 +401,16 @@
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
-    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
-    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
-    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
+    <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
 
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
                   /bedework/page='modPrefs' or
                   /bedework/page='attendeeRespond'">
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
     </xsl:if>
+
     <xsl:if test="/bedework/page='modCalendar' or
                   /bedework/page='modSchedulingPrefs'">
       <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
@@ -421,6 +422,7 @@
         </script>
       </xsl:if>
     </xsl:if>
+
     <xsl:if test="/bedework/page='attendees'">
       <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/bw-jquery.autocomplete.js">&#160;</script>
@@ -428,6 +430,7 @@
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAttendees.js">&#160;</script>
       <link rel="stylesheet" type="text/css" href="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.css" />
     </xsl:if>
+
     <xsl:if test="/bedework/page='addEvent' or
                   /bedework/page='editEvent' or
                   /bedework/page='rdates' or
@@ -488,6 +491,7 @@
         </xsl:comment>
       </script>
     </xsl:if>
+
     <script type="text/javascript">
       <xsl:comment>
       <![CDATA[
@@ -722,65 +726,6 @@
         </li>
       </ul>
     </div>
-    <!-- table cellspacing="0" id="tabsTable">
-      <tr>
-        <td>
-          <xsl:choose>
-            <xsl:when test="/bedework/periodname='Day'">
-              <a href="{$navAction}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-on.gif" width="90" height="20" border="0" alt="DAY"/></a>
-            </xsl:when>
-            <xsl:otherwise>
-              <a href="{$navAction}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-day-off.gif" width="90" height="20" border="0" alt="DAY"/></a>
-            </xsl:otherwise>
-          </xsl:choose>
-        </td>
-        <td>
-          <xsl:choose>
-            <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
-              <a href="{$navAction}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-on.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-             </xsl:when>
-            <xsl:otherwise>
-              <a href="{$navAction}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-             </xsl:otherwise>
-          </xsl:choose>
-        </td>
-        <td>
-          <xsl:choose>
-            <xsl:when test="/bedework/periodname='Month'">
-              <a href="{$navAction}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-on.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-            </xsl:when>
-            <xsl:otherwise>
-              <a href="{$navAction}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-            </xsl:otherwise>
-          </xsl:choose>
-        </td>
-        <td>
-          <xsl:choose>
-            < ! - - don't allow switching to year for free busy view, so only use setViewPeriod action - - >
-            <xsl:when test="/bedework/periodname='Year'">
-              <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="/bedework/page='attendees' or /bedework/page='freeBusy'">
-                  <img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/resources/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:otherwise>
-          </xsl:choose>
-        </td>
-        <td class="rightCell">
-          logged in as
-          <xsl:text> </xsl:text>
-          <strong><xsl:value-of select="/bedework/userid"/></strong>
-          <xsl:text> </xsl:text>
-          <span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
-        </td>
-      </tr>
-    </table-->
   </xsl:template>
 
   <xsl:template name="navigation">
@@ -2608,10 +2553,6 @@
                     </script>
                   </xsl:when>
                   <xsl:otherwise>
-                    <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
-                      <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
-                      <xsl:text> </xsl:text>
-                    </span -->
                     <input type="text" name="bwEventWidgetStartDate" id="bwEventWidgetStartDate" size="10"/>
                     <script type="text/javascript">
                       <xsl:comment>
@@ -2619,7 +2560,6 @@
                         defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>)
                       }).attr("readonly", "readonly");
                       $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');
-                      //alert($("#bwEventWidgetStartDate").datepicker("getDate"));
                       </xsl:comment>
                     </script>
                     <input type="hidden" name="eventStartDate.year">
@@ -3711,7 +3651,7 @@
             <xsl:with-param name="trash">no</xsl:with-param>
           </xsl:apply-templates>
         </xsl:if>
-        <p class="editAttendees">
+        <div class="editAttendees">
           <xsl:choose>
             <xsl:when test="form/scheduleMethod = '2'">
               <input name="editEventAttendees" type="submit" value="edit attendees and recipients"/>
@@ -3727,7 +3667,7 @@
               </xsl:choose>
             </xsl:otherwise>
           </xsl:choose>
-        </p>
+        </div>
       </div>
     </div>
 

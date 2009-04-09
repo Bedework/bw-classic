@@ -654,15 +654,32 @@ var bwAcl = new function() {
   this.display = function(id) {
     try {
 
+      // get the aclWidget and throw out the existing contents
       var aclWidget = document.getElementById(id);
-      aclWidget.innerHTML = "";
+      aclWidget.removeChild(aclWidget.firstChild);
 
       var bwCurrentAccess = document.createElement("table");
       bwCurrentAccess.className = "common scheduling";
       bwCurrentAccess.id = "bwCurrentAccess";
       bwCurrentAccess.createTHead();
       bwCurrAccessHead = bwCurrentAccess.tHead.insertRow(0);
-      bwCurrAccessHead.innerHTML = '<th>' + bwAclWidgetEntryStr + '</th>' +  '<th>' + bwAclWidgetAccessStr + '</th>' + '<th>' + bwAclWidgetInheritedStr + '</th><th></th>';
+      // build the th row using the DOM to avoid IE8 issues (i.e. avoid innerHTML)
+      var th1 = document.createElement("th");
+      var txt1 = document.createTextNode(bwAclWidgetEntryStr);
+      var th2 = document.createElement("th");
+      var txt2 = document.createTextNode(bwAclWidgetAccessStr);
+      var th2 = document.createElement("th");
+      var txt3 = document.createTextNode(bwAclWidgetInheritedStr);
+      var th3 = document.createElement("th");
+      var th4 = document.createElement("th");
+      th1.appendChild(txt1);
+      th2.appendChild(txt2);
+      th3.appendChild(txt3);
+      bwCurrAccessHead.appendChild(th1);
+      bwCurrAccessHead.appendChild(th2);
+      bwCurrAccessHead.appendChild(th3);
+      bwCurrAccessHead.appendChild(th4);
+
       var bwCurrAccessTBody = document.createElement("tbody");
       bwCurrentAccess.appendChild(bwCurrAccessTBody);
 

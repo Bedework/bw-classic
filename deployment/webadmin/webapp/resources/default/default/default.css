@@ -483,6 +483,23 @@ table.params .desc {
   color: #666;
   background-color: transparent;
 }
+table.common2 {
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+table.common2 th,
+table.common2 td {
+  padding: 0.5em;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  text-align: left;
+  vertical-align: top;
+  font-weight: normal;
+}
+table.common2 th {
+  color: black;
+  background-color: #eee;
+}
 #confirmButtons {
   margin: 1em 0 !important;
 }

@@ -2080,7 +2080,10 @@
             Description:
           </td>
           <td>
-            <xsl:copy-of select="form/desc/*"/>
+            <textarea name="description" cols="55" rows="8">
+              <xsl:copy-of select="form/desc/textarea/*"/>
+              <xsl:if test="form/desc/textarea = ''"><xsl:text> </xsl:text></xsl:if>
+            </textarea>
             <div class="fieldInfo">
               Enter all pertinent information, including the academic titles of
               all speakers and/or participants.
@@ -4713,19 +4716,19 @@
     change it without modifying includes.js -->
     <form name="eventForm" method="post" action="{$event-upload}" id="standardForm" enctype="multipart/form-data">
       <h2>Upload iCAL File</h2>
-      <table class="common" cellspacing="0">
+      <table class="common2" cellspacing="0">
         <tr>
-          <td class="fieldname">
+          <th>
             Filename:
-          </td>
+          </th>
           <td align="left">
             <input type="file" name="uploadFile" size="60" />
           </td>
         </tr>
         <tr>
-          <td class="fieldname padMeTop">
+          <th>
             Into calendar:
-          </td>
+          </th>
           <td align="left" class="padMeTop">
             <input type="hidden" name="newCalPath" value=""/>
             <span id="bwEventCalDisplay">
@@ -4736,9 +4739,9 @@
           </td>
         </tr>
         <tr>
-          <td class="fieldname padMeTop">
+          <th >
             Effects free/busy:
-          </td>
+          </th>
           <td align="left" class="padMeTop">
             <input type="radio" value="" name="transparency" checked="checked"/> accept event's settings<br/>
             <input type="radio" value="OPAQUE" name="transparency"/> yes <span class="note">(opaque: event status affects free/busy)</span><br/>
@@ -4746,9 +4749,9 @@
           </td>
         </tr>
         <tr>
-          <td class="fieldname padMeTop">
+          <th>
             Status:
-          </td>
+          </th>
           <td align="left" class="padMeTop">
             <input type="radio" value="" name="status" checked="checked"/> accept event's status<br/>
             <input type="radio" value="CONFIRMED" name="status"/> confirmed<br/>
@@ -5918,7 +5921,9 @@
             Filter Definition:
           </th>
           <td>
-            <textarea name="def" rows="30" cols="80"></textarea>
+            <textarea name="def" rows="30" cols="80">
+              <xsl:text> </xsl:text>
+            </textarea>
           </td>
         </tr>
         <tr>
