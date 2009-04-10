@@ -152,7 +152,7 @@
 
         <indexRoot>lucene/indexroot</indexRoot>
 
-        <rootUsers>caladmin</rootUsers>
+        <rootUsers>admin</rootUsers>
       </syspars>
 
       <app>
