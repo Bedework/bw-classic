@@ -5725,6 +5725,18 @@
       </xsl:choose>
     </xsl:variable>
 
+    <div class="notes">
+      <xsl:if test="$userInCalSuiteGroup = 'true'">
+        <p class="note">
+         *Highlighted rows indicate a group to which a Calendar Suite is attached.
+         Select one of these groups to edit attributes of the associated calendar suite.
+        </p>
+      </xsl:if>
+      <xsl:if test="/bedework/userInfo/superUser = 'true'">
+        <p class="note"><strong>Superuser:</strong> to dissasociate yourself from all groups, log out and log back in.</p>
+      </xsl:if>
+    </div>
+
     <table id="commonListTable">
       <tr>
         <th>Name</th>
@@ -5761,12 +5773,6 @@
         </tr>
       </xsl:for-each>
     </table>
-    <xsl:if test="$userInCalSuiteGroup = 'true'">
-      <p class="note">
-       *Highlighted rows indicate a group to which a Calendar Suite is attached.
-       Select one of these groups to edit attributes of the associated calendar suite.
-      </p>
-    </xsl:if>
   </xsl:template>
 
   <xsl:template name="modAdminGroup">
