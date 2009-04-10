@@ -1630,12 +1630,10 @@ display: inline;
   font-size: 0.9em;
 }
 #bedework img.bwCalendarColor {
-  float: right;
-  clear: right;
   padding: 0;
-  margin: 5px 10px 0 2px;
-  width: 0.6em;
-  height: 0.5em;
+  margin: 5px 0 0 5px;
+  width: 6px;
+  height: 6px;
   border: 1px solid #666 !important;
 }
 #bedework form.bwHideDisplayCal,

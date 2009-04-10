@@ -309,7 +309,8 @@
         <xsl:if test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
           <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
         </xsl:if>
-        <xsl:if test="/bedework/page='addFilter'">
+        <xsl:if test="/bedework/page='addFilter' or
+                      /bedework/page='calSuitePrefs'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
@@ -668,15 +669,19 @@
             <br/>Add Location
           </a>
         </td>
-        <!--
-          Category management is becomeing a  super-user and calsuite admin feature;
-          Categories underly much of the new single calendar and filtering model.
-        <td>
-          <a id="addCategoryLink" href="{$category-initAdd}">
-            <img src="{$resourcesRoot}/resources/bwAdminAddCategoryIcon.jpg" width="100" height="100" alt="Add Event" border="0"/>
-            <br/>Add Category
-          </a>
-        </td> -->
+        <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
+          <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser = 'true'">
+            <!--
+              Category management is a  super-user and calsuite admin feature;
+              Categories underly much of the new single calendar and filtering model.-->
+            <td>
+              <a id="addCategoryLink" href="{$category-initAdd}">
+                <img src="{$resourcesRoot}/resources/bwAdminAddCategoryIcon.jpg" width="100" height="100" alt="Add Event" border="0"/>
+                <br/>Add Category
+              </a>
+            </td>
+          </xsl:if>
+        </xsl:if>
       </tr>
       <tr>
         <td>
@@ -697,15 +702,19 @@
             <br/>Manage Locations
           </a>
         </td>
-        <!--
-          Category management is becomeing a super-user and calsuite admin feature;
-          Categories underly much of the new single calendar and filtering model.
-        <td>
-          <a href="{$category-initUpdate}">
-            <img src="{$resourcesRoot}/resources/bwAdminManageCatsIcon.jpg" width="100" height="73" alt="Manage Categories" border="0"/>
-            <br/>Manage Categories
-          </a>
-        </td> -->
+        <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
+          <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser = 'true'">
+            <!--
+              Category management is a super-user and calsuite admin feature;
+              Categories underly much of the new single calendar and filtering model.-->
+            <td>
+              <a href="{$category-initUpdate}">
+                <img src="{$resourcesRoot}/resources/bwAdminManageCatsIcon.jpg" width="100" height="73" alt="Manage Categories" border="0"/>
+                <br/>Manage Categories
+              </a>
+            </td>
+          </xsl:if>
+        </xsl:if>
       </tr>
     </table>
 
@@ -3218,7 +3227,9 @@
                 Description:
               </td>
               <td>
-                <textarea name="categoryDesc.value" rows="3" cols="60"></textarea>
+                <textarea name="categoryDesc.value" rows="3" cols="60">
+                  <xsl:text> </xsl:text>
+                </textarea>
               </td>
             </tr>
           </table>
@@ -3252,6 +3263,7 @@
               <td>
                 <textarea name="categoryDesc.value" rows="3" cols="60">
                   <xsl:value-of select="normalize-space(/bedework/currentCategory/category/desc)"/>
+                  <xsl:if test="/bedework/currentCategory/category/desc = ''"><xsl:text> </xsl:text></xsl:if>
                 </textarea>
               </td>
             </tr>
@@ -5250,28 +5262,28 @@
   <xsl:template name="calSuitePrefs">
     <h2>Edit Calendar Suite Preferences</h2>
     <form name="userPrefsForm" method="post" action="{$calsuite-updatePrefs}">
-      <table id="eventFormTable">
+      <table class="common2">
         <tr>
-          <td class="fieldName">
+          <th>
             Calendar Suite:
-          </td>
+          </th>
           <td>
             <xsl:value-of select="/bedework/currentCalSuite/name"/>
           </td>
         </tr>
         <tr>
-          <td class="fieldName">
+          <th>
             Preferred view:
-          </td>
+          </th>
           <td>
             <xsl:variable name="preferredView" select="/bedework/prefs/preferredView"/>
             <input type="text" name="preferredView" value="{$preferredView}" size="40"/>
           </td>
         </tr>
         <tr>
-          <td class="fieldName">
+          <th>
             Preferred view period:
-          </td>
+          </th>
           <td>
             <xsl:variable name="preferredViewPeriod" select="/bedework/prefs/preferredViewPeriod"/>
             <select name="viewPeriod">
@@ -5318,6 +5330,47 @@
                 </xsl:otherwise>
               </xsl:choose>
             </select>
+          </td>
+        </tr>
+        <tr>
+          <th>Default Categories:</th>
+          <td>
+            <!-- show the selected categories - in this case, iterate over
+                 the "all" listing and reveal those that have been selected;
+                 in this case, we have only the uids to go by, so we need to
+                 match them up -->
+            <ul class="catlist">
+              <xsl:for-each select="/bedework/categories/all/category">
+                <xsl:sort select="keyword" order="ascending"/>
+                <xsl:if test="uid = /bedework/categories/current//category/uid">
+                  <li>
+                    <input type="checkbox" name="defaultCategory" checked="checked">
+                      <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                    </input>
+                    <xsl:value-of select="keyword"/>
+                  </li>
+                </xsl:if>
+              </xsl:for-each>
+            </ul>
+            <a href="javascript:toggleVisibility('calCategories','visible')">
+              show/hide unused categories
+            </a>
+            <div id="calCategories" class="invisible">
+              <ul class="catlist">
+                <xsl:for-each select="/bedework/categories/all/category">
+                  <xsl:sort select="keyword" order="ascending"/>
+                  <!-- don't duplicate the selected categories -->
+                  <xsl:if test="not(keyword = ../../current//category/keyword)">
+                    <li>
+                      <input type="checkbox" name="defaultCategory">
+                        <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                      </input>
+                      <xsl:value-of select="keyword"/>
+                    </li>
+                  </xsl:if>
+                </xsl:for-each>
+              </ul>
+            </div>
           </td>
         </tr>
         <!--

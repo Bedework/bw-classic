@@ -4491,11 +4491,6 @@
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
-      <xsl:if test="color != '' and color != 'null'">
-        <!-- the spacer gif approach allows us to avoid some IE misbehavior -->
-        <xsl:variable name="color" select="color"/>
-        <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="calendar color" class="bwCalendarColor" style="background-color: {$color}; color:black;"/>
-      </xsl:if>
       <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
         <form name="bwHideDisplayCal" class="bwHideDisplayCal" method="post">
           <xsl:attribute name="action">
@@ -4530,6 +4525,11 @@
       <a href="{$setSelection}&amp;calUrl={$calPath}">
         <xsl:value-of select="name"/>
       </a>
+      <xsl:if test="color != '' and color != 'null'">
+        <!-- the spacer gif approach allows us to avoid some IE misbehavior -->
+        <xsl:variable name="color" select="color"/>
+        <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="calendar color" class="bwCalendarColor" style="background-color: {$color}; color:black;"/>
+      </xsl:if>
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar[canAlias = 'true']" mode="myCalendars">
@@ -4679,8 +4679,8 @@
       <h4>My Calendars</h4>
       <ul class="calendarTree">
         <xsl:choose>
-          <xsl:when test="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]">
-            <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[currentAccess/current-user-privilege-set/privilege/write-content]" mode="selectCalForEventCalTree">
+          <xsl:when test="/bedework/formElements/form/calendars/select/option">
+            <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="selectCalForEventCalTree">
               <xsl:sort select="name" order="ascending" case-order="upper-first"/>
             </xsl:apply-templates>
           </xsl:when>
@@ -4718,14 +4718,10 @@
         </xsl:choose>
       </xsl:variable>
       <xsl:choose>
-        <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calType != '0')">
+        <xsl:when test="path = /bedework/formElements/form/calendars/select//option/@value and (calType != '0')">
           <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
             <strong><xsl:value-of select="name"/></strong>
           </a>
-          <!-- deprecated:
-          <xsl:if test="name != $calDisplay">
-            <span class="small"> (<xsl:value-of select="$calDisplay"/>)</span>
-          </xsl:if> -->
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="name"/>

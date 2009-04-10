@@ -1285,12 +1285,12 @@
       <tr>
         <td class="leftCell">
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3 and position() &lt;= ceiling($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[(calType = 0 or calType = 7 or calType = 8) and position() &lt;= ceiling($topLevelCalCount div 2)]" mode="calTree"/>
           </ul>
         </td>
         <td>
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3 and position() &gt; ceiling($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[(calType = 0 or calType = 7 or calType = 8) and position() &gt; ceiling($topLevelCalCount div 2)]" mode="calTree"/>
           </ul>
         </td>
       </tr>
