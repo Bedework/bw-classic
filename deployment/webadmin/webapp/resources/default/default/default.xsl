@@ -5657,20 +5657,25 @@
       </xsl:choose>
     </form>
 
-    <p>Click on the group name to modify the group owner or description.<br/>
-    Click "add/remove members" to modify group membership.</p>
+    <p>Select a group name to modify the group owner or description.<br/>
+    Click "membership" to modify group membership.</p>
     <p>
       <input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initAdd}')" value="Add a new group"/>
     </p>
+    <div class="notes">
+      <p class="note">
+       *Highlighted rows indicate a group to which a Calendar Suite is attached.
+      </p>
+    </div>
     <table id="commonListTable">
       <tr>
         <th>Name</th>
-        <th>Description</th>
-        <th>Calendar Suite*</th>
         <xsl:if test="/bedework/groups/showMembers='true'">
           <th>Members</th>
         </xsl:if>
-        <th></th>
+        <th>Manage</th>
+        <th>Calendar Suite*</th>
+        <th>Description</th>
       </tr>
       <xsl:for-each select="/bedework/groups/group">
         <xsl:sort select="name" order="ascending" case-order="lower-first"/>
@@ -5684,16 +5689,6 @@
               <xsl:value-of select="name"/>
             </a>
           </td>
-          <td>
-            <xsl:value-of select="desc"/>
-          </td>
-          <td>
-            <xsl:for-each select="/bedework/calSuites/calSuite">
-              <xsl:if test="group = $groupName">
-                <xsl:value-of select="name"/>
-              </xsl:if>
-            </xsl:for-each>
-          </td>
           <xsl:if test="/bedework/groups/showMembers='true'">
             <td>
               <xsl:for-each select="members/member/account">
@@ -5702,14 +5697,21 @@
             </td>
           </xsl:if>
           <td>
-            <a href="{$admingroup-fetchForUpdateMembers}&amp;adminGroupName={$groupName}">Add/Remove members</a>
+            <a href="{$admingroup-fetchForUpdateMembers}&amp;adminGroupName={$groupName}">membership</a>
+          </td>
+          <td>
+            <xsl:for-each select="/bedework/calSuites/calSuite">
+              <xsl:if test="group = $groupName">
+                <xsl:value-of select="name"/>
+              </xsl:if>
+            </xsl:for-each>
+          </td>
+          <td>
+            <xsl:value-of select="desc"/>
           </td>
         </tr>
       </xsl:for-each>
     </table>
-    <p class="note">
-     *Highlighted rows indicate a group to which a Calendar Suite is attached.
-    </p>
     <p>
       <input type="button" name="return" onclick="javascript:location.replace('{$admingroup-initAdd}')" value="Add a new group"/>
     </p>
