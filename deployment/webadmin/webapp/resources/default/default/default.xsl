@@ -649,6 +649,15 @@
   <!--+++++++++++++++ Main Menu Tab ++++++++++++++++++++-->
   <xsl:template name="mainMenu">
 
+    <div class="notes">
+      <xsl:if test="/bedework/userInfo/superUser = 'true'">
+        <p class="note">
+          <strong>You are logged in as superuser.</strong><br/>
+          Common event administration is best performed as a typical event administrator.
+        </p>
+      </xsl:if>
+    </div>
+
     <table id="mainMenu">
       <tr>
         <td>
