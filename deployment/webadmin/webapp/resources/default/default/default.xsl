@@ -5673,7 +5673,7 @@
         <xsl:if test="/bedework/groups/showMembers='true'">
           <th>Members</th>
         </xsl:if>
-        <th>Manage</th>
+        <th>Manage<br/>Membership</th>
         <th>Calendar Suite*</th>
         <th>Description</th>
       </tr>
