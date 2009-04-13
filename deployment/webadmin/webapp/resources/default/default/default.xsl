@@ -1062,6 +1062,16 @@
         </xsl:choose>
       </input>
 
+      <!-- field to hold status of current submission -->
+      <input type="hidden" name="xBwSubmitStatus" id="bwEventSubmitStatus">
+        <xsl:attribute name="value">
+          <xsl:choose>
+            <xsl:when test="/bedework/creating = 'true'">1</xsl:when>
+            <xsl:otherwise><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-STATUS']/values/text"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+      </input>
+
       <xsl:call-template name="submitEventButtons"/>
 
       <table class="eventFormTable">
@@ -2099,7 +2109,7 @@
           </td>
           <td>
             <textarea name="description" cols="55" rows="8">
-              <xsl:copy-of select="form/desc/textarea/*"/>
+              <xsl:value-of select="form/desc/textarea"/>
               <xsl:if test="form/desc/textarea = ''"><xsl:text> </xsl:text></xsl:if>
             </textarea>
             <div class="fieldInfo">
@@ -2249,108 +2259,94 @@
           </td>
         </tr>
 
-        <!-- Topical area  -->
-        <!-- These are the subscriptions (aliases) where the events should show up.
-             By selecting one or more of these, appropriate categories will be set on the event -->
-        <tr>
-          <td class="fieldName">
-            Topical area:
-          </td>
-          <td>
-            <ul class="aliasTree">
-              <xsl:apply-templates select="form/subscriptions/calsuite/calendars/calendar" mode="showEventFormAliases">
-                <xsl:with-param name="root">true</xsl:with-param>
-              </xsl:apply-templates>
-            </ul>
-          </td>
-        </tr>
-
         <!--  Category  -->
         <!--
-          categories are no longer be directly set by the event administrator; they are set
-          by the back-end based on the subscriptions (topical area) in the calendar suite.
-          A user, therefore, tells the system where they want the event to
-          show up, and the categories are set for them. To make categories
-          available to the event administrator -->
-        <!--
+          categories can be set by the event administrator if the calendar suite preferences allow it
+          -->
+
         <tr>
           <td class="fieldName">
             Categories:
           </td>
           <td>
-            <xsl:if test="form/categories/preferred/category and /bedework/creating='true'">
-              <input type="radio" name="categoryCheckboxes" value="preferred" checked="checked" onclick="changeClass('preferredCategoryCheckboxes','shown');changeClass('allCategoryCheckboxes','invisible');"/>preferred
-              <input type="radio" name="categoryCheckboxes" value="all" onclick="changeClass('preferredCategoryCheckboxes','invisible');changeClass('allCategoryCheckboxes','shown')"/>all<br/>
-              <table cellpadding="0" id="preferredCategoryCheckboxes">
+            <a href="javascript:toggleVisibility('bwEventCategories','visible')">
+              show/hide categories
+            </a>
+            <div id="bwEventCategories" class="invisible">
+              <xsl:if test="form/categories/preferred/category and /bedework/creating='true'">
+                <input type="radio" name="categoryCheckboxes" value="preferred" checked="checked" onclick="changeClass('preferredCategoryCheckboxes','shown');changeClass('allCategoryCheckboxes','invisible');"/>preferred
+                <input type="radio" name="categoryCheckboxes" value="all" onclick="changeClass('preferredCategoryCheckboxes','invisible');changeClass('allCategoryCheckboxes','shown')"/>all<br/>
+                <table cellpadding="0" id="preferredCategoryCheckboxes">
+                  <tr>
+                    <xsl:variable name="catCount" select="count(form/categories/preferred/category)"/>
+                    <td>
+                      <xsl:for-each select="form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
+                        <xsl:sort select="keyword" order="ascending"/>
+                        <input type="checkbox" name="catUid">
+                          <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                          <xsl:attribute name="id">pref-<xsl:value-of select="uid"/></xsl:attribute>
+                          <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="uid"/>','all-<xsl:value-of select="uid"/>')</xsl:attribute>
+                          <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                          <xsl:value-of select="keyword"/>
+                        </input><br/>
+                      </xsl:for-each>
+                    </td>
+                    <td>
+                      <xsl:for-each select="form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
+                        <xsl:sort select="keyword" order="ascending"/>
+                        <input type="checkbox" name="catUid">
+                          <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                          <xsl:attribute name="id">pref-<xsl:value-of select="uid"/></xsl:attribute>
+                          <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="uid"/>','all-<xsl:value-of select="uid"/>')</xsl:attribute>
+                          <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                          <xsl:value-of select="keyword"/>
+                        </input><br/>
+                      </xsl:for-each>
+                    </td>
+                  </tr>
+                </table>
+              </xsl:if>
+              <table cellpadding="0" id="allCategoryCheckboxes">
+                <xsl:if test="form/categories/preferred/category and /bedework/creating='true'">
+                  <xsl:attribute name="class">invisible</xsl:attribute>
+                </xsl:if>
                 <tr>
-                  <xsl:variable name="catCount" select="count(form/categories/preferred/category)"/>
+                  <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
                   <td>
-                    <xsl:for-each select="form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
-                      <xsl:sort select="keyword" order="ascending"/>
-                      <input type="checkbox" name="categoryKey">
-                        <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                        <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
-                        <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="keyword"/>','all-<xsl:value-of select="keyword"/>')</xsl:attribute>
-                        <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                    <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
+                      <input type="checkbox" name="catUid">
+                        <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                        <xsl:if test="/bedework/creating='true'">
+                          <xsl:attribute name="id">all-<xsl:value-of select="uid"/></xsl:attribute>
+                          <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="uid"/>','pref-<xsl:value-of select="uid"/>')</xsl:attribute>
+                        </xsl:if>
+                        <xsl:if test="uid = ../../current//category/uid">
+                          <xsl:attribute name="checked">checked</xsl:attribute>
+                        </xsl:if>
                         <xsl:value-of select="keyword"/>
                       </input><br/>
                     </xsl:for-each>
                   </td>
                   <td>
-                    <xsl:for-each select="form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
-                      <xsl:sort select="keyword" order="ascending"/>
-                      <input type="checkbox" name="categoryKey">
-                        <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                        <xsl:attribute name="id">pref-<xsl:value-of select="keyword"/></xsl:attribute>
-                        <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="keyword"/>','all-<xsl:value-of select="keyword"/>')</xsl:attribute>
-                        <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                    <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
+                      <input type="checkbox" name="catUid">
+                        <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                        <xsl:if test="/bedework/creating='true'">
+                          <xsl:attribute name="id">all-<xsl:value-of select="uid"/></xsl:attribute>
+                          <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="uid"/>','pref-<xsl:value-of select="uid"/>')</xsl:attribute>
+                        </xsl:if>
+                        <xsl:if test="uid = ../../current//category/uid">
+                          <xsl:attribute name="checked">checked</xsl:attribute>
+                        </xsl:if>
                         <xsl:value-of select="keyword"/>
                       </input><br/>
                     </xsl:for-each>
                   </td>
                 </tr>
               </table>
-            </xsl:if>
-            <table cellpadding="0" id="allCategoryCheckboxes">
-              <xsl:if test="form/categories/preferred/category and /bedework/creating='true'">
-                <xsl:attribute name="class">invisible</xsl:attribute>
-              </xsl:if>
-              <tr>
-                <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
-                <td>
-                  <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
-                    <input type="checkbox" name="categoryKey">
-                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="/bedework/creating='true'">
-                        <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
-                        <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
-                      </xsl:if>
-                      <xsl:if test="keyword = ../../current//category/keyword">
-                        <xsl:attribute name="checked">checked</xsl:attribute>
-                      </xsl:if>
-                      <xsl:value-of select="keyword"/>
-                    </input><br/>
-                  </xsl:for-each>
-                </td>
-                <td>
-                  <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
-                    <input type="checkbox" name="categoryKey">
-                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="/bedework/creating='true'">
-                        <xsl:attribute name="id">all-<xsl:value-of select="keyword"/></xsl:attribute>
-                        <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="keyword"/>','pref-<xsl:value-of select="keyword"/>')</xsl:attribute>
-                      </xsl:if>
-                      <xsl:if test="keyword = ../../current//category/keyword">
-                        <xsl:attribute name="checked">checked</xsl:attribute>
-                      </xsl:if>
-                      <xsl:value-of select="keyword"/>
-                    </input><br/>
-                  </xsl:for-each>
-                </td>
-              </tr>
-            </table>
+            </div>
           </td>
-        </tr> -->
+        </tr>
         <!-- note -->
         <!-- let's shut this off for now - needs rewriting if we keep it at all
         <tr>
@@ -2371,6 +2367,22 @@
             </span>
           </td>
         </tr> -->
+
+        <!-- Topical area  -->
+        <!-- These are the subscriptions (aliases) where the events should show up.
+             By selecting one or more of these, appropriate categories will be set on the event -->
+        <tr>
+          <td class="fieldName">
+            Topical area:
+          </td>
+          <td>
+            <ul class="aliasTree">
+              <xsl:apply-templates select="form/subscriptions/calsuite/calendars/calendar" mode="showEventFormAliases">
+                <xsl:with-param name="root">true</xsl:with-param>
+              </xsl:apply-templates>
+            </ul>
+          </td>
+        </tr>
 
         <xsl:if test="form/contact/name">
           <tr>
@@ -3202,10 +3214,10 @@
       </tr>
 
       <xsl:for-each select="/bedework/categories/category">
-        <xsl:variable name="categoryKey" select="normalize-space(keyword)"/>
+        <xsl:variable name="catUid" select="uid"/>
         <tr>
           <td>
-            <a href="{$category-fetchForUpdate}&amp;categoryKey={$categoryKey}">
+            <a href="{$category-fetchForUpdate}&amp;catUid={$catUid}">
               <xsl:value-of select="keyword"/>
             </a>
           </td>
@@ -3556,9 +3568,9 @@
                 <xsl:for-each select="/bedework/categories/all/category">
                   <xsl:sort select="keyword" order="ascending"/>
                   <li>
-                    <input type="checkbox" name="categoryKey">
-                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                    <input type="checkbox" name="catUid">
+                      <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                      <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                     </input>
                     <xsl:value-of select="keyword"/>
                   </li>
@@ -3608,9 +3620,9 @@
               </td>
             </tr>
           </table>
-          <p>
+          <p class="note">
             Note: An alias can be added to a Bedework calendar using a URL of the form:<br/>
-            bwcal://[path], e.g. bwcal:///public/Arts
+            bwcal://[path], e.g. bwcal:///public/cals/MainCal
           </p>
         </div>
       </div>
@@ -3758,8 +3770,8 @@
               <xsl:for-each select="/bedework/categories/current/category">
                 <xsl:sort select="keyword" order="ascending"/>
                 <li>
-                  <input type="checkbox" name="categoryKey" checked="checked">
-                    <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                  <input type="checkbox" name="catUid" checked="checked">
+                    <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                   </input>
                   <xsl:value-of select="keyword"/>
                 </li>
@@ -3773,10 +3785,10 @@
                 <xsl:for-each select="/bedework/categories/all/category">
                   <xsl:sort select="keyword" order="ascending"/>
                   <!-- don't duplicate the selected categories -->
-                  <xsl:if test="not(keyword = ../../current//category/keyword)">
+                  <xsl:if test="not(uid = ../../current//category/uid)">
                     <li>
-                      <input type="checkbox" name="categoryKey">
-                        <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
+                      <input type="checkbox" name="catUid">
+                        <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                       </input>
                       <xsl:value-of select="keyword"/>
                     </li>
@@ -4465,9 +4477,9 @@
                 <xsl:for-each select="/bedework/categories/all/category">
                   <xsl:sort select="keyword" order="ascending"/>
                   <li>
-                    <input type="checkbox" name="categoryKey">
-                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                    <input type="checkbox" name="catUid">
+                      <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                      <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                     </input>
                     <xsl:value-of select="keyword"/>
                   </li>
@@ -5349,7 +5361,7 @@
                  in this case, we have only the uids to go by, so we need to
                  match them up -->
             <ul class="catlist">
-              <xsl:for-each select="/bedework/categories/all/category">
+              <xsl:for-each select="/bedework/prefs/defaultCategories/category">
                 <xsl:sort select="keyword" order="ascending"/>
                 <xsl:if test="uid = /bedework/categories/current//category/uid">
                   <li>
@@ -5366,10 +5378,10 @@
             </a>
             <div id="calCategories" class="invisible">
               <ul class="catlist">
-                <xsl:for-each select="/bedework/categories/all/category">
+                <xsl:for-each select="/bedework/prefs/defaultCategories/category">
                   <xsl:sort select="keyword" order="ascending"/>
                   <!-- don't duplicate the selected categories -->
-                  <xsl:if test="not(keyword = ../../current//category/keyword)">
+                  <xsl:if test="not(uid = ../../current//category/uid)">
                     <li>
                       <input type="checkbox" name="defaultCategory">
                         <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>

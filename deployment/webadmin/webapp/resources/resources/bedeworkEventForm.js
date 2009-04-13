@@ -358,6 +358,10 @@ function setBedeworkXProperties(formObj,submitter) {
                    [bwXParamHeight,'']],
                    formObj["xBwImageHolder"].value,true);
   }
+  // X-BEDEWORK-SUBMIT-STATUS - status of pending events
+  if (formObj["xBwSubmitStatus"] && formObj["xBwSubmitStatus"].value != '') {
+    bwXProps.update(bwXPropertySubmitStatus, [], formObj["xBwSubmitStatus"].value, true);
+  }
   // X-BEDEWORK-SUBMITTEDBY
   bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);
 

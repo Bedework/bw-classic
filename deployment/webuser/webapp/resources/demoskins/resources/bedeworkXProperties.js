@@ -36,6 +36,7 @@ var bwXPropertyLocation = "X-BEDEWORK-LOCATION";
 var bwXPropertyContact = "X-BEDEWORK-CONTACT";
 var bwXPropertyCategories = "X-BEDEWORK-CATEGORIES";
 var bwXPropertySubmitComment = "X-BEDEWORK-SUBMIT-COMMENT";
+var bwXPropertySubmitStatus = "X-BEDEWORK-SUBMIT-STATUS";
 
 var bwXParamDescription = "X-BEDEWORK-PARAM-DESCRIPTION";
 var bwXParamWidth = "X-BEDEWORK-PARAM-WIDTH";

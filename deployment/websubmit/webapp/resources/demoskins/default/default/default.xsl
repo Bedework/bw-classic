@@ -354,6 +354,15 @@
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <!-- comment field to hold the user's suggestions:  -->
     <input type="hidden" name="xbwsubmitcomment" id="bwEventComment" value=""/>
+    <!-- field to hold status of current submission -->
+    <input type="hidden" name="xBwSubmitStatus" id="bwEventSubmitStatus">
+      <xsl:attribute name="value">
+        <xsl:choose>
+          <xsl:when test="/bedework/creating = 'true'">1</xsl:when>
+          <xsl:otherwise><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-STATUS']/values/text"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+    </input>
 
       <!-- event info for edit event -->
       <xsl:if test="/bedework/creating != 'true'">
@@ -1084,18 +1093,18 @@
               <tr>
                 <td>
                   <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
-                    <input type="checkbox" name="categoryKey">
-                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                    <input type="checkbox" name="catUid">
+                      <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                      <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                       <xsl:value-of select="keyword"/>
                     </input><br/>
                   </xsl:for-each>
                 </td>
                 <td>
                   <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
-                    <input type="checkbox" name="categoryKey">
-                      <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                      <xsl:if test="keyword = ../../current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                    <input type="checkbox" name="catUid">
+                      <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                      <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                       <xsl:value-of select="keyword"/>
                     </input><br/>
                   </xsl:for-each>

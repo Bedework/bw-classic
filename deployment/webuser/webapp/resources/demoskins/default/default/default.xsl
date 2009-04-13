@@ -2861,18 +2861,18 @@
                   <tr>
                     <td>
                       <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
-                        <input type="checkbox" name="categoryKey"/>
-                          <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                          <xsl:if test="keyword = form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        <input type="checkbox" name="catUid"/>
+                          <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                          <xsl:if test="uid = form/categories/current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                           <xsl:value-of select="keyword"/>
                         <br/>
                       </xsl:for-each>
                     </td>
                     <td>
                       <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
-                        <input type="checkbox" name="categoryKey"/>
-                          <xsl:attribute name="value"><xsl:value-of select="keyword"/></xsl:attribute>
-                          <xsl:if test="keyword = form/categories/current//category/keyword"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        <input type="checkbox" name="catUid"/>
+                          <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                          <xsl:if test="uid = form/categories/current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                           <xsl:value-of select="keyword"/>
                         <br/>
                       </xsl:for-each>
@@ -4262,9 +4262,9 @@
             <xsl:choose>
               <xsl:when test="/bedework/categories/category">
                 <xsl:for-each select="/bedework/categories/category">
-                  <xsl:variable name="categoryKey" select="normalize-space(keyword)"/>
+                  <xsl:variable name="catUid" select="uid"/>
                   <li>
-                    <a href="{$category-fetchForUpdate}&amp;categoryKey={$categoryKey}">
+                    <a href="{$category-fetchForUpdate}&amp;catUid={$catUid}">
                       <xsl:value-of select="keyword"/>
                     </a>
                   </li>

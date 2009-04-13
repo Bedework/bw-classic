@@ -238,3 +238,23 @@ function setCatChBx(thiscat,othercat) {
     otherCatCheckBox.checked =  thisCatCheckBox.checked;
   }
 }
+function checkPrefCategories(formObj){
+  var hasACat = false;
+
+  if (typeof formObj.catUid.length != 'undefined') {
+    for (i = 0; i < formObj.catUid.length; i++) {
+      if (formObj.catUid[i].checked) {
+        hasACat = true;
+        break;
+      }
+    }
+  }
+  if (!hasACat) {
+    // no category is checked;
+    // create an empty catUid element to alert the backend
+    // so we can clear the cats
+    var hiddenCat = document.createElement("div");
+    hiddenCat.innerHTML = '<input type="hidden" name="catUid" value=""/>';
+    formObj.appendChild(hiddenCat);
+  }
+}

@@ -263,8 +263,6 @@ function setDates(formObj) {
 function setComments(formObj) {
   // set the submission comments (location, contact, and category suggestions)
   // as an xproperty.  Relies on bedeworkXProperties.js
-
-
 }
 function setBedeworkXProperties(formObj,submitter) {
   // Set up specific Bedework X-Properties on event form submission
@@ -303,6 +301,12 @@ function setBedeworkXProperties(formObj,submitter) {
                    [bwXParamHeight,'']],
                    formObj["xBwImageHolder"].value,true);
   }
+
+  // X-BEDEWORK-SUBMIT-STATUS
+  if (formObj["xBwSubmitStatus"] && formObj["xBwSubmitStatus"].value != '') {
+    bwXProps.update(bwXPropertySubmitStatus, [], formObj["xBwSubmitStatus"].value, true);
+  }
+
   // X-BEDEWORK-SUBMITTEDBY
   bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);
 
