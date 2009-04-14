@@ -153,6 +153,7 @@
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
   <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd/a/@href"/>
   <xsl:variable name="subscriptions-update" select="/bedework/urlPrefixes/subscriptions/update/a/@href"/>
+  <xsl:variable name="subscriptions-delete" select="/bedework/urlPrefixes/subscriptions/delete/a/@href"/>
   <xsl:variable name="subscriptions-openCloseMod" select="/bedework/urlPrefixes/subscriptions/subOpenCloseMod/a/@href"/>
   <!-- views -->
   <xsl:variable name="view-fetch" select="/bedework/urlPrefixes/view/fetch/a/@href"/>
@@ -415,7 +416,8 @@
                   <xsl:call-template name="calendarMove"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='subscriptions' or
-                                /bedework/page='modSubscription'">
+                                /bedework/page='modSubscription' or
+                                /bedework/page='deleteSubConfirm'">
                   <xsl:apply-templates select="/bedework/calendars" mode="subscriptions"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='views'">
@@ -1159,9 +1161,9 @@
                 all
               </xsl:if>
               <br/>
-              <span id="calDescriptionsLink">
+              <!-- span id="calDescriptionsLink">
                 <a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a>
-              </span>
+              </span-->
             </td>
           </tr>
         </xsl:if>
@@ -2474,8 +2476,7 @@
           <xsl:when test="calType = '0'">
             <!-- no direct selecting of folders or folder aliases: we only want users to select the
                  underlying calendar aliases -->
-            <!--img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="folder" class="folderForAliasTree" border="0"/-->
-            <input type="checkbox" name="forDiplayOnly" disabled="disabled"/>
+            <img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="folder" class="folderForAliasTree" border="0"/>
             <xsl:value-of select="name"/>
           </xsl:when>
           <xsl:otherwise>
@@ -4396,6 +4397,9 @@
             <xsl:when test="/bedework/page='subscriptions'">
               <xsl:call-template name="subscriptionIntro"/>
             </xsl:when>
+            <xsl:when test="/bedework/page='deleteSubConfirm'">
+              <xsl:apply-templates select="/bedework/currentCalendar" mode="deleteSubConfirm"/>
+            </xsl:when>
             <xsl:when test="/bedework/creating='true'">
               <xsl:apply-templates select="/bedework/currentCalendar" mode="addSubscription"/>
             </xsl:when>
@@ -4573,9 +4577,9 @@
               <div id="subscriptionTypePublic">
                 <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>
                 <div id="bwPublicCalDisplay">
-                  Select the public calendar or folder:
+                  <button type="button" onclick="showPublicCalAliasTree();">Select a public calendar or folder</button>
                 </div>
-                <ul id="publicSubscriptionTree" class="calendarTree">
+                <ul id="publicSubscriptionTree" class="invisible">
                   <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
                 </ul>
               </div>
@@ -4658,6 +4662,81 @@
     </li>
   </xsl:template>
 
+  <xsl:template match="currentCalendar" mode="deleteSubConfirm">
+    <xsl:choose>
+      <xsl:when test="isSubscription = 'true'">
+        <h3>Remove Subscription</h3>
+        <p>
+          The following subscription will be removed.
+          Continue?
+        </p>
+      </xsl:when>
+      <xsl:when test="calType = '0'">
+        <h3>Delete Folder</h3>
+        <p>
+          The following folder <em>and all its contents</em> will be deleted.
+          Continue?
+        </p>
+      </xsl:when>
+      <xsl:otherwise>
+        <h3>Delete Calendar</h3>
+        <p>
+          The following calendar will be deleted.  Continue?
+        </p>
+      </xsl:otherwise>
+    </xsl:choose>
+
+    <form name="delCalForm" action="{$subscriptions-delete}" method="post">
+      <table class="eventFormTable">
+        <tr>
+          <th>Path:</th>
+          <td>
+            <xsl:value-of select="path"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Name:</th>
+          <td>
+            <xsl:value-of select="name"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Summary:</th>
+          <td>
+            <xsl:value-of select="summary"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Description:</th>
+          <td>
+            <xsl:value-of select="desc"/>
+          </td>
+        </tr>
+      </table>
+
+      <table border="0" id="submitTable">
+        <tr>
+          <td>
+            <input type="submit" name="cancelled" value="Cancel"/>
+          </td>
+          <td align="right">
+            <xsl:choose>
+              <xsl:when test="isSubscription = 'true'">
+                <input type="submit" name="delete" value="Yes: Remove Subscription!"/>
+              </xsl:when>
+              <xsl:when test="calType = '0'">
+                <input type="submit" name="delete" value="Yes: Delete Folder!"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="delete" value="Yes: Delete Calendar!"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </xsl:template>
+
   <!--+++++++++++++++ Views ++++++++++++++++++++-->
   <xsl:template match="views" mode="viewList">
     <!-- fix this: /user/ should be parameterized not hard-coded here -->
@@ -4693,6 +4772,7 @@
           </td>
           <td>
             <xsl:for-each select="path">
+              <xsl:sort select="substring-after(.,$userPath)" order="ascending" case-order="upper-first"/>
               <xsl:value-of select="substring-after(.,$userPath)"/>
               <xsl:if test="position()!=last()"><br/></xsl:if>
             </xsl:for-each>
@@ -4742,6 +4822,8 @@
                 </tr>
               </xsl:if>
             </xsl:for-each>
+            <!-- extra row to keep the code valid if above rows are empty -->
+            <tr><td>&#160;</td></tr>
           </table>
         </td>
         <td class="view">
@@ -4763,6 +4845,8 @@
                 </td>
               </tr>
             </xsl:for-each>
+            <!-- extra row to keep the code valid if above rows are empty -->
+            <tr><td>&#160;</td></tr>
           </table>
         </td>
       </tr>
@@ -4787,20 +4871,23 @@
   <xsl:template name="deleteViewConfirm">
     <h2>Remove View?</h2>
 
-    <xsl:variable name="viewName" select="/bedework/views/view/name"/>
-    <p>The following view will be removed. <em>Be forewarned: if caching is
-    enabled, removing views from a
-    production system can cause the public interface to throw errors until the
-    cache is flushed (a few minutes).</em>
+    <p>
+      The view <strong><xsl:value-of select="/bedework/currentView/name"/></strong>
+      will be removed.
+    </p>
+    <p class="note">
+      Be forewarned: if caching is
+      enabled, removing views from a production system can cause the public
+      interface to throw errors until the
+      cache is flushed (a few minutes).
     </p>
 
     <p>Continue?</p>
 
-    <h3 class="viewName">
-      <xsl:value-of select="$viewName"/>
-    </h3>
     <form name="removeView" action="{$view-remove}" method="post">
-      <input type="hidden" name="name" value="{$viewName}"/>
+      <input type="hidden" name="name">
+        <xsl:attribute name="value"><xsl:value-of select="/bedework/currentView/name"/></xsl:attribute>
+      </input>
       <input type="submit" name="delete" value="Yes: Remove View"/>
       <input type="submit" name="cancelled" value="No: Cancel"/>
     </form>

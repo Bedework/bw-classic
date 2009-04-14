@@ -165,12 +165,15 @@ function updateEventFormCalendar(newCalPath,calDisplay) {
 }
 // used to update a calendar subscription (alias) We must do two things: update the hidden
 // calendar input field and update the displayed text
-function updatePublicCalendarAlias(newCalPath,calDisplay,calTreeNodeId,calendarCollection) {
+function updatePublicCalendarAlias(newCalPath,calDisplay,calendarCollection) {
   var calendarAliasHolder = document.getElementById("publicAliasHolder");
-  calendarAliasHolder.value = newCalPath;
-  $('#'+calTreeNodeId).addClass("strong");
   var bwCalDisplay = document.getElementById("bwPublicCalDisplay");
-  bwCalDisplay.innerHTML = "Selected calendar: <strong>" + calDisplay + "</strong>";
+  calendarAliasHolder.value = newCalPath;
+  bwCalDisplay.innerHTML = '<strong>' + calDisplay + '</strong> <button type="button" onclick="showPublicCalAliasTree();">change</button>';
+  changeClass("publicSubscriptionTree","invisible");
+}
+function showPublicCalAliasTree() {
+  changeClass("publicSubscriptionTree","calendarTree");
 }
 // set the subscription URI when creating or updating a subscription
 function setCalendarAlias(formObj) {
