@@ -460,7 +460,7 @@
               </form>
              </xsl:otherwise>
            </xsl:choose>
-           <span class="link"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">available calendars</a></span>
+           <span class="link"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">all topical areas</a></span>
          </td>
          <td class="rightCell">
             <xsl:if test="/bedework/page!='searchResult'">
@@ -842,7 +842,7 @@
           <td class="fieldval">
             <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
               <xsl:variable name="calUrl" select="values/text"/>
-              <a href="{$setSelection}&amp;calUrl={$calUrl}">
+              <a href="{$setSelection}&amp;calUrl={$calUrl}&amp;setappvar=curCollection({$calUrl})">
                 <xsl:call-template name="substring-afterLastInstanceOf">
                   <xsl:with-param name="string" select="values/text"/>
                   <xsl:with-param name="char">/</xsl:with-param>
@@ -1423,29 +1423,30 @@
 
   <!-- list of available calendars -->
   <xsl:template match="calendars">
-    <xsl:variable name="topLevelCalCount" select="count(calendar/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3])"/>
+    <xsl:variable name="topLevelCalCount" select="count(calendar/calendar[calType != 5 and calType != 6 and name != 'calendar'])"/>
     <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="2">
-          All Calendars
+          All Topical Areas
         </th>
       </tr>
       <tr>
         <td colspan="2" class="infoCell">
           <p class="info">
-            Select a calendar from the list below to see only that calendar's events.
+            Select a topical area from the list below to see only its events.
           </p>
         </td>
       </tr>
       <tr>
         <td class="leftCell">
+          <!-- adjust the following calculations to get a balanced layout between the cells -->
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[(calType = 0 or calType = 7 or calType = 8) and position() &lt;= ceiling($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[(calType != 5 and calType != 6 and name != 'calendar') and (position() &lt;= ceiling($topLevelCalCount div 2)+2)]" mode="calTree"/>
           </ul>
         </td>
         <td>
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[(calType = 0 or calType = 7 or calType = 8) and position() &gt; ceiling($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[(calType != 5 and calType != 6 and name != 'calendar') and (position() &gt; ceiling($topLevelCalCount div 2)+2)]" mode="calTree"/>
           </ul>
         </td>
       </tr>
@@ -1463,14 +1464,12 @@
     <li class="{$itemClass}">
       <xsl:variable name="calPath" select="path"/>
       <a href="{$setSelection}&amp;calUrl={$url}&amp;setappvar=curCollection({$calPath})" title="view calendar"><xsl:value-of select="name"/></a>
-      <xsl:if test="calType != '0'">
-        <xsl:variable name="calPath" select="path"/>
-        <span class="exportCalLink">
-          <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}" title="export calendar as iCal">
-            <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
-          </a>
-        </span>
-      </xsl:if>
+      <xsl:variable name="calPath" select="path"/>
+      <span class="exportCalLink">
+        <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}" title="export calendar as iCal">
+          <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
+        </a>
+      </span>
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="calTree"/>

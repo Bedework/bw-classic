@@ -980,6 +980,7 @@
           </td>
           <td class="calcat">
             <xsl:for-each select="categories/category">
+              <xsl:sort select="word"/>
               <xsl:value-of select="word"/><br/>
             </xsl:for-each>
           </td>
@@ -2270,6 +2271,22 @@
           </td>
         </tr>
 
+        <!-- Topical area  -->
+        <!-- These are the subscriptions (aliases) where the events should show up.
+             By selecting one or more of these, appropriate categories will be set on the event -->
+        <tr>
+          <td class="fieldName">
+            Topical area:
+          </td>
+          <td>
+            <ul class="aliasTree">
+              <xsl:apply-templates select="form/subscriptions/calsuite/calendars/calendar" mode="showEventFormAliases">
+                <xsl:with-param name="root">true</xsl:with-param>
+              </xsl:apply-templates>
+            </ul>
+          </td>
+        </tr>
+
         <!--  Category  -->
         <!--
           categories can be set by the event administrator if the calendar suite preferences allow it
@@ -2390,22 +2407,6 @@
           </td>
         </tr> -->
 
-        <!-- Topical area  -->
-        <!-- These are the subscriptions (aliases) where the events should show up.
-             By selecting one or more of these, appropriate categories will be set on the event -->
-        <tr>
-          <td class="fieldName">
-            Topical area:
-          </td>
-          <td>
-            <ul class="aliasTree">
-              <xsl:apply-templates select="form/subscriptions/calsuite/calendars/calendar" mode="showEventFormAliases">
-                <xsl:with-param name="root">true</xsl:with-param>
-              </xsl:apply-templates>
-            </ul>
-          </td>
-        </tr>
-
         <xsl:if test="form/contact/name">
           <tr>
             <td class="fieldName" colspan="2">
@@ -2484,7 +2485,14 @@
               <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
               <xsl:if test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
-            <xsl:value-of select="name"/>
+            <xsl:choose>
+              <xsl:when test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
+                <strong><xsl:value-of select="name"/></strong>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="name"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:if>
@@ -5542,7 +5550,7 @@
         </tr>
         <tr>
           <th>
-            Allow users to select categories in event form:
+            Allow event administrators to<br/>select categories in event form:
           </th>
           <td>
             <input type="radio" name="useCats" value="true" checked="checked"/> yes
