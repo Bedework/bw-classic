@@ -1070,6 +1070,10 @@ img.folderForAliasTree {
   margin: 0;
   padding: 0;
 }
+.defaultCategory {
+  color: #999;
+  background-color: transparent;
+}
 #bwGetCollectionForm {
   margin-top: 1em;
   white-space: nowrap;

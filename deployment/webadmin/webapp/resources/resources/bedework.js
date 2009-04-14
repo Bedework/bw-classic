@@ -241,9 +241,9 @@ function setCatChBx(thiscat,othercat) {
 function checkPrefCategories(formObj){
   var hasACat = false;
 
-  if (typeof formObj.catUid.length != 'undefined') {
-    for (i = 0; i < formObj.catUid.length; i++) {
-      if (formObj.catUid[i].checked) {
+  if (typeof formObj.defaultCategory.length != 'undefined') {
+    for (i = 0; i < formObj.defaultCategory.length; i++) {
+      if (formObj.defaultCategory[i].checked) {
         hasACat = true;
         break;
       }
@@ -254,7 +254,7 @@ function checkPrefCategories(formObj){
     // create an empty catUid element to alert the backend
     // so we can clear the cats
     var hiddenCat = document.createElement("div");
-    hiddenCat.innerHTML = '<input type="hidden" name="catUid" value=""/>';
+    hiddenCat.innerHTML = '<input type="hidden" name="defaultCategory" value=""/>';
     formObj.appendChild(hiddenCat);
   }
 }

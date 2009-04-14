@@ -918,8 +918,9 @@
         <th>Title</th>
         <th>Start</th>
         <th>End</th>
+        <th>Topical Areas</th>
         <th>Categories</th>
-        <th>Calendar</th>
+        <!-- <th>Calendar</th> -->
         <th>Description</th>
       </tr>
 
@@ -968,13 +969,21 @@
             <xsl:value-of select="end/time"/>
           </td>
           <td class="calcat">
+            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+              <xsl:call-template name="substring-afterLastInstanceOf">
+                <xsl:with-param name="string" select="values/text"/>
+                <xsl:with-param name="char">/</xsl:with-param>
+              </xsl:call-template><br/>
+            </xsl:for-each>
+          </td>
+          <td class="calcat">
             <xsl:for-each select="categories/category">
               <xsl:value-of select="word"/><br/>
             </xsl:for-each>
           </td>
-          <td>
+          <!-- <td>
             <xsl:value-of select="calendar/name"/>
-          </td>
+          </td>-->
           <td>
             <xsl:value-of select="description"/>
             <xsl:if test="recurring = 'true' or recurrenceId != ''">
@@ -2263,7 +2272,6 @@
         <!--
           categories can be set by the event administrator if the calendar suite preferences allow it
           -->
-
         <tr>
           <td class="fieldName">
             Categories:
@@ -2287,6 +2295,9 @@
                           <xsl:attribute name="id">pref-<xsl:value-of select="uid"/></xsl:attribute>
                           <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="uid"/>','all-<xsl:value-of select="uid"/>')</xsl:attribute>
                           <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                          <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
+                            <xsl:attribute name="disabled">disabled</xsl:attribute>
+                          </xsl:if>
                           <xsl:value-of select="keyword"/>
                         </input><br/>
                       </xsl:for-each>
@@ -2299,6 +2310,9 @@
                           <xsl:attribute name="id">pref-<xsl:value-of select="uid"/></xsl:attribute>
                           <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="uid"/>','all-<xsl:value-of select="uid"/>')</xsl:attribute>
                           <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                          <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
+                            <xsl:attribute name="disabled">disabled</xsl:attribute>
+                          </xsl:if>
                           <xsl:value-of select="keyword"/>
                         </input><br/>
                       </xsl:for-each>
@@ -2322,6 +2336,9 @@
                         </xsl:if>
                         <xsl:if test="uid = ../../current//category/uid">
                           <xsl:attribute name="checked">checked</xsl:attribute>
+                          <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
+                            <xsl:attribute name="disabled">disabled</xsl:attribute>
+                          </xsl:if>
                         </xsl:if>
                         <xsl:value-of select="keyword"/>
                       </input><br/>
@@ -2337,6 +2354,9 @@
                         </xsl:if>
                         <xsl:if test="uid = ../../current//category/uid">
                           <xsl:attribute name="checked">checked</xsl:attribute>
+                          <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
+                            <xsl:attribute name="disabled">disabled</xsl:attribute>
+                          </xsl:if>
                         </xsl:if>
                         <xsl:value-of select="keyword"/>
                       </input><br/>
@@ -3337,6 +3357,41 @@
     </form>
   </xsl:template>
 
+  <!-- form used for selecting categories in calendar and pref forms -->
+  <xsl:template name="categorySelectionWidget">
+    <!-- show the selected categories -->
+    <ul class="catlist">
+      <xsl:for-each select="/bedework/categories/current/category">
+        <xsl:sort select="keyword" order="ascending"/>
+        <li>
+          <input type="checkbox" name="catUid" checked="checked">
+            <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+          </input>
+          <xsl:value-of select="keyword"/>
+        </li>
+      </xsl:for-each>
+    </ul>
+    <a href="javascript:toggleVisibility('calCategories','visible')">
+      show/hide unused categories
+    </a>
+    <div id="calCategories" class="invisible">
+      <ul class="catlist">
+        <xsl:for-each select="/bedework/categories/all/category">
+          <xsl:sort select="keyword" order="ascending"/>
+          <!-- don't duplicate the selected categories -->
+          <xsl:if test="not(uid = ../../current//category/uid)">
+            <li>
+              <input type="checkbox" name="catUid">
+                <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+              </input>
+              <xsl:value-of select="keyword"/>
+            </li>
+          </xsl:if>
+        </xsl:for-each>
+      </ul>
+    </div>
+  </xsl:template>
+
 <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
   <xsl:template match="calendars" mode="calendarCommon">
     <table id="calendarTable">
@@ -3571,8 +3626,11 @@
                     <input type="checkbox" name="catUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                       <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                      <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
+                        <xsl:attribute name="disabled">disabled</xsl:attribute>
+                      </xsl:if>
+                      <xsl:value-of select="keyword"/>
                     </input>
-                    <xsl:value-of select="keyword"/>
                   </li>
                 </xsl:for-each>
               </ul>
@@ -3772,8 +3830,11 @@
                 <li>
                   <input type="checkbox" name="catUid" checked="checked">
                     <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                    <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
+                      <xsl:attribute name="disabled">disabled</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="keyword"/>
                   </input>
-                  <xsl:value-of select="keyword"/>
                 </li>
               </xsl:for-each>
             </ul>
@@ -4480,8 +4541,11 @@
                     <input type="checkbox" name="catUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                       <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                      <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
+                        <xsl:attribute name="disabled">disabled</xsl:attribute>
+                      </xsl:if>
+                      <xsl:value-of select="keyword"/>
                     </input>
-                    <xsl:value-of select="keyword"/>
                   </li>
                 </xsl:for-each>
               </ul>
@@ -5282,7 +5346,7 @@
 
   <xsl:template name="calSuitePrefs">
     <h2>Edit Calendar Suite Preferences</h2>
-    <form name="userPrefsForm" method="post" action="{$calsuite-updatePrefs}">
+    <form name="userPrefsForm" method="post" action="{$calsuite-updatePrefs}" onsubmit="checkPrefCategories(this);">
       <table class="common2">
         <tr>
           <th>
@@ -5356,21 +5420,16 @@
         <tr>
           <th>Default Categories:</th>
           <td>
-            <!-- show the selected categories - in this case, iterate over
-                 the "all" listing and reveal those that have been selected;
-                 in this case, we have only the uids to go by, so we need to
-                 match them up -->
+            <!-- show the selected categories -->
             <ul class="catlist">
-              <xsl:for-each select="/bedework/prefs/defaultCategories/category">
+              <xsl:for-each select="/bedework/categories/current/category">
                 <xsl:sort select="keyword" order="ascending"/>
-                <xsl:if test="uid = /bedework/categories/current//category/uid">
-                  <li>
-                    <input type="checkbox" name="defaultCategory" checked="checked">
-                      <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                    </input>
+                <li>
+                  <input type="checkbox" name="defaultCategory" checked="checked">
+                    <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                     <xsl:value-of select="keyword"/>
-                  </li>
-                </xsl:if>
+                  </input>
+                </li>
               </xsl:for-each>
             </ul>
             <a href="javascript:toggleVisibility('calCategories','visible')">
@@ -5378,20 +5437,29 @@
             </a>
             <div id="calCategories" class="invisible">
               <ul class="catlist">
-                <xsl:for-each select="/bedework/prefs/defaultCategories/category">
+                <xsl:for-each select="/bedework/categories/all/category">
                   <xsl:sort select="keyword" order="ascending"/>
                   <!-- don't duplicate the selected categories -->
                   <xsl:if test="not(uid = ../../current//category/uid)">
                     <li>
                       <input type="checkbox" name="defaultCategory">
                         <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                        <xsl:value-of select="keyword"/>
                       </input>
-                      <xsl:value-of select="keyword"/>
                     </li>
                   </xsl:if>
                 </xsl:for-each>
               </ul>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Allow users to select categories in event form:
+          </th>
+          <td>
+            <input type="radio" name="useCats" value="true" checked="checked"/> yes
+            <input type="radio" name="useCats" value="false"/> no
           </td>
         </tr>
         <!--
