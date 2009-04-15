@@ -39,6 +39,11 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. -->
 
+  <!-- GENERATE KEYS -->
+  <!-- Pick out unique categories from a collection of events
+       for filtering in the manage event list. -->
+  <xsl:key name="catUid" match="category" use="uid"/>
+
   <!-- DEFINE INCLUDES -->
   <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
@@ -902,14 +907,36 @@
       <input type="button" name="return" value="Add new event" onclick="javascript:location.replace('{$event-initAddEvent}')"/>
     </p>
 
-    <form name="calForm" id="bwManageEventListControls" method="post" action="{$event-initUpdateEvent}">
-      Show:
-      <xsl:copy-of select="/bedework/formElements/form/listAllSwitchFalse/*"/>
-      Active
-      <xsl:copy-of select="/bedework/formElements/form/listAllSwitchTrue/*"/>
-      All
-    </form>
+    <div id="bwEventListControls">
+      <form name="calForm" id="bwManageEventListControls" method="post" action="{$event-initUpdateEvent}">
+        Show:
+        <xsl:copy-of select="/bedework/formElements/form/listAllSwitchFalse/*"/>
+        Active
+        <xsl:copy-of select="/bedework/formElements/form/listAllSwitchTrue/*"/>
+        All
+      </form>
 
+      <form name="filterEventsForm"
+            id="bwFilterEventsForm"
+            action="{$event-initUpdateEvent}">
+        Filter by:
+        <select name="setappvar" onchange="this.form.submit();">
+          <option value="catFilter(none)">select a category</option>
+          <xsl:for-each select="/bedework/events//event/categories//category[generate-id() = generate-id(key('catUid',uid)[1])]">
+            <xsl:variable name="uid" select="uid"/>
+            <option value="catFilter({$uid})">
+              <xsl:if test="/bedework/appvar[key='catFilter']/value = uid">
+                <xsl:attribute name="selected">selected</xsl:attribute>
+              </xsl:if>
+              <xsl:value-of select="keyword"/>
+            </option>
+          </xsl:for-each>
+        </select>
+        <xsl:if test="/bedework/appvar[key='catFilter'] and /bedework/appvar[key='catFilter']/value != 'none'">
+          <input type="submit" value="clear filter" onclick="this.form.setappvar.selectedIndex = 0"/>
+        </xsl:if>
+      </form>
+    </div>
     <xsl:call-template name="eventListCommon"/>
   </xsl:template>
 
@@ -926,85 +953,100 @@
         <th>Description</th>
       </tr>
 
-      <xsl:for-each select="/bedework/events/event">
-        <xsl:variable name="subscriptionId" select="subscription/id"/>
-        <xsl:variable name="calPath" select="calendar/encodedPath"/>
-        <xsl:variable name="guid" select="guid"/>
-        <xsl:variable name="recurrenceId" select="recurrenceId"/>
-        <tr>
-          <td>
-            <xsl:choose>
-              <xsl:when test="$pending = 'true'">
-                <a href="{$event-fetchForUpdatePending}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                  <xsl:choose>
-                    <xsl:when test="summary != ''">
-                      <xsl:value-of select="summary"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <em>no title</em>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </a>
-              </xsl:when>
-              <xsl:otherwise>
-                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                  <xsl:choose>
-                    <xsl:when test="summary != ''">
-                      <xsl:value-of select="summary"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <em>no title</em>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </a>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-          <td class="date">
-            <xsl:value-of select="start/shortdate"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="start/time"/>
-          </td>
-          <td class="date">
-            <xsl:value-of select="end/shortdate"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="end/time"/>
-          </td>
-          <td class="calcat">
-            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
-              <xsl:call-template name="substring-afterLastInstanceOf">
-                <xsl:with-param name="string" select="values/text"/>
-                <xsl:with-param name="char">/</xsl:with-param>
-              </xsl:call-template><br/>
-            </xsl:for-each>
-          </td>
-          <td class="calcat">
-            <xsl:for-each select="categories/category">
-              <xsl:sort select="word"/>
-              <xsl:value-of select="word"/><br/>
-            </xsl:for-each>
-          </td>
-          <!-- <td>
-            <xsl:value-of select="calendar/name"/>
-          </td>-->
-          <td>
-            <xsl:value-of select="description"/>
-            <xsl:if test="recurring = 'true' or recurrenceId != ''">
-              <div class="recurrenceEditLinks">
-                Recurring event.
-                Edit:
-                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
-                  master
-                </a> |
-                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                  instance
-                </a>
-              </div>
-            </xsl:if>
-          </td>
-        </tr>
-      </xsl:for-each>
+      <xsl:choose>
+        <xsl:when test="/bedework/appvar[key='catFilter'] and /bedework/appvar[key='catFilter']/value != 'none'">
+          <xsl:apply-templates select="/bedework/events/event[categories//category/uid = /bedework/appvar[key='catFilter']/value]" mode="eventListCommon">
+            <xsl:with-param name="pending"><xsl:value-of select="$pending"/></xsl:with-param>
+          </xsl:apply-templates>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="/bedework/events/event" mode="eventListCommon">
+            <xsl:with-param name="pending"><xsl:value-of select="$pending"/></xsl:with-param>
+          </xsl:apply-templates>
+        </xsl:otherwise>
+      </xsl:choose>
+
     </table>
+  </xsl:template>
+
+  <xsl:template match="event" mode="eventListCommon">
+    <xsl:param name="pending">false</xsl:param>
+    <xsl:variable name="subscriptionId" select="subscription/id"/>
+    <xsl:variable name="calPath" select="calendar/encodedPath"/>
+    <xsl:variable name="guid" select="guid"/>
+    <xsl:variable name="recurrenceId" select="recurrenceId"/>
+    <tr>
+      <td>
+        <xsl:choose>
+          <xsl:when test="$pending = 'true'">
+            <a href="{$event-fetchForUpdatePending}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+              <xsl:choose>
+                <xsl:when test="summary != ''">
+                  <xsl:value-of select="summary"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <em>no title</em>
+                </xsl:otherwise>
+              </xsl:choose>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+              <xsl:choose>
+                <xsl:when test="summary != ''">
+                  <xsl:value-of select="summary"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <em>no title</em>
+                </xsl:otherwise>
+              </xsl:choose>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </td>
+      <td class="date">
+        <xsl:value-of select="start/shortdate"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="start/time"/>
+      </td>
+      <td class="date">
+        <xsl:value-of select="end/shortdate"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="end/time"/>
+      </td>
+      <td class="calcat">
+        <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+          <xsl:call-template name="substring-afterLastInstanceOf">
+            <xsl:with-param name="string" select="values/text"/>
+            <xsl:with-param name="char">/</xsl:with-param>
+          </xsl:call-template><br/>
+        </xsl:for-each>
+      </td>
+      <td class="calcat">
+        <xsl:for-each select="categories/category">
+          <xsl:sort select="word"/>
+          <xsl:value-of select="word"/><br/>
+        </xsl:for-each>
+      </td>
+      <!-- <td>
+        <xsl:value-of select="calendar/name"/>
+      </td>-->
+      <td>
+        <xsl:value-of select="description"/>
+        <xsl:if test="recurring = 'true' or recurrenceId != ''">
+          <div class="recurrenceEditLinks">
+            Recurring event.
+            Edit:
+            <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+              master
+            </a> |
+            <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+              instance
+            </a>
+          </div>
+        </xsl:if>
+      </td>
+    </tr>
   </xsl:template>
 
   <xsl:template match="formElements" mode="modEvent">
