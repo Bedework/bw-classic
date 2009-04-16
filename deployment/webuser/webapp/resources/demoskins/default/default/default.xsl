@@ -4870,10 +4870,6 @@
           </td>
         </tr>
       </table>
-      <div class="submitButtons">
-        <input type="submit" name="addCalendar" value="Add"/>
-        <input type="submit" name="cancelled" value="cancel"/>
-      </div>
       <div id="subscriptionTypes" class="invisible">
         <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
              on the subscription type. -->
@@ -4890,9 +4886,9 @@
         <div id="subscriptionTypePublic">
           <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>
           <div id="bwPublicCalDisplay">
-            Select the public calendar or folder:
+            <button type="button" onclick="showPublicCalAliasTree();">Select a public calendar or folder</button>
           </div>
-          <ul id="publicSubscriptionTree">
+          <ul id="publicSubscriptionTree" class="invisible">
             <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
           </ul>
         </div>
@@ -4939,7 +4935,10 @@
           </table>
         </div>
       </div>
-
+      <div class="submitButtons">
+        <input type="submit" name="addCalendar" value="Add"/>
+        <input type="submit" name="cancelled" value="cancel"/>
+      </div>
     </form>
 
     <div id="sharingBox">
