@@ -1065,6 +1065,9 @@ display: inline;
 #bwColorPickerButton {
   width: 28px;
 }
+#bwColorPicker {
+  white-space: nowrap;
+}
 #bedework table.widget {
   margin: 1em 1em 0 0;
   float: left;
