@@ -669,6 +669,9 @@
       <tr>
         <td>
           <a id="addEventLink" href="{$event-initAddEvent}">
+            <xsl:if test="not(/bedework/currentCalSuite/name)">
+              <xsl:attribute name="onclick">alert('You must be operating in the context of a calendar suite\nto add or manage events.\n\nYour current group is neither associated with a calendar suite\nnor a child of a group associated with a calendar suite.');return false;</xsl:attribute>
+            </xsl:if>
             <img src="{$resourcesRoot}/resources/bwAdminAddEventIcon.jpg" width="140" height="140" alt="Add Event" border="0"/>
             <br/>Add Event
           </a>
@@ -702,6 +705,9 @@
       <tr>
         <td>
           <a href="{$event-initUpdateEvent}">
+            <xsl:if test="not(/bedework/currentCalSuite/name)">
+              <xsl:attribute name="onclick">alert('You must be operating in the context of a calendar suite\nto add or manage events.\n\nYour current group is neither associated with a calendar suite\nnor a child of a group associated with a calendar suite.');return false;</xsl:attribute>
+            </xsl:if>
             <img src="{$resourcesRoot}/resources/bwAdminManageEventsIcon.jpg" width="100" height="73" alt="Manage Events" border="0"/>
             <br/>Manage Events
           </a>
@@ -6034,7 +6040,14 @@
             Description:
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/desc/*"/>
+            <textarea name="updAdminGroup.description" cols="50" rows="3">
+              <xsl:value-of select="/bedework/formElements/form/desc/textarea"/>
+              <xsl:if test="normalize-space(/bedework/formElements/form/desc/textarea) = ''">
+                <xsl:text> </xsl:text>
+                <!-- keep this non-breaking space to avoid browser
+                rendering errors when the text area is empty -->
+              </xsl:if>
+            </textarea>
           </td>
         </tr>
         <tr>
