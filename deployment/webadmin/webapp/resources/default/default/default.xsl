@@ -1024,8 +1024,8 @@
       </td>
       <td class="calcat">
         <xsl:for-each select="categories/category">
-          <xsl:sort select="word"/>
-          <xsl:value-of select="word"/><br/>
+          <xsl:sort select="keyword"/>
+          <xsl:value-of select="keyword"/><br/>
         </xsl:for-each>
       </td>
       <!-- <td>
