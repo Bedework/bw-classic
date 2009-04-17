@@ -5602,7 +5602,8 @@
           </th>
           <td>
             <input type="radio" name="useCats" value="true" checked="checked"/> yes
-            <input type="radio" name="useCats" value="false"/> no
+            <input type="radio" name="useCats" value="false"/> no<br/>
+            <p class="note">not yet implemented; the default will be "no".</p>
           </td>
         </tr>
         <!--
