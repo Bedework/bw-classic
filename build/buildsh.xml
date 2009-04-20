@@ -55,10 +55,13 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.dom4j}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ehcache}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.hibernate}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.javassist}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jgroups}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jta}" />
-
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-collections}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-api}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-log4j12}" />
+
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-logging}"/>
 
     <!-- core files -->
@@ -91,7 +94,6 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ical4j}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-codec}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-digester}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-collections}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-httpclient}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-lang}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-ssl}"/>
