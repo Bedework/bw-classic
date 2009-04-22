@@ -99,7 +99,7 @@ REM    GOTO:EOF
 
   SET CLASSPATH="%ANT_HOME%\lib\ant-launcher.jar"
 
-  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home=%ANT_HOME% org.apache.tools.ant.launch.Launcher %BWCONFIG% %1
+  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %1
 
   GOTO:EOF
 
