@@ -303,7 +303,7 @@ function bwPrincipal(who, whoType) {
     this.who = who;
 
     // Don't touch email like addresses
-    if (who.indexOf("@") < 0) {
+//    if (who.indexOf("@") < 0) {
       // Normalize the who
       if (whoType == "user") {
         if (who.indexOf(principalPrefix) != "0") {
@@ -318,7 +318,7 @@ function bwPrincipal(who, whoType) {
           who = resourcePrincipalPrefix + who;
         }
       }
-    }
+  //  }
   }
 
   // format the who string for on-screen display
