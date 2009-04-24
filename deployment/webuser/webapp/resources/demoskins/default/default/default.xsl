@@ -191,6 +191,7 @@
         <xsl:call-template name="headSection"/>
       </head>
       <body>
+        <!--
         <xsl:choose>
           <xsl:when test="/bedework/page != 'inbox' and
                           /bedework/page != 'outbox' and
@@ -199,6 +200,7 @@
             <xsl:attribute name="onload">checkStatus(<xsl:value-of select="/bedework/inboxState/numActive"/>,<xsl:value-of select="/bedework/inboxState/changed"/>,'<xsl:value-of select="$showInbox"/>')</xsl:attribute>
           </xsl:when>
         </xsl:choose>
+        -->
         <xsl:choose>
           <xsl:when test="/bedework/page = 'addEvent'">
             <xsl:attribute name="onload">focusElement('bwEventTitle');bwSetupDatePickers();</xsl:attribute>
