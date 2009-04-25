@@ -26,7 +26,7 @@ SETLOCAL
   SET ant_home_def="-Dant.home=%ANT%"
   SET ant_class_def="org.apache.tools.ant.launch.Launcher"
 
-  "%JAVA_HOME%\bin\java" -classpath %CLASSPATH% %ant_home_def% %ant_class_def% initDir
+  "%JAVA_HOME%\bin\java" -classpath "%CLASSPATH%" %ant_home_def% %ant_class_def% initDir
   GOTO:EOF
 
 :usage

@@ -36,7 +36,7 @@ SETLOCAL
   SET addgroup_defs=-Dorg.bedework.directory.group=%group%
   SET addgroup_defs=%addgroup_defs% -Dorg.bedework.directory.group.member=%groupmember%
 
-  "%JAVA_HOME%\bin\java" -classpath "%CLASSPATH%" %ant_home_def% %addgroup_defs% %ant_class_def% addGroupMember
+  "%JAVA_HOME%\bin\java" -classpath "%CLASSPATH%" "%ant_home_def%" %addgroup_defs% "%ant_class_def%" addGroupMember
   GOTO:EOF
 
 :errorUsage

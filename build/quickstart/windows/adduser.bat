@@ -44,7 +44,7 @@ SETLOCAL
   SET adduser_defs=%adduser_defs% -Dorg.bedework.directory.lastname=%lastname%
   SET adduser_defs=%adduser_defs% -Dorg.bedework.directory.caladdr=%caladdr%
   SET adduser_defs=%adduser_defs% -Dorg.bedework.directory.password=%password%
-  "%JAVA_HOME%\bin\java" -classpath "%CLASSPATH%" %ant_home_def% %adduser_defs% %ant_class_def% addUser
+  "%JAVA_HOME%\bin\java" -classpath "%CLASSPATH%" "%ant_home_def%" %adduser_defs% "%ant_class_def%" addUser
   GOTO:EOF
 
 :errorUsage
