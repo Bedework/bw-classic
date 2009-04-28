@@ -14,6 +14,7 @@ body {
   color : black;
   padding: 0.75em 1em 0em 1em;
   margin: 0;
+  min-width: 828px;
 }
 /* Generic selectors*/
 #bedework h2 {
@@ -213,7 +214,20 @@ body {
   border-left: 2px solid #333;
   border-right: 1px solid #333;
   border-bottom: 2px solid #aaa;
-  border-top: 24px solid #333;
+  /*border-top: 24px solid #333;*/
+  vertical-align: top;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+}
+#bedework #bodyBlock td#msgTaskBar {
+  width: 150px;
+  font-size: 0.8em;
+  color: black;
+  background: white url(../../resources/sideBarGrayGradRight.gif) repeat-y left;
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #aaa;
+  /*border-top: 24px solid #333;*/
   vertical-align: top;
   white-space: nowrap;
   margin: 0;
@@ -226,21 +240,28 @@ body {
   margin: 0;
   padding: 2px 4px;
 }
-#bedework #bodyBlock td#sideBar h3 a:link,
-#bedework #bodyBlock td#sideBar h3 a:active,
-#bedework #bodyBlock td#sideBar h3 a:visited {
+#bedework #bodyBlock td#msgTaskBar h3 {
+  color: #eee;
+  background: #4164AE url(../../resources/sideBarBlueGradRight.gif) repeat-y left;
+  font-weight: normal;
+  margin: 0;
+  padding: 2px 4px 2px 8px;
+}
+#bedework #bodyBlock td.sideMenus h3 a:link,
+#bedework #bodyBlock td.sideMenush3 a:active,
+#bedework #bodyBlock td.sideMenus h3 a:visited {
   float: right;
   font-size: 0.8em;
   color: #eee;
   background: transparent;
   text-decoration: none;
 }
-#bedework #bodyBlock td#sideBar h3 a:hover {
+#bedework #bodyBlock td.sideMenus h3 a:hover {
   color: #ff3;
   background: transparent;
   text-decoration: none;
 }
-#bedework #bodyBlock td#sideBar h3 a.calManageLink {
+#bedework #bodyBlock td.sideMenus h3 a.calManageLink {
   padding-right: 4px;
   margin-right: 4px;
   /*border-right: 1px solid #aaa;*/
@@ -253,12 +274,12 @@ body {
   color: black;
   background-color: #333;
 }
-#bedework #bodyBlock td#sideBar a:link,
-#bedework #bodyBlock td#sideBar a:active,
-#bedework #bodyBlock td#sideBar a:visited {
+#bedework #bodyBlock td.sideMenus a:link,
+#bedework #bodyBlock td.sideMenus a:active,
+#bedework #bodyBlock td.sideMenus a:visited {
   text-decoration: none;
 }
-#bedework #bodyBlock td#sideBar a:hover {
+#bedework #bodyBlock td.sideMenus a:hover {
   color: black;
   background-color: #ff3;
 }
@@ -284,7 +305,6 @@ body {
   font-weight: bold;
 }
 #bedework #bodyBlock td#bodyContent {
-  border-right: 2px solid #333;
   border-bottom: 2px solid #aaa;
   vertical-align: top;
   padding: 0;
@@ -404,7 +424,6 @@ body {
 }
 #bedework #bwTabs {
   width: 100%;
-  min-width: 567px;
   margin: 0;
   padding: 0;
   background-color: #333;
@@ -412,7 +431,7 @@ body {
 }
 #bedework #bwTabs ul {
   height: 20px;
-  margin: 0;
+  margin: 0 0 0 203px;
   padding: 4px 0 0 0;
 }
 #bedework #bwTabs li {
@@ -456,36 +475,6 @@ body {
   color: #ccc;
 }
 #bedework #bwUserInfo .logout {
-  padding-left: 0.5em;
-  font-size: 0.8em;
-}
-#bedework #tabsTable {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  vertical-align: bottom;
-  background-color: #333;
-  color: #eee;
-  font-size: 0.8em;
-}
-#bedework #tabsTable td {
-  padding: 4px 0 0 0;
-  white-space: nowrap;
-}
-#bedework #tabsTable img {
-  display: inline;
-}
-#bedework #tabsTable a {
-  background-color: inherit;
-  color: #ccc;
-}
-#bedework #tabsTable td.rightCell {
-  width: 100%;
-  background : url(../../resources/std-tab-space.gif);
-  padding-right: 0.5em;
-  text-align: right;
-}
-#bedework #tabsTable .logout {
   padding-left: 0.5em;
   font-size: 0.8em;
 }
@@ -1867,37 +1856,16 @@ display: inline;
   background-color: transparent;
   text-decoration: underline;
 }
-#bedework #skinSelectorTable {
+#bedework #subfoot {
   width: 100%;
   padding-top: 0.5em;
   font-size: 0.7em;
   color: #333;
   background-color: inherit;
 }
-#bedework #skinSelectorTable td {
-  vertical-align: top;
-}
-#bedework #skinSelectorTable td.rightCell {
-  text-align: right;
-}
-#bedework #skinSelectorTable td.leftCell {
-  text-align: left;
+#bedework #subfoot  a {
   color: #999;
   background-color: inherit;
-}
-#bedework #skinSelectorTable td.leftCell  a {
-  color: #999;
-  background-color: inherit;
-}
-#bedework #skinSelectorTable td.rightCell form {
-  display: inline;
-  margin: 0em;
-  padding: 0em;
-}
-#bedework #skinSelectorTable td.rightCell select {
-  font-size: 0.9em;
-  color: #333;
-  background-color: #eee;
 }
 #bedework #subscriptionTypes {
   font-size: 0.9em;

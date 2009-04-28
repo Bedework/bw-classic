@@ -218,6 +218,7 @@
         <div id="bedework"><!-- main wrapper div to keep styles encapsulated -->
           <xsl:call-template name="headBar"/>
           <xsl:call-template name="messagesAndErrors"/>
+          <xsl:call-template name="tabs"/>
           <table id="bodyBlock" cellspacing="0">
             <tr>
               <xsl:choose>
@@ -227,13 +228,12 @@
                   </td>
                 </xsl:when>
                 <xsl:otherwise>
-                  <td id="sideBar">
+                  <td id="sideBar" class="sideMenus">
                     <xsl:call-template name="sideBar"/>
                   </td>
                 </xsl:otherwise>
               </xsl:choose>
               <td id="bodyContent">
-                <xsl:call-template name="tabs"/>
                 <xsl:call-template name="navigation"/>
                 <xsl:call-template name="utilBar"/>
                 <xsl:choose>
@@ -371,6 +371,18 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </td>
+              <xsl:if test="1">
+                <td id="msgTaskBar" class="sideMenus">
+                  <h3>messages</h3>
+                  <ul>
+                    <li>example</li>
+                  </ul>
+                  <h3>tasks</h3>
+                  <ul>
+                    <li>example</li>
+                  </ul>
+                </td>
+              </xsl:if>
             </tr>
           </table>
           <!-- footer -->
@@ -8219,26 +8231,11 @@
     <div id="footer">
       Demonstration calendar; place footer information here.
     </div>
-    <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td class="leftCell">
-          <a href="http://www.bedework.org/">Bedework Website</a> |
-          <a href="?noxslt=yes">show XML</a> |
-          <a href="?refreshXslt=yes">refresh XSLT</a>
-        </td>
-        <td class="rightCell">
-          <!--<form name="skinSelectForm" method="post" action="{$setup}">
-            skin selector:
-            <select name="skinNameSticky" onchange="submit()">
-              <option>select a skin</option>
-              <option value="default">Demo Calendar</option>
-              <option value="rensselaer">Rensselaer</option>
-              <option value="washington">Washington</option>
-            </select>
-          </form>-->
-        </td>
-      </tr>
-    </table>
+    <div id="subfoot">
+      <a href="http://www.bedework.org/">Bedework Website</a> |
+      <a href="?noxslt=yes">show XML</a> |
+      <a href="?refreshXslt=yes">refresh XSLT</a>
+    </div>
   </xsl:template>
 
 </xsl:stylesheet>
