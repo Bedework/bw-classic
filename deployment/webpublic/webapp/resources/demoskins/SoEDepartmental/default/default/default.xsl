@@ -3,6 +3,7 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
+
 <xsl:output
   method="xml"
   indent="no"
@@ -14,7 +15,7 @@
 
 <!-- =========================================================
 
-        DEMONSTRATION "DEPARTMENTAL" CALENDAR STYLESHEET
+              DDEMONSTRATION PUBLIC CALENDAR STYLESHEET
 
                   SoEDepartmental Calendar Suite
 
@@ -25,7 +26,6 @@
      Suite owner, differs from the main public skin (default.xsl) in the
      following ways:
        - different header, title, and footer
-       - default layout = list view (rather than calendar grid)
        - different color scheme
 
      Otherwise, for the sake of demonstration, we've left most of the
@@ -37,31 +37,30 @@
      http://www.bedework.org/bedework/update.do?artcenterkey=24
 
 ===============================================================  -->
-
 <!-- **********************************************************************
-  Copyright 2006 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+    Copyright 2006 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
-  Redistribution and use of this distribution in source and binary forms,
-  with or without modification, are permitted provided that:
-     The above copyright notice and this permission notice appear in all
-      copies and supporting documentation;
+    Redistribution and use of this distribution in source and binary forms,
+    with or without modification, are permitted provided that:
+       The above copyright notice and this permission notice appear in all
+        copies and supporting documentation;
 
-      The name, identifiers, and trademarks of Rensselaer Polytechnic
-      Institute are not used in advertising or publicity without the
-      express prior written permission of Rensselaer Polytechnic Institute;
+        The name, identifiers, and trademarks of Rensselaer Polytechnic
+        Institute are not used in advertising or publicity without the
+        express prior written permission of Rensselaer Polytechnic Institute;
 
-  DISCLAIMER: The software is distributed" AS IS" without any express or
-  implied warranty, including but not limited to, any implied warranties
-  of merchantability or fitness for a particular purpose or any warrant)'
-  of non-infringement of any current or pending patent rights. The authors
-  of the software make no representations about the suitability of this
-  software for any particular purpose. The entire risk as to the quality
-  and performance of the software is with the user. Should the software
-  prove defective, the user assumes the cost of all necessary servicing,
-  repair or correction. In particular, neither Rensselaer Polytechnic
-  Institute, nor the authors of the software are liable for any indirect,
-  special, consequential, or incidental damages related to the software,
-  to the maximum extent the law permits. -->
+    DISCLAIMER: The software is distributed" AS IS" without any express or
+    implied warranty, including but not limited to, any implied warranties
+    of merchantability or fitness for a particular purpose or any warrant)'
+    of non-infringement of any current or pending patent rights. The authors
+    of the software make no representations about the suitability of this
+    software for any particular purpose. The entire risk as to the quality
+    and performance of the software is with the user. Should the software
+    prove defective, the user assumes the cost of all necessary servicing,
+    repair or correction. In particular, neither Rensselaer Polytechnic
+    Institute, nor the authors of the software are liable for any indirect,
+    special, consequential, or incidental damages related to the software,
+    to the maximum extent the law permits. -->
 
   <!-- ================================= -->
   <!--  DEMO PUBLIC CALENDAR STYLESHEET  -->
@@ -74,8 +73,13 @@
   <!-- cannot use the resourceCommons variable in xsl:include paths -->
   <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
+
+  <!-- URL of html resources (images, css, other html); by default this is
+       set to the application root -->
+  <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
 
   <!-- URL of the XSL template directory -->
   <!-- The approot is an appropriate place to put
@@ -85,10 +89,6 @@
        reference it explicitly.  It is not used in this stylesheet, however,
        and can be safely removed if you so choose. -->
   <xsl:variable name="appRoot" select="/bedework/approot"/>
-
-  <!-- URL of html resources (images, css, other html); by default this is
-       set to the application root -->
-  <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
 
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal.
@@ -108,8 +108,10 @@
   <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
   <xsl:variable name="calendar-fetchForExport" select="/bedework/urlPrefixes/calendar/fetchForExport"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
+  <!-- Unused
   <xsl:variable name="showPage" select="/bedework/urlPrefixes/main/showPage"/>
-  <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
+   -->
+ <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
 
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
@@ -125,13 +127,31 @@
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title>School of Engineering: Example Bedework Departmental Calendar Suite</title>
+        <title>Bedework Events Calendar</title>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-        <link rel="stylesheet" type="text/css" href="{$resourcesRoot}/default/default/soe.css" />
+        <!-- load css -->
+        <link rel="stylesheet" href="{$resourcesRoot}/default/default/soe.css"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
+        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <!-- load javascript -->
-        <xsl:if test="/bedework/page='calendarList' or /bedework/page='displayCalendarForExport'">
-          <script type="text/javascript" src="{$resourceCommons}/javascript/dojo/dojo.js">&#160;</script>
+        <xsl:if test="/bedework/page='event' or /bedework/page='calendarList' or /bedework/page='displayCalendarForExport'">
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
+          <script type="text/javascript">
+            <xsl:comment>
+            $.datepicker.setDefaults({
+              constrainInput: true,
+              dateFormat: "yy-mm-dd",
+              showOn: "both",
+              buttonImage: "<xsl:value-of select='$resourcesRoot'/>/images/calIcon.gif",
+              buttonImageOnly: true,
+              gotoCurrent: true,
+              duration: ""
+            });
+            </xsl:comment>
+          </script>
+          <!-- script type="text/javascript" src="{$resourceCommons}/javascript/dojo/dojo.js">&#160;</script -->
           <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js">&#160;</script>
         </xsl:if>
         <!-- address bar icon -->
@@ -151,6 +171,10 @@
           <xsl:when test="/bedework/page='event'">
             <!-- show an event -->
             <xsl:apply-templates select="/bedework/event"/>
+          </xsl:when>
+          <xsl:when test="/bedework/page='eventList'">
+            <!-- show a list of discrete events in a time period -->
+            <xsl:apply-templates select="/bedework/events" mode="eventList"/>
           </xsl:when>
           <xsl:when test="/bedework/page='showSysStats'">
             <!-- show system stats -->
@@ -178,11 +202,11 @@
               </xsl:when>
               <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
                 <xsl:choose>
-                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='cal'">
-                    <xsl:call-template name="weekView"/>
+                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
+                    <xsl:call-template name="listView"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:call-template name="listView"/>
+                    <xsl:call-template name="weekView"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
@@ -212,150 +236,97 @@
   <!-- these templates are separated out for convenience and to simplify the default template -->
 
   <xsl:template name="headBar">
-    <div id="headBar">
-      <div id="bedeworkLogo">
-        <a href="/bedework/">
-          <img src="{$resourcesRoot}/images/soecal/soeBedeworkLogo.gif" width="296" height="69" border="0" alt="Bedework" align="right"/>
-        </a>
-      </div>
-      <h1>Example Departmental Calendar Suite</h1>
-      <!--<ul id="schoolLinks">
-        <li><a href="{$privateCal}">Personal Calendar</a></li>
-        <li><a href="http://www.yourschoolhere.edu">School Home</a></li>
-        <li><a href="http://www.bedework.org/">Other Link</a></li>
-        <li>
-          <a href="http://helpdesk.rpi.edu/update.do?catcenterkey=51">
-            Example Calendar Help
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
+      <tr>
+        <td colspan="3" id="logoCell"><a href="/bedework/"><img src="{$resourcesRoot}/images/bedeworkLogoGreen.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
+        <td colspan="2" id="schoolLinksCell">
+          <h2>School of Engineering</h2>
+          <a href="http://www.yourdepartmenthere.edu">School of Engineering Home</a> |
+          <a href="http://www.youruniversityhere.edu">University Home</a> |
+          <a href="http://www.bedework.org/">Other Link</a>
+        </td>
+      </tr>
+    </table>
+    <table id="curDateRangeTable"  cellspacing="0">
+      <tr>
+        <td class="sideBarOpenCloseIcon">
+          &#160;
+          <!--
+          we may choose to implement calendar selection in the public calendar
+          using a sidebar; leave this comment here for now.
+          <xsl:choose>
+            <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
+              <a href="?setappvar=sidebar(opened)">
+                <img alt="open sidebar" src="{$resourcesRoot}/resources/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
+              </a>
+            </xsl:when>
+            <xsl:otherwise>
+              <a href="?setappvar=sidebar(closed)">
+                <img alt="close sidebar" src="{$resourcesRoot}/resources/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
+              </a>
+            </xsl:otherwise>
+          </xsl:choose>-->
+        </td>
+        <td class="date">
+          <xsl:choose>
+            <xsl:when test="/bedework/page='event'">
+              Event Information
+            </xsl:when>
+            <xsl:when test="/bedework/page='showSysStats' or
+                            /bedework/page='calendars'">
+              &#160;
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="/bedework/firstday/longdate"/>
+              <xsl:if test="/bedework/periodname!='Day'">
+                -
+                <xsl:value-of select="/bedework/lastday/longdate"/>
+              </xsl:if>
+            </xsl:otherwise>
+          </xsl:choose>
+        </td>
+        <td class="rssPrint">
+          <a href="javascript:window.print()" title="print this view">
+            <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
           </a>
-        </li>
-      </ul> -->
-    </div>
-    <!--  Turn off the date range table for this departmental view -->
-    <!--<table id="curDateRangeTable"  cellspacing="0">
-      <td class="sideBarOpenCloseIcon">
-        &#160; -->
-        <!--
-        we may choose to implement calendar selection in the public calendar
-        using a sidebar; leave this comment here for now.
-        <xsl:choose>
-          <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
-            <a href="?setappvar=sidebar(opened)">
-              <img alt="open sidebar" src="{$resourcesRoot}/resources/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
-            </a>
-          </xsl:when>
-          <xsl:otherwise>
-            <a href="?setappvar=sidebar(closed)">
-              <img alt="close sidebar" src="{$resourcesRoot}/resources/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
-            </a>
-          </xsl:otherwise>
-        </xsl:choose>-->
-      <!-- </td>
-      <td class="date">
-        <xsl:choose>
-          <xsl:when test="/bedework/page='event'">
-            Event Information
-          </xsl:when>
-          <xsl:when test="/bedework/page='showSysStats' or
-                          /bedework/page='calendars'">
-            &#160;
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="/bedework/firstday/longdate"/>
-            <xsl:if test="/bedework/periodname!='Day'">
-              -
-              <xsl:value-of select="/bedework/lastday/longdate"/>
-            </xsl:if>
-          </xsl:otherwise>
-        </xsl:choose>
-      </td>
-      <td class="rssPrint">
-        <a href="javascript:window.print()" title="print this view">
-          <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
-        </a>
-        <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="RSS feed">RSS</a>
-      </td>
-    </table>-->
+          <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="RSS feed">RSS</a>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 
   <xsl:template name="tabs">
-    <xsl:choose>
-      <xsl:when test="/bedework/page='eventscalendar'">
-        <table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
-          <tr>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Day'">
-                  <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-day-on.gif" width="91" height="20" border="0" alt="DAY"/></a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
-                  <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-week-on.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-                 </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-                 </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Month'">
-                  <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-month-on.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td>
-              <xsl:choose>
-                <xsl:when test="/bedework/periodname='Year'">
-                  <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-year-on.gif" width="92" height="20" border="0" alt="YEAR"/></a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td class="rssPrint">
-              <a href="javascript:window.print()" title="print this view">
-                <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
-              </a>
-              <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="RSS feed">RSS</a>
-            </td>
-          </tr>
-        </table>
-      </xsl:when>
-      <xsl:otherwise>
-        <table border="0" cellpadding="0" cellspacing="0" id="tabsTable">
-          <tr>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-day-off.gif" width="91" height="20" border="0" alt="DAY"/></a>
-            </td>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-week-off.gif" width="92" height="20" border="0" alt="WEEK"/></a>
-            </td>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-month-off.gif" width="90" height="20" border="0" alt="MONTH"/></a>
-            </td>
-            <td>
-              <a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><img src="{$resourcesRoot}/images/std-tab-year-off.gif" width="92" height="20" border="0" alt="YEAR"/></a>
-            </td>
-            <td class="rssPrint">
-              <a href="javascript:window.print()" title="print this view">
-                <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
-              </a>
-              <a class="rss" href="{$setSelection}&amp;setappvar=summaryMode(details)&amp;skinName=rss" title="RSS feed">RSS</a>
-            </td>
-          </tr>
-        </table>
-      </xsl:otherwise>
-    </xsl:choose>
+    <div id="bwTabs">
+      <ul>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Day'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">DAY</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Week' or /bedework/periodname=''">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}">WEEK</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Month'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if><a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">MONTH</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Year'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if><a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}">YEAR</a>
+        </li>
+        <li>
+          <xsl:if test="/bedework/page='eventList'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if><a href="{$listEvents}">LIST</a>
+        </li>
+      </ul>
+    </div>
   </xsl:template>
 
   <xsl:template name="navigation">
@@ -454,21 +425,17 @@
        <tr>
          <td class="leftCell">
            <xsl:choose>
-             <xsl:when test="/bedework/selectionState/selectionType = 'calendar'">
-               Calendar: <xsl:value-of select="/bedework/selectionState/subscriptions/subscription/calendar/name"/>
-               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
+             <xsl:when test="/bedework/selectionState/selectionType = 'collections'">
+               Calendar:
+               <strong>
+                 <xsl:call-template name="substring-afterLastInstanceOf">
+                   <xsl:with-param name="string" select="/bedework/appvar[key='curCollection']/value"/>
+                   <xsl:with-param name="char">/</xsl:with-param>
+                 </xsl:call-template>
+               </strong>
              </xsl:when>
              <xsl:when test="/bedework/selectionState/selectionType = 'search'">
                Current search: <xsl:value-of select="/bedework/search"/>
-               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
-             </xsl:when>
-             <xsl:when test="/bedework/selectionState/selectionType = 'subscription'">
-               Subscription: (not implemented yet)
-               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
-             </xsl:when>
-             <xsl:when test="/bedework/selectionState/selectionType = 'filter'">
-               Filter: (not implemented yet)
-               <span class="link">[<a href="{$setSelection}">default view</a>]</span>
              </xsl:when>
              <xsl:otherwise><!-- view -->
                View:
@@ -487,9 +454,9 @@
                   </xsl:for-each>
                 </select>
               </form>
-              <span class="link"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">available calendars</a></span>
              </xsl:otherwise>
            </xsl:choose>
+           <span class="link"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">all topical areas</a></span>
          </td>
          <td class="rightCell">
             <xsl:if test="/bedework/page!='searchResult'">
@@ -503,7 +470,7 @@
               <xsl:text> </xsl:text>
             </xsl:if>
             <xsl:choose>
-              <xsl:when test="/bedework/periodname='Day'">
+              <xsl:when test="/bedework/periodname='Day' or /bedework/page='eventList'">
                 <img src="{$resourcesRoot}/images/std-button-listview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
               </xsl:when>
               <xsl:when test="/bedework/periodname='Year'">
@@ -525,20 +492,34 @@
               </xsl:when>
               <xsl:otherwise>
                 <xsl:choose>
-                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='cal'">
-                    <a href="{$setup}&amp;setappvar=weekViewMode(list)" title="toggle list/calendar view">
-                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
+                    <a href="{$setup}&amp;setappvar=weekViewMode(cal)" title="toggle list/calendar view">
+                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$setup}&amp;setappvar=weekViewMode(cal)" title="toggle list/calendar view">
-                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                    <a href="{$setup}&amp;setappvar=weekViewMode(list)" title="toggle list/calendar view">
+                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
             <xsl:choose>
+              <xsl:when test="/bedework/page = 'eventList'">
+                <xsl:choose>
+                  <xsl:when test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
+                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="toggle summary/detailed view">
+                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    </a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="toggle summary/detailed view">
+                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    </a>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
               <xsl:when test="/bedework/periodname='Year' or
                               (/bedework/periodname='Month' and
                               (/bedework/appvar[key='monthViewMode']/value='cal' or
@@ -570,7 +551,12 @@
                 </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
-            <a href="{$setup}"><img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a>
+            <a href="{$setup}">
+              <xsl:if test="/bedework/page='eventList'">
+                <xsl:attribute name="href"><xsl:value-of select="$listEvents"/></xsl:attribute>
+              </xsl:if>
+              <img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/>
+            </a>
           </td>
        </tr>
     </table>
@@ -590,6 +576,9 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
+      <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="generate link to this event">
+       link to this event
+     </a>
       <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
@@ -733,12 +722,10 @@
         </td>
         <th class="icalIcon" rowspan="2">
           <div id="eventIcons">
-            <xsl:if test="recurrenceId = ''">
-              <!-- hide this for a 3.3.1 bug: can't add a reference to a recurring event at this time -->
-              <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
-                <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
-              add to my calendar</a>
-            </xsl:if>
+            <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+              <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
+              add to my calendar
+            </a>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
             <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
               <img src="{$resourcesRoot}/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
@@ -833,14 +820,29 @@
           </td>
         </tr>
       </xsl:if>
-      <xsl:if test="calendar/path!=''">
+      <xsl:if test="comments/comment">
         <tr>
-          <td class="fieldname">Calendar:</td>
+          <td class="fieldname">Comments:</td>
+          <td class="fieldval comments">
+            <xsl:for-each select="comments/comment">
+              <p><xsl:value-of select="value"/></p>
+            </xsl:for-each>
+          </td>
+        </tr>
+      </xsl:if>
+      <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+        <tr>
+          <td class="fieldname">Topical Area:</td>
           <td class="fieldval">
-            <xsl:variable name="calUrl" select="calendar/encodedPath"/>
-            <a href="{$setSelection}&amp;calUrl={$calUrl}">
-              <xsl:value-of select="calendar/name"/>
-            </a>
+            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+              <xsl:variable name="calUrl" select="values/text"/>
+              <a href="{$setSelection}&amp;calUrl={$calUrl}&amp;setappvar=curCollection({$calUrl})">
+                <xsl:call-template name="substring-afterLastInstanceOf">
+                  <xsl:with-param name="string" select="values/text"/>
+                  <xsl:with-param name="char">/</xsl:with-param>
+                </xsl:call-template>
+              </a><xsl:if test="position()!=last()">, </xsl:if>
+            </xsl:for-each>
           </td>
         </tr>
       </xsl:if>
@@ -854,16 +856,17 @@
           </td>
         </tr>
       </xsl:if>
-      <xsl:if test="comments/comment">
+      <!--  xsl:if test="calendar/path!=''">
         <tr>
-          <td class="fieldname">Comments:</td>
-          <td class="fieldval comments">
-            <xsl:for-each select="comments/comment">
-              <p><xsl:value-of select="value"/></p>
-            </xsl:for-each>
+          <td class="fieldname">Calendar:</td>
+          <td class="fieldval">
+            <xsl:variable name="calUrl" select="calendar/encodedPath"/>
+            <a href="{$setSelection}&amp;calUrl={$calUrl}">
+              <xsl:value-of select="calendar/name"/>
+            </a>
           </td>
         </tr>
-      </xsl:if>
+      </xsl:if-->
     </table>
   </xsl:template>
 
@@ -1003,7 +1006,18 @@
                             Contact: <xsl:value-of select="contact/name"/>
                           </xsl:if>
                         </em>
-                        - <xsl:value-of select="calendar/name"/>
+                        -
+                        <span class="eventSubscription">
+                          <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+                            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+                              <xsl:call-template name="substring-afterLastInstanceOf">
+                                <xsl:with-param name="string" select="values/text"/>
+                                <xsl:with-param name="char">/</xsl:with-param>
+                              </xsl:call-template>
+                              <xsl:if test="position()!=last()">, </xsl:if>
+                            </xsl:for-each>
+                          </xsl:if>
+                        </span>
                       </a>
                       <xsl:if test="link != ''">
                         <xsl:variable name="link" select="link"/>
@@ -1014,18 +1028,26 @@
                       <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:value-of select="summary"/>
                         <xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
-                         - <em><xsl:value-of select="calendar/name"/></em>
+                         -
+                        <span class="eventSubscription">
+                          <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+                            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+                              <xsl:call-template name="substring-afterLastInstanceOf">
+                                <xsl:with-param name="string" select="values/text"/>
+                                <xsl:with-param name="char">/</xsl:with-param>
+                              </xsl:call-template>
+                              <xsl:if test="position()!=last()">, </xsl:if>
+                            </xsl:for-each>
+                          </xsl:if>
+                        </span>
                       </a>
                     </xsl:otherwise>
                   </xsl:choose>
                 </td>
                 <td class="icons">
-                  <xsl:if test="recurrenceId = ''">
-                    <!-- hide this for a 3.3.1 bug: can't add a reference to a recurring event at this time -->
-                    <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
-                      <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
-                    </a>
-                  </xsl:if>
+                  <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+                    <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
+                  </a>
                   <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
                   <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
                     <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
@@ -1037,6 +1059,119 @@
         </xsl:otherwise>
       </xsl:choose>
     </table>
+  </xsl:template>
+
+  <!--==== LIST EVENTS - for listing discrete events ====-->
+  <xsl:template match="events" mode="eventList">
+    <h2 class="bwStatusConfirmed">
+      Next 7 Days
+      <!-- xsl:choose>
+        <xsl:when test="/bedework/now/longdate = /bedework/events/event[position()=last()]/start/longdate"><xsl:value-of select="/bedework/now/longdate"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="/bedework/now/longdate"/> - <xsl:value-of select="/bedework/events/event[position()=last()]/start/longdate"/></xsl:otherwise>
+      </xsl:choose-->
+    </h2>
+
+    <div id="listEvents">
+      <ul>
+        <xsl:choose>
+          <xsl:when test="not(event)">
+            <li>No events to display.</li>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:for-each select="event">
+              <xsl:variable name="id" select="id"/>
+              <xsl:variable name="subscriptionId" select="subscription/id"/>
+              <xsl:variable name="calPath" select="calendar/encodedPath"/>
+              <xsl:variable name="guid" select="guid"/>
+              <xsl:variable name="recurrenceId" select="recurrenceId"/>
+              <li>
+                <xsl:attribute name="class">
+                  <xsl:choose>
+                    <xsl:when test="status='CANCELLED'">bwStatusCancelled</xsl:when>
+                    <xsl:when test="status='TENTATIVE'">bwStatusTentative</xsl:when>
+                  </xsl:choose>
+                </xsl:attribute>
+
+                <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
+                <xsl:if test="status='TENTATIVE'"><em>TENTATIVE: </em></xsl:if>
+
+                <a class="title" href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                  <xsl:value-of select="summary"/>
+                </a><xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
+                <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
+                  <xsl:if test="location/subaddress != ''">
+                    , <xsl:value-of select="location/subaddress"/>
+                  </xsl:if>
+                </xsl:if>
+
+                <xsl:text> </xsl:text>
+                <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+                  <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
+                </a>
+                <xsl:text> </xsl:text>
+                <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
+                <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                  <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                </a>
+
+                <br/>
+
+                <xsl:value-of select="substring(start/dayname,1,3)"/>,
+                <xsl:value-of select="start/longdate"/>
+                <xsl:text> </xsl:text>
+                <xsl:if test="start/allday != 'true'">
+                  <xsl:value-of select="start/time"/>
+                </xsl:if>
+                <xsl:choose>
+                  <xsl:when test="start/shortdate != end/shortdate">
+                    -
+                    <xsl:value-of select="substring(end/dayname,1,3)"/>,
+                    <xsl:value-of select="end/longdate"/>
+                    <xsl:text> </xsl:text>
+                    <xsl:if test="start/allday != 'true'">
+                      <xsl:value-of select="end/time"/>
+                    </xsl:if>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:if test="start/time != end/time">
+                      -
+                      <xsl:value-of select="end/time"/>
+                    </xsl:if>
+                  </xsl:otherwise>
+                </xsl:choose>
+
+                <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
+                  <br/>
+                  <xsl:value-of select="description"/>
+                  <xsl:if test="link != ''">
+                    <br/>
+                    <xsl:variable name="link" select="link"/>
+                    <a href="{$link}" class="moreLink"><xsl:value-of select="link"/></a>
+                  </xsl:if>
+                  <xsl:if test="categories/category">
+                    <br/>
+                    Categories:
+                    <xsl:for-each select="categories/category">
+                      <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
+                    </xsl:for-each>
+                  </xsl:if>
+                  <br/>
+                  <em>
+                    <xsl:if test="cost!=''">
+                      <xsl:value-of select="cost"/>.&#160;
+                    </xsl:if>
+                    <xsl:if test="contact/name!='none'">
+                      Contact: <xsl:value-of select="contact/name"/>
+                    </xsl:if>
+                  </em>
+                </xsl:if>
+
+              </li>
+            </xsl:for-each>
+          </xsl:otherwise>
+        </xsl:choose>
+      </ul>
+    </div>
   </xsl:template>
 
   <!--==== WEEK CALENDAR VIEW ====-->
@@ -1189,7 +1324,16 @@
           <xsl:if test="location/address">
             Location: <xsl:value-of select="location/address"/><br/>
           </xsl:if>
-          Calendar: <xsl:value-of select="calendar/name"/>
+          <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+            Topical Area:
+              <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+                <xsl:call-template name="substring-afterLastInstanceOf">
+                  <xsl:with-param name="string" select="values/text"/>
+                  <xsl:with-param name="char">/</xsl:with-param>
+                </xsl:call-template>
+                <xsl:if test="position()!=last()">, </xsl:if>
+              </xsl:for-each>
+          </xsl:if>
         </span>
       </a>
     </li>
@@ -1268,29 +1412,30 @@
 
   <!-- list of available calendars -->
   <xsl:template match="calendars">
-    <xsl:variable name="topLevelCalCount" select="count(calendar/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3])"/>
+    <xsl:variable name="topLevelCalCount" select="count(calendar/calendar[calType != 5 and calType != 6 and name != 'calendar'])"/>
     <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="2">
-          All Calendars
+          All Topical Areas
         </th>
       </tr>
       <tr>
         <td colspan="2" class="infoCell">
           <p class="info">
-            Select a calendar from the list below to see only that calendar's events.
+            Select a topical area from the list below to see only its events.
           </p>
         </td>
       </tr>
       <tr>
         <td class="leftCell">
+          <!-- adjust the following calculations to get a balanced layout between the cells -->
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[(calType = 0 or calType = 7 or calType = 8) and position() &lt;= ceiling($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[(calType != 5 and calType != 6 and name != 'calendar') and (position() &lt;= ceiling($topLevelCalCount div 2))]" mode="calTree"/>
           </ul>
         </td>
         <td>
           <ul class="calendarTree">
-            <xsl:apply-templates select="calendar/calendar[(calType = 0 or calType = 7 or calType = 8) and position() &gt; ceiling($topLevelCalCount div 2)]" mode="calTree"/>
+            <xsl:apply-templates select="calendar/calendar[(calType != 5 and calType != 6 and name != 'calendar') and (position() &gt; ceiling($topLevelCalCount div 2))]" mode="calTree"/>
           </ul>
         </td>
       </tr>
@@ -1305,23 +1450,16 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="url" select="encodedPath"/>
+    <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
     <li class="{$itemClass}">
-      <a href="{$setSelection}&amp;calUrl={$url}" title="view calendar"><xsl:value-of select="name"/></a>
-      <xsl:if test="calType != '0'">
-        <xsl:variable name="calPath" select="path"/>
-        <span class="exportCalLink">
-          <!-- To use the dojo floating widget from the template above, uncomment
-               this block:
-          <xsl:variable name="name" select="name"/>
-          <xsl:variable name="idForCal" select="translate(translate(path,'/','S'),' ','s')"/>
-          <a href="javascript:launchExportWidget('exportCalendarForm','{$export}','{$name}','{$calPath}')" id="{$idForCal}" title="export calendar as iCal">
-            <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
-          </a> -->
-          <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}" title="export calendar as iCal">
-            <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
-          </a>
-        </span>
-      </xsl:if>
+      <xsl:variable name="calPath" select="path"/>
+      <a href="{$setSelection}&amp;calUrl={$url}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$calPath})" title="view calendar"><xsl:value-of select="name"/></a>
+      <xsl:variable name="calPath" select="path"/>
+      <span class="exportCalLink">
+        <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}&amp;virtualPath={$virtualPath}" title="export calendar as iCal">
+          <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
+        </a>
+      </span>
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="calTree"/>
@@ -1365,9 +1503,19 @@
         <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
         <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> date range
         <div id="exportDateRange" class="invisible">
-          Start: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetStartDate"><xsl:text> </xsl:text></div>
-          End: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetEndDate"><xsl:text> </xsl:text></div>
+          <!-- Start: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetStartDate"><xsl:text> </xsl:text></div>
+          End: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetEndDate"><xsl:text> </xsl:text></div>-->
+          Start: <input type="text" name="bwExportCalendarWidgetStartDate" id="bwExportCalendarWidgetStartDate" size="10"/>
+          End: <input type="text" name="bwExportCalendarWidgetEndDate" id="bwExportCalendarWidgetEndDate" size="10"/>
         </div>
+        <script language="JavaScript" type="text/javascript">
+          <xsl:comment>
+          $("#bwExportCalendarWidgetStartDate").datepicker({
+          }).attr("readonly", "readonly");
+          $("#bwExportCalendarWidgetEndDate").datepicker({
+          }).attr("readonly", "readonly");
+          </xsl:comment>
+        </script>
         <p><input type="submit" value="export" class="bwWidgetSubmit" onclick="fillExportFields(this.form)"/></p>
       </form>
     </div>
@@ -1579,40 +1727,45 @@
     </div>
   </xsl:template>
 
-  <!--==== UTILITY TEMPLATES ====-->
-
-  <!-- search and replace template taken from
-       http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
-  <xsl:template name="replace">
-    <xsl:param name="string" select="''"/>
-    <xsl:param name="pattern" select="''"/>
-    <xsl:param name="replacement" select="''"/>
-    <xsl:choose>
-      <xsl:when test="$pattern != '' and $string != '' and contains($string, $pattern)">
-        <xsl:value-of select="substring-before($string, $pattern)"/>
-        <xsl:copy-of select="$replacement"/>
-        <xsl:call-template name="replace">
-          <xsl:with-param name="string" select="substring-after($string, $pattern)"/>
-          <xsl:with-param name="pattern" select="$pattern"/>
-          <xsl:with-param name="replacement" select="$replacement"/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$string"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <!--==== FOOTER ====-->
 
   <xsl:template name="footer">
     <div id="footer">
-      Footer information here
+      Based on the <a href="http://www.bedework.org/">Bedework Calendar System</a>
     </div>
-    <div id="subFoot">
-      Based on the <a href="http://www.bedework.org/">Bedework Calendar System</a> |
-      <a href="?noxslt=yes">show XML</a> |
-      <a href="?refreshXslt=yes">refresh XSLT</a>
-    </div>
+    <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="leftCell">
+          <a href="http://www.bedework.org/">Bedework website</a> |
+          <a href="http://www.bedework.org/bedework/update.do?artcenterkey=35">production examples</a> |
+          <a href="?noxslt=yes">show XML</a> |
+          <a href="?refreshXslt=yes">refresh XSLT</a>
+        </td>
+        <td class="rightCell">
+          <!--
+          <form name="styleSelectForm" method="get" action="{$setup}">
+            <select name="setappvar" onchange="submit()">
+              <option value="">example styles:</option>
+              <option value="style(green)">green</option>
+              <option value="style(red)">red</option>
+              <option value="style(blue)">blue</option>
+            </select>
+          </form>
+          <form name="skinSelectForm" method="post" action="{$setup}">
+            <input type="hidden" name="setappvar" value="summaryMode(details)"/>
+            <select name="skinPicker" onchange="window.location = this.value">
+              <option value="{$setup}&amp;skinNameSticky=default">example skins:</option>
+              <option value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3">rss: next 3 days</option>
+              <option value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=js-list&amp;days=3&amp;contentType=text/javascript&amp;contentName=bedework.js">javascript: next 3 days</option>
+              <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedeworkToday.js">javascript: today's events</option>
+              <option value="{$setup}&amp;browserTypeSticky=PDA">for mobile browsers</option>
+              <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=videocal">video feed</option>
+              <option value="{$setup}&amp;skinNameSticky=default">reset to calendar default</option>
+            </select>
+          </form>
+          -->
+        </td>
+      </tr>
+    </table>
   </xsl:template>
 </xsl:stylesheet>

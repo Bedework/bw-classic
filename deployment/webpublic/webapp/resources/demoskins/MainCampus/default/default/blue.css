@@ -25,6 +25,8 @@ body {
   font-size: 0.8em;
   white-space : nowrap;
   padding: 0 2px 2px 0;
+  color: #999;
+  background-color: transparent;
 }
 #logoTable #schoolLinksCell h2 {
   margin: 0 0 2px 0;

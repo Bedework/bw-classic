@@ -243,11 +243,8 @@
         <td colspan="2" id="schoolLinksCell">
           <h2>Public Calendar</h2>
           <a href="{$privateCal}">Personal Calendar</a> |
-          <a href="http://www.yourschoolhere.edu">School Home</a> |
-          <a href="http://www.bedework.org/">Other Link</a> |
-          <a href="http://helpdesk.rpi.edu/update.do?catcenterkey=51">
-            Example Calendar Help
-          </a>
+          <a href="http://www.youruniversityhere.edu">University Home</a> |
+          <a href="http://www.bedework.org/">Other Link</a>
         </td>
       </tr>
     </table>
@@ -1454,12 +1451,13 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="url" select="encodedPath"/>
+    <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
     <li class="{$itemClass}">
       <xsl:variable name="calPath" select="path"/>
-      <a href="{$setSelection}&amp;calUrl={$url}&amp;setappvar=curCollection({$calPath})" title="view calendar"><xsl:value-of select="name"/></a>
+      <a href="{$setSelection}&amp;calUrl={$url}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$calPath})" title="view calendar"><xsl:value-of select="name"/></a>
       <xsl:variable name="calPath" select="path"/>
       <span class="exportCalLink">
-        <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}" title="export calendar as iCal">
+        <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}&amp;virtualPath={$virtualPath}" title="export calendar as iCal">
           <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
         </a>
       </span>
