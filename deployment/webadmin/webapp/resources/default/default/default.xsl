@@ -309,6 +309,10 @@
             </script>
           </xsl:if>
         </xsl:if>
+        <xsl:if test="/bedework/page='modCalendar' or
+                      /bedework/page='modSubscription'">
+          initCatFilters('<xsl:value-of select="/bedework/currentCalendar/filterExpr"/>');
+        </xsl:if>
         <xsl:if test="/bedework/page='upload' or /bedework/page='selectCalForEvent'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
         </xsl:if>
@@ -3664,16 +3668,32 @@
           </td>
         </tr-->
         <tr>
-          <th>Filter Expression:</th>
+          <th>Filter:</th>
           <td>
-            <input type="text" name="fexpr" value="" size="40"/>
+            <input type="hidden" name="fexpr" value=""/>
+            <a href="javascript:toggleVisibility('filterCategories','visible')">
+              show/hide categories for filtering on output
+            </a>
+            <div id="filterCategories" class="invisible">
+              <ul class="catlist">
+                <xsl:for-each select="/bedework/categories/all/category">
+                  <xsl:sort select="keyword" order="ascending"/>
+                  <li>
+                    <input type="checkbox" name="filterCatUid">
+                      <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                      <xsl:value-of select="keyword"/>
+                    </input>
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </div>
           </td>
         </tr>
         <tr>
           <th>Categories:</th>
           <td>
             <a href="javascript:toggleVisibility('calCategories','visible')">
-              show/hide categories
+              show/hide categories for auto-tagging on input
             </a>
             <div id="calCategories" class="invisible">
               <ul class="catlist">
@@ -3870,11 +3890,25 @@
           </td>
         </tr>
         <tr>
-          <th>Filter Expression:</th>
+          <th>Filter:</th>
           <td>
-            <input type="text" name="fexpr" size="40">
-              <xsl:attribute name="value"><xsl:value-of select="filterExpr"/></xsl:attribute>
-            </input>
+            <input type="hidden" name="fexpr" value=""/>
+            <a href="javascript:toggleVisibility('filterCategories','visible')">
+              show/hide categories for filtering on output
+            </a>
+            <div id="filterCategories" class="invisible">
+              <ul class="catlist">
+                <xsl:for-each select="/bedework/categories/all/category">
+                  <xsl:sort select="keyword" order="ascending"/>
+                  <li>
+                    <input type="checkbox" name="filterCatUid">
+                      <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                      <xsl:value-of select="keyword"/>
+                    </input>
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </div>
           </td>
         </tr>
         <tr>
@@ -3896,7 +3930,7 @@
               </xsl:for-each>
             </ul>
             <a href="javascript:toggleVisibility('calCategories','visible')">
-              show/hide unused categories
+              show/hide categories for auto-tagging on input
             </a>
             <div id="calCategories" class="invisible">
               <ul class="catlist">
@@ -4582,16 +4616,32 @@
           </td>
         </tr-->
         <tr>
-          <th>Filter Expression:</th>
+          <th>Filter:</th>
           <td>
-            <input type="text" name="fexpr" value="" size="40"/>
+            <input type="hidden" name="fexpr" value=""/>
+            <a href="javascript:toggleVisibility('filterCategories','visible')">
+              show/hide categories for filtering on output
+            </a>
+            <div id="filterCategories" class="invisible">
+              <ul class="catlist">
+                <xsl:for-each select="/bedework/categories/all/category">
+                  <xsl:sort select="keyword" order="ascending"/>
+                  <li>
+                    <input type="checkbox" name="filterCatUid">
+                      <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                      <xsl:value-of select="keyword"/>
+                    </input>
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </div>
           </td>
         </tr>
         <tr>
           <th>Categories:</th>
           <td>
             <a href="javascript:toggleVisibility('calCategories','visible')">
-              show/hide categories
+              show/hide categories for auto-tagging on input
             </a>
             <div id="calCategories" class="invisible">
               <ul class="catlist">
