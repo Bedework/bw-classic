@@ -270,15 +270,12 @@ function setCatFilters(formObj) {
       if (formObj.filterCatUid[i].checked) {
         filterExists = true;
         filterExpression += formObj.filterCatUid[i].value + ",";
-        alert(filterExpression);
-        alert(filterExists);
       }
     }
     alert(filterExists);
     if (filterExists) {
       // remove the last comma and close off the expression
       filterExpression = filterExpression.substring(0,filterExpression.length-1) + ")";
-      alert(filterExpression);
       // set the form value
       formObj.fexpr.value = filterExpression;
     }
