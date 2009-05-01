@@ -261,3 +261,26 @@ function checkPrefCategories(formObj){
     formObj.appendChild(hiddenCat);
   }
 }
+// set category filters on calendar collections
+function setCatFilters(formObj) {
+  if (typeof formObj.filterCatUid.length != 'undefined') {
+    var filterExpression = "catuid=(";
+    var filterExists = false;
+    for (i = 0; i < formObj.filterCatUid.length; i++) {
+      if (formObj.filterCatUid[i].checked) {
+        filterExists = true;
+        filterExpression += formObj.filterCatUid[i].value + ",";
+        alert(filterExpression);
+        alert(filterExists);
+      }
+    }
+    alert(filterExists);
+    if (filterExists) {
+      // remove the last comma and close off the expression
+      filterExpression = filterExpression.substring(0,filterExpression.length-1) + ")";
+      alert(filterExpression);
+      // set the form value
+      formObj.fexpr.value = filterExpression;
+    }
+  }
+}

@@ -309,10 +309,6 @@
             </script>
           </xsl:if>
         </xsl:if>
-        <xsl:if test="/bedework/page='modCalendar' or
-                      /bedework/page='modSubscription'">
-          initCatFilters('<xsl:value-of select="/bedework/currentCalendar/filterExpr"/>');
-        </xsl:if>
         <xsl:if test="/bedework/page='upload' or /bedework/page='selectCalForEvent'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
         </xsl:if>
@@ -3789,7 +3785,7 @@
     <xsl:variable name="calPath" select="path"/>
     <xsl:variable name="calPathEncoded" select="encodedPath"/>
 
-    <form name="modCalForm" method="post">
+    <form name="modCalForm" method="post" onsubmit="setCatFilters(this)">
       <xsl:attribute name="action">
         <xsl:choose>
           <xsl:when test="/bedework/page = 'modSubscription'">
@@ -3893,9 +3889,12 @@
           <th>Filter:</th>
           <td>
             <input type="hidden" name="fexpr" value=""/>
+            <!-- display current filter expression to get us going -->
+            <xsl:value-of select="filterExpr"/><xsl:if test="filterExpr !=''"><br/></xsl:if>
             <a href="javascript:toggleVisibility('filterCategories','visible')">
               show/hide categories for filtering on output
             </a>
+
             <div id="filterCategories" class="invisible">
               <ul class="catlist">
                 <xsl:for-each select="/bedework/categories/all/category">
