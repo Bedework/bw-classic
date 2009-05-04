@@ -1,0 +1,17 @@
+<Context path="@CONTEXT-ROOT@" reloadable="false">
+  <!-- Resource referenced by web.xml -->
+ <Resource name="jdbc/calDB" auth="Container"
+           type="javax.sql.DataSource"
+           driverClassName="oracle.jdbc.OracleDriver"
+           url="jdbc:oracle:thin:@localhost:1521:XE"
+           username="sa"
+           password=""
+           maxActive="8"
+           maxIdle="4"
+           maxWait="-1"
+           defaultAutoCommit="false" />
+
+  <!-- Disables restart persistence of sessions -->
+  <Manager pathname=""/>
+</Context>
+
