@@ -147,7 +147,7 @@
   <xsl:variable name="calendar-fetchForDisplay" select="/bedework/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
   <xsl:variable name="calendar-fetchForUpdate" select="/bedework/urlPrefixes/calendar/fetchForUpdate/a/@href"/>
   <xsl:variable name="calendar-update" select="/bedework/urlPrefixes/calendar/update/a/@href"/>
-  <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess/a/@href"/>
+  <!-- <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess/a/@href"/>-->
   <xsl:variable name="calendar-openCloseMod" select="/bedework/urlPrefixes/calendar/calOpenCloseMod/a/@href"/>
   <xsl:variable name="calendar-openCloseSelect" select="/bedework/urlPrefixes/calendar/calOpenCloseSelect/a/@href"/>
   <xsl:variable name="calendar-openCloseDisplay" select="/bedework/urlPrefixes/calendar/calOpenCloseDisplay/a/@href"/>
@@ -175,7 +175,7 @@
   <xsl:variable name="calsuite-add" select="/bedework/urlPrefixes/calsuite/add/a/@href"/>
   <xsl:variable name="calsuite-update" select="/bedework/urlPrefixes/calsuite/update/a/@href"/>
   <xsl:variable name="calsuite-showAddForm" select="/bedework/urlPrefixes/calsuite/showAddForm/a/@href"/>
-  <xsl:variable name="calsuite-setAccess" select="/bedework/urlPrefixes/calsuite/setAccess/a/@href"/>
+  <!--  <xsl:variable name="calsuite-setAccess" select="/bedework/urlPrefixes/calsuite/setAccess/a/@href"/> -->
   <xsl:variable name="calsuite-fetchPrefsForUpdate" select="/bedework/urlPrefixes/calsuite/fetchPrefsForUpdate/a/@href"/>
   <xsl:variable name="calsuite-updatePrefs" select="/bedework/urlPrefixes/calsuite/updatePrefs/a/@href"/>
   <!-- timezones and stats -->
