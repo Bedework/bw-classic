@@ -272,7 +272,6 @@ function setCatFilters(formObj) {
         filterExpression += formObj.filterCatUid[i].value + ",";
       }
     }
-    alert(filterExists);
     if (filterExists) {
       // remove the last comma and close off the expression
       filterExpression = filterExpression.substring(0,filterExpression.length-1) + ")";

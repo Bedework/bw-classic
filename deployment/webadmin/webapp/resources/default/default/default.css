@@ -1148,6 +1148,9 @@ img.folderForAliasTree {
 .viewsTable {
   width: 60%;
 }
+button {
+  margin-bottom: 1em;
+}
 a {
   color: #00c;
   background-color: inherit;
