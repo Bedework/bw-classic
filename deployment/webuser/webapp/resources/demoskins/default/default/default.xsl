@@ -2869,7 +2869,7 @@
               % Complete:
             </td>
             <td class="fieldval" align="left">
-              <input type="text" name="event.percentComplete" size="3" maxlength="3">
+              <input type="text" name="percentComplete" size="3" maxlength="3">
                 <xsl:attribute name="value"><xsl:value-of select="form/percentComplete"/></xsl:attribute>
               </input>%
             </td>
@@ -2981,7 +2981,7 @@
           <td class="fieldname">Event Link:</td>
           <td class="fieldval">
             <xsl:variable name="link" select="form/link/input/@value"/>
-            <input type="text" name="event.link" size="80" value="{$link}"/>
+            <input type="text" name="eventLink" size="80" value="{$link}"/>
           </td>
         </tr>
         <!--  Description  -->
@@ -3065,12 +3065,12 @@
             <td class="fieldval">
               <xsl:choose>
                 <xsl:when test="form/transparency = 'TRANSPARENT'">
-                  <input type="radio" name="event.transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                  <input type="radio" name="event.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+                  <input type="radio" name="transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+                  <input type="radio" name="transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="radio" name="event.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                  <input type="radio" name="event.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+                  <input type="radio" name="transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+                  <input type="radio" name="transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
@@ -7111,12 +7111,12 @@
           <td class="fieldval">
             <xsl:choose>
               <xsl:when test="form/transparency = 'TRANSPARENT'">
-                <input type="radio" name="editEvent.transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                <input type="radio" name="editEvent.transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+                <input type="radio" name="transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+                <input type="radio" name="transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
               </xsl:when>
               <xsl:otherwise>
-                <input type="radio" name="editEvent.transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                <input type="radio" name="editEvent.transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+                <input type="radio" name="transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+                <input type="radio" name="transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
               </xsl:otherwise>
             </xsl:choose>
           </td>

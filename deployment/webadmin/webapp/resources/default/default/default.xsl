@@ -2196,7 +2196,8 @@
             Event URL:
           </td>
           <td>
-            <xsl:copy-of select="form/link/*"/>
+            <xsl:variable name="link" select="form/link/input/@value"/>
+            <input type="text" name="eventLink" size="80" value="{$link}"/>
             <xsl:text> </xsl:text>
             <span class="fieldInfo">(optional: for more information about the event)</span>
           </td>
