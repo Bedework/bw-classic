@@ -269,7 +269,7 @@ function setCatFilters(formObj) {
     for (i = 0; i < formObj.filterCatUid.length; i++) {
       if (formObj.filterCatUid[i].checked) {
         filterExists = true;
-        filterExpression += formObj.filterCatUid[i].value + ",";
+        filterExpression += "'" + formObj.filterCatUid[i].value + "',";
       }
     }
     if (filterExists) {
