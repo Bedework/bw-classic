@@ -328,8 +328,10 @@
           function focusFirstElement() {
             if (window.document.forms[0]) {
               for (i=0; i<window.document.forms[0].elements.length; i++) {
-                if (window.document.forms[0].elements[i].type != "submit" &&
-                    window.document.forms[0].elements[i].type != "reset" ) {
+                if (window.document.forms[0].elements[i].type != "hidden" &&
+                    window.document.forms[0].elements[i].type != "submit" &&
+                    window.document.forms[0].elements[i].type != "reset" &&
+                    window.document.forms[0].elements[i].type != "button" ) {
                   window.document.forms[0].elements[i].focus();
                   break;
                 }
@@ -2606,8 +2608,8 @@
                 <xsl:otherwise>
                   <!-- we are using the single calendar model for public events -->
                   <input type="submit" name="updateSubmitEvent" value="Update Event"/>
-                  <input type="button" name="publishEvent" value="Publish Event">
-                    <xsl:attribute name="onclick">publishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>');</xsl:attribute>
+                  <input type="submit" name="publishEvent" value="Publish Event">
+                    <xsl:attribute name="onclick">doPublishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>',this.form);</xsl:attribute>
                   </input>
                   <input type="submit" name="cancel" value="Cancel"/>
                 </xsl:otherwise>
