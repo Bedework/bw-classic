@@ -518,7 +518,7 @@
               border="0"/>
           </span>
         </div>
-        <strong>Step 5:</strong> Add Comments. <em>Optional.</em>
+        <strong>Step 5:</strong> Contact Information and Comments.
       </div>
     </div>
 
@@ -1135,12 +1135,23 @@
           </tr>-->
           <!-- the form elements will be inserted here -->
         <!-- </table>-->
+
         <div id="bwCommentNotes">
-          Please supply any final notes or instructions regarding your event:<br/>
+          <div id="bwEmailHolderNotice" class="invisible">You must include your email address.</div> <!-- a holder for validation notes -->
+          <p>
+            <label for="emailHolder">Enter your email address: </label><br/>
+            <input type="text" name="emailHolder" size="80">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTER-EMAIL']/values/text"/></xsl:attribute>
+            </input>
+          </p>
+
+          <p>
+            Please supply any final notes or instructions regarding your event:<br/>
           <!-- note: don't remove the #160 from the textarea or browsers will see it as a closed tag when empty -->
-          <textarea name="commentNotes" cols="60" rows="4"><!--
+           <textarea name="commentNotes" cols="60" rows="4"><!--
            --><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/>&#160;<!--
            --></textarea>
+          </p>
         </div>
         <div class="eventSubmitButtons">
           <input name="submit" class="submit" type="submit" value="submit for approval"/>
