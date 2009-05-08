@@ -698,6 +698,11 @@ function doPublishEvent(publishingCal) {
   // Update the newCalPath to reflect the publishing calendar:
   newCalPath = document.getElementById("newCalPath");
   newCalPath.value = publishingCal;
+
+  // If email notification is enabled, set field to true
+  // (set to 'true' for now to get the feature working)
+  submitNotification = document.getElementById("submitNotification");
+  submitNotification.value = true;
 }
 
 

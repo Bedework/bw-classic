@@ -216,7 +216,7 @@
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
 
   <!-- Other generally useful global variables -->
-  <xsl:variable name="publicCal">/cal</xsl:variable>
+  <xsl:variable name="publicCal">http://localhost:8080/cal</xsl:variable>
 
   <!-- the following variable can be set to "true" or "false";
        to use jQuery widgets and fancier UI features, set to false - these are
@@ -1063,6 +1063,7 @@
     <xsl:variable name="calPath" select="form/calendar/path"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
+    <xsl:variable name="eventTitle" select="form/title/input/@value"/>
 
     <h2>Event Information</h2>
 
@@ -1085,7 +1086,6 @@
         <div id="bwSubmittedBy">
           Submitted by
           <xsl:variable name="submitterEmail" select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTER-EMAIL']/values/text"/>
-          <xsl:variable name="eventTitle" select="form/title/input/@value"/>
           <a href="mailto:{$submitterEmail}?subject=[Event%20Submission] {$eventTitle}" title="Email {$submitterEmail}">
             <xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/>
           </a>
@@ -1138,6 +1138,21 @@
             <xsl:when test="/bedework/creating = 'true'">1</xsl:when>
             <xsl:otherwise><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-STATUS']/values/text"/></xsl:otherwise>
           </xsl:choose>
+        </xsl:attribute>
+      </input>
+
+      <!-- Setup email notification fields -->
+      <input type="hidden" id="submitNotification" name="submitNotification" value="false"/>
+      <input type="hidden" name="snsubject" value="Event Approved: {$eventTitle}"/>
+      <input type="hidden" name="sntext">
+        <xsl:attribute name="value">
+           Your event has been approved.
+
+           EVENT DETAILS
+           -------------
+           Title: <xsl:value-of select="$eventTitle"/>
+           Dates:
+           URL: <xsl:value-of select="$publicCal"/>/event/eventView.do?subid=<xsl:value-of select="$subscriptionId"/>&amp;calPath=<xsl:value-of select="$calPathEncoded"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/>
         </xsl:attribute>
       </input>
 
