@@ -2221,7 +2221,7 @@
           </td>
           <td>
             <xsl:variable name="link" select="form/link/input/@value"/>
-            <input type="text" name="eventLink" size="80" value="{$link}"/>
+            <input type="text" name="eventLink" value="{$link}" size="80" class="edit"/>
             <xsl:text> </xsl:text>
             <span class="fieldInfo">(optional: for more information about the event)</span>
           </td>
@@ -2232,7 +2232,7 @@
             Image URL:
           </td>
           <td>
-            <input type="text" name="xBwImageHolder" value="" class="edit" size="30">
+            <input type="text" name="xBwImageHolder" value="" size="80" class="edit">
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:attribute>
             </input>
             <xsl:text> </xsl:text>
