@@ -235,16 +235,19 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
 // ========================================================================
 
 function setEventFields(formObj,portalFriendly,submitter) {
-  if (!portalFriendly) {
-    setDates(formObj);
+  if (validateStep4()) {
+    if (!portalFriendly) {
+      setDates(formObj);
+    }
+    //setComments(formObj);
+    //if(formObj.freq){
+    //  setRecurrence(formObj);
+    //} else we are editing an instance of a recurrence
+    setBedeworkXProperties(formObj, submitter);
+    return true;
+  } else {
+    return false;
   }
-  setComments(formObj);
-  //if(formObj.freq){
-  //  setRecurrence(formObj);
-  //} else we are editing an instance of a recurrence
-  setBedeworkXProperties(formObj,submitter);
-  //setAccessHow(formObj,1);
-  //setAccessAcl(formObj);
 }
 /* Set dates based on jQuery widgets */
 function setDates(formObj) {
@@ -261,6 +264,7 @@ function setDates(formObj) {
   formObj["eventEndDate.day"].value = endDate.getDate();
 }
 function setComments(formObj) {
+  // DEPRECATED: see setBedeworkXProperties()
   // set the submission comments (location, contact, and category suggestions)
   // as an xproperty.  Relies on bedeworkXProperties.js
 }
@@ -300,6 +304,11 @@ function setBedeworkXProperties(formObj,submitter) {
                    [bwXParamWidth,''],
                    [bwXParamHeight,'']],
                    formObj["xBwImageHolder"].value,true);
+  }
+
+  // X-BEDEWORK-SUBMITTER-EMAIL
+  if (formObj["xBwEmailHolder"] && formObj["xBwEmailHolder"].value != '') {
+    bwXProps.update(bwXPropertySubmitterEmail, [], formObj["xBwEmailHolder"].value, true);
   }
 
   // X-BEDEWORK-SUBMIT-STATUS
@@ -707,6 +716,29 @@ function validateStep3() {
     changeClass("bwContactUid","bigSelect");
     changeClass("bwCommentContactName","none");
     changeClass("bwContactUidNotice","invisible");
+  }
+  return validity;
+}
+
+function validateStep4(){
+  var validity = true;
+  var email = document.getElementById("xBwEmailHolder").value;
+  if (email == '') {
+    changeClass("xBwEmailHolder", "highlight");
+    changeClass("xBwEmailHolderNotice", "notice");
+    changeClass("xBwEmailHolderInvalidNotice", "invisible");
+    validity = false;
+  } else if (!echeck(email)) {
+    changeClass("xBwEmailHolder", "highlight");
+    changeClass("xBwEmailHolderInvalidNotice", "notice");
+    changeClass("xBwEmailHolderNotice","invisible");
+    validity = false;
+  } else {
+    // none of these class changes are needed, but are
+    // here for completeness
+    changeClass("xBwEmailHolder","none");
+    changeClass("xBwEmailHolderNotice","invisible");
+    changeClass("xBwEmailHolderInvalidNotice", "invisible");
   }
   return validity;
 }

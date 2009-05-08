@@ -759,6 +759,7 @@ display: inline;
 #bedework .highlight {
   color: black;
   background: #ff0 url(../../resources/glassFill-message.gif) repeat-x top;
+  /*background-color: #ff0;*/
   border: 1px solid #333;
 }
 #bedework .notice {

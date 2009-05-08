@@ -310,6 +310,9 @@ ul.adminMenu li {
 #bwSubmittedBy {
   float: right;
 }
+#bwSubmittedBy a {
+  font-weight: bold;
+}
 #bwSubmittedEventCommentBlock h4 {
   display: inline;
   font-size: 1.1em;

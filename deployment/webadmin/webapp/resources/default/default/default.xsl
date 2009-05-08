@@ -1082,7 +1082,14 @@
       </script>
 
       <div id="bwSubmittedEventCommentBlock">
-        <div id="bwSubmittedBy">Submitted by <xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/></div>
+        <div id="bwSubmittedBy">
+          Submitted by
+          <xsl:variable name="submitterEmail" select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTER-EMAIL']/values/text"/>
+          <xsl:variable name="eventTitle" select="form/title/input/@value"/>
+          <a href="mailto:{$submitterEmail}?subject=[Event%20Submission] {$eventTitle}" title="Email {$submitterEmail}">
+            <xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/>
+          </a>
+        </div>
         <h4>Comments from Submitter</h4>
         <a href="javascript:toggleVisibility('bwSubmittedEventComment','visible');" class="toggle">show/hide</a>
         <a href="javascript:bwSubmitComment.launch();" class="toggle">pop-up</a>

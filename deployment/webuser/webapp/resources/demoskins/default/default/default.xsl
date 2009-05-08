@@ -514,7 +514,7 @@
       <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
       <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkXProperties.js">&#160;</script>
+      <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">&#160;</script>
       <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
       <!-- initialize event acls, if present -->

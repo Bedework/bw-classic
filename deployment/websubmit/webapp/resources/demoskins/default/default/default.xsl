@@ -185,7 +185,8 @@
         </xsl:otherwise>
       </xsl:choose>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkXProperties.js">&#160;</script>
+      <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">&#160;</script>
+      <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkUtil.js">&#160;</script>
     </xsl:if>
     <script type="text/javascript">
       <xsl:comment>
@@ -326,7 +327,7 @@
         <xsl:otherwise><xsl:value-of select="/bedework/userid"/></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}');">
+    <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="return setEventFields(this,{$portalFriendly},'{$submitter}');">
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>
@@ -339,7 +340,7 @@
         <xsl:otherwise><xsl:value-of select="/bedework/userid"/></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}');">
+    <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="return setEventFields(this,{$portalFriendly},'{$submitter}');">
       <xsl:apply-templates select="." mode="eventForm"/>
     </form>
   </xsl:template>
@@ -1137,10 +1138,12 @@
         <!-- </table>-->
 
         <div id="bwCommentNotes">
-          <div id="bwEmailHolderNotice" class="invisible">You must include your email address.</div> <!-- a holder for validation notes -->
+          <!-- holders for validation notes -->
+          <div id="xBwEmailHolderNotice" class="invisible">You must include your email address.</div>
+          <div id="xBwEmailHolderInvalidNotice" class="invisible">This does not appear to be a valid email address.  Please correct.</div>
           <p>
-            <label for="emailHolder">Enter your email address: </label><br/>
-            <input type="text" name="emailHolder" size="80">
+            <label for="xBwEmailHolder">Enter your email address: </label><br/>
+            <input type="text" name="xBwEmailHolder" id="xBwEmailHolder" size="80">
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTER-EMAIL']/values/text"/></xsl:attribute>
             </input>
           </p>
