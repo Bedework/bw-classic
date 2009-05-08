@@ -693,7 +693,7 @@ function resetPublishBox(calSelectId) {
   changeClass('publishBox','invisible');
 }
 
-function doPublishEvent(publishingCal) {
+function doPublishEvent(publishingCal,eventTitle,eventUrl) {
   // User has submitted the event when there is only a single publishing calendar.
   // Update the newCalPath to reflect the publishing calendar:
   newCalPath = document.getElementById("newCalPath");
@@ -703,6 +703,15 @@ function doPublishEvent(publishingCal) {
   // (set to 'true' for now to get the feature working)
   submitNotification = document.getElementById("submitNotification");
   submitNotification.value = true;
+
+  // set the email field values
+  snsubject = document.getElementById("snsubject");
+  snsubject.value = "Event Approved: " + eventTitle;
+  sntext = document.getElementById("sntext");
+  sntext.value = "Your event has been approved and is now published.\n\nEVENT DETAILS\n-------------\n\nTitle: " + eventTitle + "\nURL: " + eventUrl;
+}
+function doRejectEvent(reason,eventTitle) {
+
 }
 
 

@@ -1064,6 +1064,7 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <xsl:variable name="eventTitle" select="form/title/input/@value"/>
+    <xsl:variable name="eventUrl"><xsl:value-of select="$publicCal"/>/event/eventView.do?subid=<xsl:value-of select="$subscriptionId"/>&amp;calPath=<xsl:value-of select="$calPathEncoded"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:variable>
 
     <h2>Event Information</h2>
 
@@ -1086,8 +1087,12 @@
         <div id="bwSubmittedBy">
           Submitted by
           <xsl:variable name="submitterEmail" select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTER-EMAIL']/values/text"/>
-          <a href="mailto:{$submitterEmail}?subject=[Event%20Submission] {$eventTitle}" title="Email {$submitterEmail}">
+          <a href="mailto:{$submitterEmail}?subject=[Event%20Submission] {$eventTitle}" title="Email {$submitterEmail}" class="submitter">
             <xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/>
+          </a><br/>
+          <a href="mailto:{$submitterEmail}?subject=[Event%20Submission] {$eventTitle}" title="Email {$submitterEmail}">
+            <img src="{$resourcesRoot}/resources/email.gif" border="0"/>
+            send message
           </a>
         </div>
         <h4>Comments from Submitter</h4>
@@ -1143,20 +1148,13 @@
 
       <!-- Setup email notification fields -->
       <input type="hidden" id="submitNotification" name="submitNotification" value="false"/>
-      <input type="hidden" name="snsubject" value="Event Approved: {$eventTitle}"/>
-      <input type="hidden" name="sntext">
-        <xsl:attribute name="value">
-           Your event has been approved.
+      <input type="hidden" id="snsubject" name="snsubject" value=""/>
+      <input type="hidden" id="sntext" name="sntext" value=""/>
 
-           EVENT DETAILS
-           -------------
-           Title: <xsl:value-of select="$eventTitle"/>
-           Dates:
-           URL: <xsl:value-of select="$publicCal"/>/event/eventView.do?subid=<xsl:value-of select="$subscriptionId"/>&amp;calPath=<xsl:value-of select="$calPathEncoded"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/>
-        </xsl:attribute>
-      </input>
-
-      <xsl:call-template name="submitEventButtons"/>
+      <xsl:call-template name="submitEventButtons">
+        <xsl:with-param name="eventTitle" select="$eventTitle"/>
+        <xsl:with-param name="eventUrl" select="$eventUrl"/>
+      </xsl:call-template>
 
       <table class="eventFormTable">
         <tr>
@@ -2531,7 +2529,10 @@
       <xsl:if test="not(starts-with(form/calendar/path,$submissionsRootUnencoded))">
         <!-- don't create two instances of the submit buttons on pending events;
              the publishing buttons require numerous unique ids -->
-        <xsl:call-template name="submitEventButtons"/>
+        <xsl:call-template name="submitEventButtons">>
+          <xsl:with-param name="eventTitle" select="$eventTitle"/>
+          <xsl:with-param name="eventUrl" select="$eventUrl"/>
+        </xsl:call-template>
       </xsl:if>
     </form>
   </xsl:template>
@@ -2579,6 +2580,8 @@
   </xsl:template>
 
   <xsl:template name="submitEventButtons">
+    <xsl:param name="eventTitle"/>
+    <xsl:param name="eventUrl"/>
     <table border="0" id="submitTable">
       <tr>
         <xsl:choose>
@@ -2631,7 +2634,7 @@
                   <!-- we are using the single calendar model for public events -->
                   <input type="submit" name="updateSubmitEvent" value="Update Event"/>
                   <input type="submit" name="publishEvent" value="Publish Event">
-                    <xsl:attribute name="onclick">doPublishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>',this.form);</xsl:attribute>
+                    <xsl:attribute name="onclick">doPublishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>','<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrl"/>');</xsl:attribute>
                   </input>
                   <input type="submit" name="cancel" value="Cancel"/>
                 </xsl:otherwise>

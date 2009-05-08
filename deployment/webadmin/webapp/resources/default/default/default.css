@@ -310,7 +310,7 @@ ul.adminMenu li {
 #bwSubmittedBy {
   float: right;
 }
-#bwSubmittedBy a {
+#bwSubmittedBy a.submitter {
   font-weight: bold;
 }
 #bwSubmittedEventCommentBlock h4 {
