@@ -2364,8 +2364,10 @@
 
         <!--  Category  -->
         <!--
-          categories can be set by the event administrator if the calendar suite preferences allow it
+          direct setting of categories is deprecated; if you want to reenable, uncomment this block - but
+          be forwarned that this will have peculiar consequences if using the submissions client
           -->
+        <!--
         <tr>
           <td class="fieldName">
             Categories:
@@ -2461,6 +2463,7 @@
             </div>
           </td>
         </tr>
+        -->
         <!-- note -->
         <!-- let's shut this off for now - needs rewriting if we keep it at all
         <tr>
@@ -5637,16 +5640,6 @@
                 </xsl:for-each>
               </ul>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <th>
-            Allow event administrators to<br/>select categories in event form:
-          </th>
-          <td>
-            <input type="radio" name="useCats" value="true" checked="checked"/> yes
-            <input type="radio" name="useCats" value="false"/> no<br/>
-            <p class="note">not yet implemented; the default will be "no".</p>
           </td>
         </tr>
         <!--
