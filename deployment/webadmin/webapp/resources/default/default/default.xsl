@@ -289,7 +289,7 @@
               </xsl:for-each>
             }
             function initXProperties() {
-              <xsl:for-each select="/bedework/formElements/form/xproperties/node()[text()]">
+              <xsl:for-each select="/bedework/formElements/form/xproperties/node()">
                 bwXProps.init('<xsl:value-of select="name()"/>',[<xsl:for-each select="parameters/node()">['<xsl:value-of select="name()"/>','<xsl:value-of select="node()"/>']<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>],'<xsl:call-template name="escapeApos"><xsl:with-param name="str"><xsl:value-of select="values/text"/></xsl:with-param></xsl:call-template>');
               </xsl:for-each>
             }
