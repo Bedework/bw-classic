@@ -1148,6 +1148,8 @@
 
       <!-- Setup email notification fields -->
       <input type="hidden" id="submitNotification" name="submitNotification" value="false"/>
+      <!-- "from" should be a preference: hard code it for now -->
+      <input type="hidden" id="snfrom" name="snfrom" value="bedework@yoursite.edu"/>
       <input type="hidden" id="snsubject" name="snsubject" value=""/>
       <input type="hidden" id="sntext" name="sntext" value=""/>
 
