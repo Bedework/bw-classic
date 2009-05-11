@@ -1079,6 +1079,7 @@
           '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-PHONE']"/></xsl:call-template>',
           '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']"/></xsl:call-template>',
           '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-EMAIL']"/></xsl:call-template>',
+          '<ul><xsl:for-each select="form/categories/current//keyword"><li><xsl:call-template name="escapeApos"><xsl:with-param name="str" select="."/></xsl:call-template></li></xsl:for-each></ul>',
           '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:call-template>',
           '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/></xsl:call-template>');
       </script>
@@ -1100,6 +1101,7 @@
         <a href="javascript:bwSubmitComment.launch();" class="toggle">pop-up</a>
         <div id="bwSubmittedEventComment">
           <xsl:if test="/bedework/page = 'modEvent'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
+          <xsl:text> </xsl:text>
         </div>
       </div>
       <script type="text/javascript">
@@ -2584,94 +2586,86 @@
   <xsl:template name="submitEventButtons">
     <xsl:param name="eventTitle"/>
     <xsl:param name="eventUrl"/>
-    <table border="0" id="submitTable">
-      <tr>
-        <xsl:choose>
-          <xsl:when test="starts-with(form/calendar/event/path,$submissionsRootUnencoded)">
-            <td>
-              <!-- no need for a publish box in the single calendar model unless we have more than one calendar; -->
-              <xsl:choose>
-                <xsl:when test="count(form/calendar/all/select/option) &gt; 1"><!-- test for the presence of more than one publishing calendar -->
-                  <div id="publishBox" class="invisible">
-                    <div id="publishBoxCloseButton">
-                      <a href="javascript:resetPublishBox('calendarId')">
-                        <img src="{$resourcesRoot}/resources/closeIcon.gif" width="20" height="20" alt="close" border="0"/>
-                      </a>
-                    </div>
-                    <strong>Select a calendar in which to publish this event:</strong><br/>
-                    <select name="calendarId" id="calendarId">
-                      <option>
-                        <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
-                        Select:
-                      </option>
-                      <xsl:for-each select="form/calendar/all/select/option">
-                        <xsl:sort select="." order="ascending"/>
-                        <option>
-                          <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
-                          <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                          <xsl:choose>
-                            <xsl:when test="starts-with(node(),/bedework/submissionsRoot/unencoded)">
-                              submitted events
-                            </xsl:when>
-                            <xsl:otherwise>
-                              <xsl:value-of select="substring-after(node(),'/public/')"/>
-                            </xsl:otherwise>
-                          </xsl:choose>
-                        </option>
-                      </xsl:for-each>
-                    </select>
-                    <input type="submit" name="publishEvent" value="Publish" onclick="changeClass('publishBox','invisible')"/>
-                    <xsl:if test="$portalFriendly = 'false'">
-                      <br/>
-                      <span id="calDescriptionsLink">
-                        <a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a>
-                      </span>
-                    </xsl:if>
-                  </div>
-                  <input type="submit" name="updateSubmitEvent" value="Update Event"/>
-                  <input type="button" name="publishEvent" value="Publish Event" onclick="changeClass('publishBox','visible')"/>
-                  <input type="submit" name="cancel" value="Cancel"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <!-- we are using the single calendar model for public events -->
-                  <input type="submit" name="updateSubmitEvent" value="Update Event"/>
-                  <input type="submit" name="publishEvent" value="Publish Event">
-                    <xsl:attribute name="onclick">doPublishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>','<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrl"/>');</xsl:attribute>
-                  </input>
-                  <input type="submit" name="cancel" value="Cancel"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-            <td align="right">
-              <input type="submit" name="delete" value="Delete Event"/>
-            </td>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:choose>
-              <xsl:when test="/bedework/creating='true'">
-                <td>
-                  <input type="submit" name="addEvent" value="Add Event"/>
-                  <input type="submit" name="cancelled" value="Cancel"/>
-                </td>
-              </xsl:when>
-              <xsl:otherwise>
-                <td>
-                  <input type="submit" name="updateEvent" value="Update Event"/>
-                  <input type="submit" name="cancelled" value="Cancel"/>
-                  <xsl:if test="form/recurringEntity != 'true' and recurrenceId = ''">
-                    <!-- cannot duplicate recurring events for now -->
-                    <input type="submit" name="copy" value="Copy Event"/>
-                  </xsl:if>
-                </td>
-                <td align="right">
-                  <input type="submit" name="delete" value="Delete Event"/>
-                </td>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:otherwise>
-        </xsl:choose>
-      </tr>
-    </table>
+    <div class="submitBox">
+      <xsl:choose>
+        <xsl:when test="starts-with(form/calendar/event/path,$submissionsRootUnencoded)">
+          <div class="right">
+            <input type="submit" name="delete" value="Delete Event"/>
+          </div>
+          <!-- no need for a publish box in the single calendar model unless we have more than one calendar; -->
+          <xsl:choose>
+            <xsl:when test="count(form/calendar/all/select/option) &gt; 1"><!-- test for the presence of more than one publishing calendar -->
+              <div id="publishBox" class="invisible">
+                <div id="publishBoxCloseButton">
+                  <a href="javascript:resetPublishBox('calendarId')">
+                    <img src="{$resourcesRoot}/resources/closeIcon.gif" width="20" height="20" alt="close" border="0"/>
+                  </a>
+                </div>
+                <strong>Select a calendar in which to publish this event:</strong><br/>
+                <select name="calendarId" id="calendarId">
+                  <option>
+                    <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
+                    Select:
+                  </option>
+                  <xsl:for-each select="form/calendar/all/select/option">
+                    <xsl:sort select="." order="ascending"/>
+                    <option>
+                      <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
+                      <xsl:if test="@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                      <xsl:choose>
+                        <xsl:when test="starts-with(node(),/bedework/submissionsRoot/unencoded)">
+                          submitted events
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="substring-after(node(),'/public/')"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </option>
+                  </xsl:for-each>
+                </select>
+                <input type="submit" name="publishEvent" value="Publish" onclick="changeClass('publishBox','invisible')"/>
+                <xsl:if test="$portalFriendly = 'false'">
+                  <br/>
+                  <span id="calDescriptionsLink">
+                    <a href="javascript:launchSimpleWindow('{$calendar-fetchDescriptions}')">calendar descriptions</a>
+                  </span>
+                </xsl:if>
+              </div>
+              <input type="submit" name="updateSubmitEvent" value="Update Event"/>
+              <input type="button" name="publishEvent" value="Publish Event" onclick="changeClass('publishBox','visible')"/>
+              <input type="submit" name="cancel" value="Cancel"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <!-- we are using the single calendar model for public events -->
+              <input type="submit" name="updateSubmitEvent" value="Update Event"/>
+              <input type="submit" name="publishEvent" value="Publish Event">
+                <xsl:attribute name="onclick">doPublishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>','<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrl"/>');</xsl:attribute>
+              </input>
+              <input type="submit" name="cancel" value="Cancel"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="/bedework/creating='true'">
+              <input type="submit" name="addEvent" value="Add Event"/>
+              <input type="submit" name="cancelled" value="Cancel"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <div class="right">
+                <input type="submit" name="delete" value="Delete Event"/>
+              </div>
+              <input type="submit" name="updateEvent" value="Update Event"/>
+              <input type="submit" name="cancelled" value="Cancel"/>
+              <xsl:if test="form/recurringEntity != 'true' and recurrenceId = ''">
+                <!-- cannot duplicate recurring events for now -->
+                <input type="submit" name="copy" value="Copy Event"/>
+              </xsl:if>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </div>
   </xsl:template>
 
   <xsl:template match="val" mode="weekMonthYearNumbers">
@@ -3112,28 +3106,21 @@
         </tr>
       </table>
 
-      <table border="0" id="submitTable">
-        <tr>
-          <xsl:choose>
-            <xsl:when test="/bedework/creating='true'">
-              <td>
-                <input type="submit" name="addContact" value="Add Contact"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-              </td>
-            </xsl:when>
-            <xsl:otherwise>
-              <td>
-                <input type="submit" name="updateContact" value="Update Contact"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-              </td>
-              <td align="right">
-                <input type="submit" name="delete" value="Delete Contact"/>
-              </td>
-            </xsl:otherwise>
-          </xsl:choose>
-        </tr>
-      </table>
-
+      <div class="submitBox">
+        <xsl:choose>
+          <xsl:when test="/bedework/creating='true'">
+            <input type="submit" name="addContact" value="Add Contact"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <input type="submit" name="updateContact" value="Update Contact"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <div class="right">
+              <input type="submit" name="delete" value="Delete Contact"/>
+            </div>
+          </xsl:otherwise>
+        </xsl:choose>
+      </div>
     </form>
   </xsl:template>
 
@@ -3245,27 +3232,21 @@
         </tr>
       </table>
 
-      <table border="0" id="submitTable">
-        <tr>
-          <xsl:choose>
-            <xsl:when test="/bedework/creating='true'">
-              <td>
-                <input type="submit" name="addLocation" value="Add Location"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-              </td>
-            </xsl:when>
-            <xsl:otherwise>
-              <td>
-                <input type="submit" name="updateLocation" value="Update Location"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-              </td>
-              <td align="right">
-                <input type="submit" name="delete" value="Delete Location"/>
-              </td>
-            </xsl:otherwise>
-          </xsl:choose>
-        </tr>
-      </table>
+      <div class="submitBox">
+        <xsl:choose>
+          <xsl:when test="/bedework/creating='true'">
+            <input type="submit" name="addLocation" value="Add Location"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <input type="submit" name="updateLocation" value="Update Location"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+            <div class="right">
+              <input type="submit" name="delete" value="Delete Location"/>
+            </div>
+          </xsl:otherwise>
+        </xsl:choose>
+      </div>
     </form>
   </xsl:template>
 
@@ -3361,14 +3342,10 @@
               </td>
             </tr>
           </table>
-          <table border="0" id="submitTable">
-            <tr>
-              <td>
-                <input type="submit" name="addCategory" value="Add Category"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-              </td>
-            </tr>
-          </table>
+          <div class="submitBox">
+            <input type="submit" name="addCategory" value="Add Category"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+          </div>
         </form>
       </xsl:when>
       <xsl:otherwise>
@@ -3397,17 +3374,13 @@
             </tr>
           </table>
 
-          <table border="0" id="submitTable">
-            <tr>
-              <td>
-                <input type="submit" name="updateCategory" value="Update Category"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-              </td>
-              <td align="right">
-                <input type="submit" name="delete" value="Delete Category"/>
-              </td>
-            </tr>
-          </table>
+          <div class="submitBox">
+            <div class="right">
+              <input type="submit" name="delete" value="Delete Category"/>
+            </div>
+            <input type="submit" name="updateCategory" value="Update Category"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+          </div>
         </form>
       </xsl:otherwise>
     </xsl:choose>
@@ -4039,37 +4012,33 @@
         </xsl:call-template>
       </div>
 
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <xsl:choose>
-              <xsl:when test="isSubscription='true'">
-                <input type="submit" name="updateCalendar" value="Update Subscription"/>
-              </xsl:when>
-              <xsl:when test="calType = '0'">
-                <input type="submit" name="updateCalendar" value="Update Folder"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="submit" name="updateCalendar" value="Update Calendar"/>
-              </xsl:otherwise>
-            </xsl:choose>
-            <input type="submit" name="cancelled" value="cancel"/>
-          </td>
-          <td align="right">
-            <xsl:choose>
-              <xsl:when test="isSubscription='true'">
-                <input type="submit" name="delete" value="Remove Subscription"/>
-              </xsl:when>
-              <xsl:when test="calType = '0'">
-                <input type="submit" name="delete" value="Delete Folder"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="submit" name="delete" value="Delete Calendar"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
-      </table>
+      <div class="submitBox">
+        <div class="right">
+          <xsl:choose>
+            <xsl:when test="isSubscription='true'">
+              <input type="submit" name="delete" value="Remove Subscription"/>
+            </xsl:when>
+            <xsl:when test="calType = '0'">
+              <input type="submit" name="delete" value="Delete Folder"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <input type="submit" name="delete" value="Delete Calendar"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </div>
+        <xsl:choose>
+          <xsl:when test="isSubscription='true'">
+            <input type="submit" name="updateCalendar" value="Update Subscription"/>
+          </xsl:when>
+          <xsl:when test="calType = '0'">
+            <input type="submit" name="updateCalendar" value="Update Folder"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <input type="submit" name="updateCalendar" value="Update Calendar"/>
+          </xsl:otherwise>
+        </xsl:choose>
+        <input type="submit" name="cancelled" value="cancel"/>
+      </div>
     </form>
     <!-- div id="sharingBox">
       <xsl:apply-templates select="acl" mode="currentAccess">
@@ -4203,26 +4172,22 @@
         </tr>
       </table>
 
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input type="submit" name="cancelled" value="Cancel"/>
-          </td>
-          <td align="right">
-            <xsl:choose>
-              <xsl:when test="isSubscription = 'true'">
-                <input type="submit" name="delete" value="Yes: Remove Subscription!"/>
-              </xsl:when>
-              <xsl:when test="calType = '0'">
-                <input type="submit" name="delete" value="Yes: Delete Folder!"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="submit" name="delete" value="Yes: Delete Calendar!"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
-      </table>
+      <div class="submitBox">
+        <div class="right">
+          <xsl:choose>
+            <xsl:when test="isSubscription = 'true'">
+              <input type="submit" name="delete" value="Yes: Remove Subscription!"/>
+            </xsl:when>
+            <xsl:when test="calType = '0'">
+              <input type="submit" name="delete" value="Yes: Delete Folder!"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <input type="submit" name="delete" value="Yes: Delete Calendar!"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </div>
+        <input type="submit" name="cancelled" value="Cancel"/>
+      </div>
     </form>
   </xsl:template>
 
@@ -4872,26 +4837,22 @@
         </tr>
       </table>
 
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input type="submit" name="cancelled" value="Cancel"/>
-          </td>
-          <td align="right">
-            <xsl:choose>
-              <xsl:when test="isSubscription = 'true'">
-                <input type="submit" name="delete" value="Yes: Remove Subscription!"/>
-              </xsl:when>
-              <xsl:when test="calType = '0'">
-                <input type="submit" name="delete" value="Yes: Delete Folder!"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="submit" name="delete" value="Yes: Delete Calendar!"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
-      </table>
+      <div class="submitBox">
+        <div class="right">
+          <xsl:choose>
+            <xsl:when test="isSubscription = 'true'">
+              <input type="submit" name="delete" value="Yes: Remove Subscription!"/>
+            </xsl:when>
+            <xsl:when test="calType = '0'">
+              <input type="submit" name="delete" value="Yes: Delete Folder!"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <input type="submit" name="delete" value="Yes: Delete Calendar!"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </div>
+        <input type="submit" name="cancelled" value="Cancel"/>
+      </div>
     </form>
   </xsl:template>
 
@@ -5010,20 +4971,16 @@
       </tr>
     </table>
 
-    <table border="0" id="submitTable">
-      <tr>
-        <td>
-          <input type="button" name="return" value="Return to Views Listing" onclick="javascript:location.replace('{$view-fetch}')"/>
-        </td>
-        <td align="right">
-          <form name="deleteViewForm" action="{$view-fetchForUpdate}" method="post">
-            <input type="submit" name="deleteButton" value="Delete View"/>
-            <input type="hidden" name="name" value="{$viewName}"/>
-            <input type="hidden" name="delete" value="yes"/>
-          </form>
-        </td>
-      </tr>
-    </table>
+    <div class="submitBox">
+      <div class="right">
+        <form name="deleteViewForm" action="{$view-fetchForUpdate}" method="post">
+          <input type="submit" name="deleteButton" value="Delete View"/>
+          <input type="hidden" name="name" value="{$viewName}"/>
+          <input type="hidden" name="delete" value="yes"/>
+        </form>
+      </div>
+      <input type="button" name="return" value="Return to Views Listing" onclick="javascript:location.replace('{$view-fetch}')"/>
+    </div>
   </xsl:template>
 
   <xsl:template name="deleteViewConfirm">
@@ -5102,14 +5059,10 @@
           </td>
         </tr>
       </table>
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input name="submit" type="submit" value="Continue"/>
-            <input name="cancelled" type="submit" value="Cancel"/>
-          </td>
-        </tr>
-      </table>
+      <div class="submitBox">
+        <input name="submit" type="submit" value="Continue"/>
+        <input name="cancelled" type="submit" value="Cancel"/>
+      </div>
     </form>
   </xsl:template>
 
@@ -5439,14 +5392,10 @@
           </td>
         </tr>
       </table>
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input type="submit" name="updateSystemParams" value="Update"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
-          </td>
-        </tr>
-      </table>
+      <div class="submitBox">
+        <input type="submit" name="updateSystemParams" value="Update"/>
+        <input type="submit" name="cancelled" value="Cancel"/>
+      </div>
     </form>
   </xsl:template>
 
@@ -5505,14 +5454,10 @@
           </td>
         </tr>
       </table>
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input type="submit" name="updateCalSuite" value="Add"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
-          </td>
-        </tr>
-      </table>
+      <div class="submitBox">
+        <input type="submit" name="updateCalSuite" value="Add"/>
+        <input type="submit" name="cancelled" value="Cancel"/>
+      </div>
     </form>
   </xsl:template>
 
@@ -5556,17 +5501,13 @@
         </xsl:call-template>
       </div>
 
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input type="submit" name="updateCalSuite" value="Update"/>
-            <input type="submit" name="cancelled" value="Cancel"/>
-          </td>
-          <td align="right">
-            <input type="submit" name="delete" value="Delete Calendar Suite"/>
-          </td>
-        </tr>
-      </table>
+      <div class="submitBox">
+        <div class="right">
+          <input type="submit" name="delete" value="Delete Calendar Suite"/>
+        </div>
+        <input type="submit" name="updateCalSuite" value="Update"/>
+        <input type="submit" name="cancelled" value="Cancel"/>
+      </div>
     </form>
 
     <!-- div id="sharingBox">
@@ -6177,27 +6118,23 @@
           </td>
         </tr>
       </table>
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <xsl:choose>
-              <xsl:when test="/bedework/creating = 'true'">
-                <input type="submit" name="updateAdminGroup" value="Add Admin Group"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="submit" name="updateAdminGroup" value="Update Admin Group"/>
-                <input type="submit" name="cancelled" value="Cancel"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-          <td align="right">
-            <xsl:if test="/bedework/creating = 'false'">
-              <input type="submit" name="delete" value="Delete"/>
-            </xsl:if>
-          </td>
-        </tr>
-      </table>
+      <div class="submitBox">
+        <div class="right">
+          <xsl:if test="/bedework/creating = 'false'">
+            <input type="submit" name="delete" value="Delete"/>
+          </xsl:if>
+        </div>
+        <xsl:choose>
+          <xsl:when test="/bedework/creating = 'true'">
+            <input type="submit" name="updateAdminGroup" value="Add Admin Group"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <input type="submit" name="updateAdminGroup" value="Update Admin Group"/>
+            <input type="submit" name="cancelled" value="Cancel"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </div>
     </form>
   </xsl:template>
 

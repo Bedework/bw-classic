@@ -715,9 +715,8 @@ table.common2 th {
   width: 150px;
   height: 20px;
 }
-#submitTable {
+.submitBox {
   position: relative; /* allows for absolute positioning within the table, e.g. #pubishBox */
-  width: 96%; /* less than 100% helps avoid IE weirdness */
   margin-top: 1em;
 }
 #publishBox {
@@ -1144,6 +1143,9 @@ img.folderForAliasTree {
 .odd {
   background-color: transparent;
   color: black;
+}
+.right {
+  float: right;
 }
 .padTop {
   padding-top: 1em;
