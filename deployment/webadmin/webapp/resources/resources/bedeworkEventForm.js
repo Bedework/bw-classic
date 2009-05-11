@@ -242,11 +242,11 @@ function BwREXdates(varName, reqParId, tableId, noDatesId,
  * contactPhone: value of contact's parameter X-BEDEWORK-PARAM-PHONE
  * contactUrl: value of contact's parameter X-BEDEWORK-PARAM-URL
  * contactEmail: value of contact's parameter X-BEDEWORK-PARAM-EMAIL
- * categories: list of categories derived from submitted topical areas
+ * topicalAreas: list of submitted topical areas (may not match the event admin's view
  * category: value of x-property X-BEDEWORK-CATEGORIES - a freeform user suggestion
  * notes: value of the x-property X-BEDEWORK-SUBMIT-COMMENT
  */
-function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactName,contactPhone,contactUrl,contactEmail,categories,category,notes) {
+function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactName,contactPhone,contactUrl,contactEmail,topicalAreas,category,notes) {
   this.locationAddress = locationAddress;
   this.locationSubaddress = locationSubaddress;
   this.locationUrl = locationUrl;
@@ -254,7 +254,7 @@ function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactN
   this.contactPhone = contactPhone;
   this.contactUrl = contactUrl;
   this.contactEmail = contactEmail;
-  this.categories = categories;
+  this.topicalAreas = topicalAreas;
   this.category = category;
   this.notes = notes;
 
@@ -277,14 +277,14 @@ function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactN
       output += '<tr><td>Email:</td><td>' + this.contactEmail + '</td></tr>';
       output += '</table>';
     }
-    if (this.categories != "") {
+    if (this.topicalAreas != "") {
       output += '<table>';
-      output += '<tr><th>Suggested Categories:</th></tr>';
-      output += '<tr><td>' + this.categories + '</td></tr>';
+      output += '<tr><th>Suggested Topical Areas:</th></tr>';
+      output += '<tr><td>' + this.topicalAreas + '</td></tr>';
       output += '</table>';
     }
     if (this.category != "") {
-      output += '<p><strong>Type of Event:</strong> (if categories weren\'t sufficient)<br/>';
+      output += '<p><strong>Type of Event:</strong> (if Topical Areas weren\'t sufficient)<br/>';
       output += this.category;
       output += '</p>';
     }
