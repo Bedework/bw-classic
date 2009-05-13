@@ -363,6 +363,11 @@ ul.adminMenu li {
   background-color: #eee;
   color: black;
 }
+#commonListTable td.unclaimed {
+  background-color: #eee;
+  color: #900 !important;
+  font-style: italic;
+}
 .recurrenceEditLinks {
   font-style: italic;
   font-size: 0.9em;
@@ -720,6 +725,9 @@ table.common2 th {
 .submitBox {
   position: relative; /* allows for absolute positioning within the table, e.g. #pubishBox */
   margin-top: 1em;
+}
+.claimButtons {
+  padding-left: 2em;
 }
 #publishBox {
   position: absolute;

@@ -228,7 +228,7 @@
     <html lang="en">
       <head>
         <title>Calendar Admin: Public Events Administration</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
         <!-- set globals that must be passed in from the XSLT -->
@@ -275,7 +275,7 @@
             </xsl:otherwise>
           </xsl:choose>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
-          <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkXProperties.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">&#160;</script>
           <script type="text/javascript">
             <xsl:comment>
             function initRXDates() {
@@ -953,6 +953,9 @@
     <table id="commonListTable">
       <tr>
         <th>Title</th>
+        <xsl:if test="/bedework/page='tabPendingEvents'">
+          <th>Claimed By</th>
+        </xsl:if>
         <th>Start</th>
         <th>End</th>
         <th>Topical Areas</th>
@@ -983,19 +986,36 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <tr>
+      <xsl:if test="not(xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT)">
+        <xsl:attribute name="class">highlight</xsl:attribute>
+      </xsl:if>
       <td>
         <xsl:choose>
           <xsl:when test="$pending = 'true'">
-            <a href="{$event-fetchForUpdatePending}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-              <xsl:choose>
-                <xsl:when test="summary != ''">
-                  <xsl:value-of select="summary"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <em>no title</em>
-                </xsl:otherwise>
-              </xsl:choose>
-            </a>
+            <xsl:choose>
+              <xsl:when test="xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT and not(xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT/values/text = /bedework/userInfo/group)">
+                <xsl:choose>
+                  <xsl:when test="summary != ''">
+                    <xsl:value-of select="summary"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <em>no title</em>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:otherwise>
+                <a href="{$event-fetchForUpdatePending}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                  <xsl:choose>
+                    <xsl:when test="summary != ''">
+                      <xsl:value-of select="summary"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <em>no title</em>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:when>
           <xsl:otherwise>
             <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
@@ -1011,6 +1031,20 @@
           </xsl:otherwise>
         </xsl:choose>
       </td>
+      <xsl:if test="/bedework/page='tabPendingEvents'">
+        <xsl:choose>
+          <xsl:when test="xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT">
+            <td>
+              <xsl:value-of select="xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT/values/text"/>
+              <xsl:text> </xsl:text>
+              (<xsl:value-of select="xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT/parameters/X-BEDEWORK-SUBMISSION-CLAIMANT-USER"/>)
+            </td>
+          </xsl:when>
+          <xsl:otherwise>
+            <td class="unclaimed">unclaimed</td>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
       <td class="date">
         <xsl:value-of select="start/shortdate"/>
         <xsl:text> </xsl:text>
@@ -2645,6 +2679,18 @@
               <input type="submit" name="cancel" value="Cancel"/>
             </xsl:otherwise>
           </xsl:choose>
+          <span class="claimButtons">
+            <xsl:choose>
+              <xsl:when test="form/xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT/values/text = /bedework/userInfo/group">
+                <input type="submit" name="updateSubmitEvent" value="Release Event" onclick="releasePendingEvent();"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="submit" name="updateSubmitEvent" value="Claim Event">
+                  <xsl:attribute name="onclick">claimPendingEvent('<xsl:value-of select="/bedework/userInfo/group"/>','<xsl:value-of select="/bedework/userInfo/currentUser'"/>');</xsl:attribute>
+                </input>
+              </xsl:otherwise>
+            </xsl:choose>
+          </span>
         </xsl:when>
         <xsl:otherwise>
           <xsl:choose>

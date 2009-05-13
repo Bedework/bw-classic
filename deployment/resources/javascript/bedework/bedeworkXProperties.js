@@ -38,6 +38,8 @@ var bwXPropertyCategories = "X-BEDEWORK-CATEGORIES";
 var bwXPropertySubmitComment = "X-BEDEWORK-SUBMIT-COMMENT";
 var bwXPropertySubmitStatus = "X-BEDEWORK-SUBMIT-STATUS";
 var bwXPropertySubmitterEmail = "X-BEDEWORK-SUBMITTER-EMAIL";
+var bwXPropertySubmitterEmail = "X-BEDEWORK-SUBMITTER-EMAIL";
+var bwXPropertySubmissionClaimant = "X-BEDEWORK-SUBMISSION-CLAIMANT";
 
 var bwXParamDescription = "X-BEDEWORK-PARAM-DESCRIPTION";
 var bwXParamWidth = "X-BEDEWORK-PARAM-WIDTH";
@@ -46,6 +48,7 @@ var bwXParamSubAddress = "X-BEDEWORK-PARAM-SUBADDRESS";
 var bwXParamURL = "X-BEDEWORK-PARAM-URL";
 var bwXParamPhone = "X-BEDEWORK-PARAM-PHONE";
 var bwXParamEmail = "X-BEDEWORK-PARAM-EMAIL";
+var bwXParamClaimantUser = "X-BEDEWORK-SUBMISSION-CLAIMANT-USER";
 
 
 // ========================================================================
@@ -119,6 +122,13 @@ function BwXProperties() {
       }
     } else {
       xproperties.push(xprop);
+    }
+  }
+
+  this.remove = function(name) {
+    index = this.getIndex(name);
+    if (index > -1) {
+      xproperties.splice(index,1);
     }
   }
 

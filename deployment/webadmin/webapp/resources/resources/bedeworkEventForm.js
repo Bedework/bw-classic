@@ -376,6 +376,12 @@ function setBedeworkXProperties(formObj,submitter) {
   // commit all xproperties back to the form
   bwXProps.generate(formObj);
 }
+function claimPendingEvent(group,user) {
+  bwXProps.update(bwXPropertySubmissionClaimant,[[bwXParamClaimantUser,user]],group,true);
+}
+function releasePendingEvent() {
+  bwXProps.remove(bwXPropertySubmissionClaimant);
+}
 function swapAllDayEvent(obj) {
   allDayStartDateField = document.getElementById("allDayStartDateField");
   allDayEndDateField = document.getElementById("allDayEndDateField");

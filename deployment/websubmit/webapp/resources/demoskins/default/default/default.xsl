@@ -151,7 +151,7 @@
   <xsl:template name="headSection">
     <title>Bedework: Submit a Public Event</title>
     <meta name="robots" content="noindex,nofollow"/>
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
     <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
@@ -1262,11 +1262,15 @@
       <xsl:if test="$root != 'true'">
         <!-- hide the root calendar. -->
         <xsl:choose>
+          <xsl:when test="calType = '7' or calType = '8'">
+            <!-- we've hit an unresolvable alias; stop descending -->
+            <input type="checkbox" name="forDiplayOnly" disabled="disabled"/>
+            <em><xsl:value-of select="name"/>?</em>
+          </xsl:when>
           <xsl:when test="calType = '0'">
             <!-- no direct selecting of folders or folder aliases: we only want users to select the
                  underlying calendar aliases -->
-            <!--img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="folder" class="folderForAliasTree" border="0"/-->
-            <input type="checkbox" name="forDiplayOnly" disabled="disabled"/>
+            <img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="folder" class="folderForAliasTree" border="0"/>
             <xsl:value-of select="name"/>
           </xsl:when>
           <xsl:otherwise>
@@ -1274,7 +1278,14 @@
               <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
               <xsl:if test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
-            <xsl:value-of select="name"/>
+            <xsl:choose>
+              <xsl:when test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
+                <strong><xsl:value-of select="name"/></strong>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="name"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:if>
