@@ -376,6 +376,13 @@ function setBedeworkXProperties(formObj,submitter) {
   // commit all xproperties back to the form
   bwXProps.generate(formObj);
 }
+function toggleBedeworkXProperty(xprop,value,checked) {
+  if (!checked) {
+    bwXProps.removeByValue(xprop, value);
+  } else {
+    bwXProps.update(bwXPropertyAlias,[],value,false);
+  }
+}
 function claimPendingEvent(group,user) {
   bwXProps.update(bwXPropertySubmissionClaimant,[[bwXParamClaimantUser,user]],group,true);
 }
@@ -724,6 +731,7 @@ function doPublishEvent(publishingCal,eventTitle,eventUrlPrefix) {
   sntext = document.getElementById("sntext");
   sntext.value = "Your event has been approved and is now published.\n\nEVENT DETAILS\n-------------\n\nTitle: " + eventTitle + "\nURL: " + eventUrlPrefix + "&" + publishingCal;
 }
+
 function doRejectEvent(reason,eventTitle) {
 
 }

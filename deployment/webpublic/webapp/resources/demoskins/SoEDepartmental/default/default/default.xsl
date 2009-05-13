@@ -836,7 +836,7 @@
           <td class="fieldval">
             <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
               <xsl:variable name="calUrl" select="values/text"/>
-              <a href="{$setSelection}&amp;calUrl={$calUrl}&amp;setappvar=curCollection({$calUrl})">
+              <a href="{$setSelection}&amp;virtualPath={$calUrl}&amp;setappvar=curCollection({$calUrl})">
                 <xsl:call-template name="substring-afterLastInstanceOf">
                   <xsl:with-param name="string" select="values/text"/>
                   <xsl:with-param name="char">/</xsl:with-param>
@@ -1449,14 +1449,13 @@
         <xsl:otherwise>calendar</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="url" select="encodedPath"/>
     <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
     <li class="{$itemClass}">
       <xsl:variable name="calPath" select="path"/>
-      <a href="{$setSelection}&amp;calUrl={$url}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$calPath})" title="view calendar"><xsl:value-of select="name"/></a>
+      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$calPath})" title="view calendar"><xsl:value-of select="name"/></a>
       <xsl:variable name="calPath" select="path"/>
       <span class="exportCalLink">
-        <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}&amp;virtualPath={$virtualPath}" title="export calendar as iCal">
+        <a href="{$calendar-fetchForExport}&amp;virtualPath={$virtualPath}" title="export calendar as iCal">
           <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
         </a>
       </span>

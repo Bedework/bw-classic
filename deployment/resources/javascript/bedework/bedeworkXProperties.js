@@ -30,6 +30,7 @@
 // Bedework specific x-properties
 // ========================================================================
 
+var bwXPropertyAlias = "X-BEDEWORK-ALIAS";
 var bwXPropertyImage = "X-BEDEWORK-IMAGE";
 var bwXPropertySubmittedBy = "X-BEDEWORK-SUBMITTEDBY";
 var bwXPropertyLocation = "X-BEDEWORK-LOCATION";
@@ -132,11 +133,30 @@ function BwXProperties() {
     }
   }
 
+  this.removeByValue = function(name, value) {
+    index = this.getIndexByValue(name, value);
+    if (index > -1) {
+      xproperties.splice(index,1);
+    }
+  }
+
   this.getIndex = function(name) {
     for (var i = 0; i < xproperties.length; i++) {
       var curXprop = xproperties[i];
       if (curXprop.name == name) {
         return i;
+      }
+    }
+    return -1;
+  }
+
+  this.getIndexByValue = function(name,value) {
+    for (var i = 0; i < xproperties.length; i++) {
+      var curXprop = xproperties[i];
+      if (curXprop.name == name) {
+        if (curXprop.value == value) {
+          return i;
+        }
       }
     }
     return -1;
