@@ -701,7 +701,7 @@ function resetPublishBox(calSelectId) {
   changeClass('publishBox','invisible');
 }
 
-function doPublishEvent(publishingCal,eventTitle,eventUrl) {
+function doPublishEvent(publishingCal,eventTitle,eventUrlPrefix) {
   // User has submitted the event when there is only a single publishing calendar.
   // Update the newCalPath to reflect the publishing calendar:
   newCalPath = document.getElementById("newCalPath");
@@ -716,7 +716,7 @@ function doPublishEvent(publishingCal,eventTitle,eventUrl) {
   snsubject = document.getElementById("snsubject");
   snsubject.value = "Event Approved: " + eventTitle;
   sntext = document.getElementById("sntext");
-  sntext.value = "Your event has been approved and is now published.\n\nEVENT DETAILS\n-------------\n\nTitle: " + eventTitle + "\nURL: " + eventUrl;
+  sntext.value = "Your event has been approved and is now published.\n\nEVENT DETAILS\n-------------\n\nTitle: " + eventTitle + "\nURL: " + eventUrlPrefix + "&" + publishingCal;
 }
 function doRejectEvent(reason,eventTitle) {
 
