@@ -767,6 +767,7 @@ display: inline;
   font-style: italic;
 }
 #bedework #commonListTable {
+  font-size: 0.9em;
   margin-bottom: 2em;
 }
 #bedework #commonListTable th {
@@ -782,4 +783,9 @@ display: inline;
   padding: 0.2em 1em 0.2em 0.5em;
   color: black;
   background-color: #eee;
+}
+#commonListTable td.unclaimed {
+  background-color: #eee;
+  color: #900 !important;
+  font-style: italic;
 }

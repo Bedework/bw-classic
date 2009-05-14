@@ -565,7 +565,6 @@
 
   <!--==== SINGLE EVENT ====-->
   <xsl:template match="event">
-    <xsl:variable name="subscriptionId" select="subscription/id"/>
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -577,7 +576,7 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
-      <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="generate link to this event">
+      <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="generate link to this event">
        link to this event
      </a>
       <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
@@ -723,12 +722,12 @@
         </td>
         <th class="icalIcon" rowspan="2">
           <div id="eventIcons">
-            <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+            <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
               <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
               add to my calendar
             </a>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
               <img src="{$resourcesRoot}/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
              download</a>
           </div>
@@ -896,7 +895,6 @@
             </xsl:if>
             <xsl:for-each select="event">
               <xsl:variable name="id" select="id"/>
-              <xsl:variable name="subscriptionId" select="subscription/id"/>
               <xsl:variable name="calPath" select="calendar/encodedPath"/>
               <xsl:variable name="guid" select="guid"/>
               <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -925,14 +923,14 @@
                   <xsl:when test="start/shortdate = end/shortdate and
                                   start/time = end/time">
                     <td class="{$dateRangeStyle} center" colspan="3">
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:value-of select="start/time"/>
                       </a>
                     </td>
                   </xsl:when>
                   <xsl:otherwise>
                     <td class="{$dateRangeStyle} right">
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <xsl:choose>
                         <xsl:when test="start/allday = 'true' and
                                         parent::day/shortdate = start/shortdate">
@@ -949,10 +947,10 @@
                       </a>
                     </td>
                     <td class="{$dateRangeStyle} center">
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">-</a>
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">-</a>
                     </td>
                     <td class="{$dateRangeStyle} left">
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <xsl:choose>
                         <xsl:when test="end/allday = 'true' and
                                         parent::day/shortdate = end/shortdate">
@@ -990,7 +988,7 @@
                   <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <strong>
                           <xsl:value-of select="summary"/>:
                         </strong>
@@ -1026,7 +1024,7 @@
                       </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:value-of select="summary"/>
                         <xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
                          -
@@ -1046,11 +1044,11 @@
                   </xsl:choose>
                 </td>
                 <td class="icons">
-                  <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+                  <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
                     <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
                   </a>
                   <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-                  <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                  <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
                     <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
                   </a>
                 </td>
@@ -1081,7 +1079,6 @@
           <xsl:otherwise>
             <xsl:for-each select="event">
               <xsl:variable name="id" select="id"/>
-              <xsl:variable name="subscriptionId" select="subscription/id"/>
               <xsl:variable name="calPath" select="calendar/encodedPath"/>
               <xsl:variable name="guid" select="guid"/>
               <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -1096,7 +1093,7 @@
                 <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
                 <xsl:if test="status='TENTATIVE'"><em>TENTATIVE: </em></xsl:if>
 
-                <a class="title" href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <a class="title" href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                   <xsl:value-of select="summary"/>
                 </a><xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
                 <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
@@ -1106,12 +1103,12 @@
                 </xsl:if>
 
                 <xsl:text> </xsl:text>
-                <a href="{$privateCal}/event/addEventRef.do?subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+                <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
                   <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
                 </a>
                 <xsl:text> </xsl:text>
                 <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-                <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
                   <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
                 </a>
 
@@ -1253,7 +1250,6 @@
   <!--== EVENTS IN THE CALENDAR GRID ==-->
   <xsl:template match="event" mode="calendarLayout">
     <xsl:param name="dayPos"/>
-    <xsl:variable name="subscriptionId" select="subscription/id"/>
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -1277,7 +1273,7 @@
                     subscription/subStyle != 'default'"><xsl:value-of select="subscription/subStyle"/></xsl:if>
     </xsl:variable>
     <li>
-      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass} {$subscriptionClass}">
+      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass} {$subscriptionClass}">
         <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
         <xsl:choose>
           <xsl:when test="start/shortdate != ../shortdate">
@@ -1612,7 +1608,6 @@
         </tr>
       </xsl:if>
       <xsl:for-each select="/bedework/searchResults/searchResult">
-        <xsl:variable name="subscriptionId" select="event/subscription/id"/>
         <xsl:variable name="calPath" select="event/calendar/encodedPath"/>
         <xsl:variable name="guid" select="event/guid"/>
         <xsl:variable name="recurrenceId" select="event/recurrenceId"/>
@@ -1624,7 +1619,7 @@
             </img>
           </td>
           <td>
-            <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <xsl:value-of select="event/summary"/>
             </a>
           </td>

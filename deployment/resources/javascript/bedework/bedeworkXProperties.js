@@ -36,6 +36,7 @@ var bwXPropertySubmittedBy = "X-BEDEWORK-SUBMITTEDBY";
 var bwXPropertyLocation = "X-BEDEWORK-LOCATION";
 var bwXPropertyContact = "X-BEDEWORK-CONTACT";
 var bwXPropertyCategories = "X-BEDEWORK-CATEGORIES";
+var bwXPropertySubmitAlias = "X-BEDEWORK-SUBMIT-ALIAS";
 var bwXPropertySubmitComment = "X-BEDEWORK-SUBMIT-COMMENT";
 var bwXPropertySubmitStatus = "X-BEDEWORK-SUBMIT-STATUS";
 var bwXPropertySubmitterEmail = "X-BEDEWORK-SUBMITTER-EMAIL";

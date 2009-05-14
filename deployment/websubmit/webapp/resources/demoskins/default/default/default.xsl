@@ -348,7 +348,6 @@
 
   <!--==== ADD and EDIT EVENT FORM ====-->
   <xsl:template match="formElements" mode="eventForm">
-    <xsl:variable name="subscriptionId" select="subscriptionId"/>
     <xsl:variable name="calPathEncoded" select="form/calendar/encodedPath"/>
     <xsl:variable name="calPath" select="form/calendar/path"/>
     <xsl:variable name="guid" select="guid"/>
@@ -376,11 +375,11 @@
                   <xsl:when test="recurrenceId != ''">
                     <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     Delete:
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
+                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       Delete
                       <xsl:if test="form/recurringEntity='true'">
@@ -498,7 +497,7 @@
               border="0"/>
           </a>
         </div>
-        <strong>Step 4:</strong> Select Topical Areas. <em>Optional.</em>
+        <strong>Step 4:</strong> Suggest Topical Areas. <em>Optional.</em>
       </div>
       <div id="bwHelp-Review" class="invisible">
         <div class="navButtons">
@@ -1274,12 +1273,13 @@
             <xsl:value-of select="name"/>
           </xsl:when>
           <xsl:otherwise>
-            <input type="checkbox" name="alias">
-              <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
-              <xsl:if test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
+            <xsl:variable name="virtualPath">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:variable>
+            <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-SUBMIT-ALIAS','{$virtualPath}',this.checked)">
+              <xsl:attribute name="value"><xsl:value-of select="$virtualPath"/></xsl:attribute>
+              <xsl:if test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
             <xsl:choose>
-              <xsl:when test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
+              <xsl:when test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text">
                 <strong><xsl:value-of select="name"/></strong>
               </xsl:when>
               <xsl:otherwise>
@@ -1477,8 +1477,7 @@
       The events below are waiting to be published by a
       calendar administrator.  You may edit or delete the
       events until they have been accepted.  Once your
-      event is picked up, you
-      will no longer see it in your list.
+      event is published, you will no longer see it in your list.
     </p>
     <xsl:call-template name="eventListCommon"/>
   </xsl:template>
@@ -1487,21 +1486,20 @@
     <table id="commonListTable">
       <tr>
         <th>Title</th>
-        <!-- <th>Submitted</th> -->
+        <th>Claimed By</th>
         <th>Start</th>
         <th>End</th>
-        <th>Categories</th>
+        <th>Topical Areas</th>
         <th>Description</th>
       </tr>
 
       <xsl:for-each select="/bedework/events/event">
-        <xsl:variable name="subscriptionId" select="subscription/id"/>
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
         <xsl:variable name="guid" select="guid"/>
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
         <tr>
           <td>
-            <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <xsl:choose>
                 <xsl:when test="summary != ''">
                   <xsl:value-of select="summary"/>
@@ -1512,10 +1510,18 @@
               </xsl:choose>
             </a>
           </td>
-          <!-- need to output created date
-          <td class="date">
-            <xsl:value-of select="end/longdate"/>
-          </td> -->
+          <xsl:choose>
+            <xsl:when test="xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT">
+              <td>
+                <xsl:value-of select="xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT/values/text"/>
+                <xsl:text> </xsl:text>
+                (<xsl:value-of select="xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT/parameters/X-BEDEWORK-SUBMISSION-CLAIMANT-USER"/>)
+              </td>
+            </xsl:when>
+            <xsl:otherwise>
+              <td class="unclaimed">unclaimed</td>
+            </xsl:otherwise>
+          </xsl:choose>
           <td class="date">
             <xsl:value-of select="start/shortdate"/>
             <xsl:text> </xsl:text>
@@ -1527,8 +1533,11 @@
             <xsl:value-of select="end/time"/>
           </td>
           <td>
-            <xsl:for-each select="categories/category">
-              <xsl:value-of select="word"/><br/>
+            <xsl:for-each select="xproperties/X-BEDEWORK-SUBMIT-ALIAS">
+              <xsl:call-template name="substring-afterLastInstanceOf">
+                <xsl:with-param name="string" select="values/text"/>
+                <xsl:with-param name="char">/</xsl:with-param>
+              </xsl:call-template><br/>
             </xsl:for-each>
           </td>
           <td>
@@ -1537,10 +1546,10 @@
               <div class="recurrenceEditLinks">
                 Recurring event.
                 Edit:
-                <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}">
                   master
                 </a> |
-                <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                   instance
                 </a>
               </div>

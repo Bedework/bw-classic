@@ -762,7 +762,7 @@
   <!--+++++++++++++++ Pending Events Tab ++++++++++++++++++++-->
   <xsl:template name="tabPendingEvents">
     <h2>Pending Events</h2>
-    <p>The following events were submitted to the calendar:</p>
+    <p>The following events are awaiting moderation:</p>
     <xsl:call-template name="eventListCommon">
       <xsl:with-param name="pending">true</xsl:with-param>
     </xsl:call-template>
@@ -958,9 +958,10 @@
         </xsl:if>
         <th>Start</th>
         <th>End</th>
-        <th>Topical Areas</th>
-        <th>Categories</th>
-        <!-- <th>Calendar</th> -->
+        <th>
+          <xsl:if test="/bedework/page='tabPendingEvents'">Suggested </xsl:if>
+          Topical Areas
+        </th>
         <th>Description</th>
       </tr>
 
@@ -1056,22 +1057,25 @@
         <xsl:value-of select="end/time"/>
       </td>
       <td class="calcat">
-        <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
-          <xsl:call-template name="substring-afterLastInstanceOf">
-            <xsl:with-param name="string" select="values/text"/>
-            <xsl:with-param name="char">/</xsl:with-param>
-          </xsl:call-template><br/>
-        </xsl:for-each>
+        <xsl:choose>
+          <xsl:when test="/bedework/page='tabPendingEvents'">
+            <xsl:for-each select="xproperties/X-BEDEWORK-SUBMIT-ALIAS">
+              <xsl:call-template name="substring-afterLastInstanceOf">
+                <xsl:with-param name="string" select="values/text"/>
+                <xsl:with-param name="char">/</xsl:with-param>
+              </xsl:call-template><br/>
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+              <xsl:call-template name="substring-afterLastInstanceOf">
+                <xsl:with-param name="string" select="values/text"/>
+                <xsl:with-param name="char">/</xsl:with-param>
+              </xsl:call-template><br/>
+            </xsl:for-each>
+          </xsl:otherwise>
+        </xsl:choose>
       </td>
-      <td class="calcat">
-        <xsl:for-each select="categories/category">
-          <xsl:sort select="keyword"/>
-          <xsl:value-of select="keyword"/><br/>
-        </xsl:for-each>
-      </td>
-      <!-- <td>
-        <xsl:value-of select="calendar/name"/>
-      </td>-->
       <td>
         <xsl:value-of select="description"/>
         <xsl:if test="recurring = 'true' or recurrenceId != ''">
@@ -1111,7 +1115,7 @@
           '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-PHONE']"/></xsl:call-template>',
           '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']"/></xsl:call-template>',
           '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-EMAIL']"/></xsl:call-template>',
-          '<xsl:for-each select="form/xproperties/node()[name()='X-BEDEWORK-ALIAS']/values/text"><xsl:call-template name="escapeApos"><xsl:with-param name="str"><xsl:call-template name="substring-afterLastInstanceOf"><xsl:with-param name="string" select="."/><xsl:with-param name="char">/</xsl:with-param></xsl:call-template></xsl:with-param></xsl:call-template><br/></xsl:for-each>',
+          '<xsl:for-each select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-ALIAS']/values/text"><xsl:call-template name="escapeApos"><xsl:with-param name="str"><xsl:call-template name="substring-afterLastInstanceOf"><xsl:with-param name="string" select="."/><xsl:with-param name="char">/</xsl:with-param></xsl:call-template></xsl:with-param></xsl:call-template><br/></xsl:for-each>',
           '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:call-template>',
           '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/></xsl:call-template>');
       </script>
@@ -2597,10 +2601,10 @@
             <xsl:variable name="virtualPath">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:variable>
             <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-ALIAS','{$virtualPath}',this.checked)">
               <xsl:attribute name="value"><xsl:value-of select="$virtualPath"/></xsl:attribute>
-              <xsl:if test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
+              <xsl:if test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
             <xsl:choose>
-              <xsl:when test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
+              <xsl:when test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
                 <strong><xsl:value-of select="name"/></strong>
               </xsl:when>
               <xsl:otherwise>
@@ -2669,7 +2673,7 @@
               </div>
               <input type="submit" name="updateSubmitEvent" value="Update Event"/>
               <input type="button" name="publishEvent" value="Publish Event" onclick="changeClass('publishBox','visible')"/>
-              <input type="submit" name="cancel" value="Cancel"/>
+              <input type="submit" name="cancelled" value="Cancel"/>
             </xsl:when>
             <xsl:otherwise>
               <!-- we are using the single calendar model for public events -->
@@ -2677,7 +2681,7 @@
               <input type="submit" name="publishEvent" value="Publish Event">
                 <xsl:attribute name="onclick">doPublishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>','<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrlPrefix"/>');</xsl:attribute>
               </input>
-              <input type="submit" name="cancel" value="Cancel"/>
+              <input type="submit" name="cancelled" value="Cancel"/>
             </xsl:otherwise>
           </xsl:choose>
           <span class="claimButtons">

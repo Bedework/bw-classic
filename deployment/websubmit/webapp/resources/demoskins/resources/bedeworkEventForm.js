@@ -322,6 +322,13 @@ function setBedeworkXProperties(formObj,submitter) {
   // commit all xproperties back to the form
   bwXProps.generate(formObj);
 }
+function toggleBedeworkXProperty(xprop,value,checked) {
+  if (!checked) {
+    bwXProps.removeByValue(xprop, value);
+  } else {
+    bwXProps.update(bwXPropertySubmitAlias,[],value,false);
+  }
+}
 // create table of form fields for review
 function displayReview(formId,tableId,numHeaderRows) {
   try {
