@@ -987,7 +987,7 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <tr>
-      <xsl:if test="not(xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT)">
+      <xsl:if test="$pending = 'true' and not(xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT)">
         <xsl:attribute name="class">highlight</xsl:attribute>
       </xsl:if>
       <td>
@@ -2679,7 +2679,7 @@
               <!-- we are using the single calendar model for public events -->
               <input type="submit" name="updateSubmitEvent" value="Update Event"/>
               <input type="submit" name="publishEvent" value="Publish Event">
-                <xsl:attribute name="onclick">doPublishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>','<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrlPrefix"/>');</xsl:attribute>
+                <xsl:attribute name="onclick">doPublishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>','<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrlPrefix"/>',this.form);</xsl:attribute>
               </input>
               <input type="submit" name="cancelled" value="Cancel"/>
             </xsl:otherwise>

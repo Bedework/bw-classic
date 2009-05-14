@@ -40,7 +40,6 @@ var bwXPropertySubmitAlias = "X-BEDEWORK-SUBMIT-ALIAS";
 var bwXPropertySubmitComment = "X-BEDEWORK-SUBMIT-COMMENT";
 var bwXPropertySubmitStatus = "X-BEDEWORK-SUBMIT-STATUS";
 var bwXPropertySubmitterEmail = "X-BEDEWORK-SUBMITTER-EMAIL";
-var bwXPropertySubmitterEmail = "X-BEDEWORK-SUBMITTER-EMAIL";
 var bwXPropertySubmissionClaimant = "X-BEDEWORK-SUBMISSION-CLAIMANT";
 
 var bwXParamDescription = "X-BEDEWORK-PARAM-DESCRIPTION";

@@ -89,7 +89,7 @@
   <xsl:template match="event">
     <item>
       <title><xsl:if test="status = 'CANCELLED'">CANCELLED: </xsl:if><xsl:value-of select="summary"/> - <xsl:value-of select="substring(start/dayname,1,3)"/>, <xsl:value-of select="start/longdate"/></title>
-      <link><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?subid=<xsl:value-of select="subscription/id"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></link>
+      <link><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></link>
       <pubDate><!-- takes the form: 11 Jan 2008 17:00:00 UT (note - do not output dayname - we only provide dayname in local time).
         --><xsl:value-of select="substring(start/utcdate,7,2)"/><xsl:text> </xsl:text><!--
         --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(start/utcdate,5,2)"/></xsl:call-template><xsl:text> </xsl:text><!--

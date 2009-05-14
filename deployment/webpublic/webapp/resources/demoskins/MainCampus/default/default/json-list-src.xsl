@@ -4,30 +4,30 @@
   <!-- JSON feed of Bedework events,
        Bedework v3.4.x, Arlen Johnson
 
-       Purpose: produces an array of javascript objects representing events. 
+       Purpose: produces an array of javascript objects representing events.
 
        Usage: call the JSON feed from an html file by embedding a script tag.
        Examples:
-       
+
        The next four days (max days = 31):
        <script src="http://localhost:8080/cal/main/listEvents.do?days=4&skinName=json-list-src" type="text/javascript"></script>
-       
+
        A range of dates:
        <script src="http://localhost:8080/cal/main/listEvents.do?start=2008-10-03&end=2008-11-02&skinName=json-list-src" type="text/javascript"></script>
 
        The next ten days limited by category (you can append as many categories as you like):
        <script src="http://localhost:8080/cal/main/listEvents.do?days=10&cat=Concerts&skinName=json-list-src" type="text/javascript"></script>
-       
-       Filters: Arbitrary filters can be sent to this stylesheet using the query 
-       parameter "setappvar=filter(somekey:somevalue)".  Group (creator) and 
-       location filters are included here, but you can add more under line 82. 
-       
+
+       Filters: Arbitrary filters can be sent to this stylesheet using the query
+       parameter "setappvar=filter(somekey:somevalue)".  Group (creator) and
+       location filters are included here, but you can add more under line 82.
+
        The next ten days filtered by a group (creator):
        <script src="http://localhost:8080/cal/main/listEvents.do?days=10&setappvar=filter(creator:agrp_Library)&skinName=json-list-src" type="text/javascript"></script>
-       
-       Object name: The json object name can be passed by adding 
-       "setappvar=objName(myobjname)" to the query string, allowing multiple 
-       json object calls on the same html page.  If objName is not supplied, 
+
+       Object name: The json object name can be passed by adding
+       "setappvar=objName(myobjname)" to the query string, allowing multiple
+       json object calls on the same html page.  If objName is not supplied,
        the default name is "bwObject".  e.g.:
        <script src="http://localhost:8080/cal/main/listEvents.do?days=4&setappvar(objName=myobj)&skinName=json-list-src" type="text/javascript"></script>
   -->
@@ -61,7 +61,7 @@
   <!-- util.xsl belongs in bedework-common on your application server for use
        by all stylesheets: -->
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
-  
+
   <xsl:variable name="urlprefix" select="/bedework/urlprefix"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
   <xsl:template match='/'>
@@ -135,7 +135,7 @@
                 'guid' : '<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template>',
                 'recurrenceId' : '<xsl:value-of select="recurrenceId"/>',
                 'link' : '<xsl:value-of select='link'/>',
-                'eventlink' : '<xsl:value-of select="$urlprefix"/><xsl:value-of select="$eventView"/>&amp;subid=<xsl:value-of select="subscription/id"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/>', // link of this event
+                'eventlink' : '<xsl:value-of select="$urlprefix"/><xsl:value-of select="$eventView"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/>', // link of this event
                 'status' : '<xsl:value-of select='status'/>',
                 'start' : {
                     'allday' : '<xsl:value-of select='start/allday'/>',

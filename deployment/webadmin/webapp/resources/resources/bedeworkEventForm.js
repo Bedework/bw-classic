@@ -716,7 +716,7 @@ function resetPublishBox(calSelectId) {
   changeClass('publishBox','invisible');
 }
 
-function doPublishEvent(publishingCal,eventTitle,eventUrlPrefix) {
+function doPublishEvent(publishingCal,eventTitle,eventUrlPrefix,formObj) {
   // User has submitted the event when there is only a single publishing calendar.
   // Update the newCalPath to reflect the publishing calendar:
   newCalPath = document.getElementById("newCalPath");
@@ -732,6 +732,20 @@ function doPublishEvent(publishingCal,eventTitle,eventUrlPrefix) {
   snsubject.value = "Event Approved: " + eventTitle;
   sntext = document.getElementById("sntext");
   sntext.value = "Your event has been approved and is now published.\n\nEVENT DETAILS\n-------------\n\nTitle: " + eventTitle + "\nURL: " + eventUrlPrefix + "&" + publishingCal;
+
+  // Send the names of xproperties we wish to retain after we publish.
+  // Those not listed will be thrown away
+  // but must first be passed to the backend for use
+  // (e.g. the email address of the submitter).
+  var xpropPreserve = [bwXPropertyAlias, bwXPropertyImage, bwXPropertySubmittedBy];
+
+  for (var i = 0; i < xpropPreserve.length; i++) {
+    var xpropPreserveField = document.createElement("input");
+    xpropPreserveField.type = "hidden"; // change type prior to appending to DOM
+    formObj.appendChild(xpropPreserveField);
+    xpropPreserveField.name = "xprop-preserve";
+    xpropPreserveField.value = xpropPreserve[i];
+  }
 }
 
 function doRejectEvent(reason,eventTitle) {

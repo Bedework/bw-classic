@@ -78,7 +78,7 @@
   <xsl:template match="event">
     <item>
       <title><xsl:if test="status = 'CANCELLED'">CANCELLED: </xsl:if><xsl:value-of select="summary"/> - <xsl:value-of select="substring(start/dayname,1,3)"/>, <xsl:value-of select="start/longdate"/></title>
-      <link><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?subid=<xsl:value-of select="subscription/id"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></link>
+      <link><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></link>
       <pubDate><xsl:value-of select="substring(start/dayname,1,3)"/>,<xsl:text> </xsl:text><!--
                --><xsl:value-of select="start/twodigitday"/><xsl:text> </xsl:text><!--
                --><xsl:value-of select="substring(start/monthname,1,3)"/><xsl:text> </xsl:text><!--

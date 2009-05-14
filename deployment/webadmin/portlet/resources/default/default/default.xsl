@@ -975,7 +975,6 @@
       </tr>
 
       <xsl:for-each select="/bedework/events/event">
-        <xsl:variable name="subscriptionId" select="subscription/id"/>
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
         <xsl:variable name="guid" select="guid"/>
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -983,7 +982,7 @@
           <td>
             <xsl:choose>
               <xsl:when test="$pending = 'true'">
-                <a href="{$event-fetchForUpdatePending}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <a href="{$event-fetchForUpdatePending}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                   <xsl:choose>
                     <xsl:when test="summary != ''">
                       <xsl:value-of select="summary"/>
@@ -995,7 +994,7 @@
                 </a>
               </xsl:when>
               <xsl:otherwise>
-                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                   <xsl:choose>
                     <xsl:when test="summary != ''">
                       <xsl:value-of select="summary"/>
@@ -1036,10 +1035,10 @@
               <div class="recurrenceEditLinks">
                 Recurring event.
                 Edit:
-                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}">
+                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}">
                   master
                 </a> |
-                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                   instance
                 </a>
               </div>
@@ -1051,7 +1050,6 @@
   </xsl:template>
 
   <xsl:template match="formElements" mode="modEvent">
-    <xsl:variable name="subscriptionId" select="subscriptionId"/>
     <xsl:variable name="calPathEncoded" select="form/calendar/encodedPath"/>
     <xsl:variable name="calPath" select="form/calendar/path"/>
     <xsl:variable name="guid" select="guid"/>
@@ -1494,7 +1492,7 @@
                 <!-- recurrence instances can not themselves recur,
                      so provide access to master event -->
                 <em>This event is a recurrence instance.</em><br/>
-                <a href="{$event-fetchForUpdate}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">edit master event</a>
+                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">edit master event</a>
               </xsl:when>
               <xsl:otherwise>
                 <!-- has recurrenceId, so is master -->
@@ -6421,7 +6419,6 @@
         </tr>
       </xsl:if>
       <xsl:for-each select="/bedework/searchResults/searchResult">
-        <xsl:variable name="subscriptionId" select="event/subscription/id"/>
         <xsl:variable name="calPath" select="event/calendar/encodedPath"/>
         <xsl:variable name="guid" select="event/guid"/>
         <xsl:variable name="recurrenceId" select="event/recurrenceId"/>
@@ -6433,7 +6430,7 @@
             </img>
           </td>
           <td>
-            <a href="{$event-fetchForDisplay}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$event-fetchForDisplay}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <xsl:value-of select="event/summary"/>
             </a>
           </td>

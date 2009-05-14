@@ -1151,7 +1151,8 @@
             Please supply any final notes or instructions regarding your event:<br/>
           <!-- note: don't remove the #160 from the textarea or browsers will see it as a closed tag when empty -->
            <textarea name="commentNotes" cols="60" rows="4"><!--
-           --><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/>&#160;<!--
+           --><xsl:value-of select="normalize-space(form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text)"/><!--
+           --><xsl:if test="normalize-space(form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text) = ''">&#160;</xsl:if><!--
            --></textarea>
           </p>
         </div>

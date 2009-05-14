@@ -1092,7 +1092,6 @@
             </xsl:if>
             <xsl:for-each select="event[not(entityType=2)]">
               <xsl:variable name="id" select="id"/>
-              <xsl:variable name="subscriptionId" select="subscription/id"/>
               <xsl:variable name="calPath" select="calendar/encodedPath"/>
               <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
               <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -1121,14 +1120,14 @@
                   <xsl:when test="start/shortdate = end/shortdate and
                                   start/time = end/time">
                     <td class="{$dateRangeStyle} center" colspan="3">
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:value-of select="start/time"/>
                       </a>
                     </td>
                   </xsl:when>
                   <xsl:otherwise>
                     <td class="{$dateRangeStyle} right">
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <xsl:choose>
                         <xsl:when test="start/allday = 'true' and
                                         parent::day/shortdate = start/shortdate">
@@ -1145,10 +1144,10 @@
                       </a>
                     </td>
                     <td class="{$dateRangeStyle} center">
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">-</a>
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">-</a>
                     </td>
                     <td class="{$dateRangeStyle} left">
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                       <xsl:choose>
                         <xsl:when test="end/allday = 'true' and
                                         parent::day/shortdate = end/shortdate">
@@ -1178,7 +1177,7 @@
                   <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:choose>
                           <xsl:when test="summary = ''">
                             <em>no title</em>
@@ -1209,7 +1208,7 @@
                       </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
-                      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:choose>
                           <xsl:when test="summary = ''">
                             <em>no title</em>
@@ -1228,7 +1227,7 @@
                 </td>
                 <td class="smallIcon">
                   <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-                  <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                  <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
                     <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
                   </a>
                 </td>
@@ -1242,7 +1241,6 @@
   </xsl:template>
 
   <xsl:template name="eventLinks">
-    <xsl:variable name="subscriptionId" select="subscription/id"/>
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -1250,12 +1248,12 @@
       <xsl:choose>
         <xsl:when test="recurring='true' or recurrenceId != ''">
           Edit:
-          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">master</a>,
-          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)">instance</a>
+          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">master</a>,
+          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)">instance</a>
           <br/>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
+          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
             Edit
           </a>
           |
@@ -1267,12 +1265,12 @@
       <xsl:choose>
         <xsl:when test="recurring='true' or recurrenceId != ''">
           Link:
-          <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,
-          <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
+          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,
+          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
           <br/>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
+          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
             Link
           </a>
           |
@@ -1293,11 +1291,11 @@
       <xsl:choose>
         <xsl:when test="recurring='true' or recurrenceId != ''">
           Delete:
-          <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
-          <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
             Delete
           </a>
         </xsl:otherwise>
@@ -1324,7 +1322,6 @@
           <xsl:otherwise>
             <xsl:for-each select="event">
               <xsl:variable name="id" select="id"/>
-              <xsl:variable name="subscriptionId" select="subscription/id"/>
               <xsl:variable name="calPath" select="calendar/encodedPath"/>
               <xsl:variable name="guid" select="guid"/>
               <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -1339,7 +1336,7 @@
                 <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
                 <xsl:if test="status='TENTATIVE'"><em>TENTATIVE: </em></xsl:if>
 
-                <a class="title" href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <a class="title" href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                   <xsl:value-of select="summary"/>
                 </a><xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
                 <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
@@ -1350,7 +1347,7 @@
 
                 <xsl:text> </xsl:text>
                 <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-                <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
                   <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
                 </a>
 
@@ -1515,7 +1512,6 @@
   <!--== EVENTS IN THE CALENDAR GRID ==-->
   <xsl:template match="event" mode="calendarLayout">
     <xsl:param name="dayPos"/>
-    <xsl:variable name="subscriptionId" select="subscription/id"/>
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -1546,7 +1542,7 @@
          override the background-color set by eventClass. User styles should
          not be used for cancelled events (tentative is ok). -->
     <li>
-      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"
+      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"
         class="{$eventRootClass} {$eventClass}">
         <xsl:if test="status != 'CANCELLED' and $calendarColor != ''">
           <xsl:attribute name="style">background-color: <xsl:value-of select="$calendarColor"/>; color: black;</xsl:attribute>
@@ -1723,13 +1719,12 @@
   </xsl:template>
 
   <xsl:template match="event" mode="tasks">
-    <xsl:variable name="subscriptionId" select="subscription/id"/>
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
 
     <li>
-      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
         <xsl:choose>
           <xsl:when test="summary = ''">
             <em>no title</em>
@@ -1750,7 +1745,6 @@
 
   <!--==== SINGLE EVENT ====-->
   <xsl:template match="event">
-    <xsl:variable name="subscriptionId" select="subscription/id"/>
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -1784,7 +1778,7 @@
           <div id="eventActions">
             <!-- download -->
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
               <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
               Download
             </a>
@@ -1794,10 +1788,10 @@
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                   Edit:
-                  <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">master</a>,<a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)">instance</a>
+                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">master</a>,<a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)">instance</a>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
+                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
                     <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                     Edit
                   </a>
@@ -1809,10 +1803,10 @@
               <xsl:when test="recurring='true' or recurrenceId != ''">
                 <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                 Copy:
-                <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy master (recurring event)">master</a>,<a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="copy instance (recurring event)">instance</a>
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy master (recurring event)">master</a>,<a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="copy instance (recurring event)">instance</a>
               </xsl:when>
               <xsl:otherwise>
-                <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy event">
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy event">
                   <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                   Copy
                 </a>
@@ -1825,10 +1819,10 @@
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
                   Link:
-                  <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,<a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
+                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,<a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$addEventRef}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
+                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
                     <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
                     Link
                   </a>
@@ -1852,10 +1846,10 @@
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                   Delete:
-                  <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
                     <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     Delete
                   </a>
@@ -2033,7 +2027,7 @@
         </td>
         <!--<th class="icon" rowspan="2">
           <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-          <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+          <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
             <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
           </a>
         </th>-->
@@ -2339,7 +2333,6 @@
 
   <!--==== ADD and EDIT EVENT FORM ====-->
   <xsl:template match="formElements" mode="eventForm">
-    <xsl:variable name="subscriptionId" select="subscriptionId"/>
     <xsl:variable name="calPathEncoded" select="form/calendar/encodedPath"/>
     <xsl:variable name="calPath" select="form/calendar/path"/>
     <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
@@ -2354,7 +2347,7 @@
               <div id="eventActions">
                 <xsl:if test="not(form/recurringEntity = 'true' and recurrenceId = '')">
                   <!-- don't display if a master recurring event (because the master can't be viewed) -->
-                  <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                  <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                     <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
                     View
                   </a>
@@ -2364,11 +2357,11 @@
                   <xsl:when test="recurrenceId != ''">
                     <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     Delete:
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
+                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       Delete
                       <xsl:if test="form/recurringEntity='true'">
@@ -3088,7 +3081,7 @@
           <!-- recurrence instances can not themselves recur,
                so provide access to master event -->
           <em>This event is a recurrence instance.</em><br/>
-          <a href="{$editEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">edit master event</a>
+          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">edit master event</a>
         </xsl:when>
         <xsl:otherwise>
           <!-- has recurrenceId, so is master -->
@@ -4183,11 +4176,9 @@
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
     <form name="eventForm" method="post" action="{$event-addEventRefComplete}" id="standardForm"  enctype="multipart/form-data">
-      <xsl:variable name="subscriptionId" select="subscription/id"/>
       <xsl:variable name="calPath" select="calendar/path"/>
       <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
       <xsl:variable name="recurrenceId" select="recurrenceId"/>
-      <input type="hidden" name="subid" value="{$subscriptionId}"/>
       <input type="hidden" name="calPath" value="{$calPath}"/>
       <input type="hidden" name="guid" value="{$guid}"/>
       <input type="hidden" name="recurrenceId" value="{$recurrenceId}"/>
@@ -6374,7 +6365,6 @@
       <xsl:for-each select="events/event">
         <xsl:sort select="lastmod" order="descending"/>
         <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
-        <xsl:variable name="subscriptionId" select="subscription/id"/>
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
         <xsl:variable name="eventName" select="name"/>
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -6398,12 +6388,12 @@
             </xsl:choose>
           </xsl:attribute>
           <td>
-            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <img src="{$resourcesRoot}/resources/calIconSchedule-sm.gif" width="13" height="13" border="0" alt="check message"/>
             </a>
           </td>
           <td>
-            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <!--<xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>-->
               <!--<xsl:value-of select="lastmod"/>-->
               <xsl:variable name="dt" select="substring-before(lastmod,'T')"/>
@@ -6459,7 +6449,7 @@
             </xsl:choose>
           </td>
           <td>
-            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <xsl:value-of select="title"/>
             </a>
           </td>
@@ -6467,7 +6457,7 @@
           <td><xsl:value-of select="end/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="end/time"/></td>
           <td><xsl:apply-templates select="scheduleMethod"/></td>
           <!--<td>
-            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <xsl:choose>
                 <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
                 <xsl:otherwise>processed</xsl:otherwise>
@@ -6476,12 +6466,12 @@
           </td>-->
           <td>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download">
+            <a href="{$export}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download">
               <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="download"/>
             </a>
           </td>
           <td>
-            <a href="{$delInboxEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="delete">
+            <a href="{$delInboxEvent}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="delete">
               <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
             </a>
           </td>
@@ -6508,7 +6498,6 @@
       <xsl:for-each select="events/event">
         <xsl:sort select="lastmod" order="descending"/>
         <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
-        <xsl:variable name="subscriptionId" select="subscription/id"/>
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
         <xsl:variable name="eventName" select="name"/>
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -6529,12 +6518,12 @@
             </xsl:choose>
           </xsl:attribute>
           <td>
-            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <img src="{$resourcesRoot}/resources/calIconSchedule-sm.gif" width="13" height="13" border="0" alt="check message"/>
             </a>
           </td>
           <td>
-            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <!-- <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>-->
               <!--<xsl:value-of select="lastmod"/>-->
               <xsl:variable name="dt" select="substring-before(lastmod,'T')"/>
@@ -6563,7 +6552,7 @@
             </xsl:if>
           </td>
           <td>
-            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
               <xsl:value-of select="title"/>
             </a>
           </td>
@@ -6571,7 +6560,7 @@
           <td><xsl:value-of select="end/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="end/time"/></td>
           <td><xsl:apply-templates select="scheduleMethod"/></td>
           <td>
-            <a href="{$inboxItemAction}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
               <xsl:choose>
                 <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
                 <xsl:otherwise>processed</xsl:otherwise>
@@ -6580,12 +6569,12 @@
           </td>
           <td>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download">
+            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download">
               <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="download"/>
             </a>
           </td>
           <td>
-            <a href="{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete">
+            <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete">
               <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
             </a>
           </td>
@@ -6609,7 +6598,6 @@
   </xsl:template>
 
   <xsl:template match="formElements" mode="attendeeRespond">
-    <xsl:variable name="subscriptionId" select="subscriptionId"/>
     <xsl:variable name="calPathEncoded" select="form/calendar/encodedPath"/>
     <xsl:variable name="calPath" select="form/calendar/path"/>
     <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
@@ -7006,7 +6994,7 @@
           <td class="fieldval scheduleActions">
             <xsl:choose>
               <xsl:when test="scheduleMethod='8'">
-                <input name="delete" type="button" value="Delete" onclick="document.location.replace('{$delEvent}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
+                <input name="delete" type="button" value="Delete" onclick="document.location.replace('{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
               </xsl:when>
               <xsl:otherwise>
                 <input name="submit" type="submit" value="Submit"/>
@@ -7146,7 +7134,6 @@
   </xsl:template>
 
   <xsl:template match="event" mode="attendeeReply">
-    <xsl:variable name="subscriptionId" select="subscription/id"/>
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -7338,7 +7325,7 @@
           </td>
           <!--<th class="icon" rowspan="2">
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
               <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
             </a>
           </th>-->
@@ -7392,11 +7379,9 @@
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
     <form name="eventForm" method="post" action="{$event-addEventRefComplete}" id="standardForm"  enctype="multipart/form-data">
-      <xsl:variable name="subscriptionId" select="subscription/id"/>
       <xsl:variable name="calPath" select="calendar/path"/>
       <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
       <xsl:variable name="recurrenceId" select="recurrenceId"/>
-      <input type="hidden" name="subid" value="{$subscriptionId}"/>
       <input type="hidden" name="calPath" value="{$calPath}"/>
       <input type="hidden" name="guid" value="{$guid}"/>
       <input type="hidden" name="recurrenceId" value="{$recurrenceId}"/>
@@ -8078,7 +8063,6 @@
         </tr>
       </xsl:if>
       <xsl:for-each select="/bedework/searchResults/searchResult">
-        <xsl:variable name="subscriptionId" select="event/subscription/id"/>
         <xsl:variable name="calPath" select="event/calendar/encodedPath"/>
         <xsl:variable name="guid" select="event/guid"/>
         <xsl:variable name="recurrenceId" select="event/recurrenceId"/>
@@ -8090,7 +8074,7 @@
             </img>
           </td>
           <td>
-            <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <xsl:choose>
                 <xsl:when test="event/summary = ''">
                   <em>no title</em>
