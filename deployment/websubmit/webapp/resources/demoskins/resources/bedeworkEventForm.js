@@ -311,11 +311,6 @@ function setBedeworkXProperties(formObj,submitter) {
     bwXProps.update(bwXPropertySubmitterEmail, [], formObj["xBwEmailHolder"].value, true);
   }
 
-  // X-BEDEWORK-SUBMIT-STATUS
-  if (formObj["xBwSubmitStatus"] && formObj["xBwSubmitStatus"].value != '') {
-    bwXProps.update(bwXPropertySubmitStatus, [], formObj["xBwSubmitStatus"].value, true);
-  }
-
   // X-BEDEWORK-SUBMITTEDBY
   bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);
 

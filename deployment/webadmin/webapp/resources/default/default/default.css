@@ -452,6 +452,13 @@ table.eventFormTable select.timezones {
 .hidden {
   visibility: hidden;
 }
+.bwHighlightBox {
+  margin: 0;
+  padding: 1em;
+  color: black;
+  background-color: #ffe;
+  border: 1px solid #eee;
+}
 table.eventFormTable div.durationBox {
   border: 1px solid #ccb;
   display: inline;
