@@ -1680,13 +1680,17 @@
                 <div id="recurrenceFields" class="invisible">
                   <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
 
-                  <h4>Recurrence Rules</h4>
+                  <h4>
+                    <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
+                    Recurrence Rules
+                  </h4>
                   <!-- show or hide rrules fields when editing: -->
                   <xsl:if test="form/recurrence">
-                    <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on">
-                      <xsl:if test="$canEdit = 'false'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-                    </input>
                     <span id="rrulesSwitch">
+                      <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
+                      <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on">
+                        <xsl:if test="$canEdit = 'false'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+                      </input>
                       change recurrence rules
                     </span>
                   </xsl:if>
@@ -2106,79 +2110,81 @@
                     </tr>
                   </table>
                   <h4>
+                    <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
                     Recurrence and Exception Dates
                   </h4>
                   <div id="raContent">
-                    <div class="dateStartEndBox" id="rdatesFormFields">
-                      <!--
-                      <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="true"/>
-                      all day
-                      <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="true"/>
-                      floating
-                      store time as coordinated universal time (UTC)
-                      <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
-                      store as UTC<br/>-->
-                      <div class="dateFields">
-                        <!-- input name="eventRdate.date"
-                               dojoType="dropdowndatepicker"
-                               formatLength="medium"
-                               value="today"
-                               saveFormat="yyyyMMdd"
-                               id="bwEventWidgeRdate"
-                               iconURL="{$resourcesRoot}/resources/calIcon.gif"/-->
-                        <input type="text" name="eventRdate.date" id="bwEventWidgetRdate" size="10"/>
-                        <script language="JavaScript" type="text/javascript">
-                          <xsl:comment>
-                          $("#bwEventWidgetRdate").datepicker({
-                            defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>),
-                            dateFormat: "yymmdd"
-                          }).attr("readonly", "readonly");
-                          $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');
-                          </xsl:comment>
-                        </script>
-                      </div>
-                      <div id="rdateTimeFields" class="timeFields">
-                       <select name="eventRdate.hour">
-                          <option value="00">00</option>
-                          <option value="01">01</option>
-                          <option value="02">02</option>
-                          <option value="03">03</option>
-                          <option value="04">04</option>
-                          <option value="05">05</option>
-                          <option value="06">06</option>
-                          <option value="07">07</option>
-                          <option value="08">08</option>
-                          <option value="09">09</option>
-                          <option value="10">10</option>
-                          <option value="11">11</option>
-                          <option value="12" selected="selected">12</option>
-                          <option value="13">13</option>
-                          <option value="14">14</option>
-                          <option value="15">15</option>
-                          <option value="16">16</option>
-                          <option value="17">17</option>
-                          <option value="18">18</option>
-                          <option value="19">19</option>
-                          <option value="20">20</option>
-                          <option value="21">21</option>
-                          <option value="22">22</option>
-                          <option value="23">23</option>
-                        </select>
-                        <select name="eventRdate.minute">
-                          <option value="00" selected="selected">00</option>
-                          <option value="05">05</option>
-                          <option value="10">10</option>
-                          <option value="15">15</option>
-                          <option value="20">20</option>
-                          <option value="25">25</option>
-                          <option value="30">30</option>
-                          <option value="35">35</option>
-                          <option value="40">40</option>
-                          <option value="45">45</option>
-                          <option value="50">50</option>
-                          <option value="55">55</option>
-                        </select>
-                       <xsl:text> </xsl:text>
+                      <div class="dateStartEndBox" id="rdatesFormFields">
+                        <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
+                        <!--
+                        <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="true"/>
+                        all day
+                        <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="true"/>
+                        floating
+                        store time as coordinated universal time (UTC)
+                        <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
+                        store as UTC<br/>-->
+                        <div class="dateFields">
+                          <!-- input name="eventRdate.date"
+                                 dojoType="dropdowndatepicker"
+                                 formatLength="medium"
+                                 value="today"
+                                 saveFormat="yyyyMMdd"
+                                 id="bwEventWidgeRdate"
+                                 iconURL="{$resourcesRoot}/resources/calIcon.gif"/-->
+                          <input type="text" name="eventRdate.date" id="bwEventWidgetRdate" size="10"/>
+                          <script language="JavaScript" type="text/javascript">
+                            <xsl:comment>
+                            $("#bwEventWidgetRdate").datepicker({
+                              defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>),
+                              dateFormat: "yymmdd"
+                            }).attr("readonly", "readonly");
+                            $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');
+                            </xsl:comment>
+                          </script>
+                        </div>
+                        <div id="rdateTimeFields" class="timeFields">
+                         <select name="eventRdate.hour">
+                            <option value="00">00</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12" selected="selected">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                          </select>
+                          <select name="eventRdate.minute">
+                            <option value="00" selected="selected">00</option>
+                            <option value="05">05</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="30">30</option>
+                            <option value="35">35</option>
+                            <option value="40">40</option>
+                            <option value="45">45</option>
+                            <option value="50">50</option>
+                            <option value="55">55</option>
+                          </select>
+                         <xsl:text> </xsl:text>
 
                         <select name="tzid" id="rdateTzid" class="timezones">
                           <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -2195,8 +2201,11 @@
                       </div>
                       <xsl:text> </xsl:text>
                       <!--bwRdates.update() accepts: date, time, allDay, floating, utc, tzid-->
-                      <input type="button" name="rdate" value="add recurrence" onclick="bwRdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
-                      <input type="button" name="exdate" value="add exception" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
+                      <span>
+                        <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
+                        <input type="button" name="rdate" value="add recurrence" onclick="bwRdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
+                        <input type="button" name="exdate" value="add exception" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
+                      </span>
 
                       <input type="hidden" name="rdates" value="" id="bwRdatesField" />
                       <!-- if there are no recurrence dates, the following table will show -->
