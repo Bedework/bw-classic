@@ -1108,7 +1108,7 @@
          and other fields will be disabled. -->
     <xsl:variable name="canEdit">
       <xsl:choose>
-        <xsl:when test="($userPath = creator) or (/bedework/page = 'modEventPending') or (/bedework/userInfo/superUser = 'true')">true</xsl:when>
+        <xsl:when test="($userPath = creator) or (/bedework/page = 'modEventPending') or (/bedework/userInfo/superUser = 'true') or (/bedework/creating = 'true')">true</xsl:when>
         <xsl:otherwise>false</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
