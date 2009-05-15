@@ -375,11 +375,14 @@
                 <td id="msgTaskBar" class="sideMenus">
                   <h3>messages</h3>
                   <ul>
-                    <li>example</li>
-                  </ul>
-                  <h3>tasks</h3>
-                  <ul>
-                    <li>example</li>
+                    <xsl:choose>
+                      <xsl:when test="/bedework/inboxState/messages/message">
+                        <xsl:apply-templates select="/bedework/inboxState/messages/message" mode="schedNotifications"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <li>no messages</li>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </ul>
                 </td>
               </xsl:if>
@@ -1740,6 +1743,15 @@
           </xsl:otherwise>
         </xsl:choose>
       </a>
+    </li>
+  </xsl:template>
+
+  <!--== MESSAGES ==-->
+  <xsl:template match="message" mode="schedNotifications">
+    <li>
+      <xsl:if test="new-meeting">
+        New meeting
+      </xsl:if>
     </li>
   </xsl:template>
 
