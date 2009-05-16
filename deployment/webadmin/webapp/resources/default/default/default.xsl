@@ -308,6 +308,11 @@
               <xsl:apply-templates select="/bedework/currentCalendar/acl/ace" mode="initJS"/>
             </script>
           </xsl:if>
+          <xsl:if test="/bedework/calSuite/acl/ace">
+            <script type="text/javascript">
+              <xsl:apply-templates select="/bedework/calSuite/acl/ace" mode="initJS"/>
+            </script>
+          </xsl:if>
         </xsl:if>
         <xsl:if test="/bedework/page='upload' or /bedework/page='selectCalForEvent'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
