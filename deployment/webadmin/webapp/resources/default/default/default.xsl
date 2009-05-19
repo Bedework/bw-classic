@@ -321,7 +321,8 @@
           <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
         </xsl:if>
         <xsl:if test="/bedework/page='addFilter' or
-                      /bedework/page='calSuitePrefs'">
+                      /bedework/page='calSuitePrefs' or
+                      /bedework/page='eventList'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
@@ -958,15 +959,18 @@
     <table id="commonListTable">
       <tr>
         <th>Title</th>
-        <xsl:if test="/bedework/page='tabPendingEvents'">
+        <xsl:if test="$pending = 'true'">
           <th>Claimed By</th>
         </xsl:if>
         <th>Start</th>
         <th>End</th>
         <th>
-          <xsl:if test="/bedework/page='tabPendingEvents'">Suggested </xsl:if>
+          <xsl:if test="$pending = 'true'">Suggested </xsl:if>
           Topical Areas
         </th>
+        <xsl:if test="$pending = 'false'">
+          <th>Categories</th>
+        </xsl:if>
         <th>Description</th>
       </tr>
 
@@ -1037,7 +1041,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </td>
-      <xsl:if test="/bedework/page='tabPendingEvents'">
+      <xsl:if test="$pending = 'true'">
         <xsl:choose>
           <xsl:when test="xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT">
             <td>
@@ -1063,7 +1067,7 @@
       </td>
       <td class="calcat">
         <xsl:choose>
-          <xsl:when test="/bedework/page='tabPendingEvents'">
+          <xsl:when test="$pending = 'true'">
             <xsl:for-each select="xproperties/X-BEDEWORK-SUBMIT-ALIAS">
               <xsl:call-template name="substring-afterLastInstanceOf">
                 <xsl:with-param name="string" select="values/text"/>
@@ -1072,15 +1076,28 @@
             </xsl:for-each>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
-              <xsl:call-template name="substring-afterLastInstanceOf">
-                <xsl:with-param name="string" select="values/text"/>
-                <xsl:with-param name="char">/</xsl:with-param>
-              </xsl:call-template><br/>
+            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS[contains(values/text,/bedework/currentCalSuite/resourcesHome)]">
+              <xsl:value-of select="substring-after(values/text,/bedework/currentCalSuite/resourcesHome)"/><br/>
             </xsl:for-each>
+            <xsl:if test="xproperties/X-BEDEWORK-ALIAS[not(contains(values/text,/bedework/currentCalSuite/resourcesHome))]">
+              <xsl:variable name="tagsId">bwTags-<xsl:value-of select="guid"/></xsl:variable>
+              <br/><button type="button" onmouseover="changeClass('{$tagsId}','visible');" onmouseout="changeClass('{$tagsId}','invisible');">Show tags from other groups</button>
+              <div id="{$tagsId}" class="invisible">
+                <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS[not(contains(values/text,/bedework/currentCalSuite/resourcesHome))]">
+                  <xsl:value-of select="values/text"/><br/>
+                </xsl:for-each>
+              </div>
+            </xsl:if>
           </xsl:otherwise>
         </xsl:choose>
       </td>
+      <xsl:if test="$pending = 'false'">
+        <td class="calcat">
+          <xsl:for-each select="categories/category">
+            <xsl:value-of select="keyword"/><br/>
+          </xsl:for-each>
+        </td>
+      </xsl:if>
       <td>
         <xsl:value-of select="description"/>
         <xsl:if test="recurring = 'true' or recurrenceId != ''">

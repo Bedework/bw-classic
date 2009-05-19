@@ -399,7 +399,7 @@ function bwPrincipal(who, whoType) {
     var w = this.formatXml();
 
     if (whoType == "other") {
-      return "    <D:invert>\n        <D:principal><D:owner/></D:principal>\n      </D:invert>";
+      return "    <D:invert>\n        <D:principal><D:property><D:owner/></D:property></D:principal>\n      </D:invert>";
     }
 
     var res = "    <D:principal>\n";

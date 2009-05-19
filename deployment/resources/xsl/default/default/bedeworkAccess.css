@@ -15,6 +15,7 @@
 #bedework #accessFormTable td {
   border: 1px solid #666;
   padding: 0 0 0.5em 0;
+  vertical-align: top;
 }
 #bedework #accessFormTable h5 {
   background: #e5e5e5;
