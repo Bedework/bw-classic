@@ -99,6 +99,9 @@
       <xsl:when test="id='org.bedework.client.error.noaccess'">
         Error: no access.
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.nocalsuiteaccess'">
+        Error: no access to calendar suite for group <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.nodefaultview'">
           No default view defined
       </xsl:when>
