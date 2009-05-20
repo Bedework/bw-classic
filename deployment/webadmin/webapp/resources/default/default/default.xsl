@@ -2829,7 +2829,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <input type="submit" name="updateSubmitEvent" value="Claim Event">
-                  <xsl:attribute name="onclick">claimPendingEvent('<xsl:value-of select="/bedework/userInfo/group"/>','<xsl:value-of select="/bedework/userInfo/currentUser'"/>');</xsl:attribute>
+                  <xsl:attribute name="onclick">claimPendingEvent('<xsl:value-of select="/bedework/userInfo/group"/>','<xsl:value-of select="/bedework/userInfo/currentUser"/>');</xsl:attribute>
                 </input>
               </xsl:otherwise>
             </xsl:choose>
