@@ -367,7 +367,7 @@ ul.adminMenu li {
   white-space: nowrap;
 }
 #commonListTable tr.even td {
-  background-color: #fcfcfc;
+  background-color: #fafafa;
   color: black;
 }
 #commonListTable tr.highlight td {
@@ -408,12 +408,18 @@ table.eventFormTable tr.validationError td.fieldName {
   color: black;
   background-color: #ee0 !important;
 }
-table.eventFormTable td.optional {
+table.eventFormTable tr.optional td {
   white-space: nowrap;
   font-style: italic;
-  background-color : #eee;
-  color: black;
   padding: 0.2em;
+}
+table.eventFormTable tr.optional td.fieldName {
+  font-weight: normal;
+  font-style: normal;
+}
+table.eventFormTable tr.optional input {
+  background-color: #ddd;
+  color: black;
 }
 table.eventFormTable td.allField {
   white-space: nowrap;
@@ -568,13 +574,13 @@ table.common2 th {
   font-size: 0.8em;
 }
 .edit {
-  top: -4px;
+  /*top: -4px;
   background: #F8F8F8;
-  border: 1px solid #ccc;
+  border: 1px solid #ccc;*/
 }
 .highlite {
-  background: #FFF;
-  border: 1px dashed #ccc;
+  /*background: #FFF;
+  border: 1px dashed #ccc;*/
 }
 #clock {
   position: absolute;

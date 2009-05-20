@@ -2350,9 +2350,9 @@
           </td>
         </tr>
         <!-- Cost -->
-        <tr>
+        <tr class="optional">
           <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
-          <td class="optional">
+          <td class="fieldName">
             Cost:
           </td>
           <td>
@@ -2364,9 +2364,9 @@
           </td>
         </tr>
         <!-- Url -->
-        <tr>
+        <tr class="optional">
           <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
-          <td class="optional">
+          <td class="fieldName">
             Event URL:
           </td>
           <td>
@@ -2379,9 +2379,9 @@
           </td>
         </tr>
         <!-- Image Url -->
-        <tr>
+        <tr class="optional">
           <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
-          <td class="optional">
+          <td class="fieldName">
             Image URL:
           </td>
           <td>
@@ -2456,8 +2456,8 @@
               </div>
             </td>
           </tr>
-          <tr>
-            <td class="optional">
+          <tr class="optional">
+            <td>
               <span class="std-text">Location URL:</span>
             </td>
             <td>
@@ -2677,7 +2677,7 @@
               <xsl:copy-of select="form/contact/name/*"/>
             </td>
           </tr>
-          <tr>
+          <tr class="optional">
             <td class="fieldName">
               Contact Phone Number:
             </td>
@@ -2687,8 +2687,8 @@
               <span class="fieldInfo">(optional)</span>
             </td>
           </tr>
-          <tr>
-            <td class="optional">
+          <tr class="optional">
+            <td class="fieldName">
               Contact's URL:
             </td>
             <td>
@@ -2697,8 +2697,8 @@
               <span class="fieldInfo">(optional)</span>
             </td>
           </tr>
-          <tr>
-            <td class="optional">
+          <tr class="optional">
+            <td class="fieldName">
               Contact Email Address:
             </td>
             <td>
@@ -3133,8 +3133,8 @@
         </td>
       </tr>
       <!-- Cost -->
-      <tr>
-        <th class="optional">
+      <tr class="optional">
+        <th>
           Price:
         </th>
         <td>
@@ -3142,8 +3142,8 @@
         </td>
       </tr>
       <!-- Url -->
-      <tr>
-        <th class="optional">
+      <tr class="optional">
+        <th>
           URL:
         </th>
         <td>
@@ -3306,8 +3306,8 @@
             <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
-        <tr>
-          <td class="optional">
+        <tr class="optional">
+          <td>
             Contact's URL:
           </td>
           <td>
@@ -3315,8 +3315,8 @@
             <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
-        <tr>
-          <td class="optional">
+        <tr class="optional">
+          <td>
             Contact Email Address:
           </td>
           <td>
@@ -3433,8 +3433,8 @@
             <xsl:copy-of select="/bedework/formElements/form/address/*"/>
           </td>
         </tr>
-        <tr>
-          <td class="optional">
+        <tr class="optional">
+          <td>
             Subaddress:
           </td>
           <td>
@@ -3442,8 +3442,8 @@
             <span class="fieldInfo"> (optional)</span>
           </td>
         </tr>
-        <tr>
-          <td class="optional">
+        <tr class="optional">
+          <td>
             Location's URL:
           </td>
           <td>
@@ -3486,16 +3486,16 @@
           <xsl:value-of select="/bedework/location/address"/>
         </td>
       </tr>
-      <tr>
-        <td class="optional">
+      <tr class="optional">
+        <td>
             Subaddress:
           </td>
         <td>
           <xsl:value-of select="/bedework/location/subaddress"/>
         </td>
       </tr>
-      <tr>
-        <td class="optional">
+      <tr class="optional">
+        <td>
             Location's URL:
           </td>
         <td>
@@ -3553,8 +3553,8 @@
                 <input type="text" name="categoryWord.value" value="" size="40"/>
               </td>
             </tr>
-            <tr>
-              <td class="optional">
+            <tr class="optional">
+              <td>
                 Description:
               </td>
               <td>
@@ -3583,8 +3583,8 @@
                 <input type="text" name="categoryWord.value" value="{$keyword}" size="40"/>
               </td>
             </tr>
-            <tr>
-              <td class="optional">
+            <tr class="optional">
+              <td>
             Description:
             </td>
               <td>
@@ -3623,8 +3623,8 @@
           <xsl:value-of select="/bedework/currentCategory/category/keyword"/>
         </td>
       </tr>
-      <tr>
-        <td class="optional">
+      <tr class="optional">
+        <td>
           Description:
         </td>
         <td>
