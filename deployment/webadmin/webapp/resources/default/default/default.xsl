@@ -1517,14 +1517,14 @@
                 <div class="{$timeFieldsClass}" id="endTimeFields">
                   <span id="calWidgetEndTimeHider" class="show">
                     <select name="eventEndDate.hour">
-                      <xsl:copy-of select="form/end/hour/select/*"/>
+                      <xsl:copy-of select="form/end/dateTime/hour/select/*"/>
                     </select>
                     <select name="eventEndDate.minute">
-                      <xsl:copy-of select="form/end/minute/select/*"/>
+                      <xsl:copy-of select="form/end/dateTime/minute/select/*"/>
                     </select>
                     <xsl:if test="form/end/ampm">
                       <select name="eventEndDate.ampm">
-                        <xsl:copy-of select="form/end/ampm/select/*"/>
+                        <xsl:copy-of select="form/end/dateTime/ampm/select/*"/>
                       </select>
                     </xsl:if>
                     <xsl:text> </xsl:text>
