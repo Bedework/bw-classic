@@ -996,6 +996,7 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <tr>
+      <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
       <xsl:if test="$pending = 'true' and not(xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT)">
         <xsl:attribute name="class">highlight</xsl:attribute>
       </xsl:if>
@@ -1081,11 +1082,15 @@
             </xsl:for-each>
             <xsl:if test="xproperties/X-BEDEWORK-ALIAS[not(contains(values/text,/bedework/currentCalSuite/resourcesHome))]">
               <xsl:variable name="tagsId">bwTags-<xsl:value-of select="guid"/></xsl:variable>
-              <br/><button type="button" onmouseover="changeClass('{$tagsId}','visible');" onmouseout="changeClass('{$tagsId}','invisible');">Show tags from other groups</button>
-              <div id="{$tagsId}" class="invisible">
-                <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS[not(contains(values/text,/bedework/currentCalSuite/resourcesHome))]">
-                  <xsl:value-of select="values/text"/><br/>
-                </xsl:for-each>
+              <div class="bwEventListOtherGroupTags">
+                <strong>This event is cross-tagged.</strong><br/>
+                <input type="checkbox" name="tagsToggle" value="" onclick="toggleVisibility('{$tagsId}','bwOtherTags')"/>
+                Show tags by other groups
+                <div id="{$tagsId}" class="invisible">
+                  <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS[not(contains(values/text,/bedework/currentCalSuite/resourcesHome))]">
+                    <xsl:value-of select="values/text"/><br/>
+                  </xsl:for-each>
+                </div>
               </div>
             </xsl:if>
           </xsl:otherwise>
@@ -3255,6 +3260,7 @@
 
       <xsl:for-each select="/bedework/contacts/contact">
         <tr>
+          <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
             <xsl:copy-of select="name" />
           </td>
@@ -3389,6 +3395,7 @@
 
       <xsl:for-each select="/bedework/locations/location">
         <tr>
+          <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
             <xsl:copy-of select="address/*"/>
           </td>
@@ -3518,6 +3525,7 @@
       <xsl:for-each select="/bedework/categories/category">
         <xsl:variable name="catUid" select="uid"/>
         <tr>
+          <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
             <a href="{$category-fetchForUpdate}&amp;catUid={$catUid}">
               <xsl:value-of select="keyword"/>
@@ -5097,6 +5105,7 @@
       <xsl:for-each select="view">
         <xsl:sort select="name" order="ascending" case-order="upper-first"/>
         <tr>
+          <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
             <xsl:variable name="viewName" select="name"/>
             <a href="{$view-fetchForUpdate}&amp;name={$viewName}">
@@ -5629,6 +5638,7 @@
       </tr>
       <xsl:for-each select="calSuite">
         <tr>
+          <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
             <xsl:variable name="name" select="name"/>
             <a href="{$calsuite-fetchForUpdate}&amp;name={$name}">
@@ -5920,6 +5930,7 @@
       <xsl:for-each select="/bedework/authUsers/authUser">
         <!--<xsl:sort select="account" order="ascending" case-order="upper-first"/>-->
         <tr>
+          <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
             <xsl:value-of select="account"/>
           </td>
@@ -6161,6 +6172,7 @@
         <xsl:sort select="name" order="ascending" case-order="lower-first"/>
         <xsl:variable name="groupName" select="name"/>
         <tr>
+          <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <xsl:if test="name = /bedework/calSuites//calSuite/group">
             <xsl:attribute name="class">highlight</xsl:attribute>
           </xsl:if>
@@ -6232,6 +6244,7 @@
         <xsl:sort select="name" order="ascending" case-order="upper-first"/>
         <xsl:variable name="admGroupName" select="name"/>
         <tr>
+          <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <xsl:if test="name = /bedework/calSuites//calSuite/group">
             <xsl:attribute name="class">highlight</xsl:attribute>
           </xsl:if>

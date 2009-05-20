@@ -341,23 +341,34 @@ ul.adminMenu li {
 }
 #commonListTable {
   margin-bottom: 2em;
+  border-spacing: 0;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
 }
 #commonListTable th {
   padding: 0.2em 1em 0.2em 0.5em;
-  background-color : #bbb;
+  background-color : #ccc;
   color: black;
   white-space: nowrap;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 #commonListTable td {
   vertical-align: top;
   font-size: 0.9em;
-  padding: 0.2em 1em 0.2em 0.5em;
+  padding: 0.5em;
   color: black;
-  background-color: #ddd;
+  background-color: white;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 #commonListTable td.date,
 #commonListTable td.calcat {
   white-space: nowrap;
+}
+#commonListTable tr.even td {
+  background-color: #fcfcfc;
+  color: black;
 }
 #commonListTable tr.highlight td {
   background-color: #eee;
@@ -1102,6 +1113,16 @@ img.folderForAliasTree {
 #bwEventListControls form {
   display: inline;
   padding-right: 2em;
+}
+.bwEventListOtherGroupTags {
+  font-size: 0.8em;
+  margin: 1em 0 0 0;
+}
+.bwOtherTags {
+  margin: 0.5em 0;
+  padding: 4px;
+  background-color: #eee;
+  color: black;
 }
 #filterTable {
   font-size: 0.9em;
