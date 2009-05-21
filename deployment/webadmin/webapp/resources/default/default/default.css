@@ -418,7 +418,7 @@ table.eventFormTable tr.optional td.fieldName {
   font-style: normal;
 }
 table.eventFormTable tr.optional input {
-  background-color: #ddd;
+  background-color: #eee;
   color: black;
 }
 table.eventFormTable td.allField {
