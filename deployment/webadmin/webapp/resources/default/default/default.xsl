@@ -244,8 +244,12 @@
         <xsl:if test="/bedework/page='modEvent' or
                       /bedework/page='modEventPending' or
                       /bedework/page='modSubscription'">
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
+          <!-- <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>-->
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
         </xsl:if>
         <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
@@ -257,7 +261,7 @@
               <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
             </xsl:when>
             <xsl:otherwise>
-              <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
+              <!-- link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/-->
               <script type="text/javascript">
                 <xsl:comment>
                 $.datepicker.setDefaults({
@@ -269,9 +273,44 @@
                   gotoCurrent: true,
                   duration: ""
                 });
+
+                function bwSetupDatePickers() {
+                  // startdate
+                  $("#bwEventWidgetStartDate").datepicker({
+                    defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
+                  }).attr("readonly", "readonly");
+                  $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+
+                  // enddate
+                  $("#bwEventWidgetEndDate").datepicker({
+                    defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)
+                  }).attr("readonly", "readonly");
+                  $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/end/rfc3339DateTime,'T')"/>');
+
+                  // recurrence until
+                  $("#bwEventWidgetUntilDate").datepicker({
+                    <xsl:choose>
+                      <xsl:when test="/bedework/formElements/form/recurrence/until">
+                        defaultDate: new Date(<xsl:value-of select="substring(/bedework/formElements/form/recurrence/until,1,4)"/>, <xsl:value-of select="number(substring(/bedework/formElements/form/recurrence/until,5,2)) - 1"/>, <xsl:value-of select="substring(/bedework/formElements/form/recurrence/until,7,2)"/>),
+                      </xsl:when>
+                      <xsl:otherwise>
+                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>),
+                      </xsl:otherwise>
+                    </xsl:choose>
+                    altField: "#bwEventUntilDate",
+                    altFormat: "yymmdd"
+                  }).attr("readonly", "readonly");
+                  $("#bwEventWidgetUntilDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+
+                  // rdates and xdates
+                  $("#bwEventWidgetRdate").datepicker({
+                    defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>),
+                    dateFormat: "yymmdd"
+                  }).attr("readonly", "readonly");
+                  $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+                }
                 </xsl:comment>
               </script>
-              <!-- script type="text/javascript" src="/bedework-common/javascript/dojo/dojo.js">&#160;</script-->
             </xsl:otherwise>
           </xsl:choose>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
@@ -350,7 +389,7 @@
       <body>
         <xsl:choose>
           <xsl:when test="(/bedework/page='modEvent' or /bedework/page='modEventPending') and /bedework/formElements/recurrenceId=''">
-            <xsl:attribute name="onload">initRXDates();initXProperties();focusFirstElement();</xsl:attribute>
+            <xsl:attribute name="onload">initRXDates();initXProperties();focusFirstElement();bwSetupDatePickers();</xsl:attribute>
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="onload">focusFirstElement();</xsl:attribute>
@@ -1404,17 +1443,13 @@
                     </script>
                   </xsl:when>
                   <xsl:otherwise>
-                    <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetStartDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
-                      <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
-                      <xsl:text> </xsl:text>
-                    </span-->
                     <input type="text" name="bwEventWidgetStartDate" id="bwEventWidgetStartDate" size="10"/>
                     <script language="JavaScript" type="text/javascript">
                       <xsl:comment>
-                      $("#bwEventWidgetStartDate").datepicker({
+                      /*$("#bwEventWidgetStartDate").datepicker({
                         defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>)
                       }).attr("readonly", "readonly");
-                      $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');
+                      $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');*/
                       </xsl:comment>
                     </script>
                     <input type="hidden" name="eventStartDate.year">
@@ -1501,10 +1536,10 @@
                       <input type="text" name="bwEventWidgetEndDate" id="bwEventWidgetEndDate" size="10"/>
                       <script language="JavaScript" type="text/javascript">
                         <xsl:comment>
-                        $("#bwEventWidgetEndDate").datepicker({
+                        /*$("#bwEventWidgetEndDate").datepicker({
                           defaultDate: new Date(<xsl:value-of select="form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)
                         }).attr("readonly", "readonly");
-                        $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(form/end/rfc3339DateTime,'T')"/>');
+                        $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(form/end/rfc3339DateTime,'T')"/>');*/
                         </xsl:comment>
                       </script>
                       <input type="hidden" name="eventEndDate.year">
@@ -1893,15 +1928,11 @@
                             </input>
                             until
                             <span id="untilHolder">
-                              <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
-                                <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
-                                <xsl:text> </xsl:text>
-                              </span -->
                               <input type="hidden" name="bwEventUntilDate" id="bwEventUntilDate" size="10"/>
                               <input type="text" name="bwEventWidgetUntilDate" id="bwEventWidgetUntilDate" size="10" onfocus="selectRecurCountUntil('recurUntil')"/>
                               <script language="JavaScript" type="text/javascript">
                                 <xsl:comment>
-                                $("#bwEventWidgetUntilDate").datepicker({
+                                /*$("#bwEventWidgetUntilDate").datepicker({
                                   <xsl:choose>
                                     <xsl:when test="form/recurrence/until">
                                       defaultDate: new Date(<xsl:value-of select="substring(form/recurrence/until,1,4)"/>, <xsl:value-of select="number(substring(form/recurrence/until,5,2)) - 1"/>, <xsl:value-of select="substring(form/recurrence/until,7,2)"/>),
@@ -1913,7 +1944,7 @@
                                   altField: "#bwEventUntilDate",
                                   altFormat: "yymmdd"
                                 }).attr("readonly", "readonly");
-                                $("#bwEventWidgetUntilDate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');
+                                $("#bwEventWidgetUntilDate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');*/
                                 </xsl:comment>
                               </script>
                             </span>
@@ -2162,11 +2193,11 @@
                           <input type="text" name="eventRdate.date" id="bwEventWidgetRdate" size="10"/>
                           <script language="JavaScript" type="text/javascript">
                             <xsl:comment>
-                            $("#bwEventWidgetRdate").datepicker({
+                            /*$("#bwEventWidgetRdate").datepicker({
                               defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>),
                               dateFormat: "yymmdd"
                             }).attr("readonly", "readonly");
-                            $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');
+                            $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');*/
                             </xsl:comment>
                           </script>
                         </div>
@@ -2233,6 +2264,7 @@
                         <input type="button" name="rdate" value="add recurrence" onclick="bwRdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
                         <input type="button" name="exdate" value="add exception" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
                       </span>
+                      <br class="clear"/>
 
                       <input type="hidden" name="rdates" value="" id="bwRdatesField" />
                       <!-- if there are no recurrence dates, the following table will show -->

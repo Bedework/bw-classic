@@ -425,6 +425,7 @@
     <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
     <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
     <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
+    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
 
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
                   /bedework/page='modPrefs' or
@@ -445,7 +446,7 @@
     </xsl:if>
 
     <xsl:if test="/bedework/page='attendees'">
-      <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
+      <!-- script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script -->
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/bw-jquery.autocomplete.js">&#160;</script>
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.bgiframe.min.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAttendees.js">&#160;</script>
@@ -3629,7 +3630,7 @@
                 <!--bwRdates.update() accepts: date, time, allDay, floating, utc, tzid-->
                 <input type="button" name="rdate" value="add recurrence" onclick="bwRdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
                 <input type="button" name="exdate" value="add exception" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
-
+                <br class="clear"/>
                 <input type="hidden" name="rdates" value="" id="bwRdatesField" />
                 <!-- if there are no recurrence dates, the following table will show -->
                 <table cellspacing="0" class="invisible" id="bwCurrentRdatesNone">
