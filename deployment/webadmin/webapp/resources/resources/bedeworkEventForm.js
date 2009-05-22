@@ -725,7 +725,7 @@ function doPublishEvent(publishingCal,eventTitle,eventUrlPrefix,formObj) {
   snsubject = document.getElementById("snsubject");
   snsubject.value = "Event Approved: " + eventTitle;
   sntext = document.getElementById("sntext");
-  sntext.value = "Your event has been approved and is now published.\n\nEVENT DETAILS\n-------------\n\nTitle: " + eventTitle + "\nURL: " + eventUrlPrefix + "&" + publishingCal;
+  sntext.value = "Your event has been approved and is now published.\n\nEVENT DETAILS\n-------------\n\nTitle: " + eventTitle + "\nURL: " + eventUrlPrefix + "&calPath=" + publishingCal;
 
   // Send the names of xproperties we wish to retain after we publish.
   // Those not listed will be thrown away
