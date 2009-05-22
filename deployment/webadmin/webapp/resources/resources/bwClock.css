@@ -14,7 +14,7 @@
     the anti-aliased clock edge */
   position: absolute;
   top: 130px;
-  left: 355px;
+  left: 356px;
   height: 21px;
   width: 12px;
   color: white;
@@ -32,7 +32,7 @@
   border: 2px solid black;
 }
 #bwClockBox h2 {
-  font-size: 10px;
+  font-size: 0.9em !important;
   text-align: center;
   margin: 0;
   padding: 2px 0;
