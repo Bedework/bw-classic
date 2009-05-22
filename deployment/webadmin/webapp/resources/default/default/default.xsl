@@ -2324,10 +2324,10 @@
           <td>
             <span>
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
-              <input type="radio" name="eventStatus" value="CONFIRMED">
+              <input type="radio" name="eventStatus" value="CONFIRMED" checked="checked">
                 <xsl:if test="form/status = 'CONFIRMED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
               </input>confirmed
-              <input type="radio" name="eventStatus" value="TENTATIVE" checked="checked">
+              <input type="radio" name="eventStatus" value="TENTATIVE">
                 <xsl:if test="form/status = 'TENTATIVE'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
               </input>tentative
               <input type="radio" name="eventStatus" value="CANCELLED">
