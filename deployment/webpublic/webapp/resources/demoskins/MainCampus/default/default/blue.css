@@ -1102,39 +1102,8 @@ h2 a:hover#linkToEvent {
 .invisible {
   display: none;
 }
-/*
-  dojo widget overrides
-*/
-html .dojoFloatingPane {
-  width: 370px;
-  height: 200px;
-  text-align: left;
-}
-html .dojoFloatingPaneTitleBar {
-  color: white;
-  background: #2B4795 url(../../images/curDateRangeBlue.gif) repeat-x bottom;
-}
-html .dojoFloatingPaneTitleText {
-  padding: 0.25em 1em;
-  font-weight: bold;
-  font-size: 0.8em;
-}
-html .dojoFloatingPaneClient input.bwWidgetSubmit {
-  position: absolute;
-  bottom: 1em;
-  right: 1em;
-  width: 80px;
-}
-html .dojoFloatingPaneClient #exportDateRange {
-  margin: 1em 0;
-  text-align: center;
-}
-html .dojoFloatingPaneClient #bwCalendarExportWidgetCalName {
+#exportDateRange #bwExportEndField {
   padding-left: 1em;
-}
-html .dojoFloatingPaneClient form#exportCalendarForm {
-  margin: 0;
-  padding: 0;
 }
 #listTable td.eventListDateTime {
   white-space: nowrap;

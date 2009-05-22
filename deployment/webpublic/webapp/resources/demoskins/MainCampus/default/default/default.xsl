@@ -135,25 +135,33 @@
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <!-- load javascript -->
-        <xsl:if test="/bedework/page='event' or /bedework/page='calendarList' or /bedework/page='displayCalendarForExport'">
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
-          <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/>
-          <script type="text/javascript">
-            <xsl:comment>
-            $.datepicker.setDefaults({
-              constrainInput: true,
-              dateFormat: "yy-mm-dd",
-              showOn: "both",
-              buttonImage: "<xsl:value-of select='$resourcesRoot'/>/images/calIcon.gif",
-              buttonImageOnly: true,
-              gotoCurrent: true,
-              duration: ""
-            });
-            </xsl:comment>
-          </script>
-          <!-- script type="text/javascript" src="{$resourceCommons}/javascript/dojo/dojo.js">&#160;</script -->
+        <xsl:if test="/bedework/page='event' or /bedework/page='displayCalendarForExport'">
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
           <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js">&#160;</script>
+          <xsl:if test="/bedework/page='displayCalendarForExport'">
+            <script type="text/javascript">
+              <xsl:comment>
+              $.datepicker.setDefaults({
+                constrainInput: true,
+                dateFormat: "yy-mm-dd",
+                showOn: "both",
+                buttonImage: "<xsl:value-of select='$resourcesRoot'/>/images/calIcon.gif",
+                buttonImageOnly: true,
+                gotoCurrent: true,
+                duration: ""
+              });
+              $(document).ready(function() {
+                $("#bwExportCalendarWidgetStartDate").datepicker({
+                }).attr("readonly", "readonly");
+                $("#bwExportCalendarWidgetEndDate").datepicker({
+                }).attr("readonly", "readonly");
+              });
+              </xsl:comment>
+            </script>
+          </xsl:if>
         </xsl:if>
         <!-- address bar icon -->
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
@@ -1499,19 +1507,9 @@
         <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
         <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> date range
         <div id="exportDateRange" class="invisible">
-          <!-- Start: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetStartDate"><xsl:text> </xsl:text></div>
-          End: <div dojoType="dropdowndatepicker" formatLength="medium" saveFormat="yyyyMMdd" id="bwExportCalendarWidgetEndDate"><xsl:text> </xsl:text></div>-->
           Start: <input type="text" name="bwExportCalendarWidgetStartDate" id="bwExportCalendarWidgetStartDate" size="10"/>
-          End: <input type="text" name="bwExportCalendarWidgetEndDate" id="bwExportCalendarWidgetEndDate" size="10"/>
+          <span id="bwExportEndField">End: <input type="text" name="bwExportCalendarWidgetEndDate" id="bwExportCalendarWidgetEndDate" size="10"/></span>
         </div>
-        <script language="JavaScript" type="text/javascript">
-          <xsl:comment>
-          $("#bwExportCalendarWidgetStartDate").datepicker({
-          }).attr("readonly", "readonly");
-          $("#bwExportCalendarWidgetEndDate").datepicker({
-          }).attr("readonly", "readonly");
-          </xsl:comment>
-        </script>
         <p><input type="submit" value="export" class="bwWidgetSubmit" onclick="fillExportFields(this.form)"/></p>
       </form>
     </div>
