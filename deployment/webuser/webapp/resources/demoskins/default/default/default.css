@@ -233,6 +233,12 @@ body {
   margin: 0;
   padding: 0;
 }
+#bedework #bodyBlock td#msgTaskBarPlaceholder {
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #aaa;
+  margin: 0;
+  padding: 0;
+}
 #bedework #bodyBlock td#sideBar h3 {
   color: #eee;
   background: #4164AE url(../../resources/sideBarBlueGrad.gif) repeat-y right;

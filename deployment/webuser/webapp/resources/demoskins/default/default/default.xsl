@@ -371,21 +371,19 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </td>
-              <xsl:if test="1">
-                <td id="msgTaskBar" class="sideMenus">
-                  <h3>messages</h3>
-                  <ul>
-                    <xsl:choose>
-                      <xsl:when test="/bedework/inboxState/messages/message">
-                        <xsl:apply-templates select="/bedework/inboxState/messages/message" mode="schedNotifications"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <li>no messages</li>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </ul>
-                </td>
-              </xsl:if>
+              <xsl:choose>
+                <xsl:when test="/bedework/inboxState/messages/message">
+                  <td id="msgTaskBar" class="sideMenus">
+                    <h3>messages</h3>
+                    <ul>
+                      <xsl:apply-templates select="/bedework/inboxState/messages/message" mode="schedNotifications"/>
+                    </ul>
+                  </td>
+                </xsl:when>
+                <xsl:otherwise>
+                  <td id="msgTaskBarPlaceholder"></td>
+                </xsl:otherwise>
+              </xsl:choose>
             </tr>
           </table>
           <!-- footer -->
