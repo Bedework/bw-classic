@@ -939,7 +939,7 @@
               <input type="radio" name="eventStatus" value="CANCELLED">
                 <xsl:if test="form/status = 'CANCELLED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
               </input>
-              cancelled
+              canceled
             </td>
           </tr>
           <!-- Cost -->
@@ -956,7 +956,7 @@
           <tr>
             <td class="fieldname"><em>Event URL:</em></td>
             <td class="fieldval">
-              <input type="text" name="event.link" size="30" value="">
+              <input type="text" name="eventLink" size="30" value="">
                 <xsl:attribute name="value"><xsl:value-of select="form/link/input/@value"/></xsl:attribute>
               </input>
               <span class="note"> optional: for more information about the event</span>
@@ -1607,7 +1607,7 @@
             <input type="radio" value="" name="status" checked="checked"/> accept event's status<br/>
             <input type="radio" value="CONFIRMED" name="status"/> confirmed<br/>
             <input type="radio" value="TENTATIVE" name="status"/> tentative<br/>
-            <input type="radio" value="CANCELLED" name="status"/> cancelled<br/>
+            <input type="radio" value="CANCELLED" name="status"/> canceled<br/>
           </td>
         </tr>
       </table>

@@ -1176,7 +1176,7 @@
                 </xsl:variable>
                 <xsl:variable name="subStyle" select="subscription/subStyle"/>
                 <td class="{$descriptionClass} {$subStyle}">
-                  <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
+                  <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
@@ -1335,7 +1335,7 @@
                   </xsl:choose>
                 </xsl:attribute>
 
-                <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
+                <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
                 <xsl:if test="status='TENTATIVE'"><em>TENTATIVE: </em></xsl:if>
 
                 <a class="title" href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
@@ -1542,14 +1542,14 @@
     </xsl:variable>
     <!-- Calendar colors are set in the add/modify calendar forms which, if present,
          override the background-color set by eventClass. User styles should
-         not be used for cancelled events (tentative is ok). -->
+         not be used for canceled events (tentative is ok). -->
     <li>
       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"
         class="{$eventRootClass} {$eventClass}">
         <xsl:if test="status != 'CANCELLED' and $calendarColor != ''">
           <xsl:attribute name="style">background-color: <xsl:value-of select="$calendarColor"/>; color: black;</xsl:attribute>
         </xsl:if>
-        <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
+        <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
         <xsl:choose>
           <xsl:when test="start/shortdate != ../shortdate">
             (cont)
@@ -1576,7 +1576,7 @@
           </xsl:choose>
         </xsl:variable>
         <span class="{$eventTipClass}">
-          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELLED</span></xsl:if>
+          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELED</span></xsl:if>
           <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative">TENTATIVE</span></xsl:if>
           <xsl:choose>
             <xsl:when test="summary = ''">
@@ -1767,7 +1767,7 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
-      <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
+      <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
           <xsl:variable name="link" select="link"/>
@@ -3057,7 +3057,7 @@
             <input type="radio" name="eventStatus" value="CANCELLED">
               <xsl:if test="form/status = 'CANCELLED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input>
-            cancelled
+            canceled
           </td>
         </tr>
         <!--  Transparency  -->
@@ -6111,7 +6111,7 @@
             <input type="radio" value="" name="status" checked="checked"/> accept event's status<br/>
             <input type="radio" value="CONFIRMED" name="status"/> confirmed<br/>
             <input type="radio" value="TENTATIVE" name="status"/> tentative<br/>
-            <input type="radio" value="CANCELLED" name="status"/> cancelled<br/>
+            <input type="radio" value="CANCELLED" name="status"/> canceled<br/>
           </td>
         </tr>
       </table>
@@ -6621,7 +6621,7 @@
       <h2>
         <xsl:choose>
           <xsl:when test="scheduleMethod = '5'">
-            Meeting Cancelled
+            Meeting Canceled
           </xsl:when>
           <xsl:when test="scheduleMethod = '8'">
             Meeting Counter Declined
@@ -6650,7 +6650,7 @@
           <xsl:when test="scheduleMethod = '5'">
             <tr>
               <td colspan="2" class="highlight">
-                This meeting has been cancelled.
+                This meeting has been canceled.
               </td>
             </tr>
           </xsl:when>
@@ -6765,7 +6765,7 @@
                 <!-- respond to a cancel -->
                   <input type="hidden" name="method" value="REPLY"/>
                   <select name="cancelAction">
-                    <option value="mark">mark event as cancelled</option>
+                    <option value="mark">mark event as canceled</option>
                     <option value="delete">delete event</option>
                   </select>
                 </xsl:when>
@@ -7280,11 +7280,11 @@
               <xsl:when test="scheduleMethod='7'"><!-- counter -->
                 <input type="submit" value="accept / modify" name="accept"/>
                 <input type="submit" value="decline" name="decline"/>
-                <input type="submit" value="cancel" name="cancelled"/>
+                <input type="submit" value="cancel" name="canceled"/>
               </xsl:when>
               <xsl:otherwise><!-- normal reply -->
                 <input type="submit" value="ok" name="update"/>
-                <input type="submit" value="cancel" name="cancelled"/>
+                <input type="submit" value="cancel" name="canceled"/>
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -7878,7 +7878,7 @@
                 <xsl:if test="scheduleAutoCancelAction = '1'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                set event status to CANCELLED
+                set event status to CANCELED
               </option>
               <option value="2">
                 <xsl:if test="scheduleAutoCancelAction = '2'">

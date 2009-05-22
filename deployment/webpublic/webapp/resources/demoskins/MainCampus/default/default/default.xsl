@@ -450,6 +450,7 @@
                View:
                <form name="selectViewForm" method="post" action="{$setSelection}">
                 <select name="viewName" onchange="submit()" >
+                  <xsl:if test="/bedework/page = 'eventList'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                   <xsl:for-each select="/bedework/views/view">
                     <xsl:variable name="name" select="name"/>
                     <xsl:choose>
@@ -587,7 +588,7 @@
       <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="generate link to this event">
        link to this event
      </a>
-      <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
+      <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
           <xsl:variable name="link" select="link"/>
@@ -986,14 +987,14 @@
                 <!-- Subscription styles.
                      These are set in the add/modify subscription forms in the admin client;
                      if present, these override the background-color set by eventClass. The
-                     subscription styles should not be used for cancelled events (tentative is ok). -->
+                     subscription styles should not be used for canceled events (tentative is ok). -->
                 <xsl:variable name="subscriptionClass">
                   <xsl:if test="status != 'CANCELLED' and
                                 subscription/subStyle != '' and
                                 subscription/subStyle != 'default'"><xsl:value-of select="subscription/subStyle"/></xsl:if>
                 </xsl:variable>
                 <td class="{$descriptionClass} {$subscriptionClass}">
-                  <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
+                  <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
@@ -1071,11 +1072,28 @@
   <!--==== LIST EVENTS - for listing discrete events ====-->
   <xsl:template match="events" mode="eventList">
     <h2 class="bwStatusConfirmed">
-      Next 7 Days
-      <!-- xsl:choose>
-        <xsl:when test="/bedework/now/longdate = /bedework/events/event[position()=last()]/start/longdate"><xsl:value-of select="/bedework/now/longdate"/></xsl:when>
-        <xsl:otherwise><xsl:value-of select="/bedework/now/longdate"/> - <xsl:value-of select="/bedework/events/event[position()=last()]/start/longdate"/></xsl:otherwise>
-      </xsl:choose-->
+      <!-- <form name="bwListEventsForm" action="{$listEvents}" method="post">
+        <input type="hidden" name="setappvar"/>-->
+        Next 7 Days
+        <!--
+        <span id="bwListEventsFormControls">
+          <select name="catuid" onchange="this.form.submit();">
+            <option value="">filter by category...</option>
+            <xsl:for-each select="/bedework/categories/category">
+              <option>
+                <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
+                <xsl:value-of select="keyword"/>
+              </option>
+            </xsl:for-each>
+          </select>
+          <select name="days" onchange="this.form.submit();">
+            <xsl:call-template name="buildListEventsDaysOptions">
+              <xsl:with-param name="i">1</xsl:with-param>
+              <xsl:with-param name="total">31</xsl:with-param>
+            </xsl:call-template>
+          </select>
+        </span>
+      </form>-->
     </h2>
 
     <div id="listEvents">
@@ -1098,7 +1116,7 @@
                   </xsl:choose>
                 </xsl:attribute>
 
-                <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
+                <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
                 <xsl:if test="status='TENTATIVE'"><em>TENTATIVE: </em></xsl:if>
 
                 <a class="title" href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
@@ -1178,6 +1196,28 @@
         </xsl:choose>
       </ul>
     </div>
+  </xsl:template>
+
+  <xsl:template name="buildListEventsDaysOptions">
+    <xsl:param name="i">1</xsl:param>
+    <xsl:param name="total">31</xsl:param>
+    <xsl:param name="default">7</xsl:param>
+    <xsl:variable name="selected"><xsl:value-of select="/bedework/appvar[key='listEventsDays']/value"/></xsl:variable>
+
+    <option onclick="this.form.setappvar.value='listEventsDay({$i})'">
+      <xsl:attribute name="value"><xsl:value-of select="$i"/></xsl:attribute>
+      <xsl:if test="($selected != '' and $i = $selected) or ($selected = '' and $i = $default)"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+      <xsl:value-of select="$i"/>
+    </option>
+
+    <xsl:if test="$i &lt; $total">
+      <xsl:call-template name="buildListEventsDaysOptions">
+        <xsl:with-param name="i"><xsl:value-of select="$i + 1"/></xsl:with-param>
+        <xsl:with-param name="total"><xsl:value-of select="$total"/></xsl:with-param>
+        <xsl:with-param name="default"><xsl:value-of select="$default"/></xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
+
   </xsl:template>
 
   <!--==== WEEK CALENDAR VIEW ====-->
@@ -1282,7 +1322,7 @@
     </xsl:variable>
     <li>
       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass} {$subscriptionClass}">
-        <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
+        <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
         <xsl:choose>
           <xsl:when test="start/shortdate != ../shortdate">
             (cont)
@@ -1302,7 +1342,7 @@
           </xsl:choose>
         </xsl:variable>
         <span class="{$eventTipClass}">
-          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELLED</span></xsl:if>
+          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELED</span></xsl:if>
           <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative">TENTATIVE</span></xsl:if>
           <strong><xsl:value-of select="summary"/></strong><br/>
           Time:

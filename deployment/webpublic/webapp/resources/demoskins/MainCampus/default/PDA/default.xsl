@@ -212,7 +212,7 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
-      <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
+      <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
           <xsl:variable name="link" select="link"/>
@@ -545,7 +545,7 @@
                   </xsl:choose>
                 </td>
                 <td class="description">
-                  <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
+                  <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">

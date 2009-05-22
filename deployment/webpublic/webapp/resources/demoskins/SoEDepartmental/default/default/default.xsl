@@ -587,7 +587,7 @@
       <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="generate link to this event">
        link to this event
      </a>
-      <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
+      <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
           <xsl:variable name="link" select="link"/>
@@ -986,14 +986,14 @@
                 <!-- Subscription styles.
                      These are set in the add/modify subscription forms in the admin client;
                      if present, these override the background-color set by eventClass. The
-                     subscription styles should not be used for cancelled events (tentative is ok). -->
+                     subscription styles should not be used for canceled events (tentative is ok). -->
                 <xsl:variable name="subscriptionClass">
                   <xsl:if test="status != 'CANCELLED' and
                                 subscription/subStyle != '' and
                                 subscription/subStyle != 'default'"><xsl:value-of select="subscription/subStyle"/></xsl:if>
                 </xsl:variable>
                 <td class="{$descriptionClass} {$subscriptionClass}">
-                  <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
+                  <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
@@ -1098,7 +1098,7 @@
                   </xsl:choose>
                 </xsl:attribute>
 
-                <xsl:if test="status='CANCELLED'"><strong>CANCELLED: </strong></xsl:if>
+                <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
                 <xsl:if test="status='TENTATIVE'"><em>TENTATIVE: </em></xsl:if>
 
                 <a class="title" href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
@@ -1274,7 +1274,7 @@
     <!-- Subscription styles.
          These are set in the add/modify subscription forms in the admin client;
          if present, these override the background-color set by eventClass. The
-         subscription styles should not be used for cancelled events (tentative is ok). -->
+         subscription styles should not be used for canceled events (tentative is ok). -->
     <xsl:variable name="subscriptionClass">
       <xsl:if test="status != 'CANCELLED' and
                     subscription/subStyle != '' and
@@ -1282,7 +1282,7 @@
     </xsl:variable>
     <li>
       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass} {$subscriptionClass}">
-        <xsl:if test="status='CANCELLED'">CANCELLED: </xsl:if>
+        <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
         <xsl:choose>
           <xsl:when test="start/shortdate != ../shortdate">
             (cont)
@@ -1302,7 +1302,7 @@
           </xsl:choose>
         </xsl:variable>
         <span class="{$eventTipClass}">
-          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELLED</span></xsl:if>
+          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELED</span></xsl:if>
           <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative">TENTATIVE</span></xsl:if>
           <strong><xsl:value-of select="summary"/></strong><br/>
           Time:

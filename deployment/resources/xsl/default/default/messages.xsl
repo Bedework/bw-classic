@@ -64,7 +64,7 @@
       </xsl:when>
 
       <xsl:when test="id='org.bedework.client.message.cancelled'">
-          Action cancelled.
+          Action canceled.
       </xsl:when>
 
       <xsl:when test="id='org.bedework.client.message.moved.calendar'">
