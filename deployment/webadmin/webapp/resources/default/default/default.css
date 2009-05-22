@@ -1116,6 +1116,9 @@ img.folderForAliasTree {
 #bwPublicCalDisplay {
   margin: 1em 0 -1em 1em;
 }
+#bwEventListControls {
+  margin-bottom: 0.5em;
+}
 #bwEventListControls form {
   display: inline;
   padding-right: 2em;

@@ -32,7 +32,7 @@
   border: 2px solid black;
 }
 #bwClockBox h2 {
-  font-size: 12px;
+  font-size: 0.9em !important;
   text-align: center;
   margin: 0;
   padding: 2px 0;
