@@ -2817,7 +2817,7 @@
                   </a>
                 </div>
                 <strong>Select a calendar in which to publish this event:</strong><br/>
-                <select name="calendarId" id="calendarId">
+                <select name="calendarId" id="calendarId" onchange="this.form.newCalPath.value = this.value;">
                   <option>
                     <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
                     Select:
@@ -2838,7 +2838,9 @@
                     </option>
                   </xsl:for-each>
                 </select>
-                <input type="submit" name="publishEvent" value="Publish" onclick="changeClass('publishBox','invisible')"/>
+                <input type="submit" name="publishEvent" value="Publish Event">
+                  <xsl:attribute name="onclick">doPublishEvent(this.form.newCalPath.value,'<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrlPrefix"/>',this.form);changeClass('publishBox','invisible');</xsl:attribute>
+                </input>
                 <xsl:if test="$portalFriendly = 'false'">
                   <br/>
                   <span id="calDescriptionsLink">
