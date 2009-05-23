@@ -946,7 +946,7 @@
           <tr>
             <td class="fieldname"><em>Cost:</em></td>
             <td class="fieldval">
-              <input type="text" name="event.cost" size="30" value="">
+              <input type="text" name="eventCost" size="30" value="">
                 <xsl:attribute name="value"><xsl:value-of select="form/cost/input/@value"/></xsl:attribute>
               </input>
               <span class="note"> optional: if any, and place to purchase tickets</span>
