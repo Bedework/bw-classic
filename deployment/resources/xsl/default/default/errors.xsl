@@ -401,6 +401,10 @@
         Your information is incomplete: please supply a calendar.
       </xsl:when>
 
+      <xsl:when test="id='org.bedework.validation.error.missingtopicalarea'">
+        Your information is incomplete: please supply at least one topical area.
+      </xsl:when>
+
       <xsl:when test="id='org.bedework.validation.error.missingcalendarpath'">
         Your information is incomplete: please supply a calendar path.
       </xsl:when>
