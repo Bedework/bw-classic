@@ -2347,7 +2347,7 @@
           </td>
           <td align="left" class="padMeTop">
             <input type="radio" value="OPAQUE" name="transparency">
-              <xsl:if test="form/transparency = 'OPAQUE'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+              <xsl:if test="form/transparency = 'OPAQUE' or not(form/transparency)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input>
             yes (opaque)
 
