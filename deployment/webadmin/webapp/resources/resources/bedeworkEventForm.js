@@ -725,7 +725,12 @@ function doPublishEvent(publishingCal,eventTitle,eventUrlPrefix,formObj) {
   snsubject = document.getElementById("snsubject");
   snsubject.value = "Event Approved: " + eventTitle;
   sntext = document.getElementById("sntext");
-  sntext.value = "Your event has been approved and is now published.\n\nEVENT DETAILS\n-------------\n\nTitle: " + eventTitle + "\nURL: " + eventUrlPrefix + "&calPath=" + publishingCal;
+  var message;
+  message = "Your event has been approved and is now published.\n\n";
+  message += "EVENT DETAILS\n-------------\n";
+  message += "Title: " + eventTitle + "\n";
+  message += "URL: " + eventUrlPrefix + "&calPath=" + publishingCal;
+  sntext.value = message;
 
   // Send the names of xproperties we wish to retain after we publish.
   // Those not listed will be thrown away
@@ -742,8 +747,24 @@ function doPublishEvent(publishingCal,eventTitle,eventUrlPrefix,formObj) {
   }
 }
 
-function doRejectEvent(reason,eventTitle) {
+function doRejectEvent(formObj, eventTitle, eventDatesForEmail){
+  // If email notification is enabled, set field to true
+  // (set to 'true' for now to get the feature working)
+  formObj.submitNotification.value = true;
 
+  // set the email field values
+  formObj.snsubject.value = "Event Rejected: " + eventTitle;
+
+  var message;
+  message = "Your event has been rejected.\n\n";
+  message += "EVENT DETAILS\n-------------\n";
+  message = "Event Title: " + eventTitle + "\n";
+  message = "Event Dates: " + eventDatesForEmail + "\n\n\n";
+  if (trim(formObj.reason) != '') {
+    message += "Reason:\n";
+    message += formObj.reason;
+  }
+  formObj.sntext.value = message;
 }
 
 

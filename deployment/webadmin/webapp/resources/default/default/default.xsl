@@ -353,16 +353,17 @@
             </script>
           </xsl:if>
         </xsl:if>
-        <xsl:if test="/bedework/page='upload' or /bedework/page='selectCalForEvent'">
-          <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
-        </xsl:if>
-        <xsl:if test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
-          <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
-        </xsl:if>
-        <xsl:if test="/bedework/page='addFilter' or
+        <xsl:if test="/bedework/page='upload' or
+                      /bedework/page='selectCalForEvent' or
+                      /bedework/page='deleteEventConfirmPending' or
+                      /bedework/page='addFilter' or
                       /bedework/page='calSuitePrefs' or
                       /bedework/page='eventList'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkUtil.js">&#160;</script>
+        </xsl:if>
+        <xsl:if test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
+          <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
         <script language="JavaScript" type="text/javascript">
@@ -3079,26 +3080,64 @@
     <xsl:choose>
       <xsl:when test="/bedework/page='deleteEventConfirm' or /bedework/page='deleteEventConfirmPending'">
         <h2>Ok to delete this event?</h2>
-        <p style="width: 400px;">Note: we do not encourage deletion of old but correct events; we prefer to keep
+
+        <xsl:if test="/bedework/page='deleteEventConfirm'">
+          <p style="width: 400px;">Note: we do not encourage deletion of old but correct events; we prefer to keep
            old events for historical reasons.  Please remove only those events
            that are truly erroneous.</p>
-        <p id="confirmButtons">
+        </xsl:if>
+
+        <xsl:variable name="eventDatesForEmail">
+          <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text><!--
+       --><xsl:if test="start/allday = 'false'"><xsl:value-of select="start/time"/></xsl:if><!--
+       --><xsl:if test="(end/longdate != start/longdate) or
+                        ((end/longdate = start/longdate) and (end/time != start/time))"> - </xsl:if><!--
+       --><xsl:if test="end/longdate != start/longdate"><xsl:value-of select="substring(end/dayname,1,3)"/>, <xsl:value-of select="end/longdate"/><xsl:text> </xsl:text></xsl:if><!--
+       --><xsl:choose>
+            <xsl:when test="start/allday = 'true'">(all day)</xsl:when>
+            <xsl:when test="end/longdate != start/longdate"><xsl:value-of select="end/time"/></xsl:when>
+            <xsl:when test="end/time != start/time"><xsl:value-of select="end/time"/></xsl:when>
+          </xsl:choose><!--
+     --></xsl:variable>
+
+        <div id="confirmButtons">
           <form method="post">
             <xsl:choose>
               <xsl:when test="/bedework/page = 'deleteEventConfirmPending'">
                 <xsl:attribute name="action"><xsl:value-of select="$event-deletePending"/></xsl:attribute>
+                <xsl:attribute name="onsubmit">doRejectMessage(this,<xsl:value-of select="summary"/>,<xsl:value-of select="$eventDatesForEmail"/>);</xsl:attribute>
+                <!-- Setup email notification fields -->
+                <input type="hidden" id="submitNotification" name="submitNotification" value="false"/>
+                <!-- "from" should be a preference: hard code it for now -->
+                <input type="hidden" id="snfrom" name="snfrom" value="bedework@yoursite.edu"/>
+                <input type="hidden" id="snsubject" name="snsubject" value=""/>
+                <input type="hidden" id="sntext" name="sntext" value=""/>
+                <div id="bwEmailBox">
+                  <p>
+                    <strong>You are deleting a pending event.</strong><br/>
+                    <input type="checkbox" name="notifyFlag" checked="checked" onclick="toggleVisibility('bwRejectEventReasonBox','visible');"/>
+                    Send notification to submitter
+                  </p>
+                  <div id="bwRejectEventReasonBox">
+                    <p>Reason (leave blank to exclude):<br/>
+                      <textarea name="reason" rows="4" cols="60">
+                        <xsl:text> </xsl:text>
+                      </textarea>
+                    </p>
+                  </div>
+                </div>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:attribute name="action"><xsl:value-of select="$event-delete"/></xsl:attribute>
               </xsl:otherwise>
             </xsl:choose>
+            <input type="submit" name="delete" value="Yes: Delete Event"/>
             <input type="submit" name="cancelled" value="Cancel"/>
-            <input type="submit" name="delete" value="Delete"/>
             <input type="hidden" name="calPath" value="{$calPath}"/>
             <input type="hidden" name="guid" value="{$guid}"/>
             <input type="hidden" name="recurrenceId" value="{$recurrenceId}"/>
           </form>
-        </p>
+        </div>
       </xsl:when>
       <xsl:otherwise>
         <h2>Event Information</h2>
@@ -3259,21 +3298,22 @@
 
     </table>
 
-    <p>
-      <xsl:variable name="userPath"><xsl:value-of select="/bedework/syspars/userPrincipalRoot"/>/<xsl:value-of select="/bedework/userInfo/user"/></xsl:variable>
-      <input type="button" name="return" onclick="javascript:location.replace('{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')">
-        <xsl:choose>
-          <xsl:when test="$userPath = creator or /bedework/userInfo/superUser = 'true'">
-            <xsl:attribute name="value">Edit event</xsl:attribute>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:attribute name="value">Tag event with topical areas</xsl:attribute>
-          </xsl:otherwise>
-        </xsl:choose>
-      </input>
-
-      <input type="button" name="return" value="Back" onclick="javascript:history.back()"/>
-    </p>
+    <xsl:if test="/bedework/page != 'deleteEventConfirmPending'">
+      <p>
+        <xsl:variable name="userPath"><xsl:value-of select="/bedework/syspars/userPrincipalRoot"/>/<xsl:value-of select="/bedework/userInfo/user"/></xsl:variable>
+        <input type="button" name="return" onclick="javascript:location.replace('{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')">
+          <xsl:choose>
+            <xsl:when test="$userPath = creator or /bedework/userInfo/superUser = 'true'">
+              <xsl:attribute name="value">Edit event</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:attribute name="value">Tag event with topical areas</xsl:attribute>
+            </xsl:otherwise>
+          </xsl:choose>
+        </input>
+        <input type="button" name="return" value="Back" onclick="javascript:history.back()"/>
+     </p>
+    </xsl:if>
   </xsl:template>
 
   <!--+++++++++++++++ Contacts ++++++++++++++++++++-->

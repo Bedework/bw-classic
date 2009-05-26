@@ -537,6 +537,13 @@ table.common2 th {
 #confirmButtons {
   margin: 1em 0 !important;
 }
+#bwEmailBox {
+  margin: 1em 1em 1em 0;
+  padding: 0 1em 1em 1em;
+  background-color: #ffe;
+  width: 600px;
+  border: 1px solid #ccc;
+}
 #calDescriptionsLink {
   font-size: 0.8em;
 }
