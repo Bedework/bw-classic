@@ -330,6 +330,9 @@
       <xsl:when test="id='org.bedework.client.error.badfilter'">
         Error: invalid filter definition: <em><xsl:value-of select="param"/></em>
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.badvpath'">
+        Error: bad virtual path: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.unknown.filter'">
         Error: unknown filter:  <em><xsl:value-of select="param"/></em>.
       </xsl:when>
