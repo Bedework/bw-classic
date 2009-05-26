@@ -2344,7 +2344,7 @@
         <tr>
           <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
           <td class="fieldName">
-            Effects free/busy:
+            Affects free/busy:
           </td>
           <td align="left" class="padMeTop">
             <input type="radio" value="OPAQUE" name="transparency">
@@ -5336,7 +5336,7 @@
         </tr>
         <tr>
           <th >
-            Effects free/busy:
+            Affects free/busy:
           </th>
           <td align="left" class="padMeTop">
             <input type="radio" value="" name="transparency" checked="checked"/> accept event's settings<br/>

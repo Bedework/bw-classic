@@ -2883,7 +2883,7 @@
         <!--  Transparency  -->
         <tr>
           <td class="fieldname padMeTop">
-            Effects free/busy:
+            Affects free/busy:
           </td>
           <td align="left" class="padMeTop">
             <input type="radio" value="OPAQUE" name="transparency">
@@ -3064,7 +3064,7 @@
         <xsl:if test="entityType != '2'"><!-- no transparency for Tasks -->
           <tr>
             <td class="fieldname">
-              Effects free/busy:
+              Affects free/busy:
             </td>
             <td class="fieldval">
               <xsl:choose>
@@ -6095,7 +6095,7 @@
         </tr>
         <tr>
           <td class="fieldname padMeTop">
-            Effects free/busy:
+            Affects free/busy:
           </td>
           <td align="left" class="padMeTop">
             <input type="radio" value="" name="transparency" checked="checked"/> accept event's settings<br/>
@@ -7105,7 +7105,7 @@
         <!--
         <tr>
           <td class="fieldname">
-            Effects free/busy:
+            Affects free/busy:
           </td>
           <td class="fieldval">
             <xsl:choose>

@@ -1591,7 +1591,7 @@
         </tr>
         <tr>
           <td class="fieldname padMeTop">
-            Effects free/busy:
+            Affects free/busy:
           </td>
           <td align="left" class="padMeTop">
             <input type="radio" value="" name="transparency" checked="checked"/> accept event's settings<br/>
