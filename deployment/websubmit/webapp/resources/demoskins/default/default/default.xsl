@@ -1168,7 +1168,8 @@
     <div id="bwBottomNav">
       <div id="bwBottomNav-Details">
         <div class="navButtons">
-          <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location'); hide('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details');">
+          <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location'); hide('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details');"
+             onclick="return validateStep1();">
             next
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowRight.gif"
@@ -1187,7 +1188,8 @@
               height="13"
               border="0"/>
           previous</a> |
-          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');">
+          <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');"
+             onclick="return validateStep2();">
             next
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowRight.gif"
@@ -1206,7 +1208,8 @@
               height="13"
               border="0"/>
           previous</a> |
-          <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories','bwBottomNav-Categories'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');">
+          <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories','bwBottomNav-Categories'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');"
+             onclick="return validateStep3();">
             next
             <img alt="previous"
               src="{$resourcesRoot}/resources/arrowRight.gif"
