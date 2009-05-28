@@ -168,6 +168,14 @@
           <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
 
           <defaultAddressbook>address-book</defaultAddressbook>
+
+          <principalRoot>/principals</principalRoot>
+          <userPrincipalRoot>/principals/users</userPrincipalRoot>
+          <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
+          <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
+          <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
+          <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
+          <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
         </usercarddav>
 
         <pubcarddav classname="org.bedework.carddav.util.CardDAVConfig" >
