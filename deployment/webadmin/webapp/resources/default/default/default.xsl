@@ -5685,7 +5685,7 @@
             <xsl:variable name="localeList" select="/bedework/system/localeList"/>
             <input value="{$localeList}" name="localeList" class="wide"/>
             <div class="desc">
-              List of supported locales. The format is rigid, comma separated list of 2 letter language, underscore, 2 letter country. No spaces.
+              List of supported locales. The format is a rigid, comma separated list of 2 letter language, underscore, 2 letter country. No spaces. Example: en_US,fr_CA
             </div>
           </td>
         </tr>

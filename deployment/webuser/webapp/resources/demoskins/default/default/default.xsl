@@ -4551,6 +4551,7 @@
         </xsl:choose>
       </xsl:attribute>
       <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
+        <xsl:variable name="userRootCalendar">/user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
         <form name="bwHideDisplayCal" class="bwHideDisplayCal" method="post">
           <xsl:attribute name="action">
             <xsl:choose>
@@ -4566,14 +4567,18 @@
               <!-- set the value of display to false so that when the form is submitted we toggle -->
               <input type="hidden" name="display" value="false"/>
               <input type="checkbox" name="bwDisplaySetter" checked="checked"  onclick="this.form.submit()">
-                <xsl:if test="/bedework/page != 'eventscalendar' and /bedework/page != 'eventList'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+                <xsl:if test="(/bedework/page != 'eventscalendar' and
+                               /bedework/page != 'eventList') or
+                               $userRootCalendar = path"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
               </input>
             </xsl:when>
             <xsl:otherwise>
               <!-- set the value of display to true so that when the form is submitted we toggle -->
               <input type="hidden" name="display" value="true"/>
               <input type="checkbox" name="bwDisplaySetter" onclick="this.form.submit()">
-                <xsl:if test="/bedework/page != 'eventscalendar' and /bedework/page != 'eventList'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+                <xsl:if test="(/bedework/page != 'eventscalendar' and
+                               /bedework/page != 'eventList') or
+                               $userRootCalendar = path"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
               </input>
             </xsl:otherwise>
           </xsl:choose>
