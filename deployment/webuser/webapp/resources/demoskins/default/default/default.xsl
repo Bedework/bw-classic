@@ -1898,15 +1898,17 @@
             <xsl:text> </xsl:text>
             <em>(recurrence master)</em>
           </xsl:if>
+          <!--
           <xsl:if test="scheduleMethod = '2' and not(/bedework/userid = substring-before(substring-after(organizer/organizerUri,':'),'@'))">
-            <!-- this is a scheduled event (meeting or task) - allow a direct refresh -->
-            <!-- NOTE: we need to actually output the organizer account for testing, rather
-                 than testing against the organizerUri...might not be the same -->
+             /* this is a scheduled event (meeting or task) - allow a direct refresh
+                NOTE: we need to actually output the organizer account for testing, rather
+                 than testing against the organizerUri...might not be the same */
             <a href="{$schedule-refresh}&amp;method=REFRESH" id="refreshEventAction">
               <img src="{$resourcesRoot}/resources/std-icalRefresh-icon-small.gif" width="12" height="16" border="0" alt="send a request to refresh this scheduled event"/>
               Request refresh
             </a>
           </xsl:if>
+          -->
         </th>
       </tr>
       <tr>
@@ -2243,9 +2245,10 @@
         <tr>
           <td class="fieldname">Calendar:</td>
           <td class="fieldval">
+            <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
             <xsl:variable name="calUrl" select="calendar/encodedPath"/>
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-            <a href="{$setSelection}&amp;calUrl={$calUrl}">
+            <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calUrl}">
               <xsl:choose>
                 <xsl:when test="contains(calendar/path,$userPath)">
                   <xsl:value-of select="substring-after(calendar/path,$userPath)"/>
@@ -4577,8 +4580,9 @@
         </form>
         <xsl:text> </xsl:text>
       </xsl:if>
+      <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
       <xsl:variable name="calPath" select="encodedPath"/>
-      <a href="{$setSelection}&amp;calUrl={$calPath}">
+      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calPath}">
         <xsl:value-of select="name"/>
       </a>
       <xsl:if test="color != '' and color != 'null'">
@@ -4612,37 +4616,38 @@
         </xsl:choose>
       </xsl:attribute>
       <xsl:variable name="calPath" select="encodedPath"/>
-        <xsl:choose>
-          <xsl:when test="calType='5'">
-            <a href="{$showInbox}" title="incoming scheduling requests">
-              <xsl:value-of select="name"/>
-            </a>
-            <xsl:text> </xsl:text>
-            <xsl:if test="/bedework/inboxState/numActive != '0'">
-              <span class="inoutboxActive">(<xsl:value-of select="/bedework/inboxState/numActive"/>)</span>
-            </xsl:if>
-          </xsl:when>
-          <xsl:when test="calType='6'">
-            <a href="{$showOutbox}" title="outgoing scheduling requests">
-              <xsl:value-of select="name"/>
-            </a>
-            <xsl:text> </xsl:text>
-            <xsl:if test="/bedework/outboxState/numActive != '0'">
-              <span class="inoutboxActive">(<xsl:value-of select="/bedework/outboxState/numActive"/>)</span>
-            </xsl:if>
-          </xsl:when>
-          <xsl:otherwise>
-            <a href="{$setSelection}&amp;calUrl={$calPath}">
-              <xsl:attribute name="title">
-                <xsl:choose>
-                  <xsl:when test="calType = 2">Contains items you have access to delete.</xsl:when>
-                  <xsl:when test="calType = 3">Used to mask items you do not have access to truly delete, such as many subscribed events.</xsl:when>
-                </xsl:choose>
-              </xsl:attribute>
-              <xsl:value-of select="name"/>
-            </a>
-          </xsl:otherwise>
-        </xsl:choose>
+      <xsl:choose>
+        <xsl:when test="calType='5'">
+          <a href="{$showInbox}" title="incoming scheduling requests">
+            <xsl:value-of select="name"/>
+          </a>
+          <xsl:text> </xsl:text>
+          <xsl:if test="/bedework/inboxState/numActive != '0'">
+            <span class="inoutboxActive">(<xsl:value-of select="/bedework/inboxState/numActive"/>)</span>
+          </xsl:if>
+        </xsl:when>
+        <xsl:when test="calType='6'">
+          <a href="{$showOutbox}" title="outgoing scheduling requests">
+            <xsl:value-of select="name"/>
+          </a>
+          <xsl:text> </xsl:text>
+          <xsl:if test="/bedework/outboxState/numActive != '0'">
+            <span class="inoutboxActive">(<xsl:value-of select="/bedework/outboxState/numActive"/>)</span>
+          </xsl:if>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
+          <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calPath}">
+            <xsl:attribute name="title">
+              <xsl:choose>
+                <xsl:when test="calType = 2">Contains items you have access to delete.</xsl:when>
+                <xsl:when test="calType = 3">Used to mask items you do not have access to truly delete, such as many subscribed events.</xsl:when>
+              </xsl:choose>
+            </xsl:attribute>
+            <xsl:value-of select="name"/>
+          </a>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="myCalendars"/>
@@ -8112,8 +8117,9 @@
             </xsl:choose>
           </td>
           <td>
+            <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
             <xsl:variable name="calUrl" select="event/calendar/encodedPath"/>
-            <a href="{$setSelection}&amp;calUrl={$calUrl}">
+            <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calUrl}">
               <xsl:value-of select="event/calendar/name"/>
             </a>
           </td>

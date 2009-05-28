@@ -2804,7 +2804,8 @@
     <xsl:param name="canEdit"/>
     <div class="submitBox">
       <xsl:choose>
-        <xsl:when test="starts-with(form/calendar/event/path,$submissionsRootUnencoded)">
+        <!-- xsl:when test="starts-with(form/calendar/event/path,$submissionsRootUnencoded)"-->
+        <xsl:when test="/bedework/page = 'modEventPending'">
           <div class="right">
             <input type="submit" name="delete" value="Delete Event"/>
           </div>
