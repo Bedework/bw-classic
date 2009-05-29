@@ -3736,7 +3736,10 @@
       <xsl:choose>
         <xsl:when test="form/scheduleMethod = '2'">
           <input name="submit" type="submit" value="save"/>
-          <input name="submitAndSend" type="submit" value="save &amp; send invitations"/>
+          <!-- the following test is not good - will need to fix -->
+          <xsl:if test="substring-after(substring-before(form/organizer/organizerUri,'@'),'mailto:') = /bedework/userid">
+            <input name="submitAndSend" type="submit" value="save &amp; send invitations"/>
+          </xsl:if>
         </xsl:when>
         <xsl:otherwise>
           <input name="submit" type="submit" value="save"/>
