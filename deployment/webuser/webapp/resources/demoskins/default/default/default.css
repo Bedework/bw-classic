@@ -622,7 +622,7 @@ body {
 #bedework #calSelectWidget {
   position: absolute;
   margin: 0;
-  padding: 1em;
+  padding: 0 2em 1em 0;
   border: 1px solid #666;
   background-color: white;
   color: black;
@@ -630,11 +630,10 @@ body {
 #bedework #calSelectWidget h2 {
   font-size: 1em;
   font-weight: normal;
-  margin: -1em -1em 0 -1em;
-  padding: 4px 0;
+  margin: 0 -2em 0 0;
+  padding: 4px 0 4px 12px;
   background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
   color : #eee;
-  text-align: center;
 }
 #bedework #calSelectWidget #calSelectWidgetCloser {
   position: absolute;

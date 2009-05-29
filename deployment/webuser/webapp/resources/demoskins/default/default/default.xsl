@@ -4742,7 +4742,6 @@
     <div id="calSelectWidget" class="invisible">
       <h2>select a calendar</h2>
       <a href="javascript:changeClass('calSelectWidget','invisible')" id="calSelectWidgetCloser" title="close">x</a>
-      <h4>My Calendars</h4>
       <ul class="calendarTree">
         <xsl:choose>
           <xsl:when test="/bedework/formElements/form/calendars/select/option">
@@ -4804,8 +4803,9 @@
   </xsl:template>
 
   <xsl:template name="selectCalForPublicAlias">
-  <!-- selectCalForPublicAlias creates a calendar tree in a pop-up window.
-      Used when selecting a public calendar subscription (alias). -->
+  <!-- This template is DEPRECATED ... selectCalForPublicAliasCalTree is now used instead. -->
+  <!-- selectCalForPublicAlias creates a calendar tree pop-up window for
+       selecting a public calendar subscription (alias). -->
 
     <input type="button" onclick="javascript:changeClass('calSelectWidget','visible')" value="select calendar" class="small"/>
     <div id="calSelectWidget" class="invisible">
