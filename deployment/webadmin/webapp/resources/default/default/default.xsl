@@ -4884,7 +4884,7 @@
 
   <xsl:template match="currentCalendar" mode="addSubscription">
     <h3>Add Subscription</h3>
-    <form name="addCalForm" method="post" action="{$subscriptions-update}" onsubmit="return setCalendarAlias(this)">
+    <form name="addCalForm" method="post" action="{$subscriptions-update}" onsubmit="setCatFilters(this);return setCalendarAlias(this);">
       <table class="common">
         <tr>
           <th>Name:</th>
