@@ -3737,7 +3737,7 @@
         <xsl:when test="form/scheduleMethod = '2'">
           <input name="submit" type="submit" value="save"/>
           <!-- the following test is not good - will need to fix -->
-          <xsl:if test="substring-after(substring-before(form/organizer/organizerUri,'@'),'mailto:') = /bedework/userid">
+          <xsl:if test="form/organizerSchedulingObject">
             <input name="submitAndSend" type="submit" value="save &amp; send invitations"/>
           </xsl:if>
         </xsl:when>
@@ -4402,8 +4402,8 @@
             </tr>
             <tr>
               <td class="fieldname">
-            Keyword:
-            </td>
+                Keyword:
+              </td>
               <td>
                 <xsl:variable name="keyword" select="normalize-space(/bedework/currentCategory/category/keyword)"/>
                 <input type="text" name="categoryWord.value" value="{$keyword}" size="40"/>
@@ -4411,8 +4411,8 @@
             </tr>
             <tr>
               <td class="fieldname optional">
-            Description:
-            </td>
+                Description:
+              </td>
               <td>
                 <textarea name="categoryDesc.value" rows="3" cols="60">
                   <xsl:value-of select="normalize-space(/bedework/currentCategory/category/desc)"/>
