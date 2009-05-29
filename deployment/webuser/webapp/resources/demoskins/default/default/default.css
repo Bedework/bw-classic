@@ -779,6 +779,15 @@ display: inline;
   margin-right: 2px;
   vertical-align: middle;
 }
+#bedework #bwDownloadWidget {
+  position: absolute;
+  background-color: #444;
+  color: #eee;
+}
+#bedework #bwDownloadWidget ul {
+  margin: 1em 1em 1em 2em;
+  padding: 0;
+}
 #bedework #refreshEventAction {
   padding-left: 1em;
 }

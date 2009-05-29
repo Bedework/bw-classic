@@ -1789,10 +1789,34 @@
           <div id="eventActions">
             <!-- download -->
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-              <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
-              Download
-            </a>
+            <xsl:choose>
+              <xsl:when test="recurring='true' or recurrenceId != ''">
+                <a href="javascript:changeClass('bwDownloadWidget','visible')" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                  <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                  Download
+                </a>
+                <div id="bwDownloadWidget" class="invisible">
+                  <ul>
+                    <li>
+                      <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" onclick="changeClass('bwDownloadWidget','invisible')">
+                        master (all recurrences)
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" onclick="changeClass('bwDownloadWidget','invisible')">
+                        instance (just this event)
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </xsl:when>
+              <xsl:otherwise>
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                  <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                  Download
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
             <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
               |
               <xsl:choose>
