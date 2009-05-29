@@ -779,14 +779,17 @@ display: inline;
   margin-right: 2px;
   vertical-align: middle;
 }
-#bedework #bwDownloadWidget {
+#bedework #eventActions .bwMenuWidget {
   position: absolute;
   background-color: #444;
   color: #eee;
 }
-#bedework #bwDownloadWidget ul {
+#bedework #eventActions .bwMenuWidget ul {
   margin: 1em 1em 1em 2em;
   padding: 0;
+}
+#bedework #bwEditRecurWidget {
+  margin-left: 7em;
 }
 #bedework #refreshEventAction {
   padding-left: 1em;
