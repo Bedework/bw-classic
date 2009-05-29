@@ -4897,7 +4897,7 @@
             </textarea>
           </td>
         </tr>
-        <tr>
+        <tr id="bwColorField">
           <th>Color:</th>
           <td>
             <input type="text" name="calendar.color" id="bwCalColor" value="" size="7"/>
@@ -4933,9 +4933,9 @@
             <input type="hidden" value="true" name="calendarCollection"/>
             <!-- type is defaulted to calendar.  It is changed when a typeSwitch is clicked. -->
             <input type="hidden" value="calendar" name="type" id="bwCalType"/>
-            <input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Calendar
-            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Folder
-            <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');setField('bwCalType',this.value);"/> Subscription
+            <input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');changeClass('bwColorField','visible');setField('bwCalType',this.value);"/> Calendar
+            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');changeClass('bwColorField','invisible');bwUpdateColor('','bwCalColor');setField('bwCalType',this.value);"/> Folder
+            <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');changeClass('bwColorField','invisible');bwUpdateColor('','bwCalColor');setField('bwCalType',this.value);"/> Subscription
           </td>
         </tr>
       </table>
