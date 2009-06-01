@@ -415,15 +415,11 @@
 
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
-    <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
-    <!--
-    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
-    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
-    <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/> -->
     <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
     <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
     <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
     <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
+    <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
 
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
                   /bedework/page='modPrefs' or
@@ -546,6 +542,11 @@
         }
         </xsl:comment>
       </script>
+    </xsl:if>
+
+    <xsl:if test="/bedework/page='event'">
+      <!-- jQuery functions for detailed event view -->
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEvent.js">&#160;</script>
     </xsl:if>
 
     <script type="text/javascript">
@@ -1791,66 +1792,6 @@
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
             <xsl:choose>
               <xsl:when test="recurring='true' or recurrenceId != ''">
-                <a href="javascript:toggleVisibility('bwDownloadWidget','bwMenuWidget');changeClass('bwEditRecurWidget','invisible');" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-                  <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
-                  Download
-                </a>
-                <div id="bwDownloadWidget" class="invisible">
-                  <ul>
-                    <li>
-                      <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" onclick="changeClass('bwDownloadWidget','invisible')">
-                        master (all recurrences)
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" onclick="changeClass('bwDownloadWidget','invisible')">
-                        instance (just this event)
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </xsl:when>
-              <xsl:otherwise>
-                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-                  <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
-                  Download
-                </a>
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
-              |
-              <xsl:choose>
-                <xsl:when test="recurring='true' or recurrenceId != ''">
-                  <a href="javascript:toggleVisibility('bwEditRecurWidget','bwMenuWidget');changeClass('bwDownloadWidget','invisible');" title="edit event">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
-                    Edit
-                  </a>
-                  <div id="bwEditRecurWidget" class="invisible">
-                    <ul>
-                      <li>
-                        <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)"  onclick="changeClass('bwEditRecurWidget','invisible')">
-                          master event
-                        </a>
-                      </li>
-                      <li>
-                        <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)" onclick="changeClass('bwEditRecurWidget','invisible')">
-                          instance
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                    Edit
-                  </a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:if>
-            |
-            <xsl:choose>
-              <xsl:when test="recurring='true' or recurrenceId != ''">
                 <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                 Copy:
                 <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy master (recurring event)">master</a>,<a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="copy instance (recurring event)">instance</a>
@@ -1864,7 +1805,6 @@
             </xsl:choose>
             <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content) and not(recurring='true' or recurrenceId != '')">
               <!-- temporarily hide from Recurring events -->
-              |
               <xsl:choose>
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
@@ -1883,7 +1823,6 @@
             <!-- provide this link for public subscriptions; subscriptions to user calendars are
                  currently too confusing since the current user may be able to add events to the
                  other calendar, making the ownership test a bad test -->
-              |
               <xsl:variable name="subname" select="subscription/encodedName"/>
               <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
                 <img src="{$resourcesRoot}/resources/std-ical_iconSubsDkGray.gif" width="12" height="16" border="0" alt="manage/view subscription"/>
@@ -1891,7 +1830,6 @@
               </a>
             </xsl:if>
             <xsl:if test="subscription/removeable != 'true'">
-              |
               <xsl:choose>
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
@@ -1906,6 +1844,65 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:if>
+
+            <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
+              <xsl:choose>
+                <xsl:when test="recurring='true' or recurrenceId != ''">
+                  <div id="bwEditRecurButton" class="bwMenuButton">
+                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
+                    Edit
+                    <div id="bwEditRecurWidget" class="bwMenuWidget">
+                      <ul>
+                        <li>
+                          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)"  onclick="changeClass('bwEditRecurWidget','invisible')">
+                            master
+                          </a>
+                        </li>
+                        <li>
+                          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)" onclick="changeClass('bwEditRecurWidget','invisible')">
+                            instance
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event" class="bwMenuButton">
+                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                    Edit
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
+            <xsl:choose>
+              <xsl:when test="recurring='true' or recurrenceId != ''">
+                <div id="bwDownloadButton" class="bwMenuButton">
+                  <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                  Download
+                  <div id="bwDownloadWidget" class="bwMenuWidget">
+                    <ul>
+                      <li>
+                        <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" onclick="changeClass('bwDownloadWidget','invisible')">
+                          master
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" onclick="changeClass('bwDownloadWidget','invisible')">
+                          instance
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </xsl:when>
+              <xsl:otherwise>
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                  <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                  Download
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
           </div>
           <!-- Display type of event -->
           <xsl:variable name="entityType">

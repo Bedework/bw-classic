@@ -779,17 +779,27 @@ display: inline;
   margin-right: 2px;
   vertical-align: middle;
 }
+#bedework #eventActions .bwMenuButton {
+  position: relative;
+  float: right;
+  margin: 0 1em 0 0;
+}
 #bedework #eventActions .bwMenuWidget {
   position: absolute;
   background-color: #444;
   color: #eee;
+  display: none;  /* hide until shown */
 }
 #bedework #eventActions .bwMenuWidget ul {
-  margin: 1em 1em 1em 2em;
+  margin: 0.25em 0.5em 0.5em 2em;
+  padding: 0;
+}
+#bedework #eventActions .bwMenuWidget li {
+  margin: 0.25em 0 0 0;
   padding: 0;
 }
 #bedework #bwEditRecurWidget {
-  margin-left: 7em;
+  /*margin-left: 7em;*/
 }
 #bedework #refreshEventAction {
   padding-left: 1em;

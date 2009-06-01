@@ -49,7 +49,6 @@ function setField(id,val) {
   field = document.getElementById(id);
   field.value = val;
 }
-
 // show hide items using a checkbox
 function swapVisible(obj,id) {
   if (obj.checked) {
