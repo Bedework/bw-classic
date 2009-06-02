@@ -1788,62 +1788,98 @@
       <tr>
         <th colspan="2" class="commonHeader">
           <div id="eventActions">
-            <!-- download -->
-            <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <xsl:choose>
-              <xsl:when test="recurring='true' or recurrenceId != ''">
-                <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
-                Copy:
-                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy master (recurring event)">master</a>,<a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="copy instance (recurring event)">instance</a>
-              </xsl:when>
-              <xsl:otherwise>
-                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy event">
-                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                  Copy
-                </a>
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content) and not(recurring='true' or recurrenceId != '')">
-              <!-- temporarily hide from Recurring events -->
+
+            <xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind">
               <xsl:choose>
                 <xsl:when test="recurring='true' or recurrenceId != ''">
-                  <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
-                  Link:
-                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,<a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
+                  <div id="bwDeleteRecurButton" class="bwMenuButton">
+                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                    Delete
+                    <div id="bwDeleteRecurWidget" class="bwMenuWidget">
+                      <ul>
+                        <li>
+                          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)" onclick="return confirm('Delete all recurrences of this event?');">
+                            all
+                          </a>
+                        </li>
+                        <li>
+                          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete this instance (recurring event)" onclick="return confirm('Delete this event?');">
+                            instance
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
-                    Link
-                  </a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:if>
-            <xsl:if test="owner != /bedework/userid and public='true'">
-            <!-- provide this link for public subscriptions; subscriptions to user calendars are
-                 currently too confusing since the current user may be able to add events to the
-                 other calendar, making the ownership test a bad test -->
-              <xsl:variable name="subname" select="subscription/encodedName"/>
-              <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
-                <img src="{$resourcesRoot}/resources/std-ical_iconSubsDkGray.gif" width="12" height="16" border="0" alt="manage/view subscription"/>
-                Subscription
-              </a>
-            </xsl:if>
-            <xsl:if test="subscription/removeable != 'true'">
-              <xsl:choose>
-                <xsl:when test="recurring='true' or recurrenceId != ''">
-                  <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                  Delete:
-                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,<a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event" class="bwMenuButton" onclick="return confirm('Delete this event?');">
                     <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     Delete
                   </a>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:if>
+
+            <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content) and not(recurring='true' or recurrenceId != '')">
+              <!-- temporarily hide from Recurring events -->
+              <xsl:choose>
+                <xsl:when test="recurring='true' or recurrenceId != ''">
+                  <div id="bwLinkRecurButton" class="bwMenuButton">
+                    <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
+                    Link
+                    <div id="bwLinkRecurWidget" class="bwMenuWidget">
+                      <ul>
+                        <li>
+                          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">
+                            all
+                          </a>
+                        </li>
+                        <li>
+                          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add this event reference to a calendar">
+                            instance
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar" class="bwMenuButton">
+                    <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
+                    Link
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
+
+            <xsl:choose>
+              <xsl:when test="recurring='true' or recurrenceId != ''">
+                <div id="bwCopyRecurButton" class="bwMenuButton">
+                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
+                  Copy
+                  <div id="bwCopyRecurWidget" class="bwMenuWidget">
+                    <ul>
+                      <li>
+                        <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy master (recurring event)">
+                          all
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="copy this instance (recurring event)">
+                          instance
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </xsl:when>
+              <xsl:otherwise>
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy event" class="bwMenuButton">
+                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                  Copy
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
 
             <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
               <xsl:choose>
@@ -1854,12 +1890,12 @@
                     <div id="bwEditRecurWidget" class="bwMenuWidget">
                       <ul>
                         <li>
-                          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)"  onclick="changeClass('bwEditRecurWidget','invisible')">
-                            master
+                          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">
+                            all
                           </a>
                         </li>
                         <li>
-                          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)" onclick="changeClass('bwEditRecurWidget','invisible')">
+                          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit this instance (recurring event)">
                             instance
                           </a>
                         </li>
@@ -1875,6 +1911,9 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:if>
+
+            <!-- download -->
+            <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
             <xsl:choose>
               <xsl:when test="recurring='true' or recurrenceId != ''">
                 <div id="bwDownloadButton" class="bwMenuButton">
@@ -1883,12 +1922,12 @@
                   <div id="bwDownloadWidget" class="bwMenuWidget">
                     <ul>
                       <li>
-                        <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" onclick="changeClass('bwDownloadWidget','invisible')">
-                          master
+                        <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download master (recurring event)">
+                          all
                         </a>
                       </li>
                       <li>
-                        <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" onclick="changeClass('bwDownloadWidget','invisible')">
+                        <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download this instance (recurring event)">
                           instance
                         </a>
                       </li>
@@ -1897,7 +1936,7 @@
                 </div>
               </xsl:when>
               <xsl:otherwise>
-                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" class="bwMenuButton" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
                   <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
                   Download
                 </a>
@@ -2395,23 +2434,29 @@
           <tr>
             <th colspan="2" class="commonHeader">
               <div id="eventActions">
-                <xsl:if test="not(form/recurringEntity = 'true' and recurrenceId = '')">
-                  <!-- don't display if a master recurring event (because the master can't be viewed) -->
-                  <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                    <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
-                    View
-                  </a>
-                    |
-                </xsl:if>
                 <xsl:choose>
                   <xsl:when test="recurrenceId != ''">
-                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                    Delete:
-                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
-                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+                    <div id="bwDeleteRecurButton" class="bwMenuButton">
+                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                      Delete
+                      <div id="bwDeleteRecurWidget" class="bwMenuWidget">
+                        <ul>
+                          <li>
+                            <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)" onclick="return confirm('Delete all recurrences of this event?');">
+                              all
+                            </a>
+                          </li>
+                          <li>
+                            <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete this instance (recurring event)" onclick="return confirm('Delete this event?');">
+                              instance
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event" class="bwMenuButton" onclick="return confirm('Delete this event?');">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       Delete
                       <xsl:if test="form/recurringEntity='true'">
@@ -2420,6 +2465,13 @@
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
+                <xsl:if test="not(form/recurringEntity = 'true' and recurrenceId = '')">
+                  <!-- don't display if a master recurring event (because the master can't be viewed) -->
+                  <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="bwMenuButton">
+                    <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
+                    View
+                  </a>
+                </xsl:if>
               </div>
               <!-- Display type of event -->
               <xsl:variable name="entityType">

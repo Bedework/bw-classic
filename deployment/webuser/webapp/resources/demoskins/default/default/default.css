@@ -782,7 +782,7 @@ display: inline;
 #bedework #eventActions .bwMenuButton {
   position: relative;
   float: right;
-  margin: 0 1em 0 0;
+  margin: 0 0.5em 0 0;
 }
 #bedework #eventActions .bwMenuWidget {
   position: absolute;
@@ -791,15 +791,13 @@ display: inline;
   display: none;  /* hide until shown */
 }
 #bedework #eventActions .bwMenuWidget ul {
-  margin: 0.25em 0.5em 0.5em 2em;
+  margin: 6px 6px 6px 14px;
   padding: 0;
 }
 #bedework #eventActions .bwMenuWidget li {
   margin: 0.25em 0 0 0;
   padding: 0;
-}
-#bedework #bwEditRecurWidget {
-  /*margin-left: 7em;*/
+  list-style: none;
 }
 #bedework #refreshEventAction {
   padding-left: 1em;

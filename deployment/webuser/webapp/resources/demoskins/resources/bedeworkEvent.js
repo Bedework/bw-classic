@@ -53,5 +53,36 @@ $(document).ready(function() {
       $("#bwDownloadWidget").hide();
     }
   );
+
+  // copy button
+  $("#bwCopyRecurButton").hover(
+    function () {
+      $("#bwCopyRecurWidget").show();
+    },
+    function () {
+      $("#bwCopyRecurWidget").hide();
+    }
+  );
+
+  // delete button
+  $("#bwDeleteRecurButton").hover(
+    function () {
+      $("#bwDeleteRecurWidget").show();
+    },
+    function () {
+      $("#bwDeleteRecurWidget").hide();
+    }
+  );
+
+  // link button
+  $("#bwLinkRecurButton").hover(
+    function () {
+      $("#bwLinkRecurWidget").show();
+    },
+    function () {
+      $("#bwLinkRecurWidget").hide();
+    }
+  );
+
 });
 
