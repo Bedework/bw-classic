@@ -372,11 +372,11 @@
                 </xsl:choose>
               </td>
               <xsl:choose>
-                <xsl:when test="/bedework/inboxState/messages/message">
+                <xsl:when test="/bedework/schedulingMessages/events/event">
                   <td id="msgTaskBar" class="sideMenus">
                     <h3>messages</h3>
                     <ul>
-                      <xsl:apply-templates select="/bedework/inboxState/messages/message" mode="schedNotifications"/>
+                      <xsl:apply-templates select="/bedework/schedulingMessages/events/event" mode="schedNotifications"/>
                     </ul>
                   </td>
                 </xsl:when>
@@ -544,9 +544,14 @@
       </script>
     </xsl:if>
 
+    <!-- page based jquery initializations -->
     <xsl:if test="/bedework/page='event'">
       <!-- jQuery functions for detailed event view -->
       <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEvent.js">&#160;</script>
+    </xsl:if>
+    <xsl:if test="/bedework/page='eventscalendar'">
+      <!-- jQuery functions for detailed event view -->
+      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkCalendarGrid.js">&#160;</script>
     </xsl:if>
 
     <script type="text/javascript">
@@ -886,7 +891,7 @@
        <tr>
          <td class="leftCell">
            <xsl:if test="/bedework/page != 'addEvent' or /bedework/page='editEvent'">
-             <input type="button" value="add..." onclick="toggleActionIcons('bwActionIcons-0','bwActionIcons')"/>
+             <input type="button" value="add..." id="bwAddButton"/>
              <xsl:call-template name="actionIcons">
                <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param>
                <xsl:with-param name="startDate">
@@ -1032,7 +1037,7 @@
       </xsl:choose>
     </xsl:variable>
     <br/>
-    <div id="{$actionIconsId}" class="invisible">
+    <div id="{$actionIconsId}" class="bwActionIcons">
        <a href="{$initEvent}&amp;entityType=event&amp;startdate={$dateTime}" title="add event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
           add event
@@ -1251,7 +1256,7 @@
       <xsl:choose>
         <xsl:when test="recurring='true' or recurrenceId != ''">
           Edit:
-          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">master</a>,
+          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">all</a>
           <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)">instance</a>
           <br/>
         </xsl:when>
@@ -1259,46 +1264,25 @@
           <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
             Edit
           </a>
-          |
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
     <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content) and not(recurring='true' or recurrenceId != '')">
       <!-- temporarily hide from Recurring events -->
-      <xsl:choose>
-        <xsl:when test="recurring='true' or recurrenceId != ''">
-          Link:
-          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">master</a>,
-          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add event reference to a calendar">instance</a>
-          <br/>
-        </xsl:when>
-        <xsl:otherwise>
-          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
-            Link
-          </a>
-          |
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:if>
-    <xsl:if test="owner != /bedework/userid and public='true'">
-            <!-- provide this link for public subscriptions; subscriptions to user calendars are
-                 currently too confusing since the current user may be able to add events to the
-                 other calendar, making the ownership test a bad test -->
-      <xsl:variable name="subname" select="subscription/encodedName"/>
-      <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}" title="manage/view subscription">
-        Subscription
+      <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
+        Link
       </a>
-      |
+      <xsl:text> </xsl:text>
     </xsl:if>
-    <xsl:if test="subscription/unremoveable != 'true'">
+    <xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind">
       <xsl:choose>
         <xsl:when test="recurring='true' or recurrenceId != ''">
           Delete:
-          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)">all</a>,
-          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)">instance</a>
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)" onclick="return confirm('Delete all recurrences of this event?');">all</a>
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)" onclick="return confirm('Delete this event?');">instance</a>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event">
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event" onclick="return confirm('Delete this event?');">
             Delete
           </a>
         </xsl:otherwise>
@@ -1426,25 +1410,25 @@
         <xsl:for-each select="/bedework/eventscalendar/year/month/week/day">
           <xsl:variable name="dayPos" select="position()"/>
           <xsl:if test="filler='false'">
-            <td>
+            <td class="bwActiveDay">
               <xsl:if test="/bedework/now/date = date">
-                <xsl:attribute name="class">today</xsl:attribute>
+                <xsl:attribute name="class">today bwActiveDay</xsl:attribute>
               </xsl:if>
               <xsl:variable name="dayDate" select="date"/>
               <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
+              <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
+                <xsl:value-of select="value"/>
+              </a>
               <div class="gridAdd">
-                <a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIcons bwActionIconsInGrid')" title="add...">
+                <!-- a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIcons bwActionIconsInGrid')" title="add...">
                   <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
-                </a>
+                </a-->
                 <xsl:call-template name="actionIcons">
                   <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
                   <xsl:with-param name="startDate"><xsl:value-of select="$dayDate"/></xsl:with-param>
                   <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
                 </xsl:call-template>
               </div>
-              <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
-                <xsl:value-of select="value"/>
-              </a>
               <xsl:if test="event">
                 <ul>
                   <xsl:apply-templates select="event[not(entityType=2)]" mode="calendarLayout">
@@ -1477,24 +1461,24 @@
                 <td class="filler">&#160;</td>
               </xsl:when>
               <xsl:otherwise>
-                <td>
+                <td class="bwActiveDay">
                   <xsl:if test="/bedework/now/date = date">
-                    <xsl:attribute name="class">today</xsl:attribute>
+                    <xsl:attribute name="class">today bwActiveDay</xsl:attribute>
                   </xsl:if>
                   <xsl:variable name="dayDate" select="date"/>
                   <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
+                  <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
+                    <xsl:value-of select="value"/>
+                  </a>
                   <div class="gridAdd">
-                    <a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIcons bwActionIconsInGrid')" title="add...">
+                    <!-- a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIcons bwActionIconsInGrid')" title="add...">
                       <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
-                    </a>
+                    </a -->
                    <xsl:call-template name="actionIcons">
                      <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
                      <xsl:with-param name="startDate"><xsl:value-of select="$dayDate"/></xsl:with-param>
                    </xsl:call-template>
                   </div>
-                  <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
-                    <xsl:value-of select="value"/>
-                  </a>
                   <xsl:if test="event">
                     <ul>
                       <xsl:apply-templates select="event[not(entityType=2)]" mode="calendarLayout">
@@ -1689,9 +1673,9 @@
                   <td class="filler">&#160;</td>
                 </xsl:when>
                 <xsl:otherwise>
-                  <td>
+                  <td class="bwActiveDay">
                     <xsl:if test="/bedework/now/date = date">
-                      <xsl:attribute name="class">today</xsl:attribute>
+                      <xsl:attribute name="class">today bwActiveDay</xsl:attribute>
                     </xsl:if>
                     <xsl:variable name="dayDate" select="date"/>
                     <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}">
@@ -1747,11 +1731,14 @@
   </xsl:template>
 
   <!--== MESSAGES ==-->
-  <xsl:template match="message" mode="schedNotifications">
+  <xsl:template match="event" mode="schedNotifications">
+    <xsl:variable name="calPath" select="calendar/encodedPath"/>
+    <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
+    <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <li>
-      <xsl:if test="new-meeting">
-        New meeting
-      </xsl:if>
+      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+        <xsl:value-of select="summary"/>
+      </a>
     </li>
   </xsl:template>
 
@@ -7591,30 +7578,6 @@
         </tr>
         <tr><td colspan="2">&#160;</td></tr>
         <tr><td colspan="2" class="fill">Adding events:</td></tr>
-        <!-- hide if only one calendar to select -->
-        <xsl:if test="count(/bedework/myCalendars/calendars//calendar[currentAccess/current-user-privilege-set/privilege/write-content and calType = '1']) &gt; 1">
-          <tr>
-            <td class="fieldname">
-              Default calendar:
-            </td>
-            <td>
-              <xsl:variable name="newCalPath" select="defaultCalendar/path"/>
-              <input type="hidden" name="newCalPath" value="{$newCalPath}" id="bwNewCalPathField"/>
-              <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-              <span id="bwEventCalDisplay">
-                <xsl:choose>
-                  <xsl:when test="contains(defaultCalendar,$userPath)">
-                    <xsl:value-of select="substring-after(defaultCalendar,$userPath)"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="defaultCalendar"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </span>
-              <xsl:call-template name="selectCalForEvent"/>
-            </td>
-          </tr>
-        </xsl:if>
         <tr>
           <td class="fieldname">
             Preferred time type:
@@ -7657,6 +7620,30 @@
             </select>
           </td>
         </tr>
+        <!-- hide if only one calendar to select -->
+        <xsl:if test="count(/bedework/myCalendars/calendars//calendar[currentAccess/current-user-privilege-set/privilege/write-content and calType = '1']) &gt; 1">
+          <tr>
+            <td class="fieldname">
+              Default scheduling calendar:
+            </td>
+            <td>
+              <xsl:variable name="newCalPath" select="defaultCalendar/path"/>
+              <input type="hidden" name="newCalPath" value="{$newCalPath}" id="bwNewCalPathField"/>
+              <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+              <span id="bwEventCalDisplay">
+                <xsl:choose>
+                  <xsl:when test="contains(defaultCalendar,$userPath)">
+                    <xsl:value-of select="substring-after(defaultCalendar,$userPath)"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="defaultCalendar"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </span>
+              <xsl:call-template name="selectCalForEvent"/>
+            </td>
+          </tr>
+        </xsl:if>
         <tr><td colspan="2">&#160;</td></tr>
         <tr><td colspan="2" class="fill">Workday settings:</td></tr>
         <tr>
@@ -7904,17 +7891,26 @@
       <li class="selected">scheduling/meetings</li>
     </ul>
 
-    <div class="innerBlock">
-      <h3>This page is in progress.</h3>
-      <p>In the meantime, you may <a href="{$calendar-fetch}">set scheduling access by modifying acls on your inbox and outbox</a>.  Grant scheduling access and read freebusy.</p>
-      <ul>
-        <li>Inbox: users granted scheduling access on your inbox can send you scheduling requests.</li>
-        <li>Outbox: users granted scheduling access on your outbox can schedule on your behalf.</li>
-      </ul>
-    </div>
-
     <form name="scheduleAutoProcessingForm" method="post" action="{$prefs-updateSchedulingPrefs}">
       <table class="common">
+        <tr><td colspan="2" class="fill">Scheduling access:</td></tr>
+        <tr>
+          <td colspan="2">
+            <div class="innerBlock">
+              <p>
+                <a href="{$calendar-fetch}">Set scheduling access by modifying acls on your inbox and outbox</a>.<br/>
+                Grant "scheduling" access and "read freebusy".
+              </p>
+              <ul>
+                <li>Inbox: users granted scheduling access on your inbox can send you scheduling requests.</li>
+                <li>Outbox: users granted scheduling access on your outbox can schedule on your behalf.</li>
+              </ul>
+              <p class="note">
+                *this approach is temporary and will be improved in upcoming releases.
+              </p>
+            </div>
+          </td>
+        </tr>
         <tr><td colspan="2" class="fill">Scheduling auto-processing:</td></tr>
         <tr>
           <td class="fieldname">

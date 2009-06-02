@@ -361,6 +361,7 @@ body {
 }
 #bedework .bwActionIcons {
   position: absolute;
+  display: none;
   white-space: nowrap;
   border: 1px solid #333;
   background-color: #eee;
@@ -1326,9 +1327,8 @@ display: inline;
   text-align: center;
 }
 #bedework div.gridAdd {
-  display: block;
-  float: right;
-  margin: 0;
+  position: absolute;
+  margin: -1em 0 0 1em;
   padding: 0;
 }
 #bedework a.calendarAdd img {
@@ -1539,6 +1539,7 @@ display: inline;
 }
 #bedework #listTable td.eventLinks a {
   text-decoration: underline;
+  padding-left: 0.5em;
 }
 #bedework #listTable td.eventLinks a:hover {
   color: #eee;
