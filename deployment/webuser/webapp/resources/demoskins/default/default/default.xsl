@@ -419,7 +419,9 @@
     <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
     <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
     <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
+    <!-- load bedework personal client javascript libraries -->
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
+    <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkSetup.js">&#160;</script>
 
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
                   /bedework/page='modPrefs' or

@@ -27,39 +27,15 @@
    therefore not currently interchangable between apps.  This will be normalized
    in the coming versions, but for now don't try to exchange them. */
 
-// jQuery stuff for the calendar grid.
-// These functions support contextual menus for events and day cells in the
-// week and month calendar grids
+// jQuery global stuff : these functions are called on every page
+// and should always be loaded.
 
 $(document).ready(function() {
 
-  // active day in the calendar grid
-  $("td.bwActiveDay").click (
-    function (event) {
-      // only activate if we've clicked the table cell itself
-      var $targ = $(event.target);
-      if ($targ.is("td")) {
-        $(this).children("div").children("div.bwActionIcons").toggle();
-      }
-    }
-  );
-
-  // hover effects to auto-hide the action icons;
-  // do this on both the actions and table cells.
-  $("td.bwActiveDay").hover (
-    function() {
-      // do nothing on mouseover
-    },
+  // main "add..." button
+  $("#bwAddButton").click (
     function () {
-      $("div.bwActionIcons").hide();
-    }
-  );
-  $("div.bwActionIcons").hover (
-    function() {
-      // do nothing on mouseover
-    },
-    function () {
-      $("div.bwActionIcons").hide();
+      $("#bwActionIcons-0").toggle();
     }
   );
 
