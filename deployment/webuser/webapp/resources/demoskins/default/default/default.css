@@ -1309,6 +1309,7 @@ display: inline;
   margin: 0;
   background-color: #ffd;
   color: black;
+  font-size: 125%;
 }
 #bedework #monthCalendarTable .eventTip strong {
   font-weight: bold;
@@ -1316,7 +1317,7 @@ display: inline;
 }
 #bedework #monthCalendarTable .eventTip ul {
   margin-top: 1em;
-  font-size: 120%;
+  font-size: 110%;
 }
 #bedework #monthCalendarTable .eventTipStatusCancelled {
   display: block;
