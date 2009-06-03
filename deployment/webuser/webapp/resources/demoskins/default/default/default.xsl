@@ -5653,7 +5653,7 @@
 
       <table class="common" cellspacing="0">
         <tr>
-          <th class="commonHeader" colspan="2">
+          <th class="commonHeader">
               Event date limits:
               <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> today forward
               <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
@@ -5661,7 +5661,7 @@
           </th>
         </tr>
         <tr id="exportDateRange" class="invisible">
-          <td colspan="2" class="dates">
+          <td class="dates">
             <strong>Start:</strong>
             <div class="dateFields">
               <xsl:copy-of select="/bedework/formElements/form/start/month/*"/>
@@ -5680,9 +5680,6 @@
         <tr>
           <th class="borderRight">
             My Calendars
-          </th>
-          <th>
-            Public Calendars
           </th>
         </tr>
         <tr>
@@ -5713,11 +5710,11 @@
               </xsl:for-each>
             </ul>
           </td>
-          <td>
+          <!-- td>
             <ul class="calendarTree">
               <xsl:apply-templates select="./calendar" mode="buildExportTree"/>
             </ul>
-          </td>
+          </td-->
         </tr>
       </table>
     </form>
