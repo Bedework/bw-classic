@@ -898,7 +898,7 @@
                <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param>
                <xsl:with-param name="startDate">
                  <xsl:choose>
-                   <xsl:when test="/bedework/periodname = 'day'"><xsl:value-of select="/bedework/firstday/date"/></xsl:when>
+                   <xsl:when test="/bedework/periodname = 'Day'"><xsl:value-of select="/bedework/firstday/date"/></xsl:when>
                    <xsl:otherwise><xsl:value-of select="/bedework/now/date"/></xsl:otherwise>
                  </xsl:choose>
                </xsl:with-param>
@@ -1085,13 +1085,13 @@
                    <xsl:variable name="date" select="date"/>
                    <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
                    <div class="listAdd">
-                     <a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIcons bwActionIconsInList')" title="add...">
+                     <span class="listAddButton">
                        add...
-                     </a>
+                     </span>
                      <xsl:call-template name="actionIcons">
                        <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
                        <xsl:with-param name="startDate"><xsl:value-of select="$date"/></xsl:with-param>
-                  <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
+                       <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
                      </xsl:call-template>
                    </div>
                    <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$date}">
@@ -1479,6 +1479,7 @@
                    <xsl:call-template name="actionIcons">
                      <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
                      <xsl:with-param name="startDate"><xsl:value-of select="$dayDate"/></xsl:with-param>
+                     <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
                    </xsl:call-template>
                   </div>
                   <xsl:if test="event">
@@ -1530,7 +1531,7 @@
     <!-- Calendar colors are set in the add/modify calendar forms which, if present,
          override the background-color set by eventClass. User styles should
          not be used for canceled events (tentative is ok). -->
-    <li>
+    <li class="event">
       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"
         class="{$eventRootClass} {$eventClass}">
         <xsl:if test="status != 'CANCELLED' and $calendarColor != ''">
@@ -1556,15 +1557,17 @@
             <xsl:value-of select="summary"/>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:variable name="eventTipClass">
+      </a>
+      <div>
+        <xsl:attribute name="class">
           <xsl:choose>
-            <xsl:when test="$dayPos &gt; 5">eventTipReverse</xsl:when>
+            <xsl:when test="$dayPos &gt; 5">eventTip eventTipReverse</xsl:when>
             <xsl:otherwise>eventTip</xsl:otherwise>
           </xsl:choose>
-        </xsl:variable>
-        <span class="{$eventTipClass}">
-          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELED</span></xsl:if>
-          <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative">TENTATIVE</span></xsl:if>
+        </xsl:attribute>
+        <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELED</span></xsl:if>
+        <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative">TENTATIVE</span></xsl:if>
+        <div class="eventTipDetails">
           <xsl:choose>
             <xsl:when test="summary = ''">
               <em>no title</em>
@@ -1585,7 +1588,7 @@
               all day
             </xsl:otherwise>
           </xsl:choose><br/>
-          <xsl:if test="location/address">
+          <xsl:if test="normalize-space(location/address) != ''">
             Location: <xsl:value-of select="location/address"/><br/>
           </xsl:if>
           Calendar:
@@ -1609,8 +1612,9 @@
           <xsl:if test="recurring='true' or recurrenceId != ''">
             recurring
           </xsl:if>
+          <xsl:variable name="userStr">/principals/users/<xsl:value-of select="/bedework/userid"/></xsl:variable>
           <xsl:choose>
-            <xsl:when test="owner = /bedework/userid">
+            <xsl:when test="$userStr = owner">
               personal <xsl:value-of select="$entityType"/>
             </xsl:when>
             <xsl:when test="public = 'true'">
@@ -1620,8 +1624,128 @@
               <xsl:value-of select="$entityType"/> (<xsl:value-of select="calendar/owner"/>)
             </xsl:otherwise>
           </xsl:choose>
-        </span>
-      </a>
+        </div>
+        <ul class="eventActionsInGrid">
+          <li>
+           <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+             <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
+             View details
+           </a>
+         </li>
+         <li>
+           <!-- download -->
+           <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
+           <xsl:choose>
+             <xsl:when test="recurring='true' or recurrenceId != ''">
+                <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                Download
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download master (recurring event)">
+                  all
+                </a>,
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download this instance (recurring event)">
+                  instance
+                </a>
+             </xsl:when>
+             <xsl:otherwise>
+               <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                 <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                 Download
+               </a>
+             </xsl:otherwise>
+           </xsl:choose>
+         </li>
+         <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
+           <li>
+             <xsl:choose>
+               <xsl:when test="recurring='true' or recurrenceId != ''">
+                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
+                  Edit:
+                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">
+                    all
+                  </a>,
+                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit this instance (recurring event)">
+                    instance
+                  </a>
+               </xsl:when>
+               <xsl:otherwise>
+                 <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
+                   <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                   Edit
+                 </a>
+               </xsl:otherwise>
+             </xsl:choose>
+           </li>
+          </xsl:if>
+          <li>
+           <xsl:choose>
+             <xsl:when test="recurring='true' or recurrenceId != ''">
+                <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
+                Copy:
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy master (recurring event)">
+                  all
+                </a>,
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="copy this instance (recurring event)">
+                  instance
+                </a>
+             </xsl:when>
+             <xsl:otherwise>
+               <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy event">
+                 <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                 Copy
+               </a>
+             </xsl:otherwise>
+           </xsl:choose>
+          </li>
+
+          <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content) and not(recurring='true' or recurrenceId != '')">
+            <li>
+             <!-- temporarily hide from Recurring events -->
+             <xsl:choose>
+               <xsl:when test="recurring='true' or recurrenceId != ''">
+                  <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
+                  Link:
+                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">
+                    all
+                  </a>,
+                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add this event reference to a calendar">
+                    instance
+                  </a>
+               </xsl:when>
+               <xsl:otherwise>
+                 <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
+                   <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
+                   Link
+                 </a>
+               </xsl:otherwise>
+             </xsl:choose>
+           </li>
+         </xsl:if>
+
+         <xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind">
+           <li>
+             <xsl:choose>
+               <xsl:when test="recurring='true' or recurrenceId != ''">
+                  <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                  Delete:
+                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)" onclick="return confirm('Delete all recurrences of this event?');">
+                    all
+                  </a>,
+                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete this instance (recurring event)" onclick="return confirm('Delete this event?');">
+                    instance
+                  </a>
+               </xsl:when>
+               <xsl:otherwise>
+                 <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event" onclick="return confirm('Delete this event?');">
+                   <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                   Delete
+                 </a>
+               </xsl:otherwise>
+             </xsl:choose>
+           </li>
+         </xsl:if>
+        </ul>
+
+      </div>
     </li>
   </xsl:template>
 

@@ -35,7 +35,15 @@ $(document).ready(function() {
   // main "add..." button
   $("#bwAddButton").click (
     function () {
-      $("#bwActionIcons-0").toggle();
+      $("#bwActionIcons-0").toggle("fast");
+    }
+  );
+  $("#bwActionIcons-0").hover(
+    function() {
+      // do nothing on mouseover
+    },
+    function () {
+      $("div.bwActionIcons").hide();
     }
   );
 

@@ -372,8 +372,8 @@ body {
 #bedework .bwActionIconsInGrid {
   margin-left: -100px;
 }
-#bedework .bwActionIconsInList {
-  right: 2em;
+#bedework .listAdd .bwActionIcons {
+  margin-left: -80px;
 }
 #bedework .bwActionIcons a:link,
 #bedework .bwActionIcons a:active,
@@ -799,6 +799,12 @@ display: inline;
   margin: 0.25em 0 0 0;
   padding: 0;
   list-style: none;
+}
+#bedework .eventActionsInGrid {
+  margin: 1em !important;
+}
+#bedework .eventActionsInGrid li {
+  display: block !important;
 }
 #bedework #refreshEventAction {
   padding-left: 1em;
@@ -1283,33 +1289,36 @@ display: inline;
   color: #eee !important; /* must be important to override a:hover selector above */
   background-color: black !important; /* must be important to override a:hover selector above */
 }
-#bedework #monthCalendarTable a span.eventTip,
-#bedework #monthCalendarTable a span.eventTipReverse {
+#bedework #monthCalendarTable .eventTip {
   display: none;
 }
-#bedework #monthCalendarTable a:hover span.eventTip {
-  display: block;
+#bedework #monthCalendarTable .eventTip {
   position: absolute;
   width: 20em;
-  top: 1em;
-  left: 12em;
   background-color: #ffa;
   color: black;
-  padding: 4px;
+  margin: -0.5em 0 0 4em;
+  padding: 1em;
   border: 1px solid #333;
 }
-#bedework #monthCalendarTable a:hover span.eventTipReverse {
-  display: block;
-  position: absolute;
-  width: 20em;
-  top: 1em;
-  left: -21em;
-  background-color: #ffa;
+#bedework #monthCalendarTable .eventTipReverse {
+  margin: -0.5em 0 0 -4em;
+}
+#bedework #monthCalendarTable .eventTipDetails {
+  padding: 1em;
+  margin: 0;
+  background-color: #ffd;
   color: black;
-  padding: 4px;
-  border: 1px solid #333;
 }
-#bedework #monthCalendarTable a:hover span.eventTipStatusCancelled {
+#bedework #monthCalendarTable .eventTip strong {
+  font-weight: bold;
+  font-size: 110%;
+}
+#bedework #monthCalendarTable .eventTip ul {
+  margin-top: 1em;
+  font-size: 120%;
+}
+#bedework #monthCalendarTable .eventTipStatusCancelled {
   display: block;
   color: white;
   background-color: #333;
@@ -1317,7 +1326,7 @@ display: inline;
   margin-bottom: 6px;
   text-align: center;
 }
-#bedework #monthCalendarTable a:hover span.eventTipStatusTentative {
+#bedework #monthCalendarTable .eventTipStatusTentative {
   display: block;
   color: black;
   background: #eee url('../../resources/tentativeLines.gif') top;

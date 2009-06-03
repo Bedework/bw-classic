@@ -33,13 +33,13 @@
 
 $(document).ready(function() {
 
-  // active day in the calendar grid
+  // an active day in the calendar grid
   $("td.bwActiveDay").click (
     function (event) {
       // only activate if we've clicked the table cell itself
       var $targ = $(event.target);
       if ($targ.is("td")) {
-        $(this).children("div").children("div.bwActionIcons").toggle();
+        $(this).children("div").children("div.bwActionIcons").toggle("fast");
       }
     }
   );
@@ -62,6 +62,33 @@ $(document).ready(function() {
       $("div.bwActionIcons").hide();
     }
   );
+
+  $("div.listAdd").hover (
+    function () {
+      $(this).children("div.bwActionIcons").show("fast");
+    },
+    function () {
+      $(this).children("div.bwActionIcons").hide("fast");
+    }
+  );
+
+  // EVENT MENUS and TOOLTIPS
+
+  $("li.event").hover (
+    function () {
+      $(this).children("div.eventTip").show();
+    },
+    function () {
+      $(this).children("div.eventTip").hide();
+    }
+  );
+
+  $("div.eventTip").click (
+    function () {
+      $(this).slideUp("fast");
+    }
+  );
+
 
 });
 
