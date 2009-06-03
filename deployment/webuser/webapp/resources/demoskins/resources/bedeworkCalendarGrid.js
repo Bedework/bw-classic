@@ -39,7 +39,12 @@ $(document).ready(function() {
       // only activate if we've clicked the table cell itself
       var $targ = $(event.target);
       if ($targ.is("td")) {
-        $(this).children("div").children("div.bwActionIcons").toggle("fast");
+        $(this).children("div").children("div.bwActionIcons").css({
+          "left" : event.pageX,
+          "top" : event.pageY
+        });
+
+        $(this).children("div").children("div.bwActionIcons").toggle();
       }
     }
   );
