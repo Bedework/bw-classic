@@ -758,11 +758,11 @@ function doRejectEvent(formObj, eventTitle, eventDatesForEmail){
   var message;
   message = "Your event has been rejected.\n\n";
   message += "EVENT DETAILS\n-------------\n";
-  message = "Event Title: " + eventTitle + "\n";
-  message = "Event Dates: " + eventDatesForEmail + "\n\n\n";
-  if (trim(formObj.reason) != '') {
+  message += "Event Title: " + eventTitle + "\n";
+  message += "Event Dates: " + eventDatesForEmail + "\n\n\n";
+  if (trim(formObj.reason.value) != '') {
     message += "Reason:\n";
-    message += formObj.reason;
+    message += formObj.reason.value;
   }
   formObj.sntext.value = message;
 }

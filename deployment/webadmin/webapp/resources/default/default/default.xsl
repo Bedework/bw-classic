@@ -360,6 +360,7 @@
                       /bedework/page='calSuitePrefs' or
                       /bedework/page='eventList'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
           <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkUtil.js">&#160;</script>
         </xsl:if>
         <xsl:if test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
@@ -3106,9 +3107,9 @@
             <xsl:choose>
               <xsl:when test="/bedework/page = 'deleteEventConfirmPending'">
                 <xsl:attribute name="action"><xsl:value-of select="$event-deletePending"/></xsl:attribute>
-                <xsl:attribute name="onsubmit">doRejectMessage(this,<xsl:value-of select="summary"/>,<xsl:value-of select="$eventDatesForEmail"/>);</xsl:attribute>
+                <xsl:attribute name="onsubmit">doRejectEvent(this,'<xsl:value-of select="summary"/>','<xsl:value-of select="$eventDatesForEmail"/>');</xsl:attribute>
                 <!-- Setup email notification fields -->
-                <input type="hidden" id="submitNotification" name="submitNotification" value="false"/>
+                <input type="hidden" id="submitNotification" name="submitNotification" value="true"/>
                 <!-- "from" should be a preference: hard code it for now -->
                 <input type="hidden" id="snfrom" name="snfrom" value="bedework@yoursite.edu"/>
                 <input type="hidden" id="snsubject" name="snsubject" value=""/>
