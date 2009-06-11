@@ -177,6 +177,7 @@
                 <input type="radio" value="-b" name="b" disabled="disabled"/>
               </td>
             </tr>
+            <!--  Old style scheduling - disable setting
             <tr>
               <td class="level4">
                 <input type="checkbox" value="S" id="accessSchedule" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> schedule
@@ -221,6 +222,7 @@
                 <input type="radio" value="-s" name="s" disabled="disabled"/>
               </td>
             </tr>
+            End of old style scheduling -->
             <tr>
               <td class="level3">
                  <input type="checkbox" value="u" id="u" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> delete (unbind)
@@ -230,6 +232,94 @@
               </td>
               <td>
                 <input type="radio" value="-u" name="u" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level2">
+                <input type="checkbox" value="D" id="accessScheduleDeliver" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> Schedule-deliver
+              </td>
+              <td>
+                <input type="radio" value="D" name="accessScheduleDeliver" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-D" name="accessScheduleDeliver"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="i" id="i" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-deliver-invite
+              </td>
+              <td>
+                <input type="radio" value="i" name="i" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-i" name="i" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="e" id="e" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-deliver-reply
+              </td>
+              <td>
+                <input type="radio" value="e" name="e" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-e" name="e" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="q" id="q" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-query-freebusy
+              </td>
+              <td>
+                <input type="radio" value="q" name="q" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-q" name="q" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level2">
+                <input type="checkbox" value="T" id="accessScheduleSend" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> Schedule-send
+              </td>
+              <td>
+                <input type="radio" value="T" name="accessScheduleSend" checked="checked"/>
+              </td>
+              <td>
+                <input type="radio" value="-T" name="accessScheduleSend"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="I" id="I" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-send-invite
+              </td>
+              <td>
+                <input type="radio" value="I" name="I" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-I" name="I" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="E" id="E" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-send-reply
+              </td>
+              <td>
+                <input type="radio" value="E" name="E" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-E" name="E" disabled="disabled"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="level3">
+                <input type="checkbox" value="Q" id="Q" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-send-freebusy
+              </td>
+              <td>
+                <input type="radio" value="Q" name="Q" checked="checked" disabled="disabled"/>
+              </td>
+              <td>
+                <input type="radio" value="-Q" name="Q" disabled="disabled"/>
               </td>
             </tr>
             <!--<tr>
@@ -336,6 +426,14 @@
        <xsl:when test="$name = 'schedule-free-busy'">s</xsl:when>
        <xsl:when test="$name = 'unbind'">u</xsl:when>
        <xsl:when test="$name = 'unlock'">U</xsl:when>
+       <xsl:when test="$name = 'schedule-deliver'">D</xsl:when>
+       <xsl:when test="$name = 'schedule-deliver-invite'">i</xsl:when>
+       <xsl:when test="$name = 'schedule-deliver-reply'">e</xsl:when>
+       <xsl:when test="$name = 'schedule-query-freebusy'">q</xsl:when>
+       <xsl:when test="$name = 'schedule-send'">T</xsl:when>
+       <xsl:when test="$name = 'schedule-send-invite'">I</xsl:when>
+       <xsl:when test="$name = 'schedule-send-reply'">E</xsl:when>
+       <xsl:when test="$name = 'schedule-send-freebusy'">Q</xsl:when>
        <xsl:when test="$name = 'none'">N</xsl:when>
      </xsl:choose><!--
 --></xsl:template>

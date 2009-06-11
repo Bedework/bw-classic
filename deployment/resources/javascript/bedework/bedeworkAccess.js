@@ -75,6 +75,8 @@ var howWritePropertiesVal = "write-properties";
 var howWriteContentVal = "write-content";
 
 var howBindVal = "create";
+
+/* Old scheduling */
 var howScheduleVal = "schedule";
 var howScheduleRequestVal = "schedule-request";
 var howScheduleReplyVal = "schedule-reply";
@@ -83,6 +85,16 @@ var howScheduleFreebusyVal = "schedule-freebusy";
 var howUnbindVal = "delete";
 
 var howUnlockVal = "unlock";
+
+var howScheduleDeliverVal = "schedule-deliver";
+var howScheduleDeliverInviteVal = "schedule-deliver-invite";
+var howScheduleDeliverReplyVal = "schedule-deliver-reply";
+var howScheduleQueryFreebusyVal = "schedule-query-freebusy";
+
+var howScheduleSendVal = "schedule-send";
+var howScheduleSendInviteVal = "schedule-send-invite";
+var howScheduleSendReplyVal = "schedule-send-reply";
+var howScheduleSendFreebusyVal = "schedule-send-freebusy";
 
 // How denied accesses appear
 var howDenyAllVal = "none";
@@ -106,6 +118,16 @@ var howDenyScheduleFreebusyVal = "not-schedule-freebusy";
 var howDenyUnbindVal = "not-delete";
 
 var howDenyUnlockVal = "not-unlock";
+
+var howDenyScheduleDeliverVal = "not-schedule-deliver";
+var howDenyScheduleDeliverInviteVal = "not-schedule-deliver-invite";
+var howDenyScheduleDeliverReplyVal = "not-schedule-deliver-reply";
+var howDenyScheduleQueryFreebusyVal = "not-schedule-query-freebusy";
+
+var howDenyScheduleSendVal = "not-schedule-send";
+var howDenyScheduleSendInviteVal = "not-schedule-send-invite";
+var howDenyScheduleSendReplyVal = "not-schedule-send-reply";
+var howDenyScheduleSendFreebusy = "not-schedule-send-freebusy";
 
 //var howNoneVal = "none";
 
@@ -172,7 +194,7 @@ function howVals(h, cont, davEl, dv, ddv) {
 var hows = new function() {
   var hv = new Array();
 
-  hv.push(new howVals("A", "RrPFWapcbStysuN", "<D:all/>", howAllVal, howDenyAllVal));
+  hv.push(new howVals("A", "RrPFWapcbStysuNDieqTIEQ", "<D:all/>", howAllVal, howDenyAllVal));
 
   hv.push(new howVals("R", "rPF", "<D:read/>", howReadVal, howDenyReadVal));
   hv.push(new howVals("r", "", "<D:read-acl/>", howReadAclVal, howDenyReadAclVal));
@@ -183,8 +205,9 @@ var hows = new function() {
   hv.push(new howVals("a", "", "<D:write-acl/>", howWriteAclVal, howDenyWriteAclVal));
   hv.push(new howVals("p", "", "<D:write-properties/>", howWritePropertiesVal, howDenyWritePropertiesVal));
   hv.push(new howVals("c", "", "<D:write-content/>", howWriteContentVal, howDenyWriteContentVal));
-
   hv.push(new howVals("b", "Stys", "<D:bind/>", howBindVal, howDenyBindVal));
+
+  /* Old caldav sched - should disallow use */
   hv.push(new howVals("S", "tys", "<C:schedule/>", howScheduleVal, howDenyScheduleVal));
   hv.push(new howVals("t", "", "<C:schedule-request/>", howScheduleRequestVal, howDenyScheduleRequestVal));
   hv.push(new howVals("y", "", "<C:schedule-reply/>", howScheduleReplyVal, howDenyScheduleReplyVal));
@@ -193,6 +216,24 @@ var hows = new function() {
   hv.push(new howVals("u", "", "<D:unbind/>", howUnbindVal, howDenyUnbindVal));
 
   hv.push(new howVals("U", "", "<D:unlock/>", howUnlockVal, howDenyUnlockVal));
+
+  hv.push(new howVals("D", "ieq", "<C:schedule-deliver/>",
+      howScheduleDeliverVal, howDenyScheduleDeliverVal));
+  hv.push(new howVals("i", "", "<C:schedule-deliver-invite/>",
+      howScheduleDeliverInviteVal, howDenyScheduleDeliverInviteVal));
+  hv.push(new howVals("e", "", "<C:schedule-deliver-reply/>",
+      howScheduleDeliverReplyVal, howDenyScheduleDeliverReplyVal));
+  hv.push(new howVals("q", "", "<C:schedule-query-freebusy/>",
+      howScheduleQueryFreebusyVal, howDenyScheduleQueryFreebusyVal));
+
+  hv.push(new howVals("T", "IEQ", "<C:schedule-send/>",
+      howScheduleSendVal, howDenyScheduleSendVal));
+  hv.push(new howVals("I", "", "<C:schedule-send-invite/>",
+      howScheduleSendInviteVal, howDenyScheduleSendInviteVal));
+  hv.push(new howVals("E", "", "<C:schedule-send-reply/>",
+      howScheduleSendReplyVal, howDenyScheduleSendReplyVal));
+  hv.push(new howVals("Q", "", "<C:schedule-send-freebusy/>",
+      howScheduleSendFreebusyVal, howDenyScheduleSendFreebusy));
 
   //hv.push(new howVals("N", "rPFapcbStysu", "", howNoneVal)); // None is -A
 
