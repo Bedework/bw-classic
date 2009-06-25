@@ -173,9 +173,13 @@
           <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
-          <allowEditAllCategories>false</allowEditAllCategories>
-          <allowEditAllLocations>false</allowEditAllLocations>
-          <allowEditAllContacts>false</allowEditAllContacts>
+
+          <!-- if these are false only superuser can maintain public
+               categories, locations and contacts -->
+          <allowEditAllCategories>true</allowEditAllCategories>
+          <allowEditAllLocations>true</allowEditAllLocations>
+          <allowEditAllContacts>true</allowEditAllContacts>
+
           <categoryOptional>true</categoryOptional>
 
           <noGroupAllowed>false</noGroupAllowed>

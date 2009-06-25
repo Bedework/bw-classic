@@ -87,8 +87,12 @@
           </else>
         </if>
 
+        <!--
         <property name="org.bedework.ear.templib"
                   location="${org.bedework.ear.dir}/lib" />
+                  -->
+        <property name="org.bedework.ear.templib"
+                  location="${org.bedework.temp.dir}/earlib" />
         <property name="org.bedework.ear.properties.dir"
                   location="${org.bedework.temp.dir}/ear-properties" />
 
