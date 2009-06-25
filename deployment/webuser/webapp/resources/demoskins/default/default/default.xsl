@@ -2337,10 +2337,10 @@
                     </xsl:choose>
                   </td>
                   <td class="role">
-                    <xsl:value-of select="role"/>
+                    <xsl:apply-templates select="role"/>
                   </td>
                   <td class="status">
-                    <xsl:value-of select="partstat"/>
+                    <xsl:apply-templates select="partstat"/>
                   </td>
                 </tr>
               </xsl:for-each>
@@ -4350,14 +4350,35 @@
             </a>
           </td>
           <td class="role">
-            <xsl:value-of select="role"/>
+            <xsl:apply-templates select="role"/>
           </td>
           <td class="status">
-            <xsl:value-of select="partstat"/>
+            <xsl:apply-templates select="partstat"/>
           </td>
         </tr>
       </xsl:for-each>
     </table>
+  </xsl:template>
+
+  <xsl:template match="partstat">
+    <xsl:choose>
+      <xsl:when test=". = 'NEEDS-ACTION' or . = ''">needs action</xsl:when>
+      <xsl:when test=". = 'ACCEPTED'">accepted</xsl:when>
+      <xsl:when test=". = 'DECLINED'">declined</xsl:when>
+      <xsl:when test=". = 'TENTATIVE'">tentative</xsl:when>
+      <xsl:when test=". = 'DELEGATED'">delegated</xsl:when>
+      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="role">
+    <xsl:choose>
+      <xsl:when test=". = 'REQ-PARTICIPANT' or . = ''">required participant</xsl:when>
+      <xsl:when test=". = 'CHAIR'">chair</xsl:when>
+      <xsl:when test=". = 'OPT-PARTICIPANT'">optional participant</xsl:when>
+      <xsl:when test=". = 'NON-PARTICIPANT'">non-participant</xsl:when>
+      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="recipients">
@@ -7288,10 +7309,10 @@
                   <xsl:sort select="attendeeUri" order="ascending" case-order="upper-first"/>
                   <tr>
                     <td class="role">
-                      <xsl:value-of select="role"/>
+                      <xsl:apply-templates select="role"/>
                     </td>
                     <td class="status">
-                      <xsl:value-of select="partstat"/>
+                      <xsl:apply-templates select="partstat"/>
                     </td>
                     <td>
                       <xsl:variable name="attendeeUri" select="attendeeUri"/>
@@ -7410,7 +7431,7 @@
                     TENTATIVELY accepted
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="attendees/attendee/partstat"/>
+                    <xsl:apply-templates select="attendees/attendee/partstat"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 your invitation.
@@ -7471,7 +7492,7 @@
             Status:
           </td>
           <td class="fieldval scheduleActions">
-            <xsl:value-of select="attendees/attendee/partstat"/>
+            <xsl:apply-templates select="attendees/attendee/partstat"/>
             <xsl:if test="comments/value">
               <p><strong>Comments:</strong></p>
               <div id="comments">
