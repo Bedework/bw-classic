@@ -1859,10 +1859,19 @@
   <!--== MESSAGES ==-->
   <xsl:template match="event" mode="schedNotifications">
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
-    <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
+    <xsl:variable name="eventName" select="name"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
+    <xsl:variable name="inboxItemAction">
+      <xsl:choose>
+        <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:when>
+        <xsl:when test="scheduleMethod=3"><xsl:value-of select="$schedule-initAttendeeReply"/></xsl:when>
+        <xsl:when test="scheduleMethod=6"><xsl:value-of select="$schedule-processRefresh"/></xsl:when>
+        <xsl:when test="scheduleMethod=7"><xsl:value-of select="$schedule-initAttendeeReply"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeRespond"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <li>
-      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+      <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
         <xsl:value-of select="summary"/>
       </a>
     </li>
@@ -2438,10 +2447,11 @@
         <tr>
           <td class="fieldname">Calendar:</td>
           <td class="fieldval">
+            <!--
             <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
-            <xsl:variable name="calUrl" select="calendar/encodedPath"/>
+            <xsl:variable name="calUrl" select="calendar/encodedPath"/> -->
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-            <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calUrl}">
+            <!-- a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calUrl}"-->
               <xsl:choose>
                 <xsl:when test="contains(calendar/path,$userPath)">
                   <xsl:value-of select="substring-after(calendar/path,$userPath)"/>
@@ -2450,7 +2460,7 @@
                   <xsl:value-of select="calendar/path"/>
                 </xsl:otherwise>
               </xsl:choose>
-            </a>
+            <!-- /a-->
           </td>
         </tr>
       </xsl:if>

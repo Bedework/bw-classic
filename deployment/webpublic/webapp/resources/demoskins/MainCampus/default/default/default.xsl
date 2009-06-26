@@ -435,7 +435,7 @@
          <td class="leftCell">
            <xsl:choose>
              <xsl:when test="/bedework/selectionState/selectionType = 'collections'">
-               Calendar:
+               Topical Area:
                <strong>
                  <xsl:call-template name="substring-afterLastInstanceOf">
                    <xsl:with-param name="string" select="/bedework/appvar[key='curCollection']/value"/>
