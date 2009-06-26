@@ -78,7 +78,12 @@ check() {
 # ------------------------------------------------------------------
 copyproject() {
   echo "copyproject $1 $2 from $4"
-  if [ "${1}" != "bedework" ]
+  if [ "${1}" = "buildTools" ]
+  then
+    echo "build/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
+  elif [ "${1}" = "carddav" ]
+  then
+  elif [ "${1}" != "bedework" ]
   then
     echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
   fi
@@ -105,7 +110,7 @@ COMMENT="$3"
 PROJECTS=""
 PROJECTS="$PROJECTS access"
 PROJECTS="$PROJECTS bedework"
-PROJECTS="$PROJECTS buildtools"
+PROJECTS="$PROJECTS buildTools"
 PROJECTS="$PROJECTS bwtools"
 PROJECTS="$PROJECTS bwtzsvr"
 PROJECTS="$PROJECTS caldav"
@@ -139,4 +144,5 @@ done
 svn co -N $SVNREPOSITORY/bedework/$TARGET $SCTEMPDIR/bedework
 svn propset svn:externals -F $SCTEMPFILE $SCTEMPDIR/bedework
 svn commit -N -m "Change externals to new copies" $SCTEMPDIR/bedework
+
 #more $SCTEMPFILE

@@ -79,6 +79,13 @@
             <groupDnPrefix>cn=</groupDnPrefix>
             <groupDnSuffix>,ou=groups, dc=bedework, dc=org</groupDnSuffix>
             <debug>true</debug>
+
+            <!--
+            <securityAuthentication>simple</securityAuthentication>
+            <securityProtocol>NONE</securityProtocol>
+            <authDn></authDn>
+            <authPw></authPw>
+             -->
           </user-ldap-group>
 
           <testmail classname="org.bedework.mail.MailConfigProperties">
