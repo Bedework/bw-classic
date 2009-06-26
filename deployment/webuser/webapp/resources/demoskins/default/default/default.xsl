@@ -2345,16 +2345,20 @@
                 </tr>
               </xsl:for-each>
             </table>
-            <p>
-              <em>
-                <a href="{$schedule-initAttendeeUpdate}&amp;initUpdate=yes">
-                  change my status
-                </a>
-              </em>
-            </p>
+            <xsl:if test="not(organizerSchedulingObject)">
+              <p>
+                <em>
+                  <a href="{$schedule-initAttendeeUpdate}&amp;initUpdate=yes">
+                    change my status
+                  </a>
+                </em>
+              </p>
+            </xsl:if>
           </td>
         </tr>
       </xsl:if>
+      <!-- Recipients are deprecated -->
+      <!--
       <xsl:if test="recipient">
         <tr>
           <td class="fieldname">Recipients:</td>
@@ -2385,6 +2389,7 @@
           </td>
         </tr>
       </xsl:if>
+      -->
       <xsl:if test="cost!=''">
         <tr>
           <td class="fieldname">Cost:</td>
@@ -3907,16 +3912,27 @@
             <xsl:with-param name="trash">no</xsl:with-param>
           </xsl:apply-templates>
         </xsl:if>
-
+        <!-- Recipients are deprecated -->
+        <!--
         <xsl:if test="form/recipients/recipient">
           <xsl:apply-templates select="form/recipients">
             <xsl:with-param name="trash">no</xsl:with-param>
           </xsl:apply-templates>
         </xsl:if>
+        -->
         <div class="editAttendees">
           <xsl:choose>
-            <xsl:when test="form/scheduleMethod = '2'">
-              <input name="editEventAttendees" type="submit" value="edit attendees and recipients"/>
+            <xsl:when test="form/organizerSchedulingObject">
+              <input name="editEventAttendees" type="submit" value="edit attendees"/>
+            </xsl:when>
+            <xsl:when test="form/attendeeSchedulingObject">
+              <p>
+                <em>
+                  <a href="{$schedule-initAttendeeUpdate}&amp;initUpdate=yes">
+                    change my status
+                  </a>
+                </em>
+              </p>
             </xsl:when>
             <xsl:otherwise>
               <xsl:choose>
@@ -3924,7 +3940,7 @@
                   <input name="makeEventIntoMeeting" type="submit" value="schedule this task with other users"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input name="makeEventIntoMeeting" type="submit" value="make into meeting - invite attendees and recipients"/>
+                  <input name="makeEventIntoMeeting" type="submit" value="make into meeting - invite attendees"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:otherwise>
@@ -4129,15 +4145,15 @@
     </h2>
 
     <div id="recipientsAndAttendees">
-      <h4> Add attendees and recipients</h4>
+      <h4>Add attendees</h4>
       <form name="raForm" id="recipientsAndAttendeesForm" action="{$event-attendeesForEvent}" method="post">
         <div id="raContent">
           <div id="raFields">
             <input type="text" name="uri" width="40" id="bwRaUri"/>
             <input type="submit" value="add" />
-            &#160;
-            <input type="checkbox" name="recipient" value="true" checked="checked"/> recipient
-            <input type="checkbox" name="attendee"  value="true" checked="checked"/> attendee
+            <!-- Recipients are deprecated: default all to attendees -->
+            <input type="hidden" name="recipient" value="true"/>
+            <input type="hidden" name="attendee"  value="true"/>
             &#160;
             Role:
             <select name="role">
@@ -4161,9 +4177,12 @@
             <xsl:apply-templates select="/bedework/attendees"/>
           </xsl:if>
 
+          <!-- Recipients are deprecated -->
+          <!--
           <xsl:if test="/bedework/recipients/recipient">
             <xsl:apply-templates select="/bedework/recipients"/>
           </xsl:if>
+          -->
 
           <xsl:apply-templates select="/bedework/freebusy" mode="freeBusyGrid">
             <xsl:with-param name="aggregation">true</xsl:with-param>
@@ -4381,6 +4400,7 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- Recipients are deprecated -->
   <xsl:template match="recipients">
     <xsl:param name="trash">yes</xsl:param>
     <table id="recipients" class="widget" cellspacing="0">

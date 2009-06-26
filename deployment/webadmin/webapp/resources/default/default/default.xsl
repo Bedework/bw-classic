@@ -834,11 +834,11 @@
       <ul class="adminMenu">
         <li>
           <a href="{$subscriptions-fetch}" title="subscriptions to calendars">
-            Manage topical areas
+            Manage subscriptions
           </a>
         </li>
         <li>
-          <a href="{$view-fetch}" title="collections of topical areas">
+          <a href="{$view-fetch}" title="collections of subscriptions">
             Manage views
           </a>
         </li>
@@ -2558,8 +2558,7 @@
         </xsl:if>
 
         <!-- Topical area  -->
-        <!-- These are the subscriptions (aliases) where the events should show up.
-             By selecting one or more of these, appropriate categories will be set on the event -->
+        <!-- By selecting one or more of these, appropriate categories will be set on the event -->
         <tr>
           <td class="fieldName">
             Topical area:
@@ -4136,6 +4135,19 @@
             <input type="text" name="calendar.summary" value="{$curCalSummary}" size="40"/>
           </td>
         </tr>
+        <xsl:if test="/bedework/page = 'modSubscription'">
+          <tr>
+            <th>Topical Area:</th>
+            <td>
+              <input type="radio" name="calendar.isTopicalArea" value="true">
+                <xsl:if test="isTopicalArea = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+              </input> true
+              <input type="radio" name="calendar.isTopicalArea" value="false">
+                <xsl:if test="isTopicalArea = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+              </input> false
+            </td>
+          </tr>
+        </xsl:if>
         <tr>
           <th>Description:</th>
           <td>
@@ -4790,7 +4802,7 @@
     <table id="calendarTable">
       <tr>
         <td class="cals">
-          <h3>Topical Areas</h3>
+          <h3>Subscriptions</h3>
           <ul class="calendarTree">
             <xsl:apply-templates select="calendar" mode="listForUpdateSubscription">
               <xsl:with-param name="root">true</xsl:with-param>
@@ -4818,12 +4830,31 @@
   </xsl:template>
 
   <xsl:template name="subscriptionIntro">
-    <h3>Managing Topical Areas</h3>
+    <h3>Managing Subscriptions</h3>
     <ul>
-      <li>Select an item from the tree on the left to modify a topical area.</li>
-      <li>Select the
-      <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
-      icon to add a new topical area to the tree.
+      <li>
+        Select an item from the tree on the left to modify a subscription.
+      </li>
+      <li>
+        Select the
+        <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
+        icon to add a new subscription or folder to the tree.
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <strong>Topical Areas:</strong>
+        <ul>
+          <li>
+            A subscription marked as a "Topical Area" will be presented to event administrators when creating events.
+            These are used for input (tagging) and output (if added to a view).
+          </li>
+          <li>
+            A subscription not marked as a "Topical Area" can be used in Views,
+            but will not appear when creating events.  Such subscriptions are used for output only,
+            e.g. an ical feed of holidays from an external source.
+          </li>
+        </ul>
       </li>
     </ul>
   </xsl:template>
@@ -5161,7 +5192,7 @@
 
     <h2>Manage Views</h2>
     <p>
-      Views are named aggregations of topical areas used
+      Views are named aggregations of subscriptions used
       to display sets of events within a calendar suite.
     </p>
 
@@ -5175,7 +5206,7 @@
     <table id="commonListTable" class="viewsTable">
       <tr>
         <th>Name</th>
-        <th>Included topical areas</th>
+        <th>Included subscriptions</th>
       </tr>
 
       <xsl:for-each select="view">
@@ -5207,11 +5238,24 @@
 
     <h2>Update View</h2>
 
-    <p class="note">
-      Note: In some configurations, changes made here will not show up in the calendar suite until
-      the cache is flushed (approx. 5 minutes) or you start a new session (e.g. clear your cookies).
-      Deleting a view on a production system should be followed by a server restart to clear the cache for all users.
-    </p>
+    <ul class="note">
+      <li>
+        In some configurations, changes made here will not show up in the calendar suite until
+        the cache is flushed (approx. 5 minutes) or you start a new session (e.g. clear your cookies).
+      </li>
+      <li>
+        Deleting a view on a production system should be followed by a server restart to clear the cache for all users.
+      </li>
+      <li>
+        To see underlying subscriptions in a local folder, open the folder in the
+        "<a href="{$subscriptions-fetch}" title="subscriptions to calendars">Manage Subscriptions</a>" tree
+        (this will be improved in a later version...).
+      </li>
+      <li>
+        If you include a folder in a view, you do not need to
+        include its children.
+      </li>
+    </ul>
 
     <h3 class="viewName">
       <xsl:value-of select="$viewName"/>
@@ -5219,22 +5263,29 @@
     <table id="viewsTable">
       <tr>
         <td class="subs">
-          <h3>Available topical areas:</h3>
+          <h3>Available subscriptions:</h3>
 
           <table class="subscriptionsListSubs">
-            <xsl:for-each select="/bedework/calendars/calendar/calendar[isSubscription = 'true']">
-              <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+            <xsl:for-each select="/bedework/calendars/calendar//calendar[isSubscription = 'true' or calType = '0']">
+              <xsl:sort select="substring-after(path, $userPath)" order="ascending" case-order="upper-first"/>
               <xsl:if test="not(/bedework/currentView//path = path)">
                 <tr>
                   <td>
-                    <xsl:value-of select="summary"/>
+                    <xsl:if test="calType = '0' and isSubscription = 'false'">
+                      <!-- display a folder icon for local folders... -->
+                      <img src="{$resourcesRoot}/resources/catIcon.gif"
+                          width="13" height="13" border="0"
+                          alt="folder"/>
+                      <xsl:text> </xsl:text>
+                    </xsl:if>
+                    <xsl:value-of select="substring-after(path, $userPath)"/>
                   </td>
                   <td class="arrows">
                     <xsl:variable name="subAddName" select="encodedPath"/>
                     <a href="{$view-update}&amp;name={$viewName}&amp;add={$subAddName}">
                       <img src="{$resourcesRoot}/resources/arrowRight.gif"
                           width="13" height="13" border="0"
-                          alt="add topical area"/>
+                          alt="add subscription"/>
                     </a>
                   </td>
                 </tr>
@@ -5245,7 +5296,7 @@
           </table>
         </td>
         <td class="view">
-          <h3>Active topical areas:</h3>
+          <h3>Active subscriptions:</h3>
           <table class="subscriptionsListView">
             <xsl:for-each select="/bedework/currentView/path">
               <xsl:sort select="." order="ascending" case-order="upper-first"/>
@@ -5255,7 +5306,7 @@
                   <a href="{$view-update}&amp;name={$viewName}&amp;remove={$subRemoveName}">
                     <img src="{$resourcesRoot}/resources/arrowLeft.gif"
                         width="13" height="13" border="0"
-                        alt="add topical area"/>
+                        alt="add subscription"/>
                   </a>
                 </td>
                 <td>

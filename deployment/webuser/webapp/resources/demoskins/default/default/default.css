@@ -890,7 +890,7 @@ display: inline;
   margin: 1em;
   font-size: 0.9em;
 }
-#bedework #scheduling p.editAttendees {
+#bedework #scheduling .editAttendees {
   padding-top: 1em;
   clear: both;
 }
