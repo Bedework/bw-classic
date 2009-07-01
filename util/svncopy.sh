@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copy the current trunk to a new location and adjust the externals property
 
@@ -83,6 +83,7 @@ copyproject() {
     echo "build/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
   elif [ "${1}" = "carddav" ]
   then
+    echo ""
   elif [ "${1}" != "bedework" ]
   then
     echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
