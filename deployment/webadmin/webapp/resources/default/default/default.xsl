@@ -2390,7 +2390,7 @@
             Cost:
           </td>
           <td>
-            <input type="text" size="30" name="event.cost" class="edit">
+            <input type="text" size="30" name="eventCost" class="edit">
               <xsl:attribute name="value"><xsl:value-of select="form/cost/input/@value"/></xsl:attribute>
             </input>
             <xsl:text> </xsl:text>
