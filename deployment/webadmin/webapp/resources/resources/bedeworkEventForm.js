@@ -283,13 +283,11 @@ function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactN
       output += '<tr><td>' + this.topicalAreas + '</td></tr>';
       output += '</table>';
     }
-    // categories: deprecated - there will be no categories because the topical
-    // areas selected by the submitter are only suggestions
-    /*if (this.category != "") {
-      output += '<p><strong>Type of Event:</strong> (if Topical Areas weren\'t sufficient)<br/>';
+    if (this.category != "") {
+      output += '<p><strong>Suggested Type of Event:</strong><br/>';
       output += this.category;
       output += '</p>';
-    }*/
+    }
     output += '<p>';
     if (this.notes != "") {
       output += '<strong>Notes:</strong><br/>';
