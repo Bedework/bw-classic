@@ -2743,7 +2743,7 @@
           </tr>
         </xsl:if>
       </table>
-      <xsl:if test="not(starts-with(form/calendar/path,$submissionsRootUnencoded))">
+      <xsl:if test="not(starts-with(form/calendar/event/path,$submissionsRootUnencoded))">
         <!-- don't create two instances of the submit buttons on pending events;
              the publishing buttons require numerous unique ids -->
         <xsl:call-template name="submitEventButtons">
