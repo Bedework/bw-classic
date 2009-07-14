@@ -190,6 +190,9 @@ function setCalendarAlias(formObj) {
     formObj.calendarCollection.value = "false";
   } else if (formObj.type.value == "subscription") {
     switch (formObj.subType.value) {
+      case "publicTree":
+        // do nothing: when adding a subscription to the public tree, we set the fields directly.
+        break;
       case "public":
         formObj.aliasUri.value = "bwcal://" + formObj.publicAliasHolder.value;
         break;

@@ -3919,7 +3919,7 @@
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3>Add Calendar, Folder, or Subscription</h3>
     <p class="note">Note: Access may be set on a calendar after it is created.</p>
-    <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="setCalendarAlias(this)">
+    <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="setCatFilters(this);return setCalendarAlias(this);">
       <table class="common">
         <tr>
           <th>Name:</th>
@@ -4028,6 +4028,7 @@
 
       <div id="subscriptionTypes" class="invisible">
         <h4>Subscription URL</h4>
+        <input type="hidden" value="publicTree" name="subType" id="bwSubType"/>
         <div id="subscriptionTypeExternal">
           <table class="common" id="subscriptionTypes">
             <tr>
