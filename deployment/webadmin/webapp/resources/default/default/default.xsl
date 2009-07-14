@@ -3918,6 +3918,7 @@
 
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3>Add Calendar, Folder, or Subscription</h3>
+    <p class="note">Note: Access may be set on a calendar after it is created.</p>
     <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="setCalendarAlias(this)">
       <table class="common">
         <tr>
@@ -4024,10 +4025,7 @@
           </td>
         </tr>
       </table>
-      <div class="submitButtons">
-        <input type="submit" name="addCalendar" value="Add"/>
-        <input type="submit" name="cancelled" value="cancel"/>
-      </div>
+
       <div id="subscriptionTypes" class="invisible">
         <h4>Subscription URL</h4>
         <div id="subscriptionTypeExternal">
@@ -4058,7 +4056,7 @@
         </div>
       </div>
 
-      <div id="sharingBox">
+      <!-- div id="sharingBox">
         <h3>Current Access:</h3>
         <div id="bwCurrentAccessWidget">&#160;</div>
         <script type="text/javascript">
@@ -4067,18 +4065,13 @@
         <xsl:call-template name="entityAccessForm">
           <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
         </xsl:call-template>
-      </div>
+      </div-->
 
       <div class="submitButtons">
         <input type="submit" name="addCalendar" value="Add"/>
         <input type="submit" name="cancelled" value="cancel"/>
       </div>
     </form>
-
-    <!-- div id="sharingBox">
-      <h3>Current Access:</h3>
-      Sharing may be added to a calendar once created.
-    </div-->
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="modCalendar">
@@ -4916,6 +4909,7 @@
 
   <xsl:template match="currentCalendar" mode="addSubscription">
     <h3>Add Subscription</h3>
+    <p class="note">Note: Access may be set on a subscription after it is created.</p>
     <form name="addCalForm" method="post" action="{$subscriptions-update}" onsubmit="setCatFilters(this);return setCalendarAlias(this);">
       <table class="common">
         <tr>
@@ -5062,8 +5056,7 @@
           </td>
         </tr>
       </table>
-
-      <div id="sharingBox">
+      <!-- div id="sharingBox">
         <h3>Current Access:</h3>
         <div id="bwCurrentAccessWidget">&#160;</div>
         <script type="text/javascript">
@@ -5072,7 +5065,7 @@
         <xsl:call-template name="entityAccessForm">
           <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
         </xsl:call-template>
-      </div>
+      </div-->
 
       <div class="submitButtons">
         <input type="submit" name="addCalendar" value="Add"/>
