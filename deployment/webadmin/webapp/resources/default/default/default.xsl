@@ -2565,8 +2565,8 @@
           </td>
           <td>
             <ul class="aliasTree">
-              <xsl:apply-templates select="form/subscriptions/calsuite/calendars/calendar" mode="showEventFormAliases">
-                <xsl:with-param name="root">true</xsl:with-param>
+              <xsl:apply-templates select="form/subscriptions/calsuite/calendars/calendar/calendar[isTopicalArea = 'true']" mode="showEventFormAliases">
+                <xsl:with-param name="root">false</xsl:with-param>
               </xsl:apply-templates>
             </ul>
           </td>
@@ -2790,9 +2790,13 @@
         </xsl:choose>
       </xsl:if>
 
-      <xsl:if test="calendar[isSubscription = 'true' or calType = '0']">
+      <!-- Return topical areas and all underlying calendars.
+           Check for topical areas only if the subscription is owned by the calendar suite:
+           If the subscription points out to a calendar or folder in another tree,
+           return the branch regardless of the topical area setting.  -->
+      <xsl:if test="calendar[(isSubscription = 'true' or calType = '0') and ((isTopicalArea = 'true' and  starts-with(path,/bedework/currentCalSuite/resourcesHome)) or not(starts-with(path,/bedework/currentCalSuite/resourcesHome)))]">
         <ul>
-          <xsl:apply-templates select="calendar[isSubscription = 'true' or calType = '0']" mode="showEventFormAliases"/>
+          <xsl:apply-templates select="calendar[(isSubscription = 'true' or calType = '0') and ((isTopicalArea = 'true' and  starts-with(path,/bedework/currentCalSuite/resourcesHome)) or not(starts-with(path,/bedework/currentCalSuite/resourcesHome)))]" mode="showEventFormAliases"/>
         </ul>
       </xsl:if>
     </li>
@@ -4925,6 +4929,13 @@
           <td>
             <xsl:variable name="curCalSummary" select="summary"/>
             <input type="text" name="calendar.summary" value="{$curCalSummary}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>Topical Area:</th>
+          <td>
+            <input type="radio" name="calendar.isTopicalArea" value="true" checked="checked"/> true
+            <input type="radio" name="calendar.isTopicalArea" value="false"/> false
           </td>
         </tr>
         <tr>
