@@ -1591,16 +1591,6 @@
           <xsl:if test="normalize-space(location/address) != ''">
             Location: <xsl:value-of select="location/address"/><br/>
           </xsl:if>
-          Calendar:
-          <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-          <xsl:choose>
-            <xsl:when test="contains(calendar/path,$userPath)">
-              <xsl:value-of select="substring-after(calendar/path,$userPath)"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="calendar/path"/>
-            </xsl:otherwise>
-          </xsl:choose><br/>
           Type:
           <xsl:variable name="entityType">
             <xsl:choose>
@@ -1612,7 +1602,7 @@
           <xsl:if test="recurring='true' or recurrenceId != ''">
             recurring
           </xsl:if>
-          <xsl:variable name="userStr">/principals/users/<xsl:value-of select="/bedework/userid"/></xsl:variable>
+          <xsl:variable name="userStr"><xsl:value-of select="/bedework/syspars/userPrincipalRoot"/>/<xsl:value-of select="/bedework/userid"/></xsl:variable>
           <xsl:choose>
             <xsl:when test="$userStr = owner">
               personal <xsl:value-of select="$entityType"/>
@@ -1621,7 +1611,17 @@
               public <xsl:value-of select="$entityType"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="$entityType"/> (<xsl:value-of select="calendar/owner"/>)
+              <xsl:value-of select="$entityType"/>
+            </xsl:otherwise>
+          </xsl:choose><br/>
+          Calendar:
+          <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+          <xsl:choose>
+            <xsl:when test="contains(calendar/path,$userPath)">
+              <xsl:value-of select="substring-after(calendar/path,$userPath)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="calendar/path"/>
             </xsl:otherwise>
           </xsl:choose>
         </div>
