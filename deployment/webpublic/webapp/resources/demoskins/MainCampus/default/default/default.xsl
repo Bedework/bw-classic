@@ -132,7 +132,7 @@
             <link rel="stylesheet" href="{$resourcesRoot}/default/default/blue.css"/>
           </xsl:otherwise>
         </xsl:choose>
-        <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
+        <link rel="stylesheet" href="../../../bedework-common/default/default/subColors.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
         <!-- load javascript -->
         <xsl:if test="/bedework/page='event' or /bedework/page='displayCalendarForExport'">
@@ -989,9 +989,9 @@
                      if present, these override the background-color set by eventClass. The
                      subscription styles should not be used for canceled events (tentative is ok). -->
                 <xsl:variable name="subscriptionClass">
-                  <xsl:if test="status != 'CANCELLED' and
-                                subscription/subStyle != '' and
-                                subscription/subStyle != 'default'"><xsl:value-of select="subscription/subStyle"/></xsl:if>
+                  <xsl:if test="status != 'CANCELLED'">
+                    <xsl:apply-templates select="categories" mode="customEventColor"/>
+                  </xsl:if>
                 </xsl:variable>
                 <td class="{$descriptionClass} {$subscriptionClass}">
                   <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
@@ -1316,9 +1316,9 @@
          if present, these override the background-color set by eventClass. The
          subscription styles should not be used for cancelled events (tentative is ok). -->
     <xsl:variable name="subscriptionClass">
-      <xsl:if test="status != 'CANCELLED' and
-                    subscription/subStyle != '' and
-                    subscription/subStyle != 'default'"><xsl:value-of select="subscription/subStyle"/></xsl:if>
+      <xsl:if test="status != 'CANCELLED'">
+        <xsl:apply-templates select="categories" mode="customEventColor"/>
+      </xsl:if>
     </xsl:variable>
     <li>
       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass} {$subscriptionClass}">
@@ -1382,6 +1382,20 @@
         </span>
       </a>
     </li>
+  </xsl:template>
+
+  <xsl:template match="categories" mode="customEventColor">
+    <!-- Set custom color schemes here.
+         This template looks at the categories found in the event and
+         returns a color class for use with the "subscriptionClass" variable.
+         The classes suggested below come from bwColors.css found in the bedework-common directory. -->
+    <xsl:choose>
+       <!--
+       <xsl:when test="category/value = 'Athletics'">bwltpurple</xsl:when>
+       <xsl:when test="category/value = 'Arts'">bwltsalmon</xsl:when>
+       -->
+       <xsl:otherwise></xsl:otherwise> <!-- do nothing -->
+    </xsl:choose>
   </xsl:template>
 
   <!--==== YEAR VIEW ====-->

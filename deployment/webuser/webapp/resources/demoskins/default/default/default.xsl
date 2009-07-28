@@ -399,7 +399,6 @@
     <meta name="robots" content="noindex,nofollow"/>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
-    <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
     <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
     <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
 
