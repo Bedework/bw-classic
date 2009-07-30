@@ -5359,18 +5359,21 @@
             </textarea>
           </td>
         </tr>
-        <tr>
-          <th>Color:</th>
-          <td>
-            <input type="text" name="calendar.color" id="bwCalColor" size="7">
-              <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
-              <xsl:attribute name="style">background-color: <xsl:value-of select="color"/>;color: black;</xsl:attribute>
-            </input>
-            <xsl:call-template name="colorPicker">
-              <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
-            </xsl:call-template>
-          </td>
-        </tr>
+        <xsl:if test="isSubscription='false'">
+          <!-- we can't color subscriptions yet -->
+          <tr>
+            <th>Color:</th>
+            <td>
+              <input type="text" name="calendar.color" id="bwCalColor" size="7">
+                <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
+                <xsl:attribute name="style">background-color: <xsl:value-of select="color"/>;color: black;</xsl:attribute>
+              </input>
+              <xsl:call-template name="colorPicker">
+                <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
+              </xsl:call-template>
+            </td>
+          </tr>
+        </xsl:if>
         <tr>
           <th>Display:</th>
           <td>
