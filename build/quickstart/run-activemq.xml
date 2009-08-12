@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+
+<!-- Run activemq for the bedework Calendar quickstart.
+
+     This is imported by the quickstart build.xml ensuring all changes to this file
+     appear in the repository.
+
+     Authors: Mike Douglass   douglm - rpi.edu
+-->
+
+<project name="quickstart-run-activemq" default="activemq" basedir=".">
+  <!-- This target normally overriden by the importing build.xml -->
+  <target name="run.init">
+    <property name="org.bedework.project.bedework"
+              location="${basedir}/bedework" />
+  </target>
+
+  <target name="activemq.init" depends="run.init">
+    <property name="org.bedework.activemq.dir"
+              location="${org.bedework.project.bedework}/../apache-activemq-5.2.0" />
+
+  	<!-- Copy our deployment into activemq configuration directory -->
+    <if>
+      <available file="${org.bedework.config.home}/activemq.xml" />
+      <then>
+        <copy todir="${org.bedework.activemq.dir}/conf"
+        	    file="${org.bedework.config.home}/activemq.xml" />
+      </then>
+    </if>
+
+    <path id="run.classpath">
+      <fileset dir="${org.bedework.activemq.dir}/lib">
+         <include name="*.jar"/>
+      </fileset>
+      <pathelement path="${org.bedework.activemq.dir}/conf"/>
+    </path>
+
+    <pathconvert property="run.txt.classpath"
+                 refid="run.classpath"
+                 targetos="unix"  pathsep=":" />
+  </target>
+
+  <!-- =================================================================
+       The "activemq" target starts the activemq server
+       ================================================================= -->
+
+  <target name="activemq" depends="activemq.init"
+          description="starts the activemq server">
+    <echo message="************************************************************"/>
+    <echo message=" * Starting activemq"/>
+    <echo message="************************************************************"/>
+
+    <java fork="true" dir="${basedir}"
+          jar="${org.bedework.activemq.dir}/bin/run.jar">
+      <classpath refid="run.classpath" />
+      <jvmarg value="-Xmx512m" />
+      <jvmarg value="-Dorg.apache.activemq.UseDedicatedTaskRunner=true"/>
+
+      <jvmarg value="-Dactivemq.classpath=${run.txt.classpath}"/>
+      <jvmarg value="-Dactivemq.home=${org.bedework.activemq.dir}"/>
+      <jvmarg value="-Dactivemq.base=${org.bedework.activemq.dir}"/>
+
+      <arg value="start"/>
+    </java>
+  </target>
+
+  <target name="activemq-jmx" depends="activemq.init"
+          description="starts the activemq server">
+    <echo message="************************************************************"/>
+    <echo message=" * Starting activemq"/>
+    <echo message="************************************************************"/>
+
+    <java fork="true" dir="${basedir}"
+          jar="${org.bedework.activemq.dir}/bin/run.jar">
+      <classpath refid="run.classpath" />
+      <jvmarg value="-Xmx512m" />
+      <jvmarg value="-Dorg.apache.activemq.UseDedicatedTaskRunner=true"/>
+
+      <jvmarg value="-Dcom.sun.management.jmxremote"/>
+      <!--
+      <jvmarg value="-Dcom.sun.management.jmxremote.port=1099"/>
+      <jvmarg value="-Dcom.sun.management.jmxremote.authenticate=false"/>
+      <jvmarg value="-Dcom.sun.management.jmxremote.ssl=false"/>
+      -->
+
+      <jvmarg value="-Dactivemq.classpath=${run.txt.classpath}"/>
+      <jvmarg value="-Dactivemq.home=${org.bedework.activemq.dir}"/>
+      <jvmarg value="-Dactivemq.base=${org.bedework.activemq.dir}"/>
+
+      <arg value="start"/>
+    </java>
+  </target>
+</project>

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+
+<!-- Run the bedework in/outbox scheduler service for the bedework Calendar quickstart.
+
+     This is imported by the quickstart build.xml ensuring all changes to this file
+     appear in the repository.
+
+     For the moment run this out of the dist directory
+
+     Authors: Mike Douglass   douglm - rpi.edu
+-->
+
+<project name="quickstart-run-inoutscheduler" default="start-inoutscheduler" basedir=".">
+  <!-- This target normally overriden by the importing build.xml -->
+  <target name="run.init">
+    <property name="org.bedework.project.bedework"
+              location="${basedir}/bedework" />
+  </target>
+
+	<!-- The name "bwiosched" should come from the config or as a parameter -->
+  <target name="inoutscheduler.init" depends="run.init">
+    <property name="org.bedework.inoutscheduler.dir"
+              location="${org.bedework.project.bedework}/dist/temp/shellscr/bwiosched" />
+
+    <path id="run.classpath">
+      <fileset dir="${org.bedework.inoutscheduler.dir}/lib">
+         <include name="*.jar"/>
+      </fileset>
+      <pathelement path="${org.bedework.inoutscheduler.dir}/classes"/>
+    </path>
+
+    <pathconvert property="run.txt.classpath"
+                 refid="run.classpath"
+                 targetos="unix"  pathsep=":" />
+
+  	<property name="org.bedework.run.class"
+              value="org.bedework.inoutsched.InoutSched" />
+
+    <property name="org.bedework.run.appname"
+              value="iosched" />
+  </target>
+
+  <!-- =================================================================
+       The "start-inoutscheduler" target
+       ================================================================= -->
+
+  <target name="start-inoutscheduler" depends="inoutscheduler.init"
+          description="starts the inoutscheduler server">
+    <echo message="************************************************************"/>
+    <echo message=" * Starting inoutscheduler"/>
+    <echo message="************************************************************"/>
+
+    <java fork="true" dir="${basedir}"
+          classname="${org.bedework.run.class}">
+      <classpath refid="run.classpath" />
+      <jvmarg value="-Xmx512m" />
+
+      <arg value="-appname"/>
+      <arg value="${org.bedework.run.appname}"/>
+
+      <arg value="start"/>
+    </java>
+  </target>
+</project>

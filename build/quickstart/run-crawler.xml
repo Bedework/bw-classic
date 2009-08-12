@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<!-- Run the bedework crawler service for the bedework Calendar quickstart.
+
+     This is imported by the quickstart build.xml ensuring all changes to this file
+     appear in the repository.
+
+     For the moment run this out of the dist directory
+
+     Authors: Mike Douglass   douglm - rpi.edu
+-->
+
+<project name="quickstart-run-crawler" default="start-crawler" basedir=".">
+  <!-- This target normally overriden by the importing build.xml -->
+  <target name="run.init">
+    <property name="org.bedework.project.bedework"
+              location="${basedir}/bedework" />
+  </target>
+
+  <target name="crawler.init" depends="run.init">
+    <property name="org.bedework.crawler.dir"
+              location="${org.bedework.project.bedework}/dist/temp/shellscr/bwcrawler" />
+
+    <path id="run.classpath">
+      <fileset dir="${org.bedework.crawler.dir}/lib">
+         <include name="*.jar"/>
+      </fileset>
+      <pathelement path="${org.bedework.crawler.dir}/classes"/>
+    </path>
+
+    <pathconvert property="run.txt.classpath"
+                 refid="run.classpath"
+                 targetos="unix"  pathsep=":" />
+
+  	<property name="org.bedework.run.class"
+              value="org.bedework.bwcrawler.BwCrawlApp" />
+
+    <property name="org.bedework.run.appname"
+              value="bwcrawler" />
+  </target>
+
+  <!-- =================================================================
+       The "activemq" target starts the activemq server
+       ================================================================= -->
+
+  <target name="start-crawler" depends="crawler.init"
+          description="starts the crawler server">
+    <echo message="************************************************************"/>
+    <echo message=" * Starting crawler"/>
+    <echo message="************************************************************"/>
+
+    <java fork="true" dir="${basedir}"
+          classname="${org.bedework.run.class}">
+      <classpath refid="run.classpath" />
+      <jvmarg value="-Xmx512m" />
+
+      <arg value="-appname"/>
+      <arg value="${org.bedework.run.appname}"/>
+
+      <arg value="start"/>
+    </java>
+  </target>
+</project>
