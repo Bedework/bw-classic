@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 
 <!-- ===================================================================
-     Crawler shell script deployer
+     Indexer shell script deployer
      =================================================================== -->
 
-<project name="bwcrawler.deploy" default="deploy" >
+<project name="indexer.deploy" default="deploy" >
   <import file="${org.bedework.deployment.base}/deployprops.xml" />
 
   <dirname property="this.dir" file="${ant.file}"/>

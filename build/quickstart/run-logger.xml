@@ -26,13 +26,14 @@
          <include name="*.jar"/>
       </fileset>
       <pathelement path="${org.bedework.logger.dir}/classes"/>
+      <pathelement location="${org.bedework.logger.dir}/resources"/>
     </path>
 
     <pathconvert property="run.txt.classpath"
                  refid="run.classpath"
                  targetos="unix"  pathsep=":" />
 
-  	<property name="org.bedework.run.class"
+    <property name="org.bedework.run.class"
               value="org.bedework.sysevents.listeners.LogListener" />
 
     <property name="org.bedework.run.appname"

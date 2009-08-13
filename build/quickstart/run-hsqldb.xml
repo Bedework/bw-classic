@@ -35,7 +35,9 @@
 
   <target name="hsqldb" depends="hsql.init"
           description="starts the hsqldb server">
+    <echo message="************************************************************"/>
     <echo message="Starting hsqldb on port ${org.bedework.hsqldb.port}"/>
+    <echo message="************************************************************"/>
 
     <java fork="true" dir="${basedir}" classname="org.hsqldb.Server">
       <classpath>
@@ -119,7 +121,9 @@
 
   <target name="hsqldb-test" depends="hsql.init"
           description="starts the hsqldb server for testing">
+    <echo message="************************************************************"/>
     <echo message="Starting hsqldb on port ${org.bedework.hsqldb.port}"/>
+    <echo message="************************************************************"/>
 
     <delete dir="${org.bedework.hsqldb.dbdir}" />
 
@@ -136,7 +140,9 @@
 
   <target name="hsqldb-test-trace" depends="hsql.init"
           description="starts the hsqldb server for testing">
+    <echo message="************************************************************"/>
     <echo message="Starting hsqldb on port ${org.bedework.hsqldb.port}"/>
+    <echo message="************************************************************"/>
 
     <delete dir="${org.bedework.hsqldb.dbdir}" />
 

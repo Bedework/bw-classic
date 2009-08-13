@@ -153,4 +153,4 @@ if [ "$carddav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework-carddav
 fi
 
-$JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $*
+$JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $*

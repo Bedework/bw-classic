@@ -62,6 +62,12 @@
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-api}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-log4j12}" />
 
+    <!-- jms support -->
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.activemq-core}" />
+    <copy todir="${app.dest.lib}"
+          file="${org.bedework.appjar.geronimo-j2ee-management_1.0_spec}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jms}" />
+
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-logging}"/>
 
     <!-- core files -->
@@ -126,6 +132,9 @@
       <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/hbms" />
       <filterset refid="property.filters" />
     </copy>
+
+    <copy tofile="${app.dest.classes}/jndi.properties"
+          file="${org.bedework.config.jndi.properties}" />
 
     <copy todir="${app.dest.classes}" overwrite="yes" >
       <fileset refid="org.bedework.extra.resources" />

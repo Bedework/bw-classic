@@ -70,8 +70,10 @@
                   location="${app.dest.webinf}/classes" />
       </else>
     </if>
-    <property name="app.dest.properties"
+    <property name="app.dest.properties.old"
               location="${app.dest.classes}/properties/calendar" />
+    <property name="app.dest.properties"
+              location="${app.dest.classes}/properties" />
   </target>
 
   <target name="init.common">
@@ -153,6 +155,10 @@
          directory. They will be copied into the appropriate place for the
          war and transformed by the above filter.
          =============================================================== -->
+
+    <!-- Create the runtime options file -->
+    <mkdir dir="${app.dest.properties}" />
+
     <if>
       <available file="${app.sou.dir}/properties" type="dir" />
       <then>
@@ -164,20 +170,28 @@
       </then>
     </if>
 
-    <copy todir="${app.dest.classes}">
-      <fileset dir="${app.sou.dir}/war/WEB-INF/classes"
-               includes="*"/>
-      <filterset refid="property.filters" />
-    </copy>
-
-    <!-- Create the runtime options file -->
-    <mkdir dir="${app.dest.properties}" />
-
     <copy tofile="${app.dest.properties}/options.xml"
           file="${org.bedework.config.options}" >
       <filterset>
         <filter token="RPI-DEBUG" value="${app.debug.val}"/>
       </filterset>
+      <filterset refid="property.filters" />
+    </copy>
+
+  	<!-- Temp do it again -->
+    <mkdir dir="${app.dest.properties.old}" />
+
+    <copy tofile="${app.dest.properties.old}/options.xml"
+          file="${org.bedework.config.options}" >
+      <filterset>
+        <filter token="RPI-DEBUG" value="${app.debug.val}"/>
+      </filterset>
+      <filterset refid="property.filters" />
+    </copy>
+
+    <copy todir="${app.dest.classes}">
+      <fileset dir="${app.sou.dir}/war/WEB-INF/classes"
+               includes="*"/>
       <filterset refid="property.filters" />
     </copy>
 
@@ -234,6 +248,12 @@ ${propval.app.war.name}.context=${propval.app.context.root}
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jta}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-api}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-log4j12}" />
+
+  	<!-- jms support -->
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.activemq-core}" />
+    <copy todir="${app.dest.lib}"
+    	    file="${org.bedework.appjar.geronimo-j2ee-management_1.0_spec}" />
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jms}" />
 
     <antcall target="bexchange-stuff" inheritRefs="true" />
     <antcall target="domino-stuff" inheritRefs="true" />
@@ -297,13 +317,9 @@ ${propval.app.war.name}.context=${propval.app.context.root}
   </target>
 
   <target name="bexchange-stuff" if="org.bedework.build.caldav.bexchange">
-    <copy tofile="${app.dest.properties}/timezones.xml"
-          file="${org.bedework.project.bedework}/docs/bwtimezones.xml" />
   </target>
 
   <target name="domino-stuff" if="org.bedework.build.caldav.domino">
-    <copy tofile="${app.dest.properties}/timezones.xml"
-          file="${org.bedework.project.bedework}/docs/bwtimezones.xml" />
   </target>
 
   <target name="google-stuff" if="org.bedework.build.caldav.google">
@@ -312,9 +328,6 @@ ${propval.app.war.name}.context=${propval.app.context.root}
         <include name="*.jar"/>
       </fileset>
     </copy>
-
-    <copy tofile="${app.dest.properties}/timezones.xml"
-          file="${org.bedework.project.bedework}/docs/bwtimezones.xml" />
   </target>
 
   <!-- =================================================================

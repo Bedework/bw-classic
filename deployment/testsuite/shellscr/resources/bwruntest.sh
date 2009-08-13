@@ -28,4 +28,9 @@ case "$1" in
     runit "apitests.AllApiTests" "-Dorg.bedework.test.debug=true"
     ;;
   *)
+    echo "valid parameters:"
+    echo "  apitest"
+    echo "     run the tests"
+    echo "  apitest.debug"
+    echo "     run the tests with debugging on"
 esac

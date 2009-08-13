@@ -198,19 +198,20 @@
   ** For more details see
   **
   ** http://activemq.apache.org/enterprise-integration-patterns.html
-  -->
+
   <camelContext id="camel" xmlns="http://activemq.apache.org/camel/schema/spring">
 
-    <!-- You can use a <package> element for each root package to search for
-         Java routes -->
+    < ! - - You can use a <package> element for each root package to search for
+         Java routes - - >
     <package>org.foo.bar</package>
 
-    <!-- You can use Spring XML syntax to define the routes here using the <route> element -->
+    < ! - - You can use Spring XML syntax to define the routes here using the <route> element - - >
     <route>
       <from uri="activemq:example.A"/>
       <to uri="activemq:example.B"/>
     </route>
   </camelContext>
+  -->
 
   <!--
   ** Lets configure some Camel endpoints

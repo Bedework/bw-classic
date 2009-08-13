@@ -15,10 +15,16 @@
 
   <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 
+  <import file="${bedework.quickstart.basedir}/run-activemq.xml" />
   <import file="${bedework.quickstart.basedir}/run-hsqldb.xml" />
   <import file="${bedework.quickstart.basedir}/run-tomcat.xml" />
   <import file="${bedework.quickstart.basedir}/run-dir.xml" />
   <import file="${bedework.quickstart.basedir}/install.xml" />
+
+  <!-- Bedework services -->
+  <import file="${bedework.quickstart.basedir}/run-logger.xml" />
+  <import file="${bedework.quickstart.basedir}/run-indexer.xml" />
+  <import file="${bedework.quickstart.basedir}/run-inoutscheduler.xml" />
 
   <target name="README" depends="init"
           description="Describe targets and their usage">
@@ -90,8 +96,6 @@
 
     <property name="bedework.build.file"
               location="${basedir}/bedework/build.xml" />
-    <property name="org.bedework.user.build.properties"
-              location="${user.home}/bedework.build.properties" />
     <dirname property="org.bedework.configuration.location"
              file="${org.bedework.user.build.properties}" />
 
@@ -101,9 +105,6 @@
   </target>
 
   <target name="run.init" depends="init" >
-    <property name="org.bedework.user.build.properties"
-              location="${user.home}/bedework.build.properties" />
-
     <property name="org.bedework.appserver.dir"
               location="${org.bedework.project.bedework}/../apache-tomcat-5.5.17" />
 
@@ -112,6 +113,9 @@
 
     <property name="org.bedework.directory.dir"
               location="${org.bedework.project.bedework}/../apacheds-1.5.3-fixed" />
+
+    <property name="org.bedework.activemq.dir"
+              location="${org.bedework.project.bedework}/../apache-activemq-5.2.0" />
   </target>
 
   <!-- =================================================================
@@ -238,24 +242,44 @@
   <target name="start" depends="run.init"
           description="Start quickstart system" >
     <parallel>
+      <antcall target="activemq" inheritrefs="true" />
       <antcall target="dirstart" inheritrefs="true" />
       <antcall target="hsqldb" inheritrefs="true" />
+
       <sequential>
+        <!-- wait for activemq -->
+        <waitfor maxwait="3" maxwaitunit="minute" checkevery="250">
+           <socket server="localhost" port="8161"/>
+        </waitfor>
+
+        <!-- wait for the directory server -->
         <waitfor maxwait="3" maxwaitunit="minute" checkevery="250">
            <socket server="localhost" port="10389"/>
         </waitfor>
-        <antcall target="tomcatstart" inheritrefs="true" />
+
+        <parallel>
+          <!-- Start the bedework non-web services -->
+          <antcall target="start-logger" inheritrefs="true" />
+
+          <!-- Indexer not yet ready
+          <antcall target="start-indexer" inheritrefs="true" />
+          -->
+          <antcall target="start-inoutscheduler" inheritrefs="true" />
+
+          <antcall target="tomcatstart" inheritrefs="true" />
+        </parallel>
       </sequential>
     </parallel>
   </target>
 
   <!-- =================================================================
-       The "start-debug" target starts all quickstart components except tomcat
+       The "start-debug" target starts the quickstart infrastructure components
        ================================================================= -->
 
   <target name="start-debug" depends="run.init"
           description="Start quickstart system" >
     <parallel>
+      <antcall target="activemq" inheritrefs="true" />
       <antcall target="dirstart" inheritrefs="true" />
       <antcall target="hsqldb" inheritrefs="true" />
     </parallel>

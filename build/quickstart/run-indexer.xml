@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- Run the bedework crawler service for the bedework Calendar quickstart.
+<!-- Run the bedework indexer service for the bedework Calendar quickstart.
 
      This is imported by the quickstart build.xml ensuring all changes to this file
      appear in the repository.
@@ -10,43 +10,44 @@
      Authors: Mike Douglass   douglm - rpi.edu
 -->
 
-<project name="quickstart-run-crawler" default="start-crawler" basedir=".">
+<project name="quickstart-run-indexer" default="start-indexer" basedir=".">
   <!-- This target normally overriden by the importing build.xml -->
   <target name="run.init">
     <property name="org.bedework.project.bedework"
               location="${basedir}/bedework" />
   </target>
 
-  <target name="crawler.init" depends="run.init">
-    <property name="org.bedework.crawler.dir"
-              location="${org.bedework.project.bedework}/dist/temp/shellscr/bwcrawler" />
+  <target name="indexer.init" depends="run.init">
+    <property name="org.bedework.indexer.dir"
+              location="${org.bedework.project.bedework}/dist/temp/shellscr/indexer" />
 
     <path id="run.classpath">
-      <fileset dir="${org.bedework.crawler.dir}/lib">
+      <fileset dir="${org.bedework.indexer.dir}/lib">
          <include name="*.jar"/>
       </fileset>
-      <pathelement path="${org.bedework.crawler.dir}/classes"/>
+      <pathelement path="${org.bedework.indexer.dir}/classes"/>
+      <pathelement location="${org.bedework.indexer.dir}/resources"/>
     </path>
 
     <pathconvert property="run.txt.classpath"
                  refid="run.classpath"
                  targetos="unix"  pathsep=":" />
 
-  	<property name="org.bedework.run.class"
-              value="org.bedework.bwcrawler.BwCrawlApp" />
+    <property name="org.bedework.run.class"
+              value="org.bedework.indexer.BwIndexApp" />
 
     <property name="org.bedework.run.appname"
-              value="bwcrawler" />
+              value="indexer" />
   </target>
 
   <!-- =================================================================
        The "activemq" target starts the activemq server
        ================================================================= -->
 
-  <target name="start-crawler" depends="crawler.init"
-          description="starts the crawler server">
+  <target name="start-indexer" depends="indexer.init"
+          description="starts the indexer server">
     <echo message="************************************************************"/>
-    <echo message=" * Starting crawler"/>
+    <echo message=" * Starting indexer"/>
     <echo message="************************************************************"/>
 
     <java fork="true" dir="${basedir}"
@@ -57,7 +58,7 @@
       <arg value="-appname"/>
       <arg value="${org.bedework.run.appname}"/>
 
-      <arg value="start"/>
+      <arg value="-start"/>
     </java>
   </target>
 </project>

@@ -34,6 +34,9 @@
   <property name="org.bedework.project.caldav"
             location="${org.bedework.projects}/caldav" />
 
+  <property name="org.bedework.project.caldavimpl"
+            location="${org.bedework.projects}/caldavimpl" />
+
   <property name="org.bedework.project.caldavTest"
             location="${org.bedework.projects}/caldavTest" />
 
@@ -45,6 +48,9 @@
 
   <property name="org.bedework.project.dumprestore"
             location="${org.bedework.projects}/dumprestore" />
+
+  <property name="org.bedework.project.indexer"
+            location="${org.bedework.projects}/indexer" />
 
   <property name="org.bedework.project.rpiutil"
             location="${org.bedework.projects}/rpiutil" />
@@ -104,13 +110,6 @@
   </target>
 
   <target name="init" >
-    <!-- Overriding this when invoking ant allows different user property
-         files to be included e.g.
-            ant -Dorg.bedework.user.build.properties=/home/me/bedework.properties ...
-            -->
-    <property name="org.bedework.user.build.properties"
-              location="${user.home}/bedework.build.properties" />
-
     <echo level="info" message="Load user properties from ${org.bedework.user.build.properties}" />
 
     <!-- Load user property definition overrides -->
@@ -202,9 +201,10 @@
 
   <target name="build" depends="init.build,build.rpiutil,build.bwtzsvr,
                                 build.access,build.davutil,
+                                build.webdav,build.caldav,
                                 build.calendarapi,build.dumprestore,
-                                build.webdav,build.caldav,build.caldavTest,
-                                build.bwtools,build.webapps,
+                                build.caldavTest,build.caldavimpl,
+                                build.bwtools,build.webapps,build.indexer,
                                 build.testsuite,build.deployutil"
           description="builds the project">
     <copy toDir="${dist.home}" >
@@ -216,7 +216,8 @@
                                 clean.access,clean.davutil,
                                 clean.calendarapi,clean.dumprestore,
                                 clean.webdav,clean.caldav,clean.caldavTest,
-                                clean.bwtools,clean.webapps,
+                                clean.caldavimpl,
+                                clean.bwtools,clean.webapps,clean.indexer,
                                 clean.testsuite"
           description="Remove all generated files.">
     <delete dir="${dist.home}" />
@@ -227,7 +228,8 @@
                                            clean.access,clean.davutil,
                                            clean.calendarapi,clean.dumprestore,
                                            clean.webdav,clean.caldav,clean.caldavTest,
-                                           clean.bwtools,clean.webapps,
+                                           clean.caldavimpl,
+                                           clean.bwtools,clean.webapps,clean.indexer,
                                            clean.testsuite"
           description="partial clean up for quickstart.">
     <delete dir="${bin.home}" />
@@ -349,6 +351,12 @@
                 location="${org.bedework.projectdocs.home}/caldav/api" />
     </ant>
 
+    <ant antfile="${org.bedework.project.caldavimpl}/build.xml" inheritall="false"
+         target="javadoc" >
+      <property name="destdir"
+                location="${org.bedework.projectdocs.home}/caldavimpl/api" />
+    </ant>
+
     <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
          target="javadoc" >
       <property name="destdir"
@@ -359,6 +367,12 @@
          target="javadoc" >
       <property name="destdir"
                 location="${org.bedework.projectdocs.home}/bwtools/api" />
+    </ant>
+
+    <ant antfile="${org.bedework.project.indexer}/build.xml" inheritall="false"
+         target="javadoc" >
+      <property name="destdir"
+                location="${org.bedework.projectdocs.home}/indexer/api" />
     </ant>
 
     <ant antfile="${org.bedework.project.webapps}/build.xml" inheritall="false"
@@ -463,6 +477,27 @@
           description="clean builds the caldav project"/>
 
   <!-- .................................................................
+                          caldavimpl
+       .................................................................. -->
+  <target name="build.caldavimpl" depends="init"
+          description="builds the caldavimpl project">
+    <ant antfile="${org.bedework.project.caldavimpl}/build.xml" inheritall="false"
+       target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
+  </target>
+
+  <target name="clean.caldavimpl" depends="init"
+          description="clean the caldavimpl project">
+    <ant antfile="${org.bedework.project.caldavimpl}/build.xml" inheritall="false"
+         target="deep-clean" />
+  </target>
+
+  <target name="clean.build.caldavimpl" depends="clean.caldav,build.caldav"
+          description="clean builds the caldavimpl project"/>
+
+  <!-- .................................................................
                           caldavTest
        .................................................................. -->
   <target name="build.caldavTest" depends="init"
@@ -545,6 +580,27 @@
 
   <target name="clean.build.dumprestore" depends="clean.dumprestore,build.dumprestore"
           description="builds the dumprestore project"/>
+
+  <!-- .................................................................
+                          indexer
+       .................................................................. -->
+  <target name="build.indexer" depends="init"
+          description="builds the indexer project">
+    <ant antfile="${org.bedework.project.indexer}/build.xml" inheritall="false"
+           target="build-all"  >
+      <property name="org.bedework.libcache.dir"
+                location="${org.bedework.project.bedework}/libcache"/>
+    </ant>
+  </target>
+
+  <target name="clean.indexer" depends="init"
+          description="clean the indexer project">
+    <ant antfile="${org.bedework.project.indexer}/build.xml" inheritall="false"
+           target="deep-clean" />
+  </target>
+
+  <target name="clean.build.indexer" depends="clean.indexer,build.indexer"
+          description="builds the indexer project"/>
 
   <!-- .................................................................
                           rpiutil

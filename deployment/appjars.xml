@@ -183,6 +183,17 @@
       <getJar lib="${org.bedework.app.lib}"
               name="commons-ssl" />
 
+      <!-- Jms support -->
+
+      <getJar lib="${org.bedework.app.lib}"
+              name="activemq-core" version="5.2.0" />
+
+      <getJar lib="${org.bedework.app.lib}"
+              name="geronimo-j2ee-management_1.0_spec" version="1.0" />
+
+      <getJar lib="${org.bedework.app.lib}"
+              name="jms" version="1.1" />
+
       <!-- Various apis -->
 
       <getJar lib="${org.bedework.app.lib}"
@@ -228,51 +239,51 @@
               projecthome="${bw.project.home}/projects/davutil" />
 
       <getJar lib="${org.bedework.app.lib}"
-               name="bw-annotations" version="3.5"
+               name="bw-annotations" version="3.6"
                projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-               name="bw-apiutil" version="3.5"
+               name="bw-apiutil" version="3.6"
                projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-calcore" version="3.5"
+              name="bw-calcore" version="3.6"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-calcorei" version="3.5"
+              name="bw-calcorei" version="3.6"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-calfacade" version="3.5"
+              name="bw-calfacade" version="3.6"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-               name="bw-calsvc" version="3.5"
+               name="bw-calsvc" version="3.6"
                projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-calsvci" version="3.5"
+              name="bw-calsvci" version="3.6"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-client" version="3.5"
+              name="bw-client" version="3.6"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-icalendar" version="3.5"
+              name="bw-icalendar" version="3.6"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-logging" version="3.5"
+              name="bw-logging" version="3.6"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-mail" version="3.5"
+              name="bw-mail" version="3.6"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-sysevents" version="3.5"
+              name="bw-sysevents" version="3.6"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"

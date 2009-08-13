@@ -350,9 +350,11 @@
         <!-- ==================================================================
                           User CalDAV server UserCalDAV
              ================================================================== -->
-        <Usercaldav classname="org.bedework.calfacade.configs.CalDAVConfig">
+        <Usercaldav classname="org.bedework.caldav.util.CalDAVConfig">
           <appType>usercaldav</appType>
+          <!--
           <publicAdmin>false</publicAdmin>
+          -->
           <guestMode>false</guestMode>
 
           <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
@@ -372,9 +374,11 @@
         <!-- ==================================================================
                           Public (unauthenticated) CalDAV server PublicCalDAV
              ================================================================== -->
-        <Pubcaldav classname="org.bedework.calfacade.configs.CalDAVConfig">
+        <Pubcaldav classname="org.bedework.caldav.util.CalDAVConfig">
           <appType>publiccaldav</appType>
+          <!--
           <publicAdmin>false</publicAdmin>
+           -->
           <guestMode>true</guestMode>
 
           <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
@@ -420,6 +424,36 @@
           <superGroupName>campusAdminGroups</superGroupName>
           <defaultPublicCalPath>/public/Other Events/Other</defaultPublicCalPath>
         </dumpres>
+
+        <!-- ==================================================================
+                          Crawler program
+             ================================================================== -->
+        <indexer classname="org.bedework.calfacade.configs.BwCrawlerConfig">
+          <debug>true</debug>
+          <appType>indexer</appType>
+          <guestMode>true</guestMode>
+          <debugEntity>false</debugEntity>
+        </indexer>
+
+        <!-- ==================================================================
+                          System events logger program
+             ================================================================== -->
+        <sysevlog classname="org.bedework.calfacade.configs.BwCrawlerConfig">
+          <debug>true</debug>
+          <appType>sysevlog</appType>
+          <guestMode>true</guestMode>
+          <debugEntity>false</debugEntity>
+        </sysevlog>
+
+        <!-- ==================================================================
+                          In/outbox scheduler program
+             ================================================================== -->
+        <iosched classname="org.bedework.calfacade.configs.BwCrawlerConfig">
+          <debug>true</debug>
+          <appType>inoutsched</appType>
+          <guestMode>true</guestMode>
+          <debugEntity>false</debugEntity>
+        </iosched>
       </app>
     </bedework>
   </org>
