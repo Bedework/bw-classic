@@ -220,7 +220,6 @@
   -->
 
   <!-- configure the camel activemq component to use the current broker
--->
   <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent" >
     <property name="connectionFactory">
       <bean class="org.apache.activemq.ActiveMQConnectionFactory">
@@ -230,6 +229,7 @@
       </bean>
     </property>
   </bean>
+-->
 
   <!-- Uncomment to create a command agent to respond to message based admin commands on the ActiveMQ.Agent topic
 -->
