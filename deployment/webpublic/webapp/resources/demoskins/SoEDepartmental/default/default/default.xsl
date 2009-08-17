@@ -74,6 +74,8 @@
   <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
+  <xsl:include href="./strings.xsl"/>
+  
 
   <!-- DEFINE GLOBAL CONSTANTS -->
 
@@ -127,7 +129,7 @@
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title>Bedework Events Calendar</title>
+        <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
         <!-- load css -->
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/soe.css"/>
@@ -249,10 +251,10 @@
       <tr>
         <td colspan="3" id="logoCell"><a href="/bedework/"><img src="{$resourcesRoot}/images/bedeworkLogoGreen.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
         <td colspan="2" id="schoolLinksCell">
-          <h2>School of Engineering</h2>
-          <a href="http://www.yourdepartmenthere.edu">School of Engineering Home</a> |
-          <a href="http://www.youruniversityhere.edu">University Home</a> |
-          <a href="http://www.bedework.org/">Other Link</a>
+          <h2><xsl:copy-of select="$bwStr-HdBr-SchoolOfEngineering"/></h2>
+          <a href="http://www.yourdepartmenthere.edu"><xsl:copy-of select="$bwStr-HdBr-SchoolOfEngineeringHome"/></a> |
+          <a href="http://www.youruniversityhere.edu"><xsl:copy-of select="$bwStr-HdBr-UniversityHome"/></a> |
+          <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a>
         </td>
       </tr>
     </table>
@@ -279,7 +281,7 @@
         <td class="date">
           <xsl:choose>
             <xsl:when test="/bedework/page='event'">
-              Event Information
+              <xsl:copy-of select="$bwStr-HdBr-EventInformation"/>
             </xsl:when>
             <xsl:when test="/bedework/page='showSysStats' or
                             /bedework/page='calendars'">
@@ -295,10 +297,10 @@
           </xsl:choose>
         </td>
         <td class="rssPrint">
-          <a href="javascript:window.print()" title="print this view">
-            <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> print
+          <a href="javascript:window.print()" title="{$bwStr-HdBr-PrintThisView}">
+            <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-HdBr-Print"/>
           </a>
-          <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="RSS feed">RSS</a>
+          <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="{$bwStr-HdBr-RSSFeed}"><xsl:copy-of select="$bwStr-HdBr-RSS"/></a>
         </td>
       </tr>
     </table>
@@ -311,28 +313,28 @@
           <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Day'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">DAY</a>
+          <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><xsl:copy-of select="$bwStr-Tabs-Day"/></a>
         </li>
         <li>
           <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Week' or /bedework/periodname=''">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}">WEEK</a>
+          <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}"><xsl:copy-of select="$bwStr-Tabs-Week"/></a>
         </li>
         <li>
           <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Month'">
             <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if><a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">MONTH</a>
+          </xsl:if><a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}"><xsl:copy-of select="$bwStr-Tabs-Month"/></a>
         </li>
         <li>
           <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Year'">
             <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if><a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}">YEAR</a>
+          </xsl:if><a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><xsl:copy-of select="$bwStr-Tabs-Year"/></a>
         </li>
         <li>
           <xsl:if test="/bedework/page='eventList'">
             <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if><a href="{$listEvents}">LIST</a>
+          </xsl:if><a href="{$listEvents}"><xsl:copy-of select="$bwStr-Tabs-List"/></a>
         </li>
       </ul>
     </div>
@@ -352,7 +354,7 @@
               <xsl:value-of select="/bedework/firstday/monthname"/>, <xsl:value-of select="substring(/bedework/firstday/date,1,4)"/>
             </xsl:when>
             <xsl:when test="/bedework/periodname='Week'">
-              Week of <xsl:value-of select="substring-after(/bedework/firstday/longdate,', ')"/>
+              <xsl:copy-of select="$bwStr-Navi-WeekOf"/><xsl:text> </xsl:text><xsl:value-of select="substring-after(/bedework/firstday/longdate,', ')"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="/bedework/firstday/longdate"/>
@@ -417,7 +419,7 @@
                   <input type="text" name="viewStartDate.year" maxlength="4" size="4" value="{$temp}"/>
                 </td>
                 <td>
-                  <input name="submit" type="submit" value="go"/>
+                  <input name="submit" type="submit" value="{$bwStr-Navi-Go}"/>
                 </td>
               </tr>
             </table>
@@ -435,7 +437,7 @@
          <td class="leftCell">
            <xsl:choose>
              <xsl:when test="/bedework/selectionState/selectionType = 'collections'">
-               Calendar:
+               <xsl:copy-of select="$bwStr-SrcB-Calendar"/>
                <strong>
                  <xsl:call-template name="substring-afterLastInstanceOf">
                    <xsl:with-param name="string" select="/bedework/appvar[key='curCollection']/value"/>
@@ -444,10 +446,10 @@
                </strong>
              </xsl:when>
              <xsl:when test="/bedework/selectionState/selectionType = 'search'">
-               Current search: <xsl:value-of select="/bedework/search"/>
+               <xsl:copy-of select="$bwStr-SrcB-CurrentSearch"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/search"/>
              </xsl:when>
              <xsl:otherwise><!-- view -->
-               View:
+               <xsl:copy-of select="$bwStr-SrcB-View"/>
                <form name="selectViewForm" method="post" action="{$setSelection}">
                 <select name="viewName" onchange="submit()" >
                   <xsl:for-each select="/bedework/views/view">
@@ -465,36 +467,36 @@
               </form>
              </xsl:otherwise>
            </xsl:choose>
-           <span class="link"><a href="{$setSelection}">default view</a> | <a href="{$fetchPublicCalendars}">all topical areas</a></span>
+           <span class="link"><a href="{$setSelection}"><xsl:copy-of select="$bwStr-SrcB-DefaultView"/></a> | <a href="{$fetchPublicCalendars}"><xsl:copy-of select="$bwStr-SrcB-AllTopicalAreas"/></a></span>
          </td>
          <td class="rightCell">
             <xsl:if test="/bedework/page!='searchResult'">
               <form name="searchForm" id="searchForm" method="post" action="{$search}">
-                Search:
+                <xsl:copy-of select="$bwStr-SrcB-Search"/>
                 <input type="text" name="query" size="15">
                   <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
                 </input>
-                <input type="submit" name="submit" value="go"/>
+                <input type="submit" name="submit" value="{$bwStr-SrcB-Go}"/>
               </form>
               <xsl:text> </xsl:text>
             </xsl:if>
             <xsl:choose>
               <xsl:when test="/bedework/periodname='Day' or /bedework/page='eventList'">
-                <img src="{$resourcesRoot}/images/std-button-listview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                <img src="{$resourcesRoot}/images/std-button-listview-off.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
               </xsl:when>
               <xsl:when test="/bedework/periodname='Year'">
-                <img src="{$resourcesRoot}/images/std-button-calview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                <img src="{$resourcesRoot}/images/std-button-calview-off.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
               </xsl:when>
               <xsl:when test="/bedework/periodname='Month'">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-                    <a href="{$setup}&amp;setappvar=monthViewMode(cal)" title="toggle list/calendar view">
-                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                    <a href="{$setup}&amp;setappvar=monthViewMode(cal)" title="{$bwStr-SrcB-ToggleListCalView}">
+                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$setup}&amp;setappvar=monthViewMode(list)" title="toggle list/calendar view">
-                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                    <a href="{$setup}&amp;setappvar=monthViewMode(list)" title="{$bwStr-SrcB-ToggleListCalView}">
+                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -502,13 +504,13 @@
               <xsl:otherwise>
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                    <a href="{$setup}&amp;setappvar=weekViewMode(cal)" title="toggle list/calendar view">
-                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                    <a href="{$setup}&amp;setappvar=weekViewMode(cal)" title="{$bwStr-SrcB-ToggleListCalView}">
+                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$setup}&amp;setappvar=weekViewMode(list)" title="toggle list/calendar view">
-                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                    <a href="{$setup}&amp;setappvar=weekViewMode(list)" title="{$bwStr-SrcB-ToggleListCalView}">
+                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -518,13 +520,13 @@
               <xsl:when test="/bedework/page = 'eventList'">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
-                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="{$bwStr-SrcB-ToggleSummDetView}">
+                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="{$bwStr-SrcB-ToggleSummDetView}">
+                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -548,13 +550,13 @@
               <xsl:otherwise>
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                    <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="{$bwStr-SrcB-ToggleSummDetView}">
+                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$setup}&amp;setappvar=summaryMode(details)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    <a href="{$setup}&amp;setappvar=summaryMode(details)" title="{$bwStr-SrcB-ToggleSummDetView}">
+                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -584,10 +586,10 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
-      <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="generate link to this event">
-       link to this event
+      <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="{$bwStr-SgEv-GenerateLinkToThisEvent}">
+       <xsl:copy-of select="$bwStr-SgEv-LinkToThisEvent"/>
      </a>
-      <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
+      <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-SgEv-Canceled"/><xsl:text> </xsl:text></xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
           <xsl:variable name="link" select="link"/>
@@ -602,7 +604,7 @@
     </h2>
     <table id="eventTable" cellpadding="0" cellspacing="0">
       <tr>
-        <td class="fieldname">When:</td>
+        <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-When"/></td>
         <td class="fieldval">
           <!-- always display local time -->
           <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text>
@@ -616,7 +618,7 @@
           </xsl:if>
           <xsl:choose>
             <xsl:when test="start/allday = 'true'">
-              <span class="time"><em>(all day)</em></span>
+              <span class="time"><em><xsl:copy-of select="$bwStr-SgEv-AllDay"/></em></span>
             </xsl:when>
             <xsl:when test="end/longdate != start/longdate">
               <span class="time"><xsl:value-of select="end/time"/></span>
@@ -632,10 +634,10 @@
             <strong>
               <xsl:choose>
                 <xsl:when test="start/floating = 'true'">
-                  Floating time
+                  <xsl:copy-of select="$bwStr-SgEv-FloatingTime"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  Local time
+                  <xsl:copy-of select="$bwStr-SgEv-LocalTime"/>
                 </xsl:otherwise>
               </xsl:choose>
             </strong>
@@ -649,7 +651,7 @@
                 <table border="0" cellspacing="0" id="tztable">
                   <tr>
                     <td>
-                      <strong>Start:</strong>
+                      <strong><xsl:copy-of select="$bwStr-SgEv-Start"/></strong>
                     </td>
                     <td>
                       <xsl:choose>
@@ -674,7 +676,7 @@
                   </tr>
                   <tr>
                     <td>
-                      <strong>End:</strong>
+                      <strong><xsl:copy-of select="$bwStr-SgEv-End"/></strong>
                     </td>
                     <td>
                       <xsl:choose>
@@ -712,7 +714,7 @@
                 </xsl:if>
                 <xsl:choose>
                   <xsl:when test="start/allday = 'true'">
-                    <span class="time"><em>(all day)</em></span>
+                    <span class="time"><em><xsl:copy-of select="$bwStr-SgEv-AllDay"/></em></span>
                   </xsl:when>
                   <xsl:when test="end/timezone/longdate != start/timezone/longdate">
                     <span class="time"><xsl:value-of select="end/timezone/time"/></span>
@@ -730,19 +732,19 @@
         </td>
         <th class="icalIcon" rowspan="2">
           <div id="eventIcons">
-            <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
+            <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-AddEventToMyCalendar}" target="myCalendar">
               <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
-              add to my calendar
+              <xsl:copy-of select="$bwStr-SgEv-AddToMyCalendar"/>
             </a>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-DownloadEvent}">
               <img src="{$resourcesRoot}/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
-             download</a>
+             <xsl:copy-of select="$bwStr-SgEv-Download"/></a>
           </div>
         </th>
       </tr>
       <tr>
-        <td class="fieldname">Where:</td>
+        <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Where"/></td>
         <td class="fieldval">
           <xsl:choose>
             <xsl:when test="location/link=''">
@@ -761,7 +763,7 @@
         </td>
       </tr>
       <tr>
-        <td class="fieldname">Description:</td>
+        <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Description"/></td>
         <td colspan="2" class="fieldval description">
           <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
             <xsl:variable name="bwImage"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:variable>
@@ -776,7 +778,7 @@
       </tr>
       <xsl:if test="status !='' and status != 'CONFIRMED'">
         <tr>
-          <td class="fieldname">Status:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-STATUS"/></td>
           <td class="fieldval">
             <xsl:value-of select="status"/>
           </td>
@@ -784,13 +786,13 @@
       </xsl:if>
       <xsl:if test="cost!=''">
         <tr>
-          <td class="fieldname">Cost:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Cost"/></td>
           <td colspan="2" class="fieldval"><xsl:value-of select="cost"/></td>
         </tr>
       </xsl:if>
       <xsl:if test="link != ''">
         <tr>
-          <td class="fieldname">See:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-See"/></td>
           <td colspan="2" class="fieldval">
             <xsl:variable name="link" select="link"/>
             <a href="{$link}"><xsl:value-of select="link"/></a>
@@ -799,7 +801,7 @@
       </xsl:if>
       <xsl:if test="contact/name!='none'">
         <tr>
-          <td class="fieldname">Contact:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Contact"/></td>
           <td colspan="2" class="fieldval">
             <xsl:choose>
               <xsl:when test="contact/link=''">
@@ -830,7 +832,7 @@
       </xsl:if>
       <xsl:if test="comments/comment">
         <tr>
-          <td class="fieldname">Comments:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Comments"/></td>
           <td class="fieldval comments">
             <xsl:for-each select="comments/comment">
               <p><xsl:value-of select="value"/></p>
@@ -840,7 +842,7 @@
       </xsl:if>
       <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
         <tr>
-          <td class="fieldname">Topical Area:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-TopicalArea"/></td>
           <td class="fieldval">
             <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
               <xsl:variable name="calUrl" select="values/text"/>
@@ -856,7 +858,7 @@
       </xsl:if>
       <xsl:if test="categories/category">
         <tr>
-          <td class="fieldname">Categories:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Categories"/></td>
           <td class="fieldval">
             <xsl:for-each select="categories/category">
               <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
@@ -885,7 +887,7 @@
         <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event)">
           <tr>
             <td class="noEventsCell">
-              No events to display.
+              <xsl:copy-of select="$bwStr-LsVw-NoEventsToDisplay"/>
             </td>
           </tr>
         </xsl:when>
@@ -925,7 +927,7 @@
                   <xsl:when test="start/allday = 'true' and
                                   start/shortdate = end/shortdate">
                     <td class="{$dateRangeStyle} center" colspan="3">
-                      all day
+                      <xsl:copy-of select="$bwStr-LsVw-AllDay"/>
                     </td>
                   </xsl:when>
                   <xsl:when test="start/shortdate = end/shortdate and
@@ -942,7 +944,7 @@
                       <xsl:choose>
                         <xsl:when test="start/allday = 'true' and
                                         parent::day/shortdate = start/shortdate">
-                          today
+                          <xsl:copy-of select="$bwStr-LsVw-Today"/>
                         </xsl:when>
                         <xsl:when test="parent::day/shortdate != start/shortdate">
                           <span class="littleArrow">&#171;</span>&#160;
@@ -962,7 +964,7 @@
                       <xsl:choose>
                         <xsl:when test="end/allday = 'true' and
                                         parent::day/shortdate = end/shortdate">
-                          today
+                          <xsl:copy-of select="$bwStr-LsVw-Today"/>
                         </xsl:when>
                         <xsl:when test="parent::day/shortdate != end/shortdate">
                           <xsl:value-of select="end/month"/>/<xsl:value-of select="end/day"/>
@@ -980,7 +982,7 @@
                   <xsl:choose>
                     <xsl:when test="status='CANCELLED'">description bwStatusCancelled</xsl:when>
                     <xsl:when test="status='TENTATIVE'">description bwStatusTentative</xsl:when>
-                    <xsl:otherwise>description</xsl:otherwise>
+                    <xsl:otherwise><xsl:copy-of select="$bwStr-LsVw-Description"/></xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
                 <!-- Subscription styles.
@@ -993,7 +995,7 @@
                                 subscription/subStyle != 'default'"><xsl:value-of select="subscription/subStyle"/></xsl:if>
                 </xsl:variable>
                 <td class="{$descriptionClass} {$subscriptionClass}">
-                  <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
+                  <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsVw-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
@@ -1010,7 +1012,7 @@
                             <xsl:value-of select="cost"/>.&#160;
                           </xsl:if>
                           <xsl:if test="contact/name!='none'">
-                            Contact: <xsl:value-of select="contact/name"/>
+                            <xsl:copy-of select="$bwStr-LsVw-Contact"/><xsl:text> </xsl:text><xsl:value-of select="contact/name"/>
                           </xsl:if>
                         </em>
                         -
@@ -1056,8 +1058,8 @@
                     <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
                   </a>
                   <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-                  <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-                    <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                  <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-LsVw-DownloadEvent}">
+                    <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsVw-DownloadEvent}"/>
                   </a>
                 </td>
               </tr>
@@ -1071,7 +1073,7 @@
   <!--==== LIST EVENTS - for listing discrete events ====-->
   <xsl:template match="events" mode="eventList">
     <h2 class="bwStatusConfirmed">
-      Next 7 Days
+      <xsl:copy-of select="$bwStr-LsEv-Next7Days"/>
       <!-- xsl:choose>
         <xsl:when test="/bedework/now/longdate = /bedework/events/event[position()=last()]/start/longdate"><xsl:value-of select="/bedework/now/longdate"/></xsl:when>
         <xsl:otherwise><xsl:value-of select="/bedework/now/longdate"/> - <xsl:value-of select="/bedework/events/event[position()=last()]/start/longdate"/></xsl:otherwise>
@@ -1082,7 +1084,7 @@
       <ul>
         <xsl:choose>
           <xsl:when test="not(event)">
-            <li>No events to display.</li>
+            <li><xsl:copy-of select="$bwStr-LsEv-NoEventsToDisplay"/></li>
           </xsl:when>
           <xsl:otherwise>
             <xsl:for-each select="event">
@@ -1098,8 +1100,8 @@
                   </xsl:choose>
                 </xsl:attribute>
 
-                <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
-                <xsl:if test="status='TENTATIVE'"><em>TENTATIVE: </em></xsl:if>
+                <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsEv-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
+                <xsl:if test="status='TENTATIVE'"><em><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></em></xsl:if>
 
                 <a class="title" href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                   <xsl:value-of select="summary"/>
@@ -1116,8 +1118,8 @@
                 </a>
                 <xsl:text> </xsl:text>
                 <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-                  <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-LsEv-DownloadEvent}">
+                  <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsEv-DownloadEvent}"/>
                 </a>
 
                 <br/>
@@ -1156,7 +1158,7 @@
                   </xsl:if>
                   <xsl:if test="categories/category">
                     <br/>
-                    Categories:
+                    <xsl:copy-of select="$bwStr-LsEv-Categories"/>
                     <xsl:for-each select="categories/category">
                       <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
                     </xsl:for-each>
@@ -1167,7 +1169,7 @@
                       <xsl:value-of select="cost"/>.&#160;
                     </xsl:if>
                     <xsl:if test="contact/name!='none'">
-                      Contact: <xsl:value-of select="contact/name"/>
+                      <xsl:copy-of select="$bwStr-LsEv-Contact"/><xsl:text> </xsl:text><xsl:value-of select="contact/name"/>
                     </xsl:if>
                   </em>
                 </xsl:if>
@@ -1282,16 +1284,16 @@
     </xsl:variable>
     <li>
       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass} {$subscriptionClass}">
-        <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
+        <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-EvCG-CanceledColon"/><xsl:text> </xsl:text></xsl:if>
         <xsl:choose>
           <xsl:when test="start/shortdate != ../shortdate">
-            (cont)
+            <xsl:copy-of select="$bwStr-EvCG-Cont"/>
           </xsl:when>
           <xsl:when test="start/allday = 'false'">
             <xsl:value-of select="start/time"/>:
           </xsl:when>
           <xsl:otherwise>
-            all day:
+            <xsl:copy-of select="$bwStr-EvCG-AllDayColon"/>
           </xsl:otherwise>
         </xsl:choose>
         <xsl:value-of select="summary"/>
@@ -1302,13 +1304,13 @@
           </xsl:choose>
         </xsl:variable>
         <span class="{$eventTipClass}">
-          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELED</span></xsl:if>
-          <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative">TENTATIVE</span></xsl:if>
+          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled"><xsl:copy-of select="$bwStr-EvCG-Canceled"/></span></xsl:if>
+          <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative"><xsl:copy-of select="$bwStr-EvCG-Tentative"/></span></xsl:if>
           <strong><xsl:value-of select="summary"/></strong><br/>
-          Time:
+          <xsl:copy-of select="$bwStr-EvCG-Time"/>
           <xsl:choose>
             <xsl:when test="start/allday = 'true'">
-              all day
+              <xsl:copy-of select="$bwStr-EvCG-AllDay"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:if test="start/shortdate != ../shortdate">
@@ -1327,10 +1329,10 @@
             </xsl:otherwise>
           </xsl:choose><br/>
           <xsl:if test="location/address">
-            Location: <xsl:value-of select="location/address"/><br/>
+            <xsl:copy-of select="$bwStr-EvCG-Location"/><xsl:text> </xsl:text><xsl:value-of select="location/address"/><br/>
           </xsl:if>
           <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
-            Topical Area:
+            <xsl:copy-of select="$bwStr-EvCG-TopicalArea"/>
               <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
                 <xsl:call-template name="substring-afterLastInstanceOf">
                   <xsl:with-param name="string" select="values/text"/>
@@ -1421,13 +1423,13 @@
     <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="2">
-          All Topical Areas
+          <xsl:copy-of select="$bwStr-Cals-AllTopicalAreas"/>
         </th>
       </tr>
       <tr>
         <td colspan="2" class="infoCell">
           <p class="info">
-            Select a topical area from the list below to see only its events.
+            <xsl:copy-of select="$bwStr-Cals-SelectTopicalArea"/>
           </p>
         </td>
       </tr>
@@ -1450,8 +1452,8 @@
   <xsl:template match="calendar" mode="calTree">
     <xsl:variable name="itemClass">
       <xsl:choose>
-        <xsl:when test="calType = '0'">folder</xsl:when>
-        <xsl:otherwise>calendar</xsl:otherwise>
+        <xsl:when test="calType = '0'"><xsl:copy-of select="$bwStr-Calr-Folder"/></xsl:when>
+        <xsl:otherwise><xsl:copy-of select="$bwStr-Calr-Calendar"/></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
@@ -1474,17 +1476,17 @@
 
   <!-- calendar export page -->
   <xsl:template match="currentCalendar" mode="export">
-    <h2 class="bwStatusConfirmed">Export Calendar</h2>
+    <h2 class="bwStatusConfirmed"><xsl:copy-of select="$bwStr-Cals-ExportCalendar"/></h2>
     <div id="export">
       <p>
-        <strong>Calendar to export:</strong>
+        <strong><xsl:copy-of select="$bwStr-Cals-ExportCals"/></strong>
       </p>
       <div class="indent">
-        Name: <strong><em><xsl:value-of select="name"/></em></strong><br/>
-        Path: <xsl:value-of select="path"/>
+        <xsl:copy-of select="$bwStr-Cals-Name"/><xsl:text> </xsl:text><strong><em><xsl:value-of select="name"/></em></strong><br/>
+        Path:<xsl:text> </xsl:text><xsl:value-of select="path"/>
       </div>
       <p>
-        <strong>Event date limits:</strong>
+        <strong><xsl:copy-of select="$bwStr-Cals-EventDateLimits"/></strong>
       </p>
       <form name="exportCalendarForm" id="exportCalendarForm" action="{$export}" method="post">
         <input type="hidden" name="calPath">
@@ -1503,14 +1505,14 @@
           <xsl:attribute name="value"><xsl:value-of select="name"/>.ics</xsl:attribute>
         </input>
         <!-- visible fields -->
-        <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> today forward
-        <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
-        <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> date range
+        <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Cals-TodayForward"/>
+        <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Cals-AllDates"/>
+        <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Cals-DateRange"/>
         <div id="exportDateRange" class="invisible">
-          Start: <input type="text" name="bwExportCalendarWidgetStartDate" id="bwExportCalendarWidgetStartDate" size="10"/>
-          <span id="bwExportEndField">End: <input type="text" name="bwExportCalendarWidgetEndDate" id="bwExportCalendarWidgetEndDate" size="10"/></span>
+          <xsl:copy-of select="$bwStr-Cals-Start"/><xsl:text> </xsl:text><input type="text" name="bwExportCalendarWidgetStartDate" id="bwExportCalendarWidgetStartDate" size="10"/>
+          <span id="bwExportEndField"><xsl:copy-of select="$bwStr-Cals-End"/><xsl:text> </xsl:text><input type="text" name="bwExportCalendarWidgetEndDate" id="bwExportCalendarWidgetEndDate" size="10"/></span>
         </div>
-        <p><input type="submit" value="export" class="bwWidgetSubmit" onclick="fillExportFields(this.form)"/></p>
+        <p><input type="submit" value="{$bwStr-Cals-Export}" class="bwWidgetSubmit" onclick="fillExportFields(this.form)"/></p>
       </form>
     </div>
   </xsl:template>
@@ -1520,32 +1522,32 @@
     <h2 class="bwStatusConfirmed">
       <div id="searchFilter">
         <form name="searchForm" method="post" action="{$search}">
-          Search:
+          <xsl:copy-of select="$bwStr-Srch-Search"/>
           <input type="text" name="query" size="15">
             <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
           </input>
-          <input type="submit" name="submit" value="go"/>
-          Limit:
+          <input type="submit" name="submit" value="{$bwStr-Srch-Go}"/>
+          <xsl:copy-of select="$bwStr-Srch-Limit"/>
           <xsl:choose>
             <xsl:when test="/bedework/searchResults/searchLimits = 'beforeToday'">
-              <input type="radio" name="searchLimits" value="fromToday"/>today forward
-              <input type="radio" name="searchLimits" value="beforeToday" checked="checked"/>past dates
-              <input type="radio" name="searchLimits" value="none"/>all dates
+              <input type="radio" name="searchLimits" value="fromToday"/><xsl:copy-of select="$bwStr-Srch-TodayForward"/>
+              <input type="radio" name="searchLimits" value="beforeToday" checked="checked"/><xsl:copy-of select="$bwStr-Srch-PastDates"/>
+              <input type="radio" name="searchLimits" value="none"/><xsl:copy-of select="$bwStr-Srch-AllDates"/>
             </xsl:when>
             <xsl:when test="/bedework/searchResults/searchLimits = 'none'">
-              <input type="radio" name="searchLimits" value="fromToday"/>today forward
-              <input type="radio" name="searchLimits" value="beforeToday"/>past dates
-              <input type="radio" name="searchLimits" value="none" checked="checked"/>all dates
+              <input type="radio" name="searchLimits" value="fromToday"/><xsl:copy-of select="$bwStr-Srch-TodayForward"/>
+              <input type="radio" name="searchLimits" value="beforeToday"/><xsl:copy-of select="$bwStr-Srch-PastDates"/>
+              <input type="radio" name="searchLimits" value="none" checked="checked"/><xsl:copy-of select="$bwStr-Srch-AllDates"/>
             </xsl:when>
             <xsl:otherwise>
-              <input type="radio" name="searchLimits" value="fromToday" checked="checked"/>today forward
-              <input type="radio" name="searchLimits" value="beforeToday"/>past dates
-              <input type="radio" name="searchLimits" value="none"/>all dates
+              <input type="radio" name="searchLimits" value="fromToday" checked="checked"/><xsl:copy-of select="$bwStr-Srch-TodayForward"/>
+              <input type="radio" name="searchLimits" value="beforeToday"/><xsl:copy-of select="$bwStr-Srch-PastDates"/>
+              <input type="radio" name="searchLimits" value="none"/><xsl:copy-of select="$bwStr-Srch-AllDates"/>
             </xsl:otherwise>
           </xsl:choose>
         </form>
       </div>
-      Search Result
+      <xsl:copy-of select="$bwStr-Srch-SearchResult"/>
     </h2>
     <table id="searchTable" cellpadding="0" cellspacing="0">
       <tr>
@@ -1553,10 +1555,10 @@
           <xsl:if test="/bedework/searchResults/numPages &gt; 1">
             <xsl:variable name="curPage" select="/bedework/searchResults/curPage"/>
             <div id="searchPageForm">
-              page:
+              <xsl:copy-of select="$bwStr-Srch-Page"/>
               <xsl:if test="/bedework/searchResults/curPage != 1">
                 <xsl:variable name="prevPage" select="number($curPage) - 1"/>
-                &lt;<a href="{$search-next}&amp;pageNum={$prevPage}">prev</a>
+                &lt;<a href="{$search-next}&amp;pageNum={$prevPage}"><xsl:copy-of select="$bwStr-Srch-Prev"/></a>
               </xsl:if>
               <xsl:text> </xsl:text>
 
@@ -1573,35 +1575,34 @@
               <xsl:choose>
                 <xsl:when test="$curPage != /bedework/searchResults/numPages">
                   <xsl:variable name="nextPage" select="number($curPage) + 1"/>
-                  <a href="{$search-next}&amp;pageNum={$nextPage}">next</a>&gt;
+                  <a href="{$search-next}&amp;pageNum={$nextPage}"><xsl:copy-of select="$bwStr-Srch-Next"/></a>&gt;
                 </xsl:when>
                 <xsl:otherwise>
-                  <span class="hidden">next&gt;</span><!-- occupy the space to keep the navigation from moving around -->
+                  <span class="hidden"><xsl:copy-of select="$bwStr-Srch-Next"/>&gt;</span><!-- occupy the space to keep the navigation from moving around -->
                 </xsl:otherwise>
               </xsl:choose>
             </div>
           </xsl:if>
           <xsl:value-of select="/bedework/searchResults/resultSize"/>
-          result<xsl:if test="/bedework/searchResults/resultSize != 1">s</xsl:if> returned
-          for <em><xsl:value-of select="/bedework/searchResults/query"/></em>
+          <xsl:copy-of select="$bwStr-Srch-ResultReturnedFor"/><xsl:text> </xsl:text><em><xsl:value-of select="/bedework/searchResults/query"/></em>
         </th>
       </tr>
       <xsl:if test="/bedework/searchResults/searchResult">
         <tr class="fieldNames">
           <td>
-            relevance
+            <xsl:copy-of select="$bwStr-Srch-Relevance"/>
           </td>
           <td>
-            summary
+            <xsl:copy-of select="$bwStr-Srch-Summary"/>
           </td>
           <td>
-            date &amp; time
+            <xsl:copy-of select="$bwStr-Srch-DateAndTime"/>
           </td>
           <td>
-            calendar
+            <xsl:copy-of select="$bwStr-Srch-Calendar"/>
           </td>
           <td>
-            location
+            <xsl:copy-of select="$bwStr-Srch-Location"/>
           </td>
         </tr>
       </xsl:if>
@@ -1681,18 +1682,18 @@
   <!--+++++++++++++++ System Stats ++++++++++++++++++++-->
   <xsl:template name="stats">
     <div id="stats">
-      <h2>System Statistics</h2>
+      <h2><xsl:copy-of select="$bwStr-Stat-SysStats"/></h2>
 
       <p>
-        Stats collection:
+        <xsl:copy-of select="$bwStr-Stat-StatsCollection"/>
       </p>
       <ul>
         <li>
-          <a href="{$stats}&amp;enable=yes">enable</a> |
-          <a href="{$stats}&amp;disable=yes">disable</a>
+          <a href="{$stats}&amp;enable=yes"><xsl:copy-of select="$bwStr-Stat-Enable"/></a> |
+          <a href="{$stats}&amp;disable=yes"><xsl:copy-of select="$bwStr-Stat-Disable"/></a>
         </li>
-        <li><a href="{$stats}&amp;fetch=yes">fetch statistics</a></li>
-        <li><a href="{$stats}&amp;dump=yes">dump stats to log</a></li>
+        <li><a href="{$stats}&amp;fetch=yes"><xsl:copy-of select="$bwStr-Stat-FetchStats"/></a></li>
+        <li><a href="{$stats}&amp;dump=yes"><xsl:copy-of select="$bwStr-Stat-DumpStats"/></a></li>
       </ul>
       <table id="statsTable" cellpadding="0">
         <xsl:for-each select="/bedework/sysStats/*">
@@ -1724,15 +1725,15 @@
 
   <xsl:template name="footer">
     <div id="footer">
-      Based on the <a href="http://www.bedework.org/">Bedework Calendar System</a>
+      <xsl:copy-of select="$bwStr-Foot-BasedOnThe"/><xsl:text> </xsl:text><a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-Foot-BedeworkCalendarSystem"/></a>
     </div>
     <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td class="leftCell">
-          <a href="http://www.bedework.org/">Bedework website</a> |
-          <a href="http://www.bedework.org/bedework/update.do?artcenterkey=35">production examples</a> |
-          <a href="?noxslt=yes">show XML</a> |
-          <a href="?refreshXslt=yes">refresh XSLT</a>
+          <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-Foot-BedeworkWebsite"/></a> |
+          <a href="http://www.bedework.org/bedework/update.do?artcenterkey=35"><xsl:copy-of select="$bwStr-Foot-ProductionExamples"/></a> |
+          <a href="?noxslt=yes"><xsl:copy-of select="$bwStr-Foot-ShowXML"/></a> |
+          <a href="?refreshXslt=yes"><xsl:copy-of select="$bwStr-Foot-RefreshXSLT"/></a>
         </td>
         <td class="rightCell">
           <!--
