@@ -53,6 +53,7 @@
   <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/bedeworkAccess.xsl"/>
+  <xsl:include href="./strings.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
   <!-- URL of html resources (images, css, other html); by default this is
@@ -395,7 +396,7 @@
 
   <!--==== HEAD SECTION  ====-->
   <xsl:template name="headSection">
-    <title>Bedework: Personal Calendar Client</title>
+    <title><xsl:copy-of select="$bwStr-Head-PageTitle"/></title>
     <meta name="robots" content="noindex,nofollow"/>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
@@ -604,12 +605,12 @@
       <tr>
         <td colspan="3" id="logoCell"><a href="/bedework/"><img src="{$resourcesRoot}/resources/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
         <td colspan="2" id="schoolLinksCell">
-          <h2>Personal Calendar</h2>
-          <a href="{$publicCal}">Public Calendar</a> |
-          <a href="http://www.yourschoolhere.edu">School Home</a> |
-          <a href="http://www.bedework.org/">Other Link</a> |
+          <h2><xsl:copy-of select="$bwStr-HdBr-PersonalCalendar"/></h2>
+          <a href="{$publicCal}"><xsl:copy-of select="$bwStr-HdBr-PublicCalendar"/></a> |
+          <a href="http://www.yourschoolhere.edu"><xsl:copy-of select="$bwStr-HdBr-SchoolHome"/></a> |
+          <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a> |
           <a href="http://helpdesk.rpi.edu/update.do?catcenterkey=51">
-            Example Calendar Help
+            <xsl:copy-of select="$bwStr-HdBr-ExampleCalendarHelp"/>
           </a>
         </td>
       </tr>
@@ -638,10 +639,10 @@
           </xsl:if>
         </td>
         <td class="rssPrint">
-          <a href="javascript:window.print()" title="print this view">
-            <img alt="print this view" src="{$resourcesRoot}/resources/std-print-icon.gif" width="20" height="14" border="0"/> print
+          <a href="javascript:window.print()" title="{$bwStr-HdBr-PrintThisView}">
+            <img alt="print this view" src="{$resourcesRoot}/resources/std-print-icon.gif" width="20" height="14" border="0"/> <xsl:copy-of select="$bwStr-HdBr-Print"/>
           </a>
-          <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="RSS feed">RSS</a>
+          <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="{$bwStr-HdBr-RSSFeed}"><xsl:copy-of select="$bwStr-HdBr-RSS"/></a>
         </td>
       </tr>
     </table>
@@ -650,7 +651,7 @@
   <xsl:template name="sideBar">
     <h3>
       <!--<img alt="manage views" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/>-->
-      views
+      <xsl:copy-of select="$bwStr-SdBr-Views"/>
     </h3>
     <ul id="myViews">
       <xsl:choose>
@@ -669,19 +670,19 @@
           </xsl:for-each>
         </xsl:when>
         <xsl:otherwise>
-          <li class="none">no views</li>
+          <li class="none"><xsl:copy-of select="$bwStr-SdBr-NoViews"/></li>
         </xsl:otherwise>
       </xsl:choose>
     </ul>
 
     <h3>
-      <!-- a href="{$subscriptions-showSubsMenu}" title="subscribe to calendars or iCal feeds">
-        subscribe
-      </a -->
-      <a href="{$calendar-fetch}" title="manage calendars and subscriptions" class="calManageLink">
-        manage
+      <!--a href="{$subscriptions-showSubsMenu}" title="{$bwStr-SdBr-SubscribeToCalendarsOrICalFeeds}">
+        <xsl:copy-of select="$bwStr-SdBr-Subscribe"/>
+      </a-->
+      <a href="{$calendar-fetch}" title="{$bwStr-SdBr-ManageCalendarsAndSubscriptions}" class="calManageLink">
+        <xsl:copy-of select="$bwStr-SdBr-Manage"/>
       </a>
-      calendars
+      <xsl:copy-of select="$bwStr-SdBr-Calendars"/>
     </h3>
     <!-- normal calendars -->
     <ul class="calendarTree">
@@ -714,14 +715,14 @@
       </xsl:choose>
     </ul>-->
 
-    <h3>options</h3>
+    <h3><xsl:copy-of select="$bwStr-SdBr-Options"/></h3>
     <ul id="sideBarMenu">
       <li class="prefs">
         <a href="{$prefs-fetchForUpdate}">
           <img height="13" border="0" width="13"
             src="{$resourcesRoot}/resources/prefsIcon.gif"
             alt="upload event" />
-          Preferences
+          <xsl:copy-of select="$bwStr-SdBr-Preferences"/>
         </a>
       </li>
       <li>
@@ -729,7 +730,7 @@
           <img height="16" border="0" width="12"
             src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif"
             alt="upload ical" />
-          Upload iCAL
+          <xsl:copy-of select="$bwStr-SdBr-UploadICal"/>
         </a>
       </li>
       <li>
@@ -737,7 +738,7 @@
           <img height="16" border="0" width="12"
             src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif"
             alt="upload event" />
-          Export Calendars
+          <xsl:copy-of select="$bwStr-SdBr-ExportCalendars"/>
         </a>
       </li>
     </ul>
@@ -753,39 +754,39 @@
     </xsl:variable>
     <div id="bwTabs">
       <div id="bwUserInfo">
-        logged in as
+        <xsl:copy-of select="$bwStr-Tabs-LoggedInAs"/><xsl:text> </xsl:text>
         <xsl:text> </xsl:text>
         <strong><xsl:value-of select="/bedework/userid"/></strong>
         <xsl:text> </xsl:text>
-        <span class="logout"><a href="{$setup}&amp;logout=true">logout</a></span>
+        <span class="logout"><a href="{$setup}&amp;logout=true"><xsl:copy-of select="$bwStr-Tabs-Logout"/></a></span>
       </div>
       <ul>
         <li>
           <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Day'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">DAY</a>
+          <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}"><xsl:copy-of select="$bwStr-Tabs-Day"/></a>
         </li>
         <li>
           <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Week' or /bedework/periodname=''">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
-          <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}">WEEK</a>
+          <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}"><xsl:copy-of select="$bwStr-Tabs-Week"/></a>
         </li>
         <li>
           <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Month'">
             <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if><a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">MONTH</a>
+          </xsl:if><a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}"><xsl:copy-of select="$bwStr-Tabs-Month"/></a>
         </li>
         <li>
           <xsl:if test="/bedework/page='eventscalendar' and /bedework/periodname='Year'">
             <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if><a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}">YEAR</a>
+          </xsl:if><a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><xsl:copy-of select="$bwStr-Tabs-Year"/></a>
         </li>
         <li>
           <xsl:if test="/bedework/page='eventList'">
             <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if><a href="{$listEvents}">LIST</a>
+          </xsl:if><a href="{$listEvents}"><xsl:copy-of select="$bwStr-Tabs-List"/></a>
         </li>
       </ul>
     </div>
@@ -812,7 +813,7 @@
               <xsl:value-of select="/bedework/firstday/monthname"/>, <xsl:value-of select="substring(/bedework/firstday/date,1,4)"/>
             </xsl:when>
             <xsl:when test="/bedework/periodname='Week'">
-              Week of <xsl:value-of select="substring-after(/bedework/firstday/longdate,', ')"/>
+              <xsl:copy-of select="$bwStr-Navi-WeekOf"/><xsl:text> </xsl:text><xsl:value-of select="substring-after(/bedework/firstday/longdate,', ')"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="/bedework/firstday/longdate"/>
@@ -877,7 +878,7 @@
                   <input type="text" name="viewStartDate.year" maxlength="4" size="4" value="{$temp}"/>
                 </td>
                 <td>
-                  <input name="submit" type="submit" value="go"/>
+                  <input name="submit" type="submit" value="{$bwStr-Navi-Go}"/>
                 </td>
               </tr>
             </table>
@@ -892,7 +893,7 @@
        <tr>
          <td class="leftCell">
            <xsl:if test="/bedework/page != 'addEvent' or /bedework/page='editEvent'">
-             <input type="button" value="add..." id="bwAddButton"/>
+             <input type="button" value="{$bwStr-Util-Add}" id="bwAddButton"/>
              <xsl:call-template name="actionIcons">
                <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param>
                <xsl:with-param name="startDate">
@@ -909,11 +910,11 @@
            <!-- search -->
            <xsl:if test="/bedework/page!='searchResult'">
              <form name="searchForm" method="post" action="{$search}">
-               Search:
+               <xsl:copy-of select="$bwStr-Util-Search"/>:
                <input type="text" name="query" size="15">
                  <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
                </input>
-               <input type="submit" name="submit" value="go"/>
+               <input type="submit" name="submit" value="{$bwStr-Util-Go}"/>
              </form>
            </xsl:if>
 
@@ -937,21 +938,21 @@
            <!-- toggle list / calendar view -->
            <xsl:choose>
              <xsl:when test="/bedework/periodname='Day' or /bedework/page='eventList'">
-               <img src="{$resourcesRoot}/resources/std-button-listview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+               <img src="{$resourcesRoot}/resources/std-button-listview-off.gif" width="46" height="21" border="0" alt="{$bwStr-Util-ToggleListCalView}"/>
              </xsl:when>
              <xsl:when test="/bedework/periodname='Year'">
-               <img src="{$resourcesRoot}/resources/std-button-calview-off.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+               <img src="{$resourcesRoot}/resources/std-button-calview-off.gif" width="46" height="21" border="0" alt="{$bwStr-Util-ToggleListCalView}"/>
              </xsl:when>
              <xsl:when test="/bedework/periodname='Month'">
                <xsl:choose>
                  <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-                   <a href="{$setup}&amp;setappvar=monthViewMode(cal)" title="toggle list/calendar view">
-                     <img src="{$resourcesRoot}/resources/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                   <a href="{$setup}&amp;setappvar=monthViewMode(cal)" title="{$bwStr-Util-ToggleListCalView}">
+                     <img src="{$resourcesRoot}/resources/std-button-calview.gif" width="46" height="21" border="0" alt="{$bwStr-Util-ToggleListCalView}"/>
                    </a>
                  </xsl:when>
                  <xsl:otherwise>
-                   <a href="{$setup}&amp;setappvar=monthViewMode(list)" title="toggle list/calendar view">
-                     <img src="{$resourcesRoot}/resources/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                   <a href="{$setup}&amp;setappvar=monthViewMode(list)" title="{$bwStr-Util-ToggleListCalView}">
+                     <img src="{$resourcesRoot}/resources/std-button-listview.gif" width="46" height="21" border="0" alt="{$bwStr-Util-ToggleListCalView}"/>
                    </a>
                  </xsl:otherwise>
                </xsl:choose>
@@ -959,13 +960,13 @@
              <xsl:otherwise>
                <xsl:choose>
                  <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                   <a href="{$setup}&amp;setappvar=weekViewMode(cal)" title="toggle list/calendar view">
-                     <img src="{$resourcesRoot}/resources/std-button-calview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                   <a href="{$setup}&amp;setappvar=weekViewMode(cal)" title="{$bwStr-Util-ToggleListCalView}">
+                     <img src="{$resourcesRoot}/resources/std-button-calview.gif" width="46" height="21" border="0" alt="{$bwStr-Util-ToggleListCalView}"/>
                    </a>
                  </xsl:when>
                  <xsl:otherwise>
-                   <a href="{$setup}&amp;setappvar=weekViewMode(list)" title="toggle list/calendar view">
-                     <img src="{$resourcesRoot}/resources/std-button-listview.gif" width="46" height="21" border="0" alt="toggle list/calendar view"/>
+                   <a href="{$setup}&amp;setappvar=weekViewMode(list)" title="{$bwStr-Util-ToggleListCalView}">
+                     <img src="{$resourcesRoot}/resources/std-button-listview.gif" width="46" height="21" border="0" alt="{$bwStr-Util-ToggleListCalView}"/>
                    </a>
                  </xsl:otherwise>
                </xsl:choose>
@@ -977,13 +978,13 @@
               <xsl:when test="/bedework/page = 'eventList'">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
-                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/resources/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="{$bwStr-Util-ToggleSummDetView}">
+                      <img src="{$resourcesRoot}/resources/std-button-summary.gif" width="62" height="21" border="0" alt="{$bwStr-Util-ToggleSummDetView}"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/resources/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="{$bwStr-Util-ToggleSummDetView}">
+                      <img src="{$resourcesRoot}/resources/std-button-details.gif" width="62" height="21" border="0" alt="{$bwStr-Util-ToggleSummDetView}"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -1007,13 +1008,13 @@
               <xsl:otherwise>
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                    <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/resources/std-button-summary.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="{$bwStr-Util-ToggleSummDetView}">
+                      <img src="{$resourcesRoot}/resources/std-button-summary.gif" width="62" height="21" border="0" alt="{$bwStr-Util-ToggleSummDetView}"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$setup}&amp;setappvar=summaryMode(details)" title="toggle summary/detailed view">
-                      <img src="{$resourcesRoot}/resources/std-button-details.gif" width="62" height="21" border="0" alt="toggle summary/detailed view"/>
+                    <a href="{$setup}&amp;setappvar=summaryMode(details)" title="{$bwStr-Util-ToggleSummDetView}">
+                      <img src="{$resourcesRoot}/resources/std-button-details.gif" width="62" height="21" border="0" alt="{$bwStr-Util-ToggleSummDetView}"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -1041,23 +1042,23 @@
     <div id="{$actionIconsId}" class="bwActionIcons">
        <a href="{$initEvent}&amp;entityType=event&amp;startdate={$dateTime}" title="add event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
-          add event
+          <xsl:copy-of select="$bwStr-Actn-AddEvent"/>
        </a>
        <a href="{$event-initMeeting}&amp;entityType=event&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a meeting" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="schedule meeting"/>
-          schedule meeting
+          <xsl:copy-of select="$bwStr-Actn-ScheduleMeeting"/>
        </a>
        <a href="{$initEvent}&amp;entityType=task&amp;startdate={$dateTime}" title="add task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalTask-icon-small.gif" width="12" height="16" border="0" alt="add task"/>
-          add task
+          <xsl:copy-of select="$bwStr-Actn-AddTask"/>
        </a>
        <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalSchTask-icon-small.gif" width="12" height="16" border="0" alt="schedule task"/>
-          schedule task
+          <xsl:copy-of select="$bwStr-Actn-ScheduleTask"/>
        </a>
        <a href="{$initUpload}" title="upload event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif" width="12" height="16" border="0" alt="upload event"/>
-          upload
+          <xsl:copy-of select="$bwStr-Actn-Upload"/>
        </a>
      </div>
   </xsl:template>
@@ -1069,7 +1070,7 @@
         <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event[not(entityType=2)])">
           <tr>
             <td class="noEventsCell">
-              No events to display.
+              <xsl:copy-of select="$bwStr-LsVw-NoEventsToDisplay"/>
             </td>
           </tr>
         </xsl:when>
@@ -1085,7 +1086,7 @@
                    <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
                    <div class="listAdd">
                      <span class="listAddButton">
-                       add...
+                       <xsl:copy-of select="$bwStr-LsVw-Add"/>
                      </span>
                      <xsl:call-template name="actionIcons">
                        <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
@@ -1123,7 +1124,7 @@
                   <xsl:when test="start/allday = 'true' and
                                   start/shortdate = end/shortdate">
                     <td class="{$dateRangeStyle} center" colspan="3">
-                      all day
+                      <xsl:copy-of select="$bwStr-LsVw-AllDay"/>
                     </td>
                   </xsl:when>
                   <xsl:when test="start/shortdate = end/shortdate and
@@ -1140,7 +1141,7 @@
                       <xsl:choose>
                         <xsl:when test="start/allday = 'true' and
                                         parent::day/shortdate = start/shortdate">
-                          today
+                          <xsl:copy-of select="$bwStr-LsVw-Today"/>
                         </xsl:when>
                         <xsl:when test="parent::day/shortdate != start/shortdate">
                           <span class="littleArrow">&#171;</span>&#160;
@@ -1160,7 +1161,7 @@
                       <xsl:choose>
                         <xsl:when test="end/allday = 'true' and
                                         parent::day/shortdate = end/shortdate">
-                          today
+                          <xsl:copy-of select="$bwStr-LsVw-Today"/>
                         </xsl:when>
                         <xsl:when test="parent::day/shortdate != end/shortdate">
                           <xsl:value-of select="end/month"/>/<xsl:value-of select="end/day"/>
@@ -1178,18 +1179,18 @@
                   <xsl:choose>
                     <xsl:when test="status='CANCELLED'">description bwStatusCancelled</xsl:when>
                     <xsl:when test="status='TENTATIVE'">description bwStatusTentative</xsl:when>
-                    <xsl:otherwise>description</xsl:otherwise>
+                    <xsl:otherwise><xsl:copy-of select="$bwStr-LsVw-Description"/></xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="subStyle" select="subscription/subStyle"/>
                 <td class="{$descriptionClass} {$subStyle}">
-                  <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
+                  <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsVw-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:choose>
                           <xsl:when test="summary = ''">
-                            <em>no title</em>
+                            <em><xsl:copy-of select="$bwStr-LsVw-NoTitle"/></em>
                           </xsl:when>
                           <xsl:otherwise>
                             <strong>
@@ -1207,7 +1208,7 @@
                             <xsl:value-of select="cost"/>.&#160;
                           </xsl:if>
                           <xsl:if test="sponsor/name!='none'">
-                            Contact: <xsl:value-of select="sponsor/name"/>
+                            <xsl:copy-of select="$bwStr-LsVw-Contact"/><xsl:text> </xsl:text><xsl:value-of select="sponsor/name"/>
                           </xsl:if>
                         </em>
                       </a>
@@ -1220,7 +1221,7 @@
                       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:choose>
                           <xsl:when test="summary = ''">
-                            <em>no title</em>
+                            <em><xsl:copy-of select="$bwStr-LsVw-NoTitle"/></em>
                           </xsl:when>
                           <xsl:otherwise>
                             <xsl:value-of select="summary"/>
@@ -1236,8 +1237,8 @@
                 </td>
                 <td class="smallIcon">
                   <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-                  <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-                    <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                  <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-LsVw-DownloadEvent}">
+                    <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsVw-DownloadEvent}"/>
                   </a>
                 </td>
               </tr>
@@ -1256,14 +1257,14 @@
     <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
       <xsl:choose>
         <xsl:when test="recurring='true' or recurrenceId != ''">
-          Edit:
-          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">all</a>
-          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit instance (recurring event)">instance</a>
+          <xsl:copy-of select="$bwStr-EvLn-EditColon"/><xsl:text> </xsl:text>
+          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvLn-EditMaster}"><xsl:copy-of select="$bwStr-EvLn-All"/></a>
+          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvLn-EditInstance}"><xsl:copy-of select="$bwStr-EvLn-Instance"/></a>
           <br/>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
-            Edit
+          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvLn-EditEvent}">
+            <xsl:copy-of select="$bwStr-EvLn-Edit"/>
           </a>
         </xsl:otherwise>
       </xsl:choose>
@@ -1271,20 +1272,20 @@
     <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content) and not(recurring='true' or recurrenceId != '')">
       <!-- temporarily hide from Recurring events -->
       <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
-        Link
+        <xsl:copy-of select="$bwStr-EvLn-Link"/>
       </a>
       <xsl:text> </xsl:text>
     </xsl:if>
     <xsl:if test="currentAccess/current-user-privilege-set/privilege/unbind">
       <xsl:choose>
         <xsl:when test="recurring='true' or recurrenceId != ''">
-          Delete:
-          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)" onclick="return confirm('Delete all recurrences of this event?');">all</a>
-          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete instance (recurring event)" onclick="return confirm('Delete this event?');">instance</a>
+          <xsl:copy-of select="$bwStr-EvLn-DeleteColon"/><xsl:text> </xsl:text>
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvLn-DeleteMaster}" onclick="return confirm('{$bwStr-EvLn-DeleteAllRecurrences}');"><xsl:copy-of select="$bwStr-EvLn-All"/></a>
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvLn-DeleteInstance}" onclick="return confirm('{$bwStr-EvLn-DeleteThisEvent}');"><xsl:copy-of select="$bwStr-EvLn-Instance"/></a>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event" onclick="return confirm('Delete this event?');">
-            Delete
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvLn-DeleteEvent}" onclick="return confirm('{$bwStr-EvLn-DeleteThisEvent}');">
+            <xsl:copy-of select="$bwStr-EvLn-Delete"/>
           </a>
         </xsl:otherwise>
       </xsl:choose>
@@ -1294,7 +1295,7 @@
   <!--==== LIST EVENTS - for listing discrete events ====-->
   <xsl:template match="events" mode="eventList">
     <h2 class="bwStatusConfirmed">
-      Next 7 Days
+      <xsl:copy-of select="$bwStr-LsEv-Next7Days"/>
       <!-- xsl:choose>
         <xsl:when test="/bedework/now/longdate = /bedework/events/event[position()=last()]/start/longdate"><xsl:value-of select="/bedework/now/longdate"/></xsl:when>
         <xsl:otherwise><xsl:value-of select="/bedework/now/longdate"/> - <xsl:value-of select="/bedework/events/event[position()=last()]/start/longdate"/></xsl:otherwise>
@@ -1305,7 +1306,7 @@
       <ul>
         <xsl:choose>
           <xsl:when test="not(event)">
-            <li>No events to display.</li>
+            <li><xsl:copy-of select="$bwStr-LsEv-NoEventsToDisplay"/></li>
           </xsl:when>
           <xsl:otherwise>
             <xsl:for-each select="event">
@@ -1321,8 +1322,8 @@
                   </xsl:choose>
                 </xsl:attribute>
 
-                <xsl:if test="status='CANCELLED'"><strong>CANCELED: </strong></xsl:if>
-                <xsl:if test="status='TENTATIVE'"><em>TENTATIVE: </em></xsl:if>
+                <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsEv-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
+                <xsl:if test="status='TENTATIVE'"><em><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></em></xsl:if>
 
                 <a class="title" href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                   <xsl:value-of select="summary"/>
@@ -1335,8 +1336,8 @@
 
                 <xsl:text> </xsl:text>
                 <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-                  <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-LsEv-DownloadEvent}">
+                  <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsEv-DownloadEvent}"/>
                 </a>
 
                 <br/>
@@ -1375,7 +1376,7 @@
                   </xsl:if>
                   <xsl:if test="categories/category">
                     <br/>
-                    Categories:
+                    <xsl:copy-of select="$bwStr-LsEv-Categories"/><xsl:text> </xsl:text>
                     <xsl:for-each select="categories/category">
                       <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
                     </xsl:for-each>
@@ -1386,7 +1387,7 @@
                       <xsl:value-of select="cost"/>.&#160;
                     </xsl:if>
                     <xsl:if test="contact/name!='none'">
-                      Contact: <xsl:value-of select="contact/name"/>
+                      <xsl:copy-of select="$bwStr-LsEv-Contact"/><xsl:text> </xsl:text><xsl:value-of select="contact/name"/>
                     </xsl:if>
                   </em>
                 </xsl:if>
@@ -1537,21 +1538,21 @@
         <xsl:if test="status != 'CANCELLED' and $calendarColor != ''">
           <xsl:attribute name="style">background-color: <xsl:value-of select="$calendarColor"/>; color: black;</xsl:attribute>
         </xsl:if>
-        <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
+        <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-EvCG-Canceled"/><xsl:text> </xsl:text></xsl:if>
         <xsl:choose>
           <xsl:when test="start/shortdate != ../shortdate">
-            (cont)
+            <xsl:copy-of select="$bwStr-EvCG-Cont"/>
           </xsl:when>
           <xsl:when test="start/allday = 'false'">
             <xsl:value-of select="start/time"/>:
           </xsl:when>
           <xsl:otherwise>
-            all day:
+            <xsl:copy-of select="$bwStr-EvCG-AllDayColon"/><xsl:text> </xsl:text>
           </xsl:otherwise>
         </xsl:choose>
         <xsl:choose>
           <xsl:when test="summary = ''">
-            <em>no title</em>
+            <em><xsl:copy-of select="$bwStr-EvCG-NoTitle"/><xsl:text> </xsl:text></em>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="summary"/>
@@ -1565,18 +1566,18 @@
             <xsl:otherwise>eventTip</xsl:otherwise>
           </xsl:choose>
         </xsl:attribute>
-        <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled">CANCELED</span></xsl:if>
-        <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative">TENTATIVE</span></xsl:if>
+        <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled"><xsl:copy-of select="$bwStr-EvCG-Canceled"/></span></xsl:if>
+        <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative"><xsl:copy-of select="$bwStr-EvCG-Tentative"/></span></xsl:if>
         <div class="eventTipDetails">
           <xsl:choose>
             <xsl:when test="summary = ''">
-              <em>no title</em>
+              <em><xsl:copy-of select="$bwStr-EvCG-NoTitle"/></em><xsl:text> </xsl:text>
             </xsl:when>
             <xsl:otherwise>
               <strong><xsl:value-of select="summary"/></strong><br/>
             </xsl:otherwise>
           </xsl:choose>
-          Time:
+          <xsl:copy-of select="$bwStr-EvCG-Time"/><xsl:text> </xsl:text>
           <xsl:choose>
             <xsl:when test="start/allday = 'false'">
               <xsl:value-of select="start/time"/>
@@ -1585,36 +1586,36 @@
               </xsl:if>
             </xsl:when>
             <xsl:otherwise>
-              all day
+              <xsl:copy-of select="$bwStr-EvCG-AllDay"/>
             </xsl:otherwise>
           </xsl:choose><br/>
           <xsl:if test="normalize-space(location/address) != ''">
-            Location: <xsl:value-of select="location/address"/><br/>
+            <xsl:copy-of select="$bwStr-EvCG-Location"/><xsl:text> </xsl:text><xsl:value-of select="location/address"/><br/>
           </xsl:if>
-          Type:
+          <xsl:copy-of select="$bwStr-EvCG-Type"/>
           <xsl:variable name="entityType">
             <xsl:choose>
-              <xsl:when test="entityType = '2'">task</xsl:when>
-              <xsl:when test="scheduleMethod = '2'">meeting</xsl:when>
-              <xsl:otherwise>event</xsl:otherwise>
+              <xsl:when test="entityType = '2'"><xsl:copy-of select="$bwStr-EvCG-Task"/></xsl:when>
+              <xsl:when test="scheduleMethod = '2'"><xsl:copy-of select="$bwStr-EvCG-Meeting"/></xsl:when>
+              <xsl:otherwise><xsl:copy-of select="$bwStr-EvCG-Event"/></xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
           <xsl:if test="recurring='true' or recurrenceId != ''">
-            recurring
+            <xsl:copy-of select="$bwStr-EvCG-Recurring"/>
           </xsl:if>
           <xsl:variable name="userStr"><xsl:value-of select="/bedework/syspars/userPrincipalRoot"/>/<xsl:value-of select="/bedework/userid"/></xsl:variable>
           <xsl:choose>
             <xsl:when test="$userStr = owner">
-              personal <xsl:value-of select="$entityType"/>
+              <xsl:copy-of select="$bwStr-EvCG-Personal"/><xsl:text> </xsl:text><xsl:value-of select="$entityType"/>
             </xsl:when>
             <xsl:when test="public = 'true'">
-              public <xsl:value-of select="$entityType"/>
+               <xsl:copy-of select="$bwStr-EvCG-Public"/><xsl:text> </xsl:text><xsl:value-of select="$entityType"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="$entityType"/>
             </xsl:otherwise>
           </xsl:choose><br/>
-          Calendar:
+          <xsl:copy-of select="$bwStr-EvCG-Calendar"/>
           <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
           <xsl:choose>
             <xsl:when test="contains(calendar/path,$userPath)">
@@ -1629,7 +1630,7 @@
           <li>
            <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
              <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
-             View details
+             <xsl:copy-of select="$bwStr-EvCG-ViewDetails"/>
            </a>
          </li>
          <li>
@@ -1637,19 +1638,19 @@
            <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
            <xsl:choose>
              <xsl:when test="recurring='true' or recurrenceId != ''">
-                <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
-                Download
-                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download master (recurring event)">
-                  all
+                <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-EvCG-DownloadEvent}"/>
+                <xsl:copy-of select="$bwStr-EvCG-Download"/><xsl:text> </xsl:text>
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-EvCG-DownloadMaster}">
+                  <xsl:copy-of select="$bwStr-EvCG-All"/>
                 </a>,
-                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download this instance (recurring event)">
-                  instance
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-EvCG-DownloadThisInstance}">
+                  <xsl:copy-of select="$bwStr-EvCG-Instance"/>
                 </a>
              </xsl:when>
              <xsl:otherwise>
-               <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-                 <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
-                 Download
+               <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-EvCG-DownloadEvent}">
+                 <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-EvCG-DownloadEvent}"/>
+                 <xsl:copy-of select="$bwStr-EvCG-Download"/>
                </a>
              </xsl:otherwise>
            </xsl:choose>
@@ -1659,18 +1660,18 @@
              <xsl:choose>
                <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
-                  Edit:
-                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">
-                    all
+                  <xsl:copy-of select="$bwStr-EvCG-EditColon"/><xsl:text> </xsl:text>
+                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvCG-EditMaster}">
+                    <xsl:copy-of select="$bwStr-EvCG-All"/>
                   </a>,
-                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit this instance (recurring event)">
-                    instance
+                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvCG-EditThisInstance}">
+                    <xsl:copy-of select="$bwStr-EvCG-Instance"/>
                   </a>
                </xsl:when>
                <xsl:otherwise>
-                 <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event">
+                 <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvCG-EditEvent}">
                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                   Edit
+                   <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-EvCG-Edit"/>
                  </a>
                </xsl:otherwise>
              </xsl:choose>
@@ -1680,18 +1681,18 @@
            <xsl:choose>
              <xsl:when test="recurring='true' or recurrenceId != ''">
                 <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
-                Copy:
-                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy master (recurring event)">
-                  all
+                <xsl:copy-of select="$bwStr-EvCG-CopyColon"/><xsl:text> </xsl:text>
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="{$bwStr-EvCG-CopyMaster}">
+                  <xsl:copy-of select="$bwStr-EvCG-All"/>
                 </a>,
-                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="copy this instance (recurring event)">
-                  instance
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="{$bwStr-EvCG-CopyThisInstance}">
+                  <xsl:copy-of select="$bwStr-EvCG-Instance"/>
                 </a>
              </xsl:when>
              <xsl:otherwise>
-               <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy event">
+               <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="{$bwStr-EvCG-CopyEvent}">
                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                 Copy
+                 <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-EvCG-Copy"/>
                </a>
              </xsl:otherwise>
            </xsl:choose>
@@ -1703,18 +1704,18 @@
              <xsl:choose>
                <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
-                  Link:
+                  <xsl:copy-of select="$bwStr-EvCG-LinkColon"/><xsl:text> </xsl:text>
                   <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">
-                    all
+                    <xsl:copy-of select="$bwStr-EvCG-All"/>
                   </a>,
                   <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add this event reference to a calendar">
-                    instance
+                    <xsl:copy-of select="$bwStr-EvCG-Instance"/>
                   </a>
                </xsl:when>
                <xsl:otherwise>
                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
                    <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
-                   Link
+                   <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-EvCG-Link"/>
                  </a>
                </xsl:otherwise>
              </xsl:choose>
@@ -1726,18 +1727,18 @@
              <xsl:choose>
                <xsl:when test="recurring='true' or recurrenceId != ''">
                   <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                  Delete:
-                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)" onclick="return confirm('Delete all recurrences of this event?');">
-                    all
+                  <xsl:copy-of select="$bwStr-EvCG-DeleteColon"/>
+                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvCG-DeleteMaster}" onclick="return confirm('{$bwStr-EvCG-DeleteAllRecurrences}');">
+                    <xsl:copy-of select="$bwStr-EvCG-All"/>
                   </a>,
-                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete this instance (recurring event)" onclick="return confirm('Delete this event?');">
-                    instance
+                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvCG-DeleteThisInstance}" onclick="return confirm('{$bwStr-EvCG-DeleteThisEvent}');">
+                    <xsl:copy-of select="$bwStr-EvCG-Instance"/>
                   </a>
                </xsl:when>
                <xsl:otherwise>
-                 <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event" onclick="return confirm('Delete this event?');">
+                 <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvCG-DeleteEvent}" onclick="return confirm('{$bwStr-EvCG-DeleteThisEvent}');">
                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                   Delete
+                   <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-EvCG-Delete"/>
                  </a>
                </xsl:otherwise>
              </xsl:choose>
@@ -1822,7 +1823,7 @@
     <xsl:if test="/bedework/eventscalendar//event[entityType=2]">
       <div id="tasks">
         <h3>
-          tasks &amp; reminders
+          <xsl:copy-of select="$bwStr-Task-Tasks"/> &amp; <xsl:copy-of select="$bwStr-Task-Reminders"/>
         </h3>
         <ul class="tasks">
           <xsl:apply-templates select="/bedework/eventscalendar//event[entityType=2 and generate-id() = generate-id(key('eventUid',guid)[1])]" mode="tasks"/>
@@ -1840,15 +1841,15 @@
       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
         <xsl:choose>
           <xsl:when test="summary = ''">
-            <em>no title</em>
+            <em><xsl:copy-of select="$bwStr-TskE-NoTitle"/></em><xsl:text> </xsl:text>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="summary"/>
             <xsl:if test="not(start/noStart='true')">
-              <span class="taskDate"> - Start: <xsl:value-of select="start/shortdate"/></span>
+              <span class="taskDate"> - <xsl:copy-of select="$bwStr-TskE-Start"/><xsl:text> </xsl:text><xsl:value-of select="start/shortdate"/></span>
             </xsl:if>
             <xsl:if test="not(end/type='N')">
-              <span class="taskDate">- Due: <xsl:value-of select="end/shortdate"/></span>
+              <span class="taskDate">- <xsl:copy-of select="$bwStr-TskE-Due"/><xsl:text> </xsl:text><xsl:value-of select="end/shortdate"/></span>
             </xsl:if>
           </xsl:otherwise>
         </xsl:choose>
@@ -1890,7 +1891,7 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
-      <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
+      <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-SgEv-Canceled"/><xsl:text> </xsl:text></xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
           <xsl:variable name="link" select="link"/>
@@ -1899,7 +1900,7 @@
           </a>
         </xsl:when>
         <xsl:when test="summary = ''">
-          Event <em>(no title)</em>
+          <xsl:copy-of select="$bwStr-SgEv-Event"/> <em>(<xsl:copy-of select="$bwStr-SgEv-NoTitle"/>)</em>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="summary"/>
@@ -1916,17 +1917,17 @@
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <div id="bwDeleteRecurButton" class="bwMenuButton">
                     <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                    Delete
+                    <xsl:copy-of select="$bwStr-SgEv-Delete"/>
                     <div id="bwDeleteRecurWidget" class="bwMenuWidget">
                       <ul>
                         <li>
-                          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)" onclick="return confirm('Delete all recurrences of this event?');">
-                            all
+                          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-SgEv-DeleteMaster}" onclick="return confirm('{$bwStr-SgEv-DeleteAllRecurrences}');">
+                            <xsl:copy-of select="$bwStr-SgEv-All"/>
                           </a>
                         </li>
                         <li>
-                          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete this instance (recurring event)" onclick="return confirm('Delete this event?');">
-                            instance
+                          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-DeleteThisInstance}" onclick="return confirm('{$bwStr-SgEv-DeleteThisEvent}');">
+                            <xsl:copy-of select="$bwStr-SgEv-Instance"/>
                           </a>
                         </li>
                       </ul>
@@ -1934,9 +1935,9 @@
                   </div>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event" class="bwMenuButton" onclick="return confirm('Delete this event?');">
+                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-DeleteEvent}" class="bwMenuButton" onclick="return confirm('{$bwStr-SgEv-DeleteThisEvent}');">
                     <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                    Delete
+                    <xsl:copy-of select="$bwStr-SgEv-Delete"/><xsl:text> </xsl:text>
                   </a>
                 </xsl:otherwise>
               </xsl:choose>
@@ -1948,17 +1949,17 @@
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <div id="bwLinkRecurButton" class="bwMenuButton">
                     <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
-                    Link
+                    <xsl:copy-of select="$bwStr-SgEv-Link"/>
                     <div id="bwLinkRecurWidget" class="bwMenuWidget">
                       <ul>
                         <li>
-                          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">
-                            all
+                          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-SgEv-AddMasterEvent}">
+                            <xsl:copy-of select="$bwStr-SgEv-All"/>
                           </a>
                         </li>
                         <li>
-                          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add this event reference to a calendar">
-                            instance
+                          <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-AddThisEvent}">
+                            <xsl:copy-of select="$bwStr-SgEv-Instance"/>
                           </a>
                         </li>
                       </ul>
@@ -1966,9 +1967,9 @@
                   </div>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar" class="bwMenuButton">
+                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-SgEv-AddEventReference}" class="bwMenuButton">
                     <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
-                    Link
+                    <xsl:copy-of select="$bwStr-SgEv-Link"/>
                   </a>
                 </xsl:otherwise>
               </xsl:choose>
@@ -1978,17 +1979,17 @@
               <xsl:when test="recurring='true' or recurrenceId != ''">
                 <div id="bwCopyRecurButton" class="bwMenuButton">
                   <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
-                  Copy
+                  <xsl:copy-of select="$bwStr-SgEv-Copy"/>
                   <div id="bwCopyRecurWidget" class="bwMenuWidget">
                     <ul>
                       <li>
-                        <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy master (recurring event)">
-                          all
+                        <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="{$bwStr-SgEv-CopyMaster}">
+                          <xsl:copy-of select="$bwStr-SgEv-All"/>
                         </a>
                       </li>
                       <li>
-                        <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="copy this instance (recurring event)">
-                          instance
+                        <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;copy=true" title="{$bwStr-SgEv-CopyThisInstance}">
+                          <xsl:copy-of select="$bwStr-SgEv-Instance"/>
                         </a>
                       </li>
                     </ul>
@@ -1996,9 +1997,9 @@
                 </div>
               </xsl:when>
               <xsl:otherwise>
-                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="copy event" class="bwMenuButton">
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="{$bwStr-SgEv-CopyEvent}" class="bwMenuButton">
                   <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                  Copy
+                  <xsl:copy-of select="$bwStr-SgEv-Copy"/>
                 </a>
               </xsl:otherwise>
             </xsl:choose>
@@ -2008,17 +2009,17 @@
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <div id="bwEditRecurButton" class="bwMenuButton">
                     <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
-                    Edit
+                    <xsl:copy-of select="$bwStr-SgEv-Edit"/>
                     <div id="bwEditRecurWidget" class="bwMenuWidget">
                       <ul>
                         <li>
-                          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">
-                            all
+                          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-SgEv-EditMaster}">
+                            <xsl:copy-of select="$bwStr-SgEv-All"/>
                           </a>
                         </li>
                         <li>
-                          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="edit this instance (recurring event)">
-                            instance
+                          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvCG-EditThisInstance}">
+                            <xsl:copy-of select="$bwStr-SgEv-Instance"/>
                           </a>
                         </li>
                       </ul>
@@ -2026,9 +2027,9 @@
                   </div>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit event" class="bwMenuButton">
+                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-SgEv-EditEvent}" class="bwMenuButton">
                     <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
-                    Edit
+                    <xsl:copy-of select="$bwStr-SgEv-Edit"/>
                   </a>
                 </xsl:otherwise>
               </xsl:choose>
@@ -2039,18 +2040,18 @@
             <xsl:choose>
               <xsl:when test="recurring='true' or recurrenceId != ''">
                 <div id="bwDownloadButton" class="bwMenuButton">
-                  <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
-                  Download
+                  <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-SgEv-DownloadEvent}"/>
+                  <xsl:copy-of select="$bwStr-SgEv-Download"/>
                   <div id="bwDownloadWidget" class="bwMenuWidget">
                     <ul>
                       <li>
-                        <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download master (recurring event)">
-                          all
+                        <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-DownloadMaster}">
+                          <xsl:copy-of select="$bwStr-SgEv-All"/>
                         </a>
                       </li>
                       <li>
-                        <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download this instance (recurring event)">
-                          instance
+                        <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-DownloadThisInstance}">
+                          <xsl:copy-of select="$bwStr-SgEv-Instance"/>
                         </a>
                       </li>
                     </ul>
@@ -2058,9 +2059,9 @@
                 </div>
               </xsl:when>
               <xsl:otherwise>
-                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" class="bwMenuButton" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
+                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" class="bwMenuButton" title="{$bwStr-SgEv-DownloadEvent}">
                   <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
-                  Download
+                  <xsl:copy-of select="$bwStr-SgEv-Download"/>
                 </a>
               </xsl:otherwise>
             </xsl:choose>
@@ -2068,24 +2069,24 @@
           <!-- Display type of event -->
           <xsl:variable name="entityType">
             <xsl:choose>
-              <xsl:when test="entityType = '2'">Task</xsl:when>
-              <xsl:when test="scheduleMethod = '2'">Meeting</xsl:when>
-              <xsl:otherwise>Event</xsl:otherwise>
+              <xsl:when test="entityType = '2'"><xsl:copy-of select="$bwStr-SgEv-Task"/></xsl:when>
+              <xsl:when test="scheduleMethod = '2'"><xsl:copy-of select="$bwStr-SgEv-Meeting"/></xsl:when>
+              <xsl:otherwise><xsl:copy-of select="$bwStr-SgEv-Event"/></xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
           <xsl:if test="recurring='true' or recurrenceId != ''">
-            Recurring
+            <xsl:copy-of select="$bwStr-SgEv-Recurring"/>
           </xsl:if>
           <xsl:choose>
             <xsl:when test="public = 'true'">
-              Public <xsl:value-of select="$entityType"/>
+              <xsl:copy-of select="$bwStr-SgEv-Public"/><xsl:text> </xsl:text><xsl:value-of select="$entityType"/>
             </xsl:when>
             <xsl:when test="owner = /bedework/userid">
-              Personal <xsl:value-of select="$entityType"/>
+              <xsl:copy-of select="$bwStr-SgEv-Personal"/><xsl:text> </xsl:text><xsl:value-of select="$entityType"/>
             </xsl:when>
             <xsl:when test="scheduleMethod = '2'">
               <!-- a scheduled meeting ro task -->
-              <xsl:value-of select="$entityType"/> - organizer: <xsl:value-of select="substring-after(organizer/organizerUri,':')"/>
+              <xsl:value-of select="$entityType"/> - <xsl:copy-of select="$bwStr-SgEv-Organizer"/><xsl:text> </xsl:text><xsl:value-of select="substring-after(organizer/organizerUri,':')"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="$entityType"/>
@@ -2093,7 +2094,7 @@
           </xsl:choose>
           <xsl:if test="recurring='true' and recurrenceId = ''">
             <xsl:text> </xsl:text>
-            <em>(recurrence master)</em>
+            <em><xsl:copy-of select="$bwStr-SgEv-RecurrenceMaster"/></em>
           </xsl:if>
           <!--
           <xsl:if test="scheduleMethod = '2' and not(/bedework/userid = substring-before(substring-after(organizer/organizerUri,':'),'@'))">
@@ -2109,7 +2110,7 @@
         </th>
       </tr>
       <tr>
-        <td class="fieldname">When:</td>
+        <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-When"/><xsl:text> </xsl:text></td>
         <td class="fieldval">
           <!-- always display local time -->
           <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text>
@@ -2123,7 +2124,7 @@
           </xsl:if>
           <xsl:choose>
             <xsl:when test="start/allday = 'true'">
-              <span class="time"><em>(all day)</em></span>
+              <span class="time"><em><xsl:copy-of select="$bwStr-SgEv-AllDay"/></em></span>
             </xsl:when>
             <xsl:when test="end/longdate != start/longdate">
               <span class="time"><xsl:value-of select="end/time"/></span>
@@ -2139,7 +2140,7 @@
             <strong>
               <xsl:choose>
                 <xsl:when test="start/floating = 'true'">
-                  Floating time
+                  <xsl:copy-of select="$bwStr-SgEv-FloatingTime"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="/bedework/now/defaultTzid"/>
@@ -2156,7 +2157,7 @@
                 <table border="0" cellspacing="0" id="tztable">
                   <tr>
                     <td>
-                      <strong>Start:</strong>
+                      <strong><xsl:copy-of select="$bwStr-SgEv-Start"/></strong><xsl:text> </xsl:text>
                     </td>
                     <td>
                       <xsl:choose>
@@ -2181,7 +2182,7 @@
                   </tr>
                   <tr>
                     <td>
-                      <strong>End:</strong>
+                      <strong><xsl:copy-of select="$bwStr-SgEv-End"/></strong><xsl:text> </xsl:text>
                     </td>
                     <td>
                       <xsl:choose>
@@ -2219,7 +2220,7 @@
                 </xsl:if>
                 <xsl:choose>
                   <xsl:when test="start/allday = 'true'">
-                    <span class="time"><em>(all day)</em></span>
+                    <span class="time"><em><xsl:copy-of select="$bwStr-SgEv-AllDay"/></em></span>
                   </xsl:when>
                   <xsl:when test="end/timezone/longdate != start/timezone/longdate">
                     <span class="time"><xsl:value-of select="end/timezone/time"/></span>
@@ -2244,7 +2245,7 @@
       </tr>
       <xsl:if test="location/address != ''">
         <tr>
-          <td class="fieldname">Where:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Where"/><xsl:text> </xsl:text></td>
           <td class="fieldval">
             <xsl:choose>
               <xsl:when test="location/link=''">
@@ -2267,7 +2268,7 @@
       <xsl:if test="percentComplete != ''">
         <tr>
           <td class="fieldname">
-            % Complete:
+            % <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Complete"/><xsl:text> </xsl:text></td>
           </td>
           <td class="fieldval">
             <xsl:value-of select="percentComplete"/>%
@@ -2275,7 +2276,7 @@
         </tr>
       </xsl:if>
       <tr>
-        <td class="fieldname">Description:</td>
+        <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Description"/><xsl:text> </xsl:text></td>
         <td class="fieldval">
           <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
             <xsl:variable name="bwImage"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:variable>
@@ -2290,7 +2291,7 @@
       </tr>
       <xsl:if test="status !='' and status != 'CONFIRMED'">
         <tr>
-          <td class="fieldname">Status:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-STATUS"/></td>
           <td class="fieldval">
             <xsl:value-of select="status"/>
           </td>
@@ -2298,7 +2299,7 @@
       </xsl:if>
       <xsl:if test="organizer">
         <tr>
-          <td class="fieldname">Organizer:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-ORGANIZER"/><xsl:text> </xsl:text></td>
           <xsl:variable name="organizerUri" select="organizer/organizerUri"/>
           <td class="fieldval">
             <xsl:choose>
@@ -2319,13 +2320,13 @@
       </xsl:if>
       <xsl:if test="attendees/attendee">
         <tr>
-          <td class="fieldname">Attendees:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Attendees"/><xsl:text> </xsl:text></td>
           <td class="fieldval">
             <table id="attendees" cellspacing="0">
               <tr>
-                <th>attendee</th>
-                <th>role</th>
-                <th>status</th>
+                <th><xsl:copy-of select="$bwStr-SgEv-Attendee"/></th>
+                <th><xsl:copy-of select="$bwStr-SgEv-Role"/></th>
+                <th><xsl:copy-of select="$bwStr-SgEv-Status"/></th>
               </tr>
               <xsl:for-each select="attendees/attendee">
                 <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
@@ -2358,7 +2359,7 @@
               <p>
                 <em>
                   <a href="{$schedule-initAttendeeUpdate}&amp;initUpdate=yes">
-                    change my status
+                    <xsl:copy-of select="$bwStr-SgEv-ChangeMyStatus"/>
                   </a>
                 </em>
               </p>
@@ -2401,13 +2402,13 @@
       -->
       <xsl:if test="cost!=''">
         <tr>
-          <td class="fieldname">Cost:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Cost"/></td>
           <td class="fieldval"><xsl:value-of select="cost"/></td>
         </tr>
       </xsl:if>
       <xsl:if test="link != ''">
         <tr>
-          <td class="fieldname">See:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-See"/></td>
           <td class="fieldval">
             <xsl:variable name="link" select="link"/>
             <a href="{$link}"><xsl:value-of select="link"/></a>
@@ -2416,7 +2417,7 @@
       </xsl:if>
       <xsl:if test="contact/name!='none'">
         <tr>
-          <td class="fieldname">Contact:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Contact"/></td>
           <td class="fieldval">
             <xsl:choose>
               <xsl:when test="contact/link=''">
@@ -2445,7 +2446,7 @@
       </xsl:if>
       <xsl:if test="calendar/path!=''">
         <tr>
-          <td class="fieldname">Calendar:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Calendar"/><xsl:text> </xsl:text></td>
           <td class="fieldval">
             <!--
             <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
@@ -2466,7 +2467,7 @@
       </xsl:if>
       <xsl:if test="categories/category">
         <tr>
-          <td class="fieldname">Categories:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Categories"/></td>
           <td class="fieldval">
             <xsl:for-each select="categories/category">
               <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
@@ -2476,7 +2477,7 @@
       </xsl:if>
       <xsl:if test="comments/comment">
         <tr>
-          <td class="fieldname">Comments:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Comments"/></td>
           <td class="fieldval comments">
             <xsl:for-each select="comments/comment">
               <p><xsl:value-of select="value"/></p>
@@ -2504,13 +2505,13 @@
     <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
       <h2>
         <span class="formButtons">
-          <input name="submit" type="submit" value="save"/>
-          <input name="cancelled" type="submit" value="cancel"/>
+          <input name="submit" type="submit" value="{$bwStr-AddE-Save}"/>
+          <input name="cancelled" type="submit" value="{$bwStr-AddE-Cancel}"/>
         </span>
         <xsl:choose>
-          <xsl:when test="form/entityType = '2'">Add Task</xsl:when>
-          <xsl:when test="form/scheduleMethod = '2'">Add Meeting</xsl:when>
-          <xsl:otherwise>Add Event</xsl:otherwise>
+          <xsl:when test="form/entityType = '2'"><xsl:copy-of select="$bwStr-AddE-AddTask"/></xsl:when>
+          <xsl:when test="form/scheduleMethod = '2'"><xsl:copy-of select="$bwStr-AddE-AddMeeting"/></xsl:when>
+          <xsl:otherwise><xsl:copy-of select="$bwStr-AddE-AddEvent"/></xsl:otherwise>
         </xsl:choose>
       </h2>
       <xsl:apply-templates select="." mode="eventForm"/>
@@ -2530,13 +2531,13 @@
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
       <h2>
         <span class="formButtons">
-          <input name="submit" type="submit" value="save"/>
-          <input name="cancelled" type="submit" value="cancel"/>
+          <input name="submit" type="submit" value="{$bwStr-EdtE-Save}"/>
+          <input name="cancelled" type="submit" value="{$bwStr-EdtE-Cancel}"/>
         </span>
         <xsl:choose>
-          <xsl:when test="form/entityType = '2'">Edit Task</xsl:when>
-          <xsl:when test="form/scheduleMethod = '2'">Edit Meeting</xsl:when>
-          <xsl:otherwise>Edit Event</xsl:otherwise>
+          <xsl:when test="form/entityType = '2'"><xsl:copy-of select="$bwStr-EdtE-EditTask"/></xsl:when>
+          <xsl:when test="form/scheduleMethod = '2'"><xsl:copy-of select="$bwStr-EdtE-EditMeeting"/></xsl:when>
+          <xsl:otherwise><xsl:copy-of select="$bwStr-EdtE-EditEvent"/></xsl:otherwise>
         </xsl:choose>
       </h2>
       <xsl:for-each select="form/xproperties/xproperty">
@@ -2566,17 +2567,17 @@
                   <xsl:when test="recurrenceId != ''">
                     <div id="bwDeleteRecurButton" class="bwMenuButton">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                      Delete
+                      <xsl:copy-of select="$bwStr-AEEF-Delete"/>
                       <div id="bwDeleteRecurWidget" class="bwMenuWidget">
                         <ul>
                           <li>
-                            <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="delete master (recurring event)" onclick="return confirm('Delete all recurrences of this event?');">
-                              all
+                            <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-AEEF-DeleteMaster}" onclick="return confirm('{$bwStr-AEEF-DeleteAllRecurrences}');">
+                              <xsl:copy-of select="$bwStr-AEEF-All"/>
                             </a>
                           </li>
                           <li>
-                            <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete this instance (recurring event)" onclick="return confirm('Delete this event?');">
-                              instance
+                            <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="${bwStr-AEEF-DeleteThisInstance}" onclick="return confirm('{$bwStr-AEEF-DeleteThisEvent}');">
+                              <xsl:copy-of select="$bwStr-AEEF-Instance"/>
                             </a>
                           </li>
                         </ul>
@@ -2584,11 +2585,11 @@
                     </div>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete event" class="bwMenuButton" onclick="return confirm('Delete this event?');">
+                    <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-AEEF-DeleteEvent}" class="bwMenuButton" onclick="return confirm('{$bwStr-AEEF-DeleteThisEvent}');">
                       <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
-                      Delete
+                       <xsl:copy-of select="$bwStr-AEEF-Delete"/>
                       <xsl:if test="form/recurringEntity='true'">
-                        all
+                        <xsl:copy-of select="$bwStr-AEEF-All"/>
                       </xsl:if>
                     </a>
                   </xsl:otherwise>
@@ -2597,28 +2598,28 @@
                   <!-- don't display if a master recurring event (because the master can't be viewed) -->
                   <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="bwMenuButton">
                     <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
-                    View
+                     <xsl:copy-of select="$bwStr-AEEF-View"/>
                   </a>
                 </xsl:if>
               </div>
               <!-- Display type of event -->
               <xsl:variable name="entityType">
                 <xsl:choose>
-                  <xsl:when test="entityType = '2'">Task</xsl:when>
-                  <xsl:when test="scheduleMethod = '2'">Meeting</xsl:when>
-                  <xsl:otherwise>Event</xsl:otherwise>
+                  <xsl:when test="entityType = '2'"><xsl:copy-of select="$bwStr-AEEF-TASK"/></xsl:when>
+                  <xsl:when test="scheduleMethod = '2'"><xsl:copy-of select="$bwStr-AEEF-Meeting"/></xsl:when>
+                  <xsl:otherwise><xsl:copy-of select="$bwStr-AEEF-EVENT"/></xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
               <xsl:if test="form/recurringEntity='true' or recurrenceId != ''">
-                Recurring
+                 <xsl:copy-of select="$bwStr-AEEF-Recurring"/>
               </xsl:if>
               <xsl:choose>
                 <xsl:when test="form">
                   <!-- just a placeholder: need to add owner to the jsp -->
-                  Personal <xsl:value-of select="$entityType"/>
+                   <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-Personal"/><xsl:text> </xsl:text><xsl:value-of select="$entityType"/>
                 </xsl:when>
                 <xsl:when test="public = 'true'">
-                  Public <xsl:value-of select="$entityType"/>
+                   <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-Public"/><xsl:text> </xsl:text><xsl:value-of select="$entityType"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="$entityType"/>
@@ -2626,7 +2627,7 @@
               </xsl:choose>
               <xsl:if test="form/recurringEntity='true' and recurrenceId = ''">
                 <xsl:text> </xsl:text>
-                <em>(recurrence master)</em>
+                <em><xsl:copy-of select="$bwStr-AEEF-RecurrenceMaster"/></em>
               </xsl:if>
             </th>
           </tr>
@@ -2637,22 +2638,22 @@
       <ul id="eventFormTabs" class="submenu">
         <li class="selected">
           <a href="javascript:setTab('eventFormTabs',0); show('bwEventTab-Basic'); hide('bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Access','bwEventTab-Scheduling');">
-            basic
+            <xsl:copy-of select="$bwStr-AEEF-Basic"/>
           </a>
         </li>
         <li>
           <a href="javascript:setTab('eventFormTabs',1); show('bwEventTab-Details'); hide('bwEventTab-Basic','bwEventTab-Recurrence','bwEventTab-Access','bwEventTab-Scheduling');">
-            details
+            <xsl:copy-of select="$bwStr-AEEF-Details"/>
           </a>
         </li>
         <li>
           <a href="javascript:setTab('eventFormTabs',2); show('bwEventTab-Recurrence'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Access','bwEventTab-Scheduling');">
-            recurrence
+            <xsl:copy-of select="$bwStr-AEEF-Recurrence"/>
           </a>
         </li>
         <li>
           <a href="javascript:setTab('eventFormTabs',3); show('bwEventTab-Scheduling'); hide('bwEventTab-Basic','bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Access');">
-            scheduling
+            <xsl:copy-of select="$bwStr-AEEF-Scheduling"/>
           </a>
         </li>
         <!-- Hide from use.  If you wish to enable the access control form for
@@ -2672,7 +2673,7 @@
         <!--  Calendar in which to place event  -->
         <tr>
           <td class="fieldname">
-            Calendar:
+            <xsl:copy-of select="$bwStr-AEEF-Calendar"/><xsl:text> </xsl:text>
           </td>
           <td class="fieldval">
             <!-- the string "user/" should not be hard coded; fix this -->
@@ -2736,7 +2737,7 @@
         <!--  Summary (title) of event  -->
         <tr>
           <td class="fieldname">
-            Title:
+            <xsl:copy-of select="$bwStr-AEEF-Title"/><xsl:text> </xsl:text>
           </td>
           <td class="fieldval">
             <xsl:variable name="title" select="form/title/input/@value"/>
@@ -2748,7 +2749,7 @@
         <!--  ============= -->
         <tr>
           <td class="fieldname">
-            Date &amp; Time:
+            <xsl:copy-of select="$bwStr-AEEF-DateAndTime"/><xsl:text> </xsl:text>
           </td>
           <td class="fieldval">
             <!-- Set the timefields class for the first load of the page;
@@ -2774,7 +2775,7 @@
                 <input type="hidden" name="eventEndDate.dateOnly" value="false" id="allDayEndDateField"/>
               </xsl:otherwise>
             </xsl:choose>
-            all day
+            <xsl:copy-of select="$bwStr-AEEF-AllDay"/>
 
             <!-- floating event: no timezone (and not UTC) -->
             <xsl:choose>
@@ -2789,7 +2790,7 @@
                 <input type="hidden" name="eventEndDate.floating" value="false" id="endFloating"/>
               </xsl:otherwise>
             </xsl:choose>
-            floating
+            <xsl:copy-of select="$bwStr-AEEF-Floating"/>
 
             <!-- store time as coordinated universal time (UTC) -->
             <xsl:choose>
@@ -2804,13 +2805,13 @@
                 <input type="hidden" name="eventEndDate.storeUTC" value="false" id="endStoreUTC"/>
               </xsl:otherwise>
             </xsl:choose>
-            store as UTC
+            <xsl:copy-of select="$bwStr-AEEF-StoreAsUTC"/>
 
             <br/>
             <div class="dateStartEndBox">
-              <strong>Start:</strong>
+              <strong><xsl:copy-of select="$bwStr-AEEF-Start"/></strong><xsl:text> </xsl:text>
               <div class="dateFields">
-                <span class="startDateLabel">Date </span>
+                <span class="startDateLabel"><xsl:copy-of select="$bwStr-AEEF-Date"/><xsl:text> </xsl:text></span>
                 <xsl:choose>
                   <xsl:when test="$portalFriendly = 'true'">
                     <xsl:copy-of select="/bedework/formElements/form/start/month/*"/>
@@ -2863,7 +2864,7 @@
 
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-                    <option value="-1">select timezone...</option>
+                    <option value="-1"><xsl:copy-of select="$bwStr-AEEF-SelectTimezone"/></option>
                     <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
                     <!--
                     <xsl:variable name="startTzId" select="form/start/tzid"/>
@@ -2882,8 +2883,8 @@
             <div class="dateStartEndBox">
               <strong>
                 <xsl:choose>
-                  <xsl:when test="form/entityType = '2'">Due:</xsl:when>
-                  <xsl:otherwise>End:</xsl:otherwise>
+                  <xsl:when test="form/entityType = '2'"><xsl:copy-of select="$bwStr-AEEF-Due"/><xsl:text> </xsl:text></xsl:when>
+                  <xsl:otherwise><xsl:copy-of select="$bwStr-AEEF-End"/><xsl:text> </xsl:text></xsl:otherwise>
                 </xsl:choose>
               </strong>
               <xsl:choose>
@@ -2894,7 +2895,7 @@
                   <input type="radio" name="eventEndType" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:otherwise>
               </xsl:choose>
-              Date
+              <xsl:copy-of select="$bwStr-AEEF-Date"/>
               <xsl:variable name="endDateTimeClass">
                 <xsl:choose>
                   <xsl:when test="form/end/type='E'">shown</xsl:when>
@@ -2959,7 +2960,7 @@
 
                     <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-                      <option value="-1">select timezone...</option>
+                      <option value="-1"><xsl:copy-of select="$bwStr-AEEF-SelectTimezone"/></option>
                       <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
                       <!--
                       <xsl:variable name="endTzId" select="form/end/dateTime/tzid"/>
@@ -2987,7 +2988,7 @@
                     <input type="radio" name="eventEndType" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:otherwise>
                 </xsl:choose>
-                Duration
+                <xsl:copy-of select="$bwStr-AEEF-Duration"/>
                 <xsl:variable name="endDurationClass">
                   <xsl:choose>
                     <xsl:when test="form/end/type='D'">shown</xsl:when>
@@ -3015,7 +3016,7 @@
                               <xsl:otherwise><xsl:value-of select="form/end/duration/days/input/@value"/></xsl:otherwise>
                             </xsl:choose>
                           </xsl:attribute>
-                        </input>days
+                        </input><xsl:copy-of select="$bwStr-AEEF-Days"/>
                         <span id="durationHrMin" class="{$durationHrMinClass}">
                           <input type="text" name="eventDuration.hoursStr" size="2" id="durationHours">
                             <xsl:attribute name="value">
@@ -3024,7 +3025,7 @@
                                 <xsl:otherwise><xsl:value-of select="form/end/duration/hours/input/@value"/></xsl:otherwise>
                               </xsl:choose>
                             </xsl:attribute>
-                          </input>hours
+                          </input><xsl:copy-of select="$bwStr-AEEF-Hours"/>
                           <input type="text" name="eventDuration.minutesStr" size="2" id="durationMinutes">
                             <xsl:attribute name="value">
                               <xsl:choose>
@@ -3032,14 +3033,14 @@
                                 <xsl:otherwise><xsl:value-of select="form/end/duration/minutes/input/@value"/></xsl:otherwise>
                               </xsl:choose>
                             </xsl:attribute>
-                          </input>minutes
+                          </input><xsl:copy-of select="$bwStr-AEEF-Minutes"/>
                         </span>
                       </div>
-                      <span class="durationSpacerText">or</span>
+                      <span class="durationSpacerText"><xsl:copy-of select="$bwStr-AEEF-Or"/></span>
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')"/>
                         <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
-                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="disabled"/>weeks
+                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="disabled"/><xsl:copy-of select="$bwStr-AEEF-Weeks"/>
                       </div>
                     </xsl:when>
                     <xsl:otherwise>
@@ -3047,19 +3048,19 @@
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')"/>
                         <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
-                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="disabled"/>days
+                        <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="disabled"/><xsl:copy-of select="$bwStr-AEEF-Days"/>
                         <span id="durationHrMin" class="{$durationHrMinClass}">
                           <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
-                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="disabled"/>hours
+                          <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="disabled"/><xsl:copy-of select="$bwStr-AEEF-Hours"/>
                           <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
-                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="disabled"/>minutes
+                          <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="disabled"/><xsl:copy-of select="$bwStr-AEEF-Minutes"/>
                         </span>
                       </div>
-                      <span class="durationSpacerText">or</span>
+                      <span class="durationSpacerText"><xsl:copy-of select="$bwStr-AEEF-Or"/></span>
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')" checked="checked"/>
                         <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
-                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks"/>weeks
+                        <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks"/><xsl:copy-of select="$bwStr-AEEF-Weeks"/>
                       </div>
                     </xsl:otherwise>
                   </xsl:choose>
@@ -3074,12 +3075,12 @@
                     <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
-                This
+                <xsl:copy-of select="$bwStr-AEEF-This"/><xsl:text> </xsl:text>
                 <xsl:choose>
-                  <xsl:when test="form/entityType = '2'">task</xsl:when>
-                  <xsl:otherwise>event</xsl:otherwise>
+                  <xsl:when test="form/entityType = '2'"><xsl:copy-of select="$bwStr-AEEF-Task"/><xsl:text> </xsl:text></xsl:when>
+                  <xsl:otherwise><xsl:copy-of select="$bwStr-AEEF-Event"/><xsl:text> </xsl:text></xsl:otherwise>
                 </xsl:choose>
-                has no duration / end date
+                <xsl:copy-of select="$bwStr-AEEF-HasNoDurationEndDate"/>
               </div>
             </div>
           </td>
@@ -3089,7 +3090,7 @@
         <xsl:if test="form/entityType = '2'">
           <tr>
             <td class="fieldname">
-              % Complete:
+              % <xsl:copy-of select="$bwStr-AEEF-Complete"/><xsl:text> </xsl:text>
             </td>
             <td class="fieldval" align="left">
               <input type="text" name="percentComplete" size="3" maxlength="3">
@@ -3102,7 +3103,7 @@
         <!--  Transparency  -->
         <tr>
           <td class="fieldname padMeTop">
-            Affects free/busy:
+            <xsl:copy-of select="$bwStr-AEEF-AffectsFreeBusy"/><xsl:text> </xsl:text>
           </td>
           <td align="left" class="padMeTop">
             <input type="radio" value="OPAQUE" name="transparency">
@@ -3110,28 +3111,28 @@
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
             </input>
-            yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
+            <xsl:copy-of select="$bwStr-AEEF-Yes"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Opaque"/></span><br/>
 
             <input type="radio" value="TRANSPARENT" name="transparency">
               <xsl:if test="form/transparency = 'TRANSPARENT'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
             </input>
-            no <span class="note">(transparent: event status does not affect your free/busy)</span><br/>
+            <xsl:copy-of select="$bwStr-AEEF-No"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Transparent"/></span><br/>
           </td>
         </tr>
 
         <!--  Category  -->
         <tr>
           <td class="fieldname">
-            Categories:
+            <xsl:copy-of select="$bwStr-AEEF-Categories"/><xsl:text> </xsl:text>
           </td>
           <td class="fieldval" align="left">
             <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
             <xsl:choose>
               <xsl:when test="not(form/categories/all/category)">
-                no categories defined
-                <span class="note">(<a href="{$category-initAdd}">add category</a>)</span>
+                <xsl:copy-of select="$bwStr-AEEF-NoCategoriesDefined"/>
+                <span class="note">(<a href="{$category-initAdd}"><xsl:copy-of select="$bwStr-AEEF-AddCategory"/></a>)</span>
               </xsl:when>
               <xsl:otherwise>
                 <table cellpadding="0" id="allCategoryCheckboxes">
@@ -3170,9 +3171,9 @@
       <table cellspacing="0" class="common dottedBorder">
         <!--  Location  -->
         <tr>
-          <td class="fieldname">Location:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-AEEF-Location"/></td>
           <td class="fieldval" align="left">
-            <span class="std-text">choose: </span>
+            <span class="std-text"><xsl:copy-of select="$bwStr-AEEF-Choose"/><xsl:text> </xsl:text></span>
             <span id="eventFormLocationList">
               <!--
               <xsl:choose>
@@ -3191,17 +3192,17 @@
               </xsl:choose>
               -->
               <select name="locationUid">
-                <option value="">select...</option>
+                <option value=""><xsl:copy-of select="$bwStr-AEEF-Select"/></option>
                 <xsl:copy-of select="form/location/locationmenu/select/*"/>
               </select>
             </span>
-            <span class="std-text"> or add new: </span>
+            <span class="std-text"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-OrAddNew"/><xsl:text> </xsl:text></span>
             <input type="text" name="locationAddress.value" value="" />
           </td>
         </tr>
         <!--  Link (url associated with event)  -->
         <tr>
-          <td class="fieldname">Event Link:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-AEEF-EventLink"/><xsl:text> </xsl:text></td>
           <td class="fieldval">
             <xsl:variable name="link" select="form/link/input/@value"/>
             <input type="text" name="eventLink" size="80" value="{$link}"/>
@@ -3209,7 +3210,7 @@
         </tr>
         <!--  Description  -->
         <tr>
-          <td class="fieldname">Description:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-AEEF-Description"/><xsl:text> </xsl:text></td>
           <td class="fieldval">
             <xsl:choose>
               <xsl:when test="normalize-space(form/desc/textarea) = ''">
@@ -3262,38 +3263,38 @@
         <!--  Status  -->
         <tr>
           <td class="fieldname">
-            Status:
+            <xsl:copy-of select="$bwStr-AEEF-Status"/><xsl:text> </xsl:text>
           </td>
           <td class="fieldval">
             <input type="radio" name="eventStatus" value="CONFIRMED">
               <xsl:if test="form/status = 'CONFIRMED' or /bedework/creating = 'true' or form/status = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input>
-            confirmed
+            <xsl:copy-of select="$bwStr-AEEF-Confirmed"/>
             <input type="radio" name="eventStatus" value="TENTATIVE">
               <xsl:if test="form/status = 'TENTATIVE'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input>
-            tentative
+            <xsl:copy-of select="$bwStr-AEEF-Tentative"/>
             <input type="radio" name="eventStatus" value="CANCELLED">
               <xsl:if test="form/status = 'CANCELLED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input>
-            canceled
+            <xsl:copy-of select="$bwStr-AEEF-Canceled"/>
           </td>
         </tr>
         <!--  Transparency  -->
         <xsl:if test="entityType != '2'"><!-- no transparency for Tasks -->
           <tr>
             <td class="fieldname">
-              Affects free/busy:
+              <xsl:copy-of select="$bwStr-AEEF-AffectsFreeBusy"/>
             </td>
             <td class="fieldval">
               <xsl:choose>
                 <xsl:when test="form/transparency = 'TRANSPARENT'">
-                  <input type="radio" name="transparency" value="OPAQUE"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                  <input type="radio" name="transparency" value="TRANSPARENT" checked="checked"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+                  <input type="radio" name="transparency" value="OPAQUE"/><xsl:copy-of select="$bwStr-AEEF-Yes"/> <span class="note"><xsl:copy-of select="$bwStr-AEEF-Opaque"/></span><br/>
+                  <input type="radio" name="transparency" value="TRANSPARENT" checked="checked"/><xsl:copy-of select="$bwStr-AEEF-No"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Transparent"/></span>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="radio" name="transparency" value="OPAQUE" checked="checked"/>yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-                  <input type="radio" name="transparency" value="TRANSPARENT"/>no <span class="note">(transparent: event status does not affect your free/busy)</span>
+                  <input type="radio" name="transparency" value="OPAQUE" checked="checked"/><xsl:copy-of select="$bwStr-AEEF-Yes"/> <span class="note"><xsl:copy-of select="$bwStr-AEEF-Opaque"/></span><br/>
+                  <input type="radio" name="transparency" value="TRANSPARENT"/><xsl:copy-of select="$bwStr-AEEF-No"/> <span class="note"><xsl:copy-of select="$bwStr-AEEF-Transparent"/></span>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
@@ -3310,8 +3311,8 @@
         <xsl:when test="recurrenceId != ''">
           <!-- recurrence instances can not themselves recur,
                so provide access to master event -->
-          <em>This event is a recurrence instance.</em><br/>
-          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="edit master (recurring event)">edit master event</a>
+          <em><xsl:copy-of select="$bwStr-AEEF-ThisEventRecurrenceInstance"/></em><br/>
+          <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-AEEF-EditMaster}"><xsl:copy-of select="$bwStr-AEEF-EditMasterEvent"/></a>
         </xsl:when>
         <xsl:otherwise>
           <!-- has recurrenceId, so is master -->
@@ -3320,22 +3321,22 @@
             <!-- set or remove "recurring" and show or hide all recurrence fields: -->
             <input type="radio" name="recurring" value="true" onclick="swapRecurrence(this)">
               <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-            </input> event recurs
+            </input> <xsl:copy-of select="$bwStr-AEEF-EventRecurs"/>
             <input type="radio" name="recurring" value="false" onclick="swapRecurrence(this)">
               <xsl:if test="form/recurringEntity = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-            </input> event does not recur
+            </input> <xsl:copy-of select="$bwStr-AEEF-EventDoesNotRecur"/>
           </div>
 
           <!-- wrapper for all recurrence fields (rrules and rdates): -->
           <div id="recurrenceFields" class="invisible">
             <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
 
-            <h4>Recurrence Rules</h4>
+            <h4><xsl:copy-of select="$bwStr-AEEF-RecurrenceRules"/></h4>
             <!-- show or hide rrules fields when editing: -->
             <xsl:if test="form/recurrence">
               <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on"/>
               <span id="rrulesSwitch">
-                change recurrence rules
+                <xsl:copy-of select="$bwStr-AEEF-ChangeRecurrenceRules"/>
               </span>
             </xsl:if>
             <span id="rrulesUiSwitch">
@@ -3343,7 +3344,7 @@
                 <xsl:attribute name="class">invisible</xsl:attribute>
               </xsl:if>
               <input type="checkbox" name="rrulesUiSwitch" value="advanced" onchange="swapVisible(this,'advancedRrules')"/>
-              show advanced recurrence rules
+              <xsl:copy-of select="$bwStr-AEEF-ShowAdvancedRecurrenceRules"/>
             </span>
 
             <xsl:if test="form/recurrence">
@@ -3351,7 +3352,7 @@
                    complete yet. Replace all strings so can be
                    more easily internationalized. -->
               <div id="recurrenceInfo">
-                Every
+                <xsl:copy-of select="$bwStr-AEEF-EVERY"/><xsl:text> </xsl:text>
                 <xsl:choose>
                   <xsl:when test="form/recurrence/interval &gt; 1">
                     <xsl:value-of select="form/recurrence/interval"/>
@@ -3359,36 +3360,36 @@
                 </xsl:choose>
                 <xsl:text> </xsl:text>
                 <xsl:choose>
-                  <xsl:when test="form/recurrence/freq = 'HOURLY'">hour</xsl:when>
-                  <xsl:when test="form/recurrence/freq = 'DAILY'">day</xsl:when>
-                  <xsl:when test="form/recurrence/freq = 'WEEKLY'">week</xsl:when>
-                  <xsl:when test="form/recurrence/freq = 'MONTHLY'">month</xsl:when>
-                  <xsl:when test="form/recurrence/freq = 'YEARLY'">year</xsl:when>
-                </xsl:choose><xsl:if test="form/recurrence/interval &gt; 1">s</xsl:if>
+                  <xsl:when test="form/recurrence/freq = 'HOURLY'"><xsl:copy-of select="$bwStr-AEEF-Hour"/></xsl:when>
+                  <xsl:when test="form/recurrence/freq = 'DAILY'"><xsl:copy-of select="$bwStr-AEEF-Day"/></xsl:when>
+                  <xsl:when test="form/recurrence/freq = 'WEEKLY'"><xsl:copy-of select="$bwStr-AEEF-Week"/></xsl:when>
+                  <xsl:when test="form/recurrence/freq = 'MONTHLY'"><xsl:copy-of select="$bwStr-AEEF-Month"/></xsl:when>
+                  <xsl:when test="form/recurrence/freq = 'YEARLY'"><xsl:copy-of select="$bwStr-AEEF-Year"/></xsl:when>
+                </xsl:choose>
                 <xsl:text> </xsl:text>
 
                 <xsl:if test="form/recurrence/byday">
                   <xsl:for-each select="form/recurrence/byday/pos">
-                    <xsl:if test="position() != 1"> and </xsl:if>
-                    on
+                    <xsl:if test="position() != 1"> <xsl:copy-of select="$bwStr-AEEF-And"/> </xsl:if>
+                    <xsl:copy-of select="$bwStr-AEEF-On"/>
                     <xsl:choose>
                       <xsl:when test="@val='1'">
-                        the first
+                        <xsl:copy-of select="$bwStr-AEEF-TheFirst"/>
                       </xsl:when>
                       <xsl:when test="@val='2'">
-                        the second
+                        <xsl:copy-of select="$bwStr-AEEF-TheSecond"/>
                       </xsl:when>
                       <xsl:when test="@val='3'">
-                        the third
+                        <xsl:copy-of select="$bwStr-AEEF-TheThird"/>
                       </xsl:when>
                       <xsl:when test="@val='4'">
-                        the fourth
+                        <xsl:copy-of select="$bwStr-AEEF-TheFourth"/>
                       </xsl:when>
                       <xsl:when test="@val='5'">
-                        the fifth
+                        <xsl:copy-of select="$bwStr-AEEF-TheFifth"/>
                       </xsl:when>
                       <xsl:when test="@val='-1'">
-                        the last
+                        <xsl:copy-of select="$bwStr-AEEF-TheLast"/>
                       </xsl:when>
                       <!-- don't output "every" -->
                       <!--<xsl:otherwise>
@@ -3396,7 +3397,7 @@
                       </xsl:otherwise>-->
                     </xsl:choose>
                     <xsl:for-each select="day">
-                      <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
+                      <xsl:if test="position() != 1 and position() = last()"> <xsl:copy-of select="$bwStr-AEEF-And"/> </xsl:if>
                       <xsl:variable name="dayVal" select="."/>
                       <xsl:variable name="dayPos">
                         <xsl:for-each select="/bedework/recurdayvals/val">
@@ -3410,9 +3411,9 @@
                 </xsl:if>
 
                 <xsl:if test="form/recurrence/bymonth">
-                  in
+                  <xsl:copy-of select="$bwStr-AEEF-In"/>
                   <xsl:for-each select="form/recurrence/bymonth/val">
-                    <xsl:if test="position() != 1 and position() = last()"> and </xsl:if>
+                    <xsl:if test="position() != 1 and position() = last()"> <xsl:copy-of select="$bwStr-AEEF-And"/> </xsl:if>
                     <xsl:variable name="monthNum" select="number(.)"/>
                     <xsl:value-of select="/bedework/monthlabels/val[position() = $monthNum]"/>
                     <xsl:if test="position() != last()">, </xsl:if>
@@ -3420,32 +3421,32 @@
                 </xsl:if>
 
                 <xsl:if test="form/recurrence/bymonthday">
-                  on the
+                  <xsl:copy-of select="$bwStr-AEEF-OnThe"/>
                   <xsl:apply-templates select="form/recurrence/bymonthday/val" mode="weekMonthYearNumbers"/>
-                  day<xsl:if test="form/recurrence/bymonthday/val[position()=2]">s</xsl:if> of the month
+                  <xsl:copy-of select="$bwStr-AEEF-DayOfTheMonth"/>
                 </xsl:if>
 
                 <xsl:if test="form/recurrence/byyearday">
-                  on the
+                  <xsl:copy-of select="$bwStr-AEEF-OnThe"/>
                   <xsl:apply-templates select="form/recurrence/byyearday/val" mode="weekMonthYearNumbers"/>
-                  day<xsl:if test="form/recurrence/byyearday/val[position()=2]">s</xsl:if> of the year
+                  <xsl:copy-of select="$bwStr-AEEF-DayOfTheYear"/>
                 </xsl:if>
 
                 <xsl:if test="form/recurrence/byweekno">
-                  in the
+                  <xsl:copy-of select="$bwStr-AEEF-InThe"/>
                   <xsl:apply-templates select="form/recurrence/byweekno/val" mode="weekMonthYearNumbers"/>
-                  week<xsl:if test="form/recurrence/byweekno/val[position()=2]">s</xsl:if> of the year
+                  <xsl:copy-of select="$bwStr-AEEF-WeekOfTheYear"/>
                 </xsl:if>
 
-                repeating
+                <xsl:copy-of select="$bwStr-AEEF-Repeating"/>
                 <xsl:choose>
-                  <xsl:when test="form/recurrence/count = '-1'">forever</xsl:when>
+                  <xsl:when test="form/recurrence/count = '-1'"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-Forever"/></xsl:when>
                   <xsl:when test="form/recurrence/until">
-                    until <xsl:value-of select="substring(form/recurrence/until,1,4)"/>-<xsl:value-of select="substring(form/recurrence/until,5,2)"/>-<xsl:value-of select="substring(form/recurrence/until,7,2)"/>
+                    <xsl:copy-of select="$bwStr-AEEF-Until"/> <xsl:value-of select="substring(form/recurrence/until,1,4)"/>-<xsl:value-of select="substring(form/recurrence/until,5,2)"/>-<xsl:value-of select="substring(form/recurrence/until,7,2)"/>
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="form/recurrence/count"/>
-                    time<xsl:if test="form/recurrence/count &gt; 1">s</xsl:if>
+                    <xsl:copy-of select="$bwStr-AEEF-Time"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </div>
@@ -3470,28 +3471,28 @@
               </xsl:if>
               <tr>
                 <td id="recurrenceFrequency" rowspan="2">
-                  <em>Frequency:</em><br/>
-                  <input type="radio" name="freq" value="NONE" onclick="showRrules(this.value)" checked="checked"/>none<br/>
+                  <em><xsl:copy-of select="$bwStr-AEEF-Frequency"/></em><br/>
+                  <input type="radio" name="freq" value="NONE" onclick="showRrules(this.value)" checked="checked"/><xsl:copy-of select="$bwStr-AEEF-None"/><br/>
                   <!--<input type="radio" name="freq" value="HOURLY" onclick="showRrules(this.value)"/>hourly<br/>-->
-                  <input type="radio" name="freq" value="DAILY" onclick="showRrules(this.value)"/>daily<br/>
-                  <input type="radio" name="freq" value="WEEKLY" onclick="showRrules(this.value)"/>weekly<br/>
-                  <input type="radio" name="freq" value="MONTHLY" onclick="showRrules(this.value)"/>monthly<br/>
-                  <input type="radio" name="freq" value="YEARLY" onclick="showRrules(this.value)"/>yearly
+                  <input type="radio" name="freq" value="DAILY" onclick="showRrules(this.value)"/><xsl:copy-of select="$bwStr-AEEF-Daily"/><br/>
+                  <input type="radio" name="freq" value="WEEKLY" onclick="showRrules(this.value)"/><xsl:copy-of select="$bwStr-AEEF-Weekly"/><br/>
+                  <input type="radio" name="freq" value="MONTHLY" onclick="showRrules(this.value)"/><xsl:copy-of select="$bwStr-AEEF-Monthly"/><br/>
+                  <input type="radio" name="freq" value="YEARLY" onclick="showRrules(this.value)"/><xsl:copy-of select="$bwStr-AEEF-Yearly"/>
                 </td>
                 <!-- recurrence count, until, forever -->
                 <td id="recurrenceUntil">
                   <div id="noneRecurrenceRules">
-                    no recurrence rules
+                    <xsl:copy-of select="$bwStr-AEEF-NoRecurrenceRules"/>
                   </div>
                   <div id="recurrenceUntilRules" class="invisible">
-                    <em>Repeat:</em>
+                    <em><xsl:copy-of select="$bwStr-AEEF-Repeat"/></em>
                     <p>
                       <input type="radio" name="recurCountUntil" value="forever">
                         <xsl:if test="not(form/recurring) or form/recurring/count = '-1'">
                           <xsl:attribute name="checked">checked</xsl:attribute>
                         </xsl:if>
                       </input>
-                      forever
+                      <xsl:copy-of select="$bwStr-AEEF-Forever"/>
                       <input type="radio" name="recurCountUntil" value="count" id="recurCount">
                         <xsl:if test="form/recurring/count != '-1'">
                           <xsl:attribute name="checked">checked</xsl:attribute>
@@ -3502,13 +3503,13 @@
                           <xsl:attribute name="value"><xsl:value-of select="form/recurring/count"/></xsl:attribute>
                         </xsl:if>
                       </input>
-                      time(s)
+                      <xsl:copy-of select="$bwStr-AEEF-Time"/>
                       <input type="radio" name="recurCountUntil" value="until" id="recurUntil">
                         <xsl:if test="form/recurring/until">
                           <xsl:attribute name="checked">checked</xsl:attribute>
                         </xsl:if>
                       </input>
-                      until
+                      <xsl:copy-of select="$bwStr-AEEF-Until"/>
                       <span id="untilHolder">
                         <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
                           <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
@@ -3543,31 +3544,31 @@
                   <!-- hourly -->
                   <div id="hourlyRecurrenceRules" class="invisible">
                     <p>
-                      <em>Interval:</em>
-                      every
+                      <em><xsl:copy-of select="$bwStr-AEEF-Interval"/></em>
+                      <xsl:copy-of select="$bwStr-AEEF-Every"/>
                       <input type="text" name="hourlyInterval" size="2" value="1">
                         <xsl:if test="form/recurrence/interval">
                           <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
                         </xsl:if>
                       </input>
-                      hour(s)
+                      <xsl:copy-of select="$bwStr-AEEF-Hour"/>
                     </p>
                   </div>
                   <!-- daily -->
                   <div id="dailyRecurrenceRules" class="invisible">
                     <p>
-                      <em>Interval:</em>
-                      every
+                      <em><xsl:copy-of select="$bwStr-AEEF-Interval"/></em>
+                      <xsl:copy-of select="$bwStr-AEEF-Every"/>
                       <input type="text" name="dailyInterval" size="2" value="1">
                         <xsl:if test="form/recurrence/interval">
                           <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
                         </xsl:if>
                       </input>
-                      day(s)
+                      <xsl:copy-of select="$bwStr-AEEF-Day"/>
                     </p>
                     <div>
                       <input type="checkbox" name="swapDayMonthCheckBoxList" value="" onclick="swapVisible(this,'dayMonthCheckBoxList')"/>
-                      in these months:
+                      <xsl:copy-of select="$bwStr-AEEF-InTheseMonths"/>
                       <div id="dayMonthCheckBoxList" class="invisible">
                         <xsl:for-each select="/bedework/monthlabels/val">
                           <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
@@ -3591,14 +3592,14 @@
                   <!-- weekly -->
                   <div id="weeklyRecurrenceRules" class="invisible">
                     <p>
-                      <em>Interval:</em>
-                      every
+                      <em><xsl:copy-of select="$bwStr-AEEF-Interval"/><xsl:text> </xsl:text></em>
+                      <xsl:copy-of select="$bwStr-AEEF-Every"/>
                       <input type="text" name="weeklyInterval" size="2" value="1">
                         <xsl:if test="form/recurrence/interval">
                           <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
                         </xsl:if>
                       </input>
-                      week(s) on:
+                      <xsl:copy-of select="$bwStr-AEEF-WeekOn"/>
                     </p>
                     <div id="weekRecurFields">
                       <xsl:call-template name="byDayChkBoxList">
@@ -3606,11 +3607,11 @@
                       </xsl:call-template>
                     </div>
                     <p class="weekRecurLinks">
-                      <a href="javascript:recurSelectWeekdays('weekRecurFields')">select weekdays</a> |
-                      <a href="javascript:recurSelectWeekends('weekRecurFields')">select weekends</a>
+                      <a href="javascript:recurSelectWeekdays('weekRecurFields')"><xsl:copy-of select="$bwStr-AEEF-SelectWeekdays"/></a> |
+                      <a href="javascript:recurSelectWeekends('weekRecurFields')"><xsl:copy-of select="$bwStr-AEEF-SelectWeekends"/></a>
                     </p>
                     <p>
-                      Week start:
+                      <xsl:copy-of select="$bwStr-AEEF-WeekStart"/>
                       <select name="weekWkst">
                         <xsl:for-each select="/bedework/shortdaynames/val">
                           <xsl:variable name="pos" select="position()"/>
@@ -3625,18 +3626,18 @@
                   <!-- monthly -->
                   <div id="monthlyRecurrenceRules" class="invisible">
                     <p>
-                      <em>Interval:</em>
-                      every
+                      <em><xsl:copy-of select="$bwStr-AEEF-Interval"/></em>
+                      <xsl:copy-of select="$bwStr-AEEF-Every"/>
                       <input type="text" name="monthlyInterval" size="2" value="1">
                         <xsl:if test="form/recurrence/interval">
                           <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
                         </xsl:if>
                       </input>
-                      month(s)
+                      <xsl:copy-of select="$bwStr-AEEF-Month"/>
                     </p>
                     <div id="monthRecurFields">
                       <div id="monthRecurFields1">
-                        on
+                        <xsl:copy-of select="$bwStr-AEEF-On"/>
                         <select name="bymonthposPos1" size="7" onchange="changeClass('monthRecurFields2','shown')">
                           <xsl:call-template name="recurrenceDayPosOptions"/>
                         </select>
@@ -3650,7 +3651,7 @@
                     </div>
                     <div>
                       <input type="checkbox" name="swapMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'monthDaysCheckBoxList')"/>
-                      on these days:<br/>
+                      <xsl:copy-of select="$bwStr-AEEF-OnTheseDays"/><br/>
                       <div id="monthDaysCheckBoxList" class="invisible">
                         <xsl:call-template name="buildCheckboxList">
                           <xsl:with-param name="current">1</xsl:with-param>
@@ -3663,18 +3664,18 @@
                   <!-- yearly -->
                   <div id="yearlyRecurrenceRules" class="invisible">
                     <p>
-                      <em>Interval:</em>
-                      every
+                      <em><xsl:copy-of select="$bwStr-AEEF-Interval"/><xsl:text> </xsl:text></em>
+                      <xsl:copy-of select="$bwStr-AEEF-Every"/>
                       <input type="text" name="yearlyInterval" size="2" value="1">
                         <xsl:if test="form/recurrence/interval">
                           <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
                         </xsl:if>
                       </input>
-                      years(s)
+                      <xsl:copy-of select="$bwStr-AEEF-Year"/>
                     </p>
                     <div id="yearRecurFields">
                       <div id="yearRecurFields1">
-                        on
+                        <xsl:copy-of select="$bwStr-AEEF-On"/>
                         <select name="byyearposPos1" size="7" onchange="changeClass('yearRecurFields2','shown')">
                           <xsl:call-template name="recurrenceDayPosOptions"/>
                         </select>
@@ -3688,7 +3689,7 @@
                     </div>
                     <div>
                       <input type="checkbox" name="swapYearMonthCheckBoxList" value="" onclick="swapVisible(this,'yearMonthCheckBoxList')"/>
-                      in these months:
+                      <xsl:copy-of select="$bwStr-AEEF-InTheseMonths"/>
                       <div id="yearMonthCheckBoxList" class="invisible">
                         <xsl:for-each select="/bedework/monthlabels/val">
                           <xsl:variable name="pos"><xsl:value-of select="position()"/></xsl:variable>
@@ -3704,7 +3705,7 @@
                     </div>
                     <div>
                       <input type="checkbox" name="swapYearMonthDaysCheckBoxList" value="" onclick="swapVisible(this,'yearMonthDaysCheckBoxList')"/>
-                      on these days of the month:<br/>
+                      <xsl:copy-of select="$bwStr-AEEF-OnTheseDaysOfTheMonth"/><br/>
                       <div id="yearMonthDaysCheckBoxList" class="invisible">
                         <xsl:call-template name="buildCheckboxList">
                           <xsl:with-param name="current">1</xsl:with-param>
@@ -3715,7 +3716,7 @@
                     </div>
                     <div>
                       <input type="checkbox" name="swapYearWeeksCheckBoxList" value="" onclick="swapVisible(this,'yearWeeksCheckBoxList')"/>
-                      in these weeks of the year:<br/>
+                      <xsl:copy-of select="$bwStr-AEEF-InTheseWeeksOfTheYear"/><br/>
                       <div id="yearWeeksCheckBoxList" class="invisible">
                         <xsl:call-template name="buildCheckboxList">
                           <xsl:with-param name="current">1</xsl:with-param>
@@ -3726,7 +3727,7 @@
                     </div>
                     <div>
                       <input type="checkbox" name="swapYearDaysCheckBoxList" value="" onclick="swapVisible(this,'yearDaysCheckBoxList')"/>
-                      on these days of the year:<br/>
+                      <xsl:copy-of select="$bwStr-AEEF-OnTheseDaysOfTheYear"/><br/>
                       <div id="yearDaysCheckBoxList" class="invisible">
                         <xsl:call-template name="buildCheckboxList">
                           <xsl:with-param name="current">1</xsl:with-param>
@@ -3736,7 +3737,7 @@
                       </div>
                     </div>
                     <p>
-                      Week start:
+                      <xsl:copy-of select="$bwStr-AEEF-WeekStart"/>
                       <select name="yearWkst">
                         <xsl:for-each select="/bedework/shortdaynames/val">
                           <xsl:variable name="pos" select="position()"/>
@@ -3753,7 +3754,7 @@
             </table>
 
             <h4>
-              Recurrence and Exception Dates
+              <xsl:copy-of select="$bwStr-AEEF-RecurrenceAndExceptionDates"/>
             </h4>
             <div id="raContent">
               <div class="dateStartEndBox" id="rdatesFormFields">
@@ -3828,7 +3829,7 @@
 
                   <select name="tzid" id="rdateTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-                    <option value="">select timezone...</option>
+                    <option value=""><xsl:copy-of select="$bwStr-AEEF-SelectTimezone"/></option>
                     <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
                     <!--
                     <option value="">select timezone...</option>
@@ -3845,25 +3846,25 @@
                 </div>
                 <xsl:text> </xsl:text>
                 <!--bwRdates.update() accepts: date, time, allDay, floating, utc, tzid-->
-                <input type="button" name="rdate" value="add recurrence" onclick="bwRdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
-                <input type="button" name="exdate" value="add exception" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
+                <input type="button" name="rdate" value="{$bwStr-AEEF-AddRecurance}" onclick="bwRdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
+                <input type="button" name="exdate" value="{$bwStr-AEEF-AddException}" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
                 <br class="clear"/>
                 <input type="hidden" name="rdates" value="" id="bwRdatesField" />
                 <!-- if there are no recurrence dates, the following table will show -->
                 <table cellspacing="0" class="invisible" id="bwCurrentRdatesNone">
-                  <tr><th>Recurrence Dates</th></tr>
-                  <tr><td>No recurrence dates</td></tr>
+                  <tr><th><xsl:copy-of select="$bwStr-AEEF-RecurrenceDates"/></th></tr>
+                  <tr><td><xsl:copy-of select="$bwStr-AEEF-NoRecurrenceDates"/></td></tr>
                 </table>
 
                 <!-- if there are recurrence dates, the following table will show -->
                 <table cellspacing="0" class="invisible" id="bwCurrentRdates">
                   <tr>
-                    <th colspan="4">Recurrence Dates</th>
+                    <th colspan="4"><xsl:copy-of select="$bwStr-AEEF-RecurrenceDates"/></th>
                   </tr>
                   <tr class="colNames">
-                    <td>Date</td>
-                    <td>Time</td>
-                    <td>TZid</td>
+                    <td><xsl:copy-of select="$bwStr-AEEF-Date"/></td>
+                    <td><xsl:copy-of select="$bwStr-AEEF-TIME"/></td>
+                    <td><xsl:copy-of select="$bwStr-AEEF-TZid"/></td>
                     <td></td>
                   </tr>
                 </table>
@@ -3871,25 +3872,24 @@
                 <input type="hidden" name="exdates" value="" id="bwExdatesField" />
                 <!-- if there are no exception dates, the following table will show -->
                 <table cellspacing="0" class="invisible" id="bwCurrentExdatesNone">
-                  <tr><th>Exception Dates</th></tr>
-                  <tr><td>No exception dates</td></tr>
+                  <tr><th><xsl:copy-of select="$bwStr-AEEF-ExceptionDates"/></th></tr>
+                  <tr><td><xsl:copy-of select="$bwStr-AEEF-NoExceptionDates"/></td></tr>
                 </table>
 
                 <!-- if there are exception dates, the following table will show -->
                 <table cellspacing="0" class="invisible" id="bwCurrentExdates">
                   <tr>
-                    <th colspan="4">Exception Dates</th>
+                    <th colspan="4"><xsl:copy-of select="$bwStr-AEEF-ExceptionDates"/></th>
                   </tr>
                   <tr class="colNames">
-                    <td>Date</td>
-                    <td>Time</td>
-                    <td>TZid</td>
+					<td><xsl:copy-of select="$bwStr-AEEF-Date"/></td>
+                    <td><xsl:copy-of select="$bwStr-AEEF-Time"/></td>
+                    <td><xsl:copy-of select="$bwStr-AEEF-TZid"/></td>
                     <td></td>
                   </tr>
                 </table>
                 <p>
-                  Exception dates may also be created by deleting an instance
-                  of a recurring event.
+                  <xsl:copy-of select="$bwStr-AEEF-ExceptionDatesMayBeCreated"/>
                 </p>
               </div>
             </div>
@@ -3933,13 +3933,13 @@
         <div class="editAttendees">
           <xsl:choose>
             <xsl:when test="form/organizerSchedulingObject">
-              <input name="editEventAttendees" type="submit" value="edit attendees"/>
+              <input name="editEventAttendees" type="submit" value="{$bwStr-AEEF-EditAttendees}"/>
             </xsl:when>
             <xsl:when test="form/attendeeSchedulingObject">
               <p>
                 <em>
                   <a href="{$schedule-initAttendeeUpdate}&amp;initUpdate=yes">
-                    change my status
+                    <xsl:copy-of select="$bwStr-AEEF-ChangeMyStatus"/>
                   </a>
                 </em>
               </p>
@@ -3947,10 +3947,10 @@
             <xsl:otherwise>
               <xsl:choose>
                 <xsl:when test="form/entityType = '2'">
-                  <input name="makeEventIntoMeeting" type="submit" value="schedule this task with other users"/>
+                  <input name="makeEventIntoMeeting" type="submit" value="{$bwStr-AEEF-ScheduleThisTask}"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input name="makeEventIntoMeeting" type="submit" value="make into meeting - invite attendees"/>
+                  <input name="makeEventIntoMeeting" type="submit" value="{$bwStr-AEEF-MakeIntoMeeting}"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:otherwise>
@@ -3962,17 +3962,17 @@
     <div class="eventSubmitButtons">
       <xsl:choose>
         <xsl:when test="form/scheduleMethod = '2'">
-          <input name="submit" type="submit" value="save"/>
+          <input name="submit" type="submit" value="{$bwStr-AEEF-Save}"/>
           <!-- the following test is not good - will need to fix -->
           <xsl:if test="form/organizerSchedulingObject">
-            <input name="submitAndSend" type="submit" value="save &amp; send invitations"/>
+            <input name="submitAndSend" type="submit" value="{$bwStr-AEEF-SaveAndSendInvites}"/>
           </xsl:if>
         </xsl:when>
         <xsl:otherwise>
-          <input name="submit" type="submit" value="save"/>
+          <input name="submit" type="submit" value="{$bwStr-AEEF-Save}"/>
         </xsl:otherwise>
       </xsl:choose>
-      <input name="cancelled" type="submit" value="cancel"/>
+      <input name="cancelled" type="submit" value="{$bwStr-AEEF-Cancel}"/>
     </div>
   </xsl:template>
 
@@ -4026,14 +4026,14 @@
   </xsl:template>
 
   <xsl:template name="recurrenceDayPosOptions">
-    <option value="0">none</option>
-    <option value="1">the first</option>
-    <option value="2">the second</option>
-    <option value="3">the third</option>
-    <option value="4">the fourth</option>
-    <option value="5">the fifth</option>
-    <option value="-1">the last</option>
-    <option value="">every</option>
+    <option value="0"><xsl:copy-of select="$bwStr-RCPO-None"/></option>
+    <option value="1"><xsl:copy-of select="$bwStr-RCPO-TheFirst"/></option>
+    <option value="2"><xsl:copy-of select="$bwStr-RCPO-TheSecond"/></option>
+    <option value="3"><xsl:copy-of select="$bwStr-RCPO-TheThird"/></option>
+    <option value="4"><xsl:copy-of select="$bwStr-RCPO-TheFourth"/></option>
+    <option value="5"><xsl:copy-of select="$bwStr-RCPO-TheFifth"/></option>
+    <option value="-1"><xsl:copy-of select="$bwStr-RCPO-TheLast"/></option>
+    <option value=""><xsl:copy-of select="$bwStr-RCPO-Every"/></option>
   </xsl:template>
 
   <xsl:template name="buildRecurFields">
@@ -4042,7 +4042,7 @@
     <xsl:param name="name"/>
     <div class="invisible">
       <xsl:attribute name="id"><xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current"/></xsl:attribute>
-      and
+      <xsl:copy-of select="$bwStr-BuRF-And"/>
       <select size="12">
         <xsl:attribute name="name">by<xsl:value-of select="$name"/>posPos<xsl:value-of select="$current"/></xsl:attribute>
         <xsl:if test="$current != $total">
@@ -4088,19 +4088,19 @@
       </div>
       <div id="bwClockBox">
         <h2>
-          Bedework 24-Hour Clock
+          <xsl:copy-of select="$bwStr-Cloc-Bedework24HourClock"/>
         </h2>
         <div id="bwClockDateTypeIndicator">
-          type
+          <xsl:copy-of select="$bwStr-Cloc-Type"/>
         </div>
         <div id="bwClockTime">
-          select time
+          <xsl:copy-of select="$bwStr-Cloc-SelectTime"/>
         </div>
         <div id="bwClockSwitch">
-          switch
+          <xsl:copy-of select="$bwStr-Cloc-Switch"/>
         </div>
         <div id="bwClockCloseText">
-          close
+          <xsl:copy-of select="$bwStr-Cloc-Close"/>
         </div>
         <div id="bwClockCloseButton">
           <a href="javascript:bwClockClose();">X</a>
@@ -4150,36 +4150,36 @@
 
   <xsl:template name="attendees">
     <h2>
-      <span class="formButtons"><input type="button" value="continue" onclick="window.location='{$gotoEditEvent}'"/></span>
-        Schedule Meeting or Task
+      <span class="formButtons"><input type="button" value="{$bwStr-Atnd-Continue}" onclick="window.location='{$gotoEditEvent}'"/></span>
+        <xsl:copy-of select="$bwStr-Atnd-SchedulMeetingOrTask"/>
     </h2>
 
     <div id="recipientsAndAttendees">
-      <h4>Add attendees</h4>
+      <h4><xsl:copy-of select="$bwStr-Atnd-AddAttendees"/></h4>
       <form name="raForm" id="recipientsAndAttendeesForm" action="{$event-attendeesForEvent}" method="post">
         <div id="raContent">
           <div id="raFields">
             <input type="text" name="uri" width="40" id="bwRaUri"/>
-            <input type="submit" value="add" />
+            <input type="submit" value="{$bwStr-Atnd-Add}" />
             <!-- Recipients are deprecated: default all to attendees -->
             <input type="hidden" name="recipient" value="true"/>
             <input type="hidden" name="attendee"  value="true"/>
             &#160;
-            Role:
+            <xsl:copy-of select="$bwStr-Atnd-RoleColon"/>
             <select name="role">
-              <option value="REQ-PARTICIPANT">required participant</option>
-              <option value="OPT-PARTICIPANT">optional participant</option>
-              <option value="CHAIR">chair</option>
-              <option value="NON-PARTICIPANT">non-participant</option>
+              <option value="REQ-PARTICIPANT"><xsl:copy-of select="$bwStr-Atnd-RequiredParticipant"/></option>
+              <option value="OPT-PARTICIPANT"><xsl:copy-of select="$bwStr-Atnd-OptionalParticipant"/></option>
+              <option value="CHAIR"><xsl:copy-of select="$bwStr-Atnd-Chair"/></option>
+              <option value="NON-PARTICIPANT"><xsl:copy-of select="$bwStr-Atnd-NonParticipant"/></option>
             </select>
             &#160;
-            Status:
+            <xsl:copy-of select="$bwStr-Atnd-StatusColon"/>
             <select name="partstat">
-              <option value="NEEDS-ACTION">needs action</option>
-              <option value="ACCEPTED">accepted</option>
-              <option value="DECLINED">declined</option>
-              <option value="TENTATIVE">tentative</option>
-              <option value="DELEGATED">delegated</option>
+              <option value="NEEDS-ACTION"><xsl:copy-of select="$bwStr-Atnd-NeedsAction"/></option>
+              <option value="ACCEPTED"><xsl:copy-of select="$bwStr-Atnd-Accepted"/></option>
+              <option value="DECLINED"><xsl:copy-of select="$bwStr-Atnd-Declined"/></option>
+              <option value="TENTATIVE"><xsl:copy-of select="$bwStr-Atnd-Tentative"/></option>
+              <option value="DELEGATED"><xsl:copy-of select="$bwStr-Atnd-Delegated"/></option>
             </select>
           </div>
 
@@ -4200,7 +4200,7 @@
           </xsl:apply-templates>
 
           <div class="eventSubmitButtons">
-            <input type="button" value="continue" onclick="window.location='{$gotoEditEvent}'"/>
+            <input type="button" value="{$bwStr-AEEF-Continue}" onclick="window.location='{$gotoEditEvent}'"/>
           </div>
         </div>
       </form>
@@ -4214,11 +4214,11 @@
         <tr>
           <td>&#160;</td>
           <td colspan="24" class="left">
-            Freebusy for
+            <xsl:copy-of select="$bwStr-FrBu-FreebusyFor"/><xsl:text> </xsl:text>
             <span class="who">
               <xsl:choose>
                 <xsl:when test="$aggregation = 'true'">
-                  all attendees
+                  <xsl:copy-of select="$bwStr-FrBu-AllAttendees"/>
                 </xsl:when>
                 <xsl:when test="starts-with(fbattendee/recipient,'mailto:')">
                   <xsl:value-of select="substring-after(fbattendee/recipient,'mailto:')"/>
@@ -4246,8 +4246,8 @@
         </tr>
         <tr>
           <td>&#160;</td>
-          <td colspan="12" class="morning">AM</td>
-          <td colspan="12" class="evening">PM</td>
+          <td colspan="12" class="morning"><xsl:copy-of select="$bwStr-FrBu-AM"/></td>
+          <td colspan="12" class="evening"><xsl:copy-of select="$bwStr-FrBu-PM"/></td>
         </tr>
         <tr>
           <td>&#160;</td>
@@ -4279,9 +4279,9 @@
               <td>
                 <xsl:attribute name="class">
                   <xsl:choose>
-                    <xsl:when test="fbtype = '0'">busy</xsl:when>
-                    <xsl:when test="fbtype = '3'">tentative</xsl:when>
-                    <xsl:otherwise>free</xsl:otherwise>
+                    <xsl:when test="fbtype = '0'"><xsl:copy-of select="$bwStr-FrBu-Busy"/></xsl:when>
+                    <xsl:when test="fbtype = '3'"><xsl:copy-of select="$bwStr-FrBu-Tentative"/></xsl:when>
+                    <xsl:otherwise><xsl:copy-of select="$bwStr-FrBu-Free"/></xsl:otherwise>
                   </xsl:choose>
                 </xsl:attribute>
                 <xsl:variable name="action">
@@ -4312,13 +4312,13 @@
                       </xsl:call-template>
                     </strong>
                     <xsl:if test="numBusy &gt; 0">
-                      <br/><xsl:value-of select="numBusy"/> busy
+                      <br/><xsl:value-of select="numBusy"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FrBu-Busy"/>
                     </xsl:if>
                     <xsl:if test="numTentative &gt; 0">
-                      <br/><xsl:value-of select="numTentative"/> tentative
+                      <br/><xsl:value-of select="numTentative"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FrBu-Tentative"/>
                     </xsl:if>
                     <xsl:if test="numBusy = 0 and numTentative = 0">
-                      <br/><em>all free</em>
+                      <br/><em><xsl:copy-of select="$bwStr-FrBu-AllFree"/></em>
                     </xsl:if>
                   </span>
                 </a>
@@ -4331,13 +4331,13 @@
       <table id="freeBusyKey">
         <tr>
           <td class="free">*</td>
-          <td>free</td>
+          <td><xsl:copy-of select="$bwStr-FrBu-Free"/></td>
           <td>&#160;</td>
           <td class="busy">*</td>
-          <td>busy</td>
+          <td><xsl:copy-of select="$bwStr-FrBu-Busy"/></td>
           <td>&#160;</td>
           <td class="tentative">*</td>
-          <td>tentative</td>
+          <td><xsl:copy-of select="$bwStr-FrBu-Tentative"/></td>
         </tr>
       </table>
   </xsl:template>
@@ -4346,13 +4346,13 @@
     <xsl:param name="trash">yes</xsl:param>
     <table id="attendees" class="widget" cellspacing="0">
       <tr>
-        <th colspan="4">Attendees</th>
+        <th colspan="4"><xsl:copy-of select="$bwStr-Atnd-Attendees"/></th>
       </tr>
       <tr class="subHead">
         <xsl:if test="$trash = 'yes'"><td></td></xsl:if>
-        <td>attendee</td>
-        <td>role</td>
-        <td>status</td>
+        <td><xsl:copy-of select="$bwStr-Atnd-Attendee"/></td>
+        <td><xsl:copy-of select="$bwStr-Atnd-Role"/></td>
+        <td><xsl:copy-of select="$bwStr-Atnd-Status"/></td>
       </tr>
       <xsl:for-each select="attendee">
         <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
@@ -4361,7 +4361,7 @@
         <tr>
           <xsl:if test="$trash = 'yes'">
             <td class="trash">
-              <a href="{$event-attendeesForEvent}&amp;uri={$attendeeUri}&amp;attendee=true&amp;delete=true" title="remove">
+              <a href="{$event-attendeesForEvent}&amp;uri={$attendeeUri}&amp;attendee=true&amp;delete=true" title="{$bwStr-Atnd-Remove}">
                 <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
               </a>
             </td>
@@ -4391,11 +4391,11 @@
 
   <xsl:template match="partstat">
     <xsl:choose>
-      <xsl:when test=". = 'NEEDS-ACTION' or . = ''">needs action</xsl:when>
-      <xsl:when test=". = 'ACCEPTED'">accepted</xsl:when>
-      <xsl:when test=". = 'DECLINED'">declined</xsl:when>
-      <xsl:when test=". = 'TENTATIVE'">tentative</xsl:when>
-      <xsl:when test=". = 'DELEGATED'">delegated</xsl:when>
+      <xsl:when test=". = 'NEEDS-ACTION' or . = ''"><xsl:copy-of select="$bwStr-ptst-NeedsAction"/></xsl:when>
+      <xsl:when test=". = 'ACCEPTED'"><xsl:copy-of select="$bwStr-ptst-Accepted"/></xsl:when>
+      <xsl:when test=". = 'DECLINED'"><xsl:copy-of select="$bwStr-ptst-Declined"/></xsl:when>
+      <xsl:when test=". = 'TENTATIVE'"><xsl:copy-of select="$bwStr-ptst-Tentative"/></xsl:when>
+      <xsl:when test=". = 'DELEGATED'"><xsl:copy-of select="$bwStr-ptst-Delegated"/></xsl:when>
       <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -4415,18 +4415,18 @@
     <xsl:param name="trash">yes</xsl:param>
     <table id="recipients" class="widget" cellspacing="0">
       <tr>
-        <th colspan="2">Recipients</th>
+        <th colspan="2"><xsl:copy-of select="$bwStr-Rcpt-Recipients"/></th>
       </tr>
       <tr class="subHead">
         <xsl:if test="$trash = 'yes'"><td></td></xsl:if>
-        <td>recipient</td>
+        <td><xsl:copy-of select="$bwStr-Rcpt-Recipient"/></td>
       </tr>
       <xsl:for-each select="recipient">
         <xsl:variable name="recipientUri" select="."/>
         <tr>
           <xsl:if test="$trash = 'yes'">
             <td class="trash">
-              <a href="{$event-attendeesForEvent}&amp;uri={$recipientUri}&amp;recipient=true&amp;delete=true" title="remove">
+              <a href="{$event-attendeesForEvent}&amp;uri={$recipientUri}&amp;recipient=true&amp;delete=true" title="{$bwStr-Rcpt-Remove}">
                 <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
               </a>
             </td>
@@ -4455,16 +4455,16 @@
            should be placed.  If no value, then default calendar. -->
       <input type="hidden" name="newCalPath" value="" id="bwNewCalPathField"/>
 
-      <h2>Add Event Reference</h2>
+      <h2><xsl:copy-of select="$bwStr-AEEF-AddEventReference"/></h2>
       <table class="common" cellspacing="0">
         <tr>
           <td class="fieldname">
-            Event:
+            <xsl:copy-of select="$bwStr-AEEF-EventColon"/>
           </td>
           <td>
             <xsl:choose>
               <xsl:when test="summary = ''">
-                <em>no title</em>
+                <em><xsl:copy-of select="$bwStr-AEEF-NoTitle"/></em><xsl:text> </xsl:text>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:value-of select="summary"/>
@@ -4474,30 +4474,30 @@
         </tr>
         <tr>
           <td class="fieldname">
-            Into calendar:
+            <xsl:copy-of select="$bwStr-AEEF-IntoCalendar"/>
           </td>
           <td align="left">
             <span id="bwEventCalDisplay">
-              <em>default calendar</em>
+              <em><xsl:copy-of select="$bwStr-AEEF-DefaultCalendar"/></em>
             </span>
             <xsl:call-template name="selectCalForEvent"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Affects Free/busy:
+            <xsl:copy-of select="$bwStr-AEEF-AffectsFreeBusy"/>
           </td>
           <td align="left">
-            <input type="radio" value="OPAQUE" name="transparency"/> yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-            <input type="radio" value="TRANSPARENT" name="transparency" checked="checked"/> no <span class="note">(transparent: event status does not affect your free/busy)</span>
+            <input type="radio" value="OPAQUE" name="transparency"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-Yes"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Opaque"/></span><br/>
+            <input type="radio" value="TRANSPARENT" name="transparency" checked="checked"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-No"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Transparent"/></span>
           </td>
         </tr>
       </table>
       <table border="0" id="submitTable">
         <tr>
           <td>
-            <input name="submit" type="submit" value="Continue"/>
-            <input name="cancelled" type="submit" value="cancel"/>
+            <input name="submit" type="submit" value="{$bwStr-AEEF-Continue}"/>
+            <input name="cancelled" type="submit" value="{$bwStr-AEEF-Cancel}"/>
           </td>
         </tr>
       </table>
@@ -4528,19 +4528,16 @@
         <img src="{$resourcesRoot}/resources/std-button-help.gif" width="13" height="13" alt="help" onmouseover="changeClass('helpShareFreeBusy','visible helpBox');" onmouseout="changeClass('helpShareFreeBusy','invisible');"/>
       </span>
       <div id="helpShareFreeBusy" class="helpBox invisible">
-          You may share your free busy with a user or group
-          by setting access to "read freebusy" on calendars you wish to share.
-          To share all your free busy, grant
-          "read freebusy" access on your root folder.
+          <xsl:copy-of select="$bwStr-FrBu-YouMayShareYourFreeBusy"/>
       </div>
     </span>
     <h2>
-      Free / Busy
+      <xsl:copy-of select="$bwStr-FrBu-FreeBusy"/>
     </h2>
 
     <div id="freeBusyPage">
       <form name="viewFreeBusyForm" id="viewFreeBusyForm" method="post" action="{$freeBusy-fetch}">
-        View user's free/busy:
+        <xsl:copy-of select="$bwStr-FrBu-ViewUsersFreeBusy"/>
         <input type="text" name="userid" size="20"/>
         <input type="submit" name="submit" value="Submit"/>
       </form>
@@ -4552,26 +4549,26 @@
 
   <!--+++++++++++++++ Categories ++++++++++++++++++++-->
   <xsl:template name="categoryList">
-    <h2>Manage Preferences</h2>
+    <h2><xsl:copy-of select="$bwStr-Ctgy-ManagePreferences"/></h2>
     <ul class="submenu">
       <li>
-        <a href="{$prefs-fetchForUpdate}">general</a>
+        <a href="{$prefs-fetchForUpdate}"><xsl:copy-of select="$bwStr-Ctgy-General"/></a>
       </li>
-      <li class="selected">categories</li>
+      <li class="selected"><xsl:copy-of select="$bwStr-Ctgy-Categories"/></li>
       <li>
-        <a href="{$location-initUpdate}">locations</a>
+        <a href="{$location-initUpdate}"><xsl:copy-of select="$bwStr-Ctgy-Locations"/></a>
       </li>
       <li>
-        <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
+        <a href="{$prefs-fetchSchedulingForUpdate}"><xsl:copy-of select="$bwStr-Ctgy-SchedulingMeetings"/></a>
       </li>
     </ul>
     <table class="common" id="manage" cellspacing="0">
       <tr>
-        <th class="commonHeader">Manage Categories</th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Ctgy-ManageCategories"/></th>
       </tr>
       <tr>
         <td>
-          <input type="button" name="return" value="Add new category" onclick="javascript:location.replace('{$category-initAdd}')" class="titleButton"/>
+          <input type="button" name="return" value="{$bwStr-Ctgy-Type}" onclick="javascript:location.replace('{$category-initAdd}')" class="titleButton"/>
           <ul>
             <xsl:choose>
               <xsl:when test="/bedework/categories/category">
@@ -4586,7 +4583,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <li>
-                  No categories defined
+                  <xsl:copy-of select="$bwStr-Ctgy-NoCategoriesDefined"/>
                 </li>
               </xsl:otherwise>
             </xsl:choose>
@@ -4597,17 +4594,17 @@
   </xsl:template>
 
   <xsl:template name="modCategory">
-    <h2>Manage Preferences</h2>
+    <h2><xsl:copy-of select="$bwStr-MCat-ManagePreferences"/></h2>
     <ul class="submenu">
       <li>
-        <a href="{$prefs-fetchForUpdate}">general</a>
+        <a href="{$prefs-fetchForUpdate}"><xsl:copy-of select="$bwStr-MCat-General"/></a>
       </li>
-      <li class="selected">categories</li>
+      <li class="selected"><xsl:copy-of select="$bwStr-MCat-Categories"/></li>
       <li>
-        <a href="{$location-initUpdate}">locations</a>
+        <a href="{$location-initUpdate}"><xsl:copy-of select="$bwStr-MCat-Locations"/></a>
       </li>
       <li>
-        <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
+        <a href="{$prefs-fetchSchedulingForUpdate}"><xsl:copy-of select="$bwStr-MCat-SchedulingMeetings"/></a>
       </li>
     </ul>
     <xsl:choose>
@@ -4615,11 +4612,11 @@
         <form action="{$category-update}" method="post">
           <table class="common" cellspacing="0">
             <tr>
-              <th class="commonHeader" colspan="2">Add Category</th>
+              <th class="commonHeader" colspan="2"><xsl:copy-of select="$bwStr-MCat-AddCategory"/></th>
             </tr>
             <tr>
               <td class="fieldname">
-                Keyword:
+                <xsl:copy-of select="$bwStr-MCat-Keyword"/>
               </td>
               <td>
                 <input type="text" name="categoryWord.value" value="" size="40"/>
@@ -4627,7 +4624,7 @@
             </tr>
             <tr>
               <td class="fieldname optional">
-                Description:
+                <xsl:copy-of select="$bwStr-MCat-Description"/>
               </td>
               <td>
                 <textarea name="categoryDesc.value" rows="3" cols="60">
@@ -4639,8 +4636,8 @@
           <table border="0" id="submitTable">
             <tr>
               <td>
-                <input type="submit" name="addCategory" value="Add Category"/>
-                <input type="submit" name="cancelled" value="cancel"/>
+                <input type="submit" name="addCategory" value="{$bwStr-MCat-AddCategory}"/>
+                <input type="submit" name="cancelled" value="{$bwStr-MCat-Cancel}"/>
               </td>
             </tr>
           </table>
@@ -4650,11 +4647,11 @@
         <form action="{$category-update}" method="post">
           <table class="common" cellspacing="0">
             <tr>
-              <th class="commonHeader" colspan="2">Edit Category</th>
+              <th class="commonHeader" colspan="2"><xsl:copy-of select="$bwStr-MCat-AddCategory"/></th>
             </tr>
             <tr>
               <td class="fieldname">
-                Keyword:
+                <xsl:copy-of select="$bwStr-MCat-Keyword"/>
               </td>
               <td>
                 <xsl:variable name="keyword" select="normalize-space(/bedework/currentCategory/category/keyword)"/>
@@ -4663,7 +4660,7 @@
             </tr>
             <tr>
               <td class="fieldname optional">
-                Description:
+                <xsl:copy-of select="$bwStr-MCat-Description"/>
               </td>
               <td>
                 <textarea name="categoryDesc.value" rows="3" cols="60">
@@ -4681,11 +4678,11 @@
           <table border="0" id="submitTable">
             <tr>
               <td>
-                <input type="submit" name="updateCategory" value="Update Category"/>
-                <input type="submit" name="cancelled" value="cancel"/>
+                <input type="submit" name="updateCategory" value="{$bwStr-MCat-UpdateCategory}"/>
+                <input type="submit" name="cancelled" value="{$bwStr-MCat-Cancel}"/>
               </td>
               <td align="right">
-                <input type="submit" name="delete" value="Delete Category"/>
+                <input type="submit" name="delete" value="{$bwStr-MCat-DeleteCategory}"/>
               </td>
             </tr>
           </table>
@@ -4695,15 +4692,15 @@
   </xsl:template>
 
   <xsl:template name="deleteCategoryConfirm">
-    <h2>Ok to delete this category?</h2>
+    <h2><xsl:copy-of select="$bwStr-DlCC-OKtoDeleteCategory"/></h2>
 
     <table class="common" cellspacing="0">
       <tr>
-        <th class="commonHeader" colspan="2">Delete Category</th>
+        <th class="commonHeader" colspan="2"><xsl:copy-of select="$bwStr-DlCC-DeleteCategory"/></th>
       </tr>
       <tr>
         <td class="fieldname">
-          Keyword:
+          <xsl:copy-of select="$bwStr-DlCC-Keyword"/>
         </td>
         <td>
           <xsl:value-of select="/bedework/currentCategory/category/keyword"/>
@@ -4711,7 +4708,7 @@
       </tr>
       <tr>
         <td class="fieldname optional">
-          Description:
+          <xsl:copy-of select="$bwStr-DlCC-Description"/>
         </td>
         <td>
           <xsl:value-of select="/bedework/currentCategory/category/desc"/>
@@ -4720,8 +4717,8 @@
     </table>
 
     <form action="{$category-delete}" method="post">
-      <input type="submit" name="deleteCategory" value="Yes: Delete Category"/>
-      <input type="submit" name="cancelled" value="No: Cancel"/>
+      <input type="submit" name="deleteCategory" value="{$bwStr-DlCC-YesDeleteCategory}"/>
+      <input type="submit" name="cancelled" value="{$bwStr-DlCC-NoCancel}"/>
     </form>
   </xsl:template>
 
@@ -4743,11 +4740,11 @@
   -->
 
   <xsl:template match="calendars" mode="manageCalendars">
-    <h2>Manage Calendars &amp; Subscriptions</h2>
+    <h2><xsl:copy-of select="$bwStr-Cals-ManageCalendarsSubscriptions"/></h2>
     <table id="calendarTable">
       <tr>
         <td class="cals">
-          <h3>Calendars</h3>
+          <h3><xsl:copy-of select="$bwStr-Cals-Calendars"/></h3>
           <ul class="calendarTree">
             <xsl:choose>
               <xsl:when test="/bedework/page='calendarDescriptions' or
@@ -4995,7 +4992,7 @@
        -->
     <input type="button" onclick="javascript:changeClass('calSelectWidget','visible')" value="select calendar" class="small"/>
     <div id="calSelectWidget" class="invisible">
-      <h2>select a calendar</h2>
+      <h2><xsl:copy-of select="$bwStr-SCfE-SelectACalendar"/></h2>
       <a href="javascript:changeClass('calSelectWidget','invisible')" id="calSelectWidgetCloser" title="close">x</a>
       <ul class="calendarTree">
         <xsl:choose>
@@ -5005,7 +5002,7 @@
             </xsl:apply-templates>
           </xsl:when>
           <xsl:otherwise>
-            <li><em>no writable calendars</em></li>
+            <li><em><xsl:copy-of select="$bwStr-SCfE-NoWritableCals"/></em></li>
           </xsl:otherwise>
         </xsl:choose>
       </ul>
@@ -5064,7 +5061,7 @@
 
     <input type="button" onclick="javascript:changeClass('calSelectWidget','visible')" value="select calendar" class="small"/>
     <div id="calSelectWidget" class="invisible">
-      <h2>select a calendar</h2>
+      <h2><xsl:copy-of select="$bwStr-SCPA-SelectACalendar"/></h2>
       <a href="javascript:changeClass('calSelectWidget','invisible')" id="calSelectWidgetCloser" title="close">x</a>
       <ul class="calendarTree">
         <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
@@ -5119,25 +5116,25 @@
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="addCalendar">
-    <h3>Add Calendar, Folder, or Subscription</h3>
+    <h3><xsl:copy-of select="$bwStr-CuCa-AddCalFolderOrSubscription"/></h3>
     <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="setCalendarAlias(this)">
       <table class="common">
         <tr>
-          <th>Name:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Name"/></th>
           <td>
             <xsl:variable name="curCalName" select="name"/>
             <input name="calendar.name" value="{$curCalName}" size="40"/>
           </td>
         </tr>
         <tr>
-          <th>Summary:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Summary"/></th>
           <td>
             <xsl:variable name="curCalSummary" select="summary"/>
             <input type="text" name="calendar.summary" value="{$curCalSummary}" size="40"/>
           </td>
         </tr>
         <tr>
-          <th>Description:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Description"/></th>
           <td>
             <textarea name="calendar.description" cols="30" rows="4">
               <xsl:value-of select="desc"/>
@@ -5150,7 +5147,7 @@
           </td>
         </tr>
         <tr id="bwColorField">
-          <th>Color:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Color"/></th>
           <td>
             <input type="text" name="calendar.color" id="bwCalColor" value="" size="7"/>
             <xsl:call-template name="colorPicker">
@@ -5159,7 +5156,7 @@
           </td>
         </tr>
         <tr>
-          <th>Display:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Display"/></th>
           <td>
             <input type="hidden" name="calendar.display">
               <xsl:attribute name="value"><xsl:value-of select="display"/></xsl:attribute>
@@ -5168,26 +5165,26 @@
               <xsl:if test="display = 'true'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-            </input> display items in this collection
+            </input><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-DisplayItemsInThisCollection"/>
           </td>
         </tr>
         <tr>
-          <th>Filter Expression:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-FilterExpression"/></th>
           <td>
             <input type="text" name="fexpr" value="" size="40"/>
           </td>
         </tr>
         <tr>
-          <th>Type:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Type"/></th>
           <td>
             <!-- we will set the value of "calendarCollection on submit.
                  Value is false only for folders, so we default it to true here.  -->
             <input type="hidden" value="true" name="calendarCollection"/>
             <!-- type is defaulted to calendar.  It is changed when a typeSwitch is clicked. -->
             <input type="hidden" value="calendar" name="type" id="bwCalType"/>
-            <input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Calendar
-            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Folder
-            <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');setField('bwCalType',this.value);"/> Subscription
+            <input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-Calendar"/>
+            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-Folder"/>
+            <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');setField('bwCalType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-Subscription"/>
           </td>
         </tr>
       </table>
@@ -5196,18 +5193,18 @@
              on the subscription type. -->
         <input type="hidden" name="aliasUri" value=""/>
         <p>
-          <strong>Subscription Type:</strong><br/>
+          <strong><xsl:copy-of select="$bwStr-CuCa-SubscriptionType"/></strong><br/>
           <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
           <input type="hidden" value="public" name="subType" id="bwSubType"/>
-          <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> Public calendar
-          <input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/> User calendar
-          <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/> URL
+          <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-PublicCalendar"/>
+          <input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-UserCalendar"/>
+          <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-URL"/>
         </p>
 
         <div id="subscriptionTypePublic">
           <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>
           <div id="bwPublicCalDisplay">
-            <button type="button" onclick="showPublicCalAliasTree();">Select a public calendar or folder</button>
+            <button type="button" onclick="showPublicCalAliasTree();"><xsl:copy-of select="$bwStr-CuCa-SelectAPublicCalOrFolder"/></button>
           </div>
           <ul id="publicSubscriptionTree" class="invisible">
             <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
@@ -5217,16 +5214,16 @@
         <div id="subscriptionTypeUser" class="invisible">
           <table class="common">
             <tr>
-              <th>User's ID:</th>
+              <th><xsl:copy-of select="$bwStr-CuCa-UsersID"/></th>
               <td>
                 <input type="text" name="userIdHolder" value="" size="40"/>
               </td>
             </tr>
             <tr>
-              <th>Calendar Path:</th>
+              <th><xsl:copy-of select="$bwStr-CuCa-CalendarPath"/></th>
               <td>
                 <input type="text" name="userCalHolder" value="calendar" size="40"/><br/>
-                <span class="note">E.g. "calendar" (default) or "someFolder/someCalendar"</span>
+                <span class="note"><xsl:copy-of select="$bwStr-CuCa-DefaultCalendarOrSomeCalendar"/></span>
               </td>
             </tr>
           </table>
@@ -5236,19 +5233,19 @@
         <div class="invisible" id="subscriptionTypeExternal">
           <table class="common">
             <tr>
-              <th>URL to calendar:</th>
+              <th><xsl:copy-of select="$bwStr-CuCa-URLToCalendar"/></th>
               <td>
                 <input type="text" name="aliasUriHolder" id="aliasUriHolder" value="" size="40"/>
               </td>
             </tr>
             <tr>
-              <th>ID (if required):</th>
+              <th><xsl:copy-of select="$bwStr-CuCa-ID"/></th>
               <td>
                 <input type="text" name="remoteId" value="" size="40"/>
               </td>
             </tr>
             <tr>
-              <th>Password (if required):</th>
+              <th><xsl:copy-of select="$bwStr-CuCa-Password"/></th>
               <td>
                 <input type="password" name="remotePw" value="" size="40"/>
               </td>
@@ -5257,14 +5254,14 @@
         </div>
       </div>
       <div class="submitButtons">
-        <input type="submit" name="addCalendar" value="Add"/>
-        <input type="submit" name="cancelled" value="cancel"/>
+        <input type="submit" name="addCalendar" value="{$bwStr-CuCa-Add}"/>
+        <input type="submit" name="cancelled" value="{$bwStr-CuCa-Cancel}"/>
       </div>
     </form>
 
     <div id="sharingBox">
-      <h3>Current Access:</h3>
-      Sharing may be added to a calendar once created.
+      <h3><xsl:copy-of select="$bwStr-CuCa-CurrentAccess"/></h3>
+      <xsl:copy-of select="$bwStr-CuCa-SharingMayBeAdded"/>
     </div>
   </xsl:template>
 
@@ -5275,15 +5272,15 @@
     <form name="modCalForm" method="post" action="{$calendar-update}">
       <xsl:choose>
         <xsl:when test="isSubscription='true'">
-          <h3>Modify Subscription</h3>
+          <h3><xsl:copy-of select="$bwStr-CuCa-ModifySubscription"/></h3>
           <input type="hidden" value="true" name="calendarCollection"/>
         </xsl:when>
         <xsl:when test="calType = '0'">
-          <h3>Modify Folder</h3>
+          <h3><xsl:copy-of select="$bwStr-CuCa-ModifyFolder"/></h3>
           <input type="hidden" value="false" name="calendarCollection"/>
         </xsl:when>
         <xsl:otherwise>
-          <h3>Modify Calendar</h3>
+          <h3><xsl:copy-of select="$bwStr-CuCa-ModifyCalendar"/></h3>
           <input type="hidden" value="true" name="calendarCollection"/>
         </xsl:otherwise>
       </xsl:choose>
@@ -5293,28 +5290,28 @@
           <td>
             <xsl:choose>
               <xsl:when test="isSubscription='true'">
-                <input type="submit" name="updateCalendar" value="Update Subscription"/>
+                <input type="submit" name="updateCalendar" value="{$bwStr-CuCa-UpdateSubscription}"/>
               </xsl:when>
               <xsl:when test="calType = '0'">
-                <input type="submit" name="updateCalendar" value="Update Folder"/>
+                <input type="submit" name="updateCalendar" value="{$bwStr-CuCa-UpdateFolder}"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="submit" name="updateCalendar" value="Update Calendar"/>
+                <input type="submit" name="updateCalendar" value="{$bwStr-CuCa-UpdateCalendar}"/>
               </xsl:otherwise>
             </xsl:choose>
-            <input type="submit" name="cancelled" value="cancel"/>
+            <input type="submit" name="cancelled" value="{$bwStr-CuCa-Cancel}"/>
           </td>
           <td align="right">
             <xsl:if test="calType != '3' and calType != '5' and calType != '6'">
               <xsl:choose>
                 <xsl:when test="isSubscription='true'">
-                  <input type="submit" name="delete" value="Delete Subscription"/>
+                  <input type="submit" name="delete" value="{$bwStr-CuCa-DeleteSubscription}"/>
                 </xsl:when>
                 <xsl:when test="calType = '0'">
-                  <input type="submit" name="delete" value="Delete Folder"/>
+                  <input type="submit" name="delete" value="{$bwStr-CuCa-DeleteFolder}"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="submit" name="delete" value="Delete Calendar"/>
+                  <input type="submit" name="delete" value="{$bwStr-CuCa-DeleteCalendar}"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:if>
@@ -5329,7 +5326,7 @@
           </th>
         </tr>
         <tr>
-          <th>Name:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Name"/></th>
           <td>
             <xsl:value-of select="name"/>
           </td>
@@ -5341,14 +5338,14 @@
           </td>
         </tr -->
         <tr>
-          <th>Summary:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Summary"/></th>
           <td>
             <xsl:variable name="curCalSummary" select="summary"/>
             <input type="text" name="calendar.summary" value="{$curCalSummary}" size="40"/>
           </td>
         </tr>
         <tr>
-          <th>Description:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Description"/></th>
           <td>
             <textarea name="calendar.description" cols="40" rows="4">
               <xsl:value-of select="desc"/>
@@ -5360,20 +5357,23 @@
             </textarea>
           </td>
         </tr>
+        <xsl:if test="isSubscription='false'">
+          <!-- we can't color subscriptions yet -->
+          <tr>
+            <th><xsl:copy-of select="$bwStr-CuCa-Color"/></th>
+            <td>
+              <input type="text" name="calendar.color" id="bwCalColor" size="7">
+                <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
+                <xsl:attribute name="style">background-color: <xsl:value-of select="color"/>;color: black;</xsl:attribute>
+              </input>
+              <xsl:call-template name="colorPicker">
+                <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
+              </xsl:call-template>
+            </td>
+          </tr>
+        </xsl:if>
         <tr>
-          <th>Color:</th>
-          <td>
-            <input type="text" name="calendar.color" id="bwCalColor" size="7">
-              <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
-              <xsl:attribute name="style">background-color: <xsl:value-of select="color"/>;color: black;</xsl:attribute>
-            </input>
-            <xsl:call-template name="colorPicker">
-              <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
-            </xsl:call-template>
-          </td>
-        </tr>
-        <tr>
-          <th>Display:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Display"/></th>
           <td>
             <input type="hidden" name="calendar.display">
               <xsl:attribute name="value"><xsl:value-of select="display"/></xsl:attribute>
@@ -5382,13 +5382,13 @@
               <xsl:if test="display = 'true'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-            </input> display items in this collection
+            </input><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-DisplayItemsInThisCollection"/>
           </td>
         </tr>
         <xsl:if test="disabled = 'true'">
           <tr>
             <xsl:attribute name="class">disabled</xsl:attribute>
-            <th>Disabled:</th>
+            <th><xsl:copy-of select="$bwStr-CuCa-Disabled"/></th>
             <td>
               <input type="hidden" name="calendar.disabled" size="40">
                 <xsl:attribute name="value"><xsl:value-of select="disabled"/></xsl:attribute>
@@ -5396,15 +5396,14 @@
               <xsl:value-of select="disabled"/>
               <xsl:if test="disabled = 'true'">
                 <span class="disabledNote">
-                  This item is inaccessible and has been disabled.  You may
-                  re-enable it to try again.
+                  <xsl:copy-of select="$bwStr-CuCa-ThisItemIsInaccessible"/>
                 </span>
               </xsl:if>
             </td>
           </tr>
         </xsl:if>
         <tr>
-          <th>Filter Expression:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-FilterExpression"/></th>
           <td>
             <input type="text" name="fexpr" value="" size="40">
               <xsl:attribute name="value"><xsl:value-of select="filterExpr"/></xsl:attribute>
@@ -5413,7 +5412,7 @@
         </tr>
         <xsl:if test="isSubscription = 'true'">
           <tr>
-            <th>URL:</th>
+            <th><xsl:copy-of select="$bwStr-CuCa-URL"/></th>
             <td>
               <input name="aliasUri" value="" size="40">
                 <xsl:attribute name="value"><xsl:value-of select="aliasUri"/></xsl:attribute>
@@ -5422,13 +5421,13 @@
           </tr>
           <xsl:if test="externalSub = 'true'">
             <tr>
-              <th>Id (if required):</th>
+              <th><xsl:copy-of select="$bwStr-CuCa-ID"/></th>
               <td>
                 <input name="remoteId" value="" size="40"/>
               </td>
             </tr>
             <tr>
-              <th>Password (if required):</th>
+              <th><xsl:copy-of select="$bwStr-CuCa-Password"/></th>
               <td>
                 <input type="password" name="remotePw" value="" size="40"/>
               </td>
@@ -5438,7 +5437,7 @@
       </table>
 
       <div id="sharingBox">
-        <h3>Current Access:</h3>
+        <h3><xsl:copy-of select="$bwStr-CuCa-CurrentAccess"/>Current Access:</h3>
         <div id="bwCurrentAccessWidget">&#160;</div>
         <script type="text/javascript">
           bwAcl.display("bwCurrentAccessWidget");
@@ -5449,16 +5448,7 @@
       </div>
 
       <div class="note">
-        <p><strong>Note:</strong> If you grant write access to another user, and you wish
-          to see events added by that user in your calendar, <strong>you must explicitly
-          grant yourself access to the same calendar.</strong>  Enter your RCS UserID as
-          a user in the "Who" box with "All" set in the "Rights" box.
-        </p>
-        <p>
-          This is standard access control; the reason you will not see the other
-          user's events without doing this is that the default access is grant:all to
-          "owner" - and you don't own the other user's events.
-        </p>
+        <xsl:copy-of select="$bwStr-CuCa-AccessNote"/>
       </div>
 
       <table border="0" id="submitTable">
@@ -5466,28 +5456,28 @@
           <td>
             <xsl:choose>
               <xsl:when test="isSubscription='true'">
-                <input type="submit" name="updateCalendar" value="Update Subscription"/>
+                <input type="submit" name="updateCalendar" value="{$bwStr-CuCa-UpdateSubscription}"/>
               </xsl:when>
               <xsl:when test="calType = '0'">
-                <input type="submit" name="updateCalendar" value="Update Folder"/>
+                <input type="submit" name="updateCalendar" value="{$bwStr-CuCa-UpdateFolder}"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="submit" name="updateCalendar" value="Update Calendar"/>
+                <input type="submit" name="updateCalendar" value="{$bwStr-CuCa-UpdateCalendar}"/>
               </xsl:otherwise>
             </xsl:choose>
-            <input type="submit" name="cancelled" value="cancel"/>
+            <input type="submit" name="cancelled" value="{$bwStr-CuCa-Cancel}"/>
           </td>
           <td align="right">
             <xsl:if test="calType != '3' and calType != '5' and calType != '6'">
               <xsl:choose>
                 <xsl:when test="isSubscription='true'">
-                  <input type="submit" name="delete" value="Delete Subscription"/>
+                  <input type="submit" name="delete" value="{$bwStr-CuCa-DeleteSubscription}"/>
                 </xsl:when>
                 <xsl:when test="calType = '0'">
-                  <input type="submit" name="delete" value="Delete Folder"/>
+                  <input type="submit" name="delete" value="{$bwStr-CuCa-DeleteFolder}"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="submit" name="delete" value="Delete Calendar"/>
+                  <input type="submit" name="delete" value="{$bwStr-CuCa-DeleteCalendar}"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:if>
@@ -5530,7 +5520,7 @@
         });
       });
     </script>
-    <button type="button" id="bwColorPickerButton" value="pick"><img src="{$resourcesRoot}/resources/colorIcon.gif" width="16" height="13" alt="pick a color"/></button>
+    <button type="button" id="bwColorPickerButton" value="{$bwStr-CoPi-Pick}"><img src="{$resourcesRoot}/resources/colorIcon.gif" width="16" height="13" alt="pick a color"/></button>
 
     <div id="bwColorPicker" title="Select a color">
       <xsl:for-each select="document('../../../bedework-common/default/default/subColors.xml')/subscriptionColors/color">
@@ -5544,41 +5534,37 @@
         </a>
         <xsl:if test="position() mod 6 = 0"><br style="clear:both;"/></xsl:if>
       </xsl:for-each>
-      <p><a href="javascript:bwUpdateColor('','{$colorFieldId}')" onclick="$('#bwColorPicker').dialog('close');">use default colors</a></p>
+      <p><a href="javascript:bwUpdateColor('','{$colorFieldId}')" onclick="$('#bwColorPicker').dialog('close');"><xsl:copy-of select="$bwStr-CoPi-UseDefaultColors"/></a></p>
     </div>
   </xsl:template>
 
   <xsl:template name="calendarList">
-    <h3>Managing Calendars &amp; Subscriptions</h3>
+    <h3><xsl:copy-of select="$bwStr-CaLi-ManagingCalendars"/></h3>
     <ul>
-      <li>Select an item from the calendar tree on the left to modify a<br/>
-      calendar (<img src="{$resourcesRoot}/resources/calIcon-sm.gif" width="13" height="13" alt="true" border="0"/>),
-      subscription (<img src="{$resourcesRoot}/resources/calIconAlias2-sm.gif" width="17" height="13" alt="true" border="0"/>), or
-      folder (<img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="true" border="0"/>).</li>
-      <li>Select the
+      <li><xsl:copy-of select="$bwStr-CaLi-SelectFromCalendar"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/resources/calIcon-sm.gif" width="13" height="13" alt="true" border="0"/>),
+      <xsl:copy-of select="$bwStr-CaLi-Subscription"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/resources/calIconAlias2-sm.gif" width="17" height="13" alt="true" border="0"/>)<xsl:copy-of select="$bwStr-CaLi-OrFolder"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="true" border="0"/>).</li>
+      <li><xsl:copy-of select="$bwStr-CaLi-Select"/><xsl:text> </xsl:text>
       <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
-      icon to add a new calendar, subscription, or folder to the tree.
+      <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CaLi-Icon"/>
         <ul>
-          <li>Folders may only contain calendars and subfolders.</li>
-          <li>Calendars may only contain events (and other calendar items).</li>
+          <li><xsl:copy-of select="$bwStr-CaLi-Folders"/></li>
+          <li><xsl:copy-of select="$bwStr-CaLi-Calendars"/></li>
         </ul>
       </li>
     </ul>
   </xsl:template>
 
   <xsl:template name="calendarDescriptions">
-    <h2>Calendar Information</h2>
+    <h2><xsl:copy-of select="$bwStr-CaDe-CalInfo"/></h2>
     <ul>
-      <li>Select an item from the calendar tree on the left to view all information
-      about that calendar or folder.  The tree on the left represents the calendar
-      heirarchy.</li>
+      <li><xsl:copy-of select="$bwStr-CaDe-SelectAnItem"/></li>
     </ul>
 
-    <p><strong>All Calendar Descriptions:</strong></p>
+    <p><strong><xsl:copy-of select="$bwStr-CaDe-AllCalDescriptions"/></strong></p>
     <table id="flatCalendarDescriptions" cellspacing="0">
       <tr>
-        <th>Name</th>
-        <th>Description</th>
+        <th><xsl:copy-of select="$bwStr-CaDe-Name"/></th>
+        <th><xsl:copy-of select="$bwStr-CaDe-Description"/></th>
       </tr>
       <xsl:for-each select="//calendar[calType &lt; 2]">
         <xsl:variable name="descClass">
@@ -5600,28 +5586,28 @@
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="displayCalendar">
-    <h2>Calendar Information</h2>
+    <h2><xsl:copy-of select="$bwStr-CuCa-CalendarInformation"/></h2>
     <table class="common">
       <tr>
-        <th>Name:</th>
+        <th><xsl:copy-of select="$bwStr-CuCa-Name"/></th>
         <td>
           <xsl:value-of select="name"/>
         </td>
       </tr>
       <tr>
-        <th>Path:</th>
+        <th><xsl:copy-of select="$bwStr-CuCa-Path"/></th>
         <td>
           <xsl:value-of select="path"/>
         </td>
       </tr>
       <tr>
-        <th>Summary:</th>
+        <th><xsl:copy-of select="$bwStr-CuCa-Summary"/></th>
         <td>
           <xsl:value-of select="summary"/>
         </td>
       </tr>
       <tr>
-        <th>Description:</th>
+        <th><xsl:copy-of select="$bwStr-CuCa-Description"/></th>
         <td>
           <xsl:value-of select="desc"/>
         </td>
@@ -5632,16 +5618,15 @@
   <xsl:template match="currentCalendar" mode="deleteCalendarConfirm">
     <xsl:choose>
       <xsl:when test="calType = '0'">
-        <h3>Delete Folder</h3>
+        <h3><xsl:copy-of select="$bwStr-CuCa-DeleteFolder"/></h3>
         <p>
-          The following folder <em>and all its contents</em> will be deleted.
-          Continue?
+          <xsl:copy-of select="$bwStr-CuCa-TheFollowingFolder"/>
         </p>
       </xsl:when>
       <xsl:otherwise>
-        <h3>Delete Calendar</h3>
+        <h3><xsl:copy-of select="$bwStr-CuCa-DeleteCalendar"/></h3>
         <p>
-          The following calendar will be deleted.  Continue?
+          <xsl:copy-of select="$bwStr-CuCa-TheFollowingCalendar"/>
         </p>
       </xsl:otherwise>
     </xsl:choose>
@@ -5649,25 +5634,25 @@
     <form name="delCalForm" method="post" action="{$calendar-delete}">
       <table class="common">
         <tr>
-          <th>Path:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Path"/></th>
           <td>
             <xsl:value-of select="path"/>
           </td>
         </tr>
         <tr>
-          <th>Name:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Name"/></th>
           <td>
             <xsl:value-of select="name"/>
           </td>
         </tr>
         <tr>
-          <th>Summary:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Summary"/></th>
           <td>
             <xsl:value-of select="summary"/>
           </td>
         </tr>
         <tr>
-          <th>Description:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Description"/></th>
           <td>
             <xsl:value-of select="desc"/>
           </td>
@@ -5677,15 +5662,15 @@
       <table border="0" id="submitTable">
         <tr>
           <td>
-            <input type="submit" name="cancelled" value="cancel"/>
+            <input type="submit" name="cancelled" value="{$bwStr-CuCa-Cancel}"/>
           </td>
           <td align="right">
             <xsl:choose>
               <xsl:when test="calType = '0'">
-                <input type="submit" name="delete" value="Yes: Delete Folder!"/>
+                <input type="submit" name="delete" value="{$bwStr-CuCa-YesDeleteFolder}"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="submit" name="delete" value="Yes: Delete Calendar!"/>
+                <input type="submit" name="delete" value="{$bwStr-CuCa-YesDeleteCalendar}"/>
               </xsl:otherwise>
             </xsl:choose>
           </td>
@@ -5696,7 +5681,7 @@
   </xsl:template>
 
   <xsl:template match="calendars" mode="exportCalendars">
-    <h2>Export Calendars as iCal</h2>
+    <h2><xsl:copy-of select="$bwStr-Cals-ExportCals"/></h2>
     <form name="eventForm" id="exportCalendarForm" action="{$export}" method="post">
       <input type="hidden" name="calPath" value=""/>
       <input type="hidden" name="nocache" value="no"/>
@@ -5705,22 +5690,22 @@
       <table class="common" cellspacing="0">
         <tr>
           <th class="commonHeader">
-              Event date limits:
-              <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> today forward
-              <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> all dates
-              <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> date range
+              <xsl:copy-of select="$bwStr-Cals-EventDateLimits"/>
+              <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> <xsl:copy-of select="$bwStr-Cals-TodayForward"/>
+              <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> <xsl:copy-of select="$bwStr-Cals-AllDates"/>
+              <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> <xsl:copy-of select="$bwStr-Cals-DateRange"/>
           </th>
         </tr>
         <tr id="exportDateRange" class="invisible">
           <td class="dates">
-            <strong>Start:</strong>
+            <xsl:copy-of select="$bwStr-Cals-Start"/>
             <div class="dateFields">
               <xsl:copy-of select="/bedework/formElements/form/start/month/*"/>
               <xsl:copy-of select="/bedework/formElements/form/start/day/*"/>
               <xsl:copy-of select="/bedework/formElements/form/start/yearText/*"/>
             </div>
             &#160;&#160;
-            <strong>End:</strong>
+            <xsl:copy-of select="$bwStr-Cals-End"/>
             <div class="dateFields">
               <xsl:copy-of select="/bedework/formElements/form/end/month/*"/>
               <xsl:copy-of select="/bedework/formElements/form/end/day/*"/>
@@ -5730,7 +5715,7 @@
         </tr>
         <tr>
           <th class="borderRight">
-            My Calendars
+            <xsl:copy-of select="$bwStr-Cals-MyCalendars"/>
           </th>
         </tr>
         <tr>
@@ -5801,110 +5786,36 @@
          Contextual menus on the calendar tree (will) allow for adding subscriptions under
          subfolders.  -->
     <xsl:variable name="userid" select="/bedework/userid"/>
-    <h2>Add Subscriptions</h2>
+    <h2><xsl:copy-of select="$bwStr-SuMe-AddSubs"/></h2>
     <div id="content">
-      <h4>Subscribe to:</h4>
+      <h4><xsl:copy-of select="$bwStr-SuMe-SubscribeTo"/></h4>
       <ul id="subsMenu">
         <li>
           <a href="{$calendar-initAddPublicAlias}&amp;calPath=/user/{$userid}" title="subscribe to a public calendar">
-            a public calendar (in this system)
+            <xsl:copy-of select="$bwStr-SuMe-PublicCal"/>
           </a>
         </li>
         <li>
           <a href="{$calendar-initAddAlias}&amp;calPath=/user/{$userid}" title="subscribe to a user calendar">
-            a user calendar (in this system)
+            <xsl:copy-of select="$bwStr-SuMe-UserCal"/>
           </a>
         </li>
         <li>
           <a href="{$calendar-initAddExternal}&amp;calPath=/user/{$userid}" title="subscribe to an external calendar">
-            an external iCal feed (e.g. Google, Eventful, etc)
+            <xsl:copy-of select="$bwStr-SuMe-ExternalFeed"/>
           </a>
         </li>
       </ul>
     </div>
   </xsl:template>
 
-  <!-- This template is deprecated -->
-  <xsl:template name="addPublicAlias">
-    <h2>Subscribe to a Public Calendar</h2>
-    <div id="content">
-      <h3>Add a public subscription</h3>
-      <p class="note">*the subsciption name must be unique</p>
-      <form name="subscribeForm" action="{$calendar-update}" onsubmit="return setBwSubscriptionUri(this, true)" method="post">
-        <table class="common" cellspacing="0">
-          <tr>
-            <td class="fieldname">Calendar:</td>
-            <td>
-              <input type="hidden" value="" name="aliasUri" size="60" id="bwNewCalPathField"/>
-              <input type="hidden" value="" name="calendarCollection" id="bwCalCollectionField"/>
-              <span id="bwEventCalDisplay">
-                <xsl:text> </xsl:text>
-              </span>
-              <xsl:call-template name="selectCalForPublicAlias"/>
-            </td>
-          </tr>
-          <tr>
-            <td class="fieldname">Name:</td>
-            <td>
-              <xsl:variable name="subName" select="name"/>
-              <input type="text" value="{$subName}" name="calendar.name" size="30"/>
-            </td>
-          </tr>
-          <!--<tr>
-            <td class="fieldname">Display:</td>
-            <td>
-              <input type="radio" value="true" name="calendar.display" checked="checked"/> yes
-              <input type="radio" value="false" name="calendar.display"/> no
-            </td>
-          </tr>-->
-          <tr>
-            <td class="fieldname">Affects Free/Busy:</td>
-            <td>
-              <input type="radio" value="true" name="calendar.affectsFreeBusy"/> yes
-              <input type="radio" value="false" name="calendar.affectsFreeBusy" checked="checked"/> no
-            </td>
-          </tr>
-          <tr>
-            <td class="fieldname">Style:</td>
-            <td>
-              <select name="calendar.color">
-                <option value="">default</option>
-                <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
-                  <xsl:variable name="subColor" select="@rgb"/>
-                  <xsl:variable name="subColorClass" select="."/>
-                  <option value="{$subColor}" class="{$subColorClass}">
-                    <xsl:value-of select="@name"/>
-                  </option>
-                </xsl:for-each>
-              </select>
-            </td>
-          </tr>
-          <!--<tr>
-            <td class="fieldname">Unremovable:</td>
-            <td>
-              <input type="radio" value="true" name="calendar.unremoveable" size="60"/> true
-              <input type="radio" value="false" name="calendar.unremoveable" size="60" checked="checked"/> false
-            </td>
-          </tr>-->
-        </table>
-        <table border="0" id="submitTable">
-          <tr>
-            <td>
-              <input type="submit" name="addSubscription" value="Add Subscription"/>
-              <input type="submit" name="cancelled" value="cancel"/>
-            </td>
-          </tr>
-        </table>
-      </form>
-    </div>
-  </xsl:template>
-
+  
   <xsl:template match="calendar" mode="subscribe">
     <xsl:variable name="calPath" select="encodedPath"/>
     <xsl:variable name="itemClass">
       <xsl:choose>
-        <xsl:when test="calType = '0'">folder</xsl:when>
-        <xsl:otherwise>calendar</xsl:otherwise>
+        <xsl:when test="calType = '0'"><xsl:copy-of select="$bwStr-Calr-Folder"/></xsl:when>
+        <xsl:otherwise><xsl:copy-of select="$bwStr-Calr-Calendar"/></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <li class="{$itemClass}">
@@ -5923,13 +5834,13 @@
 
   <!-- add a subscription to a user calendar by user and path -->
   <xsl:template name="addAlias">
-    <h2>Subscribe to a User Calendar</h2>
+    <h2><xsl:copy-of select="$bwStr-AddA-SubscribeToUserCal"/></h2>
     <div id="content">
-      <p class="note">*the subsciption name must be unique</p>
+      <p class="note"><xsl:copy-of select="$bwStr-AddA-SubscriptionMustBeUnique"/></p>
       <form name="subscribeForm" action="{$calendar-update}" onsubmit="return setBwSubscriptionUri(this, false)" method="post">
         <table class="common" cellspacing="0">
           <tr>
-            <td class="fieldname">Name:</td>
+            <td class="fieldname"><xsl:copy-of select="$bwStr-AddA-Name"/></td>
             <td>
               <input type="text" value="" name="calendar.name" size="60"/>
             </td>
@@ -5942,18 +5853,18 @@
             </td>
           </tr>-->
           <tr>
-            <td class="fieldname">User ID:</td>
+            <td class="fieldname"><xsl:copy-of select="$bwStr-AddA-UserID"/></td>
             <td>
               <input type="hidden" value="" name="aliasUri"/>
               <input type="text" value="" name="userId" size="20"/>
-              <span class="note"> ex: janedoe</span>
+              <span class="note"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AddA-ExJaneDoe"/></span>
             </td>
           </tr>
           <tr>
-            <td class="fieldname">Calendar path:</td>
+            <td class="fieldname"><xsl:copy-of select="$bwStr-AddA-CalendarPath"/></td>
             <td>
               <input type="text" value="" name="userPath" size="20"/>
-              <span class="note"> ex: calendar</span>
+              <span class="note"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AddA-ExCalendar"/></span>
             </td>
           </tr>
           <!--<tr>
@@ -5964,17 +5875,17 @@
             </td>
           </tr>-->
           <tr>
-            <td class="fieldname">Affects Free/Busy:</td>
+            <td class="fieldname"><xsl:copy-of select="$bwStr-AddA-AffectsFreeBusy"/></td>
             <td>
-              <input type="radio" value="true" name="affectsFreeBusy"/> yes
-              <input type="radio" value="false" name="affectsFreeBusy" checked="checked"/> no
+              <input type="radio" value="true" name="affectsFreeBusy"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AddA-Yes"/>
+              <input type="radio" value="false" name="affectsFreeBusy" checked="checked"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AddA-No"/>
             </td>
           </tr>
           <tr>
             <td class="fieldname">Color:</td>
             <td>
               <select name="calendar.color">
-                <option value="default">default</option>
+                <option value="default"><xsl:copy-of select="$bwStr-AddA-Default"/></option>
                 <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
                   <xsl:variable name="subColor" select="."/>
                   <option value="{$subColor}" class="{$subColor}">
@@ -5995,262 +5906,14 @@
         <table border="0" id="submitTable">
           <tr>
             <td>
-              <input type="submit" name="addSubscription" value="Add Subscription"/>
-              <input type="submit" name="cancelled" value="cancel"/>
+              <input type="submit" name="addSubscription" value="{$bwStr-AddA-AddSubscription}"/>
+              <input type="submit" name="cancelled" value="{$bwStr-AddA-Cancel}"/>
             </td>
           </tr>
         </table>
       </form>
 
-      <ul class="note" style="margin-left: 2em;">
-        <li>
-          You must be granted at least read access to the other user's calendar
-          to subscribe to it.
-        </li>
-        <li>The <strong>Name</strong> is anything you want to call your subscription.</li>
-        <li>The <strong>User ID</strong> is the user id that owns the calendar</li>
-        <li>
-          The <strong>Path</strong> is the name of the folder and/or calendar within
-          the remote user's calendar tree.  For example, to subscribe to
-          janedoe/someFolder/someCalendar, enter "someFolder/someCalendar".  To subscribe to janedoe's root folder, leave this field blank.
-        </li>
-        <li>
-          You can add subscriptions to your own calendars to help group and organize collections you may wish to share.
-        </li>
-      </ul>
-    </div>
-  </xsl:template>
-
-<!-- DEPRECTATED -->
-  <xsl:template match="subscription" mode="modSubscription">
-    <h3>Modify Subscription</h3>
-    <form name="subscribeForm" action="{$subscriptions-subscribe}" method="post">
-      <table class="common" cellspacing="0">
-        <tr>
-          <td class="fieldname">Name:</td>
-          <td>
-            <xsl:value-of select="name"/>
-            <xsl:variable name="subName" select="name"/>
-            <input type="hidden" value="{$subName}" name="name"/>
-          </td>
-        </tr>
-        <xsl:choose>
-          <xsl:when test="internal='false'">
-            <tr>
-              <td class="fieldname">Uri:</td>
-              <td>
-                <xsl:variable name="subUri" select="uri"/>
-                <input type="text" value="{$subUri}" name="subscription.uri" size="60"/>
-              </td>
-            </tr>
-          </xsl:when>
-          <xsl:otherwise>
-            <tr>
-              <td class="fieldname">Uri:</td>
-              <td>
-                <xsl:value-of select="uri"/>
-              </td>
-            </tr>
-          </xsl:otherwise>
-        </xsl:choose>
-        <!-- <tr>
-          <td class="fieldname">Display:</td>
-          <td>
-            <xsl:choose>
-              <xsl:when test="display='true'">
-                <input type="radio" value="true" name="subscription.display" checked="checked"/> yes
-                <input type="radio" value="false" name="subscription.display"/> no
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="radio" value="true" name="subscription.display"/> yes
-                <input type="radio" value="false" name="subscription.display" checked="checked"/> no
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr> -->
-        <tr>
-          <td class="fieldname">Affects Free/Busy:</td>
-          <td>
-            <xsl:choose>
-              <xsl:when test="affectsFreeBusy='true'">
-                <input type="radio" value="true" name="subscription.affectsFreeBusy" checked="checked"/> yes
-                <input type="radio" value="false" name="subscription.affectsFreeBusy"/> no
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="radio" value="true" name="subscription.affectsFreeBusy"/> yes
-                <input type="radio" value="false" name="subscription.affectsFreeBusy" checked="checked"/> no
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">Color:</td>
-          <td>
-            <xsl:variable name="subStyle" select="style"/>
-            <select name="subscription.style">
-              <option value="default">default</option>
-              <xsl:for-each select="document('subColors.xml')/subscriptionColors/color">
-                <xsl:variable name="subColor" select="."/>
-                <xsl:choose>
-                  <xsl:when test="$subStyle = $subColor">
-                    <option value="{$subColor}" class="{$subColor}" selected="selected">
-                      <xsl:value-of select="@name"/>
-                    </option>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <option value="{$subColor}" class="{$subColor}">
-                      <xsl:value-of select="@name"/>
-                    </option>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:for-each>
-            </select>
-          </td>
-        </tr>
-        <!--<tr>
-          <td class="fieldname">Unremovable:</td>
-          <td>
-            <xsl:choose>
-              <xsl:when test="unremoveable='true'">
-                <input type="radio" value="true" name="unremoveable" size="60" checked="checked"/> true
-                <input type="radio" value="false" name="unremoveable" size="60"/> false
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="radio" value="true" name="unremoveable" size="60"/> true
-                <input type="radio" value="false" name="unremoveable" size="60" checked="checked"/> false
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>-->
-      </table>
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <input type="submit" name="updateSubscription" value="Update Subscription"/>
-            <input type="submit" name="cancelled" value="cancel"/>
-          </td>
-          <td align="right">
-            <xsl:choose>
-              <xsl:when test="unremoveable='true'">
-                Subscription unremoveable
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="submit" name="delete" value="Delete Subscription"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
-      </table>
-    </form>
-  </xsl:template>
-
-<!-- DEPRECTATED -->
-  <xsl:template name="subscriptionList">
-    <h3>Current subscriptions</h3>
-    <table class="common" cellspacing="0">
-      <tr>
-        <th>Name</th>
-        <th>URI</th>
-        <th>Style</th>
-        <!--<th>Display</th>-->
-        <th>Free/Busy</th>
-        <!--<th>Unremovable</th>
-        <th>External</th>
-        <th>Deleted?</th>-->
-      </tr>
-      <xsl:for-each select="subscription">
-        <xsl:variable name="style" select="style"/>
-        <tr>
-          <td>
-            <xsl:variable name="subname" select="encodedName"/>
-            <a href="{$subscriptions-fetchForUpdate}&amp;subname={$subname}">
-              <xsl:value-of select="name"/>
-            </a>
-          </td>
-          <td>
-            <xsl:value-of select="uri"/>
-          </td>
-          <td class="{$style}" style="border: none;">
-            &#160; <!-- just make room and let the style show -->
-          </td>
-          <!-- <td class="center">
-            <xsl:if test="display='true'">
-              <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
-            </xsl:if>
-          </td> -->
-          <td class="center">
-            <xsl:if test="affectsFreeBusy='true'">
-              <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
-            </xsl:if>
-          </td>
-          <!--<td class="center">
-            <xsl:if test="unremoveable='true'">
-              <img src="{$resourcesRoot}/resources/redCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
-            </xsl:if>
-          </td>
-          <td class="center">
-            <xsl:if test="internal='false'">
-              <img src="{$resourcesRoot}/resources/greenCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
-            </xsl:if>
-          </td>
-          <td class="center">
-            <xsl:if test="calendarDeleted='true'">
-              <img src="{$resourcesRoot}/resources/redCheckIcon.gif" width="13" height="13" alt="true" border="0"/>
-            </xsl:if>
-          </td>-->
-        </tr>
-      </xsl:for-each>
-    </table>
-  </xsl:template>
-
-<!-- DEPRECTATED -->
-  <xsl:template match="subscription" mode="mySubscriptions">
-    <li>
-      <xsl:attribute name="class">
-        <xsl:choose>
-          <xsl:when test="/bedework/selectionState/selectionType = 'subscription'
-                          and /bedework/selectionState/subscriptions/subscription/name = name">selected</xsl:when>
-          <xsl:when test="calendarDeleted = 'true'">deleted</xsl:when>
-          <xsl:otherwise>calendar</xsl:otherwise>
-        </xsl:choose>
-      </xsl:attribute>
-      <xsl:variable name="subname" select="encodedName"/>
-      <xsl:if test="style != '' and style != 'default'">
-        <!-- the spacer gif approach allows us to avoid some IE misbehavior -->
-        <xsl:variable name="subStyle" select="style"/>
-        <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="subscription style" class="subStyle {$subStyle}"/>
-      </xsl:if>
-      <xsl:choose>
-        <xsl:when test="calendarDeleted = 'true'">
-          <a href="{$subscriptions-inaccessible}" title="underlying calendar is inaccessible">
-            <xsl:value-of select="name"/>
-          </a>
-        </xsl:when>
-        <xsl:otherwise>
-          <a href="{$setSelection}&amp;subname={$subname}">
-            <xsl:value-of select="name"/>
-          </a>
-        </xsl:otherwise>
-      </xsl:choose>
-    </li>
-  </xsl:template>
-
-<!-- DEPRECTATED -->
-  <xsl:template name="subInaccessible">
-    <h2 class="bwStatusConfirmed">Inaccessible</h2>
-    <div class="noEventsCell">
-      <p>
-        <strong>This subscription cannot be displayed.</strong><br/>
-        The underlying calendar
-        is inaccessible.
-      </p>
-      <p>
-        Possible causes:
-      </p>
-      <ol>
-        <li>Access control was changed, and you may no longer access the underlying calendar.</li>
-        <li>The underlying calendar was deleted.</li>
-      </ol>
+      <xsl:copy-of select="$bwStr-AddA-NoteAboutAccess"/>
     </div>
   </xsl:template>
 
@@ -6260,50 +5923,50 @@
       <input type="hidden" name="updateAlarmOptions" value="true"/>
       <table class="common" cellspacing="0">
         <tr>
-          <th colspan="2" class="commonHeader">Alarm options</th>
+          <th colspan="2" class="commonHeader"><xsl:copy-of select="$bwStr-AlOp-AlarmOptions"/></th>
         </tr>
         <tr>
           <td class="fieldname">
-            Alarm Date/Time:
+            <xsl:copy-of select="$bwStr-AlOp-AlarmDateTime"/>
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmTriggerSelectorDate/*"/>
           </td>
           <td class="fieldval">
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmdate/*"/>
-            <span class="std-text">at  </span>
+            <span class="std-text"><xsl:copy-of select="$bwStr-AlOp-At"/><xsl:text> </xsl:text></span>
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmtime/*"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            or Before/After event:
+            <xsl:copy-of select="$bwStr-AlOp-OrBeforeAfterEvent"/>
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmTriggerSelectorDuration/*"/>
           </td>
           <td align="left">
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmduration/days/*"/>
-            days
+            <xsl:copy-of select="$bwStr-AlOp-Days"/>
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmduration/hours/*"/>
-            hours
+            <xsl:copy-of select="$bwStr-AlOp-Hours"/>
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmduration/minutes/*"/>
-            minutes
+            <xsl:copy-of select="$bwStr-AlOp-Minutes"/>
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmduration/seconds/*"/>
-            seconds OR:
+            <xsl:copy-of select="$bwStr-AlOp-SecondsOr"/>
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmduration/weeks/*"/>
-            weeks
+            <xsl:copy-of select="$bwStr-AlOp-Weeks"/>
             &#160;
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmDurationBefore/*"/>
-            before
+            <xsl:copy-of select="$bwStr-AlOp-Before"/>
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmDurationAfter/*"/>
-            after
+            <xsl:copy-of select="$bwStr-AlOp-After"/>
             &#160;
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmDurationRelStart/*"/>
-            start
+            <xsl:copy-of select="$bwStr-AlOp-Start"/>
             <xsl:copy-of select="/bedework/alarmoptionsform/form/alarmDurationRelEnd/*"/>
-            end
+            <xsl:copy-of select="$bwStr-AlOp-End"/>
           </td>
         </tr>
         <tr>
           <td>
-            Email Address:
+            <xsl:copy-of select="$bwStr-AlOp-EmailAddress"/>
           </td>
           <td align="left">
             <xsl:copy-of select="/bedework/alarmoptionsform/form/email/*"/>
@@ -6311,7 +5974,7 @@
         </tr>
         <tr>
           <td>
-            Subject:
+            <xsl:copy-of select="$bwStr-AlOp-Subject"/>
           </td>
           <td align="left">
             <xsl:copy-of select="/bedework/alarmoptionsform/form/subject/*"/>
@@ -6320,8 +5983,8 @@
         <tr>
           <td>&#160;</td>
           <td>
-            <input name="submit" type="submit" value="Continue"/>&#160;
-            <input name="cancelled" type="submit" value="cancel"/>
+            <input name="submit" type="submit" value="{$bwStr-AlOp-Continue}"/>&#160;
+            <input name="cancelled" type="submit" value="{$bwStr-AlOp-Cancel}"/>
           </td>
         </tr>
       </table>
@@ -6333,11 +5996,11 @@
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
     <form name="eventForm" method="post" action="{$upload}" id="standardForm"  enctype="multipart/form-data">
-      <h2>Upload iCAL File</h2>
+      <h2><xsl:copy-of select="$bwStr-Upld-UploadICalFile"/></h2>
       <table class="common" cellspacing="0">
         <tr>
           <td class="fieldname">
-            Filename:
+            <xsl:copy-of select="$bwStr-Upld-Filename"/>
           </td>
           <td align="left">
             <input type="file" name="uploadFile" size="60" />
@@ -6345,43 +6008,43 @@
         </tr>
         <tr>
           <td class="fieldname padMeTop">
-            Into calendar:
+            <xsl:copy-of select="$bwStr-Upld-IntoCalendar"/>
           </td>
           <td align="left" class="padMeTop">
             <input type="hidden" name="newCalPath" id="bwNewCalPathField" value=""/>
             <span id="bwEventCalDisplay">
-              <em>default calendar</em>
+              <em><xsl:copy-of select="$bwStr-Upld-DefaultCalendar"/></em>
             </span>
             <xsl:call-template name="selectCalForEvent"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname padMeTop">
-            Affects free/busy:
+            <xsl:copy-of select="$bwStr-Upld-AffectsFreeBusy"/>
           </td>
           <td align="left" class="padMeTop">
-            <input type="radio" value="" name="transparency" checked="checked"/> accept event's settings<br/>
-            <input type="radio" value="OPAQUE" name="transparency"/> yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-            <input type="radio" value="TRANSPARENT" name="transparency"/> no <span class="note">(transparent: event status does not affect your free/busy)</span><br/>
+            <input type="radio" value="" name="transparency" checked="checked"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-AcceptEventsSettings"/><br/>
+            <input type="radio" value="OPAQUE" name="transparency"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Yes"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-Upld-Opaque"/></span><br/>
+            <input type="radio" value="TRANSPARENT" name="transparency"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-No"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-Upld-Transparent"/></span><br/>
           </td>
         </tr>
         <tr>
           <td class="fieldname padMeTop">
-            Status:
+            <xsl:copy-of select="$bwStr-Upld-Status"/>
           </td>
           <td align="left" class="padMeTop">
-            <input type="radio" value="" name="status" checked="checked"/> accept event's status<br/>
-            <input type="radio" value="CONFIRMED" name="status"/> confirmed<br/>
-            <input type="radio" value="TENTATIVE" name="status"/> tentative<br/>
-            <input type="radio" value="CANCELLED" name="status"/> canceled<br/>
+            <input type="radio" value="" name="status" checked="checked"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-AcceptEventsStatus"/><br/>
+            <input type="radio" value="CONFIRMED" name="status"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Confirmed"/><br/>
+            <input type="radio" value="TENTATIVE" name="status"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Tentative"/><br/>
+            <input type="radio" value="CANCELLED" name="status"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Canceled"/><br/>
           </td>
         </tr>
       </table>
       <table border="0" id="submitTable">
         <tr>
           <td>
-            <input name="submit" type="submit" value="Continue"/>
-            <input name="cancelled" type="submit" value="cancel"/>
+            <input name="submit" type="submit" value="{$bwStr-Upld-Continue}"/>
+            <input name="cancelled" type="submit" value="{$bwStr-Upld-Cancel}"/>
           </td>
         </tr>
       </table>
@@ -6394,11 +6057,11 @@
       <input type="hidden" name="updateEmailOptions" value="true"/>
       <table class="common" cellspacing="0">
         <tr>
-          <th colspan="2" class="commonHeader">Update email options</th>
+          <th colspan="2" class="commonHeader"><xsl:copy-of select="$bwStr-EmOp-UpdateEmailOptions"/></th>
         </tr>
         <tr>
           <td>
-            Email Address:
+            <xsl:copy-of select="$bwStr-EmOp-EmailAddress"/>
           </td>
           <td align="left">
             <xsl:copy-of select="/bedework/emailoptionsform/form/email/*"/>
@@ -6406,7 +6069,7 @@
         </tr>
         <tr>
           <td>
-            Subject:
+            <xsl:copy-of select="$bwStr-EmOp-Subject"/>
           </td>
           <td align="left">
             <xsl:copy-of select="/bedework/emailoptionsform/form/subject/*"/>
@@ -6415,8 +6078,8 @@
         <tr>
           <td>&#160;</td>
           <td>
-            <input name="submit" type="submit" value="Continue"/>&#160;
-            <input name="cancelled" type="submit" value="cancel"/>
+            <input name="submit" type="submit" value="{$bwStr-EmOp-Continue}"/>&#160;
+            <input name="cancelled" type="submit" value="{$bwStr-EmOp-Cancel}"/>
           </td>
         </tr>
       </table>
@@ -6426,27 +6089,27 @@
   <!--==== MANAGE LOCATIONS ====-->
   <xsl:template name="locationList">
     <h2>
-      Manage Preferences
+      <xsl:copy-of select="$bwStr-LocL-ManagePreferences"/>
     </h2>
     <ul class="submenu">
       <li>
-        <a href="{$prefs-fetchForUpdate}">general</a>
+        <a href="{$prefs-fetchForUpdate}"><xsl:copy-of select="$bwStr-LocL-General"/></a>
       </li>
       <li>
-        <a href="{$category-initUpdate}">categories</a>
+        <a href="{$category-initUpdate}"><xsl:copy-of select="$bwStr-LocL-Categories"/></a>
       </li>
-      <li class="selected">locations</li>
+      <li class="selected"><xsl:copy-of select="$bwStr-LocL-Locations"/></li>
       <li>
-        <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
+        <a href="{$prefs-fetchSchedulingForUpdate}"><xsl:copy-of select="$bwStr-LocL-SchedulingMeetings"/></a>
       </li>
     </ul>
     <table class="common" id="manage" cellspacing="0">
       <tr>
-        <th class="commonHeader">Manage Locations</th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-LocL-ManageLocations"/></th>
       </tr>
       <tr>
         <td>
-          <input type="button" name="return" value="Add new location" onclick="javascript:location.replace('{$location-initAdd}')" class="titleButton"/>
+          <input type="button" name="return" value="{$bwStr-LocL-AddNewLocation}" onclick="javascript:location.replace('{$location-initAdd}')" class="titleButton"/>
           <xsl:if test="/bedework/locations/location">
             <ul>
               <xsl:for-each select="/bedework/locations/location">
@@ -6465,20 +6128,20 @@
 
   <xsl:template name="modLocation">
     <h2>
-      Manage Preferences
+      <xsl:copy-of select="$bwStr-ModL-ManagePreferences"/>
     </h2>
     <ul class="submenu">
       <li>
-        <a href="{$prefs-fetchForUpdate}">general</a>
+        <a href="{$prefs-fetchForUpdate}"><xsl:copy-of select="$bwStr-ModL-General"/></a>
       </li>
       <li>
-        <a href="{$category-initUpdate}">categories</a>
+        <a href="{$category-initUpdate}"><xsl:copy-of select="$bwStr-ModL-Categories"/></a>
       </li>
       <li class="selected">
-        <a href="{$location-initUpdate}">locations</a>
+        <a href="{$location-initUpdate}"><xsl:copy-of select="$bwStr-ModL-Locations"/></a>
       </li>
       <li>
-        <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
+        <a href="{$prefs-fetchSchedulingForUpdate}"><xsl:copy-of select="$bwStr-ModL-SchedulingMeetings"/></a>
       </li>
     </ul>
     <xsl:choose>
@@ -6486,11 +6149,11 @@
         <form name="addLocationForm" method="post" action="{$location-update}" id="standardForm">
           <table class="common" cellspacing="0">
             <tr>
-              <th class="commonHeader" colspan="2">Add Location</th>
+              <th class="commonHeader" colspan="2"><xsl:copy-of select="$bwStr-ModL-AddLocation"/></th>
             </tr>
             <tr>
               <td class="fieldname">
-                Main Address:
+                <xsl:copy-of select="$bwStr-ModL-MainAddress"/>
               </td>
               <td>
                 <input size="60" name="locationAddress.value" type="text" id="bwLocMainAddress"/>
@@ -6498,7 +6161,7 @@
             </tr>
             <tr>
               <td class="fieldname">
-                Subaddress:
+                <xsl:copy-of select="$bwStr-ModL-SubAddress"/>
               </td>
               <td>
                 <input size="60" name="locationSubaddress.value" type="text"/>
@@ -6506,7 +6169,7 @@
             </tr>
             <tr>
               <td class="fieldname">
-                Location Link:
+                <xsl:copy-of select="$bwStr-ModL-LocationLink"/>
               </td>
               <td>
                 <input size="60" name="location.link" type="text"/>
@@ -6516,8 +6179,8 @@
           <table border="0" id="submitTable">
             <tr>
               <td>
-                <input name="submit" type="submit" value="Submit Location"/>
-                <input name="cancelled" type="submit" value="cancel"/>
+                <input name="submit" type="submit" value="{$bwStr-ModL-SubmitLocation}"/>
+                <input name="cancelled" type="submit" value="{$bwStr-ModL-Cancel}"/>
               </td>
             </tr>
           </table>
@@ -6529,12 +6192,12 @@
           <table class="common" cellspacing="0">
             <tr>
               <th colspan="2" class="commonHeader">
-                Edit Location
+                <xsl:copy-of select="$bwStr-ModL-EditLocation"/>
               </th>
             </tr>
             <tr>
               <td class="fieldname">
-                Main Address:
+                <xsl:copy-of select="$bwStr-ModL-MainAddress"/>
               </td>
               <td align="left">
                 <input size="60" name="locationAddress.value" type="text" id="bwLocMainAddress">
@@ -6544,7 +6207,7 @@
             </tr>
             <tr>
               <td class="fieldname">
-                Subaddress:
+                <xsl:copy-of select="$bwStr-ModL-SubAddress"/>
               </td>
               <td align="left">
                 <input size="60" name="locationSubaddress.value" type="text">
@@ -6554,7 +6217,7 @@
             </tr>
             <tr>
               <td class="fieldname">
-                Location Link:
+                <xsl:copy-of select="$bwStr-ModL-LocationLink"/>
               </td>
               <td>
                 <input size="60" name="location.link" type="text">
@@ -6566,11 +6229,11 @@
           <table border="0" id="submitTable">
             <tr>
               <td>
-                <input name="submit" type="submit" value="Submit Location"/>
-                <input name="cancelled" type="submit" value="cancel"/>
+                <input name="submit" type="submit" value="{$bwStr-ModL-SubmitLocation}"/>
+                <input name="cancelled" type="submit" value="{$bwStr-ModL-Cancel}"/>
               </td>
               <td align="right">
-                <input type="submit" name="delete" value="Delete Location"/>
+                <input type="submit" name="delete" value="{$bwStr-ModL-DeleteLocation}"/>
               </td>
             </tr>
           </table>
@@ -6580,15 +6243,15 @@
   </xsl:template>
 
   <xsl:template name="deleteLocationConfirm">
-    <h2>Ok to delete this location?</h2>
+    <h2><xsl:copy-of select="$bwStr-OKDL-OKToDeleteLocation"/></h2>
 
     <table class="common" cellspacing="0">
       <tr>
-        <th class="commonHeader" colspan="2">Delete Location</th>
+        <th class="commonHeader" colspan="2"><xsl:copy-of select="$bwStr-OKDL-DeleteLocation"/></th>
       </tr>
       <tr>
         <td class="fieldname">
-          Main Address:
+          <xsl:copy-of select="$bwStr-OKDL-MainAddress"/>
         </td>
         <td align="left">
           <xsl:value-of select="/bedework/currentLocation/address"/>
@@ -6596,7 +6259,7 @@
       </tr>
       <tr>
         <td class="fieldname">
-          Subaddress:
+          <xsl:copy-of select="$bwStr-OKDL-Subaddress"/>
         </td>
         <td align="left">
           <xsl:value-of select="/bedework/currentLocation/subaddress"/>
@@ -6604,7 +6267,7 @@
       </tr>
       <tr>
         <td class="fieldname">
-          Location Link:
+          <xsl:copy-of select="$bwStr-OKDL-LocationLink"/>
         </td>
         <td>
           <xsl:variable name="link" select="/bedework/currentLocation/link"/>
@@ -6614,24 +6277,24 @@
     </table>
 
     <form action="{$location-delete}" method="post">
-      <input type="submit" name="updateCategory" value="Yes: Delete Location"/>
-      <input type="submit" name="cancelled" value="No: Cancel"/>
+      <input type="submit" name="updateCategory" value="{$bwStr-OKDL-YesDeleteLocation}"/>
+      <input type="submit" name="cancelled" value="{$bwStr-OKDL-Cancel}"/>
     </form>
   </xsl:template>
 
   <!--==== INBOX, OUTBOX, and SCHEDULING ====-->
   <xsl:template match="inbox">
-    <h2 class="common">Inbox</h2>
+    <h2 class="common"><xsl:copy-of select="$bwStr-Inbx-Inbox"/></h2>
     <table id="inoutbox" class="common" cellspacing="0">
       <tr>
         <th class="commonHeader">&#160;</th>
-        <th class="commonHeader">sent</th>
-        <th class="commonHeader">from</th>
-        <th class="commonHeader">title</th>
-        <th class="commonHeader">start</th>
-        <th class="commonHeader">end</th>
-        <th class="commonHeader">method</th>
-        <th class="commonHeader">status</th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Inbx-Sent"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Inbx-From"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Inbx-Title"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Inbx-Start"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Inbx-End"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Inbx-Method"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Inbx-Status"/></th>
         <th class="commonHeader">&#160;</th>
         <th class="commonHeader">&#160;</th>
       </tr>
@@ -6653,11 +6316,11 @@
         <tr>
           <xsl:attribute name="class">
             <xsl:choose>
-              <xsl:when test="scheduleState=0">unprocessed</xsl:when>
-              <xsl:when test="scheduleMethod=1">publish</xsl:when>
-              <xsl:when test="scheduleMethod=2">request</xsl:when>
-              <xsl:when test="scheduleMethod=5">cancel</xsl:when>
-              <xsl:when test="scheduleMethod=7 or scheduleMethod=8">counter</xsl:when>
+              <xsl:when test="scheduleState=0"><xsl:copy-of select="$bwStr-Inbx-Unprocessed"/></xsl:when>
+              <xsl:when test="scheduleMethod=1"><xsl:copy-of select="$bwStr-Inbx-Publish"/></xsl:when>
+              <xsl:when test="scheduleMethod=2"><xsl:copy-of select="$bwStr-Inbx-Request"/></xsl:when>
+              <xsl:when test="scheduleMethod=5"><xsl:copy-of select="$bwStr-Inbx-Cancel"/></xsl:when>
+              <xsl:when test="scheduleMethod=7 or scheduleMethod=8"><xsl:copy-of select="$bwStr-Inbx-Counter"/></xsl:when>
             </xsl:choose>
           </xsl:attribute>
           <td>
@@ -6732,8 +6395,8 @@
           <td>
             <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
               <xsl:choose>
-                <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
-                <xsl:otherwise>processed</xsl:otherwise>
+                <xsl:when test="scheduleState=0"><em><xsl:copy-of select="$bwStr-Inbx-Unprocessed"/></em></xsl:when>
+                <xsl:otherwise><xsl:copy-of select="$bwStr-Inbx-Processed"/></xsl:otherwise>
               </xsl:choose>
             </a>
           </td>
@@ -6754,17 +6417,17 @@
   </xsl:template>
 
   <xsl:template match="outbox">
-    <h2 class="common">Outbox</h2>
+    <h2 class="common"><xsl:copy-of select="$bwStr-Oubx-Outbox"/></h2>
     <table id="inoutbox" class="common" cellspacing="0">
       <tr>
         <th class="commonHeader">&#160;</th>
-        <th class="commonHeader">sent</th>
-        <th class="commonHeader">organizer</th>
-        <th class="commonHeader">title</th>
-        <th class="commonHeader">start</th>
-        <th class="commonHeader">end</th>
-        <th class="commonHeader">method</th>
-        <th class="commonHeader">status</th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Oubx-Sent"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Oubx-Organizer"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Oubx-Title"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Oubx-Start"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Oubx-End"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Oubx-Method"/></th>
+        <th class="commonHeader"><xsl:copy-of select="$bwStr-Oubx-Status"/></th>
         <th class="commonHeader">&#160;</th>
         <th class="commonHeader">&#160;</th>
       </tr>
@@ -6784,10 +6447,10 @@
         <tr>
           <xsl:attribute name="class">
             <xsl:choose>
-              <xsl:when test="scheduleMethod=1">publish</xsl:when>
-              <xsl:when test="scheduleMethod=2">request</xsl:when>
-              <xsl:when test="scheduleMethod=5">cancel</xsl:when>
-              <xsl:when test="scheduleMethod=7 or scheduleMethod=8">counter</xsl:when>
+              <xsl:when test="scheduleMethod=1"><xsl:copy-of select="$bwStr-Oubx-Publish"/></xsl:when>
+              <xsl:when test="scheduleMethod=2"><xsl:copy-of select="$bwStr-Oubx-Request"/></xsl:when>
+              <xsl:when test="scheduleMethod=5"><xsl:copy-of select="$bwStr-Oubx-Cancel"/></xsl:when>
+              <xsl:when test="scheduleMethod=7 or scheduleMethod=8"><xsl:copy-of select="$bwStr-Oubx-Counter"/></xsl:when>
             </xsl:choose>
           </xsl:attribute>
           <td>
@@ -6835,8 +6498,8 @@
           <td>
             <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
               <xsl:choose>
-                <xsl:when test="scheduleState=0"><em>unprocessed</em></xsl:when>
-                <xsl:otherwise>processed</xsl:otherwise>
+                <xsl:when test="scheduleState=0"><em><xsl:copy-of select="$bwStr-Oubx-Unprocessed"/></em></xsl:when>
+                <xsl:otherwise><xsl:copy-of select="$bwStr-Oubx-Processed"/></xsl:otherwise>
               </xsl:choose>
             </a>
           </td>
@@ -6858,14 +6521,14 @@
 
   <xsl:template match="scheduleMethod">
     <xsl:choose>
-      <xsl:when test="node()=1">publish</xsl:when>
-      <xsl:when test="node()=2">request</xsl:when>
-      <xsl:when test="node()=3">reply</xsl:when>
-      <xsl:when test="node()=4">add</xsl:when>
-      <xsl:when test="node()=5">cancel</xsl:when>
-      <xsl:when test="node()=6">refresh</xsl:when>
-      <xsl:when test="node()=7">counter</xsl:when>
-      <xsl:when test="node()=8">declined</xsl:when><!-- declinecounter -->
+      <xsl:when test="node()=1"><xsl:copy-of select="$bwStr-ScMe-Publish"/></xsl:when>
+      <xsl:when test="node()=2"><xsl:copy-of select="$bwStr-ScMe-Request"/></xsl:when>
+      <xsl:when test="node()=3"><xsl:copy-of select="$bwStr-ScMe-Reply"/></xsl:when>
+      <xsl:when test="node()=4"><xsl:copy-of select="$bwStr-ScMe-Add"/></xsl:when>
+      <xsl:when test="node()=5"><xsl:copy-of select="$bwStr-ScMe-Cancel"/></xsl:when>
+      <xsl:when test="node()=6"><xsl:copy-of select="$bwStr-ScMe-Refresh"/></xsl:when>
+      <xsl:when test="node()=7"><xsl:copy-of select="$bwStr-ScMe-Counter"/></xsl:when>
+      <xsl:when test="node()=8"><xsl:copy-of select="$bwStr-ScMe-Declined"/></xsl:when><!-- declinecounter -->
       <xsl:otherwise>unknown</xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -6883,21 +6546,21 @@
       <h2>
         <xsl:choose>
           <xsl:when test="scheduleMethod = '5'">
-            Meeting Canceled
+            <xsl:copy-of select="$bwStr-AtRe-MeetingCanceled"/>
           </xsl:when>
           <xsl:when test="scheduleMethod = '8'">
-            Meeting Counter Declined
+            <xsl:copy-of select="$bwStr-AtRe-MeetingCounterDeclined"/>
           </xsl:when>
           <xsl:otherwise>
-            Meeting Request
-            <xsl:if test="guidcals/calendar"> (update)</xsl:if>
+            <xsl:copy-of select="$bwStr-AtRe-MeetingRequest"/>
+            <xsl:if test="guidcals/calendar"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AtRe-Update"/>(update)</xsl:if>
           </xsl:otherwise>
         </xsl:choose>
       </h2>
       <table class="common" cellspacing="0">
         <tr>
           <th colspan="2" class="commonHeader">
-            Organizer:
+            <xsl:copy-of select="$bwStr-AtRe-Organizer"/>
             <xsl:choose>
               <xsl:when test="organizer/cn != ''">
                 <xsl:value-of select="organizer/cn"/>
@@ -6912,21 +6575,21 @@
           <xsl:when test="scheduleMethod = '5'">
             <tr>
               <td colspan="2" class="highlight">
-                This meeting has been canceled.
+                <xsl:copy-of select="$bwStr-AtRe-ThisMeetingCanceled"/>
               </td>
             </tr>
           </xsl:when>
           <xsl:when test="scheduleMethod = '8'">
             <tr>
               <td colspan="2" class="highlight">
-                Your counter request has been declined.
+                <xsl:copy-of select="$bwStr-AtRe-CounterReqDeclined"/>
               </td>
             </tr>
           </xsl:when>
         </xsl:choose>
         <tr>
           <td class="fieldname">
-            Calendar:
+            <xsl:copy-of select="$bwStr-AtRe-Calendar"/>
           </td>
           <td class="fieldval scheduleActions">
             <xsl:choose>
@@ -7020,43 +6683,43 @@
         </tr>
         <xsl:if test="scheduleMethod != '8'">
           <tr>
-            <td class="fieldname">Action:</td>
+            <td class="fieldname"><xsl:copy-of select="$bwStr-AtRe-Action"/></td>
             <td class="fieldval scheduleActions">
               <xsl:choose>
                 <xsl:when test="scheduleMethod = '5' or scheduleMethod = '8'">
                 <!-- respond to a cancel -->
                   <input type="hidden" name="method" value="REPLY"/>
                   <select name="cancelAction">
-                    <option value="mark">mark event as canceled</option>
-                    <option value="delete">delete event</option>
+                    <option value="mark"><xsl:copy-of select="$bwStr-AtRe-MarkEventAsCanceled"/></option>
+                    <option value="delete"><xsl:copy-of select="$bwStr-AtRe-DeleteEvent"/></option>
                   </select>
                 </xsl:when>
                 <xsl:otherwise>
                 <!-- respond to a request -->
-                  <input type="radio" name="method" value="REPLY" checked="checked" onclick="swapScheduleDisplay('hide');"/>reply as
+                  <input type="radio" name="method" value="REPLY" checked="checked" onclick="swapScheduleDisplay('hide');"/><xsl:copy-of select="$bwStr-AtRe-ReplyAs"/>
                   <select name="partstat">
-                    <option value="ACCEPTED">accepted</option>
-                    <option value="DECLINED">declined</option>
-                    <option value="TENTATIVE">tentative</option>
+                    <option value="ACCEPTED"><xsl:copy-of select="$bwStr-AtRe-Accepted"/></option>
+                    <option value="DECLINED"><xsl:copy-of select="$bwStr-AtRe-Declined"/></option>
+                    <option value="TENTATIVE"><xsl:copy-of select="$bwStr-AtRe-Tentative"/></option>
                   </select><br/>
                   <!--<input type="radio" name="method" value="REFRESH" onclick="swapScheduleDisplay('hide');"/>refresh this event<br/>-->
-                  <input type="radio" name="method" value="DELEGATE" onclick="swapScheduleDisplay('hide');"/>delegate to
-                  <input type="test" name="delegate" value=""/> (uri or account)<br/>
-                  <input type="radio" name="method" value="COUNTER" onclick="swapScheduleDisplay('show');"/>counter (suggest a different date, time, and/or location)
+                  <input type="radio" name="method" value="DELEGATE" onclick="swapScheduleDisplay('hide');"/><xsl:copy-of select="$bwStr-AtRe-DelegateTo"/>
+                  <input type="test" name="delegate" value=""/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AtRe-URIOrAccount"/><br/>
+                  <input type="radio" name="method" value="COUNTER" onclick="swapScheduleDisplay('show');"/><xsl:copy-of select="$bwStr-AtRe-CounterSuggest"/>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
           </tr>
           <tr id="scheduleDateEdit" class="invisible">
-            <td class="fieldname">New Date/Time:</td>
+            <td class="fieldname"><xsl:copy-of select="$bwStr-AtRe-NewDateTime"/></td>
             <td class="fieldval scheduleActions">
               <!-- Set the timefields class for the first load of the page;
                    subsequent changes will take place using javascript without a
                    page reload. -->
               <xsl:variable name="timeFieldsClass">
                 <xsl:choose>
-                  <xsl:when test="form/allDay/input/@checked='checked'">invisible</xsl:when>
-                  <xsl:otherwise>timeFields</xsl:otherwise>
+                  <xsl:when test="form/allDay/input/@checked='checked'"><xsl:copy-of select="$bwStr-AtRe-Invisible"/>invisible</xsl:when>
+                  <xsl:otherwise><xsl:copy-of select="$bwStr-AtRe-TimeFields"/></xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
               <xsl:choose>
@@ -7071,11 +6734,11 @@
                   <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField"/>
                 </xsl:otherwise>
               </xsl:choose>
-              all day event<br/>
+              <xsl:copy-of select="$bwStr-AtRe-AllDayEvent"/><br/>
               <div class="dateStartEndBox">
-                <strong>Start:</strong>
+                <strong><xsl:copy-of select="$bwStr-AtRe-Start"/></strong>
                 <div class="dateFields">
-                  <span class="startDateLabel">Date </span>
+                  <span class="startDateLabel"><xsl:copy-of select="$bwStr-AtRe-Date"/><xsl:text> </xsl:text></span>
                   <xsl:copy-of select="form/start/month/*"/>
                   <xsl:copy-of select="form/start/day/*"/>
                   <xsl:choose>
@@ -7106,7 +6769,7 @@
                 </div>
               </div>
               <div class="dateStartEndBox">
-                <strong>End:</strong>
+                <strong><xsl:copy-of select="$bwStr-AtRe-End"/></strong>
                 <xsl:choose>
                   <xsl:when test="form/end/type='E'">
                     <input type="radio" name="eventEndType" value="E" checked="checked" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
@@ -7115,11 +6778,11 @@
                     <input type="radio" name="eventEndType" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
-                Date
+                <xsl:copy-of select="$bwStr-AtRe-Date"/>
                 <xsl:variable name="endDateTimeClass">
                   <xsl:choose>
-                    <xsl:when test="form/end/type='E'">shown</xsl:when>
-                    <xsl:otherwise>invisible</xsl:otherwise>
+                    <xsl:when test="form/end/type='E'"><xsl:copy-of select="$bwStr-AtRe-Shown"/></xsl:when>
+                    <xsl:otherwise><xsl:copy-of select="$bwStr-AtRe-Invisible"/></xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
                 <div class="{$endDateTimeClass}" id="endDateTime">
@@ -7164,17 +6827,17 @@
                       <input type="radio" name="eventEndType" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                     </xsl:otherwise>
                   </xsl:choose>
-                  Duration
+                  <xsl:copy-of select="$bwStr-AtRe-Duration"/>
                   <xsl:variable name="endDurationClass">
                     <xsl:choose>
-                      <xsl:when test="form/end/type='D'">shown</xsl:when>
-                      <xsl:otherwise>invisible</xsl:otherwise>
+                      <xsl:when test="form/end/type='D'"><xsl:copy-of select="$bwStr-AtRe-Shown"/></xsl:when>
+                      <xsl:otherwise><xsl:copy-of select="$bwStr-AtRe-Invisible"/></xsl:otherwise>
                     </xsl:choose>
                   </xsl:variable>
                   <xsl:variable name="durationHrMinClass">
                     <xsl:choose>
-                      <xsl:when test="form/allDay/input/@checked='checked'">invisible</xsl:when>
-                      <xsl:otherwise>shown</xsl:otherwise>
+                      <xsl:when test="form/allDay/input/@checked='checked'"><xsl:copy-of select="$bwStr-AtRe-Invisible"/></xsl:when>
+                      <xsl:otherwise><xsl:copy-of select="$bwStr-AtRe-Shown"/></xsl:otherwise>
                     </xsl:choose>
                   </xsl:variable>
                   <div class="{$endDurationClass}" id="endDuration">
@@ -7185,19 +6848,19 @@
                         <div class="durationBox">
                           <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')" checked="checked"/>
                           <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
-                          <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays"/>days
+                          <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays"/><xsl:copy-of select="$bwStr-AtRe-Days"/>
                           <span id="durationHrMin" class="{$durationHrMinClass}">
                             <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
-                            <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours"/>hours
+                            <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours"/><xsl:copy-of select="$bwStr-AtRe-Hours"/>
                             <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
-                            <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes"/>minutes
+                            <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes"/><xsl:copy-of select="$bwStr-AtRe-Minutes"/>
                           </span>
                         </div>
-                        <span class="durationSpacerText">or</span>
+                        <span class="durationSpacerText"><xsl:copy-of select="$bwStr-AtRe-Or"/></span>
                         <div class="durationBox">
                           <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')"/>
                           <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
-                          <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="disabled"/>weeks
+                          <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks" disabled="disabled"/><xsl:copy-of select="$bwStr-AtRe-Weeks"/>
                         </div>
                       </xsl:when>
                       <xsl:otherwise>
@@ -7205,19 +6868,19 @@
                         <div class="durationBox">
                           <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')"/>
                           <xsl:variable name="daysStr" select="form/end/duration/days/input/@value"/>
-                          <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="disabled"/>days
+                          <input type="text" name="eventDuration.daysStr" size="2" value="{$daysStr}" id="durationDays" disabled="disabled"/><xsl:copy-of select="$bwStr-AtRe-Days"/>
                           <span id="durationHrMin" class="{$durationHrMinClass}">
                             <xsl:variable name="hoursStr" select="form/end/duration/hours/input/@value"/>
-                            <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="disabled"/>hours
+                            <input type="text" name="eventDuration.hoursStr" size="2" value="{$hoursStr}" id="durationHours" disabled="disabled"/><xsl:copy-of select="$bwStr-AtRe-Hours"/>
                             <xsl:variable name="minutesStr" select="form/end/duration/minutes/input/@value"/>
-                            <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="disabled"/>minutes
+                            <input type="text" name="eventDuration.minutesStr" size="2" value="{$minutesStr}" id="durationMinutes" disabled="disabled"/><xsl:copy-of select="$bwStr-AtRe-Minutes"/>
                           </span>
                         </div>
-                        <span class="durationSpacerText">or</span>
+                        <span class="durationSpacerText"><xsl:copy-of select="$bwStr-AtRe-Or"/></span>
                         <div class="durationBox">
                           <input type="radio" name="eventDuration.type" value="weeks" onclick="swapDurationType('week')" checked="checked"/>
                           <xsl:variable name="weeksStr" select="form/end/duration/weeks/input/@value"/>
-                          <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks"/>weeks
+                          <input type="text" name="eventDuration.weeksStr" size="2" value="{$weeksStr}" id="durationWeeks"/><xsl:copy-of select="$bwStr-AtRe-Weeks"/>
                         </div>
                       </xsl:otherwise>
                     </xsl:choose>
@@ -7232,28 +6895,28 @@
                       <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                     </xsl:otherwise>
                   </xsl:choose>
-                  This event has no duration / end date
+                  <xsl:copy-of select="$bwStr-AtRe-ThisEventNoDuration"/>
                 </div>
               </div>
             </td>
           </tr>
           <tr id="scheduleLocationEdit" class="invisible">
-            <td class="fieldname">New Location:</td>
+            <td class="fieldname"><xsl:copy-of select="$bwStr-AtRe-NewLocation"/></td>
             <td class="fieldval scheduleActions">
-              <span class="std-text">choose: </span>
+              <span class="std-text"><xsl:copy-of select="$bwStr-AtRe-Choose"/><xsl:text> </xsl:text></span>
               <span id="eventFormLocationList">
                 <select name="eventLocationUid">
-                  <option value="-1">select...</option>
+                  <option value="-1"><xsl:copy-of select="$bwStr-AtRe-Select"/></option>
                   <xsl:copy-of select="/bedework/formElements/form/location/locationmenu/select/*"/>
                 </select>
               </span>
-              <span class="std-text"> or add new: </span>
+              <span class="std-text"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AtRe-OrAddNew"/><xsl:text> </xsl:text></span>
               <input type="text" name="locationAddress.value" value="" />
             </td>
           </tr>
           <xsl:if test="scheduleMethod != '5'">
             <tr>
-              <td class="fieldname">Comment:</td>
+              <td class="fieldname"><xsl:copy-of select="$bwStr-AtRe-Comment"/></td>
               <td class="fieldval scheduleActions">
                 <textarea name="comment" cols="60" rows="2">
                   <xsl:text> </xsl:text>
@@ -7267,33 +6930,33 @@
           <td class="fieldval scheduleActions">
             <xsl:choose>
               <xsl:when test="scheduleMethod='8'">
-                <input name="delete" type="button" value="Delete" onclick="document.location.replace('{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
+                <input name="delete" type="button" value="{$bwStr-AtRe-Delete}" onclick="document.location.replace('{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
               </xsl:when>
               <xsl:otherwise>
-                <input name="submit" type="submit" value="Submit"/>
+                <input name="submit" type="submit" value="{$bwStr-AtRe-Submit}"/>
               </xsl:otherwise>
             </xsl:choose>
             &#160;
-            <input name="cancelled" type="submit" value="cancel"/>
+            <input name="cancelled" type="submit" value="{$bwStr-AtRe-Cancel}"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Title:
+            <xsl:copy-of select="$bwStr-AtRe-Title"/>Title:
           </td>
           <td class="fieldval">
             <strong><xsl:value-of select="form/title/input/@value"/></strong>
           </td>
         </tr>
         <tr>
-          <td class="fieldname">Description:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-AtRe-Description"/></td>
           <td class="fieldval">
             <xsl:value-of select="/bedework/formElements/form/desc/textarea"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Date &amp; Time:
+            <xsl:copy-of select="$bwStr-AtRe-DateAndTime"/>
           </td>
           <td class="fieldval">
             <xsl:value-of select="form/start/month/select/option[@selected='selected']"/>
@@ -7311,28 +6974,28 @@
             <xsl:value-of select="form/end/dateTime/hour/select/option[@selected='selected']"/>:<xsl:value-of select="form/end/dateTime/minute/select/option[@selected='selected']"/>
             <xsl:if test="form/allDay/input/@checked='checked'">
               <xsl:text> </xsl:text>
-              (all day)
+              <xsl:copy-of select="$bwStr-AtRe-AllDay"/>
             </xsl:if>
           </td>
         </tr>
         <tr>
-          <td class="fieldname">Location:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-AtRe-Location"/></td>
           <td class="fieldval" align="left">
             <xsl:if test="location/address = ''">
-             <em>not specified</em>
+             <em><xsl:copy-of select="$bwStr-AtRe-NotSpecified"/></em>
             </xsl:if>
             <xsl:value-of select="location/address"/>
           </td>
         </tr>
         <xsl:if test="attendee">
           <tr>
-            <td class="fieldname">Attendees:</td>
+            <td class="fieldname"><xsl:copy-of select="$bwStr-AtRe-Attendees"/></td>
             <td class="fieldval">
               <table id="attendees" cellspacing="0">
                 <tr>
-                  <th>role</th>
-                  <th>status</th>
-                  <th>attendee</th>
+                  <th><xsl:copy-of select="$bwStr-AtRe-Role"/></th>
+                  <th><xsl:copy-of select="$bwStr-AtRe-Status"/></th>
+                  <th><xsl:copy-of select="$bwStr-AtRe-Attendee"/></th>
                 </tr>
                 <xsl:for-each select="attendee">
                   <xsl:sort select="cn" order="ascending" case-order="upper-first"/>
@@ -7384,7 +7047,7 @@
         </tr>-->
         <xsl:if test="form/link/input/@value != ''">
           <tr>
-            <td class="fieldname">See:</td>
+            <td class="fieldname"><xsl:copy-of select="$bwStr-AtRe-See"/></td>
             <td class="fieldval">
               <a>
                 <xsl:attribute name="href"><xsl:value-of select="form/link/input/@value"/></xsl:attribute>
@@ -7396,7 +7059,7 @@
         <!--  Status  -->
         <tr>
           <td class="fieldname">
-            Status:
+            <xsl:copy-of select="$bwStr-AtRe-Status"/>
           </td>
           <td class="fieldval">
             <xsl:value-of select="form/status"/>
@@ -7420,10 +7083,10 @@
     <h2>
       <xsl:choose>
         <xsl:when test="scheduleMethod='7'">
-          Meeting Change Request (Counter)
+          <xsl:copy-of select="$bwStr-AtRy-MeetingChangeRequest"/>
         </xsl:when>
         <xsl:otherwise>
-          Meeting Reply
+          <xsl:copy-of select="$bwStr-AtRy-MeetingReply"/>
         </xsl:otherwise>
       </xsl:choose>
     </h2>
@@ -7433,7 +7096,7 @@
           <th colspan="2" class="commonHeader">
             <div id="eventActions">
             </div>
-            Organizer:
+            <xsl:copy-of select="$bwStr-AtRy-Organizer"/>
             <xsl:choose>
               <xsl:when test="organizer/cn != ''">
                 <xsl:value-of select="organizer/cn"/>
@@ -7448,36 +7111,36 @@
           <xsl:when test="scheduleMethod = '7'">
             <tr>
               <td colspan="2" class="highlight">
-                Attendee <xsl:value-of select="substring-after(attendees/attendee/attendeeUri,'mailto:')"/> has requested a change to this meeting.
+                <xsl:copy-of select="$bwStr-AtRy-Shown"/><xsl:text> </xsl:text><xsl:value-of select="substring-after(attendees/attendee/attendeeUri,'mailto:')"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AtRy-HasRequestedChange"/>
               </td>
             </tr>
           </xsl:when>
           <xsl:otherwise>
             <tr>
               <td colspan="2" class="highlight">
-                Attendee <xsl:value-of select="substring-after(attendees/attendee/attendeeUri,'mailto:')"/> has
+                <xsl:copy-of select="$bwStr-AtRy-Attendee"/><xsl:text> </xsl:text><xsl:value-of select="substring-after(attendees/attendee/attendeeUri,'mailto:')"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AtRy-Has"/>
                 <xsl:choose>
                   <xsl:when test="attendees/attendee/partstat = 'TENTATIVE'">
-                    TENTATIVELY accepted
+                    <xsl:copy-of select="$bwStr-AtRy-TentativelyAccepted"/>
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:apply-templates select="attendees/attendee/partstat"/>
                   </xsl:otherwise>
                 </xsl:choose>
-                your invitation.
+                <xsl:copy-of select="$bwStr-AtRy-YourInvitation"/>
               </td>
             </tr>
           </xsl:otherwise>
         </xsl:choose>
         <tr>
           <td class="fieldname">
-            Calendar:
+            <xsl:copy-of select="$bwStr-AtRy-Calendar"/>
           </td>
           <td class="fieldval scheduleActions">
             <xsl:choose>
               <xsl:when test="not(/bedework/guidcals/calendar)">
               <!-- the event has been deleted by the organizer -->
-                Event no longer exists.
+                <xsl:copy-of select="$bwStr-AtRy-EventNoLongerExists"/>
               </xsl:when>
               <xsl:otherwise>
                 <!-- the event exists.  Let the user choose which copies
@@ -7499,7 +7162,7 @@
         </tr>
         <tr>
           <td class="fieldname">
-            From:
+            <xsl:copy-of select="$bwStr-AtRy-From"/>
           </td>
           <td class="fieldval scheduleActions">
             <strong>
@@ -7519,12 +7182,12 @@
         </tr>
         <tr>
           <td class="fieldname">
-            Status:
+            <xsl:copy-of select="$bwStr-AtRy-Status"/>
           </td>
           <td class="fieldval scheduleActions">
             <xsl:apply-templates select="attendees/attendee/partstat"/>
             <xsl:if test="comments/value">
-              <p><strong>Comments:</strong></p>
+              <p><strong><xsl:copy-of select="$bwStr-AtRy-Comments"/></strong></p>
               <div id="comments">
                 <xsl:for-each select="comments/value">
                   <p><xsl:value-of select="."/></p>
@@ -7535,29 +7198,29 @@
         </tr>
         <tr>
           <td class="fieldname">
-            Action:
+            <xsl:copy-of select="$bwStr-AtRy-Action"/>
           </td>
           <td class="fieldval scheduleActions">
             <xsl:choose>
               <xsl:when test="scheduleMethod='7'"><!-- counter -->
-                <input type="submit" value="accept / modify" name="accept"/>
-                <input type="submit" value="decline" name="decline"/>
-                <input type="submit" value="cancel" name="canceled"/>
+                <input type="submit" value="accept / modify" name="$bwStr-AtRy-Accept}"/>
+                <input type="submit" value="decline" name="$bwStr-AtRy-Decline}"/>
+                <input type="submit" value="cancel" name="{$bwStr-AtRy-Canceled}"/>
               </xsl:when>
               <xsl:otherwise><!-- normal reply -->
-                <input type="submit" value="ok" name="update"/>
-                <input type="submit" value="cancel" name="canceled"/>
+                <input type="submit" value="ok" name="{$bwStr-AtRy-Update}"/>
+                <input type="submit" value="cancel" name="{$bwStr-AtRy-Canceled}"/>
               </xsl:otherwise>
             </xsl:choose>
           </td>
         </tr>
         <tr>
-          <td class="fieldname">Title:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-AtRy-Title"/></td>
           <td class="fieldval">
             <strong>
               <xsl:choose>
                 <xsl:when test="summary = ''">
-                  <em>no title</em>
+                  <em><xsl:copy-of select="$bwStr-AtRy-NoTitle"/></em><xsl:text> </xsl:text>
                 </xsl:when>
                 <xsl:when test="link != ''">
                   <xsl:variable name="link" select="link"/>
@@ -7573,7 +7236,7 @@
           </td>
         </tr>
         <tr>
-          <td class="fieldname">When:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-AtRy-When"/></td>
           <td class="fieldval">
             <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/><xsl:text> </xsl:text>
             <xsl:if test="start/allday = 'false'">
@@ -7586,7 +7249,7 @@
             </xsl:if>
             <xsl:choose>
               <xsl:when test="start/allday = 'true'">
-                <span class="time"><em>(all day)</em></span>
+                <span class="time"><em><xsl:copy-of select="$bwStr-AtRy-AllDay"/></em></span>
               </xsl:when>
               <xsl:when test="end/longdate != start/longdate">
                 <span class="time"><xsl:value-of select="end/time"/></span>
@@ -7604,7 +7267,7 @@
           </th>-->
         </tr>
         <tr>
-          <td class="fieldname">Where:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-AtRy-Where"/></td>
           <td class="fieldval">
             <xsl:choose>
               <xsl:when test="location/link=''">
@@ -7623,7 +7286,7 @@
           </td>
         </tr>
         <tr>
-          <td class="fieldname">Description:</td>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-AtRy-Description"/></td>
           <td class="fieldval">
             <xsl:call-template name="replace">
               <xsl:with-param name="string" select="description"/>
@@ -7634,7 +7297,7 @@
         </tr>
         <xsl:if test="status !='' and status != 'CONFIRMED'">
           <tr>
-            <td class="fieldname">Status:</td>
+            <td class="fieldname"><xsl:copy-of select="$bwStr-AtRy-Status"/></td>
             <td class="fieldval">
               <xsl:value-of select="status"/>
             </td>
@@ -7662,16 +7325,16 @@
            should be placed.  If no value, then default calendar. -->
       <input type="hidden" name="newCalPath" value="" id="bwNewCalPathField"/>
 
-      <h2>Add Event Reference</h2>
+      <h2><xsl:copy-of select="$bwStr-AERf-AddEventReference"/></h2>
       <table class="common" cellspacing="0">
         <tr>
           <td class="fieldname">
-            Event:
+            <xsl:copy-of select="$bwStr-AERf-Event"/>
           </td>
           <td>
             <xsl:choose>
               <xsl:when test="summary = ''">
-                <em>no title</em>
+                <em><xsl:copy-of select="$bwStr-AERf-NoTitle"/></em><xsl:text> </xsl:text>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:value-of select="summary"/>
@@ -7681,30 +7344,30 @@
         </tr>
         <tr>
           <td class="fieldname">
-            Into calendar:
+            <xsl:copy-of select="$bwStr-AERf-IntoCalendar"/>
           </td>
           <td align="left">
             <span id="bwEventCalDisplay">
-              <em>default calendar</em>
+              <em><xsl:copy-of select="$bwStr-AERf-DefaultCalendar"/></em>
             </span>
             <xsl:call-template name="selectCalForEvent"/>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Affects Free/busy:
+            <xsl:copy-of select="$bwStr-AERf-AffectsFreeBusy"/>
           </td>
           <td align="left">
-            <input type="radio" value="OPAQUE" name="transparency"/> yes <span class="note">(opaque: event status affects your free/busy)</span><br/>
-            <input type="radio" value="TRANSPARENT" name="transparency" checked="checked"/> no <span class="note">(transparent: event status does not affect your free/busy)</span>
+            <input type="radio" value="OPAQUE" name="transparency"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AERf-Yes"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AERf-Opaque"/></span><br/>
+            <input type="radio" value="TRANSPARENT" name="transparency" checked="checked"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AERf-No"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AERf-Transparent"/></span>
           </td>
         </tr>
       </table>
       <table border="0" id="submitTable">
         <tr>
           <td>
-            <input name="submit" type="submit" value="Continue"/>
-            <input name="cancelled" type="submit" value="cancel"/>
+            <input name="submit" type="submit" value="{$bwStr-AERf-Continue}"/>
+            <input name="cancelled" type="submit" value="{$bwStr-AERf-Cancel}"/>
           </td>
         </tr>
       </table>
@@ -7713,27 +7376,27 @@
 
   <!--==== PREFERENCES ====-->
   <xsl:template match="prefs">
-    <h2>Manage Preferences</h2>
+    <h2><xsl:copy-of select="$bwStr-Pref-ManagePrefs"/></h2>
     <ul class="submenu">
-      <li class="selected">general</li>
+      <li class="selected"><xsl:copy-of select="$bwStr-Pref-General"/></li>
       <li>
-        <a href="{$category-initUpdate}">categories</a>
+        <a href="{$category-initUpdate}"><xsl:copy-of select="$bwStr-Pref-Categories"/></a>
       </li>
       <li>
-        <a href="{$location-initUpdate}">locations</a>
+        <a href="{$location-initUpdate}"><xsl:copy-of select="$bwStr-Pref-Locations"/></a>
       </li>
       <li>
-        <a href="{$prefs-fetchSchedulingForUpdate}">scheduling/meetings</a>
+        <a href="{$prefs-fetchSchedulingForUpdate}"><xsl:copy-of select="$bwStr-Pref-SchedulingMeetings"/></a>
       </li>
     </ul>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
     change it without modifying bedework.js -->
     <form name="eventForm" method="post" action="{$prefs-update}" onsubmit="setWorkDays(this)">
       <table class="common">
-        <tr><td colspan="2" class="fill">User settings:</td></tr>
+        <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-UserSettings"/></td></tr>
         <tr>
           <td class="fieldname">
-            User:
+            <xsl:copy-of select="$bwStr-Pref-User"/>
           </td>
           <td>
             <xsl:value-of select="user"/>
@@ -7743,7 +7406,7 @@
         </tr>
         <tr>
           <td class="fieldname">
-            Email address:
+            <xsl:copy-of select="$bwStr-Pref-EmailAddress"/>
           </td>
           <td>
             <xsl:variable name="email" select="email"/>
@@ -7751,10 +7414,10 @@
           </td>
         </tr>
         <tr><td colspan="2">&#160;</td></tr>
-        <tr><td colspan="2" class="fill">Adding events:</td></tr>
+        <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-AddingEvents"/></td></tr>
         <tr>
           <td class="fieldname">
-            Preferred time type:
+            <xsl:copy-of select="$bwStr-Pref-PreferredTimeType"/>
           </td>
           <td>
             <select name="hour24">
@@ -7762,20 +7425,20 @@
                 <xsl:if test="hour24 = 'false'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                12 hour + AM/PM
+                <xsl:copy-of select="$bwStr-Pref-12HourAMPM"/>
               </option>
               <option value="true">
                 <xsl:if test="hour24 = 'true'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                24 hour
+                <xsl:copy-of select="$bwStr-Pref-24Hour"/>
               </option>
             </select>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Preferred end date/time type:
+            <xsl:copy-of select="$bwStr-Pref-PreferredEndDateTimeType"/>
           </td>
           <td>
             <select name="preferredEndType">
@@ -7783,13 +7446,13 @@
                 <xsl:if test="preferredEndType = 'duration'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                duration
+                <xsl:copy-of select="$bwStr-Pref-Duration"/>
               </option>
               <option value="date">
                 <xsl:if test="preferredEndType = 'date'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                date/time
+                <xsl:copy-of select="$bwStr-Pref-DateTime"/>
               </option>
             </select>
           </td>
@@ -7798,7 +7461,7 @@
         <xsl:if test="count(/bedework/myCalendars/calendars//calendar[currentAccess/current-user-privilege-set/privilege/write-content and calType = '1']) &gt; 1">
           <tr>
             <td class="fieldname">
-              Default scheduling calendar:
+              <xsl:copy-of select="$bwStr-Pref-DefaultSchedulingCalendar"/>
             </td>
             <td>
               <xsl:variable name="newCalPath" select="defaultCalendar/path"/>
@@ -7819,10 +7482,10 @@
           </tr>
         </xsl:if>
         <tr><td colspan="2">&#160;</td></tr>
-        <tr><td colspan="2" class="fill">Workday settings:</td></tr>
+        <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-WorkdaySettings"/></td></tr>
         <tr>
           <td class="fieldname">
-            Workdays:
+            <xsl:copy-of select="$bwStr-Pref-Workdays"/>
           </td>
           <td>
             <xsl:variable name="workDays" select="workDays"/>
@@ -7831,49 +7494,49 @@
               <xsl:if test="substring(workDays,1,1) = 'W'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              Sun
+              <xsl:copy-of select="$bwStr-Pref-Sun"/>
             </input>
             <input type="checkbox" name="workDayIndex" value="1">
               <xsl:if test="substring(workDays,2,1) = 'W'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              Mon
+              <xsl:copy-of select="$bwStr-Pref-Mon"/>
             </input>
             <input type="checkbox" name="workDayIndex" value="2">
               <xsl:if test="substring(workDays,3,1) = 'W'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              Tue
+              <xsl:copy-of select="$bwStr-Pref-Tue"/>
             </input>
             <input type="checkbox" name="workDayIndex" value="3">
               <xsl:if test="substring(workDays,4,1) = 'W'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              Wed
+              <xsl:copy-of select="$bwStr-Pref-Wed"/>
             </input>
             <input type="checkbox" name="workDayIndex" value="4">
               <xsl:if test="substring(workDays,5,1) = 'W'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              Thu
+              <xsl:copy-of select="$bwStr-Pref-Thu"/>
             </input>
             <input type="checkbox" name="workDayIndex" value="5">
               <xsl:if test="substring(workDays,6,1) = 'W'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              Fri
+              <xsl:copy-of select="$bwStr-Pref-Fri"/>
             </input>
             <input type="checkbox" name="workDayIndex" value="6">
               <xsl:if test="substring(workDays,7,1) = 'W'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              Sat
+              <xsl:copy-of select="$bwStr-Pref-Sat"/>
             </input>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Workday start:
+            <xsl:copy-of select="$bwStr-Pref-WorkdayStart"/>
           </td>
           <td>
             <select name="workdayStart">
@@ -7885,7 +7548,7 @@
         </tr>
         <tr>
           <td class="fieldname">
-            Workday end:
+            <xsl:copy-of select="$bwStr-Pref-WorkdayEnd"/>
           </td>
           <td>
             <xsl:variable name="workdayEnd" select="workdayEnd"/>
@@ -7897,12 +7560,12 @@
           </td>
         </tr>
         <tr><td colspan="2">&#160;</td></tr>
-        <tr><td colspan="2" class="fill">Display options:</td></tr>
+        <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-DisplayOptions"/></td></tr>
         <xsl:if test="/bedework/views/view[position()=2]">
           <!-- only display if there is more than one to select -->
           <tr>
             <td class="fieldname">
-              Preferred view:
+              <xsl:copy-of select="$bwStr-Pref-PreferredView"/>
             </td>
             <td>
               <xsl:variable name="preferredView" select="preferredView"/>
@@ -7924,7 +7587,7 @@
         </xsl:if>
         <tr>
           <td class="fieldname">
-            Preferred view period:
+            <xsl:copy-of select="$bwStr-Pref-PreferredViewPeriod"/>
           </td>
           <td>
             <select name="viewPeriod">
@@ -7932,44 +7595,44 @@
                 <xsl:if test="preferredViewPeriod = 'dayView'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                day
+                <xsl:copy-of select="$bwStr-Pref-Day"/>
               </option>
               <option value="todayView">
                 <xsl:if test="preferredViewPeriod = 'todayView'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                today
+                <xsl:copy-of select="$bwStr-Pref-Today"/>
               </option>
               <option value="weekView">
                 <xsl:if test="preferredViewPeriod = 'weekView'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                week
+                <xsl:copy-of select="$bwStr-Pref-Week"/>
               </option>
               <option value="monthView">
                 <xsl:if test="preferredViewPeriod = 'monthView'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                month
+                <xsl:copy-of select="$bwStr-Pref-Month"/>
               </option>
               <option value="yearView">
                 <xsl:if test="preferredViewPeriod = 'yearView'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                year
+                <xsl:copy-of select="$bwStr-Pref-Year"/>
               </option>
             </select>
           </td>
         </tr>
         <tr>
           <td class="fieldname">
-            Default timezone:
+            <xsl:copy-of select="$bwStr-Pref-DefaultTimezone"/>
           </td>
           <td>
             <xsl:variable name="tzid" select="/bedework/prefs/tzid"/>
 
             <select name="defaultTzid" id="defaultTzid">
-              <option value="-1">select timezone...</option>
+              <option value="-1"><xsl:copy-of select="$bwStr-Pref-SelectTimezone"/></option>
               <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
               <!--
               <xsl:for-each select="/bedework/timezones/timezone">
@@ -7983,7 +7646,7 @@
             </select>
 
             <div class="desc">
-              Default timezone id for date/time values. This should normally be your local timezone.
+              <xsl:copy-of select="$bwStr-Pref-DefaultTimezoneNote"/>
             </div>
           </td>
         </tr>
@@ -8045,69 +7708,63 @@
       </table>
       <br />
 
-      <input type="submit" name="modPrefs" value="Update"/>
-      <input type="submit" name="cancelled" value="cancel"/>
+      <input type="submit" name="modPrefs" value="{$bwStr-Pref-Update}"/>
+      <input type="submit" name="cancelled" value="{$bwStr-Pref-Cancel}"/>
     </form>
   </xsl:template>
 
   <xsl:template match="schPrefs">
-    <h2>Manage Preferences</h2>
+    <h2><xsl:copy-of select="$bwStr-ScPr-ManagePreferences"/></h2>
     <ul class="submenu">
       <li>
-        <a href="{$prefs-fetchForUpdate}">general</a>
+        <a href="{$prefs-fetchForUpdate}"><xsl:copy-of select="$bwStr-ScPr-General"/></a>
       </li>
       <li>
-        <a href="{$category-initUpdate}">categories</a>
+        <a href="{$category-initUpdate}"><xsl:copy-of select="$bwStr-ScPr-Categories"/></a>
       </li>
       <li>
-        <a href="{$location-initUpdate}">locations</a>
+        <a href="{$location-initUpdate}"><xsl:copy-of select="$bwStr-ScPr-Locations"/></a>
       </li>
-      <li class="selected">scheduling/meetings</li>
+      <li class="selected"><xsl:copy-of select="$bwStr-ScPr-SchedulingMeetings"/></li>
     </ul>
 
     <form name="scheduleAutoProcessingForm" method="post" action="{$prefs-updateSchedulingPrefs}">
       <table class="common">
-        <tr><td colspan="2" class="fill">Scheduling access:</td></tr>
+        <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-ScPr-SchedulingAccess"/></td></tr>
         <tr>
           <td colspan="2">
             <div class="innerBlock">
               <p>
-                <a href="{$calendar-fetch}">Set scheduling access by modifying acls on your inbox and outbox</a>.<br/>
-                Grant "scheduling" access and "read freebusy".
+                <a href="{$calendar-fetch}"><xsl:copy-of select="$bwStr-ScPr-SetScheduleAccess"/></a>.<br/>
+                <xsl:copy-of select="$bwStr-ScPr-GrantScheduleAccess"/>
               </p>
-              <ul>
-                <li>Inbox: users granted scheduling access on your inbox can send you scheduling requests.</li>
-                <li>Outbox: users granted scheduling access on your outbox can schedule on your behalf.</li>
-              </ul>
-              <p class="note">
-                *this approach is temporary and will be improved in upcoming releases.
-              </p>
+              <xsl:copy-of select="$bwStr-ScPr-AccessNote"/>
             </div>
           </td>
         </tr>
-        <tr><td colspan="2" class="fill">Scheduling auto-processing:</td></tr>
+        <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-ScPr-SchedulingAutoProcessing"/></td></tr>
         <tr>
           <td class="fieldname">
-            Respond to scheduling requests:
+            <xsl:copy-of select="$bwStr-ScPr-RespondToSchedReqs"/>
           </td>
           <td>
             <input type="radio" name="scheduleAutoRespond" value="true" onclick="toggleAutoRespondFields(this.value)">
               <xsl:if test="scheduleAutoRespond = 'true'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              true
+              <xsl:copy-of select="$bwStr-ScPr-True"/>
             </input>
             <input type="radio" name="scheduleAutoRespond" value="false" onclick="toggleAutoRespondFields(this.value)">
               <xsl:if test="scheduleAutoRespond = 'false'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              false
+              <xsl:copy-of select="$bwStr-ScPr-False"/>
             </input>
           </td>
         </tr>
         <tr class="subField">
           <td class="fieldname">
-            Accept double-bookings:
+            <xsl:copy-of select="$bwStr-ScPr-AcceptDoubleBookings"/>
           </td>
           <td>
             <input type="radio" name="scheduleDoubleBook" value="true" id="scheduleDoubleBookTrue">
@@ -8117,7 +7774,7 @@
               <xsl:if test="scheduleDoubleBook = 'true'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              true
+              <xsl:copy-of select="$bwStr-ScPr-True"/>
             </input>
             <input type="radio" name="scheduleDoubleBook" value="false" id="scheduleDoubleBookFalse">
               <xsl:if test="scheduleAutoRespond = 'false'">
@@ -8126,13 +7783,13 @@
               <xsl:if test="scheduleDoubleBook = 'false'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-              false
+              <xsl:copy-of select="$bwStr-ScPr-False"/>
             </input>
           </td>
         </tr>
         <tr class="subField">
           <td class="fieldname">
-            Cancel processing:
+            <xsl:copy-of select="$bwStr-ScPr-CancelProcessing"/>
           </td>
           <td>
             <select name="scheduleAutoCancelAction" id="scheduleAutoCancelAction">
@@ -8143,19 +7800,19 @@
                 <xsl:if test="scheduleAutoCancelAction = '0'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                do nothing
+                <xsl:copy-of select="$bwStr-ScPr-DoNothing"/>
               </option>
               <option value="1">
                 <xsl:if test="scheduleAutoCancelAction = '1'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                set event status to CANCELED
+                <xsl:copy-of select="$bwStr-ScPr-SetToCanceled"/>
               </option>
               <option value="2">
                 <xsl:if test="scheduleAutoCancelAction = '2'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                delete the event
+                <xsl:copy-of select="$bwStr-ScPr-DeleteEvent"/>
               </option>
             </select>
           </td>
@@ -8165,7 +7822,7 @@
         </tr>
         <tr>
           <td class="fieldname">
-            Response processing:
+            <xsl:copy-of select="$bwStr-ScPr-ReponseProcessing"/>
           </td>
           <td>
             <select name="scheduleAutoProcessResponses">
@@ -8173,26 +7830,26 @@
                 <xsl:if test="scheduleAutoProcessResponses = '0'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                leave in Inbox for manual processing
+                <xsl:copy-of select="$bwStr-ScPr-LeaveInInbox"/>
               </option>
               <option value="1">
                 <xsl:if test="scheduleAutoProcessResponses = '1'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                process "Accept" responses - leave the rest in Inbox
+                <xsl:copy-of select="$bwStr-ScPr-ProcessAccepts"/>
               </option>
               <option value="2">
                 <xsl:if test="scheduleAutoProcessResponses = '2'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                try to process all responses
+                <xsl:copy-of select="$bwStr-ScPr-TryToProcessAll"/>
               </option>
             </select>
           </td>
         </tr>
       </table>
-      <input type="submit" name="modPrefs" value="Update scheduling auto-processing"/>
-      <input type="submit" name="cancelled" value="cancel"/>
+      <input type="submit" name="modPrefs" value="{$bwStr-ScPr-UpdateSchedulingProcessing}"/>
+      <input type="submit" name="cancelled" value="{$bwStr-ScPr-Cancel}"/>
     </form>
   </xsl:template>
 
@@ -8228,30 +7885,30 @@
     </input>
     <p>
       <input type="text" name="who" size="40"/>
-      <span class="nowrap"><input type="radio" name="whoType" value="user" checked="checked"/>user</span>
-      <span class="nowrap"><input type="radio" name="whoType" value="group"/>group</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="user" checked="checked"/><xsl:copy-of select="$bwStr-ScAF-User"/></span>
+      <span class="nowrap"><input type="radio" name="whoType" value="group"/><xsl:copy-of select="$bwStr-ScAF-Group"/></span>
     </p>
     <p>
       <strong>or</strong>
-      <span class="nowrap"><input type="radio" name="whoType" value="owner"/>owner</span>
-      <span class="nowrap"><input type="radio" name="whoType" value="auth"/>authenticated</span>
-      <span class="nowrap"><input type="radio" name="whoType" value="unauth"/>unauthenticated</span>
-      <span class="nowrap"><input type="radio" name="whoType" value="all"/>all</span>
+      <span class="nowrap"><input type="radio" name="whoType" value="owner"/><xsl:copy-of select="$bwStr-ScAF-Owner"/></span>
+      <span class="nowrap"><input type="radio" name="whoType" value="auth"/><xsl:copy-of select="$bwStr-ScAF-Authenticated"/></span>
+      <span class="nowrap"><input type="radio" name="whoType" value="unauth"/><xsl:copy-of select="$bwStr-ScAF-UnAuthenticated"/></span>
+      <span class="nowrap"><input type="radio" name="whoType" value="all"/><xsl:copy-of select="$bwStr-ScAF-All"/></span>
     </p>
 
     <input type="hidden" name="how" value="S"/>
     <dl>
       <dt>
-        <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="toggleScheduleHow(this.form,this)"/>all scheduling
+        <input type="checkbox" name="howSetter" value="S" checked="checked" onchange="toggleScheduleHow(this.form,this)"/><xsl:copy-of select="$bwStr-ScAF-AllScheduling"/>
       </dt>
       <dd>
-        <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/>scheduling requests<br/>
-        <input type="checkbox" name="howSetter" value="y" checked="checked" disabled="disabled"/>scheduling replies<br/>
-        <input type="checkbox" name="howSetter" value="s" checked="checked" disabled="disabled"/>free-busy requests
+        <input type="checkbox" name="howSetter" value="t" checked="checked" disabled="disabled"/><xsl:copy-of select="$bwStr-ScAF-SchedulingReqs"/><br/>
+        <input type="checkbox" name="howSetter" value="y" checked="checked" disabled="disabled"/><xsl:copy-of select="$bwStr-ScAF-SchedulingReplies"/><br/>
+        <input type="checkbox" name="howSetter" value="s" checked="checked" disabled="disabled"/><xsl:copy-of select="$bwStr-ScAF-FreeBusyReqs"/>
       </dd>
     </dl>
 
-    <input type="submit" name="modPrefs" value="Update"/>
+    <input type="submit" name="modPrefs" value="{$bwStr-ScAF-Update}"/>
   </xsl:template>
 
   <!--==== SEARCH RESULT ====-->
@@ -8259,32 +7916,32 @@
     <h2 class="bwStatusConfirmed">
       <div id="searchFilter">
         <form name="searchForm" method="post" action="{$search}">
-          Search:
+          <xsl:copy-of select="$bwStr-Srch-Search"/>
           <input type="text" name="query" size="15">
             <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
           </input>
-          <input type="submit" name="submit" value="go"/>
-          Limit:
+          <input type="submit" name="submit" value="{$bwStr-Srch-Go}"/>
+          <xsl:copy-of select="$bwStr-Srch-Limit"/>
           <xsl:choose>
             <xsl:when test="/bedework/searchResults/searchLimits = 'beforeToday'">
-              <input type="radio" name="searchLimits" value="fromToday"/>today forward
-              <input type="radio" name="searchLimits" value="beforeToday" checked="checked"/>past dates
-              <input type="radio" name="searchLimits" value="none"/>all dates
+              <input type="radio" name="searchLimits" value="fromToday"/><xsl:copy-of select="$bwStr-Srch-TodayForward"/>
+              <input type="radio" name="searchLimits" value="beforeToday" checked="checked"/><xsl:copy-of select="$bwStr-Srch-PastDates"/>
+              <input type="radio" name="searchLimits" value="none"/><xsl:copy-of select="$bwStr-Srch-AllDates"/>all dates
             </xsl:when>
             <xsl:when test="/bedework/searchResults/searchLimits = 'none'">
-              <input type="radio" name="searchLimits" value="fromToday"/>today forward
-              <input type="radio" name="searchLimits" value="beforeToday"/>past dates
-              <input type="radio" name="searchLimits" value="none" checked="checked"/>all dates
+              <input type="radio" name="searchLimits" value="fromToday"/><xsl:copy-of select="$bwStr-Srch-TodayForward"/>
+              <input type="radio" name="searchLimits" value="beforeToday"/><xsl:copy-of select="$bwStr-Srch-PastDates"/>
+              <input type="radio" name="searchLimits" value="none" checked="checked"/><xsl:copy-of select="$bwStr-Srch-AllDates"/>
             </xsl:when>
             <xsl:otherwise>
-              <input type="radio" name="searchLimits" value="fromToday" checked="checked"/>today forward
-              <input type="radio" name="searchLimits" value="beforeToday"/>past dates
-              <input type="radio" name="searchLimits" value="none"/>all dates
+              <input type="radio" name="searchLimits" value="fromToday" checked="checked"/><xsl:copy-of select="$bwStr-Srch-TodayForward"/>
+              <input type="radio" name="searchLimits" value="beforeToday"/><xsl:copy-of select="$bwStr-Srch-PastDates"/>
+              <input type="radio" name="searchLimits" value="none"/><xsl:copy-of select="$bwStr-Srch-AllDates"/>
             </xsl:otherwise>
           </xsl:choose>
         </form>
       </div>
-      Search Result
+      <xsl:copy-of select="$bwStr-Srch-SearchResult"/>
     </h2>
     <table id="searchTable" cellpadding="0" cellspacing="0">
       <tr>
@@ -8292,10 +7949,10 @@
           <xsl:if test="/bedework/searchResults/numPages &gt; 1">
             <xsl:variable name="curPage" select="/bedework/searchResults/curPage"/>
             <div id="searchPageForm">
-              page:
+              <xsl:copy-of select="$bwStr-Srch-Page"/>
               <xsl:if test="/bedework/searchResults/curPage != 1">
                 <xsl:variable name="prevPage" select="number($curPage) - 1"/>
-                &lt;<a href="{$search-next}&amp;pageNum={$prevPage}">prev</a>
+                &lt;<a href="{$search-next}&amp;pageNum={$prevPage}"><xsl:copy-of select="$bwStr-Srch-Prev"/></a>
               </xsl:if>
               <xsl:text> </xsl:text>
 
@@ -8312,35 +7969,34 @@
               <xsl:choose>
                 <xsl:when test="$curPage != /bedework/searchResults/numPages">
                   <xsl:variable name="nextPage" select="number($curPage) + 1"/>
-                  <a href="{$search-next}&amp;pageNum={$nextPage}">next</a>&gt;
+                  <a href="{$search-next}&amp;pageNum={$nextPage}"><xsl:copy-of select="$bwStr-Srch-Next"/></a>&gt;
                 </xsl:when>
                 <xsl:otherwise>
-                  <span class="hidden">next&gt;</span><!-- occupy the space to keep the navigation from moving around -->
+                  <span class="hidden"><xsl:copy-of select="$bwStr-Srch-Next"/>&gt;</span><!-- occupy the space to keep the navigation from moving around -->
                 </xsl:otherwise>
               </xsl:choose>
             </div>
           </xsl:if>
-          <xsl:value-of select="/bedework/searchResults/resultSize"/>
-          result<xsl:if test="/bedework/searchResults/resultSize != 1">s</xsl:if> returned
-          for <em><xsl:value-of select="/bedework/searchResults/query"/></em>
+          <xsl:value-of select="/bedework/searchResults/resultSize"/><xsl:text> </xsl:text>
+          <xsl:copy-of select="$bwStr-Srch-ResultReturnedFor"/><xsl:text> </xsl:text><em><xsl:value-of select="/bedework/searchResults/query"/></em>
         </th>
       </tr>
       <xsl:if test="/bedework/searchResults/searchResult">
         <tr class="fieldNames">
           <td>
-            relevance
+            <xsl:copy-of select="$bwStr-Srch-Relevance"/>
           </td>
           <td>
-            summary
+            <xsl:copy-of select="$bwStr-Srch-Summary"/>
           </td>
           <td>
-            date &amp; time
+            <xsl:copy-of select="$bwStr-Srch-DateAndTime"/>
           </td>
           <td>
-            calendar
+            <xsl:copy-of select="$bwStr-Srch-Calendar"/>
           </td>
           <td>
-            location
+            <xsl:copy-of select="$bwStr-Srch-Location"/>
           </td>
         </tr>
       </xsl:if>
@@ -8359,7 +8015,7 @@
             <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <xsl:choose>
                 <xsl:when test="event/summary = ''">
-                  <em>no title</em>
+                  <em><xsl:copy-of select="$bwStr-Srch-NoTitle"/></em><xsl:text> </xsl:text>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="event/summary"/>
@@ -8469,8 +8125,8 @@
     <xsl:variable name="minutes" select="substring($timeString,3,2)"/>
     <xsl:variable name="AmPm">
       <xsl:choose>
-        <xsl:when test="$hour &lt; 12">AM</xsl:when>
-        <xsl:otherwise>PM</xsl:otherwise>
+        <xsl:when test="$hour &lt; 12"><xsl:copy-of select="$bwStr-TiFo-AM"/></xsl:when>
+        <xsl:otherwise><xsl:copy-of select="$bwStr-TiFo-PM"/></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
@@ -8496,12 +8152,12 @@
   <!--==== FOOTER ====-->
   <xsl:template name="footer">
     <div id="footer">
-      Demonstration calendar; place footer information here.
+      <xsl:copy-of select="$bwStr-Foot-DemonstrationCalendar"/>
     </div>
     <div id="subfoot">
-      <a href="http://www.bedework.org/">Bedework Website</a> |
-      <a href="?noxslt=yes">show XML</a> |
-      <a href="?refreshXslt=yes">refresh XSLT</a>
+      <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-Foot-BedeworkWebsite"/></a> |
+      <a href="?noxslt=yes"><xsl:copy-of select="$bwStr-Foot-ShowXML"/></a> |
+      <a href="?refreshXslt=yes"><xsl:copy-of select="$bwStr-Foot-RefreshXSLT"/></a>
     </div>
   </xsl:template>
 
