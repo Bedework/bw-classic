@@ -3882,7 +3882,7 @@
                     <th colspan="4"><xsl:copy-of select="$bwStr-AEEF-ExceptionDates"/></th>
                   </tr>
                   <tr class="colNames">
-					<td><xsl:copy-of select="$bwStr-AEEF-Date"/></td>
+          <td><xsl:copy-of select="$bwStr-AEEF-Date"/></td>
                     <td><xsl:copy-of select="$bwStr-AEEF-Time"/></td>
                     <td><xsl:copy-of select="$bwStr-AEEF-TZid"/></td>
                     <td></td>
@@ -5809,7 +5809,7 @@
     </div>
   </xsl:template>
 
-  
+
   <xsl:template match="calendar" mode="subscribe">
     <xsl:variable name="calPath" select="encodedPath"/>
     <xsl:variable name="itemClass">
@@ -7203,8 +7203,8 @@
           <td class="fieldval scheduleActions">
             <xsl:choose>
               <xsl:when test="scheduleMethod='7'"><!-- counter -->
-                <input type="submit" value="accept / modify" name="$bwStr-AtRy-Accept}"/>
-                <input type="submit" value="decline" name="$bwStr-AtRy-Decline}"/>
+                <input type="submit" value="accept / modify" name="{$bwStr-AtRy-Accept}"/>
+                <input type="submit" value="decline" name="{$bwStr-AtRy-Decline}"/>
                 <input type="submit" value="cancel" name="{$bwStr-AtRy-Canceled}"/>
               </xsl:when>
               <xsl:otherwise><!-- normal reply -->
