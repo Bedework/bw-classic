@@ -132,7 +132,7 @@
   <!--  xsl:template name="monthView" -->
 
   <!--  xsl:template match="event" mode="calendarLayout" -->
-  <xsl:variable name="bwStr-EvCG-Canceled">00CANCELED:</xsl:variable>
+  <xsl:variable name="bwStr-EvCG-CanceledColon">00CANCELED:</xsl:variable>
   <xsl:variable name="bwStr-EvCG-Tentative">00TENTATIVE:</xsl:variable> 
   <xsl:variable name="bwStr-EvCG-Cont">00(cont)</xsl:variable>
   <xsl:variable name="bwStr-EvCG-AllDayColon">00all day:</xsl:variable>

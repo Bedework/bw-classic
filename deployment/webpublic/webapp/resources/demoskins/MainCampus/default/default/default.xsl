@@ -1343,7 +1343,7 @@
           </xsl:choose>
         </xsl:variable>
         <span class="{$eventTipClass}">
-          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled"><xsl:copy-of select="$bwStr-EvCG-Canceled"/></span></xsl:if>
+          <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled"><xsl:copy-of select="$bwStr-EvCG-CanceledColon"/></span></xsl:if>
           <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative"><xsl:copy-of select="$bwStr-EvCG-Tentative"/></span></xsl:if>
           <strong><xsl:value-of select="summary"/></strong><br/>
           <xsl:copy-of select="$bwStr-EvCG-Time"/>
