@@ -293,12 +293,6 @@
                   <xsl:when test="/bedework/page='addAlias'">
                     <xsl:call-template name="addAlias"/>
                   </xsl:when>
-                  <xsl:when test="/bedework/page='addPublicAlias'">
-                    <xsl:call-template name="addPublicAlias"/>
-                  </xsl:when>
-                  <xsl:when test="/bedework/page='subInaccessible'">
-                    <xsl:call-template name="subInaccessible"/>
-                  </xsl:when>
                   <xsl:when test="/bedework/page='calendarList' or
                                   /bedework/page='calendarDescriptions' or
                                   /bedework/page='displayCalendar' or
