@@ -1523,6 +1523,7 @@
     </xsl:variable>
     <xsl:variable name="calendarColor">
       <xsl:choose>
+        <xsl:when test="color and color != ''"><xsl:value-of select="color"/></xsl:when>
         <xsl:when test="xproperties/X-BEDEWORK-ALIAS/values/text = /bedework/myCalendars//calendar/path"><xsl:value-of select="/bedework/myCalendars//calendar[path=xproperties/X-BEDEWORK-ALIAS/values/text]/color"/></xsl:when>
         <xsl:when test="calendar/color != ''"><xsl:value-of select="calendar/color"/></xsl:when>
       </xsl:choose>
@@ -5184,9 +5185,9 @@
             <input type="hidden" value="true" name="calendarCollection"/>
             <!-- type is defaulted to calendar.  It is changed when a typeSwitch is clicked. -->
             <input type="hidden" value="calendar" name="type" id="bwCalType"/>
-            <input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');changeClass('bwColorField','visible');setField('bwCalType',this.value);"/> Calendar
-            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');changeClass('bwColorField','invisible');bwUpdateColor('','bwCalColor');setField('bwCalType',this.value);"/> Folder
-            <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');changeClass('bwColorField','invisible');bwUpdateColor('','bwCalColor');setField('bwCalType',this.value);"/> Subscription
+            <input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Calendar
+            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/> Folder
+            <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');setField('bwCalType',this.value);"/> Subscription
           </td>
         </tr>
       </table>
@@ -5359,21 +5360,18 @@
             </textarea>
           </td>
         </tr>
-        <xsl:if test="isSubscription='false'">
-          <!-- we can't color subscriptions yet -->
-          <tr>
-            <th>Color:</th>
-            <td>
-              <input type="text" name="calendar.color" id="bwCalColor" size="7">
-                <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
-                <xsl:attribute name="style">background-color: <xsl:value-of select="color"/>;color: black;</xsl:attribute>
-              </input>
-              <xsl:call-template name="colorPicker">
-                <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
-              </xsl:call-template>
-            </td>
-          </tr>
-        </xsl:if>
+        <tr>
+          <th>Color:</th>
+          <td>
+            <input type="text" name="calendar.color" id="bwCalColor" size="7">
+              <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
+              <xsl:attribute name="style">background-color: <xsl:value-of select="color"/>;color: black;</xsl:attribute>
+            </input>
+            <xsl:call-template name="colorPicker">
+              <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
+            </xsl:call-template>
+          </td>
+        </tr>
         <tr>
           <th>Display:</th>
           <td>
@@ -5973,7 +5971,7 @@
             </td>
           </tr>
           <tr>
-            <td class="fieldname">Style:</td>
+            <td class="fieldname">Color:</td>
             <td>
               <select name="calendar.color">
                 <option value="default">default</option>
@@ -6086,7 +6084,7 @@
           </td>
         </tr>
         <tr>
-          <td class="fieldname">Style:</td>
+          <td class="fieldname">Color:</td>
           <td>
             <xsl:variable name="subStyle" select="style"/>
             <select name="subscription.style">
