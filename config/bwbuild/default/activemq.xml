@@ -130,8 +130,10 @@
 
     <!-- The store and forward broker networks ActiveMQ will listen to -->
     <networkConnectors>
-      <!-- by default just auto discover the other brokers -->
+      <!-- by default just auto discover the other brokers
+         Configured out for the time being - causes a lot of error messages
       <networkConnector name="default-nc" uri="multicast://default" />
+       -->
       <!--
         Example of a static configuration: <networkConnector name="host1
         and host2" uri="static://(tcp://host1:61616,tcp://host2:61616)"/>
