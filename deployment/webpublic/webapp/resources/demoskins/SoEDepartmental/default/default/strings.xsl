@@ -46,7 +46,6 @@
   <xsl:variable name="bwStr-SrcB-ToggleListCalView">00toggle list/calendar view</xsl:variable>
   <xsl:variable name="bwStr-SrcB-ToggleSummDetView">00toggle summary/detailed view</xsl:variable>
   <xsl:variable name="bwStr-SrcB-TopicalArea">00Topical Area:</xsl:variable>
-  <xsl:variable name="bwStr-SrcB-CurrentSearch">00Current search:</xsl:variable>
 
   <!--:  xsl:template match="event" -->
   <xsl:variable name="bwStr-SgEv-GenerateLinkToThisEvent">00generate link to this event</xsl:variable>
@@ -77,7 +76,6 @@
   <xsl:variable name="bwStr-SgEv-DownloadThisInstance">00download this instance (recurring event)</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Task">00Task</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Meeting">00Meeting</xsl:variable>
-  <xsl:variable name="bwStr-SgEv-Event">00Event</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Recurring">00Recurring</xsl:variable>
   <!--public, private -->
   <xsl:variable name="bwStr-SgEv-Organizer">00organizer:</xsl:variable>
