@@ -592,8 +592,8 @@
   <xsl:variable name="bwStr-DeVC-WillBeRemoved">00will be removed.</xsl:variable>
   <xsl:variable name="bwStr-DeVC-BeForewarned">00Be forewarned: if caching is enabled, removing views from a production system can cause the public interface to throw errors until the cache is flushed (a few minutes).</xsl:variable>
   <xsl:variable name="bwStr-DeVC-Continue">00Continue?</xsl:variable>
-  <xsl:variable name="bwStr-DeVC-Continue">00Yes: Remove View</xsl:variable>
-  <xsl:variable name="bwStr-DeVC-Continue">00No: Cancel</xsl:variable>
+  <xsl:variable name="bwStr-DeVC-YesRemoveView">00Yes: Remove View</xsl:variable>
+  <xsl:variable name="bwStr-DeVC-Cancel">00No: Cancel</xsl:variable>
 
   <!--  xsl:template name="upload" -->
   <xsl:variable name="bwStr-Upld-UploadICalFile">00Upload iCAL File</xsl:variable>

@@ -5320,8 +5320,8 @@
       <input type="hidden" name="name">
         <xsl:attribute name="value"><xsl:value-of select="/bedework/currentView/name"/></xsl:attribute>
       </input>
-      <input type="submit" name="delete" value="{$bwStr-DeVC-Continue}"/>
-      <input type="submit" name="cancelled" value="{$bwStr-DeVC-Continue}"/>
+      <input type="submit" name="delete" value="{$bwStr-DeVC-YesRemoveView}"/>
+      <input type="submit" name="cancelled" value="{$bwStr-DeVC-Cancel"/>
     </form>
 
   </xsl:template>
