@@ -21,7 +21,6 @@
   <xsl:variable name="bwStr-Head-LogOut">00log out</xsl:variable>
   <xsl:variable name="bwStr-Head-MainMenu">00Main Menu</xsl:variable>
   <xsl:variable name="bwStr-Head-PendingEvents">00Pending Events</xsl:variable>
-  <xsl:variable name="bwStr-Head-CalendarSuite">00Calendar Suite</xsl:variable>
   <xsl:variable name="bwStr-Head-Users">00Users</xsl:variable>
   <xsl:variable name="bwStr-Head-System">00System</xsl:variable>
 
@@ -187,7 +186,7 @@
   <xsl:variable name="bwStr-AEEF-Repeating">00repeating</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Forever">00forever</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Until">00until</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-Time">00time(s)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Times">00time(s)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Frequency">00Frequency:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-None">00none</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Daily">00daily</xsl:variable>
@@ -221,12 +220,8 @@
   <xsl:variable name="bwStr-AEEF-Confirmed">00confirmed</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Tentative">00tentative</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Canceled">00canceled</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-AffectsFreeBusy">00Affects free/busy:</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-Yes">00yes</xsl:variable>
   <xsl:variable name="bwStr-AEEF-YesOpaque">00yes (opaque)</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-Transparent">00(transparent: event status does not affect your free/busy)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-NoTransparent">00no (transparent)</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-Opaque">00(opaque: event status affects your free/busy)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Description">00Description:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EnterPertientInfo">00Enter all pertinent information, including the academic titles of all speakers and/or participants.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-CharsMax">00characters max.</xsl:variable>
@@ -306,7 +301,6 @@
   <xsl:variable name="bwStr-DsEv-EventInfo">00Event Information</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Title">00Title:</xsl:variable>
   <xsl:variable name="bwStr-DsEv-When">00When:</xsl:variable>
-  <xsl:variable name="bwStr-DsEv-AllDay">00(all day)</xsl:variable>
   <xsl:variable name="bwStr-DsEv-TopicalAreas">00Topical Areas:</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Description">00Description:</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Price">00Price:</xsl:variable>
@@ -365,8 +359,6 @@
   <xsl:variable name="bwStr-MoLo-Optional">00(optional)</xsl:variable>
   <xsl:variable name="bwStr-MoLo-LocationURL">00Location's URL:</xsl:variable>
   <xsl:variable name="bwStr-MoLo-DeleteLocation">00Delete Location</xsl:variable>
-  <xsl:variable name="bwStr-MoLo-UpdateLocation">00Update Location</xsl:variable>
-  <xsl:variable name="bwStr-MoLo-AddLocation">00Add Location</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Cancel">00Cancel</xsl:variable>
   
   <!--  xsl:template name="deleteLocationConfirm" -->
@@ -584,7 +576,7 @@
   <xsl:variable name="bwStr-ModV-AvailableSubscriptions">00Available subscriptions:</xsl:variable>
   <xsl:variable name="bwStr-ModV-ActiveSubscriptions">00Active subscriptions:</xsl:variable>
   <xsl:variable name="bwStr-ModV-DeleteView">00Delete View</xsl:variable>
-  <xsl:variable name="bwStr-ModV-DeleteView">00Return to Views Listing</xsl:variable>
+  <xsl:variable name="bwStr-ModV-ReturnToViewsListing">00Return to Views Listing</xsl:variable>
 
   <!--  xsl:template name="deleteViewConfirm" -->
   <xsl:variable name="bwStr-DeVC-RemoveView">00Remove View?</xsl:variable>
@@ -811,7 +803,7 @@
   <xsl:variable name="bwStr-AdFi-Cancel">00Cancel</xsl:variable>
   <xsl:variable name="bwStr-AdFi-CurrentFilters">00Current Filters</xsl:variable>
   <xsl:variable name="bwStr-AdFi-FilterName">00Filter Name</xsl:variable>
-  <xsl:variable name="bwStr-AdFi-Description">00Description/Definition</xsl:variable>
+  <xsl:variable name="bwStr-AdFi-DescriptionDefinition">00Description/Definition</xsl:variable>
   <xsl:variable name="bwStr-AdFi-Delete">00Delete</xsl:variable>
   <xsl:variable name="bwStr-AdFi-ShowHideFilterDef">00show/hide filter definition</xsl:variable>
   <xsl:variable name="bwStr-AdFi-DeleteFilter">00delete filter</xsl:variable>

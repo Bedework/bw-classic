@@ -1861,7 +1861,7 @@
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:value-of select="form/recurrence/count"/>
-                          <xsl:copy-of select="$bwStr-AEEF-Time"/>
+                          <xsl:copy-of select="$bwStr-AEEF-Times"/>
                         </xsl:otherwise>
                       </xsl:choose>
                     </div>
@@ -5299,7 +5299,7 @@
           <input type="hidden" name="delete" value="yes"/>
         </form>
       </div>
-      <input type="button" name="return" value="{$bwStr-ModV-DeleteView}" onclick="javascript:location.replace('{$view-fetch}')"/>
+      <input type="button" name="return" value="{$bwStr-ModV-ReturnToViewsListing}" onclick="javascript:location.replace('{$view-fetch}')"/>
     </div>
   </xsl:template>
 
@@ -6585,7 +6585,7 @@
       <table id="filterTable">
         <tr>
           <th><xsl:copy-of select="$bwStr-AdFi-FilterName"/></th>
-          <th><xsl:copy-of select="$bwStr-AdFi-Description"/></th>
+          <th><xsl:copy-of select="$bwStr-AdFi-DescriptionDefinition"/></th>
           <th><xsl:copy-of select="$bwStr-AdFi-Delete"/></th>
         </tr>
         <xsl:for-each select="/bedework/filters/filter">
