@@ -110,6 +110,7 @@
   <xsl:variable name="bwStr-LsVw-Add">00add...</xsl:variable>
   <xsl:variable name="bwStr-LsVw-AllDay">00all day</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Today">00today</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-AddEventToMyCalendar">00Add event to MyCalendar</xsl:variable>
   <xsl:variable name="bwStr-LsVw-DownloadEvent">00Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Description">00description</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Canceled">00CANCELED:</xsl:variable>
