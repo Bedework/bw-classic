@@ -178,7 +178,7 @@
       <filterset refid="property.filters" />
     </copy>
 
-  	<!-- Temp do it again -->
+    <!-- Temp do it again -->
     <mkdir dir="${app.dest.properties.old}" />
 
     <copy tofile="${app.dest.properties.old}/options.xml"
@@ -198,6 +198,9 @@
     <copy tofile="${app.dest.classes}/servlet.properties" file="${app.sou.properties}">
       <filterset refid="property.filters" />
     </copy>
+
+    <copy tofile="${app.dest.classes}/sysevents.properties"
+          file="${org.bedework.config.sysevents.properties}" />
 
     <!-- ===============================================================
          Add hibernate jars and property files from calendar api.
@@ -249,10 +252,10 @@ ${propval.app.war.name}.context=${propval.app.context.root}
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-api}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-log4j12}" />
 
-  	<!-- jms support -->
+    <!-- jms support -->
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.activemq-core}" />
     <copy todir="${app.dest.lib}"
-    	    file="${org.bedework.appjar.geronimo-j2ee-management_1.0_spec}" />
+          file="${org.bedework.appjar.geronimo-j2ee-management_1.0_spec}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jms}" />
 
     <antcall target="bexchange-stuff" inheritRefs="true" />

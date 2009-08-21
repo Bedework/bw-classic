@@ -133,8 +133,8 @@
       <filterset refid="property.filters" />
     </copy>
 
-    <copy tofile="${app.dest.classes}/jndi.properties"
-          file="${org.bedework.config.jndi.properties}" />
+    <copy tofile="${app.dest.classes}/sysevents.properties"
+          file="${org.bedework.config.sysevents.properties}" />
 
     <copy todir="${app.dest.classes}" overwrite="yes" >
       <fileset refid="org.bedework.extra.resources" />
