@@ -24,14 +24,25 @@ echo ""
 PRG="$0"
 
 usage() {
-  echo "  $PRG [ -quickstart | -bwchome path ] [ -bwc configname ] [ -offline } [ target ] "
+  echo "  $PRG [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline } [ target ] "
   echo ""
-  echo "     -quickstart  Use the current quickstart configurations "
-  echo "     -bwchome     Specify path to configurations"
-  echo "     -bwc         Specify configuration name"
+  echo " where:"
+  echo "   CONFIG-SOURCE optionally defines the location of configurations and"
+  echo "                 is one or none of  "
+  echo "     -quickstart    to use the configurations within the quickstart"
+  echo "     -bwchome path  to specify the location of the bwbuild directory"
+  echo "   The default is to look in the user home for the bwbuild directory."
+  echo ""
+  echo "   CONFIG optionally defines the configuration to build"
+  echo "      -bwc configname"
+  echo ""
   echo "     -offline     Build without attempting to retrieve library jars"
-  echo "     -carddav     Target is for the CardDAV build, otherwise it's a calendar build"
   echo "     target       Ant target to execute"
+  echo ""
+  echo "   PROJECT optionally defines the package to build and is none or more of"
+  echo "     -carddav     Target is for the CardDAV build, otherwise it's a calendar build"
+  echo "     -naming      Target is for the abstract naming api"
+  echo "     The default is a calendar build"
   echo ""
   echo "   Invokes ant to build or deploy the Bedework system. Uses a configuration"
   echo "   directory which contains one directory per configuration."
@@ -71,7 +82,14 @@ bwc=default
 BWCONFIG=
 offline=
 quickstart=
+
+# Projects we will build
+pkgdefault=yes
 carddav=
+caldav=
+webdav=
+bedework=
+naming=
 
 if [ "$1" = "" ] ; then
   usage
@@ -92,10 +110,6 @@ do
       quickstart="yes"
       shift
       ;;
-    -carddav)
-      carddav="yes"
-      shift
-      ;;
     -usage | -help | -? | ?)
       usage
       exit
@@ -108,6 +122,27 @@ do
       ;;
     -offline)
       offline="-Dorg.bedework.offline.build=yes"
+      shift
+      ;;
+# Projects
+    -carddav)
+      carddav="yes"
+      pkgdefault=
+      shift
+      ;;
+    -caldav)
+      caldav="yes"
+      pkgdefault=
+      shift
+      ;;
+    -webdav)
+      webdav="yes"
+      pkgdefault=
+      shift
+      ;;
+    -naming)
+      naming="yes"
+      pkgdefault=
       shift
       ;;
     -*)
@@ -148,9 +183,20 @@ CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
 CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/build/quickstart/antlib
 CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/applib/log4j-1.2.8.jar
 
-
 if [ "$carddav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework-carddav
+fi
+
+if [ "$naming" != "" ] ; then
+  cd $QUICKSTART_HOME/bwnaming
+fi
+
+if [ "$webdav" != "" ] ; then
+  cd $QUICKSTART_HOME/bedework/projects/webdav
+fi
+
+if [ "$caldav" != "" ] ; then
+  cd $QUICKSTART_HOME/bedework/projects/caldav
 fi
 
 $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $*
