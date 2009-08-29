@@ -209,6 +209,10 @@
      <priority value="DEBUG"/>
    </category>
 
+   <category name="org.bedework.calcore.AccessUtil">
+     <priority value="INFO"/>
+   </category>
+
    <!-- Set rpi categories -->
    <category name="edu.rpi">
      <priority value="DEBUG"/>
