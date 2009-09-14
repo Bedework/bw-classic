@@ -27,6 +27,11 @@
    therefore not currently interchangable between apps.  This will be normalized
    in the coming versions, but for now don't try to exchange them. */
 
+/* Global variables / properties */
+// URLs
+var timezoneUrl = "/tzsvr/?names";
+var carddavUrl = "/ucarddav/find";
+
 var debug = false; // very basic debugging for now
 
 /* COMMON and GENERAL FUNCTIONS */

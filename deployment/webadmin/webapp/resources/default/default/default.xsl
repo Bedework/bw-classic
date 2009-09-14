@@ -354,6 +354,11 @@
             </script>
           </xsl:if>
         </xsl:if>
+        <xsl:if test="/bedework/page='calSuitePrefs'">
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
+          <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
+        </xsl:if>
         <xsl:if test="/bedework/page='upload' or
                       /bedework/page='selectCalForEvent' or
                       /bedework/page='deleteEventConfirmPending' or
@@ -1560,7 +1565,7 @@
                     <select name="eventEndDate.minute">
                       <xsl:copy-of select="form/end/dateTime/minute/select/*"/>
                     </select>
-                    <xsl:if test="form/end/ampm">
+                    <xsl:if test="form/end/dateTime/ampm/select">
                       <select name="eventEndDate.ampm">
                         <xsl:copy-of select="form/end/dateTime/ampm/select/*"/>
                       </select>
@@ -2298,8 +2303,8 @@
                         </tr>
                         <tr class="colNames">
                           <td><xsl:copy-of select="$bwStr-AEEF-Date"/></td>
-	                      <td><xsl:copy-of select="$bwStr-AEEF-TIME"/></td>
-	                      <td><xsl:copy-of select="$bwStr-AEEF-TZid"/></td>
+                        <td><xsl:copy-of select="$bwStr-AEEF-TIME"/></td>
+                        <td><xsl:copy-of select="$bwStr-AEEF-TZid"/></td>
                           <td></td>
                         </tr>
                       </table>
@@ -5951,6 +5956,61 @@
                 </xsl:for-each>
               </ul>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <xsl:copy-of select="$bwStr-CSPf-PreferredTimeType"/>
+          </th>
+          <td>
+            <select name="hour24">
+              <option value="false">
+                <xsl:if test="/bedework/prefs/hour24 = 'false'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-12Hour"/>
+              </option>
+              <option value="true">
+                <xsl:if test="/bedework/prefs/hour24 = 'true'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-24Hour"/>
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <xsl:copy-of select="$bwStr-CSPf-PreferredEndDateTimeType"/>
+          </th>
+          <td>
+            <select name="preferredEndType">
+              <option value="duration">
+                <xsl:if test="/bedework/prefs/preferredEndType = 'duration'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-Duration"/>
+              </option>
+              <option value="date">
+                <xsl:if test="/bedework/prefs/preferredEndType = 'date'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-DateTime"/>
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <xsl:copy-of select="$bwStr-CSPf-DefaultTimezone"/>
+          </th>
+          <td>
+            <xsl:variable name="tzid" select="/bedework/prefs/tzid"/>
+
+            <select name="defaultTzid" id="defaultTzid">
+              <option value="-1"><xsl:copy-of select="$bwStr-CSPf-SelectTimezone"/></option>
+            </select>
+
           </td>
         </tr>
         <!--
