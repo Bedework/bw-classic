@@ -348,7 +348,7 @@
       <xsl:when test="id='org.bedework.exception.filter.mixedlogicaloperators'">
         Filter error: Cannot mix logical operators
       </xsl:when>
-      <xsl:when test="id='org.bedework.exception.filter.unknown.property'">
+      <xsl:when test="id='org.bedework.exception.unknown.property'">
         Filter error: unknown property <em><xsl:value-of select="param"/></em>.
       </xsl:when>
       <xsl:when test="id='org.bedework.exception.filter.badproperty'">
