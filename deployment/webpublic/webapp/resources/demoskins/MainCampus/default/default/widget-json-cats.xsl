@@ -42,7 +42,7 @@
   <xsl:template match='/'>
     {'bwCategories': {
         'categories': [
-            <xsl:apply-templates select="/bedework/events//event"/>
+            <xsl:apply-templates select="/bedework/categories/category"/>
         ]
     }}
   </xsl:template>
