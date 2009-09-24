@@ -37,7 +37,9 @@
     to the maximum extent the law permits. -->
 
   <!-- DEFINE INCLUDES -->
-  <!-- none -->
+  <!-- util.xsl belongs in bedework-common on your application server for use
+       by all stylesheets: -->
+  <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
 
   <xsl:template match='/'>
     {'bwCategories': {
@@ -61,8 +63,8 @@
     <!-- finally, produce the JSON output -->
             {
                 'keyword' : '<xsl:value-of select="$strippedKeyword"/>',
-                'id' : '<xsl:with-param name="str" select="id"/>',
-                'creator' : '<xsl:value-of select="creator"/>',
+                'id' : '<xsl:value-of select="id"/>',
+                'creator' : '<xsl:value-of select="creator"/>'
             }<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>
 </xsl:stylesheet>
