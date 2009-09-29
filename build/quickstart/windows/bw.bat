@@ -55,7 +55,7 @@ GOTO branch
 
 IF NOT "%quickstart%empty" == "empty" GOTO checkBwConfig
 IF NOT "%BWCONFIGS%empty" == "empty" GOTO DoneQB
-SET BWCONFIGS=%HOME%\bwbuild
+SET BWCONFIGS=%HOMEPATH%\bwbuild
 GOTO doneQB
 
 :checkBwConfig
