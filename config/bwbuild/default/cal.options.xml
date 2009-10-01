@@ -71,21 +71,19 @@
             <defaultDomain>mysite.edu</defaultDomain>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <providerUrl>ldap://localhost/</providerUrl>
+            <providerUrl>ldap://localhost:10389</providerUrl>
             <groupContextDn>ou=groups, dc=bedework, dc=org</groupContextDn>
-            <groupMemberAttr>uniqueMember</groupMemberAttr>
+            <groupMemberAttr>member</groupMemberAttr>
             <userDnPrefix>uid=</userDnPrefix>
             <userDnSuffix>,ou=accounts, dc=bedework, dc=org</userDnSuffix>
             <groupDnPrefix>cn=</groupDnPrefix>
-            <groupDnSuffix>,ou=groups, dc=bedework, dc=org</groupDnSuffix>
+            <groupDnSuffix>,ou=groups,dc=bedework, dc=org</groupDnSuffix>
             <debug>true</debug>
 
-            <!--
             <securityAuthentication>simple</securityAuthentication>
             <securityProtocol>NONE</securityProtocol>
-            <authDn></authDn>
-            <authPw></authPw>
-             -->
+            <authDn>uid=admin,ou=system</authDn>
+            <authPw>secret</authPw>
           </user-ldap-group>
 
           <testmail classname="org.bedework.mail.MailConfigProperties">
@@ -150,10 +148,10 @@
         <userauthClass>org.bedework.calsvc.directory.UserAuthUWDbImpl</userauthClass>
         <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
         <admingroupsClass>org.bedework.calsvc.directory.AdminGroupsDbImpl</admingroupsClass>
-        <!--
         <usergroupsClass>org.bedework.calsvc.directory.UserGroupsLdapImpl</usergroupsClass>
-        -->
+        <!--
         <usergroupsClass>org.bedework.calsvc.directory.GroupsDbImpl</usergroupsClass>
+        -->
 
         <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
 
