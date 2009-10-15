@@ -42,8 +42,8 @@
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
 
   <xsl:template match='/'>
-    {'bwCategories': {
-        'categories': [
+    {"bwCategories": {
+        "categories": [
             <xsl:apply-templates select="/bedework/categories/category"/>
         ]
     }}
@@ -62,9 +62,9 @@
     <xsl:variable name="strippedKeyword" select='translate($aposStrippedKeyword,"&#xA;"," ")'/>
     <!-- finally, produce the JSON output -->
             {
-                'keyword' : '<xsl:value-of select="$strippedKeyword"/>',
-                'id' : '<xsl:value-of select="id"/>',
-                'creator' : '<xsl:value-of select="creator"/>'
+                "keyword" : "<xsl:value-of select="$strippedKeyword"/>",
+                "id" : "<xsl:value-of select="id"/>",
+                "creator" : "<xsl:value-of select="creator"/>"
             }<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>
 </xsl:stylesheet>
