@@ -23,7 +23,7 @@
               name="asm-attrs" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="asm" />
+              name="asm" version="3.2" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="cglib" version="2.1.3" />
