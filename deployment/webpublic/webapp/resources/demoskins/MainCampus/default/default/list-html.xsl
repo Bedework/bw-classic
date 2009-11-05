@@ -87,6 +87,9 @@
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
 
+  <!-- Other generally useful global variables -->
+  <xsl:variable name="privateCal">/ucal</xsl:variable>
+
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
     <html lang="en">
@@ -400,12 +403,11 @@
           <td class="fieldval">
             <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
               <xsl:variable name="calUrl" select="values/text"/>
-              <a href="{$setSelection}&amp;virtualPath={$calUrl}&amp;setappvar=curCollection({$calUrl})">
                 <xsl:call-template name="substring-afterLastInstanceOf">
                   <xsl:with-param name="string" select="values/text"/>
                   <xsl:with-param name="char">/</xsl:with-param>
                 </xsl:call-template>
-              </a><xsl:if test="position()!=last()">, </xsl:if>
+              <xsl:if test="position()!=last()">, </xsl:if>
             </xsl:for-each>
           </td>
         </tr>
