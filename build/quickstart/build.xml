@@ -236,6 +236,16 @@
   </target>
 
   <!-- =================================================================
+       The "run.test" target builds and runs tests
+       ================================================================= -->
+
+  <target name="run.test" depends="init"
+          description="builds and runs the tests">
+    <ant antfile="${bedework.build.file}" inheritrefs="true"
+           target="run.test" />
+  </target>
+
+  <!-- =================================================================
        The "start" target starts all quickstart components
        ================================================================= -->
 

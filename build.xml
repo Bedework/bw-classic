@@ -804,19 +804,19 @@ hibernate.jdbc.batch_size=0
 
   <target name="bld.test" depends="init"
           description="Build and run tests">
-    <ant antfile="${calendar.build.file}" inheritrefs="true"
+    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
          target="bld.test" />
   </target>
 
   <target name="run.test" depends="init"
           description="Build and run tests">
-    <ant antfile="${calendar.build.file}" inheritrefs="true"
+    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
          target="run.test" />
   </target>
 
   <target name="run.test.debug" depends="init"
           description="Build and run tests">
-    <ant antfile="${calendar.build.file}" inheritrefs="true"
+    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
          target="run.test"  >
       <property name="org.bedework.debug" value="yes" />
     </ant>
