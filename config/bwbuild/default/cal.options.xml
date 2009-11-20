@@ -282,6 +282,41 @@
           <calSuite>MainCampus</calSuite>
         </Events>
 
+
+        <!-- ==================================================================
+                          Feed Service
+             ================================================================== -->
+        <Feeder classname="org.bedework.calfacade.configs.ClientConfig">
+          <cachingOn>true</cachingOn>
+          <cachePrefix>bwfeeder</cachePrefix>
+
+          <autoCreateContacts>false</autoCreateContacts>
+          <autoDeleteContacts>false</autoDeleteContacts>
+          <autoCreateLocations>false</autoCreateLocations>
+          <autoDeleteLocations>false</autoDeleteLocations>
+
+          <appType>feeder</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>true</guestMode>
+
+          <!-- Default value for 24 hour mode -->
+          <hour24>true</hour24>
+
+          <!-- Default value for minute increments -->
+          <minIncrement>5</minIncrement>
+
+          <showYearData>false</showYearData>
+
+          <logPrefix>Feeder</logPrefix>
+
+          <appRoot>http://localhost:8080/calfeedrsrc</appRoot>
+
+          <refreshAction>setup.do</refreshAction>
+          <refreshInterval>300</refreshInterval>
+
+          <calSuite>MainCampus</calSuite>
+        </Feeder>
+
         <!-- ==================================================================
                           Demo departmental Public web client SoEDept
              ================================================================== -->
