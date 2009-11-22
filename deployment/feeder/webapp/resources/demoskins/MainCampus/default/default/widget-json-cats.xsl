@@ -42,7 +42,15 @@
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
 
   <xsl:template match='/'>
+	
+	<xsl:choose>
+      <xsl:when test="/bedework/appvar/key = 'objName'">
+    var <xsl:value-of select="/bedework/appvar[key='objName']/value"/> = {"bwCategories": {
+      </xsl:when>
+      <xsl:otherwise>
     {"bwCategories": {
+      </xsl:otherwise>
+    </xsl:choose>	
         "categories": [
             <xsl:apply-templates select="/bedework/categories/category"/>
         ]

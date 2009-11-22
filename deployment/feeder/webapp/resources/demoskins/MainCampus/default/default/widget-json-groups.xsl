@@ -42,7 +42,14 @@
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
   
   <xsl:template match='/'>
+	<xsl:choose>
+      <xsl:when test="/bedework/appvar/key = 'objName'">
+    var <xsl:value-of select="/bedework/appvar[key='objName']/value"/> = {"bwGroups": {
+      </xsl:when>
+      <xsl:otherwise>
     {"bwGroups": {
+      </xsl:otherwise>
+    </xsl:choose>
         "groups": [
             <xsl:apply-templates select="/bedework/groups/group"/>
         ]
