@@ -22,9 +22,6 @@
        parameter "setappvar=filter(somekey:somevalue)".  Group (creator) and
        location filters are included here, but you can add more under line 82.
 
-       The next ten days filtered by a group (creator):
-       <script src="http://localhost:8080/cal/main/listEvents.do?days=10&setappvar=filter(creator:agrp_Library)&skinName=json-list-src" type="text/javascript"></script>
-
        Object name: The json object name can be passed by adding
        "setappvar=objName(myobjname)" to the query string, allowing multiple
        json object calls on the same html page.  If objName is not supplied,
@@ -63,9 +60,9 @@
        by all stylesheets: 
   -->
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
-
   <xsl:variable name="urlprefix" select="/bedework/urlprefix"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
+  
   <xsl:template match='/'>
     <xsl:choose>
       <xsl:when test="/bedework/appvar/key = 'objName'">
@@ -82,24 +79,86 @@
               <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
               <!-- Define filters here: -->
               <xsl:choose>
-                <xsl:when test="$filterName = 'creator'">
-                  <xsl:apply-templates select="/bedework/events//event[creator = $filterVal]"/>
-                </xsl:when>
-                <xsl:when test="$filterName = 'location'">
-                  <xsl:apply-templates select="/bedework/events//event[location/address = $filterVal]"/>
+                <xsl:when test="$filterName = 'grpAndCats'">
+	              <xsl:call-template name="processGrpAndCats"><xsl:with-param name="list" select="$filterVal"/></xsl:call-template>
+                  <xsl:apply-templates select="/bedework/events/event[creator = $filterVal]"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <!-- Filter name not defined? Turn off filtering. -->
-                  <xsl:apply-templates select="/bedework/events//event"/>
+                  <xsl:apply-templates select="/bedework/events/event"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:apply-templates select="/bedework/events//event"/>
+              <xsl:apply-templates select="/bedework/events/event"/>
             </xsl:otherwise>
           </xsl:choose>
         ]
     }}
+  </xsl:template>
+
+  <xsl:template name="processGrpAndCats">
+    <xsl:param name="list" /> 
+    <xsl:variable name="group" select="substring-before($list, '~')" /> 
+    <xsl:variable name="remaining" select="substring-after($list, '~')" />
+    <xsl:call-template name="processCategories">
+	  <xsl:with-param name="group" select="$group" />
+      <xsl:with-param name="list" select="$remaining" /> 
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template name="processCategories">
+	<xsl:param name="group" />
+    <xsl:param name="list" /> 
+    <xsl:choose>
+	  <xsl:when test="contains($list, '~')">
+		<!-- Grab the first off the list and process -->
+	  	<xsl:variable name="catid" select="substring-before($list, '~')" /> 
+	    <xsl:variable name="remaining" select="substring-after($list, '~')" />
+	    <xsl:choose>
+		  <xsl:when test="$group = 'all'">
+	        <xsl:apply-templates select="/bedework/events/event[categories/category/id = $catid]" />
+	      </xsl:when>
+	      <xsl:otherwise>
+	        <xsl:apply-templates select="/bedework/events/event[categories/category/id = $catid]" />
+	      </xsl:otherwise>
+	    </xsl:choose>
+	
+		<!-- now use recursion to process the remaining categories -->
+	    <xsl:call-template name="processCategories">
+	      <xsl:with-param name="list" select="$remaining" /> 
+	    </xsl:call-template>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <!-- No more tildes, so this is the last category.  Process it -->
+		<xsl:choose>
+		  <xsl:when test="$group = 'all'">
+			<xsl:choose>
+			  <xsl:when test="$list = 'all'">
+	            <xsl:apply-templates select="/bedework/events/event" />
+	          </xsl:when>
+	          <xsl:otherwise>
+		        <xsl:apply-templates select="/bedework/events/event[categories/category/id = $list]" />
+		      </xsl:otherwise>
+	        </xsl:choose>
+	      </xsl:when>
+	      <xsl:otherwise>
+		    <xsl:choose>
+			  <xsl:when test="$list = 'all'">
+	            <xsl:apply-templates select="/bedework/events/event[creator = $group]" />
+	          </xsl:when>
+	          <xsl:otherwise>
+		        <xsl:choose>
+		          <xsl:when test="/bedework/events/events/creator = $group">
+		            <xsl:apply-templates select="/bedework/events/event[categories/category/id = $list]" />
+		          </xsl:when>
+		        </xsl:choose>
+		      </xsl:otherwise>
+			</xsl:choose>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:otherwise>
+	</xsl:choose>
   </xsl:template>
 
   <xsl:template match="event">
