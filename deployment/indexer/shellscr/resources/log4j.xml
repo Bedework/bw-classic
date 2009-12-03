@@ -126,7 +126,11 @@
    <category name="org.bedework.calcore.hibernate.CalintfImpl">
      <priority value="INFO"/>
    </category>
-
+   
+   <category name="org.bedework.sysevents.JmsNotificationsHandlerImpl">
+     <priority value="INFO"/>
+   </category>
+   
    <!-- Set rpi categories -->
    <category name="edu.rpi">
      <priority value="DEBUG"/>
