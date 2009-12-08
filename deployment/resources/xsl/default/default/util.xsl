@@ -20,6 +20,53 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template name="httpStatusCodes">
+    <xsl:param name="code"/>
+    <xsl:value-of select="$code"/><xsl:text>: </xsl:text>
+    <xsl:choose>
+      <xsl:when test="node() = 100">Continue</xsl:when>
+      <xsl:when test="node() = 101">Switching Protocols</xsl:when>
+      <xsl:when test="node() = 200">OK</xsl:when>
+      <xsl:when test="node() = 201">Created</xsl:when>
+      <xsl:when test="node() = 202">Accepted</xsl:when>
+      <xsl:when test="node() = 203">Non-Authoritative Information</xsl:when>
+      <xsl:when test="node() = 204">No Content</xsl:when>
+      <xsl:when test="node() = 205">Reset Content</xsl:when>
+      <xsl:when test="node() = 206">Partial Content</xsl:when>
+      <xsl:when test="node() = 300">Multiple Choices</xsl:when>
+      <xsl:when test="node() = 301">Moved Permanently</xsl:when>
+      <xsl:when test="node() = 302">Found</xsl:when>
+      <xsl:when test="node() = 303">See Other</xsl:when>
+      <xsl:when test="node() = 304">Not Modified</xsl:when>
+      <xsl:when test="node() = 305">Use Proxy</xsl:when>
+      <xsl:when test="node() = 307">Temporary Redirect</xsl:when>
+      <xsl:when test="node() = 400">Bad Request</xsl:when>
+      <xsl:when test="node() = 401">Unauthorized</xsl:when>
+      <xsl:when test="node() = 402">Payment Required</xsl:when>
+      <xsl:when test="node() = 403">Forbidden</xsl:when>
+      <xsl:when test="node() = 404">Not Found</xsl:when>
+      <xsl:when test="node() = 405">Method Not Allowed</xsl:when>
+      <xsl:when test="node() = 406">Not Acceptable</xsl:when>
+      <xsl:when test="node() = 407">Proxy Authentication Required</xsl:when>
+      <xsl:when test="node() = 408">Request Timeout</xsl:when>
+      <xsl:when test="node() = 409">Conflict</xsl:when>
+      <xsl:when test="node() = 410">Gone</xsl:when>
+      <xsl:when test="node() = 411">Length Required</xsl:when>
+      <xsl:when test="node() = 412">Precondition Failed</xsl:when>
+      <xsl:when test="node() = 413">Request Entity Too Large</xsl:when>
+      <xsl:when test="node() = 414">Request-URI Too Long</xsl:when>
+      <xsl:when test="node() = 415">Unsupported Media Type</xsl:when>
+      <xsl:when test="node() = 416">Requested Range Not Satisfiable</xsl:when>
+      <xsl:when test="node() = 417">Expectation Failed</xsl:when>
+      <xsl:when test="node() = 500">Internal Server Error</xsl:when>
+      <xsl:when test="node() = 501">Not Implemented</xsl:when>
+      <xsl:when test="node() = 502">Bad Gateway</xsl:when>
+      <xsl:when test="node() = 503">Service Unavailable</xsl:when>
+      <xsl:when test="node() = 504">Gateway Timeout</xsl:when>
+      <xsl:when test="node() = 505">HTTP Version Not Supported</xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
   <!-- search and replace template taken from
        http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
   <xsl:template name="replace">
