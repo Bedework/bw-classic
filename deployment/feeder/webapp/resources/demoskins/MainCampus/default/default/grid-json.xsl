@@ -72,10 +72,10 @@
 	    <xsl:variable name="remaining" select="substring-after($list, '~')" />
 	    <xsl:choose>
 		  <xsl:when test="$group = 'all'">
-	        <xsl:apply-templates select="/bedework/events/event[categories/category/id = $catid]" />
+	        <xsl:apply-templates select="event[categories/category/id = $catid]" />
 	      </xsl:when>
 	      <xsl:otherwise>
-	        <xsl:apply-templates select="/bedework/events/event[categories/category/id = $catid]" />
+	        <xsl:apply-templates select="event[categories/category/id = $catid]" />
 	      </xsl:otherwise>
 	    </xsl:choose>
 	
@@ -90,22 +90,22 @@
 		  <xsl:when test="$group = 'all'">
 			<xsl:choose>
 			  <xsl:when test="$list = 'all'">
-	            <xsl:apply-templates select="/bedework/events/event" />
+	            <xsl:apply-templates select="event" />
 	          </xsl:when>
 	          <xsl:otherwise>
-		        <xsl:apply-templates select="/bedework/events/event[categories/category/id = $list]" />
+		        <xsl:apply-templates select="event[categories/category/id = $list]" />
 		      </xsl:otherwise>
 	        </xsl:choose>
 	      </xsl:when>
 	      <xsl:otherwise>
 		    <xsl:choose>
 			  <xsl:when test="$list = 'all'">
-	            <xsl:apply-templates select="/bedework/events/event[creator = $group]" />
+	            <xsl:apply-templates select="event[creator = $group]" />
 	          </xsl:when>
 	          <xsl:otherwise>
 		        <xsl:choose>
-		          <xsl:when test="/bedework/events/events/creator = $group">
-		            <xsl:apply-templates select="/bedework/events/event[categories/category/id = $list]" />
+		          <xsl:when test="event/creator = $group">
+		            <xsl:apply-templates select="event[categories/category/id = $list]" />
 		          </xsl:when>
 		        </xsl:choose>
 		      </xsl:otherwise>

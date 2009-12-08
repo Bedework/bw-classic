@@ -73,94 +73,12 @@
       </xsl:otherwise>
     </xsl:choose>
         'events': [
-          <xsl:choose>
-            <xsl:when test="/bedework/appvar/key = 'filter'">
-              <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
-              <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
-              <!-- Define filters here: -->
-              <xsl:choose>
-                <xsl:when test="$filterName = 'grpAndCats'">
-	              <xsl:call-template name="processGrpAndCats"><xsl:with-param name="list" select="$filterVal"/></xsl:call-template>
-                  <xsl:apply-templates select="/bedework/events/event[creator = $filterVal]"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <!-- Filter name not defined? Turn off filtering. -->
-                  <xsl:apply-templates select="/bedework/events/event"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="/bedework/events/event"/>
-            </xsl:otherwise>
-          </xsl:choose>
+           <xsl:apply-templates select="/bedework/events/event"/>
         ]
     }}
   </xsl:template>
 
-  <xsl:template name="processGrpAndCats">
-    <xsl:param name="list" /> 
-    <xsl:variable name="group" select="substring-before($list, '~')" /> 
-    <xsl:variable name="remaining" select="substring-after($list, '~')" />
-    <xsl:call-template name="processCategories">
-	  <xsl:with-param name="group" select="$group" />
-      <xsl:with-param name="list" select="$remaining" /> 
-    </xsl:call-template>
-  </xsl:template>
-
-  <xsl:template name="processCategories">
-	<xsl:param name="group" />
-    <xsl:param name="list" /> 
-    <xsl:choose>
-	  <xsl:when test="contains($list, '~')">
-		<!-- Grab the first off the list and process -->
-	  	<xsl:variable name="catid" select="substring-before($list, '~')" /> 
-	    <xsl:variable name="remaining" select="substring-after($list, '~')" />
-	    <xsl:choose>
-		  <xsl:when test="$group = 'all'">
-	        <xsl:apply-templates select="/bedework/events/event[categories/category/id = $catid]" />
-	      </xsl:when>
-	      <xsl:otherwise>
-	        <xsl:apply-templates select="/bedework/events/event[categories/category/id = $catid]" />
-	      </xsl:otherwise>
-	    </xsl:choose>
-	
-		<!-- now use recursion to process the remaining categories -->
-	    <xsl:call-template name="processCategories">
-	      <xsl:with-param name="list" select="$remaining" /> 
-	    </xsl:call-template>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <!-- No more tildes, so this is the last category.  Process it -->
-		<xsl:choose>
-		  <xsl:when test="$group = 'all'">
-			<xsl:choose>
-			  <xsl:when test="$list = 'all'">
-	            <xsl:apply-templates select="/bedework/events/event" />
-	          </xsl:when>
-	          <xsl:otherwise>
-		        <xsl:apply-templates select="/bedework/events/event[categories/category/id = $list]" />
-		      </xsl:otherwise>
-	        </xsl:choose>
-	      </xsl:when>
-	      <xsl:otherwise>
-		    <xsl:choose>
-			  <xsl:when test="$list = 'all'">
-	            <xsl:apply-templates select="/bedework/events/event[creator = $group]" />
-	          </xsl:when>
-	          <xsl:otherwise>
-		        <xsl:choose>
-		          <xsl:when test="/bedework/events/events/creator = $group">
-		            <xsl:apply-templates select="/bedework/events/event[categories/category/id = $list]" />
-		          </xsl:when>
-		        </xsl:choose>
-		      </xsl:otherwise>
-			</xsl:choose>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:otherwise>
-	</xsl:choose>
-  </xsl:template>
-
+  
   <xsl:template match="event">
     <!-- first, escape apostrophes -->
     <xsl:variable name="aposStrippedSummary">
