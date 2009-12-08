@@ -1624,8 +1624,15 @@ display: inline;
 #bedework  li.outbox {
   list-style-image: url(../../resources/outboxIcon.gif);
 }
+#bedework  li.unknown,
 #bedework  li.deleted {
   list-style-image: url(../../resources/calIconDeleted-sm.gif);
+  font-style: italic;
+}
+#bedework  li.unknown a,
+#bedework  li.deleted a {
+  color: #900;
+  background-color: transparent;
 }
 #bedework  li.selected {
   list-style-image: url(../../resources/glassFill-icon-view.gif);
