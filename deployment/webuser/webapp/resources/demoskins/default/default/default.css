@@ -772,6 +772,12 @@ body {
   padding: 6px 0;
   text-align: center;
 }
+#bedework table.common tr.httpStatusMsg td,
+#bedework table.common tr.httpStatusMsg th  {
+  padding: 0.5em;
+  background-color: #ffa;
+  color: black;
+}
 #bedework table.common #eventActions {
   float: right;
   clear: none;

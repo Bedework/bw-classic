@@ -1061,8 +1061,10 @@ li.changeGroup {
 .calendarTree  li.outbox {
   list-style-image: url("../../resources/outboxIcon.gif");
 }
-.calendarTree  li.deleted {
-  list-style-image: url("../../resources/calIconDeleted-sm.gif");
+#bedework  li.unknown,
+#bedework  li.deleted {
+  list-style-image: url(../../resources/calIconDeleted-sm.gif);
+  font-style: italic;
 }
 .calendarTree  li.selected {
   list-style-image: url("../../resources/glassFill-icon-view.gif");

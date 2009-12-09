@@ -3804,6 +3804,7 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
+          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
               <xsl:when test="calType = '0'">aliasFolder</xsl:when>
@@ -3854,6 +3855,7 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
+          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
           <xsl:when test="isSubscription = 'true'"><xsl:copy-of select="$bwStr-Cals-Alias"/></xsl:when>
           <xsl:when test="calType = '0'"><xsl:copy-of select="$bwStr-Cals-Folder"/></xsl:when>
           <xsl:otherwise><xsl:copy-of select="$bwStr-Cals-Calendar"/></xsl:otherwise>
@@ -4839,6 +4841,7 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
+          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
               <xsl:when test="calType = '0'">aliasFolder</xsl:when>
@@ -5068,6 +5071,7 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
+          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
           <xsl:when test="name='Trash'"><xsl:copy-of select="$bwStr-Cals-Trash"/></xsl:when>
           <xsl:when test="isSubscription = 'true'"><xsl:copy-of select="$bwStr-Cals-Alias"/></xsl:when>
           <xsl:when test="calType = '0'"><xsl:copy-of select="$bwStr-Cals-Folder"/></xsl:when>

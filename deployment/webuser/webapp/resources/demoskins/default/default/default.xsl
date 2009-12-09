@@ -4921,6 +4921,7 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
+          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
               <xsl:when test="calType = '0'">aliasFolder</xsl:when>
@@ -5327,6 +5328,16 @@
             <xsl:value-of select="path"/>
           </th>
         </tr>
+        <xsl:if test="lastRefreshStatus &gt; 400">
+          <tr class="httpStatusMsg">
+            <th><xsl:copy-of select="$bwStr-CuCa-HttpStatus"/></th>
+            <td>
+              <xsl:call-template name="httpStatusCodes">
+                <xsl:with-param name="code"><xsl:value-of  select="lastRefreshStatus"/></xsl:with-param>
+              </xsl:call-template>
+            </td>
+          </tr>
+        </xsl:if>
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-Name"/></th>
           <td>

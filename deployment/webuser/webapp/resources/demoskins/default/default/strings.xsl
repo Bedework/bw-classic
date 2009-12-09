@@ -531,6 +531,7 @@
 
   <!--  xsl:template match="currentCalendar" mode="addCalendar" -->
   <xsl:variable name="bwStr-CuCa-AddCalFolderOrSubscription">Add Calendar, Folder, or Subscription</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-HttpStatus">HTTP Status:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Name">Name:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Summary">Summary:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Description">Description:</xsl:variable>
