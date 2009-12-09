@@ -6041,6 +6041,15 @@
             <input type="radio" value="CANCELLED" name="status"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Canceled"/><br/>
           </td>
         </tr>
+        <tr>
+          <td class="fieldname padMeTop">
+            <xsl:copy-of select="$bwStr-Upld-StripAlarms"/>
+          </td>
+          <td align="left" class="padMeTop">
+            <input type="radio" value="true" name="stripAlarms" checked="checked"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Yes"/><br/>
+            <input type="radio" value="false" name="stripAlarms"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Yes"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-Upld-No"/></span><br/>
+          </td>
+        </tr>
       </table>
       <table border="0" id="submitTable">
         <tr>
