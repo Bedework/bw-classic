@@ -54,7 +54,7 @@ hibernate.connection.driver_class=${org.bedework.global.jdbcdriver}
 hibernate.connection.username=${org.bedework.global.jdbcid}
 hibernate.connection.password=${org.bedework.global.jdbcpw}
 hibernate.connection.url=${org.bedework.global.jdbcurl}
-hibernate.cglib.use_reflection_optimizer=false
+hibernate.bytecode.use_reflection_optimizer=false
 hibernate.cache.use_second_level_cache=false
 #
 # Here for better debugging
