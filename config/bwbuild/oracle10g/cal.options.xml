@@ -316,8 +316,6 @@
           <calSuite>BwClassic</calSuite>
         </Events>
 
-
-
         <!-- ==================================================================
                           Feed Service
              ================================================================== -->
@@ -427,10 +425,13 @@
 
           <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
 
-          <!-- Comment out or delete for no real time server to server service
+          <!-- Comment out or delete for no ischedule service
                Currently under development and may present a security risk in
-               production systems -->
-          <realTimeServiceURI>/rtsvc</realTimeServiceURI>
+               production systems 
+               
+               Note that the uri "/ischedule" is defined in the draft and should 
+               not be changed to some other value. -->
+          <ischeduleURI>/ischedule</ischeduleURI>
 
           <!-- Comment out or delete for no freebusy url service -->
           <fburlServiceURI>/fbsvc</fburlServiceURI>
@@ -451,10 +452,13 @@
 
           <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
 
-          <!-- Comment out or delete for no real time server to server service
+          <!-- Comment out or delete for no ischedule service
                Currently under development and may present a security risk in
-               production systems -->
-          <realTimeServiceURI>/rtsvc</realTimeServiceURI>
+               production systems 
+               
+               Note that the uri "/ischedule" is defined in the draft and should 
+               not be changed to some other value. -->
+          <ischeduleURI>/ischedule</ischeduleURI>
 
           <!-- Comment out or delete for no freebusy url service -->
           <fburlServiceURI>/fbsvc</fburlServiceURI>
