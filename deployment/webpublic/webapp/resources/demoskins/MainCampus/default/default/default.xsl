@@ -57,11 +57,7 @@
   <!--  DEMO PUBLIC CALENDAR STYLESHEET  -->
   <!-- ================================= -->
 
-  <!-- URL of resources common to all bedework apps (javascript, images) -->
-  <xsl:variable name="resourceCommons">../../../bedework-common</xsl:variable>
-
   <!-- DEFINE INCLUDES -->
-  <!-- cannot use the resourceCommons variable in xsl:include paths -->
   <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
@@ -100,10 +96,7 @@
   <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
   <xsl:variable name="calendar-fetchForExport" select="/bedework/urlPrefixes/calendar/fetchForExport"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
-  <!-- Unused
-  <xsl:variable name="showPage" select="/bedework/urlPrefixes/main/showPage"/>
-   -->
- <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
+  <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
 
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
@@ -114,12 +107,18 @@
   <xsl:variable name="nextdate" select="/bedework/nextdate"/>
   <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
 
-
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title> 
+        <xsl:choose>
+          <xsl:when test="/bedework/page='event'">
+            <title><xsl:value-of select="/bedework/event/summary"/></title>
+          </xsl:when>
+          <xsl:otherwise>
+            <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title>
+          </xsl:otherwise>
+        </xsl:choose>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
         <!-- load css -->
         <xsl:choose>
@@ -1802,17 +1801,17 @@
             <select name="skinPicker" onchange="window.location = this.value">
               <option value="{$setup}&amp;skinNameSticky=default"><xsl:copy-of select="$bwStr-Foot-ExampleSkins"/>:</option>
               <option value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3">
-				<xsl:copy-of select="$bwStr-Foot-RSSNext3Days"/></option>
+        <xsl:copy-of select="$bwStr-Foot-RSSNext3Days"/></option>
               <option value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=js-list&amp;days=3&amp;contentType=text/javascript&amp;contentName=bedework.js">
-				<xsl:copy-of select="$bwStr-Foot-JavascriptNext3Days"/></option>
+        <xsl:copy-of select="$bwStr-Foot-JavascriptNext3Days"/></option>
               <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedeworkToday.js">
-				<xsl:copy-of select="$bwStr-Foot-JavascriptTodaysEvents"/></option>
+        <xsl:copy-of select="$bwStr-Foot-JavascriptTodaysEvents"/></option>
               <option value="{$setup}&amp;browserTypeSticky=PDA">
-				<xsl:copy-of select="$bwStr-Foot-ForMobileBrowsers"/></option>
+        <xsl:copy-of select="$bwStr-Foot-ForMobileBrowsers"/></option>
               <option value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=videocal">
-				<xsl:copy-of select="$bwStr-Foot-VideoFeed"/></option>
+        <xsl:copy-of select="$bwStr-Foot-VideoFeed"/></option>
               <option value="{$setup}&amp;skinNameSticky=default">
-				<xsl:copy-of select="$bwStr-Foot-ResetToCalendarDefault"/></option>
+        <xsl:copy-of select="$bwStr-Foot-ResetToCalendarDefault"/></option>
             </select>
           </form>
         </td>
