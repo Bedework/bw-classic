@@ -13,7 +13,7 @@
 
   <!--  xsl:template name="header" -->
   <xsl:variable name="bwStr-Head-BedeworkPubEventsAdmin">Bedework Public Events Administration</xsl:variable>
-  <xsl:variable name="bwStr-Head-CalendarSuite">Calendar Suite:</xsl:variable>
+  <xsl:variable name="bwStr-Head-CalendarSuite">Calendar Suite</xsl:variable>
   <xsl:variable name="bwStr-Head-None">none</xsl:variable>
   <xsl:variable name="bwStr-Head-Group">Group:</xsl:variable>
   <xsl:variable name="bwStr-Head-Change">change</xsl:variable>

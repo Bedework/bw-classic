@@ -379,6 +379,9 @@ ul.adminMenu li {
   color: #900 !important;
   font-style: italic;
 }
+#commonListTable td.memberList {
+  white-space: nowrap;
+}
 .recurrenceEditLinks {
   font-style: italic;
   font-size: 0.9em;

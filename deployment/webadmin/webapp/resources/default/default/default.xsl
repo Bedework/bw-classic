@@ -6345,9 +6345,9 @@
             </a>
           </td>
           <xsl:if test="/bedework/groups/showMembers='true'">
-            <td>
+            <td class="memberList">
               <xsl:for-each select="members/member/account">
-                <xsl:value-of select="."/>&#160;
+                <xsl:value-of select="."/><br/>
               </xsl:for-each>
             </td>
           </xsl:if>
