@@ -4,7 +4,7 @@
   <org>
     <bedework>
       <global>
-        <version>3.5</version>
+        <version>3.6</version>
 
         <!-- This property is how the running system finds the system settings.
              In theory we could have multiple settings with different names
@@ -71,14 +71,19 @@
             <defaultDomain>mysite.edu</defaultDomain>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <providerUrl>ldap://localhost/</providerUrl>
+            <providerUrl>ldap://localhost:10389</providerUrl>
             <groupContextDn>ou=groups, dc=bedework, dc=org</groupContextDn>
-            <groupMemberAttr>uniqueMember</groupMemberAttr>
+            <groupMemberAttr>member</groupMemberAttr>
             <userDnPrefix>uid=</userDnPrefix>
             <userDnSuffix>,ou=accounts, dc=bedework, dc=org</userDnSuffix>
             <groupDnPrefix>cn=</groupDnPrefix>
-            <groupDnSuffix>,ou=groups, dc=bedework, dc=org</groupDnSuffix>
+            <groupDnSuffix>,ou=groups,dc=bedework, dc=org</groupDnSuffix>
             <debug>true</debug>
+
+            <securityAuthentication>simple</securityAuthentication>
+            <securityProtocol>NONE</securityProtocol>
+            <authDn>uid=admin,ou=system</authDn>
+            <authPw>secret</authPw>
           </user-ldap-group>
 
           <testmail classname="org.bedework.mail.MailConfigProperties">
@@ -143,10 +148,10 @@
         <userauthClass>org.bedework.calsvc.directory.UserAuthUWDbImpl</userauthClass>
         <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
         <admingroupsClass>org.bedework.calsvc.directory.AdminGroupsDbImpl</admingroupsClass>
-        <!--
         <usergroupsClass>org.bedework.calsvc.directory.UserGroupsLdapImpl</usergroupsClass>
-        -->
+        <!--
         <usergroupsClass>org.bedework.calsvc.directory.GroupsDbImpl</usergroupsClass>
+        -->
 
         <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
 
@@ -164,6 +169,15 @@
           <publicAdmin>false</publicAdmin>
           <guestMode>true</guestMode>
         </tzsvr>
+
+        <!-- ==================================================================
+                          Config web client
+             ================================================================== -->
+        <bwconfig classname="org.bedework.calfacade.configs.ConfigCommon">
+          <appType>webconfig</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>false</guestMode>
+        </bwconfig>
 
         <!-- ==================================================================
                           Admin web client CalAdmin
@@ -235,7 +249,7 @@
         </EventSubmit>
 
         <!-- ==================================================================
-                          Public web client Events
+                          Public web client Events - Duke/Yale Theme
              ================================================================== -->
         <Events classname="org.bedework.calfacade.configs.ClientConfig">
           <cachingOn>true</cachingOn>
@@ -267,6 +281,76 @@
 
           <calSuite>MainCampus</calSuite>
         </Events>
+
+        <!-- ==================================================================
+                          Public web client Events - BwClassic Theme
+             ================================================================== -->
+        <Events classname="org.bedework.calfacade.configs.ClientConfig">
+          <cachingOn>true</cachingOn>
+          <cachePrefix>bwpubevents</cachePrefix>
+
+          <autoCreateContacts>false</autoCreateContacts>
+          <autoDeleteContacts>false</autoDeleteContacts>
+          <autoCreateLocations>false</autoCreateLocations>
+          <autoDeleteLocations>false</autoDeleteLocations>
+
+          <appType>webpublic</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>true</guestMode>
+
+          <!-- Default value for 24 hour mode -->
+          <hour24>true</hour24>
+
+          <!-- Default value for minute increments -->
+          <minIncrement>5</minIncrement>
+
+          <showYearData>false</showYearData>
+
+          <logPrefix>BwClasic</logPrefix>
+
+          <appRoot>http://localhost:8080/calrsrc</appRoot>
+
+          <refreshAction>setup.do</refreshAction>
+          <refreshInterval>300</refreshInterval>
+
+          <calSuite>BwClassic</calSuite>
+        </Events>
+
+
+
+        <!-- ==================================================================
+                          Feed Service
+             ================================================================== -->
+        <Feeder classname="org.bedework.calfacade.configs.ClientConfig">
+          <cachingOn>true</cachingOn>
+          <cachePrefix>bwfeeder</cachePrefix>
+
+          <autoCreateContacts>false</autoCreateContacts>
+          <autoDeleteContacts>false</autoDeleteContacts>
+          <autoCreateLocations>false</autoCreateLocations>
+          <autoDeleteLocations>false</autoDeleteLocations>
+
+          <appType>feeder</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>true</guestMode>
+
+          <!-- Default value for 24 hour mode -->
+          <hour24>true</hour24>
+
+          <!-- Default value for minute increments -->
+          <minIncrement>5</minIncrement>
+
+          <showYearData>false</showYearData>
+
+          <logPrefix>Feeder</logPrefix>
+
+          <appRoot>http://localhost:8080/calfeedrsrc</appRoot>
+
+          <refreshAction>setup.do</refreshAction>
+          <refreshInterval>300</refreshInterval>
+
+          <calSuite>MainCampus</calSuite>
+        </Feeder>
 
         <!-- ==================================================================
                           Demo departmental Public web client SoEDept
@@ -334,9 +418,11 @@
         <!-- ==================================================================
                           User CalDAV server UserCalDAV
              ================================================================== -->
-        <Usercaldav classname="org.bedework.calfacade.configs.CalDAVConfig">
+        <Usercaldav classname="org.bedework.caldav.util.CalDAVConfig">
           <appType>usercaldav</appType>
+          <!--
           <publicAdmin>false</publicAdmin>
+          -->
           <guestMode>false</guestMode>
 
           <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
@@ -356,9 +442,11 @@
         <!-- ==================================================================
                           Public (unauthenticated) CalDAV server PublicCalDAV
              ================================================================== -->
-        <Pubcaldav classname="org.bedework.calfacade.configs.CalDAVConfig">
+        <Pubcaldav classname="org.bedework.caldav.util.CalDAVConfig">
           <appType>publiccaldav</appType>
+          <!--
           <publicAdmin>false</publicAdmin>
+           -->
           <guestMode>true</guestMode>
 
           <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
@@ -404,6 +492,36 @@
           <superGroupName>campusAdminGroups</superGroupName>
           <defaultPublicCalPath>/public/Other Events/Other</defaultPublicCalPath>
         </dumpres>
+
+        <!-- ==================================================================
+                          Crawler program
+             ================================================================== -->
+        <indexer classname="org.bedework.calfacade.configs.BwCrawlerConfig">
+          <debug>true</debug>
+          <appType>indexer</appType>
+          <guestMode>true</guestMode>
+          <debugEntity>false</debugEntity>
+        </indexer>
+
+        <!-- ==================================================================
+                          System events logger program
+             ================================================================== -->
+        <sysevlog classname="org.bedework.calfacade.configs.BwCrawlerConfig">
+          <debug>true</debug>
+          <appType>sysevlog</appType>
+          <guestMode>true</guestMode>
+          <debugEntity>false</debugEntity>
+        </sysevlog>
+
+        <!-- ==================================================================
+                          In/outbox scheduler program
+             ================================================================== -->
+        <iosched classname="org.bedework.calfacade.configs.BwCrawlerConfig">
+          <debug>true</debug>
+          <appType>inoutsched</appType>
+          <guestMode>true</guestMode>
+          <debugEntity>false</debugEntity>
+        </iosched>
       </app>
     </bedework>
   </org>

@@ -4,7 +4,7 @@
   <org>
     <bedework>
       <global>
-        <version>3.5</version>
+        <version>3.6</version>
 
         <dirhandlers>
           <!-- handle the principal hierarchy.
@@ -169,6 +169,8 @@
 
           <defaultAddressbook>address-book</defaultAddressbook>
 
+          <addressBookHandlerPrefix>/user</addressBookHandlerPrefix>
+
           <principalRoot>/principals</principalRoot>
           <userPrincipalRoot>/principals/users</userPrincipalRoot>
           <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
@@ -186,6 +188,8 @@
           <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
 
           <defaultAddressbook>address-book</defaultAddressbook>
+
+          <addressBookHandlerPrefix>/public</addressBookHandlerPrefix>
 
           <principalRoot>/principals</principalRoot>
           <userPrincipalRoot>/principals/users</userPrincipalRoot>

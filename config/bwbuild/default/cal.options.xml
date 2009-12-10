@@ -4,7 +4,7 @@
   <org>
     <bedework>
       <global>
-        <version>3.5</version>
+        <version>3.6</version>
 
         <!-- This property is how the running system finds the system settings.
              In theory we could have multiple settings with different names
@@ -249,7 +249,7 @@
         </EventSubmit>
 
         <!-- ==================================================================
-                          Public web client Events
+                          Public web client Events - Duke/Yale Theme
              ================================================================== -->
         <Events classname="org.bedework.calfacade.configs.ClientConfig">
           <cachingOn>true</cachingOn>
@@ -281,6 +281,41 @@
 
           <calSuite>MainCampus</calSuite>
         </Events>
+
+        <!-- ==================================================================
+                          Public web client Events - BwClassic Theme
+             ================================================================== -->
+        <Events classname="org.bedework.calfacade.configs.ClientConfig">
+          <cachingOn>true</cachingOn>
+          <cachePrefix>bwpubevents</cachePrefix>
+
+          <autoCreateContacts>false</autoCreateContacts>
+          <autoDeleteContacts>false</autoDeleteContacts>
+          <autoCreateLocations>false</autoCreateLocations>
+          <autoDeleteLocations>false</autoDeleteLocations>
+
+          <appType>webpublic</appType>
+          <publicAdmin>false</publicAdmin>
+          <guestMode>true</guestMode>
+
+          <!-- Default value for 24 hour mode -->
+          <hour24>true</hour24>
+
+          <!-- Default value for minute increments -->
+          <minIncrement>5</minIncrement>
+
+          <showYearData>false</showYearData>
+
+          <logPrefix>BwClasic</logPrefix>
+
+          <appRoot>http://localhost:8080/calrsrc</appRoot>
+
+          <refreshAction>setup.do</refreshAction>
+          <refreshInterval>300</refreshInterval>
+
+          <calSuite>BwClassic</calSuite>
+        </Events>
+
 
 
         <!-- ==================================================================

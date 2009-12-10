@@ -1,10 +1,11 @@
-<!-- This provides run time options for each of the configured applications.
+<!-- This provides run time options for the CardDAV server.
   -->
 <bedework-options>
   <org>
     <bedework>
       <global>
-        <version>3.5</version>
+        <version>3.6</version>
+
         <dirhandlers>
           <!-- handle the principal hierarchy.
                This could be a read-only interface if we don't intend to allow
@@ -167,6 +168,16 @@
           <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
 
           <defaultAddressbook>address-book</defaultAddressbook>
+
+          <addressBookHandlerPrefix>/user</addressBookHandlerPrefix>
+
+          <principalRoot>/principals</principalRoot>
+          <userPrincipalRoot>/principals/users</userPrincipalRoot>
+          <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
+          <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
+          <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
+          <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
+          <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
         </usercarddav>
 
         <pubcarddav classname="org.bedework.carddav.util.CardDAVConfig" >
@@ -177,6 +188,8 @@
           <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
 
           <defaultAddressbook>address-book</defaultAddressbook>
+
+          <addressBookHandlerPrefix>/public</addressBookHandlerPrefix>
 
           <principalRoot>/principals</principalRoot>
           <userPrincipalRoot>/principals/users</userPrincipalRoot>

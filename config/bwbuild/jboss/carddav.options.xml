@@ -4,8 +4,8 @@
   <org>
     <bedework>
       <global>
-        <version>3.5</version>
-        
+        <version>3.6</version>
+
         <dirhandlers>
           <!-- handle the principal hierarchy.
                This could be a read-only interface if we don't intend to allow
