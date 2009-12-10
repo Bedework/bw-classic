@@ -77,7 +77,7 @@
             <userDnPrefix>uid=</userDnPrefix>
             <userDnSuffix>,ou=accounts, dc=bedework, dc=org</userDnSuffix>
             <groupDnPrefix>cn=</groupDnPrefix>
-            <groupDnSuffix>,ou=groups, dc=bedework, dc=org</groupDnSuffix>
+            <groupDnSuffix>,ou=groups,dc=bedework, dc=org</groupDnSuffix>
             <debug>true</debug>
 
             <securityAuthentication>simple</securityAuthentication>
@@ -249,7 +249,7 @@
         </EventSubmit>
 
         <!-- ==================================================================
-                          Public web client Events - Duke/Yale Theme
+                          Public web client Events
              ================================================================== -->
         <Events classname="org.bedework.calfacade.configs.ClientConfig">
           <cachingOn>true</cachingOn>
@@ -280,40 +280,6 @@
           <refreshInterval>300</refreshInterval>
 
           <calSuite>MainCampus</calSuite>
-        </Events>
-
-        <!-- ==================================================================
-                          Public web client Events - BwClassic Theme
-             ================================================================== -->
-        <Events classname="org.bedework.calfacade.configs.ClientConfig">
-          <cachingOn>true</cachingOn>
-          <cachePrefix>bwpubevents</cachePrefix>
-
-          <autoCreateContacts>false</autoCreateContacts>
-          <autoDeleteContacts>false</autoDeleteContacts>
-          <autoCreateLocations>false</autoCreateLocations>
-          <autoDeleteLocations>false</autoDeleteLocations>
-
-          <appType>webpublic</appType>
-          <publicAdmin>false</publicAdmin>
-          <guestMode>true</guestMode>
-
-          <!-- Default value for 24 hour mode -->
-          <hour24>true</hour24>
-
-          <!-- Default value for minute increments -->
-          <minIncrement>5</minIncrement>
-
-          <showYearData>false</showYearData>
-
-          <logPrefix>BwClasic</logPrefix>
-
-          <appRoot>http://localhost:8080/calrsrc</appRoot>
-
-          <refreshAction>setup.do</refreshAction>
-          <refreshInterval>300</refreshInterval>
-
-          <calSuite>BwClassic</calSuite>
         </Events>
 
 
@@ -429,9 +395,9 @@
 
           <!-- Comment out or delete for no ischedule service
                Currently under development and may present a security risk in
-               production systems 
-               
-               Note that the uri "/ischedule" is defined in the draft and should 
+               production systems
+
+               Note that the uri "/ischedule" is defined in the draft and should
                not be changed to some other value. -->
           <ischeduleURI>/ischedule</ischeduleURI>
 
@@ -456,9 +422,9 @@
 
           <!-- Comment out or delete for no ischedule service
                Currently under development and may present a security risk in
-               production systems 
-               
-               Note that the uri "/ischedule" is defined in the draft and should 
+               production systems
+
+               Note that the uri "/ischedule" is defined in the draft and should
                not be changed to some other value. -->
           <ischeduleURI>/ischedule</ischeduleURI>
 
