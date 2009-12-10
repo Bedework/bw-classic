@@ -619,6 +619,8 @@
   <xsl:variable name="bwStr-MdSP-CommaSeparatedList">Comma separated list of super users. No spaces.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-SystemID">System id:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-SystemIDNote">System id used when building uids and identifying users. Should not be changed.</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-Indexing">Indexing:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-IndexingNote">True if the system does indexing internally. Generally false for externally indexed</xsl:variable>
   <xsl:variable name="bwStr-MdSP-PubCalendarRoot">Public Calendar Root:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-PubCalendarRootNote">Name for public calendars root directory. Should not be changed.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-UserCalendarRoot">User Calendar Root:</xsl:variable>
