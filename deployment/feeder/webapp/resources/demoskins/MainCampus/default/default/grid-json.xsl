@@ -3,7 +3,7 @@
   <xsl:output method="html" omit-xml-declaration="yes" indent="no" media-type="text/javascript" standalone="yes"/>
   
   <!-- **********************************************************************
-    Copyright 2008 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+    Copyright 2009 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
     Redistribution and use of this distribution in source and binary forms,
     with or without modification, are permitted provided that:
@@ -121,21 +121,23 @@
 	      "value" : "<xsl:value-of select='value'/>",
 	      "longname" : "<xsl:value-of select='longname'/>",
 	      "shortname" : "<xsl:value-of select='shortname'/>",
+	      "weeks" : [
           <xsl:apply-templates select="week" />
+          ]
         }<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>
 
   <xsl:template match="week">
-	      "week": {
+	      {
 	        "value" : "<xsl:value-of select='value'/>",
-	        <xsl:apply-templates select="day" />
+	        "days" : [
+	           <xsl:apply-templates select="day" />
+	        ]
 	      }<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>
   
- 
-
   <xsl:template match="day">
-	        "day": {
+	        {
 	          <xsl:choose>
 		        <xsl:when test="filler = 'true'">
 			  "filler" : "<xsl:value-of select='filler'/>"
@@ -146,7 +148,8 @@
 	          "name" : "<xsl:value-of select='name'/>",
 	          "date" : "<xsl:value-of select='date'/>",
 	          "longdate" : "<xsl:value-of select='longdate'/>",
-	          "shortdate" : "<xsl:value-of select='shortdate'/>"
+	          "shortdate" : "<xsl:value-of select='shortdate'/>",
+	          "events" : [
 	              <xsl:choose>
 		            <xsl:when test="/bedework/appvar/key = 'filter'">
   		              <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
@@ -166,6 +169,7 @@
 		              <xsl:apply-templates select="event"/>
 		            </xsl:otherwise>
 		          </xsl:choose>
+		          ]
 		        </xsl:otherwise>
 		      </xsl:choose>
 		    }<xsl:if test="position() != last()">,</xsl:if>
@@ -199,7 +203,7 @@
     <xsl:variable name="strippedDescription" select='translate($aposStrippedDescription,"&#xA;"," ")'/>
     <xsl:variable name="strippedLocAddress" select='translate($aposStrippedLocAddress,"&#xA;"," ")'/>
     <!-- finally, produce the JSON output -->
-                  , "event": {
+                  {
                     "summary" : "<xsl:value-of select="$strippedSummary"/>",
                     "subscriptionId" : "<xsl:value-of select="subscription/id"/>",
                     "calPath" : "<xsl:value-of select="calendar/encodedPath"/>",
