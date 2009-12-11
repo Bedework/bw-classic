@@ -66,16 +66,12 @@
   <!--  DEMO PUBLIC CALENDAR STYLESHEET  -->
   <!-- ================================= -->
 
-  <!-- URL of resources common to all bedework apps (javascript, images) -->
-  <xsl:variable name="resourceCommons">../../../bedework-common</xsl:variable>
-
   <!-- DEFINE INCLUDES -->
-  <!-- cannot use the resourceCommons variable in xsl:include paths -->
   <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
   <xsl:include href="./strings.xsl"/>
-  
+
 
   <!-- DEFINE GLOBAL CONSTANTS -->
 
@@ -132,9 +128,8 @@
         <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
         <!-- load css -->
-        <link rel="stylesheet" href="{$resourcesRoot}/default/default/soe.css"/>
-        <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
-        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
+        <link rel="stylesheet" href="{$resourcesRoot}/default/default/defaultTheme/css/soe.css"/>
+        <link rel="stylesheet" href="../../../bedework-common/default/default/subColors.css"/>
         <!-- load javascript -->
         <!-- load javascript -->
         <xsl:if test="/bedework/page='event' or /bedework/page='displayCalendarForExport'">
@@ -142,7 +137,7 @@
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
           <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
           <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
-          <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js">&#160;</script>
+          <script type="text/javascript" src="{$resourcesRoot}/default/default/defaultTheme/javascript/bedework.js">&#160;</script>
           <xsl:if test="/bedework/page='displayCalendarForExport'">
             <script type="text/javascript">
               <xsl:comment>
@@ -150,7 +145,7 @@
                 constrainInput: true,
                 dateFormat: "yy-mm-dd",
                 showOn: "both",
-                buttonImage: "<xsl:value-of select='$resourcesRoot'/>/images/calIcon.gif",
+                buttonImage: "<xsl:value-of select='$resourcesRoot'/>/default/default/defaultTheme/images/calIcon.gif",
                 buttonImageOnly: true,
                 gotoCurrent: true,
                 duration: ""
@@ -166,7 +161,7 @@
           </xsl:if>
         </xsl:if>
         <!-- address bar icon -->
-        <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
+        <link rel="icon" type="image/ico" href="{$resourcesRoot}/default/default/defaultTheme/images/bedework.ico" />
       </head>
       <body>
         <xsl:call-template name="headBar"/>
@@ -249,7 +244,7 @@
   <xsl:template name="headBar">
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
       <tr>
-        <td colspan="3" id="logoCell"><a href="/bedework/"><img src="{$resourcesRoot}/images/bedeworkLogoGreen.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
+        <td colspan="3" id="logoCell"><a href="/bedework/"><img src="{$resourcesRoot}/default/default/defaultTheme/images/bedeworkLogoGreen.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
         <td colspan="2" id="schoolLinksCell">
           <h2><xsl:copy-of select="$bwStr-HdBr-SchoolOfEngineering"/></h2>
           <a href="http://www.yourdepartmenthere.edu"><xsl:copy-of select="$bwStr-HdBr-SchoolOfEngineeringHome"/></a> |
@@ -298,7 +293,7 @@
         </td>
         <td class="rssPrint">
           <a href="javascript:window.print()" title="{$bwStr-HdBr-PrintThisView}">
-            <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-HdBr-Print"/>
+            <img alt="print this view" src="{$resourcesRoot}/default/default/defaultTheme/images/std-print-icon.gif" width="20" height="14" border="0"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-HdBr-Print"/>
           </a>
           <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="{$bwStr-HdBr-RSSFeed}"><xsl:copy-of select="$bwStr-HdBr-RSS"/></a>
         </td>
@@ -344,8 +339,8 @@
     <table border="0" cellpadding="0" cellspacing="0" id="navigationBarTable">
       <tr>
         <td class="leftCell">
-          <a id="prevViewPeriod" href="{$setViewPeriod}&amp;date={$prevdate}"><img src="{$resourcesRoot}/images/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
-          <a id="nextViewPeriod" href="{$setViewPeriod}&amp;date={$nextdate}"><img src="{$resourcesRoot}/images/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
+          <a id="prevViewPeriod" href="{$setViewPeriod}&amp;date={$prevdate}"><img src="{$resourcesRoot}/default/default/defaultTheme/images/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
+          <a id="nextViewPeriod" href="{$setViewPeriod}&amp;date={$nextdate}"><img src="{$resourcesRoot}/default/default/defaultTheme/images/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
           <xsl:choose>
             <xsl:when test="/bedework/periodname='Year'">
               <xsl:value-of select="substring(/bedework/firstday/date,1,4)"/>
@@ -363,7 +358,7 @@
         </td>
         <td class="todayButton">
           <a href="{$setViewPeriod}&amp;viewType=todayView&amp;date={$curdate}">
-            <img src="{$resourcesRoot}/images/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
+            <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
           </a>
         </td>
         <td align="right" class="gotoForm">
@@ -482,21 +477,21 @@
             </xsl:if>
             <xsl:choose>
               <xsl:when test="/bedework/periodname='Day' or /bedework/page='eventList'">
-                <img src="{$resourcesRoot}/images/std-button-listview-off.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-listview-off.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
               </xsl:when>
               <xsl:when test="/bedework/periodname='Year'">
-                <img src="{$resourcesRoot}/images/std-button-calview-off.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-calview-off.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
               </xsl:when>
               <xsl:when test="/bedework/periodname='Month'">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
                     <a href="{$setup}&amp;setappvar=monthViewMode(cal)" title="{$bwStr-SrcB-ToggleListCalView}">
-                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                      <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-calview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$setup}&amp;setappvar=monthViewMode(list)" title="{$bwStr-SrcB-ToggleListCalView}">
-                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                      <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-listview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -505,12 +500,12 @@
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
                     <a href="{$setup}&amp;setappvar=weekViewMode(cal)" title="{$bwStr-SrcB-ToggleListCalView}">
-                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                      <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-calview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$setup}&amp;setappvar=weekViewMode(list)" title="{$bwStr-SrcB-ToggleListCalView}">
-                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                      <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-listview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -521,12 +516,12 @@
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
                     <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="{$bwStr-SrcB-ToggleSummDetView}">
-                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
+                      <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-summary.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="{$bwStr-SrcB-ToggleSummDetView}">
-                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
+                      <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-details.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -540,10 +535,10 @@
                                not(/bedework/appvar[key='weekViewMode'])))">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                    <img src="{$resourcesRoot}/images/std-button-summary-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
+                    <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-summary-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <img src="{$resourcesRoot}/images/std-button-details-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
+                    <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-details-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
@@ -551,12 +546,12 @@
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                     <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="{$bwStr-SrcB-ToggleSummDetView}">
-                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
+                      <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-summary.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$setup}&amp;setappvar=summaryMode(details)" title="{$bwStr-SrcB-ToggleSummDetView}">
-                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
+                      <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-details.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -566,7 +561,7 @@
               <xsl:if test="/bedework/page='eventList'">
                 <xsl:attribute name="href"><xsl:value-of select="$listEvents"/></xsl:attribute>
               </xsl:if>
-              <img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/>
+              <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/>
             </a>
           </td>
        </tr>
@@ -733,12 +728,12 @@
         <th class="icalIcon" rowspan="2">
           <div id="eventIcons">
             <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-AddEventToMyCalendar}" target="myCalendar">
-              <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
+              <img class="addref" src="{$resourcesRoot}/default/default/defaultTheme/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
               <xsl:copy-of select="$bwStr-SgEv-AddToMyCalendar"/>
             </a>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
             <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-DownloadEvent}">
-              <img src="{$resourcesRoot}/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
+              <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
              <xsl:copy-of select="$bwStr-SgEv-Download"/></a>
           </div>
         </th>
@@ -1055,11 +1050,11 @@
                 </td>
                 <td class="icons">
                   <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
-                    <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
+                    <img class="addref" src="{$resourcesRoot}/default/default/defaultTheme/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
                   </a>
                   <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
                   <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-LsVw-DownloadEvent}">
-                    <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsVw-DownloadEvent}"/>
+                    <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsVw-DownloadEvent}"/>
                   </a>
                 </td>
               </tr>
@@ -1114,12 +1109,12 @@
 
                 <xsl:text> </xsl:text>
                 <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="Add event to MyCalendar" target="myCalendar">
-                  <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
+                  <img class="addref" src="{$resourcesRoot}/default/default/defaultTheme/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="Add event to MyCalendar"/>
                 </a>
                 <xsl:text> </xsl:text>
                 <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
                 <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-LsEv-DownloadEvent}">
-                  <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsEv-DownloadEvent}"/>
+                  <img src="{$resourcesRoot}/default/default/defaultTheme/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsEv-DownloadEvent}"/>
                 </a>
 
                 <br/>
@@ -1463,7 +1458,7 @@
       <xsl:variable name="calPath" select="path"/>
       <span class="exportCalLink">
         <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}&amp;virtualPath={$virtualPath}" title="export calendar as iCal">
-          <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
+          <img src="{$resourcesRoot}/default/default/defaultTheme/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
         </a>
       </span>
       <xsl:if test="calendar">
@@ -1613,7 +1608,7 @@
         <tr>
           <td class="relevance">
             <xsl:value-of select="ceiling(number(score)*100)"/>%
-            <img src="{$resourcesRoot}/images/spacer.gif" height="4" class="searchRelevance">
+            <img src="{$resourcesRoot}/default/default/defaultTheme/images/spacer.gif" height="4" class="searchRelevance">
               <xsl:attribute name="width"><xsl:value-of select="ceiling((number(score)*100) div 1.5)"/></xsl:attribute>
             </img>
           </td>

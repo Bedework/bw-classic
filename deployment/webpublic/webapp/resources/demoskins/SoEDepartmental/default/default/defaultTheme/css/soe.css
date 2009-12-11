@@ -60,7 +60,7 @@ h2 {
 #curDateRangeTable {
   width: 100%;
   height: 26px;
-  background: #326432 url(../../images/curDateRangeGreen.gif) repeat-x bottom;
+  background: #326432 url("../images/curDateRangeGreen.gif") repeat-x bottom;
   color : #eee;
   margin: 0em;
   font-weight : bold;
@@ -75,7 +75,7 @@ h2 {
   padding-right: 13px;
 }
 #curDateRangeTable td.sideBarOpenCloseIcon {
-  background: url(../../images/curDateRangeGreen-left.gif) no-repeat top left;
+  background: url("../images/curDateRangeGreen-left.gif") no-repeat top left;
   color: inherit;
   width: 200px;
 }
@@ -85,7 +85,7 @@ h2 {
   white-space: nowrap;
 }
 #curDateRangeTable td.rssPrint {
-  background: url(../../images/curDateRangeGreen-right.gif) no-repeat top right;
+  background: url("../images/curDateRangeGreen-right.gif") no-repeat top right;
   color: inherit;
   width: 200px;
   font-weight : bold;
@@ -224,11 +224,11 @@ h2 {
   list-style: none;
   list-style-image: none;
   color: black;
-  background: #eee url("../../images/std-tab-off-80x20.gif") no-repeat bottom;
+  background: #eee url("../images/std-tab-off-80x20.gif") no-repeat bottom;
 }
 #bwTabs li.selected {
   color: black;
-  background: #eee url("../../images/std-tab-on-80x20.gif") no-repeat top;
+  background: #eee url("../images/std-tab-on-80x20.gif") no-repeat top;
 }
 #bwTabs a {
   text-decoration: none;
@@ -254,7 +254,7 @@ h2 {
   margin-right: 1px;
 }
 #tabsTable .rightCell {
-  background : url(../../images/std-tab-space.gif);
+  background : url("../images/std-tab-space.gif");
   padding-right: 0.5em;
 }
 #navigationBarTable {
@@ -888,12 +888,12 @@ a.gridAdd {
   font-weight: normal;
 }
 #calPageTable ul.calendarTree li.folder {
-  list-style-image: url(../../images/catIcon.gif);
+  list-style-image: url("../images/catIcon.gif");
   padding-top: 0.25em;
   padding-bottom: 0.25em;
 }
 #calPageTable ul.calendarTree li.calendar {
-  list-style-image: url(../../images/calIcon-sm.gif);
+  list-style-image: url("../images/calIcon-sm.gif");
 }
 .noEventsCell {
   padding: 1em;
@@ -1052,7 +1052,7 @@ h2 a:hover#linkToEvent {
 }
 #tabsTable .centerCell {
   text-align: left;
-  background : url(../../images/std-tab-space.gif);
+  background : url("../images/std-tab-space.gif");
   font-size: 0.8em;
   white-space: nowrap;
   width: 100%;
