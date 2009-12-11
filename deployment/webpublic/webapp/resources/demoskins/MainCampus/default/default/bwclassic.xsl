@@ -66,8 +66,8 @@
   <!-- DEFINE GLOBAL CONSTANTS -->
 
   <!-- URL of html resources (images, css, other html); by default this is
-       set to the application root -->
-  <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
+       set to the current theme directory  -->
+  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot"/>/default/default/bwclassicTheme</xsl:variable>
 
   <!-- URL of the XSL template directory -->
   <!-- The approot is an appropriate place to put
@@ -123,24 +123,24 @@
         <!-- load css -->
         <xsl:choose>
           <xsl:when test="/bedework/appvar[key='style']/value='red'">
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/red.css"/>
+            <link rel="stylesheet" href="{$resourcesRoot}/css/red.css"/>
           </xsl:when>
           <xsl:when test="/bedework/appvar[key='style']/value='green'">
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/green.css"/>
+            <link rel="stylesheet" href="{$resourcesRoot}/css/green.css"/>
           </xsl:when>
           <xsl:otherwise>
-            <link rel="stylesheet" href="{$resourcesRoot}/default/default/blue.css"/>
+            <link rel="stylesheet" href="{$resourcesRoot}/css/blue.css"/>
           </xsl:otherwise>
         </xsl:choose>
         <link rel="stylesheet" href="../../../bedework-common/default/default/subColors.css"/>
-        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
+        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
         <!-- load javascript -->
         <xsl:if test="/bedework/page='event' or /bedework/page='displayCalendarForExport'">
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
           <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
           <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
-          <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js">&#160;</script>
+          <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework.js">&#160;</script>
           <xsl:if test="/bedework/page='displayCalendarForExport'">
             <script type="text/javascript">
               <xsl:comment>
@@ -266,12 +266,12 @@
           <xsl:choose>
             <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
               <a href="?setappvar=sidebar(opened)">
-                <img alt="open sidebar" src="{$resourcesRoot}/resources/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
+                <img alt="open sidebar" src="{$resourcesRoot}/images/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
               </a>
             </xsl:when>
             <xsl:otherwise>
               <a href="?setappvar=sidebar(closed)">
-                <img alt="close sidebar" src="{$resourcesRoot}/resources/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
+                <img alt="close sidebar" src="{$resourcesRoot}/images/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
               </a>
             </xsl:otherwise>
           </xsl:choose>-->
@@ -1562,7 +1562,7 @@
         <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Cals-DateRange"/>
         <div id="exportDateRange" class="invisible">
           <xsl:copy-of select="$bwStr-Cals-Start"/><xsl:text> </xsl:text><input type="text" name="bwExportCalendarWidgetStartDate" id="bwExportCalendarWidgetStartDate" size="10"/>
-          <span id="bwExportEndField">E<xsl:copy-of select="$bwStr-Cals-End"/><xsl:text> </xsl:text><input type="text" name="bwExportCalendarWidgetEndDate" id="bwExportCalendarWidgetEndDate" size="10"/></span>
+          <span id="bwExportEndField"><xsl:copy-of select="$bwStr-Cals-End"/><xsl:text> </xsl:text><input type="text" name="bwExportCalendarWidgetEndDate" id="bwExportCalendarWidgetEndDate" size="10"/></span>
         </div>
         <p><input type="submit" value="{$bwStr-Cals-Export}" class="bwWidgetSubmit" onclick="fillExportFields(this.form)"/></p>
       </form>

@@ -41,6 +41,10 @@
   <xsl:variable name="nextDate" select="/bedework/nextdate"/>
   <xsl:variable name="curDate" select="/bedework/currentdate/date"/>
 
+  <!-- URL of html resources (images, css, other html); by default this is
+       set to the current theme directory  -->
+  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot"/>/default/default/videocalTheme</xsl:variable>
+
   <!-- Duration of each slide in seconds; set this to your preference -->
   <xsl:variable name="slideDuration">10</xsl:variable>
 
@@ -94,7 +98,7 @@
     <html lang="en">
       <head>
         <title>Event Calendar Video Feed</title>
-        <link rel="stylesheet" href="{$appRoot}/default/default/videocal.css"/>
+        <link rel="stylesheet" href="{$resourcesRoot}/videocal.css"/>
         <meta name="robots" content="noindex,nofollow"/>
         <script language="JavaScript">
           function today() {

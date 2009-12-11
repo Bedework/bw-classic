@@ -1,5 +1,5 @@
 /* Font sizes are set in pixels because the screen resolution is 800x600
-   Two overscan modes were viewed when creating the styles: this sheet 
+   Two overscan modes were viewed when creating the styles: this sheet
    accomodates a larger overscan mode.  videocal.css is for a
    smaller overscan mode.*/
 
@@ -8,7 +8,7 @@ body {
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   color: #eee;
-  background : #116 url(../../images/videocal/calBackground1.jpg) no-repeat;
+  background : #116 url("calBackground1.jpg") no-repeat;
 }
 h1 {
   font-size: 38px; /* 38 was optimal */
