@@ -72,8 +72,8 @@
   <!-- DEFINE GLOBAL CONSTANTS -->
 
   <!-- URL of html resources (images, css, other html); by default this is
-       set to the application root -->
-  <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
+       set to the current theme directory  -->
+  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot"/>/default/default/defaultTheme</xsl:variable>
 
   <!-- URL of the XSL template directory -->
   <!-- The approot is an appropriate place to put
@@ -130,44 +130,38 @@
         </xsl:choose>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
         <!-- load css -->
-        <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/default/default/fixed.css"/>
-        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/fixed.css"/>
+        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css"/>
 
         <!-- Dependencies -->
         <xsl:text disable-output-escaping="yes">
           <![CDATA[
           <!--[if IE 6]>
-            <link rel="stylesheet" type="text/css" media="screen" href="/calrsrc.MainCampus/default/default/ie6.css"/>
+            <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/ie6.css"/>
           <![endif]-->
 
           <!--[if IE 7]>
-            <link rel="stylesheet" type="text/css" media="screen" href="/calrsrc.MainCampus/default/default/ie7.css"/>
+            <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/ie7.css"/>
           <![endif]-->
           ]]>
         </xsl:text>
 
         <!-- load javascript -->
-        <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/yui/yahoo-dom-event.js">&#160;</script>
+        <script type="text/javascript" src="{$resourcesRoot}/javascript/yui/yahoo-dom-event.js">&#160;</script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js">&#160;</script>
-  <!--<script type="text/javascript" src="{$resourcesRoot}/resources/javascript/yui/container_core-min.js">&#160;</script>-->
-        <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/yui/calendar-min.js">&#160;</script>
-        <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/yui/animation-min.js">&#160;</script>
-  <!--<script type="text/javascript" src="{$resourcesRoot}/resources/javascript/yui/menu-min.js">&#160;</script>-->
-   <xsl:if test="/bedework/page='searchResult'">
-            <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/catSearch.js">&#160;</script>
+        <script type="text/javascript" src="{$resourcesRoot}/javascript/yui/calendar-min.js">&#160;</script>
+        <script type="text/javascript" src="{$resourcesRoot}/javascript/yui/animation-min.js">&#160;</script>
+        <xsl:if test="/bedework/page='searchResult'">
+            <script type="text/javascript" src="{$resourcesRoot}/javascript/catSearch.js">&#160;</script>
         </xsl:if>
-  <xsl:if test="/bedework/page='calendarList' or /bedework/page='displayCalendarForExport'">
-          <!-- <script type="text/javascript" src="{$resourceCommons}/javascript/dojo/dojo.js">&#160;</script> -->
-          <!-- <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js"/> -->
-        </xsl:if>
-  <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/mainCampus.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/mainCampus.js">&#160;</script>
 
         <!-- address bar icon -->
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/ecal.ico"/>
         <script type="text/javascript">
             <xsl:call-template name="jsonDataObject"/>
         </script>
-        <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/ifs-calendar.js">i&#160;</script>
+        <script type="text/javascript" src="{$resourcesRoot}/javascript/ifs-calendar.js">i&#160;</script>
       </head>
       <body>
         <div id="wrap">
@@ -230,7 +224,7 @@
       <div id="contentSection">
                       <div class="left_column">
                             <xsl:call-template name="display-side-bar"/>
-                           <div class="extFeeds"><a href="http://buzz.duke.edu"><img src="{$resourcesRoot}/default/default/images/buzz.gif" alt="Buzz"/></a>
+                           <div class="extFeeds"><a href="http://buzz.duke.edu"><img src="{$resourcesRoot}/images/buzz.gif" alt="Buzz"/></a>
                                <a id="buzzTrigger" href="#">More &gt;</a><div id="buzzResult" style="display:none">
                                Events List</div>
                      </div>
@@ -380,33 +374,33 @@
 
     <xsl:choose>
       <xsl:when test="$featureLinkLEFT = ''">
-        <img class="border" src="{$resourcesRoot}/default/default/data/FeaturedEvent/{$imageFilenameLEFT}" alt="{$toolTipLEFT}"/>
+        <img class="border" src="{$resourcesRoot}/data/FeaturedEvent/{$imageFilenameLEFT}" alt="{$toolTipLEFT}"/>
       </xsl:when>
       <xsl:otherwise>
         <a href="{$featureLinkLEFT}">
-          <img class="border" src="{$resourcesRoot}/default/default/data/FeaturedEvent/{$imageFilenameLEFT}" alt="{$toolTipLEFT}"/>
+          <img class="border" src="{$resourcesRoot}/data/FeaturedEvent/{$imageFilenameLEFT}" alt="{$toolTipLEFT}"/>
         </a>
       </xsl:otherwise>
     </xsl:choose>
 
   <xsl:choose>
       <xsl:when test="$featureLinkCENTER = ''">
-        <img class="border" src="{$resourcesRoot}/default/default/data/FeaturedEvent/{$imageFilenameCENTER}" alt="{$toolTipCENTER}"/>
+        <img class="border" src="{$resourcesRoot}/data/FeaturedEvent/{$imageFilenameCENTER}" alt="{$toolTipCENTER}"/>
       </xsl:when>
       <xsl:otherwise>
         <a href="{$featureLinkCENTER}">
-          <img class="border" src="{$resourcesRoot}/default/default/data/FeaturedEvent/{$imageFilenameCENTER}" alt="{$toolTipCENTER}"/>
+          <img class="border" src="{$resourcesRoot}/data/FeaturedEvent/{$imageFilenameCENTER}" alt="{$toolTipCENTER}"/>
         </a>
       </xsl:otherwise>
     </xsl:choose>
 
   <xsl:choose>
       <xsl:when test="$featureLinkRIGHT = ''">
-        <img src="{$resourcesRoot}/default/default/data/FeaturedEvent/{$imageFilenameRIGHT}" alt="{$toolTipRIGHT}"/>
+        <img src="{$resourcesRoot}/data/FeaturedEvent/{$imageFilenameRIGHT}" alt="{$toolTipRIGHT}"/>
       </xsl:when>
       <xsl:otherwise>
         <a href="{$featureLinkRIGHT}">
-          <img src="{$resourcesRoot}/default/default/data/FeaturedEvent/{$imageFilenameRIGHT}" alt="{$toolTipRIGHT}"/>
+          <img src="{$resourcesRoot}/data/FeaturedEvent/{$imageFilenameRIGHT}" alt="{$toolTipRIGHT}"/>
         </a>
       </xsl:otherwise>
     </xsl:choose>
@@ -1160,7 +1154,7 @@
         </xsl:if>
       </xsl:variable>
       <a id="rssRequest" class="rss" href="/feed/calendar/{$rssViewType}/rss/{$rssGroups}/details/{$rssCategory}" title="RSS feed"> <!-- &amp;date={$rssCurrDate} -->
-        <img src="{$resourcesRoot}/default/default/images/feed-icon-14x14.png" alt="RSS Feed Icon"/>
+        <img src="{$resourcesRoot}/images/feed-icon-14x14.png" alt="RSS Feed Icon"/>
       </a>
       <div id="rssPopUp" style="display:none;position:absolute"> <!-- RSS Popup window -->
         <p id="rssClose" onclick="this.parentNode.style.display = 'none'">X - Close</p>

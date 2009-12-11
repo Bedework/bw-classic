@@ -1,0 +1,45 @@
+@import "reset.css";
+
+body {background:#FFF; color:#555; font-family: Helvetica, Arial, sans-serif; font-size:12px; line-height:1.5;}
+
+hr.clear {display:block; clear:both; background:none; border:none; height:0px; display:hidden;}
+
+div#wrap {margin:0 auto; width:80em;}
+
+div#header {background:#24486C;}
+
+div#nav-main-wrap {background:#84C03C; border-top:1px solid #FFF;}
+
+ul#nav-main {}
+ul#nav-main li {display:block; float:left;}
+ul#nav-main li a {display:block; margin:0; padding:0 3em 0 1em; font-size:1.1em; line-height:2; background:#84C03C url(/images/tab-bg.png) no-repeat top right; color:#FFF;}
+ul#nav-main li a:hover {color:#DDB500;}
+
+h1 {display:block; margin:.5em 0 0 0; padding:0 0 0 10px; line-height:2; font-size:1.1em; font-weight:bold; color:#FFF; background:#014B94;}
+h1 span.date {margin:0 .6em; color:#DDB500; font-weight:normal;}
+
+div#content {clear:both; margin:1px 0;}
+
+div.calContainer {background: #FFF url() repeat-y top right;}
+.yui-calendar {width:100%;}
+
+.calheader {background-color:#377BA8; color:#FFF;}
+.calweekdayrow {background-color:#78B4E6; color:#FFF; text-align: center;}
+
+div#cal1 {float:left; width:19.6em; padding:0 .4em 0 0;}
+div#feature {float:left; width:40em; background-color:#333;}
+div#reminders {float:left; width:19.6em; padding:0 0 0 .4em;}
+
+div#secondary {clear:both; margin:1px 0 0 0;}
+
+div#ongoingEvents {float:left; width:19.6em; padding:0 .4em 0 0;}
+div#ongoingEvents ul {}
+
+div#todaysEvents {float:left; width:40em;}
+table.eventList {border-collapse:collapse; width:95%;}
+table.eventList tr td {padding:.7em .5em; font-size:.9em; border-bottom:1px solid #C5C5C5;}
+table.eventList tr td.time {background:#ECECEC;}
+
+div#searchStrategies {float:left; width:19.6em; padding:0 0 0 .4em;}
+
+h3 {font-size:1.2em; color:#FFF; background:#345080; padding:0 0 0 12px;}
