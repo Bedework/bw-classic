@@ -190,8 +190,14 @@ div.yearMonthRow {clear:both; padding:1.5em 0;}
 .resultPages#resultsBottom {}
 
 div.display-header  {font-weight:bold; font: italic 2em Garamond, sans-serif;}
-span.event-lab { width:10%; font: italic .8em, sans-serif; color:#078C2D;}
-span.tab-stop  { width:90%; color: #0A1599; font:1em}
+span.event-lab {
+  width:10%;
+  font-style: italic;
+  font-size: .8em;
+  font-family: sans-serif;
+  color:#078C2D;
+}
+span.tab-stop  { width:90%; color: #0A1599; font-size:1em}
 div.event-title  {font-weight:bold;  font: 1.3em Garamond, sans-serif;margin: .8em 0em .4em 0em}
 
 span.old-event-lab { font: italic 1em/2 Garamond, sans-serif; color:#078C2D; width:15%}
@@ -284,7 +290,7 @@ div#footer a.rss {float:right;}
     padding:3px;
     cursor:pointer;
     font-size: .8em;
-    
+
 }
 #rssValue {
     border:solid 1px #000;
