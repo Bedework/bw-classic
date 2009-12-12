@@ -7,6 +7,7 @@
   <xsl:variable name="bwStr-Root-PageTitle">Bedework Events Calendar</xsl:variable>
 
   <!-- xsl:template name="headBar" -->
+  <xsl:variable name="bwStr-HdBr-PageTitle">Bedework Events Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PublicCalendar">Public Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PersonalCalendar">Personal Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-UniversityHome">University Home</xsl:variable>
@@ -234,21 +235,22 @@
   <!--  xsl:template name="footer" -->
   <xsl:variable name="bwStr-Foot-DemonstrationCalendar">Demonstration calendar; place footer information here.</xsl:variable>
   <xsl:variable name="bwStr-Foot-BedeworkWebsite">Bedework Website</xsl:variable>
-  <xsl:variable name="bwStr-Foot-ShowXML">show XML</xsl:variable>
-  <xsl:variable name="bwStr-Foot-RefreshXSLT">refresh XSLT</xsl:variable>
+  <xsl:variable name="bwStr-Foot-ShowXML">Show XML</xsl:variable>
+  <xsl:variable name="bwStr-Foot-RefreshXSLT">Refresh XSLT</xsl:variable>
   <xsl:variable name="bwStr-Foot-BasedOnThe">Based on the</xsl:variable>
   <xsl:variable name="bwStr-Foot-BedeworkCalendarSystem">Bedework Calendar System</xsl:variable>
-  <xsl:variable name="bwStr-Foot-ProductionExamples">production examples</xsl:variable>
+  <xsl:variable name="bwStr-Foot-ProductionExamples">Production Examples</xsl:variable>
   <xsl:variable name="bwStr-Foot-ExampleStyles">example styles</xsl:variable>
   <xsl:variable name="bwStr-Foot-Green">green</xsl:variable>
   <xsl:variable name="bwStr-Foot-Red">red</xsl:variable>
   <xsl:variable name="bwStr-Foot-Blue">blue</xsl:variable>
   <xsl:variable name="bwStr-Foot-ExampleSkins">example skins</xsl:variable>
+  <xsl:variable name="bwStr-Foot-BwClassic">Bedework Classic</xsl:variable>
   <xsl:variable name="bwStr-Foot-RSSNext3Days">rss: next 3 days</xsl:variable>
   <xsl:variable name="bwStr-Foot-JavascriptNext3Days">javascript: next 3 days</xsl:variable>
   <xsl:variable name="bwStr-Foot-JavascriptTodaysEvents">javascript: today's events</xsl:variable>
   <xsl:variable name="bwStr-Foot-ForMobileBrowsers">for mobile browsers</xsl:variable>
   <xsl:variable name="bwStr-Foot-VideoFeed">video feed</xsl:variable>
-  <xsl:variable name="bwStr-Foot-ResetToCalendarDefault">reset to calendar default</xsl:variable>
+  <xsl:variable name="bwStr-Foot-ResetToCalendarDefault">Reset to Bedework Default</xsl:variable>
 
 </xsl:stylesheet>

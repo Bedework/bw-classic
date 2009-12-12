@@ -3,79 +3,78 @@
 
   <!--========  Display Events Table =========-->
   <xsl:template name="display-events-table">
-        <xsl:param name="node"/>
-        <xsl:param name="suite-name"/>
-        <xsl:choose>
+    <xsl:param name="node"/>
+    <xsl:param name="suite-name"/>
+    <xsl:choose>
 
-        <!-- filter on group but not category -->
-        <xsl:when test="(/bedework/appvar[key = 'group']/value and not(/bedework/appvar[key = 'group']/value = 'all')) and (not(/bedework/appvar[key = 'category']/value) or (/bedework/appvar[key = 'category']/value='all'))">
-        <xsl:for-each  select="event[not(categories/category[value|word ='Ongoing']) and not(categories/category[value|word ='Local'])]"> 
-             <xsl:if test="categories/category[value=$suite-name] or categories/category[word=$suite-name]">
-                <xsl:call-template name="split-for-groups">
-                          <xsl:with-param name="node" select="."/>
-                         <xsl:with-param name="list"><xsl:value-of select="/bedework/appvar[key = 'group']/value"/></xsl:with-param>
-                         <xsl:with-param name="delimiter">,</xsl:with-param>
-                         <xsl:with-param name="suite-name" select="$suite-name"/>
-                </xsl:call-template>
-             </xsl:if>
+      <!-- filter on group but not category -->
+      <xsl:when test="(/bedework/appvar[key = 'group']/value and not(/bedework/appvar[key = 'group']/value = 'all')) and (not(/bedework/appvar[key = 'category']/value) or (/bedework/appvar[key = 'category']/value='all'))">
+        <xsl:for-each  select="event[not(categories/category[value|word ='Ongoing']) and not(categories/category[value|word ='Local'])]">
+          <xsl:if test="categories/category[value=$suite-name] or categories/category[word=$suite-name]">
+            <xsl:call-template name="split-for-groups">
+              <xsl:with-param name="node" select="."/>
+              <xsl:with-param name="list"><xsl:value-of select="/bedework/appvar[key = 'group']/value"/></xsl:with-param>
+              <xsl:with-param name="delimiter">,</xsl:with-param>
+              <xsl:with-param name="suite-name" select="$suite-name"/>
+            </xsl:call-template>
+          </xsl:if>
         </xsl:for-each>
-        </xsl:when>
-
-        <!-- filter on category but not group  -->
-        <xsl:when test="(not(/bedework/appvar[key = 'group']/value) or (/bedework/appvar[key = 'group']/value = 'all')) and (/bedework/appvar[key = 'category']/value) and not(/bedework/appvar[key = 'category']/value='all')">
-        <xsl:for-each  select="event[not(categories/category[value|word ='Ongoing']) and not(categories/category[value|word ='Local'])]"> 
-             <xsl:if test="categories/category[value=$suite-name] or categories/category[word=$suite-name]">
-                <xsl:call-template name="split-for-events">
-                        <xsl:with-param name="node" select="."/>
-                        <xsl:with-param name="list"> <xsl:value-of select="/bedework/appvar[key = 'category']/value"/></xsl:with-param>
-                        <xsl:with-param name="delimiter">~</xsl:with-param>
-                        <xsl:with-param name="suite-name" select="$suite-name"/>
-                </xsl:call-template>
-             </xsl:if>
-      </xsl:for-each>
       </xsl:when>
 
-        <!-- filter on both group and category  -->
-        <xsl:when test="(/bedework/appvar[key = 'group']/value) and not(/bedework/appvar[key = 'group']/value = 'all') and (/bedework/appvar[key = 'category']/value) and not(/bedework/appvar[key = 'category']/value='all')">
-          <xsl:for-each  select="event[not(categories/category[value|word ='Ongoing']) and not(categories/category[value|word ='Local'])]"> 
-             <xsl:if test="categories/category[value=$suite-name] or categories/category[word=$suite-name]">
-                 <xsl:call-template name="split-for-groups-events-wrapper">
-                        <xsl:with-param name="node" select="."/>
-                        <xsl:with-param name="list"><xsl:value-of select="/bedework/appvar[key = 'group']/value"/></xsl:with-param>
-                        <xsl:with-param name="delimiter">,</xsl:with-param>
-                        <xsl:with-param name="suite-name" select="$suite-name"/>
-                 </xsl:call-template>
-             </xsl:if>
-          </xsl:for-each>
-        </xsl:when>
-
-        <!-- NO filter (either group or category) -->
-        <xsl:otherwise>
-        <xsl:for-each  select="event[not(categories/category[value|word ='Ongoing']) and not(categories/category[value|word ='Local'])]"> 
-             <xsl:if test="categories/category[value=$suite-name] or categories/category[word=$suite-name]">
-                <xsl:call-template name="eventRow"> 
-                     <xsl:with-param name="node" select="."/>
-                     <xsl:with-param name="suite-name" select="$suite-name"/>
-                </xsl:call-template>
-             </xsl:if> 
+      <!-- filter on category but not group  -->
+      <xsl:when test="(not(/bedework/appvar[key = 'group']/value) or (/bedework/appvar[key = 'group']/value = 'all')) and (/bedework/appvar[key = 'category']/value) and not(/bedework/appvar[key = 'category']/value='all')">
+        <xsl:for-each  select="event[not(categories/category[value|word ='Ongoing']) and not(categories/category[value|word ='Local'])]">
+          <xsl:if test="categories/category[value=$suite-name] or categories/category[word=$suite-name]">
+            <xsl:call-template name="split-for-events">
+              <xsl:with-param name="node" select="."/>
+              <xsl:with-param name="list"> <xsl:value-of select="/bedework/appvar[key = 'category']/value"/></xsl:with-param>
+              <xsl:with-param name="delimiter">~</xsl:with-param>
+              <xsl:with-param name="suite-name" select="$suite-name"/>
+            </xsl:call-template>
+          </xsl:if>
         </xsl:for-each>
-     </xsl:otherwise>
+      </xsl:when>
+
+      <!-- filter on both group and category  -->
+      <xsl:when test="(/bedework/appvar[key = 'group']/value) and not(/bedework/appvar[key = 'group']/value = 'all') and (/bedework/appvar[key = 'category']/value) and not(/bedework/appvar[key = 'category']/value='all')">
+        <xsl:for-each  select="event[not(categories/category[value|word ='Ongoing']) and not(categories/category[value|word ='Local'])]">
+          <xsl:if test="categories/category[value=$suite-name] or categories/category[word=$suite-name]">
+            <xsl:call-template name="split-for-groups-events-wrapper">
+              <xsl:with-param name="node" select="."/>
+              <xsl:with-param name="list"><xsl:value-of select="/bedework/appvar[key = 'group']/value"/></xsl:with-param>
+              <xsl:with-param name="delimiter">,</xsl:with-param>
+              <xsl:with-param name="suite-name" select="$suite-name"/>
+            </xsl:call-template>
+          </xsl:if>
+        </xsl:for-each>
+      </xsl:when>
+
+      <!-- NO filter (either group or category) -->
+      <xsl:otherwise>
+        <xsl:for-each  select="event[not(categories/category[value|word ='Ongoing']) and not(categories/category[value|word ='Local'])]">
+          <xsl:if test="categories/category[value=$suite-name] or categories/category[word=$suite-name]">
+            <xsl:call-template name="eventRow">
+              <xsl:with-param name="node" select="."/>
+              <xsl:with-param name="suite-name" select="$suite-name"/>
+            </xsl:call-template>
+          </xsl:if>
+        </xsl:for-each>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
   <!--======== list view ==========-->
   <xsl:template name="list-view">
-        <xsl:param name="node"/>
-        <xsl:param name="suite-name"/>
+    <xsl:param name="node"/>
+    <xsl:param name="suite-name"/>
 
     <table class="eventList">
-
       <xsl:choose>
         <!--  User filtered on a group or subset of groups, but not on category -->
         <xsl:when test="not(/bedework/appvar[key = 'group']/value = 'all') and (/bedework/appvar[key = 'group']) and (not(/bedework/appvar[key = 'category']/value) or (/bedework/appvar[key = 'category']/value='all'))">
-          <tr> 
-              <td class="eventFilterInfo" colspan="3">Displaying Events for Group: <span id="currGroupName" class="displayGroupName">
-                  <xsl:value-of select="/bedework/urlPrefixes/groups/group[eventOwner = (/bedework/appvar[key = 'group']/value)]/name"/>
+          <tr>
+            <td class="eventFilterInfo" colspan="3">Displaying Events for Group: <span id="currGroupName" class="displayGroupName">
+              <xsl:value-of select="/bedework/urlPrefixes/groups/group[eventOwner = (/bedework/appvar[key = 'group']/value)]/name"/>
                   </span>
                   <xsl:text> </xsl:text>
                   <xsl:choose>
@@ -89,7 +88,7 @@
                </td>
           </tr>
           <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[not(filler = 'true')]">
-              <xsl:call-template name="display-events-table"> 
+              <xsl:call-template name="display-events-table">
                  <xsl:with-param name="node" select="."/>
                  <xsl:with-param name="suite-name" select="$suite-name"/>
               </xsl:call-template>
@@ -97,34 +96,34 @@
         </xsl:when>
 
         <!--  User filtered on a category or subset of categories, but not on group -->
-	<xsl:when test="not(/bedework/appvar[key = 'category']/value = 'all') and (/bedework/appvar[key = 'category']/value) and (not(/bedework/appvar[key = 'group']/value) or (/bedework/appvar[key = 'group']/value = 'all'))">	
-	    <tr>
-              <td class="eventFilterInfo" colspan="3">Displaying Events for Calendar View 
+  <xsl:when test="not(/bedework/appvar[key = 'category']/value = 'all') and (/bedework/appvar[key = 'category']/value) and (not(/bedework/appvar[key = 'group']/value) or (/bedework/appvar[key = 'group']/value = 'all'))">
+      <tr>
+              <td class="eventFilterInfo" colspan="3">Displaying Events for Calendar View
                     <span class="displayGroupName"><xsl:value-of select="/bedework/appvar[key = 'categoryclass']/value"/>,</span>
-		<xsl:choose>
-          	<xsl:when test="contains(/bedework/appvar[key = 'category']/value,'~')">
-          		Categories:
-				<xsl:choose>
-					<xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Arts'">
-					  <span id="currCategories" class="displayGroupName">Concert/Music, Dance Performance, Exhibit, Masterclass, Movie/Film, Reading, Theater</span>
-					</xsl:when>
-					<xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Athletics/Recreation'">
-					  <span id="currCategories" class="displayGroupName">Athletics/Intramurals/Recreation, Athletics/Varsity Sports/Men, Athletics/Varsity Sports/Women</span>
-					</xsl:when>
-					<xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Lectures/Conferences'">
-					  <span id="currCategories" class="displayGroupName">Conference/Symposium, Lecture/Talk, Panel/Seminar/Colloquium</span>
-					</xsl:when>
-					<xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'University Events'">
-					  <span id="currCategories" class="displayGroupName">Commencement, Founders' Day, Holiday, MLK, Parents' and Family Weekend</span>
-					</xsl:when>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:otherwise>
-          		Category:
-			  <span id="currCategories" class="displayGroupName"><xsl:value-of select="/bedework/appvar[key = 'category']/value"/></span>
-			</xsl:otherwise>
-		  </xsl:choose>
-		  <xsl:text> </xsl:text>
+    <xsl:choose>
+            <xsl:when test="contains(/bedework/appvar[key = 'category']/value,'~')">
+              Categories:
+        <xsl:choose>
+          <xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Arts'">
+            <span id="currCategories" class="displayGroupName">Concert/Music, Dance Performance, Exhibit, Masterclass, Movie/Film, Reading, Theater</span>
+          </xsl:when>
+          <xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Athletics/Recreation'">
+            <span id="currCategories" class="displayGroupName">Athletics/Intramurals/Recreation, Athletics/Varsity Sports/Men, Athletics/Varsity Sports/Women</span>
+          </xsl:when>
+          <xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Lectures/Conferences'">
+            <span id="currCategories" class="displayGroupName">Conference/Symposium, Lecture/Talk, Panel/Seminar/Colloquium</span>
+          </xsl:when>
+          <xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'University Events'">
+            <span id="currCategories" class="displayGroupName">Commencement, Founders' Day, Holiday, MLK, Parents' and Family Weekend</span>
+          </xsl:when>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+              Category:
+        <span id="currCategories" class="displayGroupName"><xsl:value-of select="/bedework/appvar[key = 'category']/value"/></span>
+      </xsl:otherwise>
+      </xsl:choose>
+      <xsl:text> </xsl:text>
 
                   <xsl:choose>
                   <xsl:when test="$suite-name='Main'">
@@ -135,9 +134,9 @@
                   </xsl:otherwise>
                   </xsl:choose>
                  </td>
-          </tr>  
+          </tr>
           <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[not(filler = 'true')]">
-            <xsl:call-template name="display-events-table"> 
+            <xsl:call-template name="display-events-table">
                  <xsl:with-param name="node" select="."/>
                  <xsl:with-param name="suite-name" select="$suite-name"/>
             </xsl:call-template>
@@ -145,7 +144,7 @@
         </xsl:when>
 
         <!-- User filtered on both group and category -->
-	<xsl:when test="(/bedework/appvar[key = 'group']) and not(/bedework/appvar[key = 'group']/value = 'all')       and (/bedework/appvar[key = 'category']/value) and not(/bedework/appvar[key = 'category']/value='all')">
+  <xsl:when test="(/bedework/appvar[key = 'group']) and not(/bedework/appvar[key = 'group']/value = 'all')       and (/bedework/appvar[key = 'category']/value) and not(/bedework/appvar[key = 'category']/value='all')">
           <tr>
             <td class="eventFilterInfo" colspan="3">Displaying Events for Group: <span id="currGroupName" class="displayGroupName">
             <xsl:value-of select="/bedework/urlPrefixes/groups/group[eventOwner = (/bedework/appvar[key = 'group']/value)]/name"/>
@@ -162,45 +161,45 @@
              </td>
 
           </tr>
-	  <tr>
+    <tr>
             <td class="eventFilterInfo" colspan="3">Displaying Events for Calendar View <span class="displayGroupName"><xsl:value-of select="/bedework/appvar[key = 'categoryclass']/value"/>,</span>
-		<xsl:choose>
-          	<xsl:when test="contains(/bedework/appvar[key = 'category']/value,'~')">
-          		Categories:
-				<xsl:choose>
-					<xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Arts'">
-					  <span id="currCategories" class="displayGroupName">Concert/Music, Dance Performance, Exhibit, Masterclass, Movie/Film, Reading, Theater</span>
-					</xsl:when>
-					<xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Athletics/Recreation'">
-					  <span id="currCategories" class="displayGroupName">Athletics/Intramurals/Recreation, Athletics/Varsity Sports/Men, Athletics/Varsity Sports/Women</span>
-					</xsl:when>
-					<xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Lectures/Conferences'">
-					  <span id="currCategories" class="displayGroupName">Conference/Symposium, Lecture/Talk, Panel/Seminar/Colloquium</span>
-					</xsl:when>
-					<xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'University Events'">
-					  <span id="currCategories" class="displayGroupName">Commencement, Founders' Day, Holiday, MLK, Parents' and Family Weekend</span>
-					</xsl:when>
-				</xsl:choose>
-		  </xsl:when>
-		  <xsl:otherwise>
-          		Category:
-			  <span id="currCategories" class="displayGroupName"><xsl:value-of select="/bedework/appvar[key = 'category']/value"/></span>
-		  </xsl:otherwise>
-		  </xsl:choose>
-	
-		  <xsl:text> </xsl:text>
+    <xsl:choose>
+            <xsl:when test="contains(/bedework/appvar[key = 'category']/value,'~')">
+              Categories:
+        <xsl:choose>
+          <xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Arts'">
+            <span id="currCategories" class="displayGroupName">Concert/Music, Dance Performance, Exhibit, Masterclass, Movie/Film, Reading, Theater</span>
+          </xsl:when>
+          <xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Athletics/Recreation'">
+            <span id="currCategories" class="displayGroupName">Athletics/Intramurals/Recreation, Athletics/Varsity Sports/Men, Athletics/Varsity Sports/Women</span>
+          </xsl:when>
+          <xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'Lectures/Conferences'">
+            <span id="currCategories" class="displayGroupName">Conference/Symposium, Lecture/Talk, Panel/Seminar/Colloquium</span>
+          </xsl:when>
+          <xsl:when test="/bedework/appvar[key = 'categoryclass']/value = 'University Events'">
+            <span id="currCategories" class="displayGroupName">Commencement, Founders' Day, Holiday, MLK, Parents' and Family Weekend</span>
+          </xsl:when>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+              Category:
+        <span id="currCategories" class="displayGroupName"><xsl:value-of select="/bedework/appvar[key = 'category']/value"/></span>
+      </xsl:otherwise>
+      </xsl:choose>
+
+      <xsl:text> </xsl:text>
                   <xsl:choose>
                   <xsl:when test="$suite-name='Main'">
-		        <a id="allView" href="/cal/?setappvar=category(all)&amp;setappvar=categoryclass(all)">(select all categories)</a>
+            <a id="allView" href="/cal/?setappvar=category(all)&amp;setappvar=categoryclass(all)">(select all categories)</a>
                   </xsl:when>
                   <xsl:otherwise>
-		        <a id="allView" href="/student/?setappvar=category(all)&amp;setappvar=categoryclass(all)">(select all categories)</a>
+            <a id="allView" href="/student/?setappvar=category(all)&amp;setappvar=categoryclass(all)">(select all categories)</a>
                   </xsl:otherwise>
                   </xsl:choose>
             </td>
           </tr>
-	    <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[not(filler = 'true')]">
-               <xsl:call-template name="display-events-table"> 
+      <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[not(filler = 'true')]">
+               <xsl:call-template name="display-events-table">
                     <xsl:with-param name="node" select="."/>
                     <xsl:with-param name="suite-name" select="$suite-name"/>
                </xsl:call-template>
@@ -212,7 +211,7 @@
             <td class="eventFilterInfo" colspan="3">Only displaying events in calendar: <span class="displayGroupName"><xsl:value-of select="/bedework/selectionState/subscriptions/subscription/calendar/name"/></span><xsl:text> </xsl:text><a id="allView" href="setSelection.do?b=de{$allGroupsAppVar}">(return to all calendars)</a></td>
           </tr>
           <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[not(filler = 'true')]">
-             <xsl:call-template name="display-events-table"> 
+             <xsl:call-template name="display-events-table">
                   <xsl:with-param name="node" select="."/>
                   <xsl:with-param name="suite-name" select="$suite-name"/>
              </xsl:call-template>
@@ -220,7 +219,7 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[not(filler = 'true')]">
-             <xsl:call-template name="display-events-table"> 
+             <xsl:call-template name="display-events-table">
                    <xsl:with-param name="node" select="."/>
                    <xsl:with-param name="suite-name" select="$suite-name"/>
              </xsl:call-template>
@@ -253,13 +252,13 @@
                           <xsl:if test="($first = /bedework/urlPrefixes/groups/group/eventOwner)">
                                   <xsl:choose>
                                    <xsl:when test="$first = creator">
-                                                <xsl:call-template name="eventRow"> 
+                                                <xsl:call-template name="eventRow">
                                                        <xsl:with-param name="node" select="."/>
                                                        <xsl:with-param name="suite-name" select="$suite-name"/>
                                                 </xsl:call-template>
                                    </xsl:when>
                                    <xsl:when test="(contains($cosponsors, concat($first,',')) and ($first != ''))">
-                                                <xsl:call-template name="eventRow"> 
+                                                <xsl:call-template name="eventRow">
                                                        <xsl:with-param name="node" select="."/>
                                                        <xsl:with-param name="suite-name" select="$suite-name"/>
                                                 </xsl:call-template>
@@ -327,7 +326,7 @@
          </xsl:otherwise>
          </xsl:choose>
   </xsl:template>
-  
+
   <!--=========  Event Row  ==========-->
   <xsl:template name="eventRow">
           <xsl:param name="node"/>
@@ -340,14 +339,14 @@
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <xsl:variable name="currentdate" select="parent::day/date"/>
     <!-- <xsl:if test="not(preceding::event[parent::day/date=$currentdate])"> -->
-	<tr>
+  <tr>
             <td colspan="3" class="dateRow">
-	            <xsl:variable name="date" select="parent::day/date"/>
-	            <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$date}"> <xsl:value-of select="parent::day/name"/>, <xsl:value-of select="parent::day/longdate"/> </a>
-	    </td>
-	</tr>
+              <xsl:variable name="date" select="parent::day/date"/>
+              <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$date}"> <xsl:value-of select="parent::day/name"/>, <xsl:value-of select="parent::day/longdate"/> </a>
+      </td>
+  </tr>
        <!-- </xsl:if> -->
-    	<tr>
+      <tr>
 
       <!-- Event Date / Time column-->
       <xsl:variable name="dateRangeStyle">
@@ -444,7 +443,7 @@
           <xsl:if test="status='CANCELLED'">
             <strong>CANCELLED: </strong>
           </xsl:if>
-	  <xsl:if test="status='TENTATIVE'">
+    <xsl:if test="status='TENTATIVE'">
              <strong>TENTATIVE: </strong>
           </xsl:if>
 
@@ -460,33 +459,33 @@
           <xsl:if test="$suite-name='Main'">
               <h5> <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"/></h5>
               <xsl:choose>
-              <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'"> 
+              <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
                        <li class="titleEvent"><xsl:value-of select="summary"/></li>
                        <xsl:if test="location/address != ''"> <li>Location: <xsl:value-of select="location/address"/></li> </xsl:if>
                        <xsl:if test="cost!=''"><li>Cost: <xsl:value-of select="cost"/></li></xsl:if>
                        <xsl:if test="contact/name!='none'"><li>Contact: <xsl:value-of select="contact/name"/></li></xsl:if>
-	   	       <xsl:choose>
-	  	       <xsl:when test="xproperties/X-BEDEWORK-CS/values/text != ''">
-			 	<li>
-			 	<span class="infoTitle">Co-sponsors: </span>
-			  	<xsl:if test="creator != ''">
-			  		<xsl:variable name="creator" select="creator"/>
-		 			<xsl:value-of select="/bedework/urlPrefixes/groups/group[eventOwner = $creator]/name"/>
-			  	</xsl:if>
-			 	<xsl:value-of disable-output-escaping="yes" select="xproperties/X-BEDEWORK-CS/values/text"/>
-				</li>
-	  	       </xsl:when>
-	  	       <xsl:otherwise>
-	  			<li>
-				 <span class="infoTitle">Sponsor: </span>
-				  <xsl:if test="creator != ''">
-				  	<xsl:variable name="creator" select="creator"/>
-			 		<xsl:value-of select="/bedework/urlPrefixes/groups/group[eventOwner = $creator]/name"/>
-				  </xsl:if>
-				 <xsl:value-of disable-output-escaping="yes" select="xproperties/X-BEDEWORK-CS/values/text"/>
-				</li>
-	  	      </xsl:otherwise>
-		      </xsl:choose>
+              <xsl:choose>
+             <xsl:when test="xproperties/X-BEDEWORK-CS/values/text != ''">
+         <li>
+         <span class="infoTitle">Co-sponsors: </span>
+          <xsl:if test="creator != ''">
+            <xsl:variable name="creator" select="creator"/>
+           <xsl:value-of select="/bedework/urlPrefixes/groups/group[eventOwner = $creator]/name"/>
+          </xsl:if>
+         <xsl:value-of disable-output-escaping="yes" select="xproperties/X-BEDEWORK-CS/values/text"/>
+        </li>
+             </xsl:when>
+             <xsl:otherwise>
+          <li>
+         <span class="infoTitle">Sponsor: </span>
+          <xsl:if test="creator != ''">
+            <xsl:variable name="creator" select="creator"/>
+           <xsl:value-of select="/bedework/urlPrefixes/groups/group[eventOwner = $creator]/name"/>
+          </xsl:if>
+         <xsl:value-of disable-output-escaping="yes" select="xproperties/X-BEDEWORK-CS/values/text"/>
+        </li>
+            </xsl:otherwise>
+          </xsl:choose>
                       <li>Description: <xsl:value-of select="description"/></li>
                       <xsl:if test="link != ''"><li>Link: <xsl:variable name="link" select="link"/><a href="{$link}" class="moreLink">More Info</a></li></xsl:if>
               </xsl:when>
@@ -496,7 +495,7 @@
              </xsl:otherwise>
              </xsl:choose>
         </xsl:if>
-	</ul>
+  </ul>
       </td>
       <!-- Event Icon Column -->
       <td class="icons">

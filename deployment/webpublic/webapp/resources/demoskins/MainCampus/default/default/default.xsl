@@ -60,8 +60,10 @@
   <xsl:include href="../../../bedework-common/default/default/util.xsl" />
   <xsl:include href="./strings.xsl" />
 
-  <!-- acheck -->
-  <xsl:include href="defaultTheme/display-events.xsl" />
+  <!-- Page subsections -->
+  <xsl:include href="./defaultTheme/header.xsl" />
+  <xsl:include href="./defaultTheme/footer.xsl" />
+  <xsl:include href="./defaultTheme/display-events.xsl" />
   <!-- <xsl:include href="featured.xsl"/> -->
 
   <!-- DEFINE GLOBAL CONSTANTS -->
@@ -115,15 +117,21 @@
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <xsl:choose>
-          <xsl:when test="/bedework/page='event'">
-            <title><xsl:value-of select="/bedework/event/summary" /></title>
-          </xsl:when>
-          <xsl:otherwise>
-            <title><xsl:copy-of select="$bwStr-Root-PageTitle" /></title>
-          </xsl:otherwise>
-        </xsl:choose>
+        <title>
+          <xsl:choose>
+            <xsl:when test="/bedework/page='event'">
+              <xsl:value-of select="/bedework/event/summary" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:copy-of select="$bwStr-Root-PageTitle" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </title>
+
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+
+        <!-- address bar favicon -->
+        <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/ecal.ico" />
 
         <!-- load css -->
         <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/fixed.css" />
@@ -143,17 +151,14 @@
         </xsl:text>
 
         <!-- load javascript -->
+        <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
         <script type="text/javascript" src="{$resourcesRoot}/javascript/yui/yahoo-dom-event.js">&#160;</script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js">&#160;</script>
         <script type="text/javascript" src="{$resourcesRoot}/javascript/yui/calendar-min.js">&#160;</script>
         <script type="text/javascript" src="{$resourcesRoot}/javascript/yui/animation-min.js">&#160;</script>
         <xsl:if test="/bedework/page='searchResult'">
           <script type="text/javascript" src="{$resourcesRoot}/javascript/catSearch.js">&#160;</script>
         </xsl:if>
         <script type="text/javascript" src="{$resourcesRoot}/javascript/mainCampus.js">&#160;</script>
-
-        <!-- address bar icon -->
-        <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/ecal.ico" />
         <script type="text/javascript">
           <xsl:call-template name="jsonDataObject" />
         </script>
@@ -162,7 +167,7 @@
       <body>
         <div id="wrap">
           <div id="header">
-            <xsl:call-template name="dateTitleBar" />
+            <xsl:call-template name="titleBar" />
             <xsl:call-template name="tabs" />
           </div>
           <xsl:if test="/bedework/error">
@@ -173,6 +178,7 @@
           </xsl:if>
           <div id="content">
             <xsl:choose>
+              <!-- Set up the layouts for each type of display -->
               <!-- Layout for: Single Event Display-->
               <xsl:when test="/bedework/page = 'event'">
                 <div id="contentSection">
@@ -210,88 +216,59 @@
                 </div>
               </xsl:when>
 
-              <!-- Layout for: Current Day (list only) -->
-              <xsl:when test="/bedework/periodname = 'Day' and ((/bedework/now/date) = (/bedework/currentdate/date))">
-                <div id="contentSection">
-                  <xsl:call-template name="jsDateSelectionCal" />
-                  <div id="feature">
-                    <xsl:apply-templates select="document('./data/FeaturedEvent/FeaturedEvent.xml')/system-data-structure" />
-                  </div>
-                  <div class="clear">&#160;</div>
-                </div>
-                <div id="contentSection">
-                  <div class="left_column">
-                    <xsl:call-template name="display-side-bar" />
-                    <div class="extFeeds">
-                      <a href="http://buzz.duke.edu">
-                        <img src="{$resourcesRoot}/images/buzz.gif" alt="Buzz" />
-                      </a>
-                      <a id="buzzTrigger" href="#">
-                        More &gt;
-                      </a>
-                      <div id="buzzResult" style="display:none">
-                        Events List
+              <!-- Main calendar output -->
+              <xsl:when test="/bedework/page='eventscalendar'">
+                <xsl:choose>
+                  <!-- Layout for Current Day -->
+                  <!-- Here we expose the Featured Events -->
+                  <xsl:when test="/bedework/periodname = 'Today' or (/bedework/periodname = 'Day' and (/bedework/now/date = /bedework/currentdate/date))">
+                    <div id="contentSection">
+                      <xsl:call-template name="jsDateSelectionCal" />
+                      <div id="feature">
+                        <xsl:apply-templates select="document('defaultTheme/data/FeaturedEvent/FeaturedEvent.xml')/system-data-structure" />
+                      </div>
+                      <div class="clear">&#160;</div>
+                    </div>
+                    <div id="contentSection">
+                      <div class="left_column">
+                        <xsl:call-template name="display-side-bar" />
+                      </div>
+                      <xsl:call-template name="groupsList" />
+
+                      <xsl:call-template name="display-center-column" />
+                      <div class="right_column" id="right_column">
+                        <xsl:call-template name="ongoingEventList" />
                       </div>
                     </div>
-                  </div>
-                  <xsl:call-template name="groupsList" />
+                  </xsl:when>
 
-                  <xsl:call-template name="display-center-column" />
-                  <div class="right_column" id="right_column">
-                    <xsl:call-template name="ongoingEventList" />
-                  </div>
-                </div>
-              </xsl:when>
-
-              <!-- Layout for: Daily (list only) -->
-              <xsl:when
-                test="/bedework/periodname = 'Day' and /bedework/page='eventscalendar'">
-                <div id="contentSection">
-                  <xsl:call-template name="display-left-column" />
-                  <xsl:call-template name="display-center-column" />
-                  <div class="right_column" id="right_column">
-                    <xsl:call-template name="ongoingEventList" />
-                  </div>
-                </div>
-              </xsl:when>
-
-              <!-- Layout for: Week (list) -->
-              <xsl:when
-                test="bedework/periodname = 'Week' and /bedework/page='eventscalendar'">
-                <div id="contentSection">
-                  <xsl:call-template name="display-left-column" />
-                  <xsl:call-template name="display-center-column" />
-                  <div class="right_column" id="right_column">
-                    <xsl:call-template name="ongoingEventList" />
-                  </div>
-                </div>
-              </xsl:when>
-
-              <!-- Layout for: Month (List) -->
-              <xsl:when
-                test="bedework/periodname = 'Month' and /bedework/page='eventscalendar'">
-                <div id="contentSection">
-                  <xsl:call-template name="display-left-column" />
-                  <xsl:call-template name="display-center-column" />
-                  <div class="right_column" id="right_column">
-                    <xsl:call-template name="ongoingEventList" />
-                  </div>
-                </div>
-              </xsl:when>
-
-              <!-- Layout for: Year -->
-              <xsl:when
-                test="bedework/periodname = 'Year' and /bedework/page='eventscalendar'">
-                <div id="contentSection">
-                  <xsl:call-template name="display-left-column" />
-                  <div class="double_center_column" id="center_column">
-                    <div class="secondaryColHeader">
-                      <xsl:call-template name="navigation" />
+                  <!-- Layout for: Day, Week, and Month (list only) -->
+                  <xsl:when test="/bedework/periodname != 'Year' ">
+                    <div id="contentSection">
+                      <xsl:call-template name="display-left-column" />
+                      <xsl:call-template name="display-center-column" />
+                      <div class="right_column" id="right_column">
+                        <xsl:call-template name="ongoingEventList" />
+                      </div>
                     </div>
-                    <xsl:call-template name="yearView" />
-                  </div>
-                  <div class="right_column" id="right_column"></div>
-                </div>
+                  </xsl:when>
+
+                  <!-- Layout for: Year -->
+                  <xsl:when
+                    test="bedework/periodname = 'Year'">
+                    <div id="contentSection">
+                      <xsl:call-template name="display-left-column" />
+                      <div class="double_center_column" id="center_column">
+                        <div class="secondaryColHeader">
+                          <xsl:call-template name="navigation" />
+                        </div>
+                        <xsl:call-template name="yearView" />
+                      </div>
+                      <div class="right_column" id="right_column"></div>
+                    </div>
+                  </xsl:when>
+
+                </xsl:choose>
               </xsl:when>
 
               <!-- Layout for: System Stats -->
@@ -317,27 +294,6 @@
           <xsl:call-template name="footer" />
         </div>
 
-        <!--=====  If we're running in production, send stats to google analytics ========-->
-        <xsl:variable name="server-name">
-          <xsl:call-template name="current-server" />
-        </xsl:variable>
-        <xsl:if
-          test="$server-name='http://calendar.myserver.edu'">
-          <script type="text/javascript">
-            var gaJsHost = (("https:" ==
-            document.location.protocol) ? "https://ssl." :
-            "http://www.");
-            document.write(unescape("%3Cscript src='" +
-            gaJsHost + "google-analytics.com/ga.js'
-            type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            var pageTracker =
-            _gat._getTracker("UA-2424370-34");
-            pageTracker._initData();
-            pageTracker._trackPageview();
-          </script>
-        </xsl:if>
       </body>
     </html>
   </xsl:template>
@@ -495,159 +451,6 @@
       <xsl:value-of select="substring(/bedework/lastday/date,1,4)" />
     </xsl:variable>
     navcalendar = [ "<xsl:value-of select="$displayMonthYear" />", "<xsl:value-of select="$rangeStartMo" />", "<xsl:value-of select="$rangeStartDay" />", "<xsl:value-of select="$rangeStartYear" />", "<xsl:value-of select="$rangeEndMo" />", "<xsl:value-of select="$rangeEndDay" />", "<xsl:value-of select="$rangeEndYear" />", ];
-  </xsl:template>
-
-  <!--==== HEADER TEMPLATES and NAVIGATION  ====-->
-  <!-- these templates are separated out for convenience and to simplify the default template -->
-  <xsl:template name="dateTitleBar">
-    <xsl:choose>
-      <xsl:when
-        test="/bedework/page='showSysStats' or /bedework/page='calendars'">
-        &#160;
-      </xsl:when>
-      <xsl:otherwise>
-        <div id="head-top">
-          <h1>Bedework Events Calendar</h1>
-          <!-- p
-            style="padding: 1em; background-color: #eee; border: 1px solid black;">
-            In progress:
-            <a href="?skinNameSticky=bwclassic">
-              go to Bedework Classic
-            </a>
-          </p -->
-        </div>
-        <a id="currentDate"
-          href="{$setViewPeriod}&amp;viewType=todayView&amp;date={$curdate}">
-          <xsl:value-of select="/bedework/now/longdate" />
-        </a>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  <xsl:template name="dateSelectForm">
-    <form name="calForm" method="post" action="{$setViewPeriod}">
-      <xsl:if test="/bedework/periodname!='Year'">
-        <select name="viewStartDate.month">
-          <xsl:for-each select="/bedework/monthvalues/val">
-            <xsl:variable name="temp" select="." />
-            <xsl:variable name="pos" select="position()" />
-            <xsl:choose>
-              <xsl:when
-                test="/bedework/monthvalues[start=$temp]">
-                <option value="{$temp}"
-                  selected="selected">
-                  <xsl:value-of
-                    select="/bedework/monthlabels/val[position()=$pos]" />
-                </option>
-              </xsl:when>
-              <xsl:otherwise>
-                <option value="{$temp}">
-                  <xsl:value-of
-                    select="/bedework/monthlabels/val[position()=$pos]" />
-                </option>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:for-each>
-        </select>
-        <xsl:if test="/bedework/periodname!='Month'">
-          <select name="viewStartDate.day">
-            <xsl:for-each
-              select="/bedework/dayvalues/val">
-              <xsl:variable name="temp" select="." />
-              <xsl:variable name="pos"
-                select="position()" />
-              <xsl:choose>
-                <xsl:when
-                  test="/bedework/dayvalues[start=$temp]">
-                  <option value="{$temp}"
-                    selected="selected">
-                    <xsl:value-of
-                      select="/bedework/daylabels/val[position()=$pos]" />
-                  </option>
-                </xsl:when>
-                <xsl:otherwise>
-                  <option value="{$temp}">
-                    <xsl:value-of
-                      select="/bedework/daylabels/val[position()=$pos]" />
-                  </option>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:for-each>
-          </select>
-        </xsl:if>
-      </xsl:if>
-      <xsl:variable name="temp"
-        select="/bedework/yearvalues/start" />
-      <input type="text" name="viewStartDate.year" maxlength="4"
-        size="4" value="{$temp}" />
-      <input name="submit" type="submit" value="go" />
-    </form>
-  </xsl:template>
-
-  <xsl:template name="tabs">
-    <div id="nav-search-wrap">
-      <!-- <xsl:if test="/bedework/page!='searchResult'"> -->
-      <form name="searchForm" id="basic_search" method="post"
-        onsubmit="var bsearch = document.getElementById('basicsearchbox'); bsearch.value == '' ? bsearch.value += 'category:Main' : bsearch.value += ' AND category:Main'"
-        action="{$search}">
-        <!--advance search link  -->
-        <a href="{$search-next}">Advanced Search</a>
-        <!--<label for="query">Search </label>-->
-        <input type="text" name="query" id="basicsearchbox" />
-        <input id="searchSubmit" type="submit" name="submit"
-          value="Search" onmouseover="this.style.backgroundColor = '#273E6D'"
-          onmouseout="this.style.backgroundColor = '#85C13D'" />
-        <!--   -->
-      </form>
-      <!-- </xsl:if> -->
-      <ul id="nav-main">
-        <xsl:variable name="currentClass">current</xsl:variable>
-        <li>
-          <a
-            href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Day'">
-              <xsl:attribute name="class">
-                    <xsl:value-of select="$currentClass" />
-                  </xsl:attribute>
-            </xsl:if>
-            DAY
-          </a>
-        </li>
-        <li>
-          <a
-            href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Week'">
-              <xsl:attribute name="class">
-                    <xsl:value-of select="$currentClass" />
-                  </xsl:attribute>
-            </xsl:if>
-            WEEK
-          </a>
-        </li>
-        <li>
-          <a
-            href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Month'">
-              <xsl:attribute name="class">
-                    <xsl:value-of select="$currentClass" />
-                  </xsl:attribute>
-            </xsl:if>
-            MONTH
-          </a>
-        </li>
-        <li>
-          <a
-            href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Year'">
-              <xsl:attribute name="class">
-                    <xsl:value-of select="$currentClass" />
-                  </xsl:attribute>
-            </xsl:if>
-            YEAR
-          </a>
-        </li>
-      </ul>
-      <div class="clear">&#160;</div>
-    </div>
   </xsl:template>
 
   <!-- Date Selection Cal -->
@@ -2658,99 +2461,4 @@
     </div>
   </xsl:template>
 
-  <!--==== FOOTER ====-->
-
-  <xsl:template name="footer">
-    <div id="footer">
-      <xsl:copy-of select="$bwStr-Foot-BasedOnThe" />
-      <xsl:text> </xsl:text>
-      <a href="http://www.bedework.org/">
-        <xsl:copy-of
-          select="$bwStr-Foot-BedeworkCalendarSystem" />
-      </a>
-    </div>
-    <div id="subfoot">
-      <a href="http://www.bedework.org/">
-        <xsl:copy-of
-          select="$bwStr-Foot-BedeworkWebsite" />
-      </a>
-      |
-      <a
-        href="http://www.bedework.org/bedework/update.do?artcenterkey=35">
-        <xsl:copy-of
-          select="$bwStr-Foot-ProductionExamples" />
-      </a>
-      |
-      <a href="?noxslt=yes">
-        <xsl:copy-of select="$bwStr-Foot-ShowXML" />
-      </a>
-      |
-      <a href="?refreshXslt=yes">
-        <xsl:copy-of select="$bwStr-Foot-RefreshXSLT" />
-      </a>
-      <form name="styleSelectForm" method="get"
-        action="{$setup}">
-        <select name="setappvar" onchange="submit()">
-          <option value="">
-            <xsl:copy-of
-              select="$bwStr-Foot-ExampleStyles" />
-            :
-          </option>
-          <option value="style(green)">
-            <xsl:copy-of select="$bwStr-Foot-Green" />
-          </option>
-          <option value="style(red)">
-            <xsl:copy-of select="$bwStr-Foot-Red" />
-          </option>
-          <option value="style(blue)">
-            <xsl:copy-of select="$bwStr-Foot-Blue" />
-          </option>
-        </select>
-      </form>
-      <form name="skinSelectForm" method="post"
-        action="{$setup}">
-        <input type="hidden" name="setappvar"
-          value="summaryMode(details)" />
-        <select name="skinPicker"
-          onchange="window.location = this.value">
-          <option
-            value="{$setup}&amp;skinNameSticky=default">
-            <xsl:copy-of
-              select="$bwStr-Foot-ExampleSkins" />
-            :
-          </option>
-          <option
-            value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3">
-            <xsl:copy-of
-              select="$bwStr-Foot-RSSNext3Days" />
-          </option>
-          <option
-            value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=js-list&amp;days=3&amp;contentType=text/javascript&amp;contentName=bedework.js">
-            <xsl:copy-of
-              select="$bwStr-Foot-JavascriptNext3Days" />
-          </option>
-          <option
-            value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedeworkToday.js">
-            <xsl:copy-of
-              select="$bwStr-Foot-JavascriptTodaysEvents" />
-          </option>
-          <option
-            value="{$setup}&amp;browserTypeSticky=PDA">
-            <xsl:copy-of
-              select="$bwStr-Foot-ForMobileBrowsers" />
-          </option>
-          <option
-            value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=videocal">
-            <xsl:copy-of
-              select="$bwStr-Foot-VideoFeed" />
-          </option>
-          <option
-            value="{$setup}&amp;skinNameSticky=default">
-            <xsl:copy-of
-              select="$bwStr-Foot-ResetToCalendarDefault" />
-          </option>
-        </select>
-      </form>
-    </div>
-  </xsl:template>
 </xsl:stylesheet>
