@@ -245,17 +245,19 @@
                       <xsl:for-each select='categories/category'>"<xsl:value-of select='word'/>"<xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>
                     ],
                     "description" : "<xsl:value-of select='$strippedDescription'/>",
-                    "xproperties" : {
+                    "xproperties" : [
                       <xsl:for-each select="xproperties/node()[name() != '']">
-                       "<xsl:value-of select='name()'/>" : {
-                       "values" : {
-                           <xsl:for-each select="values/node()[name() != '']">
-                             "<xsl:value-of select='name()'/>" : "<xsl:call-template name="replace"><xsl:with-param name="string" select="."/><xsl:with-param name="pattern" select='"&apos;"'/><xsl:with-param name="replacement" select='"\&apos;"'/></xsl:call-template>"<xsl:if test='position() != last()'>,</xsl:if>
-                           </xsl:for-each>
+                      {
+                        "<xsl:value-of select='name()'/>" : {
+                          "values" : {
+                             <xsl:for-each select="values/node()[name() != '']">
+                               "<xsl:value-of select='name()'/>" : "<xsl:call-template name="replace"><xsl:with-param name="string" select="."/><xsl:with-param name="pattern" select='"&apos;"'/><xsl:with-param name="replacement" select='"\&apos;"'/></xsl:call-template>"<xsl:if test='position() != last()'>,</xsl:if>
+                             </xsl:for-each>
+                          }
                         }
-                      }<xsl:if test='position() != last()'>,</xsl:if>
-                  </xsl:for-each>
-                    }
+                      }<xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>
+                      
+                    ]
                  }<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>
 </xsl:stylesheet>
