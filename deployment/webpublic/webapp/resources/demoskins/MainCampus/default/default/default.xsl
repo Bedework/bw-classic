@@ -131,7 +131,7 @@
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
 
         <!-- address bar favicon -->
-        <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/ecal.ico" />
+        <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
 
         <!-- load css -->
         <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/fixed.css" />

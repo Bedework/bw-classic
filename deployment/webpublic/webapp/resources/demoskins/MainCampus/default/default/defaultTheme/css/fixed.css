@@ -52,7 +52,7 @@ div#head-top {
  position: relative;
  height: 90px;
  cursor: pointer;
- background: #014B94; /* url("../images/bedeworkLogo.gif") top left no-repeat;*/
+ background: #014B94 url("../images/bedeworkLogo3p6.gif") top left no-repeat;
  color: white;
 }
 div#title-text {
@@ -95,7 +95,7 @@ div#nav-search-wrap {
 }
 form#basic_search {
  float: right;
- margin: 4px 10px 0 0;
+ margin: 6px 6px 0 0;
 }
 form#basic_search label {
  color: #FFF;
@@ -130,16 +130,17 @@ ul#nav-main li {
 ul#nav-main li a {
  display: block;
  margin: 0;
- padding: .3em 3em 0 1em;
+ padding: .3em 2em 0 2em;
  font-size: 1.1em;
  line-height: 2;
- background: #85C13D url("../images/tab-bg.png") no-repeat top right;
+ background-color: #85C13D;
  color: #FFF;
 }
 ul#nav-main li a:hover {
  color: #273E6D;
 }
 ul#nav-main li a.current {
+ background-color: #9ed24a;
  color: #273E6D;
 }
 div#content {
@@ -284,6 +285,7 @@ div#errors {
 .secondaryColHeader {
  padding: 0 0 0 10px;
  background: #273E6D;
+ white-space: nowrap;
  clear: both;
 }
 .secondaryColHeader h3 {

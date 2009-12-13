@@ -6,25 +6,6 @@
   <xsl:template name="footer">
     <div id="footer">
       <div id="footForms">
-        <form name="styleSelectForm" method="get"
-          action="{$setup}">
-          <select name="setappvar" onchange="submit()">
-            <option value="">
-              <xsl:copy-of
-                select="$bwStr-Foot-ExampleStyles" />
-              :
-            </option>
-            <option value="style(green)">
-              <xsl:copy-of select="$bwStr-Foot-Green" />
-            </option>
-            <option value="style(red)">
-              <xsl:copy-of select="$bwStr-Foot-Red" />
-            </option>
-            <option value="style(blue)">
-              <xsl:copy-of select="$bwStr-Foot-Blue" />
-            </option>
-          </select>
-        </form>
         <form name="skinSelectForm" method="post"
           action="{$setup}">
           <input type="hidden" name="setappvar"
@@ -91,6 +72,8 @@
       <a href="?refreshXslt=yes">
         <xsl:copy-of select="$bwStr-Foot-RefreshXSLT" />
       </a>
+      <br/>
+      <xsl:copy-of select="$bwStr-Foot-Credits" />
     </div>
   </xsl:template>
 
