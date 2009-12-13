@@ -1,5 +1,4 @@
-<xsl:stylesheet
-  version="1.0"
+<xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
 
@@ -9,10 +8,20 @@
   <xsl:template name="titleBar">
     <div id="head-top">
       <div id="title-text">
-        <h2><xsl:copy-of select="$bwStr-HdBr-PublicCalendar"/></h2>
-        <a href="{$privateCal}"><xsl:copy-of select="$bwStr-HdBr-PersonalCalendar"/></a> |
-        <a href="/bedework"><xsl:copy-of select="$bwStr-HdBr-UniversityHome"/></a> |
-        <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a>
+        <h2>
+          <xsl:copy-of select="$bwStr-HdBr-PublicCalendar" />
+        </h2>
+        <a href="{$privateCal}">
+          <xsl:copy-of select="$bwStr-HdBr-PersonalCalendar" />
+        </a>
+        |
+        <a href="/bedework">
+          <xsl:copy-of select="$bwStr-HdBr-UniversityHome" />
+        </a>
+        |
+        <a href="http://www.bedework.org/">
+          <xsl:copy-of select="$bwStr-HdBr-OtherLink" />
+        </a>
       </div>
     </div>
   </xsl:template>
@@ -79,20 +88,16 @@
 
   <xsl:template name="tabs">
     <div id="nav-search-wrap">
-      <!-- <xsl:if test="/bedework/page!='searchResult'"> -->
       <form name="searchForm" id="basic_search" method="post"
         onsubmit="var bsearch = document.getElementById('basicsearchbox'); bsearch.value == '' ? bsearch.value += 'category:Main' : bsearch.value += ' AND category:Main'"
         action="{$search}">
         <!--advance search link  -->
         <a href="{$search-next}">Advanced Search</a>
-        <!--<label for="query">Search </label>-->
         <input type="text" name="query" id="basicsearchbox" />
         <input id="searchSubmit" type="submit" name="submit"
           value="Search" onmouseover="this.style.backgroundColor = '#273E6D'"
           onmouseout="this.style.backgroundColor = '#85C13D'" />
-        <!--   -->
       </form>
-      <!-- </xsl:if> -->
       <ul id="nav-main">
         <xsl:variable name="currentClass">current</xsl:variable>
         <li>
@@ -100,8 +105,8 @@
             href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">
             <xsl:if test="/bedework/periodname='Day'">
               <xsl:attribute name="class">
-                    <xsl:value-of select="$currentClass" />
-                  </xsl:attribute>
+                <xsl:value-of select="$currentClass" />
+              </xsl:attribute>
             </xsl:if>
             DAY
           </a>
@@ -111,8 +116,8 @@
             href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}">
             <xsl:if test="/bedework/periodname='Week'">
               <xsl:attribute name="class">
-                    <xsl:value-of select="$currentClass" />
-                  </xsl:attribute>
+                <xsl:value-of select="$currentClass" />
+              </xsl:attribute>
             </xsl:if>
             WEEK
           </a>
@@ -122,8 +127,8 @@
             href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">
             <xsl:if test="/bedework/periodname='Month'">
               <xsl:attribute name="class">
-                    <xsl:value-of select="$currentClass" />
-                  </xsl:attribute>
+                <xsl:value-of select="$currentClass" />
+              </xsl:attribute>
             </xsl:if>
             MONTH
           </a>
@@ -133,10 +138,21 @@
             href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}">
             <xsl:if test="/bedework/periodname='Year'">
               <xsl:attribute name="class">
-                    <xsl:value-of select="$currentClass" />
-                  </xsl:attribute>
+                <xsl:value-of select="$currentClass" />
+              </xsl:attribute>
             </xsl:if>
             YEAR
+          </a>
+        </li>
+        <li>
+          <a
+            href="{$setViewPeriod}&amp;viewType=todayView">
+            <xsl:if test="/bedework/periodname='Today'">
+              <xsl:attribute name="class">
+                <xsl:value-of select="$currentClass" />
+              </xsl:attribute>
+            </xsl:if>
+            TODAY
           </a>
         </li>
       </ul>

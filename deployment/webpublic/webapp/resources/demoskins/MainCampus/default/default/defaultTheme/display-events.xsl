@@ -52,12 +52,10 @@
       <!-- NO filter (either group or category) -->
       <xsl:otherwise>
         <xsl:for-each  select="event[not(categories/category[value|word ='Ongoing']) and not(categories/category[value|word ='Local'])]">
-          <xsl:if test="categories/category[value=$suite-name] or categories/category[word=$suite-name]">
             <xsl:call-template name="eventRow">
               <xsl:with-param name="node" select="."/>
               <xsl:with-param name="suite-name" select="$suite-name"/>
             </xsl:call-template>
-          </xsl:if>
         </xsl:for-each>
       </xsl:otherwise>
     </xsl:choose>

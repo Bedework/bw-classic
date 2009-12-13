@@ -183,7 +183,8 @@ a.breadcrumb {
 div#cal1 {
  float: left;
  width: 234px;
- padding: 0 1px 0 0;
+ padding: 0;
+ margin: 0;
  min-height: 190px;
 }
 div.calContainer {
@@ -258,13 +259,12 @@ div.calContainer {
 }
 div#feature {
  float: left;
- width: 722px;
  min-height: 190px;
  overflow: hidden;
  display: inline;
 }
-div#feature img.border {
- border-right: 3px solid #ffffff;
+div#feature img {
+ border-left: 1px solid #ffffff;
 }
 div#feature a {
 }
@@ -446,7 +446,7 @@ ul.sideLinks li a:hover {
 }
 div.center_column {
  float: left;
- width: 480px;
+ width: 483px;
 }
 a#prevViewPeriod, a#nextViewPeriod {
  font: italic 1.8em/2 Georgia,"Times New Roman",Times,serif;
@@ -511,7 +511,7 @@ a#allView:visited, a#allView {
 }
 div.double_center_column {
  float: left;
- width: 721px;
+ width: 725px;
 }
 div.groupDesc {
  display: block;
@@ -784,8 +784,9 @@ ul.calendarTree li ul li {
 }
 div.right_column {
  float: left;
- width: 244px;
- padding: 0 0 0 1px;
+ width: 241px;
+ margin: 0 0 0 1px;
+ padding: 0;
 }
 ul#event-lines {
 }
