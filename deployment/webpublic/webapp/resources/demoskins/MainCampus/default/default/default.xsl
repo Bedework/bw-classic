@@ -70,18 +70,15 @@
 
   <!-- DEFINE GLOBAL CONSTANTS -->
 
-  <!-- URL of html resources (images, css, other html);
-       by default this is set to the current theme directory  -->
-  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot" />/default/default/defaultTheme</xsl:variable>
-
   <!-- URL of the XSL template directory -->
   <!-- The approot is an appropriate place to put
     included stylesheets and xml fragments. These are generally
-    referenced relatively (like errors.xsl and messages.xsl above);
-    this variable is here for your convenience if you choose to
-    reference it explicitly.  It is not used in this stylesheet, however,
-    and can be safely removed if you so choose. -->
+    referenced relatively (like the included files above).  -->
   <xsl:variable name="appRoot" select="/bedework/approot" />
+
+  <!-- URL of html resources (images, css, other html);
+       by default this is set to the current theme directory  -->
+  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot" />/default/default/defaultTheme</xsl:variable>
 
   <!-- Properly encoded prefixes to the application actions; use these to build
     urls; allows the application to be used without cookies or within a portal.
