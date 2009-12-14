@@ -16,57 +16,39 @@
           <xsl:choose>
             <xsl:when
               test="(/bedework/appvar[key = 'group']/value = /bedework/urlPrefixes/groups/group/eventOwner) and (not(/bedework/appvar[key = 'category']/value) or (/bedework/appvar[key = 'category']/value = 'all'))">
-              <xsl:variable name="creator"
-                select="creator" />
-              <xsl:variable name="envgroup"
-                select="/bedework/appvar[key = 'group']/value" />
-              <xsl:variable name="cosponsor"
-                select="xproperties/X-BEDEWORK-CS/parameters/X-BEDEWORK-PARAM-DESCRIPTION" />
+              <xsl:variable name="creator" select="creator" />
+              <xsl:variable name="envgroup" select="/bedework/appvar[key = 'group']/value" />
+              <xsl:variable name="cosponsor" select="xproperties/X-BEDEWORK-CS/parameters/X-BEDEWORK-PARAM-DESCRIPTION" />
               <xsl:choose>
-                <xsl:when
-                  test="/bedework/appvar[key = 'group']/value = $creator">
-                  <xsl:call-template
-                    name="ongoingEvent" />
+                <xsl:when test="/bedework/appvar[key = 'group']/value = $creator">
+                  <xsl:call-template name="ongoingEvent" />
                 </xsl:when>
-                <xsl:when
-                  test="contains($cosponsor, concat($envgroup,','))">
-                  <xsl:call-template
-                    name="ongoingEvent" />
+                <xsl:when test="contains($cosponsor, concat($envgroup,','))">
+                  <xsl:call-template name="ongoingEvent" />
                 </xsl:when>
               </xsl:choose>
             </xsl:when>
-            <xsl:when
-              test="not(/bedework/appvar[key = 'group']/value = /bedework/urlPrefixes/groups/group/eventOwner) and (/bedework/appvar[key = 'category']/value) and not(/bedework/appvar[key = 'category']/value = 'all')">
-              <xsl:call-template
-                name="split-for-ongoing">
+            <xsl:when test="not(/bedework/appvar[key = 'group']/value = /bedework/urlPrefixes/groups/group/eventOwner) and (/bedework/appvar[key = 'category']/value) and not(/bedework/appvar[key = 'category']/value = 'all')">
+              <xsl:call-template name="split-for-ongoing">
                 <xsl:with-param name="list">
-                  <xsl:value-of
-                    select="/bedework/appvar[key = 'category']/value" />
+                  <xsl:value-of select="/bedework/appvar[key = 'category']/value" />
                 </xsl:with-param>
                 <xsl:with-param name="delimiter">
                   ~
                 </xsl:with-param>
               </xsl:call-template>
             </xsl:when>
-            <xsl:when
-              test="(/bedework/appvar[key = 'group']/value = /bedework/urlPrefixes/groups/group/eventOwner) and (/bedework/appvar[key = 'category']/value) and not(/bedework/appvar[key = 'category']/value = 'all')">
-              <xsl:variable name="creator"
-                select="creator" />
-              <xsl:variable name="envgroup"
-                select="/bedework/appvar[key = 'group']/value" />
-              <xsl:variable name="cosponsor"
-                select="xproperties/X-BEDEWORK-CS/parameters/X-BEDEWORK-PARAM-DESCRIPTION" />
+            <xsl:when test="(/bedework/appvar[key = 'group']/value = /bedework/urlPrefixes/groups/group/eventOwner) and (/bedework/appvar[key = 'category']/value) and not(/bedework/appvar[key = 'category']/value = 'all')">
+              <xsl:variable name="creator" select="creator" />
+              <xsl:variable name="envgroup" select="/bedework/appvar[key = 'group']/value" />
+              <xsl:variable name="cosponsor" select="xproperties/X-BEDEWORK-CS/parameters/X-BEDEWORK-PARAM-DESCRIPTION" />
               <xsl:choose>
-                <xsl:when
-                  test="/bedework/appvar[key = 'group']/value = $creator">
-                  <xsl:call-template
-                    name="split-for-ongoing">
+                <xsl:when test="/bedework/appvar[key = 'group']/value = $creator">
+                  <xsl:call-template name="split-for-ongoing">
                     <xsl:with-param name="list">
-                      <xsl:value-of
-                        select="/bedework/appvar[key = 'category']/value" />
+                      <xsl:value-of select="/bedework/appvar[key = 'category']/value" />
                     </xsl:with-param>
-                    <xsl:with-param
-                      name="delimiter">
+                    <xsl:with-param name="delimiter">
                       ~
                     </xsl:with-param>
                   </xsl:call-template>
