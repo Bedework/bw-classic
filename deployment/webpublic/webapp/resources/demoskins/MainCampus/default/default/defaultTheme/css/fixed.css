@@ -311,7 +311,7 @@ div#errors {
 }
 div.left_column {
  float: left;
- width: 235px;
+ width: 234px;
  margin: 0;
  padding: 0;
  background-color: #E0E6D8;
@@ -450,6 +450,7 @@ ul.sideLinks li a:hover {
 div.center_column {
  float: left;
  width: 483px;
+ margin-left: 1px;
 }
 a#prevViewPeriod, a#nextViewPeriod {
  font: italic 1.8em/2 Georgia,"Times New Roman",Times,serif;
@@ -460,6 +461,7 @@ a#prevViewPeriod, a#nextViewPeriod {
 table.eventList {
  border-collapse: collapse;
  width: 100%;
+ margin-left: 2px;
 }
 table.eventList tr td {
  padding: .7em .5em;
@@ -515,6 +517,7 @@ a#allView:visited, a#allView {
 div.double_center_column {
  float: left;
  width: 725px;
+ margin-left: 1px;
 }
 div.groupDesc {
  display: block;
