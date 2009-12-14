@@ -7,15 +7,13 @@
     <h3 class="secondaryColHeader">Ongoing</h3>
     <ul class="eventList">
       <xsl:for-each
-        select="/bedework/eventscalendar/year/month/week/day/event[(categories/category[value|word = 'Main']) and (categories/category[value|word = 'Ongoing']) and not(categories/category[value|word = 'Local'])]">
-        <xsl:sort select="start/unformatted" order="ascending"
-          data-type="number" />
+        select="/bedework/eventscalendar/year/month/week/day/event[categories/category[value|word = 'Ongoing']]">
+        <xsl:sort select="start/unformatted" order="ascending" data-type="number" />
         <xsl:sort select="id" data-type="number" />
         <xsl:variable name="lastId" select="id" />
         <xsl:if test="not(preceding::event[id=$lastId])">
           <xsl:choose>
-            <xsl:when
-              test="(/bedework/appvar[key = 'group']/value = /bedework/urlPrefixes/groups/group/eventOwner) and (not(/bedework/appvar[key = 'category']/value) or (/bedework/appvar[key = 'category']/value = 'all'))">
+            <xsl:when test="(/bedework/appvar[key = 'group']/value = /bedework/urlPrefixes/groups/group/eventOwner) and (not(/bedework/appvar[key = 'category']/value) or (/bedework/appvar[key = 'category']/value = 'all'))">
               <xsl:variable name="creator" select="creator" />
               <xsl:variable name="envgroup" select="/bedework/appvar[key = 'group']/value" />
               <xsl:variable name="cosponsor" select="xproperties/X-BEDEWORK-CS/parameters/X-BEDEWORK-PARAM-DESCRIPTION" />
@@ -135,21 +133,19 @@
           <xsl:otherwise>bwStatusConfirmed</xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <xsl:if test="status != 'CONFIRMED'">
-        <xsl:value-of select="status" />
-        <xsl:text>: </xsl:text>
-      </xsl:if>
-      <xsl:value-of select="summary" />
+      <a href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+        <xsl:if test="status != 'CONFIRMED'">
+          <xsl:value-of select="status" />
+          <xsl:text>: </xsl:text>
+        </xsl:if>
+        <xsl:value-of select="summary" />
+      </a>
       , Ends
       <xsl:value-of select="end/shortdate" />
       <xsl:text> </xsl:text>
-      <xsl:value-of select="end/time" />
-      <xsl:text> |</xsl:text>
-      <a
-        href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-        more
-      </a>
-      <xsl:text>|</xsl:text>
+      <xsl:if test="start/allday = 'false'">
+        <xsl:value-of select="end/time" />
+      </xsl:if>
     </li>
   </xsl:template>
 
