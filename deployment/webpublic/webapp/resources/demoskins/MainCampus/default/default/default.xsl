@@ -72,8 +72,8 @@
 
   <!-- DEFINE GLOBAL CONSTANTS -->
 
-  <!-- URL of html resources (images, css, other html); by default this is
-    set to the current theme directory  -->
+  <!-- URL of html resources (images, css, other html);
+       by default this is set to the current theme directory  -->
   <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot" />/default/default/defaultTheme</xsl:variable>
 
   <!-- URL of the XSL template directory -->
@@ -113,6 +113,7 @@
 
   <!-- Other generally useful global variables -->
   <xsl:variable name="privateCal">/ucal</xsl:variable>
+  <xsl:variable name="feederPrefix">/feeder</xsl:variable>
   <xsl:variable name="prevdate" select="/bedework/previousdate" />
   <xsl:variable name="nextdate" select="/bedework/nextdate" />
   <xsl:variable name="curdate" select="/bedework/currentdate/date" />

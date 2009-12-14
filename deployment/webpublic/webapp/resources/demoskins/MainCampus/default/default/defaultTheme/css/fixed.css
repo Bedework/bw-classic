@@ -30,6 +30,9 @@ h4 {
 em {
  font-style: italic;
 }
+strong {
+  font-weight: bold;
+}
 body {
  margin: 0;
  padding: 0;
@@ -748,6 +751,7 @@ div.singleEvent h2 {
  border-bottom: 1px solid #CCC;
 }
 div.singleEvent .eventTitle {
+  margin-bottom: 1em;
 }
 div.singleEvent .eventIcons {
  float: right;
@@ -758,6 +762,9 @@ div.singleEvent .eventIcons img {
 }
 div.singleEvent .infoTitle {
  font-weight: bold;
+}
+div.singleEvent .tzdates {
+  margin-left: 3em;
 }
 ul.calendarTree {
  padding: 1em;

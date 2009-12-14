@@ -20,6 +20,7 @@
           </a>
         </li>
       </xsl:for-each>
+      <!--
       <li>
         <a
           href="/cal/?setappvar=category(all)&amp;setappvar=categoryclass(all)">
@@ -31,10 +32,6 @@
         </a>
       </li>
       <li>
-        <!-- <a href="/cal/?setappvar=category(Academic Calendar Dates)&amp;setappvar=categoryclass(Academic Calendar Dates)">
-          <xsl:if test="/bedework/appvar[key = 'categoryclass']/value = 'Academic Calendar Dates'">
-          <xsl:attribute name="class">current</xsl:attribute>
-          </xsl:if> -->
         <a
           href="http://www.registrar.duke.edu/registrar/studentpages/student/academicalendars.html">
           Official Academic Calendar
@@ -477,6 +474,7 @@
           </li>
         </ul>
       </li>
+      -->
     </ul>
   </xsl:template>
 

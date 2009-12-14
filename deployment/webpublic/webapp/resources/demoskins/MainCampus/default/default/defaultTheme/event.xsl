@@ -19,56 +19,41 @@
 
     <div class="singleEvent">
 
-      <h2 class="{$statusClass} eventTitle">
+      <div id="eventIcons">
         <xsl:variable name="gStartdate" select="start/utcdate" />
         <xsl:variable name="gLocation" select="location/address" />
         <xsl:variable name="gEnddate" select="end/utcdate" />
         <xsl:variable name="gText" select="summary" />
         <xsl:variable name="gDetails" select="summary" />
-        <a class="eventIcons"
-          href="http://www.google.com/calendar/event?action=TEMPLATE&amp;dates={$gStartdate}/{$gEnddate}&amp;text={$gText}&amp;details={$gDetails}&amp;location={$gLocation}">
-          <img title="Add to Google Calendar"
-            src="{$resourcesRoot}/images/gcal.gif"
-            alt="Add to Google Calendar" />
+        <a class="eventIcons" href="http://www.google.com/calendar/event?action=TEMPLATE&amp;dates={$gStartdate}/{$gEnddate}&amp;text={$gText}&amp;details={$gDetails}&amp;location={$gLocation}">
+          <img title="Add to Google Calendar" src="{$resourcesRoot}/images/gcal.gif" alt="Add to Google Calendar" />
         </a>
         <xsl:choose>
           <xsl:when test="string-length($recurrenceId)">
-            <a class="eventIcons"
-              href="http://www.facebook.com/share.php?u=http://calendar.duke.edu/feed/event/cal/html/{$subscriptionId}/Public/{$recurrenceId}/{$guidEsc}">
-              <img title="Add to Facebook"
-                src="{$resourcesRoot}/images/Facebook_Badge.gif"
-                alt="Add to Facebook" />
+            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feederPrefix}/event/cal/html/Public/{$recurrenceId}/{$guidEsc}">
+              <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="Add to Facebook" />
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <a class="eventIcons"
-              href="http://www.facebook.com/share.php?u=http://calendar.duke.edu/feed/event/cal/html/{$subscriptionId}/Public/0/{$guidEsc}">
-              <img title="Add to Facebook"
-                src="{$resourcesRoot}/images/Facebook_Badge.gif"
-                alt="Add to Facebook" />
+            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feederPrefix}/event/cal/html/Public/0/{$guidEsc}">
+              <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="Add to Facebook" />
             </a>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:variable name="eventIcalName"
-          select="concat($guid,'.ics')" />
-        <a class="eventIcons"
-          href="{$export}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}"
-          title="Download .ics file for import to other calendars">
-          <img src="{$resourcesRoot}/images/std-ical_icon.gif"
-            alt="Download this event" />
+        <xsl:variable name="eventIcalName" select="concat($guid,'.ics')" />
+        <a class="eventIcons" href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download .ics file for import to other calendars">
+          <img src="{$resourcesRoot}/images/std-ical_icon.gif" alt="Download this event" />
         </a>
-        <xsl:if test="status='CANCELLED'">CANCELLED:</xsl:if>
-        <xsl:if test="summary != ''">
-          <xsl:variable name="summary" select="summary" />
-          <xsl:value-of select="$summary" />
-        </xsl:if>
+      </div>
+
+      <h2 class="{$statusClass} eventTitle">
+        <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-SgEv-Canceled"/><xsl:text> </xsl:text></xsl:if>
+        <xsl:value-of select="summary" />
       </h2>
 
-      <span class="eventWhen">
-        <br />
-        <span class="infoTitle">When: </span>
-        <xsl:value-of select="start/dayname" />
-        ,
+      <div class="eventWhen">
+        <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-When"/><xsl:text> </xsl:text></span>
+        <xsl:value-of select="start/dayname" />,
         <xsl:value-of select="start/longdate" />
         <xsl:text> </xsl:text>
         <xsl:if test="start/allday = 'false'">
@@ -77,7 +62,8 @@
           </span>
         </xsl:if>
         <xsl:if
-          test="(end/longdate != start/longdate) or ((end/longdate = start/longdate) and (end/time != start/time))">
+          test="(end/longdate != start/longdate) or
+                ((end/longdate = start/longdate) and (end/time != start/time))">
           -
         </xsl:if>
         <xsl:if test="end/longdate != start/longdate">
@@ -89,7 +75,7 @@
         <xsl:choose>
           <xsl:when test="start/allday = 'true'">
             <span class="time">
-              <em>(All day)</em>
+              <em><xsl:copy-of select="$bwStr-SgEv-AllDay"/></em>
             </span>
           </xsl:when>
           <xsl:when test="end/longdate != start/longdate">
@@ -103,7 +89,94 @@
             </span>
           </xsl:when>
         </xsl:choose>
-      </span>
+        <!-- if timezones are not local, or if floating add labels: -->
+        <xsl:if test="start/timezone/islocal = 'false' or end/timezone/islocal = 'false'">
+          <xsl:text> </xsl:text>
+          --
+          <strong>
+            <xsl:choose>
+              <xsl:when test="start/floating = 'true'">
+                <xsl:copy-of select="$bwStr-SgEv-FloatingTime"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:copy-of select="$bwStr-SgEv-LocalTime"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </strong>
+          <br/>
+        </xsl:if>
+        <!-- display in timezone if not local or floating time) -->
+        <xsl:if test="(start/timezone/islocal = 'false' or end/timezone/islocal = 'false') and start/floating = 'false'">
+          <xsl:choose>
+            <xsl:when test="start/timezone/id != end/timezone/id">
+              <!-- need to display both timezones if they differ from start to end -->
+              <div class="tzdates">
+                <em><xsl:copy-of select="$bwStr-SgEv-Start"/><xsl:text> </xsl:text></em>
+                <xsl:choose>
+                  <xsl:when test="start/timezone/islocal='true'">
+                    <xsl:value-of select="start/dayname"/>,
+                    <xsl:value-of select="start/longdate"/>
+                    <xsl:text> </xsl:text>
+                    <span class="time"><xsl:value-of select="start/time"/></span>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="start/timezone/dayname"/>,
+                    <xsl:value-of select="start/timezone/longdate"/>
+                    <xsl:text> </xsl:text>
+                    <span class="time"><xsl:value-of select="start/timezone/time"/></span>
+                  </xsl:otherwise>
+                </xsl:choose>
+                --
+                <strong><xsl:value-of select="start/timezone/id"/></strong>
+                <br/>
+                <em><xsl:copy-of select="$bwStr-SgEv-End"/><xsl:text> </xsl:text></em>
+                <xsl:choose>
+                  <xsl:when test="end/timezone/islocal='true'">
+                    <xsl:value-of select="end/dayname"/>,
+                    <xsl:value-of select="end/longdate"/>
+                    <xsl:text> </xsl:text>
+                    <span class="time"><xsl:value-of select="end/time"/></span>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="end/timezone/dayname"/>,
+                    <xsl:value-of select="end/timezone/longdate"/>
+                    <xsl:text> </xsl:text>
+                    <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                  </xsl:otherwise>
+                </xsl:choose>
+                --
+                <strong><xsl:value-of select="end/timezone/id"/></strong>
+              </div>
+            </xsl:when>
+            <xsl:otherwise>
+              <!-- otherwise, timezones are the same: display as a single line  -->
+              <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/><xsl:text> </xsl:text>
+              <xsl:if test="start/allday = 'false'">
+                <span class="time"><xsl:value-of select="start/timezone/time"/></span>
+              </xsl:if>
+              <xsl:if test="(end/timezone/longdate != start/timezone/longdate) or
+                            ((end/timezone/longdate = start/timezone/longdate) and (end/timezone/time != start/timezone/time))"> - </xsl:if>
+              <xsl:if test="end/timezone/longdate != start/timezone/longdate">
+                <xsl:value-of select="substring(end/timezone/dayname,1,3)"/>, <xsl:value-of select="end/timezone/longdate"/><xsl:text> </xsl:text>
+              </xsl:if>
+              <xsl:choose>
+                <xsl:when test="start/allday = 'true'">
+                  <span class="time"><em> <xsl:copy-of select="$bwStr-SgEv-AllDay"/></em></span>
+                </xsl:when>
+                <xsl:when test="end/timezone/longdate != start/timezone/longdate">
+                  <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                </xsl:when>
+                <xsl:when test="end/timezone/time != start/timezone/time">
+                  <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                </xsl:when>
+              </xsl:choose>
+              <xsl:text> </xsl:text>
+              --
+              <strong><xsl:value-of select="start/timezone/id"/></strong>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:if>
+      </div>
 
       <span class="eventWhere">
         <span class="infoTitle">Where: </span>
