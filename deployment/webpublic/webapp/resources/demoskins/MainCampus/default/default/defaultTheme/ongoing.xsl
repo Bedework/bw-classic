@@ -141,55 +141,13 @@
         <xsl:value-of select="summary" />
       </a>
       , Ends
+      <xsl:text> </xsl:text>
       <xsl:value-of select="end/shortdate" />
       <xsl:text> </xsl:text>
       <xsl:if test="start/allday = 'false'">
         <xsl:value-of select="end/time" />
       </xsl:if>
     </li>
-  </xsl:template>
-
-  <!-- Notices List -->
-  <xsl:template name="noticesList">
-    <h3 class="secondaryColHeader">Notices</h3>
-    <ul>
-      <xsl:for-each
-        select="/bedework/eventscalendar/year/month/week/day/event[categories/category/value = 'Reminder']">
-        <li>
-          <xsl:variable name="subscriptionId"
-            select="subscription/id" />
-          <xsl:variable name="calPath"
-            select="calendar/encodedPath" />
-          <xsl:variable name="guid" select="guid" />
-          <xsl:variable name="recurrenceId"
-            select="recurrenceId" />
-          <xsl:variable name="statusClass">
-            <xsl:choose>
-              <xsl:when test="status='CANCELLED'">
-                bwStatusCancelled
-              </xsl:when>
-              <xsl:when test="status='TENTATIVE'">
-                bwStatusTentative
-              </xsl:when>
-              <xsl:otherwise>
-                bwStatusConfirmed
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-          <xsl:if test="status != 'CONFIRMED'">
-            <xsl:value-of select="status" />
-            <xsl:text>: </xsl:text>
-          </xsl:if>
-          <xsl:value-of select="summary" />
-          <xsl:text> | </xsl:text>
-          <a
-            href="{$eventView}&amp;subid={$subscriptionId}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-            more
-          </a>
-          <xsl:text> |</xsl:text>
-        </li>
-      </xsl:for-each>
-    </ul>
   </xsl:template>
 
 </xsl:stylesheet>
